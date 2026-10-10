@@ -1335,7 +1335,7 @@
       { "catalog_slot": "M19", "after": ".out/uiux-2026-epic-289/settings/393/mobile-about-settings-after.png", "sha256": "733dc94349044ac372981ad7e5061a03cfa58b59698322d7a8b409f436298cbc", "raster": "1179x2556" }
     ],
     "observations": [
-      "M15 profile form and save state are visible with a synthetic identity. The source shows part of a secondary avatar button labelled ‘Удалить…’ clipped at the right viewport edge; the after capture shows only Edit avatar, so action parity needs a targeted follow-up.",
+      "M15 profile form and save state are visible with a synthetic identity and no avatar. The source includes a secondary avatar button labelled ‘Удалить…’; code renders this action only when avatar_url is present, so its absence in the after capture is expected and no parity defect is inferred.",
       "M16 password and logout sections match the source flow. The after capture adds explicit confirmation guidance and places active sessions below the first viewport; no overlap was observed.",
       "M17 device controls and microphone activation layout match. Device names and sensitivity values differ because the after image uses the host browser device inventory and runtime preferences.",
       "M18 notification controls and per-channel preferences are present. The source browser has notifications enabled and a channel selected; the after browser denies permission and has no open channel, which changes the visible state.",
@@ -1343,7 +1343,7 @@
     ],
     "limitations": [
       "Source and after rasters match at 1179x2556, but account identity, host devices, notification permission/channel availability and update-service response are runtime-dependent.",
-      "The M15 avatar action difference is unresolved; the screenshots are review evidence only and do not establish product parity or approved pixel goldens.",
+      "M15 uses a no-avatar QA identity while the source has an avatar; the source's remove-avatar action is conditional and therefore absent by design in the after capture. The screenshots remain review evidence, not approved pixel goldens.",
       "These five mobile Web review captures do not complete the 41-slot catalog, Flutter/native acceptance, D11 resolution or CI artifact gate."
     ]
   }

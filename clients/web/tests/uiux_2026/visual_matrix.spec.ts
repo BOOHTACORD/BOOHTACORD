@@ -255,6 +255,8 @@ describe('UIUX-2026 visual regression inventory', () => {
     }
 
     expect(settingsEvidence.reviewNotes.M15).toContain('Удалить')
+    expect(settingsEvidence.reviewNotes.M15).toContain('only when avatar_url is present')
+    expect(settingsEvidence.reviewNotes.M15).not.toContain('parity needs a targeted follow-up')
     expect(settingsEvidence.reviewNotes.M19).toContain('not suitable as a golden')
     expect(evidence.limitations.join(' ')).toContain('browser device inventory')
     expect(evidence.limitations.join(' ')).toContain('HTTP 503')

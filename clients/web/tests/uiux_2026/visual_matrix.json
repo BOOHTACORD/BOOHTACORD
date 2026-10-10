@@ -675,7 +675,7 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Edit profile name, switch tabs, force a save failure, retry, and leave with a dirty draft.",
-      "expectedOrException": "Pending/error/saved/dirty states remain explicit and unsaved changes are protected; Flutter IME/safe-area remains NOT_RUN. Mobile source review found a right-clipped secondary avatar action in the reference and no equivalent in the after capture; parity needs a targeted follow-up.",
+      "expectedOrException": "Pending/error/saved/dirty states remain explicit and unsaved changes are protected; Flutter IME/safe-area remains NOT_RUN. The source includes a secondary avatar action; QA's synthetic profile has no avatar, and the ‘Удалить’ action is conditional on avatar_url, so its absence in that capture is expected.",
       "owner": "clients/web/src/identity/ProfileSettings.vue",
       "flutterTestFile": "clients/flutter/test/profile_screen_test.dart",
       "referenceRasterPx": {
@@ -905,7 +905,7 @@
     "report": "evidence/qa/qa297-personal-settings-2026-10-10.json",
     "reviewedScreenIds": ["M15", "M16", "M17", "M18", "M19"],
     "reviewNotes": {
-      "M15": "Profile form and save state are visible with a synthetic identity. The source shows part of a secondary avatar button labelled ‘Удалить…’ clipped at the right viewport edge; the after capture shows only Edit avatar, so action parity needs a targeted follow-up.",
+      "M15": "Profile form and save state are visible with a synthetic identity and no avatar. The source includes a secondary avatar button labelled ‘Удалить…’; code renders this action only when avatar_url is present, so its absence in the after capture is expected and no parity defect is inferred.",
       "M16": "Password and logout sections match the source flow. The after capture adds explicit confirmation guidance and places active sessions below the first viewport; no overlap was observed.",
       "M17": "Device controls and microphone activation layout match. Device names and sensitivity values differ because the after image uses the host browser device inventory and runtime preferences.",
       "M18": "Notification controls and per-channel preferences are present. The source browser has notifications enabled and a channel selected; the after browser denies permission and has no open channel, which changes the visible state.",

@@ -222,7 +222,7 @@
       "dimensions_match": true,
       "observation": "The profile name/avatar form and save state are visible. The QA identity is synthetic.",
       "visual_review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
-      "visual_review_note": "Profile form and save state are visible with a synthetic identity. The source shows part of a secondary avatar button labelled ‘Удалить…’ clipped at the right viewport edge; the after capture shows only Edit avatar, so action parity needs a targeted follow-up."
+      "visual_review_note": "Profile form and save state are visible with a synthetic identity and no avatar. The source includes a secondary avatar button labelled ‘Удалить…’; code renders this action only when avatar_url is present, so its absence in the after capture is expected and no parity defect is inferred."
     },
     {
       "section": "security",
