@@ -23,6 +23,13 @@ test('scenario names stay readable and selecting 1440p chooses the supported tex
   await expect(scenarios.nth(1)).toBeInViewport({ ratio: 0.99 })
   await expect(page.getByRole('radio', { name: '1080p' })).toBeInViewport({ ratio: 0.99 })
   await expect(page.getByRole('radio', { name: '1440p' })).toBeInViewport({ ratio: 0.99 })
+  const scenarioLegend = dialog.locator('.screen-share-quality__mode legend')
+  const scenarioOptions = dialog.locator('.screen-share-quality__scenarios')
+  const scenarioLegendBox = await scenarioLegend.boundingBox()
+  const scenarioOptionsBox = await scenarioOptions.boundingBox()
+  const bodyBox = await dialog.locator('.screen-share-setup__body').boundingBox()
+  expect(scenarioOptionsBox!.y).toBeGreaterThanOrEqual(scenarioLegendBox!.y + scenarioLegendBox!.height)
+  expect(scenarioOptionsBox!.width).toBeGreaterThan(bodyBox!.width * 0.9)
   await expect(scenarios.nth(0)).toContainText('Плавность')
   await expect(scenarios.nth(0)).toContainText('Игры и видео · 60 FPS')
   await expect(scenarios.nth(1)).toContainText('Чёткость текста')
@@ -83,6 +90,13 @@ test('shows quality choices without hiding them and lets the user click 1440p di
 
   const scenarioCards = dialog.locator('.screen-share-quality__scenario-option')
   await expect(scenarioCards).toHaveCount(2)
+  const scenarioLegend = dialog.locator('.screen-share-quality__mode legend')
+  const scenarioOptions = dialog.locator('.screen-share-quality__scenarios')
+  const scenarioLegendBox = await scenarioLegend.boundingBox()
+  const scenarioOptionsBox = await scenarioOptions.boundingBox()
+  const bodyBox = await dialog.locator('.screen-share-setup__body').boundingBox()
+  expect(scenarioOptionsBox!.y).toBeGreaterThanOrEqual(scenarioLegendBox!.y + scenarioLegendBox!.height)
+  expect(scenarioOptionsBox!.width).toBeGreaterThan(bodyBox!.width * 0.9)
   for (const title of await scenarioCards.locator('.screen-share-quality__scenario-title').all()) {
     await expect(title).toBeVisible()
     expect(await title.evaluate(element => getComputedStyle(element).whiteSpace)).toBe('normal')
@@ -116,8 +130,16 @@ test('shows quality choices without hiding them and lets the user click 1440p di
   await expect(fixedFpsValue).toBeVisible()
   expect((await fixedFpsValue.boundingBox())!.width).toBeCloseTo((await resolutionSelector.boundingBox())!.width, 1)
 
+  const body = dialog.locator('.screen-share-setup__body')
+  await body.evaluate(element => { element.scrollTop = element.scrollHeight })
+  await resolution.scrollIntoViewIfNeeded()
+  await resolution.click()
+  await expect(resolution).toBeChecked()
+  await expect(resolution).toBeInViewport()
+  expect(await body.evaluate(element => element.scrollTop)).toBeGreaterThan(0)
+
   await dialog.getByRole('button', { name: 'Начать трансляцию' }).click()
-  await expect.poll(() => page.evaluate(() => window.selectedScreenQuality)).toBe('P1080_60')
+  await expect.poll(() => page.evaluate(() => window.selectedScreenQuality)).toBe('P1440_30')
 })
 
 test('normalizes a saved 1440p60 profile to a startable 1440p30 selection', async ({ page }) => {

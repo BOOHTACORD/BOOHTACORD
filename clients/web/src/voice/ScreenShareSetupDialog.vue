@@ -50,12 +50,6 @@ function selectResolution(value: ScreenResolution): void {
   mode.value = selection.mode
   resolution.value = selection.resolution
   frameRate.value = selection.frameRate
-  if (value === 1440) {
-    void nextTick(() => requestAnimationFrame(() => {
-      const body = dialog.value?.querySelector<HTMLElement>('.screen-share-setup__body')
-      if (body) body.scrollTop = 0
-    }))
-  }
 }
 
 function applyRecommendedProfile(): void {
