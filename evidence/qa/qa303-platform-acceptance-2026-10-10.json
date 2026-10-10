@@ -44,8 +44,8 @@
     },
     {
       "command": "xcrun simctl list devices available",
-      "result": "NOT_RUN_CORE_SIMULATOR_UNAVAILABLE",
-      "observation": "CoreSimulatorService connection failed and no simulator devices could be enumerated; Flutter device discovery also reported no iOS target."
+      "result": "REVALIDATED_INVENTORY_EMPTY",
+      "observation": "Re-run with SDK access completed successfully and returned only the heading `== Devices ==`; no available iOS simulator device was listed. The earlier sandboxed query had a transient CoreSimulatorService/log-permission error."
     }
   ],
   "historical_observations": [
@@ -370,5 +370,30 @@
       "analyzer": "Completed with informational diagnostics; no fatal infos or errors.",
       "acceptanceEffect": "Full automated Flutter CI entrypoint passes. Physical platform and screen-reader acceptance remain NOT_RUN."
     }
-  }
+  },
+  "latest_target_inventory": {
+    "date": "2026-10-11",
+    "source_revision": "08fdd3a6c51d9a20d24bb71d0513fc770b3d2946",
+    "flutter_devices_command": "cd clients/flutter && flutter devices --machine",
+    "flutter_devices_result": "PASS_INVENTORY",
+    "available_flutter_targets": [
+      {
+        "name": "macOS",
+        "target_platform": "darwin",
+        "sdk": "macOS 26.6.1 25G76 darwin-arm64",
+        "emulator": false
+      },
+      {
+        "name": "Chrome",
+        "target_platform": "web-javascript",
+        "sdk": "Google Chrome 154.0.8037.98",
+        "emulator": false
+      }
+    ],
+    "simulator_command": "xcrun simctl list devices available",
+    "simulator_result": "PASS_INVENTORY_EMPTY",
+    "ios_simulator_devices": [],
+    "acceptance_effect": "No physical task was run. macOS is an available native runner, but the app was not launched because its configured production HTTPS API lacks an isolated trusted QA endpoint. Android, iOS and Windows task runs remain NOT_RUN."
+  },
+  "updated_date": "2026-10-11"
 }
