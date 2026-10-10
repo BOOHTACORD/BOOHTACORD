@@ -21,7 +21,6 @@ const frameRates = computed<readonly ScreenFrameRate[]>(() => props.mode === 'mo
           <label v-for="value in resolutions" :key="value" class="screen-share-quality__option"><input :checked="resolution === value" type="radio" name="screen-share-resolution" :value="value" @change="emit('update:resolution', value)"><span>{{ value }}p</span></label>
         </div>
       </fieldset>
-      <p v-if="mode === 'motion'" class="screen-share-quality__hint" role="status">Выбор 1440p автоматически переключит сценарий на «Чёткость текста» и установит 30 FPS.</p>
       <div v-if="frameRates.length === 1" class="screen-share-quality__row screen-share-quality__row--frame-rate screen-share-quality__row--single">
         <span class="screen-share-quality__frame-rate-label">Частота кадров для плавности</span>
         <div class="screen-share-quality__single-value" role="status">{{ frameRates[0] }} FPS</div>
@@ -31,7 +30,6 @@ const frameRates = computed<readonly ScreenFrameRate[]>(() => props.mode === 'mo
           <label v-for="value in frameRates" :key="value" class="screen-share-quality__option"><input :checked="frameRate === value" type="radio" name="screen-share-frame-rate" :value="value" @change="emit('update:frameRate', value)"><span>{{ value }} FPS</span></label>
         </div>
       </fieldset>
-      <slot />
     </div>
   </section>
 </template>

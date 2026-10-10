@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 
 import ScreenShareSetupDialog from './ScreenShareSetupDialog.vue'
 import ScreenDiagnosticsPanel from './ScreenDiagnosticsPanel.vue'
-import { selectScreenQualityMode, selectScreenQualityResolution } from './screen_share_quality_selection'
+import { normalizeScreenQualitySelection, selectScreenQualityMode, selectScreenQualityResolution } from './screen_share_quality_selection'
 
 describe('screen-share setup dialog', () => {
   it('offers motion/text scenarios and ceiling choices before browser capture', async () => {
@@ -49,7 +49,7 @@ describe('screen-share setup dialog', () => {
     expect(html).toContain('Документы и код · 15–30 FPS')
     expect(html).toMatch(/<input[^>]*name="screen-share-resolution" value="1440"[^>]*>/)
     expect(html).not.toMatch(/<input[^>]*disabled[^>]*value="1440"[^>]*>/)
-    expect(html).toContain('Выбор 1440p автоматически переключит сценарий')
+    expect(html).toContain('1440p автоматически включает сценарий')
   })
 
   it('moves to the compatible text profile when 1440p is selected from motion', () => {
@@ -57,6 +57,8 @@ describe('screen-share setup dialog', () => {
     expect(selectScreenQualityResolution(motion, 1440)).toEqual({ mode: 'text', resolution: 1440, frameRate: 30 })
     expect(selectScreenQualityMode({ ...motion, resolution: 1440 }, 'motion')).toEqual({ mode: 'motion', resolution: 1080, frameRate: 60 })
     expect(selectScreenQualityMode(motion, 'text')).toEqual({ mode: 'text', resolution: 1080, frameRate: 30 })
+    expect(normalizeScreenQualitySelection({ mode: 'motion', resolution: 1440, frameRate: 60 }))
+      .toEqual({ mode: 'text', resolution: 1440, frameRate: 30 })
   })
 
   it('opens the dialog from both the room action and persistent voice dock', () => {
@@ -71,14 +73,16 @@ describe('screen-share setup dialog', () => {
     expect(pane).not.toContain('Целевой профиль<select')
   })
 
-  it('restores the profile selected before the dialog was opened', async () => {
+  it('normalizes a saved 1440p60 profile to a startable 1440p30 text profile', async () => {
     const html = await renderToString(createSSRApp(ScreenShareSetupDialog, {
       initialProfile: 'P1440_60',
     }))
 
     expect(html).toMatch(/<input[^>]*checked[^>]*name="screen-share-resolution" value="1440"[^>]*>/)
-    expect(html).toContain('<div class="screen-share-quality__single-value" role="status">60 FPS</div>')
-    expect(html).toMatch(/<button[^>]*class="screen-share-setup__start"[^>]*disabled>/)
+    expect(html).toMatch(/<input[^>]*checked[^>]*name="screen-share-mode" value="text"[^>]*>/)
+    expect(html).toMatch(/<input[^>]*checked[^>]*name="screen-share-frame-rate" value="30"[^>]*>/)
+    expect(html).toContain('Текущий выбор: 1440p · 30 FPS')
+    expect(html).not.toMatch(/<button[^>]*class="screen-share-setup__start"[^>]*disabled>/)
   })
 
   it('shows the current stream quality editor only for an updating sender', async () => {

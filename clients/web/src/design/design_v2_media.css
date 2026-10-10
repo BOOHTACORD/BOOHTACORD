@@ -27,8 +27,6 @@
 .workspace-main-panel--audio .audio-settings > button { min-height: var(--gc-size-control); }
 .screen-share-setup-dialog { width: min(var(--gc-layout-dialog), calc(100vw - 32px)); }
 .screen-share-setup__header { min-height: 72px; padding: 14px 20px 12px; }
-.screen-share-setup__body { gap: var(--gc-space-3); padding: 8px 20px 12px; }
-.screen-share-setup__notice { padding: 12px 16px; }
 .screen-share-quality__option { min-height: 44px; }
 .screen-share-setup__footer { min-height: 64px; padding: 8px 20px 12px; }
 @media (min-width: 601px) { .screen-share-setup-dialog { height: 469px; transform: translateY(.5px); } }
@@ -44,9 +42,6 @@
   .screen-voice-return { inset: 12px 12px auto; height: 40px; overflow-x: auto; flex-wrap: nowrap; }
   .stream-voice-return-copy { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
   .stream-voice-return button { min-height: 40px; flex: 0 0 auto; padding-inline: 8px; font-size: var(--gc-text-caption); }
-  .screen-share-setup__body { gap: 4px; padding: 5px 12px 4px; }
-  .screen-share-setup__notice { padding: 8px 12px; }
-  .screen-share-quality { gap: 8px; }
   .screen-share-quality__option { min-height: 44px; }
   .workspace-main-panel--audio .audio-settings { grid-template-columns: 1fr; }
   .stats-popover { position: fixed; right: 0; bottom: 0; left: 0; width: 100%; max-height: 80dvh; overflow: auto; border-radius: var(--gc-radius-shell) var(--gc-radius-shell) 0 0; }

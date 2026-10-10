@@ -7,6 +7,15 @@ export type ScreenShareQualitySelection = {
   frameRate: ScreenFrameRate
 }
 
+export function normalizeScreenQualitySelection(
+  selection: ScreenShareQualitySelection,
+): ScreenShareQualitySelection {
+  if (selection.resolution === 1440 && selection.frameRate === 60) {
+    return { mode: 'text', resolution: 1440, frameRate: 30 }
+  }
+  return selection
+}
+
 export function selectScreenQualityResolution(
   current: ScreenShareQualitySelection,
   resolution: ScreenResolution,

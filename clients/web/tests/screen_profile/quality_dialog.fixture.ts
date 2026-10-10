@@ -10,7 +10,7 @@ declare global {
 
 createApp({
   render: () => h(ScreenShareSetupDialog, {
-    initialProfile: 'P1080_60',
+    initialProfile: new URLSearchParams(location.search).get('profile') ?? 'P1080_60',
     onStart: (profile: string) => { window.selectedScreenQuality = profile },
   }),
 }).mount('#app')

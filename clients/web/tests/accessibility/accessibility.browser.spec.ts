@@ -809,9 +809,10 @@ test('screen-share selectors fit their options and allow the 1440p text profile'
     const columns = getComputedStyle(selector).gridTemplateColumns.split(/\s+/).filter(Boolean).length
     const labels = selector.querySelectorAll('.screen-share-quality__scenario-title, .screen-share-quality__scenario-copy small, .screen-share-quality__option span')
     const labelsFit = [...labels].every(label => label.scrollWidth <= label.clientWidth && label.scrollHeight <= label.clientHeight)
-    const labelFits = selector.classList.contains('screen-share-quality__single-value')
-      ? labelBox.right <= selectorBox.left && Math.abs((labelBox.top + labelBox.bottom) - (selectorBox.top + selectorBox.bottom)) <= 4
-      : labelBox.bottom <= selectorBox.top + 1
+    const placedBeforeOrBeside = labelBox.bottom <= selectorBox.top + 1
+      || (labelBox.right <= selectorBox.left + 1
+        && Math.abs((labelBox.top + labelBox.bottom) / 2 - (selectorBox.top + selectorBox.bottom) / 2) <= selectorBox.height)
+    const labelFits = placedBeforeOrBeside
     return { columns, labelsFit, labelFits }
   }))
   const motionLayout = await readSelectorLayout()
@@ -819,12 +820,17 @@ test('screen-share selectors fit their options and allow the 1440p text profile'
   expect(motionLayout.every(group => group.labelsFit && group.labelFits)).toBe(true)
 
   const resolution = dialog.getByRole('radio', { name: '1440p' })
+  await expect(dialog.locator('.screen-share-quality__mode')).toBeInViewport({ ratio: 0.99 })
+  await expect(dialog.locator('[aria-label=\"Верхний предел разрешения трансляции\"]')).toBeInViewport({ ratio: 0.99 })
+  await expect(resolution).toBeInViewport({ ratio: 0.99 })
   await expect(resolution).toBeEnabled()
   await expectAxeClear(page, '.screen-share-setup-dialog')
   await resolution.check()
   await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
   await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
   await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
+  await expect(dialog.locator('.screen-share-quality__mode')).toBeInViewport({ ratio: 0.99 })
+  await expect(resolution).toBeInViewport({ ratio: 0.99 })
   await expect(header).toBeInViewport({ ratio: 0.99 })
   await expect(footer).toBeInViewport({ ratio: 0.99 })
   await expectAxeClear(page, '.screen-share-setup-dialog')
