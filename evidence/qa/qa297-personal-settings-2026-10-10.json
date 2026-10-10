@@ -220,7 +220,9 @@
         "raster": "1179x2556"
       },
       "dimensions_match": true,
-      "observation": "The profile name/avatar form and save state are visible. The QA identity is synthetic."
+      "observation": "The profile name/avatar form and save state are visible. The QA identity is synthetic.",
+      "visual_review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+      "visual_review_note": "Profile form and save state are visible with a synthetic identity. The source shows part of a secondary avatar button labelled ‘Удалить…’ clipped at the right viewport edge; the after capture shows only Edit avatar, so action parity needs a targeted follow-up."
     },
     {
       "section": "security",
@@ -237,7 +239,9 @@
         "raster": "1179x2556"
       },
       "dimensions_match": true,
-      "observation": "Password and logout sections require explicit actions; own sessions continue below the viewport in the independently scrollable panel."
+      "observation": "Password and logout sections require explicit actions; own sessions continue below the viewport in the independently scrollable panel.",
+      "visual_review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+      "visual_review_note": "Password and logout sections match the source flow. The after capture adds explicit confirmation guidance and places active sessions below the first viewport; no overlap was observed."
     },
     {
       "section": "audio",
@@ -254,7 +258,9 @@
         "raster": "1179x2556"
       },
       "dimensions_match": true,
-      "observation": "The real Chrome audio settings component enumerates the host browser’s current default devices; this is browser emulation, not device acceptance."
+      "observation": "The real Chrome audio settings component enumerates the host browser’s current default devices; this is browser emulation, not device acceptance.",
+      "visual_review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+      "visual_review_note": "Device controls and microphone activation layout match. Device names and sensitivity values differ because the after image uses the host browser device inventory and runtime preferences."
     },
     {
       "section": "notifications",
@@ -271,7 +277,9 @@
         "raster": "1179x2556"
       },
       "dimensions_match": true,
-      "observation": "The local browser reports notifications disabled while the source shows them enabled; this runtime permission/state difference is not a pixel/layout failure."
+      "observation": "The local browser reports notifications disabled while the source shows them enabled; this runtime permission/state difference is not a pixel/layout failure.",
+      "visual_review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+      "visual_review_note": "Notification controls and per-channel preferences are present. The source browser has notifications enabled and a channel selected; the after browser denies permission and has no open channel, which changes the visible state."
     },
     {
       "section": "about",
@@ -288,7 +296,9 @@
         "raster": "1179x2556"
       },
       "dimensions_match": true,
-      "observation": "The local update endpoint returns 503 while the source shows an installed-current state; this environment response difference remains visible in the after capture."
+      "observation": "The local update endpoint returns 503 while the source shows an installed-current state; this environment response difference remains visible in the after capture.",
+      "visual_review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+      "visual_review_note": "About/version card structure matches. The source reports an installed current version; the after capture shows the local update endpoint’s 503 error and is not suitable as a golden."
     },
     {
       "section": "guild-settings",

@@ -1320,5 +1320,31 @@
       "The remaining visual catalog entries and duplicate D11 source are still unresolved.",
       "The requested [skip ci] means no new Actions artifact was created."
     ]
+  },
+  "mobile_settings_source_review_follow_up": {
+    "date": "2026-10-11",
+    "source_revision": "ab12691186a51beae7988dee01021e0ea7b5ef54",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "evidence": "evidence/qa/qa297-personal-settings-2026-10-10.json#comparisons",
+    "reviewed_catalog_slots": ["M15", "M16", "M17", "M18", "M19"],
+    "captures": [
+      { "catalog_slot": "M15", "after": ".out/uiux-2026-epic-289/settings/393/mobile-profile-settings-after.png", "sha256": "d5d41793a1e4359eb854189f33849654aa8474f14f328b51c535fac3049613e6", "raster": "1179x2556" },
+      { "catalog_slot": "M16", "after": ".out/uiux-2026-epic-289/settings/393/mobile-security-settings-after.png", "sha256": "60a0c30741e3c14f46c7af7c460f2cd90a8619fbabc80c6496087726d35e27e3", "raster": "1179x2556" },
+      { "catalog_slot": "M17", "after": ".out/uiux-2026-epic-289/settings/393/mobile-audio-settings-after.png", "sha256": "71fe011e00d75bd647b1d1e3b02724ec63cf5e51ac10d8e42c4b01b62412b36d", "raster": "1179x2556" },
+      { "catalog_slot": "M18", "after": ".out/uiux-2026-epic-289/settings/393/mobile-notification-settings-after.png", "sha256": "67e3ac2cb06a5ea237347ae035a423ba3da9e7f2dbf0b2993e4758219bbfc877", "raster": "1179x2556" },
+      { "catalog_slot": "M19", "after": ".out/uiux-2026-epic-289/settings/393/mobile-about-settings-after.png", "sha256": "733dc94349044ac372981ad7e5061a03cfa58b59698322d7a8b409f436298cbc", "raster": "1179x2556" }
+    ],
+    "observations": [
+      "M15 profile form and save state are visible with a synthetic identity. The source shows part of a secondary avatar button labelled ‘Удалить…’ clipped at the right viewport edge; the after capture shows only Edit avatar, so action parity needs a targeted follow-up.",
+      "M16 password and logout sections match the source flow. The after capture adds explicit confirmation guidance and places active sessions below the first viewport; no overlap was observed.",
+      "M17 device controls and microphone activation layout match. Device names and sensitivity values differ because the after image uses the host browser device inventory and runtime preferences.",
+      "M18 notification controls and per-channel preferences are present. The source browser has notifications enabled and a channel selected; the after browser denies permission and has no open channel, which changes the visible state.",
+      "M19 About/version card structure matches. The source reports an installed current version; the after capture shows the local update endpoint's 503 error and is not suitable as a golden."
+    ],
+    "limitations": [
+      "Source and after rasters match at 1179x2556, but account identity, host devices, notification permission/channel availability and update-service response are runtime-dependent.",
+      "The M15 avatar action difference is unresolved; the screenshots are review evidence only and do not establish product parity or approved pixel goldens.",
+      "These five mobile Web review captures do not complete the 41-slot catalog, Flutter/native acceptance, D11 resolution or CI artifact gate."
+    ]
   }
 }

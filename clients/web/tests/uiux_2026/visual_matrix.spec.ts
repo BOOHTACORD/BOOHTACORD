@@ -50,6 +50,13 @@ type VisualMatrix = {
     sourceRevision: string
     reviewNote: string
   }
+  settingsCaptureReviewEvidence: {
+    status: string
+    sourceRevision: string
+    report: string
+    reviewedScreenIds: string[]
+    reviewNotes: Record<string, string>
+  }
   screens: MatrixEntry[]
 }
 
@@ -211,5 +218,45 @@ describe('UIUX-2026 visual regression inventory', () => {
 
     expect(evidence.current_branch_revalidation.limitation).toContain('D04 and M04–M07 were visually reviewed')
     expect(evidence.current_branch_revalidation.limitation).not.toContain('were not visually re-reviewed')
+  })
+
+  it('records reviewed mobile settings captures and keeps runtime-state differences review-only', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const evidence = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa297-personal-settings-2026-10-10.json'), 'utf8'))
+    const settingsEvidence = matrix.settingsCaptureReviewEvidence
+    const expectedReviews = [
+      { id: 'M15', section: 'profile', note: 'synthetic identity' },
+      { id: 'M16', section: 'security', note: 'active sessions' },
+      { id: 'M17', section: 'audio', note: 'browser device inventory' },
+      { id: 'M18', section: 'notifications', note: 'denies permission' },
+      { id: 'M19', section: 'about', note: '503 error' },
+    ]
+
+    expect(settingsEvidence).toMatchObject({
+      status: 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN',
+      sourceRevision: 'ab12691186a51beae7988dee01021e0ea7b5ef54',
+      report: 'evidence/qa/qa297-personal-settings-2026-10-10.json',
+      reviewedScreenIds: expectedReviews.map(({ id }) => id),
+    })
+
+    for (const review of expectedReviews) {
+      const screen = matrix.screens.find(({ id }) => id === review.id)!
+      const capture = evidence.comparisons.find(({ section }: { section: string }) => section === review.section)!
+
+      expect(screen.sourceComparisonStatus, `${review.id} matrix review`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(settingsEvidence.reviewNotes[review.id], `${review.id} observation`).toContain(review.note)
+      expect(capture.visual_review_status, `${review.id} capture status`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(capture.visual_review_note, `${review.id} capture note`).toBe(settingsEvidence.reviewNotes[review.id])
+      expect(capture.dimensions_match, `${review.id} dimensions`).toBe(true)
+      expect(capture.source.raster).toBe('1179x2556')
+      expect(capture.after.raster).toBe('1179x2556')
+      expect(capture.source.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(capture.after.sha256).toMatch(/^[a-f0-9]{64}$/)
+    }
+
+    expect(settingsEvidence.reviewNotes.M15).toContain('Удалить')
+    expect(settingsEvidence.reviewNotes.M19).toContain('not suitable as a golden')
+    expect(evidence.limitations.join(' ')).toContain('browser device inventory')
+    expect(evidence.limitations.join(' ')).toContain('HTTP 503')
   })
 })

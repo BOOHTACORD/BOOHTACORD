@@ -675,13 +675,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Edit profile name, switch tabs, force a save failure, retry, and leave with a dirty draft.",
-      "expectedOrException": "Pending/error/saved/dirty states remain explicit and unsaved changes are protected; Flutter IME/safe-area remains NOT_RUN.",
+      "expectedOrException": "Pending/error/saved/dirty states remain explicit and unsaved changes are protected; Flutter IME/safe-area remains NOT_RUN. Mobile source review found a right-clipped secondary avatar action in the reference and no equivalent in the after capture; parity needs a targeted follow-up.",
       "owner": "clients/web/src/identity/ProfileSettings.vue",
       "flutterTestFile": "clients/flutter/test/profile_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M16",
@@ -695,13 +696,14 @@
       "fixture": "clients/web/tests/own_sessions/sessions.browser.spec.ts",
       "testFile": "clients/web/tests/own_sessions/sessions.browser.spec.ts",
       "interaction": "Open session management, cancel bulk revocation, and explicitly confirm revoking other sessions.",
-      "expectedOrException": "No session is revoked before confirmation and the current session remains protected; source comparison pending.",
+      "expectedOrException": "No session is revoked before confirmation and the current session remains protected; mobile source review found the same password/logout flow, explicit confirmation guidance in the after capture, and active sessions below the first viewport.",
       "owner": "clients/web/src/identity/OwnSessionsPanel.vue; clients/web/src/channel/AdminConfirmation.vue",
       "flutterTestFile": "clients/flutter/test/profile_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M17",
@@ -715,13 +717,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Inspect audio setting control labels and responsive form layout.",
-      "expectedOrException": "A browser fixture does not confirm native device permissions, hardware discovery, or selected-device availability.",
+      "expectedOrException": "A browser fixture does not confirm native device permissions, hardware discovery, or selected-device availability. Mobile source review confirms the device and activation layout; device names and sensitivity values depend on runtime hardware/preferences.",
       "owner": "clients/web/src/voice/AudioSettings.vue; clients/flutter/lib/src/screens/workspace_ui/audio_settings_screen/",
       "flutterTestFile": "clients/flutter/test/audio_devices/settings_scan_notice_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M18",
@@ -735,13 +738,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Navigate notification settings and inspect save/permission feedback.",
-      "expectedOrException": "Platform notification permission state must not be inferred from static layout; audit comparison pending.",
+      "expectedOrException": "Platform notification permission state must not be inferred from static layout. Mobile source review found notifications enabled with a selected channel in the source and denied/no channel in the after capture; this is a runtime-state difference.",
       "owner": "clients/web/src/notification/NotificationSettings.vue",
       "flutterTestFile": "clients/flutter/test/profile_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M19",
@@ -755,13 +759,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open the About section and use its visible navigation/context controls.",
-      "expectedOrException": "Long version/build identifiers remain readable or fully available; source asset and final truncation comparison pending.",
+      "expectedOrException": "Long version/build identifiers remain readable or fully available. Mobile source review found the same version-card structure; the source shows current while the local update endpoint returns 503 in the after capture, so it is not a golden.",
       "owner": "clients/web/src/workspace/WorkspaceApp.vue; clients/flutter/lib/src/screens/profile_screen.dart",
       "flutterTestFile": "clients/flutter/test/profile_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M20",
@@ -893,5 +898,18 @@
     ],
     "sourceRevision": "92ccd7c62aebdf1a09a9b635ab55e4a7d2a0974b",
     "reviewNote": "The global search panel, scope, author/attachment/date filters, and find action match the archived screen. Runtime capture retains the visible focus ring on the query field; the source screenshot has no focused control. This is review evidence, not an approved pixel golden."
+  },
+  "settingsCaptureReviewEvidence": {
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "sourceRevision": "ab12691186a51beae7988dee01021e0ea7b5ef54",
+    "report": "evidence/qa/qa297-personal-settings-2026-10-10.json",
+    "reviewedScreenIds": ["M15", "M16", "M17", "M18", "M19"],
+    "reviewNotes": {
+      "M15": "Profile form and save state are visible with a synthetic identity. The source shows part of a secondary avatar button labelled ‘Удалить…’ clipped at the right viewport edge; the after capture shows only Edit avatar, so action parity needs a targeted follow-up.",
+      "M16": "Password and logout sections match the source flow. The after capture adds explicit confirmation guidance and places active sessions below the first viewport; no overlap was observed.",
+      "M17": "Device controls and microphone activation layout match. Device names and sensitivity values differ because the after image uses the host browser device inventory and runtime preferences.",
+      "M18": "Notification controls and per-channel preferences are present. The source browser has notifications enabled and a channel selected; the after browser denies permission and has no open channel, which changes the visible state.",
+      "M19": "About/version card structure matches. The source reports an installed current version; the after capture shows the local update endpoint’s 503 error and is not suitable as a golden."
+    }
   }
 }
