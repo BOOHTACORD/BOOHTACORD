@@ -338,5 +338,183 @@
     "desktop_telemetry_verified": true,
     "desktop_api_restart_persistence": true,
     "desktop_owned_resources_removed": true
+  },
+  "current_branch_capture_refresh": {
+    "date": "2026-10-11",
+    "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc",
+    "status": "PASS_CAPTURE_ONLY",
+    "runner": "python3 -m tools.qa.client_lifecycle.run --width 393; python3 -m tools.qa.client_lifecycle.run --width 1440",
+    "report_sha256": {
+      "393": "f1d1353c2c03b3945a4a709988a014a8c87a230d7abfacfa30c51e94cb661942",
+      "1440": "f82e3edd655779c4fbdb9a687550106131849221de2958389d7e38c89dbe68c5"
+    },
+    "runtime": {
+      "api_mocks": false,
+      "telemetry": "PASS",
+      "persisted_after_api_restart": true,
+      "owned_resources_removed": true
+    },
+    "captures": [
+      {
+        "catalog_slot": "D05",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-guild-members.png",
+        "source_sha256": "0a0ba90ad3288815fa4925b540396e74defaf463f4542fe38c6370c5ff57ff57",
+        "source_raster": "2880x1800",
+        "after_path": ".out/client-lifecycle/1440/guild-members.png",
+        "after_sha256": "5159f4f8e74c88d02556fc0fa5124c7d059930e1f28a64c563431010b5598d32",
+        "after_raster": "2880x1800",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "D06",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-guild-roles.png",
+        "source_sha256": "25a665bc48e76fdb78eef275d852133a7de1300854ba4a6ae71e26b467ff0574",
+        "source_raster": "2880x1800",
+        "after_path": ".out/client-lifecycle/1440/guild-roles.png",
+        "after_sha256": "be7b13856db7cff6cff71540c0fbe579ec934628037f5abfaade9fe22a4e4419",
+        "after_raster": "2880x1800",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "D07",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-guild-readiness.png",
+        "source_sha256": "5851d67a23d4d97b0bfc4eea52785ab13073f76ad7fb8c54ebf0bc6d487ffd6d",
+        "source_raster": "2880x1800",
+        "after_path": ".out/client-lifecycle/1440/guild-readiness.png",
+        "after_sha256": "11f10b1296721f8a2d701f4cc38e8966fc5bd3d16fd04e97ff9eae88f37d1cfb",
+        "after_raster": "2880x1800",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "D08",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-guild-audit.png",
+        "source_sha256": "266bccace1a8acb746e2541f39956da0bb048b1cee70000cf984b97b0ca3509f",
+        "source_raster": "2880x1800",
+        "after_path": ".out/client-lifecycle/1440/guild-audit.png",
+        "after_sha256": "0170268f369cef45bfe992a12c3ef6b754ffd784fc886ad93a4da9d9191b5fea",
+        "after_raster": "2880x1800",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "D09",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-guild-channels.png",
+        "source_sha256": "37b867afe583f04cfdf3a0586ac140a1f229f1d56c91da159922c8cb3969cdb5",
+        "source_raster": "2880x1800",
+        "after_path": ".out/client-lifecycle/1440/guild-channels.png",
+        "after_sha256": "2cd2b071df45dda968d7787aba92d207191d978baa2e3913c435ae95d13284f5",
+        "after_raster": "2880x1800",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "D10",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-guild-media.png",
+        "source_sha256": "a2319091df0b65ebc531e0cdc18a88e5d868605509abeaeadcf35b8b1afe2480",
+        "source_raster": "2880x1800",
+        "after_path": ".out/client-lifecycle/1440/guild-media.png",
+        "after_sha256": "470a0072abbdc7e713d3d42f5e1a69e88c5739531ca84c7b98f80a66bdac4358",
+        "after_raster": "2880x1800",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "D11",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-guild-settings.png",
+        "source_sha256": "0a0ba90ad3288815fa4925b540396e74defaf463f4542fe38c6370c5ff57ff57",
+        "source_raster": "2880x1800",
+        "after_path": ".out/client-lifecycle/1440/guild-settings.png",
+        "after_sha256": "03083f6b00dff8515fffcbb7fdffc4c5680c5840ee85c0f783eaf9fec8fc6fbe",
+        "after_raster": "2880x1800",
+        "source_status": "BLOCKED_DUPLICATE_BASELINE",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "M08",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-guild-members.png",
+        "source_sha256": "c568818c1ee367eb2e3562ccfb32f2db380dc4f53fe3f8250f0bb4683f790f26",
+        "source_raster": "1179x2556",
+        "after_path": ".out/client-lifecycle/393/guild-members.png",
+        "after_sha256": "8a379d85b2abf151ba367e4d49b5b98582b2bd7e482bc92bb4ef7edda38f7e78",
+        "after_raster": "1179x2556",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "M09",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-guild-roles.png",
+        "source_sha256": "8d771f365cb60522535eeebb5e293f5d5310330007d68f2379213e9c5e49b276",
+        "source_raster": "1179x2556",
+        "after_path": ".out/client-lifecycle/393/guild-roles.png",
+        "after_sha256": "728326ac7ac84fbd29afbcf6fc72dafb0635a288b92e6b9317785e64698cc970",
+        "after_raster": "1179x2556",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "M10",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-guild-readiness.png",
+        "source_sha256": "85cbc35a1012e0d7a1023b73adb36e8a32e48823017cc5b1e7be6a45cd0bf192",
+        "source_raster": "1179x2556",
+        "after_path": ".out/client-lifecycle/393/guild-readiness.png",
+        "after_sha256": "2a03f6626e488e9883929bdc5462a8a09c2f7cb99c2525714458d234524a82d9",
+        "after_raster": "1179x2556",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "M11",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-guild-channels.png",
+        "source_sha256": "19f7e02adcab78f3e49da724edc7a08fb52bbd5691c2afe86b196e4f5a270beb",
+        "source_raster": "1179x2556",
+        "after_path": ".out/client-lifecycle/393/guild-channels.png",
+        "after_sha256": "77ffa8cf2184a7370aafa9079bcd26d2f28700febfecbce522dc02450b2dc748",
+        "after_raster": "1179x2556",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "M12",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-guild-audit.png",
+        "source_sha256": "d5a2d7adf99c251cb6f73401a1d0bfebbe8a2006a8ea29a876de1b9ea486d09b",
+        "source_raster": "1179x2556",
+        "after_path": ".out/client-lifecycle/393/guild-audit.png",
+        "after_sha256": "f258d695af2d9e1c1032bacde81ce8d7ddc94d09ba8683156c9ef63f2d12d90f",
+        "after_raster": "1179x2556",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "M13",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-guild-media.png",
+        "source_sha256": "94c7cf2210cc8adbe54b114d0f195e88ef595a6908c97254cc51df1dad8a0c28",
+        "source_raster": "1179x2556",
+        "after_path": ".out/client-lifecycle/393/guild-media.png",
+        "after_sha256": "2eda5b1a2a110615aa68d20880c157c96cc075d33c00a662cc7c3c6c99ae1b4c",
+        "after_raster": "1179x2556",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      },
+      {
+        "catalog_slot": "M14",
+        "source_archive_entry": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-guild-settings.png",
+        "source_sha256": "d8ffe033e6784f1214a2a79bed53493a62da3a133cb26fae6928e21fd97fd8aa",
+        "source_raster": "1179x2556",
+        "after_path": ".out/client-lifecycle/393/guild-settings.png",
+        "after_sha256": "6bf95c0266e9d020d1af1885479af5c6c53f4ad8ef9448b9854f0bcc14a53093",
+        "after_raster": "1179x2556",
+        "source_status": "SOURCE_CAPTURE_PRESENT",
+        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+      }
+    ],
+    "limitations": [
+      "All seven current Web admin sections have after captures at source-sized mobile and desktop viewports; these captures have not been visually re-reviewed on this source revision.",
+      "Synthetic account data and unavailable local LiveKit/storage dependencies differ from archive states; captures are not approved pixel goldens.",
+      "Desktop D11 archive entry remains byte-identical to desktop Members and is not an independent source baseline.",
+      "Flutter native app and physical device/screen-reader acceptance remain NOT_RUN."
+    ]
   }
 }
