@@ -285,7 +285,7 @@ describe('UIUX-2026 visual regression inventory', () => {
 
     expect(review).toMatchObject({
       status: 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN',
-      sourceRevision: '85218db8',
+      sourceRevision: '562bd3c7',
       report: 'evidence/qa/qa320-screen-share-quality-2026-10-10.json',
     })
     expect(report.latest_visual_regression_after_focus_state_fix.result).toBe('4/4 PASS_AUTOMATED_ONLY')
