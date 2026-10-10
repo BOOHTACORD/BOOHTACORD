@@ -55,7 +55,7 @@ test('scenario names stay readable and selecting 1440p chooses the supported tex
   await expect.poll(() => page.evaluate(() => window.selectedScreenQuality)).toBe('P1440_30')
 })
 
-test('shows quality choices without hiding them and lets the user click 1440p directly', async ({ page }) => {
+test('shows quality choices without hiding them and lets the user click 1440p directly', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 640 })
   await page.goto('/tests/screen_profile/quality_dialog.fixture.html')
 
@@ -75,12 +75,21 @@ test('shows quality choices without hiding them and lets the user click 1440p di
   )].every(label => label.scrollWidth <= label.clientWidth && label.scrollHeight <= label.clientHeight))
   expect(labelsFit).toBe(true)
 
+  await dialog.locator('.screen-share-quality__mode').scrollIntoViewIfNeeded()
+  for (const card of await scenarioCards.all()) {
+    await expect(card).toBeInViewport({ ratio: 0.99 })
+    await expect(card.locator('.screen-share-quality__scenario-title')).toBeInViewport({ ratio: 0.99 })
+    await expect(card.locator('.screen-share-quality__scenario-copy small')).toBeInViewport({ ratio: 0.99 })
+  }
+  await page.screenshot({ path: testInfo.outputPath('screen-share-scenarios-390x640.png') })
+
   const resolution = dialog.getByRole('radio', { name: '1440p' })
   await resolution.click()
   await expect(resolution).toBeChecked()
   await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
   await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
   await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
+  await page.screenshot({ path: testInfo.outputPath('screen-share-quality-1440p-390x640.png') })
 
   const resolutionSelector = dialog.locator('[aria-label="Верхний предел разрешения трансляции"]')
   const fixedFpsValue = dialog.locator('.screen-share-quality__single-value')

@@ -34,14 +34,31 @@
         "Clicking 1440p from motion selects the text scenario and 30 FPS; applying emits P1440_30.",
         "The fixed 60 FPS value appears as a compact badge aligned with its label, without an empty segmented track.",
         "Keyboard ArrowRight from 1080p selects 1440p and switches to the supported text profile.",
-        "Header and actions stay in view while the settings body scrolls."
+        "Header and actions stay in view while the settings body scrolls.",
+        "At 390x640, scrolling to the scenario selector places both scenario cards and their full helper labels in the visible dialog viewport."
       ],
       "capture": {
         "path": ".out/accessibility-browser-results/accessibility.browser-scre-e6862-llow-the-1440p-text-profile/screen-share-selector-layout-637x584.png",
         "sha256": "7624dbd556b89f0a7eca5026296febd6117e8ee057b9408cd424856edf5e4eae",
         "raster": "637x584",
         "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
-      }
+      },
+      "additional_captures": [
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+          "sha256": "467b99b52362ddcb970e289de4bbc28ba5ea7e3cb3416b45cda8b1b8871c7633",
+          "raster": "390x640",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "Both scenario cards and helper labels are fully visible after scrolling to the selection area."
+        },
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
+          "sha256": "7c0bc0e0af68db0af4157947c280c956b9203756bcba04aedbcd5df3721810f1",
+          "raster": "390x640",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "1440p is selected; the selected profile is 1440p · 30 FPS."
+        }
+      ]
     },
     {
       "name": "Screen-share accessibility and scroll geometry regression",
@@ -99,6 +116,34 @@
       "sha256": "0044a7be06ae989689fa07b43c6bda48b71a7b10be3f4e4631f78001d8fea12f",
       "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
     },
-    "limitations": "Fixture-based browser regression only. This is not a production deployment or physical platform acceptance."
-  }
+    "limitations": "Fixture-based browser regression only. This is not a production deployment or physical platform acceptance.",
+    "tested_commit": "3dabeaefc605ceba2da867969c90effb0b74cf96",
+    "unit_tests": "17 files, 72 tests PASS",
+    "profile_browser_tests": "2/2 PASS at 637x584 and 390x640",
+    "accessibility_geometry_tests": "3/3 PASS; scoped axe and focus trap pass",
+    "production_build": "PASS",
+    "mobile_scenario_visibility_follow_up": {
+      "command": "npm run test:screen-profile -- --grep 'shows quality choices without hiding them'",
+      "result": "1/1 PASS",
+      "test_source_sha256": "1be6ef05903dafcda10d1fbcd09b67bde71f824bf10780cf2cd1b0bd04b08946",
+      "additional_captures": [
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+          "sha256": "467b99b52362ddcb970e289de4bbc28ba5ea7e3cb3416b45cda8b1b8871c7633",
+          "raster": "390x640",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "Both scenario cards and helper labels are fully visible after scrolling to the selection area."
+        },
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
+          "sha256": "7c0bc0e0af68db0af4157947c280c956b9203756bcba04aedbcd5df3721810f1",
+          "raster": "390x640",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "1440p is selected; the selected profile is 1440p · 30 FPS."
+        }
+      ],
+      "note": "The regression asserts both 390x640 scenario cards and all helper labels are fully in viewport when scrolled to the selector; direct 1440p selection then selects the text mode at 30 FPS."
+    }
+  },
+  "updated_date": "2026-10-11"
 }
