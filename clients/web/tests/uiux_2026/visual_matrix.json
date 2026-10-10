@@ -650,13 +650,14 @@
       "fixture": "clients/web/tests/guild_lifecycle/fixture.html",
       "testFile": "clients/web/tests/guild_lifecycle/guild.browser.spec.ts",
       "interaction": "Inspect and save Настройки гильдии at the mobile source viewport while preserving the selected workspace.",
-      "expectedOrException": "Guild name and welcome-channel controls remain distinct from personal profile settings; mobile source-image comparison is pending.",
+      "expectedOrException": "Guild name and welcome-channel controls remain distinct from personal profile settings; full-app mobile source comparison was reviewed on 2026-10-11. Synthetic guild/channel values and saved-state feedback differ from the reference, so this is not a pixel golden.",
       "owner": "clients/web/src/admin/guild_settings/AdminGuildSettings.vue",
       "flutterTestFile": "clients/flutter/test/admin_guild_settings_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M15",

@@ -187,22 +187,26 @@
     },
     "reports": [
       {
-        "viewport": "393",
+        "viewport": "393x852",
         "path": ".out/client-lifecycle/393/report.json",
-        "sha256": "65e4f6c7bee30910978cab3e73e578b00c7a42cd01affec5e61a326a71f090e1",
-        "source_revision": "26246f5e5456b42d741ae2148a338c6310467c60",
+        "sha256": "e28f7d5c8eeaed49028074ae5e051ca01224e99b966a7ab07a83213de7c77b96",
+        "source_revision": "5fc326680652ec7a97b4334f8b326857e5f6f11a",
         "telemetry_verified": true,
         "api_restart_persistence": true,
-        "owned_resources_removed": true
+        "owned_resources_removed": true,
+        "elapsed_seconds": 38.72,
+        "api_image_id": "sha256:088d64bf3bd8e1b9127ec52c061780c58f0995f3d76477e2add73f943939aa29"
       },
       {
-        "viewport": "1440",
+        "viewport": "1440x900",
         "path": ".out/client-lifecycle/1440/report.json",
-        "sha256": "5f5dba2e3312e729d04d73d555749e8c0e346c9a4f9394228f16d96264b76d2e",
-        "source_revision": "26246f5e5456b42d741ae2148a338c6310467c60",
+        "sha256": "66681a264c4771573f07bc7a20090dd0def3bfbbd8d943df4e262910d1d47185",
+        "source_revision": "5fc326680652ec7a97b4334f8b326857e5f6f11a",
         "telemetry_verified": true,
         "api_restart_persistence": true,
-        "owned_resources_removed": true
+        "owned_resources_removed": true,
+        "elapsed_seconds": 38.48,
+        "api_image_id": "sha256:d26db118c97a63e747ca32dc86661174ec64915c0259e7c4fe613eb2918957d2"
       }
     ],
     "captures": [
@@ -214,7 +218,7 @@
         "source_archive_entry": "ui-ux-screenshots/mobile-guild-members.png",
         "source_sha256": "c568818c1ee367eb2e3562ccfb32f2db380dc4f53fe3f8250f0bb4683f790f26",
         "after_path": ".out/client-lifecycle/393/guild-members.png",
-        "after_sha256": "ce66185b9110dec85cda221c8f8a23f89997b2dfcba353e8dd12e750425af9eb",
+        "after_sha256": "895125d5b02fea9e77efdd597bb3602eccb4d97b16d1266a3bed814eb9163ed1",
         "observation": "The shell context and active section are visible; source member names differ from the synthetic QA account data."
       },
       {
@@ -236,7 +240,7 @@
         "source_archive_entry": "ui-ux-screenshots/mobile-guild-readiness.png",
         "source_sha256": "85cbc35a1012e0d7a1023b73adb36e8a32e48823017cc5b1e7be6a45cd0bf192",
         "after_path": ".out/client-lifecycle/393/guild-readiness.png",
-        "after_sha256": "caee36941017fd8952386d31c118cf6285db735e5d07ff134ebef96bfbd7175b",
+        "after_sha256": "2a03f6626e488e9883929bdc5462a8a09c2f7cb99c2525714458d234524a82d9",
         "observation": "Cards reflow into a readable single column; local LiveKit/storage errors differ from the source image’s ready state because this disposable stack has no SFU/storage service."
       },
       {
@@ -247,7 +251,7 @@
         "source_archive_entry": "ui-ux-screenshots/desktop-guild-members.png",
         "source_sha256": "0a0ba90ad3288815fa4925b540396e74defaf463f4542fe38c6370c5ff57ff57",
         "after_path": ".out/client-lifecycle/1440/guild-members.png",
-        "after_sha256": "7cfe0a8994c4e3ad30d21c48fbe9ad677df6ecb0e9ae0b81c03e91b05d680ebb",
+        "after_sha256": "41006c66c0930c3511ba53d088a47803e3c4fce62fbd6cdbcd71b76ca8315711",
         "observation": "Seven tabs and full-width member table use the available content area; account labels differ in synthetic fixture data."
       },
       {
@@ -258,7 +262,7 @@
         "source_archive_entry": "ui-ux-screenshots/desktop-guild-roles.png",
         "source_sha256": "25a665bc48e76fdb78eef275d852133a7de1300854ba4a6ae71e26b467ff0574",
         "after_path": ".out/client-lifecycle/1440/guild-roles.png",
-        "after_sha256": "3217622eededdb5b510ed3e403cba7f5cce52cce306f1c2e676502f06a03c462",
+        "after_sha256": "be7b13856db7cff6cff71540c0fbe579ec934628037f5abfaade9fe22a4e4419",
         "observation": "Role heading, selector, permission table, warning and save state fit the content width."
       },
       {
@@ -269,10 +273,70 @@
         "source_archive_entry": "ui-ux-screenshots/desktop-guild-readiness.png",
         "source_sha256": "5851d67a23d4d97b0bfc4eea52785ab13073f76ad7fb8c54ebf0bc6d487ffd6d",
         "after_path": ".out/client-lifecycle/1440/guild-readiness.png",
-        "after_sha256": "bf1c99279e5d3338f34a659e897c567c358a861986fbc2527b7f7e0fcf9cbb4b",
+        "after_sha256": "11f10b1296721f8a2d701f4cc38e8966fc5bd3d16fd04e97ff9eae88f37d1cfb",
         "observation": "Status cards form a three-column grid; local LiveKit/storage errors differ from the source image’s ready state due to unavailable local dependencies."
+      },
+      {
+        "profile": "mobile",
+        "section": "guild settings",
+        "screen_id": "M14",
+        "viewport": "393x852 @3x",
+        "raster": "1179x2556",
+        "source_archive_entry": "ui-ux-screenshots/mobile-guild-settings.png",
+        "source_sha256": "d8ffe033e6784f1214a2a79bed53493a62da3a133cb26fae6928e21fd97fd8aa",
+        "after_path": ".out/client-lifecycle/393/guild-settings.png",
+        "after_sha256": "6bf95c0266e9d020d1af1885479af5c6c53f4ad8ef9448b9854f0bcc14a53093",
+        "observation": "The settings form fits the source-sized viewport. The current production header is compact (“Админ”) and adds a horizontal-tab scroll hint; synthetic guild name, welcome channel, and saved feedback differ from the reference. Review-only; no pixel golden is approved."
       }
     ],
-    "review_method": "Side-by-side visual review against each issue source screenshot. Raster dimensions match. Fixture account names and readiness values are runtime data, not visual regressions; local SFU and object storage are intentionally absent from the disposable stack."
+    "review_method": "Side-by-side visual review against each issue source screenshot. Raster dimensions match. Fixture account names and readiness values are runtime data, not visual regressions; local SFU and object storage are intentionally absent from the disposable stack.",
+    "latest_revalidation": {
+      "date": "2026-10-11",
+      "source_revision": "5fc326680652ec7a97b4334f8b326857e5f6f11a",
+      "reports": [
+        {
+          "viewport": "393x852",
+          "path": ".out/client-lifecycle/393/report.json",
+          "sha256": "e28f7d5c8eeaed49028074ae5e051ca01224e99b966a7ab07a83213de7c77b96",
+          "telemetry_verified": true,
+          "api_restart_persistence": true,
+          "owned_resources_removed": true
+        },
+        {
+          "viewport": "1440x900",
+          "path": ".out/client-lifecycle/1440/report.json",
+          "sha256": "66681a264c4771573f07bc7a20090dd0def3bfbbd8d943df4e262910d1d47185",
+          "telemetry_verified": true,
+          "api_restart_persistence": true,
+          "owned_resources_removed": true
+        }
+      ],
+      "result": "PASS_FOR_DISPOSABLE_WEB_CAPTURE_AND_SOURCE_SIZED_REVIEW_ONLY"
+    }
+  },
+  "latest_revalidation": {
+    "date": "2026-10-11",
+    "source_revision": "5fc326680652ec7a97b4334f8b326857e5f6f11a",
+    "browser": "Google Chrome 154.0.8037.98",
+    "viewport_css": "393x852 + 1440x900",
+    "device_scale_factor": 3,
+    "api_mocks": false,
+    "source_review_pair": {
+      "screen_id": "M14",
+      "source_sha256": "d8ffe033e6784f1214a2a79bed53493a62da3a133cb26fae6928e21fd97fd8aa",
+      "after_sha256": "6bf95c0266e9d020d1af1885479af5c6c53f4ad8ef9448b9854f0bcc14a53093",
+      "raster": "1179x2556",
+      "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "full_app_report": ".out/client-lifecycle/393/report.json",
+    "full_app_report_sha256": "e28f7d5c8eeaed49028074ae5e051ca01224e99b966a7ab07a83213de7c77b96",
+    "result": "PASS_FOR_DISPOSABLE_WEB_CAPTURE_AND_SOURCE-SIZED_REVIEW_ONLY",
+    "note": "The source/after pair was visually reviewed. Synthetic values and the compact production header differ; no baseline approval or physical-device result is claimed.",
+    "telemetry_verified": true,
+    "desktop_full_app_report": ".out/client-lifecycle/1440/report.json",
+    "desktop_full_app_report_sha256": "66681a264c4771573f07bc7a20090dd0def3bfbbd8d943df4e262910d1d47185",
+    "desktop_telemetry_verified": true,
+    "desktop_api_restart_persistence": true,
+    "desktop_owned_resources_removed": true
   }
 }

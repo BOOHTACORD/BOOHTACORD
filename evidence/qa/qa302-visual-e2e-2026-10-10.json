@@ -86,7 +86,7 @@
           },
           "actual": {
             "path": ".out/client-lifecycle/1440/channel-text.png",
-            "sha256": "b2ad38320c5619956a97cb7be4d1a2c2a848e654345d644848562e2c2d9b8d7b",
+            "sha256": "c33ac6ea2187124058fc248cce2fad2b0a12137eeecf2a76bb99c2a1b67ef07b",
             "raster": "2880x1800"
           },
           "regions": [
@@ -123,7 +123,7 @@
           },
           "actual": {
             "path": ".out/client-lifecycle/393/channel-text.png",
-            "sha256": "bfbe93f68d6faf12fa84b98d7804073956e725a3ee669761bd3616a2ca7a8b0c",
+            "sha256": "80bb0855e928bde8a905118449d63be849b98a77d2d03fdbe355161096508e18",
             "raster": "1179x2556"
           },
           "regions": [
@@ -135,8 +135,8 @@
                 1179,
                 250
               ],
-              "meanAbsoluteRgbChange": 1.507,
-              "pixelsChangedOverThresholdPercent": 1.666
+              "meanAbsoluteRgbChange": 3.904,
+              "pixelsChangedOverThresholdPercent": 2.813
             },
             {
               "name": "mobile-composer",
@@ -147,7 +147,7 @@
                 290
               ],
               "meanAbsoluteRgbChange": 0.379,
-              "pixelsChangedOverThresholdPercent": 0
+              "pixelsChangedOverThresholdPercent": 0.0
             }
           ]
         },
@@ -477,9 +477,9 @@
   "golden_comparison": {
     "status": "NOT_APPROVED_FOR_FULL_CATALOG",
     "source_assets_are_audit_references": true,
-    "reviewed_source_matched_admin_screens": 6,
+    "reviewed_source_matched_admin_screens": 7,
     "remaining_source_backed_full_app_after_captures": "NOT_RUN",
-    "note": "Do not convert the audit archive into a pixel gate without review; the source has one duplicate baseline and other slots have no approved current-state capture."
+    "note": "Seven source-sized full-app admin captures have been reviewed (six existing pairs plus mobile M14). All remain review-only; the audit archive has no approved pixel baselines and desktop D11 is a duplicate source."
   },
   "acceptance": {
     "41_screen_catalog_and_source_integrity": "PASS",
@@ -493,7 +493,7 @@
     "responsive_shell_cross_browser": "PASS_21_CASES_CHROMIUM_WEBKIT_FIREFOX"
   },
   "limitations": [
-    "Only the six admin screens listed above have reviewed source-sized full-stack comparisons; the other catalog slots do not yet have source-backed full-app after captures.",
+    "Only seven admin screens now have reviewed source-sized full-app after captures; other catalog slots still lack source-backed full-app after captures. The source archive remains an audit reference, not an approved pixel golden.",
     "Source screenshots are audit evidence, not approved goldens. desktop-guild-settings.png is byte-identical to desktop-guild-members.png.",
     "Earlier [skip ci] checkpoints produced no GitHub Actions bundle. PR #307 now has a full successful CI run and retained Web/Flutter review artifacts; the run does not approve pixel goldens.",
     "The 2026-10-10 rerun at 2cdc9b2c passed locally. The commits use [skip ci], so there is still no GitHub Actions artifact bundle for this source revision."
@@ -947,5 +947,53 @@
     "source_revision": "92ccd7c62aebdf1a09a9b635ab55e4a7d2a0974b",
     "coverage": "Authenticated production Web app, actual global workspace search, all/default scope, author/attachment/date filters, disposable API results, and opening the original result context at 393x852 CSS px.",
     "review_note": "The archive reference is global search, not search within an open DM. The panel and filter layout match. The runtime image keeps the visible focus ring on the query field; the reference has no focused control. Review-only, no pixel-golden approval."
+  },
+  "source_review_follow_up_m14": {
+    "date": "2026-10-11",
+    "screen_id": "M14",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "source": {
+      "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-guild-settings.png",
+      "sha256": "d8ffe033e6784f1214a2a79bed53493a62da3a133cb26fae6928e21fd97fd8aa",
+      "raster": "1179x2556"
+    },
+    "actual": {
+      "path": ".out/client-lifecycle/393/guild-settings.png",
+      "sha256": "6bf95c0266e9d020d1af1885479af5c6c53f4ad8ef9448b9854f0bcc14a53093",
+      "raster": "1179x2556"
+    },
+    "full_app_report": "evidence/qa/qa295-flutter-admin-captures-2026-10-10.json",
+    "source_revision": "5fc326680652ec7a97b4334f8b326857e5f6f11a",
+    "coverage": "Authenticated production Web guild settings at 393x852 CSS px against disposable Go API/PostgreSQL/Tempo; no API mocks; owned resources removed.",
+    "review_note": "Settings form remains visible in the source-sized viewport. Current header shortens “Администрирование” to “Админ” and adds the horizontal tab cue; synthetic guild/channel values and saved-state feedback differ from source. Review evidence only; no pixel-golden approval."
+  },
+  "web_full_app_capture_revalidation": {
+    "date": "2026-10-11",
+    "source_revision": "5fc326680652ec7a97b4334f8b326857e5f6f11a",
+    "viewport_reports": [
+      {
+        "viewport": "393x852",
+        "path": ".out/client-lifecycle/393/report.json",
+        "sha256": "e28f7d5c8eeaed49028074ae5e051ca01224e99b966a7ab07a83213de7c77b96",
+        "telemetry_verified": true,
+        "api_restart_persistence": true,
+        "owned_resources_removed": true
+      },
+      {
+        "viewport": "1440x900",
+        "path": ".out/client-lifecycle/1440/report.json",
+        "sha256": "66681a264c4771573f07bc7a20090dd0def3bfbbd8d943df4e262910d1d47185",
+        "telemetry_verified": true,
+        "api_restart_persistence": true,
+        "owned_resources_removed": true
+      }
+    ],
+    "review_only_delta_reports": [
+      ".out/uiux-visual-diff-302/channel-desktop-report.json",
+      ".out/uiux-visual-diff-302/channel-mobile-report.json",
+      ".out/uiux-visual-diff-302/settings-mobile-report.json"
+    ],
+    "source_review": "All five QA-294 mobile/desktop pairs and M14 were visually reviewed after recapture; synthetic account data and existing compact admin header differences remain documented.",
+    "result": "PASS_CAPTURE_AND_REVIEW_ONLY_NO_GOLDEN_APPROVAL"
   }
 }
