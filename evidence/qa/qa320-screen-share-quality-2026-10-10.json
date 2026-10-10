@@ -24,7 +24,10 @@
       "result": "PASS_AUTOMATED_ONLY",
       "tests_passed": 2,
       "browser": "Google Chrome 154.0.8037.98",
-      "viewports_css": ["637x584", "390x640"],
+      "viewports_css": [
+        "637x584",
+        "390x640"
+      ],
       "assertions": [
         "Scenario titles, descriptions, resolution labels and FPS labels fit without clipping at desktop and narrow viewports.",
         "Resolution and FPS choices are visible without opening a disclosure control.",
@@ -74,5 +77,28 @@
     "Commits use [skip ci], so this checkpoint has no new GitHub Actions artifact.",
     "This automated keyboard and axe result does not replace VoiceOver, TalkBack, NVDA or Narrator traversal, nor physical platform acceptance under #301 and #303."
   ],
-  "issue_state": "PR_OPEN; #289 REMAINS OPEN"
+  "issue_state": "PR_OPEN; #289 REMAINS OPEN",
+  "latest_revalidation": {
+    "date": "2026-10-11",
+    "source_revision": "e8108f93285f13a07d632150176c0a6974ce061a",
+    "result": "PASS_AUTOMATED_ONLY",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
+    "tests_passed": 2,
+    "browser": "Google Chrome 154.0.8037.98",
+    "viewports_css": [
+      "637x584",
+      "390x640"
+    ],
+    "confirmed": [
+      "Both scenario titles and helper lines render in full without truncation.",
+      "1440p can be selected directly and remains selected; from motion it changes to the supported text scenario at 30 FPS.",
+      "The resolution and FPS controls have clear separate selected states and remain in the scrollable content area beneath the fixed dialog header."
+    ],
+    "capture": {
+      "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+      "sha256": "0044a7be06ae989689fa07b43c6bda48b71a7b10be3f4e4631f78001d8fea12f",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": "Fixture-based browser regression only. This is not a production deployment or physical platform acceptance."
+  }
 }

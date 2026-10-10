@@ -3,7 +3,7 @@
   "date": "2026-10-10",
   "task": "UIUX-2026 issue #303 — physical platform and assistive-technology acceptance inventory",
   "issue": "https://github.com/Egkurilov/BOOHTACORD/issues/303",
-  "source_revision": "a89ef57d",
+  "source_revision": "04146493626a068233a6bda825c1e20782c74fae",
   "application_manifest_version": "1.0.38+71",
   "status": "BLOCKED_DEVICE_MATRIX_NOT_RUN",
   "inventory_commands": [
@@ -167,11 +167,22 @@
     {
       "target": "Flutter macOS desktop",
       "available": true,
-      "result": "NOT_RUN",
+      "result": "PASS_BUILD_ONLY",
       "manifestVersion": "1.0.38+71",
       "applicationLaunched": false,
       "manualTaskSmoke": "NOT_RUN",
-      "limitation": "The host is detected, but the current candidate was not launched against an isolated QA account and no screen-reader task was run."
+      "limitation": "The debug app was built but not launched. The app defaults to the production HTTPS API; no isolated TLS endpoint trusted by the native client is configured, so a native user task would risk using production. Physical interaction, window resize, system capture picker, and screen-reader tasks remain NOT_RUN.",
+      "builtVersion": "1.0.38+71",
+      "buildCommand": "cd clients/flutter && flutter build macos --debug",
+      "buildResult": "PASS",
+      "buildEnvironment": {
+        "macOS": "26.6.1 (25G76)",
+        "architecture": "arm64",
+        "Xcode": "27.0 (27A266a)",
+        "Flutter": "3.47.5",
+        "Dart": "3.13.4"
+      },
+      "buildWarnings": "Existing native dependency warnings, including WebRTC null-dereference diagnostics and dependency deprecations; no fatal build diagnostics."
     },
     {
       "target": "Flutter Windows desktop",
@@ -248,7 +259,8 @@
     "Run current native Flutter task scripts on macOS and Windows; verify window resizing, keyboard/focus and native capture picker behavior.",
     "Run mobile IME, SafeArea, Back/swipe, dynamic text and TalkBack/VoiceOver acceptance.",
     "Record per-target OS/device, app build, reproducible steps and source-sized screenshots/video; link any user-blocking issues.",
-    "Run actual full-app Safari and physical/mobile browser task scripts; current WebKit/Firefox results are automated viewport smoke only."
+    "Run actual full-app Safari and physical/mobile browser task scripts; current WebKit/Firefox results are automated viewport smoke only.",
+    "Run authenticated macOS Flutter task scripts and VoiceOver only after an isolated HTTPS QA endpoint is trusted by the native client; the current debug build is PASS_BUILD_ONLY."
   ],
   "acceptance": {
     "platform_results_recorded_as_pass_fail_not_run": "PASS",
@@ -258,7 +270,8 @@
     "all_supported_platforms_unblocked": "NOT_RUN",
     "issue_state_at_capture": "OPEN",
     "cross_browser_responsive_automation": "PASS_21_CASES_3_ENGINES",
-    "ci_artifact_run": "PASS_RUN_38068041885"
+    "ci_artifact_run": "PASS_RUN_38068041885",
+    "flutter_macos_debug_build": "PASS_BUILD_ONLY"
   },
   "artifact_storage": "GitHub Actions run 38068041885 completed successfully on code commit 8b46e4e033b8c78d08590023ba2070ec7ff4f8e5. Responsive-shell, Flutter visual-review, Android debug APK and Windows x64 artifacts are available through 2026-11-09; see ci_artifact_runs. Later [skip ci] evidence commits do not have per-revision Actions artifacts. No physical captures/video exist.",
   "scope_note": "Platform media QoE is separate from UI acceptance and remains under #173/#174; no media capacity or quality claim is made here.",
@@ -303,5 +316,59 @@
       ],
       "acceptance_effect": "PASS for configured CI artifact publication on this tested code commit. These artifacts are not physical device/task acceptance and do not cover later [skip ci] evidence-only commits."
     }
-  ]
+  ],
+  "revalidation_date": "2026-10-11",
+  "working_tree_changes": true,
+  "working_tree_change_note": "This revalidation adds a private-header regression test, keeps the C++ coalescer unit test on the moved header, and fixes Flutter macOS SwiftPM header export. The tested native build and source hashes are recorded below; no application launch or user data was involved.",
+  "native_macos_revalidation": {
+    "date": "2026-10-11",
+    "debug_build": {
+      "command": "cd clients/flutter && flutter build macos --debug",
+      "result": "PASS",
+      "applicationLaunched": false,
+      "bundleVersion": "1.0.38+71",
+      "host": "macOS 26.6.1 (25G76), arm64",
+      "toolchain": {
+        "Xcode": "27.0 (27A266a)",
+        "Flutter": "3.47.5",
+        "Dart": "3.13.4"
+      },
+      "output": "clients/flutter/build/macos/Build/Products/Debug/BOOHTACORD.app"
+    },
+    "regression": {
+      "command": "python3 -m unittest tools.verify.test_flutter_webrtc_public_headers -v",
+      "result": "PASS",
+      "beforeFix": "FAIL: audio_device_change_coalescer.h was exported from the SwiftPM public include directory and imported <cstdint>.",
+      "afterFix": "PASS: the C++ helper is private to the plugin target and no C++-only header remains in the exported include directory."
+    },
+    "cxxUnit": {
+      "result": "PASS",
+      "compileCommand": "clang++ -std=c++17 -UNDEBUG -I clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc clients/flutter/packages/flutter_webrtc/common/cpp/tests/audio_device_change_coalescer_test.cc -o /private/tmp/qa303-audio-device-change-coalescer-test",
+      "execution": "/private/tmp/qa303-audio-device-change-coalescer-test",
+      "cmake": "NOT_AVAILABLE; equivalent existing C++ unit target compiled and executed directly."
+    },
+    "sourceHashes": {
+      "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/audio_device_change_coalescer.h": "e9852fa8b77d67ff88087f97b7b1856072fafb225540ba82e72a77f2c2656b4f",
+      "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/AudioDeviceChangeMonitor.mm": "0aeac69b8f3b0d65094dc4155e49a47721f2d00ed7b8732ce4d46974726bd6ce",
+      "tools/verify/test_flutter_webrtc_public_headers.py": "9ef009c6ad9228cf877ce966920faa08260ca4f09a691c57fd06bbf458c1a48a",
+      "tools/ci/native/flutter.py": "6d3900da8ee32db1128db568701ef15a47dfdef2c38d91dc0b223203b24bbcdc"
+    },
+    "launchLimitation": "No safe isolated API endpoint with a certificate trusted by the native client is available. The macOS client requires HTTPS and defaults to the production API, so it was deliberately not launched.",
+    "full_flutter_ci": {
+      "date": "2026-10-11",
+      "command": "python3 -m tools.ci.native.flutter",
+      "result": "PASS",
+      "exitCode": 0,
+      "stages": [
+        "Python SwiftPM public-header regression test",
+        "Flutter application dependency lock validation",
+        "Flutter application test suite",
+        "LiveKit client package test suite",
+        "flutter_webrtc package test suite",
+        "Flutter analyze --no-pub --no-fatal-infos"
+      ],
+      "analyzer": "Completed with informational diagnostics; no fatal infos or errors.",
+      "acceptanceEffect": "Full automated Flutter CI entrypoint passes. Physical platform and screen-reader acceptance remain NOT_RUN."
+    }
+  }
 }
