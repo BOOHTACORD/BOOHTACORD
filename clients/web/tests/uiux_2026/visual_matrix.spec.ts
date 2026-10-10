@@ -57,6 +57,18 @@ type VisualMatrix = {
     reviewedScreenIds: string[]
     reviewNotes: Record<string, string>
   }
+  screenShareQualityReviewEvidence: {
+    status: string
+    sourceRevision: string
+    report: string
+    captures: Array<{
+      screenId: string
+      state: string
+      path: string
+      sha256: string
+      rasterPx: [number, number]
+    }>
+  }
   screens: MatrixEntry[]
 }
 
@@ -260,5 +272,38 @@ describe('UIUX-2026 visual regression inventory', () => {
     expect(settingsEvidence.reviewNotes.M19).toContain('not suitable as a golden')
     expect(evidence.limitations.join(' ')).toContain('browser device inventory')
     expect(evidence.limitations.join(' ')).toContain('HTTP 503')
+  })
+
+  it('records current mobile screen-share captures and direct 1440p behavior as review-only', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const report = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa320-screen-share-quality-2026-10-10.json'), 'utf8'))
+    const review = matrix.screenShareQualityReviewEvidence
+    const expectedCaptures = [
+      { screenId: 'M20', state: 'default-actions', file: 'mobile-stream-launch-actions-current-393x852-2x.png' },
+      { screenId: 'M21', state: 'selected-1440p-30fps', file: 'mobile-stream-launch-settings-1440p-current-393x852-2x.png' },
+    ]
+
+    expect(review).toMatchObject({
+      status: 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN',
+      sourceRevision: '85218db8',
+      report: 'evidence/qa/qa320-screen-share-quality-2026-10-10.json',
+    })
+    expect(report.latest_visual_regression_after_focus_state_fix.result).toBe('4/4 PASS_AUTOMATED_ONLY')
+    expect(report.latest_visual_regression_after_focus_state_fix.confirmed.join(' ')).toContain('1440p remains selected')
+
+    for (const expected of expectedCaptures) {
+      const screen = matrix.screens.find(({ id }) => id === expected.screenId)!
+      const capture = review.captures.find(({ screenId }) => screenId === expected.screenId)!
+      const reportCapture = report.latest_visual_regression_after_focus_state_fix.captures.find(({ state }: { state: string }) => state === expected.state)!
+
+      expect(screen.sourceComparisonStatus).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(screen.expectedOrException.toLowerCase()).toContain(expected.screenId === 'M20' ? 'full scenario labels' : '1440p can be selected directly')
+      expect(capture.path).toContain(expected.file)
+      expect(capture.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(capture.rasterPx).toEqual([786, 1704])
+      expect(reportCapture.capture.path).toBe(capture.path)
+      expect(reportCapture.capture.sha256).toBe(capture.sha256)
+      expect(reportCapture.capture.raster).toBe('786x1704')
+    }
   })
 })

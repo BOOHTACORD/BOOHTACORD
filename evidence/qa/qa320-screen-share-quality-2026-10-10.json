@@ -212,5 +212,56 @@
       "Physical device and screen-reader acceptance remain open under #301 and #303."
     ]
   },
+  "latest_visual_regression_after_focus_state_fix": {
+    "date": "2026-10-11",
+    "source_revision": "85218db8",
+    "working_tree_changes": true,
+    "result": "4/4 PASS_AUTOMATED_ONLY",
+    "visual_matrix_inventory_test": "9/9 PASS",
+    "source_archive_integrity_verification": "PASS: 41 source screenshots verified; one duplicate is explicitly blocked from independent comparison.",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
+    "tests_passed": 4,
+    "browser": "Google Chrome 154.0.8037.98",
+    "viewports_css": [
+      "637x584",
+      "390x640",
+      "393x852 at DPR 2"
+    ],
+    "test_source_sha256": "eb3e935a4e3d1c6413361d4dabe53ca9188bdfad54cb9efc28e2c06cb1e82eab",
+    "visual_matrix_test_source_sha256": "1230ffaa5a6cb1de72b3d82883505966b1078a19e2164a538540bb8282bfaae6",
+    "confirmed": [
+      "Scenario names and helper text are fully readable in separate cards; resolution and FPS remain separate choices.",
+      "1440p remains selected after direct pointer activation; it resolves to the text scenario at 30 FPS and applying emits P1440_30.",
+      "Pointer selection shows the selected fill without an overlapping keyboard outline, while keyboard navigation retains a visible focus outline.",
+      "At the 393x852 source viewport, the two scenario names, 1440p choice, selected 30 FPS and sticky actions are visible in the mobile sheet."
+    ],
+    "captures": [
+      {
+        "screenId": "M20",
+        "state": "default-actions",
+        "capture": {
+          "path": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-actions-current-393x852-2x.png",
+          "sha256": "cbcb64d661f3b59914debb98779e8b019f0da67e0c1d487f6e760de0484ac1db",
+          "raster": "786x1704",
+          "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+        }
+      },
+      {
+        "screenId": "M21",
+        "state": "selected-1440p-30fps",
+        "capture": {
+          "path": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-settings-1440p-current-393x852-2x.png",
+          "sha256": "479c483f9a9a62aed9344dce54035d918cbfda9dbf3fbc0a53ec99b1cc16ec49",
+          "raster": "786x1704",
+          "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+        }
+      }
+    ],
+    "limitations": [
+      "The screenshot is a local component fixture, not a production full-app or native source-picker result.",
+      "The new captures are review evidence and do not approve visual goldens or complete the full 41-screen catalog.",
+      "The requested [skip ci] checkpoint has no GitHub Actions artifact."
+    ]
+  },
   "updated_date": "2026-10-11"
 }

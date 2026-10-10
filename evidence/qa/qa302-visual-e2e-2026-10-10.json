@@ -1346,5 +1346,40 @@
       "M15 uses a no-avatar QA identity while the source has an avatar; the source's remove-avatar action is conditional and therefore absent by design in the after capture. The screenshots remain review evidence, not approved pixel goldens.",
       "These five mobile Web review captures do not complete the 41-slot catalog, Flutter/native acceptance, D11 resolution or CI artifact gate."
     ]
+  },
+  "screen_share_quality_source_review_follow_up": {
+    "date": "2026-10-11",
+    "source_revision": "85218db8",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "evidence": "evidence/qa/qa320-screen-share-quality-2026-10-10.json#latest_visual_regression_after_focus_state_fix",
+    "reviewed_catalog_slots": ["M20", "M21"],
+    "captures": [
+      {
+        "catalog_slot": "M20",
+        "state": "default-actions",
+        "after": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-actions-current-393x852-2x.png",
+        "sha256": "cbcb64d661f3b59914debb98779e8b019f0da67e0c1d487f6e760de0484ac1db",
+        "raster": "786x1704"
+      },
+      {
+        "catalog_slot": "M21",
+        "state": "selected-1440p-30fps",
+        "after": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-settings-1440p-current-393x852-2x.png",
+        "sha256": "479c483f9a9a62aed9344dce54035d918cbfda9dbf3fbc0a53ec99b1cc16ec49",
+        "raster": "786x1704"
+      }
+    ],
+    "visual_matrix_inventory_test": "9/9 PASS",
+    "source_archive_integrity_verification": "PASS: 41 source screenshots verified; one duplicate is explicitly blocked from independent comparison.",
+    "observations": [
+      "The old scenario switch clipped both names; the current selector presents the full scenario names and helper text as separate cards.",
+      "Resolution and FPS are separate, clearly outlined choices. Selecting 1440p directly switches to Чёткость текста at 30 FPS and highlights the selected options.",
+      "The fixed Cancel/Start footer remains visible while the selector body scrolls. Pointer activation does not retain a keyboard focus ring; keyboard Tab/Arrow navigation retains a visible focus outline."
+    ],
+    "limitations": [
+      "The captures are production Vue component mounts in an isolated Playwright fixture, not the authenticated full app or native capture picker.",
+      "These are review captures, not approved pixel goldens. Physical device and screen-reader acceptance remain open under #301 and #303.",
+      "The current checkpoint uses [skip ci], so no new GitHub Actions artifact was created."
+    ]
   }
 }

@@ -780,13 +780,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open the stream setup sheet, traverse source actions, cancel, and inspect focus return.",
-      "expectedOrException": "Start/cancel controls remain visible at target viewport; actual source-picker support is platform-specific and not proven by a browser fixture.",
+      "expectedOrException": "Full scenario labels and separate quality choices remain readable; the sticky actions stay available. Actual source-picker support is platform-specific and not proven by a browser fixture.",
       "owner": "clients/web/src/voice/ScreenShareSetupDialog.vue",
       "flutterTestFile": "clients/flutter/test/screen_setup/dialog_test.dart",
       "referenceRasterPx": {
         "width": 786,
         "height": 1704
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M21",
@@ -800,13 +801,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Review recommended and advanced stream profile options and apply/cancel.",
-      "expectedOrException": "Reduced motion remains honored; keyboard, landscape, 2× text, and native capture acceptance are separate.",
+      "expectedOrException": "1440p can be selected directly and resolves to the supported text profile at 30 FPS; keyboard, landscape, 2× text, and native capture acceptance are separate.",
       "owner": "clients/web/src/voice/ScreenShareQualityOptions.vue; clients/web/src/voice/ScreenShareSetupDialog.vue",
       "flutterTestFile": "clients/flutter/test/screen_share_profile_geometry_test.dart",
       "referenceRasterPx": {
         "width": 786,
         "height": 1704
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M22",
@@ -911,5 +913,26 @@
       "M18": "Notification controls and per-channel preferences are present. The source browser has notifications enabled and a channel selected; the after browser denies permission and has no open channel, which changes the visible state.",
       "M19": "About/version card structure matches. The source reports an installed current version; the after capture shows the local update endpoint’s 503 error and is not suitable as a golden."
     }
+  },
+  "screenShareQualityReviewEvidence": {
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "sourceRevision": "85218db8",
+    "report": "evidence/qa/qa320-screen-share-quality-2026-10-10.json",
+    "captures": [
+      {
+        "screenId": "M20",
+        "state": "default-actions",
+        "path": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-actions-current-393x852-2x.png",
+        "sha256": "cbcb64d661f3b59914debb98779e8b019f0da67e0c1d487f6e760de0484ac1db",
+        "rasterPx": [786, 1704]
+      },
+      {
+        "screenId": "M21",
+        "state": "selected-1440p-30fps",
+        "path": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-settings-1440p-current-393x852-2x.png",
+        "sha256": "479c483f9a9a62aed9344dce54035d918cbfda9dbf3fbc0a53ec99b1cc16ec49",
+        "rasterPx": [786, 1704]
+      }
+    ]
   }
 }

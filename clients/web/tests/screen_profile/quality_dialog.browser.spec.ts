@@ -49,10 +49,19 @@ test('scenario names stay readable and selecting 1440p chooses the supported tex
   const resolutionGroupBox = await page.locator('[aria-label="Верхний предел разрешения трансляции"]').boundingBox()
   expect(fpsGroupBox?.width).toBeCloseTo(resolutionGroupBox!.width, 1)
 
-  await page.getByRole('radio', { name: '1080p' }).focus()
+  await page.keyboard.press('Tab')
+  const keyboardFocusedScenario = dialog.locator('.screen-share-quality__scenario-option:has(input:focus-visible)')
+  await expect(keyboardFocusedScenario).toHaveCount(1)
+  expect(await keyboardFocusedScenario.evaluate(element => getComputedStyle(element).outlineStyle)).toBe('solid')
+  await page.keyboard.press('Tab')
+  const keyboardFocusedQuality = dialog.locator('.screen-share-quality__option:has(input:focus-visible)')
+  await expect(keyboardFocusedQuality).toHaveCount(1)
+  await expect(page.getByRole('radio', { name: '1080p' })).toBeFocused()
   await page.keyboard.press('ArrowRight')
   await expect(page.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
   await expect(resolution1440).toBeChecked()
+  await expect(keyboardFocusedQuality).toHaveCount(1)
+  expect(await keyboardFocusedQuality.evaluate(element => getComputedStyle(element).outlineStyle)).toBe('solid')
   const textFrameRate = page.getByRole('radio', { name: '30 FPS', exact: true })
   await expect(textFrameRate).toBeVisible()
   await expect(dialog.locator('.screen-share-quality__mode')).toBeInViewport({ ratio: 0.99 })
@@ -119,6 +128,10 @@ test('shows quality choices without hiding them and lets the user click 1440p di
   await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
   await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
   await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
+  const checkedQualityOptions = dialog.locator('.screen-share-quality__option:has(input:checked)')
+  for (const option of await checkedQualityOptions.all()) {
+    expect(await option.evaluate(element => getComputedStyle(element).outlineStyle)).toBe('none')
+  }
   await expect(scenarioCards.first()).toBeInViewport({ ratio: 0.99 })
   await expect(resolution).toBeInViewport({ ratio: 0.99 })
   await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeInViewport({ ratio: 0.99 })
@@ -154,4 +167,38 @@ test('normalizes a saved 1440p60 profile to a startable 1440p30 selection', asyn
   await expect(dialog.getByRole('button', { name: 'Начать трансляцию' })).toBeEnabled()
   await dialog.getByRole('button', { name: 'Начать трансляцию' }).click()
   await expect.poll(() => page.evaluate(() => window.selectedScreenQuality)).toBe('P1440_30')
+})
+
+test.describe('source-sized mobile chooser captures', () => {
+  test.use({ viewport: { width: 393, height: 852 }, deviceScaleFactor: 2 })
+
+  test('captures the current actions and direct 1440p selection at 2x', async ({ page }, testInfo) => {
+    await page.goto('/tests/screen_profile/quality_dialog.fixture.html')
+
+    const dialog = page.getByRole('dialog')
+    await expect(dialog).toBeVisible()
+    await expect(dialog.getByRole('button', { name: 'Отмена', exact: true })).toBeVisible()
+    await expect(dialog.getByRole('button', { name: 'Начать трансляцию', exact: true })).toBeVisible()
+    await expect(dialog.locator('.screen-share-quality__scenario-option')).toHaveCount(2)
+    await expect(dialog.getByRole('radio', { name: '720p' })).toBeVisible()
+    await expect(dialog.getByRole('radio', { name: '1080p' })).toBeVisible()
+    await expect(dialog.getByRole('radio', { name: '1440p' })).toBeVisible()
+    await expect(dialog.locator('.screen-share-quality__single-value')).toHaveText('60 FPS')
+    await page.screenshot({ path: testInfo.outputPath('mobile-stream-launch-actions-current.png') })
+
+    await dialog.getByRole('radio', { name: '1440p' }).click()
+    await expect(dialog.getByRole('radio', { name: '1440p' })).toBeChecked()
+    await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
+    await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
+    await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
+    await dialog.locator('.screen-share-setup__body').evaluate(element => { element.scrollTop = 0 })
+    for (const card of await dialog.locator('.screen-share-quality__scenario-option').all()) {
+      await expect(card).toBeInViewport({ ratio: 0.99 })
+      await expect(card.locator('.screen-share-quality__scenario-title')).toBeInViewport({ ratio: 0.99 })
+      await expect(card.locator('.screen-share-quality__scenario-copy small')).toBeInViewport({ ratio: 0.99 })
+    }
+    await expect(dialog.getByRole('radio', { name: '1440p' })).toBeInViewport({ ratio: 0.99 })
+    await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeInViewport({ ratio: 0.99 })
+    await page.screenshot({ path: testInfo.outputPath('mobile-stream-launch-settings-1440p-current.png') })
+  })
 })
