@@ -69,17 +69,31 @@
     },
     {
       "name": "Screen-share dialog accessible action names and quality controls",
-      "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
+      "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- --grep 'scenario names|quality choices|normalizes'",
       "result": "PASS_AUTOMATED_ONLY",
-      "tests_passed": 2,
+      "tests_passed": 3,
       "browser": "Google Chrome 154.0.8037.98",
       "assertions": [
         "The close icon button has the accessible name Закрыть; cancel and start actions expose their visible names.",
-        "Scenario and resolution/FPS radio options are discoverable by role and accessible name, including 1440p and 30 FPS.",
+        "Scenario, resolution and FPS labels fit and remain fully visible at initial open on 637x584 and 390x640 viewports.",
+        "Clicking 1440p selects the supported 1440p · 30 FPS text profile; starting emits P1440_30.",
+        "A saved incompatible P1440_60 selection opens as enabled P1440_30 rather than leaving the start action disabled.",
         "The scoped dialog axe scan reports no WCAG 2.2 AA violations."
       ],
       "limitation": "Fixture-based browser automation only; this does not replace screen-reader traversal on physical Web or Flutter devices.",
-      "test_source_sha256": "0db752211a3af9e7cc569013c5081968e9a0571e957b8c44ad95218b645c5866"
+      "test_source_sha256": "8b8b10cca8bbe5d3fc1b6c38177f35264a282524789f0118dee224f9577b8829"
+    },
+    {
+      "name": "Screen-share compact viewport selector geometry",
+      "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' clients/web/node_modules/.bin/playwright test -c clients/web/tests/accessibility/playwright.config.ts --grep 'screen-share selectors fit their options'",
+      "result": "PASS_AUTOMATED_ONLY",
+      "tests_passed": 1,
+      "browser": "Google Chrome 154.0.8037.98",
+      "assertions": [
+        "Scenario and quality controls do not clip at 637x584; scenario cards, 1440p and modal actions remain in the viewport after selection.",
+        "Selector labels fit their measured regions and the dialog axe scan reports no WCAG 2.2 AA violations."
+      ],
+      "revision": "fd844b3c"
     }
   ],
   "contrast": {

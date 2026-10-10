@@ -1021,5 +1021,53 @@
       "The pre-UIUX Web lifecycle was capture-only and ended at an obsolete session-dialog selector after writing target screenshots.",
       "Source and after contain different synthetic runtime data; this is visual review evidence, not an approved pixel golden."
     ]
+  },
+  "screen_share_quality_controls_follow_up": {
+    "date": "2026-10-11",
+    "revision": "fd844b3c",
+    "commands": [
+      "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm --prefix clients/web run test:screen-profile -- --grep 'scenario names|quality choices|normalizes'",
+      "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' clients/web/node_modules/.bin/playwright test -c clients/web/tests/accessibility/playwright.config.ts --grep 'screen-share selectors fit their options'",
+      "npm --prefix clients/web run test -- src/voice/screen_share_setup_dialog.spec.ts",
+      "npm --prefix clients/web run build -- --mode development"
+    ],
+    "result": "PASS_AUTOMATED_REVIEW_ONLY",
+    "browser": "Google Chrome 154.0.8037.98",
+    "browser_tests_passed": 4,
+    "unit_tests_passed": 8,
+    "build": "PASS_DEVELOPMENT_MODE",
+    "observations": [
+      "Scenario and resolution/FPS selectors are the first dialog content, use readable labels and remain in view at 637x584 and 390x640.",
+      "Selecting 1440p switches to the supported text scenario at 30 FPS and keeps the scenario selector visible.",
+      "A persisted P1440_60 profile normalizes to P1440_30 and leaves Start enabled.",
+      "The source archive is not an approved golden; these screenshots are implementation-review captures."
+    ],
+    "captures": [
+      {
+        "viewport": "637x584",
+        "selection": "1440p · 30 FPS",
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+        "sha256": "d1239a4897ab9f0f8d30d4ec294580f1b7b3fcddf9cbe3ea838ffa790e31d04b",
+        "raster": "637x584"
+      },
+      {
+        "viewport": "390x640",
+        "selection": "1440p · 30 FPS",
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
+        "sha256": "809e58ed4b470d6c31e1f584077b3e5bd66aee06371d4ae9fb74a3a35480b693",
+        "raster": "390x640"
+      },
+      {
+        "viewport": "637x584",
+        "selection": "1440p · 30 FPS after keyboard selection",
+        "path": ".out/accessibility-browser-results/accessibility.browser-scre-e6862-llow-the-1440p-text-profile/screen-share-selector-layout-637x584.png",
+        "sha256": "f97b1b8db1b350d2dddedd93ca322dde4ceb031f11682a74c8850c17f3ae5fd7",
+        "raster": "637x584"
+      }
+    ],
+    "limitations": [
+      "The production Vite build requires VITE_PUBLIC_ORIGIN; development-mode build passed, but production-mode build was not verified in this environment.",
+      "The checkpoint used the requested [skip ci], so this follow-up has no new GitHub Actions artifact."
+    ]
   }
 }
