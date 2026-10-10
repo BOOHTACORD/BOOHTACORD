@@ -305,18 +305,40 @@
         "raster": "2880x1800"
       },
       "dimensions_match": true,
-      "comparison_result": "BLOCKED_DUPLICATE_BASELINE",
-      "observation": "The source desktop-guild-settings.png is byte-identical to desktop-guild-members.png (D11). The current production guild settings after capture exists, but this archive does not provide an independent before baseline."
+      "comparison_result": "REPLACEMENT_BASELINE_AVAILABLE_CAPTURE_ONLY",
+      "observation": "The supplied desktop-guild-settings.png remains byte-identical to desktop-guild-members.png (D11). An independent pre-UIUX Web Guild Settings pair is now available and visually reviewed in QA-290; the source archive remains unchanged.",
+      "archive_comparison_result": "BLOCKED_DUPLICATE_BASELINE",
+      "replacement_baseline": {
+        "evidence": "evidence/qa/qa290-design-tokens-2026-10-10.json#baseline_comparison.comparisons[Guild settings, desktop]",
+        "before_revision": "674fb79ca57ce7207bd75ce6e8dcd3d86b5deee6",
+        "after_revision": "d856ecac6c9397ae99468c1e6c9492fec4d35e71",
+        "before": {
+          "path": ".out/qa-visual-290-before/.out/client-lifecycle/1440/guild-settings.png",
+          "sha256": "8eb7a20c57c2c2578fadc572dc39dc3907de25366f6f679706f342426e9260e6",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/qa-visual-290-d856/.out/client-lifecycle/1440/guild-settings.png",
+          "sha256": "56874fc0803b9009d7147eac531eff49c34314ccd91dd10e137a741c9690123d",
+          "raster": "2880x1800"
+        },
+        "result": "VISUALLY_REVIEWED_CAPTURE_ONLY",
+        "limitations": [
+          "The independent before/after images match at 1440x900 CSS, DPR 2 and 2880x1800 raster; source and after hashes were verified against the local captures.",
+          "The pre-UIUX lifecycle was capture-only and stopped at an obsolete session-dialog selector after target screenshots were written.",
+          "The captures are not approved pixel goldens; synthetic runtime data differs."
+        ]
+      }
     }
   ],
   "limitations": [
     "Mobile after captures have matching 1179×2556 source rasters. The visual review records runtime-data differences: synthetic account identity, Chrome notification permission/state, browser device inventory, and update-check HTTP 503.",
-    "The desktop guild settings baseline is blocked by the duplicated source asset (D11); its after image is retained locally.",
+    "The supplied archive source is duplicated (D11), but an independent pre-UIUX desktop Guild Settings before/after capture pair is now recorded and visually reviewed in QA-290. It is capture-only, not an approved golden; the archive itself remains unchanged.",
     "No native macOS/Android audio/settings smoke was run. Widget target-platform cases pass; there is no populated native QA session, and no physical Android/iOS device is available. TalkBack/VoiceOver spoken review is NOT_RUN.",
     "Generated PNGs and extracted source PNGs remain in ignored .out directories and are not staged.",
     "Flutter settings/session confirmation captures are production-widget after images with synthetic fixtures; they are not authenticated full-app before/after comparisons or native device screenshots."
   ],
-  "status": "PARTIAL — settings taxonomy, save/audio states, profile logout and own-session confirmation behavior, source-sized captures, desktop audio-settings return action, and Flutter/Web profile heading/helper/typography parity are recorded. Independent desktop guild-settings baseline (D11), native macOS/Android settings smoke, and screen-reader acceptance remain open.",
+  "status": "PARTIAL — settings taxonomy, save/audio states, profile logout and own-session confirmation behavior, source-sized captures, desktop audio-settings return action, Flutter/Web profile heading/helper/typography parity, and an independent review-only desktop Guild Settings comparison are recorded. Native macOS/Android settings smoke and screen-reader acceptance remain open.",
   "flutter_supplementary_captures": [
     {
       "flow": "Logout confirmation",
@@ -330,5 +352,6 @@
       "sha256": "548d5918c4555025cfc8c11ccbb5a2a40f75463ab4e272fcb898b7ea4389b118",
       "raster": "1179x2556"
     }
-  ]
+  ],
+  "updated_date": "2026-10-11"
 }

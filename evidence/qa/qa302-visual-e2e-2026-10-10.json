@@ -494,7 +494,7 @@
   },
   "limitations": [
     "Only seven admin screens now have reviewed source-sized full-app after captures; other catalog slots still lack source-backed full-app after captures. The source archive remains an audit reference, not an approved pixel golden.",
-    "Source screenshots are audit evidence, not approved goldens. desktop-guild-settings.png is byte-identical to desktop-guild-members.png.",
+    "The archive asset desktop-guild-settings.png is byte-identical to desktop-guild-members.png. An independent pre-UIUX Web replacement pair is now available and visually reviewed; it is capture-only, not an approved golden, and the archive remains unchanged.",
     "Earlier [skip ci] checkpoints produced no GitHub Actions bundle. PR #307 now has a full successful CI run and retained Web/Flutter review artifacts; the run does not approve pixel goldens.",
     "The 2026-10-10 rerun at 2cdc9b2c passed locally. The commits use [skip ci], so there is still no GitHub Actions artifact bundle for this source revision."
   ],
@@ -995,5 +995,31 @@
     ],
     "source_review": "All five QA-294 mobile/desktop pairs and M14 were visually reviewed after recapture; synthetic account data and existing compact admin header differences remain documented.",
     "result": "PASS_CAPTURE_AND_REVIEW_ONLY_NO_GOLDEN_APPROVAL"
+  },
+  "d11_replacement_capture_follow_up": {
+    "date": "2026-10-11",
+    "status": "INDEPENDENT_REPLACEMENT_CAPTURE_AVAILABLE_NOT_APPROVED_GOLDEN",
+    "archive_entry_sha256": "0a0ba90ad3288815fa4925b540396e74defaf463f4542fe38c6370c5ff57ff57",
+    "source_revision_before": "674fb79ca57ce7207bd75ce6e8dcd3d86b5deee6",
+    "source_revision_after": "d856ecac6c9397ae99468c1e6c9492fec4d35e71",
+    "before": {
+      "path": ".out/qa-visual-290-before/.out/client-lifecycle/1440/guild-settings.png",
+      "sha256": "8eb7a20c57c2c2578fadc572dc39dc3907de25366f6f679706f342426e9260e6",
+      "raster": "2880x1800"
+    },
+    "after": {
+      "path": ".out/qa-visual-290-d856/.out/client-lifecycle/1440/guild-settings.png",
+      "sha256": "56874fc0803b9009d7147eac531eff49c34314ccd91dd10e137a741c9690123d",
+      "raster": "2880x1800"
+    },
+    "css_viewport": "1440x900",
+    "dpr": 2,
+    "result": "VISUALLY_REVIEWED_CAPTURE_ONLY",
+    "evidence": "evidence/qa/qa290-design-tokens-2026-10-10.json#baseline_comparison.comparisons[Guild settings, desktop]",
+    "limitations": [
+      "The supplied archive asset remains byte-identical to desktop-guild-members.png; this pair is a separately captured replacement and the source archive was not modified.",
+      "The pre-UIUX Web lifecycle was capture-only and ended at an obsolete session-dialog selector after writing target screenshots.",
+      "Source and after contain different synthetic runtime data; this is visual review evidence, not an approved pixel golden."
+    ]
   }
 }
