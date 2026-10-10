@@ -93,6 +93,34 @@ try {
 
   await guest.screenshot({ path: input.directory+'/direct-message-header.png' })
   report.navigation_context = { ...report.navigation_context, direct_message_header: 'PASS' }
+
+  await openNavigation(guest)
+  await guest.locator('.guild-search-button').click()
+  const globalSearch = guest.getByTestId('search-panel')
+  await expect(globalSearch).toBeVisible()
+  await expect(globalSearch.getByRole('heading', { name: 'Поиск сообщений', exact: true })).toBeVisible()
+  await expect(globalSearch.getByLabel('Область поиска')).toHaveValue('all')
+  await expect(globalSearch.getByLabel('Автор')).toHaveValue('')
+  await expect(globalSearch.getByLabel('Вложения')).toHaveValue('any')
+  await expect(globalSearch.getByLabel('С даты')).toBeVisible()
+  await expect(globalSearch.getByLabel('По дату включительно')).toBeVisible()
+  await expect(globalSearch.getByRole('button', { name: 'Найти', exact: true })).toBeDisabled()
+  await guest.screenshot({ path: input.directory+'/global-search.png' })
+  await globalSearch.getByRole('searchbox', { name: 'Запрос' }).fill('Synthetic UIUX channel sample')
+  await globalSearch.getByRole('button', { name: 'Найти', exact: true }).click()
+  const globalResults = globalSearch.locator('.search-result')
+  await expect(globalResults.first()).toBeVisible()
+  await globalResults.first().getByRole('button').click()
+  await expect(guest.getByTestId('search-message-context')).toBeVisible()
+  await guest.screenshot({ path: input.directory+'/global-search-result-context.png' })
+  report.global_search_full_app = {
+    panel: true,
+    defaultGlobalScope: true,
+    authorAttachmentDateFilters: true,
+    disposableApiResults: true,
+    resultOpensOriginalContext: true,
+  }
+
   const denied = await api(guest, '/admin/guild-settings', 'PATCH', {
     name: 'MemberOverwrite', expected_revision: value.revision,
   })

@@ -40,6 +40,16 @@ type VisualMatrix = {
     desktop1440ReportSha256: string
     dataset: { members: number; categories: number; channels: number; auditRows: number }
   }
+  supplementalSourceReviewEvidence: {
+    status: string
+    screenId: string
+    report: string
+    capture: string
+    captureSha256: string
+    rasterPx: [number, number]
+    sourceRevision: string
+    reviewNote: string
+  }
   screens: MatrixEntry[]
 }
 
@@ -148,7 +158,30 @@ describe('UIUX-2026 visual regression inventory', () => {
 
     const settings = matrix.screens.find(({ id }) => id === 'D11')!
     expect(settings.sourceComparisonStatus).toBe('BLOCKED_DUPLICATE_BASELINE')
-    expect(matrix.screens.filter(({ sourceComparisonStatus }) => sourceComparisonStatus === 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN'))
+    expect(matrix.screens.filter(({ id, sourceComparisonStatus }) =>
+      reviewedAdminIds.has(id) && sourceComparisonStatus === 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN'))
       .toHaveLength(reviewedAdminIds.size)
+  })
+
+  it('maps M07 to full-app global search and records review-only source evidence', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const search = matrix.screens.find(({ id }) => id === 'M07')!
+
+    expect(search.fixture).toBe('tools/qa/client_lifecycle/run.py')
+    expect(search.testFile).toBe('tools/qa/client_lifecycle/scenario.mjs')
+    expect(search.interaction).toContain('global workspace search')
+    expect(search.owner).toContain('clients/web/src/workspace/search/WorkspaceSearchPanel.vue')
+    expect(search.owner).toContain('clients/web/src/search/SearchPanel.vue')
+    expect(search.sourceComparisonStatus).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+    expect(matrix.supplementalSourceReviewEvidence).toMatchObject({
+      status: 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN',
+      screenId: 'M07',
+      report: 'evidence/qa/qa294-dm-live-full-app-2026-10-10.json',
+      capture: '.out/client-lifecycle/393/global-search.png',
+      captureSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+      rasterPx: [1179, 2556],
+      sourceRevision: expect.stringMatching(/^[a-f0-9]{40}$/),
+      reviewNote: expect.stringContaining('focus'),
+    })
   })
 })

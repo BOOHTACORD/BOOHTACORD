@@ -928,5 +928,24 @@
     "related_issue": "#298",
     "related_pr": "https://github.com/Egkurilov/BOOHTACORD/pull/309",
     "test_file": "clients/web/tests/accessibility/screen_share_short_desktop.browser.spec.ts"
+  },
+  "updated_date": "2026-10-11",
+  "supplemental_source_review_evidence": {
+    "screen_id": "M07",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "source": {
+      "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-message-search.png",
+      "sha256": "c1ca3930347bc82d24cb4fca84d4896db452b7bde9c64e651acc18a27d251809",
+      "raster": "1179x2556"
+    },
+    "actual": {
+      "path": ".out/client-lifecycle/393/global-search.png",
+      "sha256": "1ccbe071d54d400148902565f319904fd1d07a8c6b426cd21856df4caefdff43",
+      "raster": "1179x2556"
+    },
+    "full_app_report": "evidence/qa/qa294-dm-live-full-app-2026-10-10.json",
+    "source_revision": "92ccd7c62aebdf1a09a9b635ab55e4a7d2a0974b",
+    "coverage": "Authenticated production Web app, actual global workspace search, all/default scope, author/attachment/date filters, disposable API results, and opening the original result context at 393x852 CSS px.",
+    "review_note": "The archive reference is global search, not search within an open DM. The panel and filter layout match. The runtime image keeps the visible focus ring on the query field; the reference has no focused control. Review-only, no pixel-golden approval."
   }
 }

@@ -500,16 +500,17 @@
         "width": 393,
         "height": 852
       },
-      "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "interaction": "Search within a DM, open a result in context, then return to the result list.",
-      "expectedOrException": "Search entry is visible and result state survives context return; Android/iOS IME is not covered by browser fixture.",
-      "owner": "clients/web/src/conversation/TextMessageSearch.vue; clients/web/src/direct_message/DirectMessageConversation.vue",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "interaction": "Open global workspace search, verify the global scope and author/attachment/date filters, search a disposable API message, open its original channel context, and return to search.",
+      "expectedOrException": "The full-app Web run verifies the global search panel, default scope, filters, live API results, and opening the original message context. The archive reference has no focused search field; the review capture retains the visible keyboard focus ring. Flutter search behavior is covered by workspace_screen_test.dart; physical keyboard and IME acceptance remains separate.",
+      "owner": "clients/web/src/workspace/search/WorkspaceSearchPanel.vue; clients/web/src/search/SearchPanel.vue; clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/component.dart",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M08",
@@ -874,5 +875,18 @@
       "channels": 8,
       "auditRows": 100
     }
+  },
+  "supplementalSourceReviewEvidence": {
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "screenId": "M07",
+    "report": "evidence/qa/qa294-dm-live-full-app-2026-10-10.json",
+    "capture": ".out/client-lifecycle/393/global-search.png",
+    "captureSha256": "1ccbe071d54d400148902565f319904fd1d07a8c6b426cd21856df4caefdff43",
+    "rasterPx": [
+      1179,
+      2556
+    ],
+    "sourceRevision": "92ccd7c62aebdf1a09a9b635ab55e4a7d2a0974b",
+    "reviewNote": "The global search panel, scope, author/attachment/date filters, and find action match the archived screen. Runtime capture retains the visible focus ring on the query field; the source screenshot has no focused control. This is review evidence, not an approved pixel golden."
   }
 }
