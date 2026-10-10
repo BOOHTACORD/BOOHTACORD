@@ -38,7 +38,16 @@ test('scenario names stay readable and selecting 1440p chooses the supported tex
   await page.keyboard.press('ArrowRight')
   await expect(page.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
   await expect(resolution1440).toBeChecked()
-  await expect(page.getByRole('radio', { name: '30 FPS', exact: true })).toBeVisible()
+  const textFrameRate = page.getByRole('radio', { name: '30 FPS', exact: true })
+  await expect(textFrameRate).toBeVisible()
+  await dialog.locator('.screen-share-quality__mode').scrollIntoViewIfNeeded()
+  for (const card of await scenarios.all()) {
+    await expect(card).toBeInViewport({ ratio: 0.99 })
+    await expect(card.locator('.screen-share-quality__scenario-title')).toBeInViewport({ ratio: 0.99 })
+    await expect(card.locator('.screen-share-quality__scenario-copy small')).toBeInViewport({ ratio: 0.99 })
+  }
+  await expect(resolution1440).toBeInViewport({ ratio: 0.99 })
+  await expect(textFrameRate).toBeInViewport({ ratio: 0.99 })
   await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') })
   const violations = await page.evaluate(async () => {
     const result = await (window as any).axe.run(document.querySelector('dialog'), {

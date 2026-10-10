@@ -8,7 +8,7 @@
     "https://github.com/Egkurilov/BOOHTACORD/issues/302"
   ],
   "pull_request": "https://github.com/Egkurilov/BOOHTACORD/pull/320",
-  "source_revision": "e8108f93285f13a07d632150176c0a6974ce061a",
+  "source_revision": "9ef8d9c1383a813100e06e7dced70cc67f29c60",
   "status": "PASS_LOCAL_AUTOMATED_ONLY",
   "checks": [
     {
@@ -35,7 +35,8 @@
         "The fixed 60 FPS value appears as a compact badge aligned with its label, without an empty segmented track.",
         "Keyboard ArrowRight from 1080p selects 1440p and switches to the supported text profile.",
         "Header and actions stay in view while the settings body scrolls.",
-        "At 390x640, scrolling to the scenario selector places both scenario cards and their full helper labels in the visible dialog viewport."
+        "At 390x640, scrolling to the scenario selector places both scenario cards and their full helper labels in the visible dialog viewport.",
+        "At 637x584, both scenario cards with labels, the 1440p option and the 30 FPS option are simultaneously within the visible dialog viewport after scrolling to the selector."
       ],
       "capture": {
         "path": ".out/accessibility-browser-results/accessibility.browser-scre-e6862-llow-the-1440p-text-profile/screen-share-selector-layout-637x584.png",
@@ -46,17 +47,24 @@
       "additional_captures": [
         {
           "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
-          "sha256": "467b99b52362ddcb970e289de4bbc28ba5ea7e3cb3416b45cda8b1b8871c7633",
+          "sha256": "6317fb1fb9e64adb6861a60ecfbffc4971ba6025e1c941b962749a209f810999",
           "raster": "390x640",
           "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
           "note": "Both scenario cards and helper labels are fully visible after scrolling to the selection area."
         },
         {
           "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
-          "sha256": "7c0bc0e0af68db0af4157947c280c956b9203756bcba04aedbcd5df3721810f1",
+          "sha256": "18a8a128c94d500fd278d6867dc07329209f1ba6b28c9093f5918a5e6b79445c",
           "raster": "390x640",
           "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
           "note": "1440p is selected; the selected profile is 1440p · 30 FPS."
+        },
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+          "sha256": "0044a7be06ae989689fa07b43c6bda48b71a7b10be3f4e4631f78001d8fea12f",
+          "raster": "637x584",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "Both scenario cards, all resolution options including selected 1440p, and selected 30 FPS are visible together after scrolling to the selector."
         }
       ]
     },
@@ -97,8 +105,8 @@
   "issue_state": "PR_OPEN; #289 REMAINS OPEN",
   "latest_revalidation": {
     "date": "2026-10-11",
-    "source_revision": "e8108f93285f13a07d632150176c0a6974ce061a",
-    "result": "PASS_AUTOMATED_ONLY",
+    "source_revision": "9ef8d9c1383a813100e06e7dced70cc67f29c60",
+    "result": "2/2 PASS_AUTOMATED_ONLY",
     "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
     "tests_passed": 2,
     "browser": "Google Chrome 154.0.8037.98",
@@ -109,7 +117,8 @@
     "confirmed": [
       "Both scenario titles and helper lines render in full without truncation.",
       "1440p can be selected directly and remains selected; from motion it changes to the supported text scenario at 30 FPS.",
-      "The resolution and FPS controls have clear separate selected states and remain in the scrollable content area beneath the fixed dialog header."
+      "The resolution and FPS controls have clear separate selected states and remain in the scrollable content area beneath the fixed dialog header.",
+      "At 637x584, the visible selector viewport shows both full scenario cards, the 1440p choice and 30 FPS together."
     ],
     "capture": {
       "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
@@ -117,32 +126,39 @@
       "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     "limitations": "Fixture-based browser regression only. This is not a production deployment or physical platform acceptance.",
-    "tested_commit": "3dabeaefc605ceba2da867969c90effb0b74cf96",
+    "tested_commit": "9ef8d9c1383a813100e06e7dced70cc67f29c60",
     "unit_tests": "17 files, 72 tests PASS",
     "profile_browser_tests": "2/2 PASS at 637x584 and 390x640",
     "accessibility_geometry_tests": "3/3 PASS; scoped axe and focus trap pass",
     "production_build": "PASS",
     "mobile_scenario_visibility_follow_up": {
-      "command": "npm run test:screen-profile -- --grep 'shows quality choices without hiding them'",
-      "result": "1/1 PASS",
-      "test_source_sha256": "1be6ef05903dafcda10d1fbcd09b67bde71f824bf10780cf2cd1b0bd04b08946",
+      "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
+      "result": "2/2 PASS",
+      "test_source_sha256": "34acac1371a4e0c628bc67440b6b290101e49a8f2aad00b7f620bdf3d361bfeb",
       "additional_captures": [
         {
           "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
-          "sha256": "467b99b52362ddcb970e289de4bbc28ba5ea7e3cb3416b45cda8b1b8871c7633",
+          "sha256": "6317fb1fb9e64adb6861a60ecfbffc4971ba6025e1c941b962749a209f810999",
           "raster": "390x640",
           "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
           "note": "Both scenario cards and helper labels are fully visible after scrolling to the selection area."
         },
         {
           "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
-          "sha256": "7c0bc0e0af68db0af4157947c280c956b9203756bcba04aedbcd5df3721810f1",
+          "sha256": "18a8a128c94d500fd278d6867dc07329209f1ba6b28c9093f5918a5e6b79445c",
           "raster": "390x640",
           "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
           "note": "1440p is selected; the selected profile is 1440p · 30 FPS."
+        },
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+          "sha256": "0044a7be06ae989689fa07b43c6bda48b71a7b10be3f4e4631f78001d8fea12f",
+          "raster": "637x584",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "Both scenario cards and labels, 1440p and 30 FPS fit inside the visible dialog viewport at this short height."
         }
       ],
-      "note": "The regression asserts both 390x640 scenario cards and all helper labels are fully in viewport when scrolled to the selector; direct 1440p selection then selects the text mode at 30 FPS."
+      "note": "The regression asserts both 390x640 scenario cards and all helper labels are fully in viewport when scrolled to the selector; direct 1440p selection then selects the text mode at 30 FPS. At 637x584 it additionally asserts both scenarios, 1440p and 30 FPS are visible together."
     }
   },
   "updated_date": "2026-10-11"
