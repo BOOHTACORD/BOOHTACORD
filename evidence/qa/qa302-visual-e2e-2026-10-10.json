@@ -1069,5 +1069,237 @@
       "The production Vite build requires VITE_PUBLIC_ORIGIN; development-mode build passed, but production-mode build was not verified in this environment.",
       "The checkpoint used the requested [skip ci], so this follow-up has no new GitHub Actions artifact."
     ]
+  },
+  "current_branch_production_capture_refresh": {
+    "date": "2026-10-11",
+    "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc",
+    "status": "PASS_REVIEW_ONLY",
+    "runner": "python3 -m tools.qa.client_lifecycle.run",
+    "scope": "Authenticated production Web lifecycle on a disposable Go API/PostgreSQL/Tempo stack; no API mocks; mobile and desktop source-sized captures; telemetry, API-restart persistence, and owned-resource cleanup verified.",
+    "viewports": {
+      "393": {
+        "viewport_css": "393x852",
+        "device_scale_factor": 3,
+        "has_touch": true,
+        "result": "PASS",
+        "telemetry": "PASS",
+        "persisted_after_api_restart": true,
+        "owned_resources_removed": true,
+        "report_path": ".out/client-lifecycle/393/report.json",
+        "report_sha256": "f1d1353c2c03b3945a4a709988a014a8c87a230d7abfacfa30c51e94cb661942",
+        "screenshots": {
+          "authentication.png": {
+            "sha256": "94c506df857f4a486b5fc594265cae44a586993e9c9bedbd39fe3a8fe998060c",
+            "raster": "1179x2556"
+          },
+          "channel-participants-200.png": {
+            "sha256": "cdda22e426c6f32b99180ec998c40f9d0472882e34afcf8f00b430c7ca754999",
+            "raster": "1179x2556"
+          },
+          "channel-participants.png": {
+            "sha256": "bb92c593281ec1b860b60ce6bc4d4df7fb19197cb73364a8fe5a7e99554e26d9",
+            "raster": "1179x2556"
+          },
+          "channel-text-200.png": {
+            "sha256": "1221fca12b932818de9c32b14dd608ae8f1542051ccf620a71957abfe37fed9a",
+            "raster": "1179x2556"
+          },
+          "channel-text.png": {
+            "sha256": "44ec392be029d1ecefc4ec966e116220e30007a0606dca0113346ae5a82539dc",
+            "raster": "1179x2556"
+          },
+          "direct-message-header.png": {
+            "sha256": "48a262470a749cb14bdf71f91c3acee4380b4414067595f5c4a6c497d7b8b26e",
+            "raster": "1179x2556"
+          },
+          "dm-conversation.png": {
+            "sha256": "ab7941880cc08fef646be489b3acba42ca5acac780ea0dd4b31428979d512ad8",
+            "raster": "1179x2556"
+          },
+          "dm-empty-conversation.png": {
+            "sha256": "4f2f03322104ed44659287cc8a571107db4efcaa17cde43178d272e68bd961d9",
+            "raster": "1179x2556"
+          },
+          "dm-list.png": {
+            "sha256": "26dd86f5d314cda03a5ef5e243657e093f8d78145ae6df6eccb7e979d7c8cc2d",
+            "raster": "1179x2556"
+          },
+          "dm-search.png": {
+            "sha256": "d3e045c21bc58e8e00fe5f5d905bc2cc007bd70ab7306161da19d1e4882a8ba3",
+            "raster": "1179x2556"
+          },
+          "global-search-result-context.png": {
+            "sha256": "5865fc4bdd156da02cbad543f2f4fce6cea21a5c27550fde924127e5f9232bb7",
+            "raster": "1179x2556"
+          },
+          "global-search.png": {
+            "sha256": "1ccbe071d54d400148902565f319904fd1d07a8c6b426cd21856df4caefdff43",
+            "raster": "1179x2556"
+          },
+          "guild-audit.png": {
+            "sha256": "f258d695af2d9e1c1032bacde81ce8d7ddc94d09ba8683156c9ef63f2d12d90f",
+            "raster": "1179x2556"
+          },
+          "guild-channels.png": {
+            "sha256": "77ffa8cf2184a7370aafa9079bcd26d2f28700febfecbce522dc02450b2dc748",
+            "raster": "1179x2556"
+          },
+          "guild-media.png": {
+            "sha256": "2eda5b1a2a110615aa68d20880c157c96cc075d33c00a662cc7c3c6c99ae1b4c",
+            "raster": "1179x2556"
+          },
+          "guild-members.png": {
+            "sha256": "8a379d85b2abf151ba367e4d49b5b98582b2bd7e482bc92bb4ef7edda38f7e78",
+            "raster": "1179x2556"
+          },
+          "guild-readiness.png": {
+            "sha256": "2a03f6626e488e9883929bdc5462a8a09c2f7cb99c2525714458d234524a82d9",
+            "raster": "1179x2556"
+          },
+          "guild-roles.png": {
+            "sha256": "728326ac7ac84fbd29afbcf6fc72dafb0635a288b92e6b9317785e64698cc970",
+            "raster": "1179x2556"
+          },
+          "guild-settings-200.png": {
+            "sha256": "9114abee089b284c1a204be2bffb1a8f536ad1e4c1d4bf9d71765b53af35cf62",
+            "raster": "1179x2556"
+          },
+          "guild-settings-initial.png": {
+            "sha256": "28b0e573ab33bc666c86ec1489c8bfd8315368e6526fa136f9d819013ff852ee",
+            "raster": "1179x2556"
+          },
+          "guild-settings.png": {
+            "sha256": "6bf95c0266e9d020d1af1885479af5c6c53f4ad8ef9448b9854f0bcc14a53093",
+            "raster": "1179x2556"
+          },
+          "own-sessions.png": {
+            "sha256": "8d2badf7f4b242ca8b073cb9914d8e49f9161f5a54ba0fa640ec6dc52a068c0b",
+            "raster": "1179x2556"
+          },
+          "welcome-a.png": {
+            "sha256": "9d3516cbf0c5885e65e5bac9cb32373657d18d44ba8a32c9455dda9e9a1fb706",
+            "raster": "1179x2556"
+          },
+          "welcome-b.png": {
+            "sha256": "bb92c593281ec1b860b60ce6bc4d4df7fb19197cb73364a8fe5a7e99554e26d9",
+            "raster": "1179x2556"
+          }
+        }
+      },
+      "1440": {
+        "viewport_css": "1440x900",
+        "device_scale_factor": 2,
+        "has_touch": false,
+        "result": "PASS",
+        "telemetry": "PASS",
+        "persisted_after_api_restart": true,
+        "owned_resources_removed": true,
+        "report_path": ".out/client-lifecycle/1440/report.json",
+        "report_sha256": "f82e3edd655779c4fbdb9a687550106131849221de2958389d7e38c89dbe68c5",
+        "screenshots": {
+          "authentication.png": {
+            "sha256": "8d30f6a95fac5e24aab0e3bebc6a7b8269f8ca4ba396f22b41de9a7676e47e31",
+            "raster": "2880x1800"
+          },
+          "channel-participants-200.png": {
+            "sha256": "0d345d9fd1014b33167da24db25e0e6646a22dede6a7e14c76c0511923af6271",
+            "raster": "2880x1800"
+          },
+          "channel-participants.png": {
+            "sha256": "b11bb62d2875442cf912cd6e8468481734cec122ab7a09ce5dad594c88188613",
+            "raster": "2880x1800"
+          },
+          "channel-text-200.png": {
+            "sha256": "0d345d9fd1014b33167da24db25e0e6646a22dede6a7e14c76c0511923af6271",
+            "raster": "2880x1800"
+          },
+          "channel-text.png": {
+            "sha256": "b11bb62d2875442cf912cd6e8468481734cec122ab7a09ce5dad594c88188613",
+            "raster": "2880x1800"
+          },
+          "direct-message-header.png": {
+            "sha256": "a1312d4da65a020b51034a88a7c6003d35e26c5bd774582439bbf3b8ea5fbc20",
+            "raster": "2880x1800"
+          },
+          "dm-conversation.png": {
+            "sha256": "6b46a74d19f0a162a37bca2d66005dded2f37122b29c4ba12d45f38e11affe1f",
+            "raster": "2880x1800"
+          },
+          "dm-empty-conversation.png": {
+            "sha256": "4c62813bb10e8699183c33906df8753e2bb20818c384d221ca2cd1aa7420bb1c",
+            "raster": "2880x1800"
+          },
+          "dm-list.png": {
+            "sha256": "4c62813bb10e8699183c33906df8753e2bb20818c384d221ca2cd1aa7420bb1c",
+            "raster": "2880x1800"
+          },
+          "dm-search.png": {
+            "sha256": "a1312d4da65a020b51034a88a7c6003d35e26c5bd774582439bbf3b8ea5fbc20",
+            "raster": "2880x1800"
+          },
+          "global-search-result-context.png": {
+            "sha256": "7d95271613a96416bae6b2b8ad05d5916dbbed0b27980355219c4e223caea2cb",
+            "raster": "2880x1800"
+          },
+          "global-search.png": {
+            "sha256": "ddadab5bc121001fb78e686fd89f2826ce0f1a3dcaf6c87c635081b8e16547fa",
+            "raster": "2880x1800"
+          },
+          "guild-audit.png": {
+            "sha256": "0170268f369cef45bfe992a12c3ef6b754ffd784fc886ad93a4da9d9191b5fea",
+            "raster": "2880x1800"
+          },
+          "guild-channels.png": {
+            "sha256": "2cd2b071df45dda968d7787aba92d207191d978baa2e3913c435ae95d13284f5",
+            "raster": "2880x1800"
+          },
+          "guild-media.png": {
+            "sha256": "470a0072abbdc7e713d3d42f5e1a69e88c5739531ca84c7b98f80a66bdac4358",
+            "raster": "2880x1800"
+          },
+          "guild-members.png": {
+            "sha256": "5159f4f8e74c88d02556fc0fa5124c7d059930e1f28a64c563431010b5598d32",
+            "raster": "2880x1800"
+          },
+          "guild-readiness.png": {
+            "sha256": "11f10b1296721f8a2d701f4cc38e8966fc5bd3d16fd04e97ff9eae88f37d1cfb",
+            "raster": "2880x1800"
+          },
+          "guild-roles.png": {
+            "sha256": "be7b13856db7cff6cff71540c0fbe579ec934628037f5abfaade9fe22a4e4419",
+            "raster": "2880x1800"
+          },
+          "guild-settings-200.png": {
+            "sha256": "bffec787907de81164e1de6b8c16cfa1d2597f65328cf9701409f3f04a70c8d5",
+            "raster": "2880x1800"
+          },
+          "guild-settings-initial.png": {
+            "sha256": "188463a978e861cd4c952ff9fcc46c97fe9c9b27aa7b770ddd58ce0e443d6a3e",
+            "raster": "2880x1800"
+          },
+          "guild-settings.png": {
+            "sha256": "03083f6b00dff8515fffcbb7fdffc4c5680c5840ee85c0f783eaf9fec8fc6fbe",
+            "raster": "2880x1800"
+          },
+          "own-sessions.png": {
+            "sha256": "b2b274468353d54f9e29fb1928e2dc9155d0a172b487be77cfe3151a9ac0200b",
+            "raster": "2880x1800"
+          },
+          "welcome-a.png": {
+            "sha256": "6db0040dff7fe1cc2f67f5e3aae2bfff30b4a806e2de54537261a36bca78eeb7",
+            "raster": "2880x1800"
+          },
+          "welcome-b.png": {
+            "sha256": "b11bb62d2875442cf912cd6e8468481734cec122ab7a09ce5dad594c88188613",
+            "raster": "2880x1800"
+          }
+        }
+      }
+    },
+    "limitations": [
+      "These captures supplement the reviewed catalog entries but do not complete all 41 source-backed after captures.",
+      "Captures are review evidence, not owner-approved pixel goldens; the source archive D11 entry remains a duplicate.",
+      "The requested [skip ci] means this current checkpoint has local captures only and no new GitHub Actions artifact bundle."
+    ]
   }
 }
