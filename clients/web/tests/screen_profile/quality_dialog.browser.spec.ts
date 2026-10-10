@@ -202,3 +202,32 @@ test.describe('source-sized mobile chooser captures', () => {
     await page.screenshot({ path: testInfo.outputPath('mobile-stream-launch-settings-1440p-current.png') })
   })
 })
+
+test.describe('source-sized desktop chooser captures', () => {
+  test.use({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 })
+
+  test('captures desktop actions and direct 1440p selection at 2x', async ({ page }, testInfo) => {
+    await page.goto('/tests/screen_profile/quality_dialog.fixture.html')
+
+    const dialog = page.getByRole('dialog')
+    await expect(dialog).toBeVisible()
+    const scenarioCards = dialog.locator('.screen-share-quality__scenario-option')
+    await expect(scenarioCards).toHaveCount(2)
+    await expect(scenarioCards.nth(0).locator('.screen-share-quality__scenario-title')).toHaveText('Плавность')
+    await expect(scenarioCards.nth(1).locator('.screen-share-quality__scenario-title')).toHaveText('Чёткость текста')
+    await expect(dialog.getByRole('radio', { name: '720p' })).toBeVisible()
+    await expect(dialog.getByRole('radio', { name: '1080p' })).toBeVisible()
+    await expect(dialog.getByRole('radio', { name: '1440p' })).toBeVisible()
+    await expect(dialog.locator('.screen-share-quality__single-value')).toHaveText('60 FPS')
+    await expect(dialog.getByRole('button', { name: 'Отмена', exact: true })).toBeVisible()
+    await expect(dialog.getByRole('button', { name: 'Начать трансляцию', exact: true })).toBeVisible()
+    await page.screenshot({ path: testInfo.outputPath('desktop-stream-launch-actions-current.png') })
+
+    await dialog.getByRole('radio', { name: '1440p' }).click()
+    await expect(dialog.getByRole('radio', { name: '1440p' })).toBeChecked()
+    await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
+    await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
+    await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
+    await page.screenshot({ path: testInfo.outputPath('desktop-stream-launch-settings-1440p-current.png') })
+  })
+})

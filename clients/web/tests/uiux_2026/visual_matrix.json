@@ -244,13 +244,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open a create-section dialog, traverse controls, cancel, and submit valid input.",
-      "expectedOrException": "Focus is contained, cancel is the safe default, and errors do not discard input; this matrix does not replace a complete dialog inventory.",
+      "expectedOrException": "Focus is contained, cancel is the safe default, and errors do not discard input. Source-sized review confirms the title, helper, field and actions retain clear spacing; this matrix does not replace a complete dialog inventory.",
       "owner": "clients/web/src/channel/AdminCategoryControls.vue; clients/web/src/channel/AdminConfirmation.vue",
       "flutterTestFile": "clients/flutter/test/admin_topology_widget_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D13",
@@ -264,13 +265,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Validate channel creation and keyboard-safe dialog cancellation.",
-      "expectedOrException": "No duplicate submission while pending; form state remains on recoverable failure; source comparison pending.",
+      "expectedOrException": "No duplicate submission while pending; form state remains on recoverable failure. Source-sized review confirms the form hierarchy; the synthetic category/channel list differs from the source fixture.",
       "owner": "clients/web/src/channel/AdminChannelCreate.vue",
       "flutterTestFile": "clients/flutter/test/admin_topology_widget_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D14",
@@ -284,13 +286,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Inspect consequences, cancel with Enter/Escape, and require an explicit confirmation to close.",
-      "expectedOrException": "Destructive action never runs from default focus, backdrop click, or Escape; the Web dialog regression covers focus behavior.",
+      "expectedOrException": "Destructive action never runs from default focus, backdrop click, or Escape. Source-sized review confirms the current dialog separates the named channel/consequence from safe Cancel and danger actions; the Web regression covers focus behavior.",
       "owner": "clients/web/src/channel/AdminConfirmation.vue",
       "flutterTestFile": "clients/flutter/test/confirmation_dialog_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D15",
@@ -324,13 +327,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open screen-share setup, inspect source actions, and cancel safely.",
-      "expectedOrException": "Setup dialog has bounded keyboard focus and safe close behavior; native source picker is not represented by this fixture.",
+      "expectedOrException": "Setup dialog uses readable scenario cards and directly selectable resolution/FPS controls with safe close behavior; native source picker is not represented by this fixture.",
       "owner": "clients/web/src/voice/ScreenShareSetupDialog.vue",
       "flutterTestFile": "clients/flutter/test/screen_setup/inventory_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D17",
@@ -344,13 +348,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Change stream quality, apply, cancel, and inspect reduced-motion behavior.",
-      "expectedOrException": "Current preference and submit/cancel controls remain visible; capture and reconnect media behavior requires device/SFU evidence.",
+      "expectedOrException": "1440p is directly selectable and selects the supported text profile at 30 FPS; capture and reconnect media behavior requires device/SFU evidence.",
       "owner": "clients/web/src/voice/ScreenShareSetupDialog.vue; clients/web/src/voice/ScreenShareQualityOptions.vue",
       "flutterTestFile": "clients/flutter/test/screen_share_profile_geometry_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D18",
@@ -932,6 +937,20 @@
         "path": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-settings-1440p-current-393x852-2x.png",
         "sha256": "479c483f9a9a62aed9344dce54035d918cbfda9dbf3fbc0a53ec99b1cc16ec49",
         "rasterPx": [786, 1704]
+      },
+      {
+        "screenId": "D16",
+        "state": "desktop-default-actions",
+        "path": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-actions-current-1440x900-2x.png",
+        "sha256": "5839e4decb850088185eee7b7127134d608a0111302c08debca5e8f95d45967e",
+        "rasterPx": [2880, 1800]
+      },
+      {
+        "screenId": "D17",
+        "state": "desktop-selected-1440p-30fps",
+        "path": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-settings-1440p-current-1440x900-2x.png",
+        "sha256": "4ecffc2a0cf01b0ae5fdcffa6eb236fa02432dc9aa46e83fa8f554726261dc3c",
+        "rasterPx": [2880, 1800]
       }
     ]
   }

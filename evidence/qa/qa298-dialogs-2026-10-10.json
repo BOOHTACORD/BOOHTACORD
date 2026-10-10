@@ -98,7 +98,9 @@
         "sha256": "65108d83885a27eb086dd014a6d47ee414685b72a343be4339bdc4f8b52942cc",
         "raster": "2880x1800"
       },
-      "dimensions_match": true
+      "dimensions_match": true,
+      "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+      "observation": "The title, helper, field label/input, Cancel and Create actions have clear spacing; the after capture preserves the form hierarchy and aligns the actions in the footer."
     },
     {
       "flow": "Create channel",
@@ -112,7 +114,9 @@
         "sha256": "215c98db1cf5af704017ff71fcd923e8f91bfc334cd034e0d65ee6b7baa20961",
         "raster": "2880x1800"
       },
-      "dimensions_match": true
+      "dimensions_match": true,
+      "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+      "observation": "The channel type, name, category and consequence guidance remain ordered and readable. The synthetic after fixture has a different category/channel list state than the source."
     },
     {
       "flow": "Destructive channel confirmation",
@@ -127,7 +131,40 @@
         "raster": "2880x1800"
       },
       "dimensions_match": true,
-      "observation": "Source title and description touched the modal edge. The current component has 24 px token padding, retains the explicit object/consequence copy and aligns actions to the bottom."
+      "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+      "observation": "The source title and description clip against the modal edge and its actions overlap the content. The after capture separates the named channel and consequence from safe Cancel and danger actions, with the actions aligned in the footer. The dialog test covers explicit confirmation and safe cancellation."
+    },
+    {
+      "flow": "Desktop screen-share actions",
+      "source": {
+        "path": ".out/uiux-source/ui-ux-screenshots/desktop-stream-launch-actions.png",
+        "sha256": "8dc6f5ce8baac37837ccc133dd02273c162f5af30d3ae5f460260ef2f3367c16",
+        "raster": "2880x1800"
+      },
+      "after": {
+        "path": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-actions-current-1440x900-2x.png",
+        "sha256": "5839e4decb850088185eee7b7127134d608a0111302c08debca5e8f95d45967e",
+        "raster": "2880x1800"
+      },
+      "dimensions_match": true,
+      "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+      "observation": "The old segmented scenario text is replaced by full scenario cards; 720p/1080p/1440p are separate visible choices and fixed 60 FPS is shown as a clear value. The Cancel and Start actions stay in the footer."
+    },
+    {
+      "flow": "Desktop screen-share settings and actions",
+      "source": {
+        "path": ".out/uiux-source/ui-ux-screenshots/desktop-stream-launch-settings.png",
+        "sha256": "fa61f7ccdf37238bf676afc8f71c73f893db863336820da9d4135d0203445e16",
+        "raster": "2880x1800"
+      },
+      "after": {
+        "path": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-settings-1440p-current-1440x900-2x.png",
+        "sha256": "4ecffc2a0cf01b0ae5fdcffa6eb236fa02432dc9aa46e83fa8f554726261dc3c",
+        "raster": "2880x1800"
+      },
+      "dimensions_match": true,
+      "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+      "observation": "The scenario names are fully readable and 1440p is directly selectable. The selected state clearly shows Чёткость текста, 1440p and 30 FPS together; Cancel and Start remain visible."
     },
     {
       "flow": "Mobile screen-share actions",

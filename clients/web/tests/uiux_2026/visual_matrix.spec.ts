@@ -279,8 +279,10 @@ describe('UIUX-2026 visual regression inventory', () => {
     const report = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa320-screen-share-quality-2026-10-10.json'), 'utf8'))
     const review = matrix.screenShareQualityReviewEvidence
     const expectedCaptures = [
-      { screenId: 'M20', state: 'default-actions', file: 'mobile-stream-launch-actions-current-393x852-2x.png' },
-      { screenId: 'M21', state: 'selected-1440p-30fps', file: 'mobile-stream-launch-settings-1440p-current-393x852-2x.png' },
+      { screenId: 'M20', state: 'default-actions', file: 'mobile-stream-launch-actions-current-393x852-2x.png', raster: '786x1704', rasterPx: [786, 1704] },
+      { screenId: 'M21', state: 'selected-1440p-30fps', file: 'mobile-stream-launch-settings-1440p-current-393x852-2x.png', raster: '786x1704', rasterPx: [786, 1704] },
+      { screenId: 'D16', state: 'desktop-default-actions', file: 'desktop-stream-launch-actions-current-1440x900-2x.png', raster: '2880x1800', rasterPx: [2880, 1800] },
+      { screenId: 'D17', state: 'desktop-selected-1440p-30fps', file: 'desktop-stream-launch-settings-1440p-current-1440x900-2x.png', raster: '2880x1800', rasterPx: [2880, 1800] },
     ]
 
     expect(review).toMatchObject({
@@ -288,7 +290,7 @@ describe('UIUX-2026 visual regression inventory', () => {
       sourceRevision: '562bd3c7',
       report: 'evidence/qa/qa320-screen-share-quality-2026-10-10.json',
     })
-    expect(report.latest_visual_regression_after_focus_state_fix.result).toBe('4/4 PASS_AUTOMATED_ONLY')
+    expect(report.latest_visual_regression_after_focus_state_fix.result).toBe('5/5 PASS_AUTOMATED_ONLY')
     expect(report.latest_visual_regression_after_focus_state_fix.confirmed.join(' ')).toContain('1440p remains selected')
 
     for (const expected of expectedCaptures) {
@@ -297,13 +299,42 @@ describe('UIUX-2026 visual regression inventory', () => {
       const reportCapture = report.latest_visual_regression_after_focus_state_fix.captures.find(({ state }: { state: string }) => state === expected.state)!
 
       expect(screen.sourceComparisonStatus).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
-      expect(screen.expectedOrException.toLowerCase()).toContain(expected.screenId === 'M20' ? 'full scenario labels' : '1440p can be selected directly')
+      const expectedNote = expected.screenId === 'M20' ? 'full scenario labels'
+        : expected.screenId === 'M21' ? '1440p can be selected directly'
+          : expected.screenId === 'D16' ? 'readable scenario cards'
+            : '1440p is directly selectable'
+      expect(screen.expectedOrException.toLowerCase()).toContain(expectedNote)
       expect(capture.path).toContain(expected.file)
       expect(capture.sha256).toMatch(/^[a-f0-9]{64}$/)
-      expect(capture.rasterPx).toEqual([786, 1704])
+      expect(capture.rasterPx).toEqual(expected.rasterPx)
       expect(reportCapture.capture.path).toBe(capture.path)
       expect(reportCapture.capture.sha256).toBe(capture.sha256)
-      expect(reportCapture.capture.raster).toBe('786x1704')
+      expect(reportCapture.capture.raster).toBe(expected.raster)
+    }
+  })
+
+  it('records visually reviewed source-sized Web topology dialogs as review-only', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const report = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa298-dialogs-2026-10-10.json'), 'utf8'))
+    const reviews = [
+      { id: 'D12', flow: 'Create category', matrixNote: 'clear spacing', observationNote: 'clear spacing' },
+      { id: 'D13', flow: 'Create channel', matrixNote: 'source fixture', observationNote: 'different category/channel list state' },
+      { id: 'D14', flow: 'Destructive channel confirmation', matrixNote: 'safe Cancel and danger actions', observationNote: 'safe Cancel and danger actions' },
+    ]
+
+    for (const review of reviews) {
+      const screen = matrix.screens.find(({ id }) => id === review.id)!
+      const comparison = report.visual_comparisons.find(({ flow }: { flow: string }) => flow === review.flow)!
+
+      expect(screen.sourceComparisonStatus, `${review.id} matrix review`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(screen.expectedOrException.toLowerCase(), `${review.id} matrix note`).toContain(review.matrixNote.toLowerCase())
+      expect(comparison.review_status, `${review.id} comparison`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(comparison.dimensions_match, `${review.id} raster`).toBe(true)
+      expect(comparison.source.raster).toBe('2880x1800')
+      expect(comparison.after.raster).toBe('2880x1800')
+      expect(comparison.source.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(comparison.after.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(comparison.observation.toLowerCase()).toContain(review.observationNote.toLowerCase())
     }
   })
 })

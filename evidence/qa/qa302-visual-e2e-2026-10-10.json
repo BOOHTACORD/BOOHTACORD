@@ -1352,7 +1352,7 @@
     "source_revision": "562bd3c7",
     "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
     "evidence": "evidence/qa/qa320-screen-share-quality-2026-10-10.json#latest_visual_regression_after_focus_state_fix",
-    "reviewed_catalog_slots": ["M20", "M21"],
+    "reviewed_catalog_slots": ["D16", "D17", "M20", "M21"],
     "captures": [
       {
         "catalog_slot": "M20",
@@ -1367,19 +1367,52 @@
         "after": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-settings-1440p-current-393x852-2x.png",
         "sha256": "479c483f9a9a62aed9344dce54035d918cbfda9dbf3fbc0a53ec99b1cc16ec49",
         "raster": "786x1704"
+      },
+      {
+        "catalog_slot": "D16",
+        "state": "desktop-default-actions",
+        "after": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-actions-current-1440x900-2x.png",
+        "sha256": "5839e4decb850088185eee7b7127134d608a0111302c08debca5e8f95d45967e",
+        "raster": "2880x1800"
+      },
+      {
+        "catalog_slot": "D17",
+        "state": "desktop-selected-1440p-30fps",
+        "after": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-settings-1440p-current-1440x900-2x.png",
+        "sha256": "4ecffc2a0cf01b0ae5fdcffa6eb236fa02432dc9aa46e83fa8f554726261dc3c",
+        "raster": "2880x1800"
       }
     ],
-    "visual_matrix_inventory_test": "9/9 PASS",
+    "visual_matrix_inventory_test": "10/10 PASS",
     "source_archive_integrity_verification": "PASS: 41 source screenshots verified; one duplicate is explicitly blocked from independent comparison.",
     "observations": [
       "The old scenario switch clipped both names; the current selector presents the full scenario names and helper text as separate cards.",
       "Resolution and FPS are separate, clearly outlined choices. Selecting 1440p directly switches to Чёткость текста at 30 FPS and highlights the selected options.",
-      "The fixed Cancel/Start footer remains visible while the selector body scrolls. Pointer activation does not retain a keyboard focus ring; keyboard Tab/Arrow navigation retains a visible focus outline."
+      "The fixed Cancel/Start footer remains visible while the selector body scrolls. Pointer activation does not retain a keyboard focus ring; keyboard Tab/Arrow navigation retains a visible focus outline.",
+      "Desktop source-sized review likewise confirms complete scenario names, direct 1440p selection and visible 30 FPS state at 1440×900."
     ],
     "limitations": [
       "The captures are production Vue component mounts in an isolated Playwright fixture, not the authenticated full app or native capture picker.",
       "These are review captures, not approved pixel goldens. Physical device and screen-reader acceptance remain open under #301 and #303.",
       "The current checkpoint uses [skip ci], so no new GitHub Actions artifact was created."
+    ]
+  },
+  "desktop_dialog_source_review_follow_up": {
+    "date": "2026-10-11",
+    "source_revision": "a89ef57d",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "evidence": "evidence/qa/qa298-dialogs-2026-10-10.json#visual_comparisons",
+    "reviewed_catalog_slots": ["D12", "D13", "D14"],
+    "visual_matrix_inventory_test": "10/10 PASS",
+    "observations": [
+      "D12 preserves a readable title/helper/field hierarchy and aligned footer actions in the source-sized after capture.",
+      "D13 keeps channel type, name, category and audience guidance readable; the synthetic category/channel list differs from the source state.",
+      "D14 corrects clipped title/consequence copy and overlapping actions: the current dialog names the channel, explains impact, and separates safe Cancel from the danger action. Automated explicit-confirm/cancel checks pass."
+    ],
+    "limitations": [
+      "The comparisons use local 2880x1800 screenshots and are review evidence, not approved pixel goldens.",
+      "The D13 synthetic category/channel state differs from the archived source.",
+      "These three desktop dialogs do not complete the 41-slot after-capture catalog or physical acceptance."
     ]
   }
 }
