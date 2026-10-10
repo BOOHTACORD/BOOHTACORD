@@ -184,4 +184,32 @@ describe('UIUX-2026 visual regression inventory', () => {
       reviewNote: expect.stringContaining('focus'),
     })
   })
+
+  it('records visually reviewed full-stack DM captures without approving pixel goldens', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const evidence = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa294-dm-live-full-app-2026-10-10.json'), 'utf8'))
+    const expectedReviews = [
+      { id: 'D04', note: 'synthetic account and message data' },
+      { id: 'M04', note: 'one synthetic account while the source lists six users' },
+      { id: 'M05', note: 'synthetic account header' },
+      { id: 'M06', note: 'sixth reaction wraps to a second row' },
+      { id: 'M07', note: 'keyboard focus ring' },
+    ]
+    const captures = evidence.current_branch_revalidation.source_matched_captures
+
+    for (const review of expectedReviews) {
+      const screen = matrix.screens.find(({ id }) => id === review.id)!
+      const capture = captures.find(({ catalog_slot }: { catalog_slot: string }) => catalog_slot === review.id)!
+
+      expect(screen.sourceComparisonStatus, `${review.id} matrix review`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(screen.expectedOrException.toLowerCase(), `${review.id} observation`).toContain(review.note)
+      expect(capture.review_status, `${review.id} capture review`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(capture.source.raster).toBe(capture.after.raster)
+      expect(capture.source.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(capture.after.sha256).toMatch(/^[a-f0-9]{64}$/)
+    }
+
+    expect(evidence.current_branch_revalidation.limitation).toContain('D04 and M04–M07 were visually reviewed')
+    expect(evidence.current_branch_revalidation.limitation).not.toContain('were not visually re-reviewed')
+  })
 })

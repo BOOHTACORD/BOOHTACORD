@@ -76,13 +76,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Compose and search within a DM, open a result in its original context, and return.",
-      "expectedOrException": "Existing draft/search state and protected content boundaries remain intact; pixel comparison is not run.",
+      "expectedOrException": "Production desktop DM layout matches the source structure; the QA capture uses synthetic account and message data. Reviewed capture is not an approved pixel golden.",
       "owner": "clients/web/src/direct_message/DirectMessageConversation.vue; clients/web/src/conversation/use_saved_composer.ts",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D05",
@@ -443,13 +444,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open DM navigation, select a person, and return to the conversation list.",
-      "expectedOrException": "The active context is identified and navigable; compare against the missing audit image before visual acceptance.",
+      "expectedOrException": "Production drawer/list structure matches; the QA image has one synthetic account while the source lists six users and omits the chat/voice status block. Reviewed capture is not an approved pixel golden.",
       "owner": "clients/web/src/direct_message/DirectMessageNavigation.vue",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M05",
@@ -463,13 +465,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open an empty DM and use the visible start-message action while keeping the composer available.",
-      "expectedOrException": "Empty is not confused with loading and a next action is visible; audit before/after comparison pending.",
+      "expectedOrException": "Production empty-state and composer structure match; the QA image has a synthetic account header and a mobile search affordance absent from the source. Reviewed capture is not an approved pixel golden.",
       "owner": "clients/web/src/direct_message/DirectMessageConversation.vue",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M06",
@@ -483,13 +486,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Switch DM, compose, return from search, then switch away and back.",
-      "expectedOrException": "Per-conversation draft, search query, and result context are retained; physical IME acceptance remains separate.",
+      "expectedOrException": "Per-conversation draft, search query, and result context are retained. The QA image uses one synthetic message; its sixth reaction wraps to a second row at 393x852 without observed overlap. Reviewed capture is not an approved pixel golden; physical IME acceptance remains separate.",
       "owner": "clients/web/src/direct_message/DirectMessageConversation.vue; clients/web/src/conversation/use_saved_composer.ts",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M07",

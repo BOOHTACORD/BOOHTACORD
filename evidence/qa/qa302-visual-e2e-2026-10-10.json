@@ -1301,5 +1301,24 @@
       "Captures are review evidence, not owner-approved pixel goldens; the source archive D11 entry remains a duplicate.",
       "The requested [skip ci] means this current checkpoint has local captures only and no new GitHub Actions artifact bundle."
     ]
+  },
+  "current_branch_dm_source_review_follow_up": {
+    "date": "2026-10-11",
+    "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "evidence": "evidence/qa/qa294-dm-live-full-app-2026-10-10.json#current_branch_revalidation",
+    "reviewed_catalog_slots": ["D04", "M04", "M05", "M06", "M07"],
+    "observations": [
+      "D04 and M04 use synthetic account/message data; the DM conversation/list structure is comparable to the source.",
+      "M04 adds a chat/voice/member status block not present in the source, which lists six users while the QA capture lists one synthetic user.",
+      "M05 keeps the empty state and composer structure; the synthetic account header and mobile search affordance differ.",
+      "M06 uses one synthetic message; its sixth reaction wraps to a second row at 393x852 with no observed overlap.",
+      "M07 matches the global search panel and filters; the QA capture shows a query focus ring absent from the source."
+    ],
+    "limitations": [
+      "The current-branch DM comparisons are review captures, not approved pixel goldens.",
+      "The remaining visual catalog entries and duplicate D11 source are still unresolved.",
+      "The requested [skip ci] means no new Actions artifact was created."
+    ]
   }
 }

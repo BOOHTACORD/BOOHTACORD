@@ -4,7 +4,7 @@
   "issue": "https://github.com/Egkurilov/BOOHTACORD/issues/294",
   "source_revision": "5fc326680652ec7a97b4334f8b326857e5f6f11a",
   "working_tree_changes": true,
-  "working_tree_change_note": "The full-app lifecycle scenario now captures the DM flow and the actual global WorkspaceSearchPanel against the disposable Go API/PostgreSQL/Tempo stack. The amended M07 source mapping and screenshots were reviewed on 2026-10-11. No product, API, ACL, or database contract changed. Revalidated on 2026-10-11 at source revision 5fc326680652ec7a97b4334f8b326857e5f6f11a; all five matched pairs and supplemental screenshot hashes now point to these captures.",
+  "working_tree_change_note": "The full-app lifecycle scenario captures the DM flow and actual global WorkspaceSearchPanel against disposable Go API/PostgreSQL/Tempo. On 2026-10-11, the current-branch D04 and M04–M07 source-sized pairs were visually reviewed; synthetic account/message differences, the M06 reaction wrap and M07 focus ring are recorded in the visual matrix. The capture refresh is source revision ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc. No product, API, ACL, or database contract changed.",
   "environment": {
     "client": "Production Vite build served by the disposable client-lifecycle harness",
     "api": "Go API and PostgreSQL in an owned disposable Docker stack",
@@ -284,7 +284,7 @@
   "current_branch_revalidation": {
     "date": "2026-10-11",
     "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc",
-    "status": "PASS_CAPTURE_ONLY",
+    "status": "PASS_CAPTURE_AND_VISUAL_REVIEW_ONLY",
     "runner": "python3 -m tools.qa.client_lifecycle.run --width 393; python3 -m tools.qa.client_lifecycle.run --width 1440",
     "report_sha256": {
       "393": "f1d1353c2c03b3945a4a709988a014a8c87a230d7abfacfa30c51e94cb661942",
@@ -310,7 +310,7 @@
           "raster": "1179x2556",
           "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc"
         },
-        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
       },
       {
         "catalog_slot": "M05",
@@ -325,7 +325,7 @@
           "raster": "1179x2556",
           "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc"
         },
-        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
       },
       {
         "catalog_slot": "M06",
@@ -340,7 +340,7 @@
           "raster": "1179x2556",
           "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc"
         },
-        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
       },
       {
         "catalog_slot": "M07",
@@ -355,7 +355,7 @@
           "raster": "1179x2556",
           "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc"
         },
-        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
       },
       {
         "catalog_slot": "D04",
@@ -370,9 +370,9 @@
           "raster": "2880x1800",
           "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc"
         },
-        "review_status": "CAPTURE_REFRESHED_NOT_VISUALLY_REVIEWED"
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
       }
     ],
-    "limitation": "This refresh binds the after images to the current screen-share PR source revision; these five refreshed captures were not visually re-reviewed, do not approve pixel goldens, and do not replace Flutter or physical mobile acceptance."
+    "limitation": "D04 and M04–M07 were visually reviewed at matching source raster dimensions. The captures are review-only, not approved pixel goldens, and do not replace Flutter or physical mobile acceptance."
   }
 }
