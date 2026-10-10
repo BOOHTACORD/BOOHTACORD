@@ -10,6 +10,10 @@ test('scenario names stay readable and selecting 1440p chooses the supported tex
   const dialog = page.getByRole('dialog')
   await expect(dialog).toBeVisible()
   await expect(dialog.getByRole('heading', { name: 'Демонстрация экрана' })).toBeVisible()
+  for (const actionName of ['Закрыть', 'Отмена', 'Начать трансляцию']) {
+    await expect(dialog.getByRole('button', { name: actionName, exact: true })).toBeVisible()
+  }
+  await expect(dialog.getByRole('button', { name: 'Закрыть', exact: true })).toHaveAttribute('aria-label', 'Закрыть')
   const scenarios = page.locator('.screen-share-quality__scenario-option')
   await expect(scenarios).toHaveCount(2)
   await expect(page.getByRole('heading', { name: 'Качество изображения' })).toBeVisible()

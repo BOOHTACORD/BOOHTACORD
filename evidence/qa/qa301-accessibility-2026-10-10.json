@@ -66,6 +66,20 @@
       },
       "test_stability_note": "The test explicitly initializes VAD and microphone state so prior workspace tests cannot leave it in push-to-talk mode.",
       "limitation": "Flutter widget semantics are not physical TalkBack, VoiceOver or Narrator acceptance."
+    },
+    {
+      "name": "Screen-share dialog accessible action names and quality controls",
+      "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
+      "result": "PASS_AUTOMATED_ONLY",
+      "tests_passed": 2,
+      "browser": "Google Chrome 154.0.8037.98",
+      "assertions": [
+        "The close icon button has the accessible name Закрыть; cancel and start actions expose their visible names.",
+        "Scenario and resolution/FPS radio options are discoverable by role and accessible name, including 1440p and 30 FPS.",
+        "The scoped dialog axe scan reports no WCAG 2.2 AA violations."
+      ],
+      "limitation": "Fixture-based browser automation only; this does not replace screen-reader traversal on physical Web or Flutter devices.",
+      "test_source_sha256": "0db752211a3af9e7cc569013c5081968e9a0571e957b8c44ad95218b645c5866"
     }
   ],
   "contrast": {
@@ -222,5 +236,14 @@
         "This is not native Safari app, physical device or screen-reader acceptance."
       ]
     }
+  },
+  "screen_share_quality_dialog_follow_up": {
+    "date": "2026-10-11",
+    "source_revision": "ff01a652e4a85d13943003289f997c3f234872f0",
+    "test_file": "clients/web/tests/screen_profile/quality_dialog.browser.spec.ts",
+    "test_source_sha256": "0db752211a3af9e7cc569013c5081968e9a0571e957b8c44ad95218b645c5866",
+    "result": "2/2 PASS_AUTOMATED_ONLY",
+    "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
+    "limitation": "Fixture-based browser automation only; this does not replace screen-reader traversal on physical Web or Flutter devices."
   }
 }

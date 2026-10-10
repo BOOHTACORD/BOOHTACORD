@@ -88,10 +88,10 @@
     },
     {
       "id": "stream",
-      "controlsAndActions": ["screen-share source selection", "recommended/advanced profile controls", "start/cancel actions", "permission and unsupported-source feedback", "dialog focus and reduced motion"],
+      "controlsAndActions": ["screen-share source selection", "recommended/advanced profile controls", "start/cancel actions", "permission and unsupported-source feedback", "dialog focus and reduced motion", "scenario names, resolution/FPS radio labels, 1440p-to-text-profile transition, named close/cancel/start actions"],
       "web": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/tests/screen_profile/encoding.browser.spec.ts"],
+        "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/tests/screen_profile/encoding.browser.spec.ts", "clients/web/tests/screen_profile/quality_dialog.browser.spec.ts"],
         "manualAssistiveTech": "NOT_RUN"
       },
       "flutter": {

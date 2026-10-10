@@ -36,7 +36,8 @@
         "Keyboard ArrowRight from 1080p selects 1440p and switches to the supported text profile.",
         "Header and actions stay in view while the settings body scrolls.",
         "At 390x640, scrolling to the scenario selector places both scenario cards and their full helper labels in the visible dialog viewport.",
-        "At 637x584, both scenario cards with labels, the 1440p option and the 30 FPS option are simultaneously within the visible dialog viewport after scrolling to the selector."
+        "At 637x584, both scenario cards with labels, the 1440p option and the 30 FPS option are simultaneously within the visible dialog viewport after scrolling to the selector.",
+        "The close icon action exposes the accessible name Закрыть; Cancel and Start retain their visible accessible names."
       ],
       "capture": {
         "path": ".out/accessibility-browser-results/accessibility.browser-scre-e6862-llow-the-1440p-text-profile/screen-share-selector-layout-637x584.png",
@@ -134,7 +135,7 @@
     "mobile_scenario_visibility_follow_up": {
       "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
       "result": "2/2 PASS",
-      "test_source_sha256": "34acac1371a4e0c628bc67440b6b290101e49a8f2aad00b7f620bdf3d361bfeb",
+      "test_source_sha256": "0db752211a3af9e7cc569013c5081968e9a0571e957b8c44ad95218b645c5866",
       "additional_captures": [
         {
           "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",

@@ -12,7 +12,7 @@ Scope: GitHub [#301](https://github.com/Egkurilov/BOOHTACORD/issues/301), key in
 | Settings | Linked profile tabs; form labels/save feedback; session confirmations; unsaved-change guard | Profile settings and shared semantic theme | Focused form, tab and widget checks pass; native audio/device settings remain outside this slice. |
 | Dialogs | Named modal, Cancel-first focus, keyboard containment, Escape, focus return, stale-target dismissal | Dialog semantics, Cancel-first Enter, Escape/Back, modal barrier and IME layout | Focused browser and widget cases pass; assistive-technology announcement review not run. |
 | Voice | Prejoin/device actions, join, connected/reconnecting/ended status, shortcuts and timeout feedback | Prejoin status, connection badge and shortcut preferences | Web smoke passes; Flutter widget coverage is partial. No live-media screen-reader task was performed. |
-| Stream setup | Source/profile controls, start/cancel, failure feedback, focus and reduced motion | Setup actions, capability/profile labels, responsive dialog geometry | Scoped automated checks pass; native picker and assistive-technology acceptance not run. |
+| Stream setup | Scenario, resolution/FPS radio names, 1440p supported-profile transition, named close/cancel/start actions, failure feedback and reduced motion | Setup actions, capability/profile labels, responsive dialog geometry | Scoped browser/widget checks pass; native picker and assistive-technology acceptance not run. |
 
 The individual paths, control lists and per-client status live in the JSON inventory. This document separates automated evidence from manual acceptance so a passing axe/widget run is never presented as a physical screen-reader result.
 
