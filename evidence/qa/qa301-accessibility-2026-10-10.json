@@ -149,6 +149,24 @@
         "Joining, closed admission and a BANNED disconnect expose both actions as disabled."
       ],
       "limitation": "Flutter widget semantics only; physical keyboard traversal and spoken assistive-technology acceptance remain NOT_RUN."
+    },
+    {
+      "name": "Flutter audio-device picker keyboard semantics",
+      "command": "cd clients/flutter && flutter test --no-pub test/audio_device_dropdown_test.dart",
+      "result": "PASS",
+      "tests_passed": 2,
+      "test_source_sha256": "2bc09fb4f65f52ec03b9b307299c3bb363c3c79d9a42822b9d2fcbcf1d2d00af",
+      "test_source_commit": "309211a7e767322ba63c1e3f145a9051fe4e59c4",
+      "analyzer": {
+        "command": "cd clients/flutter && flutter analyze --no-pub test/audio_device_dropdown_test.dart",
+        "result": "PASS",
+        "observation": "No issues found."
+      },
+      "assertions": [
+        "The selected microphone label remains present in the dropdown semantics; the picker exposes button role, expanded state and tap action.",
+        "Starting from the preceding control, Tab reaches the picker, Space opens it, Tab moves to the next device and Space selects that device."
+      ],
+      "limitation": "Flutter widget keyboard/semantics evidence only; native screen-reader and physical keyboard acceptance remain NOT_RUN."
     }
   ],
   "contrast": {
