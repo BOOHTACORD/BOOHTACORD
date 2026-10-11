@@ -94,6 +94,25 @@
         "Selector labels fit their measured regions and the dialog axe scan reports no WCAG 2.2 AA violations."
       ],
       "revision": "fd844b3c"
+    },
+    {
+      "name": "Flutter voice disconnected/error status semantics",
+      "command": "cd clients/flutter && flutter test --no-pub test/voice_connection_badge_test.dart",
+      "result": "PASS_AUTOMATED_ONLY",
+      "tests_passed": 6,
+      "revision": "797a9788",
+      "test_source_sha256": "4d5717db02c51ab88460bade29de63e514f4fd1c02b8099d9c9fa4584e71cfb1",
+      "analyzer": {
+        "command": "cd clients/flutter && flutter analyze --no-pub test/voice_connection_badge_test.dart",
+        "result": "PASS",
+        "observation": "No issues found."
+      },
+      "assertions": [
+        "Disconnected and error states expose distinct localized visible labels and live-region announcements.",
+        "Disconnected and error states hide connection-quality and ping values even when stale excellent/42 ms values are supplied.",
+        "Existing cases cover connecting, connected, reconnecting and leaving status announcements."
+      ],
+      "limitation": "Flutter semantics-tree evidence only; physical TalkBack, VoiceOver and Narrator traversal remains NOT_RUN."
     }
   ],
   "contrast": {

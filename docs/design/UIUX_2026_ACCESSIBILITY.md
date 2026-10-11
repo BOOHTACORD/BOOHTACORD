@@ -11,10 +11,12 @@ Scope: GitHub [#301](https://github.com/Egkurilov/BOOHTACORD/issues/301), key in
 | Admin | Seven tabs; member search/role/status/reset; role/topology review; audit/readiness/media status | Seven sections; member/audit/role controls; live-region and focus behavior | Flutter regression checks all seven compact tab labels, tab roles and selected states; focused Web/Flutter admin and responsive-state suites pass. Full rendered-state and screen-reader coverage remains partial. |
 | Settings | Linked profile tabs; form labels/save feedback; session confirmations; unsaved-change guard | Profile settings and shared semantic theme | Focused form, tab and widget checks pass; native audio/device settings remain outside this slice. |
 | Dialogs | Named modal, Cancel-first focus, keyboard containment, Escape, focus return, stale-target dismissal | Dialog semantics, Cancel-first Enter, Escape/Back, modal barrier and IME layout | Focused browser and widget cases pass; assistive-technology announcement review not run. |
-| Voice | Prejoin/device actions, join, connected/reconnecting/ended status, shortcuts and timeout feedback | Prejoin status, connection badge and shortcut preferences | Web smoke passes; Flutter widget coverage is partial. No live-media screen-reader task was performed. |
+| Voice | Prejoin/device actions, join, connected/reconnecting/ended status, shortcuts and timeout feedback | Prejoin status, connected dock actions, connection badge states, retry and shortcut feedback | Scoped Web/Flutter widget coverage passes; Flutter's broader screen-reader review remains partial. No physical keyboard or live-media screen-reader task was performed. |
 | Stream setup | Scenario, resolution/FPS radio names, 1440p supported-profile transition, named close/cancel/start actions, failure feedback and reduced motion | Setup actions, capability/profile labels, responsive dialog geometry | Scoped browser/widget checks pass; native picker and assistive-technology acceptance not run. |
 
 The individual paths, control lists and per-client status live in the JSON inventory. This document separates automated evidence from manual acceptance so a passing axe/widget run is never presented as a physical screen-reader result.
+
+Flutter's voice badge regression checks every connection status. Disconnected and error announce distinct live-region labels and hide connection quality/ping values, even if stale measurements are supplied. This is semantics-tree evidence; physical TalkBack/VoiceOver traversal remains `NOT_RUN`.
 
 ## Contrast and target size
 
