@@ -680,5 +680,41 @@
       "This measurement does not replace manual VoiceOver/NVDA/TalkBack/Narrator acceptance.",
       "Captures are local and review-only; no pixel golden is approved."
     ]
+  },
+  "web_keyboard_visible_focus_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_FIXTURE_ONLY",
+    "tested_source_revision": "ec410bf7548a664fc824ade27fb959f656f47fda plus the focused regression update",
+    "test_file": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+    "test_name": "WCAG keyboard smoke covers visible navigation focus, focus trap and restoration",
+    "test_source_sha256": "4edd47b2b7a68a6c599d854bdf02ad2dd71f01e1c81459c8a8bcd8acada01a27",
+    "commands": [
+      "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npx playwright test -c tests/accessibility/playwright.config.ts --grep 'WCAG keyboard smoke covers visible navigation focus, focus trap and restoration'",
+      "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:accessibility"
+    ],
+    "browser": "Google Chrome 154.0.8037.98",
+    "results": {
+      "focused_case": "1/1 PASS",
+      "accessibility_browser_suite": "54/54 PASS",
+      "conversation_action_disclosure_axe_case": "1/1 PASS"
+    },
+    "viewport": "390x844 CSS px",
+    "assertions": [
+      "Enter opens the navigation drawer and focuses the channel-selection control.",
+      "The focused control matches :focus-visible and has a solid purple outline at least 2 CSS px wide.",
+      "Tab remains within the one-control navigation fixture; Escape closes it and restores focus to its opener.",
+      "The .app-frame axe scan is clear."
+    ],
+    "capture": {
+      "path": ".out/accessibility-browser-results/accessibility.browser-WCAG-abd6b--focus-trap-and-restoration/navigation-keyboard-focus-visible.png",
+      "sha256": "2dd569bbd940b6d4a38b1d71ca751a22a3c29221657bafbd559b301bf657c4e0",
+      "raster": "390x844",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": [
+      "This uses the responsive shell focus fixture with production CSS and drawer behavior, not the authenticated full application.",
+      "Automated keyboard evidence does not replace a manual screen-reader task; VoiceOver, NVDA, TalkBack and Narrator remain NOT_RUN.",
+      "The screenshot is local and ignored; it is not uploaded or an approved visual golden."
+    ]
   }
 }

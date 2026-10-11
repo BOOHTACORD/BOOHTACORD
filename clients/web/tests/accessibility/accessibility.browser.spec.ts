@@ -29,18 +29,34 @@ test('WCAG smoke covers navigation, search and connected voice dock', async ({ p
   await expectAxeClear(page, '#app')
 })
 
-test('WCAG keyboard smoke covers navigation focus trap and restoration', async ({ page }) => {
+test('WCAG keyboard smoke covers visible navigation focus, focus trap and restoration', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/tests/responsive_shell/focus_fixture.html')
   const trigger = page.getByRole('button', { name: 'Открыть навигацию' })
   const selection = page.getByRole('button', { name: 'Выбрать канал' })
-  await trigger.click()
-  await expect(page.getByRole('dialog', { name: 'Навигация по каналам' })).toBeVisible()
+  await trigger.press('Enter')
+  const dialog = page.getByRole('dialog', { name: 'Навигация по каналам' })
+  await expect(dialog).toBeVisible()
   await expect(selection).toBeFocused()
+  const focusStyle = await selection.evaluate((element) => {
+    const style = getComputedStyle(element)
+    return {
+      focusVisible: element.matches(':focus-visible'),
+      outlineStyle: style.outlineStyle,
+      outlineWidth: style.outlineWidth,
+      outlineColor: style.outlineColor,
+    }
+  })
+  expect(focusStyle.focusVisible).toBe(true)
+  expect(focusStyle.outlineStyle).toBe('solid')
+  expect(Number.parseFloat(focusStyle.outlineWidth)).toBeGreaterThanOrEqual(2)
+  expect(focusStyle.outlineColor).toBe('rgb(180, 164, 255)')
+  await page.screenshot({ path: testInfo.outputPath('navigation-keyboard-focus-visible.png') })
   await expectAxeClear(page, '.app-frame')
   await page.keyboard.press('Tab')
   await expect(selection).toBeFocused()
   await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
   await expect(trigger).toBeFocused()
 })
 

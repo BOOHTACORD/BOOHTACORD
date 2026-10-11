@@ -319,7 +319,12 @@
     "ios_device_or_simulator_available": false,
     "windows_device_or_vm_available": false,
     "task_interaction_performed": false,
-    "note": "No Android application interaction was performed during this inventory; emulator availability does not count as physical acceptance."
+    "note": "No Android application interaction was performed during this inventory; emulator availability does not count as physical acceptance.",
+    "user_confirmation": {
+      "date": "2026-10-11",
+      "statement": "The Android emulator is the only available Android test device; no physical Android phone is available.",
+      "acceptance_effect": "Physical Android acceptance remains NOT_RUN. Emulator scenarios remain partial and do not satisfy physical-device acceptance."
+    }
   },
   "macos_lock_recheck_2026_10_11": {
     "date": "2026-10-11",
