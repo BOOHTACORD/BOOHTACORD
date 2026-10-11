@@ -147,7 +147,7 @@
                 290
               ],
               "meanAbsoluteRgbChange": 0.379,
-              "pixelsChangedOverThresholdPercent": 0.0
+              "pixelsChangedOverThresholdPercent": 0
             }
           ]
         },
@@ -1679,6 +1679,34 @@
     "limitations": [
       "This regression guards the traceability map; it does not approve pixel goldens or change the source archive.",
       "The source archive entry for D11 remains byte-identical to desktop-guild-members.png until the supplied source is corrected or a release owner approves a replacement baseline."
+    ]
+  },
+  "ci_artifact_run_after_master_merge": {
+    "date": "2026-10-11",
+    "status": "PASS_CI_ARTIFACT_ON_CURRENT_MASTER",
+    "workflow": "build-server.yaml",
+    "run_id": 38145265870,
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38145265870#artifacts",
+    "branch": "master",
+    "commit_sha": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "conclusion": "success",
+    "web_job": {
+      "result": "success",
+      "test_files_passed": 466,
+      "tests_passed": 1487
+    },
+    "artifact": {
+      "id": 11704337586,
+      "name": "ux-responsive-shell-9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+      "size_in_bytes": 207479,
+      "digest": "sha256:2d99b3a73a7f1e6e1e9488ec06305e9b9474fdc83294e67e52580bb583e439a5",
+      "created_at": "2026-10-11T14:06:51Z",
+      "expires_at": "2026-11-10T14:06:51Z"
+    },
+    "provenance": "This artifact belongs to the successful GitHub Actions run for the merged master commit. It is separate from earlier [skip ci] checkpoints, which produced no run.",
+    "limitations": [
+      "This artifact proves the current-master Web CI regression job and its responsive-shell capture output; it does not approve screenshot goldens or satisfy physical platform acceptance.",
+      "The previous report about the 189602da [skip ci] checkpoint having no artifact remains historically accurate."
     ]
   }
 }
