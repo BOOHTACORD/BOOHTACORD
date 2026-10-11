@@ -14,7 +14,8 @@ async function captureAtTwoX(page, directory, file, report) {
 }
 
 export async function guild(a, b, guest, password, report, directory, expectedMemberCount = 20) {
-  const target = await seedAdminReferenceTopology(a)
+  const topology = await seedAdminReferenceTopology(a)
+  const target = topology.welcome
   await channel(b, 'Text')
   await expect(b.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   const channelHash = `#workspace/channel/${encodeURIComponent(target.id)}`
@@ -111,5 +112,6 @@ export async function guild(a, b, guest, password, report, directory, expectedMe
   await b.screenshot({ path: directory+'/welcome-b.png' })
   report.welcome = { two_live_clients: true, reconnect_single: true, retry_no_duplicate: true }
   const currentProfile = (await api(a, '/guild-profile')).body
-  return { channelId: target.id, accountId: registered.body.id, message: rows[0], revision: currentProfile.revision }
+  return { channelId: target.id, logChannelId: topology.log.id, accountId: registered.body.id,
+    message: rows[0], revision: currentProfile.revision }
 }

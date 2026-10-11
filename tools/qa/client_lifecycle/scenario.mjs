@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { randomUUID } from 'node:crypto'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { api, channel, chromium, expect, login, openNavigation, origin, status } from './request.mjs'
 import { guild } from './guild.mjs'
@@ -77,6 +78,38 @@ try {
     await expect(messageActionButtons).toHaveCSS('pointer-events', 'none')
   }
   report.catalog_message_actions = { open: true, close: true, pointer: input.viewport.has_touch ? 'touch' : 'mouse' }
+
+  await channel(guest, 'Voice')
+  await expect(guest.getByRole('heading', { name: 'Вы не подключены', exact: true })).toBeVisible()
+  await expect(guest.getByRole('button', { name: 'Подключиться к голосу', exact: true })).toBeVisible()
+  await expect(guest.getByRole('button', { name: 'Подключиться без микрофона', exact: true })).toBeVisible()
+  await guest.screenshot({ path: input.directory+'/voice-prejoin.png' })
+  report.catalog_voice_prejoin = { channel_selected: true, connection_not_started: true, join_modes_visible: true }
+
+  const logMessages = [
+    'Synthetic UIUX log sample: first readable entry.',
+    'Synthetic UIUX log sample: labels, timestamps and actions.',
+    'Synthetic UIUX log sample: wrapping at narrow viewports.',
+  ]
+  for (const body of logMessages) {
+    status(await api(a, `/channels/${value.logChannelId}/messages`, 'POST', {
+      client_message_id: randomUUID(), body,
+    }), 201)
+  }
+  await channel(a, 'log')
+  const logHistory = a.getByRole('log', { name: 'История сообщений' })
+  await expect(logHistory).toContainText(logMessages[2])
+  const firstLogMessage = a.locator('.message-row').filter({ hasText: logMessages[0] }).first()
+  await expect(firstLogMessage).toBeVisible()
+  if (input.viewport.has_touch) {
+    await firstLogMessage.locator('.message-actions-toggle').tap()
+    await expect(firstLogMessage.locator('.message-actions')).toHaveClass(/is-open/)
+  } else {
+    await firstLogMessage.hover()
+  }
+  await expect(firstLogMessage.getByRole('button', { name: 'Удалить', exact: true })).toBeVisible()
+  await a.screenshot({ path: input.directory+'/channel-log.png' })
+  report.catalog_channel_log = { synthetic_messages_visible: true, source_channel: 'log', admin_delete_action_reachable: true }
 
   if (input.viewport.is_mobile) {
     const sidebar = guest.locator('.sidebar')

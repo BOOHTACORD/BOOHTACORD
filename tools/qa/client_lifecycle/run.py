@@ -46,12 +46,16 @@ def catalog_capture_plan(width):
             ('M01', 'navigation-overlay.png'),
             ('M02', 'channel-text.png'),
             ('M03', 'channel-text-actions.png'),
+            ('M22', 'voice-prejoin.png'),
+            ('M23', 'channel-log.png'),
         ]
     if width == 1440:
         return [
             ('D01', 'channel-text.png'),
             ('D02', 'channel-text-actions.png'),
             ('D03', 'dm-list.png'),
+            ('D15', 'voice-prejoin.png'),
+            ('D18', 'channel-log.png'),
         ]
     return []
 

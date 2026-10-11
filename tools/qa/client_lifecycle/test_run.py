@@ -53,6 +53,8 @@ class CatalogCapturePlanTests(unittest.TestCase):
             ('M01', 'navigation-overlay.png'),
             ('M02', 'channel-text.png'),
             ('M03', 'channel-text-actions.png'),
+            ('M22', 'voice-prejoin.png'),
+            ('M23', 'channel-log.png'),
         ])
 
     def test_desktop_plan_covers_channel_message_actions_and_dm_list(self):
@@ -60,6 +62,8 @@ class CatalogCapturePlanTests(unittest.TestCase):
             ('D01', 'channel-text.png'),
             ('D02', 'channel-text-actions.png'),
             ('D03', 'dm-list.png'),
+            ('D15', 'voice-prejoin.png'),
+            ('D18', 'channel-log.png'),
         ])
 
     def test_non_catalog_viewports_do_not_claim_source_sized_captures(self):

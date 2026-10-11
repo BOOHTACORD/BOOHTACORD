@@ -77,7 +77,7 @@ type VisualMatrix = {
     captures: Array<{
       catalogSlot: string
       source: { path: string; sha256: string; raster: string }
-      after: { path: string; sha256: string; raster: string }
+      after: { path: string; sha256: string; raster: string; source_revision?: string }
       reviewNote: string
     }>
   }
@@ -355,7 +355,7 @@ describe('UIUX-2026 visual regression inventory', () => {
     const evidence = matrix.fullAppInteractionReviewEvidence
     const report = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa302-visual-e2e-2026-10-10.json'), 'utf8'))
       .full_app_interaction_source_review
-    const expectedSlots = ['D01', 'D02', 'D03', 'M01', 'M02', 'M03']
+    const expectedSlots = ['D01', 'D02', 'D03', 'D15', 'D18', 'M01', 'M02', 'M03', 'M22', 'M23']
 
     expect(evidence).toMatchObject({
       status: 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN',
@@ -369,6 +369,8 @@ describe('UIUX-2026 visual regression inventory', () => {
     expect(report.telemetry).toBe('PASS')
     expect(report.persisted_after_api_restart).toBe(true)
     expect(report.owned_resources_removed).toBe(true)
+    expect(evidence.captures).toHaveLength(expectedSlots.length)
+    expect(report.captures).toHaveLength(expectedSlots.length)
 
     for (const screenId of expectedSlots) {
       const screen = matrix.screens.find(({ id }) => id === screenId)!
@@ -380,12 +382,19 @@ describe('UIUX-2026 visual regression inventory', () => {
       expect(capture.source.sha256).toMatch(/^[a-f0-9]{64}$/)
       expect(capture.after.sha256).toMatch(/^[a-f0-9]{64}$/)
       expect(capture.source.raster).toBe(capture.after.raster)
+      expect(capture.after.source_revision).toBe(evidence.sourceRevision)
       expect(capture.reviewNote.length).toBeGreaterThan(20)
       expect(reportCapture.review_status).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
       expect(reportCapture.source.sha256).toBe(capture.source.sha256)
       expect(reportCapture.after.sha256).toBe(capture.after.sha256)
       expect(reportCapture.after.raster).toBe(capture.after.raster)
+      expect(reportCapture.after.source_revision).toBe(evidence.sourceRevision)
     }
+    expect(evidence.captures.find(({ catalogSlot }) => catalogSlot === 'D15')?.reviewNote).toContain('LiveKit')
+    expect(evidence.captures.find(({ catalogSlot }) => catalogSlot === 'M22')?.reviewNote).toContain('retry')
+    expect(evidence.captures.find(({ catalogSlot }) => catalogSlot === 'D18')?.reviewNote).toContain('synthetic messages')
+    expect(evidence.captures.find(({ catalogSlot }) => catalogSlot === 'M23')?.reviewNote).toContain('touch')
     expect(report.limitations.join(' ')).toContain('no owner-approved pixel golden')
+    expect(report.limitations.join(' ')).toContain('omits LiveKit')
   })
 })

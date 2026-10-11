@@ -307,16 +307,17 @@
         "width": 1440,
         "height": 900
       },
-      "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Review voice prejoin states and keyboard navigation of join controls.",
-      "expectedOrException": "Idle, pending, permission, connected, and reconnect states remain distinguishable; real LiveKit acceptance is separate.",
+      "expectedOrException": "The Voice header, idle prejoin card, and both join choices are visible at 1440x900. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; structural review only.",
       "owner": "clients/web/src/voice/VoicePrejoin.vue; clients/web/src/voice/VoiceRoomControls.vue",
       "flutterTestFile": "clients/flutter/test/features/voice/prejoin/header_status_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D16",
@@ -369,16 +370,17 @@
         "width": 1440,
         "height": 900
       },
-      "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "testFile": "clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Open the log channel and inspect grouped message rows, mentions, timestamps, and destructive action controls.",
-      "expectedOrException": "Log content remains readable at the source desktop viewport; destructive actions require confirmation and are reachable without hover.",
+      "expectedOrException": "The log channel, message history, composer, and admin Reply/Edit/Delete actions are visible at 1440x900. Three synthetic messages replace the source mentions and historical author distribution; structural review only.",
       "owner": "clients/web/src/conversation/MessageItem.vue; clients/web/src/channel/ChannelNavigation.vue",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M01",
@@ -830,16 +832,17 @@
         "width": 393,
         "height": 852
       },
-      "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Inspect prejoin, join, no-microphone join, connected, reconnecting, and ended states.",
-      "expectedOrException": "Browser semantics smoke does not substitute for a live media call or Flutter platform acceptance.",
+      "expectedOrException": "The mobile Voice header, idle prejoin card, and both join choices are visible at 393x852. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; no voice call was started.",
       "owner": "clients/web/src/voice/VoicePrejoin.vue; clients/web/src/voice/VoiceRoomConnected.vue",
       "flutterTestFile": "clients/flutter/test/features/voice/prejoin/header_status_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M23",
@@ -850,16 +853,17 @@
         "width": 393,
         "height": 852
       },
-      "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "testFile": "clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Read log entries at phone width, inspect mention wrapping and reach message actions while scrolling.",
-      "expectedOrException": "Long mentions and action controls remain usable without horizontal overflow; browser touch emulation is not physical-device acceptance.",
+      "expectedOrException": "At 393x852 the log messages and composer remain readable, and touch opens the admin Reply/Edit/Delete action disclosure. Synthetic messages do not reproduce the source mentions or historical authors; browser touch emulation is not physical-device acceptance.",
       "owner": "clients/web/src/conversation/MessageItem.vue; clients/web/src/channel/ChannelNavigation.vue",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     }
   ],
   "sourceArchive": "artifacts/ui-ux-screenshots.zip",
@@ -980,15 +984,19 @@
   },
   "fullAppInteractionReviewEvidence": {
     "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
-    "sourceRevision": "8fd0bc9f9f46d4cbdf0ba1cc6eff6bf43ee5ec2c",
+    "sourceRevision": "8995730ebcd31c1259acbd75c2638adf871875bb",
     "report": "evidence/qa/qa302-visual-e2e-2026-10-10.json#full_app_interaction_source_review",
     "reviewedScreenIds": [
       "D01",
       "D02",
       "D03",
+      "D15",
+      "D18",
       "M01",
       "M02",
-      "M03"
+      "M03",
+      "M22",
+      "M23"
     ],
     "captures": [
       {
@@ -1000,8 +1008,9 @@
         },
         "after": {
           "path": ".out/client-lifecycle/1440/channel-text.png",
-          "sha256": "4658d1f5ca20801e9674ca98efe2cfe80bf0f69bf5f9be00fda1592ccef0ca06",
-          "raster": "2880x1800"
+          "sha256": "3836beb8189daf2f6454ad3c050c601df107f24cda309dddf062a16392edd939",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
         },
         "reviewNote": "The header, channel navigation, member rail, voice dock and composer are present. The source shows historic messages and an attachment; the current runtime capture uses synthetic messages, so this is structural review only."
       },
@@ -1014,8 +1023,9 @@
         },
         "after": {
           "path": ".out/client-lifecycle/1440/channel-text-actions.png",
-          "sha256": "e07fbd41436ea4cb13bd9c28135d92bda413d5b5956910ee3a4a52865434d66d",
-          "raster": "2880x1800"
+          "sha256": "e85f7886d798aa0babc9eb503fa9beef03908be3d586ef75cd96eb63e99c98c0",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
         },
         "reviewNote": "The pointer-hover capture exposes Reply and keeps the message row actions reachable. The synthetic member lacks edit/delete rights, so the source’s additional privileged actions are intentionally absent."
       },
@@ -1028,8 +1038,9 @@
         },
         "after": {
           "path": ".out/client-lifecycle/1440/dm-list.png",
-          "sha256": "5f93fb8a77c18819391a5c02677cddfc98d60fa63eff1935b715da430b04ee9a",
-          "raster": "2880x1800"
+          "sha256": "d479b1de8a4426c3d241e786cd37b5cf654751e995d3ef850b61fa39eb9e3bf8",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
         },
         "reviewNote": "Both images show the DM navigation beside an empty voice prejoin. The source lists several DM accounts; the runtime after image has one synthetic qa_admin account."
       },
@@ -1042,8 +1053,9 @@
         },
         "after": {
           "path": ".out/client-lifecycle/393/navigation-overlay.png",
-          "sha256": "4ee1a112e268a00b632813ede906306e1c4f1267e54957851a705a882e045e54",
-          "raster": "1179x2556"
+          "sha256": "36fd4803b6901fb3fb1dc3ca9e1d9d58ae00b5aa94904cd24bd81abd9638d05d",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
         },
         "reviewNote": "The drawer opens over the selected channel and closes from its close button. The runtime includes a connectivity summary absent from the source and one additional synthetic member, leaving fewer channel rows visible before scrolling."
       },
@@ -1056,8 +1068,9 @@
         },
         "after": {
           "path": ".out/client-lifecycle/393/channel-text.png",
-          "sha256": "e334918859a2627149915743b4ceb870352c757f64599d7b70a6163911137e9f",
-          "raster": "1179x2556"
+          "sha256": "4c9cddd8b6e6e3c424bd7835643bef3e286f407cdbd2cb3da86d8ae1e77c7b56",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
         },
         "reviewNote": "The selected channel, message history, member rail and composer remain visible. The runtime shows synthetic messages and an unread prompt, while the source shows older message and attachment content."
       },
@@ -1070,10 +1083,71 @@
         },
         "after": {
           "path": ".out/client-lifecycle/393/channel-text-actions.png",
-          "sha256": "4af5488eceab54919cd1862fca3a1d01516edd0ce777873d7b5750a9b18eb708",
-          "raster": "1179x2556"
+          "sha256": "730a32caa2dc7c3edda7837c9ba4bb375aa4bdb9b6537169152c8d430fab2d91",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
         },
         "reviewNote": "A touch tap opens the message action popover and the scenario closes it again. Only Reply is available because the synthetic member lacks edit/delete permission; this is not physical-device acceptance."
+      },
+      {
+        "catalogSlot": "D15",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-voice-room.png",
+          "sha256": "092542a95206b66e22c79bb3852284072416a2d3283270a77023dba156db529b",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/voice-prejoin.png",
+          "sha256": "8d94ab3543685be5cb00d6001e0691607dc1e433cc3aa4dc90791bb5db4d9823",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "The Voice header, idle prejoin card, and both join choices are visible at 1440x900. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; structural review only."
+      },
+      {
+        "catalogSlot": "D18",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-channel-log.png",
+          "sha256": "eac38402f17787224eb465fc67f3b266170c5b6a62ec7d12c15f709563bcb0cf",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/channel-log.png",
+          "sha256": "f20822b19eb8063de0fa141799ba675b809d5141377610d7e82cb91ca8453453",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "The log channel, message history, composer, and admin Reply/Edit/Delete actions are visible at 1440x900. Three synthetic messages replace the source mentions and historical author distribution; structural review only."
+      },
+      {
+        "catalogSlot": "M22",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-voice-room.png",
+          "sha256": "cb80e9851d105196369e1bf19a59c4bb29d2b951bf391034e2d26b9322351688",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/voice-prejoin.png",
+          "sha256": "45ef782d79b51defe839e2f524125fe544446b9794660c75c863dbd400109b7f",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "The mobile Voice header, idle prejoin card, and both join choices are visible at 393x852. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; no voice call was started."
+      },
+      {
+        "catalogSlot": "M23",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-channel-log.png",
+          "sha256": "23389c64c50e15d9c9e5be796e7d18c2fa68844254337aa18b1201dd57b4e775",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/channel-log.png",
+          "sha256": "08119dbe18e758d7d160954aee317f464ad188af4d2f97bc1aa7f9853ad04da5",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "At 393x852 the log messages and composer remain readable, and touch opens the admin Reply/Edit/Delete action disclosure. Synthetic messages do not reproduce the source mentions or historical authors; browser touch emulation is not physical-device acceptance."
       }
     ]
   }

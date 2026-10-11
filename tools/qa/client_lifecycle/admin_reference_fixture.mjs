@@ -18,7 +18,7 @@ export async function seedAdminReferenceTopology(admin) {
   await channel(admin, general, 'Voice', 'VOICE')
   await channel(admin, general, 'Голос', 'VOICE')
   const welcome = await channel(admin, general, 'Text', 'TEXT')
-  await channel(admin, general, 'log', 'TEXT')
+  const log = await channel(admin, general, 'log', 'TEXT')
 
   const test = await category(admin, 'TEST')
   await channel(admin, test, 'SHARE_TEST', 'VOICE')
@@ -27,7 +27,7 @@ export async function seedAdminReferenceTopology(admin) {
   for (const name of ['Канал №1', 'Канал №2', 'Канал №3']) {
     await channel(admin, voice, name, 'VOICE')
   }
-  return welcome
+  return { welcome, log }
 }
 
 export async function seedAdminAuditHistory(admin) {
