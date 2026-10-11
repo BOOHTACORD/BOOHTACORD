@@ -52,22 +52,28 @@ try {
   const value = await guild(a, b, guest, input.password, report, input.directory, expectedMemberCount)
   console.log('stage=reference-guild-journey-complete')
   await login(guest, 'qa_member', input.password)
+  console.log(`stage=qa-member-login:${input.viewport.width}`)
   await channel(guest, 'Text')
+  console.log('stage=qa-member-text-channel-selected')
   const channelHistory = guest.getByRole('log', { name: 'История сообщений' })
   await expect(channelHistory).toContainText('Synthetic UIUX channel sample: readable conversation text.')
+  console.log('stage=qa-member-message-history-visible')
   await guest.screenshot({ path: input.directory+'/channel-text.png' })
   const firstChannelMessage = guest.locator('.message-row')
     .filter({ hasText: 'Synthetic UIUX channel sample: readable conversation text.' }).first()
   await expect(firstChannelMessage).toBeVisible()
+  console.log('stage=qa-member-first-message-visible')
   const messageActionsToggle = firstChannelMessage.locator('.message-actions-toggle')
   const messageActionButtons = firstChannelMessage.locator('.message-action-buttons')
   if (input.viewport.has_touch) {
     await messageActionsToggle.tap()
     await expect(firstChannelMessage.locator('.message-actions')).toHaveClass(/is-open/)
+    console.log('stage=qa-member-message-actions-open-touch')
   } else {
     await firstChannelMessage.hover()
     await expect(firstChannelMessage.getByRole('button', { name: 'Ответить' })).toBeVisible()
     await expect(messageActionButtons).toHaveCSS('opacity', '1')
+    console.log('stage=qa-member-message-actions-open-mouse')
   }
   await guest.screenshot({ path: input.directory+'/channel-text-actions.png' })
   if (input.viewport.has_touch) {
@@ -79,6 +85,7 @@ try {
     await expect(messageActionButtons).toHaveCSS('pointer-events', 'none')
   }
   report.catalog_message_actions = { open: true, close: true, pointer: input.viewport.has_touch ? 'touch' : 'mouse' }
+  console.log('stage=qa-member-message-actions-complete')
 
   await channel(guest, 'Voice')
   await expect(guest.getByRole('heading', { name: 'Вы не подключены', exact: true })).toBeVisible()
@@ -86,6 +93,7 @@ try {
   await expect(guest.getByRole('button', { name: 'Подключиться без микрофона', exact: true })).toBeVisible()
   await guest.screenshot({ path: input.directory+'/voice-prejoin.png' })
   report.catalog_voice_prejoin = { channel_selected: true, connection_not_started: true, join_modes_visible: true }
+  console.log('stage=qa-member-voice-prejoin-complete')
 
   const logMessages = [
     'Synthetic UIUX log sample: first readable entry.',
@@ -111,6 +119,7 @@ try {
   await expect(firstLogMessage.getByRole('button', { name: 'Удалить', exact: true })).toBeVisible()
   await a.screenshot({ path: input.directory+'/channel-log.png' })
   report.catalog_channel_log = { synthetic_messages_visible: true, source_channel: 'log', admin_delete_action_reachable: true }
+  console.log('stage=qa-member-channel-log-complete')
 
   if (input.viewport.is_mobile) {
     const sidebar = guest.locator('.sidebar')
@@ -120,6 +129,7 @@ try {
     await guest.getByRole('button', { name: 'Закрыть навигацию', exact: true }).click()
     await expect(sidebar).not.toHaveClass(/is-open/)
     report.catalog_navigation_overlay = { opened_by_trigger: true, closed_by_button: true }
+    console.log('stage=qa-member-navigation-overlay-complete')
   }
 
   await openNavigation(guest)
@@ -131,6 +141,7 @@ try {
   await dmStarter.getByRole('button', { name: 'qa_admin', exact: true }).click()
   await expect(guest.getByRole('heading', { name: 'qa_admin', exact: true })).toBeVisible()
   await expect(guest.getByText('Сообщений пока нет.', { exact: true })).toBeVisible()
+  console.log('stage=qa-member-dm-empty-complete')
   await guest.screenshot({ path: input.directory+'/dm-empty-conversation.png' })
 
   if (input.viewport.is_mobile && !(await guest.locator('.sidebar').evaluate(element => element.classList.contains('is-open')))) {
@@ -145,6 +156,7 @@ try {
   await guest.getByRole('textbox', { name: 'Сообщение' }).fill(syntheticMessage)
   await guest.getByRole('button', { name: 'Отправить сообщение', exact: true }).click()
   await expect(guest.getByText(syntheticMessage, { exact: true })).toBeVisible()
+  console.log('stage=qa-member-dm-message-sent')
   await guest.screenshot({ path: input.directory+'/dm-conversation.png' })
 
   await guest.getByRole('button', { name: 'Найти сообщение', exact: true }).click()
@@ -162,6 +174,7 @@ try {
   await expect(dmSearch.getByRole('searchbox', { name: 'Запрос' })).toHaveValue(syntheticMessage)
   await expect(dmSearch.getByText(syntheticMessage, { exact: true })).toBeVisible()
   report.dm_full_app = { empty_conversation: true, list: true, sent_message: true, search: true, context_return_preserves_search: true }
+  console.log('stage=qa-member-dm-search-complete')
 
   await guest.screenshot({ path: input.directory+'/direct-message-header.png' })
   report.navigation_context = { ...report.navigation_context, direct_message_header: 'PASS' }
@@ -185,6 +198,7 @@ try {
   await globalResults.first().getByRole('button').click()
   await expect(guest.getByTestId('search-message-context')).toBeVisible()
   await guest.screenshot({ path: input.directory+'/global-search-result-context.png' })
+  console.log('stage=qa-member-global-search-complete')
   report.global_search_full_app = {
     panel: true,
     defaultGlobalScope: true,
