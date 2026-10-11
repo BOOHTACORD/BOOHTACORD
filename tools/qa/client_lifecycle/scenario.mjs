@@ -50,6 +50,7 @@ try {
   await guest.goto(origin)
   const expectedMemberCount = 20 + Number(Boolean(flowAccount))
   const value = await guild(a, b, guest, input.password, report, input.directory, expectedMemberCount)
+  console.log('stage=reference-guild-journey-complete')
   await login(guest, 'qa_member', input.password)
   await channel(guest, 'Text')
   const channelHistory = guest.getByRole('log', { name: 'История сообщений' })
