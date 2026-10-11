@@ -747,40 +747,46 @@ test('voice dock and audio settings icons expose keyboard names, focus and activ
   const deafenButton = page.getByRole('button', { name: 'Выключить удалённый звук' })
   const shareButton = page.locator('.voice-actions button').nth(2)
   const leaveButton = page.getByRole('button', { name: 'Выйти из голосового канала' })
+  const userAgent = await page.evaluate(() => navigator.userAgent)
+  const webkitUsesSystemTabPolicy = userAgent.includes('AppleWebKit') && !userAgent.includes('Chrome')
+  const focusButton = async (button: typeof profileButton) => {
+    if (webkitUsesSystemTabPolicy) {
+      // The WebKit host follows Safari's default Full Keyboard Access setting, which excludes buttons from Tab traversal.
+      await page.keyboard.press('Tab')
+      await button.focus()
+    } else {
+      await page.keyboard.press('Tab')
+    }
+    await expect(button).toBeFocused()
+  }
 
-  await page.keyboard.press('Tab')
-  await expect(profileButton).toBeFocused()
-  await page.keyboard.press('Tab')
-  await expect(settingsButton).toBeFocused()
+  await focusButton(profileButton)
+  await focusButton(settingsButton)
   await expect(settingsButton).toHaveCSS('outline-style', 'solid')
   await expect(settingsButton).toHaveCSS('outline-width', '2px')
   await page.keyboard.press('Enter')
   expect(await page.evaluate(() => Boolean((window as typeof window & { __uiuxSettingsActivated?: boolean }).__uiuxSettingsActivated))).toBe(true)
 
-  await page.keyboard.press('Tab')
-  await expect(muteButton).toBeFocused()
+  await focusButton(muteButton)
   await expect(muteButton).toHaveCSS('outline-style', 'solid')
   await page.keyboard.press('Space')
   const mutedButton = page.getByRole('button', { name: 'Включить микрофон' })
   await expect(mutedButton).toHaveAttribute('aria-pressed', 'false')
   await expect(mutedButton).toHaveClass(/voice-icon-button--danger-active/)
 
-  await page.keyboard.press('Tab')
-  await expect(deafenButton).toBeFocused()
+  await focusButton(deafenButton)
   await page.keyboard.press('Enter')
   const deafenedButton = page.getByRole('button', { name: 'Включить удалённый звук' })
   await expect(deafenedButton).toHaveAttribute('aria-pressed', 'true')
   await expect(deafenedButton).toHaveClass(/voice-icon-button--danger-active/)
 
   await expect(shareButton).toHaveAttribute('aria-label', /.+/)
-  await page.keyboard.press('Tab')
   if (await shareButton.isEnabled()) {
-    await expect(shareButton).toBeFocused()
+    await focusButton(shareButton)
     await page.keyboard.press('Enter')
     await expect(shareButton).toBeDisabled()
-    await page.keyboard.press('Tab')
   }
-  await expect(leaveButton).toBeFocused()
+  await focusButton(leaveButton)
   await page.keyboard.press('Enter')
   await expect(leaveButton).toBeDisabled()
   await expectAxeClear(page, '#mount')
