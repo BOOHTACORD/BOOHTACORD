@@ -541,5 +541,47 @@
       "Emulated mobile viewport does not prove physical touch, native screen-reader traversal, or device behavior; those remain NOT_RUN under #301/#303.",
       "Captures are review-only; no pixel golden is approved."
     ]
+  },
+  "native_safari_voice_dock_keyboard_smoke_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PARTIAL_PASS_NATIVE_SAFARI_KEYBOARD_COMPONENT_FIXTURE",
+    "platform": {
+      "browser": "Safari 26.6",
+      "host": "macOS 26.6.1",
+      "viewport": "3440x1315"
+    },
+    "source_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "fixture": {
+      "html": "clients/web/tests/accessibility/manual_voice_dock.html",
+      "module": "clients/web/tests/accessibility/manual_voice_dock.ts",
+      "commits": [
+        "17bf317e544599e13450c720df85f72927723b8b",
+        "a15e14d239794f7598e862708988d442ed178417"
+      ],
+      "fixture_source_sha256": {
+        "html": "a4baf6cc981e23ef6e54f217f9e56a142a2c97384414c4dfc2824aeed5d6fd63",
+        "module": "7b0b39dad20faf533b3e4d321c0bf039d075c65b45e9b929d63057b32bfcad0e"
+      },
+      "url": "http://127.0.0.1:5175/tests/accessibility/manual_voice_dock.html",
+      "data_scope": "Synthetic QA room and controls; no API, LiveKit session, account or production data."
+    },
+    "procedure": "In native Safari, used Option+Tab to traverse the production component fixture in DOM order, then Return/Space for keyboard actions.",
+    "observations": [
+      "Focus moved through microphone, deafen, screen share, leave, profile and audio settings; no focus trap observed.",
+      "The settings gear displayed a visible focus outline. Return on the settings button changed its live status to “Настройки аудио открыты”.",
+      "Space toggled the microphone action; the accessible name and pressed state changed.",
+      "Return toggled deafen; the accessible name and pressed state changed.",
+      "Return on the fixture's screen-share action moved it to its disabled STARTING state; the fixture does not open the native capture picker.",
+      "Return on leave announced “Завершаем голосовое подключение” and disabled the leave action."
+    ],
+    "screenshot": {
+      "status": "CUA_NATIVE_SCREENSHOT_OBSERVED_NOT_RETAINED",
+      "related_review_captures": "See voice_dock_icon_target_geometry_2026_10_11 for retained local review captures and hashes."
+    },
+    "limitations": [
+      "This is a manual keyboard smoke of production Vue components in a fixture, not the authenticated full application or an actual LiveKit session.",
+      "VoiceOver/NVDA traversal was not run; physical mobile, iOS Safari, and native capture-picker acceptance remain NOT_RUN.",
+      "Option+Tab was used with Safari's default Full Keyboard Access policy; this is distinct from a physical-device screen-reader pass."
+    ]
   }
 }
