@@ -1656,5 +1656,29 @@
       "The client-lifecycle disposable stack omits LiveKit. D15 and M22 are structural prejoin captures with a roster-unavailable retry state; voice roster parity and live media remain unverified.",
       "D18 and M23 use synthetic log entries and a synthetic roster, so archived mention targets, author history and timestamps are not compared. M23 uses browser touch emulation, not a physical device."
     ]
+  },
+  "visual_review_catalog_completeness_follow_up": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_REVIEW_MAP_REVIEW_ONLY",
+    "catalog_slots": 41,
+    "unique_reference_payloads_reviewed": 40,
+    "known_blocked_slot": "D11",
+    "d11_replacement_status": "INDEPENDENT_REPLACEMENT_CAPTURE_AVAILABLE_NOT_APPROVED_GOLDEN",
+    "test": {
+      "file": "clients/web/tests/uiux_2026/visual_matrix.spec.ts",
+      "command": "cd clients/web && npm test -- --run tests/uiux_2026/visual_matrix.spec.ts",
+      "result": "PASS",
+      "tests_passed": 12,
+      "revision": "f087d5ef",
+      "source_sha256": "308c6b66aac62dc4676844b474ceee711f81574b6f05edd09e0eb88d1d1f1605"
+    },
+    "assertions": [
+      "Exactly 40 unique source slots have reviewed capture status; D11 remains explicitly blocked by the duplicate archive payload.",
+      "The independent D11 before/after replacement pair has matching 2880x1800 rasters, valid revisions and hashes, and remains capture-only rather than an approved golden."
+    ],
+    "limitations": [
+      "This regression guards the traceability map; it does not approve pixel goldens or change the source archive.",
+      "The source archive entry for D11 remains byte-identical to desktop-guild-members.png until the supplied source is corrected or a release owner approves a replacement baseline."
+    ]
   }
 }
