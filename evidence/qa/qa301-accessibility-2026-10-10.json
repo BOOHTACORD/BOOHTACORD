@@ -496,5 +496,50 @@
       "Manual VoiceOver/NVDA/TalkBack/Narrator traversal remains NOT_RUN.",
       "The screenshot is review-only, not an approved visual golden or retained Actions artifact."
     ]
+  },
+  "voice_dock_icon_target_geometry_2026_10_11": {
+    "date": "2026-10-11",
+    "tested_checkout_source_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "checkpoint_commit": "d3e7c82c168586dd6e15f4d9d13d73693944abff",
+    "test": "voice and settings icon targets keep their desktop and mobile dimensions",
+    "executed_test_source_sha256": "4eb8cee3d0b93daf3123c3f81550901b2ffb92aa74ee9a57bf976726e561a2e2",
+    "committed_test_blob_sha": "2c4639ba5aa0b0bd414592d689ae7faf56733805",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npx playwright test -c tests/accessibility/playwright.config.ts --grep 'voice and settings icon targets keep their desktop and mobile dimensions'",
+    "browser": "Google Chrome 154",
+    "result": "1/1 PASS",
+    "assertions": {
+      "desktop": {
+        "viewport": "1440x900",
+        "settings_button": "40x40 CSS px",
+        "gear_svg": "22x22 CSS px",
+        "voice_dock_buttons": "4 buttons at 40x40 CSS px"
+      },
+      "mobile": {
+        "viewport": "390x844",
+        "sidebar_drawer": "open",
+        "settings_button": "44x44 CSS px",
+        "voice_dock_buttons": "4 buttons at 44x44 CSS px",
+        "document_horizontal_overflow": false
+      }
+    },
+    "captures": [
+      {
+        "path": ".out/accessibility-browser-results/accessibility.browser-voic-13707-sktop-and-mobile-dimensions/voice-settings-targets-desktop.png",
+        "sha256": "b469a7b41da57ef5d8c424a90b3d57b6355722bf6e2d2d61fa3b326457228fed",
+        "raster": "1440x900",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/accessibility-browser-results/accessibility.browser-voic-13707-sktop-and-mobile-dimensions/voice-settings-targets-mobile.png",
+        "sha256": "f808f4150650df836ab52f44bdc3356e6d5601daa27e8ceef13b84b4c468002d",
+        "raster": "390x844",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      }
+    ],
+    "limitations": [
+      "The browser test mounts the production Vue components with production CSS in an isolated fixture; it is not full authenticated app or physical-device acceptance.",
+      "Emulated mobile viewport does not prove physical touch, native screen-reader traversal, or device behavior; those remain NOT_RUN under #301/#303.",
+      "Captures are review-only; no pixel golden is approved."
+    ]
   }
 }
