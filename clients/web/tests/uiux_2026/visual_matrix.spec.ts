@@ -167,6 +167,35 @@ describe('UIUX-2026 visual regression inventory', () => {
     expect(desktop.expectedOrException).toContain('desktop-guild-members.png')
   })
 
+  it('accounts for each unique source review and keeps the D11 replacement review-only', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const qa302 = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa302-visual-e2e-2026-10-10.json'), 'utf8'))
+    const reviewed = matrix.screens.filter(({ sourceComparisonStatus }) =>
+      sourceComparisonStatus === 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+    const unresolved = matrix.screens.filter(({ sourceComparisonStatus }) =>
+      sourceComparisonStatus !== 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+    const replacement = qa302.d11_replacement_capture_follow_up
+
+    expect(reviewed).toHaveLength(40)
+    expect(unresolved.map(({ id }) => id)).toEqual(['D11'])
+    expect(replacement).toMatchObject({
+      date: '2026-10-11',
+      status: 'INDEPENDENT_REPLACEMENT_CAPTURE_AVAILABLE_NOT_APPROVED_GOLDEN',
+      archive_entry_sha256: matrix.sourceIntegrityFindings[0].sha256,
+      css_viewport: '1440x900',
+      dpr: 2,
+      result: 'VISUALLY_REVIEWED_CAPTURE_ONLY',
+    })
+    expect(replacement.before.raster).toBe('2880x1800')
+    expect(replacement.after.raster).toBe('2880x1800')
+    expect(replacement.before.sha256).toMatch(/^[a-f0-9]{64}$/)
+    expect(replacement.after.sha256).toMatch(/^[a-f0-9]{64}$/)
+    expect(replacement.source_revision_before).toMatch(/^[a-f0-9]{40}$/)
+    expect(replacement.source_revision_after).toMatch(/^[a-f0-9]{40}$/)
+    expect(replacement.limitations.join(' ')).toContain('source archive was not modified')
+    expect(replacement.status).toContain('NOT_APPROVED_GOLDEN')
+  })
+
   it('records reviewed full-stack admin captures without treating them as approved goldens', () => {
     const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
     const reviewedAdminIds = new Set([
