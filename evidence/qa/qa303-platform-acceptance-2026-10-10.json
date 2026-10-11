@@ -412,5 +412,39 @@
     },
     "acceptance_effect": "Inventory only. No app was launched and no physical task, screen-reader traversal or production account mutation was performed. Current macOS task acceptance requires the user to unlock the host; Android, iOS and Windows remain unavailable."
   },
+  "current_inventory_recheck_2026_10_11": {
+    "date": "2026-10-11",
+    "verified_at_utc": "2026-10-11 01:06:06 UTC",
+    "source_revision": "220732d930552d6efdad4d1d260e9eea7916630b",
+    "command": "cd clients/flutter && flutter devices --machine",
+    "result": "PASS_INVENTORY",
+    "available_flutter_targets": [
+      {
+        "name": "macOS",
+        "id": "macos",
+        "target_platform": "darwin",
+        "sdk": "macOS 26.6.1 25G76 darwin-arm64",
+        "emulator": false
+      },
+      {
+        "name": "Chrome",
+        "id": "chrome",
+        "target_platform": "web-javascript",
+        "sdk": "Google Chrome 154.0.8037.98",
+        "emulator": false
+      }
+    ],
+    "unavailable_targets": [
+      "Android physical/emulator",
+      "iOS device/simulator",
+      "Windows device/VM"
+    ],
+    "native_host_state": {
+      "source": "Codex computer-use desktop state check",
+      "result": "MACOS_LOCKED",
+      "observation": "The Mac remains locked; automatic unlock is unavailable."
+    },
+    "acceptance_effect": "Inventory only. No app was launched and no physical task, screen-reader traversal or production account mutation was performed."
+  },
   "updated_date": "2026-10-11"
 }
