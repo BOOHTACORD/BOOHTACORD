@@ -66,6 +66,71 @@
       },
       "test_stability_note": "The test explicitly initializes VAD and microphone state so prior workspace tests cannot leave it in push-to-talk mode.",
       "limitation": "Flutter widget semantics are not physical TalkBack, VoiceOver or Narrator acceptance."
+    },
+    {
+      "name": "Screen-share dialog accessible action names and quality controls",
+      "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- --grep 'scenario names|quality choices|normalizes'",
+      "result": "PASS_AUTOMATED_ONLY",
+      "tests_passed": 3,
+      "browser": "Google Chrome 154.0.8037.98",
+      "assertions": [
+        "The close icon button has the accessible name Закрыть; cancel and start actions expose their visible names.",
+        "Scenario, resolution and FPS labels fit and remain fully visible at initial open on 637x584 and 390x640 viewports.",
+        "Clicking 1440p selects the supported 1440p · 30 FPS text profile; starting emits P1440_30.",
+        "A saved incompatible P1440_60 selection opens as enabled P1440_30 rather than leaving the start action disabled.",
+        "The scoped dialog axe scan reports no WCAG 2.2 AA violations."
+      ],
+      "limitation": "Fixture-based browser automation only; this does not replace screen-reader traversal on physical Web or Flutter devices.",
+      "test_source_sha256": "8b8b10cca8bbe5d3fc1b6c38177f35264a282524789f0118dee224f9577b8829"
+    },
+    {
+      "name": "Screen-share compact viewport selector geometry",
+      "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' clients/web/node_modules/.bin/playwright test -c clients/web/tests/accessibility/playwright.config.ts --grep 'screen-share selectors fit their options'",
+      "result": "PASS_AUTOMATED_ONLY",
+      "tests_passed": 1,
+      "browser": "Google Chrome 154.0.8037.98",
+      "assertions": [
+        "Scenario and quality controls do not clip at 637x584; scenario cards, 1440p and modal actions remain in the viewport after selection.",
+        "Selector labels fit their measured regions and the dialog axe scan reports no WCAG 2.2 AA violations."
+      ],
+      "revision": "fd844b3c"
+    },
+    {
+      "name": "Flutter voice disconnected/error status semantics",
+      "command": "cd clients/flutter && flutter test --no-pub test/voice_connection_badge_test.dart",
+      "result": "PASS_AUTOMATED_ONLY",
+      "tests_passed": 6,
+      "revision": "797a9788",
+      "test_source_sha256": "4d5717db02c51ab88460bade29de63e514f4fd1c02b8099d9c9fa4584e71cfb1",
+      "analyzer": {
+        "command": "cd clients/flutter && flutter analyze --no-pub test/voice_connection_badge_test.dart",
+        "result": "PASS",
+        "observation": "No issues found."
+      },
+      "assertions": [
+        "Disconnected and error states expose distinct localized visible labels and live-region announcements.",
+        "Disconnected and error states hide connection-quality and ping values even when stale excellent/42 ms values are supplied.",
+        "Existing cases cover connecting, connected, reconnecting and leaving status announcements."
+      ],
+      "limitation": "Flutter semantics-tree evidence only; physical TalkBack, VoiceOver and Narrator traversal remains NOT_RUN."
+    },
+    {
+      "name": "Flutter voice dock icon action semantics",
+      "command": "cd clients/flutter && flutter test --no-pub test/workspace_screen_test.dart --plain-name 'voice dock reports accurate microphone actions in all states'",
+      "result": "PASS_AUTOMATED_ONLY",
+      "tests_passed": 1,
+      "revision": "75cdb75c",
+      "test_source_sha256": "2ebeefd5583f711e4f5b24c36ec4098868d0eb0850eafab77b001bcc44649053",
+      "analyzer": {
+        "command": "cd clients/flutter && flutter analyze --no-pub test/workspace_screen_test.dart",
+        "result": "PASS",
+        "observation": "No issues found."
+      },
+      "assertions": [
+        "The icon-only screen-share launch action exposes the localized accessible name and tap action while connected.",
+        "The icon-only voice-leave control keeps its accessible label and removes its tap action while the room is leaving."
+      ],
+      "limitation": "Flutter semantics-tree evidence only; physical keyboard and screen-reader traversal remains NOT_RUN."
     }
   ],
   "contrast": {
@@ -222,5 +287,58 @@
         "This is not native Safari app, physical device or screen-reader acceptance."
       ]
     }
+  },
+  "screen_share_quality_dialog_follow_up": {
+    "date": "2026-10-11",
+    "source_revision": "ff01a652e4a85d13943003289f997c3f234872f0",
+    "test_file": "clients/web/tests/screen_profile/quality_dialog.browser.spec.ts",
+    "test_source_sha256": "0db752211a3af9e7cc569013c5081968e9a0571e957b8c44ad95218b645c5866",
+    "result": "2/2 PASS_AUTOMATED_ONLY",
+    "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
+    "limitation": "Fixture-based browser automation only; this does not replace screen-reader traversal on physical Web or Flutter devices."
+  },
+  "channel_favorite_toggle_follow_up": {
+    "date": "2026-10-11",
+    "working_tree_changes": true,
+    "test_file": "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts",
+    "test_source_sha256": "1ec968d577672cf9ceb37f5ee1032c227702aaf72d6d346e33740dc8bccb690d",
+    "result": "PASS_AUTOMATED_ONLY_3_ENGINES",
+    "browser_runs": [
+      {"browser": "Google Chrome 154.0.8037.98", "result": "1/1 PASS"},
+      {"browser": "Playwright WebKit 26.6 (v2359)", "result": "1/1 PASS"},
+      {"browser": "Playwright Firefox 155.0 (v1543)", "result": "1/1 PASS"}
+    ],
+    "assertions": [
+      "The add/remove accessible names use grammatical Russian and aria-pressed tracks the favorite state.",
+      "Pointer and Space activation both toggle the favorite without moving it outside the navigation viewport.",
+      "Keyboard focus has a visible outline; navigation and page do not gain horizontal overflow."
+    ],
+    "limitation": "Browser automation only; physical screen-reader acceptance remains NOT_RUN."
+  },
+  "current_branch_revalidation_2026_10_11": {
+    "source_revision": "4829b17d + working-tree accessibility test update",
+    "status": "PASS_AUTOMATED_ONLY",
+    "browser": "Google Chrome 154.0.8037.98",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:accessibility",
+    "results": {
+      "accessibility_browser_cases": "51/51 PASS",
+      "message_action_axe_case": "1/1 PASS"
+    },
+    "test_source_sha256": "b98bffc236415f7778ec2f397e394f67d034574dd94bc12feed2ae13e7037ee1",
+    "compact_screen_share_capture": {
+      "path": ".out/accessibility-browser-results/accessibility.browser-scre-46abc-uality-options-discoverable/screen-share-setup-320x640-initial.png",
+      "sha256": "912c0a6bb20033a5ef9cf61f6a94128281cf8f7ec5566ebe386a6c052769d925",
+      "raster": "320x640",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "observations": [
+      "At 320x640 the primary scenario, resolution and frame-rate controls fit in the initial screen together with the pinned Cancel/Start actions.",
+      "The secondary recommended-profile action remains available by scrolling the dialog body.",
+      "The suite covers browser axe/keyboard/state checks only; it is not a physical screen-reader traversal."
+    ],
+    "limitations": [
+      "Physical TalkBack, VoiceOver, Narrator and native platform acceptance remain NOT_RUN under #301/#303.",
+      "The capture is review evidence, not an approved pixel golden or Actions artifact."
+    ]
   }
 }

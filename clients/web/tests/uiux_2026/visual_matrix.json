@@ -13,16 +13,17 @@
         "width": 1440,
         "height": 900
       },
-      "fixture": "clients/web/tests/responsive_shell/fixture.html",
-      "testFile": "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Open and resize the channel workspace while keeping the selected channel, composer, member rail, and voice dock available.",
-      "expectedOrException": "No horizontal page overflow; channel context is stable; capture is a current-state review image until the audit reference is supplied.",
+      "expectedOrException": "Authenticated production capture confirms the selected channel, member rail and composer at the source viewport; synthetic messages, attachment and unread-state differences are documented in review evidence.",
       "owner": "clients/web/src/workspace/WorkspaceApp.vue; clients/web/src/design/responsive_shell.css",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D02",
@@ -33,16 +34,17 @@
         "width": 1440,
         "height": 900
       },
-      "fixture": "clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts",
-      "testFile": "clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Keyboard and pointer access to reply, reaction, and message overflow actions.",
-      "expectedOrException": "Actions are named and reachable without relying on hover; reference screenshot comparison remains pending.",
+      "expectedOrException": "Production runtime verifies pointer hover on desktop or explicit touch action on mobile; the synthetic member’s permissions limit visible actions, and mobile emulation is not physical touch evidence.",
       "owner": "clients/web/src/conversation/MessageItem.vue; clients/web/src/conversation/message_actions/",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D03",
@@ -53,16 +55,17 @@
         "width": 1440,
         "height": 900
       },
-      "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Open the DM list and select a conversation while retaining the workspace context.",
-      "expectedOrException": "DM navigation and selection are covered by component/browser smoke; compare layout against the source asset when provided.",
+      "expectedOrException": "Production runtime capture shows DM navigation beside retained workspace context; the single synthetic account differs from the source roster.",
       "owner": "clients/web/src/direct_message/DirectMessageNavigation.vue",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D04",
@@ -76,13 +79,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Compose and search within a DM, open a result in its original context, and return.",
-      "expectedOrException": "Existing draft/search state and protected content boundaries remain intact; pixel comparison is not run.",
+      "expectedOrException": "Production desktop DM layout matches the source structure; the QA capture uses synthetic account and message data. Reviewed capture is not an approved pixel golden.",
       "owner": "clients/web/src/direct_message/DirectMessageConversation.vue; clients/web/src/conversation/use_saved_composer.ts",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D05",
@@ -243,13 +247,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open a create-section dialog, traverse controls, cancel, and submit valid input.",
-      "expectedOrException": "Focus is contained, cancel is the safe default, and errors do not discard input; this matrix does not replace a complete dialog inventory.",
+      "expectedOrException": "Focus is contained, cancel is the safe default, and errors do not discard input. Source-sized review confirms the title, helper, field and actions retain clear spacing; this matrix does not replace a complete dialog inventory.",
       "owner": "clients/web/src/channel/AdminCategoryControls.vue; clients/web/src/channel/AdminConfirmation.vue",
       "flutterTestFile": "clients/flutter/test/admin_topology_widget_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D13",
@@ -263,13 +268,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Validate channel creation and keyboard-safe dialog cancellation.",
-      "expectedOrException": "No duplicate submission while pending; form state remains on recoverable failure; source comparison pending.",
+      "expectedOrException": "No duplicate submission while pending; form state remains on recoverable failure. Source-sized review confirms the form hierarchy; the synthetic category/channel list differs from the source fixture.",
       "owner": "clients/web/src/channel/AdminChannelCreate.vue",
       "flutterTestFile": "clients/flutter/test/admin_topology_widget_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D14",
@@ -283,13 +289,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Inspect consequences, cancel with Enter/Escape, and require an explicit confirmation to close.",
-      "expectedOrException": "Destructive action never runs from default focus, backdrop click, or Escape; the Web dialog regression covers focus behavior.",
+      "expectedOrException": "Destructive action never runs from default focus, backdrop click, or Escape. Source-sized review confirms the current dialog separates the named channel/consequence from safe Cancel and danger actions; the Web regression covers focus behavior.",
       "owner": "clients/web/src/channel/AdminConfirmation.vue",
       "flutterTestFile": "clients/flutter/test/confirmation_dialog_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D15",
@@ -300,16 +307,17 @@
         "width": 1440,
         "height": 900
       },
-      "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Review voice prejoin states and keyboard navigation of join controls.",
-      "expectedOrException": "Idle, pending, permission, connected, and reconnect states remain distinguishable; real LiveKit acceptance is separate.",
+      "expectedOrException": "The Voice header, idle prejoin card, and both join choices are visible at 1440x900. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; structural review only.",
       "owner": "clients/web/src/voice/VoicePrejoin.vue; clients/web/src/voice/VoiceRoomControls.vue",
       "flutterTestFile": "clients/flutter/test/features/voice/prejoin/header_status_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D16",
@@ -323,13 +331,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open screen-share setup, inspect source actions, and cancel safely.",
-      "expectedOrException": "Setup dialog has bounded keyboard focus and safe close behavior; native source picker is not represented by this fixture.",
+      "expectedOrException": "Setup dialog uses readable scenario cards and directly selectable resolution/FPS controls with safe close behavior; native source picker is not represented by this fixture.",
       "owner": "clients/web/src/voice/ScreenShareSetupDialog.vue",
       "flutterTestFile": "clients/flutter/test/screen_setup/inventory_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D17",
@@ -343,13 +352,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Change stream quality, apply, cancel, and inspect reduced-motion behavior.",
-      "expectedOrException": "Current preference and submit/cancel controls remain visible; capture and reconnect media behavior requires device/SFU evidence.",
+      "expectedOrException": "1440p is directly selectable and selects the supported text profile at 30 FPS; capture and reconnect media behavior requires device/SFU evidence.",
       "owner": "clients/web/src/voice/ScreenShareSetupDialog.vue; clients/web/src/voice/ScreenShareQualityOptions.vue",
       "flutterTestFile": "clients/flutter/test/screen_share_profile_geometry_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "D18",
@@ -360,16 +370,17 @@
         "width": 1440,
         "height": 900
       },
-      "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "testFile": "clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Open the log channel and inspect grouped message rows, mentions, timestamps, and destructive action controls.",
-      "expectedOrException": "Log content remains readable at the source desktop viewport; destructive actions require confirmation and are reachable without hover.",
+      "expectedOrException": "The log channel, message history, composer, and admin Reply/Edit/Delete actions are visible at 1440x900. Three synthetic messages replace the source mentions and historical author distribution; structural review only.",
       "owner": "clients/web/src/conversation/MessageItem.vue; clients/web/src/channel/ChannelNavigation.vue",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 2880,
         "height": 1800
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M01",
@@ -380,16 +391,17 @@
         "width": 393,
         "height": 852
       },
-      "fixture": "clients/web/tests/responsive_shell/fixture.html",
-      "testFile": "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Open and close the navigation drawer by trigger, close button, scrim, and browser Back.",
-      "expectedOrException": "Drawer stays inside the viewport, closes after navigation, and restores context; mobile native Back/gesture is not covered here.",
+      "expectedOrException": "Production runtime capture verifies drawer open/close over selected channel context; a connectivity summary and synthetic roster differ from the source, and native Back/gesture remains separate.",
       "owner": "clients/web/src/channel/ChannelNavigation.vue; clients/web/src/workspace/WorkspaceApp.vue",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M02",
@@ -400,16 +412,17 @@
         "width": 393,
         "height": 852
       },
-      "fixture": "clients/web/tests/responsive_shell/fixture.html",
-      "testFile": "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Resize through compact widths with selected channel, composer, and voice dock present.",
-      "expectedOrException": "No horizontal page overflow and no loss of the selected channel; the fixture is not a full authenticated app capture.",
+      "expectedOrException": "Authenticated production capture confirms the selected channel, member rail and composer at the source viewport; synthetic messages, attachment and unread-state differences are documented in review evidence.",
       "owner": "clients/web/src/workspace/WorkspaceApp.vue; clients/web/src/design/responsive_shell.css",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M03",
@@ -420,16 +433,17 @@
         "width": 393,
         "height": 852
       },
-      "fixture": "clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts",
-      "testFile": "clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Touch-tap and long-press message action menu while scrolling and using reply.",
-      "expectedOrException": "Actions have explicit touch-sized controls and scrolling does not trigger the menu; mobile emulation is not physical touch evidence.",
+      "expectedOrException": "Production runtime verifies pointer hover on desktop or explicit touch action on mobile; the synthetic member’s permissions limit visible actions, and mobile emulation is not physical touch evidence.",
       "owner": "clients/web/src/conversation/MessageItem.vue; clients/web/src/conversation/message_actions/",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M04",
@@ -443,13 +457,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open DM navigation, select a person, and return to the conversation list.",
-      "expectedOrException": "The active context is identified and navigable; compare against the missing audit image before visual acceptance.",
+      "expectedOrException": "Production drawer/list structure matches; the QA image has one synthetic account while the source lists six users and omits the chat/voice status block. Reviewed capture is not an approved pixel golden.",
       "owner": "clients/web/src/direct_message/DirectMessageNavigation.vue",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M05",
@@ -463,13 +478,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open an empty DM and use the visible start-message action while keeping the composer available.",
-      "expectedOrException": "Empty is not confused with loading and a next action is visible; audit before/after comparison pending.",
+      "expectedOrException": "Production empty-state and composer structure match; the QA image has a synthetic account header and a mobile search affordance absent from the source. Reviewed capture is not an approved pixel golden.",
       "owner": "clients/web/src/direct_message/DirectMessageConversation.vue",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M06",
@@ -483,13 +499,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Switch DM, compose, return from search, then switch away and back.",
-      "expectedOrException": "Per-conversation draft, search query, and result context are retained; physical IME acceptance remains separate.",
+      "expectedOrException": "Per-conversation draft, search query, and result context are retained. The QA image uses one synthetic message; its sixth reaction wraps to a second row at 393x852 without observed overlap. Reviewed capture is not an approved pixel golden; physical IME acceptance remains separate.",
       "owner": "clients/web/src/direct_message/DirectMessageConversation.vue; clients/web/src/conversation/use_saved_composer.ts",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M07",
@@ -500,16 +517,17 @@
         "width": 393,
         "height": 852
       },
-      "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "interaction": "Search within a DM, open a result in context, then return to the result list.",
-      "expectedOrException": "Search entry is visible and result state survives context return; Android/iOS IME is not covered by browser fixture.",
-      "owner": "clients/web/src/conversation/TextMessageSearch.vue; clients/web/src/direct_message/DirectMessageConversation.vue",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "interaction": "Open global workspace search, verify the global scope and author/attachment/date filters, search a disposable API message, open its original channel context, and return to search.",
+      "expectedOrException": "The full-app Web run verifies the global search panel, default scope, filters, live API results, and opening the original message context. The archive reference has no focused search field; the review capture retains the visible keyboard focus ring. Flutter search behavior is covered by workspace_screen_test.dart; physical keyboard and IME acceptance remains separate.",
+      "owner": "clients/web/src/workspace/search/WorkspaceSearchPanel.vue; clients/web/src/search/SearchPanel.vue; clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/component.dart",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M08",
@@ -649,13 +667,14 @@
       "fixture": "clients/web/tests/guild_lifecycle/fixture.html",
       "testFile": "clients/web/tests/guild_lifecycle/guild.browser.spec.ts",
       "interaction": "Inspect and save Настройки гильдии at the mobile source viewport while preserving the selected workspace.",
-      "expectedOrException": "Guild name and welcome-channel controls remain distinct from personal profile settings; mobile source-image comparison is pending.",
+      "expectedOrException": "Guild name and welcome-channel controls remain distinct from personal profile settings; full-app mobile source comparison was reviewed on 2026-10-11. Synthetic guild/channel values and saved-state feedback differ from the reference, so this is not a pixel golden.",
       "owner": "clients/web/src/admin/guild_settings/AdminGuildSettings.vue",
       "flutterTestFile": "clients/flutter/test/admin_guild_settings_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M15",
@@ -669,13 +688,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Edit profile name, switch tabs, force a save failure, retry, and leave with a dirty draft.",
-      "expectedOrException": "Pending/error/saved/dirty states remain explicit and unsaved changes are protected; Flutter IME/safe-area remains NOT_RUN.",
+      "expectedOrException": "Pending/error/saved/dirty states remain explicit and unsaved changes are protected; Flutter IME/safe-area remains NOT_RUN. The source includes a secondary avatar action; QA's synthetic profile has no avatar, and the ‘Удалить’ action is conditional on avatar_url, so its absence in that capture is expected.",
       "owner": "clients/web/src/identity/ProfileSettings.vue",
       "flutterTestFile": "clients/flutter/test/profile_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M16",
@@ -689,13 +709,14 @@
       "fixture": "clients/web/tests/own_sessions/sessions.browser.spec.ts",
       "testFile": "clients/web/tests/own_sessions/sessions.browser.spec.ts",
       "interaction": "Open session management, cancel bulk revocation, and explicitly confirm revoking other sessions.",
-      "expectedOrException": "No session is revoked before confirmation and the current session remains protected; source comparison pending.",
+      "expectedOrException": "No session is revoked before confirmation and the current session remains protected; mobile source review found the same password/logout flow, explicit confirmation guidance in the after capture, and active sessions below the first viewport.",
       "owner": "clients/web/src/identity/OwnSessionsPanel.vue; clients/web/src/channel/AdminConfirmation.vue",
       "flutterTestFile": "clients/flutter/test/profile_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M17",
@@ -709,13 +730,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Inspect audio setting control labels and responsive form layout.",
-      "expectedOrException": "A browser fixture does not confirm native device permissions, hardware discovery, or selected-device availability.",
+      "expectedOrException": "A browser fixture does not confirm native device permissions, hardware discovery, or selected-device availability. Mobile source review confirms the device and activation layout; device names and sensitivity values depend on runtime hardware/preferences.",
       "owner": "clients/web/src/voice/AudioSettings.vue; clients/flutter/lib/src/screens/workspace_ui/audio_settings_screen/",
       "flutterTestFile": "clients/flutter/test/audio_devices/settings_scan_notice_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M18",
@@ -729,13 +751,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Navigate notification settings and inspect save/permission feedback.",
-      "expectedOrException": "Platform notification permission state must not be inferred from static layout; audit comparison pending.",
+      "expectedOrException": "Platform notification permission state must not be inferred from static layout. Mobile source review found notifications enabled with a selected channel in the source and denied/no channel in the after capture; this is a runtime-state difference.",
       "owner": "clients/web/src/notification/NotificationSettings.vue",
       "flutterTestFile": "clients/flutter/test/profile_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M19",
@@ -749,13 +772,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open the About section and use its visible navigation/context controls.",
-      "expectedOrException": "Long version/build identifiers remain readable or fully available; source asset and final truncation comparison pending.",
+      "expectedOrException": "Long version/build identifiers remain readable or fully available. Mobile source review found the same version-card structure; the source shows current while the local update endpoint returns 503 in the after capture, so it is not a golden.",
       "owner": "clients/web/src/workspace/WorkspaceApp.vue; clients/flutter/lib/src/screens/profile_screen.dart",
       "flutterTestFile": "clients/flutter/test/profile_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M20",
@@ -769,13 +793,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Open the stream setup sheet, traverse source actions, cancel, and inspect focus return.",
-      "expectedOrException": "Start/cancel controls remain visible at target viewport; actual source-picker support is platform-specific and not proven by a browser fixture.",
+      "expectedOrException": "Full scenario labels and separate quality choices remain readable; the sticky actions stay available. Actual source-picker support is platform-specific and not proven by a browser fixture.",
       "owner": "clients/web/src/voice/ScreenShareSetupDialog.vue",
       "flutterTestFile": "clients/flutter/test/screen_setup/dialog_test.dart",
       "referenceRasterPx": {
         "width": 786,
         "height": 1704
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M21",
@@ -789,13 +814,14 @@
       "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "interaction": "Review recommended and advanced stream profile options and apply/cancel.",
-      "expectedOrException": "Reduced motion remains honored; keyboard, landscape, 2× text, and native capture acceptance are separate.",
+      "expectedOrException": "1440p can be selected directly and resolves to the supported text profile at 30 FPS; keyboard, landscape, 2× text, and native capture acceptance are separate.",
       "owner": "clients/web/src/voice/ScreenShareQualityOptions.vue; clients/web/src/voice/ScreenShareSetupDialog.vue",
       "flutterTestFile": "clients/flutter/test/screen_share_profile_geometry_test.dart",
       "referenceRasterPx": {
         "width": 786,
         "height": 1704
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M22",
@@ -806,16 +832,17 @@
         "width": 393,
         "height": 852
       },
-      "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "testFile": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Inspect prejoin, join, no-microphone join, connected, reconnecting, and ended states.",
-      "expectedOrException": "Browser semantics smoke does not substitute for a live media call or Flutter platform acceptance.",
+      "expectedOrException": "The mobile Voice header, idle prejoin card, and both join choices are visible at 393x852. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; no voice call was started.",
       "owner": "clients/web/src/voice/VoicePrejoin.vue; clients/web/src/voice/VoiceRoomConnected.vue",
       "flutterTestFile": "clients/flutter/test/features/voice/prejoin/header_status_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     },
     {
       "id": "M23",
@@ -826,16 +853,17 @@
         "width": 393,
         "height": 852
       },
-      "fixture": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
-      "testFile": "clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts",
+      "fixture": "tools/qa/client_lifecycle/run.py",
+      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
       "interaction": "Read log entries at phone width, inspect mention wrapping and reach message actions while scrolling.",
-      "expectedOrException": "Long mentions and action controls remain usable without horizontal overflow; browser touch emulation is not physical-device acceptance.",
+      "expectedOrException": "At 393x852 the log messages and composer remain readable, and touch opens the admin Reply/Edit/Delete action disclosure. Synthetic messages do not reproduce the source mentions or historical authors; browser touch emulation is not physical-device acceptance.",
       "owner": "clients/web/src/conversation/MessageItem.vue; clients/web/src/channel/ChannelNavigation.vue",
       "flutterTestFile": "clients/flutter/test/workspace_screen_test.dart",
       "referenceRasterPx": {
         "width": 1179,
         "height": 2556
-      }
+      },
+      "sourceComparisonStatus": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
     }
   ],
   "sourceArchive": "artifacts/ui-ux-screenshots.zip",
@@ -874,5 +902,253 @@
       "channels": 8,
       "auditRows": 100
     }
+  },
+  "supplementalSourceReviewEvidence": {
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "screenId": "M07",
+    "report": "evidence/qa/qa294-dm-live-full-app-2026-10-10.json",
+    "capture": ".out/client-lifecycle/393/global-search.png",
+    "captureSha256": "1ccbe071d54d400148902565f319904fd1d07a8c6b426cd21856df4caefdff43",
+    "rasterPx": [
+      1179,
+      2556
+    ],
+    "sourceRevision": "92ccd7c62aebdf1a09a9b635ab55e4a7d2a0974b",
+    "reviewNote": "The global search panel, scope, author/attachment/date filters, and find action match the archived screen. Runtime capture retains the visible focus ring on the query field; the source screenshot has no focused control. This is review evidence, not an approved pixel golden."
+  },
+  "settingsCaptureReviewEvidence": {
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "sourceRevision": "ab12691186a51beae7988dee01021e0ea7b5ef54",
+    "report": "evidence/qa/qa297-personal-settings-2026-10-10.json",
+    "reviewedScreenIds": [
+      "M15",
+      "M16",
+      "M17",
+      "M18",
+      "M19"
+    ],
+    "reviewNotes": {
+      "M15": "Profile form and save state are visible with a synthetic identity and no avatar. The source includes a secondary avatar button labelled ‘Удалить…’; code renders this action only when avatar_url is present, so its absence in the after capture is expected and no parity defect is inferred.",
+      "M16": "Password and logout sections match the source flow. The after capture adds explicit confirmation guidance and places active sessions below the first viewport; no overlap was observed.",
+      "M17": "Device controls and microphone activation layout match. Device names and sensitivity values differ because the after image uses the host browser device inventory and runtime preferences.",
+      "M18": "Notification controls and per-channel preferences are present. The source browser has notifications enabled and a channel selected; the after browser denies permission and has no open channel, which changes the visible state.",
+      "M19": "About/version card structure matches. The source reports an installed current version; the after capture shows the local update endpoint’s 503 error and is not suitable as a golden."
+    }
+  },
+  "screenShareQualityReviewEvidence": {
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "sourceRevision": "21069626",
+    "report": "evidence/qa/qa320-screen-share-quality-2026-10-10.json",
+    "captures": [
+      {
+        "screenId": "M20",
+        "state": "default-actions",
+        "path": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-actions-current-393x852-2x.png",
+        "sha256": "cbcb64d661f3b59914debb98779e8b019f0da67e0c1d487f6e760de0484ac1db",
+        "rasterPx": [
+          786,
+          1704
+        ]
+      },
+      {
+        "screenId": "M21",
+        "state": "selected-1440p-30fps",
+        "path": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-settings-1440p-current-393x852-2x.png",
+        "sha256": "479c483f9a9a62aed9344dce54035d918cbfda9dbf3fbc0a53ec99b1cc16ec49",
+        "rasterPx": [
+          786,
+          1704
+        ]
+      },
+      {
+        "screenId": "D16",
+        "state": "desktop-default-actions",
+        "path": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-actions-current-1440x900-2x.png",
+        "sha256": "5839e4decb850088185eee7b7127134d608a0111302c08debca5e8f95d45967e",
+        "rasterPx": [
+          2880,
+          1800
+        ]
+      },
+      {
+        "screenId": "D17",
+        "state": "desktop-selected-1440p-30fps",
+        "path": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-settings-1440p-current-1440x900-2x.png",
+        "sha256": "4ecffc2a0cf01b0ae5fdcffa6eb236fa02432dc9aa46e83fa8f554726261dc3c",
+        "rasterPx": [
+          2880,
+          1800
+        ]
+      }
+    ]
+  },
+  "fullAppInteractionReviewEvidence": {
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "sourceRevision": "8995730ebcd31c1259acbd75c2638adf871875bb",
+    "report": "evidence/qa/qa302-visual-e2e-2026-10-10.json#full_app_interaction_source_review",
+    "reviewedScreenIds": [
+      "D01",
+      "D02",
+      "D03",
+      "D15",
+      "D18",
+      "M01",
+      "M02",
+      "M03",
+      "M22",
+      "M23"
+    ],
+    "captures": [
+      {
+        "catalogSlot": "D01",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-channel-overview.png",
+          "sha256": "1c6780a376993228a18f6012f5c60abf337469428bef44059dba31e298990f63",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/channel-text.png",
+          "sha256": "3836beb8189daf2f6454ad3c050c601df107f24cda309dddf062a16392edd939",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "The header, channel navigation, member rail, voice dock and composer are present. The source shows historic messages and an attachment; the current runtime capture uses synthetic messages, so this is structural review only."
+      },
+      {
+        "catalogSlot": "D02",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-channel-text.png",
+          "sha256": "d0a993e09564b1e3dc5cf9224ecef3f92078d72e12bb00143ac586efeaafde0b",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/channel-text-actions.png",
+          "sha256": "e85f7886d798aa0babc9eb503fa9beef03908be3d586ef75cd96eb63e99c98c0",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "The pointer-hover capture exposes Reply and keeps the message row actions reachable. The synthetic member lacks edit/delete rights, so the source’s additional privileged actions are intentionally absent."
+      },
+      {
+        "catalogSlot": "D03",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-dm-list.png",
+          "sha256": "c4bf57482ab0eb6720f98ed215c83e19fa04a7ab1758f329f1fd6b445a56b19e",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/dm-list.png",
+          "sha256": "d479b1de8a4426c3d241e786cd37b5cf654751e995d3ef850b61fa39eb9e3bf8",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "Both images show the DM navigation beside an empty voice prejoin. The source lists several DM accounts; the runtime after image has one synthetic qa_admin account."
+      },
+      {
+        "catalogSlot": "M01",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-navigation-overlay.png",
+          "sha256": "ddc71e96ce0fea770cda98aec536bcec018a557042abb10784ad6924bd85c3fb",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/navigation-overlay.png",
+          "sha256": "36fd4803b6901fb3fb1dc3ca9e1d9d58ae00b5aa94904cd24bd81abd9638d05d",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "The drawer opens over the selected channel and closes from its close button. The runtime includes a connectivity summary absent from the source and one additional synthetic member, leaving fewer channel rows visible before scrolling."
+      },
+      {
+        "catalogSlot": "M02",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-channel-overview.png",
+          "sha256": "6ab04d76b87dc665bad23a023dfcfadf11aedf932948c69e7cbead5917aa95e5",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/channel-text.png",
+          "sha256": "4c9cddd8b6e6e3c424bd7835643bef3e286f407cdbd2cb3da86d8ae1e77c7b56",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "The selected channel, message history, member rail and composer remain visible. The runtime shows synthetic messages and an unread prompt, while the source shows older message and attachment content."
+      },
+      {
+        "catalogSlot": "M03",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-channel-text-hover.png",
+          "sha256": "6d3235e9fa0dc84495ee0feb663f88a1372036be27436c966e41a338136ab4d1",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/channel-text-actions.png",
+          "sha256": "730a32caa2dc7c3edda7837c9ba4bb375aa4bdb9b6537169152c8d430fab2d91",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "A touch tap opens the message action popover and the scenario closes it again. Only Reply is available because the synthetic member lacks edit/delete permission; this is not physical-device acceptance."
+      },
+      {
+        "catalogSlot": "D15",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-voice-room.png",
+          "sha256": "092542a95206b66e22c79bb3852284072416a2d3283270a77023dba156db529b",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/voice-prejoin.png",
+          "sha256": "8d94ab3543685be5cb00d6001e0691607dc1e433cc3aa4dc90791bb5db4d9823",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "The Voice header, idle prejoin card, and both join choices are visible at 1440x900. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; structural review only."
+      },
+      {
+        "catalogSlot": "D18",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-channel-log.png",
+          "sha256": "eac38402f17787224eb465fc67f3b266170c5b6a62ec7d12c15f709563bcb0cf",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/channel-log.png",
+          "sha256": "f20822b19eb8063de0fa141799ba675b809d5141377610d7e82cb91ca8453453",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "The log channel, message history, composer, and admin Reply/Edit/Delete actions are visible at 1440x900. Three synthetic messages replace the source mentions and historical author distribution; structural review only."
+      },
+      {
+        "catalogSlot": "M22",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-voice-room.png",
+          "sha256": "cb80e9851d105196369e1bf19a59c4bb29d2b951bf391034e2d26b9322351688",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/voice-prejoin.png",
+          "sha256": "45ef782d79b51defe839e2f524125fe544446b9794660c75c863dbd400109b7f",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "The mobile Voice header, idle prejoin card, and both join choices are visible at 393x852. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; no voice call was started."
+      },
+      {
+        "catalogSlot": "M23",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-channel-log.png",
+          "sha256": "23389c64c50e15d9c9e5be796e7d18c2fa68844254337aa18b1201dd57b4e775",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/channel-log.png",
+          "sha256": "08119dbe18e758d7d160954aee317f464ad188af4d2f97bc1aa7f9853ad04da5",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "reviewNote": "At 393x852 the log messages and composer remain readable, and touch opens the admin Reply/Edit/Delete action disclosure. Synthetic messages do not reproduce the source mentions or historical authors; browser touch emulation is not physical-device acceptance."
+      }
+    ]
   }
 }

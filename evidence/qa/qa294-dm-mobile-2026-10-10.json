@@ -85,8 +85,8 @@
     "IME and compact keyboard layouts are widget/browser-fixture coverage, not native Android/iOS keyboard acceptance.",
     "Physical clipboard/image picker, safe-area and background/foreground interaction remain NOT_RUN on mobile devices under #303.",
     "Browser fixture tests now exercise quick-jump HTTP 403/404 and a stale DM mention target at 390/1440 px using mocked API responses; a full authenticated live-backend/mobile task with those responses was not run.",
-    "No Web/Flutter full-app before/after DM screenshot comparison or real-user navigation-time measurement was produced in this pass.",
+    "The authenticated Web full-app DM flow and source-matched screenshot pairs were produced in the companion record qa294-dm-live-full-app-2026-10-10.json; Flutter full-app captures and real-user navigation-time measurement remain NOT_RUN.",
     "No API/ACL behavior was changed in this revalidation; server authorization tests ran against disposable data only."
   ],
-  "status": "PARTIAL — focused Web unit suites pass 94 executions across the two recorded groups (66 + 28); quick-jump/mention browser regressions pass 10/10; Web production build, Flutter 133/133 and DM attachment ACL integration packages pass. Physical mobile input/background acceptance, authenticated live permission-flow E2E and remaining issue-level user task gates stay open."
+  "status": "PARTIAL — focused Web unit suites pass 94 executions across the two recorded groups (66 + 28); quick-jump/mention browser regressions pass 10/10; Web production build, Flutter 133/133, DM attachment ACL integration packages, and the authenticated Web full-app flow with source-matched captures in qa294-dm-live-full-app-2026-10-10.json pass. Physical mobile input/background acceptance, authenticated live permission-flow E2E and remaining issue-level user task gates stay open."
 }

@@ -1,0 +1,378 @@
+{
+  "id": "QA-294-DM-LIVE-FULL-APP",
+  "date": "2026-10-11",
+  "issue": "https://github.com/Egkurilov/BOOHTACORD/issues/294",
+  "source_revision": "5fc326680652ec7a97b4334f8b326857e5f6f11a",
+  "working_tree_changes": true,
+  "working_tree_change_note": "The full-app lifecycle scenario captures the DM flow and actual global WorkspaceSearchPanel against disposable Go API/PostgreSQL/Tempo. On 2026-10-11, the current-branch D04 and M04–M07 source-sized pairs were visually reviewed; synthetic account/message differences, the M06 reaction wrap and M07 focus ring are recorded in the visual matrix. The capture refresh is source revision ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc. No product, API, ACL, or database contract changed.",
+  "environment": {
+    "client": "Production Vite build served by the disposable client-lifecycle harness",
+    "api": "Go API and PostgreSQL in an owned disposable Docker stack",
+    "browser": "Google Chrome 154",
+    "viewports": [
+      {
+        "name": "mobile-393x852",
+        "css_viewport": [
+          393,
+          852
+        ],
+        "device_scale_factor": 3,
+        "touch": true
+      },
+      {
+        "name": "desktop-1440x900",
+        "css_viewport": [
+          1440,
+          900
+        ],
+        "device_scale_factor": 2,
+        "touch": false
+      }
+    ],
+    "api_mocks": false,
+    "accounts": "Synthetic qa_admin and qa_member only",
+    "synthetic_message_content_recorded": false,
+    "owned_resources_removed": true
+  },
+  "checks": [
+    {
+      "name": "Authenticated full-app DM and global message search, result context, and return",
+      "commands": [
+        "QA_BROWSER_EXECUTABLE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' python3 -m tools.qa.client_lifecycle.run --width 393",
+        "QA_BROWSER_EXECUTABLE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' python3 -m tools.qa.client_lifecycle.run --width 1440"
+      ],
+      "result": "PASS",
+      "runs": [
+        {
+          "viewport": "mobile-393x852",
+          "elapsed_seconds": 38.72,
+          "api_image_id": "sha256:088d64bf3bd8e1b9127ec52c061780c58f0995f3d76477e2add73f943939aa29",
+          "telemetry": "PASS",
+          "database_persistence_after_api_restart": true,
+          "global_search": "PASS",
+          "owned_resources_removed": true
+        },
+        {
+          "viewport": "desktop-1440x900",
+          "elapsed_seconds": 38.48,
+          "api_image_id": "sha256:d26db118c97a63e747ca32dc86661174ec64915c0259e7c4fe613eb2918957d2",
+          "telemetry": "PASS",
+          "database_persistence_after_api_restart": true,
+          "global_search": "PASS",
+          "owned_resources_removed": true
+        }
+      ],
+      "assertions": {
+        "empty_conversation": true,
+        "direct_message_list": true,
+        "send_message_to_disposable_api": true,
+        "search_live_message": true,
+        "open_search_result_context": true,
+        "return_preserves_search_query_and_results": true,
+        "global_workspace_search_panel": true,
+        "global_scope_default": true,
+        "author_attachment_date_filters": true,
+        "global_search_live_api_result": true,
+        "global_result_opens_original_context": true
+      }
+    },
+    {
+      "name": "Client-lifecycle viewport profile tests",
+      "command": "python3 -m unittest tools.qa.client_lifecycle.test_run",
+      "result": "PASS",
+      "passed": 4
+    },
+    {
+      "name": "Browser scenario JavaScript syntax",
+      "command": "node --check tools/qa/client_lifecycle/scenario.mjs",
+      "result": "PASS"
+    }
+  ],
+  "source_matched_capture_pairs": [
+    {
+      "source": {
+        "file": "mobile-dm-list.png",
+        "sha256": "8e3034e56a49793985ea90be7fa16afd051b9c13b41fd1f98d38cd1859cdcee7",
+        "px": [
+          1179,
+          2556
+        ]
+      },
+      "after": {
+        "file": ".out/client-lifecycle/393/dm-list.png",
+        "sha256": "d9c793154f2e546ebafb3ee5bde1e44455fc476484b578a2f771dac064162db5",
+        "px": [
+          1179,
+          2556
+        ]
+      }
+    },
+    {
+      "source": {
+        "file": "mobile-dm-empty-chat.png",
+        "sha256": "a073ac9916cce4dd250e01a65350373e3d6f1dff4c663e9e926f55a9471d3564",
+        "px": [
+          1179,
+          2556
+        ]
+      },
+      "after": {
+        "file": ".out/client-lifecycle/393/dm-empty-conversation.png",
+        "sha256": "4f2f03322104ed44659287cc8a571107db4efcaa17cde43178d272e68bd961d9",
+        "px": [
+          1179,
+          2556
+        ]
+      }
+    },
+    {
+      "source": {
+        "file": "mobile-dm-conversation.png",
+        "sha256": "20081e82ac0f4da0d064c65c985b37cfea31903f0dc48cfa2c81ca61ffe7beb4",
+        "px": [
+          1179,
+          2556
+        ]
+      },
+      "after": {
+        "file": ".out/client-lifecycle/393/dm-conversation.png",
+        "sha256": "d7745a71c368542aef12c5eb7cd7ca60fce0515a2bdda47db37b32afc8ed8666",
+        "px": [
+          1179,
+          2556
+        ]
+      }
+    },
+    {
+      "source": {
+        "file": "mobile-message-search.png",
+        "sha256": "c1ca3930347bc82d24cb4fca84d4896db452b7bde9c64e651acc18a27d251809",
+        "px": [
+          1179,
+          2556
+        ]
+      },
+      "after": {
+        "file": ".out/client-lifecycle/393/global-search.png",
+        "sha256": "1ccbe071d54d400148902565f319904fd1d07a8c6b426cd21856df4caefdff43",
+        "px": [
+          1179,
+          2556
+        ]
+      }
+    },
+    {
+      "source": {
+        "file": "desktop-dm-conversation.png",
+        "sha256": "148ef1287fd79142eb39402ffe291e99ab11d08e91f4f3224c09c3843f332f75",
+        "px": [
+          2880,
+          1800
+        ]
+      },
+      "after": {
+        "file": ".out/client-lifecycle/1440/dm-conversation.png",
+        "sha256": "00d7e88c8d4a7b4fe510eb823bd8c3b808ff8a24c7a5b117cffe5121baea9fb5",
+        "px": [
+          2880,
+          1800
+        ]
+      }
+    }
+  ],
+  "additional_after_captures": [
+    {
+      "file": ".out/client-lifecycle/393/dm-search.png",
+      "sha256": "ede7a3bfc88521210421b1e971e66e6e3f3dc00cd9d5f650f504ff851fc7460f",
+      "px": [
+        1179,
+        2556
+      ],
+      "note": "Search within the current DM; this is not the global-search M07 reference."
+    },
+    {
+      "file": ".out/client-lifecycle/393/global-search-result-context.png",
+      "sha256": "62c71e9387cadf0a43139a8f48f728702481aff308b796d051c10c91fd977a32",
+      "px": [
+        1179,
+        2556
+      ],
+      "note": "Supplemental evidence that a global result opens its original channel context."
+    },
+    {
+      "file": ".out/client-lifecycle/1440/dm-empty-conversation.png",
+      "sha256": "453c1b3f760443901a74544a73a33ee1c8eb9875cc2b7347a5e6e64e20dd1ead",
+      "px": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "file": ".out/client-lifecycle/1440/dm-search.png",
+      "sha256": "b70edc8ffa2c69574c61fbb4a4a4d5b91466ea8326c51460c897516f621af070",
+      "px": [
+        2880,
+        1800
+      ],
+      "note": "Search within the current DM; this is not the global-search M07 reference."
+    },
+    {
+      "file": ".out/client-lifecycle/1440/global-search-result-context.png",
+      "sha256": "c62ebd568bad6ed64d76c32772f1a3af8c7b7ee8c5129334b8fdb6b8f1f470aa",
+      "px": [
+        2880,
+        1800
+      ],
+      "note": "Supplemental evidence that a global result opens its original channel context."
+    },
+    {
+      "file": ".out/client-lifecycle/1440/dm-list.png",
+      "sha256": "453c1b3f760443901a74544a73a33ee1c8eb9875cc2b7347a5e6e64e20dd1ead",
+      "px": [
+        2880,
+        1800
+      ],
+      "note": "Not counted as a source-matched pair: the archived desktop image shows a voice channel with the DM roster, while this full-app capture shows the selected synthetic DM conversation."
+    }
+  ],
+  "limitations": [
+    "The production-browser run covers Web only; no Flutter full-app before/after screenshots were captured.",
+    "Physical Android/iOS IME, clipboard/image picker, safe-area and background/foreground acceptance remains NOT_RUN under #303.",
+    "No real-user navigation-time measurements or release-gate tester sample were collected; #305 remains NOT_RUN.",
+    "The six source-sized Web captures are review evidence, not approved visual goldens. For M07, the runtime capture has a visible keyboard focus ring while the archived source has no focused control.",
+    "The desktop DM roster full-screen capture is retained as supplemental evidence only because its archived reference includes a voice-channel main surface; it is excluded from source-matched pair counts."
+  ],
+  "status": "PASS for authenticated Web full-app DM and global search flow at mobile and desktop viewports, with five visually reviewed source-matched capture pairs; issue #294 and epic #289 remain open for physical/mobile and user-measurement gates.",
+  "updated_date": "2026-10-11",
+  "global_search_full_app": {
+    "result": "PASS",
+    "api_mocks": false,
+    "assertions": {
+      "panel_visible": true,
+      "default_global_scope": true,
+      "author_attachment_date_filters_visible": true,
+      "live_disposable_api_results": true,
+      "result_opens_original_channel_context": true
+    },
+    "captures": [
+      {
+        "viewport": "mobile-393x852",
+        "panel": ".out/client-lifecycle/393/global-search.png",
+        "panel_sha256": "1ccbe071d54d400148902565f319904fd1d07a8c6b426cd21856df4caefdff43",
+        "result_context": ".out/client-lifecycle/393/global-search-result-context.png",
+        "result_context_sha256": "62c71e9387cadf0a43139a8f48f728702481aff308b796d051c10c91fd977a32",
+        "raster_px": [
+          1179,
+          2556
+        ]
+      },
+      {
+        "viewport": "desktop-1440x900",
+        "panel": ".out/client-lifecycle/1440/global-search.png",
+        "panel_sha256": "a98b968d8e5b44e374200a464ed4725baf3b31d76c4162680b9ba2fddd31bbe1",
+        "result_context": ".out/client-lifecycle/1440/global-search-result-context.png",
+        "result_context_sha256": "c62ebd568bad6ed64d76c32772f1a3af8c7b7ee8c5129334b8fdb6b8f1f470aa",
+        "raster_px": [
+          2880,
+          1800
+        ]
+      }
+    ],
+    "review_note": "M07 is the global WorkspaceSearchPanel. The actual authenticated Web app capture matches its panel and filters. The runtime capture shows the query input keyboard focus ring; the source screenshot has no focused control. Review-only; not an approved pixel golden."
+  },
+  "capture_scenario_sha256": "4492fae2f722f51b5d2beb59330995aa49a24e8266e82dbe897ec3fd05dcad3a",
+  "current_branch_revalidation": {
+    "date": "2026-10-11",
+    "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc",
+    "status": "PASS_CAPTURE_AND_VISUAL_REVIEW_ONLY",
+    "runner": "python3 -m tools.qa.client_lifecycle.run --width 393; python3 -m tools.qa.client_lifecycle.run --width 1440",
+    "report_sha256": {
+      "393": "f1d1353c2c03b3945a4a709988a014a8c87a230d7abfacfa30c51e94cb661942",
+      "1440": "f82e3edd655779c4fbdb9a687550106131849221de2958389d7e38c89dbe68c5"
+    },
+    "runtime": {
+      "api_mocks": false,
+      "telemetry": "PASS",
+      "persisted_after_api_restart": true,
+      "owned_resources_removed": true
+    },
+    "source_matched_captures": [
+      {
+        "catalog_slot": "M04",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-dm-list.png",
+          "sha256": "8e3034e56a49793985ea90be7fa16afd051b9c13b41fd1f98d38cd1859cdcee7",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "file": ".out/client-lifecycle/393/dm-list.png",
+          "sha256": "26dd86f5d314cda03a5ef5e243657e093f8d78145ae6df6eccb7e979d7c8cc2d",
+          "raster": "1179x2556",
+          "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "catalog_slot": "M05",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-dm-empty-chat.png",
+          "sha256": "a073ac9916cce4dd250e01a65350373e3d6f1dff4c663e9e926f55a9471d3564",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "file": ".out/client-lifecycle/393/dm-empty-conversation.png",
+          "sha256": "4f2f03322104ed44659287cc8a571107db4efcaa17cde43178d272e68bd961d9",
+          "raster": "1179x2556",
+          "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "catalog_slot": "M06",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-dm-conversation.png",
+          "sha256": "20081e82ac0f4da0d064c65c985b37cfea31903f0dc48cfa2c81ca61ffe7beb4",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "file": ".out/client-lifecycle/393/dm-conversation.png",
+          "sha256": "ab7941880cc08fef646be489b3acba42ca5acac780ea0dd4b31428979d512ad8",
+          "raster": "1179x2556",
+          "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "catalog_slot": "M07",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-message-search.png",
+          "sha256": "c1ca3930347bc82d24cb4fca84d4896db452b7bde9c64e651acc18a27d251809",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "file": ".out/client-lifecycle/393/global-search.png",
+          "sha256": "1ccbe071d54d400148902565f319904fd1d07a8c6b426cd21856df4caefdff43",
+          "raster": "1179x2556",
+          "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "catalog_slot": "D04",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-dm-conversation.png",
+          "sha256": "148ef1287fd79142eb39402ffe291e99ab11d08e91f4f3224c09c3843f332f75",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "file": ".out/client-lifecycle/1440/dm-conversation.png",
+          "sha256": "6b46a74d19f0a162a37bca2d66005dded2f37122b29c4ba12d45f38e11affe1f",
+          "raster": "2880x1800",
+          "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+      }
+    ],
+    "limitation": "D04 and M04–M07 were visually reviewed at matching source raster dimensions. The captures are review-only, not approved pixel goldens, and do not replace Flutter or physical mobile acceptance."
+  }
+}

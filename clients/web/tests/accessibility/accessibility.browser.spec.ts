@@ -702,7 +702,7 @@ test('voice dock makes muted and deafened states visibly red after each toggle',
   await page.screenshot({ path: testInfo.outputPath('voice-dock-muted-deafened-active.png') })
 })
 
-test('screen-share setup shows the recommended profile before progressive quality options', async ({ page, browser }, testInfo) => {
+test('screen-share setup shows the recommended profile and keeps all quality options discoverable', async ({ page, browser }, testInfo) => {
   await page.setViewportSize({ width: 320, height: 640 })
   await page.goto('/')
   await page.evaluate(async () => {
@@ -720,7 +720,7 @@ test('screen-share setup shows the recommended profile before progressive qualit
 
   const dialog = page.getByRole('dialog', { name: 'Демонстрация экрана' })
   const header = dialog.locator('.screen-share-setup__header')
-  const additional = dialog.locator('.screen-share-quality__advanced')
+  const qualitySettings = dialog.locator('.screen-share-quality__settings')
   const capabilityDetails = dialog.locator('.screen-share-capabilities__details')
   await expect(dialog.locator('.screen-share-capabilities__availability')).toContainText('Поддержка видео до выбора источника')
   await expect(capabilityDetails).not.toHaveAttribute('open', '')
@@ -728,17 +728,18 @@ test('screen-share setup shows the recommended profile before progressive qualit
   await expect(dialog.getByText('1080p · 60 FPS', { exact: true })).toBeVisible()
   await expect(dialog.getByText('Текущий выбор: 1080p · 30 FPS', { exact: true })).toBeVisible()
   await expect(header).toBeInViewport({ ratio: 0.99 })
-  await expect(dialog.getByText('Рекомендуемый профиль', { exact: true })).toBeInViewport()
+  await expect(dialog.locator('.screen-share-setup__footer')).toBeInViewport({ ratio: 0.99 })
+  // On a 320px screen the primary chooser takes priority; the optional recommendation is available by body scroll.
+  await page.screenshot({ path: testInfo.outputPath('screen-share-setup-320x640-initial.png') })
   const recommendedProfile = dialog.getByRole('button', { name: 'Применить рекомендованный профиль' })
   await recommendedProfile.scrollIntoViewIfNeeded()
   await expect(recommendedProfile).toBeInViewport()
-  await expect(additional).not.toHaveAttribute('open', '')
-  await expect(dialog.getByRole('radio', { name: '720p' })).toBeHidden()
+  await expect(qualitySettings).toBeVisible()
+  await expect(dialog.getByRole('radio', { name: '1440p' })).toBeVisible()
   await page.screenshot({ path: testInfo.outputPath('screen-share-setup-recommended-profile.png') })
 
   await dialog.getByRole('button', { name: 'Применить рекомендованный профиль' }).click()
   await expect(dialog.getByText('Текущий выбор: 1080p · 60 FPS', { exact: true })).toBeVisible()
-  await additional.getByText('Дополнительные настройки качества', { exact: true }).click()
   await dialog.getByRole('radio', { name: '720p' }).check()
   await expect(dialog.getByText('Текущий выбор: 720p · 60 FPS', { exact: true })).toBeVisible()
   await expectAxeClear(page, '.screen-share-setup-dialog')
@@ -752,7 +753,6 @@ test('screen-share setup shows the recommended profile before progressive qualit
   await header.scrollIntoViewIfNeeded()
   await expect(header).toBeInViewport({ ratio: 0.99 })
   await page.screenshot({ path: testInfo.outputPath('desktop-stream-launch-settings-after.png'), fullPage: true })
-  await additional.getByText('Дополнительные настройки качества', { exact: true }).click()
   await page.screenshot({ path: testInfo.outputPath('desktop-stream-launch-actions-after.png'), fullPage: true })
   await dialog.getByRole('button', { name: 'Начать трансляцию' }).click()
   await expect.poll(() => page.evaluate(() => (window as Window & { __startedScreenProfile?: string }).__startedScreenProfile)).toBe('P720_60')
@@ -802,33 +802,39 @@ test('screen-share selectors fit their options and allow the 1440p text profile'
   await expect(footer).toBeInViewport({ ratio: 0.99 })
   await expect(body).toHaveCSS('overflow-y', 'auto')
   expect(await body.evaluate(element => element.scrollHeight > element.clientHeight)).toBe(true)
-  await dialog.locator('.screen-share-quality__advanced > summary').click()
-
   const groups = dialog.locator('.screen-share-quality__row')
   const readSelectorLayout = () => groups.evaluateAll(elements => elements.map(field => {
-    const selector = field.querySelector<HTMLElement>('.screen-share-quality__segments')!
-    const legend = field.querySelector('legend')!
+    const selector = field.querySelector<HTMLElement>('.screen-share-quality__scenarios, .screen-share-quality__segments, .screen-share-quality__single-value')!
+    const label = field.querySelector<HTMLElement>('legend, .screen-share-quality__frame-rate-label')!
     const selectorBox = selector.getBoundingClientRect()
-    const legendBox = legend.getBoundingClientRect()
+    const labelBox = label.getBoundingClientRect()
     const columns = getComputedStyle(selector).gridTemplateColumns.split(/\s+/).filter(Boolean).length
-    const labelsFit = [...selector.querySelectorAll('span')].every(label => label.scrollWidth <= label.clientWidth)
-    return { columns, labelsFit, legendAboveSelector: legendBox.bottom <= selectorBox.top + 1 }
+    const labels = selector.querySelectorAll('.screen-share-quality__scenario-title, .screen-share-quality__scenario-copy small, .screen-share-quality__option span')
+    const labelsFit = [...labels].every(label => label.scrollWidth <= label.clientWidth && label.scrollHeight <= label.clientHeight)
+    const placedBeforeOrBeside = labelBox.bottom <= selectorBox.top + 1
+      || (labelBox.right <= selectorBox.left + 1
+        && Math.abs((labelBox.top + labelBox.bottom) / 2 - (selectorBox.top + selectorBox.bottom) / 2) <= selectorBox.height)
+    const labelFits = placedBeforeOrBeside
+    return { columns, labelsFit, labelFits }
   }))
   const motionLayout = await readSelectorLayout()
   expect(motionLayout.map(group => group.columns)).toEqual([2, 3, 1])
-  expect(motionLayout.every(group => group.labelsFit && group.legendAboveSelector)).toBe(true)
+  expect(motionLayout.every(group => group.labelsFit && group.labelFits)).toBe(true)
 
   const resolution = dialog.getByRole('radio', { name: '1440p' })
-  await expect(resolution).toBeDisabled()
-  await expect(dialog.getByText(/1440p60 пока недоступно/)).toBeVisible()
-  await expectAxeClear(page, '.screen-share-setup-dialog')
-  await dialog.getByRole('radio', { name: 'Текст — документы и код' }).check()
+  await expect(dialog.locator('.screen-share-quality__mode')).toBeInViewport({ ratio: 0.99 })
+  await expect(dialog.locator('[aria-label=\"Верхний предел разрешения трансляции\"]')).toBeInViewport({ ratio: 0.99 })
+  await expect(resolution).toBeInViewport({ ratio: 0.99 })
   await expect(resolution).toBeEnabled()
-  const textLayout = await readSelectorLayout()
-  expect(textLayout.map(group => group.columns)).toEqual([2, 3, 2])
-  expect(textLayout.every(group => group.labelsFit && group.legendAboveSelector)).toBe(true)
+  await expectAxeClear(page, '.screen-share-setup-dialog')
   await resolution.check()
+  await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
+  await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
   await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
+  await expect(dialog.locator('.screen-share-quality__mode')).toBeInViewport({ ratio: 0.99 })
+  await expect(resolution).toBeInViewport({ ratio: 0.99 })
+  await expect(header).toBeInViewport({ ratio: 0.99 })
+  await expect(footer).toBeInViewport({ ratio: 0.99 })
   await expectAxeClear(page, '.screen-share-setup-dialog')
   await page.screenshot({ path: testInfo.outputPath('screen-share-selector-layout-637x584.png') })
 
@@ -1224,12 +1230,12 @@ test('screen-share setup keeps keyboard focus inside its modal dialog', async ({
   const dialog = page.getByRole('dialog', { name: 'Демонстрация экрана' })
   const close = dialog.getByRole('button', { name: 'Закрыть' })
   const start = dialog.getByRole('button', { name: 'Начать трансляцию' })
-  const selectedMode = dialog.getByRole('radio', { name: 'Текст — документы и код' })
-  const advanced = dialog.getByText('Дополнительные настройки качества', { exact: true })
+  const selectedMode = dialog.getByRole('radio', { name: /Чёткость текста/ })
+  const resolution = dialog.getByRole('radio', { name: '1080p' })
   await expect(close).toBeFocused()
   await selectedMode.focus()
   await page.keyboard.press('Tab')
-  await expect(advanced).toBeFocused()
+  await expect(resolution).toBeFocused()
   await page.keyboard.press('Shift+Tab')
   await expect(selectedMode).toBeFocused()
   await start.focus()

@@ -8,6 +8,7 @@ def main():
     require_version("flutter", versions["frameworkVersion"])
     require_version("dart", versions["dartSdkVersion"].split()[0])
     app = client("flutter")
+    run("python3", "-m", "unittest", "tools.verify.test_flutter_webrtc_public_headers")
     run("flutter", "pub", "get", "--enforce-lockfile", cwd=app)
     run("flutter", "test", "--no-pub", cwd=app)
     for package in ("livekit_client", "flutter_webrtc"):

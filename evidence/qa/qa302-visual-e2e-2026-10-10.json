@@ -86,7 +86,7 @@
           },
           "actual": {
             "path": ".out/client-lifecycle/1440/channel-text.png",
-            "sha256": "b2ad38320c5619956a97cb7be4d1a2c2a848e654345d644848562e2c2d9b8d7b",
+            "sha256": "c33ac6ea2187124058fc248cce2fad2b0a12137eeecf2a76bb99c2a1b67ef07b",
             "raster": "2880x1800"
           },
           "regions": [
@@ -123,7 +123,7 @@
           },
           "actual": {
             "path": ".out/client-lifecycle/393/channel-text.png",
-            "sha256": "bfbe93f68d6faf12fa84b98d7804073956e725a3ee669761bd3616a2ca7a8b0c",
+            "sha256": "80bb0855e928bde8a905118449d63be849b98a77d2d03fdbe355161096508e18",
             "raster": "1179x2556"
           },
           "regions": [
@@ -135,8 +135,8 @@
                 1179,
                 250
               ],
-              "meanAbsoluteRgbChange": 1.507,
-              "pixelsChangedOverThresholdPercent": 1.666
+              "meanAbsoluteRgbChange": 3.904,
+              "pixelsChangedOverThresholdPercent": 2.813
             },
             {
               "name": "mobile-composer",
@@ -147,7 +147,7 @@
                 290
               ],
               "meanAbsoluteRgbChange": 0.379,
-              "pixelsChangedOverThresholdPercent": 0
+              "pixelsChangedOverThresholdPercent": 0.0
             }
           ]
         },
@@ -477,9 +477,9 @@
   "golden_comparison": {
     "status": "NOT_APPROVED_FOR_FULL_CATALOG",
     "source_assets_are_audit_references": true,
-    "reviewed_source_matched_admin_screens": 6,
+    "reviewed_source_matched_admin_screens": 7,
     "remaining_source_backed_full_app_after_captures": "NOT_RUN",
-    "note": "Do not convert the audit archive into a pixel gate without review; the source has one duplicate baseline and other slots have no approved current-state capture."
+    "note": "Seven source-sized full-app admin captures have been reviewed (six existing pairs plus mobile M14). All remain review-only; the audit archive has no approved pixel baselines and desktop D11 is a duplicate source."
   },
   "acceptance": {
     "41_screen_catalog_and_source_integrity": "PASS",
@@ -493,8 +493,8 @@
     "responsive_shell_cross_browser": "PASS_21_CASES_CHROMIUM_WEBKIT_FIREFOX"
   },
   "limitations": [
-    "Only the six admin screens listed above have reviewed source-sized full-stack comparisons; the other catalog slots do not yet have source-backed full-app after captures.",
-    "Source screenshots are audit evidence, not approved goldens. desktop-guild-settings.png is byte-identical to desktop-guild-members.png.",
+    "Only seven admin screens now have reviewed source-sized full-app after captures; other catalog slots still lack source-backed full-app after captures. The source archive remains an audit reference, not an approved pixel golden.",
+    "The archive asset desktop-guild-settings.png is byte-identical to desktop-guild-members.png. An independent pre-UIUX Web replacement pair is now available and visually reviewed; it is capture-only, not an approved golden, and the archive remains unchanged.",
     "Earlier [skip ci] checkpoints produced no GitHub Actions bundle. PR #307 now has a full successful CI run and retained Web/Flutter review artifacts; the run does not approve pixel goldens.",
     "The 2026-10-10 rerun at 2cdc9b2c passed locally. The commits use [skip ci], so there is still no GitHub Actions artifact bundle for this source revision."
   ],
@@ -928,5 +928,757 @@
     "related_issue": "#298",
     "related_pr": "https://github.com/Egkurilov/BOOHTACORD/pull/309",
     "test_file": "clients/web/tests/accessibility/screen_share_short_desktop.browser.spec.ts"
+  },
+  "updated_date": "2026-10-11",
+  "supplemental_source_review_evidence": {
+    "screen_id": "M07",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "source": {
+      "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-message-search.png",
+      "sha256": "c1ca3930347bc82d24cb4fca84d4896db452b7bde9c64e651acc18a27d251809",
+      "raster": "1179x2556"
+    },
+    "actual": {
+      "path": ".out/client-lifecycle/393/global-search.png",
+      "sha256": "1ccbe071d54d400148902565f319904fd1d07a8c6b426cd21856df4caefdff43",
+      "raster": "1179x2556"
+    },
+    "full_app_report": "evidence/qa/qa294-dm-live-full-app-2026-10-10.json",
+    "source_revision": "92ccd7c62aebdf1a09a9b635ab55e4a7d2a0974b",
+    "coverage": "Authenticated production Web app, actual global workspace search, all/default scope, author/attachment/date filters, disposable API results, and opening the original result context at 393x852 CSS px.",
+    "review_note": "The archive reference is global search, not search within an open DM. The panel and filter layout match. The runtime image keeps the visible focus ring on the query field; the reference has no focused control. Review-only, no pixel-golden approval."
+  },
+  "source_review_follow_up_m14": {
+    "date": "2026-10-11",
+    "screen_id": "M14",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "source": {
+      "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-guild-settings.png",
+      "sha256": "d8ffe033e6784f1214a2a79bed53493a62da3a133cb26fae6928e21fd97fd8aa",
+      "raster": "1179x2556"
+    },
+    "actual": {
+      "path": ".out/client-lifecycle/393/guild-settings.png",
+      "sha256": "6bf95c0266e9d020d1af1885479af5c6c53f4ad8ef9448b9854f0bcc14a53093",
+      "raster": "1179x2556"
+    },
+    "full_app_report": "evidence/qa/qa295-flutter-admin-captures-2026-10-10.json",
+    "source_revision": "5fc326680652ec7a97b4334f8b326857e5f6f11a",
+    "coverage": "Authenticated production Web guild settings at 393x852 CSS px against disposable Go API/PostgreSQL/Tempo; no API mocks; owned resources removed.",
+    "review_note": "Settings form remains visible in the source-sized viewport. Current header shortens “Администрирование” to “Админ” and adds the horizontal tab cue; synthetic guild/channel values and saved-state feedback differ from source. Review evidence only; no pixel-golden approval."
+  },
+  "web_full_app_capture_revalidation": {
+    "date": "2026-10-11",
+    "source_revision": "5fc326680652ec7a97b4334f8b326857e5f6f11a",
+    "viewport_reports": [
+      {
+        "viewport": "393x852",
+        "path": ".out/client-lifecycle/393/report.json",
+        "sha256": "e28f7d5c8eeaed49028074ae5e051ca01224e99b966a7ab07a83213de7c77b96",
+        "telemetry_verified": true,
+        "api_restart_persistence": true,
+        "owned_resources_removed": true
+      },
+      {
+        "viewport": "1440x900",
+        "path": ".out/client-lifecycle/1440/report.json",
+        "sha256": "66681a264c4771573f07bc7a20090dd0def3bfbbd8d943df4e262910d1d47185",
+        "telemetry_verified": true,
+        "api_restart_persistence": true,
+        "owned_resources_removed": true
+      }
+    ],
+    "review_only_delta_reports": [
+      ".out/uiux-visual-diff-302/channel-desktop-report.json",
+      ".out/uiux-visual-diff-302/channel-mobile-report.json",
+      ".out/uiux-visual-diff-302/settings-mobile-report.json"
+    ],
+    "source_review": "All five QA-294 mobile/desktop pairs and M14 were visually reviewed after recapture; synthetic account data and existing compact admin header differences remain documented.",
+    "result": "PASS_CAPTURE_AND_REVIEW_ONLY_NO_GOLDEN_APPROVAL"
+  },
+  "d11_replacement_capture_follow_up": {
+    "date": "2026-10-11",
+    "status": "INDEPENDENT_REPLACEMENT_CAPTURE_AVAILABLE_NOT_APPROVED_GOLDEN",
+    "archive_entry_sha256": "0a0ba90ad3288815fa4925b540396e74defaf463f4542fe38c6370c5ff57ff57",
+    "source_revision_before": "674fb79ca57ce7207bd75ce6e8dcd3d86b5deee6",
+    "source_revision_after": "d856ecac6c9397ae99468c1e6c9492fec4d35e71",
+    "before": {
+      "path": ".out/qa-visual-290-before/.out/client-lifecycle/1440/guild-settings.png",
+      "sha256": "8eb7a20c57c2c2578fadc572dc39dc3907de25366f6f679706f342426e9260e6",
+      "raster": "2880x1800"
+    },
+    "after": {
+      "path": ".out/qa-visual-290-d856/.out/client-lifecycle/1440/guild-settings.png",
+      "sha256": "56874fc0803b9009d7147eac531eff49c34314ccd91dd10e137a741c9690123d",
+      "raster": "2880x1800"
+    },
+    "css_viewport": "1440x900",
+    "dpr": 2,
+    "result": "VISUALLY_REVIEWED_CAPTURE_ONLY",
+    "evidence": "evidence/qa/qa290-design-tokens-2026-10-10.json#baseline_comparison.comparisons[Guild settings, desktop]",
+    "limitations": [
+      "The supplied archive asset remains byte-identical to desktop-guild-members.png; this pair is a separately captured replacement and the source archive was not modified.",
+      "The pre-UIUX Web lifecycle was capture-only and ended at an obsolete session-dialog selector after writing target screenshots.",
+      "Source and after contain different synthetic runtime data; this is visual review evidence, not an approved pixel golden."
+    ]
+  },
+  "screen_share_quality_controls_follow_up": {
+    "date": "2026-10-11",
+    "revision": "fd844b3c",
+    "commands": [
+      "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm --prefix clients/web run test:screen-profile -- --grep 'scenario names|quality choices|normalizes'",
+      "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' clients/web/node_modules/.bin/playwright test -c clients/web/tests/accessibility/playwright.config.ts --grep 'screen-share selectors fit their options'",
+      "npm --prefix clients/web run test -- src/voice/screen_share_setup_dialog.spec.ts",
+      "npm --prefix clients/web run build -- --mode development"
+    ],
+    "result": "PASS_AUTOMATED_REVIEW_ONLY",
+    "browser": "Google Chrome 154.0.8037.98",
+    "browser_tests_passed": 4,
+    "unit_tests_passed": 8,
+    "build": "PASS_DEVELOPMENT_MODE",
+    "observations": [
+      "Scenario and resolution/FPS selectors are the first dialog content, use readable labels and remain in view at 637x584 and 390x640.",
+      "Selecting 1440p switches to the supported text scenario at 30 FPS and keeps the scenario selector visible.",
+      "A persisted P1440_60 profile normalizes to P1440_30 and leaves Start enabled.",
+      "The source archive is not an approved golden; these screenshots are implementation-review captures."
+    ],
+    "captures": [
+      {
+        "viewport": "637x584",
+        "selection": "1440p · 30 FPS",
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+        "sha256": "d1239a4897ab9f0f8d30d4ec294580f1b7b3fcddf9cbe3ea838ffa790e31d04b",
+        "raster": "637x584"
+      },
+      {
+        "viewport": "390x640",
+        "selection": "1440p · 30 FPS",
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
+        "sha256": "809e58ed4b470d6c31e1f584077b3e5bd66aee06371d4ae9fb74a3a35480b693",
+        "raster": "390x640"
+      },
+      {
+        "viewport": "637x584",
+        "selection": "1440p · 30 FPS after keyboard selection",
+        "path": ".out/accessibility-browser-results/accessibility.browser-scre-e6862-llow-the-1440p-text-profile/screen-share-selector-layout-637x584.png",
+        "sha256": "f97b1b8db1b350d2dddedd93ca322dde4ceb031f11682a74c8850c17f3ae5fd7",
+        "raster": "637x584"
+      }
+    ],
+    "limitations": [
+      "The production Vite build requires VITE_PUBLIC_ORIGIN; development-mode build passed, but production-mode build was not verified in this environment.",
+      "The checkpoint used the requested [skip ci], so this follow-up has no new GitHub Actions artifact."
+    ]
+  },
+  "current_branch_production_capture_refresh": {
+    "date": "2026-10-11",
+    "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc",
+    "status": "PASS_REVIEW_ONLY",
+    "runner": "python3 -m tools.qa.client_lifecycle.run",
+    "scope": "Authenticated production Web lifecycle on a disposable Go API/PostgreSQL/Tempo stack; no API mocks; mobile and desktop source-sized captures; telemetry, API-restart persistence, and owned-resource cleanup verified.",
+    "viewports": {
+      "393": {
+        "viewport_css": "393x852",
+        "device_scale_factor": 3,
+        "has_touch": true,
+        "result": "PASS",
+        "telemetry": "PASS",
+        "persisted_after_api_restart": true,
+        "owned_resources_removed": true,
+        "report_path": ".out/client-lifecycle/393/report.json",
+        "report_sha256": "f1d1353c2c03b3945a4a709988a014a8c87a230d7abfacfa30c51e94cb661942",
+        "screenshots": {
+          "authentication.png": {
+            "sha256": "94c506df857f4a486b5fc594265cae44a586993e9c9bedbd39fe3a8fe998060c",
+            "raster": "1179x2556"
+          },
+          "channel-participants-200.png": {
+            "sha256": "cdda22e426c6f32b99180ec998c40f9d0472882e34afcf8f00b430c7ca754999",
+            "raster": "1179x2556"
+          },
+          "channel-participants.png": {
+            "sha256": "bb92c593281ec1b860b60ce6bc4d4df7fb19197cb73364a8fe5a7e99554e26d9",
+            "raster": "1179x2556"
+          },
+          "channel-text-200.png": {
+            "sha256": "1221fca12b932818de9c32b14dd608ae8f1542051ccf620a71957abfe37fed9a",
+            "raster": "1179x2556"
+          },
+          "channel-text.png": {
+            "sha256": "44ec392be029d1ecefc4ec966e116220e30007a0606dca0113346ae5a82539dc",
+            "raster": "1179x2556"
+          },
+          "direct-message-header.png": {
+            "sha256": "48a262470a749cb14bdf71f91c3acee4380b4414067595f5c4a6c497d7b8b26e",
+            "raster": "1179x2556"
+          },
+          "dm-conversation.png": {
+            "sha256": "ab7941880cc08fef646be489b3acba42ca5acac780ea0dd4b31428979d512ad8",
+            "raster": "1179x2556"
+          },
+          "dm-empty-conversation.png": {
+            "sha256": "4f2f03322104ed44659287cc8a571107db4efcaa17cde43178d272e68bd961d9",
+            "raster": "1179x2556"
+          },
+          "dm-list.png": {
+            "sha256": "26dd86f5d314cda03a5ef5e243657e093f8d78145ae6df6eccb7e979d7c8cc2d",
+            "raster": "1179x2556"
+          },
+          "dm-search.png": {
+            "sha256": "d3e045c21bc58e8e00fe5f5d905bc2cc007bd70ab7306161da19d1e4882a8ba3",
+            "raster": "1179x2556"
+          },
+          "global-search-result-context.png": {
+            "sha256": "5865fc4bdd156da02cbad543f2f4fce6cea21a5c27550fde924127e5f9232bb7",
+            "raster": "1179x2556"
+          },
+          "global-search.png": {
+            "sha256": "1ccbe071d54d400148902565f319904fd1d07a8c6b426cd21856df4caefdff43",
+            "raster": "1179x2556"
+          },
+          "guild-audit.png": {
+            "sha256": "f258d695af2d9e1c1032bacde81ce8d7ddc94d09ba8683156c9ef63f2d12d90f",
+            "raster": "1179x2556"
+          },
+          "guild-channels.png": {
+            "sha256": "77ffa8cf2184a7370aafa9079bcd26d2f28700febfecbce522dc02450b2dc748",
+            "raster": "1179x2556"
+          },
+          "guild-media.png": {
+            "sha256": "2eda5b1a2a110615aa68d20880c157c96cc075d33c00a662cc7c3c6c99ae1b4c",
+            "raster": "1179x2556"
+          },
+          "guild-members.png": {
+            "sha256": "8a379d85b2abf151ba367e4d49b5b98582b2bd7e482bc92bb4ef7edda38f7e78",
+            "raster": "1179x2556"
+          },
+          "guild-readiness.png": {
+            "sha256": "2a03f6626e488e9883929bdc5462a8a09c2f7cb99c2525714458d234524a82d9",
+            "raster": "1179x2556"
+          },
+          "guild-roles.png": {
+            "sha256": "728326ac7ac84fbd29afbcf6fc72dafb0635a288b92e6b9317785e64698cc970",
+            "raster": "1179x2556"
+          },
+          "guild-settings-200.png": {
+            "sha256": "9114abee089b284c1a204be2bffb1a8f536ad1e4c1d4bf9d71765b53af35cf62",
+            "raster": "1179x2556"
+          },
+          "guild-settings-initial.png": {
+            "sha256": "28b0e573ab33bc666c86ec1489c8bfd8315368e6526fa136f9d819013ff852ee",
+            "raster": "1179x2556"
+          },
+          "guild-settings.png": {
+            "sha256": "6bf95c0266e9d020d1af1885479af5c6c53f4ad8ef9448b9854f0bcc14a53093",
+            "raster": "1179x2556"
+          },
+          "own-sessions.png": {
+            "sha256": "8d2badf7f4b242ca8b073cb9914d8e49f9161f5a54ba0fa640ec6dc52a068c0b",
+            "raster": "1179x2556"
+          },
+          "welcome-a.png": {
+            "sha256": "9d3516cbf0c5885e65e5bac9cb32373657d18d44ba8a32c9455dda9e9a1fb706",
+            "raster": "1179x2556"
+          },
+          "welcome-b.png": {
+            "sha256": "bb92c593281ec1b860b60ce6bc4d4df7fb19197cb73364a8fe5a7e99554e26d9",
+            "raster": "1179x2556"
+          }
+        }
+      },
+      "1440": {
+        "viewport_css": "1440x900",
+        "device_scale_factor": 2,
+        "has_touch": false,
+        "result": "PASS",
+        "telemetry": "PASS",
+        "persisted_after_api_restart": true,
+        "owned_resources_removed": true,
+        "report_path": ".out/client-lifecycle/1440/report.json",
+        "report_sha256": "f82e3edd655779c4fbdb9a687550106131849221de2958389d7e38c89dbe68c5",
+        "screenshots": {
+          "authentication.png": {
+            "sha256": "8d30f6a95fac5e24aab0e3bebc6a7b8269f8ca4ba396f22b41de9a7676e47e31",
+            "raster": "2880x1800"
+          },
+          "channel-participants-200.png": {
+            "sha256": "0d345d9fd1014b33167da24db25e0e6646a22dede6a7e14c76c0511923af6271",
+            "raster": "2880x1800"
+          },
+          "channel-participants.png": {
+            "sha256": "b11bb62d2875442cf912cd6e8468481734cec122ab7a09ce5dad594c88188613",
+            "raster": "2880x1800"
+          },
+          "channel-text-200.png": {
+            "sha256": "0d345d9fd1014b33167da24db25e0e6646a22dede6a7e14c76c0511923af6271",
+            "raster": "2880x1800"
+          },
+          "channel-text.png": {
+            "sha256": "b11bb62d2875442cf912cd6e8468481734cec122ab7a09ce5dad594c88188613",
+            "raster": "2880x1800"
+          },
+          "direct-message-header.png": {
+            "sha256": "a1312d4da65a020b51034a88a7c6003d35e26c5bd774582439bbf3b8ea5fbc20",
+            "raster": "2880x1800"
+          },
+          "dm-conversation.png": {
+            "sha256": "6b46a74d19f0a162a37bca2d66005dded2f37122b29c4ba12d45f38e11affe1f",
+            "raster": "2880x1800"
+          },
+          "dm-empty-conversation.png": {
+            "sha256": "4c62813bb10e8699183c33906df8753e2bb20818c384d221ca2cd1aa7420bb1c",
+            "raster": "2880x1800"
+          },
+          "dm-list.png": {
+            "sha256": "4c62813bb10e8699183c33906df8753e2bb20818c384d221ca2cd1aa7420bb1c",
+            "raster": "2880x1800"
+          },
+          "dm-search.png": {
+            "sha256": "a1312d4da65a020b51034a88a7c6003d35e26c5bd774582439bbf3b8ea5fbc20",
+            "raster": "2880x1800"
+          },
+          "global-search-result-context.png": {
+            "sha256": "7d95271613a96416bae6b2b8ad05d5916dbbed0b27980355219c4e223caea2cb",
+            "raster": "2880x1800"
+          },
+          "global-search.png": {
+            "sha256": "ddadab5bc121001fb78e686fd89f2826ce0f1a3dcaf6c87c635081b8e16547fa",
+            "raster": "2880x1800"
+          },
+          "guild-audit.png": {
+            "sha256": "0170268f369cef45bfe992a12c3ef6b754ffd784fc886ad93a4da9d9191b5fea",
+            "raster": "2880x1800"
+          },
+          "guild-channels.png": {
+            "sha256": "2cd2b071df45dda968d7787aba92d207191d978baa2e3913c435ae95d13284f5",
+            "raster": "2880x1800"
+          },
+          "guild-media.png": {
+            "sha256": "470a0072abbdc7e713d3d42f5e1a69e88c5739531ca84c7b98f80a66bdac4358",
+            "raster": "2880x1800"
+          },
+          "guild-members.png": {
+            "sha256": "5159f4f8e74c88d02556fc0fa5124c7d059930e1f28a64c563431010b5598d32",
+            "raster": "2880x1800"
+          },
+          "guild-readiness.png": {
+            "sha256": "11f10b1296721f8a2d701f4cc38e8966fc5bd3d16fd04e97ff9eae88f37d1cfb",
+            "raster": "2880x1800"
+          },
+          "guild-roles.png": {
+            "sha256": "be7b13856db7cff6cff71540c0fbe579ec934628037f5abfaade9fe22a4e4419",
+            "raster": "2880x1800"
+          },
+          "guild-settings-200.png": {
+            "sha256": "bffec787907de81164e1de6b8c16cfa1d2597f65328cf9701409f3f04a70c8d5",
+            "raster": "2880x1800"
+          },
+          "guild-settings-initial.png": {
+            "sha256": "188463a978e861cd4c952ff9fcc46c97fe9c9b27aa7b770ddd58ce0e443d6a3e",
+            "raster": "2880x1800"
+          },
+          "guild-settings.png": {
+            "sha256": "03083f6b00dff8515fffcbb7fdffc4c5680c5840ee85c0f783eaf9fec8fc6fbe",
+            "raster": "2880x1800"
+          },
+          "own-sessions.png": {
+            "sha256": "b2b274468353d54f9e29fb1928e2dc9155d0a172b487be77cfe3151a9ac0200b",
+            "raster": "2880x1800"
+          },
+          "welcome-a.png": {
+            "sha256": "6db0040dff7fe1cc2f67f5e3aae2bfff30b4a806e2de54537261a36bca78eeb7",
+            "raster": "2880x1800"
+          },
+          "welcome-b.png": {
+            "sha256": "b11bb62d2875442cf912cd6e8468481734cec122ab7a09ce5dad594c88188613",
+            "raster": "2880x1800"
+          }
+        }
+      }
+    },
+    "limitations": [
+      "These captures supplement the reviewed catalog entries but do not complete all 41 source-backed after captures.",
+      "Captures are review evidence, not owner-approved pixel goldens; the source archive D11 entry remains a duplicate.",
+      "The requested [skip ci] means this current checkpoint has local captures only and no new GitHub Actions artifact bundle."
+    ]
+  },
+  "current_branch_dm_source_review_follow_up": {
+    "date": "2026-10-11",
+    "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "evidence": "evidence/qa/qa294-dm-live-full-app-2026-10-10.json#current_branch_revalidation",
+    "reviewed_catalog_slots": [
+      "D04",
+      "M04",
+      "M05",
+      "M06",
+      "M07"
+    ],
+    "observations": [
+      "D04 and M04 use synthetic account/message data; the DM conversation/list structure is comparable to the source.",
+      "M04 adds a chat/voice/member status block not present in the source, which lists six users while the QA capture lists one synthetic user.",
+      "M05 keeps the empty state and composer structure; the synthetic account header and mobile search affordance differ.",
+      "M06 uses one synthetic message; its sixth reaction wraps to a second row at 393x852 with no observed overlap.",
+      "M07 matches the global search panel and filters; the QA capture shows a query focus ring absent from the source."
+    ],
+    "limitations": [
+      "The current-branch DM comparisons are review captures, not approved pixel goldens.",
+      "The remaining visual catalog entries and duplicate D11 source are still unresolved.",
+      "The requested [skip ci] means no new Actions artifact was created."
+    ]
+  },
+  "mobile_settings_source_review_follow_up": {
+    "date": "2026-10-11",
+    "source_revision": "ab12691186a51beae7988dee01021e0ea7b5ef54",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "evidence": "evidence/qa/qa297-personal-settings-2026-10-10.json#comparisons",
+    "reviewed_catalog_slots": [
+      "M15",
+      "M16",
+      "M17",
+      "M18",
+      "M19"
+    ],
+    "captures": [
+      {
+        "catalog_slot": "M15",
+        "after": ".out/uiux-2026-epic-289/settings/393/mobile-profile-settings-after.png",
+        "sha256": "d5d41793a1e4359eb854189f33849654aa8474f14f328b51c535fac3049613e6",
+        "raster": "1179x2556"
+      },
+      {
+        "catalog_slot": "M16",
+        "after": ".out/uiux-2026-epic-289/settings/393/mobile-security-settings-after.png",
+        "sha256": "60a0c30741e3c14f46c7af7c460f2cd90a8619fbabc80c6496087726d35e27e3",
+        "raster": "1179x2556"
+      },
+      {
+        "catalog_slot": "M17",
+        "after": ".out/uiux-2026-epic-289/settings/393/mobile-audio-settings-after.png",
+        "sha256": "71fe011e00d75bd647b1d1e3b02724ec63cf5e51ac10d8e42c4b01b62412b36d",
+        "raster": "1179x2556"
+      },
+      {
+        "catalog_slot": "M18",
+        "after": ".out/uiux-2026-epic-289/settings/393/mobile-notification-settings-after.png",
+        "sha256": "67e3ac2cb06a5ea237347ae035a423ba3da9e7f2dbf0b2993e4758219bbfc877",
+        "raster": "1179x2556"
+      },
+      {
+        "catalog_slot": "M19",
+        "after": ".out/uiux-2026-epic-289/settings/393/mobile-about-settings-after.png",
+        "sha256": "733dc94349044ac372981ad7e5061a03cfa58b59698322d7a8b409f436298cbc",
+        "raster": "1179x2556"
+      }
+    ],
+    "observations": [
+      "M15 profile form and save state are visible with a synthetic identity and no avatar. The source includes a secondary avatar button labelled ‘Удалить…’; code renders this action only when avatar_url is present, so its absence in the after capture is expected and no parity defect is inferred.",
+      "M16 password and logout sections match the source flow. The after capture adds explicit confirmation guidance and places active sessions below the first viewport; no overlap was observed.",
+      "M17 device controls and microphone activation layout match. Device names and sensitivity values differ because the after image uses the host browser device inventory and runtime preferences.",
+      "M18 notification controls and per-channel preferences are present. The source browser has notifications enabled and a channel selected; the after browser denies permission and has no open channel, which changes the visible state.",
+      "M19 About/version card structure matches. The source reports an installed current version; the after capture shows the local update endpoint's 503 error and is not suitable as a golden."
+    ],
+    "limitations": [
+      "Source and after rasters match at 1179x2556, but account identity, host devices, notification permission/channel availability and update-service response are runtime-dependent.",
+      "M15 uses a no-avatar QA identity while the source has an avatar; the source's remove-avatar action is conditional and therefore absent by design in the after capture. The screenshots remain review evidence, not approved pixel goldens.",
+      "These five mobile Web review captures do not complete the 41-slot catalog, Flutter/native acceptance, D11 resolution or CI artifact gate."
+    ]
+  },
+  "screen_share_quality_source_review_follow_up": {
+    "date": "2026-10-11",
+    "source_revision": "21069626",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "evidence": "evidence/qa/qa320-screen-share-quality-2026-10-10.json#latest_visual_regression_after_focus_state_fix",
+    "reviewed_catalog_slots": [
+      "D16",
+      "D17",
+      "M20",
+      "M21"
+    ],
+    "captures": [
+      {
+        "catalog_slot": "M20",
+        "state": "default-actions",
+        "after": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-actions-current-393x852-2x.png",
+        "sha256": "cbcb64d661f3b59914debb98779e8b019f0da67e0c1d487f6e760de0484ac1db",
+        "raster": "786x1704"
+      },
+      {
+        "catalog_slot": "M21",
+        "state": "selected-1440p-30fps",
+        "after": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-settings-1440p-current-393x852-2x.png",
+        "sha256": "479c483f9a9a62aed9344dce54035d918cbfda9dbf3fbc0a53ec99b1cc16ec49",
+        "raster": "786x1704"
+      },
+      {
+        "catalog_slot": "D16",
+        "state": "desktop-default-actions",
+        "after": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-actions-current-1440x900-2x.png",
+        "sha256": "5839e4decb850088185eee7b7127134d608a0111302c08debca5e8f95d45967e",
+        "raster": "2880x1800"
+      },
+      {
+        "catalog_slot": "D17",
+        "state": "desktop-selected-1440p-30fps",
+        "after": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-settings-1440p-current-1440x900-2x.png",
+        "sha256": "4ecffc2a0cf01b0ae5fdcffa6eb236fa02432dc9aa46e83fa8f554726261dc3c",
+        "raster": "2880x1800"
+      }
+    ],
+    "visual_matrix_inventory_test": "10/10 PASS",
+    "source_archive_integrity_verification": "PASS: 41 source screenshots verified; one duplicate is explicitly blocked from independent comparison.",
+    "observations": [
+      "The old scenario switch clipped both names; the current selector presents the full scenario names and helper text as separate cards.",
+      "Resolution and FPS are separate, clearly outlined choices. Selecting 1440p directly switches to Чёткость текста at 30 FPS and highlights the selected options.",
+      "The fixed Cancel/Start footer remains visible while the selector body scrolls. Pointer activation does not retain a keyboard focus ring; keyboard Tab/Arrow navigation retains a visible focus outline.",
+      "Desktop source-sized review likewise confirms complete scenario names, direct 1440p selection and visible 30 FPS state at 1440×900."
+    ],
+    "limitations": [
+      "The captures are production Vue component mounts in an isolated Playwright fixture, not the authenticated full app or native capture picker.",
+      "These are review captures, not approved pixel goldens. Physical device and screen-reader acceptance remain open under #301 and #303.",
+      "The current checkpoint uses [skip ci], so no new GitHub Actions artifact was created."
+    ]
+  },
+  "desktop_dialog_source_review_follow_up": {
+    "date": "2026-10-11",
+    "source_revision": "a89ef57d",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "evidence": "evidence/qa/qa298-dialogs-2026-10-10.json#visual_comparisons",
+    "reviewed_catalog_slots": [
+      "D12",
+      "D13",
+      "D14"
+    ],
+    "visual_matrix_inventory_test": "10/10 PASS",
+    "observations": [
+      "D12 preserves a readable title/helper/field hierarchy and aligned footer actions in the source-sized after capture.",
+      "D13 keeps channel type, name, category and audience guidance readable; the synthetic category/channel list differs from the source state.",
+      "D14 corrects clipped title/consequence copy and overlapping actions: the current dialog names the channel, explains impact, and separates safe Cancel from the danger action. Automated explicit-confirm/cancel checks pass."
+    ],
+    "limitations": [
+      "The comparisons use local 2880x1800 screenshots and are review evidence, not approved pixel goldens.",
+      "The D13 synthetic category/channel state differs from the archived source.",
+      "These three desktop dialogs do not complete the 41-slot after-capture catalog or physical acceptance."
+    ]
+  },
+  "full_app_interaction_source_review": {
+    "date": "2026-10-11",
+    "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "runner": "QA_BROWSER_EXECUTABLE=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome python3 -m tools.qa.client_lifecycle.run --width 1440; repeat with --width 393",
+    "browser": "Chrome 154",
+    "api_mocks": false,
+    "telemetry": "PASS",
+    "persisted_after_api_restart": true,
+    "owned_resources_removed": true,
+    "capture_harness_files": {
+      "tools/qa/client_lifecycle/run.py": "a61c81a31c7aac2b8ea177a74813e39f81886ecf79ad6468cd1e68978e557d43",
+      "tools/qa/client_lifecycle/scenario.mjs": "e2d02643e4ab7b2cae37503d8ab9e383ac221c24b80a0638065a6501e8f15323"
+    },
+    "captures": [
+      {
+        "catalog_slot": "D01",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-channel-overview.png",
+          "sha256": "1c6780a376993228a18f6012f5c60abf337469428bef44059dba31e298990f63",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/channel-text.png",
+          "sha256": "3836beb8189daf2f6454ad3c050c601df107f24cda309dddf062a16392edd939",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "The header, channel navigation, member rail, voice dock and composer are present. The source shows historic messages and an attachment; the current runtime capture uses synthetic messages, so this is structural review only."
+      },
+      {
+        "catalog_slot": "D02",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-channel-text.png",
+          "sha256": "d0a993e09564b1e3dc5cf9224ecef3f92078d72e12bb00143ac586efeaafde0b",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/channel-text-actions.png",
+          "sha256": "e85f7886d798aa0babc9eb503fa9beef03908be3d586ef75cd96eb63e99c98c0",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "The pointer-hover capture exposes Reply and keeps the message row actions reachable. The synthetic member lacks edit/delete rights, so the source’s additional privileged actions are intentionally absent."
+      },
+      {
+        "catalog_slot": "D03",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-dm-list.png",
+          "sha256": "c4bf57482ab0eb6720f98ed215c83e19fa04a7ab1758f329f1fd6b445a56b19e",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/dm-list.png",
+          "sha256": "d479b1de8a4426c3d241e786cd37b5cf654751e995d3ef850b61fa39eb9e3bf8",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "Both images show the DM navigation beside an empty voice prejoin. The source lists several DM accounts; the runtime after image has one synthetic qa_admin account."
+      },
+      {
+        "catalog_slot": "M01",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-navigation-overlay.png",
+          "sha256": "ddc71e96ce0fea770cda98aec536bcec018a557042abb10784ad6924bd85c3fb",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/navigation-overlay.png",
+          "sha256": "36fd4803b6901fb3fb1dc3ca9e1d9d58ae00b5aa94904cd24bd81abd9638d05d",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "The drawer opens over the selected channel and closes from its close button. The runtime includes a connectivity summary absent from the source and one additional synthetic member, leaving fewer channel rows visible before scrolling."
+      },
+      {
+        "catalog_slot": "M02",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-channel-overview.png",
+          "sha256": "6ab04d76b87dc665bad23a023dfcfadf11aedf932948c69e7cbead5917aa95e5",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/channel-text.png",
+          "sha256": "4c9cddd8b6e6e3c424bd7835643bef3e286f407cdbd2cb3da86d8ae1e77c7b56",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "The selected channel, message history, member rail and composer remain visible. The runtime shows synthetic messages and an unread prompt, while the source shows older message and attachment content."
+      },
+      {
+        "catalog_slot": "M03",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-channel-text-hover.png",
+          "sha256": "6d3235e9fa0dc84495ee0feb663f88a1372036be27436c966e41a338136ab4d1",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/channel-text-actions.png",
+          "sha256": "730a32caa2dc7c3edda7837c9ba4bb375aa4bdb9b6537169152c8d430fab2d91",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "A touch tap opens the message action popover and the scenario closes it again. Only Reply is available because the synthetic member lacks edit/delete permission; this is not physical-device acceptance."
+      },
+      {
+        "catalog_slot": "D15",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-voice-room.png",
+          "sha256": "092542a95206b66e22c79bb3852284072416a2d3283270a77023dba156db529b",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/voice-prejoin.png",
+          "sha256": "8d94ab3543685be5cb00d6001e0691607dc1e433cc3aa4dc90791bb5db4d9823",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "The Voice header, idle prejoin card, and both join choices are visible at 1440x900. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; structural review only."
+      },
+      {
+        "catalog_slot": "D18",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-channel-log.png",
+          "sha256": "eac38402f17787224eb465fc67f3b266170c5b6a62ec7d12c15f709563bcb0cf",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/channel-log.png",
+          "sha256": "f20822b19eb8063de0fa141799ba675b809d5141377610d7e82cb91ca8453453",
+          "raster": "2880x1800",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "The log channel, message history, composer, and admin Reply/Edit/Delete actions are visible at 1440x900. Three synthetic messages replace the source mentions and historical author distribution; structural review only."
+      },
+      {
+        "catalog_slot": "M22",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-voice-room.png",
+          "sha256": "cb80e9851d105196369e1bf19a59c4bb29d2b951bf391034e2d26b9322351688",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/voice-prejoin.png",
+          "sha256": "45ef782d79b51defe839e2f524125fe544446b9794660c75c863dbd400109b7f",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "The mobile Voice header, idle prejoin card, and both join choices are visible at 393x852. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; no voice call was started."
+      },
+      {
+        "catalog_slot": "M23",
+        "source": {
+          "path": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-channel-log.png",
+          "sha256": "23389c64c50e15d9c9e5be796e7d18c2fa68844254337aa18b1201dd57b4e775",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/channel-log.png",
+          "sha256": "08119dbe18e758d7d160954aee317f464ad188af4d2f97bc1aa7f9853ad04da5",
+          "raster": "1179x2556",
+          "source_revision": "8995730ebcd31c1259acbd75c2638adf871875bb"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "At 393x852 the log messages and composer remain readable, and touch opens the admin Reply/Edit/Delete action disclosure. Synthetic messages do not reproduce the source mentions or historical authors; browser touch emulation is not physical-device acceptance."
+      }
+    ],
+    "observations": [
+      "The header, channel navigation, member rail, voice dock and composer are present. The source shows historic messages and an attachment; the current runtime capture uses synthetic messages, so this is structural review only.",
+      "The pointer-hover capture exposes Reply and keeps the message row actions reachable. The synthetic member lacks edit/delete rights, so the source’s additional privileged actions are intentionally absent.",
+      "Both images show the DM navigation beside an empty voice prejoin. The source lists several DM accounts; the runtime after image has one synthetic qa_admin account.",
+      "The drawer opens over the selected channel and closes from its close button. The runtime includes a connectivity summary absent from the source and one additional synthetic member, leaving fewer channel rows visible before scrolling.",
+      "The selected channel, message history, member rail and composer remain visible. The runtime shows synthetic messages and an unread prompt, while the source shows older message and attachment content.",
+      "A touch tap opens the message action popover and the scenario closes it again. Only Reply is available because the synthetic member lacks edit/delete permission; this is not physical-device acceptance.",
+      "D15 desktop and M22 mobile captures show the idle Voice prejoin and both join choices. The disposable API/DB/Tempo stack does not start LiveKit, so roster visibility is unavailable in these runs and shows a retry state rather than the archive empty-roster state.",
+      "D18 desktop hover exposes the admin Reply/Edit/Delete controls; M23 touch opens the same action disclosure. Both log captures use three synthetic admin messages and do not recreate archived mentions or historical author distribution."
+    ],
+    "limitations": [
+      "These ten captures are review-only; no owner-approved pixel golden or per-pixel pass threshold is inferred.",
+      "Account rosters, message history, unread state, attachments and member permissions differ because the disposable runtime uses synthetic accounts and data.",
+      "Chrome mobile emulation is automated evidence, not physical iPhone/Android interaction, OS Back gesture or screen-reader acceptance.",
+      "D02 desktop hover flow and M03 touch disclosure were exercised in the authenticated app; the separate component keyboard and long-press suites cover those specific input states.",
+      "The requested [skip ci] checkpoint has local capture hashes but no new GitHub Actions run or artifact bundle.",
+      "The client-lifecycle disposable stack omits LiveKit. D15 and M22 are structural prejoin captures with a roster-unavailable retry state; voice roster parity and live media remain unverified.",
+      "D18 and M23 use synthetic log entries and a synthetic roster, so archived mention targets, author history and timestamps are not compared. M23 uses browser touch emulation, not a physical device."
+    ]
+  },
+  "visual_review_catalog_completeness_follow_up": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_REVIEW_MAP_REVIEW_ONLY",
+    "catalog_slots": 41,
+    "unique_reference_payloads_reviewed": 40,
+    "known_blocked_slot": "D11",
+    "d11_replacement_status": "INDEPENDENT_REPLACEMENT_CAPTURE_AVAILABLE_NOT_APPROVED_GOLDEN",
+    "test": {
+      "file": "clients/web/tests/uiux_2026/visual_matrix.spec.ts",
+      "command": "cd clients/web && npm test -- --run tests/uiux_2026/visual_matrix.spec.ts",
+      "result": "PASS",
+      "tests_passed": 12,
+      "revision": "f087d5ef",
+      "source_sha256": "308c6b66aac62dc4676844b474ceee711f81574b6f05edd09e0eb88d1d1f1605"
+    },
+    "assertions": [
+      "Exactly 40 unique source slots have reviewed capture status; D11 remains explicitly blocked by the duplicate archive payload.",
+      "The independent D11 before/after replacement pair has matching 2880x1800 rasters, valid revisions and hashes, and remains capture-only rather than an approved golden."
+    ],
+    "limitations": [
+      "This regression guards the traceability map; it does not approve pixel goldens or change the source archive.",
+      "The source archive entry for D11 remains byte-identical to desktop-guild-members.png until the supplied source is corrected or a release owner approves a replacement baseline."
+    ]
   }
 }

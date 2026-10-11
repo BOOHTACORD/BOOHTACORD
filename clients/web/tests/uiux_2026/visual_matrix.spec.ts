@@ -40,6 +40,47 @@ type VisualMatrix = {
     desktop1440ReportSha256: string
     dataset: { members: number; categories: number; channels: number; auditRows: number }
   }
+  supplementalSourceReviewEvidence: {
+    status: string
+    screenId: string
+    report: string
+    capture: string
+    captureSha256: string
+    rasterPx: [number, number]
+    sourceRevision: string
+    reviewNote: string
+  }
+  settingsCaptureReviewEvidence: {
+    status: string
+    sourceRevision: string
+    report: string
+    reviewedScreenIds: string[]
+    reviewNotes: Record<string, string>
+  }
+  screenShareQualityReviewEvidence: {
+    status: string
+    sourceRevision: string
+    report: string
+    captures: Array<{
+      screenId: string
+      state: string
+      path: string
+      sha256: string
+      rasterPx: [number, number]
+    }>
+  }
+  fullAppInteractionReviewEvidence: {
+    status: string
+    sourceRevision: string
+    report: string
+    reviewedScreenIds: string[]
+    captures: Array<{
+      catalogSlot: string
+      source: { path: string; sha256: string; raster: string }
+      after: { path: string; sha256: string; raster: string; source_revision?: string }
+      reviewNote: string
+    }>
+  }
   screens: MatrixEntry[]
 }
 
@@ -126,6 +167,35 @@ describe('UIUX-2026 visual regression inventory', () => {
     expect(desktop.expectedOrException).toContain('desktop-guild-members.png')
   })
 
+  it('accounts for each unique source review and keeps the D11 replacement review-only', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const qa302 = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa302-visual-e2e-2026-10-10.json'), 'utf8'))
+    const reviewed = matrix.screens.filter(({ sourceComparisonStatus }) =>
+      sourceComparisonStatus === 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+    const unresolved = matrix.screens.filter(({ sourceComparisonStatus }) =>
+      sourceComparisonStatus !== 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+    const replacement = qa302.d11_replacement_capture_follow_up
+
+    expect(reviewed).toHaveLength(40)
+    expect(unresolved.map(({ id }) => id)).toEqual(['D11'])
+    expect(replacement).toMatchObject({
+      date: '2026-10-11',
+      status: 'INDEPENDENT_REPLACEMENT_CAPTURE_AVAILABLE_NOT_APPROVED_GOLDEN',
+      archive_entry_sha256: matrix.sourceIntegrityFindings[0].sha256,
+      css_viewport: '1440x900',
+      dpr: 2,
+      result: 'VISUALLY_REVIEWED_CAPTURE_ONLY',
+    })
+    expect(replacement.before.raster).toBe('2880x1800')
+    expect(replacement.after.raster).toBe('2880x1800')
+    expect(replacement.before.sha256).toMatch(/^[a-f0-9]{64}$/)
+    expect(replacement.after.sha256).toMatch(/^[a-f0-9]{64}$/)
+    expect(replacement.source_revision_before).toMatch(/^[a-f0-9]{40}$/)
+    expect(replacement.source_revision_after).toMatch(/^[a-f0-9]{40}$/)
+    expect(replacement.limitations.join(' ')).toContain('source archive was not modified')
+    expect(replacement.status).toContain('NOT_APPROVED_GOLDEN')
+  })
+
   it('records reviewed full-stack admin captures without treating them as approved goldens', () => {
     const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
     const reviewedAdminIds = new Set([
@@ -148,7 +218,212 @@ describe('UIUX-2026 visual regression inventory', () => {
 
     const settings = matrix.screens.find(({ id }) => id === 'D11')!
     expect(settings.sourceComparisonStatus).toBe('BLOCKED_DUPLICATE_BASELINE')
-    expect(matrix.screens.filter(({ sourceComparisonStatus }) => sourceComparisonStatus === 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN'))
+    expect(matrix.screens.filter(({ id, sourceComparisonStatus }) =>
+      reviewedAdminIds.has(id) && sourceComparisonStatus === 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN'))
       .toHaveLength(reviewedAdminIds.size)
+  })
+
+  it('maps M07 to full-app global search and records review-only source evidence', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const search = matrix.screens.find(({ id }) => id === 'M07')!
+
+    expect(search.fixture).toBe('tools/qa/client_lifecycle/run.py')
+    expect(search.testFile).toBe('tools/qa/client_lifecycle/scenario.mjs')
+    expect(search.interaction).toContain('global workspace search')
+    expect(search.owner).toContain('clients/web/src/workspace/search/WorkspaceSearchPanel.vue')
+    expect(search.owner).toContain('clients/web/src/search/SearchPanel.vue')
+    expect(search.sourceComparisonStatus).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+    expect(matrix.supplementalSourceReviewEvidence).toMatchObject({
+      status: 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN',
+      screenId: 'M07',
+      report: 'evidence/qa/qa294-dm-live-full-app-2026-10-10.json',
+      capture: '.out/client-lifecycle/393/global-search.png',
+      captureSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+      rasterPx: [1179, 2556],
+      sourceRevision: expect.stringMatching(/^[a-f0-9]{40}$/),
+      reviewNote: expect.stringContaining('focus'),
+    })
+  })
+
+  it('records visually reviewed full-stack DM captures without approving pixel goldens', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const evidence = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa294-dm-live-full-app-2026-10-10.json'), 'utf8'))
+    const expectedReviews = [
+      { id: 'D04', note: 'synthetic account and message data' },
+      { id: 'M04', note: 'one synthetic account while the source lists six users' },
+      { id: 'M05', note: 'synthetic account header' },
+      { id: 'M06', note: 'sixth reaction wraps to a second row' },
+      { id: 'M07', note: 'keyboard focus ring' },
+    ]
+    const captures = evidence.current_branch_revalidation.source_matched_captures
+
+    for (const review of expectedReviews) {
+      const screen = matrix.screens.find(({ id }) => id === review.id)!
+      const capture = captures.find(({ catalog_slot }: { catalog_slot: string }) => catalog_slot === review.id)!
+
+      expect(screen.sourceComparisonStatus, `${review.id} matrix review`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(screen.expectedOrException.toLowerCase(), `${review.id} observation`).toContain(review.note)
+      expect(capture.review_status, `${review.id} capture review`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(capture.source.raster).toBe(capture.after.raster)
+      expect(capture.source.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(capture.after.sha256).toMatch(/^[a-f0-9]{64}$/)
+    }
+
+    expect(evidence.current_branch_revalidation.limitation).toContain('D04 and M04–M07 were visually reviewed')
+    expect(evidence.current_branch_revalidation.limitation).not.toContain('were not visually re-reviewed')
+  })
+
+  it('records reviewed mobile settings captures and keeps runtime-state differences review-only', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const evidence = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa297-personal-settings-2026-10-10.json'), 'utf8'))
+    const settingsEvidence = matrix.settingsCaptureReviewEvidence
+    const expectedReviews = [
+      { id: 'M15', section: 'profile', note: 'synthetic identity' },
+      { id: 'M16', section: 'security', note: 'active sessions' },
+      { id: 'M17', section: 'audio', note: 'browser device inventory' },
+      { id: 'M18', section: 'notifications', note: 'denies permission' },
+      { id: 'M19', section: 'about', note: '503 error' },
+    ]
+
+    expect(settingsEvidence).toMatchObject({
+      status: 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN',
+      sourceRevision: 'ab12691186a51beae7988dee01021e0ea7b5ef54',
+      report: 'evidence/qa/qa297-personal-settings-2026-10-10.json',
+      reviewedScreenIds: expectedReviews.map(({ id }) => id),
+    })
+
+    for (const review of expectedReviews) {
+      const screen = matrix.screens.find(({ id }) => id === review.id)!
+      const capture = evidence.comparisons.find(({ section }: { section: string }) => section === review.section)!
+
+      expect(screen.sourceComparisonStatus, `${review.id} matrix review`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(settingsEvidence.reviewNotes[review.id], `${review.id} observation`).toContain(review.note)
+      expect(capture.visual_review_status, `${review.id} capture status`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(capture.visual_review_note, `${review.id} capture note`).toBe(settingsEvidence.reviewNotes[review.id])
+      expect(capture.dimensions_match, `${review.id} dimensions`).toBe(true)
+      expect(capture.source.raster).toBe('1179x2556')
+      expect(capture.after.raster).toBe('1179x2556')
+      expect(capture.source.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(capture.after.sha256).toMatch(/^[a-f0-9]{64}$/)
+    }
+
+    expect(settingsEvidence.reviewNotes.M15).toContain('Удалить')
+    expect(settingsEvidence.reviewNotes.M15).toContain('only when avatar_url is present')
+    expect(settingsEvidence.reviewNotes.M15).not.toContain('parity needs a targeted follow-up')
+    expect(settingsEvidence.reviewNotes.M19).toContain('not suitable as a golden')
+    expect(evidence.limitations.join(' ')).toContain('browser device inventory')
+    expect(evidence.limitations.join(' ')).toContain('HTTP 503')
+  })
+
+  it('records current mobile screen-share captures and direct 1440p behavior as review-only', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const report = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa320-screen-share-quality-2026-10-10.json'), 'utf8'))
+    const review = matrix.screenShareQualityReviewEvidence
+    const expectedCaptures = [
+      { screenId: 'M20', state: 'default-actions', file: 'mobile-stream-launch-actions-current-393x852-2x.png', raster: '786x1704', rasterPx: [786, 1704] },
+      { screenId: 'M21', state: 'selected-1440p-30fps', file: 'mobile-stream-launch-settings-1440p-current-393x852-2x.png', raster: '786x1704', rasterPx: [786, 1704] },
+      { screenId: 'D16', state: 'desktop-default-actions', file: 'desktop-stream-launch-actions-current-1440x900-2x.png', raster: '2880x1800', rasterPx: [2880, 1800] },
+      { screenId: 'D17', state: 'desktop-selected-1440p-30fps', file: 'desktop-stream-launch-settings-1440p-current-1440x900-2x.png', raster: '2880x1800', rasterPx: [2880, 1800] },
+    ]
+
+    expect(review).toMatchObject({
+      status: 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN',
+      sourceRevision: '21069626',
+      report: 'evidence/qa/qa320-screen-share-quality-2026-10-10.json',
+    })
+    expect(report.latest_visual_regression_after_focus_state_fix.result).toBe('5/5 PASS_AUTOMATED_ONLY')
+    expect(report.latest_visual_regression_after_focus_state_fix.confirmed.join(' ')).toContain('1440p remains selected')
+
+    for (const expected of expectedCaptures) {
+      const screen = matrix.screens.find(({ id }) => id === expected.screenId)!
+      const capture = review.captures.find(({ screenId }) => screenId === expected.screenId)!
+      const reportCapture = report.latest_visual_regression_after_focus_state_fix.captures.find(({ state }: { state: string }) => state === expected.state)!
+
+      expect(screen.sourceComparisonStatus).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      const expectedNote = expected.screenId === 'M20' ? 'full scenario labels'
+        : expected.screenId === 'M21' ? '1440p can be selected directly'
+          : expected.screenId === 'D16' ? 'readable scenario cards'
+            : '1440p is directly selectable'
+      expect(screen.expectedOrException.toLowerCase()).toContain(expectedNote)
+      expect(capture.path).toContain(expected.file)
+      expect(capture.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(capture.rasterPx).toEqual(expected.rasterPx)
+      expect(reportCapture.capture.path).toBe(capture.path)
+      expect(reportCapture.capture.sha256).toBe(capture.sha256)
+      expect(reportCapture.capture.raster).toBe(expected.raster)
+    }
+  })
+
+  it('records visually reviewed source-sized Web topology dialogs as review-only', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const report = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa298-dialogs-2026-10-10.json'), 'utf8'))
+    const reviews = [
+      { id: 'D12', flow: 'Create category', matrixNote: 'clear spacing', observationNote: 'clear spacing' },
+      { id: 'D13', flow: 'Create channel', matrixNote: 'source fixture', observationNote: 'different category/channel list state' },
+      { id: 'D14', flow: 'Destructive channel confirmation', matrixNote: 'safe Cancel and danger actions', observationNote: 'safe Cancel and danger actions' },
+    ]
+
+    for (const review of reviews) {
+      const screen = matrix.screens.find(({ id }) => id === review.id)!
+      const comparison = report.visual_comparisons.find(({ flow }: { flow: string }) => flow === review.flow)!
+
+      expect(screen.sourceComparisonStatus, `${review.id} matrix review`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(screen.expectedOrException.toLowerCase(), `${review.id} matrix note`).toContain(review.matrixNote.toLowerCase())
+      expect(comparison.review_status, `${review.id} comparison`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(comparison.dimensions_match, `${review.id} raster`).toBe(true)
+      expect(comparison.source.raster).toBe('2880x1800')
+      expect(comparison.after.raster).toBe('2880x1800')
+      expect(comparison.source.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(comparison.after.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(comparison.observation.toLowerCase()).toContain(review.observationNote.toLowerCase())
+    }
+  })
+
+  it('records authenticated source-sized channel and navigation review captures without approving goldens', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const evidence = matrix.fullAppInteractionReviewEvidence
+    const report = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa302-visual-e2e-2026-10-10.json'), 'utf8'))
+      .full_app_interaction_source_review
+    const expectedSlots = ['D01', 'D02', 'D03', 'D15', 'D18', 'M01', 'M02', 'M03', 'M22', 'M23']
+
+    expect(evidence).toMatchObject({
+      status: 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN',
+      report: 'evidence/qa/qa302-visual-e2e-2026-10-10.json#full_app_interaction_source_review',
+      reviewedScreenIds: expectedSlots,
+    })
+    expect(evidence.sourceRevision).toMatch(/^[a-f0-9]{40}$/)
+    expect(report.status).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+    expect(report.browser).toBe('Chrome 154')
+    expect(report.api_mocks).toBe(false)
+    expect(report.telemetry).toBe('PASS')
+    expect(report.persisted_after_api_restart).toBe(true)
+    expect(report.owned_resources_removed).toBe(true)
+    expect(evidence.captures).toHaveLength(expectedSlots.length)
+    expect(report.captures).toHaveLength(expectedSlots.length)
+
+    for (const screenId of expectedSlots) {
+      const screen = matrix.screens.find(({ id }) => id === screenId)!
+      const capture = evidence.captures.find(({ catalogSlot }) => catalogSlot === screenId)!
+      const reportCapture = report.captures.find(({ catalog_slot }: { catalog_slot: string }) => catalog_slot === screenId)!
+      expect(screen.sourceComparisonStatus, `${screenId} review status`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(screen.fixture).toBe('tools/qa/client_lifecycle/run.py')
+      expect(screen.testFile).toBe('tools/qa/client_lifecycle/scenario.mjs')
+      expect(capture.source.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(capture.after.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(capture.source.raster).toBe(capture.after.raster)
+      expect(capture.after.source_revision).toBe(evidence.sourceRevision)
+      expect(capture.reviewNote.length).toBeGreaterThan(20)
+      expect(reportCapture.review_status).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(reportCapture.source.sha256).toBe(capture.source.sha256)
+      expect(reportCapture.after.sha256).toBe(capture.after.sha256)
+      expect(reportCapture.after.raster).toBe(capture.after.raster)
+      expect(reportCapture.after.source_revision).toBe(evidence.sourceRevision)
+    }
+    expect(evidence.captures.find(({ catalogSlot }) => catalogSlot === 'D15')?.reviewNote).toContain('LiveKit')
+    expect(evidence.captures.find(({ catalogSlot }) => catalogSlot === 'M22')?.reviewNote).toContain('retry')
+    expect(evidence.captures.find(({ catalogSlot }) => catalogSlot === 'D18')?.reviewNote).toContain('synthetic messages')
+    expect(evidence.captures.find(({ catalogSlot }) => catalogSlot === 'M23')?.reviewNote).toContain('touch')
+    expect(report.limitations.join(' ')).toContain('no owner-approved pixel golden')
+    expect(report.limitations.join(' ')).toContain('omits LiveKit')
   })
 })

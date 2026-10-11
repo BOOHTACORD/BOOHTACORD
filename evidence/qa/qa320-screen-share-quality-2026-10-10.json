@@ -1,0 +1,371 @@
+{
+  "id": "QA-320-SCREEN-SHARE-QUALITY",
+  "date": "2026-10-10",
+  "task": "UIUX-2026 #289 follow-up — screen-share scenario and quality selection",
+  "related_issues": [
+    "https://github.com/Egkurilov/BOOHTACORD/issues/298",
+    "https://github.com/Egkurilov/BOOHTACORD/issues/301",
+    "https://github.com/Egkurilov/BOOHTACORD/issues/302"
+  ],
+  "pull_request": "https://github.com/Egkurilov/BOOHTACORD/pull/320",
+  "source_revision": "9ef8d9c1383a813100e06e7dced70cc67f29c60",
+  "status": "PASS_LOCAL_AUTOMATED_ONLY",
+  "checks": [
+    {
+      "name": "Screen-share profile selection unit suite",
+      "command": "cd clients/web && npm test -- src/voice/screen_share_setup_dialog.spec.ts src/voice/screen_profile src/voice/screen_profile_metadata src/voice/screen_publisher",
+      "result": "PASS",
+      "test_files_passed": 17,
+      "tests_passed": 72
+    },
+    {
+      "name": "Screen-share quality browser regression",
+      "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- --grep 'scenario names stay readable|shows quality choices without hiding them'",
+      "result": "PASS_AUTOMATED_ONLY",
+      "tests_passed": 2,
+      "browser": "Google Chrome 154.0.8037.98",
+      "viewports_css": [
+        "637x584",
+        "390x640"
+      ],
+      "assertions": [
+        "Scenario titles, descriptions, resolution labels and FPS labels fit without clipping at desktop and narrow viewports.",
+        "Resolution and FPS choices are visible without opening a disclosure control.",
+        "Clicking 1440p from motion selects the text scenario and 30 FPS; applying emits P1440_30.",
+        "The fixed 60 FPS value appears as a compact badge aligned with its label, without an empty segmented track.",
+        "Keyboard ArrowRight from 1080p selects 1440p and switches to the supported text profile.",
+        "Header and actions stay in view while the settings body scrolls.",
+        "At 390x640, scrolling to the scenario selector places both scenario cards and their full helper labels in the visible dialog viewport.",
+        "At 637x584, both scenario cards with labels, the 1440p option and the 30 FPS option are simultaneously within the visible dialog viewport after scrolling to the selector.",
+        "The close icon action exposes the accessible name Закрыть; Cancel and Start retain their visible accessible names."
+      ],
+      "capture": {
+        "path": ".out/accessibility-browser-results/accessibility.browser-scre-e6862-llow-the-1440p-text-profile/screen-share-selector-layout-637x584.png",
+        "sha256": "7624dbd556b89f0a7eca5026296febd6117e8ee057b9408cd424856edf5e4eae",
+        "raster": "637x584",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      "additional_captures": [
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+          "sha256": "6317fb1fb9e64adb6861a60ecfbffc4971ba6025e1c941b962749a209f810999",
+          "raster": "390x640",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "Both scenario cards and helper labels are fully visible after scrolling to the selection area."
+        },
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
+          "sha256": "18a8a128c94d500fd278d6867dc07329209f1ba6b28c9093f5918a5e6b79445c",
+          "raster": "390x640",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "1440p is selected; the selected profile is 1440p · 30 FPS."
+        },
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+          "sha256": "0044a7be06ae989689fa07b43c6bda48b71a7b10be3f4e4631f78001d8fea12f",
+          "raster": "637x584",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "Both scenario cards, all resolution options including selected 1440p, and selected 30 FPS are visible together after scrolling to the selector."
+        }
+      ]
+    },
+    {
+      "name": "Screen-share accessibility and scroll geometry regression",
+      "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm exec -- playwright test -c tests/accessibility/playwright.config.ts --grep 'screen-share selectors fit their options|keeps all quality options discoverable|screen-share setup keeps keyboard focus inside its modal dialog'",
+      "result": "PASS_AUTOMATED_ONLY",
+      "tests_passed": 3,
+      "browser": "Google Chrome 154.0.8037.98",
+      "assertions": [
+        "The settings body scrolls independently while header and footer remain visible.",
+        "1440p is enabled and direct selection changes to text mode at 30 FPS.",
+        "axe-core reports no scoped WCAG 2.2 AA violations in the setup dialog.",
+        "Tab and Shift+Tab move through the dialog controls and wrap to the close/start actions."
+      ]
+    },
+    {
+      "name": "Web production build",
+      "command": "cd clients/web && VITE_PUBLIC_ORIGIN=https://v.bootybay.ru npm run build",
+      "result": "PASS",
+      "observations": [
+        "vue-tsc and Vite production build succeeded.",
+        "Existing warnings remain for LiveKit dynamic import chunking and the main bundle size."
+      ]
+    }
+  ],
+  "behavior": {
+    "resolution_1440p": "Shown directly in the quality controls; selecting it from motion switches to the text scenario and 30 FPS.",
+    "1440p60": "Not offered as a new default choice pending validated policy; this evidence does not assert physical capture capability.",
+    "existing_behavior": "Source selection, modal actions and screen publication lifecycle remain unchanged."
+  },
+  "limitations": [
+    "The browser test mounts the production Vue component in an isolated fixture; it does not exercise an authenticated full-app session or the native system capture picker.",
+    "The screenshot is a local review capture, not an approved visual golden or a retained CI artifact.",
+    "Commits use [skip ci], so this checkpoint has no new GitHub Actions artifact.",
+    "This automated keyboard and axe result does not replace VoiceOver, TalkBack, NVDA or Narrator traversal, nor physical platform acceptance under #301 and #303."
+  ],
+  "issue_state": "PR_OPEN; #289 REMAINS OPEN",
+  "latest_revalidation": {
+    "date": "2026-10-11",
+    "source_revision": "9ef8d9c1383a813100e06e7dced70cc67f29c60",
+    "result": "2/2 PASS_AUTOMATED_ONLY",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
+    "tests_passed": 2,
+    "browser": "Google Chrome 154.0.8037.98",
+    "viewports_css": [
+      "637x584",
+      "390x640"
+    ],
+    "confirmed": [
+      "Both scenario titles and helper lines render in full without truncation.",
+      "1440p can be selected directly and remains selected; from motion it changes to the supported text scenario at 30 FPS.",
+      "The resolution and FPS controls have clear separate selected states and remain in the scrollable content area beneath the fixed dialog header.",
+      "At 637x584, the visible selector viewport shows both full scenario cards, the 1440p choice and 30 FPS together."
+    ],
+    "capture": {
+      "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+      "sha256": "0044a7be06ae989689fa07b43c6bda48b71a7b10be3f4e4631f78001d8fea12f",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": "Fixture-based browser regression only. This is not a production deployment or physical platform acceptance.",
+    "tested_commit": "9ef8d9c1383a813100e06e7dced70cc67f29c60",
+    "unit_tests": "17 files, 72 tests PASS",
+    "profile_browser_tests": "2/2 PASS at 637x584 and 390x640",
+    "accessibility_geometry_tests": "3/3 PASS; scoped axe and focus trap pass",
+    "production_build": "PASS",
+    "mobile_scenario_visibility_follow_up": {
+      "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
+      "result": "2/2 PASS",
+      "test_source_sha256": "0db752211a3af9e7cc569013c5081968e9a0571e957b8c44ad95218b645c5866",
+      "additional_captures": [
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+          "sha256": "6317fb1fb9e64adb6861a60ecfbffc4971ba6025e1c941b962749a209f810999",
+          "raster": "390x640",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "Both scenario cards and helper labels are fully visible after scrolling to the selection area."
+        },
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
+          "sha256": "18a8a128c94d500fd278d6867dc07329209f1ba6b28c9093f5918a5e6b79445c",
+          "raster": "390x640",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "1440p is selected; the selected profile is 1440p · 30 FPS."
+        },
+        {
+          "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+          "sha256": "0044a7be06ae989689fa07b43c6bda48b71a7b10be3f4e4631f78001d8fea12f",
+          "raster": "637x584",
+          "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+          "note": "Both scenario cards and labels, 1440p and 30 FPS fit inside the visible dialog viewport at this short height."
+        }
+      ],
+      "note": "The regression asserts both 390x640 scenario cards and all helper labels are fully in viewport when scrolled to the selector; direct 1440p selection then selects the text mode at 30 FPS. At 637x584 it additionally asserts both scenarios, 1440p and 30 FPS are visible together."
+    }
+  },
+  "latest_follow_up": {
+    "date": "2026-10-11",
+    "source_revision": "6f3297b53d35323281a5f7415fa159681f1394bb",
+    "result": "3/3 PASS_AUTOMATED_ONLY",
+    "execution_workspace": "/private/tmp/uiux289-screen-quality-check",
+    "capture_root": "/Users/pistol121/DEV/BOOHTACORD",
+    "source_tree_note": "The tested source is the committed 6f3297b5 tree with the three changed files copied from the attached worktree; no source files were changed after that commit.",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- quality_dialog.browser.spec.ts",
+    "tests_passed": 3,
+    "browser": "Google Chrome 154.0.8037.98",
+    "viewports_css": [
+      "637x584",
+      "390x640"
+    ],
+    "test_source_sha256": "a0e31520a0bc0e5ee2acc8cd90718724dd168afd6ec207485180a37c90d9f1a5",
+    "confirmed": [
+      "Scenario labels and descriptions are fully visible; scenario options span the available dialog content width.",
+      "Scenario, resolution and FPS captions sit above full-width choices instead of competing for a narrow side column.",
+      "Selecting 1440p from a scrolled position leaves the selected option in view and applies the supported 1440p · 30 FPS text profile.",
+      "At 637x584, both scenario cards, 1440p and 30 FPS fit together in the visible selector area."
+    ],
+    "captures": [
+      {
+        "path": ".out/screen-share-quality-follow-up-6f3297b5/screen-share-quality-637x584.png",
+        "sha256": "dbd197eb96eef44aab766f741d9429cc61f9c34ae6846ec025e2f5bbb3067d3a",
+        "raster": "637x584",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/screen-share-quality-follow-up-6f3297b5/screen-share-scenarios-390x640.png",
+        "sha256": "e29d429f59bb74b2653fefcacb4938b63759f098cc43c4d1b71d0fcee3f5f3d8",
+        "raster": "390x640",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/screen-share-quality-follow-up-6f3297b5/screen-share-quality-1440p-390x640.png",
+        "sha256": "809e58ed4b470d6c31e1f584077b3e5bd66aee06371d4ae9fb74a3a35480b693",
+        "raster": "390x640",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      }
+    ],
+    "unit_tests": "8/8 focused screen-share dialog tests PASS",
+    "production_build": "PASS with VITE_PUBLIC_ORIGIN=https://v.bootybay.ru; existing LiveKit chunking and bundle-size warnings remain",
+    "limitations": [
+      "Screenshots are local review captures; no approved pixel golden is asserted.",
+      "The screen-share test mounts the production Vue dialog in a fixture; it does not exercise the authenticated full app or native system picker.",
+      "The PR checkpoint uses [skip ci], so this follow-up has no GitHub Actions artifact.",
+      "Physical device and screen-reader acceptance remain open under #301 and #303."
+    ]
+  },
+  "latest_visual_regression_after_focus_state_fix": {
+    "date": "2026-10-11",
+    "source_revision": "21069626",
+    "working_tree_changes": false,
+    "result": "5/5 PASS_AUTOMATED_ONLY",
+    "visual_matrix_inventory_test": "10/10 PASS",
+    "source_archive_integrity_verification": "PASS: 41 source screenshots verified; one duplicate is explicitly blocked from independent comparison.",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
+    "tests_passed": 5,
+    "browser": "Google Chrome 154.0.8037.98",
+    "viewports_css": [
+      "637x584",
+      "390x640",
+      "393x852 at DPR 2",
+      "1440x900 at DPR 2"
+    ],
+    "test_source_sha256": "55b12dc4f2d92356c44ea99c19bb7788f67abef9aa819c10a5218a7ca0719f8f",
+    "visual_matrix_test_source_sha256": "57be9539dbaea5851abb8726aa906a2a1520ae351f4e8787ae2db5efc4d9bd3e",
+    "confirmed": [
+      "Scenario names and helper text are fully readable in separate cards; resolution and FPS remain separate choices.",
+      "1440p remains selected after direct pointer activation; it resolves to the text scenario at 30 FPS and applying emits P1440_30.",
+      "Pointer selection shows the selected fill without an overlapping keyboard outline, while keyboard navigation retains a visible focus outline.",
+      "At the 393x852 source viewport, the two scenario names, 1440p choice, selected 30 FPS and sticky actions are visible in the mobile sheet.",
+      "At 1440x900, full scenario names, 1440p and 30 FPS choices, and both footer actions remain visible; direct 1440p selection switches to the text scenario at 30 FPS."
+    ],
+    "captures": [
+      {
+        "screenId": "M20",
+        "state": "default-actions",
+        "capture": {
+          "path": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-actions-current-393x852-2x.png",
+          "sha256": "cbcb64d661f3b59914debb98779e8b019f0da67e0c1d487f6e760de0484ac1db",
+          "raster": "786x1704",
+          "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+        }
+      },
+      {
+        "screenId": "M21",
+        "state": "selected-1440p-30fps",
+        "capture": {
+          "path": ".out/uiux-2026-epic-289/dialogs/mobile-stream-launch-settings-1440p-current-393x852-2x.png",
+          "sha256": "479c483f9a9a62aed9344dce54035d918cbfda9dbf3fbc0a53ec99b1cc16ec49",
+          "raster": "786x1704",
+          "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+        }
+      },
+      {
+        "screenId": "D16",
+        "state": "desktop-default-actions",
+        "capture": {
+          "path": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-actions-current-1440x900-2x.png",
+          "sha256": "5839e4decb850088185eee7b7127134d608a0111302c08debca5e8f95d45967e",
+          "raster": "2880x1800",
+          "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+        }
+      },
+      {
+        "screenId": "D17",
+        "state": "desktop-selected-1440p-30fps",
+        "capture": {
+          "path": ".out/uiux-2026-epic-289/dialogs/desktop-stream-launch-settings-1440p-current-1440x900-2x.png",
+          "sha256": "4ecffc2a0cf01b0ae5fdcffa6eb236fa02432dc9aa46e83fa8f554726261dc3c",
+          "raster": "2880x1800",
+          "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN"
+        }
+      }
+    ],
+    "limitations": [
+      "The screenshot is a local component fixture, not a production full-app or native source-picker result.",
+      "The new captures are review evidence and do not approve visual goldens or complete the full 41-screen catalog.",
+      "The requested [skip ci] checkpoint has no GitHub Actions artifact."
+    ]
+  },
+  "latest_mobile_screen_share_control_review": {
+    "date": "2026-10-11",
+    "source_revision": "f4c8e73a + working-tree changes",
+    "working_tree_changes": true,
+    "result": "2/2 focused browser tests PASS; full screen-profile suite 12 passed, 1 skipped; focused dialog unit tests 8/8 PASS",
+    "browser": "Google Chrome 154.0.8037.98",
+    "viewports_css": [
+      "637x584",
+      "390x640"
+    ],
+    "test_source_sha256": "4cbaeedeee2fbdc917743903031b20f41f302d8a1b393e7aced5f1859d633763",
+    "unit_tests": "8/8 focused screen-share setup dialog tests PASS",
+    "production_build": "PASS with VITE_PUBLIC_ORIGIN=https://v.bootybay.ru; existing LiveKit chunking and bundle-size warnings remain",
+    "confirmed": [
+      "At 390x640, both scenario cards show full labels and the initial 60 FPS value stays fully visible above the pinned footer.",
+      "Direct pointer selection of 1440p keeps it selected, switches to the text scenario at 30 FPS, exposes the 30 FPS radio after scrolling it into view, and Start emits P1440_30.",
+      "At 637x584, keyboard selection of 1440p and the text profile remains visible with readable scenario names."
+    ],
+    "captures": [
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+        "sha256": "70612662a77a968792fe72f4f5179b65c4dc7470aa1a9537a12121e04d2db4b2",
+        "raster": "390x640",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
+        "sha256": "6f2b509a921f66a8199f9b17e21f91e2693518834937411e79dc16eba92e2f22",
+        "raster": "390x640",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+        "sha256": "9b9c03910f344b32e29a094224196671c5828eba77c41f3d1b6a516db925affb",
+        "raster": "637x584",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      }
+    ],
+    "limitations": [
+      "Screenshots exercise the production Vue dialog through a fixture; no authenticated full-app session or native screen picker is involved.",
+      "Screenshots are review evidence, not approved visual goldens."
+    ]
+  },
+  "latest_action_footer_after_scroll_check": {
+    "date": "2026-10-11",
+    "source_revision": "1345f7e6 + working-tree regression assertion",
+    "status": "PASS_AUTOMATED_ONLY",
+    "browser": "Google Chrome 154.0.8037.98",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile",
+    "suite_result": "12 passed, 1 skipped",
+    "test_source_sha256": "5cea176b7feb06bdc3ff881fe8de669117e273ffa88d669fcf28591f7dd8d58e",
+    "viewport_css": "390x640",
+    "assertions": [
+      "After selecting 1440p and scrolling to the 30 FPS control, Start and Cancel remain inside the viewport.",
+      "The center hit-test for Start resolves to the button or one of its descendants, so scroll content does not cover it.",
+      "Start still emits the supported P1440_30 profile."
+    ],
+    "captures": [
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+        "sha256": "8b4ff30691bf12805cd94d9588f3921fe0e1892cd6e9db4576372b88a0a8e189",
+        "raster": "390x640",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
+        "sha256": "fc0b486508218b2677b8cd198266b8dc93c97912f7f2afb1df39f904d15f9310",
+        "raster": "390x640",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+        "sha256": "9b9c03910f344b32e29a094224196671c5828eba77c41f3d1b6a516db925affb",
+        "raster": "637x584",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      }
+    ],
+    "limitations": [
+      "The dialog is exercised through the production Vue component fixture; native picker and physical-device acceptance remain open.",
+      "Captures are local review evidence, not approved pixel goldens or GitHub Actions artifacts."
+    ]
+  },
+  "updated_date": "2026-10-11"
+}

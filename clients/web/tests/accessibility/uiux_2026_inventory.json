@@ -7,6 +7,8 @@
       "web": {
         "status": "PASS_SCOPED",
         "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts"],
+        "assertions": ["Favorite toggle has state-aware accessible names and aria-pressed state; pointer and Space activation preserve viewport reachability and visible keyboard focus."],
+        "crossBrowserRegression": "Chrome, WebKit and Firefox",
         "manualAssistiveTech": "NOT_RUN"
       },
       "flutter": {
@@ -82,16 +84,16 @@
       "flutter": {
         "status": "PARTIAL",
         "testFiles": ["clients/flutter/test/features/voice/prejoin/header_status_test.dart", "clients/flutter/test/voice_connection_badge_test.dart", "clients/flutter/test/voice_shortcut_preferences_test.dart", "clients/flutter/test/workspace_screen_test.dart"],
-        "automatedCoverageNote": "The voice dock regression checks unavailable-microphone retry and push-to-talk semantics; native and screen-reader acceptance remains NOT_RUN.",
+        "automatedCoverageNote": "Widget/semantics cases cover connected dock actions, including the named screen-share start action and disabled leave state, joining/reconnecting/leaving/error statuses, unavailable-microphone retry and push-to-talk. The badge suite checks disconnected/error live announcements and suppresses stale quality/ping. Broader Flutter voice accessibility coverage remains partial; physical keyboard and assistive-technology acceptance remains NOT_RUN.",
         "manualAssistiveTech": "NOT_RUN"
       }
     },
     {
       "id": "stream",
-      "controlsAndActions": ["screen-share source selection", "recommended/advanced profile controls", "start/cancel actions", "permission and unsupported-source feedback", "dialog focus and reduced motion"],
+      "controlsAndActions": ["screen-share source selection", "recommended/advanced profile controls", "start/cancel actions", "permission and unsupported-source feedback", "dialog focus and reduced motion", "scenario names, resolution/FPS radio labels, 1440p-to-text-profile transition, named close/cancel/start actions"],
       "web": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/tests/screen_profile/encoding.browser.spec.ts"],
+        "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/tests/screen_profile/encoding.browser.spec.ts", "clients/web/tests/screen_profile/quality_dialog.browser.spec.ts"],
         "manualAssistiveTech": "NOT_RUN"
       },
       "flutter": {

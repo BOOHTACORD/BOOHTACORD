@@ -2791,6 +2791,16 @@ void main() {
       isFalse,
     );
     expect(find.byTooltip('Начать демонстрацию экрана'), findsNWidgets(2));
+    final startScreenShareSemantics = tester.getSemantics(
+      find.byTooltip('Начать демонстрацию экрана').first,
+    );
+    expect(startScreenShareSemantics.label, 'Начать демонстрацию экрана');
+    expect(
+      startScreenShareSemantics.getSemanticsData().hasAction(
+        SemanticsAction.tap,
+      ),
+      isTrue,
+    );
     await tester.tap(find.byTooltip('Начать демонстрацию экрана').first);
     await tester.pump();
     expect(find.text('Демонстрация экрана'), findsOneWidget);
@@ -2892,6 +2902,14 @@ void main() {
       matching: find.byType(InkWell),
     );
     expect(tester.widget<InkWell>(leaveButton).onTap, isNull);
+    final leaveButtonSemantics = tester.getSemantics(
+      find.byTooltip('Выходим…'),
+    );
+    expect(leaveButtonSemantics.label, 'Выходим…');
+    expect(
+      leaveButtonSemantics.getSemanticsData().hasAction(SemanticsAction.tap),
+      isFalse,
+    );
 
     state.error = 'Голосовая сессия завершилась с ошибкой';
     state.notifyListeners();

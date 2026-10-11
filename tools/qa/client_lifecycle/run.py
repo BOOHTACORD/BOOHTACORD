@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import os
+import struct
 import subprocess
 import tempfile
 import time
@@ -37,6 +38,52 @@ def viewport_profile(width):
         return dict(VIEWPORT_PROFILES[width])
     except KeyError as error:
         raise ValueError(f'unsupported client lifecycle viewport width: {width}') from error
+
+
+def catalog_capture_plan(width):
+    if width == 393:
+        return [
+            ('M01', 'navigation-overlay.png'),
+            ('M02', 'channel-text.png'),
+            ('M03', 'channel-text-actions.png'),
+            ('M22', 'voice-prejoin.png'),
+            ('M23', 'channel-log.png'),
+        ]
+    if width == 1440:
+        return [
+            ('D01', 'channel-text.png'),
+            ('D02', 'channel-text-actions.png'),
+            ('D03', 'dm-list.png'),
+            ('D15', 'voice-prejoin.png'),
+            ('D18', 'channel-log.png'),
+        ]
+    return []
+
+
+def verify_catalog_captures(width, destination, root):
+    viewport = viewport_profile(width)
+    expected_raster = (viewport['width'] * viewport['device_scale_factor'],
+                       viewport['height'] * viewport['device_scale_factor'])
+    captures = []
+    for screen_id, filename in catalog_capture_plan(width):
+        path = destination/filename
+        if not path.is_file():
+            raise AssertionError(f'{screen_id} source-sized capture missing: {path}')
+        data = path.read_bytes()
+        if data[:8] != b'\x89PNG\r\n\x1a\n' or len(data) < 24:
+            raise AssertionError(f'{screen_id} capture is not a valid PNG: {path}')
+        raster = struct.unpack('>II', data[16:24])
+        if raster != expected_raster:
+            raise AssertionError(f'{screen_id} raster {raster} does not match {expected_raster}')
+        captures.append({
+            'catalog_slot': screen_id,
+            'after': {
+                'path': str(path.relative_to(root)),
+                'sha256': hashlib.sha256(data).hexdigest(),
+                'raster': f'{raster[0]}x{raster[1]}',
+            },
+        })
+    return captures
 
 
 def main():
@@ -95,6 +142,8 @@ def main():
             report = json.loads((destination/'browser.json').read_text())
             report.update(telemetry=metrics, persisted_after_restart=True,
                           source_revision=output('git', '-C', str(root), 'rev-parse', 'HEAD'))
+            report['source_sized_catalog_captures'] = verify_catalog_captures(
+                args.width, destination, root)
             sources = list((root/'tools/qa/client_lifecycle').glob('*.py'))
             sources += list((root/'tools/qa/client_lifecycle').glob('*.mjs'))
             sources += list((root/'tools/qa/critical_client_acceptance').glob('*.*'))

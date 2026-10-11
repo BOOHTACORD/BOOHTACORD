@@ -6,6 +6,7 @@ import 'package:livekit_client/livekit_client.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'src/app.dart';
+import 'src/desktop_window_options.dart';
 import 'src/services/api_client.dart';
 import 'src/services/third_party_audio_licenses.dart';
 import 'src/services/client_telemetry.dart';
@@ -24,16 +25,7 @@ Future<void> main() async {
   }
   if (Platform.isMacOS || Platform.isWindows) {
     await windowManager.ensureInitialized();
-    const options = WindowOptions(
-      size: Size(1440, 900),
-      minimumSize: Size(1024, 680),
-      center: true,
-      backgroundColor: Color(0xFF0E1117),
-      title: 'BOOHTACORD',
-      titleBarStyle: TitleBarStyle.hidden,
-      windowButtonVisibility: true,
-    );
-    await windowManager.waitUntilReadyToShow(options, () async {
+    await windowManager.waitUntilReadyToShow(desktopWindowOptions, () async {
       await windowManager.show();
       await windowManager.focus();
     });
