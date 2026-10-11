@@ -3,102 +3,207 @@
   "scenarios": [
     {
       "id": "guild-navigation",
-      "controlsAndActions": ["skip-to-content", "guild and navigation toggles", "channel buttons", "favorite toggle", "channel actions", "mobile drawer close and focus return"],
+      "controlsAndActions": [
+        "skip-to-content",
+        "guild and navigation toggles",
+        "channel buttons",
+        "favorite toggle",
+        "channel actions",
+        "mobile drawer close and focus return"
+      ],
       "web": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts"],
-        "assertions": ["Favorite toggle has state-aware accessible names and aria-pressed state; pointer and Space activation preserve viewport reachability and visible keyboard focus."],
+        "testFiles": [
+          "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+          "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts"
+        ],
+        "assertions": [
+          "Favorite toggle has state-aware accessible names and aria-pressed state; pointer and Space activation preserve viewport reachability and visible keyboard focus."
+        ],
         "crossBrowserRegression": "Chrome, WebKit and Firefox",
         "manualAssistiveTech": "NOT_RUN"
       },
       "flutter": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/flutter/test/workspace_screen_test.dart"],
+        "testFiles": [
+          "clients/flutter/test/workspace_screen_test.dart"
+        ],
         "manualAssistiveTech": "NOT_RUN"
       }
     },
     {
       "id": "chat-dm",
-      "controlsAndActions": ["message composer and send", "attachment and mention controls", "message reply/edit/delete/reaction", "DM search result context", "touch and keyboard action disclosure"],
+      "controlsAndActions": [
+        "message composer and send",
+        "attachment and mention controls",
+        "message reply/edit/delete/reaction",
+        "DM search result context",
+        "touch and keyboard action disclosure"
+      ],
       "web": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts", "clients/web/src/direct_message/direct_message_search_client.spec.ts", "clients/web/src/conversation/message_log_semantics.spec.ts"],
+        "testFiles": [
+          "clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts",
+          "clients/web/src/direct_message/direct_message_search_client.spec.ts",
+          "clients/web/src/conversation/message_log_semantics.spec.ts"
+        ],
         "manualAssistiveTech": "NOT_RUN"
       },
       "flutter": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/flutter/test/workspace_screen_test.dart", "clients/flutter/test/message_attachment_composer_test.dart", "clients/flutter/test/message_social/private_widget_test.dart"],
+        "testFiles": [
+          "clients/flutter/test/workspace_screen_test.dart",
+          "clients/flutter/test/message_attachment_composer_test.dart",
+          "clients/flutter/test/message_social/private_widget_test.dart"
+        ],
         "manualAssistiveTech": "NOT_RUN"
       }
     },
     {
       "id": "admin",
-      "controlsAndActions": ["seven admin section tabs", "member search/role/status filters and reset", "role controls and conflict review", "channel topology actions", "audit filters", "readiness/media refresh and status"],
+      "controlsAndActions": [
+        "seven admin section tabs",
+        "member search/role/status filters and reset",
+        "role controls and conflict review",
+        "channel topology actions",
+        "audit filters",
+        "readiness/media refresh and status"
+      ],
       "web": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/tests/accessibility/admin_fixture_matrix.browser.spec.ts"],
+        "testFiles": [
+          "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+          "clients/web/tests/accessibility/admin_fixture_matrix.browser.spec.ts"
+        ],
         "manualAssistiveTech": "NOT_RUN"
       },
       "flutter": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/flutter/test/admin_accessibility/controls_test.dart", "clients/flutter/test/admin_accessibility/keyboard_test.dart", "clients/flutter/test/admin_accessibility/state_test.dart", "clients/flutter/test/admin_accessibility/contrast_test.dart"],
+        "testFiles": [
+          "clients/flutter/test/admin_accessibility/controls_test.dart",
+          "clients/flutter/test/admin_accessibility/keyboard_test.dart",
+          "clients/flutter/test/admin_accessibility/state_test.dart",
+          "clients/flutter/test/admin_accessibility/contrast_test.dart"
+        ],
         "manualAssistiveTech": "NOT_RUN"
       }
     },
     {
       "id": "settings",
-      "controlsAndActions": ["profile tabs and linked tabpanels", "display-name/avatar/password fields", "save and retry feedback", "logout and session revocation confirmations", "unsaved-change navigation guard"],
+      "controlsAndActions": [
+        "profile tabs and linked tabpanels",
+        "display-name/avatar/password fields",
+        "save and retry feedback",
+        "logout and session revocation confirmations",
+        "unsaved-change navigation guard"
+      ],
       "web": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/src/workspace/settings_exit_guard.spec.ts", "clients/web/src/workspace/settings_panel_focus.spec.ts"],
-        "manualAssistiveTech": "NOT_RUN"
+        "testFiles": [
+          "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+          "clients/web/src/workspace/settings_exit_guard.spec.ts",
+          "clients/web/src/workspace/settings_panel_focus.spec.ts"
+        ],
+        "manualAssistiveTech": "NOT_RUN",
+        "assertions": [
+          "The footer audio-settings icon has an accessible name, visible keyboard focus, and an Enter activation path."
+        ]
       },
       "flutter": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/flutter/test/profile_screen_test.dart", "clients/flutter/test/theme_tokens_test.dart"],
+        "testFiles": [
+          "clients/flutter/test/profile_screen_test.dart",
+          "clients/flutter/test/theme_tokens_test.dart"
+        ],
         "manualAssistiveTech": "NOT_RUN"
       }
     },
     {
       "id": "dialogs",
-      "controlsAndActions": ["dialog name and modal semantics", "cancel-first focus", "keyboard traversal and focus containment", "Escape/Back/cancel", "focus restoration and stale-target dismissal"],
+      "controlsAndActions": [
+        "dialog name and modal semantics",
+        "cancel-first focus",
+        "keyboard traversal and focus containment",
+        "Escape/Back/cancel",
+        "focus restoration and stale-target dismissal"
+      ],
       "web": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/tests/accessibility/admin_confirmation.browser.spec.ts"],
+        "testFiles": [
+          "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+          "clients/web/tests/accessibility/admin_confirmation.browser.spec.ts"
+        ],
         "manualAssistiveTech": "NOT_RUN"
       },
       "flutter": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/flutter/test/confirmation_dialog_test.dart", "clients/flutter/test/admin_accessibility/dialog_test.dart", "clients/flutter/test/screen_setup/dialog_test.dart"],
+        "testFiles": [
+          "clients/flutter/test/confirmation_dialog_test.dart",
+          "clients/flutter/test/admin_accessibility/dialog_test.dart",
+          "clients/flutter/test/screen_setup/dialog_test.dart"
+        ],
         "manualAssistiveTech": "NOT_RUN"
       }
     },
     {
       "id": "voice",
-      "controlsAndActions": ["prejoin microphone/device selection", "join without microphone", "connected/reconnecting/ended status", "voice shortcuts and mute controls", "timeout and retry feedback"],
+      "controlsAndActions": [
+        "prejoin microphone/device selection",
+        "join without microphone",
+        "connected/reconnecting/ended status",
+        "voice shortcuts and mute controls",
+        "timeout and retry feedback"
+      ],
       "web": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/tests/voice_shortcuts/interaction.browser.spec.ts", "clients/web/tests/voice_timeout/timeout.browser.spec.ts"],
-        "manualAssistiveTech": "NOT_RUN"
+        "testFiles": [
+          "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+          "clients/web/tests/voice_shortcuts/interaction.browser.spec.ts",
+          "clients/web/tests/voice_timeout/timeout.browser.spec.ts"
+        ],
+        "manualAssistiveTech": "NOT_RUN",
+        "assertions": [
+          "Voice-dock microphone, deafen, screen-share and leave controls expose names; Tab focus is visible and Space/Enter activate available actions."
+        ]
       },
       "flutter": {
         "status": "PARTIAL",
-        "testFiles": ["clients/flutter/test/features/voice/prejoin/header_status_test.dart", "clients/flutter/test/voice_connection_badge_test.dart", "clients/flutter/test/voice_shortcut_preferences_test.dart", "clients/flutter/test/workspace_screen_test.dart"],
+        "testFiles": [
+          "clients/flutter/test/features/voice/prejoin/header_status_test.dart",
+          "clients/flutter/test/voice_connection_badge_test.dart",
+          "clients/flutter/test/voice_shortcut_preferences_test.dart",
+          "clients/flutter/test/workspace_screen_test.dart"
+        ],
         "automatedCoverageNote": "Widget/semantics cases cover connected dock actions, including the named screen-share start action and disabled leave state, joining/reconnecting/leaving/error statuses, unavailable-microphone retry and push-to-talk. The badge suite checks disconnected/error live announcements and suppresses stale quality/ping. Broader Flutter voice accessibility coverage remains partial; physical keyboard and assistive-technology acceptance remains NOT_RUN.",
         "manualAssistiveTech": "NOT_RUN"
       }
     },
     {
       "id": "stream",
-      "controlsAndActions": ["screen-share source selection", "recommended/advanced profile controls", "start/cancel actions", "permission and unsupported-source feedback", "dialog focus and reduced motion", "scenario names, resolution/FPS radio labels, 1440p-to-text-profile transition, named close/cancel/start actions"],
+      "controlsAndActions": [
+        "screen-share source selection",
+        "recommended/advanced profile controls",
+        "start/cancel actions",
+        "permission and unsupported-source feedback",
+        "dialog focus and reduced motion",
+        "scenario names, resolution/FPS radio labels, 1440p-to-text-profile transition, named close/cancel/start actions"
+      ],
       "web": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/tests/screen_profile/encoding.browser.spec.ts", "clients/web/tests/screen_profile/quality_dialog.browser.spec.ts"],
+        "testFiles": [
+          "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+          "clients/web/tests/screen_profile/encoding.browser.spec.ts",
+          "clients/web/tests/screen_profile/quality_dialog.browser.spec.ts"
+        ],
         "manualAssistiveTech": "NOT_RUN"
       },
       "flutter": {
         "status": "PASS_SCOPED",
-        "testFiles": ["clients/flutter/test/screen_setup/dialog_test.dart", "clients/flutter/test/screen_share_profile_geometry_test.dart", "clients/flutter/test/android_screen_capture_profile_contract_test.dart"],
+        "testFiles": [
+          "clients/flutter/test/screen_setup/dialog_test.dart",
+          "clients/flutter/test/screen_share_profile_geometry_test.dart",
+          "clients/flutter/test/android_screen_capture_profile_contract_test.dart"
+        ],
         "manualAssistiveTech": "NOT_RUN"
       }
     }
@@ -106,12 +211,20 @@
   "contrast": {
     "status": "PASS_SAMPLED",
     "evidence": "docs/design/DESIGN_V2_TOKEN_CROSSWALK.md",
-    "testFiles": ["clients/web/src/design/contrast_contract.spec.ts", "clients/flutter/test/admin_accessibility/contrast_test.dart", "clients/flutter/test/theme_tokens_test.dart"],
+    "testFiles": [
+      "clients/web/src/design/contrast_contract.spec.ts",
+      "clients/flutter/test/admin_accessibility/contrast_test.dart",
+      "clients/flutter/test/theme_tokens_test.dart"
+    ],
     "coverageNote": "Opaque semantic token pairs and selected rendered states only; not every translucent overlay or composited runtime color."
   },
   "touchTargets": {
     "productMinimumCssOrLogicalPx": 44,
-    "automatedEvidence": ["clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts", "clients/flutter/test/workspace_screen_test.dart", "clients/flutter/test/admin_accessibility/controls_test.dart"],
+    "automatedEvidence": [
+      "clients/web/tests/conversation_action_disclosure/message_action.browser.spec.ts",
+      "clients/flutter/test/workspace_screen_test.dart",
+      "clients/flutter/test/admin_accessibility/controls_test.dart"
+    ],
     "exceptionsNote": "WCAG 2.2 AA minimum target-size exceptions remain applicable; the product target is 44 px/pt/dp where a control is interactive."
   },
   "manualAcceptance": {
