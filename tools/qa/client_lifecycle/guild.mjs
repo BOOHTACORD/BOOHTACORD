@@ -16,14 +16,18 @@ async function captureAtTwoX(page, directory, file, report) {
 export async function guild(a, b, guest, password, report, directory, expectedMemberCount = 20) {
   const topology = await seedAdminReferenceTopology(a)
   const target = topology.welcome
+  console.log('stage=reference-topology-seeded')
   await channel(b, 'Text')
+  console.log('stage=reference-channel-selected')
   await expect(b.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
+  console.log('stage=reference-channel-heading-visible')
   const channelHash = `#workspace/channel/${encodeURIComponent(target.id)}`
   assert.equal(new URL(b.url()).hash, channelHash, 'Selected channel should be addressable in the URL')
   await b.reload()
   await expect(b.getByTestId('app-shell')).toBeVisible()
   await expect(b.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   assert.equal(new URL(b.url()).hash, channelHash, 'Refresh should restore the selected channel URL')
+  console.log('stage=reference-channel-refresh-restored')
   report.navigation_context = {
     channel_header: 'PASS',
     channel_url: 'PASS',
@@ -37,6 +41,7 @@ export async function guild(a, b, guest, password, report, directory, expectedMe
     status(await api(b, `/channels/${target.id}/messages`, 'POST', { client_message_id: randomUUID(), body }), 201)
   }
   await expect(b.getByRole('log', { name: 'История сообщений' })).toContainText('Synthetic UIUX channel sample: wrapping at narrow viewports.')
+  console.log('stage=reference-channel-messages-visible')
   await b.screenshot({ path: directory+'/channel-text.png' })
   await guildPanel(a)
   const settings = (await api(a, '/admin/guild-settings')).body
@@ -47,7 +52,9 @@ export async function guild(a, b, guest, password, report, directory, expectedMe
   await expect(a.getByRole('status').filter({ hasText: 'Настройки сохранены' })).toBeVisible()
   await expect(b.locator('#app-title')).toHaveText('Автономная гильдия')
   await expect(b).toHaveTitle('Автономная гильдия')
+  console.log('stage=reference-live-guild-rename')
   await seedAdminAuditHistory(a)
+  console.log('stage=reference-audit-history-seeded')
   const adminNav = a.getByRole('navigation', { name: 'Разделы администрирования' })
   const adminScreens = [
     { tab: 'Участники', selector: '.admin-directory', file: 'guild-members.png', ready: () => expect(a.locator('.admin-filter-results')).toHaveText(`Показано: ${expectedMemberCount} из ${expectedMemberCount} загруженных`) },
@@ -68,6 +75,7 @@ export async function guild(a, b, guest, password, report, directory, expectedMe
     await expect(tab).toHaveAttribute('aria-current', 'page')
     await expect(a.locator(screen.selector)).toBeVisible()
     await screen.ready()
+    console.log(`stage=admin-screen-ready:${screen.tab}`)
     await a.screenshot({ path: directory+'/'+screen.file })
     capturedAdminScreens.push(screen.file)
   }
@@ -81,6 +89,7 @@ export async function guild(a, b, guest, password, report, directory, expectedMe
   report.guild = { live_rename: true, private_profile: true, revision_conflict: true, origin_denied: true }
   await a.screenshot({ path: directory+'/guild-settings.png' })
   await captureAtTwoX(a, directory, 'guild-settings-200.png', report)
+  console.log('stage=reference-security-and-access-complete')
   const closeAdmin = a.getByRole('button', { name: 'Закрыть администрирование', exact: true })
   if (await closeAdmin.isVisible()) await closeAdmin.click()
   await channel(a, 'Text'); await channel(b, 'Text')
@@ -111,6 +120,7 @@ export async function guild(a, b, guest, password, report, directory, expectedMe
   await a.screenshot({ path: directory+'/welcome-a.png' })
   await b.screenshot({ path: directory+'/welcome-b.png' })
   report.welcome = { two_live_clients: true, reconnect_single: true, retry_no_duplicate: true }
+  console.log('stage=reference-welcome-complete')
   const currentProfile = (await api(a, '/guild-profile')).body
   return { channelId: target.id, logChannelId: topology.log.id, accountId: registered.body.id,
     message: rows[0], revision: currentProfile.revision }
