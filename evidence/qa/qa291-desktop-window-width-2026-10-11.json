@@ -1,0 +1,34 @@
+{
+  "id": "QA-291-DESKTOP-WINDOW-WIDTH-2026-10-11",
+  "date": "2026-10-11",
+  "issue": "https://github.com/Egkurilov/BOOHTACORD/issues/291",
+  "source_revision": "a415abe1",
+  "change": {
+    "minimum_window_size_logical_px": {
+      "width": 800,
+      "height": 680
+    },
+    "initial_window_size_logical_px": {
+      "width": 1440,
+      "height": 900
+    },
+    "platforms": ["macOS", "Windows"]
+  },
+  "verification": {
+    "flutter_test": {
+      "command": "flutter test test/desktop_window_options_test.dart",
+      "result": "PASS",
+      "passed": 1
+    },
+    "macos_debug_build": {
+      "command": "flutter build macos --debug",
+      "result": "PASS"
+    },
+    "native_window_resize": {
+      "macos": "NOT_RUN",
+      "windows": "NOT_RUN",
+      "reason": "The macOS QA process appears in the app inventory, but CUA getApp rejects its registered bundle identifier, so no window interaction or screenshot could be captured. No Windows runner is available."
+    }
+  },
+  "acceptance": "PARTIAL; physical desktop resize, native panels and active-media resize remain under #303."
+}

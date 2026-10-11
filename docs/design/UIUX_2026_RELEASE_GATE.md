@@ -71,3 +71,9 @@ The original 41 reference screenshots are recorded in the visual audit at local 
 - A macOS debug QA build was built and launched against the local QA endpoint. The CUA bridge rejected the isolated `.qa` bundle identifier, so no Mac UI task was counted as passed. Window resize, focus/input, capture picker and VoiceOver remain `NOT_RUN`.
 - Android screenshots and hashes are retained in the ignored local `.out` directory and are not staged or published. They are not reviewer-accessible artifacts; screenshot publication remains an open gate.
 - #303 and #289 remain open. This checkpoint does not change the release decision: `NO-GO / NOT_RUN`.
+
+## Desktop resize follow-up — 2026-10-11
+
+- The desktop minimum window width is now 800 logical pixels (previously 1024), matching the lower edge of UX-02's 800–1920 px resize scenario. The existing 1440×900 launch size and 680 px minimum height are preserved.
+- `flutter test test/desktop_window_options_test.dart` and `flutter build macos --debug` pass. The focused result is recorded in [QA-291](../../evidence/qa/qa291-desktop-window-width-2026-10-11.json).
+- Native drag-resize and OS panel interaction remain `NOT_RUN`: the macOS QA process was listed as running, but CUA could not bind its window; no Windows runner was available. #291, #303 and #289 remain open.
