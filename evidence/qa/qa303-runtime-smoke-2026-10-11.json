@@ -77,11 +77,40 @@
     },
     {
       "scenario": "Voice join, screen-share system picker and reconnect",
-      "result": "NOT_RUN"
+      "result": "PASS_PARTIAL",
+      "scope": "Disposable local HTTPS/LiveKit QA stack, synthetic qa_admin only; Android emulator 15/API 35, package ru.boohtacord.app.qa. Voice join/reconnect passed locally. System app-only capture consent selected the uniquely labelled BOOHTACORD QA package; Android MediaProjection became active and the local roster showed the screen-share indicator. No second client consumed frames, so remote delivery and media QoE were not verified.",
+      "steps": [
+        {
+          "scenario": "Voice join and microphone permission",
+          "result": "PASS",
+          "scope": "Android runtime permission selected Only this time; app showed Голос подключён and Выключить микрофон; one QA participant, ping 1–5 ms. Permission was revoked by uninstalling the QA package."
+        },
+        {
+          "scenario": "Reconnect after local proxy interruption",
+          "result": "PASS",
+          "scope": "Local proxy was stopped for approximately five seconds and restored; client changed to reconnecting then returned to connected. No remote peer or media QoE was measured."
+        },
+        {
+          "scenario": "App-only screen capture consent and local state",
+          "result": "PASS_SYSTEM_PROJECTION_AND_LOCAL_INDICATOR",
+          "scope": "Android chooser exposed BOOHTACORD and BOOHTACORD QA separately; selected BOOHTACORD QA. dumpsys media_projection reported ru.boohtacord.app.qa TYPE_SCREEN_CAPTURE. The participant row showed the monitor indicator. Projection was no longer active after returning to the voice screen."
+        },
+        {
+          "scenario": "Remote screen-video receipt and sustained delivery",
+          "result": "NOT_RUN",
+          "scope": "No second QA client/participant was available to consume the track; no remote frame, bitrate, or QoE claim."
+        }
+      ]
     },
     {
       "scenario": "Landscape, dynamic text and TalkBack",
-      "result": "NOT_RUN"
+      "result": "PARTIAL_OBSERVATION_ONLY",
+      "scope": "Android emulator only. font_scale=2.0 and landscape rotation were inspected; the voice control dock remained visible, the screen-share modal body was scrollable with its footer fixed, and the full accessibility label for the channel remained available while the visible subtitle ellipsized. Android system capture consent had no visible Start action at 2x text in landscape; the device was returned to portrait/1x to complete the isolated permission flow. TalkBack and physical-device acceptance remain NOT_RUN."
+    },
+    {
+      "scenario": "Screen-share quality selection including 1440p",
+      "result": "PASS_EMULATOR_UI_SELECTION",
+      "scope": "In the isolated `.qa` screen-share modal, accessibility exposed 720p, 1080p, 1440p and 15/30/60 FPS. Selecting 1440p and 60 FPS changed the current selection to 1440p · 60 FPS; both controls reported selected=true. This verifies UI state only, not achieved encoder resolution or media quality."
     }
   ],
   "macos_scenarios": {
@@ -90,7 +119,7 @@
     "window_resize_focus_keyboard_capture_picker_voiceover": "NOT_RUN"
   },
   "evidence_artifacts": {
-    "storage": "Local ignored .out files; screenshots were not staged or uploaded, per repository media-staging rule. Hashes identify the local captures but they are not available to GitHub reviewers.",
+    "storage": "Screenshots are retained in the ignored local .out directory and are not staged or uploaded; hashes identify local captures but are not GitHub-reviewer-accessible artifacts. Disposable QA APK, credentials, certificate and backend state were removed after the run.",
     "screenshots": [
       {
         "path": ".out/uiux-2026-android-message-sent.png",
@@ -131,6 +160,46 @@
       {
         "path": ".out/uiux-2026-android-back.png",
         "sha256": "ea9bc30c63e663538189a30dc8980dde5c5a590f5623524cce669acc2f0de46d"
+      },
+      {
+        "path": ".out/qa303-android/voice-2x-text.png",
+        "sha256": "f0064d032343f9e75e98b83040304568ca74be4690d84e9986ab4759dc58b9bd"
+      },
+      {
+        "path": ".out/qa303-android/voice-landscape-2x.png",
+        "sha256": "54144920768d827e1a620c8f732beb67c864dc0e0ac33f8cc3e6b0aefd2cc468"
+      },
+      {
+        "path": ".out/qa303-android/share-settings-landscape.png",
+        "sha256": "84aec385671f29ea049cd42d07ebdedc951cab6393de8c0c5c15caf251599a30"
+      },
+      {
+        "path": ".out/qa303-android/share-settings-scrolled.png",
+        "sha256": "753a30e91e8cd78082dc4b4e6e55f9f66e112118d5f418c03abc0e43471e973b"
+      },
+      {
+        "path": ".out/qa303-android/share-quality-expanded.png",
+        "sha256": "e8beac608840d444159a93b18908e190a216a118cdff1eb45fe1780ec35c8a27"
+      },
+      {
+        "path": ".out/qa303-android/share-quality-1440p60.png",
+        "sha256": "4371ff1fdcc8839c126c910f1661ed775df0405d55a3dfb54eea02527061d7b0"
+      },
+      {
+        "path": ".out/qa303-android/system-share-consent-qa.png",
+        "sha256": "99490ca3098ccba9e5a5d2513ad9c6fe1e090ac05eea6627d6e6e665dfa29bb6"
+      },
+      {
+        "path": ".out/qa303-android/share-app-picker.png",
+        "sha256": "d3f7c7f5e75ef68f74f2fd459a044d6178036f8298675cbe24a8edb10b5a7ff8"
+      },
+      {
+        "path": ".out/qa303-android/share-active-qa.png",
+        "sha256": "55ed53e483210f1c1684fc854d44edcfbbbde17d422c6c01914d86b8dc19f273"
+      },
+      {
+        "path": ".out/qa303-android/share-active-voice-screen.png",
+        "sha256": "9d8dfab3b39bdd5441ebcaaf4aa140eec4edd35b22cd249a6f1d8046dfd5f710"
       }
     ]
   },
@@ -139,10 +208,11 @@
     "physical_android_acceptance": "NOT_RUN",
     "macos_task_acceptance": "NOT_RUN",
     "full_issue_303": "OPEN_INCOMPLETE",
-    "media_qoe": "OUT_OF_SCOPE; remains under #173/#174"
+    "media_qoe": "OUT_OF_SCOPE; remains under #173/#174",
+    "android_emulator_voice_share_smoke": "PASS_PARTIAL"
   },
   "open_gates": [
-    "Run the remaining Android scenarios on a physical device, including voice join, screen picker, reconnect, landscape, dynamic text, keyboard dismissal and TalkBack.",
+    "Physical Android acceptance remains NOT_RUN because the emulator is the only available Android device. Emulator-only TalkBack, full keyboard/IME traversal and remote screen-frame receipt also remain unverified.",
     "Complete macOS task acceptance with a CUA-bindable isolated QA app, including 800–1920 px resize, focus/input and native capture picker.",
     "Complete Windows, iOS and full-app browser task scripts and required assistive-technology runs.",
     "Publish source-sized screenshots or video through the approved evidence channel; current Android captures remain local-only."
@@ -439,6 +509,106 @@
     "qa_secondary_user_available": false,
     "application_interaction": "NOT_RUN",
     "security_boundary": "The only matching installed app is the production package. It was not launched and no production account, data or endpoint was accessed.",
-    "next_action": "Prepare/install a separately identified QA build and disposable backend before continuing emulator task scripts. This remains emulator evidence and cannot satisfy physical Android acceptance."
+    "next_action": "Physical Android acceptance is still NOT_RUN because the user confirmed this emulator is the only available Android device. Remaining emulator work is a second-client screen-frame check, complete IME and Back task scripts, and TalkBack if available; this cannot replace physical acceptance.",
+    "subsequent_runtime_follow_up": {
+      "result": "PASS_PARTIAL_EMULATOR_ONLY",
+      "source_revision": "e8372d452a0693e447588e611264bd6c20360c1d",
+      "qa_package": "ru.boohtacord.app.qa",
+      "picker_label": "BOOHTACORD QA",
+      "isolated_stack_used": true,
+      "production_package_touched": false,
+      "cleanup_completed": true,
+      "details": "See android_isolated_voice_share_smoke_2026_10_11 and android_scenarios for voice join/reconnect, system capture and 1440p UI evidence."
+    }
+  },
+  "android_isolated_voice_share_smoke_2026_10_11": {
+    "date": "2026-10-11",
+    "source_revision": "e8372d452a0693e447588e611264bd6c20360c1d",
+    "application_manifest_version": "1.0.38+71",
+    "qa_build": {
+      "package": "ru.boohtacord.app.qa",
+      "picker_label": "BOOHTACORD QA",
+      "debug_apk_sha256": "a8968cf43de4109e65fddc5bdc98ad4d33c3f26eff6af619c311bc788aa8e363",
+      "build_overrides": "Temporary package suffix, QA label, localhost API default and exact localhost certificate trust/pin; source files were restored byte-for-byte after the run.",
+      "installed_after_run": false
+    },
+    "device": {
+      "serial": "emulator-5554",
+      "model": "sdk_gphone64_arm64",
+      "os": "Android 15 / API 35",
+      "default_resolution": "1080x2400 at density 420",
+      "landscape_resolution": "2400x1080 at density 420",
+      "physical_device": false,
+      "android_user": "0"
+    },
+    "stack": {
+      "type": "Disposable local HTTPS API, Postgres, Tempo, Caddy and LiveKit QA stack",
+      "api_origin": "https://localhost:4810/api/v1",
+      "sfu_origin": "wss://localhost:4810/qa-sfu",
+      "account": "Synthetic qa_admin only",
+      "production_package": "ru.boohtacord.app",
+      "production_package_modified_or_shared": false,
+      "cleanup": "QA app uninstalled; temporary RECORD_AUDIO grant revoked; ADB reverse ports 4810/4881 removed; local stack stopped; emulator font_scale=1.0, user_rotation=0, accelerometer_rotation=0."
+    },
+    "observations": {
+      "voice_join": "PASS; app showed connected, one participant, 1–5 ms displayed ping. Microphone grant was Only this time.",
+      "proxy_reconnect": "PASS; after an approximately five-second owned proxy outage, app showed reconnecting then connected.",
+      "screen_share_system_flow": "PASS_PARTIAL; Android single-app chooser displayed separate BOOHTACORD and BOOHTACORD QA entries; only BOOHTACORD QA was selected. dumpsys identified active TYPE_SCREEN_CAPTURE for ru.boohtacord.app.qa. Local participant UI showed a screen-share monitor indicator.",
+      "screen_share_delivery": "NOT_RUN; no second client/participant was available to verify receipt of video frames, sustained publication, bitrate, or QoE. Projection was no longer active after returning to the voice route.",
+      "quality_controls": "PASS_EMULATOR_UI_SELECTION; 1440p and 60 FPS were available, selected=true, and the current selection became 1440p · 60 FPS.",
+      "large_text_and_landscape": "PARTIAL; voice controls remained visible and the screen-share modal scrolled with a fixed footer. Channel subtitle visually ellipsized at 2x although the full accessibility label remained exposed. TalkBack NOT_RUN.",
+      "system_consent_large_text_landscape": "OBSERVED_LIMITATION; at 2x text in landscape Android’s system consent prompt did not show a visible Start button. Returned to portrait/1x to complete the authorized QA-only flow."
+    },
+    "artifacts": {
+      "screenshots": [
+        {
+          "path": ".out/qa303-android/voice-2x-text.png",
+          "sha256": "f0064d032343f9e75e98b83040304568ca74be4690d84e9986ab4759dc58b9bd"
+        },
+        {
+          "path": ".out/qa303-android/voice-landscape-2x.png",
+          "sha256": "54144920768d827e1a620c8f732beb67c864dc0e0ac33f8cc3e6b0aefd2cc468"
+        },
+        {
+          "path": ".out/qa303-android/share-settings-landscape.png",
+          "sha256": "84aec385671f29ea049cd42d07ebdedc951cab6393de8c0c5c15caf251599a30"
+        },
+        {
+          "path": ".out/qa303-android/share-settings-scrolled.png",
+          "sha256": "753a30e91e8cd78082dc4b4e6e55f9f66e112118d5f418c03abc0e43471e973b"
+        },
+        {
+          "path": ".out/qa303-android/share-quality-expanded.png",
+          "sha256": "e8beac608840d444159a93b18908e190a216a118cdff1eb45fe1780ec35c8a27"
+        },
+        {
+          "path": ".out/qa303-android/share-quality-1440p60.png",
+          "sha256": "4371ff1fdcc8839c126c910f1661ed775df0405d55a3dfb54eea02527061d7b0"
+        },
+        {
+          "path": ".out/qa303-android/system-share-consent-qa.png",
+          "sha256": "99490ca3098ccba9e5a5d2513ad9c6fe1e090ac05eea6627d6e6e665dfa29bb6"
+        },
+        {
+          "path": ".out/qa303-android/share-app-picker.png",
+          "sha256": "d3f7c7f5e75ef68f74f2fd459a044d6178036f8298675cbe24a8edb10b5a7ff8"
+        },
+        {
+          "path": ".out/qa303-android/share-active-qa.png",
+          "sha256": "55ed53e483210f1c1684fc854d44edcfbbbde17d422c6c01914d86b8dc19f273"
+        },
+        {
+          "path": ".out/qa303-android/share-active-voice-screen.png",
+          "sha256": "9d8dfab3b39bdd5441ebcaaf4aa140eec4edd35b22cd249a6f1d8046dfd5f710"
+        }
+      ],
+      "storage": "Screenshots are retained in the ignored local .out directory and are not staged or uploaded; hashes identify local captures but are not GitHub-reviewer-accessible artifacts. Disposable QA APK, credentials, certificate and backend state were removed after the run."
+    },
+    "limitations": [
+      "Emulator evidence is not physical-device acceptance.",
+      "No second client verified video receipt or sustained screen-share delivery.",
+      "TalkBack and complete IME/navigation task scripts remain NOT_RUN.",
+      "Screenshots are local-only and unavailable to GitHub reviewers."
+    ]
   }
 }
