@@ -131,6 +131,24 @@
         "The icon-only voice-leave control keeps its accessible label and removes its tap action while the room is leaving."
       ],
       "limitation": "Flutter semantics-tree evidence only; physical keyboard and screen-reader traversal remains NOT_RUN."
+    },
+    {
+      "name": "Flutter voice prejoin join action semantics",
+      "command": "cd clients/flutter && flutter test --no-pub test/voice_manual_join_actions_accessibility_test.dart",
+      "result": "PASS",
+      "tests_passed": 3,
+      "test_source_sha256": "2ace82e89a042d925eab571bfcb10931c6aa800760f1663deb3ac2f42c920db8",
+      "test_source_commit": "193280c798ed11630a104ec57dc41e9a92d2ab41",
+      "analyzer": {
+        "command": "cd clients/flutter && flutter analyze --no-pub test/voice_manual_join_actions_accessibility_test.dart",
+        "result": "PASS",
+        "observation": "No issues found."
+      },
+      "assertions": [
+        "Join and listener-only actions expose non-empty labels, button semantics and tap actions.",
+        "Joining, closed admission and a BANNED disconnect expose both actions as disabled."
+      ],
+      "limitation": "Flutter widget semantics only; physical keyboard traversal and spoken assistive-technology acceptance remain NOT_RUN."
     }
   ],
   "contrast": {
