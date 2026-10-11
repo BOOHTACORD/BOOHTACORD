@@ -5,6 +5,7 @@ const dock = readFileSync(new URL('./VoiceDock.vue', import.meta.url), 'utf8')
 const voiceStyles = readFileSync(new URL('../design/voice.css', import.meta.url), 'utf8')
 const dockStyles = readFileSync(new URL('../design/design_v2_voice_dock.css', import.meta.url), 'utf8')
 const desktopDockStyles = readFileSync(new URL('../design/design_v2_chat_presentation.css', import.meta.url), 'utf8')
+const mobileDockStyles = readFileSync(new URL('../design/design_v2_mobile_navigation.css', import.meta.url), 'utf8')
 
 describe('Design V2 voice dock icons', () => {
   it('uses the handoff microphone outline while keeping the existing action', () => {
@@ -25,7 +26,15 @@ describe('Design V2 voice dock icons', () => {
     expect(dock).toContain('class="voice-icon voice-icon--filled" viewBox="0 0 24 24"')
     expect(dockStyles).toContain('.voice-dock .voice-icon { stroke-width: 2; }')
     expect(dockStyles).toContain('.voice-dock .voice-icon--filled { fill: currentColor; stroke: none; }')
-    expect(desktopDockStyles).toContain('.sidebar .mobile-voice-dock .voice-icon-button { width: 40px; height: 40px; flex: 0 0 40px; }')
+    expect(desktopDockStyles).toContain('.sidebar .mobile-voice-dock .voice-icon-button { width: auto; height: 40px; flex: 1 1 0; min-width: 0; }')
+  })
+
+  it('fills the desktop and open-drawer dock width with evenly sized action targets', () => {
+    expect(desktopDockStyles).toContain('.sidebar .mobile-voice-dock .voice-actions { width: 100%;')
+    expect(desktopDockStyles).toContain('.sidebar .mobile-voice-dock .voice-icon-button { width: auto; height: 40px; flex: 1 1 0; min-width: 0; }')
+    expect(mobileDockStyles).toContain('.sidebar.is-open .mobile-voice-dock .voice-actions { display: flex; width: 100%;')
+    expect(mobileDockStyles).toContain('min-height: 44px; flex: 1 1 0; min-width: 0;')
+    expect(mobileDockStyles).toContain('width: 44px; height: 44px; min-height: 44px;')
   })
 
   it('uses the same headphones outline for the header and deafen control', () => {

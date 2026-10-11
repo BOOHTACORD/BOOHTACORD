@@ -29,18 +29,34 @@ test('WCAG smoke covers navigation, search and connected voice dock', async ({ p
   await expectAxeClear(page, '#app')
 })
 
-test('WCAG keyboard smoke covers navigation focus trap and restoration', async ({ page }) => {
+test('WCAG keyboard smoke covers visible navigation focus, focus trap and restoration', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/tests/responsive_shell/focus_fixture.html')
   const trigger = page.getByRole('button', { name: 'Открыть навигацию' })
   const selection = page.getByRole('button', { name: 'Выбрать канал' })
-  await trigger.click()
-  await expect(page.getByRole('dialog', { name: 'Навигация по каналам' })).toBeVisible()
+  await trigger.press('Enter')
+  const dialog = page.getByRole('dialog', { name: 'Навигация по каналам' })
+  await expect(dialog).toBeVisible()
   await expect(selection).toBeFocused()
+  const focusStyle = await selection.evaluate((element) => {
+    const style = getComputedStyle(element)
+    return {
+      focusVisible: element.matches(':focus-visible'),
+      outlineStyle: style.outlineStyle,
+      outlineWidth: style.outlineWidth,
+      outlineColor: style.outlineColor,
+    }
+  })
+  expect(focusStyle.focusVisible).toBe(true)
+  expect(focusStyle.outlineStyle).toBe('solid')
+  expect(Number.parseFloat(focusStyle.outlineWidth)).toBeGreaterThanOrEqual(2)
+  expect(focusStyle.outlineColor).toBe('rgb(180, 164, 255)')
+  await page.screenshot({ path: testInfo.outputPath('navigation-keyboard-focus-visible.png') })
   await expectAxeClear(page, '.app-frame')
   await page.keyboard.press('Tab')
   await expect(selection).toBeFocused()
   await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
   await expect(trigger).toBeFocused()
 })
 
@@ -700,6 +716,153 @@ test('voice dock makes muted and deafened states visibly red after each toggle',
   await expect(deafenedButton).toHaveCSS('color', 'rgb(255, 255, 255)')
   await expectAxeClear(page, '.voice-dock')
   await page.screenshot({ path: testInfo.outputPath('voice-dock-muted-deafened-active.png') })
+})
+
+test('voice dock and audio settings icons expose keyboard names, focus and activation', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+  await page.evaluate(async () => {
+    const load = (path: string) => import(path)
+    const { createApp, h, reactive } = await load('/node_modules/.vite/deps/vue.js')
+    const { default: VoiceDock } = await load('/src/voice/VoiceDock.vue')
+    const { default: WorkspaceUserFooter } = await load('/src/workspace/WorkspaceUserFooter.vue')
+    document.body.innerHTML = '<div id="mount"></div>'
+    Object.assign(window, { __uiuxSettingsActivated: false })
+    const state = reactive({
+      channel: { id: 'voice-1', name: 'Комната', kind: 'VOICE', position: 0, admissionClosed: false },
+      activeSession: true,
+      error: null,
+      activationMode: 'VAD',
+      deafened: false,
+      deafenChanging: false,
+      microphoneMuted: false,
+      microphonePermissionDenied: false,
+      screenShareState: 'IDLE',
+      state: 'CONNECTED',
+    })
+    createApp({
+      render: () => h('main', [
+        h(WorkspaceUserFooter, {
+          role: 'ADMINISTRATOR', displayName: 'Алексей',
+          onOpenSettings: () => Object.assign(window, { __uiuxSettingsActivated: true }),
+        }),
+        h(VoiceDock, {
+          ...state,
+          onToggleMicrophone: () => { state.microphoneMuted = !state.microphoneMuted },
+          onToggleDeafen: () => { state.deafened = !state.deafened },
+          onStartScreen: () => { state.screenShareState = 'STARTING' },
+          onLeave: () => { state.state = 'LEAVING' },
+        }),
+      ]),
+    }).mount('#mount')
+  })
+
+  const profileButton = page.getByRole('button', { name: 'Открыть настройки профиля' })
+  const settingsButton = page.getByRole('button', { name: 'Настройки аудио' })
+  const muteButton = page.getByRole('button', { name: 'Выключить микрофон' })
+  const deafenButton = page.getByRole('button', { name: 'Выключить удалённый звук' })
+  const shareButton = page.locator('.voice-actions button').nth(2)
+  const leaveButton = page.getByRole('button', { name: 'Выйти из голосового канала' })
+  const userAgent = await page.evaluate(() => navigator.userAgent)
+  const webkitUsesSystemTabPolicy = userAgent.includes('AppleWebKit') && !userAgent.includes('Chrome')
+  const focusButton = async (button: typeof profileButton) => {
+    if (webkitUsesSystemTabPolicy) {
+      // The WebKit host follows Safari's default Full Keyboard Access setting, which excludes buttons from Tab traversal.
+      await page.keyboard.press('Tab')
+      await button.focus()
+    } else {
+      await page.keyboard.press('Tab')
+    }
+    await expect(button).toBeFocused()
+  }
+
+  await focusButton(profileButton)
+  await focusButton(settingsButton)
+  await expect(settingsButton).toHaveCSS('outline-style', 'solid')
+  await expect(settingsButton).toHaveCSS('outline-width', '2px')
+  await page.keyboard.press('Enter')
+  expect(await page.evaluate(() => Boolean((window as typeof window & { __uiuxSettingsActivated?: boolean }).__uiuxSettingsActivated))).toBe(true)
+
+  await focusButton(muteButton)
+  await expect(muteButton).toHaveCSS('outline-style', 'solid')
+  await page.keyboard.press('Space')
+  const mutedButton = page.getByRole('button', { name: 'Включить микрофон' })
+  await expect(mutedButton).toHaveAttribute('aria-pressed', 'false')
+  await expect(mutedButton).toHaveClass(/voice-icon-button--danger-active/)
+
+  await focusButton(deafenButton)
+  await page.keyboard.press('Enter')
+  const deafenedButton = page.getByRole('button', { name: 'Включить удалённый звук' })
+  await expect(deafenedButton).toHaveAttribute('aria-pressed', 'true')
+  await expect(deafenedButton).toHaveClass(/voice-icon-button--danger-active/)
+
+  await expect(shareButton).toHaveAttribute('aria-label', /.+/)
+  if (await shareButton.isEnabled()) {
+    await focusButton(shareButton)
+    await page.keyboard.press('Enter')
+    await expect(shareButton).toBeDisabled()
+  }
+  await focusButton(leaveButton)
+  await page.keyboard.press('Enter')
+  await expect(leaveButton).toBeDisabled()
+  await expectAxeClear(page, '#mount')
+  await page.screenshot({ path: testInfo.outputPath('voice-settings-dock-keyboard.png') })
+})
+
+test('voice and settings icon targets meet desktop and mobile minimum dimensions', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+  await page.evaluate(async () => {
+    const load = (path: string) => import(path)
+    const { createApp, h } = await load('/node_modules/.vite/deps/vue.js')
+    const { default: VoiceDock } = await load('/src/voice/VoiceDock.vue')
+    const { default: WorkspaceUserFooter } = await load('/src/workspace/WorkspaceUserFooter.vue')
+    document.body.innerHTML = '<div id="mount"></div>'
+    const channel = { id: 'voice-1', name: 'Комната', kind: 'VOICE', position: 0, admissionClosed: false }
+    createApp({ render: () => h('aside', { class: 'sidebar' }, [
+      h('div', { class: 'mobile-voice-dock mobile-visible' }, [h(VoiceDock, {
+        channel, activeSession: true, error: null, activationMode: 'VAD', deafened: false,
+        deafenChanging: false, microphoneMuted: false, microphonePermissionDenied: false,
+        screenShareState: 'IDLE', state: 'CONNECTED',
+      })]),
+      h(WorkspaceUserFooter, { role: 'ADMINISTRATOR', displayName: 'Алексей' }),
+    ]) }).mount('#mount')
+  })
+
+  const settings = page.getByRole('button', { name: 'Настройки аудио' })
+  const dockButtons = page.locator('.mobile-voice-dock .voice-actions .voice-icon-button')
+  await expect(settings).toBeVisible()
+  await expect(dockButtons).toHaveCount(4)
+  const desktopSettings = await settings.boundingBox()
+  expect(desktopSettings).not.toBeNull()
+  expect(desktopSettings!.width).toBe(40)
+  expect(desktopSettings!.height).toBe(40)
+  const desktopGear = await settings.locator('svg').boundingBox()
+  expect(desktopGear).not.toBeNull()
+  expect(desktopGear!.width).toBe(22)
+  expect(desktopGear!.height).toBe(22)
+  for (const button of await dockButtons.all()) {
+    const bounds = await button.boundingBox()
+    expect(bounds).not.toBeNull()
+    expect(bounds!.width).toBeGreaterThanOrEqual(40)
+    expect(bounds!.height).toBe(40)
+  }
+  await page.screenshot({ path: testInfo.outputPath('voice-settings-targets-desktop.png') })
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.locator('.sidebar').evaluate(element => element.classList.add('is-open'))
+  const mobileSettings = await settings.boundingBox()
+  expect(mobileSettings).not.toBeNull()
+  expect(mobileSettings!.width).toBe(44)
+  expect(mobileSettings!.height).toBe(44)
+  for (const button of await dockButtons.all()) {
+    const bounds = await button.boundingBox()
+    expect(bounds).not.toBeNull()
+    expect(bounds!.width).toBeGreaterThanOrEqual(44)
+    expect(bounds!.height).toBe(44)
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.screenshot({ path: testInfo.outputPath('voice-settings-targets-mobile.png') })
 })
 
 test('screen-share setup shows the recommended profile and keeps all quality options discoverable', async ({ page, browser }, testInfo) => {

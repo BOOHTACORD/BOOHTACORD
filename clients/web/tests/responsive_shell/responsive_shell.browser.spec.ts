@@ -296,16 +296,30 @@ test('browser Back and Forward close and restore overlays without losing workspa
   await expect(admin).toBeHidden()
 })
 
-test('the production drawer focus manager traps focus and restores it after Escape and selection', async ({ page }) => {
+test('the production drawer focus manager exposes visible focus, traps traversal and restores it', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/tests/responsive_shell/focus_fixture.html')
   const trigger = page.getByRole('button', { name: 'Открыть навигацию' })
   const membersTrigger = page.getByRole('button', { name: 'Открыть участников' })
   const selection = page.getByRole('button', { name: 'Выбрать канал' })
 
-  await trigger.click()
+  await trigger.press('Enter')
   await expect(page.getByRole('dialog', { name: 'Навигация по каналам' })).toHaveAttribute('aria-modal', 'true')
   await expect(selection).toBeFocused()
+  const focusStyle = await selection.evaluate((element) => {
+    const style = getComputedStyle(element)
+    return {
+      focusVisible: element.matches(':focus-visible'),
+      outlineStyle: style.outlineStyle,
+      outlineWidth: style.outlineWidth,
+      outlineColor: style.outlineColor,
+    }
+  })
+  expect(focusStyle.focusVisible).toBe(true)
+  expect(focusStyle.outlineStyle).toBe('solid')
+  expect(Number.parseFloat(focusStyle.outlineWidth)).toBeGreaterThanOrEqual(2)
+  expect(focusStyle.outlineColor).toBe('rgb(180, 164, 255)')
+  await page.screenshot({ path: testInfo.outputPath('navigation-keyboard-focus-visible.png') })
   await page.keyboard.press('Tab')
   await expect(selection).toBeFocused()
   await page.keyboard.press('Escape')

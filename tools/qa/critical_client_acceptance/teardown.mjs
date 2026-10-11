@@ -1,16 +1,21 @@
 import assert from 'node:assert/strict'
-import { api, expect, login, security, status } from '../client_lifecycle/request.mjs'
+import { api, channel, expect, login, security, status } from '../client_lifecycle/request.mjs'
 async function join(page) {
-  await page.locator('.channel-button').filter({ hasText: 'VoiceLab' }).click()
+  await channel(page, 'VoiceLab')
   await page.getByRole('button', { name: 'Подключиться без микрофона', exact: true }).click()
   await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 22000 })
 }
 async function mediaClosed(page) {
-  await expect.poll(() => page.evaluate(() => window.__qaPeers.every(peer => peer.connectionState !== 'connected'))).toBe(true)
+  try {
+    await expect.poll(() => page.evaluate(() => window.__qaPeers.every(peer => peer.connectionState !== 'connected'))).toBe(true)
+  } catch (error) {
+    console.error('media-close-state-counts='+JSON.stringify(await page.evaluate(() => Object.groupBy(window.__qaPeers.map(peer => peer.connectionState), state => state))))
+    throw error
+  }
 }
 export async function teardown(a, b, channelId, input, report, observed) {
   await join(a)
-  await a.locator('.channel-button').filter({ hasText: 'Text' }).click()
+  await channel(a, 'Text')
   let release, waiting = false
   const routed = []
   const held = new Promise(resolve => { release = resolve })

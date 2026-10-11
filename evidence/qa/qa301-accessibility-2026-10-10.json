@@ -131,6 +131,42 @@
         "The icon-only voice-leave control keeps its accessible label and removes its tap action while the room is leaving."
       ],
       "limitation": "Flutter semantics-tree evidence only; physical keyboard and screen-reader traversal remains NOT_RUN."
+    },
+    {
+      "name": "Flutter voice prejoin join action semantics",
+      "command": "cd clients/flutter && flutter test --no-pub test/voice_manual_join_actions_accessibility_test.dart",
+      "result": "PASS",
+      "tests_passed": 3,
+      "test_source_sha256": "2ace82e89a042d925eab571bfcb10931c6aa800760f1663deb3ac2f42c920db8",
+      "test_source_commit": "193280c798ed11630a104ec57dc41e9a92d2ab41",
+      "analyzer": {
+        "command": "cd clients/flutter && flutter analyze --no-pub test/voice_manual_join_actions_accessibility_test.dart",
+        "result": "PASS",
+        "observation": "No issues found."
+      },
+      "assertions": [
+        "Join and listener-only actions expose non-empty labels, button semantics and tap actions.",
+        "Joining, closed admission and a BANNED disconnect expose both actions as disabled."
+      ],
+      "limitation": "Flutter widget semantics only; physical keyboard traversal and spoken assistive-technology acceptance remain NOT_RUN."
+    },
+    {
+      "name": "Flutter audio-device picker keyboard semantics",
+      "command": "cd clients/flutter && flutter test --no-pub test/audio_device_dropdown_test.dart",
+      "result": "PASS",
+      "tests_passed": 2,
+      "test_source_sha256": "2bc09fb4f65f52ec03b9b307299c3bb363c3c79d9a42822b9d2fcbcf1d2d00af",
+      "test_source_commit": "309211a7e767322ba63c1e3f145a9051fe4e59c4",
+      "analyzer": {
+        "command": "cd clients/flutter && flutter analyze --no-pub test/audio_device_dropdown_test.dart",
+        "result": "PASS",
+        "observation": "No issues found."
+      },
+      "assertions": [
+        "The selected microphone label remains present in the dropdown semantics; the picker exposes button role, expanded state and tap action.",
+        "Starting from the preceding control, Tab reaches the picker, Space opens it, Tab moves to the next device and Space selects that device."
+      ],
+      "limitation": "Flutter widget keyboard/semantics evidence only; native screen-reader and physical keyboard acceptance remain NOT_RUN."
     }
   ],
   "contrast": {
@@ -207,16 +243,17 @@
     "windows_narrator_and_keyboard": "NOT_RUN",
     "device_inventory": {
       "available": [
+        "Android 15/API 35 emulator emulator-5554 (emulator; inventory only in this update)",
         "macOS 26.6.1 arm64",
-        "Chrome 154.0.8037.98"
+        "Google Chrome 154.0.8037.98"
       ],
       "unavailable": [
-        "Android physical device/emulator",
-        "iOS device/simulator",
-        "Windows device/VM"
+        "physical Android device",
+        "iOS device or simulator",
+        "Windows device or VM"
       ]
     },
-    "limitation": "Widget and browser automation cannot confirm announcements or traversal through a real screen reader. Keep #301 open until the manual acceptance is performed and recorded; platform runtime scheduling is tracked with #303."
+    "limitation": "Automated geometry and widget/browser checks cannot confirm real screen-reader announcements or physical traversal. The Android emulator is available, but no physical Android device is connected; keep manual acceptance open under #301/#303."
   },
   "acceptance": {
     "seven_scenario_control_inventory": "PASS_DOCUMENTED",
@@ -304,9 +341,18 @@
     "test_source_sha256": "1ec968d577672cf9ceb37f5ee1032c227702aaf72d6d346e33740dc8bccb690d",
     "result": "PASS_AUTOMATED_ONLY_3_ENGINES",
     "browser_runs": [
-      {"browser": "Google Chrome 154.0.8037.98", "result": "1/1 PASS"},
-      {"browser": "Playwright WebKit 26.6 (v2359)", "result": "1/1 PASS"},
-      {"browser": "Playwright Firefox 155.0 (v1543)", "result": "1/1 PASS"}
+      {
+        "browser": "Google Chrome 154.0.8037.98",
+        "result": "1/1 PASS"
+      },
+      {
+        "browser": "Playwright WebKit 26.6 (v2359)",
+        "result": "1/1 PASS"
+      },
+      {
+        "browser": "Playwright Firefox 155.0 (v1543)",
+        "result": "1/1 PASS"
+      }
     ],
     "assertions": [
       "The add/remove accessible names use grammatical Russian and aria-pressed tracks the favorite state.",
@@ -339,6 +385,382 @@
     "limitations": [
       "Physical TalkBack, VoiceOver, Narrator and native platform acceptance remain NOT_RUN under #301/#303.",
       "The capture is review evidence, not an approved pixel golden or Actions artifact."
+    ]
+  },
+  "voice_dock_settings_keyboard_follow_up": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_ONLY",
+    "browser": "Google Chrome 154.0.8037.98",
+    "tested_source_revision": "a80c8a28a11c4eb83c895a454a2e2343a56408c1",
+    "current_master_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "test_file": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+    "test_name": "voice dock and audio settings icons expose keyboard names, focus and activation",
+    "test_source_sha256": "f8f5ac8e5ec126c71cfd373a7f8e0a701c16db2bb786f090a2a2671134aba7b2",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npx playwright test -c tests/accessibility/playwright.config.ts tests/accessibility/accessibility.browser.spec.ts --grep 'voice dock and audio settings icons expose keyboard'",
+    "result": "1/1 PASS",
+    "checked": [
+      "Audio-settings icon is named and appears in keyboard order with a visible 2px focus outline; Enter dispatches the open-settings action.",
+      "Voice dock exposes state-aware microphone/deafen names; Space and Enter toggle the actions, pressed state and red active treatment.",
+      "Screen-share action has an accessible name and participates in keyboard traversal when supported; leaving remains keyboard available and disables during LEAVING.",
+      "Scoped axe scan reports no violations for the mounted footer and voice dock controls."
+    ],
+    "capture": {
+      "path": ".out/accessibility-browser-results/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+      "sha256": "66b1e9e288d06f88cc9b11dab06aa41dbe1b6e57f378412e617880bd086bc1b6",
+      "raster": "1440x900",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": [
+      "This is browser-automated keyboard and axe evidence, not manual VoiceOver/NVDA/TalkBack/Narrator traversal.",
+      "The focused run used local checkout a80c8a28a11c4eb83c895a454a2e2343a56408c1 (parent of merged PR #321); PR #321 changed icon glyphs and presentation CSS without changing the tested button names or event/state contract.",
+      "The screenshot is a review capture only; it is not a user-approved pixel golden or retained Actions artifact."
+    ]
+  },
+  "web_accessibility_suite_revalidation_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_ONLY",
+    "browser": "Google Chrome 154.0.8037.98",
+    "tested_source_revision": "a80c8a28a11c4eb83c895a454a2e2343a56408c1",
+    "current_master_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:accessibility",
+    "results": {
+      "accessibility_browser_cases": "52/52 PASS",
+      "conversation_action_disclosure_axe_case": "1/1 PASS"
+    },
+    "test_source_sha256": "f8f5ac8e5ec126c71cfd373a7f8e0a701c16db2bb786f090a2a2671134aba7b2",
+    "new_keyboard_test": "voice dock and audio settings icons expose keyboard names, focus and activation — 1/1 PASS",
+    "capture": {
+      "path": ".out/accessibility-browser-results/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+      "sha256": "66b1e9e288d06f88cc9b11dab06aa41dbe1b6e57f378412e617880bd086bc1b6",
+      "raster": "1440x900",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": [
+      "This is a local browser component suite, not a production authenticated runtime or manual VoiceOver/NVDA/TalkBack/Narrator traversal.",
+      "The suite used local checkout a80c8a28a11c4eb83c895a454a2e2343a56408c1. Current master 9f8926ba91accbafce0fc8b95b2dd64ac15b27b9 includes PR #321 icon/presentation changes, which do not change the tested button name/event/state contracts.",
+      "The capture is review-only; no pixel golden approval or physical-platform pass is implied."
+    ]
+  },
+  "web_master_icon_revalidation_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_ONLY",
+    "browser": "Google Chrome 154.0.8037.98",
+    "source_alignment": {
+      "tested_master_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+      "accessibility_test_branch": "codex/ux13-ci-artifact-evidence",
+      "accessibility_test_revision_before_evidence_commit": "613c40af00ba73766a5049946c413aeadd84af41",
+      "production_files_refreshed_from_master": [
+        "clients/web/src/design/design_v2_chat_presentation.css",
+        "clients/web/src/design/design_v2_mobile_navigation.css",
+        "clients/web/src/design/design_v2_user_footer.css",
+        "clients/web/src/design/design_v2_voice_dock.css",
+        "clients/web/src/design/mobile_navigation_v2.spec.ts",
+        "clients/web/src/voice/VoiceDock.vue",
+        "clients/web/src/voice/voice_dock_design_icons.spec.ts",
+        "clients/web/src/workspace/WorkspaceUserFooter.vue"
+      ],
+      "test_file_sha256": "f8f5ac8e5ec126c71cfd373a7f8e0a701c16db2bb786f090a2a2671134aba7b2"
+    },
+    "checks": [
+      {
+        "command": "cd clients/web && npm test -- --run src/voice/voice_dock_design_icons.spec.ts src/design/mobile_navigation_v2.spec.ts",
+        "result": "13/13 PASS"
+      },
+      {
+        "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:accessibility",
+        "result": "52/52 accessibility cases PASS; separate conversation-action axe case 1/1 PASS"
+      }
+    ],
+    "keyboard_regression": "voice dock and audio settings icons expose keyboard names, focus and activation — PASS",
+    "screenshot": {
+      "path": ".out/accessibility-browser-results/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+      "sha256": "32c6d4a68b38fa7a03d1cdfb83c21619562e532f3d2dedf79237285fc7aa1c14",
+      "raster": "1440x900",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "assertions": [
+      "Audio settings icon exposes a name, visible keyboard focus and Enter activation.",
+      "Microphone and deafen controls expose state-aware names and work with Space/Enter; pressed state and red active styling update.",
+      "Screen share and leave actions remain named and keyboard reachable, with unavailable/leaving states disabled.",
+      "Scoped axe reports no violations for the mounted footer and voice dock."
+    ],
+    "limitations": [
+      "Automated browser keyboard and axe coverage only; manual VoiceOver, NVDA, TalkBack and Narrator traversal remains NOT_RUN.",
+      "Screenshot is a local review capture, not an approved visual golden or Actions artifact.",
+      "This evidence is Web-only and does not assert Mac native or Android physical acceptance."
+    ]
+  },
+  "voice_dock_cross_browser_revalidation_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_ONLY",
+    "production_source_master": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "test_source_revision": "99a69d5bf0e1c1ab279dda7142a6f23dedf538f4",
+    "inventory_revision": "0e8f3e742ddb3e6b660b60a837e9f88a8f16c757",
+    "test_file": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+    "test_name": "voice dock and audio settings icons expose keyboard names, focus and activation",
+    "test_source_sha256": "3fba9271c0c95ed7d63aec3fa32fd87d8ad27df015f88ddaa9a28bffcc8f70e1",
+    "browser_runs": [
+      {
+        "browser": "Google Chrome 154",
+        "result": "1/1 PASS",
+        "coverage": "Sequential Tab traversal, visible focus, Enter/Space activation and state changes."
+      },
+      {
+        "browser": "Playwright Firefox",
+        "result": "1/1 PASS",
+        "coverage": "Sequential Tab traversal, visible focus, Enter/Space activation and state changes."
+      },
+      {
+        "browser": "Playwright WebKit",
+        "result": "1/1 PASS",
+        "coverage": "Direct focus, visible focus, Enter/Space activation and state changes; Tab order is not asserted."
+      }
+    ],
+    "full_chromium_suite": {
+      "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:accessibility",
+      "accessibility_browser_cases": "52/52 PASS",
+      "conversation_action_axe_case": "1/1 PASS"
+    },
+    "webkit_host_behavior": "The initial run confirmed that the WebKit host does not Tab-focus the profile button under its default Safari Full Keyboard Access policy. The regression now uses direct focus in WebKit and keeps real sequential Tab assertions in Chromium and Firefox.",
+    "capture": {
+      "path": ".out/accessibility-browser-results/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+      "sha256": "32c6d4a68b38fa7a03d1cdfb83c21619562e532f3d2dedf79237285fc7aa1c14",
+      "raster": "1440x900",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": [
+      "Automated fixture-based browser evidence only; native Safari with Full Keyboard Access settings manually configured remains NOT_RUN.",
+      "Manual VoiceOver/NVDA/TalkBack/Narrator traversal remains NOT_RUN.",
+      "The screenshot is review-only, not an approved visual golden or retained Actions artifact."
+    ]
+  },
+  "voice_dock_icon_target_geometry_2026_10_11": {
+    "date": "2026-10-11",
+    "tested_checkout_source_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "checkpoint_commit": "d3e7c82c168586dd6e15f4d9d13d73693944abff",
+    "test": "voice and settings icon targets keep their desktop and mobile dimensions",
+    "executed_test_source_sha256": "4eb8cee3d0b93daf3123c3f81550901b2ffb92aa74ee9a57bf976726e561a2e2",
+    "committed_test_blob_sha": "2c4639ba5aa0b0bd414592d689ae7faf56733805",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npx playwright test -c tests/accessibility/playwright.config.ts --grep 'voice and settings icon targets keep their desktop and mobile dimensions'",
+    "browser": "Google Chrome 154",
+    "result": "1/1 PASS",
+    "assertions": {
+      "desktop": {
+        "viewport": "1440x900",
+        "settings_button": "40x40 CSS px",
+        "gear_svg": "22x22 CSS px",
+        "voice_dock_buttons": "4 buttons at 40x40 CSS px"
+      },
+      "mobile": {
+        "viewport": "390x844",
+        "sidebar_drawer": "open",
+        "settings_button": "44x44 CSS px",
+        "voice_dock_buttons": "4 buttons at 44x44 CSS px",
+        "document_horizontal_overflow": false
+      }
+    },
+    "captures": [
+      {
+        "path": ".out/accessibility-browser-results/accessibility.browser-voic-13707-sktop-and-mobile-dimensions/voice-settings-targets-desktop.png",
+        "sha256": "b469a7b41da57ef5d8c424a90b3d57b6355722bf6e2d2d61fa3b326457228fed",
+        "raster": "1440x900",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/accessibility-browser-results/accessibility.browser-voic-13707-sktop-and-mobile-dimensions/voice-settings-targets-mobile.png",
+        "sha256": "f808f4150650df836ab52f44bdc3356e6d5601daa27e8ceef13b84b4c468002d",
+        "raster": "390x844",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      }
+    ],
+    "limitations": [
+      "The browser test mounts the production Vue components with production CSS in an isolated fixture; it is not full authenticated app or physical-device acceptance.",
+      "Emulated mobile viewport does not prove physical touch, native screen-reader traversal, or device behavior; those remain NOT_RUN under #301/#303.",
+      "Captures are review-only; no pixel golden is approved."
+    ],
+    "historical_note": "The 40x40 dock-button geometry and captures above are from checkpoint d3e7c82c before checkpoint 8133faac expanded dock actions. Current dock geometry is recorded in voice_dock_full_width_geometry_2026_10_11."
+  },
+  "native_safari_voice_dock_keyboard_smoke_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PARTIAL_PASS_NATIVE_SAFARI_KEYBOARD_COMPONENT_FIXTURE",
+    "platform": {
+      "browser": "Safari 26.6",
+      "host": "macOS 26.6.1",
+      "viewport": "3440x1315"
+    },
+    "source_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "fixture": {
+      "html": "clients/web/tests/accessibility/manual_voice_dock.html",
+      "module": "clients/web/tests/accessibility/manual_voice_dock.ts",
+      "commits": [
+        "17bf317e544599e13450c720df85f72927723b8b",
+        "a15e14d239794f7598e862708988d442ed178417"
+      ],
+      "fixture_source_sha256": {
+        "html": "a4baf6cc981e23ef6e54f217f9e56a142a2c97384414c4dfc2824aeed5d6fd63",
+        "module": "7b0b39dad20faf533b3e4d321c0bf039d075c65b45e9b929d63057b32bfcad0e"
+      },
+      "url": "http://127.0.0.1:5175/tests/accessibility/manual_voice_dock.html",
+      "data_scope": "Synthetic QA room and controls; no API, LiveKit session, account or production data."
+    },
+    "procedure": "In native Safari, used Option+Tab to traverse the production component fixture in DOM order, then Return/Space for keyboard actions.",
+    "observations": [
+      "Focus moved through microphone, deafen, screen share, leave, profile and audio settings; no focus trap observed.",
+      "The settings gear displayed a visible focus outline. Return on the settings button changed its live status to “Настройки аудио открыты”.",
+      "Space toggled the microphone action; the accessible name and pressed state changed.",
+      "Return toggled deafen; the accessible name and pressed state changed.",
+      "Return on the fixture's screen-share action moved it to its disabled STARTING state; the fixture does not open the native capture picker.",
+      "Return on leave announced “Завершаем голосовое подключение” and disabled the leave action."
+    ],
+    "screenshot": {
+      "status": "CUA_NATIVE_SCREENSHOT_OBSERVED_NOT_RETAINED",
+      "related_review_captures": "See voice_dock_icon_target_geometry_2026_10_11 for retained local review captures and hashes."
+    },
+    "limitations": [
+      "This is a manual keyboard smoke of production Vue components in a fixture, not the authenticated full application or an actual LiveKit session.",
+      "VoiceOver/NVDA traversal was not run; physical mobile, iOS Safari, and native capture-picker acceptance remain NOT_RUN.",
+      "Option+Tab was used with Safari's default Full Keyboard Access policy; this is distinct from a physical-device screen-reader pass."
+    ]
+  },
+  "voice_dock_full_width_geometry_2026_10_11": {
+    "date": "2026-10-11",
+    "tested_ui_checkpoint": "8133faac4834ebd0022f4a14b05331f037e863a6",
+    "test_file": "clients/web/tests/accessibility/voice_dock_layout.browser.spec.ts",
+    "test_name": "voice dock action row fills desktop and open mobile drawer evenly",
+    "test_source_sha256": "d994673eaa0eb812e313572a3e78dd54f7b569f176b64d38316ca037a016e44e",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npx playwright test -c tests/accessibility/playwright.config.ts --grep 'voice dock action row fills desktop'",
+    "browser": "Google Chrome 154.0.8037.98",
+    "result": "1/1 PASS",
+    "assertions": {
+      "desktop": {
+        "viewport": "1440x900",
+        "dock_outer_width_css_px": 279,
+        "actions_row_width_css_px": 247,
+        "action_button_widths_css_px": [
+          57.25,
+          57.25,
+          57.25,
+          57.25
+        ],
+        "action_button_height_css_px": 40,
+        "svg_glyph_size_css_px": "20x20"
+      },
+      "mobile_open_drawer": {
+        "viewport": "390x844",
+        "dock_width_css_px": 320,
+        "actions_row_width_css_px": 288,
+        "action_button_widths_css_px": [
+          71.5,
+          71.5,
+          71.5,
+          71.5
+        ],
+        "action_button_height_css_px": 44,
+        "svg_glyph_size_css_px": "20x20",
+        "document_horizontal_overflow": false
+      }
+    },
+    "captures": [
+      {
+        "path": ".out/accessibility-browser-results/voice_dock_layout.browser--d95a4-d-open-mobile-drawer-evenly/voice-dock-width-desktop.png",
+        "sha256": "26a97f6cbeb4c679bb5a7f7089b8e98682ee142cd4e07cf007b74f16e0ae1bd2",
+        "raster": "1440x900",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/accessibility-browser-results/voice_dock_layout.browser--d95a4-d-open-mobile-drawer-evenly/voice-dock-width-mobile.png",
+        "sha256": "65c3efeab17553513a70c71e6f100c431198b0768d654c9084ad63c8ecb7674e",
+        "raster": "390x844",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      }
+    ],
+    "limitations": [
+      "Production Vue component and CSS mounted in an isolated browser fixture; no backend, account, or LiveKit session.",
+      "Mobile layout uses a browser viewport, not physical-device acceptance.",
+      "This measurement does not replace manual VoiceOver/NVDA/TalkBack/Narrator acceptance.",
+      "Captures are local and review-only; no pixel golden is approved."
+    ]
+  },
+  "web_keyboard_visible_focus_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_FIXTURE_ONLY",
+    "tested_source_revision": "ec410bf7548a664fc824ade27fb959f656f47fda plus the focused regression update",
+    "test_file": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+    "test_name": "WCAG keyboard smoke covers visible navigation focus, focus trap and restoration",
+    "test_source_sha256": "4edd47b2b7a68a6c599d854bdf02ad2dd71f01e1c81459c8a8bcd8acada01a27",
+    "commands": [
+      "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npx playwright test -c tests/accessibility/playwright.config.ts --grep 'WCAG keyboard smoke covers visible navigation focus, focus trap and restoration'",
+      "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:accessibility"
+    ],
+    "browser": "Google Chrome 154.0.8037.98",
+    "results": {
+      "focused_case": "1/1 PASS",
+      "accessibility_browser_suite": "54/54 PASS",
+      "conversation_action_disclosure_axe_case": "1/1 PASS"
+    },
+    "viewport": "390x844 CSS px",
+    "assertions": [
+      "Enter opens the navigation drawer and focuses the channel-selection control.",
+      "The focused control matches :focus-visible and has a solid purple outline at least 2 CSS px wide.",
+      "Tab remains within the one-control navigation fixture; Escape closes it and restores focus to its opener.",
+      "The .app-frame axe scan is clear."
+    ],
+    "capture": {
+      "path": ".out/accessibility-browser-results/accessibility.browser-WCAG-abd6b--focus-trap-and-restoration/navigation-keyboard-focus-visible.png",
+      "sha256": "2dd569bbd940b6d4a38b1d71ca751a22a3c29221657bafbd559b301bf657c4e0",
+      "raster": "390x844",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": [
+      "This uses the responsive shell focus fixture with production CSS and drawer behavior, not the authenticated full application.",
+      "Automated keyboard evidence does not replace a manual screen-reader task; VoiceOver, NVDA, TalkBack and Narrator remain NOT_RUN.",
+      "The screenshot is local and ignored; it is not uploaded or an approved visual golden."
+    ]
+  },
+  "responsive_shell_keyboard_visible_focus_cross_browser_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_ONLY_3_ENGINES",
+    "source_revision": "8f3e34f43e764eaf96723eb05c651e0ef32688ab plus the focused responsive-shell test update",
+    "test_file": "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts",
+    "test_name": "the production drawer focus manager exposes visible focus, traps traversal and restores it",
+    "test_source_sha256": "27b37c10913a6b86b7c41135a26cf8d0d087ce5cbbda5421409368bd16449ae5",
+    "viewport": "390x844 CSS px",
+    "browser_runs": [
+      {
+        "browser": "Google Chrome 154.0.8037.98",
+        "focused_case": "1/1 PASS",
+        "responsive_shell_suite": "11/11 PASS",
+        "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:responsive-shell"
+      },
+      {
+        "browser": "Playwright WebKit 26.6 (v2359)",
+        "focused_case": "1/1 PASS",
+        "responsive_shell_suite": "11/11 PASS",
+        "command": "cd clients/web && env -u CHROMIUM_EXECUTABLE_PATH npm run test:responsive-shell -- --browser webkit"
+      },
+      {
+        "browser": "Playwright Firefox 155.0 (v1543)",
+        "focused_case": "1/1 PASS",
+        "responsive_shell_suite": "11/11 PASS",
+        "command": "cd clients/web && env -u CHROMIUM_EXECUTABLE_PATH npm run test:responsive-shell -- --browser firefox"
+      }
+    ],
+    "assertions": [
+      "Enter opens the navigation drawer and focuses the channel-selection control.",
+      "The selected control matches :focus-visible and has a solid purple outline at least 2 CSS px wide.",
+      "Tab remains inside the modal drawer; Escape closes the drawer and restores focus to the opener.",
+      "The same browser suite covers 12 responsive viewport sizes, channel favorite reachability, independent scrolling and browser Back/Forward."
+    ],
+    "capture": {
+      "path": ".out/responsive-shell-browser-results/responsive_shell.browser-t-f8490-s-traversal-and-restores-it-firefox/navigation-keyboard-focus-visible.png",
+      "sha256": "256ec72300d2582e574802b2668ca3e639d2a5b5c8a58edb3fd536877c847750",
+      "raster": "390x844",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": [
+      "This is an automated production-component fixture, not the authenticated full application or physical mobile acceptance.",
+      "VoiceOver, NVDA, TalkBack and Narrator traversal remains NOT_RUN.",
+      "The screenshot is local and ignored; no visual golden approval is implied."
     ]
   }
 }

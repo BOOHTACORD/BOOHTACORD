@@ -426,4 +426,30 @@ describe('UIUX-2026 visual regression inventory', () => {
     expect(report.limitations.join(' ')).toContain('no owner-approved pixel golden')
     expect(report.limitations.join(' ')).toContain('omits LiveKit')
   })
+  it('records the successful current-master CI capture artifact separately from skip-ci checkpoints', () => {
+    const evidence = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa302-visual-e2e-2026-10-10.json'), 'utf8'))
+      .ci_artifact_run_after_master_merge
+
+    expect(evidence).toMatchObject({
+      date: '2026-10-11',
+      status: 'PASS_CI_ARTIFACT_ON_CURRENT_MASTER',
+      workflow: 'build-server.yaml',
+      run_id: 38145265870,
+      branch: 'master',
+      commit_sha: '9f8926ba91accbafce0fc8b95b2dd64ac15b27b9',
+      conclusion: 'success',
+      web_job: { result: 'success', test_files_passed: 466, tests_passed: 1487 },
+      artifact: {
+        id: 11704337586,
+        name: 'ux-responsive-shell-9f8926ba91accbafce0fc8b95b2dd64ac15b27b9',
+        size_in_bytes: 207479,
+        digest: 'sha256:2d99b3a73a7f1e6e1e9488ec06305e9b9474fdc83294e67e52580bb583e439a5',
+      },
+    })
+    expect(evidence.run_url).toContain('/actions/runs/38145265870#artifacts')
+    expect(evidence.provenance).toContain('separate from earlier [skip ci] checkpoints')
+    expect(evidence.limitations.join(' ')).toContain('does not approve screenshot goldens')
+    expect(evidence.limitations.join(' ')).toContain('physical platform acceptance')
+  })
+
 })

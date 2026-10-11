@@ -38,8 +38,8 @@
   .sidebar.is-open .mobile-voice-dock .voice-dock-headset { position: absolute; top: 0; left: 0; display: block; width: 16px; height: 16px; color: #78e6a0; stroke-width: 1.8; }
   .sidebar.is-open .mobile-voice-dock .voice-status { padding-left: 24px; }
   .sidebar.is-open .mobile-voice-dock .voice-dock-copy { flex: 1; }
-  .sidebar.is-open .mobile-voice-dock .voice-actions { display: flex; flex: none; grid-column: auto; grid-row: auto; justify-content: flex-start; gap: 6px; margin-top: 14px; }
-  .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button { position: relative; display: grid; width: 44px; height: 44px; min-height: 44px; margin: -4px -2px; background: transparent; }
+  .sidebar.is-open .mobile-voice-dock .voice-actions { display: flex; width: 100%; flex: none; grid-column: auto; grid-row: auto; justify-content: flex-start; gap: 6px; margin-top: 14px; }
+  .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button { position: relative; display: grid; width: 44px; height: 44px; min-height: 44px; flex: 1 1 0; min-width: 0; margin: -4px -2px; background: transparent; }
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button::before { position: absolute; inset: 4px 2px; border-radius: 8px; background: #252a36; content: ''; }
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button svg { position: relative; }
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button--danger { color: #fff; }

@@ -147,7 +147,7 @@
                 290
               ],
               "meanAbsoluteRgbChange": 0.379,
-              "pixelsChangedOverThresholdPercent": 0.0
+              "pixelsChangedOverThresholdPercent": 0
             }
           ]
         },
@@ -1679,6 +1679,320 @@
     "limitations": [
       "This regression guards the traceability map; it does not approve pixel goldens or change the source archive.",
       "The source archive entry for D11 remains byte-identical to desktop-guild-members.png until the supplied source is corrected or a release owner approves a replacement baseline."
+    ]
+  },
+  "ci_artifact_run_after_master_merge": {
+    "date": "2026-10-11",
+    "status": "PASS_CI_ARTIFACT_ON_CURRENT_MASTER",
+    "workflow": "build-server.yaml",
+    "run_id": 38145265870,
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38145265870#artifacts",
+    "branch": "master",
+    "commit_sha": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "conclusion": "success",
+    "web_job": {
+      "result": "success",
+      "test_files_passed": 466,
+      "tests_passed": 1487
+    },
+    "artifact": {
+      "id": 11704337586,
+      "name": "ux-responsive-shell-9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+      "size_in_bytes": 207479,
+      "digest": "sha256:2d99b3a73a7f1e6e1e9488ec06305e9b9474fdc83294e67e52580bb583e439a5",
+      "created_at": "2026-10-11T14:06:51Z",
+      "expires_at": "2026-11-10T14:06:51Z"
+    },
+    "provenance": "This artifact belongs to the successful GitHub Actions run for the merged master commit. It is separate from earlier [skip ci] checkpoints, which produced no run.",
+    "limitations": [
+      "This artifact proves the current-master Web CI regression job and its responsive-shell capture output; it does not approve screenshot goldens or satisfy physical platform acceptance.",
+      "The previous report about the 189602da [skip ci] checkpoint having no artifact remains historically accurate."
+    ]
+  },
+  "voice_settings_icon_target_review_2026_10_11": {
+    "date": "2026-10-11",
+    "related_issue": "#301",
+    "checkpoint_commit": "d3e7c82c168586dd6e15f4d9d13d73693944abff",
+    "tested_checkout_source_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "test": "voice and settings icon targets keep their desktop and mobile dimensions",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npx playwright test -c tests/accessibility/playwright.config.ts --grep 'voice and settings icon targets keep their desktop and mobile dimensions'",
+    "result": "Google Chrome 154 — 1/1 PASS",
+    "observations": [
+      "At 1440x900, the audio-settings icon button is 40x40 CSS px, the gear SVG is 22x22 CSS px, and each of the four dock action targets is 40x40 CSS px.",
+      "At 390x844 in the open mobile drawer, the settings icon and all four dock action targets are 44x44 CSS px.",
+      "The mobile document has no horizontal overflow."
+    ],
+    "captures": [
+      {
+        "path": ".out/accessibility-browser-results/accessibility.browser-voic-13707-sktop-and-mobile-dimensions/voice-settings-targets-desktop.png",
+        "sha256": "b469a7b41da57ef5d8c424a90b3d57b6355722bf6e2d2d61fa3b326457228fed",
+        "raster": "1440x900"
+      },
+      {
+        "path": ".out/accessibility-browser-results/accessibility.browser-voic-13707-sktop-and-mobile-dimensions/voice-settings-targets-mobile.png",
+        "sha256": "f808f4150650df836ab52f44bdc3356e6d5601daa27e8ceef13b84b4c468002d",
+        "raster": "390x844"
+      }
+    ],
+    "review_status": "LOCAL_SOURCE_SIZED_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+    "limitations": [
+      "The captures show production components and design CSS in an isolated fixture, not full-app screenshots for the 41-reference catalog.",
+      "Browser screenshots are not physical-device evidence; no source screenshot comparison or golden owner approval is claimed.",
+      "The screenshot files remain local ignored .out artifacts; hashes are tracked but images are not uploaded or committed."
+    ]
+  },
+  "web_full_app_runtime_smoke_2026_10_11": {
+    "result": "PASS_REVIEW_ONLY_NOT_GOLDEN",
+    "source_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "browser": "Google Chrome 154.0.8037.98",
+    "host": "macOS 26.6.1",
+    "data_scope": "Authenticated full Web application against disposable local services using synthetic data; no API mocks and no production data.",
+    "viewports": [
+      {
+        "viewport": "1440x900",
+        "device_scale_factor": 2,
+        "touch": false
+      },
+      {
+        "viewport": "393x852",
+        "device_scale_factor": 3,
+        "touch": true,
+        "emulated": true
+      }
+    ],
+    "reports": [
+      {
+        "path": ".out/client-lifecycle/1440/report.json",
+        "sha256": "c9ef5ee17f5ed90f0c481bc2b3368e73483ed85db24cac94cd88e5bdaff7e634",
+        "result": "PASS",
+        "captures": 33
+      },
+      {
+        "path": ".out/client-lifecycle/393/report.json",
+        "sha256": "f135b3edb407661812c746872d26785161cd7d996f4f6f45026439c690865dbf",
+        "result": "PASS",
+        "captures": 34
+      }
+    ],
+    "catalogCaptures": [
+      {
+        "catalogSlot": "D01",
+        "path": ".out/client-lifecycle/1440/channel-text.png",
+        "sha256": "0269faeca2022154fd2b986876c6619d8de39607012cc381d7268a1f4450c227",
+        "raster": "2880x1800"
+      },
+      {
+        "catalogSlot": "D02",
+        "path": ".out/client-lifecycle/1440/channel-text-actions.png",
+        "sha256": "f7ef20823809dc79fc76736930b04b00156ad4c598a711f9ecdb40003c172131",
+        "raster": "2880x1800"
+      },
+      {
+        "catalogSlot": "D03",
+        "path": ".out/client-lifecycle/1440/dm-list.png",
+        "sha256": "d6e1f5e705396a91bb9b2b412df7ff0caf7f0ae1e1c3d2f05cc12f2181b639a0",
+        "raster": "2880x1800"
+      },
+      {
+        "catalogSlot": "D15",
+        "path": ".out/client-lifecycle/1440/voice-prejoin.png",
+        "sha256": "78c79ae448e3c017c0bc960cf430c5026e2227217584f2c07e9cb0b3995bf7fc",
+        "raster": "2880x1800"
+      },
+      {
+        "catalogSlot": "D18",
+        "path": ".out/client-lifecycle/1440/channel-log.png",
+        "sha256": "cf9650dddd839c88ca26022a14aa4f5744f03a794be24d031be3c503841b9cfa",
+        "raster": "2880x1800"
+      },
+      {
+        "catalogSlot": "M01",
+        "path": ".out/client-lifecycle/393/navigation-overlay.png",
+        "sha256": "c2adb610d453a07d5660722df929c1c3309b4cf6c9c0c9454e8acc4449e787ae",
+        "raster": "1179x2556"
+      },
+      {
+        "catalogSlot": "M02",
+        "path": ".out/client-lifecycle/393/channel-text.png",
+        "sha256": "70d27b2f62c05c8ff1fc7b0a6ce82e6698e63ff53a8b758ed43be0eb9cfde3a5",
+        "raster": "1179x2556"
+      },
+      {
+        "catalogSlot": "M03",
+        "path": ".out/client-lifecycle/393/channel-text-actions.png",
+        "sha256": "3df4d45fc60ca4ba2d42720e476b0a67b67c5dc8a9f7d9ca8198773ab9160d14",
+        "raster": "1179x2556"
+      },
+      {
+        "catalogSlot": "M22",
+        "path": ".out/client-lifecycle/393/voice-prejoin.png",
+        "sha256": "010e70eea0cdccfe57d8a5beb784be415db5a77b56a4fc688417e5339c37bfac",
+        "raster": "1179x2556"
+      },
+      {
+        "catalogSlot": "M23",
+        "path": ".out/client-lifecycle/393/channel-log.png",
+        "sha256": "eed85fc2d3589015cc922fb86d80fe0b2fc09aea1dc12fcbfe2d50a6b6e47ee4",
+        "raster": "1179x2556"
+      }
+    ],
+    "artifactStorage": "Captured images/reports remain ignored local .out files and were not staged; these hashes are review references only.",
+    "limitations": [
+      "Mobile run is browser emulation, not physical-device evidence.",
+      "No screen-reader or physical-device acceptance is implied.",
+      "No source screenshot archive entry is declared an approved pixel golden; all captures are review-only.",
+      "Screen-share native system picker is outside this run."
+    ]
+  },
+  "voice_dock_full_width_geometry_follow_up_2026_10_11": {
+    "result": "PASS_BROWSER_GEOMETRY_REVIEW_ONLY",
+    "tested_ui_checkpoint": "8133faac4834ebd0022f4a14b05331f037e863a6",
+    "test_file": "clients/web/tests/accessibility/voice_dock_layout.browser.spec.ts",
+    "test_source_sha256": "d994673eaa0eb812e313572a3e78dd54f7b569f176b64d38316ca037a016e44e",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npx playwright test -c tests/accessibility/playwright.config.ts --grep 'voice dock action row fills desktop'",
+    "browser": "Google Chrome 154.0.8037.98",
+    "viewports": [
+      "1440x900 desktop",
+      "390x844 mobile drawer open"
+    ],
+    "measured": {
+      "desktop_action_width_css_px": 57.25,
+      "desktop_action_height_css_px": 40,
+      "mobile_action_width_css_px": 71.5,
+      "mobile_action_height_css_px": 44,
+      "svg_glyph_size_css_px": "20x20",
+      "mobile_document_horizontal_overflow": false
+    },
+    "captures": [
+      {
+        "path": ".out/accessibility-browser-results/voice_dock_layout.browser--d95a4-d-open-mobile-drawer-evenly/voice-dock-width-desktop.png",
+        "sha256": "26a97f6cbeb4c679bb5a7f7089b8e98682ee142cd4e07cf007b74f16e0ae1bd2",
+        "raster": "1440x900"
+      },
+      {
+        "path": ".out/accessibility-browser-results/voice_dock_layout.browser--d95a4-d-open-mobile-drawer-evenly/voice-dock-width-mobile.png",
+        "sha256": "65c3efeab17553513a70c71e6f100c431198b0768d654c9084ad63c8ecb7674e",
+        "raster": "390x844"
+      }
+    ],
+    "review_status": "LOCAL_REVIEW_ONLY_NOT_APPROVED_GOLDEN",
+    "limitations": [
+      "Fixture mounts the production Vue VoiceDock component and styles, not the authenticated full application.",
+      "Mobile is browser viewport emulation, not a physical device.",
+      "Captures are ignored local .out files; no image was staged."
+    ]
+  },
+  "responsive_shell_keyboard_visible_focus_cross_browser_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_ONLY_3_ENGINES",
+    "test_file": "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts",
+    "test_source_sha256": "27b37c10913a6b86b7c41135a26cf8d0d087ce5cbbda5421409368bd16449ae5",
+    "responsive_shell_suite": "11/11 PASS per browser across 12 viewports",
+    "keyboard_visible_focus_case": "1/1 PASS per browser",
+    "engines": [
+      "Google Chrome 154.0.8037.98",
+      "Playwright WebKit 26.6 (v2359)",
+      "Playwright Firefox 155.0 (v1543)"
+    ],
+    "capture": {
+      "path": ".out/responsive-shell-browser-results/responsive_shell.browser-t-f8490-s-traversal-and-restores-it-firefox/navigation-keyboard-focus-visible.png",
+      "sha256": "256ec72300d2582e574802b2668ca3e639d2a5b5c8a58edb3fd536877c847750",
+      "raster": "390x844",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": [
+      "Fixture and automation evidence only; manual screen-reader, physical-device and approved pixel-golden gates remain open."
+    ]
+  },
+  "ux13_current_branch_visual_regression_revalidation_2026_10_11": {
+    "date": "2026-10-11",
+    "tested_source_revision": "1bdad9bfee6938b2a92f56439b135988049dd0bd",
+    "web": {
+      "responsive_shell": {
+        "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:responsive-shell",
+        "result": "PASS",
+        "browser": "Google Chrome 154.0.8037.98",
+        "tests_passed": 11,
+        "viewports": [
+          "320x640",
+          "375x812",
+          "390x844",
+          "393x852",
+          "430x932",
+          "600x900",
+          "768x1024",
+          "840x390",
+          "1024x768",
+          "1280x800",
+          "1440x900",
+          "1920x1080"
+        ],
+        "capture_revalidation": "12/12 responsive-shell PNG hashes are byte-identical to the previously recorded review captures.",
+        "capture_status": "LOCAL_REVIEW_ONLY_NOT_APPROVED_GOLDEN"
+      },
+      "visual_matrix_spec": {
+        "command": "npm test -- --run tests/uiux_2026/visual_matrix.spec.ts",
+        "result": "PASS",
+        "tests_passed": 13,
+        "test_source_sha256": "9daa192e43b1f0f55fea4be52571e411b26bcb667faf3c2c05287948dcffb076"
+      }
+    },
+    "flutter": {
+      "command": "BOOHTACORD_VISUAL_CAPTURE_DIR=/private/tmp/boohtacord-ux13-flutter-captures-20261011 flutter test --no-pub test/uiux_2026/admin_visual_capture_test.dart test/uiux_2026/dialog_visual_capture_test.dart test/mobile_navigation_visual_capture_test.dart",
+      "result": "PASS",
+      "tests_passed": 5,
+      "png_captures": 25,
+      "capture_directory": "/private/tmp/boohtacord-ux13-flutter-captures-20261011",
+      "capture_policy": "Temporary local captures; no generated media was staged or published.",
+      "test_source_sha256": {
+        "clients/flutter/test/uiux_2026/admin_visual_capture_test.dart": "0e0179e2a46bfbaa6b9c123dcf520caee40e4ede354151f8e3f0228cbdd7b552",
+        "clients/flutter/test/uiux_2026/dialog_visual_capture_test.dart": "e2481080a3045f9058e9135a9f2944bb178bdaf860965e09bd375a8a46df3b4b",
+        "clients/flutter/test/mobile_navigation_visual_capture_test.dart": "020b2ea5de1ddd674ee8116ea0d1951703069b9adf212022c2a4207c2229943e"
+      },
+      "comparison_with_prior_review_capture_set": {
+        "prior_source_revision": "a89ef57d",
+        "byte_identical_images": 23,
+        "changed_images": [
+          {
+            "name": "flutter-admin-media-desktop-1440x900.png",
+            "raster": "2880x1800",
+            "prior_sha256": "b670c5f94601b455d41e6a31e4aad86196583413c81bdc946e8f8f5ed79fc52e",
+            "current_sha256": "f3f901145771e004025633fd301d4fa191a1550f7c4058f56b378ff92055d0e4"
+          },
+          {
+            "name": "flutter-admin-media-mobile-393x852.png",
+            "raster": "1179x2556",
+            "prior_sha256": "6d64cb5d30df2daca4a0efb41fd9c98bcc1aedb5333aeff897c0e5b67db22f65",
+            "current_sha256": "49e6a8ff8a518e6147bfe612c72207b01de51a782a99efcae9f591d616abfbba"
+          }
+        ],
+        "documented_false_positive": "Both media-panel captures differ only in the dynamic last-success timestamp: prior 2026-10-10 14:24, current 2026-10-11 22:13 (local time). Visual review confirmed all other content and layout stayed the same; exclude this status timestamp from pixel-golden comparison or compare it semantically."
+      }
+    },
+    "source_archive_verifier": {
+      "command": "python3 -m tools.verify.uiux_visual_matrix",
+      "result": "PASS",
+      "source_archive_sha256": "44da32a8c6888a012c8f85cf66d8bd320d240509ec31538854438388964a3b2c",
+      "screens_verified": 41,
+      "desktop": 18,
+      "mobile": 23,
+      "duplicate_source_exception": "desktop-guild-settings.png is byte-identical to desktop-guild-members.png; independent D11 baseline remains blocked and this limitation is declared in the catalog. The archive was temporarily linked from the main checkout for verification, then the link was removed."
+    },
+    "visual_diff_unit_tests": {
+      "command": "python3 -m unittest tools.verify.test_uiux_visual_diff tools.verify.test_uiux_visual_matrix -v",
+      "result": "PASS",
+      "tests_passed": 5
+    },
+    "acceptance_update": {
+      "target_size_regressions": "PASS_SCOPED_AUTOMATED; current Chrome responsive suite passed across 12 sizes and Flutter capture assertions passed.",
+      "false_positive_exceptions": "PASS_DOCUMENTED; dynamic Media-panel timestamp and duplicate D11 source are explicit exceptions.",
+      "approved_pixel_goldens": "NOT_RUN; no owner-approved golden set exists, so the separate full critical-flow baseline criterion remains open.",
+      "ci_artifact_for_current_revision": "NOT_RUN_BY_REQUEST; commit uses [skip ci]."
+    },
+    "limitations": [
+      "The Flutter suite captures production widgets and checks layout/state assertions; it does not capture the full authenticated application or perform approved pixel-golden comparison.",
+      "Screenshot hashes are local review evidence and the images are not reviewer-accessible artifacts.",
+      "No Actions run is attributed to the current skip-ci revision."
     ]
   }
 }

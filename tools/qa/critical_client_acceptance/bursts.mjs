@@ -44,6 +44,7 @@ export async function bursts(a, b, channelId, report, directory, baseline = fals
     await expect.poll(() => counters.every(counter => counter.quiet()), { timeout: 10000 }).toBe(true)
     console.log(`stage=critical-burst-${size}-quiet`)
     const [active, hiddenResult] = counters.map(counter => counter.stop())
+    console.log(`stage=critical-burst-${size}-request-metrics:${JSON.stringify({ active, hidden: hiddenResult })}`)
     assert.equal(hiddenResult.history, 0)
     assert.ok(active.history >= 1 && (baseline || active.history <= Math.max(2, size/2)), 'Unbounded protected GET burst')
     if (!baseline) assert.ok(active.max_parallel <= 1 && hiddenResult.max_parallel <= 1, 'Parallel GETs for one resource')
