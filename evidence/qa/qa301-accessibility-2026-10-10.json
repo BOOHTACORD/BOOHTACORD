@@ -378,5 +378,30 @@
       "The focused run used local checkout a80c8a28a11c4eb83c895a454a2e2343a56408c1 (parent of merged PR #321); PR #321 changed icon glyphs and presentation CSS without changing the tested button names or event/state contract.",
       "The screenshot is a review capture only; it is not a user-approved pixel golden or retained Actions artifact."
     ]
+  },
+  "web_accessibility_suite_revalidation_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_ONLY",
+    "browser": "Google Chrome 154.0.8037.98",
+    "tested_source_revision": "a80c8a28a11c4eb83c895a454a2e2343a56408c1",
+    "current_master_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:accessibility",
+    "results": {
+      "accessibility_browser_cases": "52/52 PASS",
+      "conversation_action_disclosure_axe_case": "1/1 PASS"
+    },
+    "test_source_sha256": "f8f5ac8e5ec126c71cfd373a7f8e0a701c16db2bb786f090a2a2671134aba7b2",
+    "new_keyboard_test": "voice dock and audio settings icons expose keyboard names, focus and activation — 1/1 PASS",
+    "capture": {
+      "path": ".out/accessibility-browser-results/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+      "sha256": "66b1e9e288d06f88cc9b11dab06aa41dbe1b6e57f378412e617880bd086bc1b6",
+      "raster": "1440x900",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": [
+      "This is a local browser component suite, not a production authenticated runtime or manual VoiceOver/NVDA/TalkBack/Narrator traversal.",
+      "The suite used local checkout a80c8a28a11c4eb83c895a454a2e2343a56408c1. Current master 9f8926ba91accbafce0fc8b95b2dd64ac15b27b9 includes PR #321 icon/presentation changes, which do not change the tested button name/event/state contracts.",
+      "The capture is review-only; no pixel golden approval or physical-platform pass is implied."
+    ]
   }
 }
