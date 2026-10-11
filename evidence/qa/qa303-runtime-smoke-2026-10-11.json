@@ -369,6 +369,29 @@
       "binding_result": "cua.getApp(\"BOOHTACORD QA\") returned Invalid app: BOOHTACORD QA.",
       "ui_input_sent": false,
       "process_state_at_last_inventory": "RUNNING; disposable backend had already been stopped; no UI task was performed."
+    },
+    "post_unlock_cua_recheck": {
+      "date": "2026-10-11",
+      "user_confirmed_desktop_unlocked": true,
+      "cua_inventory": [
+        {
+          "display_name": "BOOHTACORD",
+          "bundle_id": "ru.boohtacord.boohtacordDesktop.qa",
+          "is_running": true
+        },
+        {
+          "display_name": "BOOHTACORD",
+          "bundle_id": "ru.boohtacord.boohtacordDesktop",
+          "is_running": false
+        }
+      ],
+      "binding_attempts": [
+        "cua.getApp(bundle_id .qa) returned Invalid app: ru.boohtacord.boohtacordDesktop.qa.",
+        "cua.getApp(shared display name BOOHTACORD) resolved the production bundle id and returned Running application not found because production remained stopped."
+      ],
+      "ui_input_sent": false,
+      "physical_task_acceptance": "NOT_RUN",
+      "next_step": "Await explicit authorization for an AppleScript/System Events bridge scoped to the isolated QA app; otherwise continue only if CUA can bind the .qa app."
     }
   }
 }
