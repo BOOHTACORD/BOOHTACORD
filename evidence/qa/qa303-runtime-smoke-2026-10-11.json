@@ -359,6 +359,16 @@
       "temporary_source_patches_restored_byte_for_byte": true,
       "temporary_credentials_and_certificate_pin_removed": true
     },
-    "conclusion": "Build, signature validation and launch passed for the isolated QA app, but CUA could not bind its .qa identity. Window resize, focus/keyboard, native capture picker and VoiceOver remain NOT_RUN."
+    "conclusion": "Build, signature validation and launch passed for the isolated QA app, but CUA could not bind its .qa identity. Window resize, focus/keyboard, native capture picker and VoiceOver remain NOT_RUN.",
+    "unique_display_name_followup": {
+      "date": "2026-10-11",
+      "qa_app_display_name": "BOOHTACORD QA",
+      "bundle_id_remains": "ru.boohtacord.boohtacordDesktop.qa",
+      "codesign_verification": "PASS after re-signing the generated QA bundle",
+      "cua_inventory": "Listed BOOHTACORD QA as running while the production bundle remained not running.",
+      "binding_result": "cua.getApp(\"BOOHTACORD QA\") returned Invalid app: BOOHTACORD QA.",
+      "ui_input_sent": false,
+      "process_state_at_last_inventory": "RUNNING; disposable backend had already been stopped; no UI task was performed."
+    }
   }
 }
