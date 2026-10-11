@@ -147,4 +147,51 @@ void main() {
     expect(find.text('Подключено'), findsNothing);
     expect(find.byType(VoiceQualityIndicator), findsNothing);
   });
+
+  testWidgets('announces disconnected and failed states without stale quality', (
+    tester,
+  ) async {
+    final semantics = tester.ensureSemantics();
+    const cases = [
+      (
+        status: VoiceConnectionBadgeStatus.disconnected,
+        visible: 'Не подключено',
+        announcement: 'Голос не подключён',
+      ),
+      (
+        status: VoiceConnectionBadgeStatus.error,
+        visible: 'Ошибка подключения',
+        announcement: 'Ошибка голосового подключения',
+      ),
+    ];
+
+    for (final testCase in cases) {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: VoiceConnectionBadge(
+              status: testCase.status,
+              quality: ConnectionQuality.excellent,
+              pingMs: 42,
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text(testCase.visible), findsOneWidget);
+      expect(find.byType(VoiceQualityIndicator), findsNothing);
+      expect(find.text('42 мс'), findsNothing);
+      expect(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Semantics &&
+              widget.properties.liveRegion == true &&
+              widget.properties.label == testCase.announcement,
+        ),
+        findsOneWidget,
+      );
+    }
+
+    semantics.dispose();
+  });
 }
