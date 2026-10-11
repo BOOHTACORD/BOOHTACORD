@@ -92,16 +92,46 @@
   "evidence_artifacts": {
     "storage": "Local ignored .out files; screenshots were not staged or uploaded, per repository media-staging rule. Hashes identify the local captures but they are not available to GitHub reviewers.",
     "screenshots": [
-      { "path": ".out/uiux-2026-android-message-sent.png", "sha256": "486fd07d836d43a2a20495225d102fd39c4454ba2718e45c16919b3372c5668b" },
-      { "path": ".out/uiux-2026-android-reaction.png", "sha256": "2644fa9f232f8dc71e55b2ff2b0f2d968d6aabf673ccd4efec9ce168635fd767" },
-      { "path": ".out/uiux-2026-android-message-edited.png", "sha256": "c54707d95b9bf84977889026daaed457f8ba4be49d51093dcb301970297d1fd9" },
-      { "path": ".out/uiux-2026-android-search-result.png", "sha256": "aa60f92dd8dfd969dde9aecd83d1df6672c493e7516f980da14cc57d9b275066" },
-      { "path": ".out/uiux-2026-android-dm-search.png", "sha256": "ac83c28dd18366c71fd340e1d05698a83a531a60d089a67b36b5d4e7bfcf4551" },
-      { "path": ".out/uiux-2026-android-delete-cancelled.png", "sha256": "8dec6e7fc682455a4d87486260f45c1817294d90b13d60692403c001c9d20eef" },
-      { "path": ".out/uiux-2026-android-admin-roles.png", "sha256": "d5690287047385a593000297cb68b2c3796f530eead774b83664213c947731af" },
-      { "path": ".out/uiux-2026-android-admin-channels.png", "sha256": "7ee0c6e523bb029937c8157fabe621fae08b17d14b61afdb5f28663acfb4d0c7" },
-      { "path": ".out/uiux-2026-android-audio-persisted.png", "sha256": "1d3424226c7c0da4848ec351970e4d50b92d9e237ab4d48e3736c8598220c617" },
-      { "path": ".out/uiux-2026-android-back.png", "sha256": "ea9bc30c63e663538189a30dc8980dde5c5a590f5623524cce669acc2f0de46d" }
+      {
+        "path": ".out/uiux-2026-android-message-sent.png",
+        "sha256": "486fd07d836d43a2a20495225d102fd39c4454ba2718e45c16919b3372c5668b"
+      },
+      {
+        "path": ".out/uiux-2026-android-reaction.png",
+        "sha256": "2644fa9f232f8dc71e55b2ff2b0f2d968d6aabf673ccd4efec9ce168635fd767"
+      },
+      {
+        "path": ".out/uiux-2026-android-message-edited.png",
+        "sha256": "c54707d95b9bf84977889026daaed457f8ba4be49d51093dcb301970297d1fd9"
+      },
+      {
+        "path": ".out/uiux-2026-android-search-result.png",
+        "sha256": "aa60f92dd8dfd969dde9aecd83d1df6672c493e7516f980da14cc57d9b275066"
+      },
+      {
+        "path": ".out/uiux-2026-android-dm-search.png",
+        "sha256": "ac83c28dd18366c71fd340e1d05698a83a531a60d089a67b36b5d4e7bfcf4551"
+      },
+      {
+        "path": ".out/uiux-2026-android-delete-cancelled.png",
+        "sha256": "8dec6e7fc682455a4d87486260f45c1817294d90b13d60692403c001c9d20eef"
+      },
+      {
+        "path": ".out/uiux-2026-android-admin-roles.png",
+        "sha256": "d5690287047385a593000297cb68b2c3796f530eead774b83664213c947731af"
+      },
+      {
+        "path": ".out/uiux-2026-android-admin-channels.png",
+        "sha256": "7ee0c6e523bb029937c8157fabe621fae08b17d14b61afdb5f28663acfb4d0c7"
+      },
+      {
+        "path": ".out/uiux-2026-android-audio-persisted.png",
+        "sha256": "1d3424226c7c0da4848ec351970e4d50b92d9e237ab4d48e3736c8598220c617"
+      },
+      {
+        "path": ".out/uiux-2026-android-back.png",
+        "sha256": "ea9bc30c63e663538189a30dc8980dde5c5a590f5623524cce669acc2f0de46d"
+      }
     ]
   },
   "acceptance": {
@@ -116,5 +146,43 @@
     "Complete macOS task acceptance with a CUA-bindable isolated QA app, including 800–1920 px resize, focus/input and native capture picker.",
     "Complete Windows, iOS and full-app browser task scripts and required assistive-technology runs.",
     "Publish source-sized screenshots or video through the approved evidence channel; current Android captures remain local-only."
-  ]
+  ],
+  "web_manual_safari_voice_dock_smoke_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PARTIAL_PASS_WEB_COMPONENT_FIXTURE",
+    "product": "Web (Vue 3 / TypeScript)",
+    "source_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "platform": {
+      "browser": "Safari 26.6",
+      "host": "macOS 26.6.1",
+      "viewport": "3440x1315"
+    },
+    "fixture": {
+      "html": "clients/web/tests/accessibility/manual_voice_dock.html",
+      "module": "clients/web/tests/accessibility/manual_voice_dock.ts",
+      "commits": [
+        "17bf317e544599e13450c720df85f72927723b8b",
+        "a15e14d239794f7598e862708988d442ed178417"
+      ],
+      "data_scope": "Synthetic QA state only; no API, account, production data or LiveKit session."
+    },
+    "procedure": "Native Safari keyboard smoke using Option+Tab, Return and Space against the production Vue voice-dock and profile-footer components mounted in the isolated fixture.",
+    "observations": [
+      "Focus moved through microphone, deafen, screen share, leave, profile and audio settings without an observed focus trap.",
+      "The settings gear displayed a visible focus outline; activating it updated the live status to “Настройки аудио открыты”.",
+      "Space toggled microphone state; its accessible name and pressed state changed.",
+      "Return toggled deafen state; its accessible name and pressed state changed.",
+      "Activating screen share moved the fixture action into its disabled STARTING state; the fixture does not open the native capture picker.",
+      "Activating leave changed the status to “Завершаем голосовое подключение” and disabled the leave action."
+    ],
+    "screenshot": {
+      "status": "CUA_NATIVE_SCREENSHOT_OBSERVED_NOT_RETAINED",
+      "related_captures": "Review-only desktop/mobile target-geometry captures and hashes are recorded in QA-301."
+    },
+    "limitations": [
+      "This validates Web production components in an isolated fixture, not the authenticated full application or a real LiveKit session.",
+      "VoiceOver/NVDA/TalkBack/Narrator, physical-device traversal, iOS Safari and native capture-picker acceptance were not run.",
+      "Safari used its default Full Keyboard Access policy; this is not screen-reader acceptance."
+    ]
+  }
 }
