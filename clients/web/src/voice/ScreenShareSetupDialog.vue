@@ -121,9 +121,9 @@ function start(): void {
           @update:resolution="selectResolution"
           @update:mode="selectMode"
         />
+        <p class="screen-share-quality__current" role="status" aria-live="polite">Текущий выбор: {{ profileSummary }}</p>
 
         <div v-if="!updating" class="screen-share-quality__overview">
-          <p class="screen-share-quality__current" role="status" aria-live="polite">Текущий выбор: {{ profileSummary }}</p>
           <div class="screen-share-quality__recommended">
             <div>
               <p>Рекомендуемый профиль</p>
