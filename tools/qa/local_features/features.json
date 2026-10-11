@@ -1,0 +1,108 @@
+{
+  "auth": {
+    "paths": [
+      "clients/web/src/identity/*",
+      "clients/flutter/lib/src/screens/auth*",
+      "clients/flutter/lib/src/features/session/*",
+      "clients/flutter/lib/src/core/session/*"
+    ],
+    "web": [
+      "tests/password_generation/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/password_generation/visual_test.dart"
+    ]
+  },
+  "voice": {
+    "paths": [
+      "clients/web/src/voice/*",
+      "clients/flutter/lib/src/features/voice/*",
+      "clients/flutter/lib/src/widgets/voice*",
+      "clients/flutter/lib/src/services/voice*"
+    ],
+    "web": [
+      "tests/accessibility/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/voice_disconnect/visual_capture_test.dart"
+    ]
+  },
+  "screen": {
+    "paths": [
+      "clients/web/src/media/*",
+      "clients/web/src/screen*",
+      "clients/flutter/lib/src/features/screen/*",
+      "clients/flutter/lib/src/services/screen*",
+      "clients/flutter/lib/src/widgets/screen*"
+    ],
+    "web": [
+      "tests/accessibility/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/uiux_2026/dialog_visual_capture_test.dart"
+    ]
+  },
+  "settings": {
+    "paths": [
+      "clients/web/src/profile/*",
+      "clients/web/src/preferences/*",
+      "clients/flutter/lib/src/features/profile/*",
+      "clients/flutter/lib/src/screens/workspace_ui/audio*",
+      "clients/flutter/lib/src/screens/workspace_ui/personal*"
+    ],
+    "web": [
+      "tests/accessibility/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/uiux_2026/personal_settings_visual_capture_test.dart"
+    ]
+  },
+  "admin": {
+    "paths": [
+      "clients/web/src/admin/*",
+      "clients/web/src/guild/*",
+      "clients/flutter/lib/src/features/admin/*",
+      "clients/flutter/lib/src/features/guild/*"
+    ],
+    "web": [
+      "tests/accessibility/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/uiux_2026/admin_visual_capture_test.dart"
+    ]
+  },
+  "chat": {
+    "paths": [
+      "clients/web/src/conversation/*",
+      "clients/web/src/messages/*",
+      "clients/web/src/text*",
+      "clients/web/src/direct*",
+      "clients/flutter/lib/src/features/conversation/*",
+      "clients/flutter/lib/src/features/attachments/*"
+    ],
+    "web": [
+      "tests/conversation_action_disclosure/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/uiux_2026/dialog_visual_capture_test.dart"
+    ]
+  },
+  "shell": {
+    "paths": [
+      "clients/web/src/channel/*",
+      "clients/web/src/workspace/*",
+      "clients/web/src/design/*",
+      "clients/web/src/style.css",
+      "clients/flutter/lib/src/screens/workspace_screen.dart",
+      "clients/flutter/lib/src/theme*",
+      "clients/flutter/lib/src/app*",
+      "clients/flutter/lib/src/screens/workspace_ui/*"
+    ],
+    "web": [
+      "tests/responsive_shell/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/mobile_navigation_visual_capture_test.dart"
+    ]
+  }
+}

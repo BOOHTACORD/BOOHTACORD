@@ -24,3 +24,7 @@
 ## Security
 
 Do not log passwords, session/reset/media tokens, DM bodies, message text, attachment contents or high-cardinality usernames/DM IDs. Production mutations require secure session cookies and CSRF/Origin validation. Keep PostgreSQL, storage and LiveKit management interfaces private.
+
+## Local feature acceptance
+
+For changes to Web, Android or iOS behaviour/UI, register or update the scenario in `tools/qa/local_features/features.json`, add focused behaviour tests before implementation, then run `./tools/qa/local_features/check.sh --feature <feature> --base <base-ref> --real-stack` including the applicable native runtime target. Inspect the generated screenshots at source resolution and record visual observations. A missing scenario/device or failed check must stay `NOT_RUN`/`BLOCKED`/`FAIL`; component captures do not prove native/media acceptance. See `tools/qa/local_features/README.md` for scope and Before/After review. Never approve a new screenshot baseline solely to silence a difference.

@@ -1,0 +1,96 @@
+{
+  "id": "LOCAL-FEATURE-QA-20261012",
+  "date": "2026-10-12",
+  "task": "FV2-006 local Web/Android/iOS acceptance harness; T-050 serialized Web topology refresh",
+  "source_revision": "58e9718881eb534fd4c0971935480b66f474b153",
+  "working_diff_sha256": "d3235000e7a5ed38dd516a05f4b615facfbda4ab4d075dc1402f0b4a8d4cd9be",
+  "status": "PASS_LOCAL_ENVIRONMENT_AND_CORE_SMOKE; BLOCKED_PAIRED_UI; RELEASE_GATE_OPEN",
+  "host": {
+    "macos": "27.0.1 Apple Silicon",
+    "xcode": "27.0",
+    "flutter": "3.47.6",
+    "docker": "Colima boohtacord-qa, 4 CPU/8GB, loopback ports, disposable DB",
+    "android": "AOSP ARM64 Android 15 API 35, BOOHTACORD_QA_API35",
+    "ios": "iOS 27 BOOHTACORD QA iPhone",
+    "android_licenses": "Accepted with explicit user permission"
+  },
+  "validation": {
+    "web_unit": {
+      "status": "PASS",
+      "tests": 1491
+    },
+    "flutter_unit": {
+      "status": "PASS",
+      "tests": 1139,
+      "skipped": 1
+    },
+    "web_browser_suites": {
+      "status": "PASS",
+      "tests": 76
+    },
+    "qa_python": {
+      "status": "PASS",
+      "tests": 45
+    },
+    "request_counter_node": {
+      "status": "PASS",
+      "tests": 2
+    },
+    "web_real_stack_393": {
+      "status": "PASS"
+    },
+    "web_real_stack_1440": {
+      "status": "PASS_RETRY",
+      "prior_attempt": "FAIL: lease-revocation hint not observed within 20 seconds; cause unresolved"
+    },
+    "android_runtime": {
+      "status": "PASS_RETRY",
+      "mocks": false,
+      "scope": "Authentication, workspace, profile/audio/admin panels, logout",
+      "prior_attempt": "Build timeout before app tests; warm-cache retry passed"
+    },
+    "ios_runtime": {
+      "status": "PASS",
+      "mocks": false,
+      "scope": "Authentication, workspace, profile/audio/admin panels, logout"
+    },
+    "macos_qa_build": {
+      "status": "PASS_BUILD_ONLY",
+      "bundle_id": "ru.boohtacord.localqa"
+    },
+    "web_topology_regression": {
+      "status": "PASS",
+      "before": "Parallel topology peak 2 after 50 hints; old counter did not include topology concurrency",
+      "after": "Topology/history parallel peak <=1 on desktop/mobile actual API runs",
+      "focused_tests": 14
+    }
+  },
+  "artifacts": {
+    "report": ".out/local-features/20261012-review-summary/index.html",
+    "manifest": ".out/local-features/20261012-review-summary/report.json",
+    "screenshots": 208,
+    "manifest_sha256": "f6e12f68d08a16c1c4b8fc78eb6342d716f539ea4ef2b6bc2401d9781b82b77c"
+  },
+  "visual_review": {
+    "status": "PARTIAL_REVIEW",
+    "reviewed": "14 native Flutter-content screenshots: auth, navigation, empty workspace, profile, audio, admin, signed-out on Android/iOS",
+    "result": "PASS_WITHIN_CAPTURE_SCOPE",
+    "observations": [
+      "No visible text overflow in reviewed content.",
+      "Horizontal tab strips and vertical admin/audio scroll areas are intentional.",
+      "Android capture includes a grey bottom system area; actual OS chrome remains NOT_RUN while Mac is locked."
+    ],
+    "not_reviewed": "Full component/Web reference approval, OS chrome, system permission picker, screen reader and paired media."
+  },
+  "issue_queue": "evidence/qa/local-issue-queue-2026-10-12.json",
+  "first_case": "evidence/qa/issue42-local-preflight-2026-10-12.json",
+  "limits": [
+    "Desktop notification timing is intermittent; one repeated pass does not explain the failed attempt.",
+    "Native runtime currently covers core smoke only; feature-specific media/upload/DM/reconnect cases need their own runtime scenarios.",
+    "Physical Pixel/iOS devices, paired screen capture, OS picker/screen reader, media quality and capacity NOT_RUN.",
+    "No visual baseline was approved; FV2-006 and issue #42 remain open.",
+    "No production account or guild was used.",
+    "Xcode doctor warns about absent CocoaPods; these macOS/iOS builds and iOS runtime succeeded with Swift Package Manager.",
+    "Backlog/requirements/contracts were not changed; conditional traceability/contract verifiers were not required."
+  ]
+}

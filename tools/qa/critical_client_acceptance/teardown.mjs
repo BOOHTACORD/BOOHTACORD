@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { owned } from './control.mjs'
 import { api, channel, expect, login, security, status } from '../client_lifecycle/request.mjs'
 async function join(page) {
   await channel(page, 'VoiceLab')
@@ -41,7 +42,23 @@ export async function teardown(a, b, channelId, input, report, observed) {
     status(kick, 200)
     assert.equal(kick.body.revoked_leases, 1)
     // Native notification worker polls every 15 seconds; client teardown is checked separately.
-    await expect.poll(() => observed.revocations, { timeout: 20000 }).toBeGreaterThan(previousRevocations)
+    try {
+      await expect.poll(() => observed.revocations, { timeout: 20000 }).toBeGreaterThan(previousRevocations)
+    } catch (error) {
+      // Aggregate counters from the owned disposable DB only; no lease/account IDs or tokens.
+      let outbox = 'UNAVAILABLE'
+      try {
+        outbox = JSON.parse(owned('db', 'exec', '$owned', 'psql', '-U', 'qa', '-d', 'qa', '-Atc',
+          "SELECT json_build_object('pending', count(*) FILTER (WHERE notification_emitted_at IS NULL), 'claimed', count(*) FILTER (WHERE notification_claim_token IS NOT NULL), 'emitted', count(*) FILTER (WHERE notification_emitted_at IS NOT NULL)) FROM voice_sfu_revocations").toString())
+      } catch { /* Keep the original acceptance failure. */ }
+      let connected = 'UNAVAILABLE'
+      try { connected = await a.evaluate(() => window.__qaPeers.filter(peer => peer.connectionState === 'connected').length) }
+      catch { /* A closed page must not replace the original failure. */ }
+      console.error('lease-notification-diagnostics='+JSON.stringify({ outbox,
+        observed_hints: observed.revocations-previousRevocations, connected_transports: connected,
+      }))
+      throw error
+    }
     const received = Date.now()
     await expect(a.getByTestId('voice-dock')).not.toHaveClass(/connected/, { timeout: 2000 })
     await mediaClosed(a)

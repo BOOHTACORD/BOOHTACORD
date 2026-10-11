@@ -1,0 +1,53 @@
+{
+  "id": "LOCAL-QA-ISSUE-42-20261012",
+  "date": "2026-10-12",
+  "issue": "https://github.com/Egkurilov/BOOHTACORD/issues/42",
+  "started_at": "2026-10-12T01:44:35.243379+03:00",
+  "status": "BLOCKED",
+  "phase": "paired runtime preflight",
+  "source_revision": "58e9718881eb534fd4c0971935480b66f474b153",
+  "prepared_artifacts": {
+    "android": {
+      "status": "PASS_BUILD_AND_CORE_SMOKE",
+      "version": "1.0.38+71",
+      "application_id": "ru.boohtacord.app",
+      "platform": "Android 15 API 35 ARM64 AOSP emulator",
+      "target": "integration_test/local_qa_test.dart",
+      "apk_sha256": "983c96823f77cbccbb0e46c30e36fd2b6fe1a2c97b74670b881c1b6cc5a77f1d"
+    },
+    "macos": {
+      "status": "PASS_BUILD_ONLY",
+      "version": "1.0.38+71",
+      "bundle_id": "ru.boohtacord.localqa",
+      "platform": "macOS 27.0.1 Apple Silicon",
+      "target": "integration_test/local_qa_test.dart"
+    }
+  },
+  "blocker": {
+    "source": "Computer Use app inventory, repeated after emulator setup",
+    "observation": "Mac is locked and automatic unlock could not unlock it.",
+    "required_action": "Unlock Mac manually to access emulator projection picker and macOS receiver UI."
+  },
+  "checks": {
+    "current_source_paired_session": "NOT_RUN",
+    "android_full_display_capture": "NOT_RUN",
+    "android_app_only_capture": "NOT_RUN",
+    "macos_discovery_subscription_render": "NOT_RUN",
+    "synchronized_sender_receiver_samples": "NOT_RUN",
+    "advancing_uncropped_frames": "NOT_RUN",
+    "capture_and_publication_cleanup": "NOT_RUN",
+    "physical_pixel_repeat": "NOT_RUN"
+  },
+  "next_steps": [
+    "Build the paired scenario for both clients from the same exact source revision.",
+    "Use two disposable accounts on the isolated guild and join SHARE_TEST with microphones muted.",
+    "Select Android capture through its real system picker.",
+    "Correlate sanitized sender/receiver samples and verify moving uncropped frames.",
+    "Stop capture and verify publication/viewer removal and MediaProjection cleanup."
+  ],
+  "limits": [
+    "Core smoke does not test screen capture or paired media.",
+    "No paired PASS, physical-device acceptance or issue closure is claimed.",
+    "No production account or production guild was mutated."
+  ]
+}

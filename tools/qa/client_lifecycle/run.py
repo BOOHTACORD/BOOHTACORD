@@ -90,6 +90,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--width', type=int, choices=tuple(VIEWPORT_PROFILES), default=1440)
     parser.add_argument('--critical', action='store_true')
+    parser.add_argument('--portable-proxy', action='store_true', help='bridge proxy for macOS Colima')
     args = parser.parse_args()
     viewport = viewport_profile(args.width)
     started = time.monotonic()
@@ -107,6 +108,8 @@ def main():
             from tools.qa.critical_client_acceptance.stack import Stack as ActualStack
         else:
             ActualStack = Stack
+        if args.portable_proxy:
+            from tools.qa.local_features.stack import Stack as ActualStack
         stack = ActualStack(root, work)
         try:
             stack.start()
