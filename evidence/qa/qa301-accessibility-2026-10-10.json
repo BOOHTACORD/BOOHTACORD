@@ -207,16 +207,17 @@
     "windows_narrator_and_keyboard": "NOT_RUN",
     "device_inventory": {
       "available": [
+        "Android 15/API 35 emulator emulator-5554 (emulator; inventory only in this update)",
         "macOS 26.6.1 arm64",
-        "Chrome 154.0.8037.98"
+        "Google Chrome 154.0.8037.98"
       ],
       "unavailable": [
-        "Android physical device/emulator",
-        "iOS device/simulator",
-        "Windows device/VM"
+        "physical Android device",
+        "iOS device or simulator",
+        "Windows device or VM"
       ]
     },
-    "limitation": "Widget and browser automation cannot confirm announcements or traversal through a real screen reader. Keep #301 open until the manual acceptance is performed and recorded; platform runtime scheduling is tracked with #303."
+    "limitation": "Automated geometry and widget/browser checks cannot confirm real screen-reader announcements or physical traversal. The Android emulator is available, but no physical Android device is connected; keep manual acceptance open under #301/#303."
   },
   "acceptance": {
     "seven_scenario_control_inventory": "PASS_DOCUMENTED",
@@ -540,7 +541,8 @@
       "The browser test mounts the production Vue components with production CSS in an isolated fixture; it is not full authenticated app or physical-device acceptance.",
       "Emulated mobile viewport does not prove physical touch, native screen-reader traversal, or device behavior; those remain NOT_RUN under #301/#303.",
       "Captures are review-only; no pixel golden is approved."
-    ]
+    ],
+    "historical_note": "The 40x40 dock-button geometry and captures above are from checkpoint d3e7c82c before checkpoint 8133faac expanded dock actions. Current dock geometry is recorded in voice_dock_full_width_geometry_2026_10_11."
   },
   "native_safari_voice_dock_keyboard_smoke_2026_10_11": {
     "date": "2026-10-11",
@@ -582,6 +584,65 @@
       "This is a manual keyboard smoke of production Vue components in a fixture, not the authenticated full application or an actual LiveKit session.",
       "VoiceOver/NVDA traversal was not run; physical mobile, iOS Safari, and native capture-picker acceptance remain NOT_RUN.",
       "Option+Tab was used with Safari's default Full Keyboard Access policy; this is distinct from a physical-device screen-reader pass."
+    ]
+  },
+  "voice_dock_full_width_geometry_2026_10_11": {
+    "date": "2026-10-11",
+    "tested_ui_checkpoint": "8133faac4834ebd0022f4a14b05331f037e863a6",
+    "test_file": "clients/web/tests/accessibility/voice_dock_layout.browser.spec.ts",
+    "test_name": "voice dock action row fills desktop and open mobile drawer evenly",
+    "test_source_sha256": "d994673eaa0eb812e313572a3e78dd54f7b569f176b64d38316ca037a016e44e",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npx playwright test -c tests/accessibility/playwright.config.ts --grep 'voice dock action row fills desktop'",
+    "browser": "Google Chrome 154.0.8037.98",
+    "result": "1/1 PASS",
+    "assertions": {
+      "desktop": {
+        "viewport": "1440x900",
+        "dock_outer_width_css_px": 279,
+        "actions_row_width_css_px": 247,
+        "action_button_widths_css_px": [
+          57.25,
+          57.25,
+          57.25,
+          57.25
+        ],
+        "action_button_height_css_px": 40,
+        "svg_glyph_size_css_px": "20x20"
+      },
+      "mobile_open_drawer": {
+        "viewport": "390x844",
+        "dock_width_css_px": 320,
+        "actions_row_width_css_px": 288,
+        "action_button_widths_css_px": [
+          71.5,
+          71.5,
+          71.5,
+          71.5
+        ],
+        "action_button_height_css_px": 44,
+        "svg_glyph_size_css_px": "20x20",
+        "document_horizontal_overflow": false
+      }
+    },
+    "captures": [
+      {
+        "path": ".out/accessibility-browser-results/voice_dock_layout.browser--d95a4-d-open-mobile-drawer-evenly/voice-dock-width-desktop.png",
+        "sha256": "26a97f6cbeb4c679bb5a7f7089b8e98682ee142cd4e07cf007b74f16e0ae1bd2",
+        "raster": "1440x900",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/accessibility-browser-results/voice_dock_layout.browser--d95a4-d-open-mobile-drawer-evenly/voice-dock-width-mobile.png",
+        "sha256": "65c3efeab17553513a70c71e6f100c431198b0768d654c9084ad63c8ecb7674e",
+        "raster": "390x844",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      }
+    ],
+    "limitations": [
+      "Production Vue component and CSS mounted in an isolated browser fixture; no backend, account, or LiveKit session.",
+      "Mobile layout uses a browser viewport, not physical-device acceptance.",
+      "This measurement does not replace manual VoiceOver/NVDA/TalkBack/Narrator acceptance.",
+      "Captures are local and review-only; no pixel golden is approved."
     ]
   }
 }

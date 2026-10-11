@@ -1843,5 +1843,43 @@
       "No source screenshot archive entry is declared an approved pixel golden; all captures are review-only.",
       "Screen-share native system picker is outside this run."
     ]
+  },
+  "voice_dock_full_width_geometry_follow_up_2026_10_11": {
+    "result": "PASS_BROWSER_GEOMETRY_REVIEW_ONLY",
+    "tested_ui_checkpoint": "8133faac4834ebd0022f4a14b05331f037e863a6",
+    "test_file": "clients/web/tests/accessibility/voice_dock_layout.browser.spec.ts",
+    "test_source_sha256": "d994673eaa0eb812e313572a3e78dd54f7b569f176b64d38316ca037a016e44e",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npx playwright test -c tests/accessibility/playwright.config.ts --grep 'voice dock action row fills desktop'",
+    "browser": "Google Chrome 154.0.8037.98",
+    "viewports": [
+      "1440x900 desktop",
+      "390x844 mobile drawer open"
+    ],
+    "measured": {
+      "desktop_action_width_css_px": 57.25,
+      "desktop_action_height_css_px": 40,
+      "mobile_action_width_css_px": 71.5,
+      "mobile_action_height_css_px": 44,
+      "svg_glyph_size_css_px": "20x20",
+      "mobile_document_horizontal_overflow": false
+    },
+    "captures": [
+      {
+        "path": ".out/accessibility-browser-results/voice_dock_layout.browser--d95a4-d-open-mobile-drawer-evenly/voice-dock-width-desktop.png",
+        "sha256": "26a97f6cbeb4c679bb5a7f7089b8e98682ee142cd4e07cf007b74f16e0ae1bd2",
+        "raster": "1440x900"
+      },
+      {
+        "path": ".out/accessibility-browser-results/voice_dock_layout.browser--d95a4-d-open-mobile-drawer-evenly/voice-dock-width-mobile.png",
+        "sha256": "65c3efeab17553513a70c71e6f100c431198b0768d654c9084ad63c8ecb7674e",
+        "raster": "390x844"
+      }
+    ],
+    "review_status": "LOCAL_REVIEW_ONLY_NOT_APPROVED_GOLDEN",
+    "limitations": [
+      "Fixture mounts the production Vue VoiceDock component and styles, not the authenticated full application.",
+      "Mobile is browser viewport emulation, not a physical device.",
+      "Captures are ignored local .out files; no image was staged."
+    ]
   }
 }
