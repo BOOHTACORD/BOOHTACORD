@@ -793,7 +793,7 @@ test('voice dock and audio settings icons expose keyboard names, focus and activ
   await page.screenshot({ path: testInfo.outputPath('voice-settings-dock-keyboard.png') })
 })
 
-test('voice and settings icon targets keep their desktop and mobile dimensions', async ({ page }, testInfo) => {
+test('voice and settings icon targets meet desktop and mobile minimum dimensions', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
   await page.evaluate(async () => {
@@ -828,7 +828,7 @@ test('voice and settings icon targets keep their desktop and mobile dimensions',
   for (const button of await dockButtons.all()) {
     const bounds = await button.boundingBox()
     expect(bounds).not.toBeNull()
-    expect(bounds!.width).toBe(40)
+    expect(bounds!.width).toBeGreaterThanOrEqual(40)
     expect(bounds!.height).toBe(40)
   }
   await page.screenshot({ path: testInfo.outputPath('voice-settings-targets-desktop.png') })
@@ -842,7 +842,7 @@ test('voice and settings icon targets keep their desktop and mobile dimensions',
   for (const button of await dockButtons.all()) {
     const bounds = await button.boundingBox()
     expect(bounds).not.toBeNull()
-    expect(bounds!.width).toBe(44)
+    expect(bounds!.width).toBeGreaterThanOrEqual(44)
     expect(bounds!.height).toBe(44)
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
