@@ -69,6 +69,18 @@ type VisualMatrix = {
       rasterPx: [number, number]
     }>
   }
+  fullAppInteractionReviewEvidence: {
+    status: string
+    sourceRevision: string
+    report: string
+    reviewedScreenIds: string[]
+    captures: Array<{
+      catalogSlot: string
+      source: { path: string; sha256: string; raster: string }
+      after: { path: string; sha256: string; raster: string }
+      reviewNote: string
+    }>
+  }
   screens: MatrixEntry[]
 }
 
@@ -336,5 +348,44 @@ describe('UIUX-2026 visual regression inventory', () => {
       expect(comparison.after.sha256).toMatch(/^[a-f0-9]{64}$/)
       expect(comparison.observation.toLowerCase()).toContain(review.observationNote.toLowerCase())
     }
+  })
+
+  it('records authenticated source-sized channel and navigation review captures without approving goldens', () => {
+    const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
+    const evidence = matrix.fullAppInteractionReviewEvidence
+    const report = JSON.parse(readFileSync(resolve(repoRoot, 'evidence/qa/qa302-visual-e2e-2026-10-10.json'), 'utf8'))
+      .full_app_interaction_source_review
+    const expectedSlots = ['D01', 'D02', 'D03', 'M01', 'M02', 'M03']
+
+    expect(evidence).toMatchObject({
+      status: 'REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN',
+      report: 'evidence/qa/qa302-visual-e2e-2026-10-10.json#full_app_interaction_source_review',
+      reviewedScreenIds: expectedSlots,
+    })
+    expect(evidence.sourceRevision).toMatch(/^[a-f0-9]{40}$/)
+    expect(report.status).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+    expect(report.browser).toBe('Chrome 154')
+    expect(report.api_mocks).toBe(false)
+    expect(report.telemetry).toBe('PASS')
+    expect(report.persisted_after_api_restart).toBe(true)
+    expect(report.owned_resources_removed).toBe(true)
+
+    for (const screenId of expectedSlots) {
+      const screen = matrix.screens.find(({ id }) => id === screenId)!
+      const capture = evidence.captures.find(({ catalogSlot }) => catalogSlot === screenId)!
+      const reportCapture = report.captures.find(({ catalog_slot }: { catalog_slot: string }) => catalog_slot === screenId)!
+      expect(screen.sourceComparisonStatus, `${screenId} review status`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(screen.fixture).toBe('tools/qa/client_lifecycle/run.py')
+      expect(screen.testFile).toBe('tools/qa/client_lifecycle/scenario.mjs')
+      expect(capture.source.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(capture.after.sha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(capture.source.raster).toBe(capture.after.raster)
+      expect(capture.reviewNote.length).toBeGreaterThan(20)
+      expect(reportCapture.review_status).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
+      expect(reportCapture.source.sha256).toBe(capture.source.sha256)
+      expect(reportCapture.after.sha256).toBe(capture.after.sha256)
+      expect(reportCapture.after.raster).toBe(capture.after.raster)
+    }
+    expect(report.limitations.join(' ')).toContain('no owner-approved pixel golden')
   })
 })

@@ -1307,7 +1307,13 @@
     "source_revision": "ee4538d40080a3e64b6c2b91bb1d60d1f763ebfc",
     "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
     "evidence": "evidence/qa/qa294-dm-live-full-app-2026-10-10.json#current_branch_revalidation",
-    "reviewed_catalog_slots": ["D04", "M04", "M05", "M06", "M07"],
+    "reviewed_catalog_slots": [
+      "D04",
+      "M04",
+      "M05",
+      "M06",
+      "M07"
+    ],
     "observations": [
       "D04 and M04 use synthetic account/message data; the DM conversation/list structure is comparable to the source.",
       "M04 adds a chat/voice/member status block not present in the source, which lists six users while the QA capture lists one synthetic user.",
@@ -1326,13 +1332,44 @@
     "source_revision": "ab12691186a51beae7988dee01021e0ea7b5ef54",
     "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
     "evidence": "evidence/qa/qa297-personal-settings-2026-10-10.json#comparisons",
-    "reviewed_catalog_slots": ["M15", "M16", "M17", "M18", "M19"],
+    "reviewed_catalog_slots": [
+      "M15",
+      "M16",
+      "M17",
+      "M18",
+      "M19"
+    ],
     "captures": [
-      { "catalog_slot": "M15", "after": ".out/uiux-2026-epic-289/settings/393/mobile-profile-settings-after.png", "sha256": "d5d41793a1e4359eb854189f33849654aa8474f14f328b51c535fac3049613e6", "raster": "1179x2556" },
-      { "catalog_slot": "M16", "after": ".out/uiux-2026-epic-289/settings/393/mobile-security-settings-after.png", "sha256": "60a0c30741e3c14f46c7af7c460f2cd90a8619fbabc80c6496087726d35e27e3", "raster": "1179x2556" },
-      { "catalog_slot": "M17", "after": ".out/uiux-2026-epic-289/settings/393/mobile-audio-settings-after.png", "sha256": "71fe011e00d75bd647b1d1e3b02724ec63cf5e51ac10d8e42c4b01b62412b36d", "raster": "1179x2556" },
-      { "catalog_slot": "M18", "after": ".out/uiux-2026-epic-289/settings/393/mobile-notification-settings-after.png", "sha256": "67e3ac2cb06a5ea237347ae035a423ba3da9e7f2dbf0b2993e4758219bbfc877", "raster": "1179x2556" },
-      { "catalog_slot": "M19", "after": ".out/uiux-2026-epic-289/settings/393/mobile-about-settings-after.png", "sha256": "733dc94349044ac372981ad7e5061a03cfa58b59698322d7a8b409f436298cbc", "raster": "1179x2556" }
+      {
+        "catalog_slot": "M15",
+        "after": ".out/uiux-2026-epic-289/settings/393/mobile-profile-settings-after.png",
+        "sha256": "d5d41793a1e4359eb854189f33849654aa8474f14f328b51c535fac3049613e6",
+        "raster": "1179x2556"
+      },
+      {
+        "catalog_slot": "M16",
+        "after": ".out/uiux-2026-epic-289/settings/393/mobile-security-settings-after.png",
+        "sha256": "60a0c30741e3c14f46c7af7c460f2cd90a8619fbabc80c6496087726d35e27e3",
+        "raster": "1179x2556"
+      },
+      {
+        "catalog_slot": "M17",
+        "after": ".out/uiux-2026-epic-289/settings/393/mobile-audio-settings-after.png",
+        "sha256": "71fe011e00d75bd647b1d1e3b02724ec63cf5e51ac10d8e42c4b01b62412b36d",
+        "raster": "1179x2556"
+      },
+      {
+        "catalog_slot": "M18",
+        "after": ".out/uiux-2026-epic-289/settings/393/mobile-notification-settings-after.png",
+        "sha256": "67e3ac2cb06a5ea237347ae035a423ba3da9e7f2dbf0b2993e4758219bbfc877",
+        "raster": "1179x2556"
+      },
+      {
+        "catalog_slot": "M19",
+        "after": ".out/uiux-2026-epic-289/settings/393/mobile-about-settings-after.png",
+        "sha256": "733dc94349044ac372981ad7e5061a03cfa58b59698322d7a8b409f436298cbc",
+        "raster": "1179x2556"
+      }
     ],
     "observations": [
       "M15 profile form and save state are visible with a synthetic identity and no avatar. The source includes a secondary avatar button labelled ‘Удалить…’; code renders this action only when avatar_url is present, so its absence in the after capture is expected and no parity defect is inferred.",
@@ -1352,7 +1389,12 @@
     "source_revision": "21069626",
     "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
     "evidence": "evidence/qa/qa320-screen-share-quality-2026-10-10.json#latest_visual_regression_after_focus_state_fix",
-    "reviewed_catalog_slots": ["D16", "D17", "M20", "M21"],
+    "reviewed_catalog_slots": [
+      "D16",
+      "D17",
+      "M20",
+      "M21"
+    ],
     "captures": [
       {
         "catalog_slot": "M20",
@@ -1402,7 +1444,11 @@
     "source_revision": "a89ef57d",
     "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
     "evidence": "evidence/qa/qa298-dialogs-2026-10-10.json#visual_comparisons",
-    "reviewed_catalog_slots": ["D12", "D13", "D14"],
+    "reviewed_catalog_slots": [
+      "D12",
+      "D13",
+      "D14"
+    ],
     "visual_matrix_inventory_test": "10/10 PASS",
     "observations": [
       "D12 preserves a readable title/helper/field hierarchy and aligned footer actions in the source-sized after capture.",
@@ -1413,6 +1459,133 @@
       "The comparisons use local 2880x1800 screenshots and are review evidence, not approved pixel goldens.",
       "The D13 synthetic category/channel state differs from the archived source.",
       "These three desktop dialogs do not complete the 41-slot after-capture catalog or physical acceptance."
+    ]
+  },
+  "full_app_interaction_source_review": {
+    "date": "2026-10-11",
+    "source_revision": "8fd0bc9f9f46d4cbdf0ba1cc6eff6bf43ee5ec2c",
+    "status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+    "runner": "QA_BROWSER_EXECUTABLE=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome python3 -m tools.qa.client_lifecycle.run --width 1440; repeat with --width 393",
+    "browser": "Chrome 154",
+    "api_mocks": false,
+    "telemetry": "PASS",
+    "persisted_after_api_restart": true,
+    "owned_resources_removed": true,
+    "capture_harness_files": {
+      "tools/qa/client_lifecycle/run.py": "b5918231b58db580bf1a1868de0009c6f75554170a64a0418047038ca8dcef2d",
+      "tools/qa/client_lifecycle/scenario.mjs": "2738acd7a46be8df27f73ea4e177044ebc1795fde850b3dea81ec5caba291914"
+    },
+    "captures": [
+      {
+        "catalog_slot": "D01",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-channel-overview.png",
+          "sha256": "1c6780a376993228a18f6012f5c60abf337469428bef44059dba31e298990f63",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/channel-text.png",
+          "sha256": "4658d1f5ca20801e9674ca98efe2cfe80bf0f69bf5f9be00fda1592ccef0ca06",
+          "raster": "2880x1800",
+          "source_revision": "8fd0bc9f9f46d4cbdf0ba1cc6eff6bf43ee5ec2c"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "The header, channel navigation, member rail, voice dock and composer are present. The source shows historic messages and an attachment; the current runtime capture uses synthetic messages, so this is structural review only."
+      },
+      {
+        "catalog_slot": "D02",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-channel-text.png",
+          "sha256": "d0a993e09564b1e3dc5cf9224ecef3f92078d72e12bb00143ac586efeaafde0b",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/channel-text-actions.png",
+          "sha256": "e07fbd41436ea4cb13bd9c28135d92bda413d5b5956910ee3a4a52865434d66d",
+          "raster": "2880x1800",
+          "source_revision": "8fd0bc9f9f46d4cbdf0ba1cc6eff6bf43ee5ec2c"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "The pointer-hover capture exposes Reply and keeps the message row actions reachable. The synthetic member lacks edit/delete rights, so the source’s additional privileged actions are intentionally absent."
+      },
+      {
+        "catalog_slot": "D03",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/desktop-dm-list.png",
+          "sha256": "c4bf57482ab0eb6720f98ed215c83e19fa04a7ab1758f329f1fd6b445a56b19e",
+          "raster": "2880x1800"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/1440/dm-list.png",
+          "sha256": "5f93fb8a77c18819391a5c02677cddfc98d60fa63eff1935b715da430b04ee9a",
+          "raster": "2880x1800",
+          "source_revision": "8fd0bc9f9f46d4cbdf0ba1cc6eff6bf43ee5ec2c"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "Both images show the DM navigation beside an empty voice prejoin. The source lists several DM accounts; the runtime after image has one synthetic qa_admin account."
+      },
+      {
+        "catalog_slot": "M01",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-navigation-overlay.png",
+          "sha256": "ddc71e96ce0fea770cda98aec536bcec018a557042abb10784ad6924bd85c3fb",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/navigation-overlay.png",
+          "sha256": "4ee1a112e268a00b632813ede906306e1c4f1267e54957851a705a882e045e54",
+          "raster": "1179x2556",
+          "source_revision": "8fd0bc9f9f46d4cbdf0ba1cc6eff6bf43ee5ec2c"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "The drawer opens over the selected channel and closes from its close button. The runtime includes a connectivity summary absent from the source and one additional synthetic member, leaving fewer channel rows visible before scrolling."
+      },
+      {
+        "catalog_slot": "M02",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-channel-overview.png",
+          "sha256": "6ab04d76b87dc665bad23a023dfcfadf11aedf932948c69e7cbead5917aa95e5",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/channel-text.png",
+          "sha256": "e334918859a2627149915743b4ceb870352c757f64599d7b70a6163911137e9f",
+          "raster": "1179x2556",
+          "source_revision": "8fd0bc9f9f46d4cbdf0ba1cc6eff6bf43ee5ec2c"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "The selected channel, message history, member rail and composer remain visible. The runtime shows synthetic messages and an unread prompt, while the source shows older message and attachment content."
+      },
+      {
+        "catalog_slot": "M03",
+        "source": {
+          "file": "artifacts/ui-ux-screenshots.zip#ui-ux-screenshots/mobile-channel-text-hover.png",
+          "sha256": "6d3235e9fa0dc84495ee0feb663f88a1372036be27436c966e41a338136ab4d1",
+          "raster": "1179x2556"
+        },
+        "after": {
+          "path": ".out/client-lifecycle/393/channel-text-actions.png",
+          "sha256": "4af5488eceab54919cd1862fca3a1d01516edd0ce777873d7b5750a9b18eb708",
+          "raster": "1179x2556",
+          "source_revision": "8fd0bc9f9f46d4cbdf0ba1cc6eff6bf43ee5ec2c"
+        },
+        "review_status": "REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN",
+        "review_note": "A touch tap opens the message action popover and the scenario closes it again. Only Reply is available because the synthetic member lacks edit/delete permission; this is not physical-device acceptance."
+      }
+    ],
+    "observations": [
+      "The header, channel navigation, member rail, voice dock and composer are present. The source shows historic messages and an attachment; the current runtime capture uses synthetic messages, so this is structural review only.",
+      "The pointer-hover capture exposes Reply and keeps the message row actions reachable. The synthetic member lacks edit/delete rights, so the source’s additional privileged actions are intentionally absent.",
+      "Both images show the DM navigation beside an empty voice prejoin. The source lists several DM accounts; the runtime after image has one synthetic qa_admin account.",
+      "The drawer opens over the selected channel and closes from its close button. The runtime includes a connectivity summary absent from the source and one additional synthetic member, leaving fewer channel rows visible before scrolling.",
+      "The selected channel, message history, member rail and composer remain visible. The runtime shows synthetic messages and an unread prompt, while the source shows older message and attachment content.",
+      "A touch tap opens the message action popover and the scenario closes it again. Only Reply is available because the synthetic member lacks edit/delete permission; this is not physical-device acceptance."
+    ],
+    "limitations": [
+      "These six captures are review-only; no owner-approved pixel golden or per-pixel pass threshold is inferred.",
+      "Account rosters, message history, unread state, attachments and member permissions differ because the disposable runtime uses synthetic accounts and data.",
+      "Chrome mobile emulation is automated evidence, not physical iPhone/Android interaction, OS Back gesture or screen-reader acceptance.",
+      "D02 desktop hover flow and M03 touch disclosure were exercised in the authenticated app; the separate component keyboard and long-press suites cover those specific input states."
     ]
   }
 }

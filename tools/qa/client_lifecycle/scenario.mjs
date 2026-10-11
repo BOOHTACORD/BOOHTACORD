@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { readFileSync, writeFileSync } from 'node:fs'
-import { api, chromium, expect, login, openNavigation, origin, status } from './request.mjs'
+import { api, channel, chromium, expect, login, openNavigation, origin, status } from './request.mjs'
 import { guild } from './guild.mjs'
 import { sessions } from './sessions.mjs'
 import { registration, rateLimit } from '../critical_client_acceptance/auth.mjs'
@@ -50,6 +50,44 @@ try {
   const expectedMemberCount = 20 + Number(Boolean(flowAccount))
   const value = await guild(a, b, guest, input.password, report, input.directory, expectedMemberCount)
   await login(guest, 'qa_member', input.password)
+  await channel(guest, 'Text')
+  const channelHistory = guest.getByRole('log', { name: 'История сообщений' })
+  await expect(channelHistory).toContainText('Synthetic UIUX channel sample: readable conversation text.')
+  await guest.screenshot({ path: input.directory+'/channel-text.png' })
+  const firstChannelMessage = guest.locator('.message-row')
+    .filter({ hasText: 'Synthetic UIUX channel sample: readable conversation text.' }).first()
+  await expect(firstChannelMessage).toBeVisible()
+  const messageActionsToggle = firstChannelMessage.locator('.message-actions-toggle')
+  const messageActionButtons = firstChannelMessage.locator('.message-action-buttons')
+  if (input.viewport.has_touch) {
+    await messageActionsToggle.tap()
+    await expect(firstChannelMessage.locator('.message-actions')).toHaveClass(/is-open/)
+  } else {
+    await firstChannelMessage.hover()
+    await expect(firstChannelMessage.getByRole('button', { name: 'Ответить' })).toBeVisible()
+    await expect(messageActionButtons).toHaveCSS('opacity', '1')
+  }
+  await guest.screenshot({ path: input.directory+'/channel-text-actions.png' })
+  if (input.viewport.has_touch) {
+    await messageActionsToggle.tap()
+    await expect(firstChannelMessage.locator('.message-actions')).not.toHaveClass(/is-open/)
+  } else {
+    await guest.mouse.move(0, 0)
+    await expect(messageActionButtons).toHaveCSS('opacity', '0')
+    await expect(messageActionButtons).toHaveCSS('pointer-events', 'none')
+  }
+  report.catalog_message_actions = { open: true, close: true, pointer: input.viewport.has_touch ? 'touch' : 'mouse' }
+
+  if (input.viewport.is_mobile) {
+    const sidebar = guest.locator('.sidebar')
+    await guest.getByRole('button', { name: 'Открыть навигацию', exact: true }).click()
+    await expect(sidebar).toHaveClass(/is-open/)
+    await guest.screenshot({ path: input.directory+'/navigation-overlay.png' })
+    await guest.getByRole('button', { name: 'Закрыть навигацию', exact: true }).click()
+    await expect(sidebar).not.toHaveClass(/is-open/)
+    report.catalog_navigation_overlay = { opened_by_trigger: true, closed_by_button: true }
+  }
+
   await openNavigation(guest)
   await guest.getByRole('button', { name: 'Личные', exact: true }).click()
   const dmNavigation = guest.getByRole('navigation', { name: 'Личные сообщения' })

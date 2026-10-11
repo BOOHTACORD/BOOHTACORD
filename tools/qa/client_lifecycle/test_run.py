@@ -1,6 +1,6 @@
 import unittest
 
-from .run import viewport_profile
+from .run import catalog_capture_plan, viewport_profile
 
 
 class ViewportProfileTests(unittest.TestCase):
@@ -45,6 +45,26 @@ class ViewportProfileTests(unittest.TestCase):
     def test_unsupported_width_is_rejected(self):
         with self.assertRaises(ValueError):
             viewport_profile(391)
+
+
+class CatalogCapturePlanTests(unittest.TestCase):
+    def test_mobile_plan_covers_navigation_channel_and_touch_message_actions(self):
+        self.assertEqual(catalog_capture_plan(393), [
+            ('M01', 'navigation-overlay.png'),
+            ('M02', 'channel-text.png'),
+            ('M03', 'channel-text-actions.png'),
+        ])
+
+    def test_desktop_plan_covers_channel_message_actions_and_dm_list(self):
+        self.assertEqual(catalog_capture_plan(1440), [
+            ('D01', 'channel-text.png'),
+            ('D02', 'channel-text-actions.png'),
+            ('D03', 'dm-list.png'),
+        ])
+
+    def test_non_catalog_viewports_do_not_claim_source_sized_captures(self):
+        self.assertEqual(catalog_capture_plan(390), [])
+        self.assertEqual(catalog_capture_plan(1024), [])
 
 
 if __name__ == '__main__':
