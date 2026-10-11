@@ -1,4 +1,5 @@
 #import "FlutterRPScreenRecorder.h"
+#import "ScreenAudioTrackCapturer.h"
 #if TARGET_OS_IPHONE
 #import <ReplayKit/ReplayKit.h>
 
@@ -31,6 +32,8 @@
                                   RPSampleBufferType bufferType, NSError* _Nullable error) {
           if (bufferType == RPSampleBufferTypeVideo) {  // We want video only now
             [self handleSourceBuffer:sampleBuffer sampleType:bufferType];
+          } else if (bufferType == RPSampleBufferTypeAudioApp) {
+            [self.screenAudioCapturer appendSampleBuffer:sampleBuffer];
           }
         }
         completionHandler:^(NSError* _Nullable error) {
@@ -45,6 +48,7 @@
 }
 
 - (void)stopCapture {
+  [self.screenAudioCapturer stop];
   if (@available(iOS 11.0, *)) {
     [screenRecorder stopCaptureWithHandler:^(NSError* _Nullable error) {
       if (error != nil)

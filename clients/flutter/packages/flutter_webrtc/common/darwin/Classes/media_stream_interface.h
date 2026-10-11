@@ -15,10 +15,14 @@
 #define API_MEDIA_STREAM_INTERFACE_H_
 
 #include <stddef.h>
+#include <stdint.h>
 #include <string>
 #include <vector>
 #include <memory>
 #include <utility>
+#include <optional>
+
+#include "audio_options.h"
 
 namespace webrtc {
 
@@ -78,7 +82,7 @@ namespace webrtc {
                             int sample_rate,
                             size_t number_of_channels,
                             size_t number_of_frames,
-                            void* absolute_capture_timestamp_ms) {
+                            std::optional<int64_t> absolute_capture_timestamp_ms) {
           // TODO(bugs.webrtc.org/10739): Deprecate the old OnData and make this one
           // pure virtual.
           return OnData(audio_data, bits_per_sample, sample_rate, number_of_channels,
@@ -104,16 +108,15 @@ namespace webrtc {
         // TODO(tommi): This method should be on the track and ideally volume should
         // be applied in the track in a way that does not affect clones of the track.
         virtual void SetVolume(double volume) {}
+        virtual double GetVolume() const { return 1.0; }
         // Registers/unregisters observers to the audio source.
         virtual void RegisterAudioObserver(AudioObserver* observer) {}
         virtual void UnregisterAudioObserver(AudioObserver* observer) {}
         // TODO(tommi): Make pure virtual.
         virtual void AddSink(AudioTrackSinkInterface* sink) {}
         virtual void RemoveSink(AudioTrackSinkInterface* sink) {}
-        // Returns options for the AudioSource.
-        // (for some of the settings this approach is broken, e.g. setting
-        // audio network adaptation on the source is the wrong layer of abstraction).
-//        virtual const AudioOptions options() const;
+        virtual const AudioOptions options() const { return AudioOptions{}; }
+        virtual void SetOptions(const AudioOptions& options) {}
     };
 }
 namespace rtc {

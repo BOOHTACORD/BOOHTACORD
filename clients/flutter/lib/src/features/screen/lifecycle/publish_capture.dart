@@ -15,6 +15,7 @@ extension ScreenShareCapturePublish on ScreenShareController {
     int expected,
     String? sourceId,
     VideoDimensions? dimensions,
+    bool captureScreenAudio,
   ) async {
     bool active() => current(ticket, expected, room);
     LocalVideoTrack? pending;
@@ -35,6 +36,7 @@ extension ScreenShareCapturePublish on ScreenShareController {
       pending = await driver.capture(
         ScreenShareCaptureOptions(
           sourceId: sourceId,
+          captureScreenAudio: captureScreenAudio,
           maxFrameRate: capturePlan.requestedMaxFrameRate.toDouble(),
           params: capturePlan.requestedParameters,
         ),

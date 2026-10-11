@@ -32,6 +32,7 @@ class SetupBody extends StatefulWidget {
 
 class _SetupState extends State<SetupBody> {
   late ScreenShareQuality quality;
+  bool captureScreenAudio = false;
   late SourceInventory inventory;
   @override
   void initState() {
@@ -97,6 +98,12 @@ class _SetupState extends State<SetupBody> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ScreenCapabilityNotice(capability: capability),
+                    if (capability.captureAudioConfigured && !widget.updating)
+                      _ScreenAudioToggle(
+                        selected: captureScreenAudio,
+                        onChanged: (value) =>
+                            setState(() => captureScreenAudio = value),
+                      ),
                     SourceTabs(inventory: inventory),
                     SourceGrid(inventory: inventory, shrinkWrap: true),
                     picker,
@@ -106,6 +113,12 @@ class _SetupState extends State<SetupBody> {
             )
           else ...[
             ScreenCapabilityNotice(capability: capability),
+            if (capability.captureAudioConfigured && !widget.updating)
+              _ScreenAudioToggle(
+                selected: captureScreenAudio,
+                onChanged: (value) =>
+                    setState(() => captureScreenAudio = value),
+              ),
             SourceTabs(inventory: inventory),
             Expanded(child: SourceGrid(inventory: inventory)),
             picker,
@@ -116,6 +129,9 @@ class _SetupState extends State<SetupBody> {
               capability: capability,
               updating: widget.updating,
               picker: picker,
+              captureScreenAudio: captureScreenAudio,
+              onCaptureScreenAudioChanged: (value) =>
+                  setState(() => captureScreenAudio = value),
             ),
           ),
         SetupFooter(
@@ -130,10 +146,30 @@ class _SetupState extends State<SetupBody> {
               sourceId: inventory.selectedId,
               quality: quality,
               sourceDimensions: dimensions,
+              captureScreenAudio: captureScreenAudio,
             ),
           ),
         ),
       ],
     );
   }
+}
+
+class _ScreenAudioToggle extends StatelessWidget {
+  const _ScreenAudioToggle({required this.selected, required this.onChanged});
+
+  final bool selected;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) => SwitchListTile.adaptive(
+    key: const ValueKey('capture-screen-audio'),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+    value: selected,
+    onChanged: onChanged,
+    title: const Text('Передавать звук экрана'),
+    subtitle: const Text(
+      'Звук игры или приложения передаётся, если источник и система разрешают захват.',
+    ),
+  );
 }

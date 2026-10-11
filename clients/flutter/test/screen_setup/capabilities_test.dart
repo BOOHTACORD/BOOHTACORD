@@ -3,9 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('native configured capture never promises screen audio or hardware acceptance', () {
+  test('native screen audio is available on every shipped native target', () {
     for (final platform in [
       TargetPlatform.windows,
+      TargetPlatform.linux,
       TargetPlatform.macOS,
       TargetPlatform.android,
       TargetPlatform.iOS,
@@ -13,8 +14,8 @@ void main() {
       final value = ScreenPreflight.detect(platform: platform);
       expect(value.captureConfigured, isTrue);
       expect(value.videoLabel, contains('при запуске'));
-      expect(value.audioLabel, contains('не публикуется'));
-      expect(value.audioLabel, contains('Звук игры не передаётся'));
+      expect(value.captureAudioConfigured, isTrue);
+      expect(value.audioLabel, isNot(contains('не публикуется')));
       expect(value.viewerLabel, contains('остаются доступны'));
     }
   });

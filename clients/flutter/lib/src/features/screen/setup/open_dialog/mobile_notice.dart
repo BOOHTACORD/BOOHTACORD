@@ -4,7 +4,8 @@ import 'package:flutter/foundation.dart';
 import '../../../../theme.dart';
 
 class MobileCaptureNotice extends StatelessWidget {
-  const MobileCaptureNotice({super.key});
+  const MobileCaptureNotice({super.key, this.captureScreenAudio = false});
+  final bool captureScreenAudio;
   @override
   Widget build(BuildContext context) => Container(
     margin: EdgeInsets.symmetric(
@@ -28,7 +29,9 @@ class MobileCaptureNotice extends StatelessWidget {
         Expanded(
           child: Text(
             defaultTargetPlatform == TargetPlatform.iOS
-                ? 'На iPhone транслируется только содержимое BOOHTACORD. Другие приложения и системный звук не передаются. Остановить трансляцию можно в голосовом канале.'
+                ? captureScreenAudio
+                      ? 'iOS запустит системную трансляцию ReplayKit. Звук будет передан, если приложение-источник разрешает захват. Остановить трансляцию можно в системной панели или голосовом канале.'
+                      : 'Без системной трансляции iOS показывает только содержимое BOOHTACORD. Чтобы запросить звук игры или приложения, включите «Передавать звук экрана».'
                 : 'При выборе отдельного приложения Android может скрыть его изображение, когда оно полностью закрыто другим окном или вы переключились на другое приложение. Для непрерывной трансляции выберите весь экран в системном окне Android.',
             style: const TextStyle(color: GcColors.textSecondary, height: 1.45),
           ),

@@ -3,7 +3,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class FlutterScreenAudioTrackCapturer;
+
 @interface FlutterScreenCaptureKitCapturer : NSObject
+
+@property(nonatomic, strong, nullable) FlutterScreenAudioTrackCapturer *screenAudioCapturer;
 
 - (instancetype)initWithDelegate:(id<RTCVideoCapturerDelegate>)delegate;
 
@@ -13,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
                   onStarted:(void (^ _Nonnull)(NSError * _Nullable error))onStarted;
 
 - (void)stopCaptureWithCompletion:(void (^ _Nonnull)(void))completion;
+
+- (void)startAudioCaptureWithSourceId:(NSString * _Nullable)sourceId
+                            onStarted:(void (^ _Nonnull)(NSError * _Nullable error))onStarted;
 
 @end
 

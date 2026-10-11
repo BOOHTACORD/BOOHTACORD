@@ -23,5 +23,6 @@ Future<void> workspaceShowScreenShareSetup(
     sourceId: selection.sourceId,
     quality: selection.quality,
     sourceDimensions: selection.sourceDimensions,
+    captureScreenAudio: selection.captureScreenAudio,
   );
 }

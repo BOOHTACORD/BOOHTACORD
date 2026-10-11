@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart' as rtc;
 
 import 'package:livekit_client/src/audio/android_audio_session_adapter.dart';
 import 'package:livekit_client/src/audio/audio_engine_error.dart';
@@ -25,7 +27,9 @@ import 'package:livekit_client/src/exceptions.dart';
 import 'package:livekit_client/src/support/native.dart';
 import 'package:livekit_client/src/support/native_audio.dart' as native_audio;
 import 'package:livekit_client/src/support/webrtc_initialize_options.dart';
+import 'package:livekit_client/src/track/local/audio.dart';
 import 'package:livekit_client/src/track/options.dart' as track_options;
+import 'package:livekit_client/src/types/other.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -68,6 +72,31 @@ void main() {
         ],
       );
     });
+  });
+
+  test('screen-share audio publication does not start microphone recording', () async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+    final calls = <MethodCall>[];
+    final messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    messenger.setMockMethodCallHandler(Native.channel, (call) async {
+      calls.add(call);
+      return true;
+    });
+    addTearDown(() => messenger.setMockMethodCallHandler(Native.channel, null));
+
+    final track = LocalAudioTrack(
+      TrackSource.screenShareAudio,
+      _AudioTestStream(),
+      _AudioTestMediaTrack(),
+      const track_options.AudioCaptureOptions(),
+    );
+    await track.start();
+
+    expect(calls.where((call) => call.method == 'startLocalRecording'), isEmpty);
+    expect(calls, isEmpty);
+    await track.stop();
   });
 
   group('AudioSessionOptions', () {
@@ -936,4 +965,36 @@ void main() {
       expect(audioEngineExceptionFrom(PlatformException(code: 'setEngineAvailability')), isNull);
     });
   });
+}
+
+class _AudioTestStream implements rtc.MediaStream {
+  @override
+  Future<void> dispose() async {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _AudioTestMediaTrack implements rtc.MediaStreamTrack {
+  @override
+  rtc.StreamTrackCallback? onEnded;
+  @override
+  rtc.StreamTrackCallback? onMute;
+  @override
+  rtc.StreamTrackCallback? onUnMute;
+  @override
+  bool enabled = true;
+  @override
+  String get id => 'screen-audio-track';
+  @override
+  String get kind => 'audio';
+
+  @override
+  Future<void> dispose() async {}
+
+  @override
+  Future<void> stop() async {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

@@ -25,10 +25,7 @@ import 'processor.dart';
 import 'processor_native.dart' if (dart.library.js_interop) 'processor_web.dart';
 
 /// A type that represents front or back of the camera.
-enum CameraPosition {
-  front,
-  back,
-}
+enum CameraPosition { front, back }
 
 enum CameraFocusMode { auto, locked }
 
@@ -138,7 +135,8 @@ class ScreenShareCaptureOptions extends VideoCaptureOptions {
   /// https://github.com/flutter-webrtc/flutter-webrtc/wiki/iOS-Screen-Sharing#broadcast-extension-quick-setup
   final bool useiOSBroadcastExtension;
 
-  // for browser only, if true, will capture screen audio.
+  /// Requests the source's app or system playback audio as a separate
+  /// `screenShareAudio` track where the native platform supports it.
   final bool captureScreenAudio;
 
   /// for browser only, if true, will capture current tab.
@@ -457,7 +455,9 @@ class AudioCaptureOptions extends LocalTrackOptions implements AudioProcessingOp
           constraints['deviceId'] = {'ideal': deviceId};
         }
       } else {
-        constraints['optional'].cast<Map<String, dynamic>>().add(<String, dynamic>{'sourceId': deviceId});
+        constraints['optional'].cast<Map<String, dynamic>>().add(
+          <String, dynamic>{'sourceId': deviceId},
+        );
       }
     }
     return constraints;
@@ -546,7 +546,10 @@ String _defaultAudioProcessingMessage(AudioProcessingFailureReason reason) {
   }
 }
 
-String _audioProcessingMessageOrDefault(AudioProcessingFailureReason reason, String message) {
+String _audioProcessingMessageOrDefault(
+  AudioProcessingFailureReason reason,
+  String message,
+) {
   final trimmed = message.trim();
   return trimmed.isEmpty ? _defaultAudioProcessingMessage(reason) : trimmed;
 }

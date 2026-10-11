@@ -16,6 +16,14 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		C46E92A9C80B33BC2A4E3A6C /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638111133EAB3485E0EED293 /* SampleHandler.swift */; };
+		BE035480DC9327BFF233293F /* SampleUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328137B2FC3DB422026CB642 /* SampleUploader.swift */; };
+		102865B294C228E5022F7482 /* SocketConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2E7A5331F6A9EE1D285858 /* SocketConnection.swift */; };
+		23A0C96F18C98B87BDDC1711 /* DarwinNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59D7FA4DF6D91FEE4B5827 /* DarwinNotificationCenter.swift */; };
+		38F356707000477AC05BD446 /* ScreenAudioPCMConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 645CD2FF424252EA122D60CA /* ScreenAudioPCMConverter.mm */; };
+		05817524569B33F2061FD68C /* BOOHTACORD Screen Share Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7664D2785593E63A14EDDFA9 /* ScreenShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F1E2DB856049465362DD8CC6 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C72E26CCE6387FAB92568D2C /* ReplayKit.framework */; };
+		0B65438C5649D34789754281 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3176DF2F67FDC6AF1051E3C5 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,6 +33,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 97C146ED1CF9000F007C117D;
 			remoteInfo = Runner;
+		};
+		29F8FCF3587F8864C18D9A8C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7B1856EA5E579F0D111954E3;
+			remoteInfo = "BOOHTACORD Screen Share Extension";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -37,6 +52,17 @@
 			files = (
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CD9F1560EE1AF0CAF135D11 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				05817524569B33F2061FD68C /* BOOHTACORD Screen Share Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -59,6 +85,19 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7664D2785593E63A14EDDFA9 /* ScreenShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "BOOHTACORD Screen Share Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A409678F0E355872B5C6F3D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		544BEB4C6EB54176D7A1D551 /* ScreenShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScreenShareExtension.entitlements; sourceTree = "<group>"; };
+		638111133EAB3485E0EED293 /* SampleHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleHandler.swift; sourceTree = "<group>"; };
+		328137B2FC3DB422026CB642 /* SampleUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleUploader.swift; sourceTree = "<group>"; };
+		6D2E7A5331F6A9EE1D285858 /* SocketConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketConnection.swift; sourceTree = "<group>"; };
+		ED59D7FA4DF6D91FEE4B5827 /* DarwinNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarwinNotificationCenter.swift; sourceTree = "<group>"; };
+		50B2A5A135D7939EEC8C13B1 /* ScreenAudioPCMConverter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ScreenAudioPCMConverter.h; path = ../../packages/flutter_webrtc/common/darwin/Classes/ScreenAudioPCMConverter.h; sourceTree = "<group>"; };
+		645CD2FF424252EA122D60CA /* ScreenAudioPCMConverter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ScreenAudioPCMConverter.mm; path = ScreenAudioPCMConverter.mm; sourceTree = "<group>"; };
+		125AA6D260338514299847EE /* ScreenShareExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ScreenShareExtension-Bridging-Header.h"; sourceTree = "<group>"; };
+		046108459DEDAB4706E14D77 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
+		C72E26CCE6387FAB92568D2C /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
+		3176DF2F67FDC6AF1051E3C5 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +106,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D9E1757A7E48ED8DC5A83126 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1E2DB856049465362DD8CC6 /* ReplayKit.framework in Frameworks */,
+				0B65438C5649D34789754281 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +146,7 @@
 			children = (
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
+				7FFAC3D53F32B3419023FD98 /* ScreenShareExtension */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
 			);
@@ -108,6 +157,7 @@
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
+				7664D2785593E63A14EDDFA9 /* ScreenShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -115,6 +165,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				046108459DEDAB4706E14D77 /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -126,6 +177,24 @@
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 			);
 			path = Runner;
+			sourceTree = "<group>";
+		};
+		7FFAC3D53F32B3419023FD98 /* ScreenShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				544BEB4C6EB54176D7A1D551 /* ScreenShareExtension.entitlements */,
+				A409678F0E355872B5C6F3D5 /* Info.plist */,
+				638111133EAB3485E0EED293 /* SampleHandler.swift */,
+				328137B2FC3DB422026CB642 /* SampleUploader.swift */,
+				6D2E7A5331F6A9EE1D285858 /* SocketConnection.swift */,
+				ED59D7FA4DF6D91FEE4B5827 /* DarwinNotificationCenter.swift */,
+				125AA6D260338514299847EE /* ScreenShareExtension-Bridging-Header.h */,
+				50B2A5A135D7939EEC8C13B1 /* ScreenAudioPCMConverter.h */,
+				645CD2FF424252EA122D60CA /* ScreenAudioPCMConverter.mm */,
+				C72E26CCE6387FAB92568D2C /* ReplayKit.framework */,
+				3176DF2F67FDC6AF1051E3C5 /* AudioToolbox.framework */,
+			);
+			path = ScreenShareExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,11 +226,13 @@
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
+				6CD9F1560EE1AF0CAF135D11 /* Embed App Extensions */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DF7AE5BB4AC1CF009B3FC167 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			packageProductDependencies = (
@@ -170,6 +241,23 @@
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
 			productType = "com.apple.product-type.application";
+		};
+		7B1856EA5E579F0D111954E3 /* BOOHTACORD Screen Share Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1FFFE69E647B7D757C493E23 /* Build configuration list for PBXNativeTarget "BOOHTACORD Screen Share Extension" */;
+			buildPhases = (
+				37853751BBBA2726A377D75B /* Sources */,
+				D9E1757A7E48ED8DC5A83126 /* Frameworks */,
+				795AA3C94FD33B666F217C2E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "BOOHTACORD Screen Share Extension";
+			productName = ScreenShareExtension;
+			productReference = 7664D2785593E63A14EDDFA9 /* ScreenShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -188,6 +276,10 @@
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
 						LastSwiftMigration = 1100;
+					};
+					7B1856EA5E579F0D111954E3 = {
+						CreatedOnToolsVersion = 15.0;
+						LastSwiftMigration = 1500;
 					};
 				};
 			};
@@ -209,6 +301,7 @@
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
+				7B1856EA5E579F0D111954E3 /* BOOHTACORD Screen Share Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -229,6 +322,13 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		795AA3C94FD33B666F217C2E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +387,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		37853751BBBA2726A377D75B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C46E92A9C80B33BC2A4E3A6C /* SampleHandler.swift in Sources */,
+				BE035480DC9327BFF233293F /* SampleUploader.swift in Sources */,
+				102865B294C228E5022F7482 /* SocketConnection.swift in Sources */,
+				23A0C96F18C98B87BDDC1711 /* DarwinNotificationCenter.swift in Sources */,
+				38F356707000477AC05BD446 /* ScreenAudioPCMConverter.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -294,6 +406,11 @@
 			isa = PBXTargetDependency;
 			target = 97C146ED1CF9000F007C117D /* Runner */;
 			targetProxy = 331C8085294A63A400263BE5 /* PBXContainerItemProxy */;
+		};
+		DF7AE5BB4AC1CF009B3FC167 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7B1856EA5E579F0D111954E3 /* BOOHTACORD Screen Share Extension */;
+			targetProxy = 29F8FCF3587F8864C18D9A8C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -379,6 +496,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 8FA7GMXG58;
 				ENABLE_BITCODE = NO;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -561,6 +679,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 8FA7GMXG58;
 				ENABLE_BITCODE = NO;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -584,6 +703,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 8FA7GMXG58;
 				ENABLE_BITCODE = NO;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -596,6 +716,79 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
+		};
+		093E0B80F6ED1C0FC22F3688 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ScreenShareExtension/ScreenShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8FA7GMXG58;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScreenShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks");
+				PRODUCT_BUNDLE_IDENTIFIER = ru.boohtacord.app.ScreenShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = ScreenShareExtension/ScreenShareExtension-Bridging-Header.h;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1FAC72170776E541CB30B547 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ScreenShareExtension/ScreenShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8FA7GMXG58;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScreenShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks");
+				PRODUCT_BUNDLE_IDENTIFIER = ru.boohtacord.app.ScreenShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = ScreenShareExtension/ScreenShareExtension-Bridging-Header.h;
+				SWIFT_VERSION = 5.0;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		46245E62AF4F159ABF28FF59 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ScreenShareExtension/ScreenShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8FA7GMXG58;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ScreenShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks");
+				PRODUCT_BUNDLE_IDENTIFIER = ru.boohtacord.app.ScreenShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = ScreenShareExtension/ScreenShareExtension-Bridging-Header.h;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Profile;
 		};
 /* End XCBuildConfiguration section */
 
@@ -626,6 +819,16 @@
 				97C147061CF9000F007C117D /* Debug */,
 				97C147071CF9000F007C117D /* Release */,
 				249021D4217E4FDB00AE95B9 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1FFFE69E647B7D757C493E23 /* Build configuration list for PBXNativeTarget "BOOHTACORD Screen Share Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				093E0B80F6ED1C0FC22F3688 /* Debug */,
+				1FAC72170776E541CB30B547 /* Release */,
+				46245E62AF4F159ABF28FF59 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -14,8 +14,11 @@ extern NSString* const kRTCAppGroupIdentifier;
 extern NSString* const kRTCScreenSharingExtension;
 
 @class FlutterSocketConnectionFrameReader;
+@class FlutterScreenAudioTrackCapturer;
 
 @interface FlutterBroadcastScreenCapturer : RTCVideoCapturer
+@property(nonatomic, strong, nullable) FlutterScreenAudioTrackCapturer *screenAudioCapturer;
+
 - (void)startCapture;
 - (void)stopCapture;
 - (void)stopCaptureWithCompletionHandler:(nullable void (^)(void))completionHandler;

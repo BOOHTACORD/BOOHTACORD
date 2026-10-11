@@ -8,6 +8,7 @@
 #import "FlutterBroadcastScreenCapturer.h"
 #import "FlutterSocketConnection.h"
 #import "FlutterSocketConnectionFrameReader.h"
+#import "../ScreenAudioTrackCapturer.h"
 
 NSString* const kRTCScreensharingSocketFD = @"rtc_SSFD";
 NSString* const kRTCAppGroupIdentifier = @"RTCAppGroupIdentifier";
@@ -34,7 +35,8 @@ NSString* const kRTCScreenSharingExtension = @"RTCScreenSharingExtension";
 
   NSString* socketFilePath = [self filePathForApplicationGroupIdentifier:self.appGroupIdentifier];
   FlutterSocketConnectionFrameReader* frameReader =
-      [[FlutterSocketConnectionFrameReader alloc] initWithDelegate:self.delegate];
+      [[FlutterSocketConnectionFrameReader alloc] initWithDelegate:self.delegate
+                                                   audioCapturer:self.screenAudioCapturer];
   FlutterSocketConnection* connection =
       [[FlutterSocketConnection alloc] initWithFilePath:socketFilePath];
   self.capturer = frameReader;
@@ -43,6 +45,7 @@ NSString* const kRTCScreenSharingExtension = @"RTCScreenSharingExtension";
 
 - (void)stopCapture {
   [self.capturer stopCapture];
+  [self.screenAudioCapturer stop];
 }
 - (void)stopCaptureWithCompletionHandler:(nullable void (^)(void))completionHandler {
   [self stopCapture];

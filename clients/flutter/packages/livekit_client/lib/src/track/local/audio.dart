@@ -61,7 +61,9 @@ class LocalAudioTrack extends LocalTrack with AudioTrack, LocalAudioManagementMi
   ///
   /// Experimental: this API may change in a future release.
   @experimental
-  Future<void> setAudioProcessingOptions(track_options.AudioProcessingOptions options) async {
+  Future<void> setAudioProcessingOptions(
+    track_options.AudioProcessingOptions options,
+  ) async {
     final nextOptions = currentOptions.copyWith(processing: options);
     final response = await Native.setAudioProcessingOptions(
       mediaStreamTrack.id!,
@@ -72,10 +74,7 @@ class LocalAudioTrack extends LocalTrack with AudioTrack, LocalAudioManagementMi
 
     currentOptions = nextOptions;
     events.emit(
-      LocalTrackOptionsUpdatedEvent(
-        track: this,
-        options: currentOptions,
-      ),
+      LocalTrackOptionsUpdatedEvent(track: this, options: currentOptions),
     );
   }
 
@@ -87,7 +86,9 @@ class LocalAudioTrack extends LocalTrack with AudioTrack, LocalAudioManagementMi
   @override
   Future<void> startCapture() async {
     await super.startCapture();
-    if (lkPlatformSupportsExplicitAudioRecordingStart()) {
+    // A screen-share audio track is fed by the native playback-capture API.
+    // Starting the microphone ADM here would request/record mic audio as well.
+    if (source != TrackSource.screenShareAudio && lkPlatformSupportsExplicitAudioRecordingStart()) {
       // Recording can start before any policy push (pre-connect audio,
       // pre-join mic). Hand native the resolved Dart policy first — cache-only
       // while the engine is idle — so the session is not left to the native
@@ -122,7 +123,9 @@ class LocalAudioTrack extends LocalTrack with AudioTrack, LocalAudioManagementMi
       if (stats != null && prevStats != null && sender != null) {
         final bitrate = computeBitrateForSenderStats(stats, prevStats);
         _currentBitrate = bitrate;
-        events.emit(AudioSenderStatsEvent(stats: stats, currentBitrate: bitrate));
+        events.emit(
+          AudioSenderStatsEvent(stats: stats, currentBitrate: bitrate),
+        );
       }
 
       prevStats = stats;
@@ -161,7 +164,10 @@ class LocalAudioTrack extends LocalTrack with AudioTrack, LocalAudioManagementMi
         final c = stats.firstWhereOrNull((element) => element.type == 'codec');
         if (c != null) {
           senderStats.mimeType = getStringValFromReport(c.values, 'mimeType');
-          senderStats.payloadType = getNumValFromReport(c.values, 'payloadType');
+          senderStats.payloadType = getNumValFromReport(
+            c.values,
+            'payloadType',
+          );
           senderStats.channels = getNumValFromReport(c.values, 'channels');
           senderStats.clockRate = getNumValFromReport(c.values, 'clockRate');
         }
@@ -180,12 +186,7 @@ class LocalAudioTrack extends LocalTrack with AudioTrack, LocalAudioManagementMi
     rtc.MediaStream stream,
     rtc.MediaStreamTrack track,
     this.currentOptions,
-  ) : super(
-        TrackType.AUDIO,
-        source,
-        stream,
-        track,
-      );
+  ) : super(TrackType.AUDIO, source, stream, track);
 
   /// Creates a new audio track from the default audio input device.
   static Future<LocalAudioTrack> create([
@@ -209,7 +210,9 @@ class LocalAudioTrack extends LocalTrack with AudioTrack, LocalAudioManagementMi
       try {
         await track.stop();
       } catch (stopError) {
-        logger.warning('failed to stop audio track after processor setup failure: $stopError');
+        logger.warning(
+          'failed to stop audio track after processor setup failure: $stopError',
+        );
       }
       Error.throwWithStackTrace(error, stackTrace);
     }
@@ -232,10 +235,7 @@ void _throwIfAudioProcessingFailed(Map<String, dynamic> response) {
     case 'applyFailed':
     case 'unknown':
     case 'rejectedRemoteTrack':
-      throw track_options.AudioProcessingException(
-        reason,
-        message,
-      );
+      throw track_options.AudioProcessingException(reason, message);
     default:
       throw track_options.AudioProcessingException(
         track_options.AudioProcessingFailureReason.unknown,
@@ -244,7 +244,9 @@ void _throwIfAudioProcessingFailed(Map<String, dynamic> response) {
   }
 }
 
-track_options.AudioProcessingFailureReason _audioProcessingFailureReason(String? code) {
+track_options.AudioProcessingFailureReason _audioProcessingFailureReason(
+  String? code,
+) {
   switch (code) {
     case 'rejectedInvalidCombination':
       return track_options.AudioProcessingFailureReason.invalidCombination;

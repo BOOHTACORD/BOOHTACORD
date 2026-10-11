@@ -9,6 +9,8 @@
 
 #import "VideoProcessingAdapter.h"
 #import "LocalVideoTrack.h"
+#import "LocalAudioTrack.h"
+#import "ScreenAudioTrackCapturer.h"
 #if TARGET_OS_OSX
 #import "FlutterScreenCaptureKitCapturer.h"
 #import "FlutterScreenShareResolutionProcessor.h"
@@ -23,11 +25,59 @@ NSArray<RTCDesktopSource*>* _captureSources;
 @implementation FlutterWebRTCPlugin (DesktopCapturer)
 
 - (void)getDisplayMedia:(NSDictionary*)constraints result:(FlutterResult)result {
+  id audioConstraint = constraints[@"audio"];
+  BOOL captureScreenAudio = [audioConstraint isKindOfClass:[NSNumber class]]
+                                ? [audioConstraint boolValue]
+                                : [audioConstraint isKindOfClass:[NSDictionary class]];
   NSString* mediaStreamId = [[NSUUID UUID] UUIDString];
   RTCMediaStream* mediaStream = [self.peerConnectionFactory mediaStreamWithStreamId:mediaStreamId];
   RTCVideoSource* videoSource = [self.peerConnectionFactory videoSourceForScreenCast:YES];
   NSString* trackUUID = [[NSUUID UUID] UUIDString];
   VideoProcessingAdapter *videoProcessingAdapter = [[VideoProcessingAdapter alloc] initWithRTCVideoSource:videoSource];
+  __block FlutterScreenAudioTrackCapturer *screenAudioCapturer = nil;
+  __block BOOL deferMediaStreamResult = NO;
+  void (^completeMediaStream)(void) = ^{
+    RTCVideoTrack* videoTrack = [self.peerConnectionFactory videoTrackWithSource:videoSource
+                                                                         trackId:trackUUID];
+    [mediaStream addVideoTrack:videoTrack];
+
+    LocalVideoTrack *localVideoTrack = [[LocalVideoTrack alloc] initWithTrack:videoTrack
+                                                               videoProcessing:videoProcessingAdapter];
+    [self.localTracks setObject:localVideoTrack forKey:trackUUID];
+
+    NSMutableArray* audioTracks = [NSMutableArray array];
+    NSMutableArray* videoTracks = [NSMutableArray array];
+    for (RTCVideoTrack* track in mediaStream.videoTracks) {
+      [videoTracks addObject:@{
+        @"id" : track.trackId,
+        @"kind" : track.kind,
+        @"label" : track.trackId,
+        @"enabled" : @(track.isEnabled),
+        @"remote" : @(YES),
+        @"readyState" : @"live"
+      }];
+    }
+
+    if (screenAudioCapturer.audioTrack != nil) {
+      RTCAudioTrack *audioTrack = screenAudioCapturer.audioTrack;
+      [mediaStream addAudioTrack:audioTrack];
+      LocalAudioTrack *localAudioTrack = [[LocalAudioTrack alloc] initWithTrack:audioTrack];
+      [self.localTracks setObject:localAudioTrack forKey:audioTrack.trackId];
+      [audioTracks addObject:@{
+        @"id" : audioTrack.trackId,
+        @"kind" : audioTrack.kind,
+        @"label" : audioTrack.trackId,
+        @"enabled" : @(audioTrack.isEnabled),
+        @"remote" : @(NO),
+        @"readyState" : @"live"
+      }];
+    }
+
+    self.localStreams[mediaStreamId] = mediaStream;
+    result(@{@"streamId" : mediaStreamId,
+             @"audioTracks" : audioTracks,
+             @"videoTracks" : videoTracks});
+  };
   
 #if TARGET_OS_IPHONE
   BOOL useBroadcastExtension = false;
@@ -88,6 +138,15 @@ NSArray<RTCDesktopSource*>* _captureSources;
 #endif
 
 #if TARGET_OS_OSX
+  if (captureScreenAudio) {
+    if (@available(macOS 13.0, *)) {
+    } else {
+      result([FlutterError errorWithCode:@"SCREEN_AUDIO_UNAVAILABLE"
+                                 message:@"System audio capture requires macOS 13 or later."
+                                 details:nil]);
+      return;
+    }
+  }
   /* example for constraints:
       {
           'audio': false,
@@ -139,6 +198,7 @@ NSArray<RTCDesktopSource*>* _captureSources;
   }
   RTCDesktopCapturer* desktopCapturer;
   FlutterScreenCaptureKitCapturer* screenCaptureKitCapturer = nil;
+  FlutterScreenCaptureKitCapturer* audioOnlyCapturer = nil;
   RTCDesktopSource* source = nil;
   BOOL useScreenCaptureKit = NO;
 
@@ -172,15 +232,36 @@ NSArray<RTCDesktopSource*>* _captureSources;
     if (@available(macOS 13.0, *)) {
       screenCaptureKitCapturer =
           [[FlutterScreenCaptureKitCapturer alloc] initWithDelegate:videoProcessingAdapter];
+      if (captureScreenAudio) {
+        screenAudioCapturer = [[FlutterScreenAudioTrackCapturer alloc]
+            initWithFactory:self.peerConnectionFactory];
+        screenCaptureKitCapturer.screenAudioCapturer = screenAudioCapturer;
+        deferMediaStreamResult = YES;
+      }
       [screenCaptureKitCapturer startCaptureWithFPS:fps
                                  maximumResolution:maximumResolution
                                            sourceId:sourceId
                                           onStarted:^(NSError * _Nullable error) {
                                             if (error != nil) {
                                               NSLog(@"ScreenCaptureKit start failed: %@", error);
+                                              if (captureScreenAudio) {
+                                                [screenCaptureKitCapturer stopCaptureWithCompletion:^{
+                                                  [screenAudioCapturer stop];
+                                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                                    result([FlutterError
+                                                        errorWithCode:@"SCREEN_AUDIO_CAPTURE_FAILED"
+                                                             message:error.localizedDescription
+                                                             details:nil]);
+                                                  });
+                                                }];
+                                                return;
+                                              }
                                             } else {
                                               NSLog(@"start screencapturekit capture: for  sourceId: %@, fps: %lu",
                                                     sourceId, fps);
+                                            }
+                                            if (captureScreenAudio) {
+                                              dispatch_async(dispatch_get_main_queue(), completeMediaStream);
                                             }
                                           }];
     } else {
@@ -199,6 +280,36 @@ NSArray<RTCDesktopSource*>* _captureSources;
     }
   }
 
+  if (captureScreenAudio && screenAudioCapturer == nil) {
+    if (@available(macOS 13.0, *)) {
+      screenAudioCapturer = [[FlutterScreenAudioTrackCapturer alloc]
+          initWithFactory:self.peerConnectionFactory];
+      audioOnlyCapturer = [[FlutterScreenCaptureKitCapturer alloc]
+          initWithDelegate:videoProcessingAdapter];
+      audioOnlyCapturer.screenAudioCapturer = screenAudioCapturer;
+      NSString* audioSourceId = source.sourceType == RTCDesktopSourceTypeScreen ? sourceId : nil;
+      deferMediaStreamResult = YES;
+      [audioOnlyCapturer startAudioCaptureWithSourceId:audioSourceId
+                                             onStarted:^(NSError* _Nullable error) {
+                                               if (error != nil) {
+                                                 NSLog(@"ScreenCaptureKit audio start failed: %@", error);
+                                                 [desktopCapturer stopCapture];
+                                                 [audioOnlyCapturer stopCaptureWithCompletion:^{
+                                                   [screenAudioCapturer stop];
+                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                     result([FlutterError
+                                                         errorWithCode:@"SCREEN_AUDIO_CAPTURE_FAILED"
+                                                              message:error.localizedDescription
+                                                              details:nil]);
+                                                   });
+                                                 }];
+                                                 return;
+                                               }
+                                               dispatch_async(dispatch_get_main_queue(), completeMediaStream);
+                                             }];
+    }
+  }
+
   if (screenCaptureKitCapturer == nil) {
     [desktopCapturer startCaptureWithFPS:fps];
     NSLog(@"start desktop capture: sourceId: %@, type: %@, fps: %lu", sourceId,
@@ -208,7 +319,11 @@ NSArray<RTCDesktopSource*>* _captureSources;
       NSLog(@"stop desktop capture: sourceId: %@, type: %@, trackID %@", sourceId,
             source.sourceType == RTCDesktopSourceTypeScreen ? @"screen" : @"window", trackUUID);
       [desktopCapturer stopCapture];
-      handler();
+      if (audioOnlyCapturer != nil) {
+        [audioOnlyCapturer stopCaptureWithCompletion:handler];
+      } else {
+        handler();
+      }
     };
   } else {
     self.videoCapturerStopHandlers[trackUUID] = ^(CompletionHandler handler) {
@@ -217,32 +332,9 @@ NSArray<RTCDesktopSource*>* _captureSources;
     };
   }
 #endif
-
-  RTCVideoTrack* videoTrack = [self.peerConnectionFactory videoTrackWithSource:videoSource
-                                                                       trackId:trackUUID];
-  [mediaStream addVideoTrack:videoTrack];
-
-  LocalVideoTrack *localVideoTrack = [[LocalVideoTrack alloc] initWithTrack:videoTrack videoProcessing:videoProcessingAdapter];
-
-  [self.localTracks setObject:localVideoTrack forKey:trackUUID];
-
-  NSMutableArray* audioTracks = [NSMutableArray array];
-  NSMutableArray* videoTracks = [NSMutableArray array];
-
-  for (RTCVideoTrack* track in mediaStream.videoTracks) {
-    [videoTracks addObject:@{
-      @"id" : track.trackId,
-      @"kind" : track.kind,
-      @"label" : track.trackId,
-      @"enabled" : @(track.isEnabled),
-      @"remote" : @(YES),
-      @"readyState" : @"live"
-    }];
+  if (!deferMediaStreamResult) {
+    completeMediaStream();
   }
-
-  self.localStreams[mediaStreamId] = mediaStream;
-  result(
-      @{@"streamId" : mediaStreamId, @"audioTracks" : audioTracks, @"videoTracks" : videoTracks});
 }
 
 - (void)getDesktopSources:(NSDictionary*)argsMap result:(FlutterResult)result {
