@@ -452,5 +452,49 @@
       "Screenshot is a local review capture, not an approved visual golden or Actions artifact.",
       "This evidence is Web-only and does not assert Mac native or Android physical acceptance."
     ]
+  },
+  "voice_dock_cross_browser_revalidation_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_ONLY",
+    "production_source_master": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "test_source_revision": "99a69d5bf0e1c1ab279dda7142a6f23dedf538f4",
+    "inventory_revision": "0e8f3e742ddb3e6b660b60a837e9f88a8f16c757",
+    "test_file": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+    "test_name": "voice dock and audio settings icons expose keyboard names, focus and activation",
+    "test_source_sha256": "3fba9271c0c95ed7d63aec3fa32fd87d8ad27df015f88ddaa9a28bffcc8f70e1",
+    "browser_runs": [
+      {
+        "browser": "Google Chrome 154",
+        "result": "1/1 PASS",
+        "coverage": "Sequential Tab traversal, visible focus, Enter/Space activation and state changes."
+      },
+      {
+        "browser": "Playwright Firefox",
+        "result": "1/1 PASS",
+        "coverage": "Sequential Tab traversal, visible focus, Enter/Space activation and state changes."
+      },
+      {
+        "browser": "Playwright WebKit",
+        "result": "1/1 PASS",
+        "coverage": "Direct focus, visible focus, Enter/Space activation and state changes; Tab order is not asserted."
+      }
+    ],
+    "full_chromium_suite": {
+      "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:accessibility",
+      "accessibility_browser_cases": "52/52 PASS",
+      "conversation_action_axe_case": "1/1 PASS"
+    },
+    "webkit_host_behavior": "The initial run confirmed that the WebKit host does not Tab-focus the profile button under its default Safari Full Keyboard Access policy. The regression now uses direct focus in WebKit and keeps real sequential Tab assertions in Chromium and Firefox.",
+    "capture": {
+      "path": ".out/accessibility-browser-results/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+      "sha256": "32c6d4a68b38fa7a03d1cdfb83c21619562e532f3d2dedf79237285fc7aa1c14",
+      "raster": "1440x900",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": [
+      "Automated fixture-based browser evidence only; native Safari with Full Keyboard Access settings manually configured remains NOT_RUN.",
+      "Manual VoiceOver/NVDA/TalkBack/Narrator traversal remains NOT_RUN.",
+      "The screenshot is review-only, not an approved visual golden or retained Actions artifact."
+    ]
   }
 }
