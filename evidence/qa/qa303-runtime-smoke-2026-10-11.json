@@ -329,5 +329,36 @@
     "acceptance": "NOT_RUN",
     "cleanup": "The disposable QA-stack process was stopped and exited with code 0; temporary QA helper and localhost certificate files were removed. No screenshots or runtime evidence were produced by this attempt.",
     "next_step": "Retry only after the desktop is manually unlocked; bind and launch the dedicated QA bundle directly."
+  },
+  "macos_unlocked_binding_retry_2026_10_11": {
+    "date": "2026-10-11",
+    "source_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "platform": "macOS 26.6.1 (25G76), arm64",
+    "isolated_build": {
+      "version": "1.0.38+71",
+      "bundle_id": "ru.boohtacord.boohtacordDesktop.qa",
+      "command": "flutter build macos --debug --no-pub --build-name=1.0.38 --build-number=71 with QA-only localhost API and exact ephemeral certificate-pin defines",
+      "result": "PASS",
+      "codesign_verification": "PASS — codesign --verify --deep --strict --verbose=1",
+      "executable_sha256": "50cd2f7eaf16021feb59ee44c28a84e75477ff4f708998623e070d208ee501d6"
+    },
+    "runtime": {
+      "launched_by_exact_qa_bundle_path": true,
+      "cua_inventory": "The .qa bundle appeared running; the production bundle id appeared not running.",
+      "binding_attempts": [
+        "cua.getApp(bundle_id .qa) returned Invalid app for ru.boohtacord.boohtacordDesktop.qa.",
+        "cua.getApp(exact .app path) resolved the production bundle id and returned Running application not found: ru.boohtacord.boohtacordDesktop.",
+        "cua.getApp(shared display name BOOHTACORD) also resolved the production bundle id, which remained not running."
+      ],
+      "ui_input_sent": false,
+      "physical_task_acceptance": "NOT_RUN"
+    },
+    "cleanup": {
+      "disposable_stack_stopped": true,
+      "stack_exit_code": 0,
+      "temporary_source_patches_restored_byte_for_byte": true,
+      "temporary_credentials_and_certificate_pin_removed": true
+    },
+    "conclusion": "Build, signature validation and launch passed for the isolated QA app, but CUA could not bind its .qa identity. Window resize, focus/keyboard, native capture picker and VoiceOver remain NOT_RUN."
   }
 }
