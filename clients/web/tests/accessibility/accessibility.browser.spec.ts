@@ -793,6 +793,62 @@ test('voice dock and audio settings icons expose keyboard names, focus and activ
   await page.screenshot({ path: testInfo.outputPath('voice-settings-dock-keyboard.png') })
 })
 
+test('voice and settings icon targets keep their desktop and mobile dimensions', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+  await page.evaluate(async () => {
+    const load = (path: string) => import(path)
+    const { createApp, h } = await load('/node_modules/.vite/deps/vue.js')
+    const { default: VoiceDock } = await load('/src/voice/VoiceDock.vue')
+    const { default: WorkspaceUserFooter } = await load('/src/workspace/WorkspaceUserFooter.vue')
+    document.body.innerHTML = '<div id="mount"></div>'
+    const channel = { id: 'voice-1', name: 'Комната', kind: 'VOICE', position: 0, admissionClosed: false }
+    createApp({ render: () => h('aside', { class: 'sidebar' }, [
+      h('div', { class: 'mobile-voice-dock mobile-visible' }, [h(VoiceDock, {
+        channel, activeSession: true, error: null, activationMode: 'VAD', deafened: false,
+        deafenChanging: false, microphoneMuted: false, microphonePermissionDenied: false,
+        screenShareState: 'IDLE', state: 'CONNECTED',
+      })]),
+      h(WorkspaceUserFooter, { role: 'ADMINISTRATOR', displayName: 'Алексей' }),
+    ]) }).mount('#mount')
+  })
+
+  const settings = page.getByRole('button', { name: 'Настройки аудио' })
+  const dockButtons = page.locator('.mobile-voice-dock .voice-actions .voice-icon-button')
+  await expect(settings).toBeVisible()
+  await expect(dockButtons).toHaveCount(4)
+  const desktopSettings = await settings.boundingBox()
+  expect(desktopSettings).not.toBeNull()
+  expect(desktopSettings!.width).toBe(40)
+  expect(desktopSettings!.height).toBe(40)
+  const desktopGear = await settings.locator('svg').boundingBox()
+  expect(desktopGear).not.toBeNull()
+  expect(desktopGear!.width).toBe(22)
+  expect(desktopGear!.height).toBe(22)
+  for (const button of await dockButtons.all()) {
+    const bounds = await button.boundingBox()
+    expect(bounds).not.toBeNull()
+    expect(bounds!.width).toBe(40)
+    expect(bounds!.height).toBe(40)
+  }
+  await page.screenshot({ path: testInfo.outputPath('voice-settings-targets-desktop.png') })
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.locator('.sidebar').evaluate(element => element.classList.add('is-open'))
+  const mobileSettings = await settings.boundingBox()
+  expect(mobileSettings).not.toBeNull()
+  expect(mobileSettings!.width).toBe(44)
+  expect(mobileSettings!.height).toBe(44)
+  for (const button of await dockButtons.all()) {
+    const bounds = await button.boundingBox()
+    expect(bounds).not.toBeNull()
+    expect(bounds!.width).toBe(44)
+    expect(bounds!.height).toBe(44)
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.screenshot({ path: testInfo.outputPath('voice-settings-targets-mobile.png') })
+})
+
 test('screen-share setup shows the recommended profile and keeps all quality options discoverable', async ({ page, browser }, testInfo) => {
   await page.setViewportSize({ width: 320, height: 640 })
   await page.goto('/')
