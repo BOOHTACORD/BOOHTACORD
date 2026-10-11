@@ -47,7 +47,7 @@ Threshold approval does not complete the release gate. Until tester/device runs 
 | Web / Chrome desktop and mobile viewports | Local unit/build/accessibility and selected Playwright fixtures are recorded in the evidence file; Chrome 154.0.8037.98 is installed on the macOS host. | `NOT_RUN` — manual task-based tester baseline/post-change and full-app screenshots. Automated fixtures are not physical acceptance. |
 | Web / Firefox desktop and mobile | No task-based run recorded for this pass. | `NOT_RUN` — browser/device, screenshot, and task evidence required. |
 | Web / Safari desktop and mobile | No task-based run recorded for this pass. | `NOT_RUN` — desktop Safari plus iOS Safari device, screenshot, and task evidence required. |
-| Flutter / macOS | Device discovery found a native macOS 26.6.1 (25G76), arm64 target. Widget/analyzer results are recorded in the evidence file. | `NOT_RUN` — native task, settings/audio, window/focus, and task-based usability capture. |
+| Flutter / macOS | Debug app `1.0.38+71` built from `9f8926ba` with a dedicated `.qa` bundle against disposable HTTPS API/LiveKit; code signature verified. CUA listed the isolated app but refused binding, including after a unique display name; see [QA-303 runtime](../../evidence/qa/qa303-runtime-smoke-2026-10-11.json). | `NOT_RUN` — 800–1920 px resize, native focus/keyboard, capture picker, VoiceOver and task-based usability. No native UI task was counted. |
 | Flutter / Android portrait and landscape | Platform-specific widget coverage exists. Android 15 / API 35 emulator `emulator-5554` was discovered on 2026-10-10; no physical Android device was identified. The app's default API origin is production and has no QA-origin override, so no emulator task was run against a real user account. | `NOT_RUN` — physical settings, IME, voice, screen capture, and TalkBack acceptance. |
 | Flutter / iOS portrait and landscape | Platform-specific widget coverage exists. No iOS device was discovered on this host. | `NOT_RUN` — physical settings, IME, voice, screen capture, system Back/swipe, and VoiceOver acceptance. |
 | Flutter / Windows | Platform-specific widget coverage exists. No Windows device was discovered on this host. | `NOT_RUN` — physical interaction, voice/stream, window controls, and screen-reader acceptance. |
@@ -77,3 +77,10 @@ The original 41 reference screenshots are recorded in the visual audit at local 
 - The desktop minimum window width is now 800 logical pixels (previously 1024), matching the lower edge of UX-02's 800–1920 px resize scenario. The existing 1440×900 launch size and 680 px minimum height are preserved.
 - `flutter test test/desktop_window_options_test.dart` and `flutter build macos --debug` pass. The focused result is recorded in [QA-291](../../evidence/qa/qa291-desktop-window-width-2026-10-11.json).
 - Native drag-resize and OS panel interaction remain `NOT_RUN`: the macOS QA process was listed as running, but CUA could not bind its window; no Windows runner was available. #291, #303 and #289 remain open.
+
+
+## Native macOS QA retry — 2026-10-11
+
+- The user unlocked the Mac and an isolated Flutter debug build v1.0.38+71 was launched with bundle ID `ru.boohtacord.boohtacordDesktop.qa` against the disposable local HTTPS API/LiveKit stack. Build and code-signature verification passed; executable SHA-256: `50cd2f7eaf16021feb59ee44c28a84e75477ff4f708998623e070d208ee501d6`.
+- CUA exposed the app as running but rejected binding by bundle ID, exact path and unique display name. The production app remained not running; no UI input or screenshot was captured.
+- The UI gate is still `NOT_RUN`. Resize, focus/keyboard, system capture picker and VoiceOver need a CUA-bindable isolated app or an approved native UI bridge. QA-only source edits and temporary credentials/pin were removed; the disposable backend exited cleanly.
