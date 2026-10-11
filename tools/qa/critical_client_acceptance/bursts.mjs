@@ -2,6 +2,9 @@ import assert from 'node:assert/strict'
 import { api, expect, openNavigation, status } from '../client_lifecycle/request.mjs'
 import { requests } from './requests.mjs'
 export async function bursts(a, b, channelId, report, directory, baseline = false) {
+  const activeChannelRoute = `#workspace/channel/${encodeURIComponent(channelId)}`
+  assert.equal(new URL(a.url()).hash, activeChannelRoute, 'Active browser must display the burst target channel')
+  console.log('stage=critical-burst-active-channel-confirmed')
   const category = await api(a, '/admin/categories', 'POST', { name: 'HiddenLab' }); status(category, 201)
   const hidden = await api(a, `/admin/categories/${category.body.id}/channels`, 'POST', { name: 'HiddenLab', kind: 'TEXT' }); status(hidden, 201)
   console.log('stage=critical-burst-hidden-channel-created')
@@ -25,6 +28,7 @@ export async function bursts(a, b, channelId, report, directory, baseline = fals
       return rows
     }, { channelId, size })
     result.forEach(row => status(row, 201))
+    assert.ok(result.every(row => typeof row.body?.body === 'string'), 'Burst response must include a message body')
     console.log(`stage=critical-burst-${size}-posted`)
     oldest ??= result[0].body
     await expect.poll(async () => {
