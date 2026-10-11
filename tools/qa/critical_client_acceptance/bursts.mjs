@@ -7,7 +7,7 @@ export async function bursts(a, b, channelId, report, directory, baseline = fals
     await a.evaluate(route => { window.location.hash = route }, activeChannelRoute)
     await expect.poll(() => new URL(a.url()).hash).toBe(activeChannelRoute)
   }
-  await expect(a.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
+  await expect(a.getByRole('heading', { name: baseline ? 'WelcomeLab' : 'Text', exact: true })).toBeVisible()
   assert.equal(new URL(a.url()).hash, activeChannelRoute, 'Active browser must display the burst target channel')
   console.log('stage=critical-burst-active-channel-confirmed')
   const category = await api(a, '/admin/categories', 'POST', { name: 'HiddenLab' }); status(category, 201)
