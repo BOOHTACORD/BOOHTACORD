@@ -143,6 +143,15 @@ test('shows quality choices without hiding them and lets the user click 1440p di
   await textFrameRate.scrollIntoViewIfNeeded()
   await expect(textFrameRate).toBeInViewport()
   await textFrameRate.check()
+  const startAction = dialog.getByRole('button', { name: 'Начать трансляцию', exact: true })
+  await expect(startAction).toBeInViewport({ ratio: 0.99 })
+  await expect(dialog.getByRole('button', { name: 'Отмена', exact: true })).toBeInViewport({ ratio: 0.99 })
+  const actionIsUnobscured = await startAction.evaluate(button => {
+    const bounds = button.getBoundingClientRect()
+    const hit = document.elementFromPoint(bounds.left + bounds.width / 2, bounds.top + bounds.height / 2)
+    return hit !== null && button.contains(hit)
+  })
+  expect(actionIsUnobscured).toBe(true)
   const checkedQualityOptions = dialog.locator('.screen-share-quality__option:has(input:checked)')
   for (const option of await checkedQualityOptions.all()) {
     expect(await option.evaluate(element => getComputedStyle(element).outlineStyle)).toBe('none')

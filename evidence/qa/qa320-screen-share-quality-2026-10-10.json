@@ -291,7 +291,10 @@
     "working_tree_changes": true,
     "result": "2/2 focused browser tests PASS; full screen-profile suite 12 passed, 1 skipped; focused dialog unit tests 8/8 PASS",
     "browser": "Google Chrome 154.0.8037.98",
-    "viewports_css": ["637x584", "390x640"],
+    "viewports_css": [
+      "637x584",
+      "390x640"
+    ],
     "test_source_sha256": "4cbaeedeee2fbdc917743903031b20f41f302d8a1b393e7aced5f1859d633763",
     "unit_tests": "8/8 focused screen-share setup dialog tests PASS",
     "production_build": "PASS with VITE_PUBLIC_ORIGIN=https://v.bootybay.ru; existing LiveKit chunking and bundle-size warnings remain",
@@ -323,6 +326,45 @@
     "limitations": [
       "Screenshots exercise the production Vue dialog through a fixture; no authenticated full-app session or native screen picker is involved.",
       "Screenshots are review evidence, not approved visual goldens."
+    ]
+  },
+  "latest_action_footer_after_scroll_check": {
+    "date": "2026-10-11",
+    "source_revision": "1345f7e6 + working-tree regression assertion",
+    "status": "PASS_AUTOMATED_ONLY",
+    "browser": "Google Chrome 154.0.8037.98",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile",
+    "suite_result": "12 passed, 1 skipped",
+    "test_source_sha256": "5cea176b7feb06bdc3ff881fe8de669117e273ffa88d669fcf28591f7dd8d58e",
+    "viewport_css": "390x640",
+    "assertions": [
+      "After selecting 1440p and scrolling to the 30 FPS control, Start and Cancel remain inside the viewport.",
+      "The center hit-test for Start resolves to the button or one of its descendants, so scroll content does not cover it.",
+      "Start still emits the supported P1440_30 profile."
+    ],
+    "captures": [
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+        "sha256": "8b4ff30691bf12805cd94d9588f3921fe0e1892cd6e9db4576372b88a0a8e189",
+        "raster": "390x640",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
+        "sha256": "fc0b486508218b2677b8cd198266b8dc93c97912f7f2afb1df39f904d15f9310",
+        "raster": "390x640",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+        "sha256": "9b9c03910f344b32e29a094224196671c5828eba77c41f3d1b6a516db925affb",
+        "raster": "637x584",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      }
+    ],
+    "limitations": [
+      "The dialog is exercised through the production Vue component fixture; native picker and physical-device acceptance remain open.",
+      "Captures are local review evidence, not approved pixel goldens or GitHub Actions artifacts."
     ]
   },
   "updated_date": "2026-10-11"
