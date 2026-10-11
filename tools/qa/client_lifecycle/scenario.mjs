@@ -228,5 +228,10 @@ try {
   let message = String(error)
   for (const value of redactions.filter(Boolean)) message = message.split(value).join('[redacted]')
   console.error(message)
+  if (error instanceof Error && typeof error.stack === 'string') {
+    let frames = error.stack.split('\n').slice(1, 9).join('\n')
+    for (const value of redactions.filter(Boolean)) frames = frames.split(value).join('[redacted]')
+    if (frames) console.error(frames)
+  }
   process.exitCode = 1
 } finally { await browser.close() }
