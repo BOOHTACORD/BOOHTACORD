@@ -296,5 +296,23 @@
     "result": "2/2 PASS_AUTOMATED_ONLY",
     "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:screen-profile -- tests/screen_profile/quality_dialog.browser.spec.ts",
     "limitation": "Fixture-based browser automation only; this does not replace screen-reader traversal on physical Web or Flutter devices."
+  },
+  "channel_favorite_toggle_follow_up": {
+    "date": "2026-10-11",
+    "working_tree_changes": true,
+    "test_file": "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts",
+    "test_source_sha256": "1ec968d577672cf9ceb37f5ee1032c227702aaf72d6d346e33740dc8bccb690d",
+    "result": "PASS_AUTOMATED_ONLY_3_ENGINES",
+    "browser_runs": [
+      {"browser": "Google Chrome 154.0.8037.98", "result": "1/1 PASS"},
+      {"browser": "Playwright WebKit 26.6 (v2359)", "result": "1/1 PASS"},
+      {"browser": "Playwright Firefox 155.0 (v1543)", "result": "1/1 PASS"}
+    ],
+    "assertions": [
+      "The add/remove accessible names use grammatical Russian and aria-pressed tracks the favorite state.",
+      "Pointer and Space activation both toggle the favorite without moving it outside the navigation viewport.",
+      "Keyboard focus has a visible outline; navigation and page do not gain horizontal overflow."
+    ],
+    "limitation": "Browser automation only; physical screen-reader acceptance remains NOT_RUN."
   }
 }

@@ -161,7 +161,7 @@ test('the channel favorite toggle stays inside its row at responsive widths', as
   }
 })
 
-test('production channel favorites remain reachable when adding a lower channel on narrow drawers', async ({ page }) => {
+test('production channel favorites remain reachable when adding a lower channel on narrow drawers', async ({ page, browserName }) => {
   const shortViewports = [
     { width: 320, height: 568 },
     { width: 637, height: 584 },
@@ -204,8 +204,12 @@ test('production channel favorites remain reachable when adding a lower channel 
     await targetRow.scrollIntoViewIfNeeded()
     const favorite = targetRow.locator('.channel-favorite-toggle')
     await expect(favorite).toBeVisible()
+    await expect(favorite).toHaveRole('button')
+    await expect(favorite).toHaveAccessibleName('Добавить в избранное: Канал 18')
+    await expect(favorite).toHaveAttribute('aria-pressed', 'false')
     await favorite.click()
     await expect(favorite).toHaveAttribute('aria-pressed', 'true')
+    await expect(favorite).toHaveAccessibleName('Убрать из избранного: Канал 18')
     await expect(favorite).toBeInViewport({ ratio: 0.99 })
     await expect(page.locator('.channel-favorite-link')).toBeVisible()
     await expect(favorite).toBeVisible()
@@ -219,6 +223,25 @@ test('production channel favorites remain reachable when adding a lower channel 
     expect(favoriteBox!.x + favoriteBox!.width).toBeLessThanOrEqual(navBox!.x + navBox!.width + 1)
     expect(favoriteBox!.y).toBeGreaterThanOrEqual(navBox!.y)
     expect(favoriteBox!.y + favoriteBox!.height).toBeLessThanOrEqual(navBox!.y + navBox!.height + 1)
+
+    if (browserName === 'webkit') {
+      await favorite.focus()
+    } else {
+      await targetRow.locator('.channel-button').focus()
+      await page.keyboard.press('Tab')
+    }
+    await expect(favorite).toBeFocused()
+    await page.keyboard.press('Space')
+    await expect(favorite).toHaveCSS('outline-style', 'solid')
+    await expect(favorite).toHaveCSS('outline-width', '2px')
+    await expect(favorite).toHaveAttribute('aria-pressed', 'false')
+    await expect(favorite).toHaveAccessibleName('Добавить в избранное: Канал 18')
+    await expect(favorite).toBeInViewport({ ratio: 0.99 })
+
+    await page.keyboard.press('Space')
+    await expect(favorite).toHaveAttribute('aria-pressed', 'true')
+    await expect(favorite).toHaveAccessibleName('Убрать из избранного: Канал 18')
+    await expect(favorite).toBeInViewport({ ratio: 0.99 })
   }
 })
 

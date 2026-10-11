@@ -7,6 +7,8 @@
       "web": {
         "status": "PASS_SCOPED",
         "testFiles": ["clients/web/tests/accessibility/accessibility.browser.spec.ts", "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts"],
+        "assertions": ["Favorite toggle has state-aware accessible names and aria-pressed state; pointer and Space activation preserve viewport reachability and visible keyboard focus."],
+        "crossBrowserRegression": "Chrome, WebKit and Firefox",
         "manualAssistiveTech": "NOT_RUN"
       },
       "flutter": {

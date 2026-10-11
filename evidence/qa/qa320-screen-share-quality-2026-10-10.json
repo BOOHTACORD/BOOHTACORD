@@ -285,5 +285,45 @@
       "The requested [skip ci] checkpoint has no GitHub Actions artifact."
     ]
   },
+  "latest_mobile_screen_share_control_review": {
+    "date": "2026-10-11",
+    "source_revision": "f4c8e73a + working-tree changes",
+    "working_tree_changes": true,
+    "result": "2/2 focused browser tests PASS; full screen-profile suite 12 passed, 1 skipped; focused dialog unit tests 8/8 PASS",
+    "browser": "Google Chrome 154.0.8037.98",
+    "viewports_css": ["637x584", "390x640"],
+    "test_source_sha256": "4cbaeedeee2fbdc917743903031b20f41f302d8a1b393e7aced5f1859d633763",
+    "unit_tests": "8/8 focused screen-share setup dialog tests PASS",
+    "production_build": "PASS with VITE_PUBLIC_ORIGIN=https://v.bootybay.ru; existing LiveKit chunking and bundle-size warnings remain",
+    "confirmed": [
+      "At 390x640, both scenario cards show full labels and the initial 60 FPS value stays fully visible above the pinned footer.",
+      "Direct pointer selection of 1440p keeps it selected, switches to the text scenario at 30 FPS, exposes the 30 FPS radio after scrolling it into view, and Start emits P1440_30.",
+      "At 637x584, keyboard selection of 1440p and the text profile remains visible with readable scenario names."
+    ],
+    "captures": [
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+        "sha256": "70612662a77a968792fe72f4f5179b65c4dc7470aa1a9537a12121e04d2db4b2",
+        "raster": "390x640",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
+        "sha256": "6f2b509a921f66a8199f9b17e21f91e2693518834937411e79dc16eba92e2f22",
+        "raster": "390x640",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      },
+      {
+        "path": ".out/screen-profile-browser-results/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+        "sha256": "9b9c03910f344b32e29a094224196671c5828eba77c41f3d1b6a516db925affb",
+        "raster": "637x584",
+        "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+      }
+    ],
+    "limitations": [
+      "Screenshots exercise the production Vue dialog through a fixture; no authenticated full-app session or native screen picker is involved.",
+      "Screenshots are review evidence, not approved visual goldens."
+    ]
+  },
   "updated_date": "2026-10-11"
 }
