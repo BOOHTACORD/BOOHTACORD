@@ -1708,5 +1708,37 @@
       "This artifact proves the current-master Web CI regression job and its responsive-shell capture output; it does not approve screenshot goldens or satisfy physical platform acceptance.",
       "The previous report about the 189602da [skip ci] checkpoint having no artifact remains historically accurate."
     ]
+  },
+  "voice_settings_icon_target_review_2026_10_11": {
+    "date": "2026-10-11",
+    "related_issue": "#301",
+    "checkpoint_commit": "d3e7c82c168586dd6e15f4d9d13d73693944abff",
+    "tested_checkout_source_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "test": "voice and settings icon targets keep their desktop and mobile dimensions",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npx playwright test -c tests/accessibility/playwright.config.ts --grep 'voice and settings icon targets keep their desktop and mobile dimensions'",
+    "result": "Google Chrome 154 — 1/1 PASS",
+    "observations": [
+      "At 1440x900, the audio-settings icon button is 40x40 CSS px, the gear SVG is 22x22 CSS px, and each of the four dock action targets is 40x40 CSS px.",
+      "At 390x844 in the open mobile drawer, the settings icon and all four dock action targets are 44x44 CSS px.",
+      "The mobile document has no horizontal overflow."
+    ],
+    "captures": [
+      {
+        "path": ".out/accessibility-browser-results/accessibility.browser-voic-13707-sktop-and-mobile-dimensions/voice-settings-targets-desktop.png",
+        "sha256": "b469a7b41da57ef5d8c424a90b3d57b6355722bf6e2d2d61fa3b326457228fed",
+        "raster": "1440x900"
+      },
+      {
+        "path": ".out/accessibility-browser-results/accessibility.browser-voic-13707-sktop-and-mobile-dimensions/voice-settings-targets-mobile.png",
+        "sha256": "f808f4150650df836ab52f44bdc3356e6d5601daa27e8ceef13b84b4c468002d",
+        "raster": "390x844"
+      }
+    ],
+    "review_status": "LOCAL_SOURCE_SIZED_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN",
+    "limitations": [
+      "The captures show production components and design CSS in an isolated fixture, not full-app screenshots for the 41-reference catalog.",
+      "Browser screenshots are not physical-device evidence; no source screenshot comparison or golden owner approval is claimed.",
+      "The screenshot files remain local ignored .out artifacts; hashes are tracked but images are not uploaded or committed."
+    ]
   }
 }
