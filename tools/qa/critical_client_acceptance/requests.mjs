@@ -25,12 +25,16 @@ export function requests(page, channelId) {
     if (value.startsWith('history_')) {
       current.history++
       const parallelHistory = [...active.entries()].reduce((count, [kind, amount]) => count+(kind.startsWith('history_') ? amount : 0), 0)
+      current.max_parallel_history = Math.max(current.max_parallel_history, parallelHistory)
       current.max_parallel = Math.max(current.max_parallel, parallelHistory)
+    } else {
+      current.max_parallel_topology = Math.max(current.max_parallel_topology, active.get(value))
+      current.max_parallel = Math.max(current.max_parallel, active.get(value))
     }
   })
   page.on('requestfinished', finish); page.on('requestfailed', finish)
   return { start() { current = { topology: 0, history: 0, history_latest: 0, history_before: 0,
-    history_after: 0, history_at: 0, max_parallel: 0 }; lastActivity = Date.now() },
+    history_after: 0, history_at: 0, max_parallel: 0, max_parallel_history: 0, max_parallel_topology: 0 }; lastActivity = Date.now() },
     quiet: () => watched.size === 0 && Date.now()-lastActivity >= 500,
     stop() { const result = current; current = null; return result } }
 }
