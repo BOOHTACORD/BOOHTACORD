@@ -107,7 +107,8 @@
         "manualAssistiveTech": "NOT_RUN",
         "assertions": [
           "The footer audio-settings icon has an accessible name, visible keyboard focus, and an Enter activation path."
-        ]
+        ],
+        "keyboardTraversalCoverage": "Chromium and Firefox verify sequential Tab traversal. WebKit verifies named-control focus, visible focus styling and Enter/Space activation using direct focus because its Safari host default excludes buttons from Tab traversal when Full Keyboard Access is off; native Safari with the setting enabled remains NOT_RUN."
       },
       "flutter": {
         "status": "PASS_SCOPED",
@@ -164,7 +165,8 @@
         "manualAssistiveTech": "NOT_RUN",
         "assertions": [
           "Voice-dock microphone, deafen, screen-share and leave controls expose names; Tab focus is visible and Space/Enter activate available actions."
-        ]
+        ],
+        "keyboardTraversalCoverage": "Chromium and Firefox verify sequential Tab traversal. WebKit verifies named-control focus, visible focus styling and Enter/Space activation using direct focus because its Safari host default excludes buttons from Tab traversal when Full Keyboard Access is off; native Safari with the setting enabled remains NOT_RUN."
       },
       "flutter": {
         "status": "PARTIAL",
