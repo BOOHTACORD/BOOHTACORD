@@ -6,8 +6,10 @@
 .user-footer-profile .username { gap: 0; }
 .user-footer-name { font-weight: 600; }
 .user-footer small { line-height: 1rem; }
-.user-footer-settings { border-radius: 8px; }
-.user-footer-settings svg { stroke-width: 1.8; }
+.user-footer-settings { width: 40px; height: 40px; flex: 0 0 40px; border-radius: 8px; color: var(--gc-text-secondary); transition: color 120ms ease, background-color 120ms ease; }
+.user-footer-settings:hover { color: var(--gc-text-primary); }
+.user-footer-settings:active { color: var(--gc-accent-text); background: var(--gc-surface-selected); }
+.user-footer-settings svg { width: 22px; height: 22px; stroke-width: 1.9; }
 @media (max-width: 720px) {
   .sidebar.is-open .user-footer { border-top: 0; }
 }
