@@ -16,7 +16,7 @@ Scope: GitHub [#301](https://github.com/Egkurilov/BOOHTACORD/issues/301), key in
 
 The individual paths, control lists and per-client status live in the JSON inventory. This document separates automated evidence from manual acceptance so a passing axe/widget run is never presented as a physical screen-reader result.
 
-Flutter's voice badge regression checks every connection status. Disconnected and error announce distinct live-region labels and hide connection quality/ping values, even if stale measurements are supplied. This is semantics-tree evidence; physical TalkBack/VoiceOver traversal remains `NOT_RUN`.
+Flutter's voice badge regression checks every connection status. Disconnected and error announce distinct live-region labels and hide connection quality/ping values, even if stale measurements are supplied. The connected voice dock regression also asserts the screen-share launch action's accessible name/action and that the leave action becomes non-actionable while leaving. This is semantics-tree evidence; physical TalkBack/VoiceOver traversal remains `NOT_RUN`.
 
 ## Contrast and target size
 

@@ -113,6 +113,24 @@
         "Existing cases cover connecting, connected, reconnecting and leaving status announcements."
       ],
       "limitation": "Flutter semantics-tree evidence only; physical TalkBack, VoiceOver and Narrator traversal remains NOT_RUN."
+    },
+    {
+      "name": "Flutter voice dock icon action semantics",
+      "command": "cd clients/flutter && flutter test --no-pub test/workspace_screen_test.dart --plain-name 'voice dock reports accurate microphone actions in all states'",
+      "result": "PASS_AUTOMATED_ONLY",
+      "tests_passed": 1,
+      "revision": "75cdb75c",
+      "test_source_sha256": "2ebeefd5583f711e4f5b24c36ec4098868d0eb0850eafab77b001bcc44649053",
+      "analyzer": {
+        "command": "cd clients/flutter && flutter analyze --no-pub test/workspace_screen_test.dart",
+        "result": "PASS",
+        "observation": "No issues found."
+      },
+      "assertions": [
+        "The icon-only screen-share launch action exposes the localized accessible name and tap action while connected.",
+        "The icon-only voice-leave control keeps its accessible label and removes its tap action while the room is leaving."
+      ],
+      "limitation": "Flutter semantics-tree evidence only; physical keyboard and screen-reader traversal remains NOT_RUN."
     }
   ],
   "contrast": {

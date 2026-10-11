@@ -82,7 +82,7 @@
       "flutter": {
         "status": "PARTIAL",
         "testFiles": ["clients/flutter/test/features/voice/prejoin/header_status_test.dart", "clients/flutter/test/voice_connection_badge_test.dart", "clients/flutter/test/voice_shortcut_preferences_test.dart", "clients/flutter/test/workspace_screen_test.dart"],
-        "automatedCoverageNote": "Widget/semantics cases cover connected dock actions, joining/reconnecting/leaving/error states, unavailable-microphone retry and push-to-talk. The badge suite now also checks disconnected/error live announcements and suppresses stale quality/ping. Broader Flutter voice accessibility coverage remains partial; physical keyboard and assistive-technology acceptance remains NOT_RUN.",
+        "automatedCoverageNote": "Widget/semantics cases cover connected dock actions, including the named screen-share start action and disabled leave state, joining/reconnecting/leaving/error statuses, unavailable-microphone retry and push-to-talk. The badge suite checks disconnected/error live announcements and suppresses stale quality/ping. Broader Flutter voice accessibility coverage remains partial; physical keyboard and assistive-technology acceptance remains NOT_RUN.",
         "manualAssistiveTech": "NOT_RUN"
       }
     },
