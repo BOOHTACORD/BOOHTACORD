@@ -403,5 +403,54 @@
       "The suite used local checkout a80c8a28a11c4eb83c895a454a2e2343a56408c1. Current master 9f8926ba91accbafce0fc8b95b2dd64ac15b27b9 includes PR #321 icon/presentation changes, which do not change the tested button name/event/state contracts.",
       "The capture is review-only; no pixel golden approval or physical-platform pass is implied."
     ]
+  },
+  "web_master_icon_revalidation_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_ONLY",
+    "browser": "Google Chrome 154.0.8037.98",
+    "source_alignment": {
+      "tested_master_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+      "accessibility_test_branch": "codex/ux13-ci-artifact-evidence",
+      "accessibility_test_revision_before_evidence_commit": "613c40af00ba73766a5049946c413aeadd84af41",
+      "production_files_refreshed_from_master": [
+        "clients/web/src/design/design_v2_chat_presentation.css",
+        "clients/web/src/design/design_v2_mobile_navigation.css",
+        "clients/web/src/design/design_v2_user_footer.css",
+        "clients/web/src/design/design_v2_voice_dock.css",
+        "clients/web/src/design/mobile_navigation_v2.spec.ts",
+        "clients/web/src/voice/VoiceDock.vue",
+        "clients/web/src/voice/voice_dock_design_icons.spec.ts",
+        "clients/web/src/workspace/WorkspaceUserFooter.vue"
+      ],
+      "test_file_sha256": "f8f5ac8e5ec126c71cfd373a7f8e0a701c16db2bb786f090a2a2671134aba7b2"
+    },
+    "checks": [
+      {
+        "command": "cd clients/web && npm test -- --run src/voice/voice_dock_design_icons.spec.ts src/design/mobile_navigation_v2.spec.ts",
+        "result": "13/13 PASS"
+      },
+      {
+        "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:accessibility",
+        "result": "52/52 accessibility cases PASS; separate conversation-action axe case 1/1 PASS"
+      }
+    ],
+    "keyboard_regression": "voice dock and audio settings icons expose keyboard names, focus and activation — PASS",
+    "screenshot": {
+      "path": ".out/accessibility-browser-results/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+      "sha256": "32c6d4a68b38fa7a03d1cdfb83c21619562e532f3d2dedf79237285fc7aa1c14",
+      "raster": "1440x900",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "assertions": [
+      "Audio settings icon exposes a name, visible keyboard focus and Enter activation.",
+      "Microphone and deafen controls expose state-aware names and work with Space/Enter; pressed state and red active styling update.",
+      "Screen share and leave actions remain named and keyboard reachable, with unavailable/leaving states disabled.",
+      "Scoped axe reports no violations for the mounted footer and voice dock."
+    ],
+    "limitations": [
+      "Automated browser keyboard and axe coverage only; manual VoiceOver, NVDA, TalkBack and Narrator traversal remains NOT_RUN.",
+      "Screenshot is a local review capture, not an approved visual golden or Actions artifact.",
+      "This evidence is Web-only and does not assert Mac native or Android physical acceptance."
+    ]
   }
 }
