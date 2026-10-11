@@ -1,0 +1,120 @@
+{
+  "id": "QA-303-RUNTIME-SMOKE-2026-10-11",
+  "date": "2026-10-11",
+  "issue": "https://github.com/Egkurilov/BOOHTACORD/issues/303",
+  "source_revision": "38fdb074109ebcfcbd4ea655ea80cda600e510f5",
+  "application_manifest_version": "1.0.38+71",
+  "environment": {
+    "backend": "Disposable local QA stack, HTTPS API and local LiveKit; synthetic qa_admin account and guild only.",
+    "production_data_used": false,
+    "android": {
+      "target": "Android emulator emulator-5554, sdk_gphone64_arm64",
+      "os": "Android 15 / API 35",
+      "screen": "1080x2400 at density 420",
+      "qa_user": "UIUX-QA (secondary emulator user 10)",
+      "package": "ru.boohtacord.app.qa",
+      "version": "1.0.38+71",
+      "physical_device": false
+    },
+    "macos": {
+      "target": "macOS 26.6.1 (25G76), arm64",
+      "package": "ru.boohtacord.boohtacordDesktop.qa",
+      "build": "flutter run -d macos with local QA API and exact ephemeral localhost certificate pin compile-time defines",
+      "launched": true,
+      "ui_binding": "CUA did not bind the QA bundle: getApp rejected the QA bundle identifier and resolving the shared display name selected the production bundle identity. No UI input was sent to the production app."
+    }
+  },
+  "android_scenarios": [
+    {
+      "scenario": "Create a section, text channel and voice channel",
+      "result": "PASS",
+      "scope": "Disposable local QA guild; visual result confirmed in the channel list and admin channel structure."
+    },
+    {
+      "scenario": "Send, edit and react to a channel message",
+      "result": "PASS",
+      "scope": "One synthetic message in the local QA text channel."
+    },
+    {
+      "scenario": "Search channel history",
+      "result": "PASS",
+      "scope": "Search returned the synthetic QA message."
+    },
+    {
+      "scenario": "Create a DM, send a message and search its history",
+      "result": "PASS",
+      "scope": "One synthetic QA participant and one synthetic DM; search returned one matching result."
+    },
+    {
+      "scenario": "Admin member, role and channel surfaces",
+      "result": "PASS_VIEW_ONLY",
+      "scope": "Member list and administration tabs for members, roles and channels rendered. Role or access changes were not submitted."
+    },
+    {
+      "scenario": "Settings persistence",
+      "result": "PASS",
+      "scope": "Changed microphone activation from voice activity to push-to-talk, force-stopped and relaunched the QA app, confirmed push-to-talk persisted, then restored voice activity."
+    },
+    {
+      "scenario": "Cancel destructive action",
+      "result": "PASS",
+      "scope": "Cancelled deletion of the synthetic channel message and confirmed that it remained visible."
+    },
+    {
+      "scenario": "Android system Back at the channel root",
+      "result": "PASS_ROOT_BACK_TO_LAUNCHER",
+      "scope": "One Back key event returned the app to the Android launcher. Dialog, keyboard and nested-route Back behavior remain untested."
+    },
+    {
+      "scenario": "Portrait system bars",
+      "result": "OBSERVED_ONLY",
+      "scope": "Status and navigation bars remained visible in portrait captures; this is not a full SafeArea acceptance pass."
+    },
+    {
+      "scenario": "Keyboard and IME overlays",
+      "result": "PARTIAL_OBSERVATION_ONLY",
+      "scope": "The emulator stylus input toolbar appeared alongside focused text fields. Full keyboard overlay traversal and dismissal scenarios were not completed."
+    },
+    {
+      "scenario": "Voice join, screen-share system picker and reconnect",
+      "result": "NOT_RUN"
+    },
+    {
+      "scenario": "Landscape, dynamic text and TalkBack",
+      "result": "NOT_RUN"
+    }
+  ],
+  "macos_scenarios": {
+    "result": "NOT_RUN_UI",
+    "build_and_launch": "PASS_BUILD_AND_LAUNCH_ONLY",
+    "window_resize_focus_keyboard_capture_picker_voiceover": "NOT_RUN"
+  },
+  "evidence_artifacts": {
+    "storage": "Local ignored .out files; screenshots were not staged or uploaded, per repository media-staging rule. Hashes identify the local captures but they are not available to GitHub reviewers.",
+    "screenshots": [
+      { "path": ".out/uiux-2026-android-message-sent.png", "sha256": "486fd07d836d43a2a20495225d102fd39c4454ba2718e45c16919b3372c5668b" },
+      { "path": ".out/uiux-2026-android-reaction.png", "sha256": "2644fa9f232f8dc71e55b2ff2b0f2d968d6aabf673ccd4efec9ce168635fd767" },
+      { "path": ".out/uiux-2026-android-message-edited.png", "sha256": "c54707d95b9bf84977889026daaed457f8ba4be49d51093dcb301970297d1fd9" },
+      { "path": ".out/uiux-2026-android-search-result.png", "sha256": "aa60f92dd8dfd969dde9aecd83d1df6672c493e7516f980da14cc57d9b275066" },
+      { "path": ".out/uiux-2026-android-dm-search.png", "sha256": "ac83c28dd18366c71fd340e1d05698a83a531a60d089a67b36b5d4e7bfcf4551" },
+      { "path": ".out/uiux-2026-android-delete-cancelled.png", "sha256": "8dec6e7fc682455a4d87486260f45c1817294d90b13d60692403c001c9d20eef" },
+      { "path": ".out/uiux-2026-android-admin-roles.png", "sha256": "d5690287047385a593000297cb68b2c3796f530eead774b83664213c947731af" },
+      { "path": ".out/uiux-2026-android-admin-channels.png", "sha256": "7ee0c6e523bb029937c8157fabe621fae08b17d14b61afdb5f28663acfb4d0c7" },
+      { "path": ".out/uiux-2026-android-audio-persisted.png", "sha256": "1d3424226c7c0da4848ec351970e4d50b92d9e237ab4d48e3736c8598220c617" },
+      { "path": ".out/uiux-2026-android-back.png", "sha256": "ea9bc30c63e663538189a30dc8980dde5c5a590f5623524cce669acc2f0de46d" }
+    ]
+  },
+  "acceptance": {
+    "android_emulator_subset": "PASS_PARTIAL",
+    "physical_android_acceptance": "NOT_RUN",
+    "macos_task_acceptance": "NOT_RUN",
+    "full_issue_303": "OPEN_INCOMPLETE",
+    "media_qoe": "OUT_OF_SCOPE; remains under #173/#174"
+  },
+  "open_gates": [
+    "Run the remaining Android scenarios on a physical device, including voice join, screen picker, reconnect, landscape, dynamic text, keyboard dismissal and TalkBack.",
+    "Complete macOS task acceptance with a CUA-bindable isolated QA app, including 800–1920 px resize, focus/input and native capture picker.",
+    "Complete Windows, iOS and full-app browser task scripts and required assistive-technology runs.",
+    "Publish source-sized screenshots or video through the approved evidence channel; current Android captures remain local-only."
+  ]
+}

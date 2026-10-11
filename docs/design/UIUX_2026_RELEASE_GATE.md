@@ -64,3 +64,10 @@ The original 41 reference screenshots are recorded in the visual audit at local 
 - Flutter rollback: halt the affected platform cohort and use the existing platform release rollback/update process to return to its last known-good build. Record store/desktop packaging constraints before rollout.
 - Release owner and per-platform rollback owner: `TBD — assign before rollout`.
 - Release decision: `NO-GO / NOT_RUN` until tester evidence, platform acceptance, artifact references, owner assignments, and screenshot gaps are reviewed. An owner may record accepted exceptions with rationale and follow-up issue; do not relabel `NOT_RUN` as `PASS`.
+
+## Runtime follow-up — 2026-10-11
+
+- [QA-303 runtime smoke](../../evidence/qa/qa303-runtime-smoke-2026-10-11.json) records a partial Android 15/API 35 emulator pass against the disposable local QA stack. Channel and DM send/search/edit/react, admin surfaces (view-only), settings persistence, destructive cancellation and root Back were observed. It is emulator evidence only; physical Android, voice join, screen sharing, reconnect, landscape, dynamic text, keyboard traversal and TalkBack remain `NOT_RUN`.
+- A macOS debug QA build was built and launched against the local QA endpoint. The CUA bridge rejected the isolated `.qa` bundle identifier, so no Mac UI task was counted as passed. Window resize, focus/input, capture picker and VoiceOver remain `NOT_RUN`.
+- Android screenshots and hashes are retained in the ignored local `.out` directory and are not staged or published. They are not reviewer-accessible artifacts; screenshot publication remains an open gate.
+- #303 and #289 remain open. This checkpoint does not change the release decision: `NO-GO / NOT_RUN`.
