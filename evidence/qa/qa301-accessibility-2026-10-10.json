@@ -716,5 +716,51 @@
       "Automated keyboard evidence does not replace a manual screen-reader task; VoiceOver, NVDA, TalkBack and Narrator remain NOT_RUN.",
       "The screenshot is local and ignored; it is not uploaded or an approved visual golden."
     ]
+  },
+  "responsive_shell_keyboard_visible_focus_cross_browser_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_ONLY_3_ENGINES",
+    "source_revision": "8f3e34f43e764eaf96723eb05c651e0ef32688ab plus the focused responsive-shell test update",
+    "test_file": "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts",
+    "test_name": "the production drawer focus manager exposes visible focus, traps traversal and restores it",
+    "test_source_sha256": "27b37c10913a6b86b7c41135a26cf8d0d087ce5cbbda5421409368bd16449ae5",
+    "viewport": "390x844 CSS px",
+    "browser_runs": [
+      {
+        "browser": "Google Chrome 154.0.8037.98",
+        "focused_case": "1/1 PASS",
+        "responsive_shell_suite": "11/11 PASS",
+        "command": "cd clients/web && CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:responsive-shell"
+      },
+      {
+        "browser": "Playwright WebKit 26.6 (v2359)",
+        "focused_case": "1/1 PASS",
+        "responsive_shell_suite": "11/11 PASS",
+        "command": "cd clients/web && env -u CHROMIUM_EXECUTABLE_PATH npm run test:responsive-shell -- --browser webkit"
+      },
+      {
+        "browser": "Playwright Firefox 155.0 (v1543)",
+        "focused_case": "1/1 PASS",
+        "responsive_shell_suite": "11/11 PASS",
+        "command": "cd clients/web && env -u CHROMIUM_EXECUTABLE_PATH npm run test:responsive-shell -- --browser firefox"
+      }
+    ],
+    "assertions": [
+      "Enter opens the navigation drawer and focuses the channel-selection control.",
+      "The selected control matches :focus-visible and has a solid purple outline at least 2 CSS px wide.",
+      "Tab remains inside the modal drawer; Escape closes the drawer and restores focus to the opener.",
+      "The same browser suite covers 12 responsive viewport sizes, channel favorite reachability, independent scrolling and browser Back/Forward."
+    ],
+    "capture": {
+      "path": ".out/responsive-shell-browser-results/responsive_shell.browser-t-f8490-s-traversal-and-restores-it-firefox/navigation-keyboard-focus-visible.png",
+      "sha256": "256ec72300d2582e574802b2668ca3e639d2a5b5c8a58edb3fd536877c847750",
+      "raster": "390x844",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": [
+      "This is an automated production-component fixture, not the authenticated full application or physical mobile acceptance.",
+      "VoiceOver, NVDA, TalkBack and Narrator traversal remains NOT_RUN.",
+      "The screenshot is local and ignored; no visual golden approval is implied."
+    ]
   }
 }

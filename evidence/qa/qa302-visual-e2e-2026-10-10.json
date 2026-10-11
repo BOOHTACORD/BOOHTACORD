@@ -1881,5 +1881,27 @@
       "Mobile is browser viewport emulation, not a physical device.",
       "Captures are ignored local .out files; no image was staged."
     ]
+  },
+  "responsive_shell_keyboard_visible_focus_cross_browser_2026_10_11": {
+    "date": "2026-10-11",
+    "status": "PASS_AUTOMATED_ONLY_3_ENGINES",
+    "test_file": "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts",
+    "test_source_sha256": "27b37c10913a6b86b7c41135a26cf8d0d087ce5cbbda5421409368bd16449ae5",
+    "responsive_shell_suite": "11/11 PASS per browser across 12 viewports",
+    "keyboard_visible_focus_case": "1/1 PASS per browser",
+    "engines": [
+      "Google Chrome 154.0.8037.98",
+      "Playwright WebKit 26.6 (v2359)",
+      "Playwright Firefox 155.0 (v1543)"
+    ],
+    "capture": {
+      "path": ".out/responsive-shell-browser-results/responsive_shell.browser-t-f8490-s-traversal-and-restores-it-firefox/navigation-keyboard-focus-visible.png",
+      "sha256": "256ec72300d2582e574802b2668ca3e639d2a5b5c8a58edb3fd536877c847750",
+      "raster": "390x844",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "limitations": [
+      "Fixture and automation evidence only; manual screen-reader, physical-device and approved pixel-golden gates remain open."
+    ]
   }
 }
