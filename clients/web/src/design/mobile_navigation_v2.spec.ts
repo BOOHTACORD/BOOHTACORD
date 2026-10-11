@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 import workspace from '../workspace/WorkspaceApp.vue?raw'
 import userFooter from '../workspace/WorkspaceUserFooter.vue?raw'
 const mobileNavigation = readFileSync(new URL('./design_v2_mobile_navigation.css', import.meta.url), 'utf8')
+const userFooterStyles = readFileSync(new URL('./design_v2_user_footer.css', import.meta.url), 'utf8')
 const responsiveShell = readFileSync(new URL('./responsive_shell.css', import.meta.url), 'utf8')
 const searchLauncher = readFileSync(new URL('../search/SearchLauncher.vue', import.meta.url), 'utf8')
 const navigation = readFileSync(new URL('./navigation.css', import.meta.url), 'utf8')
@@ -50,7 +51,7 @@ describe('V2 mobile navigation drawer', () => {
     expect(mobileNavigation).toContain('.sidebar.is-open .user-footer-profile { gap: 10px; }')
     expect(mobileNavigation).toContain('.sidebar.is-open .user-footer .username { gap: 0; }')
     expect(mobileNavigation).toContain('.sidebar.is-open .user-footer small { line-height: 1rem; }')
-    expect(mobileNavigation).toContain('.sidebar.is-open .user-footer-settings { width: 44px; height: 44px; }')
+    expect(mobileNavigation).toContain('.sidebar.is-open .user-footer-settings { width: 44px; height: 44px; flex-basis: 44px; }')
   })
 
   it('matches the handoff search and segmented tabs in the open drawer', () => {
@@ -61,10 +62,14 @@ describe('V2 mobile navigation drawer', () => {
     expect(mobileNavigation).toContain('.sidebar.is-open .sidebar-tabs button.is-selected { background: var(--gc-surface-raised); }')
   })
 
-  it('uses the handoff close and account settings outlines with live handlers', () => {
+  it('uses a centered settings cog with a larger, touchable target and live handler', () => {
     expect(workspace).toContain('aria-label="Закрыть навигацию" @click="toggleNavigation"><svg')
     expect(workspace).toContain('d="m6 6 12 12M18 6 6 18"')
-    expect(userFooter).toContain('d="m9 3 1-1h4l1 3 3 1 3 1v4l-2 2 1 3-3 3-3-1-2 2H8l-1-3-3-1-2-2 1-4 3-1 1-3Z"')
+    expect(userFooter).toContain('<circle cx="12" cy="12" r="3" />')
+    expect(userFooterStyles).toContain('width: 40px; height: 40px; flex: 0 0 40px;')
+    expect(userFooterStyles).toContain('width: 22px; height: 22px; stroke-width: 1.9;')
+    expect(mobileNavigation).toContain('.sidebar.is-open .user-footer-settings { width: 44px; height: 44px; flex-basis: 44px; }')
+    expect(userFooter).toContain('aria-label="Настройки аудио" title="Настройки аудио"')
     expect(userFooter).toContain('@click="emit(\'openSettings\')"')
   })
 })
