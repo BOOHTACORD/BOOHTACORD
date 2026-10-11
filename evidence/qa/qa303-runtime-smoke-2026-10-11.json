@@ -184,5 +184,127 @@
       "VoiceOver/NVDA/TalkBack/Narrator, physical-device traversal, iOS Safari and native capture-picker acceptance were not run.",
       "Safari used its default Full Keyboard Access policy; this is not screen-reader acceptance."
     ]
+  },
+  "web_full_app_runtime_smoke_2026_10_11": {
+    "date": "2026-10-11",
+    "result": "PASS_SCOPED_WEB_AUTOMATED",
+    "source_revision": "9f8926ba91accbafce0fc8b95b2dd64ac15b27b9",
+    "environment": {
+      "browser": "Google Chrome 154.0.8037.98",
+      "host": "macOS 26.6.1",
+      "production_data_used": false,
+      "backend": "Disposable local Go API, PostgreSQL, Tempo and LiveKit; synthetic accounts/guild; no API mocks.",
+      "desktop": {
+        "viewport": "1440x900",
+        "device_scale_factor": 2,
+        "touch": false
+      },
+      "mobile": {
+        "viewport": "393x852",
+        "device_scale_factor": 3,
+        "touch": true,
+        "emulation": true
+      }
+    },
+    "commands": [
+      "QA_BROWSER_EXECUTABLE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' python3 -m tools.qa.client_lifecycle.run --width 1440 --critical",
+      "QA_BROWSER_EXECUTABLE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' python3 -m tools.qa.client_lifecycle.run --width 393 --critical"
+    ],
+    "reports": [
+      {
+        "path": ".out/client-lifecycle/1440/report.json",
+        "sha256": "c9ef5ee17f5ed90f0c481bc2b3368e73483ed85db24cac94cd88e5bdaff7e634",
+        "result": "PASS",
+        "elapsed_seconds": 78.3,
+        "captures": 33,
+        "owned_resources_removed": true,
+        "telemetry": "PASS"
+      },
+      {
+        "path": ".out/client-lifecycle/393/report.json",
+        "sha256": "f135b3edb407661812c746872d26785161cd7d996f4f6f45026439c690865dbf",
+        "result": "PASS",
+        "elapsed_seconds": 78.56,
+        "captures": 34,
+        "owned_resources_removed": true,
+        "telemetry": "PASS"
+      }
+    ],
+    "coverage": [
+      "Authenticated admin and guild surfaces; channel history and mouse/touch actions.",
+      "DM list/send/search and return to original context; global search and open original message context.",
+      "Protected refresh bursts of 1/20/50; maximum concurrent history GETs per resource was 1.",
+      "Edit/delete old-page message; real LiveKit WebRTC join; chat WebSocket failure/recovery while media stays connected; SFU unavailable/restored; lease revoke while REST is blocked; logout/session revoke cleanup.",
+      "Telemetry checks passed with sensitive content absent and bounded metrics."
+    ],
+    "catalog_captures_review_only": [
+      {
+        "catalogSlot": "D01",
+        "path": ".out/client-lifecycle/1440/channel-text.png",
+        "sha256": "0269faeca2022154fd2b986876c6619d8de39607012cc381d7268a1f4450c227",
+        "raster": "2880x1800"
+      },
+      {
+        "catalogSlot": "D02",
+        "path": ".out/client-lifecycle/1440/channel-text-actions.png",
+        "sha256": "f7ef20823809dc79fc76736930b04b00156ad4c598a711f9ecdb40003c172131",
+        "raster": "2880x1800"
+      },
+      {
+        "catalogSlot": "D03",
+        "path": ".out/client-lifecycle/1440/dm-list.png",
+        "sha256": "d6e1f5e705396a91bb9b2b412df7ff0caf7f0ae1e1c3d2f05cc12f2181b639a0",
+        "raster": "2880x1800"
+      },
+      {
+        "catalogSlot": "D15",
+        "path": ".out/client-lifecycle/1440/voice-prejoin.png",
+        "sha256": "78c79ae448e3c017c0bc960cf430c5026e2227217584f2c07e9cb0b3995bf7fc",
+        "raster": "2880x1800"
+      },
+      {
+        "catalogSlot": "D18",
+        "path": ".out/client-lifecycle/1440/channel-log.png",
+        "sha256": "cf9650dddd839c88ca26022a14aa4f5744f03a794be24d031be3c503841b9cfa",
+        "raster": "2880x1800"
+      },
+      {
+        "catalogSlot": "M01",
+        "path": ".out/client-lifecycle/393/navigation-overlay.png",
+        "sha256": "c2adb610d453a07d5660722df929c1c3309b4cf6c9c0c9454e8acc4449e787ae",
+        "raster": "1179x2556"
+      },
+      {
+        "catalogSlot": "M02",
+        "path": ".out/client-lifecycle/393/channel-text.png",
+        "sha256": "70d27b2f62c05c8ff1fc7b0a6ce82e6698e63ff53a8b758ed43be0eb9cfde3a5",
+        "raster": "1179x2556"
+      },
+      {
+        "catalogSlot": "M03",
+        "path": ".out/client-lifecycle/393/channel-text-actions.png",
+        "sha256": "3df4d45fc60ca4ba2d42720e476b0a67b67c5dc8a9f7d9ca8198773ab9160d14",
+        "raster": "1179x2556"
+      },
+      {
+        "catalogSlot": "M22",
+        "path": ".out/client-lifecycle/393/voice-prejoin.png",
+        "sha256": "010e70eea0cdccfe57d8a5beb784be415db5a77b56a4fc688417e5339c37bfac",
+        "raster": "1179x2556"
+      },
+      {
+        "catalogSlot": "M23",
+        "path": ".out/client-lifecycle/393/channel-log.png",
+        "sha256": "eed85fc2d3589015cc922fb86d80fe0b2fc09aea1dc12fcbfe2d50a6b6e47ee4",
+        "raster": "1179x2556"
+      }
+    ],
+    "limitations": [
+      "Mobile browser run used Chromium mobile/touch emulation, not a physical Android or iOS device.",
+      "Screen-share system picker was not exercised.",
+      "No VoiceOver, NVDA, TalkBack or Narrator acceptance was performed.",
+      "Screenshots/reports remain in ignored local .out; hashes are recorded but image files are not published.",
+      "This scoped Web run does not close issue #303 or the #289 epic."
+    ]
   }
 }

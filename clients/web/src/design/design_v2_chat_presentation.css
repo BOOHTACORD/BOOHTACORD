@@ -7,8 +7,8 @@
 .voice-dock-subtitle { margin: 0; color: var(--gc-text-muted); font-size: 0.75rem; line-height: 1rem; }
 .voice-dock.connected .voice-status { color: var(--gc-success); }
 @media (min-width: 1024px) {
-  .sidebar .mobile-voice-dock .voice-actions { justify-content: flex-start; gap: 6px; }
-  .sidebar .mobile-voice-dock .voice-icon-button { width: 40px; height: 40px; flex: 0 0 40px; }
+  .sidebar .mobile-voice-dock .voice-actions { width: 100%; justify-content: flex-start; gap: 6px; }
+  .sidebar .mobile-voice-dock .voice-icon-button { width: auto; height: 40px; flex: 1 1 0; min-width: 0; }
   .sidebar .mobile-voice-dock .voice-icon-button--danger { color: #fff; background: #b80c16; }
 }
 .text-conversation .message-list > li[data-message-id] + li[data-message-id] { margin-top: 24px; }
