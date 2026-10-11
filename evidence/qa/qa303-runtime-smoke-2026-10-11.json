@@ -320,5 +320,14 @@
     "windows_device_or_vm_available": false,
     "task_interaction_performed": false,
     "note": "No Android application interaction was performed during this inventory; emulator availability does not count as physical acceptance."
+  },
+  "macos_lock_recheck_2026_10_11": {
+    "date": "2026-10-11",
+    "result": "BLOCKED_BEFORE_APP_LAUNCH",
+    "platform": "macOS 26.6.1 arm64",
+    "observation": "CUA reported that the Mac was locked and automatic unlock failed. The dedicated ru.boohtacord.boohtacordDesktop.qa bundle could not be opened. No UI input was sent to any application.",
+    "acceptance": "NOT_RUN",
+    "cleanup": "The disposable QA-stack process was stopped and exited with code 0; temporary QA helper and localhost certificate files were removed. No screenshots or runtime evidence were produced by this attempt.",
+    "next_step": "Retry only after the desktop is manually unlocked; bind and launch the dedicated QA bundle directly."
   }
 }
