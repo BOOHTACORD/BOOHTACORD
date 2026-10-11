@@ -314,5 +314,31 @@
       "Keyboard focus has a visible outline; navigation and page do not gain horizontal overflow."
     ],
     "limitation": "Browser automation only; physical screen-reader acceptance remains NOT_RUN."
+  },
+  "current_branch_revalidation_2026_10_11": {
+    "source_revision": "4829b17d + working-tree accessibility test update",
+    "status": "PASS_AUTOMATED_ONLY",
+    "browser": "Google Chrome 154.0.8037.98",
+    "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:accessibility",
+    "results": {
+      "accessibility_browser_cases": "51/51 PASS",
+      "message_action_axe_case": "1/1 PASS"
+    },
+    "test_source_sha256": "b98bffc236415f7778ec2f397e394f67d034574dd94bc12feed2ae13e7037ee1",
+    "compact_screen_share_capture": {
+      "path": ".out/accessibility-browser-results/accessibility.browser-scre-46abc-uality-options-discoverable/screen-share-setup-320x640-initial.png",
+      "sha256": "912c0a6bb20033a5ef9cf61f6a94128281cf8f7ec5566ebe386a6c052769d925",
+      "raster": "320x640",
+      "review_status": "LOCAL_REVIEW_CAPTURE_NOT_APPROVED_GOLDEN"
+    },
+    "observations": [
+      "At 320x640 the primary scenario, resolution and frame-rate controls fit in the initial screen together with the pinned Cancel/Start actions.",
+      "The secondary recommended-profile action remains available by scrolling the dialog body.",
+      "The suite covers browser axe/keyboard/state checks only; it is not a physical screen-reader traversal."
+    ],
+    "limitations": [
+      "Physical TalkBack, VoiceOver, Narrator and native platform acceptance remain NOT_RUN under #301/#303.",
+      "The capture is review evidence, not an approved pixel golden or Actions artifact."
+    ]
   }
 }

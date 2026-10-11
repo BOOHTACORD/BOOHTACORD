@@ -728,7 +728,9 @@ test('screen-share setup shows the recommended profile and keeps all quality opt
   await expect(dialog.getByText('1080p · 60 FPS', { exact: true })).toBeVisible()
   await expect(dialog.getByText('Текущий выбор: 1080p · 30 FPS', { exact: true })).toBeVisible()
   await expect(header).toBeInViewport({ ratio: 0.99 })
-  await expect(dialog.getByText('Рекомендуемый профиль', { exact: true })).toBeInViewport()
+  await expect(dialog.locator('.screen-share-setup__footer')).toBeInViewport({ ratio: 0.99 })
+  // On a 320px screen the primary chooser takes priority; the optional recommendation is available by body scroll.
+  await page.screenshot({ path: testInfo.outputPath('screen-share-setup-320x640-initial.png') })
   const recommendedProfile = dialog.getByRole('button', { name: 'Применить рекомендованный профиль' })
   await recommendedProfile.scrollIntoViewIfNeeded()
   await expect(recommendedProfile).toBeInViewport()
