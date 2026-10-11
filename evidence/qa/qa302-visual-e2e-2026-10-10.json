@@ -1903,5 +1903,96 @@
     "limitations": [
       "Fixture and automation evidence only; manual screen-reader, physical-device and approved pixel-golden gates remain open."
     ]
+  },
+  "ux13_current_branch_visual_regression_revalidation_2026_10_11": {
+    "date": "2026-10-11",
+    "tested_source_revision": "1bdad9bfee6938b2a92f56439b135988049dd0bd",
+    "web": {
+      "responsive_shell": {
+        "command": "CHROMIUM_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:responsive-shell",
+        "result": "PASS",
+        "browser": "Google Chrome 154.0.8037.98",
+        "tests_passed": 11,
+        "viewports": [
+          "320x640",
+          "375x812",
+          "390x844",
+          "393x852",
+          "430x932",
+          "600x900",
+          "768x1024",
+          "840x390",
+          "1024x768",
+          "1280x800",
+          "1440x900",
+          "1920x1080"
+        ],
+        "capture_revalidation": "12/12 responsive-shell PNG hashes are byte-identical to the previously recorded review captures.",
+        "capture_status": "LOCAL_REVIEW_ONLY_NOT_APPROVED_GOLDEN"
+      },
+      "visual_matrix_spec": {
+        "command": "npm test -- --run tests/uiux_2026/visual_matrix.spec.ts",
+        "result": "PASS",
+        "tests_passed": 13,
+        "test_source_sha256": "9daa192e43b1f0f55fea4be52571e411b26bcb667faf3c2c05287948dcffb076"
+      }
+    },
+    "flutter": {
+      "command": "BOOHTACORD_VISUAL_CAPTURE_DIR=/private/tmp/boohtacord-ux13-flutter-captures-20261011 flutter test --no-pub test/uiux_2026/admin_visual_capture_test.dart test/uiux_2026/dialog_visual_capture_test.dart test/mobile_navigation_visual_capture_test.dart",
+      "result": "PASS",
+      "tests_passed": 5,
+      "png_captures": 25,
+      "capture_directory": "/private/tmp/boohtacord-ux13-flutter-captures-20261011",
+      "capture_policy": "Temporary local captures; no generated media was staged or published.",
+      "test_source_sha256": {
+        "clients/flutter/test/uiux_2026/admin_visual_capture_test.dart": "0e0179e2a46bfbaa6b9c123dcf520caee40e4ede354151f8e3f0228cbdd7b552",
+        "clients/flutter/test/uiux_2026/dialog_visual_capture_test.dart": "e2481080a3045f9058e9135a9f2944bb178bdaf860965e09bd375a8a46df3b4b",
+        "clients/flutter/test/mobile_navigation_visual_capture_test.dart": "020b2ea5de1ddd674ee8116ea0d1951703069b9adf212022c2a4207c2229943e"
+      },
+      "comparison_with_prior_review_capture_set": {
+        "prior_source_revision": "a89ef57d",
+        "byte_identical_images": 23,
+        "changed_images": [
+          {
+            "name": "flutter-admin-media-desktop-1440x900.png",
+            "raster": "2880x1800",
+            "prior_sha256": "b670c5f94601b455d41e6a31e4aad86196583413c81bdc946e8f8f5ed79fc52e",
+            "current_sha256": "f3f901145771e004025633fd301d4fa191a1550f7c4058f56b378ff92055d0e4"
+          },
+          {
+            "name": "flutter-admin-media-mobile-393x852.png",
+            "raster": "1179x2556",
+            "prior_sha256": "6d64cb5d30df2daca4a0efb41fd9c98bcc1aedb5333aeff897c0e5b67db22f65",
+            "current_sha256": "49e6a8ff8a518e6147bfe612c72207b01de51a782a99efcae9f591d616abfbba"
+          }
+        ],
+        "documented_false_positive": "Both media-panel captures differ only in the dynamic last-success timestamp: prior 2026-10-10 14:24, current 2026-10-11 22:13 (local time). Visual review confirmed all other content and layout stayed the same; exclude this status timestamp from pixel-golden comparison or compare it semantically."
+      }
+    },
+    "source_archive_verifier": {
+      "command": "python3 -m tools.verify.uiux_visual_matrix",
+      "result": "PASS",
+      "source_archive_sha256": "44da32a8c6888a012c8f85cf66d8bd320d240509ec31538854438388964a3b2c",
+      "screens_verified": 41,
+      "desktop": 18,
+      "mobile": 23,
+      "duplicate_source_exception": "desktop-guild-settings.png is byte-identical to desktop-guild-members.png; independent D11 baseline remains blocked and this limitation is declared in the catalog. The archive was temporarily linked from the main checkout for verification, then the link was removed."
+    },
+    "visual_diff_unit_tests": {
+      "command": "python3 -m unittest tools.verify.test_uiux_visual_diff tools.verify.test_uiux_visual_matrix -v",
+      "result": "PASS",
+      "tests_passed": 5
+    },
+    "acceptance_update": {
+      "target_size_regressions": "PASS_SCOPED_AUTOMATED; current Chrome responsive suite passed across 12 sizes and Flutter capture assertions passed.",
+      "false_positive_exceptions": "PASS_DOCUMENTED; dynamic Media-panel timestamp and duplicate D11 source are explicit exceptions.",
+      "approved_pixel_goldens": "NOT_RUN; no owner-approved golden set exists, so the separate full critical-flow baseline criterion remains open.",
+      "ci_artifact_for_current_revision": "NOT_RUN_BY_REQUEST; commit uses [skip ci]."
+    },
+    "limitations": [
+      "The Flutter suite captures production widgets and checks layout/state assertions; it does not capture the full authenticated application or perform approved pixel-golden comparison.",
+      "Screenshot hashes are local review evidence and the images are not reviewer-accessible artifacts.",
+      "No Actions run is attributed to the current skip-ci revision."
+    ]
   }
 }
