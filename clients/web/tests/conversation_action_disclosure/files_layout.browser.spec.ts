@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 for (const kind of ['CHANNEL', 'DIRECT_MESSAGE']) {
   for (const width of [320, 393, 1440]) {
-    test(`${kind} file metadata stays inside its table cells at ${width}px`, async ({ page }) => {
+    test(`${kind} file metadata stays inside its table cells at ${width}px`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 900 })
       await page.route('**/api/v1/**/qa-files/messages', route => route.fulfill({
         json: { messages: [{
@@ -38,6 +38,7 @@ for (const kind of ['CHANNEL', 'DIRECT_MESSAGE']) {
       }
       const panel = await page.locator('.conversation-files').boundingBox()
       expect(panel!.x + panel!.width).toBeLessThanOrEqual(width)
+      await page.locator('.conversation-files').screenshot({ path: testInfo.outputPath(`files-${kind}-${width}.png`) })
     })
   }
 }

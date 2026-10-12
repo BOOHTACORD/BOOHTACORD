@@ -79,7 +79,16 @@ async function loaded(page) {
   await expect(p.locator('tbody tr')).toHaveCount(3)
   return p
 }
+async function capture(p, name) {
+  await p.page().bringToFront()
+  await p.evaluate(async () => {
+    await document.fonts.ready
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+  })
+  await p.screenshot({path:input.directory+'/'+name})
+}
 async function metadata(p,names) {
+  await p.page().bringToFront()
   await p.evaluate(async () => {
     await document.fonts.load('500 14px Inter')
     await document.fonts.ready
@@ -132,7 +141,7 @@ try {
   await a.reload()
   let p=await loaded(a)
   await metadata(p,['text-new.png','text-old-one.png','text-old-two.png'])
-  await p.screenshot({path:input.directory+'/text-files-paginated.png'})
+  await capture(p,'text-files-paginated.png')
   await p.getByRole('button',{name:'Перейти к сообщению с файлом text-old-one.png',exact:true}).click()
   await expect(a.getByTestId('search-message-context').locator('[data-search-anchor]')).toBeVisible()
   await a.getByTestId('search-message-context').getByRole('button',{name:'Вернуться к исходной позиции',exact:true}).click()
@@ -161,7 +170,7 @@ try {
   await a.reload(); await dm(a,'qa_files_b')
   p=await loaded(a)
   await metadata(p,['dm-new.png','dm-old-one.png','dm-old-two.png'])
-  await p.screenshot({path:input.directory+'/dm-files-paginated.png'})
+  await capture(p,'dm-files-paginated.png')
   await b.reload(); await dm(b,'qa_files_a')
   const bp=await loaded(b); await metadata(bp,['dm-new.png','dm-old-one.png','dm-old-two.png'])
   report.checks.dm_both_participants_metadata_cursor='PASS'
@@ -209,7 +218,7 @@ try {
   await p.getByRole('button',{name:'Показать более старые файлы',exact:true}).click()
   await expect(p.locator('tbody tr')).toHaveCount(1)
   await expect(p.locator('tbody tr')).toContainText('dm-new.png')
-  await p.screenshot({path:input.directory+'/dm-files-after-delete-refresh.png'})
+  await capture(p,'dm-files-after-delete-refresh.png')
   report.checks.scope_changes_no_rows_or_tombstones_leak='PASS'
   report.checks.close_reopen_refresh_cursor_recovery='PASS'
   report.checks.dm_origin_navigation='PASS'

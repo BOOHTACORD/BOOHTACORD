@@ -75,4 +75,13 @@ onMounted(() => title.value?.focus())
 .conversation-files th, .conversation-files td { border-bottom: 1px solid var(--gc-border-subtle); padding: var(--gc-space-2); text-align: start; }
 .conversation-files th { overflow-wrap: anywhere; color: var(--gc-text-muted); font-weight: var(--gc-weight-medium); }
 .conversation-files__name { overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .conversation-files table { table-layout: fixed; }
+  .conversation-files th:first-child { width: 13%; }
+  .conversation-files th:nth-child(2) { width: 19%; }
+  .conversation-files th:nth-child(3) { width: 16%; }
+  .conversation-files th:nth-child(4), .conversation-files th:nth-child(5) { width: 26%; }
+  .conversation-files td { overflow-wrap: anywhere; }
+  .conversation-files tbody button { max-width: 100%; }
+}
 </style>
