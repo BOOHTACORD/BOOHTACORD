@@ -208,7 +208,7 @@ try {
   await closeSearch(a)
   const held=await heldMentions(a)
   p=await inbox(a);await held.started
-  await expect(p.getByText('Загружаем упоминания…',{exact:true})).toBeVisible()
+  await expect(p.getByText('Загружаем упоминания…',{exact:true})).toHaveCSS('clip-path','none')
   await capture(a,p,'loading-metadata')
   held.release();await held.cleanup()
   await expect(p.locator('.search-result')).toHaveCount(50)
@@ -259,7 +259,7 @@ try {
   const own=await api(a,'/mentions');status(own,200)
   const ownMessage=own.body.mentions[0]
   status(await api(await client('qa_mentions_a'),`/channels/${ownMessage.conversation_id}/messages/${ownMessage.message_id}`,'DELETE'),204)
-  await refresh(p);await expect(p.getByText('Пока нет упоминаний.',{exact:true})).toBeVisible()
+  await refresh(p);await expect(p.getByText('Пока нет упоминаний.',{exact:true})).toHaveCSS('clip-path','none')
   await capture(a,p,'empty-metadata')
   report.checks.empty_inbox='PASS'
   report.status='PASS';report.browser=browser.version()

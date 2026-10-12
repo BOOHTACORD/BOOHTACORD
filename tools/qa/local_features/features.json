@@ -82,10 +82,12 @@
       "clients/web/src/text*",
       "clients/web/src/direct*",
       "clients/flutter/lib/src/features/conversation/*",
-      "clients/flutter/lib/src/features/attachments/*"
+      "clients/flutter/lib/src/features/attachments/*",
+      "clients/web/src/search/*"
     ],
     "web": [
-      "tests/conversation_action_disclosure/playwright.config.ts"
+      "tests/conversation_action_disclosure/playwright.config.ts",
+      "tests/mentions_inbox/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart"

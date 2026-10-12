@@ -37,3 +37,27 @@ test('shows an empty state when the caller has no mentions', async ({ page }) =>
   await page.getByRole('button', { name: 'Упоминания' }).click()
   await expect(page.getByText('Пока нет упоминаний.')).toBeVisible()
 })
+
+for (const width of [393, 1440]) {
+  for (const state of ['empty', 'loading']) {
+    test(`paints a visible ${state} inbox state at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 })
+      let release!: () => void
+      const held = new Promise<void>(resolve => { release = resolve })
+      await page.route('**/api/v1/mentions*', async route => {
+        if (state === 'loading') await held
+        await route.fulfill({ json: { mentions: [] } })
+      })
+      try {
+        await page.reload()
+        await page.getByRole('button', { name: 'Упоминания', exact: true }).click()
+        const message = page.getByText(state === 'loading' ? 'Загружаем упоминания…' : 'Пока нет упоминаний.', { exact: true })
+        await expect(message).toBeVisible()
+        await expect(message).toHaveCSS('clip-path', 'none')
+        const box = await message.boundingBox()
+        expect(box!.height).toBeGreaterThanOrEqual(20)
+        expect(box!.width).toBeGreaterThan(200)
+      } finally { release() }
+    })
+  }
+}

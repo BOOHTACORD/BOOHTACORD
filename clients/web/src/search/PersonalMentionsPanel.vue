@@ -20,8 +20,8 @@ onMounted(() => { void inbox.refresh() })
   <section class="mention-inbox" aria-label="Личные упоминания" data-testid="mention-inbox">
     <div class="mention-inbox-toolbar"><p role="status" aria-live="polite" :aria-busy="inbox.loading.value">Упоминания только для вас</p><button type="button" :disabled="inbox.loading.value" @click="inbox.refresh">Обновить</button></div>
     <p v-if="inbox.error.value" class="search-error" role="alert">{{ inbox.error.value }}</p>
-    <p v-else-if="inbox.loading.value && !inbox.mentions.value.length" class="search-status" role="status">Загружаем упоминания…</p>
-    <p v-else-if="!inbox.mentions.value.length" class="search-status" role="status">Пока нет упоминаний.</p>
+    <p v-else-if="inbox.loading.value && !inbox.mentions.value.length" class="search-status search-status--visible" role="status">Загружаем упоминания…</p>
+    <p v-else-if="!inbox.mentions.value.length" class="search-status search-status--visible" role="status">Пока нет упоминаний.</p>
     <ol v-else class="search-results" aria-label="Список личных упоминаний">
       <li v-for="item in inbox.mentions.value" :key="`${item.kind}:${item.messageId}`" class="search-result">
         <article><header>{{ label(item) }} · <time :datetime="item.createdAt">{{ date(item.createdAt) }}</time></header>
