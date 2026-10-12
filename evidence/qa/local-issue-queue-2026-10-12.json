@@ -157,8 +157,9 @@
       "number": 254,
       "title": "[QA] Проверить файлы беседы и ACL для TEXT/DM (#75)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/254",
-      "status": "IN_PROGRESS",
-      "reason": "Actual uploaded TEXT files: metadata, cursor pagination and navigation PASS. Investigating older-page row invalidation after peer DELETE 204; remaining DM/ACL/scope checks still running."
+      "status": "PASS",
+      "reason": "All 6 browser/API criteria PASS on published master 0183e48f at 1440/393px; mobile files menu and table fixed; 6 sanitized panel captures inspected.",
+      "evidence": "evidence/qa/issue254-conversation-files-runtime-2026-10-12.json"
     },
     {
       "number": 257,
@@ -298,7 +299,8 @@
   "ordering": "Within each selected batch, run one browser case at a time; independent PostgreSQL measurement may run while browser cases are prepared. Hardware-dependent older gates remain explicitly open.",
   "source": "https://github.com/Egkurilov/BOOHTACORD/issues",
   "closure_policy": "Only applicable runtime evidence can close a case; emulator/unit PASS does not establish physical-device or load acceptance.",
-  "active_batch": [
+  "active_batch": [],
+  "completed_batch": [
     251,
     254,
     258

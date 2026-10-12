@@ -1,0 +1,284 @@
+{
+  "issue": 254,
+  "status": "PASS",
+  "gate_closed": true,
+  "leaf": "T-044",
+  "dependencies": [
+    "T-040",
+    "T-041"
+  ],
+  "tested_master_sha": "0183e48fc65d0850e4403852c080f522d76d51aa",
+  "tested_web_source_tree": "fbef11efc1c7c80b18caee8e9e03c9272c1de28c",
+  "tested_backend_source_tree": "2d6e5977ab812db05bce599fea4aa654ba762507",
+  "os": "macOS-27.0.1-arm64-arm-64bit",
+  "app": {
+    "client": "BOOHTACORD production Web bundle",
+    "vue": "3.5.43",
+    "vite": "8.3.0",
+    "pinia": "4.0.3",
+    "playwright": "1.63.0"
+  },
+  "deployment": {
+    "origin": "https://localhost:4810",
+    "real_api_and_postgresql": true,
+    "database": "PostgreSQL 17.6-alpine",
+    "synthetic_guild": true,
+    "production_mutations": false,
+    "mocks": false
+  },
+  "source_manifest": {
+    "clients/web/src/design/design_v2_chat_presentation.css": "2391ebf1b3cf060d578e775dc4a1ee320ffe6cadca9ee51a55d471a53a97b6bb",
+    "clients/web/src/conversation/files_panel/ConversationFilesPanel.vue": "c525f55a4de1ba68eb380c0089a0a0dc68e8a739d219eb0422080f3b71e3ea96",
+    "clients/web/tests/conversation_action_disclosure/files_menu.browser.spec.ts": "9db51da11b1518abaa2c15a91869c5417d6f91ee17ba5207c416e7a58072bf72",
+    "clients/web/tests/conversation_action_disclosure/files_layout.browser.spec.ts": "113cc19554f90ace14e53262098ac587651ffb6a43874d5be761a37fdafc0a2a",
+    "tools/qa/local_features/features.json": "29c18f90bed5eda7e436cbd85dbf7cdcb100ba094b56e917f6a4b731a145cbff",
+    "tools/qa/conversation_files/run.py": "dc7f260c8458d822458cc1ae51ccc7bda15b9eef87cb55d29f599f4fed0fcf91",
+    "tools/qa/conversation_files/scenario.mjs": "ba08d481904c5fc7df7c15b441b3b2a151f15d31876cdf3e61879ac0ca76eb3d",
+    "tools/qa/conversation_files/README.md": "c32525fa3574488cd3c869d21bf1aee10bb53e560573a08113c2260f357935f0"
+  },
+  "scenarios": [
+    {
+      "issue": 254,
+      "width": 1440,
+      "checks": {
+        "text_metadata_cursor_and_origin_navigation": "PASS",
+        "text_previous_page_peer_delete_live": "PASS",
+        "dm_both_participants_metadata_cursor": "PASS",
+        "acl": {
+          "status": "PASS",
+          "participants_download_preview": [
+            200,
+            200
+          ],
+          "third_admin_history_download_preview": [
+            404,
+            404,
+            404
+          ],
+          "anonymous_download_preview": [
+            401,
+            401
+          ]
+        },
+        "dm_previous_page_peer_delete_live_and_deleted_object_denied": "PASS",
+        "scope_changes_no_rows_or_tombstones_leak": "PASS",
+        "close_reopen_refresh_cursor_recovery": "PASS",
+        "dm_origin_navigation": "PASS"
+      },
+      "roles": [
+        "MEMBER",
+        "MEMBER",
+        "ADMIN"
+      ],
+      "mocks": false,
+      "fixture": "Actual uploads/messages; 50 synthetic body-only SQL messages per scope to exercise older history pages; no attachment row/file seeding",
+      "text_participant_file_statuses": [
+        200,
+        200
+      ],
+      "text_delete_http_status": 204,
+      "text_delete_observation": {
+        "ws_counts": {
+          "deleted": 1,
+          "ready": 3,
+          "resync": 0
+        },
+        "rows": 1,
+        "visibility": "visible",
+        "server_deleted": true
+      },
+      "text_deleted_file_statuses": [
+        404,
+        404
+      ],
+      "acl_participant_a": [
+        200,
+        200
+      ],
+      "acl_participant_b": [
+        200,
+        200
+      ],
+      "acl_third_history_status": 404,
+      "acl_third_files": [
+        404,
+        404
+      ],
+      "text_anonymous_file_statuses": [
+        401,
+        401
+      ],
+      "dm_delete_http_status": 204,
+      "status": "PASS",
+      "browser": "153.0.8010.12",
+      "candidate": "0183e48fc65d0850e4403852c080f522d76d51aa",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "text-files-paginated.png": "d543fa8e25c774ab2a8d8db9eec1cdd346972dacabff4b89f688eb92e7c938d6",
+        "dm-files-after-delete-refresh.png": "35246f13767fe43ea9da4d8e2349da284be86fa9f157bbe6d423b301733d688b",
+        "dm-files-paginated.png": "566b193af40a9ed1ec84c7aa315e4304b2dae4badd703972192acb77fc332596"
+      }
+    },
+    {
+      "issue": 254,
+      "width": 393,
+      "checks": {
+        "text_metadata_cursor_and_origin_navigation": "PASS",
+        "text_previous_page_peer_delete_live": "PASS",
+        "dm_both_participants_metadata_cursor": "PASS",
+        "acl": {
+          "status": "PASS",
+          "participants_download_preview": [
+            200,
+            200
+          ],
+          "third_admin_history_download_preview": [
+            404,
+            404,
+            404
+          ],
+          "anonymous_download_preview": [
+            401,
+            401
+          ]
+        },
+        "dm_previous_page_peer_delete_live_and_deleted_object_denied": "PASS",
+        "scope_changes_no_rows_or_tombstones_leak": "PASS",
+        "close_reopen_refresh_cursor_recovery": "PASS",
+        "dm_origin_navigation": "PASS"
+      },
+      "roles": [
+        "MEMBER",
+        "MEMBER",
+        "ADMIN"
+      ],
+      "mocks": false,
+      "fixture": "Actual uploads/messages; 50 synthetic body-only SQL messages per scope to exercise older history pages; no attachment row/file seeding",
+      "text_participant_file_statuses": [
+        200,
+        200
+      ],
+      "text_delete_http_status": 204,
+      "text_delete_observation": {
+        "ws_counts": {
+          "deleted": 1,
+          "ready": 3,
+          "resync": 0
+        },
+        "rows": 1,
+        "visibility": "visible",
+        "server_deleted": true
+      },
+      "text_deleted_file_statuses": [
+        404,
+        404
+      ],
+      "acl_participant_a": [
+        200,
+        200
+      ],
+      "acl_participant_b": [
+        200,
+        200
+      ],
+      "acl_third_history_status": 404,
+      "acl_third_files": [
+        404,
+        404
+      ],
+      "text_anonymous_file_statuses": [
+        401,
+        401
+      ],
+      "dm_delete_http_status": 204,
+      "status": "PASS",
+      "browser": "153.0.8010.12",
+      "candidate": "0183e48fc65d0850e4403852c080f522d76d51aa",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "text-files-paginated.png": "cbb062ed00c9dafe44aab1199fb3e5e75d8db3067a92d8c29103a51fd153f3ab",
+        "dm-files-after-delete-refresh.png": "0357ae93ac49a23f3b4c43a6fc27b6d256b05ac85c9b0fb50e63d904c1dc1c61",
+        "dm-files-paginated.png": "c560b7c1b52948a39bea712a0ade7bcf023422c0c434102331b50a1826d4286e"
+      }
+    }
+  ],
+  "checklist": {
+    "1_TEXT_metadata_cursor_origin": "PASS at 1440 and 393 CSS px; 3 files across 2 actual uploads/messages, older history cursor exercised",
+    "2_DM_participants_and_third_party_denial": "PASS: MEMBER A/B history metadata and download/preview 200; third ADMIN history/download/preview 404",
+    "3_live_delete_on_previously_loaded_page": "PASS: other MEMBER deletes its older two-file message with panel open; 3 rows become 1 without manual refresh in TEXT and DM",
+    "4_scoped_rows_and_tombstones": "PASS: switch between 2 TEXT channels and 2 DMs, empty/live file state remains scoped",
+    "5_protected_preview_and_download": "PASS: participants 200; third ADMIN DM 404; anonymous TEXT/DM 401; deleted TEXT/DM objects 404",
+    "6_close_reopen_refresh_cursor": "PASS: correct single live file survives recovery and loading older cursor; deleted file stays absent"
+  },
+  "defects_and_fixes": [
+    {
+      "before": "At <=1023px CSS hid the only conversation overflow menu, blocking Files in TEXT and DM",
+      "after": "Overflow remains visible and interactive; mobile controls retain 44px minimum touch height",
+      "test_first": "6 mobile menu tests failed visibility before CSS fix; 8 viewport/kind menu tests pass after"
+    },
+    {
+      "before": "Early mobile captures showed congested/overlapping metadata headings with automatic table widths",
+      "after": "Header/value wrapping and fixed mobile column widths keep metadata within its own cells; foreground/font/frame capture guards prevent stale-page captures",
+      "verification": "6 component bounds tests at 320/393/1440px PASS; final full-app panel captures at 1440/393px visually inspected"
+    }
+  ],
+  "verification": {
+    "unit_tests": "1492 PASS / 467 files",
+    "browser_tests": "17 PASS; includes 8 menu and 6 metadata layout cases",
+    "policy_tests": "4 PASS",
+    "visual_fixture_capture_tests": "6 PASS after adding screenshot receipts",
+    "local_feature_command": "./tools/qa/local_features/check.sh --feature chat --platform web --base origin/master --real-stack",
+    "local_feature_run": ".out/local-features/20261012-155801",
+    "local_feature_source": "7161586b4953f2800aafa4b4874ae7f0425430ad diff-sha256=783d1ed237a3f5a4fa0d7d685dc991ac43f1db9567d463e74cc7a1202eef5d85",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "report_status": "REVIEW_REQUIRED: auxiliary real-stack images are not all manually approved; this evidence approves only #254",
+    "shell_and_chat_run": ".out/local-features/20261012-154821",
+    "earlier_unstable_result": {
+      "stage": "web-real-stack-393 voice lease notification wait",
+      "status": "FAIL at 20s; observed hints 0, connected transports 0, outbox pending 3/claimed 0/emitted 0",
+      "targeted_retry_command": "DOCKER_CONTEXT=colima-boohtacord-qa python3 -m tools.qa.client_lifecycle.run --width 393 --critical --portable-proxy",
+      "targeted_retry": "PASS; later complete 155801 run also PASS on both widths",
+      "latency_or_production_guarantee": false
+    }
+  },
+  "visual_review": {
+    "status": "PASS_SCOPED",
+    "actual_app_panel_images": 6,
+    "local_path": ".out/qa254-20261012/{1440,393}/",
+    "before_fixed_columns_local_path": ".out/qa254-20261012/before-fixed-columns/",
+    "notes": [
+      "Only files panels captured: no account names, DM IDs, message bodies, cookies, tokens or attachment contents",
+      "Final mobile headers/values stay in their columns; long filenames and action labels wrap within the available width",
+      "All actual origin-navigation controls were clicked successfully at both widths; metadata text/date/size verified",
+      "13 previously inspected responsive shell fixtures from the earlier shell run are byte-identical; no broad baseline approval"
+    ]
+  },
+  "limits": [
+    "Web viewport acceptance; no native Android/iOS or physical-device acceptance claimed",
+    "Six synthetic 70-byte PNG uploads; this does not establish upload limits, other format support or load capacity",
+    "50 body-only synthetic SQL messages per conversation force older history pages; no attachment rows or files are seeded",
+    "Screenshots remain ignored local artifacts; only sanitized metadata and SHA256 receipts are published",
+    "Broader #42/#53/#54 and voice/production/notification gates remain open"
+  ]
+}
