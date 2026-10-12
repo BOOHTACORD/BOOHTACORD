@@ -33,13 +33,15 @@
       "clients/web/src/screen*",
       "clients/flutter/lib/src/features/screen/*",
       "clients/flutter/lib/src/services/screen*",
-      "clients/flutter/lib/src/widgets/screen*"
+      "clients/flutter/lib/src/widgets/screen*",
+      "clients/flutter/packages/livekit_client/lib/src/widgets/video_track_renderer*"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts"
     ],
     "flutter": [
-      "test/uiux_2026/dialog_visual_capture_test.dart"
+      "test/uiux_2026/dialog_visual_capture_test.dart",
+      "test/video_track_renderer_stream_lifecycle_test.dart"
     ]
   },
   "settings": {

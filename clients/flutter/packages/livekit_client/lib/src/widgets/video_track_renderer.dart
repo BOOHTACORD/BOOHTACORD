@@ -221,13 +221,17 @@ class _VideoTrackRendererState extends State<VideoTrackRenderer> {
   }
 
   Future<void> _attach() async {
-    _renderer?.srcObject = widget.track.mediaStream;
     final renderer = _renderer;
     if (renderer != null) {
       setVideoTrackRendererFirstFrameCallback(
         renderer,
         widget.onFirstFrameRendered,
       );
+      // Layout and resize rebuilds must retain the native source generation.
+      // Reattaching the same stream would discard its queued first-frame event.
+      if (!identical(renderer.srcObject, widget.track.mediaStream)) {
+        renderer.srcObject = widget.track.mediaStream;
+      }
     }
     await _listener?.dispose();
     _listener = widget.track.createListener()
