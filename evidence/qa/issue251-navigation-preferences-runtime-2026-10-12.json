@@ -1,0 +1,142 @@
+{
+  "issue": 251,
+  "status": "PASS",
+  "gate_closed": true,
+  "leaf": "T-050",
+  "dependencies": [
+    "T-020",
+    "T-022",
+    "T-040"
+  ],
+  "candidate_base": "dd52cad16807c2ff2e87f787c079ba3997ef2471",
+  "candidate_diff_sha256": "8ee002b6ec5db4235eabaf2182d5d8c51e301b7ec3a63de183c2a1593f7f33ac",
+  "os": "macOS-27.0.1-arm64-arm-64bit",
+  "source_manifest": {
+    "clients/web/src/workspace/workspace_drawer_focus.ts": "55495216bbf7e2a2239a3f93140e6f2ab409607ba61df922dcaf06c784b750de",
+    "clients/web/src/workspace/workspace_drawer_voice_controls.spec.ts": "6c2700b4e517eb1a2741d894345a8fe76200351ceb27d0955af511c26fc2d44b",
+    "tools/qa/navigation_preferences/run.py": "b3f4d294491d21bf93589895961bdb2cfc2d98564cf076ec04d80c8786d96509",
+    "tools/qa/navigation_preferences/scenario.mjs": "90a0fa15c5d246996d980ae4806f3edabda9cac8c2d1907c39ff2b0ab3d24b7f"
+  },
+  "scenarios": [
+    {
+      "issue": 251,
+      "width": 1440,
+      "checks": {
+        "add_reload_restore": "PASS",
+        "accounts_isolated": "PASS",
+        "origins_isolated": "PASS",
+        "remove_reload_restore": "PASS",
+        "case_insensitive_search_and_navigation": "PASS",
+        "collapsed_voice_dock_and_controls": "PASS",
+        "archive_prune_no_extra_topology_mutation": "PASS"
+      },
+      "origins": [
+        "https://localhost:4810",
+        "https://localhost:4811"
+      ],
+      "roles": [
+        "ADMIN",
+        "MEMBER"
+      ],
+      "mocks": false,
+      "status": "PASS",
+      "browser": "153.0.8010.12",
+      "candidate": "dd52cad16807c2ff2e87f787c079ba3997ef2471",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "case-insensitive-search.png": "aacc5aff06a15e87f7d3b2eecfc50cad9400d53b6eb78bd9df63e1fcb13b6339",
+        "favorite-restored.png": "91a83bc8d7b6832db429fbd30ccaa8def03e7cac3ed35dbf8bb8bfa7bebd0846",
+        "archived-favorite-pruned.png": "40e293e752dee8cd58c90171d73b8f86cc92763ca36138b08a8b8f633c16e625",
+        "collapsed-connected-dock.png": "888abcbba644dce2af9ae5b57c2d85e029ebb65ca95fbec114f34dd65e5be08f"
+      }
+    },
+    {
+      "issue": 251,
+      "width": 393,
+      "checks": {
+        "add_reload_restore": "PASS",
+        "accounts_isolated": "PASS",
+        "origins_isolated": "PASS",
+        "remove_reload_restore": "PASS",
+        "case_insensitive_search_and_navigation": "PASS",
+        "collapsed_voice_dock_and_controls": "PASS",
+        "archive_prune_no_extra_topology_mutation": "PASS"
+      },
+      "origins": [
+        "https://localhost:4810",
+        "https://localhost:4811"
+      ],
+      "roles": [
+        "ADMIN",
+        "MEMBER"
+      ],
+      "mocks": false,
+      "status": "PASS",
+      "browser": "153.0.8010.12",
+      "candidate": "dd52cad16807c2ff2e87f787c079ba3997ef2471",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "case-insensitive-search.png": "a8a23d9e98b5dfd7048c44965b85ccfee2fb13c3e68edfb51ca5afd7cd45b2e0",
+        "favorite-restored.png": "88a817bd264026790ad7b76f3247b52e7965876ab30c07b16b9f62e8aac70993",
+        "archived-favorite-pruned.png": "353742e378997464923efeab1467a91c31476a1a92ce90be721827dab442289f",
+        "collapsed-connected-dock.png": "28fc240b30c1dbedcfa92545dd7daae265c6857be674275f16f9d00099464bc6"
+      }
+    }
+  ],
+  "real_backend_and_database": true,
+  "real_LiveKit_listener_connection": true,
+  "production_mutations": false,
+  "defect_and_fix": {
+    "before": "393px open navigation made visible dock inert; actual leave click timed out because nav-drawer intercepted pointer events",
+    "root_cause": "useWorkspaceDrawerFocus made .mobile-voice-dock inert although it is rendered as part of the active navigation drawer",
+    "after": "Visible dock stays interactive inside modal navigation; background main/members/search remain inert",
+    "test_first": "workspace_drawer_voice_controls.spec.ts FAIL (dock.inert true vs false) before implementation; 11 focus/history tests PASS after",
+    "runtime_after": "Actual Leave click after category collapse disconnects successfully on both widths"
+  },
+  "verification": {
+    "focused_preferences_and_files": "12 PASS / 3 files",
+    "focused_focus_history": "11 PASS / 3 files",
+    "local_feature_command": "./tools/qa/local_features/check.sh --feature shell --platform web --base origin/master --real-stack",
+    "run": ".out/local-features/20261012-151515",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "report_status": "REVIEW_REQUIRED; broader real-stack images are not all approved"
+  },
+  "visual_review": {
+    "status": "PASS_SCOPED",
+    "actual_full_app_images": 8,
+    "responsive_shell_fixture_images": 13,
+    "notes": [
+      "All eight actual app captures inspected at 1440/393 px: favorite restored, case-insensitive search, collapsed connected dock, archived favorite removed",
+      "Favorite/category labels, focus outlines and dock controls stay within their drawer/viewport; no clipping observed in these states",
+      "13 responsive-shell fixture captures inspected from 320x640 to 1920x1080 including landscape and keyboard focus; layout only, not full app acceptance",
+      "Real-stack auxiliary screenshots were not all visually reviewed; no broad baseline approval"
+    ]
+  },
+  "limits": [
+    "Web-only issue; Android/iOS Flutter feature parity is outside #251",
+    "Listener connection and actual Leave confirm dock behavior; no audio quality/FPS/capacity acceptance claimed",
+    "Same synthetic guild/user DB used at two origin ports; protected mutation Origin validated by a separate owned API instance for each origin",
+    "Screenshots remain ignored local artifacts; only SHA256 receipts are published"
+  ]
+}

@@ -54,7 +54,6 @@ export function useWorkspaceDrawerFocus(
         const sibling = document.getElementById(id)
         if (sibling !== panel) makeInert(sibling)
       }
-      if (next === 'nav') makeInert(panel?.querySelector<HTMLElement>('.mobile-voice-dock') ?? null)
       const entry = panel && (focusables(panel)[0] ?? panel.querySelector<HTMLElement>('.nav-drawer') ?? panel)
       entry?.focus()
     } else {

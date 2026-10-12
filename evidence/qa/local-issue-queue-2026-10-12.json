@@ -149,13 +149,16 @@
       "number": 251,
       "title": "QA: проверить избранные каналы и сворачивание категорий (#66)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/251",
-      "status": "IN_PROGRESS"
+      "status": "PASS",
+      "evidence": "evidence/qa/issue251-navigation-preferences-runtime-2026-10-12.json",
+      "reason": "All browser checklist criteria PASS at 1440/393px with actual API/PostgreSQL/LiveKit; visible mobile voice dock inert defect fixed and actual Leave click verified. Eight app images inspected."
     },
     {
       "number": 254,
       "title": "[QA] Проверить файлы беседы и ACL для TEXT/DM (#75)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/254",
-      "status": "SELECTED"
+      "status": "IN_PROGRESS",
+      "reason": "Actual uploaded TEXT files: metadata, cursor pagination and navigation PASS. Investigating older-page row invalidation after peer DELETE 204; remaining DM/ACL/scope checks still running."
     },
     {
       "number": 257,
