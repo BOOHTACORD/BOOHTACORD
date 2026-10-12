@@ -1,9 +1,9 @@
-.voice-room--mini { position: fixed; right: var(--gc-space-4); bottom: calc(var(--gc-layout-voice-dock) + var(--gc-space-4)); z-index: 30; width: min(360px, calc(100vw - 2 * var(--gc-space-4))); height: auto; min-height: 0; overflow: hidden; border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-lg); background: var(--gc-surface); box-shadow: 0 14px 36px rgb(0 0 0 / 42%); }
-.voice-room--mini > .main-header, .voice-room--mini > .room-wrap, .voice-room--mini > .voice-room-footer, .voice-room--mini > .state { display: none; }
-.voice-room--mini .screen-viewer { display: block; min-height: 0; padding: var(--gc-space-2); }
-.voice-room--mini .screen-stage { width: 100%; aspect-ratio: 16 / 9; min-height: 0; }
-.voice-room--mini .screen-stage-top, .voice-room--mini .screen-fullscreen-button, .voice-room--mini .stream-quality-row, .voice-room--mini .screen-rail-section, .voice-room--mini .stream-voice-return { display: none; }
+.voice-room.voice-room--mini { display: block; position: fixed; right: var(--gc-space-4); bottom: calc(var(--gc-layout-voice-dock) + var(--gc-space-4)); z-index: 30; width: min(360px, calc(100vw - 2 * var(--gc-space-4))); height: auto; min-height: 0; overflow: hidden; border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-lg); background: var(--gc-surface); box-shadow: 0 14px 36px rgb(0 0 0 / 42%); }
+.voice-room.voice-room--mini > .main-header, .voice-room.voice-room--mini > .room-wrap, .voice-room.voice-room--mini > .voice-room-footer, .voice-room.voice-room--mini > .state { display: none; }
+.voice-room.voice-room--mini .screen-viewer.stream-wrap { display: block; height: auto; flex: none; min-height: 0; padding: var(--gc-space-2); }
+.voice-room.voice-room--mini .screen-stage { width: 100%; aspect-ratio: 16 / 9; min-height: 0; }
+.voice-room.voice-room--mini .screen-stage-top, .voice-room.voice-room--mini .screen-fullscreen-button, .voice-room.voice-room--mini .stream-quality-row, .voice-room.voice-room--mini .screen-rail-section, .voice-room.voice-room--mini .stream-voice-return { display: none; }
 .screen-mini-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--gc-space-1); padding-bottom: var(--gc-space-2); }
 .screen-mini-toolbar strong { flex: 1 1 100%; overflow: hidden; color: var(--gc-text-primary); font-size: var(--gc-text-small); text-overflow: ellipsis; white-space: nowrap; }
 .screen-mini-toolbar button { min-height: 32px; border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-sm); padding: 0 var(--gc-space-2); color: var(--gc-text-primary); background: var(--gc-surface-raised); }
-@media (max-width: 639px) { .voice-room--mini { right: var(--gc-space-2); bottom: calc(var(--gc-layout-voice-dock) + var(--gc-space-2)); width: min(320px, calc(100vw - 2 * var(--gc-space-2))); } }
+@media (max-width: 639px) { .voice-room.voice-room--mini { right: var(--gc-space-2); bottom: calc(var(--gc-layout-voice-dock) + var(--gc-space-2)); width: min(320px, calc(100vw - 2 * var(--gc-space-2))); } }

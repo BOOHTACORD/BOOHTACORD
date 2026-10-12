@@ -35,15 +35,18 @@ extension PinnedScreenMiniPlayerFloatingSurfaceRenderer
           participant,
           screenVolume,
         ),
-        renderPinnedScreenMiniPlayerVideoPreview(
-          track,
-          publicationSid,
-          participant,
-          publication,
-          rendererOwner,
-          miniGeneration,
-          selectedGeneration,
-          selectedFullscreen,
+        Flexible(
+          fit: FlexFit.loose,
+          child: renderPinnedScreenMiniPlayerVideoPreview(
+            track,
+            publicationSid,
+            participant,
+            publication,
+            rendererOwner,
+            miniGeneration,
+            selectedGeneration,
+            selectedFullscreen,
+          ),
         ),
         if (hasAudio && screenVolume != null && participant != null)
           Padding(

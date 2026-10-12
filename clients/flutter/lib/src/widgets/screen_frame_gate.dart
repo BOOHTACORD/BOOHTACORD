@@ -83,33 +83,35 @@ class _ScreenFrameGateState extends State<ScreenFrameGate> {
           child: Center(
             child: Semantics(
               liveRegion: true,
-              child: Padding(
-                padding: EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (widget.waitingMessage == null)
-                      SizedBox.square(
-                        dimension: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    else
-                      Icon(
-                        Icons.visibility_off_outlined,
-                        color: GcColors.muted,
-                        size: 24,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (widget.waitingMessage == null)
+                        SizedBox.square(
+                          dimension: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      else
+                        Icon(
+                          Icons.visibility_off_outlined,
+                          color: GcColors.muted,
+                          size: 24,
+                        ),
+                      SizedBox(height: 12),
+                      Text(
+                        widget.waitingMessage ??
+                            'Получаем первый кадр демонстрации…',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: GcColors.muted, fontSize: 14),
                       ),
-                    SizedBox(height: 12),
-                    Text(
-                      widget.waitingMessage ??
-                          'Получаем первый кадр демонстрации…',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: GcColors.muted, fontSize: 14),
-                    ),
-                    if (widget.recoveryExhausted &&
-                        widget.onRecoveryRetry != null)
-                      ScreenRecoveryRetry(onPressed: widget.onRecoveryRetry!),
-                  ],
+                      if (widget.recoveryExhausted &&
+                          widget.onRecoveryRetry != null)
+                        ScreenRecoveryRetry(onPressed: widget.onRecoveryRetry!),
+                    ],
+                  ),
                 ),
               ),
             ),

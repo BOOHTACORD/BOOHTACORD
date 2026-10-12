@@ -583,6 +583,70 @@ void main() {
   });
 
   testWidgets(
+    'macOS app resize preserves native editing across stats rebuilds',
+    (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = const Size(1440, 900);
+      addTearDown(tester.view.reset);
+      final state = AppState(_PortraitApi());
+      await state.initialize();
+      state
+        ..selectedChannel = _PortraitApi.channel
+        ..voiceChannel = _PortraitApi.voiceChannel
+        ..voicePhase = VoicePhase.listener;
+      await tester.pumpWidget(BoohtacordApp(state: state));
+      await tester.pumpAndSettle();
+      final composer = find.byWidgetPredicate(
+        (widget) =>
+            widget is TextField &&
+            widget.decoration?.hintText == 'Написать сообщение…',
+      );
+      await tester.showKeyboard(composer);
+      tester.testTextInput.updateEditingValue(
+        const TextEditingValue(
+          text: 'Native draft',
+          selection: TextSelection.collapsed(offset: 12),
+        ),
+      );
+      await tester.pump();
+      expect(
+        tester.widget<TextField>(composer).controller!.text,
+        'Native draft',
+      );
+      expect(
+        ComposerDraftMemory.load<ChatMessage>(
+          state.user!.accountId,
+          ComposerDraftKind.channel,
+          _PortraitApi.channel.id,
+        )?.body,
+        'Native draft',
+      );
+      for (final size in [
+        const Size(801, 949),
+        const Size(1440, 900),
+        const Size(800, 900),
+      ]) {
+        tester.view.physicalSize = size;
+        // Real stats notifications also rebuild BoohtacordApp during native resize.
+        state.notifyListeners();
+        await tester.pumpAndSettle();
+        expect(
+          tester.widget<TextField>(composer).controller!.text,
+          'Native draft',
+        );
+        expect(state.voicePhase, VoicePhase.listener);
+        expect(state.selectedChannel?.id, _PortraitApi.channel.id);
+        expect(tester.takeException(), isNull);
+      }
+      await tester.pumpWidget(const SizedBox.shrink());
+      state.dispose();
+      debugDefaultTargetPlatformOverride = null;
+    },
+  );
+
+  testWidgets(
     'shows a server-authored text channel description in its header',
     (tester) async {
       final state = AppState(_PortraitApi());
@@ -1641,6 +1705,132 @@ void main() {
     await tester.pumpAndSettle();
     expect(state.workspacePanel, WorkspacePanel.none);
 
+    await tester.pumpWidget(const SizedBox.shrink());
+    state.dispose();
+  });
+
+  for (final action in ['close', 'back', 'system Back']) {
+    testWidgets('dirty profile $action asks before discarding edits', (
+      tester,
+    ) async {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = const Size(801, 949);
+      addTearDown(tester.view.reset);
+      final state = AppState(_PortraitApi());
+      await state.initialize();
+      state.toggleWorkspacePanel(WorkspacePanel.profile);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: AnimatedBuilder(
+            animation: state,
+            builder: (context, _) => WorkspaceScreen(state: state),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      final name = find.byWidgetPredicate(
+        (widget) =>
+            widget is TextField &&
+            widget.decoration?.labelText == 'Отображаемое имя',
+      );
+      await tester.enterText(name, 'Unsaved profile');
+      await tester.pump();
+      if (action == 'system Back') {
+        await tester.binding.handlePopRoute();
+      } else {
+        await tester.tap(
+          find.byTooltip(action == 'close' ? 'Закрыть настройки' : 'Назад'),
+        );
+      }
+      await tester.pumpAndSettle();
+      expect(find.text('Несохранённые изменения'), findsOneWidget);
+      expect(state.workspacePanel, WorkspacePanel.profile);
+      await tester.tap(find.text('Отмена'));
+      await tester.pumpAndSettle();
+      expect(
+        tester.widget<TextField>(name).controller!.text,
+        'Unsaved profile',
+      );
+      await tester.tap(find.byTooltip('Закрыть настройки'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Выйти без сохранения'));
+      await tester.pumpAndSettle();
+      expect(state.workspacePanel, WorkspacePanel.none);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox.shrink());
+      state.dispose();
+    });
+  }
+
+  testWidgets('dirty profile close cancels when the account changes', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(801, 949);
+    addTearDown(tester.view.reset);
+    final state = AppState(_PortraitApi());
+    await state.initialize();
+    state.toggleWorkspacePanel(WorkspacePanel.profile);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: AnimatedBuilder(
+          animation: state,
+          builder: (context, _) => WorkspaceScreen(state: state),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    final name = find.byWidgetPredicate(
+      (widget) =>
+          widget is TextField &&
+          widget.decoration?.labelText == 'Отображаемое имя',
+    );
+    await tester.enterText(name, 'Unsaved profile');
+    await tester.tap(find.byTooltip('Закрыть настройки'));
+    await tester.pumpAndSettle();
+    expect(find.text('Несохранённые изменения'), findsOneWidget);
+    state.profile = const OwnProfile(
+      accountId: 'replacement-account',
+      login: 'replacement',
+      displayName: 'Replacement',
+      role: 'MEMBER',
+    );
+    state.notifyListeners();
+    await tester.pumpAndSettle();
+    expect(find.text('Несохранённые изменения'), findsNothing);
+    expect(state.workspacePanel, WorkspacePanel.profile);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+    state.dispose();
+  });
+
+  testWidgets('profile close waits for an in-flight save', (tester) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(801, 949);
+    addTearDown(tester.view.reset);
+    final state = AppState(_PortraitApi());
+    await state.initialize();
+    state.toggleWorkspacePanel(WorkspacePanel.profile);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: AnimatedBuilder(
+          animation: state,
+          builder: (context, _) => WorkspaceScreen(state: state),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    state.profileSaving = true;
+    state.notifyListeners();
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Закрыть настройки'));
+    await tester.pumpAndSettle();
+    expect(state.workspacePanel, WorkspacePanel.profile);
+    expect(find.text('Несохранённые изменения'), findsNothing);
+    state.profileSaving = false;
+    await tester.tap(find.byTooltip('Закрыть настройки'));
+    await tester.pumpAndSettle();
+    expect(state.workspacePanel, WorkspacePanel.none);
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
   });
@@ -2853,12 +3043,14 @@ void main() {
         GcColors.danger,
       );
       expect(
-        tester.widget<Icon>(
-          find.descendant(
-            of: find.byTooltip(tooltip),
-            matching: find.byType(Icon),
-          ),
-        ).color,
+        tester
+            .widget<Icon>(
+              find.descendant(
+                of: find.byTooltip(tooltip),
+                matching: find.byType(Icon),
+              ),
+            )
+            .color,
         GcColors.onDanger,
       );
     }

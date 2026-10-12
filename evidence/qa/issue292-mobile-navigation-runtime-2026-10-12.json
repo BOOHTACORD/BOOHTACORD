@@ -1,0 +1,728 @@
+{
+  "schema_version": 1,
+  "issue": 292,
+  "issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/292",
+  "tested_at": "2026-10-12",
+  "status": "PARTIAL",
+  "close_issue": false,
+  "selected_leaf": "FV2-004",
+  "dependencies_read": [
+    "FV2-001",
+    "FV2-014",
+    "FV2-016",
+    "T-014",
+    "T-020",
+    "T-050",
+    "T-051"
+  ],
+  "contract_read": "docs/design/UIUX_2026_MOBILE_NAVIGATION.md",
+  "summary": "Android/iOS production App exercised real cookie-authenticated Go/PostgreSQL/LiveKit navigation with two synthetic native listener Rooms. All ten observed navigation rows and four derivative profile rows pass on each platform. Physical-device, spoken-reader and audible-call gates remain unproven.",
+  "production_changes_owned_by_this_QA_agent": [],
+  "tested_shared_fix": "#297 profile dirty Close/Back guard, implemented/test-first by the settings worker; native derivative verifies the exact tested source hashes.",
+  "platforms": {
+    "android": {
+      "observed_runtime_result": "PASS",
+      "issue_gate_result": "PARTIAL",
+      "runner_exit_code": 0,
+      "runtime_receipt": ".out/qa292-20261012/android/runtime.json",
+      "runtime_receipt_sha256": "20392eafc6a194400db4b6c689069c58efebe222d7dcda303abad657cd86014a",
+      "source": {
+        "candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+        "dirty_diff_sha256": "f494c803beee3f51e841ffe95e4e30bd0f84d628007db321930b2c593797b966",
+        "flutter_lib_manifest_sha256": "bb8548fad80b9858b0c2d632a46c099d6a73eea0f5707a1fad1fcf91dcf7e4cf",
+        "app_source_files": {
+          "src/screens/profile_screen.dart": "3140813ef09927fc2a62c723faed4e8ce24ef955aaf56b625fad8a6c9dcb0b3a",
+          "src/screens/workspace_ui/workspace_screen/build/back_guard/handler.dart": "8669ad6075fa956f14239985e944eafbe9a77c20b7dfd62a2081da42f28d9167",
+          "src/screens/workspace_ui/workspace_screen/build/swipe_navigation/handler.dart": "e34d716ee0f7963297cc9992f007628bc7ed107fed22e84ec546e399b706ee9d",
+          "src/screens/workspace_ui/workspace_screen/build/mobile_layers/handler.dart": "a3e55958ebefbc3d7368db1a6eec32d035ce00d6d7807e15276f6c7da0925dfa",
+          "src/screens/workspace_ui/main_surface/build/handler.dart": "4b87a2ed0e2de5bf805eb1654d926495c79d46e9f65226e72a986358f5f75f96",
+          "src/screens/workspace_ui/workspace_screen/close_drawers/handler.dart": "8971ef5a19313795598ce62925eadc153bcb99d9fde63638ae798c41e6ff2e99",
+          "src/widgets/sliding_drawer_layer.dart": "4cd4b9bde902f080f30e00cd1cc3402163d7732e5ecc7dd847f62e2a4286bc57",
+          "src/features/workspace/search/navigation.dart": "4787e3d72068b14e35722d236642c4dbba0421729fc8ed056a36d23b0f264c8c",
+          "src/features/voice/admission/join.dart": "6971f855b16749bf597ca5c00e338abf60694bbc2f5a119852d35ac8c1888a2d",
+          "src/features/workspace/mobile_navigation/top.dart": "39b0db42f171863eb536967d23ae231b211440ba64f402eab42f98be60702a01"
+        },
+        "qa_source_files": {
+          "clients/flutter/integration_test/mobile_navigation_qa_test.dart": "aed6449c54d7ad7640c4c75dedb0bf13f31a055dba1fce2632980dfda23f03ab",
+          "clients/flutter/test_driver/mobile_navigation_qa.dart": "09dd7ec9a7eee4c884ceee1ff0a8ec785662f7e04e7bdd31e76ac233fff6efbb",
+          "tools/qa/mobile_navigation/run_native.py": "c17e70f9aebe8e5479563d5f4d83a450c05f0ac127b4601bc8a3378ac1193cf9",
+          "tools/qa/mobile_navigation/stack.py": "f2a7b97e9e5af60d6d50622068b019366929e6d065bc9a075e0e255e5214eb3c",
+          "tools/qa/mobile_navigation/os_back.py": "ffd90c9f9bb3b2a5e2adb03ec3ff8a9fe7a506eecc82114e63b9a2bfdd2f28c0"
+        },
+        "source_copy_match": true,
+        "native_artifact_sha256": "c5e63fed66fb33689e43950a8cc648076189f1c24ccb8f082d7244d1c61c2f3b"
+      },
+      "device": "emulator-5556",
+      "os_version": "sdk_phone64_arm64-userdebug 15 AE3A.240806.019 12368160 test-keys",
+      "viewport": {
+        "physical_width": 1080.0,
+        "physical_height": 2400.0,
+        "device_pixel_ratio": 2.625
+      },
+      "build_mode": "debug",
+      "physical_device": false,
+      "real_backend_and_SFU": true,
+      "mocks": false,
+      "roles": [
+        "ADMIN",
+        "MEMBER"
+      ],
+      "native_RTC_transport": {
+        "succeeded_candidate_pairs": 4,
+        "connected_dtls_transports": 2
+      },
+      "peer_RTC_transport": {
+        "succeeded_candidate_pairs": 6,
+        "connected_dtls_transports": 2
+      },
+      "voice_scope": "Two actual LiveKit listeners; real RTC transport stats, microphone/audio quality not exercised. Data publishing remains forbidden by the server contract.",
+      "checks": {
+        "actual_two_listener_SFU_and_RTC_transport": "PASS",
+        "drawer_channel_selection_closes_context_and_voice_retained": "PASS",
+        "drawer_outside_Escape_Back_focus_and_voice_retained": "PASS",
+        "controlled_edge_swipes_both_drawers_and_Back": "PASS",
+        "drawer_DM_selection_closes_relevant_context_and_voice_retained": "PASS",
+        "profile_one_Back_restores_DM_draft_and_voice": "PASS",
+        "audio_one_Back_restores_DM_draft_and_voice": "PASS",
+        "admin_one_Back_restores_DM_draft_and_voice": "PASS",
+        "DM_search_owned_query_reopen_draft_and_voice": "PASS",
+        "logout_clears_voice_and_selected_context": "PASS"
+      },
+      "Back_input": "ADB KEYCODE_BACK through emulator OS dispatch",
+      "android_OS_Back_dispatches": 9,
+      "observations": {
+        "admin_filter_after_panel_unmount": "reset to empty",
+        "drawer_tab_after_return": "DM retained"
+      },
+      "voice_telemetry_reports": 8,
+      "owned_resources_removed": true,
+      "screenshots": [
+        {
+          "path": ".out/qa292-20261012/android/native-connected-admin-filter.png",
+          "sha256": "401938ac21a68892b790e2ab78099e889923300f5ef8b571c732f2dd40bf99ff",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Actual filtered synthetic MEMBER card and filter count are readable; tall administration content is scrollable above the voice dock."
+        },
+        {
+          "path": ".out/qa292-20261012/android/native-connected-dm-context.png",
+          "sha256": "a1cbc0d515b919a8c0555b34f23ecdf646aa846818bed44b4bb0fa16fe70812d",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Selected synthetic DM participant heading is readable; empty conversation has no message body; connected voice remains separate."
+        },
+        {
+          "path": ".out/qa292-20261012/android/native-connected-profile.png",
+          "sha256": "68ff8bb6a2865746b483da4b43c19b621d54a15e0ccc2052e3f8f508ae61ad44",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Profile heading, Back/navigation controls, form labels and unchanged status are readable; horizontal tab overflow is deliberate and all four tabs were exercised."
+        },
+        {
+          "path": ".out/qa292-20261012/android/native-connected-search.png",
+          "sha256": "e14247410f151e47e8cafbee6d497d35dad393c9f815f4f11d94240e1fa17217",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Actual authorized DM-scope empty search and query are readable; scope-selector touch geometry has not been certified by this run."
+        },
+        {
+          "path": ".out/qa292-20261012/android/native-connected-text-context.png",
+          "sha256": "d2ad6c939d5147db23f2ad6a3ba3fdd7757386d512e16a56abc7cbd4ba89a002",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Selected text-channel heading and empty history are readable; voice connection remains independently visible."
+        },
+        {
+          "path": ".out/qa292-20261012/android/native-connected-voice.png",
+          "sha256": "293bf94d1a6d27212d73cd6f1b85c2a0cddfa9944ebd4a36d0d5d5aeb25b6c9f",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Selected voice heading, two actual participants, muted indicators and connected voice controls are readable; long peer label uses ellipsis."
+        },
+        {
+          "path": ".out/qa292-20261012/android/native-logout-cleared.png",
+          "sha256": "8a7494da6075041ee3bc830a258228f7f478736f090f510283eb1a4f94848a14",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Signed-out form is empty; selected conversation and voice controls are cleared."
+        },
+        {
+          "path": ".out/qa292-20261012/android/native-members-overlay.png",
+          "sha256": "784dc8264a1b016dcca00e88332787fc8e8dd731a357fba17aab0088763cc05b",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Members drawer closes independently; synthetic online/offline rows stay within the scrollable panel."
+        },
+        {
+          "path": ".out/qa292-20261012/android/native-navigation-overlay.png",
+          "sha256": "5f02e21badf42cf7b2b691e5444128ebf06d0a545c98ef9f9c9008fb91ff8492",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Navigation drawer, selected text row, distinct live voice row/two participants, close control and outside backdrop are readable."
+        },
+        {
+          "path": ".out/qa292-20261012/android/native-profile-save-feedback.png",
+          "sha256": "25c4e03d4b3cc1062d499059fbac7d14854ee3b1fc7207a058169c6d0fe1705d",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Synthetic saved profile name and explicit saved feedback are readable after the real API save."
+        }
+      ]
+    },
+    "ios": {
+      "observed_runtime_result": "PASS",
+      "issue_gate_result": "PARTIAL",
+      "runner_exit_code": 0,
+      "runtime_receipt": ".out/qa292-20261012/ios/runtime.json",
+      "runtime_receipt_sha256": "9af145d2175b0db79b678dafa3fd09a7720eb83b73f13e7cba8a3afa28e8bf81",
+      "source": {
+        "candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+        "dirty_diff_sha256": "f494c803beee3f51e841ffe95e4e30bd0f84d628007db321930b2c593797b966",
+        "flutter_lib_manifest_sha256": "bb8548fad80b9858b0c2d632a46c099d6a73eea0f5707a1fad1fcf91dcf7e4cf",
+        "app_source_files": {
+          "src/screens/profile_screen.dart": "3140813ef09927fc2a62c723faed4e8ce24ef955aaf56b625fad8a6c9dcb0b3a",
+          "src/screens/workspace_ui/workspace_screen/build/back_guard/handler.dart": "8669ad6075fa956f14239985e944eafbe9a77c20b7dfd62a2081da42f28d9167",
+          "src/screens/workspace_ui/workspace_screen/build/swipe_navigation/handler.dart": "e34d716ee0f7963297cc9992f007628bc7ed107fed22e84ec546e399b706ee9d",
+          "src/screens/workspace_ui/workspace_screen/build/mobile_layers/handler.dart": "a3e55958ebefbc3d7368db1a6eec32d035ce00d6d7807e15276f6c7da0925dfa",
+          "src/screens/workspace_ui/main_surface/build/handler.dart": "4b87a2ed0e2de5bf805eb1654d926495c79d46e9f65226e72a986358f5f75f96",
+          "src/screens/workspace_ui/workspace_screen/close_drawers/handler.dart": "8971ef5a19313795598ce62925eadc153bcb99d9fde63638ae798c41e6ff2e99",
+          "src/widgets/sliding_drawer_layer.dart": "4cd4b9bde902f080f30e00cd1cc3402163d7732e5ecc7dd847f62e2a4286bc57",
+          "src/features/workspace/search/navigation.dart": "4787e3d72068b14e35722d236642c4dbba0421729fc8ed056a36d23b0f264c8c",
+          "src/features/voice/admission/join.dart": "6971f855b16749bf597ca5c00e338abf60694bbc2f5a119852d35ac8c1888a2d",
+          "src/features/workspace/mobile_navigation/top.dart": "39b0db42f171863eb536967d23ae231b211440ba64f402eab42f98be60702a01"
+        },
+        "qa_source_files": {
+          "clients/flutter/integration_test/mobile_navigation_qa_test.dart": "aed6449c54d7ad7640c4c75dedb0bf13f31a055dba1fce2632980dfda23f03ab",
+          "clients/flutter/test_driver/mobile_navigation_qa.dart": "09dd7ec9a7eee4c884ceee1ff0a8ec785662f7e04e7bdd31e76ac233fff6efbb",
+          "tools/qa/mobile_navigation/run_native.py": "c17e70f9aebe8e5479563d5f4d83a450c05f0ac127b4601bc8a3378ac1193cf9",
+          "tools/qa/mobile_navigation/stack.py": "f2a7b97e9e5af60d6d50622068b019366929e6d065bc9a075e0e255e5214eb3c",
+          "tools/qa/mobile_navigation/os_back.py": "ffd90c9f9bb3b2a5e2adb03ec3ff8a9fe7a506eecc82114e63b9a2bfdd2f28c0"
+        },
+        "source_copy_match": true,
+        "native_artifact_sha256": "d0afe68a8aab508e7086e1bb06eb36ea9ab17332567eeca64a6f7f6a2c14491d"
+      },
+      "device": "82C26E13-0F1F-43F9-AF27-866DC22C2456",
+      "os_version": "Version 27.0 (Build 24A434)",
+      "viewport": {
+        "physical_width": 1206.0,
+        "physical_height": 2622.0,
+        "device_pixel_ratio": 3.0
+      },
+      "build_mode": "debug",
+      "physical_device": false,
+      "real_backend_and_SFU": true,
+      "mocks": false,
+      "roles": [
+        "ADMIN",
+        "MEMBER"
+      ],
+      "native_RTC_transport": {
+        "succeeded_candidate_pairs": 2,
+        "connected_dtls_transports": 2
+      },
+      "peer_RTC_transport": {
+        "succeeded_candidate_pairs": 2,
+        "connected_dtls_transports": 2
+      },
+      "voice_scope": "Two actual LiveKit listeners; real RTC transport stats, microphone/audio quality not exercised. Data publishing remains forbidden by the server contract.",
+      "checks": {
+        "actual_two_listener_SFU_and_RTC_transport": "PASS",
+        "drawer_channel_selection_closes_context_and_voice_retained": "PASS",
+        "drawer_outside_Escape_Back_focus_and_voice_retained": "PASS",
+        "controlled_edge_swipes_both_drawers_and_Back": "PASS",
+        "drawer_DM_selection_closes_relevant_context_and_voice_retained": "PASS",
+        "profile_one_Back_restores_DM_draft_and_voice": "PASS",
+        "audio_one_Back_restores_DM_draft_and_voice": "PASS",
+        "admin_one_Back_restores_DM_draft_and_voice": "PASS",
+        "DM_search_owned_query_reopen_draft_and_voice": "PASS",
+        "logout_clears_voice_and_selected_context": "PASS"
+      },
+      "Back_input": "integration binding handlePopRoute; OS route swipe not exercised",
+      "android_OS_Back_dispatches": 0,
+      "observations": {
+        "admin_filter_after_panel_unmount": "reset to empty",
+        "drawer_tab_after_return": "DM retained"
+      },
+      "voice_telemetry_reports": 6,
+      "owned_resources_removed": true,
+      "screenshots": [
+        {
+          "path": ".out/qa292-20261012/ios/native-connected-admin-filter.png",
+          "sha256": "0add4a03375e4928864080cc93d71dd723eb61aaa35f546d7764f4b003dcc448",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Actual filtered synthetic MEMBER card and filter count are readable; tall administration content is scrollable above the voice dock."
+        },
+        {
+          "path": ".out/qa292-20261012/ios/native-connected-dm-context.png",
+          "sha256": "8beb935325d9c639b2baa399db5b56d1437547bfbdfbdd195dd4d8d4f90d7479",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Selected synthetic DM participant heading is readable; empty conversation has no message body; connected voice remains separate."
+        },
+        {
+          "path": ".out/qa292-20261012/ios/native-connected-profile.png",
+          "sha256": "ec06a0bce2c76d7c69136c38d0780b8e0371c40989db1ef02126d07b045bf547",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Profile heading, Back/navigation controls, form labels and unchanged status are readable; horizontal tab overflow is deliberate and all four tabs were exercised."
+        },
+        {
+          "path": ".out/qa292-20261012/ios/native-connected-search.png",
+          "sha256": "dff88b2b4d7f4f79f7574e0752097162a38357e7853a32fff6082f4d4677518e",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Actual authorized DM-scope empty search and query are readable; scope-selector touch geometry has not been certified by this run."
+        },
+        {
+          "path": ".out/qa292-20261012/ios/native-connected-text-context.png",
+          "sha256": "21811fef4505ac4e33b62212dd6d0b5e5fcc79e32079af5c00fcb75aa123e411",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Selected text-channel heading and empty history are readable; voice connection remains independently visible."
+        },
+        {
+          "path": ".out/qa292-20261012/ios/native-connected-voice.png",
+          "sha256": "dd6496c48f6397c3175c550801585ff738137f9779633a026f6bb0ddc276265e",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Selected voice heading, two actual participants, muted indicators and connected voice controls are readable; long peer label uses ellipsis."
+        },
+        {
+          "path": ".out/qa292-20261012/ios/native-logout-cleared.png",
+          "sha256": "1911667941275de5dd9c95baa4eddd38f059604cd07a0c894802a73b28c0328e",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Signed-out form is empty; selected conversation and voice controls are cleared."
+        },
+        {
+          "path": ".out/qa292-20261012/ios/native-members-overlay.png",
+          "sha256": "8a22a6cb1168907efcb29ae3b22bde3a54a9229cb9ec321509383c652df795ef",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Members drawer closes independently; synthetic online/offline rows stay within the scrollable panel."
+        },
+        {
+          "path": ".out/qa292-20261012/ios/native-navigation-overlay.png",
+          "sha256": "9de0ab93fa212cfd042fe044c247342083281d6780ea0c48aac9521d564dc6a1",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Navigation drawer, selected text row, distinct live voice row/two participants, close control and outside backdrop are readable."
+        },
+        {
+          "path": ".out/qa292-20261012/ios/native-profile-save-feedback.png",
+          "sha256": "ebc78c9c5660615cdaf6082544b5f737c4acd213953bf078a5b95aa6c9b6acca",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Readable layout/state, no renderer overflow or private content in this capture; not touch-target certification.",
+          "notes": "Synthetic saved profile name and explicit saved feedback are readable after the real API save."
+        }
+      ]
+    }
+  },
+  "derivative_issue297": {
+    "android": {
+      "observed_result": "PASS",
+      "checks": {
+        "dirty_platform_Back_cancel_retains_editor_and_voice": "PASS",
+        "dirty_logout_cancel_retains_editor_and_voice": "PASS",
+        "actual_profile_save_feedback": "PASS",
+        "four_profile_tabs_and_logout_confirmation_cancel": "PASS"
+      },
+      "input_scope": "ADB KEYCODE_BACK through emulator OS dispatch",
+      "source_files": {
+        "src/screens/profile_screen.dart": "3140813ef09927fc2a62c723faed4e8ce24ef955aaf56b625fad8a6c9dcb0b3a",
+        "src/screens/workspace_ui/main_surface/build/handler.dart": "4b87a2ed0e2de5bf805eb1654d926495c79d46e9f65226e72a986358f5f75f96"
+      },
+      "runtime_receipt": ".out/qa292-20261012/android/runtime.json",
+      "physical_device": false,
+      "spoken_reader": "NOT_RUN"
+    },
+    "ios": {
+      "observed_result": "PASS",
+      "checks": {
+        "dirty_platform_Back_cancel_retains_editor_and_voice": "PASS",
+        "dirty_logout_cancel_retains_editor_and_voice": "PASS",
+        "actual_profile_save_feedback": "PASS",
+        "four_profile_tabs_and_logout_confirmation_cancel": "PASS"
+      },
+      "input_scope": "integration binding handlePopRoute; OS route swipe not exercised",
+      "source_files": {
+        "src/screens/profile_screen.dart": "3140813ef09927fc2a62c723faed4e8ce24ef955aaf56b625fad8a6c9dcb0b3a",
+        "src/screens/workspace_ui/main_surface/build/handler.dart": "4b87a2ed0e2de5bf805eb1654d926495c79d46e9f65226e72a986358f5f75f96"
+      },
+      "runtime_receipt": ".out/qa292-20261012/ios/runtime.json",
+      "physical_device": false,
+      "spoken_reader": "NOT_RUN"
+    }
+  },
+  "tests": {
+    "nearest_before_shared_profile_fix": {
+      "mobile_edge_swipes_iOS_android": "2 PASS",
+      "profile_Android_Back_navigation": "1 PASS",
+      "scope": "Widget evidence; not OS or physical acceptance."
+    },
+    "owned_OS_input_ownership_guards": "2 PASS",
+    "qa_entry_driver_analyze": "PASS; no issues found",
+    "python_compile": "PASS",
+    "mandatory_final_profile_source": {
+      "receipt": ".out/local-features/20261012-194623/report.json",
+      "sha256": "e8a5bba159e4ba71fb75778b577127c68bc7ad37c29320f97b2ef11eaf913e12",
+      "report_status": "REVIEW_REQUIRED",
+      "stages": [
+        {
+          "name": "flutter-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "flutter-component-captures",
+          "status": "PASS"
+        },
+        {
+          "name": "android-runtime",
+          "status": "PASS"
+        }
+      ],
+      "flutter_unit_passed": 1155,
+      "flutter_unit_skipped": 1,
+      "component_captures": 17,
+      "scope": "Exact report source applies to the final profile guard and Android baseline, including nearest navigation tests; independent iOS-specific acceptance is recorded above."
+    },
+    "post_mini_change_broad_check_snapshot": {
+      "receipt": ".out/local-features/20261012-195850/report.json",
+      "sha256": "8cfd14679c2f4b37a2500b2164f31f9dbbdb0f17588d816e5a7a9ea4c5ade4da",
+      "source": "0546d32f38bf923ddfbc25b93d1a696585663ea7 diff-sha256=2209b48f45182df15fe8ec6cad1ff34440ad9253547b9056d0942da5554983de",
+      "report_status": "FAIL",
+      "stages": [
+        {
+          "name": "flutter-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "flutter-component-captures",
+          "status": "PASS"
+        },
+        {
+          "name": "android-runtime",
+          "status": "FAIL"
+        },
+        {
+          "name": "ios-runtime",
+          "status": "PASS"
+        }
+      ],
+      "flutter_unit_passed": 1159,
+      "flutter_unit_skipped": 1,
+      "component_captures": 21,
+      "Android_baseline": "FAIL in this receipt after emulator disappearance; root is rerunning the baseline. Do not treat this receipt as an overall PASS."
+    }
+  },
+  "harness_history": [
+    {
+      "runtime_receipt": ".out/qa292-20261012/previous-harness-runs/android/1791822385583052000/runtime.json",
+      "sha256": "fd993cf625d1b4aef6b8beac5dfddbadfce146e64471bd10132ef534bf8d9263",
+      "status": "FAIL",
+      "classification": "QA harness expectation/precondition; not a confirmed product bug",
+      "failed_phase": "actual two participant LiveKit listener call",
+      "failed_test_line": 273,
+      "observed_prior_main_rows": 0,
+      "correction": "Actual VOICE drawer selection intentionally autojoins; QA setup changed to pure authorized context selection followed by the real listener button."
+    },
+    {
+      "runtime_receipt": ".out/qa292-20261012/previous-harness-runs/android/1791823053956570000/runtime.json",
+      "sha256": "57e1ee486176b3ddbebd8a89342288fb5235b599add05c9cd9ac83f7479a98b5",
+      "status": "FAIL",
+      "classification": "QA harness expectation/precondition; not a confirmed product bug",
+      "failed_phase": "actual two participant LiveKit listener call",
+      "failed_test_line": 108,
+      "observed_prior_main_rows": 0,
+      "correction": "Server intentionally forbids data publishing; invalid QA data-delivery expectation replaced by actual native RTC transport stats. Server/SDK grants unchanged."
+    },
+    {
+      "runtime_receipt": ".out/qa292-20261012/previous-harness-runs/android/1791823205374034000/runtime.json",
+      "sha256": "aaa2612264bbb23eb833e32e30e933eaca3498d747b64e109547f8adc39ed75c",
+      "status": "FAIL",
+      "classification": "QA harness expectation/precondition; not a confirmed product bug",
+      "failed_phase": "drawer close outside Escape OS Back and focus",
+      "failed_test_line": 336,
+      "observed_prior_main_rows": 2,
+      "correction": "Periodic production screen-metrics POST was counted as voice admission; QA admission counter restricted to actual lease/credential/release endpoints."
+    },
+    {
+      "runtime_receipt": ".out/qa292-20261012/previous-harness-runs/android/1791823347249998000/runtime.json",
+      "sha256": "c1ddd1d69619022a120f01643cd0dd3e332e280ae565807177829110ae3f896d",
+      "status": "FAIL",
+      "classification": "QA harness expectation/precondition; not a confirmed product bug",
+      "failed_phase": "profile settings and one platform Back preserves DM draft",
+      "failed_test_line": 471,
+      "observed_prior_main_rows": 5,
+      "correction": "QA tap happened before layout after ensureVisible; native warning identified an off-screen tab. QA now settles layout and asserts hitTestable before tapping."
+    },
+    {
+      "runtime_receipt": ".out/qa292-20261012/previous-harness-runs/android/1791823561307500000/runtime.json",
+      "sha256": "b4ef2d7c986d1e950227c49c2c476988a6996e8ea42178ac20aadaeab199512b",
+      "status": "FAIL",
+      "classification": "QA harness expectation/precondition; not a confirmed product bug",
+      "failed_phase": "DM search query scope owned session Back/reopen",
+      "failed_test_line": 123,
+      "observed_prior_main_rows": 8,
+      "correction": "QA search-response counter used /search; production API is /search/messages. Counter corrected to the actual endpoint."
+    }
+  ],
+  "source_mismatch_guard": "Stopped before build/stack when private lib did not match the coordinated profile source; resynced only stable approved app files and tested both platforms after equality passed.",
+  "visual_review": {
+    "reviewed_original_captures": 20,
+    "Android_pixels": [
+      1080,
+      2400
+    ],
+    "iOS_pixels": [
+      1206,
+      2622
+    ],
+    "forwarding": "view_image(detail=original), image(image_url, original)",
+    "observation": "Search scope field source uses tightFor(height:32) inside a mobile 44-high outer row. The effective hit target was not measured in this acceptance; touch-target conformity is not claimed. Profile tabs deliberately scroll horizontally and all four were actually selected.",
+    "privacy": "Only synthetic aliases, empty conversation/search states and application chrome; no message bodies, local draft contents, passwords, tokens, participant IDs or session rows in retained captures."
+  },
+  "remaining": [
+    {
+      "criterion": "Physical Android system Back with active call",
+      "status": "NOT_RUN",
+      "scope": "9 actual emulator OS KEYCODE_BACK dispatches passed; no physical Android device used."
+    },
+    {
+      "criterion": "Physical iOS interactive route-Back gesture with active call",
+      "status": "NOT_RUN",
+      "scope": "iOS handlePopRoute and native integration pointer drawer swipes are controlled app tests."
+    },
+    {
+      "criterion": "Live spoken TalkBack/VoiceOver focus review",
+      "status": "NOT_RUN"
+    },
+    {
+      "criterion": "Physical microphone/audible media quality or sustained load",
+      "status": "NOT_RUN",
+      "scope": "Both Rooms are real muted listener transports; no RTP/audio-quality or capacity claim."
+    },
+    {
+      "criterion": "Non-empty history/results scroll position across owned panels",
+      "status": "NOT_RUN",
+      "scope": "This runtime uses empty histories/results to protect message-body evidence; query/draft/context and focus are exercised."
+    }
+  ],
+  "cleanup": {
+    "owned_disposable_API_PostgreSQL_Tempo_Caddy_LiveKit_removed": true,
+    "owned_TCP_ports_free": [
+      4840,
+      4842,
+      4843,
+      4844,
+      4892,
+      4893
+    ],
+    "Android_reverse_ports_removed": [
+      4840,
+      4844,
+      4893
+    ],
+    "Android_QA_package_absent_before_shutdown": true,
+    "Android5556_shutdown": true,
+    "iOS_QA_package_absent_at_handoff": true,
+    "iOS82_handed_to_root293_booted": true,
+    "private_Flutter_copy_and_credential_bearing_compiled_artifacts_removed_after_hash_verification": true,
+    "raw_native_runtime_logs_removed": true,
+    "canonical_original_PNG_and_safe_JSON_receipts_retained": true
+  },
+  "source_scope_note": "Original Android/iOS runtime source hashes, diff hashes, artifact hashes and receipts remain unchanged. Scoped source-equivalence below proves the reviewed new pinned-mini branch does not execute in the non-pinned #292 scenario; it does not relabel the old runtime as execution of the newer full manifest. Later changes outside those three exact paths require a new comparison or rerun.",
+  "scoped_source_equivalence": {
+    "status": "PASS_SOURCE_REVIEW_ONLY",
+    "reviewed_final_flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+    "reviewed_delta_files": {
+      "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/mobile_layers/handler.dart": "1879aec38de71c02cd5d2569761bbee092b1fffbedcbe2fdb2bd3cd88c4323d2",
+      "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/pinned_layer/handler.dart": "7c859dbb9c44d8816831273b71c524bc75377b04df28ceade02253ff249ab50b",
+      "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/workspace_changed/synchronize_screen_selection.dart": "4c61265ac033ebc05250858e5de0e1b1fbc33a734a67896b6d987ec137ea3fbc",
+      "clients/flutter/lib/src/services/pinned_screen_mini_player_policy.dart": "96b420899f9a98565cc35d82b527dd8cb88b202a08cff6935b856228b6c90631",
+      "clients/flutter/lib/src/screens/workspace_ui/pinned_screen_mini_player/build/floating_surface/handler.dart": "9a0e9c92390265fbe99dd8d75037b590934d37eddb3e98d8d18eea8f5b47952c",
+      "clients/flutter/lib/src/widgets/screen_frame_gate.dart": "59ca0574d7898d90dde87c389af5d6de83058f97e09b326ab81e126d0798ae62",
+      "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/mobile_layers/pinned_content/handler.dart": "87a196e5ce3c53f9669887579f7208c705e2a98df3173651de328c401b1af4c4"
+    },
+    "runtime_rerun_on_final_manifest": false,
+    "reconstruct_previous_Android_iOS_manifest": {
+      "restore": "Restore six pre-existing mini-player/layout/frame-gate app files from base HEAD and remove new pinned-content helper; keep measured profile guard changes. All other lib bytes are unchanged. This reconstruction matches Android/iOS292/293 manifests, not the separately recorded macOS manifest.",
+      "sha256": "bb8548fad80b9858b0c2d632a46c099d6a73eea0f5707a1fad1fcf91dcf7e4cf",
+      "matches_measured_292_293_receipts": true
+    },
+    "equivalent_scope": "Earlier case291/292/293/297 native runs never select/pin a screen and have no pending screen restart. pinnedMiniVisible stays false, so mobile_layers takes its original drawer/sidebar branch. The pure route-stop predicate evaluates false with both selected/waiting screen identities empty; its new state-mutation branch is not entered. Mini preview and ScreenFrameGate are not instantiated in these no-screen workflows; their video-flex/overlay-scroll changes do not execute. Profile and message action implementations retain measured hashes.",
+    "limits": [
+      "Measured earlier lib/artifact/QA hashes and timestamps remain unchanged. This review establishes source equivalence only for the executed no-screen path; selected mini-player media/layout acceptance belongs to independent final issue247 runtime.",
+      "Physical/device/readers/audio-quality/load criteria keep their original PARTIAL or NOT_RUN states."
+    ],
+    "mandatory_final_validation": "Final source09eba39f full Flutter unit1166/1skip and selected35 tests PASS; earlier Android/iOS API baselines PASS on equivalent no-selected/pending-screen branch."
+  },
+  "final_review": {
+    "privacy": "PASS: safe JSON contains bounded counts/hashes/static fixture aliases only; twenty original captures inspected without messages, draft contents, tokens, passwords, participant IDs or session rows.",
+    "repro_integrity": "PASS: current QA entry/driver/harness hashes equal both before-build receipts; native copies were matched before compilation; hashes verified before private build deletion; five archived QA expectation/precondition failures retained separately from passing final runs.",
+    "cleanup": "PASS for owned #292 privatecopy/artifacts/rawlogs, disposable services, reverseports and5556 shutdown. iOS82 explicitly transferred to root; subsequent root lifecycle is outside this cleanup claim.",
+    "measured_source_hashes_preserved": true,
+    "product_or_harness_changes_during_final_review": false
+  },
+  "mandatory_final_validation": {
+    "native_baseline_receipt": ".out/local-features/20261012-195850/report.json",
+    "original_attempt_status": "FAIL: Android emulator disappeared before runtime",
+    "android_retry_receipt": ".out/local-features/20261012-195850/android-runtime-retry/runtime.json",
+    "android_retry_status": "PASS",
+    "ios_status": "PASS",
+    "final_source_Flutter_unit_component_run": "PASS1166+1skip/35 on09eba39f; receipt .out/qa-batch2-ultimate-flutter-20261012/report.json"
+  },
+  "mandatory_native": {
+    "status": "REVIEW_REQUIRED",
+    "receipt": ".out/local-features/20261012-195850/report.json",
+    "sha256": "8cfd14679c2f4b37a2500b2164f31f9dbbdb0f17588d816e5a7a9ea4c5ade4da",
+    "stages": [
+      {
+        "name": "flutter-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "flutter-component-captures",
+        "status": "PASS"
+      },
+      {
+        "name": "android-runtime-retry",
+        "status": "PASS"
+      },
+      {
+        "name": "ios-runtime",
+        "status": "PASS"
+      }
+    ],
+    "counts": {
+      "unit": 1166,
+      "skipped": 1,
+      "component": 35,
+      "native_Android_baseline": 1,
+      "native_iOS_baseline": 1
+    },
+    "android_retry_receipt": ".out/local-features/20261012-195850/android-runtime-retry/runtime.json",
+    "android_retry_sha256": "50faa89bc76b290f2ea978aabd53f2b6cfed4cca15d074770e6e9dda9d84cda0",
+    "original_android_attempt": {
+      "status": "FAIL",
+      "reason": "Owned emulator5554 had exited; preflight connection refused before build or API. Restarted the same AVD and reran only Android runtime successfully. Original report remains FAIL rather than overwriting that attempt."
+    },
+    "visual_scope": "Broad captures remain REVIEW_REQUIRED; scoped issue images are reviewed separately.",
+    "compiled_artifacts_sha256": {
+      "clients/flutter/build/app/outputs/flutter-apk/app-debug.apk": "636bcfa27a40129baf553d503397b464033e6b1bcc9f7452da329ac7e3acd6f1",
+      "clients/flutter/build/ios/iphonesimulator/Runner.app/Runner": "f935b70a25500518c0eddea93bdb649438d38c9bb8c3ded29af18b4582e63b5a"
+    },
+    "final_source_unit_component": {
+      "receipt": ".out/qa-batch2-ultimate-flutter-20261012/report.json",
+      "sha256": "28e8c1b65cb7f07346fde8a881d018854e34736e579e81c122373f802932d0cb",
+      "status": "PASS",
+      "final_flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "stages": [
+        {
+          "name": "flutter-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "flutter-component-captures",
+          "status": "PASS"
+        }
+      ],
+      "counts": {
+        "unit": 1166,
+        "skipped": 1,
+        "component": 35
+      },
+      "features_sha256": "7b5bc7014ab8ac23b925c9bdab4112c10d83ab9d8a224861a20cd8045cfd7645",
+      "visual_review": "REVIEW_REQUIRED: broader component pictures are not a substitute for individually reviewed runtime issue images"
+    },
+    "scope": "Final source09eba39f full unit/component PASS. Earlier Android/iOS auth/workspace/profile/audio/admin/logout baselines use e05755 with source-reviewed equivalent no-selected-screen path. Final issue247 Android runtime independently exercises changed selected-screen paths; its iOS media runtime FAIL is recorded separately and is not replaced by baseline or unit PASS. Original attempts and measured artifact hashes are preserved."
+  },
+  "final_runner_failure_followup": {
+    "status": "PASS_FOCUSED_TESTS",
+    "changes": "Archive prior receipts/captures and write fresh RUNNING before device/source preflight; any failure records a sanitized FAIL, including errors after an outcome write. Navigation also cleans every successfully created reverse port after partial setup failure.",
+    "tests": "3 receipt-freshness tests exercise both292/293 runners;4 navigation reverse-cleanup tests; integrated44runner tests PASS.",
+    "final_runner_sha256": "81ea25ecde98d7d4fa433f0bf8bbe0adbb05ac43c77012e32cb1be1cb951f1d4",
+    "runtime_provenance": "Measured earlier app runtime and QA hashes remain preserved. Only reusable-runner failure handling changed; app paths and scenario entries are unchanged."
+  }
+}

@@ -1,0 +1,905 @@
+{
+  "date": "2026-10-12",
+  "status": "PARTIAL",
+  "source": {
+    "base_commit": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+    "candidate_files": {
+      "clients/flutter/lib/src/screens/profile_screen.dart": "3140813ef09927fc2a62c723faed4e8ce24ef955aaf56b625fad8a6c9dcb0b3a",
+      "clients/flutter/lib/src/screens/workspace_ui/main_surface/build/handler.dart": "4b87a2ed0e2de5bf805eb1654d926495c79d46e9f65226e72a986358f5f75f96",
+      "clients/flutter/test/workspace_screen_test.dart": "019527305d783bfbcb0e197be13940433d143b05f0e048b9779df822d08fba30",
+      "tools/qa/macos_ui/native_app.dart": "2d2cfe96f842cabee155eb1adce5ff08e5ff39537cfb37747c74046085f6e9d6"
+    },
+    "flutter_lib_manifest_sha256": "ce9633aa87845603d7da9728bd84f51ae3370cf501be4d89dc77d6a4923a5b49",
+    "web_visual_review": {
+      "captures_reviewed_original": 23,
+      "status": "PASS",
+      "notes": "All viewport composer/voice controls readable; profile save/error/tab cards readable. Masks intentionally cover composer and password boxes; logout mask obscures part of modal copy, so title/copy approval limited there, actions/dialog still tested."
+    },
+    "working_tree_uncommitted": true,
+    "scoped_source_equivalence": {
+      "status": "PASS_SOURCE_REVIEW_ONLY",
+      "reviewed_final_flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "reviewed_delta_files": {
+        "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/mobile_layers/handler.dart": "1879aec38de71c02cd5d2569761bbee092b1fffbedcbe2fdb2bd3cd88c4323d2",
+        "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/pinned_layer/handler.dart": "7c859dbb9c44d8816831273b71c524bc75377b04df28ceade02253ff249ab50b",
+        "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/workspace_changed/synchronize_screen_selection.dart": "4c61265ac033ebc05250858e5de0e1b1fbc33a734a67896b6d987ec137ea3fbc",
+        "clients/flutter/lib/src/services/pinned_screen_mini_player_policy.dart": "96b420899f9a98565cc35d82b527dd8cb88b202a08cff6935b856228b6c90631",
+        "clients/flutter/lib/src/screens/workspace_ui/pinned_screen_mini_player/build/floating_surface/handler.dart": "9a0e9c92390265fbe99dd8d75037b590934d37eddb3e98d8d18eea8f5b47952c",
+        "clients/flutter/lib/src/widgets/screen_frame_gate.dart": "59ca0574d7898d90dde87c389af5d6de83058f97e09b326ab81e126d0798ae62",
+        "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/mobile_layers/pinned_content/handler.dart": "87a196e5ce3c53f9669887579f7208c705e2a98df3173651de328c401b1af4c4"
+      },
+      "runtime_rerun_on_final_manifest": false,
+      "reconstruct_previous_Android_iOS_manifest": {
+        "restore": "Restore six pre-existing mini-player/layout/frame-gate app files from base HEAD and remove new pinned-content helper; keep measured profile guard changes. All other lib bytes are unchanged. This reconstruction matches Android/iOS292/293 manifests, not the separately recorded macOS manifest.",
+        "sha256": "bb8548fad80b9858b0c2d632a46c099d6a73eea0f5707a1fad1fcf91dcf7e4cf",
+        "matches_measured_292_293_receipts": true
+      },
+      "equivalent_scope": "Earlier case291/292/293/297 native runs never select/pin a screen and have no pending screen restart. pinnedMiniVisible stays false, so mobile_layers takes its original drawer/sidebar branch. The pure route-stop predicate evaluates false with both selected/waiting screen identities empty; its new state-mutation branch is not entered. Mini preview and ScreenFrameGate are not instantiated in these no-screen workflows; their video-flex/overlay-scroll changes do not execute. Profile and message action implementations retain measured hashes.",
+      "limits": [
+        "Measured earlier lib/artifact/QA hashes and timestamps remain unchanged. This review establishes source equivalence only for the executed no-screen path; selected mini-player media/layout acceptance belongs to independent final issue247 runtime.",
+        "Physical/device/readers/audio-quality/load criteria keep their original PARTIAL or NOT_RUN states.",
+        "For macOS291/297 the historical ce9633 manifest uses a different inventory method and remains separately recorded. Measured profile/main-surface hashes match final source; no equality between ce9633 and reconstructed bb8548 is claimed."
+      ],
+      "mandatory_final_validation": "Final source09eba39f full Flutter unit1166/1skip and selected35 tests PASS; earlier Android/iOS API baselines PASS on equivalent no-selected/pending-screen branch."
+    }
+  },
+  "native_build": {
+    "mode": "Debug",
+    "version": "1.0.38",
+    "build": "71",
+    "bundle": "ru.boohtacord.localqa",
+    "executable_sha256": "6ada289dcd4e94406fcc0233237759c2f0b6bd1536609f1898b9ae19987fd7c9",
+    "production_framework_sha256": "b2396e6046e0467d4fb1dcf6a70e310b1ccd78bd49ee97b4812dc0b2b9976f03",
+    "QA_entry_sha256": "2d2cfe96f842cabee155eb1adce5ff08e5ff39537cfb37747c74046085f6e9d6",
+    "credential_storage": "documented in-memory test adapter; real HTTP secure-cookie transport unchanged",
+    "keychain_restore": "NOT_RUN",
+    "signing": "ad-hoc local QA; no production binary or private defines published",
+    "web_dist_sha256": "801d17c691cf01ee87fa4a73bbeee5a6a91710ad60b8b2f8908953f6e47d4d51"
+  },
+  "environment": {
+    "physical_macos": {
+      "model": "Mac16,8",
+      "chip": "Apple M4 Pro",
+      "memory_gb": 24,
+      "os": "macOS 27.0.1 (26A434)"
+    },
+    "stack": "Owned loopback Go/PostgreSQL/LiveKit/Tempo/Caddy",
+    "ports": [
+      4850,
+      4851,
+      4852,
+      4890,
+      4891,
+      4895
+    ],
+    "credential_storage": "QA-entry-only documented FlutterSecureStorage in-memory adapter, real authenticated Go secure-cookie/Origin transport; user Keychain/TCC untouched"
+  },
+  "native_capture": {
+    "method": "Documented Computer Use inline original captures",
+    "filesystem_export": "NOT_AVAILABLE",
+    "png_files_claimed": false,
+    "observed_resolutions": [
+      [
+        2880,
+        1800
+      ],
+      [
+        1602,
+        1898
+      ]
+    ],
+    "native_widgets": "Real BoohtacordApp/AppState/ProfileScreen/WorkspaceScreen; no fake profile/voice state"
+  },
+  "web": {
+    "status": "PASS",
+    "scope": "Actual production Web with owned Go/SFU; real browser listener peer; mic-enabled pipeline probe separate",
+    "checks": {
+      "resize_real_voice_and_draft": "PASS",
+      "profile_dirty_pending_saved": "PASS",
+      "profile_failure_preserves_input_and_retry": "PASS",
+      "dirty_close_cancel_preserves_input": "PASS",
+      "section_Безопасность": "PASS",
+      "section_Уведомления": "PASS",
+      "section_О приложении": "PASS",
+      "section_Профиль": "PASS",
+      "logout_confirm_cancel": "PASS",
+      "audio_surface_navigation": "PASS"
+    },
+    "viewports": [
+      {
+        "width": 320,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      },
+      {
+        "width": 375,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      },
+      {
+        "width": 390,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      },
+      {
+        "width": 430,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      },
+      {
+        "width": 600,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      },
+      {
+        "width": 720,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      },
+      {
+        "width": 840,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      },
+      {
+        "width": 960,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      },
+      {
+        "width": 1024,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      },
+      {
+        "width": 1280,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      },
+      {
+        "width": 1440,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      },
+      {
+        "width": 1920,
+        "horizontal_overflow": false,
+        "status": "PASS"
+      }
+    ],
+    "captures": [
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-320.png",
+        "sha256": "93b564d5ff462f582f0fbe65830ab3ace00b75a451d24b944afefb2f879a6428",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-375.png",
+        "sha256": "e412b7a5522de507df138520f2163393318bb16823ca0cf6f5e6a7954dfc38f1",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-390.png",
+        "sha256": "bd3ae9a83a3a5a5f22a5f866cdce1a70a55430f8d5e337a929ecd88f7b950bcd",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-430.png",
+        "sha256": "deb5b935c2612ca3dce8c12ca67418b5f956c70d98b31f078e1b21bf1ad8499d",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-600.png",
+        "sha256": "77778429b25d95c9fe86a96c71fc42709e1d846d33c31eb9baff8b12a91f08dd",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-720.png",
+        "sha256": "53a0ca579ef9cb5da6e1bd17420aab3206a98090804538aae8733980426d5679",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-840.png",
+        "sha256": "0862b397e247246956173fe9923509ce3d8ada212a710e300bcee30150ac2824",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-960.png",
+        "sha256": "9d8752f6d461346412cde95914bdc6cf95c6d6437b683498ca50dcb0d8828e47",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-1024.png",
+        "sha256": "6cd23fd864cdeb7178a35d4f330898ac4f2ab0cc7c8a46d74cb7dbc8e95113b3",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-1280.png",
+        "sha256": "3d7e498fe1a4277848edccb5a86bc0fa6f1623e385f1aaf5622f034f88096d6e",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-1440.png",
+        "sha256": "ad15bfaab024313a3069b3bea814b0ad6e11893816ed378ef5e07de3edef0978",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-active-voice-1920.png",
+        "sha256": "5cfab59a051980bc12afe03d3f28dccb9055d72fd03686ceaa640819d6bd7fb3",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-profile-dirty.png",
+        "sha256": "a4cdcbbc8cc3cd0a789181525a23e168e1db44ddad797eebe2e15464a36a00c3",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-profile-pending.png",
+        "sha256": "eb493e077a0633e1377ee0c5e805f3594d0cf5ee55d87acbd0a99788aab94042",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-profile-saved.png",
+        "sha256": "9b85f2cd4320dab227bc3ef4f8c67b6fb5b183380528df5d66c85d1634b1d6c1",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-profile-service-error.png",
+        "sha256": "eef0d0425a868e5e62f49f72e8eadeae7c4d5dfe8b5329dd2d6ad6fc859f4534",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-profile-dirty-cancel.png",
+        "sha256": "298fb0b5b1bbd49106ee3a9faa9f92747d5a38a07877f9daf27e6f96342add7f",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-settings-security.png",
+        "sha256": "9e0369c483bb424a5f6a637922860ea415177839cda036ebe729dd5ae3225819",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-settings-notifications.png",
+        "sha256": "ff1871dfbd28176eedaf7b5185469f54223eff723911596ccb23c3db493186e2",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-settings-about.png",
+        "sha256": "3816b5ea6696464e043eb06614dc70d827a2772da6096367faf8a41c8e4d94cf",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-settings-profile.png",
+        "sha256": "f8b694670459e3f279a8200cd066a32cf6ddd1b36715b8b3980f090e3f70a15d",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-logout-confirm.png",
+        "sha256": "6d21ea088e0dd67d0d721a37a667097de5f9034f8ff82b421d6fd93b36128712",
+        "review": "Original resolution inspected; composer/password masks intentional. Logout modal copy partly masked, visual claim limited to dialog/actions."
+      },
+      {
+        "path": ".out/qa291-297-20261012/web-captures/web-audio-settings.png",
+        "sha256": "1a612a5b6b40b672e03dda3ab476e418a95accf9f3bda69dfaccf7c2af7aeb08",
+        "review": "Original resolution inspected; visible chrome/cards/controls readable; masks intentional."
+      }
+    ],
+    "artifact_sha256": "801d17c691cf01ee87fa4a73bbeee5a6a91710ad60b8b2f8908953f6e47d4d51",
+    "source_scope": "Private production dist built on batch base before unrelated parallel Web fixes; artifact hash pins actual tested bytes. Do not imply current whole Web manifest was rebuilt here.",
+    "capture_storage": {
+      "tracked": false,
+      "location": ".out/qa291-297-20261012/web-captures",
+      "reason": "Generated screenshots remain in ignored local QA storage under AGENTS.md; committed records retain original capture SHA-256 and visual review receipts.",
+      "moved_captures": 23,
+      "content_hashes_preserved": true
+    }
+  },
+  "tests": [
+    {
+      "directory": "clients/flutter",
+      "command": "flutter test --no-pub test/desktop_window_options_test.dart test/profile_screen_test.dart --reporter expanded",
+      "status": "PASS",
+      "count": 22,
+      "phase": "Initial native baseline"
+    },
+    {
+      "directory": "clients/flutter",
+      "command": "flutter test --no-pub test/workspace_screen_test.dart --name 'workspace resize preserves' --reporter expanded",
+      "status": "PASS",
+      "count": 1,
+      "phase": "Initial native baseline"
+    },
+    {
+      "directory": "clients/flutter",
+      "command": "flutter test --no-pub test/workspace_screen_test.dart test/profile_screen_test.dart --name 'dirty profile|profile close|profile panel|macOS app resize preserves native editing|logout' --reporter expanded",
+      "status": "PASS",
+      "count": 13,
+      "phase": "Final guard focused regression"
+    },
+    {
+      "directory": ".",
+      "command": "python3 -m unittest tools.qa.macos_ui.test_run -v",
+      "status": "PASS",
+      "count": 4
+    }
+  ],
+  "native_state_receipt": {
+    "qa_mac_ui_state": {
+      "status": "OBSERVED",
+      "timeline": [
+        {
+          "phase": "loading",
+          "voice_phase": "idle",
+          "workspace_panel": "none",
+          "channel_selected": false,
+          "selection_revision": 0,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "voice_phase": "idle",
+          "workspace_panel": "none",
+          "channel_selected": false,
+          "selection_revision": 0,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "voice_phase": "idle",
+          "workspace_panel": "none",
+          "channel_selected": false,
+          "selection_revision": 0,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "voice_phase": "idle",
+          "workspace_panel": "none",
+          "channel_selected": false,
+          "selection_revision": 0,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "idle",
+          "workspace_panel": "none",
+          "channel_selected": false,
+          "selection_revision": 0,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "idle",
+          "workspace_panel": "none",
+          "channel_selected": true,
+          "selection_revision": 1,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "idle",
+          "workspace_panel": "none",
+          "channel_selected": true,
+          "selection_revision": 2,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "joining",
+          "workspace_panel": "none",
+          "channel_selected": true,
+          "selection_revision": 2,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "joining",
+          "workspace_panel": "none",
+          "channel_selected": true,
+          "selection_revision": 2,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "joining",
+          "workspace_panel": "none",
+          "channel_selected": true,
+          "selection_revision": 2,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "none",
+          "channel_selected": true,
+          "selection_revision": 2,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "none",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "profile",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "profile",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": true,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "profile",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "profile",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": true,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "profile",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": false,
+          "profile_error_present": true,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "profile",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": true,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "profile",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "none",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "audio",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "audio",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "voice_phase": "listener",
+          "workspace_panel": "none",
+          "channel_selected": true,
+          "selection_revision": 3,
+          "profile_saving": false,
+          "profile_error_present": false,
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        }
+      ]
+    },
+    "qa_mac_ui_geometry": {
+      "width": 1440.0,
+      "height": 901.0,
+      "voice_phase": "listener",
+      "workspace_panel": "none",
+      "selection_revision": 3
+    }
+  },
+  "cleanup": {
+    "status": "PASS",
+    "owned_resources_remaining": {
+      "containers": 0,
+      "networks": 0,
+      "volumes": 0
+    },
+    "private_work_directory_absent": true,
+    "disposed": [
+      "configuration.json",
+      "browser-private.json",
+      "debug-private-defines.json",
+      "private Flutter lib/package/build/Pods/app artifacts",
+      "private Web dist",
+      "private copied stack/helper modules and stack configuration"
+    ],
+    "retained": [
+      "sanitized build/source/native-state receipts",
+      "reviewed masked Web captures/results"
+    ],
+    "scope": "Only ownership-labelled macos_ui worker resources and its private TemporaryDirectory; unrelated stacks/source/user Keychain/TCC untouched",
+    "disposed_owned_private_tmp_logs": [
+      "macos-ui-291-297-run.log",
+      "macos-ui-resize-focused.log",
+      "macos-ui-red-tests.log",
+      "macos-ui-green-tests.log",
+      "macos-ui-final-focused.log",
+      "macos-ui-final-build.log",
+      "macos-ui-memory-build.log",
+      "macos-ui-harness-tests.log"
+    ],
+    "owned_web_scenario_process_absent": true,
+    "peer_shutdown": "Owned PTY interrupted after stdin heredoc failed to forward Enter; scenario source now also settles wait on EOF, and dedicated run_web preserves interactive stdin. Completed Web assertions remain PASS; cleanup/process checks independently verified."
+  },
+  "gate_close_allowed": false,
+  "issue": 297,
+  "leaf_task": "FV2-004",
+  "defect": {
+    "before": "Physical macOS painted dirty profile name and enabled Save; Close dismissed editor immediately without discard confirmation. Focused Close/Back/system Back cases each RED (missing dialog).",
+    "after": "ProfileScreen now owns toolbar/PopScope leave callbacks and reuses account-scoped discard dialog; Cancel retains editor; confirmed discard exits; stale account cancels prompt; in-flight save blocks close. Physical final native Close/Back/Cancel confirmed visually.",
+    "paths": [
+      "clients/flutter/lib/src/screens/profile_screen.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/main_surface/build/handler.dart"
+    ],
+    "focused_red": 3,
+    "focused_green": 13
+  },
+  "requirements": [
+    {
+      "case": "Physical native profile unchanged/dirty/Close and Back Cancel",
+      "status": "PASS",
+      "result": "Real keyboard input painted; final guard dialog readable; both Cancel actions retained editor and live room."
+    },
+    {
+      "case": "Physical native pending/saved",
+      "status": "PASS",
+      "controlled_fault": "Pause only owned API, actual Save request pending, Close ignored, unpause then real Saved feedback; input disabled during pending."
+    },
+    {
+      "case": "Physical native error/input retention/retry",
+      "status": "PASS",
+      "controlled_fault": "Stop only owned API: actual 502 error and retained input. Restart API and actual retry -> Saved feedback; SFU stayed connected."
+    },
+    {
+      "case": "Physical native Profile/Security/Notifications/About taxonomy",
+      "status": "PASS",
+      "result": "Four sections readable at 801 logical width. Security fields empty; no password mutation. Existing notification-denied state displayed without granting permissions. About version 1.0.38(71) visible."
+    },
+    {
+      "case": "Physical native clean logout confirmation/Cancel",
+      "status": "PASS",
+      "result": "Dialog copy/actions readable; Cancel keeps authenticated editor and connected voice."
+    },
+    {
+      "case": "Physical native Audio surface and Back",
+      "status": "PASS",
+      "result": "Actual native scan notice and audio controls readable; Back restored conversation and painted draft, voice still connected."
+    },
+    {
+      "case": "Production Web unchanged/dirty/pending/saved/error/retry/dirty-closeCancel/4tabs/logoutCancel/Audio",
+      "status": "PASS",
+      "result": "Actual production Web and owned API/SFU; 23 original captures reviewed; held response and owned API stop/restart disclosed."
+    },
+    {
+      "case": "Android/iOS emulator derivative settings",
+      "status": "PASS",
+      "evidence_owner": "tools/qa/mobile_navigation / issue292 worker",
+      "result": "Worker reported actual Android and iOS simulator dirty platformBackCancel, dirtylogoutCancel, real profile Save feedback, four tabs and clean logoutCancel all 4/4 each. Main issue292 evidence holds exact native hashes/captures; this is not physical hardware acceptance."
+    },
+    {
+      "case": "Physical Android settings/system behavior",
+      "status": "NOT_RUN"
+    },
+    {
+      "case": "Live spoken VoiceOver/TalkBack review",
+      "status": "NOT_RUN",
+      "reason": "No live spoken reader enabled/reviewed. AX capture/component semantics do not substitute; OS setting not changed."
+    },
+    {
+      "case": "Keychain restore / update platform metadata or update installation / password mutation",
+      "status": "NOT_RUN",
+      "reason": "Final QA entry uses memory credential storage; update bootstrap disabled (default Windows selector label is fixture metadata), only About version/taxonomy counted; no credentials changed."
+    },
+    {
+      "case": "Release macOS native settings",
+      "status": "NOT_RUN"
+    }
+  ],
+  "closure_condition": "Complete physical Android settings and live spoken screen-reader review plus any remaining release gates with evidence. Do not close issue297 based on emulator/native Debug subset alone.",
+  "mandatory_native": {
+    "status": "REVIEW_REQUIRED",
+    "receipt": ".out/local-features/20261012-195850/report.json",
+    "sha256": "8cfd14679c2f4b37a2500b2164f31f9dbbdb0f17588d816e5a7a9ea4c5ade4da",
+    "stages": [
+      {
+        "name": "flutter-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "flutter-component-captures",
+        "status": "PASS"
+      },
+      {
+        "name": "android-runtime-retry",
+        "status": "PASS"
+      },
+      {
+        "name": "ios-runtime",
+        "status": "PASS"
+      }
+    ],
+    "counts": {
+      "unit": 1166,
+      "skipped": 1,
+      "component": 35,
+      "native_Android_baseline": 1,
+      "native_iOS_baseline": 1
+    },
+    "android_retry_receipt": ".out/local-features/20261012-195850/android-runtime-retry/runtime.json",
+    "android_retry_sha256": "50faa89bc76b290f2ea978aabd53f2b6cfed4cca15d074770e6e9dda9d84cda0",
+    "original_android_attempt": {
+      "status": "FAIL",
+      "reason": "Owned emulator5554 had exited; preflight connection refused before build or API. Restarted the same AVD and reran only Android runtime successfully. Original report remains FAIL rather than overwriting that attempt."
+    },
+    "visual_scope": "Broad captures remain REVIEW_REQUIRED; scoped issue images are reviewed separately.",
+    "compiled_artifacts_sha256": {
+      "clients/flutter/build/app/outputs/flutter-apk/app-debug.apk": "636bcfa27a40129baf553d503397b464033e6b1bcc9f7452da329ac7e3acd6f1",
+      "clients/flutter/build/ios/iphonesimulator/Runner.app/Runner": "f935b70a25500518c0eddea93bdb649438d38c9bb8c3ded29af18b4582e63b5a"
+    },
+    "final_source_unit_component": {
+      "receipt": ".out/qa-batch2-ultimate-flutter-20261012/report.json",
+      "sha256": "28e8c1b65cb7f07346fde8a881d018854e34736e579e81c122373f802932d0cb",
+      "status": "PASS",
+      "final_flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "stages": [
+        {
+          "name": "flutter-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "flutter-component-captures",
+          "status": "PASS"
+        }
+      ],
+      "counts": {
+        "unit": 1166,
+        "skipped": 1,
+        "component": 35
+      },
+      "features_sha256": "7b5bc7014ab8ac23b925c9bdab4112c10d83ab9d8a224861a20cd8045cfd7645",
+      "visual_review": "REVIEW_REQUIRED: broader component pictures are not a substitute for individually reviewed runtime issue images"
+    },
+    "scope": "Final source09eba39f full unit/component PASS. Earlier Android/iOS auth/workspace/profile/audio/admin/logout baselines use e05755 with source-reviewed equivalent no-selected-screen path. Final issue247 Android runtime independently exercises changed selected-screen paths; its iOS media runtime FAIL is recorded separately and is not replaced by baseline or unit PASS. Original attempts and measured artifact hashes are preserved."
+  }
+}

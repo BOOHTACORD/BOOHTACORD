@@ -1,0 +1,1048 @@
+{
+  "issue": 247,
+  "issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/247",
+  "leaf": "IMP-28 acceptance (#94, ADR-011)",
+  "date": "2026-10-12",
+  "status": "PARTIAL",
+  "close_gate": "OPEN_IOS_AUDIO_CRASH",
+  "candidate_base": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+  "final_flutter_lib_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+  "scope": [
+    "production Web",
+    "Android emulator",
+    "iOS simulator"
+  ],
+  "environment": {
+    "api": "actual Go secure-cookie/CSRF/Origin API",
+    "database": "owned disposable PostgreSQL tmpfs",
+    "media": "actual LiveKit SFU; Go does not proxy media",
+    "source": "owned production Web UI publishes synthetic640x360 canvas30requestedfps + quiet440Hz tone",
+    "api_mocks": false,
+    "transport_mocks": false,
+    "production_data": false,
+    "ports": [
+      4830,
+      4832,
+      4833,
+      4834,
+      4883,
+      4884,
+      4885
+    ]
+  },
+  "steps": [
+    "Publish the synthetic source using production Web UI; listener joins actual voice without microphone.",
+    "Select and pin; navigate TEXT, empty DM, settings; retain selected publication/track/controller and one video/audio subscription; decoded frames/audio packets increase.",
+    "Return/fullscreen/full/mini preserve the same selection without another media receiver; mute changes actual client output state; Stop unsubscribes each of the two media publications once.",
+    "Without pin, TEXT/DM/settings stop the selection; removing source, leaving then republishing must not revive an unpinned stream.",
+    "Verify320/393 layout, accessible control labels and keyboard traversal; native controlled engine captures are explicit renderer proof, ordinary geometry uses native screenshots.",
+    "Actual publisher UI removal, voice disconnect, logout/new-account login and real administrator account revocation clear selected viewer/renderer/room as applicable."
+  ],
+  "web": {
+    "status": "PASS",
+    "browser": "153.0.8010.12",
+    "checks": {
+      "pin_TEXT_DM_settings_one_output_no_resubscription": "PASS",
+      "full_mini_full_return_preserves_stream": "PASS",
+      "viewport_320_adaptive_keyboard_labels": "PASS",
+      "stop_two_publications_exactly_once_and_mute": "PASS",
+      "no_pin_default_route_stop": "PASS",
+      "source_removal_cleanup": "PASS",
+      "disconnect_cleanup": "PASS",
+      "logout_account_switch_cleanup": "PASS",
+      "revoke_cleanup": "PASS"
+    },
+    "observations": [
+      {
+        "name": "selected",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 2,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 8
+        }
+      },
+      {
+        "name": "pinned TEXT",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 180,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 11
+        }
+      },
+      {
+        "name": "pinned DM",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 183,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "pinned settings",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 185,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "return full",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 188,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "expanded",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 190,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "expanded return",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 192,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "full to mini",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 193,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "mini return full",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 194,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "viewport 1024",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 196,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "viewport 768",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 197,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "viewport 393",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 197,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "viewport 320",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 198,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "muted actual output",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 200,
+        "width": 640,
+        "height": 360,
+        "audio_muted": true,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "unmuted actual output",
+        "viewer_elements": 1,
+        "video_outputs": 1,
+        "audio_outputs": 1,
+        "decoded_frames": 201,
+        "width": 640,
+        "height": 360,
+        "audio_muted": false,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 0,
+          "frames": 12
+        }
+      },
+      {
+        "name": "explicit stop",
+        "viewer_elements": 0,
+        "video_outputs": 0,
+        "audio_outputs": 0,
+        "decoded_frames": 0,
+        "width": 0,
+        "height": 0,
+        "audio_muted": null,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 2,
+          "unsubscribe": 2,
+          "frames": 15
+        }
+      },
+      {
+        "name": "unpinned route stop",
+        "viewer_elements": 0,
+        "video_outputs": 0,
+        "audio_outputs": 0,
+        "decoded_frames": 0,
+        "width": 0,
+        "height": 0,
+        "audio_muted": null,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 4,
+          "unsubscribe": 4,
+          "frames": 25
+        }
+      },
+      {
+        "name": "publisher removal",
+        "viewer_elements": 0,
+        "video_outputs": 0,
+        "audio_outputs": 0,
+        "decoded_frames": 0,
+        "width": 0,
+        "height": 0,
+        "audio_muted": null,
+        "connected_peers": 1,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 6,
+          "unsubscribe": 6,
+          "frames": 38
+        }
+      },
+      {
+        "name": "voice disconnect",
+        "viewer_elements": 0,
+        "video_outputs": 0,
+        "audio_outputs": 0,
+        "decoded_frames": 0,
+        "width": 0,
+        "height": 0,
+        "audio_muted": null,
+        "connected_peers": 0,
+        "retained_video_receiver_objects": 3,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 8,
+          "unsubscribe": 8,
+          "frames": 48
+        }
+      },
+      {
+        "name": "logout",
+        "viewer_elements": 0,
+        "video_outputs": 0,
+        "audio_outputs": 0,
+        "decoded_frames": 0,
+        "width": 0,
+        "height": 0,
+        "audio_muted": null,
+        "connected_peers": 0,
+        "retained_video_receiver_objects": 0,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 10,
+          "unsubscribe": 10,
+          "frames": 61
+        }
+      },
+      {
+        "name": "other account login",
+        "viewer_elements": 0,
+        "video_outputs": 0,
+        "audio_outputs": 0,
+        "decoded_frames": 0,
+        "width": 0,
+        "height": 0,
+        "audio_muted": null,
+        "connected_peers": 0,
+        "retained_video_receiver_objects": 0,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 10,
+          "unsubscribe": 10,
+          "frames": 61
+        }
+      },
+      {
+        "name": "account revoke",
+        "viewer_elements": 0,
+        "video_outputs": 0,
+        "audio_outputs": 0,
+        "decoded_frames": 0,
+        "width": 0,
+        "height": 0,
+        "audio_muted": null,
+        "connected_peers": 0,
+        "retained_video_receiver_objects": 0,
+        "document_overflow": false,
+        "subscription_requests": {
+          "subscribe": 12,
+          "unsubscribe": 12,
+          "frames": 77
+        }
+      }
+    ],
+    "publisher_bridge_handler": {
+      "scenario_sha256": "befa27aa29e68fe4faae45ab38d7866d131199775a8082c695160a17b6b7c5e9",
+      "protocol": "live-string-atomic-ui-v2"
+    },
+    "screenshots": [
+      {
+        "path": ".out/qa247-20261012/web/expanded-viewer.png",
+        "sha256": "065769792ee45876591574378f19ab4176f7d48e4b828517b7b89adf784cb82a",
+        "pixels": [
+          1440,
+          1000
+        ],
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/web/full-viewer.png",
+        "sha256": "f88812e0ed62597af4cffc7db79f52be013f751b66ac4c34ae3f61d1f7be788f",
+        "pixels": [
+          1440,
+          1000
+        ],
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/web/mini-width-1024.png",
+        "sha256": "7440efbdeb2afd23e4347b2ff651d9e8aaedb140fbe747a4170d9cd3a3b79221",
+        "pixels": [
+          1024,
+          900
+        ],
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/web/mini-width-320.png",
+        "sha256": "c73853f27c24695b911d0a9465c6d1273c823fa0162c5bc5f08ab8036ad0bf36",
+        "pixels": [
+          320,
+          900
+        ],
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/web/mini-width-393.png",
+        "sha256": "1e1f90281079dad6e56ce0ee9eb8aaee7c73f77ee569f93fb303bd6a4d8b8b56",
+        "pixels": [
+          393,
+          900
+        ],
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/web/mini-width-768.png",
+        "sha256": "741423b633b7328bd48007e5cbd104cd9ac23a9dc9c90c246453a1086f92c8f9",
+        "pixels": [
+          768,
+          900
+        ],
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/web/pinned-dm.png",
+        "sha256": "8725e297bf66991a3cb7806884b7ace0ff7c8c21beb5c26015a13dd95d5a6093",
+        "pixels": [
+          1440,
+          1000
+        ],
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/web/pinned-settings.png",
+        "sha256": "8af2f9b4f2686df9e99d1055ff0d2e45ccc2a5d0f90a2eb1de9fa9c666bc95a0",
+        "pixels": [
+          1440,
+          1000
+        ],
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/web/pinned-text.png",
+        "sha256": "6eefe6267d707d4ab10b2b688f0e87e4087c9e976178c9e92e5921b4ace98c35",
+        "pixels": [
+          1440,
+          1000
+        ],
+        "original_resolution_review": "PASS"
+      }
+    ],
+    "runtime_artifact": ".out/qa247-20261012/web/runtime.json",
+    "runtime_completed": true,
+    "visual_review": "All nine current original-resolution PNGs inspected. Actual synthetic video and mini controls are visible; TEXT/DM composer and voice dock do not overlap the mini surface. DM and settings captures include loading-state copy, so the visual verdict concerns mini-player and navigation controls rather than profile/history completion.",
+    "owned_resources_removed": true,
+    "artifact_sha256": "a79df0fe9c247e8d01337111b07d224862f54ed3cf36c51573224c4ce0cceb5a"
+  },
+  "android": {
+    "status": "PASS",
+    "candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+    "flutter": "3.47.6",
+    "dart": "3.13.5",
+    "flutter_framework_revision": "5fc346839b5d0eef006ed8404392afb4dfae428d",
+    "flutter_lib_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+    "flutter_lib_file_count": 1101,
+    "qa_target_sha256": "9925f5f2a43af4712899f45d6b28d8bf849c88076efbc9b06995abbc126f7dcb",
+    "qa_handler_sha256": {
+      "native.py": "44381d8081a3fbe282eedd6a2c1fbdf8c5e93377a9a9a99fa142522f076f59d5",
+      "bridge.py": "8a1680feadb5171408d819a2d0dc4c828aedfedf03f4593d3b80e1b45c3a5533",
+      "scenario.mjs": "e0c57a7e4616ffb8232135135fa48a3c8a0978d3755f6cb9ce715bb3f2c690a3"
+    },
+    "qa_driver_sha256": "589d15cb53d3a9a8438c16f80b7dc740e66cda19b0286857cfb99e443a64f0ea",
+    "actual_publisher_handler": {
+      "scenario_sha256": "e0c57a7e4616ffb8232135135fa48a3c8a0978d3755f6cb9ce715bb3f2c690a3",
+      "protocol": "live-string-atomic-ui-v2"
+    },
+    "platform_version": "sdk_phone64_arm64-userdebug 15 AE3A.240806.019 12368160 test-keys",
+    "build_mode": "debug",
+    "device_kind": "emulator",
+    "runtime_completed": true,
+    "owned_reverse_removed": true,
+    "native_executable_sha256": "a960122f8f8e50aabf336fd0055be25e4573bf06bfc1fedad184908b8ce1d5df",
+    "checks": {
+      "pin_TEXT_DM_settings_one_receiver_no_resubscription": "PASS",
+      "full_mini_full_return_preserves_subscription": "PASS",
+      "stop_exactly_once_and_mute": "PASS",
+      "no_pin_default_route_stop": "PASS",
+      "unpinned_source_restart_outside_voice_does_not_resubscribe": "PASS",
+      "viewport_320_adaptive_focus": "PASS",
+      "source_removal_cleanup": "PASS",
+      "disconnect_cleanup": "PASS",
+      "logout_account_switch_cleanup": "PASS",
+      "revoke_cleanup": "PASS"
+    },
+    "observations": [
+      {
+        "name": "full",
+        "screen_video_subscriptions": 1,
+        "screen_audio_subscriptions": 1,
+        "video_renderers": 1,
+        "decoded_frames": 1,
+        "audio_packets_received": 24,
+        "subscribe_events_since_selection": 0,
+        "unsubscribe_events_since_selection": 0
+      },
+      {
+        "name": "pinned TEXT",
+        "screen_video_subscriptions": 1,
+        "screen_audio_subscriptions": 1,
+        "video_renderers": 1,
+        "decoded_frames": 12,
+        "audio_packets_received": 79,
+        "subscribe_events_since_selection": 0,
+        "unsubscribe_events_since_selection": 0
+      },
+      {
+        "name": "pinned DM",
+        "screen_video_subscriptions": 1,
+        "screen_audio_subscriptions": 1,
+        "video_renderers": 1,
+        "decoded_frames": 31,
+        "audio_packets_received": 107,
+        "subscribe_events_since_selection": 0,
+        "unsubscribe_events_since_selection": 0
+      },
+      {
+        "name": "pinned settings",
+        "screen_video_subscriptions": 1,
+        "screen_audio_subscriptions": 1,
+        "video_renderers": 1,
+        "decoded_frames": 48,
+        "audio_packets_received": 136,
+        "subscribe_events_since_selection": 0,
+        "unsubscribe_events_since_selection": 0
+      },
+      {
+        "name": "return full",
+        "screen_video_subscriptions": 1,
+        "screen_audio_subscriptions": 1,
+        "video_renderers": 1,
+        "decoded_frames": 75,
+        "audio_packets_received": 183,
+        "subscribe_events_since_selection": 0,
+        "unsubscribe_events_since_selection": 0
+      },
+      {
+        "name": "fullscreen",
+        "screen_video_subscriptions": 1,
+        "screen_audio_subscriptions": 1,
+        "video_renderers": 1,
+        "decoded_frames": 97,
+        "audio_packets_received": 220,
+        "subscribe_events_since_selection": 0,
+        "unsubscribe_events_since_selection": 0
+      },
+      {
+        "name": "fullscreen return",
+        "screen_video_subscriptions": 1,
+        "screen_audio_subscriptions": 1,
+        "video_renderers": 1,
+        "decoded_frames": 123,
+        "audio_packets_received": 267,
+        "subscribe_events_since_selection": 0,
+        "unsubscribe_events_since_selection": 0
+      }
+    ],
+    "adaptive_method": "real native renderer with explicit Flutter logical viewport override",
+    "adaptive_capture_method": "actual Flutter RepaintBoundary.toImage of running app, engine viewport override; not OS screenshot",
+    "started_at": "2026-10-12T17:33:12.118500+00:00",
+    "completed_at": "2026-10-12T17:34:26.575965+00:00",
+    "artifact": ".out/qa247-20261012/android/runtime.json",
+    "artifact_sha256": "e99bc772e809affaec345643d1dfd41fb9c15754bd8392c53c5a890c09de74e4",
+    "screenshots": [
+      {
+        "path": ".out/qa247-20261012/android/mini-native-disconnected.png",
+        "sha256": "0e5313699cd495ca479ddc3331815b4509b5460cc5d76afc2265047edcfb173f",
+        "pixels": [
+          1080,
+          2400
+        ],
+        "capture": "native integration screenshot",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-dm.png",
+        "sha256": "b3650b7b9f299d307d77c752802903f41318074fa2db68f94c3b56f6966e93f7",
+        "pixels": [
+          1080,
+          2400
+        ],
+        "capture": "native integration screenshot",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-full.png",
+        "sha256": "86fb47db9de25feefb57addd257e51750242155a2bfcfa0f8f33b2a43752e288",
+        "pixels": [
+          1080,
+          2400
+        ],
+        "capture": "native integration screenshot",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-fullscreen.png",
+        "sha256": "5b9db1b8278ea192b8dcc2080aa7e783e64497e52771495b3d01e57c463e5b0d",
+        "pixels": [
+          1080,
+          2400
+        ],
+        "capture": "native integration screenshot",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-other-account.png",
+        "sha256": "6a8c90fa8cd24b7ec3a0473a84fc4be3195dd45cdb140bf99f1476880afc2095",
+        "pixels": [
+          1080,
+          2400
+        ],
+        "capture": "native integration screenshot",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-revoked.png",
+        "sha256": "b085be5aff83bf811719466f187f199c99fed99d4d67b33d0691317a8bde29d9",
+        "pixels": [
+          1080,
+          2400
+        ],
+        "capture": "native integration screenshot",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-settings.png",
+        "sha256": "21a23ade5337c8bad353f7cab512cb0a31f90f03ad0be399d24d6df3eb65875d",
+        "pixels": [
+          1080,
+          2400
+        ],
+        "capture": "native integration screenshot",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-source-removed.png",
+        "sha256": "c5bd1336fd90fa63ebd46cd7ad6d0ad49ec38033dd1fc27f322b9711990b966d",
+        "pixels": [
+          1080,
+          2400
+        ],
+        "capture": "native integration screenshot",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-source-republished.png",
+        "sha256": "44a0db6c0ceff207a92bfa9d833a5928e1d21aca95515ac2a1f0008303b23429",
+        "pixels": [
+          1080,
+          2400
+        ],
+        "capture": "native integration screenshot",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-stopped.png",
+        "sha256": "7da2ad8d62f3f56474113716f98b7262cd2448cd9573d16246835a417c754b45",
+        "pixels": [
+          1080,
+          2400
+        ],
+        "capture": "native integration screenshot",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-text.png",
+        "sha256": "d57f54fb75834b73d2e1f05e88a18e5d97ddda7fbe95f94421f5a8e1ef6baee8",
+        "pixels": [
+          1080,
+          2400
+        ],
+        "capture": "native integration screenshot",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-width-320.png",
+        "sha256": "df54ebd60e074508930fde8b6d448ae635695e9f9957e9308ca947be831fba9b",
+        "pixels": [
+          840,
+          2400
+        ],
+        "capture": "Flutter RepaintBoundary engine renderer",
+        "original_resolution_review": "PASS"
+      },
+      {
+        "path": ".out/qa247-20261012/android/mini-native-width-393.png",
+        "sha256": "83427e6757e5aeb885abeb3dcb683a4ebcbe02ba936bbddfb0b06e5ebef7f946",
+        "pixels": [
+          1032,
+          2400
+        ],
+        "capture": "Flutter RepaintBoundary engine renderer",
+        "original_resolution_review": "PASS"
+      }
+    ]
+  },
+  "ios": {
+    "status": "FAIL",
+    "started_at": "2026-10-12T17:51:10.551651+00:00",
+    "runtime_completed": false,
+    "owned_reverse_removed": true,
+    "candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+    "flutter": "3.47.6",
+    "dart": "3.13.5",
+    "flutter_framework_revision": "5fc346839b5d0eef006ed8404392afb4dfae428d",
+    "qa_handler_sha256": {
+      "native.py": "b3ef371201e37fa8415fdf60175c223faee97622b03d48d9628ae060f0a31004",
+      "bridge.py": "8a1680feadb5171408d819a2d0dc4c828aedfedf03f4593d3b80e1b45c3a5533",
+      "scenario.mjs": "befa27aa29e68fe4faae45ab38d7866d131199775a8082c695160a17b6b7c5e9"
+    },
+    "qa_driver_sha256": "589d15cb53d3a9a8438c16f80b7dc740e66cda19b0286857cfb99e443a64f0ea",
+    "actual_publisher_handler": {
+      "scenario_sha256": "befa27aa29e68fe4faae45ab38d7866d131199775a8082c695160a17b6b7c5e9",
+      "protocol": "live-string-atomic-ui-v2"
+    },
+    "flutter_lib_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+    "flutter_lib_file_count": 1101,
+    "qa_target_sha256": "9925f5f2a43af4712899f45d6b28d8bf849c88076efbc9b06995abbc126f7dcb",
+    "error_type": "CalledProcessError",
+    "error_phase": "native drive",
+    "completed_at": "2026-10-12T17:52:13.328415+00:00",
+    "build_mode": "debug",
+    "device_kind": "simulator",
+    "native_executable_sha256": "a8f7c44d862ff80f7c50a92b23f3fc9cd25b311819e49c69aac955146eb80d83",
+    "artifact": ".out/qa247-20261012/ios/runtime.json",
+    "artifact_sha256": "5eff0f960ffa9546a8af6db316a5a3fa2025aad4be1d32a99011ce13a2e54ab9",
+    "screenshots": [],
+    "attempt": "iOS3 clean simulator reboot diagnostic",
+    "previous_failure": {
+      "status": "FAIL",
+      "candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+      "flutter": "3.47.6",
+      "dart": "3.13.5",
+      "flutter_framework_revision": "5fc346839b5d0eef006ed8404392afb4dfae428d",
+      "flutter_lib_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "flutter_lib_file_count": 1101,
+      "qa_target_sha256": "9925f5f2a43af4712899f45d6b28d8bf849c88076efbc9b06995abbc126f7dcb",
+      "qa_handler_sha256": {
+        "native.py": "b3ef371201e37fa8415fdf60175c223faee97622b03d48d9628ae060f0a31004",
+        "bridge.py": "8a1680feadb5171408d819a2d0dc4c828aedfedf03f4593d3b80e1b45c3a5533",
+        "scenario.mjs": "befa27aa29e68fe4faae45ab38d7866d131199775a8082c695160a17b6b7c5e9"
+      },
+      "qa_driver_sha256": "589d15cb53d3a9a8438c16f80b7dc740e66cda19b0286857cfb99e443a64f0ea",
+      "actual_publisher_handler": {
+        "scenario_sha256": "befa27aa29e68fe4faae45ab38d7866d131199775a8082c695160a17b6b7c5e9",
+        "protocol": "live-string-atomic-ui-v2"
+      },
+      "build_mode": "debug",
+      "device_kind": "simulator",
+      "runtime_completed": false,
+      "owned_reverse_removed": true,
+      "native_executable_sha256": "bee860d06e5fccb266c90e4d19ac98c28adb27844c68b575d74aef6aca85e1f2",
+      "started_at": "2026-10-12T17:41:10.859402+00:00",
+      "completed_at": "2026-10-12T17:41:53.429775+00:00",
+      "error_type": "CalledProcessError",
+      "error_phase": "native drive",
+      "artifact": ".out/qa247-20261012/previous-attempts/ios/20261012T175110550933Z/runtime.json",
+      "artifact_sha256": "c1aef1bbef84df68d0b40d5b65e8c9dfc97b8d0527831ef8f68e6ac4fdbf944a",
+      "screenshots": []
+    },
+    "diagnostics": {
+      "status": "FAIL",
+      "scope": "iOS27 simulator runtime; physical iOS unproven",
+      "last_safe_phase": "first actual decoded/rendered frame",
+      "repeat_after_clean_boot": true,
+      "exception": "EXC_CRASH",
+      "signal": "SIGABRT",
+      "fixed_stack_symbols": [
+        "__pthread_kill",
+        "pthread_kill",
+        "abort",
+        "_ReportRPCTimeout",
+        "_CheckRPCError",
+        "AURemoteIO::Initialize",
+        "AudioUnitInitialize"
+      ],
+      "latest_private_crash_sha256": "3e41fd1a724929d66c71a25f3f46c70c4093ba3f9cd68c40f00f8781666de922",
+      "driver_error": "ext.flutter.driver112 Service has disappeared",
+      "host_core_audio": "PASS built-in default input/output alive48000Hz OSStatus0; no virtual/USB/Bluetooth hardware entries",
+      "device_gui": "DeviceHub installed at Xcode Applications/DeviceHub.app; absence of legacy Simulator.app is not claimed as cause",
+      "retry_policy": "One clean simulator reboot repeated the same crash; further retries stopped; no audio bypass, dependency upgrade or product change",
+      "prior_private_crash_sha256": "0a25c9462cd5214d500c40ee0992a0a25bb337dfcad37f0cec88044b03ca43a1"
+    }
+  },
+  "focused_verification": {
+    "receipt_and_real_http_guard_tests": {
+      "status": "PASS",
+      "count": 10
+    },
+    "layout_policy_frame_gate_tests": {
+      "status": "PASS",
+      "count": 23
+    },
+    "changed_file_analyze": "PASS",
+    "parent_full_flutter": {
+      "status": "PASS",
+      "passed": 1166,
+      "skipped": 1,
+      "components_passed": 35,
+      "artifact": ".out/qa-batch2-ultimate-flutter-20261012/report.json"
+    }
+  },
+  "confirmed_fixes": [
+    "Web mini-player clipped controls/video at narrow viewport: responsive mini CSS.",
+    "Web Stop repeated false subscription signals: desired-state registry guard.",
+    "Native pinned overlay covered composer: compact pinned content places mini below chat content.",
+    "Native unpinned route transitions retained selection/restart intent: default-policy guard clears selected and pending identities outside active voice.",
+    "Native pinned plus keyboard overflow: constrain preview height while reserving content, and scroll the waiting overlay within a small preview."
+  ],
+  "limitations": [
+    "Emulator/simulator acceptance does not establish physical-device capacity, microphone hardware or acoustic speaker output quality.",
+    "Native320/393 uses explicit Flutter engine viewport metrics and actual RepaintBoundary raster readback; it is not a physical-device resolution measurement.",
+    "Android initial full screenshot is an early black-frame transition; later fullscreen and native TEXT/DM/settings show the actual source texture and runtime decoded-frame counters increase.",
+    "Web16 temporary six-second stream-start notice appeared above composer; Web17 stable captures wait for its natural expiry without modifying app behavior.",
+    "Browser retained RTC receiver objects are distinct from active subscriptions/output: cleanup reports actual video/audio outputs zero.",
+    "iOS2 and iOS3 clean-boot diagnostic both crashed before completing required native checks: SIGABRT/AURemoteIO::Initialize/AudioUnitInitialize/_ReportRPCTimeout. Healthy Apple built-in host input/output48000Hz. iOS acceptance FAIL; physical iOS unproven. #247 remains open."
+  ],
+  "cleanup": {
+    "web16": "PASS owned resources removed",
+    "web17": "PASS publisher stopped; owned API/database/SFU/proxy resources removed; active input file removed",
+    "android": "PASS owned reverse ports removed, assigned AVD package absence verified, assigned emulator stopped",
+    "ios": "PASS assigned simulator QAapp uninstalled, app container absence verified, assigned simulator stopped",
+    "private_credentials_and_builds": "PASS isolated Flutter compiled fixture removed; credential defines auto-disposed; own raw logs removed; original ignored screenshots and safe receipts retained",
+    "ports": "PASS all assigned localhost ports4830/4832/4833/4834/4883/4884/4885 closed"
+  },
+  "artifact_policy": "Original generated PNGs and fresh FAIL runtime receipts remain ignored local artifacts; private credential-bearing builds/logs are removed after hashes are recorded. No message bodies, SDP, user/participant IDs, session tokens, raw crash payload or disposable credentials are included in this evidence.",
+  "close_issue": false,
+  "mandatory_web": {
+    "status": "REVIEW_REQUIRED",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "counts": {
+      "unit": 1493,
+      "browser": 96,
+      "real_stack": 2
+    },
+    "receipt": ".out/local-features/20261012-193641/report.json",
+    "sha256": "fc441ec12a3493cf77cfe71ccc36d22be792347a5ddfff202a2865f52fe1b05e",
+    "visual_scope": "Broad visual report remains REVIEW_REQUIRED. Scoped case captures reviewed separately; no blanket pixel-golden approval."
+  },
+  "mandatory_native": {
+    "status": "REVIEW_REQUIRED",
+    "receipt": ".out/local-features/20261012-195850/report.json",
+    "sha256": "8cfd14679c2f4b37a2500b2164f31f9dbbdb0f17588d816e5a7a9ea4c5ade4da",
+    "stages": [
+      {
+        "name": "flutter-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "flutter-component-captures",
+        "status": "PASS"
+      },
+      {
+        "name": "android-runtime-retry",
+        "status": "PASS"
+      },
+      {
+        "name": "ios-runtime",
+        "status": "PASS"
+      }
+    ],
+    "counts": {
+      "unit": 1166,
+      "skipped": 1,
+      "component": 35,
+      "native_Android_baseline": 1,
+      "native_iOS_baseline": 1
+    },
+    "android_retry_receipt": ".out/local-features/20261012-195850/android-runtime-retry/runtime.json",
+    "android_retry_sha256": "50faa89bc76b290f2ea978aabd53f2b6cfed4cca15d074770e6e9dda9d84cda0",
+    "original_android_attempt": {
+      "status": "FAIL",
+      "reason": "Owned emulator5554 had exited; preflight connection refused before build or API. Restarted the same AVD and reran only Android runtime successfully. Original report remains FAIL rather than overwriting that attempt."
+    },
+    "visual_scope": "Broad captures remain REVIEW_REQUIRED; scoped issue images are reviewed separately.",
+    "compiled_artifacts_sha256": {
+      "clients/flutter/build/app/outputs/flutter-apk/app-debug.apk": "636bcfa27a40129baf553d503397b464033e6b1bcc9f7452da329ac7e3acd6f1",
+      "clients/flutter/build/ios/iphonesimulator/Runner.app/Runner": "f935b70a25500518c0eddea93bdb649438d38c9bb8c3ded29af18b4582e63b5a"
+    },
+    "final_source_unit_component": {
+      "receipt": ".out/qa-batch2-ultimate-flutter-20261012/report.json",
+      "sha256": "28e8c1b65cb7f07346fde8a881d018854e34736e579e81c122373f802932d0cb",
+      "status": "PASS",
+      "final_flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "stages": [
+        {
+          "name": "flutter-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "flutter-component-captures",
+          "status": "PASS"
+        }
+      ],
+      "counts": {
+        "unit": 1166,
+        "skipped": 1,
+        "component": 35
+      },
+      "features_sha256": "7b5bc7014ab8ac23b925c9bdab4112c10d83ab9d8a224861a20cd8045cfd7645",
+      "visual_review": "REVIEW_REQUIRED: broader component pictures are not a substitute for individually reviewed runtime issue images"
+    },
+    "scope": "Final source09eba39f full unit/component PASS. Earlier Android/iOS auth/workspace/profile/audio/admin/logout baselines use e05755 with source-reviewed equivalent no-selected-screen path. Final issue247 Android runtime independently exercises changed selected-screen paths; its iOS media runtime FAIL is recorded separately and is not replaced by baseline or unit PASS. Original attempts and measured artifact hashes are preserved."
+  },
+  "root_independent_visual_review": {
+    "status": "PASS_SCOPED_VISUAL_REVIEW",
+    "web": [
+      "Web17 mini-width-320.png",
+      "Web17 mini-width-393.png"
+    ],
+    "android": [
+      "Android12 mini-native-text.png",
+      "Android12 mini-native-width-393.png",
+      "Android12 mini-native-width-320.png"
+    ],
+    "notes": "Original-resolution images inspected. Actual synthetic video, Return/mute/Stop and composer are visible without mini-player overlap. Android adaptive393 capture demonstrates reduced preview while preserving controls; PNG IHDR393=1032x2400 and320=840x2400. These controlled engine rasters are distinguished from ordinary native integration captures. No iOS visual PASS claimed."
+  }
+}

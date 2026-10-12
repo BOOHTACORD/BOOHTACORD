@@ -36,6 +36,33 @@ describe('LiveKit screen registry', () => {
     expect(bobVideo.setSubscribed).toHaveBeenCalledWith(false)
   })
 
+  it('does not repeat unsubscribe after viewer clear and track-unsubscribed refreshes', async () => {
+    const { ScreenViewerController } = await import('./screen_viewer_controller')
+    function desiredPublication() {
+      let desired = true
+      return {
+        get isDesired() { return desired },
+        setSubscribed: vi.fn((value: boolean) => { desired = value }),
+        track: { attach: vi.fn(), detach: vi.fn() },
+      }
+    }
+    const video = desiredPublication(), audio = desiredPublication()
+    const owner = { identity: 'screen-owner', video, audio }
+    const registry = new LiveKitScreenRegistry()
+    registry.refresh([owner], null)
+    const viewer = new ScreenViewerController(() => registry.streams())
+    viewer.select('screen-owner:screen', {} as HTMLVideoElement, {} as HTMLAudioElement)
+    video.setSubscribed.mockClear(); audio.setSubscribed.mockClear()
+    viewer.clear()
+    // Both actual TrackUnsubscribed events trigger registry refresh separately.
+    registry.refresh([owner], null)
+    registry.refresh([owner], null)
+    expect(video.setSubscribed).toHaveBeenCalledTimes(1)
+    expect(audio.setSubscribed).toHaveBeenCalledTimes(1)
+    expect(video.setSubscribed).toHaveBeenCalledWith(false)
+    expect(audio.setSubscribed).toHaveBeenCalledWith(false)
+  })
+
   it('does not turn off the currently selected stream while new room events arrive', () => {
     const video = publication()
     const audio = publication()

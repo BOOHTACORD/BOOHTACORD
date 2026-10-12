@@ -11,12 +11,22 @@ import '../models.dart';
 import '../services/native_notifications.dart';
 import '../theme.dart';
 import '../widgets/authenticated_avatar.dart';
+import 'workspace_ui/profile_panel_toolbar/component.dart';
 
 enum _ProfileSection { profile, security, notifications, about }
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key, required this.state});
+  const ProfileScreen({
+    super.key,
+    required this.state,
+    this.onBack,
+    this.onClose,
+    this.onToggleNavigation,
+  });
   final AppState state;
+  final VoidCallback? onBack;
+  final VoidCallback? onClose;
+  final VoidCallback? onToggleNavigation;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -27,6 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _displayName = TextEditingController();
   final _currentPassword = TextEditingController();
   final _newPassword = TextEditingController();
+  bool _leaving = false;
   String? _status;
   String? _profileSaveStatus;
   _ProfileSection _selectedSection = _ProfileSection.profile;
@@ -162,6 +173,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
     return confirmed == true && widget.state.profile?.accountId == accountId;
+  }
+
+  Future<void> _requestLeave(VoidCallback leave) async {
+    if (_leaving || widget.state.profileSaving) return;
+    final accountId = widget.state.profile?.accountId;
+    if (accountId == null) return;
+    _leaving = true;
+    try {
+      if (_hasUnsavedSecurityChanges &&
+          !await _confirmLeavingUnsavedChanges(accountId)) {
+        return;
+      }
+      if (!mounted || widget.state.profile?.accountId != accountId) return;
+      leave();
+    } finally {
+      _leaving = false;
+    }
   }
 
   Future<void> _requestLogout() async {
@@ -621,7 +649,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final profile = widget.state.profile;
-    return ColoredBox(
+    final content = ColoredBox(
       color: GcColors.content,
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -676,6 +704,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           );
         },
+      ),
+    );
+    final onClose = widget.onClose;
+    if (onClose == null) return content;
+    return PopScope<Object?>(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _requestLeave(widget.onBack ?? onClose);
+      },
+      child: Column(
+        children: [
+          WorkspaceProfilePanelToolbar(
+            onToggleNavigation: widget.onToggleNavigation,
+            onBack: widget.onBack == null
+                ? null
+                : () => _requestLeave(widget.onBack!),
+            onClose: () => _requestLeave(onClose),
+          ),
+          Expanded(child: content),
+        ],
       ),
     );
   }

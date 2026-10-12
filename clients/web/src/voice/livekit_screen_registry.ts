@@ -40,8 +40,8 @@ export class LiveKitScreenRegistry {
       video: participant.video,
     }] : [])
     this.current.filter((stream) => stream.id !== selectedId && !stream.isLocal).forEach((stream) => {
-      stream.video.setSubscribed?.(false)
-      stream.audio?.setSubscribed?.(false)
+      if (stream.video.isDesired !== false) stream.video.setSubscribed?.(false)
+      if (stream.audio?.isDesired !== false) stream.audio?.setSubscribed?.(false)
     })
   }
 

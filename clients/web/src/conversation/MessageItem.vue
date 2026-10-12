@@ -59,7 +59,7 @@ function onEditKeydown(event: KeyboardEvent): void {
 function closeActionsAndRestoreFocus(): void {
   actionsOpen.value = false
   void nextTick(() => {
-    if (actionsToggle.value?.isConnected) actionsToggle.value.focus()
+    if (actionsToggle.value?.isConnected && actionsToggle.value.getClientRects().length > 0) actionsToggle.value.focus()
     else row.value?.focus()
   })
 }

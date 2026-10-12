@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-12",
+  "status": "COMPLETED_WITH_OPEN_GATES",
+  "issues": [
+    247,
+    291,
+    292,
+    293,
+    297
+  ],
+  "agent_count": 4,
+  "execution": "Independent scenario work and isolated real API/SFU stacks run concurrently; SDK compilation is serialized to avoid shared-runtime/resource collisions. Physical macOS worker covers both resize and settings in the same live session.",
+  "devices": {
+    "android": [
+      "BOOHTACORD_QA_API35 /5554",
+      "BOOHTACORD_QA_283_API35 /5556",
+      "BOOHTACORD_QA_278_API35 /5558"
+    ],
+    "ios": [
+      "82C26E13-0F1F-43F9-AF27-866DC22C2456",
+      "57E6A791-8975-4C84-82E6-47321F22C9B8"
+    ],
+    "desktop": "physical macOS27 Apple Silicon"
+  },
+  "base_candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+  "app_source_sha256": {
+    "clients/web/src/conversation/MessageItem.vue": "b3abfe0ef907ff005a85b8893c4253827481363864fe431b8df7936732302673",
+    "clients/web/src/design/mini_player.css": "500a78c9225c04f1cef1b1f93383d199b8f19677b11943b2512c0073932807d8",
+    "clients/web/src/voice/livekit_screen_registry.ts": "c832089e53d633e239f05adc6f55c77f2ec865e0dbb1ba09468c54918e85bdb2",
+    "clients/web/src/voice/screen_viewer_types.ts": "fabf7da3b3b8029991d2c34be7265c58f4009147d5d71338d2e72739d9095957",
+    "clients/flutter/lib/src/screens/profile_screen.dart": "3140813ef09927fc2a62c723faed4e8ce24ef955aaf56b625fad8a6c9dcb0b3a",
+    "clients/flutter/lib/src/screens/workspace_ui/main_surface/build/handler.dart": "4b87a2ed0e2de5bf805eb1654d926495c79d46e9f65226e72a986358f5f75f96",
+    "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/mobile_layers/handler.dart": "1879aec38de71c02cd5d2569761bbee092b1fffbedcbe2fdb2bd3cd88c4323d2",
+    "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/pinned_layer/handler.dart": "7c859dbb9c44d8816831273b71c524bc75377b04df28ceade02253ff249ab50b",
+    "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/mobile_layers/pinned_content/handler.dart": "87a196e5ce3c53f9669887579f7208c705e2a98df3173651de328c401b1af4c4",
+    "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/workspace_changed/synchronize_screen_selection.dart": "4c61265ac033ebc05250858e5de0e1b1fbc33a734a67896b6d987ec137ea3fbc",
+    "clients/flutter/lib/src/services/pinned_screen_mini_player_policy.dart": "96b420899f9a98565cc35d82b527dd8cb88b202a08cff6935b856228b6c90631",
+    "clients/flutter/lib/src/screens/workspace_ui/pinned_screen_mini_player/build/floating_surface/handler.dart": "9a0e9c92390265fbe99dd8d75037b590934d37eddb3e98d8d18eea8f5b47952c",
+    "clients/flutter/lib/src/widgets/screen_frame_gate.dart": "59ca0574d7898d90dde87c389af5d6de83058f97e09b326ab81e126d0798ae62"
+  },
+  "confirmed_fixes": [
+    "Web mini-player layout exposes Return/mute/Stop controls after pinning.",
+    "Web unsubscribe signaling does not repeat for already undesired publications.",
+    "Desktop message Reply returns focus to a rendered control or row.",
+    "Native profile Close/Back/system Back use existing account-scoped dirty confirmation and respect pending save.",
+    "Native compact pinned mini-player reserves its own layout area above the voice dock instead of covering composer/settings fields.",
+    "Native unpinned selected or pending-restart screen stops when leaving the active voice surface; source republish cannot silently resume it after navigation.",
+    "Native compact mini-player shrinks only the video preview when the keyboard reduces available height, keeps composer and controls separate, and scrolls the waiting overlay within a short preview."
+  ],
+  "mandatory_web": {
+    "status": "REVIEW_REQUIRED",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "counts": {
+      "unit": 1493,
+      "browser": 96,
+      "real_stack": 2
+    },
+    "receipt": ".out/local-features/20261012-193641/report.json",
+    "sha256": "fc441ec12a3493cf77cfe71ccc36d22be792347a5ddfff202a2865f52fe1b05e",
+    "visual_scope": "Broad visual report remains REVIEW_REQUIRED. Scoped case captures reviewed separately; no blanket pixel-golden approval."
+  },
+  "runner_safety": {
+    "status": "PASS",
+    "count": 44,
+    "receipt": ".out/qa-batch2-ultimate-runners.log",
+    "sha256": "af4b03d17398db5c2ac8f6541ed5e5edc0608698c3a4218b257a59a272199aa7",
+    "scope": "21 local-feature policy/process/native/stack/baseline/doctor/iOS-extension,4 Mac,2 assigned-Android OS Back,4 navigation reverse cleanup,3 native292/293 freshness guards,10 mini-player receipt/control/device guards."
+  },
+  "mandatory_native": {
+    "status": "REVIEW_REQUIRED",
+    "receipt": ".out/local-features/20261012-195850/report.json",
+    "sha256": "8cfd14679c2f4b37a2500b2164f31f9dbbdb0f17588d816e5a7a9ea4c5ade4da",
+    "stages": [
+      {
+        "name": "flutter-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "flutter-component-captures",
+        "status": "PASS"
+      },
+      {
+        "name": "android-runtime-retry",
+        "status": "PASS"
+      },
+      {
+        "name": "ios-runtime",
+        "status": "PASS"
+      }
+    ],
+    "counts": {
+      "unit": 1166,
+      "skipped": 1,
+      "component": 35,
+      "native_Android_baseline": 1,
+      "native_iOS_baseline": 1
+    },
+    "android_retry_receipt": ".out/local-features/20261012-195850/android-runtime-retry/runtime.json",
+    "android_retry_sha256": "50faa89bc76b290f2ea978aabd53f2b6cfed4cca15d074770e6e9dda9d84cda0",
+    "original_android_attempt": {
+      "status": "FAIL",
+      "reason": "Owned emulator5554 had exited; preflight connection refused before build or API. Restarted the same AVD and reran only Android runtime successfully. Original report remains FAIL rather than overwriting that attempt."
+    },
+    "visual_scope": "Broad captures remain REVIEW_REQUIRED; scoped issue images are reviewed separately.",
+    "compiled_artifacts_sha256": {
+      "clients/flutter/build/app/outputs/flutter-apk/app-debug.apk": "636bcfa27a40129baf553d503397b464033e6b1bcc9f7452da329ac7e3acd6f1",
+      "clients/flutter/build/ios/iphonesimulator/Runner.app/Runner": "f935b70a25500518c0eddea93bdb649438d38c9bb8c3ded29af18b4582e63b5a"
+    },
+    "final_source_unit_component": {
+      "receipt": ".out/qa-batch2-ultimate-flutter-20261012/report.json",
+      "sha256": "28e8c1b65cb7f07346fde8a881d018854e34736e579e81c122373f802932d0cb",
+      "status": "PASS",
+      "final_flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "stages": [
+        {
+          "name": "flutter-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "flutter-component-captures",
+          "status": "PASS"
+        }
+      ],
+      "counts": {
+        "unit": 1166,
+        "skipped": 1,
+        "component": 35
+      },
+      "features_sha256": "7b5bc7014ab8ac23b925c9bdab4112c10d83ab9d8a224861a20cd8045cfd7645",
+      "visual_review": "REVIEW_REQUIRED: broader component pictures are not a substitute for individually reviewed runtime issue images"
+    },
+    "scope": "Final source09eba39f full unit/component PASS. Earlier Android/iOS auth/workspace/profile/audio/admin/logout baselines use e05755 with source-reviewed equivalent no-selected-screen path. Final issue247 Android runtime independently exercises changed selected-screen paths; its iOS media runtime FAIL is recorded separately and is not replaced by baseline or unit PASS. Original attempts and measured artifact hashes are preserved."
+  },
+  "closure_policy": "Only complete applicable runtime evidence closes a case; physical, reader, capacity and load checks are not inferred from emulators or unit tests.",
+  "cleanup": "PASS: all current-batch owned stacks, reverse ports and private credential-bearing builds removed; assigned Android emulators and iOS simulators shut down. Reusable device definitions and ignored sanitized captures retained. Foreign services are untouched.",
+  "final_flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+  "case_outcomes": {
+    "247": {
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue247-mini-player-runtime-2026-10-12.json",
+      "sha256": "f4698365edc15b0574d8679aa949d3e9c5fed2763884b30294cd5456c5318b72",
+      "close_issue_allowed": false
+    },
+    "291": {
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue291-responsive-runtime-2026-10-12.json",
+      "sha256": "856c4269bf747cc6ff61f165b9465cf0bd43e372e7719c0865a3676760836e63",
+      "close_issue_allowed": false
+    },
+    "292": {
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue292-mobile-navigation-runtime-2026-10-12.json",
+      "sha256": "976acb905ff52c1332a23366a3685e74e34dbf5395f1dbe5bbf010228f1eca65",
+      "close_issue_allowed": false
+    },
+    "293": {
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue293-message-actions-runtime-2026-10-12.json",
+      "sha256": "4a0622bcde99d3779efa7bea60181f18a7223758df392fd71b13162a9845a809",
+      "close_issue_allowed": false
+    },
+    "297": {
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue297-settings-runtime-2026-10-12.json",
+      "sha256": "fd4206079972d8327dab43c47f92833f66ae8e8b94ca4ba3c6c8689b6015de6d",
+      "close_issue_allowed": false
+    }
+  },
+  "eligible_new_closures": [],
+  "verified_previously_closed": [
+    251,
+    254,
+    258,
+    264,
+    276
+  ],
+  "publication": "Commit containing this record; published master SHA is recorded in each issue follow-up comment."
+}

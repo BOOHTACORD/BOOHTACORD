@@ -4,16 +4,14 @@ import '../../lifecycle/context.dart';
 
 extension RenderWorkspaceScreenPinnedLayerAction
     on WorkspaceScreenStateContext {
-  Positioned renderWorkspaceScreenPinnedLayer(
+  Widget renderWorkspaceScreenPinnedLayer(
     bool compact,
     BoxConstraints constraints,
     bool modalOverlayActive,
     bool pinnedMiniVisible,
     GuildChannel? activeVoiceChannel,
-  ) => Positioned(
-    right: compact ? 12 : 16,
-    bottom: 16,
-    child: SizedBox(
+  ) {
+    final mini = SizedBox(
       width: (constraints.maxWidth - (compact ? 24 : 32))
           .clamp(0.0, 360.0)
           .toDouble(),
@@ -33,6 +31,7 @@ extension RenderWorkspaceScreenPinnedLayerAction
           ),
         ),
       ),
-    ),
-  );
+    );
+    return compact ? mini : Positioned(right: 16, bottom: 16, child: mini);
+  }
 }

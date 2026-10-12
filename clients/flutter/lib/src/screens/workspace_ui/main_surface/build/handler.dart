@@ -2,7 +2,6 @@ import 'colored_box/handler.dart';
 import '../../audio_settings_screen/component.dart';
 import '../../direct_conversation/component.dart';
 import '../../header/component.dart';
-import '../../profile_panel_toolbar/component.dart';
 import '../../search_message_context/component.dart';
 import '../../native_bindings.dart';
 
@@ -28,21 +27,11 @@ extension WorkspaceMainSurfaceBuildAction on WorkspaceMainSurfaceContext {
       return WorkspaceSearchMessageContext(state: state);
     }
     if (state.workspacePanel == WorkspacePanel.profile) {
-      return PopScope<Object?>(
-        canPop: false,
-        onPopInvokedWithResult: (didPop, _) {
-          if (!didPop) leaveWorkspacePanel();
-        },
-        child: Column(
-          children: [
-            WorkspaceProfilePanelToolbar(
-              onToggleNavigation: onToggleNavigation,
-              onBack: compact ? leaveWorkspacePanel : null,
-              onClose: leaveWorkspacePanel,
-            ),
-            Expanded(child: ProfileScreen(state: state)),
-          ],
-        ),
+      return ProfileScreen(
+        state: state,
+        onToggleNavigation: onToggleNavigation,
+        onBack: compact ? leaveWorkspacePanel : null,
+        onClose: leaveWorkspacePanel,
       );
     }
     if (state.workspacePanel == WorkspacePanel.audio) {

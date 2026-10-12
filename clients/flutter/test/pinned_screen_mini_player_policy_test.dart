@@ -105,4 +105,46 @@ void main() {
       );
     });
   });
+  group('unpinned remote viewer navigation lifecycle', () {
+    bool stop({
+      String? selected = 'remote',
+      String? waiting,
+      String? pinned,
+      String? active = 'voice-1',
+      String? channel = 'voice-1',
+      bool dm = false,
+      bool panel = false,
+    }) => unpinnedScreenSelectionShouldStop(
+      selectedScreenIdentity: selected,
+      waitingScreenIdentity: waiting,
+      pinnedScreenIdentity: pinned,
+      activeVoiceChannelId: active,
+      selectedChannelId: channel,
+      directMessageOpen: dm,
+      workspacePanelOpen: panel,
+    );
+    test('stops hidden selection on text or another voice channel', () {
+      expect(stop(channel: 'text-1'), isTrue);
+      expect(stop(channel: 'voice-2'), isTrue);
+    });
+    test(
+      'stops DM and settings even when underlying channel is active voice',
+      () {
+        expect(stop(dm: true), isTrue);
+        expect(stop(panel: true), isTrue);
+      },
+    );
+    test('clears pending restart outside voice before source republish', () {
+      expect(stop(selected: '', waiting: 'remote', channel: 'text-1'), isTrue);
+      expect(stop(selected: null, waiting: 'remote', dm: true), isTrue);
+      expect(stop(selected: '', waiting: 'remote'), isFalse);
+    });
+    test('preserves pin, visible voice, stopped selection and channel-close ownership', () {
+      expect(stop(pinned: 'remote', channel: 'text-1'), isFalse);
+      expect(stop(), isFalse);
+      expect(stop(selected: '', channel: 'text-1'), isFalse);
+      expect(stop(selected: null, channel: 'text-1'), isFalse);
+      expect(stop(active: null, channel: 'text-1'), isFalse);
+    });
+  });
 }

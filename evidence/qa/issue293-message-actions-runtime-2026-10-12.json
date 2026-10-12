@@ -1,0 +1,596 @@
+{
+  "schema_version": 1,
+  "issue": 293,
+  "date": "2026-10-12",
+  "status": "PARTIAL",
+  "close_issue": false,
+  "leaf_task": {
+    "id": "FV2-008",
+    "dependencies": [
+      "FV2-007",
+      "T-040",
+      "T-041",
+      "T-050",
+      "T-051"
+    ]
+  },
+  "environment": {
+    "host": "Apple Silicon macOS27",
+    "flutter": "3.47.6",
+    "dart": "3.13.5",
+    "stack": [
+      "real Go API",
+      "PostgreSQL17.6",
+      "Caddy HTTPS",
+      "LiveKit SFU"
+    ],
+    "loopback_ports": [
+      4810,
+      4812,
+      4820,
+      4880,
+      4881,
+      4882
+    ],
+    "fixtures": "Three disposable real HTTP sessions; invisible synthetic native bodies; no successful API payload mocked."
+  },
+  "confirmed_fix": {
+    "problem": "Desktop Reply tried to return focus to the hidden mobile disclosure, leaving focus on Reply instead of the visible message row.",
+    "fix": "Focus disclosure only when it has a rendered rectangle; otherwise focus existing row fallback.",
+    "source": "clients/web/src/conversation/MessageItem.vue",
+    "source_sha256": "b3abfe0ef907ff005a85b8893c4253827481363864fe431b8df7936732302673",
+    "test": "clients/web/tests/conversation_action_disclosure/reply_focus.browser.spec.ts",
+    "red": "Actual production component Reply then Enter failed visible-row focus before implementation.",
+    "green": "18 action browser tests PASS including the new desktop regression."
+  },
+  "focused_validation": {
+    "web_unit": "18 PASS across message toolbar, edit shortcuts/controller, reaction/pin client suites",
+    "web_browser": "18 PASS action disclosure tests",
+    "flutter": "4 PASS message_action_menu_test.dart",
+    "analysis": "New integration target and driver: no issues"
+  },
+  "results": {
+    "320": {
+      "issue": 293,
+      "width": 320,
+      "checks": {
+        "TEXT_reply_explicit_focus": "PASS",
+        "TEXT_edit_HTTP": "PASS",
+        "TEXT_reaction_toggle_and_touch_targets": "PASS",
+        "TEXT_cancel_delete_no_HTTP": "PASS",
+        "TEXT_confirm_delete_once": "PASS",
+        "TEXT_peer_ownership": "PASS",
+        "TEXT_admin_pin": "PASS",
+        "DM_reply_explicit_focus": "PASS",
+        "DM_edit_HTTP": "PASS",
+        "DM_reaction_toggle_and_touch_targets": "PASS",
+        "DM_cancel_delete_no_HTTP": "PASS",
+        "DM_confirm_delete_once": "PASS",
+        "DM_peer_ownership_no_pin": "PASS",
+        "DM_third_admin_history_delete_denied": "PASS"
+      },
+      "mocks": false,
+      "physical_touch": false,
+      "roles": [
+        "MEMBER",
+        "MEMBER",
+        "ADMIN"
+      ],
+      "mutations": {
+        "PATCH": 2,
+        "PUT": 2,
+        "DELETE": 5
+      },
+      "pin_observation": {
+        "HTTP": 204,
+        "server_list_contains_message": true,
+        "persistent_confirmation_notice": "Not required for this action criterion; transient during social refresh, not claimed PASS"
+      },
+      "status": "PASS",
+      "browser": "153.0.8010.12",
+      "candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "DM-reaction-tools.png": "4509784e3a841272129c2de8eed58bbf63c89016b47b208bcd7b415f8cc687b3",
+        "TEXT-admin-pin-tools.png": "692ad66123747c9da158563be1b0f51a8ee4f632a191662c1714411c1eb9a30f",
+        "DM-peer-toolbar.png": "17e2d2c02b1633eac20df8e9202960ee52d64ecf57afdb25451c63739bc6e5d8",
+        "DM-owned-toolbar.png": "2851ff49cf9c2f6f52a36dd47865f6ae19f0697ab734e257b632776339d0f2fa",
+        "TEXT-peer-toolbar.png": "a4e0c57cecab7a9b2a82fe0e6e0b27e238221488f3a289a5da205c974b6bb92e",
+        "TEXT-reaction-tools.png": "42437fba5135ab3ea58a21e173248957f3133c7dc9ad540e9097c0c45ea4a9ae",
+        "TEXT-owned-toolbar.png": "2d2600b79ce24710b4ccd3759afed9ff0058f947f2777a595eb960afeeabe472"
+      },
+      "receipt": {
+        "path": ".out/qa293-20261012/320/runtime.json",
+        "sha256": "6446651ee4e19c2daf26220e39de6126b2dc3397f232aef76b6540f44e6903af"
+      },
+      "visual_review": {
+        "status": "PASS for captured action panels and confirmations",
+        "original_resolution": true,
+        "capture_count": 7,
+        "observations": [
+          "Complete action labels and peer-only Reply; controls remain inside panel bounds.",
+          "Web reactions wrap on narrow widths; native Cancel/Delete confirmation controls visible and separate.",
+          "Message bodies excluded from cropped Web captures; native synthetic bodies deliberately invisible; no assertion about text formatting or attachments."
+        ]
+      }
+    },
+    "393": {
+      "issue": 293,
+      "width": 393,
+      "checks": {
+        "TEXT_reply_explicit_focus": "PASS",
+        "TEXT_edit_HTTP": "PASS",
+        "TEXT_reaction_toggle_and_touch_targets": "PASS",
+        "TEXT_cancel_delete_no_HTTP": "PASS",
+        "TEXT_confirm_delete_once": "PASS",
+        "TEXT_peer_ownership": "PASS",
+        "TEXT_admin_pin": "PASS",
+        "DM_reply_explicit_focus": "PASS",
+        "DM_edit_HTTP": "PASS",
+        "DM_reaction_toggle_and_touch_targets": "PASS",
+        "DM_cancel_delete_no_HTTP": "PASS",
+        "DM_confirm_delete_once": "PASS",
+        "DM_peer_ownership_no_pin": "PASS",
+        "DM_third_admin_history_delete_denied": "PASS"
+      },
+      "mocks": false,
+      "physical_touch": false,
+      "roles": [
+        "MEMBER",
+        "MEMBER",
+        "ADMIN"
+      ],
+      "mutations": {
+        "PATCH": 2,
+        "PUT": 2,
+        "DELETE": 5
+      },
+      "pin_observation": {
+        "HTTP": 204,
+        "server_list_contains_message": true,
+        "persistent_confirmation_notice": "Not required for this action criterion; transient during social refresh, not claimed PASS"
+      },
+      "status": "PASS",
+      "browser": "153.0.8010.12",
+      "candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "DM-reaction-tools.png": "edc5b221b5b3ebad84cb0c7f2388b268f71ab48c15295642cdd5a9a2be7e1597",
+        "TEXT-admin-pin-tools.png": "de7866e9f217330146aa2f2d59181c02a797883f259bc85cd8d0fe756a4a09f9",
+        "DM-peer-toolbar.png": "94c1648b6547700cf971c87ca4ab6d5e02f213bf221a491fca864a8fb1ba7b61",
+        "DM-owned-toolbar.png": "273d6a38744ffa4bbe699d58235b8fd927928b1fb76b4fbecb0ef2ea6e699477",
+        "TEXT-peer-toolbar.png": "6bcfde4648a0c2dd783d91bb790b86ad920d776221a2d0044a91442d484707ca",
+        "TEXT-reaction-tools.png": "de7cc7212a142fe2c9b9c12f3d642eaf76464ccfde385ee5c7a343c3a652c238",
+        "TEXT-owned-toolbar.png": "d9f1a07951b208dfd5b77115e85385bc6e3fe281e8775cc1dc083311c0882077"
+      },
+      "receipt": {
+        "path": ".out/qa293-20261012/393/runtime.json",
+        "sha256": "ca718107303bd921e029c5e9ecf2827eec526c9624e67e56f4102aee105cba61"
+      },
+      "visual_review": {
+        "status": "PASS for captured action panels and confirmations",
+        "original_resolution": true,
+        "capture_count": 7,
+        "observations": [
+          "Complete action labels and peer-only Reply; controls remain inside panel bounds.",
+          "Web reactions wrap on narrow widths; native Cancel/Delete confirmation controls visible and separate.",
+          "Message bodies excluded from cropped Web captures; native synthetic bodies deliberately invisible; no assertion about text formatting or attachments."
+        ]
+      }
+    },
+    "1440": {
+      "issue": 293,
+      "width": 1440,
+      "checks": {
+        "TEXT_reply_explicit_focus": "PASS",
+        "TEXT_edit_HTTP": "PASS",
+        "TEXT_reaction_toggle_and_touch_targets": "PASS",
+        "TEXT_cancel_delete_no_HTTP": "PASS",
+        "TEXT_confirm_delete_once": "PASS",
+        "TEXT_peer_ownership": "PASS",
+        "TEXT_admin_pin": "PASS",
+        "DM_reply_explicit_focus": "PASS",
+        "DM_edit_HTTP": "PASS",
+        "DM_reaction_toggle_and_touch_targets": "PASS",
+        "DM_cancel_delete_no_HTTP": "PASS",
+        "DM_confirm_delete_once": "PASS",
+        "DM_peer_ownership_no_pin": "PASS",
+        "DM_third_admin_history_delete_denied": "PASS"
+      },
+      "mocks": false,
+      "physical_touch": false,
+      "roles": [
+        "MEMBER",
+        "MEMBER",
+        "ADMIN"
+      ],
+      "mutations": {
+        "PATCH": 2,
+        "PUT": 2,
+        "DELETE": 5
+      },
+      "pin_observation": {
+        "HTTP": 204,
+        "server_list_contains_message": true,
+        "persistent_confirmation_notice": "Not required for this action criterion; transient during social refresh, not claimed PASS"
+      },
+      "status": "PASS",
+      "browser": "153.0.8010.12",
+      "candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "DM-reaction-tools.png": "192b6afbc316cb90b5bd9a74e1c5d5c77ecc54d45ac44ac16ee39adae3cf61a0",
+        "TEXT-admin-pin-tools.png": "7620fee89b69ad47cb87bb1c1b3a81b5d88f5d952ba41eea06c8cd7b21a22672",
+        "DM-peer-toolbar.png": "636011ba3dfe29d35cd89a872679368168607dd542d2c98d91387dde19c7462c",
+        "DM-owned-toolbar.png": "130c968f23391bec98771a0827e5bda9f411beaa1506dae77d17e8144765cdb5",
+        "TEXT-peer-toolbar.png": "636011ba3dfe29d35cd89a872679368168607dd542d2c98d91387dde19c7462c",
+        "TEXT-reaction-tools.png": "9b0617a4a0decb5d422dc0e628c9c1955551e22b513377a02d7c9ff886602572",
+        "TEXT-owned-toolbar.png": "130c968f23391bec98771a0827e5bda9f411beaa1506dae77d17e8144765cdb5"
+      },
+      "receipt": {
+        "path": ".out/qa293-20261012/1440/runtime.json",
+        "sha256": "be30dccd014fa148592e96461664024f6f52fec2044262dbdb386823a7435bb6"
+      },
+      "visual_review": {
+        "status": "PASS for captured action panels and confirmations",
+        "original_resolution": true,
+        "capture_count": 7,
+        "observations": [
+          "Complete action labels and peer-only Reply; controls remain inside panel bounds.",
+          "Web reactions wrap on narrow widths; native Cancel/Delete confirmation controls visible and separate.",
+          "Message bodies excluded from cropped Web captures; native synthetic bodies deliberately invisible; no assertion about text formatting or attachments."
+        ]
+      }
+    },
+    "android": {
+      "issue": 293,
+      "platform": "android",
+      "os_version": "sdk_phone64_arm64-userdebug 15 AE3A.240806.019 12368160 test-keys",
+      "physical_device": false,
+      "mocks": false,
+      "fixture": "Invisible synthetic message content; no body text or attachment payload in captures",
+      "checks": {
+        "TEXT_explicit_actions_targets": "PASS",
+        "TEXT_reply_and_cancel": "PASS",
+        "TEXT_edit_HTTP_200": "PASS",
+        "TEXT_delete_cancel_then_once_HTTP_204": "PASS",
+        "TEXT_peer_only_reply": "PASS",
+        "DM_explicit_actions_targets": "PASS",
+        "DM_reply_and_cancel": "PASS",
+        "DM_edit_HTTP_200": "PASS",
+        "DM_delete_cancel_then_once_HTTP_204": "PASS",
+        "DM_peer_only_reply": "PASS",
+        "DM_third_admin_history_denied": "PASS"
+      },
+      "viewport": {
+        "physical_width": 1080.0,
+        "physical_height": 2400.0,
+        "device_pixel_ratio": 2.625
+      },
+      "TEXT_menu_item_count": 3,
+      "DM_menu_item_count": 3,
+      "mutation_counts": {
+        "PATCH": 2,
+        "DELETE": 2
+      },
+      "http_statuses": {
+        "PATCH": [
+          200,
+          200
+        ],
+        "DELETE": [
+          204,
+          204
+        ]
+      },
+      "status": "PARTIAL",
+      "remaining": [
+        "physical touch/keyboard/spoken screen reader",
+        "native reactions/pin/attachment and scroll/swipe/retry states not exercised"
+      ],
+      "candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+      "dirty_diff_sha256": "ce1480a461cacf7f403f4cdc0accbbe5a379813664ff704951026bbc605c3a45",
+      "flutter_lib_manifest_sha256": "bb8548fad80b9858b0c2d632a46c099d6a73eea0f5707a1fad1fcf91dcf7e4cf",
+      "app_source_files": {
+        "src/screens/workspace_ui/message_action_menu/component.dart": "8e0c48809da46fa0ac599f80d3a77a1abcc4d05177f4690879f57682fd0bccd7",
+        "src/screens/workspace_ui/direct_message_action_menu/component.dart": "90edd43d82a4bbf2fbfafa5ead9a5287be068c1a810d3156684ddab29c1b92fc",
+        "src/screens/workspace_ui/message_edit_dialog/build/handler.dart": "13ec23793718a87729617b6d142c8d7c435ad6596b8ffc6e32e428eccf7fb133"
+      },
+      "source_copy_match": true,
+      "build_mode": "debug",
+      "device": "emulator-5554",
+      "os": "15",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "dm-peer-actions.png": "aed90ba154c07fd6aa832251dd890766d938be61a89b763edd1d40625c716c71",
+        "dm-owned-actions.png": "a50e1edd049a6d1f2ba99e6ae07306363eb50aec1f2de259de5766f869bcc91e",
+        "text-delete-confirmation.png": "8c77563863ebd615c2c63068f6abea8144411114d16e7555e332b45d5c47bc6d",
+        "text-owned-actions.png": "472749eb2a607baf23ed7c7dfadda1d32d01d1ee5aff050a22af2d1e25ab398b",
+        "dm-delete-confirmation.png": "2747e8943f006a6c016327a3ad75a99da9c214a41186c851341957df01585acb",
+        "text-peer-actions.png": "4b019c8299a795203fd3dfbe77a5710ca7f7aa83fa7df315ecaf985e7e8f7bd2"
+      },
+      "native_artifact_sha256": "d45051efc1c60632ecefeb6b83f5b686113074564a37e08942922bb49645da64",
+      "receipt": {
+        "path": ".out/qa293-20261012/android/runtime.json",
+        "sha256": "fe2759ce0a0adfe7f8ec57e8d76b995834a84912348de5e5a5b8c85e734b4750"
+      },
+      "visual_review": {
+        "status": "PASS for captured action panels and confirmations",
+        "original_resolution": true,
+        "capture_count": 6,
+        "observations": [
+          "Complete action labels and peer-only Reply; controls remain inside panel bounds.",
+          "Web reactions wrap on narrow widths; native Cancel/Delete confirmation controls visible and separate.",
+          "Synthetic content deliberately invisible; no assertion about text formatting or attachments."
+        ]
+      }
+    },
+    "ios": {
+      "issue": 293,
+      "platform": "ios",
+      "os_version": "Version 27.0 (Build 24A434)",
+      "physical_device": false,
+      "mocks": false,
+      "fixture": "Invisible synthetic message content; no body text or attachment payload in captures",
+      "checks": {
+        "TEXT_explicit_actions_targets": "PASS",
+        "TEXT_reply_and_cancel": "PASS",
+        "TEXT_edit_HTTP_200": "PASS",
+        "TEXT_delete_cancel_then_once_HTTP_204": "PASS",
+        "TEXT_peer_only_reply": "PASS",
+        "DM_explicit_actions_targets": "PASS",
+        "DM_reply_and_cancel": "PASS",
+        "DM_edit_HTTP_200": "PASS",
+        "DM_delete_cancel_then_once_HTTP_204": "PASS",
+        "DM_peer_only_reply": "PASS",
+        "DM_third_admin_history_denied": "PASS"
+      },
+      "viewport": {
+        "physical_width": 1206.0,
+        "physical_height": 2622.0,
+        "device_pixel_ratio": 3.0
+      },
+      "TEXT_menu_item_count": 3,
+      "DM_menu_item_count": 3,
+      "mutation_counts": {
+        "PATCH": 2,
+        "DELETE": 2
+      },
+      "http_statuses": {
+        "PATCH": [
+          200,
+          200
+        ],
+        "DELETE": [
+          204,
+          204
+        ]
+      },
+      "status": "PARTIAL",
+      "remaining": [
+        "physical touch/keyboard/spoken screen reader",
+        "native reactions/pin/attachment and scroll/swipe/retry states not exercised"
+      ],
+      "candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+      "dirty_diff_sha256": "f494c803beee3f51e841ffe95e4e30bd0f84d628007db321930b2c593797b966",
+      "flutter_lib_manifest_sha256": "bb8548fad80b9858b0c2d632a46c099d6a73eea0f5707a1fad1fcf91dcf7e4cf",
+      "app_source_files": {
+        "src/screens/workspace_ui/message_action_menu/component.dart": "8e0c48809da46fa0ac599f80d3a77a1abcc4d05177f4690879f57682fd0bccd7",
+        "src/screens/workspace_ui/direct_message_action_menu/component.dart": "90edd43d82a4bbf2fbfafa5ead9a5287be068c1a810d3156684ddab29c1b92fc",
+        "src/screens/workspace_ui/message_edit_dialog/build/handler.dart": "13ec23793718a87729617b6d142c8d7c435ad6596b8ffc6e32e428eccf7fb133"
+      },
+      "source_copy_match": true,
+      "build_mode": "debug",
+      "device": "82C26E13-0F1F-43F9-AF27-866DC22C2456",
+      "os": "iOS27.0 simulator",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "dm-peer-actions.png": "b399d2d82dae709082766a5a48f38957faf5e63ef02064073a432a03c583822e",
+        "dm-owned-actions.png": "05520747b22b5891227d2917a416e0dd50e62a99cfe1500d624752c0522e3881",
+        "text-delete-confirmation.png": "1aae154c8a947571d89aa81bae56b998a238b5d9ab5883f32cb530a5176e75a9",
+        "text-owned-actions.png": "031515175514dc151b19ef63a37b0b05ebd76f7ae497ff6e0389671e13aae548",
+        "dm-delete-confirmation.png": "fdf08a31beb4458ecc03979379039f65be7f9c3933a25a3fd6800eed480904b2",
+        "text-peer-actions.png": "1409e00c2f96131dd84ffbe60db3f45d7eb1f0463325e11c90aa19dd2dbbbf95"
+      },
+      "native_artifact_sha256": "f50f7a62c1875036f1b7e8187043cdc7c6c7a3fd29d80bcd3c77f8839f1baf7f",
+      "receipt": {
+        "path": ".out/qa293-20261012/ios/runtime.json",
+        "sha256": "9cb5c11744824125454db426f3f2a165d871a20830a2db6e0fd7cad20e8bf3af"
+      },
+      "visual_review": {
+        "status": "PASS for captured action menus and confirmation states",
+        "original_resolution": true,
+        "capture_count": 6,
+        "observations": [
+          "Readable Reply/Edit/Delete and peer-only Reply labels; no clipped menu controls.",
+          "Confirmation Cancel/Delete remain separate and fit device width; composer visible.",
+          "No message bodies or attachment content used for visual acceptance."
+        ]
+      }
+    }
+  },
+  "ios": {
+    "status": "PASS for 11 observed action rows; overall acceptance PARTIAL",
+    "device": "82C26E13-0F1F-43F9-AF27-866DC22C2456",
+    "visual": "6 original1206x2622 captures reviewed",
+    "physical": false
+  },
+  "remaining_gates": [
+    "Physical touch/keyboard and spoken reader traversal under issue303: NOT_RUN",
+    "Native integrated reactions/pin/attachment/scroll/swipe/retry coverage: NOT_RUN; focused component coverage is separate."
+  ],
+  "harness_corrections": [
+    "Edit locator now follows actual editor after row text changes.",
+    "Desktop uses hover/keyboard because mobile disclosure is deliberately hidden.",
+    "Close initial native navigation drawer before testing hit-testable message action trigger.",
+    "Web capture awaits fonts, animation frames and compositor settling; initial partial-painted captures are not accepted."
+  ],
+  "source_provenance": {
+    "base_candidate": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+    "publication": "Publication commit containing this record; issue comment will identify final SHA. Native receipts pin complete lib manifests before compilation.",
+    "web_source_equivalence": "Scoped runtime compiled MessageItem Reply focus fix. Subsequent mini-player CSS/registry changes do not modify message action surfaces; final broad Web mandatory run covers their combined source tree.",
+    "tested_web_action_files_sha256": {
+      "clients/web/src/conversation/MessageItem.vue": "b3abfe0ef907ff005a85b8893c4253827481363864fe431b8df7936732302673",
+      "clients/web/tests/conversation_action_disclosure/reply_focus.browser.spec.ts": "1c82fc539ba1f6cea75b8b9c71e00ac9e8f80d2e81e1138627ed0a18645a2ac6"
+    },
+    "final_compact_mini_layout_equivalence": {
+      "status": "PASS_SOURCE_REVIEW_ONLY",
+      "reviewed_final_flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "reviewed_delta_files": {
+        "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/mobile_layers/handler.dart": "1879aec38de71c02cd5d2569761bbee092b1fffbedcbe2fdb2bd3cd88c4323d2",
+        "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/pinned_layer/handler.dart": "7c859dbb9c44d8816831273b71c524bc75377b04df28ceade02253ff249ab50b",
+        "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/workspace_changed/synchronize_screen_selection.dart": "4c61265ac033ebc05250858e5de0e1b1fbc33a734a67896b6d987ec137ea3fbc",
+        "clients/flutter/lib/src/services/pinned_screen_mini_player_policy.dart": "96b420899f9a98565cc35d82b527dd8cb88b202a08cff6935b856228b6c90631",
+        "clients/flutter/lib/src/screens/workspace_ui/pinned_screen_mini_player/build/floating_surface/handler.dart": "9a0e9c92390265fbe99dd8d75037b590934d37eddb3e98d8d18eea8f5b47952c",
+        "clients/flutter/lib/src/widgets/screen_frame_gate.dart": "59ca0574d7898d90dde87c389af5d6de83058f97e09b326ab81e126d0798ae62",
+        "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/mobile_layers/pinned_content/handler.dart": "87a196e5ce3c53f9669887579f7208c705e2a98df3173651de328c401b1af4c4"
+      },
+      "runtime_rerun_on_final_manifest": false,
+      "reconstruct_previous_Android_iOS_manifest": {
+        "restore": "Restore six pre-existing mini-player/layout/frame-gate app files from base HEAD and remove new pinned-content helper; keep measured profile guard changes. All other lib bytes are unchanged. This reconstruction matches Android/iOS292/293 manifests, not the separately recorded macOS manifest.",
+        "sha256": "bb8548fad80b9858b0c2d632a46c099d6a73eea0f5707a1fad1fcf91dcf7e4cf",
+        "matches_measured_292_293_receipts": true
+      },
+      "equivalent_scope": "Earlier case291/292/293/297 native runs never select/pin a screen and have no pending screen restart. pinnedMiniVisible stays false, so mobile_layers takes its original drawer/sidebar branch. The pure route-stop predicate evaluates false with both selected/waiting screen identities empty; its new state-mutation branch is not entered. Mini preview and ScreenFrameGate are not instantiated in these no-screen workflows; their video-flex/overlay-scroll changes do not execute. Profile and message action implementations retain measured hashes.",
+      "limits": [
+        "Measured earlier lib/artifact/QA hashes and timestamps remain unchanged. This review establishes source equivalence only for the executed no-screen path; selected mini-player media/layout acceptance belongs to independent final issue247 runtime.",
+        "Physical/device/readers/audio-quality/load criteria keep their original PARTIAL or NOT_RUN states."
+      ],
+      "mandatory_final_validation": "Final source09eba39f full Flutter unit1166/1skip and selected35 tests PASS; earlier Android/iOS API baselines PASS on equivalent no-selected/pending-screen branch."
+    }
+  },
+  "cleanup": {
+    "owned_stack_and_reverse_removed": true,
+    "generated_media_and_binaries": "Ignored .out and private package copy; never staged.",
+    "private_credential_bearing_package_and_root_generated_build_removed": true,
+    "owned_Android5554_and_iOS82_QA_packages_absent_before_shutdown": true,
+    "owned_Android5554_and_iOS82_shutdown": true,
+    "owned_root_TCP_ports_free": [
+      4810,
+      4812,
+      4820,
+      4880,
+      4881
+    ]
+  },
+  "mandatory_web": {
+    "report_path": ".out/local-features/20261012-193641/report.json",
+    "report_sha256": "fc441ec12a3493cf77cfe71ccc36d22be792347a5ddfff202a2865f52fe1b05e",
+    "status": "REVIEW_REQUIRED",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "counts": {
+      "unit": 1493,
+      "browser": 96,
+      "real_stack_widths": [
+        1440,
+        393
+      ]
+    },
+    "visual_scope": "Broad report remains REVIEW_REQUIRED; the 21 scoped message-action captures were separately inspected at original resolution."
+  },
+  "mandatory_native": {
+    "status": "REVIEW_REQUIRED",
+    "receipt": ".out/local-features/20261012-195850/report.json",
+    "sha256": "8cfd14679c2f4b37a2500b2164f31f9dbbdb0f17588d816e5a7a9ea4c5ade4da",
+    "stages": [
+      {
+        "name": "flutter-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "flutter-component-captures",
+        "status": "PASS"
+      },
+      {
+        "name": "android-runtime-retry",
+        "status": "PASS"
+      },
+      {
+        "name": "ios-runtime",
+        "status": "PASS"
+      }
+    ],
+    "counts": {
+      "unit": 1166,
+      "skipped": 1,
+      "component": 35,
+      "native_Android_baseline": 1,
+      "native_iOS_baseline": 1
+    },
+    "android_retry_receipt": ".out/local-features/20261012-195850/android-runtime-retry/runtime.json",
+    "android_retry_sha256": "50faa89bc76b290f2ea978aabd53f2b6cfed4cca15d074770e6e9dda9d84cda0",
+    "original_android_attempt": {
+      "status": "FAIL",
+      "reason": "Owned emulator5554 had exited; preflight connection refused before build or API. Restarted the same AVD and reran only Android runtime successfully. Original report remains FAIL rather than overwriting that attempt."
+    },
+    "visual_scope": "Broad captures remain REVIEW_REQUIRED; scoped issue images are reviewed separately.",
+    "compiled_artifacts_sha256": {
+      "clients/flutter/build/app/outputs/flutter-apk/app-debug.apk": "636bcfa27a40129baf553d503397b464033e6b1bcc9f7452da329ac7e3acd6f1",
+      "clients/flutter/build/ios/iphonesimulator/Runner.app/Runner": "f935b70a25500518c0eddea93bdb649438d38c9bb8c3ded29af18b4582e63b5a"
+    },
+    "final_source_unit_component": {
+      "receipt": ".out/qa-batch2-ultimate-flutter-20261012/report.json",
+      "sha256": "28e8c1b65cb7f07346fde8a881d018854e34736e579e81c122373f802932d0cb",
+      "status": "PASS",
+      "final_flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "stages": [
+        {
+          "name": "flutter-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "flutter-component-captures",
+          "status": "PASS"
+        }
+      ],
+      "counts": {
+        "unit": 1166,
+        "skipped": 1,
+        "component": 35
+      },
+      "features_sha256": "7b5bc7014ab8ac23b925c9bdab4112c10d83ab9d8a224861a20cd8045cfd7645",
+      "visual_review": "REVIEW_REQUIRED: broader component pictures are not a substitute for individually reviewed runtime issue images"
+    },
+    "scope": "Final source09eba39f full unit/component PASS. Earlier Android/iOS auth/workspace/profile/audio/admin/logout baselines use e05755 with source-reviewed equivalent no-selected-screen path. Final issue247 Android runtime independently exercises changed selected-screen paths; its iOS media runtime FAIL is recorded separately and is not replaced by baseline or unit PASS. Original attempts and measured artifact hashes are preserved."
+  },
+  "final_runner_failure_followup": {
+    "status": "PASS_FOCUSED_TESTS",
+    "changes": "Archive prior receipts/captures and write fresh RUNNING before device/source preflight; any failure records a sanitized FAIL, including errors after an outcome write. Navigation also cleans every successfully created reverse port after partial setup failure.",
+    "tests": "3 receipt-freshness tests exercise both292/293 runners;4 navigation reverse-cleanup tests; integrated44runner tests PASS.",
+    "final_runner_sha256": "be58e7ebe4bd67e09c45a5fff080850139a29d9f3c1055537dbeae389ed0f95b",
+    "runtime_provenance": "Measured earlier app runtime and QA hashes remain preserved. Only reusable-runner failure handling changed; app paths and scenario entries are unchanged."
+  }
+}

@@ -137,7 +137,9 @@
       "number": 247,
       "title": "[QA] Mini-player browser and Flutter acceptance for #94",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/247",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue247-mini-player-runtime-2026-10-12.json",
+      "reason": "Real Web/Android mini-player acceptance recorded; final iOS result and limitations are in the linked runtime evidence."
     },
     {
       "number": 249,
@@ -245,19 +247,25 @@
       "number": 291,
       "title": "[UIUX-2026][UX-02][P1] Адаптивный workspace shell: desktop density, resize и split panes",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/291",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue291-responsive-runtime-2026-10-12.json",
+      "reason": "Web12-size matrix and physical macOS resize PASS. Windows, physical mobile browser/IME/system panels, active RTP and loaded-scroll acceptance remain NOT_RUN."
     },
     {
       "number": 292,
       "title": "[UIUX-2026][UX-03][P1] Мобильная навигация: drawer, Back, контекст канала и восстановление состояния",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/292",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue292-mobile-navigation-runtime-2026-10-12.json",
+      "reason": "Android/iOS navigation observed10 rows each and dirty-profile derivative4 each PASS. Physical Android Back/iOS route gesture, spoken reader, audible call and loaded history remain NOT_RUN."
     },
     {
       "number": 293,
       "title": "[UIUX-2026][UX-04][P1] TEXT/DM: действия с сообщениями без hover, touch targets и единая toolbar",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/293",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue293-message-actions-runtime-2026-10-12.json",
+      "reason": "Web320/393/1440 actual actions14 rows each and Android/iOS11 rows each PASS. Physical traversal and full native reaction/pin/attachment/scroll/swipe/retry acceptance remain NOT_RUN."
     },
     {
       "number": 294,
@@ -275,7 +283,9 @@
       "number": 297,
       "title": "[UIUX-2026][UX-08][P2] Личные настройки: информационная архитектура, формы и ясные save-state",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/297",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue297-settings-runtime-2026-10-12.json",
+      "reason": "Actual physical macOS settings and emulator dirty-profile guards PASS. Required physical Android and live spoken-reader release acceptance remains NOT_RUN."
     },
     {
       "number": 298,
@@ -308,7 +318,7 @@
       "status": "NOT_RUN"
     }
   ],
-  "ordering": "User-authorized parallel batch: root #276, agent #278, agent #283, one macOS agent #257/#259. Four concurrent agent slots. Dedicated Android AVDs 5554/5556/5558; isolated servers and build directories. Native builds scheduled to avoid memory exhaustion.",
+  "ordering": "Second parallel batch: mini-player #247; macOS responsive shell #291 and settings #297; Android/iOS navigation #292; root TEXT/DM actions #293. Four agents, three Android AVDs, two iOS simulators, isolated servers. Physical-only criteria remain NOT_RUN without hardware proof.",
   "source": "https://github.com/Egkurilov/BOOHTACORD/issues",
   "closure_policy": "Only applicable runtime evidence can close a case; emulator/unit PASS does not establish physical-device or load acceptance.",
   "active_batch": [],
@@ -320,68 +330,79 @@
     276
   ],
   "selected_batch": [
-    276,
-    278,
-    283,
-    257,
-    259
+    247,
+    291,
+    292,
+    293,
+    297
   ],
-  "current_batch_completed": [
-    276
-  ],
+  "current_batch_completed": [],
   "workers": {
-    "profile_revision": {
+    "mini_player": {
       "issues": [
-        276
-      ],
-      "https": 4810,
-      "android": "BOOHTACORD_QA_API35",
-      "ios": "BOOHTACORD QA iPhone"
-    },
-    "guild_identity": {
-      "issues": [
-        278
-      ],
-      "https": 4840,
-      "android": "BOOHTACORD_QA_278_API35",
-      "ios": "BOOHTACORD QA278 iPhone"
-    },
-    "quickjump": {
-      "issues": [
-        283
+        247
       ],
       "https": 4830,
-      "android": "BOOHTACORD_QA_283_API35",
-      "ios": "BOOHTACORD QA iPhone (82C26E13-0F1F-43F9-AF27-866DC22C2456), reused after profile worker finished"
+      "android": "BOOHTACORD_QA_278_API35 / emulator-5558",
+      "ios": "BOOHTACORD QA278 iPhone /57E6A791-8975-4C84-82E6-47321F22C9B8"
     },
-    "macos_audio": {
+    "macos_settings_resize": {
       "issues": [
-        257,
-        259
+        291,
+        297
       ],
       "https": 4850,
-      "device": "physical macOS built-in input/output"
+      "device": "physical macOS window and native profile controls"
+    },
+    "mobile_navigation": {
+      "issues": [
+        292
+      ],
+      "https": 4840,
+      "android": "BOOHTACORD_QA_283_API35 / emulator-5556",
+      "ios": "BOOHTACORD QA iPhone /82C26E13-0F1F-43F9-AF27-866DC22C2456"
+    },
+    "message_actions": {
+      "issues": [
+        293
+      ],
+      "https": 4810,
+      "android": "BOOHTACORD_QA_API35 / emulator-5554",
+      "ios": "Simulator82 reused only after navigation worker release"
     }
   },
   "processed_batch": [
-    276,
-    278,
-    283,
-    257,
-    259
+    247,
+    291,
+    292,
+    293,
+    297
   ],
   "partial_gates": [
+    247,
     257,
     259,
     278,
-    283
+    283,
+    291,
+    292,
+    293,
+    297
   ],
-  "parallel_batch_status": "Completed execution; four acceptance gates remain PARTIAL/open",
-  "cleanup": "Owned disposable stacks and private builds removed; dedicated emulators/simulators shutdown",
+  "parallel_batch_status": "COMPLETED_WITH_OPEN_GATES",
+  "cleanup": "PASS: all current-batch owned stacks, reverse ports and private credential-bearing builds removed; assigned Android emulators and iOS simulators shut down. Reusable device definitions and ignored sanitized captures retained. Foreign services are untouched.",
   "runner_safety_tests": {
     "status": "PASS",
-    "count": 8,
-    "log": "/tmp/qa-parallel-runner-tests-final.log",
-    "scope": "profile revision, guild identity and macOS audio orchestration"
-  }
+    "count": 44,
+    "receipt": ".out/qa-batch2-ultimate-runners.log",
+    "sha256": "af4b03d17398db5c2ac8f6541ed5e5edc0608698c3a4218b257a59a272199aa7",
+    "scope": "21 local-feature policy/process/native/stack/baseline/doctor/iOS-extension,4 Mac,2 assigned-Android OS Back,4 navigation reverse cleanup,3 native292/293 freshness guards,10 mini-player receipt/control/device guards."
+  },
+  "current_batch_execution_finished": [
+    247,
+    291,
+    292,
+    293,
+    297
+  ]
 }

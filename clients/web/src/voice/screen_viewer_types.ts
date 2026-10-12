@@ -11,6 +11,7 @@ export interface ScreenViewerPublication {
   isMuted?: boolean
   name?: string
   trackSid?: string
+  readonly isDesired?: boolean
   setSubscribed?(subscribed: boolean): void
   track?: ScreenViewerTrack
 }

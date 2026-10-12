@@ -1,4 +1,5 @@
 import '../search_drawer/handler.dart';
+import 'pinned_content/handler.dart';
 import '../drawer_sidebar/handler.dart';
 import '../../../drawer_surface/component.dart';
 import '../../../members_panel/component.dart';
@@ -17,12 +18,27 @@ extension WorkspaceScreenMobileLayersRenderer on WorkspaceScreenStateContext {
     BoxConstraints constraints,
   ) => Stack(
     children: [
-      renderWorkspaceScreenDrawerSidebar(
-        searchPanelModal,
-        pinnedMiniVisible,
-        showMemberToggle,
-      ),
-      if (pinnedMiniVisible) pinnedMiniLayer(),
+      if (pinnedMiniVisible)
+        Positioned.fill(
+          child: WorkspacePinnedScreenMobileContent(
+            content: Stack(
+              children: [
+                renderWorkspaceScreenDrawerSidebar(
+                  searchPanelModal,
+                  pinnedMiniVisible,
+                  showMemberToggle,
+                ),
+              ],
+            ),
+            mini: pinnedMiniLayer(),
+          ),
+        )
+      else
+        renderWorkspaceScreenDrawerSidebar(
+          searchPanelModal,
+          pinnedMiniVisible,
+          showMemberToggle,
+        ),
       renderWorkspaceScreenSearchDrawer(searchPanelModal, fullScreenSearch),
       SlidingDrawerLayer(
         visible: workspaceShowMobileSidebar,
