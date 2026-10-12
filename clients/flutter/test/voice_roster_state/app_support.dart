@@ -26,8 +26,17 @@ AppState ready(RosterApi api) {
 Future<void> flush() => Future<void>.delayed(Duration.zero);
 
 Future<StreamController<List<int>>> connect(RosterApi api) async {
-  final stream = StreamController<List<int>>();
-  api.streams.last.complete(http.StreamedResponse(stream.stream, 200));
-  await flush();
-  return stream;
+  for (var attempt = 0; attempt < 100; attempt++) {
+    final pending = api.streams.reversed
+        .where((request) => !request.isCompleted)
+        .firstOrNull;
+    if (pending != null) {
+      final stream = StreamController<List<int>>();
+      pending.complete(http.StreamedResponse(stream.stream, 200));
+      await flush();
+      return stream;
+    }
+    await Future<void>.delayed(const Duration(milliseconds: 1));
+  }
+  throw StateError('No pending roster stream request became available.');
 }

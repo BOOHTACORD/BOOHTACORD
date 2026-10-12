@@ -48,7 +48,12 @@ void main() {
           find.byKey(const ValueKey('screen-preflight-capabilities')),
           findsOneWidget,
         );
-        expect(find.textContaining('Звук игры не передаётся'), findsOneWidget);
+        final audioMessage = switch (platform) {
+          TargetPlatform.android => 'Android 10+: понадобится разрешение записи аудио; приложение-источник может запретить захват.',
+          TargetPlatform.iOS => 'iOS: звук передаётся через системный ReplayKit broadcast; приложение-источник может ограничить захват.',
+          _ => 'Звук экрана на этой платформе недоступен.',
+        };
+        expect(find.text(audioMessage), findsOneWidget);
         final button = tester.widget<FilledButton>(
           find.byKey(const ValueKey('start-screen-share')),
         );
