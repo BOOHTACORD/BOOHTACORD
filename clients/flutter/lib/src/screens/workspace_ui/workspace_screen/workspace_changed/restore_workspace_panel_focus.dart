@@ -28,7 +28,8 @@ extension RestoreWorkspacePanelFocusAction on WorkspaceScreenStateContext {
     }
     if ((previous == WorkspacePanel.search ||
             previous == WorkspacePanel.searchContext) &&
-        current == WorkspacePanel.none) {
+        current == WorkspacePanel.none &&
+        widget.state.workspace.restoreSearchLauncherFocus) {
       final compact =
           MediaQuery.sizeOf(context).width < GcLayout.mobileBreakpoint;
       if (compact) {

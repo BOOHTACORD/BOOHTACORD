@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-10-12",
+  "status": "PARTIAL",
+  "close_allowed": false,
+  "candidate_commit": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+  "backlog_leaf": "T-022",
+  "dependencies": [
+    "T-006",
+    "T-020"
+  ],
+  "platform": {
+    "kind": "physical macOS",
+    "model": "MacBook Pro",
+    "model_identifier": "Mac16,8",
+    "processor": "Apple M4 Pro",
+    "memory_gb": 24,
+    "os": "27.0.1",
+    "os_build": "26A434",
+    "physical_endpoint_types": [
+      "builtin microphone",
+      "builtin speaker"
+    ],
+    "physical_inputs": 1,
+    "physical_outputs": 1,
+    "usb_available": false,
+    "bluetooth_available": false
+  },
+  "artifacts": {
+    "app_version": "1.0.38",
+    "build_number": 71,
+    "bundle": "ru.boohtacord.localqa",
+    "entrypoint": "tools/qa/macos_audio/native_app.dart",
+    "kind": "Instrumented QA artifacts using production Flutter widgets, AppState, native bootstrap and real Go/LiveKit backend. Auto-login, exact local TLS pin and sanitized state diagnostics are QA additions. These are not unmodified production binaries.",
+    "debug_executable_sha256": "993b9a8048669d1467201696b980595b1a10c83b2585f661cfcf2ee1d35c24bf",
+    "release_executable_sha256": "372d6308d989f7dc93d7f8ff17b71985ddb29a6282757931130f1a627dbfc1e2",
+    "build_status": {
+      "Debug": "PASS",
+      "Release": "PASS"
+    },
+    "credentials_or_binaries_published": false
+  },
+  "backend": {
+    "kind": "isolated local Go/PostgreSQL/LiveKit/Tempo/Caddy",
+    "docker_context": "colima-boohtacord-qa",
+    "loopback_ports": [
+      4850,
+      4851,
+      4852,
+      4890,
+      4891,
+      4895
+    ],
+    "real_room_connection": true
+  },
+  "focused_checks": {
+    "flutter_tests": {
+      "status": "PASS",
+      "count": 16,
+      "files": [
+        "settings_scan_notice_test.dart",
+        "bootstrap_recovery_test.dart",
+        "bootstrap_scope_test.dart",
+        "prejoin_selection_test.dart",
+        "prejoin_selection/restore_test.dart",
+        "prejoin_selection/reconnect_test.dart",
+        "prejoin_selection/missing_inventory_test.dart",
+        "account_scope_test.dart",
+        "microphone_account_preferences_test.dart"
+      ],
+      "directory": "clients/flutter/test/audio_devices",
+      "limit": "Controller/component tests do not replace physical permission, routing or hotplug evidence.",
+      "working_directory": "Independent QA copy of clients/flutter, created from candidate commit",
+      "exact_command": "flutter test --no-pub test/audio_devices/settings_scan_notice_test.dart test/audio_devices/bootstrap_recovery_test.dart test/audio_devices/bootstrap_scope_test.dart test/audio_devices/prejoin_selection_test.dart test/audio_devices/prejoin_selection/restore_test.dart test/audio_devices/prejoin_selection/reconnect_test.dart test/audio_devices/prejoin_selection/missing_inventory_test.dart test/audio_devices/account_scope_test.dart test/audio_devices/microphone_account_preferences_test.dart --reporter expanded"
+    },
+    "qa_entry_analyze": "PASS",
+    "harness_unittests": {
+      "status": "PASS",
+      "count": 4,
+      "command": "python3 -m unittest tools.qa.macos_audio.test_run -v"
+    },
+    "harness_occupied_port_guard": "PASS: real occupied loopback port aborted before provisioning; existing stack remained healthy.",
+    "new_wrapper_cold_positive_run": {
+      "status": "PASS",
+      "mode": "Debug",
+      "source_commit": "66658d10052253f1db6c1e472949f39fc93de565",
+      "receipt": "evidence/qa/issue257-259-macos-wrapper-cold-2026-10-12.json",
+      "scope": "Reusable runner cold provision/build/readiness/cleanup only; no additional native UI or physical audio pass claimed."
+    }
+  },
+  "visual_evidence": {
+    "status": "OBSERVED",
+    "method": "Documented Computer Use native getAXStateAndScreenshot and accessibility snapshots",
+    "inline_snapshots": [
+      "Debug first connected voice channel",
+      "Debug after full restart connected voice channel",
+      "Release initial Audio Settings defaults",
+      "Release first connected voice channel",
+      "Release after full restart connected voice channel",
+      "Final signed-out empty login form"
+    ],
+    "observations": [
+      "Connected voice status and controls visibly rendered in Debug and Release.",
+      "Audio Settings rendered the successful list, dropdowns and local check controls.",
+      "No overflow or duplicate error notices observed in the successful path.",
+      "Final signed-out UI displayed empty credentials and version 1.0.38 (71)."
+    ],
+    "local_screenshot_export_status": "NOT_RUN",
+    "local_screenshot_files": [],
+    "limitation": "Available documented Computer Use API emitted inline captures; no filesystem export was used and no PNG or hash is claimed. Screens containing endpoint labels were not saved to public evidence."
+  },
+  "cleanup": {
+    "status": "PASS",
+    "client": "Native app signed out, verified login screen, then Cmd-Q.",
+    "stack": "Owned stack input completed; finally cleanup marker observed.",
+    "remaining_owned_resources": {
+      "containers": 0,
+      "networks": 0,
+      "volumes": 0,
+      "images": 0,
+      "stack_closed_marker": true
+    },
+    "generated_file_disposal": {
+      "status": "PASS",
+      "disposed_paths": [
+        "/private/tmp/boohtacord-mac-audio-20261012/credentials.json",
+        "/private/tmp/boohtacord-mac-audio-20261012/fixture.json",
+        "/private/tmp/boohtacord-mac-audio-20261012/flutter",
+        "/private/tmp/boohtacord-mac-audio-20261012/release-defines.json",
+        "/private/tmp/boohtacord-mac-audio-20261012/seed.py",
+        "/private/tmp/boohtacord-mac-audio-20261012/stack",
+        "/private/tmp/boohtacord-mac-audio-20261012/stack.log",
+        "/private/tmp/boohtacord-mac-audio-20261012/start_stack.py",
+        "/private/tmp/boohtacord-mac-audio-20261012/tools",
+        "/private/tmp/boohtacord-mac-audio-20261012/wrapper-collision.log"
+      ],
+      "disposed_generated_stack_config_files": [
+        "/Users/shaneque/.codex/worktrees/local-feature-qa/BOOHTACORD/.out/macos_audio/stack/Caddyfile",
+        "/Users/shaneque/.codex/worktrees/local-feature-qa/BOOHTACORD/.out/macos_audio/stack/livekit.yaml",
+        "/Users/shaneque/.codex/worktrees/local-feature-qa/BOOHTACORD/.out/macos_audio/stack/tempo.yaml"
+      ],
+      "disposed_config_directory": "/Users/shaneque/.codex/worktrees/local-feature-qa/BOOHTACORD/.out/macos_audio/stack",
+      "compiled_QA_Debug_Release_apps_and_private_Flutter_copy_removed": true,
+      "private_fixture_credentials_and_release_defines_removed": true,
+      "retained_sanitized_receipts": [
+        "cleanup.json",
+        "debug-restart-timeline.json",
+        "debug-return-A-timeline.json",
+        "debug-timeline.json",
+        "release-baseline-timeline.json",
+        "release-restart-timeline.json",
+        "release-timeline.json"
+      ],
+      "entire_tmp_directory_removed": false,
+      "verification": "Owned cleanup receipt records zero containers/networks/volumes/images. Exact generated directories were removed; each disposed path verified absent. Only enumerated sanitized JSON receipts remain."
+    }
+  },
+  "sanitization": "No account IDs, endpoint IDs or labels, credentials, session/media tokens, audio samples or message bodies are included.",
+  "issue": 257,
+  "issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/257",
+  "title": "Physical macOS Audio Settings permission and list states",
+  "cases": [
+    {
+      "case": 1,
+      "criterion": "Actual pending/bootstrap/enumeration frame",
+      "status": "NOT_RUN",
+      "reason": "Sanitized controller timeline observed initializing -> ready. The actual pending frame was too brief to capture visually; controller evidence alone does not complete this criterion."
+    },
+    {
+      "case": 2,
+      "criterion": "Actual OS microphone permission denied and manual refresh without prompt loop",
+      "status": "NOT_RUN",
+      "reason": "Read-only System Settings microphone panel had an empty app list. Native capture/check succeeded without a permission prompt. No actual OS denial was induced or observed."
+    },
+    {
+      "case": 3,
+      "criterion": "Actual system-restricted microphone state and separate instruction",
+      "status": "NOT_RUN",
+      "reason": "No restricted policy was available on this host; no TCC or managed policy was modified."
+    },
+    {
+      "case": 4,
+      "criterion": "Actual bootstrap failure or device-enumeration failure distinct from denial",
+      "status": "NOT_RUN",
+      "reason": "Physical native initialization and enumeration succeeded. No real failure was observed; controller tests are supporting evidence only."
+    },
+    {
+      "case": 5,
+      "criterion": "Actual successful empty inventory and successful nonempty inventory",
+      "status": "NOT_RUN",
+      "reason": "Nonempty inventory passed in both modes; real empty native inventory could not be produced with builtin endpoints.",
+      "scoped_subchecks": {
+        "successful_nonempty_inventory": {
+          "Debug": "PASS",
+          "Release": "PASS",
+          "listed_inputs": 2,
+          "listed_outputs": 2,
+          "interpretation": "Each list contains system-default alias plus the one concrete builtin endpoint; these are not two physical devices."
+        },
+        "successful_empty_inventory": "NOT_RUN"
+      }
+    },
+    {
+      "case": 6,
+      "criterion": "OS permission grant then refresh without app restart in Debug and Release",
+      "status": "NOT_RUN",
+      "reason": "No OS permission-denied state or grant prompt occurred; no recovery-from-denial claim is made."
+    },
+    {
+      "case": 7,
+      "criterion": "Dropdown, device selection, local mic check and Join remain functional without duplicate error",
+      "status": "PASS",
+      "reason": "Both modes displayed real dropdowns and success notice, persisted selection, started/stopped local microphone check and connected to real local voice room. No duplicate error notice observed.",
+      "scoped_subchecks": {
+        "Debug": "PASS",
+        "Release": "PASS",
+        "local_speaker_check_action": "PASS: native action returned normally; human audibility NOT_RUN"
+      }
+    }
+  ],
+  "next_closure_conditions": [
+    "Capture actual pending UI frame.",
+    "Run actual denied, restricted, initialization/error and successful-empty physical states; verify specific UI and no automatic retry loop.",
+    "Grant microphone permission through normal System Settings UI and prove refresh recovery without restart in Debug and Release."
+  ],
+  "sanitized_final_ready_states": {
+    "debug": {
+      "phase": "ready",
+      "scan_status": "ready",
+      "scan_failure": null,
+      "input_count": 2,
+      "output_count": 2,
+      "input_selected": true,
+      "output_selected": true,
+      "warning_present": false,
+      "error_present": false
+    },
+    "release": {
+      "phase": "ready",
+      "scan_status": "ready",
+      "scan_failure": null,
+      "input_count": 2,
+      "output_count": 2,
+      "input_selected": true,
+      "output_selected": false,
+      "warning_present": false,
+      "error_present": false
+    }
+  }
+}

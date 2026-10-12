@@ -1,0 +1,1224 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-10-12",
+  "status": "PARTIAL",
+  "close_allowed": false,
+  "candidate_commit": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+  "backlog_leaf": "T-022",
+  "dependencies": [
+    "T-006",
+    "T-020"
+  ],
+  "platform": {
+    "kind": "physical macOS",
+    "model": "MacBook Pro",
+    "model_identifier": "Mac16,8",
+    "processor": "Apple M4 Pro",
+    "memory_gb": 24,
+    "os": "27.0.1",
+    "os_build": "26A434",
+    "physical_endpoint_types": [
+      "builtin microphone",
+      "builtin speaker"
+    ],
+    "physical_inputs": 1,
+    "physical_outputs": 1,
+    "usb_available": false,
+    "bluetooth_available": false
+  },
+  "artifacts": {
+    "app_version": "1.0.38",
+    "build_number": 71,
+    "bundle": "ru.boohtacord.localqa",
+    "entrypoint": "tools/qa/macos_audio/native_app.dart",
+    "kind": "Instrumented QA artifacts using production Flutter widgets, AppState, native bootstrap and real Go/LiveKit backend. Auto-login, exact local TLS pin and sanitized state diagnostics are QA additions. These are not unmodified production binaries.",
+    "debug_executable_sha256": "993b9a8048669d1467201696b980595b1a10c83b2585f661cfcf2ee1d35c24bf",
+    "release_executable_sha256": "372d6308d989f7dc93d7f8ff17b71985ddb29a6282757931130f1a627dbfc1e2",
+    "build_status": {
+      "Debug": "PASS",
+      "Release": "PASS"
+    },
+    "credentials_or_binaries_published": false
+  },
+  "backend": {
+    "kind": "isolated local Go/PostgreSQL/LiveKit/Tempo/Caddy",
+    "docker_context": "colima-boohtacord-qa",
+    "loopback_ports": [
+      4850,
+      4851,
+      4852,
+      4890,
+      4891,
+      4895
+    ],
+    "real_room_connection": true
+  },
+  "focused_checks": {
+    "flutter_tests": {
+      "status": "PASS",
+      "count": 16,
+      "files": [
+        "settings_scan_notice_test.dart",
+        "bootstrap_recovery_test.dart",
+        "bootstrap_scope_test.dart",
+        "prejoin_selection_test.dart",
+        "prejoin_selection/restore_test.dart",
+        "prejoin_selection/reconnect_test.dart",
+        "prejoin_selection/missing_inventory_test.dart",
+        "account_scope_test.dart",
+        "microphone_account_preferences_test.dart"
+      ],
+      "directory": "clients/flutter/test/audio_devices",
+      "limit": "Controller/component tests do not replace physical permission, routing or hotplug evidence.",
+      "working_directory": "Independent QA copy of clients/flutter, created from candidate commit",
+      "exact_command": "flutter test --no-pub test/audio_devices/settings_scan_notice_test.dart test/audio_devices/bootstrap_recovery_test.dart test/audio_devices/bootstrap_scope_test.dart test/audio_devices/prejoin_selection_test.dart test/audio_devices/prejoin_selection/restore_test.dart test/audio_devices/prejoin_selection/reconnect_test.dart test/audio_devices/prejoin_selection/missing_inventory_test.dart test/audio_devices/account_scope_test.dart test/audio_devices/microphone_account_preferences_test.dart --reporter expanded"
+    },
+    "qa_entry_analyze": "PASS",
+    "harness_unittests": {
+      "status": "PASS",
+      "count": 4,
+      "command": "python3 -m unittest tools.qa.macos_audio.test_run -v"
+    },
+    "harness_occupied_port_guard": "PASS: real occupied loopback port aborted before provisioning; existing stack remained healthy.",
+    "new_wrapper_cold_positive_run": {
+      "status": "PASS",
+      "mode": "Debug",
+      "source_commit": "66658d10052253f1db6c1e472949f39fc93de565",
+      "receipt": "evidence/qa/issue257-259-macos-wrapper-cold-2026-10-12.json",
+      "scope": "Reusable runner cold provision/build/readiness/cleanup only; no additional native UI or physical audio pass claimed."
+    }
+  },
+  "visual_evidence": {
+    "status": "OBSERVED",
+    "method": "Documented Computer Use native getAXStateAndScreenshot and accessibility snapshots",
+    "inline_snapshots": [
+      "Debug first connected voice channel",
+      "Debug after full restart connected voice channel",
+      "Release initial Audio Settings defaults",
+      "Release first connected voice channel",
+      "Release after full restart connected voice channel",
+      "Final signed-out empty login form"
+    ],
+    "observations": [
+      "Connected voice status and controls visibly rendered in Debug and Release.",
+      "Audio Settings rendered the successful list, dropdowns and local check controls.",
+      "No overflow or duplicate error notices observed in the successful path.",
+      "Final signed-out UI displayed empty credentials and version 1.0.38 (71)."
+    ],
+    "local_screenshot_export_status": "NOT_RUN",
+    "local_screenshot_files": [],
+    "limitation": "Available documented Computer Use API emitted inline captures; no filesystem export was used and no PNG or hash is claimed. Screens containing endpoint labels were not saved to public evidence."
+  },
+  "cleanup": {
+    "status": "PASS",
+    "client": "Native app signed out, verified login screen, then Cmd-Q.",
+    "stack": "Owned stack input completed; finally cleanup marker observed.",
+    "remaining_owned_resources": {
+      "containers": 0,
+      "networks": 0,
+      "volumes": 0,
+      "images": 0,
+      "stack_closed_marker": true
+    },
+    "generated_file_disposal": {
+      "status": "PASS",
+      "disposed_paths": [
+        "/private/tmp/boohtacord-mac-audio-20261012/credentials.json",
+        "/private/tmp/boohtacord-mac-audio-20261012/fixture.json",
+        "/private/tmp/boohtacord-mac-audio-20261012/flutter",
+        "/private/tmp/boohtacord-mac-audio-20261012/release-defines.json",
+        "/private/tmp/boohtacord-mac-audio-20261012/seed.py",
+        "/private/tmp/boohtacord-mac-audio-20261012/stack",
+        "/private/tmp/boohtacord-mac-audio-20261012/stack.log",
+        "/private/tmp/boohtacord-mac-audio-20261012/start_stack.py",
+        "/private/tmp/boohtacord-mac-audio-20261012/tools",
+        "/private/tmp/boohtacord-mac-audio-20261012/wrapper-collision.log"
+      ],
+      "disposed_generated_stack_config_files": [
+        "/Users/shaneque/.codex/worktrees/local-feature-qa/BOOHTACORD/.out/macos_audio/stack/Caddyfile",
+        "/Users/shaneque/.codex/worktrees/local-feature-qa/BOOHTACORD/.out/macos_audio/stack/livekit.yaml",
+        "/Users/shaneque/.codex/worktrees/local-feature-qa/BOOHTACORD/.out/macos_audio/stack/tempo.yaml"
+      ],
+      "disposed_config_directory": "/Users/shaneque/.codex/worktrees/local-feature-qa/BOOHTACORD/.out/macos_audio/stack",
+      "compiled_QA_Debug_Release_apps_and_private_Flutter_copy_removed": true,
+      "private_fixture_credentials_and_release_defines_removed": true,
+      "retained_sanitized_receipts": [
+        "cleanup.json",
+        "debug-restart-timeline.json",
+        "debug-return-A-timeline.json",
+        "debug-timeline.json",
+        "release-baseline-timeline.json",
+        "release-restart-timeline.json",
+        "release-timeline.json"
+      ],
+      "entire_tmp_directory_removed": false,
+      "verification": "Owned cleanup receipt records zero containers/networks/volumes/images. Exact generated directories were removed; each disposed path verified absent. Only enumerated sanitized JSON receipts remain."
+    }
+  },
+  "sanitization": "No account IDs, endpoint IDs or labels, credentials, session/media tokens, audio samples or message bodies are included.",
+  "issue": 259,
+  "issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/259",
+  "title": "Physical macOS selected audio restore before Join/reconnect",
+  "cases": [
+    {
+      "case": 1,
+      "criterion": "Saved choices on first Join without AudioDeviceCheck and selected physical capture/hearing",
+      "status": "NOT_RUN",
+      "reason": "First Join and connected native microphone meter passed in both modes without running local AudioDeviceCheck first. One physical endpoint per direction cannot distinguish concrete selection from default routing; no remote listener verified actual hearing.",
+      "scoped_subchecks": {
+        "first_join_no_audio_check": {
+          "Debug": "PASS",
+          "Release": "PASS"
+        },
+        "native_mic_level_observed_dbfs": {
+          "Debug": [
+            -61,
+            -55
+          ],
+          "Release": [
+            -66,
+            -51
+          ]
+        },
+        "specific_physical_route": "NOT_RUN",
+        "remote_human_hearing": "NOT_RUN"
+      }
+    },
+    {
+      "case": 2,
+      "criterion": "Leave/rejoin preserves selected physical route rather than substituting system default",
+      "status": "NOT_RUN",
+      "reason": "Both modes connected after Leave/rejoin and retained the selected UI/preferences. Specific native route identity was not instrumented and there is only one physical endpoint per direction.",
+      "scoped_subchecks": {
+        "real_leave_rejoin": {
+          "Debug": "PASS",
+          "Release": "PASS"
+        },
+        "selected_ui_and_preferences_retained": {
+          "Debug": "PASS",
+          "Release": "PASS"
+        },
+        "physical_route_not_default": "NOT_RUN"
+      }
+    },
+    {
+      "case": 3,
+      "criterion": "Full app restart restores selections before Room creation and native Join",
+      "status": "NOT_RUN",
+      "reason": "Full Cmd-Q/relaunch restored ready choices before the user clicked Join and both modes connected. Hardware-operation order before Room creation is supported by focused tests but was not instrumented in native runtime.",
+      "scoped_subchecks": {
+        "full_restart_ready_before_join": {
+          "Debug": "PASS",
+          "Release": "PASS"
+        },
+        "post_restart_real_join": {
+          "Debug": "PASS",
+          "Release": "PASS"
+        },
+        "native_hardware_operation_order": "NOT_RUN"
+      }
+    },
+    {
+      "case": 4,
+      "criterion": "Two accounts retain separate chosen device settings",
+      "status": "PASS",
+      "reason": "Account A saved concrete builtin input/output in Debug. Account B initially had system-default input/output in Release, then saved concrete builtin input with system-default output. B retained its own choices after restart. Returning to A in Debug restored both concrete choices.",
+      "scoped_subchecks": {
+        "initial_B_did_not_inherit_A": "PASS",
+        "B_restart_retained_B": "PASS",
+        "return_A_restored_A": "PASS",
+        "limitation": "Different settings were proven; separate physical devices were unavailable."
+      }
+    },
+    {
+      "case": 5,
+      "criterion": "Unplug saved endpoint, warn/fallback, avoid stale restore and restore after reconnect",
+      "status": "NOT_RUN",
+      "reason": "Only builtin endpoints were available. No USB/Bluetooth unplug/replug was possible; focused missing-inventory tests do not substitute for physical hotplug."
+    },
+    {
+      "case": 6,
+      "criterion": "AudioDeviceCheck and processing preserve actual active native I/O",
+      "status": "NOT_RUN",
+      "reason": "Both modes started/stopped microphone check and completed speaker-check action without changing selection UI. Release AGC off/on retained selection and connected voice status. Human audibility and exact native I/O route were not verified; Debug processing toggle not run.",
+      "scoped_subchecks": {
+        "local_mic_check_action": {
+          "Debug": "PASS",
+          "Release": "PASS"
+        },
+        "local_speaker_check_action": {
+          "Debug": "PASS",
+          "Release": "PASS"
+        },
+        "selection_UI_after_checks": {
+          "Debug": "PASS",
+          "Release": "PASS"
+        },
+        "Release_AGC_off_on": "PASS: connected status and input meter persisted; selected settings unchanged.",
+        "Debug_processing_toggle": "NOT_RUN",
+        "human_hearing_and_native_route": "NOT_RUN"
+      }
+    }
+  ],
+  "action_timeline": {
+    "Debug_account_A": [
+      "Start independently built Debug QA artifact against owned backend.",
+      "Open real Audio Settings; successful inventory lists default alias and builtin endpoint for each direction.",
+      "Choose builtin microphone and speaker.",
+      "First Join without AudioDeviceCheck: connected voice status and fluctuating native meter.",
+      "Leave, rejoin: connected status; selected input/output remain concrete.",
+      "Run local microphone check, stop it, run speaker-check action; selected UI unchanged.",
+      "Leave, fully quit with Cmd-Q, relaunch Debug.",
+      "Wait for ready state: both concrete choices restored before pressing Join.",
+      "Join again: connected voice status."
+    ],
+    "Release_account_B": [
+      "Launch independently built Release QA artifact, auto-authenticate second synthetic account.",
+      "Initial ready selections are system-default input/output; account A concrete settings were not inherited.",
+      "Choose builtin microphone; keep system-default output.",
+      "First Join without AudioDeviceCheck: connected status and fluctuating native meter.",
+      "Leave, rejoin: connected status; choices retained.",
+      "Run/stop local microphone check and complete speaker-check action; choices retained.",
+      "While voice connected, toggle AGC off then on; connected status and input meter persist; choices retained.",
+      "Leave, fully quit, relaunch Release.",
+      "Ready state restores concrete input and system-default output before pressing Join.",
+      "Join again: connected voice status.",
+      "Leave and quit Release."
+    ],
+    "Return_Debug_A": [
+      "Launch Debug as first account again.",
+      "Wait for ready Audio Settings: both concrete choices restored.",
+      "Verify selected booleans true/true in sanitized diagnostic final ready state.",
+      "Sign out, verify empty login form, Cmd-Q, remove only owned stack resources."
+    ]
+  },
+  "next_closure_conditions": [
+    "Use at least one additional physical USB/Bluetooth endpoint and a remote listener to distinguish selected route from system default on first Join, rejoin and full restart in both modes.",
+    "Observe native restore/selection before Room creation, with sanitized ordering telemetry if required.",
+    "Perform physical hot-unplug/replug with warning/fallback/no-stale-ID/restore observations.",
+    "Complete Debug processing-toggle and actual hearing checks after local device checks."
+  ],
+  "sanitized_timeline_receipts": {
+    "debug-timeline.json": {
+      "status": "OBSERVED",
+      "timeline": [
+        {
+          "phase": "loading",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        }
+      ]
+    },
+    "debug-restart-timeline.json": {
+      "status": "OBSERVED",
+      "timeline": [
+        {
+          "phase": "loading",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "loading",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "loading",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        }
+      ]
+    },
+    "release-baseline-timeline.json": {
+      "status": "OBSERVED",
+      "timeline": [
+        {
+          "phase": "loading",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "loading",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "loading",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        }
+      ]
+    },
+    "release-timeline.json": {
+      "status": "OBSERVED",
+      "timeline": [
+        {
+          "phase": "loading",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "loading",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "loading",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        }
+      ]
+    },
+    "release-restart-timeline.json": {
+      "status": "OBSERVED",
+      "timeline": [
+        {
+          "phase": "loading",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "loading",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "loading",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "signedOut",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        }
+      ]
+    },
+    "debug-return-A-timeline.json": {
+      "status": "OBSERVED",
+      "timeline": [
+        {
+          "phase": "loading",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "connectionError",
+          "scan_status": "idle",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": false,
+          "output_selected": false,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "connectionError",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 0,
+          "output_count": 0,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "connectionError",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "initializing",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        },
+        {
+          "phase": "ready",
+          "scan_status": "ready",
+          "scan_failure": null,
+          "input_count": 2,
+          "output_count": 2,
+          "input_selected": true,
+          "output_selected": true,
+          "warning_present": false,
+          "error_present": false
+        }
+      ]
+    }
+  }
+}

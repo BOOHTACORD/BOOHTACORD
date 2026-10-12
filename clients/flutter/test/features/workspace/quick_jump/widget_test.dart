@@ -45,6 +45,45 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
+  testWidgets('distinguishes guild candidates from existing DM peers', (
+    tester,
+  ) async {
+    final h = JumpHarness();
+    h.directs = const [
+      DirectConversation(
+        id: 'existing',
+        participantId: 'known',
+        displayName: 'Собеседник',
+        unreadCount: 0,
+      ),
+    ];
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(body: GuildQuickJumpPanel(createOwner: () => h.owner)),
+      ),
+    );
+    h.api.pending.single.complete(
+      const DirectCandidatePage(
+        items: [
+          DirectCandidate(id: 'known', displayName: 'Собеседник'),
+          DirectCandidate(id: 'new', displayName: 'Новый участник'),
+        ],
+        nextAfter: null,
+      ),
+    );
+    await tester.pumpAndSettle();
+    final candidate = find.byKey(const ValueKey('quick-jump-person-new'));
+    final existing = find.byKey(const ValueKey('quick-jump-person-known'));
+    expect(
+      find.descendant(of: candidate, matching: find.text('Участник гильдии')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: existing, matching: find.text('Личное сообщение')),
+      findsOneWidget,
+    );
+    expect(find.text('Собеседник'), findsOneWidget);
+  });
   testWidgets('IME composing Enter does not open a dialog', (tester) async {
     final h = JumpHarness();
     await tester.pumpWidget(

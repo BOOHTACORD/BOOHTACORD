@@ -8,6 +8,7 @@ extension WorkspaceSearchContext on WorkspaceController {
   }) async {
     final ticket = scope.capture();
     if (!accepts(ticket)) return;
+    restoreSearchLauncherFocus = true;
     final sequence = ++searchContextSequence;
     bool active() => accepts(ticket) && sequence == searchContextSequence;
     searchContextMessage = target;

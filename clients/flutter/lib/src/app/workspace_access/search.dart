@@ -36,7 +36,8 @@ mixin AppSearchAccess on AppOwners {
 
   void openSearchPanel() => workspace.openSearchPanel();
 
-  void closeSearchPanel() => workspace.closeSearchPanel();
+  void closeSearchPanel({bool restoreLauncherFocus = true}) =>
+      workspace.closeSearchPanel(restoreLauncherFocus: restoreLauncherFocus);
 
   Future<void> openSearchContext(SearchMessage target, {String? heading}) =>
       workspace.openSearchContext(target, heading: heading);

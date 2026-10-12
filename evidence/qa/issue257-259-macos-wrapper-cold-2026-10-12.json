@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-10-12",
+  "status": "PASS",
+  "scope": "Reusable macOS QA wrapper cold Debug provisioning/build/readiness/cleanup only. App not launched; no physical UI/audio acceptance claimed.",
+  "command": "python3 -m tools.qa.macos_audio.run --mode debug",
+  "source_commit": "66658d10052253f1db6c1e472949f39fc93de565",
+  "health": {
+    "origin": "https://localhost:4850",
+    "path": "/healthz",
+    "status": 200
+  },
+  "ready_message_observed": true,
+  "artifact": {
+    "mode": "Debug",
+    "exists_at_ready": true,
+    "app_version": "1.0.38",
+    "build_number": "71",
+    "bundle": "ru.boohtacord.localqa",
+    "executable_sha256": "e68c985a5760b620ec3b1945e6c14e76ef69a686ed96a09c569372d22305f3bb",
+    "published": false
+  },
+  "private_defines_permissions": "0o600",
+  "private_configuration_permissions": "0o600",
+  "gui_opened": false,
+  "cleanup": {
+    "status": "PASS",
+    "runner_exit_code": 0,
+    "owned_resources_remaining": {
+      "containers": 0,
+      "networks": 0,
+      "volumes": 0,
+      "images": 0
+    },
+    "cleanup_message_observed": true,
+    "temporary_owned_work_directory_absent": true,
+    "private_configuration_and_defines_absent": true,
+    "compiled_debug_artifact_absent": true,
+    "source_and_build_copy_absent": true,
+    "verification": "Enter completed worker finally cleanup; TemporaryDirectory removed independent Flutter build/source/configuration. All owned Docker resources queried by ownership label and found zero.",
+    "private_validation_owner_file_removed": true,
+    "validation_log_removed": true
+  },
+  "source_commit_role": "Base HEAD only. The QA working tree had uncommitted quick-jump changes during this isolated readiness build; this is not an exact release-source acceptance receipt.",
+  "source_manifest_at_build": "NOT_CAPTURED: provisioning/build/readiness/cleanup scope only; no app UI or media acceptance is inferred."
+}

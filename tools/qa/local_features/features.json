@@ -102,7 +102,9 @@
       "clients/flutter/lib/src/screens/workspace_screen.dart",
       "clients/flutter/lib/src/theme*",
       "clients/flutter/lib/src/app*",
-      "clients/flutter/lib/src/screens/workspace_ui/*"
+      "clients/flutter/lib/src/screens/workspace_ui/*",
+      "clients/flutter/lib/src/screens/guild_quick_jump/*",
+      "clients/flutter/lib/src/features/workspace/*"
     ],
     "web": [
       "tests/responsive_shell/playwright.config.ts",
@@ -110,7 +112,9 @@
       "tests/mentions_inbox/playwright.config.ts"
     ],
     "flutter": [
-      "test/mobile_navigation_visual_capture_test.dart"
+      "test/mobile_navigation_visual_capture_test.dart",
+      "test/features/workspace/quick_jump/widget_test.dart",
+      "test/features/workspace/quick_jump/workspace_navigation_test.dart"
     ]
   }
 }

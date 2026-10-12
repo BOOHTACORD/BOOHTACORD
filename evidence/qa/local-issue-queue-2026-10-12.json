@@ -165,7 +165,9 @@
       "number": 257,
       "title": "[QA] Проверить состояния разрешений и списка Audio Settings на macOS (#182)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/257",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue257-macos-audio-settings-2026-10-12.json",
+      "reason": "Debug/Release real macOS list and startup PASS; pending/denied/restricted/empty/bootstrap-failure and permission-refresh states NOT_RUN."
     },
     {
       "number": 258,
@@ -179,7 +181,9 @@
       "number": 259,
       "title": "[QA] Проверить восстановление выбранных audio devices перед Join/reconnect на macOS (#181)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/259",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue259-macos-audio-restore-2026-10-12.json",
+      "reason": "Account-specific audio preferences and real joins/restarts PASS; selected physical routing, remote hearing, hotplug and native pre-Room ordering NOT_RUN."
     },
     {
       "number": 264,
@@ -207,13 +211,17 @@
       "number": 278,
       "title": "[QA] Verify accessible configured guild name in Flutter (#78)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/278",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue278-guild-identity-runtime-2026-10-12.json",
+      "reason": "Android/iOS configured name, Semantics, rename and account boundaries PASS; physical screen readers, notifications and desktop criteria NOT_RUN."
     },
     {
       "number": 283,
       "title": "[QA] Browser/device acceptance for channel and DM quick jump (#78)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/283",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue283-quick-jump-runtime-2026-10-12.json",
+      "reason": "Web 14 observed rows at each width and native 7 observed rows/platform PASS after fixes; OS notifications, physical IME and released desktop remain NOT_RUN; literal initial quick-jump tab criterion PARTIAL."
     },
     {
       "number": 287,
@@ -303,12 +311,7 @@
   "ordering": "User-authorized parallel batch: root #276, agent #278, agent #283, one macOS agent #257/#259. Four concurrent agent slots. Dedicated Android AVDs 5554/5556/5558; isolated servers and build directories. Native builds scheduled to avoid memory exhaustion.",
   "source": "https://github.com/Egkurilov/BOOHTACORD/issues",
   "closure_policy": "Only applicable runtime evidence can close a case; emulator/unit PASS does not establish physical-device or load acceptance.",
-  "active_batch": [
-    278,
-    283,
-    257,
-    259
-  ],
+  "active_batch": [],
   "completed_batch": [
     251,
     254,
@@ -324,7 +327,6 @@
     259
   ],
   "current_batch_completed": [
-    264,
     276
   ],
   "workers": {
@@ -349,7 +351,8 @@
         283
       ],
       "https": 4830,
-      "android": "BOOHTACORD_QA_283_API35"
+      "android": "BOOHTACORD_QA_283_API35",
+      "ios": "BOOHTACORD QA iPhone (82C26E13-0F1F-43F9-AF27-866DC22C2456), reused after profile worker finished"
     },
     "macos_audio": {
       "issues": [
@@ -359,5 +362,26 @@
       "https": 4850,
       "device": "physical macOS built-in input/output"
     }
+  },
+  "processed_batch": [
+    276,
+    278,
+    283,
+    257,
+    259
+  ],
+  "partial_gates": [
+    257,
+    259,
+    278,
+    283
+  ],
+  "parallel_batch_status": "Completed execution; four acceptance gates remain PARTIAL/open",
+  "cleanup": "Owned disposable stacks and private builds removed; dedicated emulators/simulators shutdown",
+  "runner_safety_tests": {
+    "status": "PASS",
+    "count": 8,
+    "log": "/tmp/qa-parallel-runner-tests-final.log",
+    "scope": "profile revision, guild identity and macOS audio orchestration"
   }
 }

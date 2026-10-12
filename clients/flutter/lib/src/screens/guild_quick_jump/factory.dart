@@ -11,9 +11,12 @@ QuickJumpController guildQuickJumpOwner(AppState state) => QuickJumpController(
   effects: QuickJumpEffects(
     acceptTopology: (value) => state.topology = value,
     acceptDirects: (value) => state.directMessages = value,
-    openChannel: state.selectChannel,
+    openChannel: (value) async {
+      state.closeSearchPanel(restoreLauncherFocus: false);
+      await state.selectChannel(value);
+    },
     openDirect: (value) async {
-      state.closeSearchPanel();
+      state.closeSearchPanel(restoreLauncherFocus: false);
       await state.openDirectConversation(value);
     },
   ),

@@ -32,7 +32,9 @@ class QuickJumpRow extends StatelessWidget {
     title: Text(entry.label, maxLines: 1, overflow: TextOverflow.ellipsis),
     subtitle: Text(
       entry.isPerson
-          ? 'Личное сообщение'
+          ? entry.direct == null
+                ? 'Участник гильдии'
+                : 'Личное сообщение'
           : entry.channel?.kind == ChannelKind.voice
           ? 'Открыть комнату без подключения'
           : 'Текстовый канал',

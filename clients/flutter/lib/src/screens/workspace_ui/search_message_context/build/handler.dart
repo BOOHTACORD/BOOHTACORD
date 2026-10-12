@@ -19,6 +19,9 @@ extension WorkspaceSearchMessageContextStateBuildAction
   Widget executeWorkspaceSearchMessageContextStateBuild(BuildContext context) {
     final target = widget.state.searchContextMessage;
     final isDirect = target?.kind == SearchMessageKind.directMessage;
+    final backLabel = widget.state.searchContextHeading == 'Контекст ответа'
+        ? 'К последним сообщениям'
+        : 'Вернуться к беседе';
     final List<WorkspaceSearchContextMessage> messages = isDirect
         ? widget.state.searchContextDirectMessages
               .map(
@@ -60,52 +63,66 @@ extension WorkspaceSearchMessageContextStateBuildAction
         }
       });
     }
-    return Column(
-      children: [
-        WorkspaceHeader(
-          icon: Icons.manage_search,
-          title: widget.state.searchContextHeading,
-          subtitle: target == null
-              ? ''
-              : isDirect
-              ? widget.state.selectedDirectMessage?.displayName ??
-                    'Личный диалог'
-              : '# ${widget.state.selectedChannel?.name ?? 'Текстовый канал'}',
-          trailing: TextButton.icon(
-            onPressed: widget.state.returnFromSearchContext,
-            icon: const Icon(Icons.arrow_back, size: 18),
-            label: Text(
-              widget.state.searchContextHeading == 'Контекст ответа'
-                  ? 'К последним сообщениям'
-                  : 'Вернуться к беседе',
-            ),
-          ),
-        ),
-        if (widget.state.searchContextError case final error?)
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(error, style: const TextStyle(color: GcColors.danger)),
-                  const SizedBox(height: 8),
-                  if (target != null)
-                    TextButton(
-                      onPressed: () => widget.state.openSearchContext(
-                        target,
-                        heading: widget.state.searchContextHeading,
-                      ),
-                      child: const Text('Повторить'),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth <= 720;
+        return Column(
+          children: [
+            WorkspaceHeader(
+              icon: Icons.manage_search,
+              title: widget.state.searchContextHeading,
+              subtitle: target == null
+                  ? ''
+                  : isDirect
+                  ? widget.state.selectedDirectMessage?.displayName ??
+                        'Личный диалог'
+                  : '# ${widget.state.selectedChannel?.name ?? 'Текстовый канал'}',
+              trailing: compact
+                  ? IconButton(
+                      tooltip: backLabel,
+                      onPressed: widget.state.returnFromSearchContext,
+                      icon: const Icon(Icons.arrow_back, size: 18),
+                    )
+                  : TextButton.icon(
+                      onPressed: widget.state.returnFromSearchContext,
+                      icon: const Icon(Icons.arrow_back, size: 18),
+                      label: Text(backLabel),
                     ),
-                ],
-              ),
             ),
-          )
-        else if (widget.state.loadingSearchContext)
-          const Expanded(child: Center(child: CircularProgressIndicator()))
-        else
-          renderSearchMessageContextContextMessages(messages, target, isDirect),
-      ],
+            if (widget.state.searchContextError case final error?)
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        error,
+                        style: const TextStyle(color: GcColors.danger),
+                      ),
+                      const SizedBox(height: 8),
+                      if (target != null)
+                        TextButton(
+                          onPressed: () => widget.state.openSearchContext(
+                            target,
+                            heading: widget.state.searchContextHeading,
+                          ),
+                          child: const Text('Повторить'),
+                        ),
+                    ],
+                  ),
+                ),
+              )
+            else if (widget.state.loadingSearchContext)
+              const Expanded(child: Center(child: CircularProgressIndicator()))
+            else
+              renderSearchMessageContextContextMessages(
+                messages,
+                target,
+                isDirect,
+              ),
+          ],
+        );
+      },
     );
   }
 }

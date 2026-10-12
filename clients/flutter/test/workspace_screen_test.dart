@@ -5066,7 +5066,12 @@ void main() {
         expect(api.lastDirectMessageAt, 'dm-message-1');
         expect(find.text('Исходное личное сообщение'), findsOneWidget);
 
-        await tester.tap(find.text('Вернуться к беседе'));
+        final compactBack = find.byTooltip('Вернуться к беседе');
+        await tester.tap(
+          compactBack.evaluate().isNotEmpty
+              ? compactBack
+              : find.text('Вернуться к беседе'),
+        );
         await tester.pumpAndSettle();
         expect(state.workspacePanel, WorkspacePanel.none);
         expect(state.selectedDirectMessage?.id, 'dm-1');

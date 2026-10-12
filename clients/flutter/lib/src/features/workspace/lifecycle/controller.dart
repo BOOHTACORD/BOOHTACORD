@@ -55,6 +55,7 @@ class WorkspaceController extends ChangeNotifier {
   String? searchContextError;
   GuildChannel? searchOriginChannel;
   DirectConversation? searchOriginDirectMessage;
+  bool restoreSearchLauncherFocus = true;
   int searchContextSequence = 0;
   int searchSessionEpoch = 0;
   final Map<String, WorkspaceSearchSession> searchSessions = {};
@@ -66,6 +67,7 @@ class WorkspaceController extends ChangeNotifier {
 
   void clear() {
     cancelOperations();
+    restoreSearchLauncherFocus = true;
     topology = null;
     members = const [];
     membersLoading = false;

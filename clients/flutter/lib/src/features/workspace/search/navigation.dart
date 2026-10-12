@@ -2,6 +2,7 @@ import '../lifecycle/controller.dart';
 
 extension WorkspaceSearchNavigation on WorkspaceController {
   void openSearchPanel() {
+    restoreSearchLauncherFocus = true;
     searchContextSequence++;
     searchOriginChannel = selectedChannel;
     searchOriginDirectMessage = selectedDirectMessage;
@@ -14,7 +15,8 @@ extension WorkspaceSearchNavigation on WorkspaceController {
     changed();
   }
 
-  void closeSearchPanel() {
+  void closeSearchPanel({bool restoreLauncherFocus = true}) {
+    restoreSearchLauncherFocus = restoreLauncherFocus;
     searchContextSequence++;
     loadingSearchContext = false;
     searchContextHeading = 'Контекст найденного сообщения';

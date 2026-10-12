@@ -1,0 +1,448 @@
+{
+  "schema_version": 1,
+  "issue": 283,
+  "implementation_issue": 78,
+  "implementation_pull_request": 286,
+  "status": "PARTIAL",
+  "close_issue": false,
+  "date": "2026-10-12",
+  "leaf_task": {
+    "id": "RP-010",
+    "dependencies": [
+      "RP-005",
+      "RP-007"
+    ],
+    "related_web_leaf": "RP-009"
+  },
+  "environment": {
+    "host": "Apple Silicon macOS27, local dedicated QA devices",
+    "flutter": "3.47.6",
+    "dart": "3.13.5",
+    "native_version": "1.0.38 (71) debug",
+    "web_version": "1.0.32 web-browser-stable-r46",
+    "browser": "Chromium153.0.8010.12",
+    "web_viewports": [
+      "1440x900",
+      "393x900"
+    ],
+    "stack": [
+      "real Go API",
+      "PostgreSQL17.6",
+      "Caddy2.10.0",
+      "LiveKit SFU"
+    ],
+    "loopback_ports": {
+      "https": 4830,
+      "tempo": 4832,
+      "api": 4833,
+      "sfu_http": 4883,
+      "sfu_tcp": 4884,
+      "sfu_udp": 4885
+    },
+    "data": "Owned disposable fixture accounts and empty conversations; no successful API payload mocked."
+  },
+  "source_provenance": {
+    "native_base_candidate": "66658d10052253f1db6c1e472949f39fc93de565",
+    "web_before_candidate": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+    "web_before_source_equivalence": "Web/backend and pre-fix Flutter app source unchanged by parent QA-only publication66658; native After records exact 8 app file hashes and full lib manifest before build. Final published tree must match these tested hashes.",
+    "published_commit": "The publication commit containing this record; both native receipts match the eight app file hashes verified before staging. GitHub issue comment records the final commit SHA."
+  },
+  "confirmed_fixes": [
+    {
+      "problem": "All person candidates were labelled DM, even MEMBER entries without a direct conversation.",
+      "fix": "Distinguish participant rows from existing DM rows.",
+      "proof": "Focused label RED before implementation; native Android/iOS source After screenshots and assertions."
+    },
+    {
+      "problem": "Successful new/existing DM quick-jump closed search by returning launcher focus and opening the mobile drawer over the selected DM.",
+      "fix": "Close accepted navigation without restoring launcher focus; preserve default Escape/cancel behavior.",
+      "proof": "Focused new/same DM RED then GREEN, actual authorized native DM unobscured."
+    },
+    {
+      "problem": "Suppressed launcher return leaked into a later standalone reply-context Back.",
+      "fix": "Reset focus-return state at admitted new context and session clear boundaries.",
+      "proof": "Behavior tests quick-jump selection → standalone reply-context → Back → navigation/focus return, plus later Ctrl-K/Escape. No property-only assertion counted as acceptance."
+    },
+    {
+      "problem": "Full-text Back button overflowed narrow reply-context header by34px on390 phone and58px in390 desktop pane.",
+      "fix": "Use actual LayoutBuilder pane constraints and compact Back icon with full tooltip when width<=720.",
+      "proof": "Focused actual render RED then GREEN; native fault-fixture header screenshots and Back interaction."
+    }
+  ],
+  "results": {
+    "web": {
+      "1440": {
+        "status": "PASS for observed functional rows; overall issue PARTIAL",
+        "candidate": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+        "checks": {
+          "Ctrl_K_opens_search_with_separate_quick_jump": "PASS",
+          "Cmd_K_opens_search_with_separate_quick_jump": "PASS",
+          "Escape_focus_return": "PASS",
+          "actual_candidate_pagination_error_retry_dedup": "PASS",
+          "typing_and_controlled_IME_no_selection": "PASS",
+          "keyboard_authorized_two_person_DM": "PASS",
+          "disconnected_TEXT_DM_no_join_mic_lease": "PASS",
+          "connected_listener_TEXT_DM_no_join_mic_transfer": "PASS",
+          "archived_channel_rejected": "PASS",
+          "stale_foreign_DM_refresh_rejected": "PASS",
+          "revoked_candidate_member_rejected": "PASS",
+          "guild_rename_header_title": "PASS",
+          "logo_no_switcher": "PASS",
+          "logout_switch_disposes_old_people": "PASS"
+        },
+        "shortcut_initial_mode": "messages",
+        "roles": [
+          "MEMBER",
+          "MEMBER",
+          "ADMIN"
+        ],
+        "network_records": 39,
+        "network_receipt": {
+          "path": ".out/qa283-20261012/1440/results.json",
+          "sha256": "7963a22bcbf4e112acb996ffab9f73de5d0263103ae1d16d2f9081678e4975ee"
+        },
+        "controlled_faults": [
+          "held actual candidates response",
+          "owned API stop/restart",
+          "owned SQL stale DM fixture"
+        ],
+        "owned_resources_removed": true,
+        "screenshots": {
+          "shortcut-destination.png": "83ecc93b90b206cbecfe88d668a0604c907c31e78581a60e13fdaca20ec20049",
+          "connected-navigation-voice-dock.png": "32fea38c5481aafe3c63f39874fa6ae0f3572b249877790c1994f41d2ca774a1",
+          "deduplicated-long-unicode.png": "c0e4c668ef73e94c53ae7399971ce7d6b02def6d4cd217598931dd4b08de25b2",
+          "switched-account-people.png": "e5ee47a099adffd518efd5c1d7929abcfcac23239c9e91450c3de0a0bf309648",
+          "connected-DM-picker.png": "c0e4c668ef73e94c53ae7399971ce7d6b02def6d4cd217598931dd4b08de25b2",
+          "guild-header-current.png": "80c98166ed57baa83b6db8cab74b3ff4a61b54626578902446177fee4f1d5c4f",
+          "candidate-page-error.png": "ebd1ccd201ec2e49a708eb5970ae800d9d978e5e43a02743c7f9f81e86e74d03"
+        },
+        "visual_review": {
+          "status": "PASS for observed layout states",
+          "reviewed_at_original_resolution": true,
+          "observations": [
+            "Unicode rows wrap within the viewport, visible keyboard focus, error/retry state fits, connected voice dock remains present during text/DM navigation.",
+            "BOOHTACORD logo is retained, current guild header truncates long name while browser title carries full current name; no guild switcher.",
+            "Logout/new-account candidates show only the new account scope.",
+            "Browser-default search input/load-more controls appear compact. Global 44px minimum is not explicit in REQ-UI02; recorded as observation, not an invented failing requirement."
+          ]
+        }
+      },
+      "393": {
+        "status": "PASS for observed functional rows; overall issue PARTIAL",
+        "candidate": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+        "checks": {
+          "Ctrl_K_opens_search_with_separate_quick_jump": "PASS",
+          "Cmd_K_opens_search_with_separate_quick_jump": "PASS",
+          "Escape_focus_return": "PASS",
+          "actual_candidate_pagination_error_retry_dedup": "PASS",
+          "typing_and_controlled_IME_no_selection": "PASS",
+          "keyboard_authorized_two_person_DM": "PASS",
+          "disconnected_TEXT_DM_no_join_mic_lease": "PASS",
+          "connected_listener_TEXT_DM_no_join_mic_transfer": "PASS",
+          "archived_channel_rejected": "PASS",
+          "stale_foreign_DM_refresh_rejected": "PASS",
+          "revoked_candidate_member_rejected": "PASS",
+          "guild_rename_header_title": "PASS",
+          "logo_no_switcher": "PASS",
+          "logout_switch_disposes_old_people": "PASS"
+        },
+        "shortcut_initial_mode": "messages",
+        "roles": [
+          "MEMBER",
+          "MEMBER",
+          "ADMIN"
+        ],
+        "network_records": 39,
+        "network_receipt": {
+          "path": ".out/qa283-20261012/393/results.json",
+          "sha256": "31b3de2665ff2bf5afa795afde225ba4f7867fbf1f07fa8831738775ae3f05ec"
+        },
+        "controlled_faults": [
+          "held actual candidates response",
+          "owned API stop/restart",
+          "owned SQL stale DM fixture"
+        ],
+        "owned_resources_removed": true,
+        "screenshots": {
+          "shortcut-destination.png": "d900e5c8e4b430406f0cfd68208ecc4035077268a5ca739faff0cf2b340b2f51",
+          "connected-navigation-voice-dock.png": "6cfb2d87cb8faa9704955624843b0decbee9aef8ff8886804a07157e106a97f6",
+          "deduplicated-long-unicode.png": "7d15e05f6f9a89ee0533e11a10b28f16d7619e64dc31b7f392105d6739aeacf5",
+          "switched-account-people.png": "c8815ea94d074025e4ad28a533c25b668c8a7b9afbff63d0c33b318c31982226",
+          "connected-DM-picker.png": "7d15e05f6f9a89ee0533e11a10b28f16d7619e64dc31b7f392105d6739aeacf5",
+          "guild-header-current.png": "e95f5195c2915c43bc8f59cf701e0563f94efc727a1f8a373572393bc411db87",
+          "candidate-page-error.png": "6dd84a7e3e0cb238b5a1899f0ce73cc2778aa61adb59a651551a323b69c8b39c"
+        },
+        "visual_review": {
+          "status": "PASS for observed layout states",
+          "reviewed_at_original_resolution": true,
+          "observations": [
+            "Unicode rows wrap within the viewport, visible keyboard focus, error/retry state fits, connected voice dock remains present during text/DM navigation.",
+            "BOOHTACORD logo is retained, current guild header truncates long name while browser title carries full current name; no guild switcher.",
+            "Logout/new-account candidates show only the new account scope.",
+            "Browser-default search input/load-more controls appear compact. Global 44px minimum is not explicit in REQ-UI02; recorded as observation, not an invented failing requirement."
+          ]
+        }
+      }
+    },
+    "android_native_after": {
+      "issue": 283,
+      "platform": "android",
+      "physical_device": false,
+      "viewport": {
+        "physical_width": 1080.0,
+        "physical_height": 2400.0,
+        "device_pixel_ratio": 2.625
+      },
+      "shortcut_initial_mode": "messages",
+      "os_version": "sdk_phone64_arm64-userdebug 15 AE3A.240806.019 12368160 test-keys",
+      "roles": [
+        "ADMIN",
+        "MEMBER"
+      ],
+      "checks": {
+        "visible_MEMBER_vs_existing_DM_labels": "PASS",
+        "shortcut_separate_people_and_dedup": "PASS",
+        "DM_surface_not_obscured_by_navigation": "PASS",
+        "controlled_IME_then_Enter_authorized_DM_no_voice": "PASS",
+        "actual_unavailable_reply_context_header_no_overflow_Back": "PASS",
+        "Escape_disposes_people": "PASS",
+        "same_app_switch_people_scope": "PASS"
+      },
+      "OS_notifications": "NOT_RUN",
+      "mocks": false,
+      "controlled_reply_context_statuses": [
+        200
+      ],
+      "context_error_present": true,
+      "controlled_reply_context_history_status": 200,
+      "status": "PARTIAL",
+      "candidate": "66658d10052253f1db6c1e472949f39fc93de565",
+      "dirty_diff_sha256": "4dc15b3f654ce205fff0f912ea6629759ecd41d76435f07725f16694da2b9da8",
+      "flutter_lib_manifest_sha256": "5e03476abd5119d1c36243bc18fd49856b9a91061bd2aeef3261dca0d58cf57a",
+      "app_source_files": {
+        "src/app/workspace_access/search.dart": "49ce31c4d73d3a8bf471ee20007c35f6513b9222e334eccbfd35eb93ce532d1e",
+        "src/features/workspace/lifecycle/controller.dart": "d65717162c59ca1da54c856d870f5185ab44c59c4d81664f6742fe2e796dc661",
+        "src/features/workspace/search/navigation.dart": "4787e3d72068b14e35722d236642c4dbba0421729fc8ed056a36d23b0f264c8c",
+        "src/features/workspace/search/context.dart": "3f8bc166ba2e2e822f1e1cae729a09013b3e29ff10f310871dbee98bb0bf4349",
+        "src/screens/workspace_ui/search_message_context/build/handler.dart": "407c4f9eadb4a5cdd6989dd97ef7449ec503cd45331eefd9e2258bcbb6c2dd6b",
+        "src/screens/guild_quick_jump/factory.dart": "0af51909ad5f245506d3292847622777f8d03b7cf41a035e83fdefb268f1e106",
+        "src/screens/guild_quick_jump/row.dart": "57dd494e3385217de3108a9c7ec69b8c0d75b3c66d0947ef39a5ddb81518c190",
+        "src/screens/workspace_ui/workspace_screen/workspace_changed/restore_workspace_panel_focus.dart": "bda82335fd7ba99e6a3f68ce3e20e57cc1618d200edb05b1f15d92e2fe56da24"
+      },
+      "source_copy_match": true,
+      "build_mode": "debug",
+      "device": "emulator-5556",
+      "os": "15",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "native-unavailable-reply-context-header.png": "f891f1b5439f058723a27218ee0987a1ecd65fe3f11e5c9415e272f932d1912a",
+        "native-account-switch-people.png": "e07e23ce75282ffe910595fc8194d7d6da16c72ac72b7417fcaad5ab7b78644a",
+        "native-quick-jump-people.png": "96b2a0ea69e54c2fffefc7c74cdc4def7fc4270f1272f178c4a7363643eaf6a7",
+        "native-logged-out.png": "b085be5aff83bf811719466f187f199c99fed99d4d67b33d0691317a8bde29d9",
+        "native-authorized-dm-navigation.png": "47f2c674d5fbf6e8d1b40918f37e9b9c9df07b5221c4aca09696af815c04a9ce"
+      },
+      "native_artifact_sha256": "30a3b48a4f48edb9eabdba14b80e78d27571af7b2a12c9a5676920c56c957e55",
+      "receipt": {
+        "path": ".out/qa283-20261012/android/runtime.json",
+        "sha256": "408952e9a90d9c35675340acb081c0c540c09a7e4a35c6ac0821b1bfe6724c1a"
+      },
+      "visual_review": {
+        "status": "PASS",
+        "reviewed_at_original_resolution": true,
+        "observations": [
+          "Existing DM has Личное сообщение; new member rows have Участник гильдии. Long synthetic Unicode name truncates within the row; focus border remains visible.",
+          "Authorized empty DM surface and composer are visible without mobile navigation obscuring them.",
+          "Unavailable reply-context header has a compact Back icon with full tooltip, fits the actual narrow pane and returns to the conversation without render exceptions.",
+          "Logged-out screen contains no previous workspace state; new-account candidate list belongs to its own admitted scope."
+        ]
+      }
+    },
+    "ios_native_after": {
+      "issue": 283,
+      "platform": "ios",
+      "physical_device": false,
+      "viewport": {
+        "physical_width": 1206.0,
+        "physical_height": 2622.0,
+        "device_pixel_ratio": 3.0
+      },
+      "shortcut_initial_mode": "messages",
+      "os_version": "Version 27.0 (Build 24A434)",
+      "roles": [
+        "ADMIN",
+        "MEMBER"
+      ],
+      "checks": {
+        "visible_MEMBER_vs_existing_DM_labels": "PASS",
+        "shortcut_separate_people_and_dedup": "PASS",
+        "DM_surface_not_obscured_by_navigation": "PASS",
+        "controlled_IME_then_Enter_authorized_DM_no_voice": "PASS",
+        "actual_unavailable_reply_context_header_no_overflow_Back": "PASS",
+        "Escape_disposes_people": "PASS",
+        "same_app_switch_people_scope": "PASS"
+      },
+      "OS_notifications": "NOT_RUN",
+      "mocks": false,
+      "controlled_reply_context_statuses": [
+        200
+      ],
+      "context_error_present": true,
+      "controlled_reply_context_history_status": 200,
+      "status": "PARTIAL",
+      "candidate": "66658d10052253f1db6c1e472949f39fc93de565",
+      "dirty_diff_sha256": "4dc15b3f654ce205fff0f912ea6629759ecd41d76435f07725f16694da2b9da8",
+      "flutter_lib_manifest_sha256": "5e03476abd5119d1c36243bc18fd49856b9a91061bd2aeef3261dca0d58cf57a",
+      "app_source_files": {
+        "src/app/workspace_access/search.dart": "49ce31c4d73d3a8bf471ee20007c35f6513b9222e334eccbfd35eb93ce532d1e",
+        "src/features/workspace/lifecycle/controller.dart": "d65717162c59ca1da54c856d870f5185ab44c59c4d81664f6742fe2e796dc661",
+        "src/features/workspace/search/navigation.dart": "4787e3d72068b14e35722d236642c4dbba0421729fc8ed056a36d23b0f264c8c",
+        "src/features/workspace/search/context.dart": "3f8bc166ba2e2e822f1e1cae729a09013b3e29ff10f310871dbee98bb0bf4349",
+        "src/screens/workspace_ui/search_message_context/build/handler.dart": "407c4f9eadb4a5cdd6989dd97ef7449ec503cd45331eefd9e2258bcbb6c2dd6b",
+        "src/screens/guild_quick_jump/factory.dart": "0af51909ad5f245506d3292847622777f8d03b7cf41a035e83fdefb268f1e106",
+        "src/screens/guild_quick_jump/row.dart": "57dd494e3385217de3108a9c7ec69b8c0d75b3c66d0947ef39a5ddb81518c190",
+        "src/screens/workspace_ui/workspace_screen/workspace_changed/restore_workspace_panel_focus.dart": "bda82335fd7ba99e6a3f68ce3e20e57cc1618d200edb05b1f15d92e2fe56da24"
+      },
+      "source_copy_match": true,
+      "build_mode": "debug",
+      "device": "82C26E13-0F1F-43F9-AF27-866DC22C2456",
+      "os": "iOS27.0 simulator",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "native-unavailable-reply-context-header.png": "24e49e69e3beecc4c71e5285bd3c27d5a55ab3ac7514adcbedb9dddbe5e761d3",
+        "native-account-switch-people.png": "43f06d3ac1809c28a346bb61947f41d273dfaff3825f11a97af36ea1a06cca3e",
+        "native-quick-jump-people.png": "bae7697dee2bbfeb8bb86456605ba886830d09501ba448de3b23faaa9dbeb2b3",
+        "native-logged-out.png": "0577e9fddb94464e57343ab85dbcc55102a61e209c70f4d458ccee790fd57beb",
+        "native-authorized-dm-navigation.png": "41781b2f5b39f6cda18e26da9de4e8d5bc3b85a8e32511de696998294b32f7d7"
+      },
+      "native_artifact_sha256": "268c13bc186a946abcb15e049435ca04a0dd0bbc421e725108797de1d3bccbcc",
+      "receipt": {
+        "path": ".out/qa283-20261012/ios/runtime.json",
+        "sha256": "9b9e19a21fefc069f654704784d2937e8d7a8fab6b1cfaa51d8d143ed8af65b1"
+      },
+      "visual_review": {
+        "status": "PASS",
+        "reviewed_at_original_resolution": true,
+        "observations": [
+          "Existing DM has Личное сообщение; new member rows have Участник гильдии. Long synthetic Unicode name truncates within the row; focus border remains visible.",
+          "Authorized empty DM surface and composer are visible without mobile navigation obscuring them.",
+          "Unavailable reply-context header has a compact Back icon with full tooltip, fits the actual narrow pane and returns to the conversation without render exceptions.",
+          "Logged-out screen contains no previous workspace state; new-account candidate list belongs to its own admitted scope."
+        ]
+      }
+    },
+    "focused_web": {
+      "status": "PASS",
+      "count": 17,
+      "files": 7,
+      "log_receipt": {
+        "local_log": "/tmp/qa283-web-focused.log"
+      },
+      "log_sha256": "69d0444b54f9218c8405a157fc6dc286d9aa291311ffd41c23cda560231ea42a"
+    },
+    "focused_flutter": {
+      "status": "PASS",
+      "count": 17,
+      "local_log": "/tmp/qa283-native-green.log",
+      "log_sha256": "7445fc42e5dcac2e01bddee724543515e6c4fa8f0e5496079fff40644b0ff03f"
+    },
+    "native_analysis": {
+      "status": "PASS",
+      "local_log": "/tmp/qa283-native-analyze.log",
+      "log_sha256": "3871e9815abeefa3cb460cc81f37baa98b41a2577e557f3d70adc6388f29e423"
+    },
+    "mandatory_shell_android_ios": {
+      "status": "REVIEW_REQUIRED",
+      "stages": [
+        {
+          "name": "flutter-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "flutter-component-captures",
+          "status": "PASS"
+        },
+        {
+          "name": "android-runtime",
+          "status": "PASS"
+        },
+        {
+          "name": "ios-runtime",
+          "status": "PASS"
+        }
+      ],
+      "flutter_tests_passed": 1149,
+      "flutter_tests_skipped": 1,
+      "registered_component_tests_passed": 7,
+      "receipt": {
+        "path": ".out/local-features/20261012-183423/report.json",
+        "sha256": "238893157f044e2b67ce6c6d552a1b6d62477be06a450b3feadec4e0b3fd38b4"
+      },
+      "command": "./tools/qa/local_features/check.sh --feature shell --platform android --platform ios --native-device android:emulator-5556 --native-device ios:82C26E13-0F1F-43F9-AF27-866DC22C2456 --base origin/master --real-stack",
+      "visual_scope": "Broad mandatory capture suite remains REVIEW_REQUIRED; this record approves only the manually inspected scoped #283 screenshots."
+    }
+  },
+  "before_evidence": {
+    "receipt": {
+      "path": ".out/qa283-20261012/previous-harness-runs/android/1791819560135713000/runtime.json",
+      "sha256": "58c80ed195d8842aa49cb039e9e1df3942c10ea41a784a06d6b6859f2ac27e8c"
+    },
+    "candidate": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+    "screenshots": {
+      "native-account-switch-people.png": "693fe6dd528046b34cad816d17424c4040503f57312d6537b3d7741c77cfde85",
+      "native-quick-jump-people.png": "da6bf75c1369c402f26f479c96cbbdc9a8c6a0a4cdb9d07976a43f57c4b3dfff",
+      "native-logged-out.png": "b085be5aff83bf811719466f187f199c99fed99d4d67b33d0691317a8bde29d9",
+      "native-authorized-dm-navigation.png": "cd226e98feab6fcbfff9e484303848c53df076d2686f8f0f20ef538fcd0df395"
+    },
+    "visual_findings": [
+      "MEMBER entries incorrectly show DM label.",
+      "Opened authorized DM is obscured by mobile navigation."
+    ]
+  },
+  "proof_corrections": [
+    "Initial supplementary context test fixture omitted AnimatedBuilder and its missing-Back assertion was not valid focus-return RED. Corrected fixture produced behavioral focus-return RED and actual header render overflow on an isolated original-source copy.",
+    "Incomplete synthetic clear/session fixture produced a loading spinner and was removed rather than changing app behavior. No property-mirroring clear test counted.",
+    "Early native After assumed HTTP404 for an absent message anchor. Actual protected API returned200 without the anchor and client correctly reported unavailable context. Final assertion matches200 plus unavailable UI/no render exception/Back. This is fault-fixture layout proof, not successful history acceptance.",
+    "Old After failures and screenshots are archived; final run pins source before compilation and cannot reuse old PASS."
+  ],
+  "remaining_acceptance": {
+    "literal_shortcut_auto_selects_quick_jump": {
+      "status": "PARTIAL",
+      "reason": "Approved existing binding opens search in messages mode; Channels and people is a separate selected tab. Observed launcher/tab paths PASS, literal auto-selected-tab interpretation requires clarification.",
+      "references": [
+        "backlog/improvements/USER_TODO.md IMP-38",
+        "docs/superpowers/plans/2026-10-09-native-people-quick-jump.md"
+      ]
+    },
+    "OS_notifications_allowed_denied_delivery_rename_account_switch_generic_private_preview": {
+      "status": "NOT_RUN",
+      "reason": "No OS notification permission/delivery/preview acceptance exercised."
+    },
+    "physical_keyboard_and_OS_IME": {
+      "status": "NOT_RUN",
+      "reason": "Browser and integration controlled composition/key events prove app routing only."
+    },
+    "released_Flutter_desktop_and_mobile_release_builds": {
+      "status": "NOT_RUN",
+      "reason": "Real emulator/simulator debug scenarios do not prove released clients or desktop OS behavior."
+    }
+  },
+  "security": {
+    "private_content_captured": false,
+    "successful_payload_mocked": false,
+    "screenshots": "Synthetic aliases, empty DM surfaces, generic unavailable error and auth chrome only; no message content, IDs, cookies or tokens."
+  },
+  "cleanup": {
+    "owned_stack_containers_networks_removed": true,
+    "private_build_copy_removed": true,
+    "devices_shutdown": true,
+    "installed_disposable_QA_apps_absent": true,
+    "android_reverse_removed": true,
+    "tcp_ports_free": {
+      "4830": true,
+      "4832": true,
+      "4833": true,
+      "4883": true,
+      "4884": true
+    }
+  }
+}

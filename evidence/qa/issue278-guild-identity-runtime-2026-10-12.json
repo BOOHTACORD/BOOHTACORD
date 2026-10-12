@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "issue": 278,
+  "status": "PARTIAL",
+  "close_issue": false,
+  "candidate_master": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+  "date": "2026-10-12",
+  "leaf_task": {
+    "id": "FV2-017",
+    "dependencies": [
+      "FV2-001",
+      "FV2-007",
+      "T-040",
+      "T-041",
+      "T-050",
+      "T-051"
+    ],
+    "nearest_tests": [
+      "workspace_guild_identity_test.dart",
+      "guild_profile_test.dart",
+      "guild_window_title_test.dart",
+      "notification_scope/guild_title_test.dart",
+      "workspace_navigation_top_test.dart"
+    ],
+    "native_test": "integration_test/guild_identity_qa_test.dart"
+  },
+  "environment": {
+    "flutter": "3.47.6",
+    "dart": "3.13.5",
+    "build": "debug 1.0.38 (71), real BoohtacordApp with integration_test binding",
+    "android": "15 API35 arm64-v8a emulator, dedicated BOOHTACORD_QA_278_API35",
+    "real_stack": [
+      "Go API",
+      "PostgreSQL17.6",
+      "Caddy2.10.0",
+      "private isolated Docker network"
+    ],
+    "loopback_ports": {
+      "https": 4840,
+      "tempo": 4842,
+      "api": 4843
+    },
+    "roles": [
+      "ADMIN on native client",
+      "ADMIN separate real HTTP session for rename",
+      "MEMBER on same native app after logout"
+    ],
+    "physical_device": false,
+    "ios": "iOS27.0 24A434 iPhone16 Simulator arm64, dedicated BOOHTACORD QA278 iPhone"
+  },
+  "results": {
+    "android_native_ui": {
+      "status": "PASS",
+      "platform": "android",
+      "physical_device": false,
+      "checks": {
+        "long_unicode_auth_and_header_layout": "PASS",
+        "full_logo_semantics_once": "PASS",
+        "no_server_switcher": "PASS",
+        "second_admin_session_rename_realtime": "PASS",
+        "logout_and_new_sign_in": "PASS",
+        "admin_to_member_account_switch": "PASS"
+      },
+      "semantics_excerpt": {
+        "configured_name": "synthetic 80 Unicode code points",
+        "logo_label_before": "Логотип гильдии [80-codepoint synthetic name]",
+        "logo_label_after": "Логотип гильдии Гильдия обновлена 🌍界",
+        "logo_nodes": 1
+      },
+      "reader": "NOT_RUN: TalkBack not installed; Flutter native semantics tree is not speech proof",
+      "notifications": "NOT_RUN",
+      "account_switch": "PASS",
+      "candidate": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+      "owned_resources_removed": true,
+      "started_at": "2026-10-12T14:31:54.649933+00:00",
+      "completed_at": "2026-10-12T14:33:51.761359+00:00",
+      "build_mode": "debug",
+      "app": "real Flutter app with integration_test binding",
+      "flutter": "3.47.6",
+      "dart": "3.13.5",
+      "android": "15 API35 arm64-v8a",
+      "screenshots": {
+        "guild-account-switch.png": "4e41f5bb385f01ae375a79a3d7bb7fb33fdd5122b6c02a90bf9924b6097c8f94",
+        "guild-header-long-unicode.png": "a1fb747633182582382389a40359a905d35fa3bcf2ca6dc6c3ae06e397f8bc1a",
+        "guild-signed-out-renamed.png": "a26173c30eb519b72e707259d8187432e9fe998de4b8384822ca51ecaeeb9470",
+        "guild-new-sign-in.png": "ca7c2ed32ad1fafd9c825cd36c31a5c9088c3846be520e729f5b49921e3e62a1",
+        "guild-renamed-realtime.png": "107ee054d9f292f6313fd16c044c55497126855edd587db7b21f251e7dba8caf",
+        "guild-auth-long-unicode.png": "71e63bd56f22fd62d86ec432b267a7f9f9885a64903c3c6324bd685f704d0399"
+      }
+    },
+    "focused_tests": {
+      "status": "PASS",
+      "count": 8
+    },
+    "native_analysis": "PASS",
+    "android_talkback": {
+      "status": "NOT_RUN",
+      "reason": "Dedicated installed Android35 default system image has AccessibilityMenu but no TalkBack package; Flutter semantics is not spoken-output proof."
+    },
+    "windows_nvda": {
+      "status": "NOT_RUN",
+      "reason": "No Windows host/VM and NVDA runtime available on this Mac."
+    },
+    "macos_voiceover": {
+      "status": "NOT_RUN",
+      "reason": "Physical macOS audio cases own the Mac UI; native VoiceOver announcement was not exercised."
+    },
+    "ios_voiceover": {
+      "status": "NOT_RUN",
+      "reason": "Physical iOS VoiceOver behavior has not been exercised."
+    },
+    "desktop_window_title": {
+      "status": "NOT_RUN",
+      "supporting_widget_test": "guild_window_title_test.dart PASS; this does not prove OS title behavior."
+    },
+    "notifications_os_permission_denied_allowed_and_delivery": {
+      "status": "NOT_RUN",
+      "supporting_unit_test": "notification_scope/guild_title_test.dart PASS; this does not prove OS delivery/permission or privacy."
+    },
+    "keyboard_focus_and_contrast_across_platforms": {
+      "status": "NOT_RUN",
+      "reason": "Native mobile UI used software keyboard/taps; desktop assistive keyboard and contrast acceptance still missing."
+    },
+    "ios_native_ui": {
+      "status": "PASS",
+      "platform": "ios",
+      "physical_device": false,
+      "checks": {
+        "long_unicode_auth_and_header_layout": "PASS",
+        "full_logo_semantics_once": "PASS",
+        "no_server_switcher": "PASS",
+        "second_admin_session_rename_realtime": "PASS",
+        "logout_and_new_sign_in": "PASS",
+        "admin_to_member_account_switch": "PASS"
+      },
+      "semantics_excerpt": {
+        "configured_name": "synthetic 80 Unicode code points",
+        "logo_label_before": "Логотип гильдии [80-codepoint synthetic name]",
+        "logo_label_after": "Логотип гильдии Гильдия обновлена 🌍界",
+        "logo_nodes": 1
+      },
+      "reader": "NOT_RUN: actual assistive technology speech not checked; native semantics tree alone is insufficient",
+      "notifications": "NOT_RUN",
+      "account_switch": "PASS",
+      "candidate": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+      "owned_resources_removed": true,
+      "started_at": "2026-10-12T14:34:51.454283+00:00",
+      "completed_at": "2026-10-12T14:38:22.442941+00:00",
+      "build_mode": "debug",
+      "app": "real Flutter app with integration_test binding",
+      "flutter": "3.47.6",
+      "dart": "3.13.5",
+      "os": "iOS27.0 iPhone16 Simulator arm64",
+      "screenshots": {
+        "guild-account-switch.png": "276efcb4a45574ed08e8b64cb25a843ce3c6d35edf69028bb4ab0f20cbb61e12",
+        "guild-header-long-unicode.png": "1446fa54ac6a0fa93cc037ea3c38971a6a6cc6b6c11c3bb3f90ce9ee5c3bc357",
+        "guild-signed-out-renamed.png": "aab85c83493a99bc84603b869263f231b9e41d62fe094d50987b1d459719d2ce",
+        "guild-new-sign-in.png": "fd50ef8ff333dcdb4a2ea0cb45be53edbc939938ee149838a0605e5f85a79c79",
+        "guild-renamed-realtime.png": "fd50ef8ff333dcdb4a2ea0cb45be53edbc939938ee149838a0605e5f85a79c79",
+        "guild-auth-long-unicode.png": "95b599ce5dd5017fdfad55bda168fd3bc7117601a59fd6cc20bf9c11641b755d"
+      }
+    }
+  },
+  "visual_review": {
+    "status": "PASS",
+    "capture_source_pixels": {
+      "android": [
+        1080,
+        2400
+      ],
+      "ios": [
+        1179,
+        2556
+      ]
+    },
+    "images_inspected": 12,
+    "observations": [
+      "Auth name contains 80 synthetic Unicode code points; it stays on one line with an ellipsis, labels and login controls do not overflow.",
+      "The original BOOHTACORD logo remains recognizable alongside the configured header name; header layout stays within the drawer.",
+      "Renaming through a real authorized session updates the visible navigation header without restarting the app.",
+      "Signed-out auth and a new sign-in display the renamed guild.",
+      "Switching from ADMIN to MEMBER keeps the configured guild name and changes the account/role footer.",
+      "The corresponding six iOS screenshots show the same coherent auth/header/renamed/logout/account-switch surfaces with no overflow; the platform emoji glyph differs as expected."
+    ],
+    "limitation": "The tool displays a scaled preview of source PNGs; source-resolution files and hashes are retained. Screenshot review does not establish screen-reader speech, desktop title or OS notifications.",
+    "platforms": [
+      "Android",
+      "iOS"
+    ]
+  },
+  "privacy": {
+    "message_or_dm_content_in_evidence": false,
+    "session_cookies_or_credentials_in_evidence": false,
+    "screenshots": "Only synthetic guild/account aliases and empty workspace; ignored local PNGs are not committed."
+  },
+  "cleanup": {
+    "owned_api_db_tempo_proxy_network_images_removed": true,
+    "android_reverse_removed": true,
+    "dedicated_android_emulator_shutdown": true,
+    "dedicated_ios_simulator_shutdown": true
+  },
+  "gate_reason": "Required physical assistive technologies, desktop OS title, notifications and keyboard/contrast rows are NOT_RUN; issue must remain open."
+}

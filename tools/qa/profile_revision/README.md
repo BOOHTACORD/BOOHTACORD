@@ -13,4 +13,4 @@ It creates two MEMBER accounts using a real ADMIN session, updates names and pro
 
 Credentials and the certificate pin are provided through a temporary mode-0600 Dart defines file. The stack is removed in finally. Never publish this temporary file, raw payloads or screenshot binaries. Reports contain generic phases, revision values, status codes and local screenshot SHA256 receipts. Review actual screenshots before accepting visual evidence.
 
-Outputs are ignored local artifacts under `.out/qa276-20261012/<platform>/`. A FAIL or missing screenshot is not acceptance. Emulator coverage does not establish physical media, OS notification or OS screen-reader capability.
+Each attempt clears only this runner's old scenario/PNG outputs, writes RUNNING before device access, and records FAIL with a nonzero exit on failure. The source SHA is captured before launch. Outputs are ignored local artifacts under `.out/qa276-20261012/<platform>/`. A FAIL or missing screenshot is not acceptance. Emulator coverage does not establish physical media, OS notification or OS screen-reader capability.
