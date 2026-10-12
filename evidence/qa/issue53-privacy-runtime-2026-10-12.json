@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "issue": 53,
+  "url": "https://github.com/Egkurilov/BOOHTACORD/issues/53",
+  "leaf_task": "T-052",
+  "dependencies": [
+    "T-010",
+    "T-014",
+    "T-044"
+  ],
+  "source_commit": "4dff4815a3c0414abed470da6f83f702cfe10e8a",
+  "recorded_at": "2026-10-12T07:48:16.340031+00:00",
+  "status": "BLOCKED",
+  "production_mutations": false,
+  "integration": {
+    "status": "PASS",
+    "postgres": "official postgres:17.6-alpine, owned disposable instance, loopback-only; per-test isolated schemas",
+    "go": "official golang:1.26.4-alpine, repository mounted read-only",
+    "tests_passed": 20,
+    "subtests_passed": 3,
+    "tests_skipped": 0,
+    "checks": [
+      "Create/edit/delete private hints reach only the two current participants; third-party administrator receives no hint or private payload.",
+      "History/search/reply obey participant ACL; unread/read cursors remain caller-local.",
+      "Download/preview work for live participants and reject foreign administrators, wrong pair, blocked participant and deleted message links.",
+      "Private HTML/SVG cannot be previewed; atomic attachment claim/idempotency and attachment limits preserved."
+    ],
+    "test_results": [
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMAttachConcurrentDifferentSendsClaimOnlyOnce",
+        "Elapsed": 0.19
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMTenAttachmentsCommitAndEleventhRejectsAtomicallyInPostgres",
+        "Elapsed": 0.17
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMRepositoryRejectsEmptyMessageWithoutAttachmentInPostgres",
+        "Elapsed": 0.18
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMAttachConcurrentIdempotencyWithPostgres",
+        "Elapsed": 0.19
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMMentionIsPrivateAndFollowsEditDeleteAndCursor",
+        "Elapsed": 0.19
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/storage/download_direct_message_attachment/postgres",
+        "Test": "TestPrivateDMFileAndPreviewRequireLiveParticipantLink",
+        "Elapsed": 0.19
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMMentionRejectsOutsidePairAtomically",
+        "Elapsed": 0.19
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/storage/download_direct_message_attachment/postgres",
+        "Test": "TestPrivateDMHTMLAndSVGFilesCannotBePreviewed/private.html",
+        "Elapsed": 0.18
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMReadCursorAndNavigationCountersStayCallerLocalInPostgres",
+        "Elapsed": 0.19
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/storage/download_direct_message_attachment/postgres",
+        "Test": "TestPrivateDMHTMLAndSVGFilesCannotBePreviewed/private.svg",
+        "Elapsed": 0.18
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/storage/download_direct_message_attachment/postgres",
+        "Test": "TestPrivateDMHTMLAndSVGFilesCannotBePreviewed",
+        "Elapsed": 0.36
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMCreateEditDeleteHintsReachOnlyCurrentPairInPostgres",
+        "Elapsed": 0.18
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/storage/download_direct_message_attachment/postgres",
+        "Test": "TestMigrationBackedDMDownloadAuthorization",
+        "Elapsed": 0.19
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/storage/download_direct_message_attachment/postgres",
+        "Test": "TestFindRequiresLiveSamePairLinkAndParticipant",
+        "Elapsed": 0
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/storage/download_direct_message_attachment/postgres",
+        "Test": "TestFindMapsEveryMissingPredicateToUniformUnavailable",
+        "Elapsed": 0
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/storage/download_direct_message_attachment/postgres",
+        "Elapsed": 0.737
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMHistorySearchAndReplyShareParticipantACLInPostgres",
+        "Elapsed": 0.18
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMAttachIsAtomicAndIdempotentWithPostgres",
+        "Elapsed": 0.18
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/testsupport/postgres",
+        "Test": "TestHostPolicyRejectsRemoteAndFallbackHosts",
+        "Elapsed": 0
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/testsupport/postgres",
+        "Test": "TestIsolatedSchemasAreDistinctAndCleanupSurvivesCancelledContext/owned_schemas",
+        "Elapsed": 0.01
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/testsupport/postgres",
+        "Test": "TestIsolatedSchemasAreDistinctAndCleanupSurvivesCancelledContext",
+        "Elapsed": 0.02
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/testsupport/postgres",
+        "Elapsed": 0.023
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMAttachRejectsForeignPairAndPartialSet",
+        "Elapsed": 0.17
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestRepositoryWritesOnlyForActiveParticipantPair",
+        "Elapsed": 0
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Test": "TestDMUploadTargetIsRecheckedInPostgres",
+        "Elapsed": 0.16
+      },
+      {
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+        "Elapsed": 2.161
+      }
+    ],
+    "cleanup": {
+      "remaining_owned_schemas": 0,
+      "owned_database_removed": true
+    }
+  },
+  "remaining": {
+    "trusted_browser_granted_and_denied_os_notification": "NOT_RUN: Mac locked; real permission and OS notification observation unavailable.",
+    "generic_dm_preview_without_private_content": "NOT_RUN in trusted browser; source unit coverage from the preceding full Web run is not OS acceptance.",
+    "cross_tab_dedup_logout_account_switch": "NOT_RUN in trusted browser",
+    "three_live_browser_sessions_http_ws_privacy": "NOT_RUN on this candidate; PostgreSQL integration acceptance above does not replace real browser/WebSocket checks."
+  },
+  "gate_closed": false
+}
