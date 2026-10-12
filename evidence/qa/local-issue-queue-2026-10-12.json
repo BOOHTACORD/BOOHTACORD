@@ -185,7 +185,9 @@
       "number": 264,
       "title": "[QA] Проверить inbox упоминаний и точный переход (#72)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/264",
-      "status": "NOT_RUN"
+      "status": "PASS",
+      "evidence": "evidence/qa/issue264-mentions-inbox-runtime-2026-10-12.json",
+      "reason": "All 6 Web runtime criteria PASS at master 90870515; stale navigation and clipped loading/empty states fixed; 12 metadata-only captures inspected."
     },
     {
       "number": 272,
@@ -299,10 +301,19 @@
   "ordering": "Within each selected batch, run one browser case at a time; independent PostgreSQL measurement may run while browser cases are prepared. Hardware-dependent older gates remain explicitly open.",
   "source": "https://github.com/Egkurilov/BOOHTACORD/issues",
   "closure_policy": "Only applicable runtime evidence can close a case; emulator/unit PASS does not establish physical-device or load acceptance.",
-  "active_batch": [],
+  "active_batch": [
+    276
+  ],
   "completed_batch": [
     251,
     254,
     258
+  ],
+  "selected_batch": [
+    264,
+    276
+  ],
+  "current_batch_completed": [
+    264
   ]
 }

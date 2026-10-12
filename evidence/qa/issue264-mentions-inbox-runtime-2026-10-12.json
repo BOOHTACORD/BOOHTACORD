@@ -1,0 +1,199 @@
+{
+  "issue": 264,
+  "status": "PASS",
+  "gate_closed": true,
+  "leaf": "T-040",
+  "dependencies": [
+    "T-010",
+    "T-020"
+  ],
+  "tested_master_sha": "908705153348f2fb713eda0e3ef5d976fef2e863",
+  "tested_web_source_tree": "aad592a89c2178b3bf49f05c96844bdeaf111ecc",
+  "os": "macOS-27.0.1-arm64-arm-64bit",
+  "app_version": "0.1.0 production Web bundle",
+  "vue": "3.5.43",
+  "vite": "8.3.0",
+  "pinia": "4.0.3",
+  "playwright": "1.63.0",
+  "source_manifest": {
+    "clients/web/src/workspace/search/WorkspaceSearchPanel.vue": "7ac009cf1f14b5ed327f896fdb7b5639606a1b4feda9c3a24c56adb3a7d25e96",
+    "clients/web/src/search/PersonalMentionsPanel.vue": "8106a0d807312cfd7dfa12e70565341a00e3c13333ef9b59ae2a33b8874ceaad",
+    "clients/web/tests/mentions_inbox/stale_navigation.browser.spec.ts": "fea94359c7af81f2074121a5c079f8ab9c2945001021891c1154d50eb881a916",
+    "clients/web/tests/mentions_inbox/mentions_inbox.browser.spec.ts": "eda0a5e2d710dcfe2adb5e05020f708bc3b7a72ba2b1a68e921082655fb1433d",
+    "clients/web/tests/mentions_inbox/workspace_fixture.html": "53c475e9cbcbb218fd098e8b09ac3db9bf1ff9811e02eb4447334f4afc929aa8",
+    "clients/web/tests/mentions_inbox/workspace_fixture.ts": "ffe5f6782d4004598b774577d705216b8c11a5996f50af646d34cf5ee827bae7",
+    "tools/qa/local_features/features.json": "77c2f1f3ca41fcf8cfd7ef59c8257e88f02998e2f3f16fa46a829802a48d4684",
+    "tools/qa/mentions_inbox/run.py": "9becff8519bcea9f38a5fb155e949505a7e5e519f2e849cb8d4b5519271f5cca",
+    "tools/qa/mentions_inbox/scenario.mjs": "c5204b441183b83b9788f95fda9f06e84469344af253b29985da7a095f59480d",
+    "tools/qa/mentions_inbox/README.md": "747e7cb6799a23dfb4fc61baafd2bcc794cd5e39260c132f0e675cdfd93cb6fa"
+  },
+  "deployment": "Owned loopback HTTPS Go API/PostgreSQL 17.6/Caddy; disposable synthetic single guild; no production mutation",
+  "scenarios": [
+    {
+      "issue": 264,
+      "width": 1440,
+      "checks": {
+        "recipient_metadata_only_cursor_no_duplicates": "PASS",
+        "author_and_third_inbox_isolation": "PASS",
+        "TEXT_DM_exact_origin_and_keyboard_activation": "PASS",
+        "rename_remove_delete_refresh_cursor": "PASS",
+        "stale_non_TEXT_rejected": "PASS",
+        "stale_archived_rejected": "PASS",
+        "stale_foreign_DM_rejected": "PASS",
+        "loading_error_refresh": "PASS",
+        "picker_arrows_Enter_Escape_controlled_composition": "PASS",
+        "same_page_logout_account_switch_no_old_data": "PASS",
+        "empty_inbox": "PASS"
+      },
+      "roles": [
+        "MEMBER",
+        "MEMBER",
+        "ADMIN"
+      ],
+      "mocks": false,
+      "controlled_faults": [
+        "held actual HTTP responses",
+        "owned API stop/restart",
+        "owned SQL stale-access fixtures"
+      ],
+      "third_admin_history_status": 404,
+      "stale_non_TEXT_history_status": 404,
+      "stale_foreign_DM_history_status": 404,
+      "status": "PASS",
+      "browser": "153.0.8010.12",
+      "candidate": "908705153348f2fb713eda0e3ef5d976fef2e863",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "error-metadata.png": "adfaf42cb784265ae7497469786f2ceba72a543ba9ae6b9388530ae83c5fde59",
+        "switched-admin-metadata.png": "bb985902001d9c2c77202a5170b5488f72d4bca3d7efd84c7bdbc01622f20bf3",
+        "recipient-metadata.png": "d7ffc1f71c9d902a1924a69a9b5a9a5523198a092dcfacd04dd3dbb5930ee693",
+        "empty-metadata.png": "7d0c0d3f9774cd7ab422a9d74e8291828c91fa4d662e344b386758871b80fe09",
+        "loading-metadata.png": "a97ba63ed9b59ac7aeb72479a41f2f951a9295eb9c4d7831f158fd493e3065dd",
+        "renamed-clean-paged-metadata.png": "f40ed5214bb82601f3de2d178eef21be9f6c16126e39570694dbba1d1f45049c"
+      }
+    },
+    {
+      "issue": 264,
+      "width": 393,
+      "checks": {
+        "recipient_metadata_only_cursor_no_duplicates": "PASS",
+        "author_and_third_inbox_isolation": "PASS",
+        "TEXT_DM_exact_origin_and_keyboard_activation": "PASS",
+        "rename_remove_delete_refresh_cursor": "PASS",
+        "stale_non_TEXT_rejected": "PASS",
+        "stale_archived_rejected": "PASS",
+        "stale_foreign_DM_rejected": "PASS",
+        "loading_error_refresh": "PASS",
+        "picker_arrows_Enter_Escape_controlled_composition": "PASS",
+        "same_page_logout_account_switch_no_old_data": "PASS",
+        "empty_inbox": "PASS"
+      },
+      "roles": [
+        "MEMBER",
+        "MEMBER",
+        "ADMIN"
+      ],
+      "mocks": false,
+      "controlled_faults": [
+        "held actual HTTP responses",
+        "owned API stop/restart",
+        "owned SQL stale-access fixtures"
+      ],
+      "third_admin_history_status": 404,
+      "stale_non_TEXT_history_status": 404,
+      "stale_foreign_DM_history_status": 404,
+      "status": "PASS",
+      "browser": "153.0.8010.12",
+      "candidate": "908705153348f2fb713eda0e3ef5d976fef2e863",
+      "owned_resources_removed": true,
+      "screenshots": {
+        "error-metadata.png": "1e6e85858fd45437c1e43e68186b2676ef2717eb7a9aac0674451b3d17c82a56",
+        "switched-admin-metadata.png": "062e135eb543b9b997b990a4250d60f966c95bb4e24a44cbf0e7e1c667122fef",
+        "recipient-metadata.png": "abef70bb012a0945493cbd9f817d609b02f26a05a581f9cd2fdc46c20207a901",
+        "empty-metadata.png": "f1cd1cf13d6765837c26448d499edb117beecc93a7901e8076ad9fcb74832d95",
+        "loading-metadata.png": "a21ba2375a009bf01b41b1cb58378d634c94a0c71f1c168dd8059a3fee3a5c3f",
+        "renamed-clean-paged-metadata.png": "61c42377b1581af8213ff0ee002ec880106956433ad2ce1c48e2d2293ed3b23d"
+      }
+    }
+  ],
+  "checklist": {
+    "1_metadata_only_TEXT_and_own_DM": "PASS: recipient sees 57 rows through 50+7 real cursor pages; exact five allowed API fields; body canary absent in API and rendered inbox",
+    "2_author_third_admin_scope": "PASS: author and third ADMIN each see only one separately addressed TEXT result; third ADMIN private DM history 404",
+    "3_rename_edit_delete_cursor": "PASS: author name updates; removed mention, deleted DM and deleted old-page TEXT disappear after refresh; 54 unique valid results remain",
+    "4_exact_and_stale_targets": "PASS: TEXT and own DM select exact message through history 200; cached stale VOICE/archived/foreign-DM targets do not navigate; former-access history 404",
+    "5_states_refresh_keyboard_composition": "PASS: painted loading/empty, actual owned API outage error and recovery, Tab/Enter result activation, @-picker arrows/Enter/Escape and controlled browser composition events",
+    "6_logout_account_switch": "PASS: actual previous-account response held while same page logs out and signs into another account; new inbox contains only its own addressed result, not old rows"
+  },
+  "defects_and_fixes": [
+    {
+      "before": "Cached navigation entries bypassed authoritative refresh when opening mention metadata",
+      "after": "Always refresh the relevant channel/DM list, reject failed refresh, recheck TEXT kind/membership and ignore superseded opens",
+      "test_first": "7 browser navigation tests failed before implementation; all 7 pass afterward; real stale SQL fixture also fails before and passes after"
+    },
+    {
+      "before": "Loading/empty <p> reused screen-reader-only search-status class and was clipped to 1px",
+      "after": "Conditional inbox status paragraphs use search-status--visible; status text is painted at desktop/mobile widths",
+      "test_first": "4 paint/bounds tests failed clip-path inset(50%) before implementation and pass after"
+    }
+  ],
+  "verification": {
+    "unit_tests": "1492 PASS / 467 files",
+    "focused_initial_unit_tests": "8 PASS / 4 files",
+    "mentions_browser_tests": "13 PASS (metadata/empty + 7 stale-navigation + 4 paint cases)",
+    "conversation_action_browser_tests": "17 PASS",
+    "command": "./tools/qa/local_features/check.sh --feature shell --feature chat --platform web --base origin/master --real-stack",
+    "run": ".out/local-features/20261012-165901",
+    "source": "81d344bbddbdbb29d3ce023f4ac113eacae68c09 diff-sha256=01e7355cede1ce18f6f865e1a575fe7ed1509f5e93965ffcdc60c41b29659dab",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "overall_report_status": "REVIEW_REQUIRED: broad auxiliary images not all reviewed; only #264 scoped visual acceptance is approved"
+  },
+  "visual_review": {
+    "status": "PASS_SCOPED",
+    "actual_cropped_app_images": 12,
+    "local_path": ".out/qa264-20261012/{1440,393}/",
+    "before_local_path": ".out/qa264-20261012/before-visible-states/",
+    "notes": [
+      "All 12 final captures inspected at source resolution: recipient metadata, renamed paged data, loading, error, switched ADMIN, empty",
+      "Loading and empty text now painted; author/time/fact labels fit on mobile and desktop; metadata cards never show message bodies",
+      "Synthetic role aliases only; no real names, user/DM IDs, cookies, tokens, authorization headers or attachment contents in evidence",
+      "Images stay ignored local artifacts; SHA256 receipts are published rather than generated media"
+    ]
+  },
+  "limits": [
+    "Web only: no native/physical/OS-notification acceptance claimed",
+    "Composition uses controlled actual browser events; this is not OS-level IME/device acceptance",
+    "55 old synthetic SQL rows force real cursor paging; primary messages/edit/delete/rename use actual authenticated REST",
+    "Adversarial owned SQL fixtures change channel kind/DM ownership after row capture; this is not a supported product mutation or a change to the two-person DM contract",
+    "Held HTTP replies preserve actual payloads; the server returns denied/not-found responses itself; no successful metadata/history payload is fabricated",
+    "Broader #42/#53/#54 and native release gates remain open"
+  ]
+}
