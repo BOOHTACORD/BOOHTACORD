@@ -63,8 +63,7 @@
   .mobile-voice-dock .voice-actions .voice-icon-button:first-child { background: transparent; }
   .mobile-voice-dock .voice-actions .voice-icon-button--danger { color: var(--gc-on-danger); background: var(--gc-danger-solid); }
   .mobile-voice-dock .status-dot, .mobile-voice-dock .voice-quality { display: none; }
-  .conversation-header .conversation-symbol,
-  .conversation-header .conversation-overflow { display: none; }
+  .conversation-header .conversation-symbol { display: none; }
   .conversation-header .header-action:not(.workspace-header-toggle) { display: grid; min-width: var(--gc-size-touch); min-height: var(--gc-size-touch); }
   .text-conversation .message-list > li[data-message-id] + li[data-message-id] { margin-top: 20px; }
   .text-conversation .message-list > li:has(.attachment-card) + li[data-message-id] { margin-top: 25px; }

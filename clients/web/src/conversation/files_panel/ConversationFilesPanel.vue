@@ -73,6 +73,6 @@ onMounted(() => title.value?.focus())
 .conversation-files header h3 { flex: 1; }
 .conversation-files table { width: 100%; border-collapse: collapse; }
 .conversation-files th, .conversation-files td { border-bottom: 1px solid var(--gc-border-subtle); padding: var(--gc-space-2); text-align: start; }
-.conversation-files th { color: var(--gc-text-muted); font-weight: var(--gc-weight-medium); }
+.conversation-files th { overflow-wrap: anywhere; color: var(--gc-text-muted); font-weight: var(--gc-weight-medium); }
 .conversation-files__name { overflow-wrap: anywhere; }
 </style>
