@@ -7,7 +7,7 @@
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/42",
       "status": "BLOCKED",
       "evidence": "evidence/qa/issue42-paired-runtime-2026-10-12.json",
-      "reason": "Native first-frame defect fixed, regression-tested and live Android-to-macOS rendering verified. Moving-timer/reopen/app-only/clean-stop and physical/browser acceptance remain open; Mac locked during follow-up."
+      "reason": "Native first frame, moving full-display timer, window resize and receiver reconnect PASS after the renderer fix. Sustained 15fps NOT_PASS (9.36fps/58s); app-only, normal stop, same published-master pair and physical/browser gates remain open."
     },
     {
       "number": 53,
@@ -15,7 +15,7 @@
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/53",
       "status": "BLOCKED",
       "evidence": "evidence/qa/issue53-privacy-runtime-2026-10-12.json",
-      "reason": "PostgreSQL DM/storage privacy 20 tests and 3 subtests PASS, no skips; real browser/OS notification and three-session acceptance blocked by locked Mac."
+      "reason": "PostgreSQL privacy 20 tests + 3 subtests PASS without skips. Two actual browser participants verified DM creation, live edit delivery and hidden-tab unread count. OS notifications, native delete confirmation, visible read cursor and third-party browser checks remain blocked/unverified."
     },
     {
       "number": 54,

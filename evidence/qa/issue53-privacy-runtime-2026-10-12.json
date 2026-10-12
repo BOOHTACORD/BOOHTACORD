@@ -9,7 +9,7 @@
     "T-044"
   ],
   "source_commit": "4dff4815a3c0414abed470da6f83f702cfe10e8a",
-  "recorded_at": "2026-10-12T07:48:16.340031+00:00",
+  "recorded_at": "2026-10-12T08:21:35.275213+00:00",
   "status": "BLOCKED",
   "production_mutations": false,
   "integration": {
@@ -189,7 +189,33 @@
     "trusted_browser_granted_and_denied_os_notification": "NOT_RUN: Mac locked; real permission and OS notification observation unavailable.",
     "generic_dm_preview_without_private_content": "NOT_RUN in trusted browser; source unit coverage from the preceding full Web run is not OS acceptance.",
     "cross_tab_dedup_logout_account_switch": "NOT_RUN in trusted browser",
-    "three_live_browser_sessions_http_ws_privacy": "NOT_RUN on this candidate; PostgreSQL integration acceptance above does not replace real browser/WebSocket checks."
+    "three_live_browser_sessions_http_ws_privacy": "PARTIAL: two real browser participants verified create/edit/unread; third-party browser session remains NOT_RUN."
   },
-  "gate_closed": false
+  "gate_closed": false,
+  "browser_candidate": {
+    "commit": "658692ab779219785c06facae44a40dfd7268a45",
+    "web_source_tree": "7cf7c82be295f71ee49b91414e38aa600e75bff3",
+    "backend_source_tree": "2d6e5977ab812db05bce599fea4aa654ba762507",
+    "origin": "http://localhost:4876",
+    "isolation": "Owned loopback-only Caddy/Go/PostgreSQL; independent of paired media QA; no production data. Browser uses its localhost secure-context exception; this does not verify production TLS. Secure cookie flags and server Origin middleware unchanged.",
+    "bundles": [
+      {
+        "path": "clients/web/dist/assets/index-C0XZOIGn.js",
+        "sha256": "08432855e1ed11499cb5456a659c54b1029a17a898e4c0f1364a12d63e33a38b"
+      },
+      {
+        "path": "clients/web/dist/assets/index-CH0eV7ng.css",
+        "sha256": "71a3edf7c4ff86aef7d8f456fcf708f1171dbe44a38ddaf23d8d082fdb9b05d2"
+      }
+    ]
+  },
+  "browser_observations": {
+    "real_independent_sessions": "PASS: MEMBER sender in Codex in-app browser, MEMBER recipient in Chrome; public registration/login and actual session-backed UI.",
+    "create_delivery_and_hidden_unread": "PASS: recipient title and DM navigation showed unread count 1 without reload; actual message visible at both participants. Message body omitted from logs/evidence.",
+    "edit_delivery": "PASS: edited body appeared at both participants, original body no longer present at recipient, title remained unread 1; no reload.",
+    "visible_read_cursor": "NOT_RUN: recipient tab remained hidden; opening the DM while hidden did not clear its unread count.",
+    "delete_delivery": "BLOCKED: author delete command opened native confirmation; browser dialog API did not expose it, and Mac locked before confirmation could be handled. No deletion PASS claimed.",
+    "notifications_available": "PASS for UI capability: recipient settings offered Enable notifications and reported notifications off. No permission granted.",
+    "os_notification_granted_denied_dedup_logout": "NOT_RUN: real OS observation requires unlocked Mac and requested notification permission."
+  }
 }

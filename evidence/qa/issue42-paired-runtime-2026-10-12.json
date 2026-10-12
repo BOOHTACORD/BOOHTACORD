@@ -3,7 +3,7 @@
   "issue": 42,
   "url": "https://github.com/Egkurilov/BOOHTACORD/issues/42",
   "leaf_task": "FV2-006",
-  "recorded_at": "2026-10-12T07:43:33.967595+00:00",
+  "recorded_at": "2026-10-12T08:12:03.791543+00:00",
   "status": "BLOCKED",
   "source_base": "d6f9ce7413bd05462d4c54dc3b1e348b5e1160f5",
   "production_mutations": false,
@@ -115,19 +115,39 @@
     },
     {
       "path": ".out/local-pair-20261012-retry/receiver-native-samples.jsonl",
-      "sha256": "ed833251b3d52f5cc73278420cf01f59e131b1106d0ede91b1f9c5677ca2ee9a",
-      "snapshot_at": "2026-10-12T07:43:33.967595+00:00"
+      "sha256": "9f744d134d087c52e70dcd7fb115413429d6540f7cb7e208976328b651e314a6",
+      "snapshot_at": "2026-10-12T07:57:01Z"
     },
     {
       "path": ".out/local-pair-20261012-retry/source/index.html",
       "sha256": "651f442b17efb20068ee6953d92ddc7d3aa3fb05a18b7498110f37b1174c0588",
       "snapshot_at": "2026-10-12T07:43:33.967595+00:00"
+    },
+    {
+      "path": ".out/local-pair-20261012-retry/fixed-motion-a.png",
+      "sha256": "6b958873cef649010db76aec58b919341f2ed06201688bb5b862c3d888961bed"
+    },
+    {
+      "path": ".out/local-pair-20261012-retry/source-motion-a.png",
+      "sha256": "855569b5183c988ae9c307cdbdfe95ae1528eab7533ff81f34ac55503d10c42b"
+    },
+    {
+      "path": ".out/local-pair-20261012-retry/fixed-motion-b.png",
+      "sha256": "4ac88c72b3c18a1034c156ba9f56357fc2a5282ad7189ac196e2046650746e83"
+    },
+    {
+      "path": ".out/local-pair-20261012-retry/fixed-motion-resized.png",
+      "sha256": "9862e1e7ac1091fd5c45ffb0dcc98092309599a52dcb8e65c4ab42f1ebacb59a"
+    },
+    {
+      "path": ".out/local-pair-20261012-retry/fixed-reconnect.png",
+      "sha256": "93a86382a15fe6e68775c3f9e21e72cc8fa2fc3b32d6a5489688c075fd3b0f8b"
     }
   ],
   "remaining": {
-    "fixed_paired_media_runtime": "PARTIAL PASS: native first frame and advancing decode counters verified; moving timer, repeated reopen and clean stop still need visual acceptance.",
+    "fixed_paired_media_runtime": "PARTIAL PASS: moving timer, full portrait, resize and receiver reconnect verified; app-only and normal-stop acceptance pending.",
     "same_master_sha_complete_pair": "NOT_RUN",
-    "moving_timer_and_sustained_15fps": "NOT_PASS: timer visual comparison pending; sampled decoding averaged about 10fps under 720p15.",
+    "moving_timer_and_sustained_15fps": "Moving timer PASS; sustained 15fps NOT_PASS, observed mean 9.36 decoded FPS over 58 seconds.",
     "app_only_capture": "NOT_RUN",
     "normal_stop_viewer_removal_and_media_projection_release": "NOT_RUN",
     "physical_pixel_repeat": "NOT_RUN",
@@ -151,6 +171,25 @@
     "rendered_frame_counter": "Unavailable from native receiver stats; no numeric rendered-frame claim",
     "selected_profile": "720p15; observed mean does not demonstrate 15fps acceptance",
     "initial_attempt_isolation": "Unintended receiver-side publication stopped before the Android-only viewing interval; contaminated initial interval excluded",
-    "visual_followup": "BLOCKED: Mac locked again before confirming the moving HTML timer, viewer reopen, app-only and normal stop."
+    "visual_followup": "PASS for full-display moving timer, uncropped portrait, window resize and receiver leave/rejoin/reselect; normal stop and app-only capture pending.",
+    "motion_comparison": {
+      "receiver_timer": "16:40.007",
+      "receiver_fixture_frame": 21618,
+      "source_timer": "16:40.091",
+      "source_fixture_frame": 21620,
+      "observation": "Sequential source/receiver screenshots; complete portrait, advancing timer and moving blue bar visible. The two readings do not establish end-to-end latency."
+    },
+    "receiver_reconnect": "PASS: actual UI leave voice, join listener-only, select remote screen; live timer appeared without first-frame overlay; observer reset decoded count and recorded subscribed=true, first_frame_rendered=true.",
+    "moving_frame_cadence": {
+      "from_utc": "2026-10-12T07:54:01.069649Z",
+      "to_utc": "2026-10-12T07:54:59.069679Z",
+      "seconds": 58.00003,
+      "decoded_frames_delta": 543,
+      "mean_decoded_fps": 9.362064123070281,
+      "reported_loss": 0.0,
+      "selected_profile": "720p15",
+      "status": "NOT_PASS for sustained 15fps"
+    },
+    "visual_followup_interruption": "Mac locked again after successful motion/resize/reconnect verification, before normal Android stop/app-only acceptance."
   }
 }
