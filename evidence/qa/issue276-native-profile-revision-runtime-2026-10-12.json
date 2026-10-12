@@ -1,0 +1,588 @@
+{
+  "issue": 276,
+  "status": "PASS",
+  "close_issue": true,
+  "date": "2026-10-12",
+  "tested_master_sha": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+  "leaf": "T-010",
+  "dependencies": [
+    "T-003"
+  ],
+  "release_targets_in_scope": [
+    "Android",
+    "iOS"
+  ],
+  "app_version": "1.0.38+71",
+  "flutter": "3.47.6",
+  "dart": "3.13.5",
+  "build_mode": "Debug integration_test on real production widgets",
+  "deployment": "Owned loopback HTTPS Go API, PostgreSQL17.6, Caddy, synthetic single guild",
+  "scenarios": [
+    {
+      "issue": 276,
+      "status": "PASS",
+      "platform": "android",
+      "os": "sdk_phone64_arm64-userdebug 15 AE3A.240806.019 12368160 test-keys",
+      "build_mode": "Debug",
+      "roles": [
+        "MEMBER",
+        "MEMBER",
+        "ADMIN"
+      ],
+      "mocks": false,
+      "controlled_fault": "hold actual finite HTTP responses, leave streaming transports unchanged",
+      "checks": {
+        "remote_peer_name_roster_open_DM": "PASS",
+        "own_editor_and_out_of_order_me": "PASS",
+        "out_of_order_member_highest_revision": "PASS",
+        "remote_avatar_upload_replace_clear_and_render": "PASS",
+        "authenticated_same_origin_revision_avatar_route": "PASS",
+        "logout_account_switch_lower_revision_and_avatar_fence": "PASS",
+        "avatar_denied_without_active_membership": "PASS"
+      },
+      "avatar_probe": {
+        "matching_avatar_widgets": 1,
+        "image_provider_types": [
+          "MemoryImage"
+        ]
+      },
+      "avatar_acl_statuses": {
+        "active_member": 200,
+        "blocked_member": 401,
+        "anonymous": 401
+      },
+      "timeline": [
+        {
+          "route": "members_page",
+          "status": 200,
+          "at_ms": 3722,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 2,
+          "at_ms": 3863,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 3,
+          "at_ms": 5842,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 2,
+          "at_ms": 6987,
+          "held": true
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 3,
+          "at_ms": 7247,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 3,
+          "at_ms": 7253,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "released_at_ms": 7524,
+          "profile_revision": 2
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 3,
+          "at_ms": 8228,
+          "held": true
+        },
+        {
+          "route": "members_page",
+          "status": 200,
+          "at_ms": 8468,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "released_at_ms": 8507,
+          "profile_revision": 3
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 5,
+          "at_ms": 9899,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "status": 200,
+          "revision_query_present": true,
+          "at_ms": 10067,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 6,
+          "at_ms": 10908,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "status": 200,
+          "revision_query_present": true,
+          "at_ms": 11062,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 7,
+          "at_ms": 11796,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 8,
+          "at_ms": 13201,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 5,
+          "at_ms": 13208,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 6,
+          "at_ms": 13222,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 6,
+          "at_ms": 13222,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 7,
+          "at_ms": 13226,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 8,
+          "at_ms": 13236,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 9,
+          "at_ms": 13242,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 9,
+          "at_ms": 13253,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 10,
+          "at_ms": 13260,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 10,
+          "at_ms": 13266,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "status": 200,
+          "revision_query_present": true,
+          "at_ms": 13486,
+          "held": true
+        },
+        {
+          "route": "members_page",
+          "status": 200,
+          "at_ms": 15067,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 8,
+          "at_ms": 15086,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "status": 200,
+          "revision_query_present": true,
+          "at_ms": 15722,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "status": 200,
+          "revision_query_present": true,
+          "at_ms": 16158,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "released_at_ms": 16260,
+          "profile_revision": null
+        }
+      ],
+      "candidate": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+      "owned_resources_removed": true,
+      "physical_device": false,
+      "screenshots": {
+        "peer-renamed-open-dm.png": "5008bd0df899df9556149293dbf19a037c03a52f3bd29d26cb786764d93712a0",
+        "peer-avatar-uploaded-roster.png": "4b40de7ac187fbeb3c51e9322f6e2da45eb3bd8232e2ad9373d8b92660f003ce",
+        "peer-avatar-replaced-roster.png": "b2703568f48d5f23cf76c0b3cdd9bd6dfc470dfa2d855dca0dba1df30870d2f8",
+        "own-editor-newer-me-retained.png": "194610aee9b0c5e6035bf3516bb813add41020175879cd5a63f7fb6697e5e27f",
+        "peer-avatar-cleared-roster.png": "e8e5f1736436d6a818daa8af9ba2bd170416adb956e5aec23430ebeb23d8b2ea",
+        "new-account-profile-no-old-state.png": "132f36ac13dc4712c9680d7df50266068d719b2dbd7615636b5d666d4fa89b2c",
+        "logout-cleared.png": "86983c86e0f867ab23e717dea834482a3cc016462852e74e27fc9b0f5d33e6d1"
+      },
+      "capture_pixels": [
+        1080,
+        2400
+      ]
+    },
+    {
+      "issue": 276,
+      "status": "PASS",
+      "platform": "ios",
+      "os": "Version 27.0 (Build 24A434)",
+      "build_mode": "Debug",
+      "roles": [
+        "MEMBER",
+        "MEMBER",
+        "ADMIN"
+      ],
+      "mocks": false,
+      "controlled_fault": "hold actual finite HTTP responses, leave streaming transports unchanged",
+      "checks": {
+        "remote_peer_name_roster_open_DM": "PASS",
+        "own_editor_and_out_of_order_me": "PASS",
+        "out_of_order_member_highest_revision": "PASS",
+        "remote_avatar_upload_replace_clear_and_render": "PASS",
+        "authenticated_same_origin_revision_avatar_route": "PASS",
+        "logout_account_switch_lower_revision_and_avatar_fence": "PASS",
+        "avatar_denied_without_active_membership": "PASS"
+      },
+      "avatar_probe": {
+        "matching_avatar_widgets": 1,
+        "image_provider_types": [
+          "MemoryImage"
+        ]
+      },
+      "avatar_acl_statuses": {
+        "active_member": 200,
+        "blocked_member": 401,
+        "anonymous": 401
+      },
+      "timeline": [
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 2,
+          "at_ms": 1698,
+          "held": false
+        },
+        {
+          "route": "members_page",
+          "status": 200,
+          "at_ms": 1701,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 3,
+          "at_ms": 2799,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 2,
+          "at_ms": 3843,
+          "held": true
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 3,
+          "at_ms": 4073,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 3,
+          "at_ms": 4077,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "released_at_ms": 4323,
+          "profile_revision": 2
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 3,
+          "at_ms": 4970,
+          "held": true
+        },
+        {
+          "route": "members_page",
+          "status": 200,
+          "at_ms": 5208,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "released_at_ms": 5230,
+          "profile_revision": 3
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 5,
+          "at_ms": 6552,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "status": 200,
+          "revision_query_present": true,
+          "at_ms": 6694,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 6,
+          "at_ms": 7475,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "status": 200,
+          "revision_query_present": true,
+          "at_ms": 7607,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 7,
+          "at_ms": 8284,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 8,
+          "at_ms": 9663,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 5,
+          "at_ms": 9667,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 6,
+          "at_ms": 9672,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 6,
+          "at_ms": 9672,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 7,
+          "at_ms": 9677,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 8,
+          "at_ms": 9680,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 9,
+          "at_ms": 9687,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 9,
+          "at_ms": 9691,
+          "held": false
+        },
+        {
+          "route": "member_profile",
+          "status": 200,
+          "profile_revision": 10,
+          "at_ms": 9695,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 10,
+          "at_ms": 9699,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "status": 200,
+          "revision_query_present": true,
+          "at_ms": 9934,
+          "held": true
+        },
+        {
+          "route": "members_page",
+          "status": 200,
+          "at_ms": 11261,
+          "held": false
+        },
+        {
+          "route": "own_profile",
+          "status": 200,
+          "profile_revision": 8,
+          "at_ms": 11267,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "status": 200,
+          "revision_query_present": true,
+          "at_ms": 11351,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "status": 200,
+          "revision_query_present": true,
+          "at_ms": 12079,
+          "held": false
+        },
+        {
+          "route": "protected_avatar",
+          "released_at_ms": 12185,
+          "profile_revision": null
+        }
+      ],
+      "candidate": "76782c999f8dff9db599ffc9c0cea05620c4f536",
+      "owned_resources_removed": true,
+      "physical_device": false,
+      "screenshots": {
+        "peer-renamed-open-dm.png": "7aa1c9fce2ad3071dfb70d46a17875ff6687cba79ace465048e5d1a9c710f30b",
+        "peer-avatar-uploaded-roster.png": "8f6b116090e201761f266284398a9f3ce00db4b4e3bf6f352596e180f7dad202",
+        "peer-avatar-replaced-roster.png": "b342883bb8614837c5a16b73f84547fe93ac4e8cd07384ea2d720c19a7848c86",
+        "own-editor-newer-me-retained.png": "a0973ac21fbf2f8bee20541af50550b4265e190daf284cb8b8ea86ba2cc6c51a",
+        "peer-avatar-cleared-roster.png": "02c164310fc0b17200be5888a26d08021fa3aae93976ce45d4c6873662196b95",
+        "new-account-profile-no-old-state.png": "70697e8abf96f3da96285e95ba9e43c3bddf3f2de4eeecd3ac5cb204c305d7fd",
+        "logout-cleared.png": "eec4971fc774ec31a36add2040df7bdadcb2d6585cd6a0f2c94492c0f5342f30"
+      },
+      "capture_pixels": [
+        1206,
+        2622
+      ]
+    }
+  ],
+  "checklist": {
+    "exact_source_platform_build_roles": "PASS: exact SHA and platform/OS/build recorded; two MEMBER sessions and ADMIN",
+    "remote_rename_avatar_and_live_UI": "PASS: peer rename updates roster and open DM; own editor refreshes; peer upload/replace/clear renders canonical decoded image without restart",
+    "out_of_order_me_and_member": "PASS: actual earlier HTTP replies released after higher server revisions, no rollback",
+    "logout_and_account_switch": "PASS: own revision/member/DM state cleared; lower revision for new account accepted; delayed previous-session avatar rejected",
+    "avatar_route_and_membership_ACL": "PASS: actual authenticated same-origin revision query; active MEMBER200, blocked MEMBER401, anonymous401",
+    "platform_matrix": "PASS: Android15 API35 ARM64 and iOS27.0 Simulator, both in current scope"
+  },
+  "source_manifest": {
+    "clients/flutter/integration_test/profile_revision/fixture.dart": "7311887e1a3f7d3e153306992ac50d8565b5363e366d82b980949f30a011ea19",
+    "clients/flutter/integration_test/profile_revision/delayed_client.dart": "a6fede0488f74fc48f65b8cc75edf68eb5c672674dd710246913487bb3184ac1",
+    "clients/flutter/integration_test/profile_revision_qa_test.dart": "20877e187673a7cb0f44ed4a12140f3a3c7c5d5a2b481383a6f2545b926a9dc2",
+    "clients/flutter/test_driver/profile_revision_qa.dart": "ddd69f9de74a9969a182536160e1ed90d5c7ebb1b38647a168569d4b8598a172",
+    "tools/qa/profile_revision/run.py": "7c7b3157a1204e88828df818c8140d1338b1b7d87c95ab88bec9296c927cf544",
+    "tools/qa/profile_revision/README.md": "aa797b149b166486fd337da69875b11ceebedde596490268629a6a4ba7a843c8"
+  },
+  "nearest_tests": {
+    "command": "flutter test --no-pub test/profile_revision test/avatar_api_test.dart test/avatar_image_test.dart test/profile_screen_test.dart test/workspace_state/member_list_revision_test.dart test/workspace_state/member_profile_refresh_test.dart test/workspace_state/member_profile_event_test.dart",
+    "count": 47,
+    "status": "PASS"
+  },
+  "analysis": "PASS: no issues found for integration helpers, scenario and driver",
+  "visual_review": {
+    "status": "PASS_SCOPED",
+    "images_inspected": 14,
+    "paths": ".out/qa276-20261012/{android,ios}",
+    "notes": [
+      "Renamed DM header and current profile editor name visible; no overflow in tested profile fields.",
+      "Actual native roster shows green upload, blue replacement, then initial fallback after clear. RawImage decoded pixels also match canonical protected response; bytes stay in memory.",
+      "New account shows its own name/avatar, signed-out view clears account fields.",
+      "All 14 final images inspected at source resolution; screenshot binaries remain ignored local artifacts. Synthetic aliases only; no message contents or private identifiers."
+    ]
+  },
+  "harness_corrections": [
+    "Login expects actual HTTP204.",
+    "Preserve integration screenshot metadata when attaching safe report.",
+    "Scroll lazy native roster before inspecting peer; Android peer was initially visible while iOS peer could be offscreen.",
+    "Wait for actual decoded RawImage and real frame before capture: provider changed before iOS gapless image rendered; intermediate replacement capture duplicated old color. Final captures and decoded-pixel checks pass."
+  ],
+  "app_behavior_changes": false,
+  "limits": [
+    "Physical audio, notifications, readers and OS IME are outside this profile metadata gate.",
+    "Native Flutter uses authenticated image bytes rather than browser object URLs; session-fence rejection and cleared native state establish equivalent current-account cleanup.",
+    "Delayed replies contain actual status/headers/body; streaming transports untouched. No successful response fabricated.",
+    "No credentials/cookies/member IDs/avatar bytes in published evidence."
+  ]
+}

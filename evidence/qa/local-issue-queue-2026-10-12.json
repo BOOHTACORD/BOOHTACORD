@@ -199,7 +199,9 @@
       "number": 276,
       "title": "[QA] Проверить Flutter актуализацию имени и аватара (#65)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/276",
-      "status": "NOT_RUN"
+      "status": "PASS",
+      "evidence": "evidence/qa/issue276-native-profile-revision-runtime-2026-10-12.json",
+      "reason": "Android+iOS actual runtime PASS; all profile ordering, avatar ACL and account boundaries; 14 final captures reviewed."
     },
     {
       "number": 278,
@@ -298,22 +300,64 @@
       "status": "NOT_RUN"
     }
   ],
-  "ordering": "Within each selected batch, run one browser case at a time; independent PostgreSQL measurement may run while browser cases are prepared. Hardware-dependent older gates remain explicitly open.",
+  "ordering": "User-authorized parallel batch: root #276, agent #278, agent #283, one macOS agent #257/#259. Four concurrent agent slots. Dedicated Android AVDs 5554/5556/5558; isolated servers and build directories. Native builds scheduled to avoid memory exhaustion.",
   "source": "https://github.com/Egkurilov/BOOHTACORD/issues",
   "closure_policy": "Only applicable runtime evidence can close a case; emulator/unit PASS does not establish physical-device or load acceptance.",
   "active_batch": [
-    276
+    278,
+    283,
+    257,
+    259
   ],
   "completed_batch": [
     251,
     254,
-    258
-  ],
-  "selected_batch": [
+    258,
     264,
     276
   ],
+  "selected_batch": [
+    276,
+    278,
+    283,
+    257,
+    259
+  ],
   "current_batch_completed": [
-    264
-  ]
+    264,
+    276
+  ],
+  "workers": {
+    "profile_revision": {
+      "issues": [
+        276
+      ],
+      "https": 4810,
+      "android": "BOOHTACORD_QA_API35",
+      "ios": "BOOHTACORD QA iPhone"
+    },
+    "guild_identity": {
+      "issues": [
+        278
+      ],
+      "https": 4840,
+      "android": "BOOHTACORD_QA_278_API35",
+      "ios": "BOOHTACORD QA278 iPhone"
+    },
+    "quickjump": {
+      "issues": [
+        283
+      ],
+      "https": 4830,
+      "android": "BOOHTACORD_QA_283_API35"
+    },
+    "macos_audio": {
+      "issues": [
+        257,
+        259
+      ],
+      "https": 4850,
+      "device": "physical macOS built-in input/output"
+    }
+  }
 }
