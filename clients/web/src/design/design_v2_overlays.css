@@ -18,6 +18,9 @@
 .topology-dialog > header button:hover { background: var(--gc-surface-hover); }
 .topology-dialog-note { margin: 0; color: var(--gc-text-muted); font-size: var(--gc-text-caption); line-height: var(--gc-line-caption); }
 .admin-confirm-dialog { width: min(var(--gc-layout-dialog), calc(100vw - 32px)); height: 287px; max-width: none; box-sizing: border-box; border-color: var(--gc-border-subtle); border-radius: var(--gc-radius-lg); background: var(--gc-surface-raised); }
+.admin-confirm-dialog[open] { max-height: calc(100dvh - 32px); }
+.admin-confirm-dialog > h3, .admin-confirm-dialog .admin-confirm-actions { flex-shrink: 0; }
+.admin-confirm-dialog > p { min-height: 0; overflow-y: auto; overflow-wrap: anywhere; }
 .admin-confirm-dialog .admin-confirm-actions button:last-child { border-color: var(--gc-danger); color: var(--gc-on-danger); background: var(--gc-danger-solid); }
 .search-aside { width: 380px; border-color: var(--gc-border-subtle); background: var(--gc-sidebar); }
 .search-panel-heading h1 { font-size: var(--gc-text-section); line-height: var(--gc-line-section); }

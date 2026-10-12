@@ -142,6 +142,7 @@ class _TopologyCreateDialogState extends State<_TopologyCreateDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButtonFormField<String>(
+              isExpanded: true,
               initialValue: kind,
               decoration: const InputDecoration(labelText: 'Тип'),
               items: [
@@ -166,6 +167,7 @@ class _TopologyCreateDialogState extends State<_TopologyCreateDialog> {
             ),
             if (kind != 'CATEGORY')
               DropdownButtonFormField<String>(
+                isExpanded: true,
                 initialValue: categoryId,
                 decoration: const InputDecoration(labelText: 'Раздел'),
                 items: [
@@ -192,6 +194,7 @@ class _TopologyCreateDialogState extends State<_TopologyCreateDialog> {
               decoration: InputDecoration(
                 labelText: 'Имя',
                 errorText: nameError,
+                errorMaxLines: 12,
               ),
               onChanged: (_) => changed(),
               onSubmitted: (_) => submit(),

@@ -1,0 +1,2261 @@
+{
+  "schema_version": 1,
+  "issue": 302,
+  "date": "2026-10-12",
+  "status": "PARTIAL",
+  "close_issue": false,
+  "candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+  "leaf": "FV2-006",
+  "dependencies": [
+    "FV2-002",
+    "FV2-003",
+    "FV2-004",
+    "FV2-005"
+  ],
+  "source_manifests": {
+    "flutter_lib_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+    "web_src_sha256": "fded6387d1e6f271524ab20d123bb55ac817af064e86b0e786ab243634846f6d",
+    "scope": "Initial baseline manifests; latest frozen builds are identified per check below."
+  },
+  "checks": [
+    {
+      "name": "visual_matrix_unit",
+      "status": "PASS",
+      "count": 13,
+      "receipt": ".out/qa302-20261012/visual-matrix.log",
+      "sha256": "890a5492b15c4ac22c11120595b4b0a917aca067e87c542eded0fcc59e49d888"
+    },
+    {
+      "name": "catalog_diff_baseline_guards",
+      "status": "PASS",
+      "count": 10
+    },
+    {
+      "name": "fresh_capture_destination_guards",
+      "status": "PASS",
+      "count": 13,
+      "scope": "Existing viewport/catalog tests and new output overwrite/escape protections; first RED missingmodule then GREEN."
+    },
+    {
+      "name": "source_archive",
+      "status": "NOT_RUN",
+      "reason": "Pinned ZIP absent in owned checkout, original checkout, Downloads, Documents and private tmp. Catalog structure verified; archive bytes/hash/dimensions not verified."
+    },
+    {
+      "name": "web_build",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/web-build-with-origin.log",
+      "sha256": "8fe26ad7c77ac3a48fdedf740783b6c992a2eeb66c4937e6b73067ab384562e6",
+      "initial_attempt": "FAIL_CONFIG: VITE_PUBLIC_ORIGIN missing; initial log preserved."
+    },
+    {
+      "name": "flutter_component_captures",
+      "status": "PASS",
+      "count": 7,
+      "receipt": ".out/qa302-20261012/flutter-captures.log",
+      "sha256": "2bf96fc8655ceb0eb6989d288fcb010a24afb0da9706e52b64f794545e988bd9",
+      "screenshots": 27
+    },
+    {
+      "name": "actual_full_app_1440",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/full-app/1440/report.json",
+      "sha256": "53b0ff71ce4b11cffc1f204389a12ad544463e17184a54336e489baf2c81b038",
+      "telemetry": {
+        "status": "PASS",
+        "actual_tempo": true,
+        "register_parent_welcome_child": true,
+        "identity_matches_database": true,
+        "sensitive_content_absent": true,
+        "bounded_metrics": true
+      },
+      "persisted_after_restart": true,
+      "owned_resources_removed": true,
+      "elapsed_seconds": 73.09,
+      "source_revision": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+      "mocks": false,
+      "capture_count": 33
+    },
+    {
+      "name": "actual_full_app_393",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/full-app/393/report.json",
+      "sha256": "faadd76591e7b42be6f4a44a48f62daf24a1e53d54f37a48f614deb9f295025f",
+      "telemetry": {
+        "status": "PASS",
+        "actual_tempo": true,
+        "register_parent_welcome_child": true,
+        "identity_matches_database": true,
+        "sensitive_content_absent": true,
+        "bounded_metrics": true
+      },
+      "persisted_after_restart": true,
+      "owned_resources_removed": true,
+      "elapsed_seconds": 73.48,
+      "source_revision": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+      "mocks": false,
+      "capture_count": 34
+    },
+    {
+      "name": "responsive_chromium_host",
+      "status": "PASS",
+      "count": 11,
+      "viewports": 12,
+      "scope": "Production shell CSS and synthetic fixture; host macOS. Other browser failures retained in mixed attempt receipt.",
+      "receipt": ".out/qa302-20261012/responsive-results.json",
+      "sha256": "5d0bc076a7e777a6b3ec6ea810285dcb3a3478559ba6396f2713e81a94b7703e"
+    },
+    {
+      "name": "responsive_webkit_host",
+      "status": "PASS",
+      "count": 11,
+      "viewports": 12,
+      "scope": "Production shell CSS and synthetic fixture; host macOS. Other browser failures retained in mixed attempt receipt.",
+      "receipt": ".out/qa302-20261012/responsive-ready-results.json",
+      "sha256": "216ca53492c8121e8bc068db65c438f74008ccf81a3b30f239c14abdd57af819"
+    },
+    {
+      "name": "responsive_firefox_host",
+      "status": "BLOCKED_RUNTIME",
+      "reason": "Installed arm64 browser exits before page with profile-folder error; bounded clean TMPDIR smoke also fails. Similar official upstream issue exists, local cause unproven.",
+      "receipt": ".out/qa302-20261012/firefox-profile-smoke.log",
+      "upstream": "https://github.com/microsoft/playwright/issues/42768"
+    },
+    {
+      "name": "responsive_firefox_linux",
+      "status": "PASS",
+      "count": 11,
+      "viewports": 12,
+      "receipt": ".out/qa302-20261012/linux-firefox/retry-results.json",
+      "sha256": "a55d4bc847199a2d6f4b833a41776b8a155fe50e54ca67b11b65881c39e9f81b",
+      "runtime": "Official Playwright v1.63.0-noble arm64 Linux container",
+      "image_digest": "sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "scope": "Production responsive shell fixture; Linux browser result is separate from blocked macOS Firefox runtime.",
+      "initial_attempt": "10 PASS, 1 FAIL_HARNESS: screen-share profile contract absent from isolated copy; restored exact tracked contract, fresh retry receipt retained."
+    },
+    {
+      "name": "web_unit_candidate",
+      "status": "PASS",
+      "count": 1493,
+      "receipt": ".out/qa302-20261012/web-unit-candidate.log",
+      "scope": "Current candidate unit suite; browser regressions and final build checked separately after source freeze."
+    },
+    {
+      "name": "actual_full_app_after_admin_history_fixes_1440",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/final-full-app/1440/report.json",
+      "sha256": "61a6b75d7a7e38c0888d7554a4926c99dfe60dcf8140b9c0d91e4793b37a7fcc",
+      "web_src_manifest_sha256": "dad615ee7f238c8ab7bc2655a070736246f695763f756aec518260546a5ff977",
+      "scope": "Five Vue/CSS fixes included; later discovered #294 search-session fix is outside this measured candidate.",
+      "capture_count": 33,
+      "telemetry": {
+        "status": "PASS",
+        "actual_tempo": true,
+        "register_parent_welcome_child": true,
+        "identity_matches_database": true,
+        "sensitive_content_absent": true,
+        "bounded_metrics": true
+      },
+      "persisted_after_restart": true,
+      "owned_resources_removed": true
+    },
+    {
+      "name": "actual_full_app_after_admin_history_fixes_393",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/final-full-app/393/report.json",
+      "sha256": "7bbc1d65e3cdcefd5beb1ab95071a28ca2c461101ab67f4d5d3bcdddc394172c",
+      "web_src_manifest_sha256": "dad615ee7f238c8ab7bc2655a070736246f695763f756aec518260546a5ff977",
+      "scope": "Five Vue/CSS fixes included; later discovered #294 search-session fix is outside this measured candidate.",
+      "capture_count": 34,
+      "telemetry": {
+        "status": "PASS",
+        "actual_tempo": true,
+        "register_parent_welcome_child": true,
+        "identity_matches_database": true,
+        "sensitive_content_absent": true,
+        "bounded_metrics": true
+      },
+      "persisted_after_restart": true,
+      "owned_resources_removed": true
+    },
+    {
+      "name": "accessibility_after_admin_history_fixes",
+      "status": "PASS",
+      "count": 67,
+      "receipt": ".out/qa302-20261012/accessibility-final-results.json",
+      "sha256": "9574a10f9126f411c95bcd0be4f5caf0a5bc2b029597679db8081c73718b538d",
+      "web_src_manifest_sha256": "dad615ee7f238c8ab7bc2655a070736246f695763f756aec518260546a5ff977",
+      "scope": "Automated axe/keyboard/component checks; not spoken reader acceptance."
+    },
+    {
+      "name": "web_full_unit_after_search_and_text_scale",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/final-web-unit.log",
+      "sha256": "ae4ec89ee6d59cd3e7d1ca62024d264029975ebfade6e67f0c23898ca96123f2",
+      "count": 1496
+    },
+    {
+      "name": "web_frozen_production_build",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/build-before-participant-role-source.json",
+      "sha256": "c2aa9b4fb38df2cadb703f94ab6f15bc0dbee60d29cc19ee89a94e3ac3966852",
+      "base_commit": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+      "web_src_manifest_sha256": "0856177cf91b823f1f44ebc606be53a7f5da526911db5878cdd80a8a2a130870",
+      "web_src_files": 1098,
+      "built_dist_manifest_sha256": "8968a9af57b2d3cccf20cb212b1db1ef83800a61237c50085ba79907bdf1beaf",
+      "origin": "https://localhost:4810",
+      "source_stable_during_unit_and_build": true,
+      "scope": "Binary built from frozen working-tree source; base commit plus fixes."
+    },
+    {
+      "name": "flutter_full_suite_after_admin_session_fix",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/final-flutter-unit.log",
+      "sha256": "e504441c805faa5759588bc006034d444c1a793a1ce81cea3424f825b10494b6",
+      "count": 1169,
+      "skipped": 1,
+      "flutter_lib_sha256": "01aeceac5e4de962502c70480aacf2f4a3a0cd387afcee5858a498f461c49d35",
+      "scope": "Before later native accessibility header/footer height fix; runtime 2x overflow remains under #301."
+    },
+    {
+      "name": "accessibility_after_search_owner_text_scale",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/accessibility-complete-results.json",
+      "sha256": "7d97f7172ab0e10513ac6370c6f2c905fbc04962a596ab7dab135777667b52e2",
+      "count": 69,
+      "scope": "Before connected-voice participant role fix; automated fixture coverage only."
+    },
+    {
+      "name": "web_unit_with_voice_status_role",
+      "status": "PASS",
+      "count": 1496,
+      "receipt": ".out/qa302-20261012/release-web-unit.log",
+      "sha256": "08d4a73a3cbc845260043c752adb0a2a22464503eaed229417b9cbaa8423a1f4",
+      "scope": "Measured candidate before later discovered closed-drawer connected-voice 2x composer overlap; no physical/golden claim."
+    },
+    {
+      "name": "web_axe_with_voice_status_role",
+      "status": "PASS",
+      "count": 74,
+      "receipt": ".out/qa302-20261012/accessibility-release-results.json",
+      "sha256": "96f6b392caf373a58740d751725b55e6e6b2102075f464c16137689cc0c7cdb0",
+      "scope": "Measured candidate before later discovered closed-drawer connected-voice 2x composer overlap; no physical/golden claim."
+    },
+    {
+      "name": "responsive_host_contained_drawer",
+      "status": "PASS",
+      "count": 22,
+      "receipt": ".out/qa302-20261012/responsive-release-results.json",
+      "sha256": "4bc211f90a5da90f01efe71cd925b20c80de20c5e39411d89979a149878ffb98",
+      "scope": "Measured candidate before later discovered closed-drawer connected-voice 2x composer overlap; no physical/golden claim."
+    },
+    {
+      "name": "responsive_linux_firefox_contained_drawer",
+      "status": "PASS",
+      "count": 11,
+      "receipt": ".out/qa302-20261012/linux-firefox/release-results.json",
+      "sha256": "d9b9d2ee9ee94d256880120ca154dfe212f77f0d9fff872475de3ecc84d949cd",
+      "scope": "Measured candidate before later discovered closed-drawer connected-voice 2x composer overlap; no physical/golden claim."
+    },
+    {
+      "name": "actual_full_app_after_search_and_backend_role_fix_1440",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/complete-full-app/1440/report.json",
+      "sha256": "cbc4d180fb74abd84e9d5690aa4d4dfaa21f0183163f074befdcb98d13cf5a73",
+      "capture_count": 33,
+      "persisted_after_restart": true,
+      "owned_resources_removed": true,
+      "telemetry": {
+        "status": "PASS",
+        "actual_tempo": true,
+        "register_parent_welcome_child": true,
+        "identity_matches_database": true,
+        "sensitive_content_absent": true,
+        "bounded_metrics": true
+      },
+      "source_proof": ".out/qa302-20261012/complete-full-app/1440/source-proof.json",
+      "scope": "Measured138aaf production binary before later category-dialog/connected2x mobile dock fixes."
+    },
+    {
+      "name": "actual_full_app_same_candidate_393_build_attempt",
+      "status": "FAIL_ENV_BUILD",
+      "receipt": ".out/qa302-20261012/complete-full-app-393.log",
+      "scope": "Docker API build exited1 before API/browser. Exact builder cause absent from captured output, no product failure inferred. Owned stack finally removed. Fresh final retry planned."
+    },
+    {
+      "name": "flutter_full_suite_after_adaptive_native_navigation",
+      "status": "PASS",
+      "count": 1177,
+      "skipped": 1,
+      "receipt": ".out/qa302-20261012/release-flutter-unit.log",
+      "sha256": "761673becffa48f7cb007daf99a0d8a675bb90a30c2d5375eea9951ab69687d7",
+      "source_proof": ".out/qa302-20261012/release-flutter-source.json",
+      "flutter_lib_sha256": "dfa68a25cba8ee12424d0016f18bc927f7bdab5ed2520c055d30946b890d4bd5"
+    },
+    {
+      "name": "web_unit_after_connected_dock_category_fixes",
+      "status": "PASS",
+      "count": 1496,
+      "receipt": ".out/qa302-20261012/accepted-web-unit.log",
+      "sha256": "0d3bf02f4f59c2fb0ceae66f89916cb836934aad9634f2ed2a9437301df4ae66",
+      "web_src_manifest_sha256": "140676ae0422f10f57221e5fd0d0cd07b2b3d678e0827635bd1276c90b387e7d",
+      "scope": "Before later scope-select2x CSS fix; manual/golden gates separate."
+    },
+    {
+      "name": "web_a11y_after_connected_dock_category_fixes",
+      "status": "PASS",
+      "count": 80,
+      "receipt": ".out/qa302-20261012/accessibility-accepted-results.json",
+      "sha256": "725ecf7baff257b8f9a658473e3eb39679434511e1682bab759bf6ee272d297a",
+      "web_src_manifest_sha256": "140676ae0422f10f57221e5fd0d0cd07b2b3d678e0827635bd1276c90b387e7d",
+      "scope": "Before later scope-select2x CSS fix; manual/golden gates separate."
+    },
+    {
+      "name": "responsive_host_after_dock_grid",
+      "status": "PASS",
+      "count": 22,
+      "receipt": ".out/qa302-20261012/responsive-accepted-results.json",
+      "sha256": "4803bf18096b1ab2c291b70aac417ee9e053c684340b690ecdc3d713957504e7",
+      "web_src_manifest_sha256": "140676ae0422f10f57221e5fd0d0cd07b2b3d678e0827635bd1276c90b387e7d",
+      "scope": "Before later scope-select2x CSS fix; manual/golden gates separate."
+    },
+    {
+      "name": "responsive_linux_firefox_after_dock_grid",
+      "status": "PASS",
+      "count": 11,
+      "receipt": ".out/qa302-20261012/linux-firefox/accepted-results.json",
+      "sha256": "5093d7ec650155b2d51e71753faa3feae62c22646f05c42c092f880c015e1c6f",
+      "web_src_manifest_sha256": "140676ae0422f10f57221e5fd0d0cd07b2b3d678e0827635bd1276c90b387e7d",
+      "scope": "Before later scope-select2x CSS fix; manual/golden gates separate."
+    },
+    {
+      "name": "web_unit_final_search_scale",
+      "status": "PASS",
+      "count": 1496,
+      "receipt": ".out/qa302-20261012/publish-web-unit.log",
+      "sha256": "11d5954f2dd9006c6571b9ed113a7b730a41b7d6f2c52ae7a089430ce9d513ad",
+      "scope": "Final search-scale source f561d2ae; any later source change requires separate scoped proof."
+    },
+    {
+      "name": "accessibility_final_search_scale",
+      "status": "PASS",
+      "count": 80,
+      "receipt": ".out/qa302-20261012/accessibility-publish-results.json",
+      "sha256": "3cc8f2399c629dfebd6d378a1f284fe8130175d305c3252e735f6075f2448fea",
+      "scope": "Final search-scale source f561d2ae; any later source change requires separate scoped proof."
+    },
+    {
+      "name": "responsive_linux_firefox_final_search_scale",
+      "status": "PASS",
+      "count": 11,
+      "receipt": ".out/qa302-20261012/linux-firefox/publish-results.json",
+      "sha256": "9ceba1be45f524cf3e4f672ea5944e978c8137ab316ea4043130b45c51c0855b",
+      "scope": "Final search-scale source f561d2ae; any later source change requires separate scoped proof."
+    },
+    {
+      "name": "runner_guard_final_includes_scope_checks",
+      "status": "PASS",
+      "count": 33,
+      "receipt": ".out/qa302-20261012/publish-qa-guards.log",
+      "sha256": "0481331fb77ac2c7cc4d2fa7ac3c14a1232d9bb8232fb56f0ce94adcb279480d",
+      "scope": "Final search-scale source f561d2ae; any later source change requires separate scoped proof."
+    },
+    {
+      "name": "web_production_build_after_search_scale",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/build-before-confirmation-height-source.json",
+      "sha256": "8fddf89a0cae58a7ede27b9d38a684df562957d9ed20c13aaf7f85d85db6964a",
+      "base_commit": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+      "web_src_manifest_sha256": "f561d2ae69d8f3bc88043132bcfd9c1d22899cc3905644ee3b663916dfa22034",
+      "web_src_files": 1098,
+      "built_dist_manifest_sha256": "5ff02a2185368170ca28eb6e998f006d0aa07d0af56f09286fe54c7d7547824a",
+      "origin": "https://localhost:4810",
+      "source_stable_during_unit_and_build": true,
+      "scope": "Frozen final batch3 source including search heading and scope at enlarged text."
+    },
+    {
+      "name": "responsive_host_final_search_scale",
+      "status": "PASS",
+      "count": 22,
+      "receipt": ".out/qa302-20261012/responsive-publish-results.json",
+      "sha256": "b0b498fbd73db8812dc8d6623abc9ac7d0962fcaf409a61dd12a155781ecd29f",
+      "scope": "Final frozen f561 source on Chromium/WebKit; 12 viewport sizes in each engine, browser fixtures separate from live API smoke."
+    },
+    {
+      "name": "actual_full_app_final_search_scale_1440",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/publish-full-app/1440/report.json",
+      "sha256": "30782ed64969a96d97636d4edb409b3713fa05ceb634ba3988970ca232443084",
+      "source_proof": ".out/qa302-20261012/publish-full-app/1440/source-proof.json",
+      "source_proof_sha256": "2e059fc091e23759e44aa9bb19dcd800e3e57f7cbe88f1503bfb8fe753043e41",
+      "web_src_manifest_sha256": "f561d2ae69d8f3bc88043132bcfd9c1d22899cc3905644ee3b663916dfa22034",
+      "backend_manifest_sha256": "55f73b7dea44488b58de78152d9e10e3ccfe403ea70eea73661ff34b38befcba",
+      "owned_resources_removed": true,
+      "telemetry": "PASS",
+      "persistence_after_api_restart": "PASS",
+      "catalog_captures": [
+        {
+          "catalog_slot": "D01",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/1440/channel-text.png",
+            "sha256": "c3dd14b855aee1feb2c1a5ef2207b75a48c7b6fc39afadbe852e867a0678c433",
+            "raster": "2880x1800"
+          }
+        },
+        {
+          "catalog_slot": "D02",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/1440/channel-text-actions.png",
+            "sha256": "6e94800bb5ecd27c9c29a953d24f91ed4b0bed014ecb3ab439f3023b1b3e8391",
+            "raster": "2880x1800"
+          }
+        },
+        {
+          "catalog_slot": "D03",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/1440/dm-list.png",
+            "sha256": "f58043974595daea060cdde4d73b80c6a8f08c298a2845e7fae6d8173313c3f0",
+            "raster": "2880x1800"
+          }
+        },
+        {
+          "catalog_slot": "D15",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/1440/voice-prejoin.png",
+            "sha256": "c9ced00f5313afd638b889c0fc20b0482a6a05b31d3d88cf82843ace7c02e123",
+            "raster": "2880x1800"
+          }
+        },
+        {
+          "catalog_slot": "D18",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/1440/channel-log.png",
+            "sha256": "dd2523cfbf8804aa7e69065d766f54aebd48e37f343cbf5d86f71c56ccbf28db",
+            "raster": "2880x1800"
+          }
+        }
+      ],
+      "scope": "Actual production Web with disposable API/PostgreSQL/Tempo, no API mocks; normal and2x smoke not pixelgolden."
+    },
+    {
+      "name": "actual_full_app_final_search_scale_393",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/publish-full-app/393/report.json",
+      "sha256": "08d6689b090a9fe71077371765f560cada97ea81bdb1e64e80004d6bf5e10975",
+      "source_proof": ".out/qa302-20261012/publish-full-app/393/source-proof.json",
+      "source_proof_sha256": "2e059fc091e23759e44aa9bb19dcd800e3e57f7cbe88f1503bfb8fe753043e41",
+      "web_src_manifest_sha256": "f561d2ae69d8f3bc88043132bcfd9c1d22899cc3905644ee3b663916dfa22034",
+      "backend_manifest_sha256": "55f73b7dea44488b58de78152d9e10e3ccfe403ea70eea73661ff34b38befcba",
+      "owned_resources_removed": true,
+      "telemetry": "PASS",
+      "persistence_after_api_restart": "PASS",
+      "catalog_captures": [
+        {
+          "catalog_slot": "M01",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/393/navigation-overlay.png",
+            "sha256": "a0490eb892a9650a148796c0c4d5307001dd3eea53d7c18a9fbff231b404c0d3",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M02",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/393/channel-text.png",
+            "sha256": "a9b1703fc772bfb7f3aed8990b508a732ffa88692cb605f5de3dd064d8c0dea3",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M03",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/393/channel-text-actions.png",
+            "sha256": "0f3eb6023f289144906798ea6418c12f6a3c151910986c4b15e9ab751054043a",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M22",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/393/voice-prejoin.png",
+            "sha256": "8c49b05e7f98c4607c00d2db57a2fb97ed026b1ec368d9376b94547ee15c5512",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M23",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/393/channel-log.png",
+            "sha256": "77ec024ab6b00d364fbb09f592f06656f1a319bbaf76edf19467a64a84c0f9f7",
+            "raster": "1179x2556"
+          }
+        }
+      ],
+      "scope": "Actual production Web with disposable API/PostgreSQL/Tempo, no API mocks; normal and2x smoke not pixelgolden."
+    },
+    {
+      "name": "actual_full_app_final_search_scale_393",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/publish-full-app/393/report.json",
+      "sha256": "08d6689b090a9fe71077371765f560cada97ea81bdb1e64e80004d6bf5e10975",
+      "source_proof": ".out/qa302-20261012/publish-full-app/393/source-proof.json",
+      "source_proof_sha256": "2e059fc091e23759e44aa9bb19dcd800e3e57f7cbe88f1503bfb8fe753043e41",
+      "web_src_manifest_sha256": "f561d2ae69d8f3bc88043132bcfd9c1d22899cc3905644ee3b663916dfa22034",
+      "backend_manifest_sha256": "55f73b7dea44488b58de78152d9e10e3ccfe403ea70eea73661ff34b38befcba",
+      "owned_resources_removed": true,
+      "telemetry": "PASS",
+      "persistence_after_api_restart": "PASS",
+      "catalog_captures": [
+        {
+          "catalog_slot": "M01",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/393/navigation-overlay.png",
+            "sha256": "a0490eb892a9650a148796c0c4d5307001dd3eea53d7c18a9fbff231b404c0d3",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M02",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/393/channel-text.png",
+            "sha256": "a9b1703fc772bfb7f3aed8990b508a732ffa88692cb605f5de3dd064d8c0dea3",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M03",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/393/channel-text-actions.png",
+            "sha256": "0f3eb6023f289144906798ea6418c12f6a3c151910986c4b15e9ab751054043a",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M22",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/393/voice-prejoin.png",
+            "sha256": "8c49b05e7f98c4607c00d2db57a2fb97ed026b1ec368d9376b94547ee15c5512",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M23",
+          "after": {
+            "path": ".out/qa302-20261012/publish-full-app/393/channel-log.png",
+            "sha256": "77ec024ab6b00d364fbb09f592f06656f1a319bbaf76edf19467a64a84c0f9f7",
+            "raster": "1179x2556"
+          }
+        }
+      ],
+      "scope": "Actual production Web+Go/Postgres/Tempo mobile, no API mocks; before later standalone confirmation-height CSS fix."
+    },
+    {
+      "name": "runner_guard_final_admin_included",
+      "status": "PASS",
+      "count": 44,
+      "receipt": ".out/qa302-20261012/publish-all-qa-guards.log",
+      "sha256": "695c140ad6c989548eed36fb2cc86c5515af642e5f1810388e4bf848f23186d0",
+      "scope": "Freshness/assigned-device/reverse/resource cleanup/output destination/registry guards; physical gates separate."
+    },
+    {
+      "name": "web_full_unit_final_confirmation_height",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/commit-web-unit.log",
+      "sha256": "c5731e1da1e8b3c17417454d45085a4d3af1d3da0eed5d4a986d9ad180330407",
+      "count": 1496,
+      "web_src_manifest_sha256": "efb8aabf031bcbdc60b76c263e73eb3f4b40ffb01b56520726cf91c0c81119e7",
+      "built_dist_manifest_sha256": "87a8755fbaeb8db7846b988257f522817d7c294fbf891e73d03a7e9b7a749007",
+      "scope": "Final frozen completeWebsrc; actualfullappf561 precedesonlyscopedconfirmationheightCSS, separateactualrepeatunder298/301."
+    },
+    {
+      "name": "web_build_final_confirmation_height",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/build-before-confirmation-wrap-source.json",
+      "sha256": "12415679fc6a38a44704b7fbfb4af31977b79621829ac89e2aeed091e3cba913",
+      "count": null,
+      "web_src_manifest_sha256": "efb8aabf031bcbdc60b76c263e73eb3f4b40ffb01b56520726cf91c0c81119e7",
+      "built_dist_manifest_sha256": "87a8755fbaeb8db7846b988257f522817d7c294fbf891e73d03a7e9b7a749007",
+      "scope": "Final frozen completeWebsrc; actualfullappf561 precedesonlyscopedconfirmationheightCSS, separateactualrepeatunder298/301."
+    },
+    {
+      "name": "accessibility_final_confirmation_height",
+      "status": "PASS",
+      "count": 90,
+      "receipt": ".out/qa302-20261012/accessibility-commit-results.json",
+      "sha256": "f275eafbc34c6d7f6cc29fb9fcd220210876c46af8e36e0df1a7818c79b8d847",
+      "web_src_manifest_sha256": "efb8aabf031bcbdc60b76c263e73eb3f4b40ffb01b56520726cf91c0c81119e7",
+      "scope": "Final frozen source including10newnormal/enlarged confirmation bounds regressions; axe/keyboard, not spoken readers."
+    },
+    {
+      "name": "flutter_full_final_validation_profile_labels",
+      "status": "PASS",
+      "count": 1183,
+      "skipped": 1,
+      "receipt": ".out/qa302-20261012/commit-flutter-unit.log",
+      "sha256": "ecb26257f2fa38fc4e3c4c7e7b480a19b913ee747f6cdfd576a0896af71e8a8d",
+      "source_proof": ".out/qa302-20261012/commit-flutter-source.json",
+      "source_proof_sha256": "4159297f7492e7168619a6ea7d0a9a381d03b189f8fde716c239bfa5d60767a7",
+      "flutter_lib_sha256": "31b73f8238b70e1f9b4c5bc681a0bbf1575a781c60a4fdbb15f644e0c8dedf36",
+      "scope": "Final stable1102libfiles; all unit/widget tests, actual platforms separately recorded."
+    },
+    {
+      "name": "web_final_confirmation_target_wrap_build",
+      "status": "PASS",
+      "receipt": ".out/qa302-20261012/final-build-source.json",
+      "sha256": "5ce443a1d46c1cd63f52de161bc3e7f966c84a5342c3d56392f3d45ba9e4bf67",
+      "base_commit": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+      "web_src_manifest_sha256": "88e369ec94660e3e5af73acb0b35a12e3b362144c1eaecd8a26e3e2144a0ef90",
+      "web_src_files": 1098,
+      "built_dist_manifest_sha256": "8eaeb0166ef31cf2d80dfa24fe679c2e1515ad3eccb27afdf77b6d954ba0f4b0",
+      "origin": "https://localhost:4810",
+      "source_stable_during_unit_and_build": true,
+      "scope": "Final batch3 source; last delta is overflow-wrap:anywhere for confirmation target paragraph."
+    },
+    {
+      "name": "runner_guard_final_after_native_cleanup_fix",
+      "status": "PASS",
+      "count": 44,
+      "receipt": ".out/qa302-20261012/commit-all-qa-guards.log",
+      "sha256": "c846209cdf3bde7e77f00b02644a33c17fda3b18a3dd94aa0c6e8a021f9c2035"
+    },
+    {
+      "name": "final_issue295_owned_live_scoped_acceptance",
+      "status": "PASS_SCOPED_PARTIAL_GATE",
+      "evidence": "evidence/qa/issue295-admin-runtime-2026-10-12.json",
+      "evidence_sha256": "8ca00e4c53601c5c6ef5acb2399b3c66c8ae37e04668041d068242b7b0848a06",
+      "browser_focused": 25,
+      "native_nearest": 61,
+      "real_postgres_authorization": 19,
+      "current_originals_reviewed": 84,
+      "scope": "Historical exact-source platform runs plus latestactual320wrap test; no physicalgate closure."
+    },
+    {
+      "name": "final_issue298_owned_live_scoped_acceptance",
+      "status": "PASS_SCOPED_PARTIAL_GATE",
+      "evidence": "evidence/qa/issue298-dialogs-runtime-2026-10-12.json",
+      "evidence_sha256": "92d6c48239735cd34c5f9e12e32bb5fd2875c349f63c728d72b11bec79b18ede",
+      "browser_focused": 25,
+      "native_nearest": 61,
+      "real_postgres_authorization": 19,
+      "current_originals_reviewed": 84,
+      "scope": "Historical exact-source platform runs plus latestactual320wrap test; no physicalgate closure."
+    },
+    {
+      "name": "web_full_unit_exact_final_target_wrap_source",
+      "status": "PASS",
+      "count": 1496,
+      "receipt": ".out/qa302-20261012/wrap-web-unit.log",
+      "sha256": "21b8a2c580233291e867d17be8c4909806cee32dad8b4aabef2fb47e409be8ad",
+      "source_proof": ".out/qa302-20261012/wrap-web-unit-source.json",
+      "source_proof_sha256": "6c42105ebbdef44e161c6ff7d717c6bd9fd289e45d62b6b61d879f98fa9254f4",
+      "web_src_manifest_sha256": "88e369ec94660e3e5af73acb0b35a12e3b362144c1eaecd8a26e3e2144a0ef90"
+    },
+    {
+      "name": "runner_guards_after_final_android7_cleanup_test_change",
+      "status": "PASS",
+      "count": 44,
+      "receipt": ".out/qa302-20261012/commit-all-qa-guards-final.log",
+      "sha256": "1c20787d75ebdab774579e0764fc2df8cbec706ba417cab9a84d622645ea5fca",
+      "scope": "Final QA harness source; six output destination, seven lifecycle runner, four policy, four DM contract, twelve accessibility and eleven admin guards."
+    },
+    {
+      "name": "final_issue301_owned_live_scoped_acceptance",
+      "status": "PASS_SCOPED_PARTIAL_GATE",
+      "evidence": "evidence/qa/issue301-accessibility-runtime-2026-10-12.json",
+      "evidence_sha256": "77b49adade0d5f87fadd65cc5f03553f82a66136904f70d6ac9a5f4f05ea953e",
+      "scope": "Final frozen native lib; Android eight scenarios including actualSFU, iOS seven nonmedia scenarios. Scoped browser axe/keyboard/geometry and original raster review. Spoken readers and physical acceptance remain open; certificate handoff fixture intentionally held."
+    }
+  ],
+  "visual_review": {
+    "status": "PASS_SCOPED_REVIEW_ONLY",
+    "scoped_originals_reviewed": [
+      "flutter-admin-media-desktop-1440x900.png",
+      "flutter-admin-media-mobile-393x852.png",
+      "flutter-screen-share-mobile-ime-2x-393x852.png",
+      "flutter-topology-destructive-desktop-1440x900@2x.png"
+    ],
+    "observations": [
+      "Media panes display current last-success timestamp; two altered image hashes do not establish layout regression.",
+      "Compact screen-share dialog with 2x text/IME fixture has scrollable content and visible Start/Close; lower helper content requires scrolling.",
+      "Destructive channel confirmation names target and effect; cancel and confirmation visible.",
+      "Desktop Members status-select label looks clipped under dropdown arrow: sent to #295 owner for actual DOM confirmation; not yet counted as a product defect.",
+      "393px DM conversation has visible composer/send controls and readable wrapped message; DM search query/result/open action visible in full-page capture.",
+      "393px TEXT action popover covers part of the message while open; available Reply action and remaining conversation readable. No pixel-baseline acceptance inferred.",
+      "393px Members filter labels are readable; cards and section-strip horizontal-scroll hint visible. Desktop status-select clipping remains under #295 investigation.",
+      "393px login inputs, password visibility, recovery and registration links readable and visible.",
+      "393px global-search context highlights target and shows return/next actions; internal context scroll can crop neighboring rows.",
+      "393px media no-data state shows refresh time and instructions without identifiers; no media-capacity inference.",
+      "393px navigation overlay has readable channel names/favorites and accessible close affordance in captured state.",
+      "After CSS fix, actual 1440 Members status filter displays complete Любой статус label clear of dropdown arrow. Table/search/role/status filters fit available main area.",
+      "Root reviewed disconnected2xTEXT, open navigation and connected open drawer originals: header/account role reserve actual height; composer line and Send fit vertically; connected four voice actions and account footer visible without overlap. Names/placeholder truncate horizontally at available width; no full-name/spoken-reader claim. Later closed-drawer connected2x composer overlap discovered by agent, remains separate open fix.",
+      "Root after active dock fix reviewed actualTEXT3932x andDM3202x: Send fully above grown connected dock; wrapped channel/count inside dock. Members3202x ends above dock with background modal scrim. Current2941440 original shows synthetichistory16–24/reactions and multiline Send clearly; no blank-history product defect reproduced.",
+      "Final f561 original desktopMembers shows full status label/table. Actual3013202x search original shows wrapped title above modes, full Везде scope, meta and filter/date rows without vertical overlap; narrow modes scroll horizontally. No spoken-reader/pixelgolden claim.",
+      "Final sourcef5613932x search original shows full scope label and filter/date controls; actualfullapp393 context capture highlights target, offers return/next and leaves composerSend visible. Neighboring rows may be cropped by intentional internal context scroll.",
+      "Root inspected finaliOS5 enlargedsettings original after denying own-simulator pending microphone prompt: actualcoloured UI, wrapped heading/avatar action, profile/securitytabs and editable field visible. Remaining controls require scroll; no spoken-reader/picker claim."
+    ],
+    "scope": "Listed originals inspected at original resolution; full source/golden/physical reader acceptance remains PARTIAL.",
+    "actual_web_originals_reviewed": {
+      "1440": [
+        "voice-prejoin.png",
+        "guild-members.png",
+        "guild-roles.png",
+        "guild-readiness.png"
+      ],
+      "393": [
+        "dm-conversation.png",
+        "dm-search.png",
+        "channel-text-actions.png",
+        "guild-members.png",
+        "authentication.png",
+        "global-search-result-context.png",
+        "guild-media.png",
+        "navigation-overlay.png"
+      ],
+      "393_final": [
+        "global-search-result-context.png"
+      ]
+    },
+    "additional_originals_reviewed": [
+      ".out/qa302-20261012/final-full-app/1440/guild-members.png",
+      ".out/qa301-20261012/web/guild-navigation-2x.png",
+      ".out/qa301-20261012/web/chat-2x.png",
+      ".out/qa301-20261012/web/voice-drawer-2x.png",
+      ".out/qa301-20261012/web/voice-TEXT-393-2x.png",
+      ".out/qa301-20261012/web/voice-DM-320-2x.png",
+      ".out/qa301-20261012/web/members-320-2x.png",
+      ".out/qa294-20261012/1440/multiline-composer.png",
+      ".out/qa302-20261012/publish-full-app/1440/guild-members.png",
+      ".out/qa301-20261012/web/search-320-2x.png",
+      ".out/qa301-20261012/web/search-393-2x.png",
+      ".out/qa301-20261012/ios/native-settings-2x.png"
+    ],
+    "latest_original_sha256": {
+      ".out/qa302-20261012/final-full-app/1440/guild-members.png": "d256cb3b0b3bee4a26694be83217b2a7ed238b7b88cd9b0cba08deb5e33d2119",
+      ".out/qa301-20261012/web/guild-navigation-2x.png": "c856f0593ca87e5fc07728415dce3b8bb7d5c019598dc5a43974ca03150bdca8",
+      ".out/qa301-20261012/web/chat-2x.png": "2fbb36586e48038d2b29fd972331a884142361103536165577d8dba341f115f1",
+      ".out/qa301-20261012/web/voice-drawer-2x.png": "cdfc59f8fb53bb67733244aea1b1372f531fdfd7ad73394c97552d5823fc19b0",
+      ".out/qa301-20261012/web/voice-TEXT-393-2x.png": "c3b296f7f423803120b71f7ca80f69ebdef0edcf52e295c7b8a2b33566c91f7b",
+      ".out/qa301-20261012/web/voice-DM-320-2x.png": "698f87cb392c5d52ddeae3586094de9c01b6e20892db84be369172cc7e33f6c5",
+      ".out/qa301-20261012/web/members-320-2x.png": "591af9e44562cf3b2ebb9324fa6b5e7c90fdf1ab765ec004609bb76eddb26a09",
+      ".out/qa294-20261012/1440/multiline-composer.png": "2c9fdad614af5fa7068f3673d8d445f56236a14be44a18c441d020948f504650",
+      ".out/qa302-20261012/publish-full-app/1440/guild-members.png": "04e00de3df628eb4a11cb0846471695cb45eb77b198808c1c49d2931eb1a6c1f",
+      ".out/qa301-20261012/web/search-320-2x.png": "66d624d4a500fc6be9fae45ba7c7aa2d7b3539ed3184b783c3191e3523868218",
+      ".out/qa301-20261012/web/search-393-2x.png": "98dd59c753be9335bea31e113baf93d781db4e50b8177aacd5ee15f517d493e9",
+      ".out/qa301-20261012/ios/native-settings-2x.png": "9f95e3e5be51a6f9936140d1e5254e309e6d16e39f46223643bd255c98a404fb"
+    }
+  },
+  "ci": {
+    "status": "PASS_BASELINE",
+    "head_sha": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+    "run_id": 38287955904,
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38287955904",
+    "conclusion": "success",
+    "scope": "Published d78e5ea6 baseline; subsequent Vue product fixes require a new candidate run.",
+    "artifacts": [
+      {
+        "id": 11764730393,
+        "name": "uiux-flutter-visual-review-d78e5ea6",
+        "digest": "sha256:2bcd9a86d0981268e1fe962633f880d697fc66a07183cac7c06402be587fce82",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/artifacts/11764730393"
+      },
+      {
+        "id": 11764671954,
+        "name": "ux-responsive-shell-d78e5ea6",
+        "digest": "sha256:33d438b8cc8e2862dfc9599c8b982ceddbd93e42698a735744ed2553316a3a62",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/artifacts/11764671954"
+      }
+    ]
+  },
+  "remaining_gates": [
+    "Source archive absent locally: pinned bytes/hash/dimensions NOT_RUN (41catalogentriesstructureverified)",
+    "Owner-approved pixel golden baselines",
+    "Missing full-app catalog slots and deterministic full critical-flow golden acceptance",
+    "D11 duplicate source remains blocked",
+    "Current revision successful CI artifact evidence pending"
+  ],
+  "screenshots": [
+    {
+      "path": ".out/qa302-20261012/flutter-captures/R14-navigation-top.png",
+      "sha256": "91533f569d9e0a21f2aceb5df30f3dfb94eabd3d8fe388559903015cc9f0376f"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-audit-desktop-1440x900.png",
+      "sha256": "db5ee4d1db0aaded3f78cd6f29f1e699822a006f2cd6f7bd10bbdb8fa6ff512e"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-audit-mobile-393x852.png",
+      "sha256": "518a2938888cb4c3083d5536e12fd708ba66036084d1415306898bb02a94a13b"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-audit-mobile-large-text-393x852.png",
+      "sha256": "950d9129e0c1e627bf66ba95bbd32d9a239263872b66731aec16809e2462d05b"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-channels-desktop-1440x900.png",
+      "sha256": "d6c853dc797bbdfc67ac116a18536a4298d67a00996752550ee9056498e74347"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-channels-mobile-393x852.png",
+      "sha256": "bf10098f8170330368639649c4ebd89e9f8795721f76210ac48c82082332ebe4"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-channels-mobile-large-text-393x852.png",
+      "sha256": "86cd77c48022bc0fce5917ca65095715b38f1cc44bbed30128f9f90bd5c32b2b"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-guild-desktop-1440x900.png",
+      "sha256": "230ef57de5337ff28f157c4075dd65f5c04665021377293b2bd2d6b381143b5b"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-guild-mobile-393x852.png",
+      "sha256": "1ad83a34acbf2f0df965afee1b746634a9aa168632f6f57eb387f98c7a3f8329"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-guild-mobile-large-text-393x852.png",
+      "sha256": "f928f1a3fcdec1d33dcf9e682edafcf2dc3e525e50dda83f711dea48bbb3bb1f"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-media-desktop-1440x900.png",
+      "sha256": "445f1c1ec01e9ca0dc5f80aa191b8fe043e222b739fb0f281b73a34885a4c35d"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-media-mobile-393x852.png",
+      "sha256": "6e59fe69bd9f2cb3865ba51df299ea2792047a5c30312899a738508515757434"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-media-mobile-large-text-393x852.png",
+      "sha256": "a94eb24f8b956510167ad0aa19e15935a6feb7214fa091f17cf514be4c0b729a"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-members-desktop-1440x900.png",
+      "sha256": "1144c48bb54dc3d85c969dc0cb5171de5f72366240b71ad0f13419c137cd3c0a"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-members-mobile-393x852.png",
+      "sha256": "58574d0c79c0fdd0a43657d9015f6d61cc9e44ae4e79ea65769a9bf964ad69d3"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-members-mobile-large-text-393x852.png",
+      "sha256": "3e0b7f649b0ac6ee3984201887849e0ad17563aa59982ada07632c1563ff3566"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-readiness-desktop-1440x900.png",
+      "sha256": "68fde39baa06db938e4d2325242951e90c182c6e9a0bc6691853d6b5ffa36a21"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-readiness-mobile-393x852.png",
+      "sha256": "abc404480443c92d75d508e836ac3038cf02c4d784177254a74b8a615898ee9f"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-readiness-mobile-large-text-393x852.png",
+      "sha256": "7df506e269adba228cf14d25955b206c4bcf744941220dec17ff4669cb947cff"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-roles-desktop-1440x900.png",
+      "sha256": "65ea473f61769a0795b026c53e87bdfbc71ad55433741925a400537c01ac1799"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-roles-mobile-393x852.png",
+      "sha256": "549afc24a5e6a6f2c7f70aab2f364a8454e3a9470130620c8e381e3d7c7f550d"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-admin-roles-mobile-large-text-393x852.png",
+      "sha256": "7ed92e6fb84103823832cf21ab79700d961e02dc9b9836bcb02ced8a7822c67d"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-profile-logout-confirmation-mobile-393x852@3x.png",
+      "sha256": "5f901259368357199d12df82fe22d8242df179656ffb8f6ace18425863e235b5"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-screen-share-mobile-ime-2x-393x852.png",
+      "sha256": "250c920a2f72651c7efe91280db6b21cfd1944b135388bfceceff25d512c09ba"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png",
+      "sha256": "57a1ee201ed52100ff62996e132b9efca95d22a1dbf5bf9317bd128d9659d3de"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-topology-create-desktop-1440x900@2x.png",
+      "sha256": "5a21ebcb5b166a210ed4dcd2f7351936542e26cdc02c84aa1cdfed1fe2999b92"
+    },
+    {
+      "path": ".out/qa302-20261012/flutter-captures/flutter-topology-destructive-desktop-1440x900@2x.png",
+      "sha256": "5c9615c8ba8fae3251a5790929993e4e76cd7dcad43678d84ddce7752a9cabe9"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/guild-audit.png",
+      "sha256": "0a06b4fbd44f25f656433bd4ab1d05581eac0bb72ee4356e25e2df1659c33095"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/guild-settings-200.png",
+      "sha256": "15dcdd6b196714bdf2975e274fecfa4be4c31dbbbdf3c696b7a1eb66ad85a097"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/global-search-result-context.png",
+      "sha256": "e4199358c906d2c893fc58a4e599b92c27d1c969f5c20562e247a0c25ea4165c"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/authentication.png",
+      "sha256": "111f6a332dcfc2ea9d9fb95b898a667cd814a23f79a0c104da8ee8ea92f264dd"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/global-search.png",
+      "sha256": "c4bcc6ccc73f2e6f61b5510dcfb57ca86a75ff86cfcacf2424bf51c11231457c"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/password-reset-expired.png",
+      "sha256": "3320a69e01ad427ec32f557ab57ce9ee5ff8f1f2c50228b41c2493bb515d652a"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/guild-settings-initial.png",
+      "sha256": "854148bd40cbfe6d7ea2029ff971cf3ed11083d0b12fc7927302b37502c2b53b"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/channel-text.png",
+      "sha256": "5d4bf71a9239df643a44b2bb306f9541481dea891bf7856350eccb7e3a01a142"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/direct-message-header.png",
+      "sha256": "2a1650d56a6568752b5fafed59be8852384c9fd349dca59704fc835f697fe262"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/dm-empty-conversation.png",
+      "sha256": "23bbb33c6be82e54c2344b135a684bca61f36721cd53bc1191578eb52aee4a44"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/old-page-delete.png",
+      "sha256": "20e1c7c8f2400b52edc9b076efb953939deba49a6a9ca418b054f7b166424370"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/channel-participants.png",
+      "sha256": "5ab8a35cce83d99450e47708c5c597173cb2db88a8434ecd91746ec94c042745"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/channel-text-200.png",
+      "sha256": "b100d507d21f660fe6812f266eb8c180eb90b157b7e8f853ee7e4bd92e94d9ae"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/dm-list.png",
+      "sha256": "23bbb33c6be82e54c2344b135a684bca61f36721cd53bc1191578eb52aee4a44"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/channel-text-actions.png",
+      "sha256": "a6b8a29c5233800b969656c14fbcf747cffc69d997dacd41c474436924ba1e53"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/guild-members.png",
+      "sha256": "643025243b6d805931aee279b22a4d0d41bf5a963fea0aae910e7eb3b8cb6442"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/channel-participants-200.png",
+      "sha256": "b100d507d21f660fe6812f266eb8c180eb90b157b7e8f853ee7e4bd92e94d9ae"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/guild-roles.png",
+      "sha256": "8e38654c6b03d27281a3696dca0cc0952f2014f8e5a27b868507f8dfe3c3d53b"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/guild-settings.png",
+      "sha256": "41a8042658c0845c0b4ddf939901b3a5856e75152ddb969d66d038e2acb9e66f"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/guild-media.png",
+      "sha256": "3649a44cc6132984d982a8549013c3bab39068003ff9a66a52387315eaca7dee"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/dm-conversation.png",
+      "sha256": "66a6f0159fad0111a7c17c75341f78f2fc7eab2abafa466dd54dccc733763d7e"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/registration-login-failed.png",
+      "sha256": "f9003761a9faf6c454278837f417e09e7a7ad93712cf667f1684bf1156ea7b61"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/sfu-unavailable.png",
+      "sha256": "c2b43da77e1cc39ea9aaa374cab88ef541014537cd72b6902da4e47a002873c5"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/guild-readiness.png",
+      "sha256": "3b2c0b31160c74da541751f8a3fccbb0c2109d2071856cb888937877d42d56ef"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/welcome-b.png",
+      "sha256": "5ab8a35cce83d99450e47708c5c597173cb2db88a8434ecd91746ec94c042745"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/welcome-a.png",
+      "sha256": "476bda4ace2dfe7213cd63a0eca4521961a5904fcb9d77c43e82fa394f483f99"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/authentication-rate-limit.png",
+      "sha256": "56c960db373951179ddbfa4bc214656292f66f158573bffb1fff3fd256f86ce2"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/channel-log.png",
+      "sha256": "04073a7714ec345fd67fde2ee03b631c0e0e011a1d9074d9c31e46e2f02360de"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/guild-channels.png",
+      "sha256": "d0862514adb206a8b1aa6e56818ff9ad004c956a8c46f633d83226d0ba27d9d1"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/own-sessions.png",
+      "sha256": "522aebc7ba8ac977523e944ee6df1ffedb0156ebce05cbdaaad4afcddcd5eb99"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/dm-search.png",
+      "sha256": "2a1650d56a6568752b5fafed59be8852384c9fd349dca59704fc835f697fe262"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/voice-prejoin.png",
+      "sha256": "12164a39401c0ca10573cd57684de3a33d49a539e79c5205d32f5c3f43a72403"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/1440/chat-failed-media-connected.png",
+      "sha256": "0443e7b8662039e6408962e5e16bbc723cb5eb61b2f219d3f94176d5bde159c2"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/guild-audit.png",
+      "sha256": "4de19ff1fc0ed29409a9777a19ec3d228d74d182a249e71f4d1eeb0b3fc657a9"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/guild-settings-200.png",
+      "sha256": "9ce134025c6417580cce99ea30341e877303a110dc230aca8c6c9fc6c53c210b"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/global-search-result-context.png",
+      "sha256": "47d866d496c3e7a0e0b7bcafffa21485db11c10772543291efe9be2ccaa57da2"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/authentication.png",
+      "sha256": "351180e8fa98aa192569ae90669ef10a82f331c227ee1d1bfb6ab82636c2ff5f"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/global-search.png",
+      "sha256": "4b5338cda428c4f36eb9564a6f18f73796a90af7188fda7e35ae235ec9ebd3e1"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/password-reset-expired.png",
+      "sha256": "3320a69e01ad427ec32f557ab57ce9ee5ff8f1f2c50228b41c2493bb515d652a"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/guild-settings-initial.png",
+      "sha256": "d90d8baf7297157e21070fa62d21907b0078ab651dd951c1c461c0b0f60ed6e3"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/channel-text.png",
+      "sha256": "e31026d411d69c37f265d025af4093d9895a4caf96f803e3604012ee7678116e"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/direct-message-header.png",
+      "sha256": "2e8dc038f1db533c9a69e65a282000b6fa6b920f2efcf21a4ae9248b3653b964"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/dm-empty-conversation.png",
+      "sha256": "c7aa19607e998a6f0014c3fb35130635a2e7aabc173a1dce8526e70c242845ea"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/old-page-delete.png",
+      "sha256": "9ac32d8f419aad2665472b1c3fd98ba2f4a4f9cdcd55302840fbf09de8af6483"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/channel-participants.png",
+      "sha256": "6df16f5c597c7560bada0664370cb3f45c48b3363d023f24eb1c31d57542e03a"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/channel-text-200.png",
+      "sha256": "1391b7157e307b53230ce6fcc1847a6be9d193d696dfc8976f77af00507b8231"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/dm-list.png",
+      "sha256": "c01f603cc4430daa58f995151cc601883c2e36719f5695c862e796ee16586b4f"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/channel-text-actions.png",
+      "sha256": "bce3aa83f79a2893f7c2d3949f11bf18400ff5e42feb87eaee52f8e1fad4f66e"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/guild-members.png",
+      "sha256": "519c5e6e4f0485ce1b7636974d70a1a24e1ca9950e414b2251b562193a701236"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/channel-participants-200.png",
+      "sha256": "3efb1b3dc30aca23975f1ae1ab3a04237d1767aff46d57f0c54ca052c81c4143"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/guild-roles.png",
+      "sha256": "3e6395c3317a408a7a9d2b2bc0909f6d97faaf0c65482c5f07194b646fea7e19"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/guild-settings.png",
+      "sha256": "da8ad51f90448707483c0589213774d8073fee3c74432d1b7f5bc945b3cf2b99"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/guild-media.png",
+      "sha256": "e09d68337dde78048134586f9db328cbfed4d5405f2dc67683ae510dd05d0b3f"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/dm-conversation.png",
+      "sha256": "fa9c5587a427f3a4d0a2245bebe0c53a963e822770b85fce6408922eb6ff1018"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/registration-login-failed.png",
+      "sha256": "ad3b78c76d8349efee0748682747132e34aeffd5c20603315ef2c5eafd63c7a2"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/sfu-unavailable.png",
+      "sha256": "38e5fa24523092c58736232028c956a8dd3af8328f1bc16477e376bece107744"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/navigation-overlay.png",
+      "sha256": "98e8551034494247487e14c884b725336c4baf53cf8e9ebd56ce8b5b5375f382"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/guild-readiness.png",
+      "sha256": "a2ee151d940d4ee700fd28c312a9e8fed9b1107ebf6c4127ef46a7753e63fd40"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/welcome-b.png",
+      "sha256": "6df16f5c597c7560bada0664370cb3f45c48b3363d023f24eb1c31d57542e03a"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/welcome-a.png",
+      "sha256": "1dd66566c9b3ecb38370724ede8c18b3b020ef536ad7f30d44894b6a882b50af"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/authentication-rate-limit.png",
+      "sha256": "e14f3f7d53412f78d86bac9683403a1eee533e165339fda6543c27bde4ef2f71"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/channel-log.png",
+      "sha256": "882cf9cd12c3f18e8299d9767c11890d02afba2101593be0ef2e6bda20575e14"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/guild-channels.png",
+      "sha256": "196b28d0d4d7fb5a0ff038b4351e1543abdd2675c0219d97ccc5d246512389ca"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/own-sessions.png",
+      "sha256": "45293eca3d93bfc708e9792941ed331ce925e0c9265f89c7b13f7feb72ee98c8"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/dm-search.png",
+      "sha256": "b1b6942f5dcdc1891fa67a344f10c60d098244086bde43e4d6211255041c2788"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/voice-prejoin.png",
+      "sha256": "8c49b05e7f98c4607c00d2db57a2fb97ed026b1ec368d9376b94547ee15c5512"
+    },
+    {
+      "path": ".out/qa302-20261012/full-app/393/chat-failed-media-connected.png",
+      "sha256": "6daf0a4c0e1f3dfd8e2bb3a5fd9fc11c2a98281f61feb170a5fe669a0767775b"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/authentication-rate-limit.png",
+      "sha256": "e14f3f7d53412f78d86bac9683403a1eee533e165339fda6543c27bde4ef2f71"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/authentication.png",
+      "sha256": "111f6a332dcfc2ea9d9fb95b898a667cd814a23f79a0c104da8ee8ea92f264dd"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/channel-log.png",
+      "sha256": "172d0edd9c34f0b431ff4113f88c83dacc21157ceb02142c9d95998a67a5c360"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/channel-participants-200.png",
+      "sha256": "317e614fd84a7c430b9f1870527659f5710dbc150ca0513c2c66fe11e1ab45a3"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/channel-participants.png",
+      "sha256": "be9a0b794bc9728c46c9a84fef8b2b69a769d6b103ba568b926391cd6b85ef21"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/channel-text-200.png",
+      "sha256": "317e614fd84a7c430b9f1870527659f5710dbc150ca0513c2c66fe11e1ab45a3"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/channel-text-actions.png",
+      "sha256": "f02e37fd21ee55cd289554020e6e224a530771ad65bfbba4cca23236a8e0ffa4"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/channel-text.png",
+      "sha256": "9034dc5fe467cedc197eaab9c86f22b0c38f19d8b2be9c9bc89b776e2bbb98bb"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/chat-failed-media-connected.png",
+      "sha256": "1a32fd4003a364b38dbfc8760148984844a3986768c2fcecba0a5c1a59a38b5d"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/direct-message-header.png",
+      "sha256": "4e022b78fddf77ca27331bec5a3065e4da677d1cad015c159335f83713555ae9"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/dm-conversation.png",
+      "sha256": "3183e35046327dd5e22c54741eea6e97c79adef75645e23d13af37e2e727fb13"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/dm-empty-conversation.png",
+      "sha256": "7c19b16022cf0264159327977c626d3f2d5c7a7037d7625df2208e8bffb63b08"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/dm-list.png",
+      "sha256": "7c19b16022cf0264159327977c626d3f2d5c7a7037d7625df2208e8bffb63b08"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/dm-search.png",
+      "sha256": "4e022b78fddf77ca27331bec5a3065e4da677d1cad015c159335f83713555ae9"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/global-search-result-context.png",
+      "sha256": "487f0a834b0a491c4a719f9bf7fb01c185fe28cc12785b08e36b1c06788d9793"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/global-search.png",
+      "sha256": "bf3f312b090de144e9e01f0ffd8c8740ee36c2ea3520595f828f006e24b01c5e"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/guild-audit.png",
+      "sha256": "aad101add0a49d800ce4b86bdba1e7a758488514a1e89b733e736ecfc147f3d4"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/guild-channels.png",
+      "sha256": "33722a46085c1d7a9fc163778969cddb32e2568f331940a214052966c0c69545"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/guild-media.png",
+      "sha256": "be0fe7f63c7b860a255b9b3d00b351d69c9323f5a123c471db258f10dcc60879"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/guild-members.png",
+      "sha256": "d256cb3b0b3bee4a26694be83217b2a7ed238b7b88cd9b0cba08deb5e33d2119"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/guild-readiness.png",
+      "sha256": "ed586aa86a6f0197785fd8a2a18c3d6b3c7e25f0f1ee515b5582bc26c49933d0"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/guild-roles.png",
+      "sha256": "d513746638a9b132f830a9adbd6616490433fe023791cf1b9c7ae92ff79a9a7a"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/guild-settings-200.png",
+      "sha256": "d05bedf108cf5d414f02d23bdb6b702369787e261958bb29b5308cd398ea6dff"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/guild-settings-initial.png",
+      "sha256": "5b243e5a47e8d3b715146b91c6077d3fc17d1881653f56507c09feb1abb08329"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/guild-settings.png",
+      "sha256": "19f39e67ce1e42f24c6b005e7d6cc81ded140a533eeefd0731a0f1b26ee4b3f3"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/old-page-delete.png",
+      "sha256": "cc7e6d27a7b70b28d81a3e426d46fbc8d7fc197892ba2c589c074abe2e3169ab"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/own-sessions.png",
+      "sha256": "39382351ff48553a3d5714d9e7b4075c343ba895686da7b427a0931b00b902aa"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/password-reset-expired.png",
+      "sha256": "3320a69e01ad427ec32f557ab57ce9ee5ff8f1f2c50228b41c2493bb515d652a"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/registration-login-failed.png",
+      "sha256": "f9003761a9faf6c454278837f417e09e7a7ad93712cf667f1684bf1156ea7b61"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/sfu-unavailable.png",
+      "sha256": "3314b7b614caac11c8073cf84aa7ef6f16d60fa552cf9f967a967de61946fd17"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/voice-prejoin.png",
+      "sha256": "c9ced00f5313afd638b889c0fc20b0482a6a05b31d3d88cf82843ace7c02e123"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/welcome-a.png",
+      "sha256": "1bc538fb8e10a4e9337c6ef3c579c8d4582211ceadd13069da679c6b3a2a0ebd"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/1440/welcome-b.png",
+      "sha256": "be9a0b794bc9728c46c9a84fef8b2b69a769d6b103ba568b926391cd6b85ef21"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/authentication-rate-limit.png",
+      "sha256": "56c960db373951179ddbfa4bc214656292f66f158573bffb1fff3fd256f86ce2"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/authentication.png",
+      "sha256": "351180e8fa98aa192569ae90669ef10a82f331c227ee1d1bfb6ab82636c2ff5f"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/channel-log.png",
+      "sha256": "dd6606ffcb2615006e925de112b6739ccc8be1603859def3751413edf7c1b9e2"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/channel-participants-200.png",
+      "sha256": "1216756425234338fa7c3dea351603dfd0a5358b3c9e2ae9ab1d510e9fd77d7e"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/channel-participants.png",
+      "sha256": "3b2a9a59491fbd55ab1accc415b704e025fe12fdcb7150e28e03b9f4723ef126"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/channel-text-200.png",
+      "sha256": "bc2581b1f68750e7dd05ac4b4810443da5b7bffc0987b982d660e3ee90971812"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/channel-text-actions.png",
+      "sha256": "858245f676b397871963800a3713da65670cb37b473e0804aaaa1ea5813e3cb7"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/channel-text.png",
+      "sha256": "606f651a347960a5fab6237bea220f57b83b038020a2927004f587539202cbb5"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/chat-failed-media-connected.png",
+      "sha256": "172d612f95d9fb7cd4040d83ff54c558a341e29cdb516614cf49be3f143a73aa"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/direct-message-header.png",
+      "sha256": "f232d6b29a1e0bc567b360b353b135e606ed5148748c0d8cbdff9069ab0e7989"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/dm-conversation.png",
+      "sha256": "dcdc08d51898c971f6d8884136321026e29d1f97f0a39e9abb8e4e8af13b0c5f"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/dm-empty-conversation.png",
+      "sha256": "c7aa19607e998a6f0014c3fb35130635a2e7aabc173a1dce8526e70c242845ea"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/dm-list.png",
+      "sha256": "e8175e5d4aec55daefbccfcf52d285717a730b6a870c2d5cfa6653bbaff0e399"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/dm-search.png",
+      "sha256": "cc7c2d6a7e90928eaf22f09b756a1d604839eed0fd05f9c2cc213ff531491db6"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/global-search-result-context.png",
+      "sha256": "31360647086777df0513362dfb1d7f61c2c786c7fd53da663d1a13f73f0d6e6e"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/global-search.png",
+      "sha256": "4b5338cda428c4f36eb9564a6f18f73796a90af7188fda7e35ae235ec9ebd3e1"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/guild-audit.png",
+      "sha256": "04536d37b925ddb020a399f6bc87884ca0611ccf6c5697392fc7d13aef55f2e3"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/guild-channels.png",
+      "sha256": "196b28d0d4d7fb5a0ff038b4351e1543abdd2675c0219d97ccc5d246512389ca"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/guild-media.png",
+      "sha256": "f35d97d6094ed2dfca133f49276fc149b7ab4a01db985f3f08baef5c4674c905"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/guild-members.png",
+      "sha256": "b4b75ba701f6bf88a4ff6c26fc28872d807f2cbec1661547067c9658295d2800"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/guild-readiness.png",
+      "sha256": "a2ee151d940d4ee700fd28c312a9e8fed9b1107ebf6c4127ef46a7753e63fd40"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/guild-roles.png",
+      "sha256": "3e6395c3317a408a7a9d2b2bc0909f6d97faaf0c65482c5f07194b646fea7e19"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/guild-settings-200.png",
+      "sha256": "9ce134025c6417580cce99ea30341e877303a110dc230aca8c6c9fc6c53c210b"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/guild-settings-initial.png",
+      "sha256": "d90d8baf7297157e21070fa62d21907b0078ab651dd951c1c461c0b0f60ed6e3"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/guild-settings.png",
+      "sha256": "da8ad51f90448707483c0589213774d8073fee3c74432d1b7f5bc945b3cf2b99"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/navigation-overlay.png",
+      "sha256": "028fd1c2571445e8dca030de218ce0c3ff114fbfa52f48f28bd6b4e97d9c9e58"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/old-page-delete.png",
+      "sha256": "85f3b150392d8d0492a970bbab97c3bdc516909108819377f496662694db4e7d"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/own-sessions.png",
+      "sha256": "90068a2c51b1c40bafc2669428ceb68ca0efea51ae5eb60bf88a667aa75c1f32"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/password-reset-expired.png",
+      "sha256": "3320a69e01ad427ec32f557ab57ce9ee5ff8f1f2c50228b41c2493bb515d652a"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/registration-login-failed.png",
+      "sha256": "382a2135facd5d4dff1d7387b9c04b130e4734b4aad3282b1229754ebedc10d4"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/sfu-unavailable.png",
+      "sha256": "bbb23a75125fb41dd790bdd6ced38f8848518242668db19171ca9bf7c82776ca"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/voice-prejoin.png",
+      "sha256": "8c49b05e7f98c4607c00d2db57a2fb97ed026b1ec368d9376b94547ee15c5512"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/welcome-a.png",
+      "sha256": "618ad71a80e4bcad577d0030196b057d0d2a23a726208b854a81768be08e5868"
+    },
+    {
+      "path": ".out/qa302-20261012/final-full-app/393/welcome-b.png",
+      "sha256": "3b2a9a59491fbd55ab1accc415b704e025fe12fdcb7150e28e03b9f4723ef126"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/R14-navigation-top.png",
+      "sha256": "91533f569d9e0a21f2aceb5df30f3dfb94eabd3d8fe388559903015cc9f0376f"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-audit-desktop-1440x900.png",
+      "sha256": "db5ee4d1db0aaded3f78cd6f29f1e699822a006f2cd6f7bd10bbdb8fa6ff512e"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-audit-mobile-393x852.png",
+      "sha256": "518a2938888cb4c3083d5536e12fd708ba66036084d1415306898bb02a94a13b"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-audit-mobile-large-text-393x852.png",
+      "sha256": "950d9129e0c1e627bf66ba95bbd32d9a239263872b66731aec16809e2462d05b"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-channels-desktop-1440x900.png",
+      "sha256": "d6c853dc797bbdfc67ac116a18536a4298d67a00996752550ee9056498e74347"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-channels-mobile-393x852.png",
+      "sha256": "bf10098f8170330368639649c4ebd89e9f8795721f76210ac48c82082332ebe4"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-channels-mobile-large-text-393x852.png",
+      "sha256": "86cd77c48022bc0fce5917ca65095715b38f1cc44bbed30128f9f90bd5c32b2b"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-guild-desktop-1440x900.png",
+      "sha256": "230ef57de5337ff28f157c4075dd65f5c04665021377293b2bd2d6b381143b5b"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-guild-mobile-393x852.png",
+      "sha256": "1ad83a34acbf2f0df965afee1b746634a9aa168632f6f57eb387f98c7a3f8329"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-guild-mobile-large-text-393x852.png",
+      "sha256": "f928f1a3fcdec1d33dcf9e682edafcf2dc3e525e50dda83f711dea48bbb3bb1f"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-media-desktop-1440x900.png",
+      "sha256": "13a66a07d7dbe8a0e4baa4809869541d840570b30aa1373489fdf45946abb7c2"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-media-mobile-393x852.png",
+      "sha256": "12073d26b79ac0067d527ac253b9527e76a0f280833ed7004e2f25f98d12fc33"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-media-mobile-large-text-393x852.png",
+      "sha256": "a94eb24f8b956510167ad0aa19e15935a6feb7214fa091f17cf514be4c0b729a"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-members-desktop-1440x900.png",
+      "sha256": "1144c48bb54dc3d85c969dc0cb5171de5f72366240b71ad0f13419c137cd3c0a"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-members-mobile-393x852.png",
+      "sha256": "58574d0c79c0fdd0a43657d9015f6d61cc9e44ae4e79ea65769a9bf964ad69d3"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-members-mobile-large-text-393x852.png",
+      "sha256": "3e0b7f649b0ac6ee3984201887849e0ad17563aa59982ada07632c1563ff3566"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-readiness-desktop-1440x900.png",
+      "sha256": "68fde39baa06db938e4d2325242951e90c182c6e9a0bc6691853d6b5ffa36a21"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-readiness-mobile-393x852.png",
+      "sha256": "abc404480443c92d75d508e836ac3038cf02c4d784177254a74b8a615898ee9f"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-readiness-mobile-large-text-393x852.png",
+      "sha256": "7df506e269adba228cf14d25955b206c4bcf744941220dec17ff4669cb947cff"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-roles-desktop-1440x900.png",
+      "sha256": "65ea473f61769a0795b026c53e87bdfbc71ad55433741925a400537c01ac1799"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-roles-mobile-393x852.png",
+      "sha256": "549afc24a5e6a6f2c7f70aab2f364a8454e3a9470130620c8e381e3d7c7f550d"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-admin-roles-mobile-large-text-393x852.png",
+      "sha256": "7ed92e6fb84103823832cf21ab79700d961e02dc9b9836bcb02ced8a7822c67d"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-dm-conversation-desktop-1440x900.png",
+      "sha256": "b6bb6f6ff344793b88d092c0874958134acff4425c286bf344d8a68b616823b1"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-dm-conversation-mobile-393x852.png",
+      "sha256": "fbdcd1a58ef9f264c38b5a6bd793509128bccbadd315e78525e1f37c59d1d512"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-dm-conversation-mobile-large-text-393x852.png",
+      "sha256": "cec1729241c0da80617060ada44af9118a9bc345d0565f0e9fc529c34e5120ac"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-profile-logout-confirmation-mobile-393x852@3x.png",
+      "sha256": "5f901259368357199d12df82fe22d8242df179656ffb8f6ace18425863e235b5"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-screen-share-mobile-ime-2x-393x852.png",
+      "sha256": "250c920a2f72651c7efe91280db6b21cfd1944b135388bfceceff25d512c09ba"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png",
+      "sha256": "57a1ee201ed52100ff62996e132b9efca95d22a1dbf5bf9317bd128d9659d3de"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-text-channel-desktop-1440x900.png",
+      "sha256": "c29b72ddf3e3a939d1211adca1813ac0bf499e5a1b753af4dac0be7b348b93eb"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-text-channel-mobile-393x852.png",
+      "sha256": "9380b17966fcf09334d997737917a594b8884a436f71b33b0770cae3abe30e86"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-text-channel-mobile-large-text-393x852.png",
+      "sha256": "8d0bcd79c452d8106312b76990b4ea2ca38b538e963c09cc173880b4a7a0dd42"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-topology-create-desktop-1440x900@2x.png",
+      "sha256": "5a21ebcb5b166a210ed4dcd2f7351936542e26cdc02c84aa1cdfed1fe2999b92"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/flutter-topology-destructive-desktop-1440x900@2x.png",
+      "sha256": "5c9615c8ba8fae3251a5790929993e4e76cd7dcad43678d84ddce7752a9cabe9"
+    },
+    {
+      "path": ".out/qa302-20261012/final-flutter-captures/maintenance-banner-safe-area-390x800.png",
+      "sha256": "0ec431e7d63973d1e128ac29840fb60172380f49cb657b627b156b7df83dcbef"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/R14-navigation-top.png",
+      "sha256": "91533f569d9e0a21f2aceb5df30f3dfb94eabd3d8fe388559903015cc9f0376f"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-audit-desktop-1440x900.png",
+      "sha256": "db5ee4d1db0aaded3f78cd6f29f1e699822a006f2cd6f7bd10bbdb8fa6ff512e"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-audit-mobile-393x852.png",
+      "sha256": "518a2938888cb4c3083d5536e12fd708ba66036084d1415306898bb02a94a13b"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-audit-mobile-large-text-393x852.png",
+      "sha256": "950d9129e0c1e627bf66ba95bbd32d9a239263872b66731aec16809e2462d05b"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-channels-desktop-1440x900.png",
+      "sha256": "d6c853dc797bbdfc67ac116a18536a4298d67a00996752550ee9056498e74347"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-channels-mobile-393x852.png",
+      "sha256": "bf10098f8170330368639649c4ebd89e9f8795721f76210ac48c82082332ebe4"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-channels-mobile-large-text-393x852.png",
+      "sha256": "86cd77c48022bc0fce5917ca65095715b38f1cc44bbed30128f9f90bd5c32b2b"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-guild-desktop-1440x900.png",
+      "sha256": "230ef57de5337ff28f157c4075dd65f5c04665021377293b2bd2d6b381143b5b"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-guild-mobile-393x852.png",
+      "sha256": "1ad83a34acbf2f0df965afee1b746634a9aa168632f6f57eb387f98c7a3f8329"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-guild-mobile-large-text-393x852.png",
+      "sha256": "f928f1a3fcdec1d33dcf9e682edafcf2dc3e525e50dda83f711dea48bbb3bb1f"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-media-desktop-1440x900.png",
+      "sha256": "b95b15c3aaf7e6211c689152a1540718ea8864582a6cb52943b18c7b341ca328"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-media-mobile-393x852.png",
+      "sha256": "2e3a2006c081731a25bb56717ea6bdf18e5a7e5ade11023a89a33171be93bc19"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-media-mobile-large-text-393x852.png",
+      "sha256": "a94eb24f8b956510167ad0aa19e15935a6feb7214fa091f17cf514be4c0b729a"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-members-desktop-1440x900.png",
+      "sha256": "1144c48bb54dc3d85c969dc0cb5171de5f72366240b71ad0f13419c137cd3c0a"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-members-mobile-393x852.png",
+      "sha256": "58574d0c79c0fdd0a43657d9015f6d61cc9e44ae4e79ea65769a9bf964ad69d3"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-members-mobile-large-text-393x852.png",
+      "sha256": "3e0b7f649b0ac6ee3984201887849e0ad17563aa59982ada07632c1563ff3566"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-readiness-desktop-1440x900.png",
+      "sha256": "68fde39baa06db938e4d2325242951e90c182c6e9a0bc6691853d6b5ffa36a21"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-readiness-mobile-393x852.png",
+      "sha256": "abc404480443c92d75d508e836ac3038cf02c4d784177254a74b8a615898ee9f"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-readiness-mobile-large-text-393x852.png",
+      "sha256": "7df506e269adba228cf14d25955b206c4bcf744941220dec17ff4669cb947cff"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-roles-desktop-1440x900.png",
+      "sha256": "65ea473f61769a0795b026c53e87bdfbc71ad55433741925a400537c01ac1799"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-roles-mobile-393x852.png",
+      "sha256": "549afc24a5e6a6f2c7f70aab2f364a8454e3a9470130620c8e381e3d7c7f550d"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-admin-roles-mobile-large-text-393x852.png",
+      "sha256": "7ed92e6fb84103823832cf21ab79700d961e02dc9b9836bcb02ced8a7822c67d"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-dm-conversation-desktop-1440x900.png",
+      "sha256": "b6bb6f6ff344793b88d092c0874958134acff4425c286bf344d8a68b616823b1"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-dm-conversation-mobile-393x852.png",
+      "sha256": "fbdcd1a58ef9f264c38b5a6bd793509128bccbadd315e78525e1f37c59d1d512"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-dm-conversation-mobile-large-text-393x852.png",
+      "sha256": "cec1729241c0da80617060ada44af9118a9bc345d0565f0e9fc529c34e5120ac"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-profile-logout-confirmation-mobile-393x852@3x.png",
+      "sha256": "5f901259368357199d12df82fe22d8242df179656ffb8f6ace18425863e235b5"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-screen-share-mobile-ime-2x-393x852.png",
+      "sha256": "250c920a2f72651c7efe91280db6b21cfd1944b135388bfceceff25d512c09ba"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png",
+      "sha256": "57a1ee201ed52100ff62996e132b9efca95d22a1dbf5bf9317bd128d9659d3de"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-text-channel-desktop-1440x900.png",
+      "sha256": "c29b72ddf3e3a939d1211adca1813ac0bf499e5a1b753af4dac0be7b348b93eb"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-text-channel-mobile-393x852.png",
+      "sha256": "9380b17966fcf09334d997737917a594b8884a436f71b33b0770cae3abe30e86"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-text-channel-mobile-large-text-393x852.png",
+      "sha256": "8d0bcd79c452d8106312b76990b4ea2ca38b538e963c09cc173880b4a7a0dd42"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-topology-create-desktop-1440x900@2x.png",
+      "sha256": "5a21ebcb5b166a210ed4dcd2f7351936542e26cdc02c84aa1cdfed1fe2999b92"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/flutter-topology-destructive-desktop-1440x900@2x.png",
+      "sha256": "5c9615c8ba8fae3251a5790929993e4e76cd7dcad43678d84ddce7752a9cabe9"
+    },
+    {
+      "path": ".out/qa302-20261012/release-flutter-captures/maintenance-banner-safe-area-390x800.png",
+      "sha256": "0ec431e7d63973d1e128ac29840fb60172380f49cb657b627b156b7df83dcbef"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/guild-audit.png",
+      "sha256": "e3860adb705c2dace8d0cc0aa4f250ab4129e309f7dcfdc2deae59c45201b422"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/guild-settings-200.png",
+      "sha256": "15dcdd6b196714bdf2975e274fecfa4be4c31dbbbdf3c696b7a1eb66ad85a097"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/global-search-result-context.png",
+      "sha256": "9616a0a6be99eec800616c0254f6f6a72e60a16294667a3b5688878588a3cc97"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/authentication.png",
+      "sha256": "111f6a332dcfc2ea9d9fb95b898a667cd814a23f79a0c104da8ee8ea92f264dd"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/global-search.png",
+      "sha256": "2611ca934e32bdfc3979bfb5a5d93f98224c4e43b098643f4bb7a2ace7b402c9"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/password-reset-expired.png",
+      "sha256": "3320a69e01ad427ec32f557ab57ce9ee5ff8f1f2c50228b41c2493bb515d652a"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/guild-settings-initial.png",
+      "sha256": "854148bd40cbfe6d7ea2029ff971cf3ed11083d0b12fc7927302b37502c2b53b"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/channel-text.png",
+      "sha256": "c3dd14b855aee1feb2c1a5ef2207b75a48c7b6fc39afadbe852e867a0678c433"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/direct-message-header.png",
+      "sha256": "9707b7ed2f9669f66c5b607e56a4a84b67d39a287ccd7a25894e10d01e51cee4"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/dm-empty-conversation.png",
+      "sha256": "f58043974595daea060cdde4d73b80c6a8f08c298a2845e7fae6d8173313c3f0"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/old-page-delete.png",
+      "sha256": "35c832d7673681d66477032e35ec0d3866c881129c2887289c6d704d0e796a76"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/channel-participants.png",
+      "sha256": "398ccc79cba891b3b51770dc92ca7af1591c6ab1080db7b4003db57a22ff5bcd"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/channel-text-200.png",
+      "sha256": "a0862496abdfd539fe4b06e2b92ffbf57ee8156d6608faa2f13ee442c37263f7"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/dm-list.png",
+      "sha256": "f58043974595daea060cdde4d73b80c6a8f08c298a2845e7fae6d8173313c3f0"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/channel-text-actions.png",
+      "sha256": "6e94800bb5ecd27c9c29a953d24f91ed4b0bed014ecb3ab439f3023b1b3e8391"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/guild-members.png",
+      "sha256": "04e00de3df628eb4a11cb0846471695cb45eb77b198808c1c49d2931eb1a6c1f"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/channel-participants-200.png",
+      "sha256": "a0862496abdfd539fe4b06e2b92ffbf57ee8156d6608faa2f13ee442c37263f7"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/guild-roles.png",
+      "sha256": "8e38654c6b03d27281a3696dca0cc0952f2014f8e5a27b868507f8dfe3c3d53b"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/guild-settings.png",
+      "sha256": "41a8042658c0845c0b4ddf939901b3a5856e75152ddb969d66d038e2acb9e66f"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/guild-media.png",
+      "sha256": "62eea5aa5b5d0bed53c48d6a4b08b7f78ece6d3bf9d9ca58c29dfd8b3083e4e2"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/dm-conversation.png",
+      "sha256": "87f03bf8c40eb43072a4ad20684c9002088ed3760991f6cf28570061b7be435c"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/registration-login-failed.png",
+      "sha256": "4563e2f0350df3e78ced488021971191bee0bc06bb91d26b4507946b8e16475b"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/sfu-unavailable.png",
+      "sha256": "c2b43da77e1cc39ea9aaa374cab88ef541014537cd72b6902da4e47a002873c5"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/guild-readiness.png",
+      "sha256": "3b2c0b31160c74da541751f8a3fccbb0c2109d2071856cb888937877d42d56ef"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/welcome-b.png",
+      "sha256": "398ccc79cba891b3b51770dc92ca7af1591c6ab1080db7b4003db57a22ff5bcd"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/welcome-a.png",
+      "sha256": "5c685011ecb05bbde20202b98ce54e75edaaff3adc1e427d316e85a207588777"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/authentication-rate-limit.png",
+      "sha256": "56c960db373951179ddbfa4bc214656292f66f158573bffb1fff3fd256f86ce2"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/channel-log.png",
+      "sha256": "dd2523cfbf8804aa7e69065d766f54aebd48e37f343cbf5d86f71c56ccbf28db"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/guild-channels.png",
+      "sha256": "d0862514adb206a8b1aa6e56818ff9ad004c956a8c46f633d83226d0ba27d9d1"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/own-sessions.png",
+      "sha256": "bf76e0b09d2d04b720f3d1d5e2e742ddfaa5bc7152c6ab48b8828cfb6f870e15"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/dm-search.png",
+      "sha256": "9707b7ed2f9669f66c5b607e56a4a84b67d39a287ccd7a25894e10d01e51cee4"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/voice-prejoin.png",
+      "sha256": "c9ced00f5313afd638b889c0fc20b0482a6a05b31d3d88cf82843ace7c02e123"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/1440/chat-failed-media-connected.png",
+      "sha256": "b5c5cd7b39647de8e0a37aff904789837126ac728a5088a3fbbb4c67120d6d62"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-audit.png",
+      "sha256": "7fdfc29221d655210b6f3b2afa7552c0ea19ba6302c63653be0908d47bdf04cd"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-settings-200.png",
+      "sha256": "9ce134025c6417580cce99ea30341e877303a110dc230aca8c6c9fc6c53c210b"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/global-search-result-context.png",
+      "sha256": "5f039e10ce1b0b45fefa036ee68803a694e986192cf134c813fdf1228619d974"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/authentication.png",
+      "sha256": "351180e8fa98aa192569ae90669ef10a82f331c227ee1d1bfb6ab82636c2ff5f"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/global-search.png",
+      "sha256": "4b5338cda428c4f36eb9564a6f18f73796a90af7188fda7e35ae235ec9ebd3e1"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/password-reset-expired.png",
+      "sha256": "3320a69e01ad427ec32f557ab57ce9ee5ff8f1f2c50228b41c2493bb515d652a"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-settings-initial.png",
+      "sha256": "d90d8baf7297157e21070fa62d21907b0078ab651dd951c1c461c0b0f60ed6e3"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-text.png",
+      "sha256": "a9b1703fc772bfb7f3aed8990b508a732ffa88692cb605f5de3dd064d8c0dea3"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/direct-message-header.png",
+      "sha256": "f99d6e671aea5c21a66c54fed48925061d4c285ef809ffb9f94d5ee7c304e1e7"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/dm-empty-conversation.png",
+      "sha256": "c7aa19607e998a6f0014c3fb35130635a2e7aabc173a1dce8526e70c242845ea"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/old-page-delete.png",
+      "sha256": "b4d9826cb3d5a60fa316c509df83473dc53dd277b2a66128e7ea8878a6a2d129"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-participants.png",
+      "sha256": "8c8adb4a0b26853eb4b19161278daa0385faa2cc30d979e2490314681ea5c1f8"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-text-200.png",
+      "sha256": "d68ffc6d2c3e224d97df59309984991a06ff126193d14a0e7268c27fec6d1a8c"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/dm-list.png",
+      "sha256": "eeae4432e7419f7176fb66a99f71914a6801fd2b7ad652a9340599b4b0a95d89"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-text-actions.png",
+      "sha256": "0f3eb6023f289144906798ea6418c12f6a3c151910986c4b15e9ab751054043a"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-members.png",
+      "sha256": "f15571f3e326ae1c368b9d6ad9db102a82c6bbd4253118fd934eefdbe1b6a51b"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-participants-200.png",
+      "sha256": "37ea09fb3ec99e5e2c4a114bc06025af652609cbea98e691e795ccc214c01f91"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-roles.png",
+      "sha256": "3e6395c3317a408a7a9d2b2bc0909f6d97faaf0c65482c5f07194b646fea7e19"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-settings.png",
+      "sha256": "da8ad51f90448707483c0589213774d8073fee3c74432d1b7f5bc945b3cf2b99"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-media.png",
+      "sha256": "c2469fa463a0283787dc7400ac0b0935cd865d32c99942a53e194725d7e75dcc"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/dm-conversation.png",
+      "sha256": "4bf198582f253cde26a9692d4f4456905c7ef7b48171b6246a9e48a0afd0eb54"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/registration-login-failed.png",
+      "sha256": "96db199ee15b2e23a17a575cd56e16391fd90e76fdfbfa282c055608ace471fb"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/sfu-unavailable.png",
+      "sha256": "78481f836241408ee9a5c2736e2c74c8b89203d9a8599340afe7781c45a76cc2"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/navigation-overlay.png",
+      "sha256": "a0490eb892a9650a148796c0c4d5307001dd3eea53d7c18a9fbff231b404c0d3"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-readiness.png",
+      "sha256": "a2ee151d940d4ee700fd28c312a9e8fed9b1107ebf6c4127ef46a7753e63fd40"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/welcome-b.png",
+      "sha256": "8c8adb4a0b26853eb4b19161278daa0385faa2cc30d979e2490314681ea5c1f8"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/welcome-a.png",
+      "sha256": "2c6e49842c1140f08b4175b93bb02e689ee56f8d239a73b9ea3e7bcf847608c1"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/authentication-rate-limit.png",
+      "sha256": "e14f3f7d53412f78d86bac9683403a1eee533e165339fda6543c27bde4ef2f71"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-log.png",
+      "sha256": "77ec024ab6b00d364fbb09f592f06656f1a319bbaf76edf19467a64a84c0f9f7"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-channels.png",
+      "sha256": "196b28d0d4d7fb5a0ff038b4351e1543abdd2675c0219d97ccc5d246512389ca"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/own-sessions.png",
+      "sha256": "dbdad45b74630134d46d1475700d50a3bbe970b1c9904e1da3abb23c36734d87"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/dm-search.png",
+      "sha256": "336b0b20ebc7f87325a29b10eb4aaaf0da66706d671fea6d7692b205d66db944"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/voice-prejoin.png",
+      "sha256": "8c49b05e7f98c4607c00d2db57a2fb97ed026b1ec368d9376b94547ee15c5512"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/chat-failed-media-connected.png",
+      "sha256": "f28185eca6a6e5724e61474a05f4914d22809f45d5181222232d89faecc7d025"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-audit.png",
+      "sha256": "7fdfc29221d655210b6f3b2afa7552c0ea19ba6302c63653be0908d47bdf04cd"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-settings-200.png",
+      "sha256": "9ce134025c6417580cce99ea30341e877303a110dc230aca8c6c9fc6c53c210b"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/global-search-result-context.png",
+      "sha256": "5f039e10ce1b0b45fefa036ee68803a694e986192cf134c813fdf1228619d974"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/authentication.png",
+      "sha256": "351180e8fa98aa192569ae90669ef10a82f331c227ee1d1bfb6ab82636c2ff5f"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/global-search.png",
+      "sha256": "4b5338cda428c4f36eb9564a6f18f73796a90af7188fda7e35ae235ec9ebd3e1"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/password-reset-expired.png",
+      "sha256": "3320a69e01ad427ec32f557ab57ce9ee5ff8f1f2c50228b41c2493bb515d652a"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-settings-initial.png",
+      "sha256": "d90d8baf7297157e21070fa62d21907b0078ab651dd951c1c461c0b0f60ed6e3"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-text.png",
+      "sha256": "a9b1703fc772bfb7f3aed8990b508a732ffa88692cb605f5de3dd064d8c0dea3"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/direct-message-header.png",
+      "sha256": "f99d6e671aea5c21a66c54fed48925061d4c285ef809ffb9f94d5ee7c304e1e7"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/dm-empty-conversation.png",
+      "sha256": "c7aa19607e998a6f0014c3fb35130635a2e7aabc173a1dce8526e70c242845ea"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/old-page-delete.png",
+      "sha256": "b4d9826cb3d5a60fa316c509df83473dc53dd277b2a66128e7ea8878a6a2d129"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-participants.png",
+      "sha256": "8c8adb4a0b26853eb4b19161278daa0385faa2cc30d979e2490314681ea5c1f8"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-text-200.png",
+      "sha256": "d68ffc6d2c3e224d97df59309984991a06ff126193d14a0e7268c27fec6d1a8c"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/dm-list.png",
+      "sha256": "eeae4432e7419f7176fb66a99f71914a6801fd2b7ad652a9340599b4b0a95d89"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-text-actions.png",
+      "sha256": "0f3eb6023f289144906798ea6418c12f6a3c151910986c4b15e9ab751054043a"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-members.png",
+      "sha256": "f15571f3e326ae1c368b9d6ad9db102a82c6bbd4253118fd934eefdbe1b6a51b"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-participants-200.png",
+      "sha256": "37ea09fb3ec99e5e2c4a114bc06025af652609cbea98e691e795ccc214c01f91"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-roles.png",
+      "sha256": "3e6395c3317a408a7a9d2b2bc0909f6d97faaf0c65482c5f07194b646fea7e19"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-settings.png",
+      "sha256": "da8ad51f90448707483c0589213774d8073fee3c74432d1b7f5bc945b3cf2b99"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-media.png",
+      "sha256": "c2469fa463a0283787dc7400ac0b0935cd865d32c99942a53e194725d7e75dcc"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/dm-conversation.png",
+      "sha256": "4bf198582f253cde26a9692d4f4456905c7ef7b48171b6246a9e48a0afd0eb54"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/registration-login-failed.png",
+      "sha256": "96db199ee15b2e23a17a575cd56e16391fd90e76fdfbfa282c055608ace471fb"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/sfu-unavailable.png",
+      "sha256": "78481f836241408ee9a5c2736e2c74c8b89203d9a8599340afe7781c45a76cc2"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/navigation-overlay.png",
+      "sha256": "a0490eb892a9650a148796c0c4d5307001dd3eea53d7c18a9fbff231b404c0d3"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-readiness.png",
+      "sha256": "a2ee151d940d4ee700fd28c312a9e8fed9b1107ebf6c4127ef46a7753e63fd40"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/welcome-b.png",
+      "sha256": "8c8adb4a0b26853eb4b19161278daa0385faa2cc30d979e2490314681ea5c1f8"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/welcome-a.png",
+      "sha256": "2c6e49842c1140f08b4175b93bb02e689ee56f8d239a73b9ea3e7bcf847608c1"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/authentication-rate-limit.png",
+      "sha256": "e14f3f7d53412f78d86bac9683403a1eee533e165339fda6543c27bde4ef2f71"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/channel-log.png",
+      "sha256": "77ec024ab6b00d364fbb09f592f06656f1a319bbaf76edf19467a64a84c0f9f7"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/guild-channels.png",
+      "sha256": "196b28d0d4d7fb5a0ff038b4351e1543abdd2675c0219d97ccc5d246512389ca"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/own-sessions.png",
+      "sha256": "dbdad45b74630134d46d1475700d50a3bbe970b1c9904e1da3abb23c36734d87"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/dm-search.png",
+      "sha256": "336b0b20ebc7f87325a29b10eb4aaaf0da66706d671fea6d7692b205d66db944"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/voice-prejoin.png",
+      "sha256": "8c49b05e7f98c4607c00d2db57a2fb97ed026b1ec368d9376b94547ee15c5512"
+    },
+    {
+      "path": ".out/qa302-20261012/publish-full-app/393/chat-failed-media-connected.png",
+      "sha256": "f28185eca6a6e5724e61474a05f4914d22809f45d5181222232d89faecc7d025"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-readiness-mobile-large-text-393x852.png",
+      "sha256": "7df506e269adba228cf14d25955b206c4bcf744941220dec17ff4669cb947cff"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-screen-share-mobile-ime-2x-393x852.png",
+      "sha256": "250c920a2f72651c7efe91280db6b21cfd1944b135388bfceceff25d512c09ba"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-members-desktop-1440x900.png",
+      "sha256": "1144c48bb54dc3d85c969dc0cb5171de5f72366240b71ad0f13419c137cd3c0a"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png",
+      "sha256": "57a1ee201ed52100ff62996e132b9efca95d22a1dbf5bf9317bd128d9659d3de"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-readiness-desktop-1440x900.png",
+      "sha256": "68fde39baa06db938e4d2325242951e90c182c6e9a0bc6691853d6b5ffa36a21"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-channels-mobile-large-text-393x852.png",
+      "sha256": "86cd77c48022bc0fce5917ca65095715b38f1cc44bbed30128f9f90bd5c32b2b"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-roles-mobile-large-text-393x852.png",
+      "sha256": "7ed92e6fb84103823832cf21ab79700d961e02dc9b9836bcb02ced8a7822c67d"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-guild-mobile-large-text-393x852.png",
+      "sha256": "f928f1a3fcdec1d33dcf9e682edafcf2dc3e525e50dda83f711dea48bbb3bb1f"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-text-channel-desktop-1440x900.png",
+      "sha256": "c29b72ddf3e3a939d1211adca1813ac0bf499e5a1b753af4dac0be7b348b93eb"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-members-mobile-large-text-393x852.png",
+      "sha256": "3e0b7f649b0ac6ee3984201887849e0ad17563aa59982ada07632c1563ff3566"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/maintenance-banner-safe-area-390x800.png",
+      "sha256": "0ec431e7d63973d1e128ac29840fb60172380f49cb657b627b156b7df83dcbef"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-members-mobile-393x852.png",
+      "sha256": "58574d0c79c0fdd0a43657d9015f6d61cc9e44ae4e79ea65769a9bf964ad69d3"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-dm-conversation-mobile-393x852.png",
+      "sha256": "fbdcd1a58ef9f264c38b5a6bd793509128bccbadd315e78525e1f37c59d1d512"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-dm-conversation-mobile-large-text-393x852.png",
+      "sha256": "cec1729241c0da80617060ada44af9118a9bc345d0565f0e9fc529c34e5120ac"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-topology-destructive-desktop-1440x900@2x.png",
+      "sha256": "5c9615c8ba8fae3251a5790929993e4e76cd7dcad43678d84ddce7752a9cabe9"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-channels-mobile-393x852.png",
+      "sha256": "bf10098f8170330368639649c4ebd89e9f8795721f76210ac48c82082332ebe4"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-media-desktop-1440x900.png",
+      "sha256": "8d74c30342987dd04082bbcdf01a87af477ba3b136b0fd06fabe981b2dce8a40"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-media-mobile-large-text-393x852.png",
+      "sha256": "a94eb24f8b956510167ad0aa19e15935a6feb7214fa091f17cf514be4c0b729a"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-media-mobile-393x852.png",
+      "sha256": "e6fcb31a3fd59021567f3ef2740a8df52277eef0218ef2da8cd18159aea996ed"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-readiness-mobile-393x852.png",
+      "sha256": "abc404480443c92d75d508e836ac3038cf02c4d784177254a74b8a615898ee9f"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-roles-desktop-1440x900.png",
+      "sha256": "65ea473f61769a0795b026c53e87bdfbc71ad55433741925a400537c01ac1799"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-audit-mobile-393x852.png",
+      "sha256": "518a2938888cb4c3083d5536e12fd708ba66036084d1415306898bb02a94a13b"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-audit-desktop-1440x900.png",
+      "sha256": "db5ee4d1db0aaded3f78cd6f29f1e699822a006f2cd6f7bd10bbdb8fa6ff512e"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-dm-conversation-desktop-1440x900.png",
+      "sha256": "b6bb6f6ff344793b88d092c0874958134acff4425c286bf344d8a68b616823b1"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-channels-desktop-1440x900.png",
+      "sha256": "d6c853dc797bbdfc67ac116a18536a4298d67a00996752550ee9056498e74347"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-guild-desktop-1440x900.png",
+      "sha256": "230ef57de5337ff28f157c4075dd65f5c04665021377293b2bd2d6b381143b5b"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-text-channel-mobile-393x852.png",
+      "sha256": "9380b17966fcf09334d997737917a594b8884a436f71b33b0770cae3abe30e86"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-guild-mobile-393x852.png",
+      "sha256": "1ad83a34acbf2f0df965afee1b746634a9aa168632f6f57eb387f98c7a3f8329"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-text-channel-mobile-large-text-393x852.png",
+      "sha256": "8d0bcd79c452d8106312b76990b4ea2ca38b538e963c09cc173880b4a7a0dd42"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-roles-mobile-393x852.png",
+      "sha256": "549afc24a5e6a6f2c7f70aab2f364a8454e3a9470130620c8e381e3d7c7f550d"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-profile-logout-confirmation-mobile-393x852@3x.png",
+      "sha256": "5f901259368357199d12df82fe22d8242df179656ffb8f6ace18425863e235b5"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-admin-audit-mobile-large-text-393x852.png",
+      "sha256": "950d9129e0c1e627bf66ba95bbd32d9a239263872b66731aec16809e2462d05b"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/R14-navigation-top.png",
+      "sha256": "91533f569d9e0a21f2aceb5df30f3dfb94eabd3d8fe388559903015cc9f0376f"
+    },
+    {
+      "path": ".out/qa302-20261012/commit-flutter-captures/flutter-topology-create-desktop-1440x900@2x.png",
+      "sha256": "5a21ebcb5b166a210ed4dcd2f7351936542e26cdc02c84aa1cdfed1fe2999b92"
+    }
+  ],
+  "responsive_drawer_correction": {
+    "status": "PASS_TEST_CORRECTION",
+    "initial_receipts": [
+      ".out/qa302-20261012/responsive-complete-results.json",
+      ".out/qa302-20261012/linux-firefox/complete-results.json"
+    ],
+    "observation": "New production grid makes inner drawer279px inside outer sidebar280px including border at320px. Earlier assertion compared inner content box to outer width. Updated check verifies exact outer width and contained visible inner drawer; CSS unchanged.",
+    "intermediate_test_attempt": "Initial correction incorrectly applied mobile parent geometry to840px tablet; retained failed receipt, final check scopes parent grid to<=720px and retains exact original tablet drawer geometry."
+  },
+  "latest_frozen_sources": {
+    "web": {
+      "status": "PASS",
+      "base_commit": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+      "web_src_manifest_sha256": "88e369ec94660e3e5af73acb0b35a12e3b362144c1eaecd8a26e3e2144a0ef90",
+      "web_src_files": 1098,
+      "built_dist_manifest_sha256": "8eaeb0166ef31cf2d80dfa24fe679c2e1515ad3eccb27afdf77b6d954ba0f4b0",
+      "origin": "https://localhost:4810",
+      "source_stable_during_unit_and_build": true,
+      "scope": "Final batch3 source; last delta is overflow-wrap:anywhere for confirmation target paragraph."
+    },
+    "native": "31b73f8238b70e1f9b4c5bc681a0bbf1575a781c60a4fdbb15f644e0c8dedf36"
+  },
+  "cleanup": {
+    "status": "PASS_ROOT_OWNED",
+    "receipt": ".out/qa302-20261012/final-root-cleanup.json",
+    "sha256": "2e969d7f38ffe0fcc3f3fb883a826ffb9d0d916eb8f4150066cef5f68065fe25"
+  }
+}

@@ -6,11 +6,11 @@
 .voice-dock.connected { background: #10191A; }
 .main-header { background: var(--gc-content); }
 .text-conversation .message-list { padding: 20px 24px 12px; }
-.text-conversation .composer-wrap { display: block; height: 98px; min-height: 98px; padding: 8px 24px 16px; background: var(--gc-content); }
-.text-conversation .composer { box-sizing: border-box; height: 52px; min-height: 52px; align-items: flex-end; border-radius: 12px; padding: 8px; background: var(--gc-surface-raised); }
+.text-conversation .composer-wrap { display: block; height: auto; min-height: 98px; padding: 8px 24px 16px; background: var(--gc-content); }
+.text-conversation .composer { box-sizing: border-box; height: auto; min-height: 52px; align-items: flex-end; border-radius: 12px; padding: 8px; background: var(--gc-surface-raised); }
 .direct-message-conversation .message-list { padding: 20px 24px 12px; }
-.direct-message-conversation .composer-wrap { display: block; height: 98px; min-height: 98px; padding: 8px 24px 16px; background: var(--gc-content); }
-.direct-message-conversation .composer { box-sizing: border-box; height: 52px; min-height: 52px; align-items: flex-end; border-radius: 12px; padding: 8px; background: var(--gc-surface-raised); }
+.direct-message-conversation .composer-wrap { display: block; height: auto; min-height: 98px; padding: 8px 24px 16px; background: var(--gc-content); }
+.direct-message-conversation .composer { box-sizing: border-box; height: auto; min-height: 52px; align-items: flex-end; border-radius: 12px; padding: 8px; background: var(--gc-surface-raised); }
 .media-main { display: flex; flex-direction: column; gap: 16px; padding: 24px; background: var(--gc-canvas); }
 .media-main > .screen-viewer.stream-wrap { min-height: 0; flex: 1; gap: 16px; padding: 0; background: transparent; }
 .screen-stage { display: flex; justify-content: center; background: #050608; }
@@ -46,8 +46,8 @@ dialog:not([open]) { display: none; }
   .guild-header { padding: 12px 16px; }
   .main-header { gap: 8px; padding-right: 12px; padding-left: 12px; }
   .text-conversation .message-list, .direct-message-conversation .message-list { padding: 16px 12px 8px; }
-  .text-conversation .composer-wrap, .direct-message-conversation .composer-wrap { height: 70px; min-height: 70px; padding: 8px; }
-  .text-conversation .composer, .direct-message-conversation .composer { height: 54px; min-height: 54px; gap: 4px; padding-top: 4px; padding-bottom: 4px; padding-right: 4px; padding-left: 4px; }
+  .text-conversation .composer-wrap, .direct-message-conversation .composer-wrap { height: auto; min-height: 70px; padding: 8px; }
+  .text-conversation .composer, .direct-message-conversation .composer { height: auto; min-height: 54px; gap: 4px; padding-top: 4px; padding-bottom: 4px; padding-right: 4px; padding-left: 4px; }
   .sidebar > .guild-header { border-bottom: 0; }
 }
 @media (min-width: 1024px) and (max-width: 1279px) {
@@ -78,10 +78,10 @@ dialog:not([open]) { display: none; }
 .mention-autocomplete--unfiltered .mention-popover { height: auto; max-height: min(322px, calc(100dvh - 150px)); overflow-y: auto; }
 .mention-autocomplete-error { margin: 0; color: var(--gc-danger); font-size: 0.75rem; }
 @media (max-width: 600px) { .mention-autocomplete, .mention-popover { width: min(360px, calc(100vw - 32px)); }.mention-autocomplete { left: 16px; } }.text-conversation .reply-target { display: flex; flex: none; box-sizing: border-box; height: 41px; align-items: center; gap: 8px; margin: 0; border: 1px solid #707B91; border-radius: 10px 10px 0 0; padding: 6px 12px; color: var(--gc-text-primary); background: var(--gc-surface); font-size: 0.75rem; }
-.text-conversation .composer-wrap:has(.reply-target) { height: 131px; min-height: 131px; padding: 0 24px 18px; }
+.text-conversation .composer-wrap:has(.reply-target) { height: auto; min-height: 131px; padding: 0 24px 18px; }
 .text-conversation .composer-wrap:has(.reply-target) .composer { border-radius: 0 0 12px 12px; }
 .direct-message-conversation .reply-target { display: flex; flex: none; box-sizing: border-box; height: 41px; align-items: center; gap: 8px; margin: 0; border: 1px solid #707B91; border-radius: 10px 10px 0 0; padding: 6px 12px; color: var(--gc-text-primary); background: var(--gc-surface); font-size: 0.75rem; }
-.direct-message-conversation .composer-wrap:has(.reply-target) { height: 131px; min-height: 131px; padding: 0 24px 18px; }
+.direct-message-conversation .composer-wrap:has(.reply-target) { height: auto; min-height: 131px; padding: 0 24px 18px; }
 .direct-message-conversation .composer-wrap:has(.reply-target) .composer { border-radius: 0 0 12px 12px; }
 .text-conversation .reply-target, .direct-message-conversation .reply-target { justify-content: normal; }
 .topology-dialog { gap: normal; transform: translateY(0); }

@@ -84,11 +84,11 @@ async function loadOlder(): Promise<void> {
   <p class="gc-sr-only" role="status" aria-atomic="true">{{ announcement }}</p>
   <button v-if="jumpCount" class="message-jump-latest" type="button" @click="jumpToLatest">К новым сообщениям ({{ jumpCount }})</button>
   <ol ref="list" class="messages message-list" role="log" aria-live="off" aria-label="История личного диалога" @scroll.passive="onScroll">
-    <li v-if="store.nextCursor" class="message-actions"><button type="button" :disabled="store.olderLoading" @click="loadOlder">{{ store.olderLoading ? 'Загружаем старые сообщения…' : 'Показать предыдущие сообщения' }}</button></li>
+    <li role="presentation" v-if="store.nextCursor" class="message-actions"><button type="button" :disabled="store.olderLoading" @click="loadOlder">{{ store.olderLoading ? 'Загружаем старые сообщения…' : 'Показать предыдущие сообщения' }}</button></li>
     <li v-if="store.olderError" class="state state-error" role="alert">{{ store.olderError }} <button type="button" :disabled="store.olderLoading" @click="loadOlder">Повторить</button></li>
     <template v-for="(entry, index) in chronologicalMessages" :key="entry.message.id">
-    <li v-if="entry.dateLabel" class="history-date"><span v-if="store.historyLoaded && !store.nextCursor && index === 0" class="history-start" role="status" aria-label="Это начало истории.">Начало</span><time :datetime="entry.dateTime">{{ entry.dateLabel }}</time></li>
-    <li :data-message-id="entry.message.id" :class="{ 'grouped-message': entry.grouped }">
+    <li role="presentation" v-if="entry.dateLabel" class="history-date"><span v-if="store.historyLoaded && !store.nextCursor && index === 0" class="history-start" role="status" aria-label="Это начало истории.">Начало</span><time :datetime="entry.dateTime">{{ entry.dateLabel }}</time></li>
+    <li role="presentation" :data-message-id="entry.message.id" :class="{ 'grouped-message': entry.grouped }">
       <MessageItem
         :message="entry.message"
         :grouped="entry.grouped"
@@ -106,7 +106,7 @@ async function loadOlder(): Promise<void> {
       />
     </li>
     </template>
-    <li v-if="store.historyLoaded && !store.error && !store.messages.length && !store.loadingHistory" class="state">Сообщений пока нет.</li>
+    <li role="presentation" v-if="store.historyLoaded && !store.error && !store.messages.length && !store.loadingHistory" class="state">Сообщений пока нет.</li>
   </ol>
   </div>
 </template>

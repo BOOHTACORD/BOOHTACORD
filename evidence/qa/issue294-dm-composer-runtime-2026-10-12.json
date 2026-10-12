@@ -1,0 +1,1272 @@
+{
+  "schema_version": 1,
+  "issue": 294,
+  "issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/294",
+  "tested_at": "2026-10-12",
+  "status": "PARTIAL",
+  "close_issue": false,
+  "selected_leaf": "FV2-019",
+  "dependencies_read": [
+    "FV2-001",
+    "FV2-007",
+    "FV2-017",
+    "T-041",
+    "T-050",
+    "T-051"
+  ],
+  "related_composer_leaf": "FV2-008",
+  "summary": "Production Web and native Flutter DM/search/composer workflows against disposable actual Go/PostgreSQL secure-cookie API, with real third-administrator DM denial. Observed emulator/simulator and controlled browser results are separated from physical-device gates.",
+  "production_changes_owned_by_this_QA_agent": [
+    "clients/web/src/search/SearchPanel.vue",
+    "clients/web/src/search/session/state.ts"
+  ],
+  "confirmed_defect_and_fix": {
+    "observed_before": "Closing and reopening global search lost the origin query, while singleton filters leaked into a different DM.",
+    "focused_RED_before_implementation": "Actual SearchPanel browser regression failed on leaked author filter. Subsequent reviewer cases failed for re-submitting an unsubmitted edited query and restoring scroll on the non-scrollable result list.",
+    "implemented_behavior": "Pinia in-memory origin-scoped query/filter/search session retains input and last submitted query separately, refetches actual results, and restores the actual search-aside scroll owner. Existing authenticated-state teardown disposes the store between accounts.",
+    "persistent_browser_storage_added": false,
+    "message_results_cached": false,
+    "shared_native_product_changes_owned": []
+  },
+  "platforms": {
+    "android": {
+      "observed_runtime_result": "PASS",
+      "issue_gate_result": "PARTIAL",
+      "runtime_receipt": ".out/qa294-20261012/android/runtime.json",
+      "runtime_receipt_sha256": "8897b8dd9a0036d22af0f5a60a0b8774a30251ec12e8e2b4a2bc5babb3deffb6",
+      "source": {
+        "candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+        "dirty_diff_sha256": "5f27e73dcc0462e9139db5db4cda30cf385d1eb4836c16a03287925888d8f982",
+        "flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+        "qa_source_files": {
+          "clients/flutter/integration_test/dm_composer_qa_test.dart": "d5e5b2bdb877fc6c0e9f99427ea6f377d44ea880dd6814190e47a318b3596e04",
+          "clients/flutter/test_driver/dm_composer_qa.dart": "9a08bc9781409251a3b937cd54d1f23c4a4d29b51cc948f87d5bc41708073b30",
+          "tools/qa/dm_composer/run_native.py": "8973049cfb08ddad5834066a06488cc7592fbdb17d90cb178b39f7ae5978e12f",
+          "tools/qa/dm_composer/stack.py": "00a00ed96273abb733794f22add0c485490b21ff427fa5e9cccea38b806da2a8",
+          "tools/qa/dm_composer/os_control.py": "43f38429883dc1295846fb5f8c5a3ce465486959d29fe4680221dcd9da8e158a",
+          "tools/qa/dm_composer/integrity.py": "0e9731cfcc9fcaf2304b5c5492e2425d682d24ea718787c3c4b248699cc8722d"
+        },
+        "native_artifact_sha256": "d6bd23e05e0b6ae68a7fccd42113cf9c2a586e4a905f4e7de9ab0c4c231bb6b2"
+      },
+      "started_at": "2026-10-12T18:39:13.607533+00:00",
+      "completed_at": "2026-10-12T18:40:27.783555+00:00",
+      "mocks": false,
+      "physical_device": false,
+      "actual_backend": "Go/PostgreSQL secure-cookie HTTP API",
+      "checks": {
+        "list_empty_composer_visible": "PASS",
+        "UI_send_real_history": "PASS",
+        "per_conversation_drafts": "PASS",
+        "search_result_original_context_draft": "PASS",
+        "per_origin_query_scope_back_resize": "PASS",
+        "OS_clipboard_controlled_paste": "PASS",
+        "long_multiline_composer_layout": "PASS",
+        "emulator_OS_background_foreground_draft": "PASS",
+        "real_server_third_admin_DM_ACL": "PASS"
+      },
+      "observations": {
+        "draft_b_entered": {
+          "selected_expected_b": true,
+          "selected_expected_c": false,
+          "loading": false,
+          "sending": false,
+          "account_present": true,
+          "epoch_unchanged": true,
+          "controller_length": 13,
+          "stored_length": 13
+        },
+        "draft_c_selected": {
+          "selected_expected_b": false,
+          "selected_expected_c": true,
+          "loading": false,
+          "sending": false,
+          "account_present": true,
+          "epoch_unchanged": true,
+          "controller_length": 0,
+          "stored_length": null
+        },
+        "draft_c_entered": {
+          "selected_expected_b": false,
+          "selected_expected_c": true,
+          "loading": false,
+          "sending": false,
+          "account_present": true,
+          "epoch_unchanged": true,
+          "controller_length": 13,
+          "stored_length": 13
+        },
+        "draft_b_returned": {
+          "selected_expected_b": true,
+          "selected_expected_c": false,
+          "loading": false,
+          "sending": false,
+          "account_present": true,
+          "epoch_unchanged": true,
+          "controller_length": 13,
+          "stored_length": 13
+        },
+        "clipboard_method": "Actual platform Clipboard.setData/getData via EditableTextState.pasteText; controlled Flutter action, not physical paste gesture",
+        "actual_IME_inset_logical": 0.0,
+        "safe_area_padding_logical": 0.0,
+        "lifecycle_dispatch": "adb KEYCODE_HOME then explicit launch of owned QA package; actual Android lifecycle observer",
+        "third_admin_DM_history_HTTP": 404,
+        "third_admin_DM_search_HTTP": 404
+      },
+      "owned_resources_removed": true,
+      "screenshots": [
+        {
+          "path": ".out/qa294-20261012/android/native-dm-conversation.png",
+          "sha256": "9f52592814776a368ed7a95252f9cd667888b0345b033ecc5938483d6ec70f4c",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/android/native-dm-list.png",
+          "sha256": "c31efb723711d4a14f9ef91c3f66e24af21387182eea9b16801c3aef4a47ad51",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/android/native-dm-search.png",
+          "sha256": "ae9165bfda021ec34ddfb54fb67fb246f2cc3f632845e2d858875c08535dba53",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/android/native-draft-return.png",
+          "sha256": "85cd919b72556c948b0720b929d3785bca1b919af3319533aaccdbd2a8bf7c2a",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/android/native-empty-dm.png",
+          "sha256": "2509ad4f8a680c138b1548c9e3c5fc5191c415f1f812b526e17fa2f89e13e418",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/android/native-long-multiline-composer.png",
+          "sha256": "6f00813c75b853b816d29054aeb00dda2c8e8acd303bd0c797164e716197109e",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/android/native-original-context-final.png",
+          "sha256": "6f00813c75b853b816d29054aeb00dda2c8e8acd303bd0c797164e716197109e",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/android/native-result-context.png",
+          "sha256": "18f2ae60e78467eb4933ec4d3166dc7bf7efe019b4c677bef5c19767a24f6661",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/android/native-search-restored.png",
+          "sha256": "649b3d8d934be26a0a1418054360107c7a16661af5765d73497dd63202f88cfc",
+          "pixels": [
+            1080,
+            2400
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        }
+      ],
+      "device": "emulator-5556",
+      "os_version": "sdk_phone64_arm64-userdebug 15 AE3A.240806.019 12368160 test-keys",
+      "build_mode": "debug",
+      "owned_reverses_removed": true,
+      "capture_method": "integration_test binding.takeScreenshot; Android convertFlutterSurfaceToImage. Flutter raster surface, not physical OS screenshot.",
+      "remaining": [
+        "physical device touch/IME/image picker and clipboard gesture",
+        "real-user transition/time measurement",
+        "physical background foreground and screen reader"
+      ]
+    },
+    "ios": {
+      "observed_runtime_result": "PASS",
+      "issue_gate_result": "PARTIAL",
+      "runtime_receipt": ".out/qa294-20261012/ios/runtime.json",
+      "runtime_receipt_sha256": "8df235b2bda5fc82aab75c66e0f890127db2b4a9fde18321e05ca2053b435fbe",
+      "source": {
+        "candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+        "dirty_diff_sha256": "f51180cf46ec822496a3f5b38ca0ddeae5a0bcb561a3af0706b89b6e5600d118",
+        "flutter_lib_manifest_sha256": "01aeceac5e4de962502c70480aacf2f4a3a0cd387afcee5858a498f461c49d35",
+        "qa_source_files": {
+          "clients/flutter/integration_test/dm_composer_qa_test.dart": "d5e5b2bdb877fc6c0e9f99427ea6f377d44ea880dd6814190e47a318b3596e04",
+          "clients/flutter/test_driver/dm_composer_qa.dart": "9a08bc9781409251a3b937cd54d1f23c4a4d29b51cc948f87d5bc41708073b30",
+          "tools/qa/dm_composer/run_native.py": "8973049cfb08ddad5834066a06488cc7592fbdb17d90cb178b39f7ae5978e12f",
+          "tools/qa/dm_composer/stack.py": "00a00ed96273abb733794f22add0c485490b21ff427fa5e9cccea38b806da2a8",
+          "tools/qa/dm_composer/os_control.py": "43f38429883dc1295846fb5f8c5a3ce465486959d29fe4680221dcd9da8e158a",
+          "tools/qa/dm_composer/integrity.py": "0e9731cfcc9fcaf2304b5c5492e2425d682d24ea718787c3c4b248699cc8722d"
+        },
+        "native_artifact_sha256": "fde7e01d394d50a1a478a76722d8efa4410ac137c77a986782038cdfd2e754cd"
+      },
+      "started_at": "2026-10-12T18:58:05.507381+00:00",
+      "completed_at": "2026-10-12T19:00:44.736976+00:00",
+      "mocks": false,
+      "physical_device": false,
+      "actual_backend": "Go/PostgreSQL secure-cookie HTTP API",
+      "checks": {
+        "list_empty_composer_visible": "PASS",
+        "UI_send_real_history": "PASS",
+        "per_conversation_drafts": "PASS",
+        "search_result_original_context_draft": "PASS",
+        "per_origin_query_scope_back_resize": "PASS",
+        "OS_clipboard_controlled_paste": "PASS",
+        "long_multiline_composer_layout": "PASS",
+        "real_server_third_admin_DM_ACL": "PASS"
+      },
+      "observations": {
+        "draft_b_entered": {
+          "selected_expected_b": true,
+          "selected_expected_c": false,
+          "loading": false,
+          "sending": false,
+          "account_present": true,
+          "epoch_unchanged": true,
+          "controller_length": 13,
+          "stored_length": 13
+        },
+        "draft_c_selected": {
+          "selected_expected_b": false,
+          "selected_expected_c": true,
+          "loading": false,
+          "sending": false,
+          "account_present": true,
+          "epoch_unchanged": true,
+          "controller_length": 0,
+          "stored_length": null
+        },
+        "draft_c_entered": {
+          "selected_expected_b": false,
+          "selected_expected_c": true,
+          "loading": false,
+          "sending": false,
+          "account_present": true,
+          "epoch_unchanged": true,
+          "controller_length": 13,
+          "stored_length": 13
+        },
+        "draft_b_returned": {
+          "selected_expected_b": true,
+          "selected_expected_c": false,
+          "loading": false,
+          "sending": false,
+          "account_present": true,
+          "epoch_unchanged": true,
+          "controller_length": 13,
+          "stored_length": 13
+        },
+        "clipboard_method": "Actual platform Clipboard.setData/getData via EditableTextState.pasteText; controlled Flutter action, not physical paste gesture",
+        "actual_IME_inset_logical": 0.0,
+        "safe_area_padding_logical": 0.0,
+        "OS_background_foreground": "NOT_RUN",
+        "third_admin_DM_history_HTTP": 404,
+        "third_admin_DM_search_HTTP": 404
+      },
+      "owned_resources_removed": true,
+      "screenshots": [
+        {
+          "path": ".out/qa294-20261012/ios/native-dm-conversation.png",
+          "sha256": "dce659a3924729ddd46d6018c091becf89d5488762173bcce231a3783dc01d67",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/ios/native-dm-list.png",
+          "sha256": "a25e72f2db16f8b238c5b3036366735dfbcb0d8cb8d0285da0bec2d5485790c4",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/ios/native-dm-search.png",
+          "sha256": "47889bfde7b68666fd2b25b5bf6b55a75d7eaccdfc2aedb766bf5c2ebf600d7f",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/ios/native-draft-return.png",
+          "sha256": "b1542e6dae1344085848262c78f17637be6bd2d9192f31f492e824ad86f3b28a",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/ios/native-empty-dm.png",
+          "sha256": "214a1dc96165054f60642f9fa8f1fbcc11c41767f6f059c4eb07ea82994525a5",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/ios/native-long-multiline-composer.png",
+          "sha256": "54545f060f6feb9d2ac2483c275e6a04c51435d241a5af1f4149eef4e6bc69ac",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/ios/native-original-context-final.png",
+          "sha256": "54545f060f6feb9d2ac2483c275e6a04c51435d241a5af1f4149eef4e6bc69ac",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/ios/native-result-context.png",
+          "sha256": "7605b4f2f40f9d880bddfd452f1c958b18b185ebbfc35c9e50b0f46ef557178a",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/ios/native-search-restored.png",
+          "sha256": "8ab18d05482b629348dc75f8a1ad02e0dd86dcbbcb96a4acf79a704ff4f1812a",
+          "pixels": [
+            1206,
+            2622
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        }
+      ],
+      "device": "82C26E13-0F1F-43F9-AF27-866DC22C2456",
+      "os_version": "Version 27.0 (Build 24A434)",
+      "build_mode": "debug",
+      "owned_reverses_removed": true,
+      "capture_method": "integration_test binding.takeScreenshot; Android convertFlutterSurfaceToImage. Flutter raster surface, not physical OS screenshot.",
+      "remaining": [
+        "physical device touch/IME/image picker and clipboard gesture",
+        "real-user transition/time measurement",
+        "physical background foreground and screen reader"
+      ]
+    },
+    "393": {
+      "observed_runtime_result": "PASS",
+      "issue_gate_result": "PARTIAL",
+      "runtime_receipt": ".out/qa294-20261012/393/runtime.json",
+      "runtime_receipt_sha256": "483fe8657107be96f07b33503dc564d9eca1e0d1df31f141d90179e1baca3fa6",
+      "source": {
+        "candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+        "web_source_manifest_sha256": "8f4cb8f6da5581d9ea7e0800bb081b69b6230a1ac8318adfcbe39987fc5c2f07",
+        "web_dist_manifest_sha256": "138aaf2d8a4386ce730f9bfb7360096b81a27e06cba55b856ba0e7e65f404ff7",
+        "build_source_candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+        "build_receipt_sha256": "0cd5d2f32719f8b941c9038956fde823cd12fa6dce7401ac7882a17c17517e3e",
+        "checkout_web_source_matches_build": true,
+        "qa_source_files": {
+          "scenario.mjs": "f8df83d10d1e4deded5b5384e60aff3edd963fb5ee0212ba6e88281c572869d3",
+          "run.py": "cd213ac861b9e83535bf18290afd7c00b50999c33791260be6821ad563a7e6fb",
+          "stack.py": "707e4ae4e7ab2d906a2b49cb921f795c866399059e336a02b5809a92a5732ae4",
+          "integrity.py": "0e9731cfcc9fcaf2304b5c5492e2425d682d24ea718787c3c4b248699cc8722d",
+          "build.py": "04b6aa625416844cd933d8196a402fc0ec963483f26e5c02ef05dc4a5e1d3385"
+        },
+        "backend_source_manifest_sha256": "55f73b7dea44488b58de78152d9e10e3ccfe403ea70eea73661ff34b38befcba",
+        "backend_image_id": "sha256:3f0f020ffaa5d94b19fc63266673c93dca0dc023f05584e962218b20459b3db0"
+      },
+      "started_at": "2026-10-12T19:04:03.294389+00:00",
+      "completed_at": "2026-10-12T19:04:33.410636+00:00",
+      "mocks": false,
+      "physical_device": false,
+      "actual_backend": "Go/PostgreSQL secure-cookie HTTP API",
+      "checks": {
+        "list_empty_composer_visible": "PASS",
+        "UI_send_real_history": "PASS",
+        "per_conversation_drafts": "PASS",
+        "search_result_original_context_draft": "PASS",
+        "per_origin_query_filters_back_resize": "PASS",
+        "real_server_search_scroll_back_switch": "PASS",
+        "browser_clipboard_multiline": "PASS",
+        "real_server_third_admin_DM_ACL": "PASS"
+      },
+      "observations": {
+        "author_account_has_id": true,
+        "actual_members_HTTP": 200,
+        "actual_members_has_self": true,
+        "author_option_count": 24,
+        "author_login_option_present": true,
+        "author_option_present": true,
+        "actual_search_result_count": 24,
+        "restored_search_scroll_px": 280,
+        "third_admin_DM_history_HTTP": 404,
+        "third_admin_DM_search_HTTP": 404
+      },
+      "owned_resources_removed": true,
+      "screenshots": [
+        {
+          "path": ".out/qa294-20261012/393/dm-conversation.png",
+          "sha256": "fd0b4a65f370bee2d0b1fd806c1ebac94dc5be3b1164fe7ffb69b8d806f69250",
+          "pixels": [
+            393,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/393/dm-empty.png",
+          "sha256": "065e0680aa08d23c6da82dd7e38787e4c3a777fb4401b7288247e2280d36c3f6",
+          "pixels": [
+            393,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/393/dm-list.png",
+          "sha256": "41a8269d1ca5b7f2abaed834ef54d635e8ab53e4eb191d430076a6b31c3af53e",
+          "pixels": [
+            393,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/393/dm-result-context.png",
+          "sha256": "cad368f18f255edff05280a6a0217f871f5ef8b03fd830b4d9a9ade54fb239a9",
+          "pixels": [
+            393,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/393/dm-search.png",
+          "sha256": "35277cc73e97e7447c13304ff32b8844b6f9a404cbafec788a26846414da2849",
+          "pixels": [
+            393,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/393/global-search-filtered.png",
+          "sha256": "426747d382a295cc3f8422bdaf4fde895709280f7e5c4c10e53bff24f7bcc28d",
+          "pixels": [
+            393,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/393/multiline-composer.png",
+          "sha256": "670d1117e7394457d1525d87662703f12994d0451e81440eed1c9454c595cb55",
+          "pixels": [
+            393,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/393/search-scroll-restored.png",
+          "sha256": "265ff35871a94728d2c98fa902634d975e8a8ef0056a8252399fce37460dad65",
+          "pixels": [
+            393,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        }
+      ],
+      "browser": "153.0.8010.12",
+      "viewport": {
+        "width": 393,
+        "height": 900
+      },
+      "capture_method": "Playwright screenshot from actual immutable production Web at owned HTTPS4940, after fonts and animation frames; animation disabled except the additional natural capture in 1440.",
+      "remaining": [
+        "physical device IME/image picker/background",
+        "real-user timing",
+        "spoken screen reader"
+      ]
+    },
+    "1440": {
+      "observed_runtime_result": "PASS",
+      "issue_gate_result": "PARTIAL",
+      "runtime_receipt": ".out/qa294-20261012/1440/runtime.json",
+      "runtime_receipt_sha256": "3caf61072d36c7a65d80ca9a5ac6bd62d8ed94781a7e14de5fa4b7f2ee07a210",
+      "source": {
+        "candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+        "web_source_manifest_sha256": "8f4cb8f6da5581d9ea7e0800bb081b69b6230a1ac8318adfcbe39987fc5c2f07",
+        "web_dist_manifest_sha256": "138aaf2d8a4386ce730f9bfb7360096b81a27e06cba55b856ba0e7e65f404ff7",
+        "build_source_candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+        "build_receipt_sha256": "0cd5d2f32719f8b941c9038956fde823cd12fa6dce7401ac7882a17c17517e3e",
+        "checkout_web_source_matches_build": false,
+        "qa_source_files": {
+          "scenario.mjs": "eefd5f0ab28baaea5c07e519cc52df5de03756e112644bf2994b74e8969c78d7",
+          "run.py": "cd213ac861b9e83535bf18290afd7c00b50999c33791260be6821ad563a7e6fb",
+          "stack.py": "707e4ae4e7ab2d906a2b49cb921f795c866399059e336a02b5809a92a5732ae4",
+          "integrity.py": "0e9731cfcc9fcaf2304b5c5492e2425d682d24ea718787c3c4b248699cc8722d",
+          "build.py": "04b6aa625416844cd933d8196a402fc0ec963483f26e5c02ef05dc4a5e1d3385"
+        },
+        "backend_source_manifest_sha256": "55f73b7dea44488b58de78152d9e10e3ccfe403ea70eea73661ff34b38befcba",
+        "backend_image_id": "sha256:d8b9d84ade78b87988f0ff38d4102b0e58535d86832b13e1baaa70978d7e453a"
+      },
+      "started_at": "2026-10-12T19:10:59.857766+00:00",
+      "completed_at": "2026-10-12T19:11:29.570306+00:00",
+      "mocks": false,
+      "physical_device": false,
+      "actual_backend": "Go/PostgreSQL secure-cookie HTTP API",
+      "checks": {
+        "list_empty_composer_visible": "PASS",
+        "UI_send_real_history": "PASS",
+        "per_conversation_drafts": "PASS",
+        "search_result_original_context_draft": "PASS",
+        "per_origin_query_filters_back_resize": "PASS",
+        "real_server_search_scroll_back_switch": "PASS",
+        "browser_clipboard_multiline": "PASS",
+        "real_server_third_admin_DM_ACL": "PASS"
+      },
+      "observations": {
+        "author_account_has_id": true,
+        "actual_members_HTTP": 200,
+        "actual_members_has_self": true,
+        "author_option_count": 24,
+        "author_login_option_present": true,
+        "author_option_present": true,
+        "actual_search_result_count": 24,
+        "restored_search_scroll_px": 280,
+        "after_multiline_history_geometry": {
+          "row_count": 25,
+          "visible_row_count": 10,
+          "top": 64,
+          "left": 280,
+          "bottom": 798,
+          "right": 1440,
+          "height": 734,
+          "width": 1160,
+          "scroll_top": 1347,
+          "scroll_height": 2081,
+          "client_height": 734,
+          "display": "block",
+          "visibility": "visible",
+          "ancestors": [
+            {
+              "tag": "OL",
+              "class": "messages message-list",
+              "top": 64,
+              "left": 280,
+              "height": 734,
+              "width": 1160,
+              "overflow": "auto",
+              "display": "block",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "DIV",
+              "class": "message-history-wrap",
+              "top": 64,
+              "left": 280,
+              "height": 734,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "flex",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "SECTION",
+              "class": "direct-message-conversation",
+              "top": 0,
+              "left": 280,
+              "height": 900,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "flex",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "SECTION",
+              "class": "conversation-pane",
+              "top": 0,
+              "left": 280,
+              "height": 900,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "flex",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "MAIN",
+              "class": "main",
+              "top": 0,
+              "left": 280,
+              "height": 900,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "block",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            }
+          ],
+          "window_intersecting_rows": 10
+        },
+        "settled_after_multiline_history_geometry": {
+          "row_count": 25,
+          "visible_row_count": 10,
+          "top": 64,
+          "left": 280,
+          "bottom": 798,
+          "right": 1440,
+          "height": 734,
+          "width": 1160,
+          "scroll_top": 1347,
+          "scroll_height": 2081,
+          "client_height": 734,
+          "display": "block",
+          "visibility": "visible",
+          "ancestors": [
+            {
+              "tag": "OL",
+              "class": "messages message-list",
+              "top": 64,
+              "left": 280,
+              "height": 734,
+              "width": 1160,
+              "overflow": "auto",
+              "display": "block",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "DIV",
+              "class": "message-history-wrap",
+              "top": 64,
+              "left": 280,
+              "height": 734,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "flex",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "SECTION",
+              "class": "direct-message-conversation",
+              "top": 0,
+              "left": 280,
+              "height": 900,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "flex",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "SECTION",
+              "class": "conversation-pane",
+              "top": 0,
+              "left": 280,
+              "height": 900,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "flex",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "MAIN",
+              "class": "main",
+              "top": 0,
+              "left": 280,
+              "height": 900,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "block",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            }
+          ],
+          "window_intersecting_rows": 10
+        },
+        "post_capture_history_geometry": {
+          "row_count": 25,
+          "visible_row_count": 10,
+          "top": 64,
+          "left": 280,
+          "bottom": 798,
+          "right": 1440,
+          "height": 734,
+          "width": 1160,
+          "scroll_top": 1347,
+          "scroll_height": 2081,
+          "client_height": 734,
+          "display": "block",
+          "visibility": "visible",
+          "ancestors": [
+            {
+              "tag": "OL",
+              "class": "messages message-list",
+              "top": 64,
+              "left": 280,
+              "height": 734,
+              "width": 1160,
+              "overflow": "auto",
+              "display": "block",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "DIV",
+              "class": "message-history-wrap",
+              "top": 64,
+              "left": 280,
+              "height": 734,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "flex",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "SECTION",
+              "class": "direct-message-conversation",
+              "top": 0,
+              "left": 280,
+              "height": 900,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "flex",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "SECTION",
+              "class": "conversation-pane",
+              "top": 0,
+              "left": 280,
+              "height": 900,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "flex",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            },
+            {
+              "tag": "MAIN",
+              "class": "main",
+              "top": 0,
+              "left": 280,
+              "height": 900,
+              "width": 1160,
+              "overflow": "visible",
+              "display": "block",
+              "visibility": "visible",
+              "opacity": "1",
+              "transform": "none"
+            }
+          ],
+          "window_intersecting_rows": 10
+        },
+        "third_admin_DM_history_HTTP": 404,
+        "third_admin_DM_search_HTTP": 404
+      },
+      "owned_resources_removed": true,
+      "screenshots": [
+        {
+          "path": ".out/qa294-20261012/1440/dm-conversation.png",
+          "sha256": "1bc5f770e8008e33071c8f607a1ba17c7d8112caada518af2d4131edef45cd28",
+          "pixels": [
+            1440,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/1440/dm-empty.png",
+          "sha256": "cf3565c38eae6f7429bca82f3249c8f4687539cb3b5b01d1f847d14509ce4fa1",
+          "pixels": [
+            1440,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/1440/dm-list.png",
+          "sha256": "c64113350b85687f79a9be7f37f8ce957f5ca63946e4549c725f2455fb15f8a0",
+          "pixels": [
+            1440,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/1440/dm-result-context.png",
+          "sha256": "3eaac7f54a1d195c6d92737f5c07c7d99b6b55dee70e86f26523364a1142545c",
+          "pixels": [
+            1440,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/1440/dm-search.png",
+          "sha256": "3ea6f98ac1042277627150c23dd2445b515b7f364d841c85dfde1d5b88f45b15",
+          "pixels": [
+            1440,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/1440/global-search-filtered.png",
+          "sha256": "1d86e36a05475c0ee27187b0f7455fbc743e5017e370f6f414243feba744346c",
+          "pixels": [
+            1440,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/1440/multiline-composer-natural.png",
+          "sha256": "2c9fdad614af5fa7068f3673d8d445f56236a14be44a18c441d020948f504650",
+          "pixels": [
+            1440,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/1440/multiline-composer.png",
+          "sha256": "2c9fdad614af5fa7068f3673d8d445f56236a14be44a18c441d020948f504650",
+          "pixels": [
+            1440,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        },
+        {
+          "path": ".out/qa294-20261012/1440/search-scroll-restored.png",
+          "sha256": "ae6985636e799677731d742f715007fd161fe15b48b74cf76c4faca636e601e5",
+          "pixels": [
+            1440,
+            900
+          ],
+          "reviewed_original_resolution": true,
+          "review_scope": "Recipient/search/context/composer layout visually inspected at original pixel resolution, with fixed synthetic fixture content; no physical touch/IME certification."
+        }
+      ],
+      "browser": "153.0.8010.12",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "capture_method": "Playwright screenshot from actual immutable production Web at owned HTTPS4940, after fonts and animation frames; animation disabled except the additional natural capture in 1440.",
+      "remaining": [
+        "physical device IME/image picker/background",
+        "real-user timing",
+        "spoken screen reader"
+      ]
+    }
+  },
+  "nearest_checks": {
+    "web_unit": {
+      "status": "PASS",
+      "tests": 26
+    },
+    "actual_SearchPanel_browser_fixture": {
+      "status": "PASS",
+      "tests": 4,
+      "API_mocks": true,
+      "scope": "Origin/account retention, fresh denied re-fetch, unsubmitted query, real scroll owner; component proof only."
+    },
+    "existing_calendar_browser_fixture": {
+      "status": "PASS",
+      "tests": 8,
+      "scope": "UTC/New York date range, pagination and mobile/desktop submit."
+    },
+    "typescript": {
+      "status": "PASS",
+      "diagnostics": 0
+    },
+    "native_DM_draft_widget": {
+      "status": "PASS",
+      "tests": 1,
+      "API_mocks": true,
+      "scope": "Two-conversation draft switching through actual TextField; component proof only."
+    },
+    "nearest_native_search": {
+      "status": "PASS",
+      "tests": 14
+    },
+    "runner_contracts": {
+      "status": "PASS",
+      "tests": 4,
+      "scope": "Exact device ownership, previous-attempt archive, missing-row rejection, unauthorized lifecycle control causes no OS dispatch."
+    },
+    "receipt": {
+      "path": ".out/qa294-focused.json",
+      "sha256": "e8e21dabf60f57d6cf125db18d7fa65155ba5b784f397a35a03142f5ae6cb357",
+      "focused_source": {
+        "issue": 294,
+        "focused_component_receipt": true,
+        "before_source": {
+          "candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+          "SearchPanel_SHA256": "daf905a6fccf700aee160cbdc71aaa6f5dd0833d6eee3be7fdd33f960ac93888"
+        },
+        "after_SourcePanel_SHA256": "169e4be6a3aa1767f848ce22592fa1f7dd36877f807bb730192175816b17999a",
+        "RED": {
+          "origin_filter_retention": "FAIL before implementation",
+          "unsubmitted_query_reopen": "FAIL before follow-up correction",
+          "actual_scroll_owner": "FAIL before follow-up correction"
+        },
+        "GREEN": {
+          "Web_units": 26,
+          "SearchPanel_browser_fixture": 4,
+          "calendar_browser_fixture": 8,
+          "TypeScript_diagnostics": 0,
+          "Flutter_DM_draft_widget": 1,
+          "Flutter_nearest_search": 14,
+          "runner_contracts": 4
+        },
+        "raw_log_SHA256_only": {
+          "qa294-web-red.log": "8fb6fa7c5a3c2e97bec7e71a3bf89031e5ef2e37c1b1890e4fb545d7b27c5311",
+          "qa294-web-query-red.log": "44551a1446ba4ae3fc14d12c1824f70b501a45866e155f6b7978546de631543a",
+          "qa294-web-scroll-red.log": "9f792a08a92f4fad4ce96cdb9806be322ff1404c48b401280157f47501f1c9a3",
+          "qa294-web-green.log": "30c15ec1210844dc7b48f74fed4f463e899fff4a370334a62a889659709c59a6",
+          "qa294-web-unit.log": "e831ceb26e10b68eb4eadc287a4f6280cc49b84098e92620f3275d6565493df0",
+          "qa294-web-dates.log": "d98e06ada7276213df61fe14c5d0fd82943337288d2a0300c51e66fa1d569d09",
+          "qa294-tsc.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "qa294-drafts-nearest.log": "0e37269de30c99f367fcbde73b95f7db63e917087e77b77e765f59f755d543c7",
+          "qa294-nearest.log": "eb84adbb4112283fff8fedd36e6d67c3b47533d3b3bf3e6732226911dede87f6",
+          "qa294-contracts.log": "9661bd769cf08f3cc9f017eb7454b3887dc7c3525a6c8c46fc86a3494e27a8a8"
+        },
+        "raw_logs_private_not_published": true,
+        "scope": "Focused tests establish behavior and regression only; actual device/backend evidence is separate."
+      }
+    }
+  },
+  "remaining_acceptance": {
+    "physical_iOS_Android_IME_clipboard_gesture_image_picker": "NOT_RUN",
+    "physical_attachment_emoji_mention_interactions": "NOT_RUN",
+    "physical_background_foreground": "NOT_RUN",
+    "physical_safe_area_and_keyboard_geometry": "NOT_RUN",
+    "real_user_navigation_measurement": "NOT_RUN",
+    "spoken_screen_reader": "NOT_RUN"
+  },
+  "attempt_transparency": [
+    "Original Web API runs used an older immutable dist without a full source-pair receipt; they are not used as source-matched After evidence.",
+    "Docker readiness from a non-mounted private path and early locator failures were harness setup failures; corrected attempts start with RUNNING and archive previous captures.",
+    "Native enterText after screenshot unfocus dropped text before conversation switching. Actual tap/pump before input plus an immediate controller assertion corrected the harness; no Flutter product defect was inferred.",
+    "The product search-retention failure and follow-up query/scroll review regressions were preserved as focused RED before corrections.",
+    "The first final Web Docker build failed before UI with destination image SHA not found. It remains an archived environment build failure; a specific underlying cache/concurrency cause was not proved. Retry runs completed both widths.",
+    "Additional 1440px actual replays investigated a suspected blank history. Original capture and unchanged ROI pixels refuted the interpretation; no product renderer change was made."
+  ],
+  "privacy": {
+    "accounts_and_message_content": "Only fixed synthetic disposable fixtures appear in local ignored PNGs. Public evidence contains no live session/control secrets, private message payloads or DM/account IDs.",
+    "capture_publication": "PNG stays ignored .out; hashes and paths only.",
+    "raw_private_logs_published": false
+  },
+  "cleanup": {
+    "owned_stack_containers_remaining": false,
+    "owned_ports_listening": false,
+    "Android5556_shutdown": true,
+    "iOS82_shutdown": true,
+    "owned_reverse_removed": true,
+    "owned_QA_apps_uninstalled": true,
+    "private_Flutter_copy_and_compiled_credentials_removed": true,
+    "private_raw_logs_removed": true,
+    "device_definitions_preserved": true,
+    "sanitized_ignored_receipts_and_original_PNG_preserved": true,
+    "removed_private_log_hashes": [
+      {
+        "filename": "qa294-pubget.log",
+        "sha256": "08606c2c82727907969bac5eb18e4831602a3435590f62482e979fb2f1942947"
+      },
+      {
+        "filename": "qa294-format.log",
+        "sha256": "55ffdf96278e0beb6003aac14667911d2c31731206d12f7cac47c79e01ee9b45"
+      },
+      {
+        "filename": "qa294-nearest.log",
+        "sha256": "eb84adbb4112283fff8fedd36e6d67c3b47533d3b3bf3e6732226911dede87f6"
+      },
+      {
+        "filename": "qa294-analyze.log",
+        "sha256": "bef2991c6807dd0beb282cfcbca9c6488fabeeefbdcdf14a684adab617ee0fe1"
+      },
+      {
+        "filename": "qa294-drafts-nearest.log",
+        "sha256": "0e37269de30c99f367fcbde73b95f7db63e917087e77b77e765f59f755d543c7"
+      },
+      {
+        "filename": "qa294-contracts.log",
+        "sha256": "b8e7a53259837cf5d4ee1982719821e16037350755f0aee6986f619d84a7e0d1"
+      },
+      {
+        "filename": "qa294-android.log",
+        "sha256": "a447c02ab3a87408f3dc77becd89ded5908fe83d764c3cb198c10a9b1f2a007d"
+      },
+      {
+        "filename": "qa294-ios.log",
+        "sha256": "036371adc9e102511d3f721b16fe720f8aa5483b83cc9dc1305f86651ad9f37b"
+      },
+      {
+        "filename": "qa294-web.log",
+        "sha256": "0c355cc1c844c00419f12961ed6fe11710859807daabfaf0398ee6238e8ad01e"
+      },
+      {
+        "filename": "qa294-web-scroll.log",
+        "sha256": "96c1a4e274a78a75e62d23551fd1d5381e2192c4d3d8dac752592e7205293950"
+      },
+      {
+        "filename": "qa294-web-final.log",
+        "sha256": "a7833dbcd1ec86cb5e78a24a9c9073fc803fb4c4d49ff5e1cc7fb9324a3b4c56"
+      },
+      {
+        "filename": "qa294-web-final-retry.log",
+        "sha256": "b2ab165ef1afc42d9d3d9f269a38c69b434af04da04aeb6b6c9251bfcf2bbe8b"
+      },
+      {
+        "filename": "qa294-web-history-diagnosis.log",
+        "sha256": "8136d0602a01228ecf92249ae910c7310959f4c2eec89396e5bd14f0f01a72b1"
+      },
+      {
+        "filename": "qa294-web-paint-diagnosis.log",
+        "sha256": "12ac346f6cdcaaa13b5e98d8cd754667f0aa3b8713b7a223bf43e5c3d2cba0a6"
+      },
+      {
+        "filename": "qa294-web-red.log",
+        "sha256": "8fb6fa7c5a3c2e97bec7e71a3bf89031e5ef2e37c1b1890e4fb545d7b27c5311"
+      },
+      {
+        "filename": "qa294-web-query-red.log",
+        "sha256": "44551a1446ba4ae3fc14d12c1824f70b501a45866e155f6b7978546de631543a"
+      },
+      {
+        "filename": "qa294-web-scroll-red.log",
+        "sha256": "9f792a08a92f4fad4ce96cdb9806be322ff1404c48b401280157f47501f1c9a3"
+      },
+      {
+        "filename": "qa294-web-green.log",
+        "sha256": "30c15ec1210844dc7b48f74fed4f463e899fff4a370334a62a889659709c59a6"
+      },
+      {
+        "filename": "qa294-web-unit.log",
+        "sha256": "e831ceb26e10b68eb4eadc287a4f6280cc49b84098e92620f3275d6565493df0"
+      },
+      {
+        "filename": "qa294-web-dates.log",
+        "sha256": "d98e06ada7276213df61fe14c5d0fd82943337288d2a0300c51e66fa1d569d09"
+      },
+      {
+        "filename": "qa294-tsc.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "filename": "qa294-web-build.log",
+        "sha256": "75a9546fac096274d788ceed9a5c08bd54a96b49949b4343bdd55f60682e284d"
+      },
+      {
+        "filename": "qa294-emulator.log",
+        "sha256": "26fdf2ca2d2d973f81646ae79e43255c4df2cfe02355a6f598739020e050d0a0"
+      }
+    ]
+  },
+  "runtime_scope": {
+    "source_handling": "Each platform preserves its measured source, QA harness and artifact hashes. Later root global source changes are separate evidence; no old runtime is relabelled as the final publication candidate.",
+    "Android_source": "Measured Flutter lib manifest equals full tracked lib at candidate d78e5ea6.",
+    "iOS_source": "Measured later Flutter lib includes the separately implemented admin-section retention changes. This DM workflow does not exercise admin-section retention.",
+    "native_filter_scope": "Native runtime verifies query and all/current scope. Web additionally verifies author/attachment filter isolation and actual 24-result scroll restoration.",
+    "native_backend_provenance": "Native runs predate the backend snapshot-manifest addition; they prove actual disposable Go/PostgreSQL API behavior but do not contain a backend source-manifest hash. Final Web runs contain guarded backend snapshot and Docker image identity.",
+    "OS_geometry": "Native actual observed IME inset and safe-area padding were zero. Controlled viewport resizing proves Flutter layout only.",
+    "iOS_OS_background_foreground": "NOT_RUN"
+  },
+  "visual_review": {
+    "status": "PASS within captured synthetic workflow",
+    "original_captures_reviewed": 35,
+    "web": "393px drill-in and 1440px split view retain recipient, message/result context, composer and restored filters/scroll. Empty Web DM shows status and usable composer. Multiline composer is internally scrollable with Send visible.",
+    "native": "Actual Flutter empty-state CTA, recipient, search/context back, distinct retained drafts and multiline composer are visible without RenderFlex overflow in measured captures.",
+    "capture_limit": "Flutter raster screenshots exclude certification of native OS keyboard, physical safe area and physical gesture behavior."
+  },
+  "paint_diagnosis": {
+    "result": "NO_APPLICATION_DEFECT_REPRODUCED",
+    "reason": "An initial image inspection interpreted desktop history as blank. Bounded replays and original-resolution reinspection show synthetic rows16\u201324 with reactions and the multiline composer. Parent independently reviewed the original capture and confirmed visible history.",
+    "natural_and_disabled_animation_capture_sha256": "2c9fdad614af5fa7068f3673d8d445f56236a14be44a18c441d020948f504650",
+    "read_only_ROI_pixel_analysis": {
+      "method": "Read-only RGB ROI x320,y70,x1100,y750; no edited or masked evidence image exported.",
+      "rgb_sha256": "242b5305b2e9301bc31df3b1a0123198eeed39ab096620c097ca0436ea97cf9b",
+      "same_in_earlier_suspected_and_final_capture": true,
+      "non_background_pixels": 16648
+    },
+    "hit_test_limit": "A probe hit the header using a partially clipped first row; it is not used as occlusion proof."
+  },
+  "archived_attempts": [
+    {
+      "path": ".out/qa294-20261012/previous-attempts/1440/20261012T190433412079Z/runtime.json",
+      "sha256": "ed0e3c6dc49c1f746f63b2fb63585748cefa901432c1e0bb80c62afa8eb45008",
+      "status": "PASS"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/1440/20261012T190730369400Z/runtime.json",
+      "sha256": "b9dd3b887f595ec21d3af810ec521f82c7e4a7ca123312fdf6a58f6bac624945",
+      "status": "PASS"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/1440/20261012T191059847951Z/runtime.json",
+      "sha256": "1a0595e3acbbfc8f9d9f53769b0e5bc3668f221462f0edcdd4a075b4e656f108",
+      "status": "PASS"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/393/20261012T182623651256Z/runtime.json",
+      "sha256": "eca9ceff5759ee9822aa1bb53c212c5a7444aa6ffaf5ab3c9dce5812c220e8e4",
+      "status": "FAIL"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/393/20261012T182738917543Z/runtime.json",
+      "sha256": "f22b42b4be0cf5fcc804e38d68f5f18a812057b525ddf1a1243470f8cb36d117",
+      "status": "FAIL"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/393/20261012T182848392383Z/runtime.json",
+      "sha256": "4ce3b5197fbeeb4914921ebd7409154f461365ff6c9143a178f95d9186f6d61f",
+      "status": "FAIL"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/393/20261012T183036923221Z/runtime.json",
+      "sha256": "403225b2d7e36b2040ef1ab64496e3561a19fe3fd5576b14f6d22abb4d95a738",
+      "status": "FAIL"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/393/20261012T183206191589Z/runtime.json",
+      "sha256": "c562d3e945281edfceb70442f675f4b101eae4d8fc182b7316733d9f5eb2b69d",
+      "status": "FAIL"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/393/20261012T184700704832Z/runtime.json",
+      "sha256": "ab7161ad045ebf016c35135fcdd5f8f7ba28fec8842d45a6cde0303f10aca05d",
+      "status": "FAIL"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/393/20261012T185135564104Z/runtime.json",
+      "sha256": "156a5dc2b8721b74a79e2058f00c66a7d7dc87b9c575b3c97472479619b5353c",
+      "status": "PASS"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/393/20261012T190228957552Z/runtime.json",
+      "sha256": "0805c0288bd32de202ee82b39a6de0272a1b2671b9308a766e9b5f5b86b5ddcc",
+      "status": "PASS"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/393/20261012T190403284909Z/runtime.json",
+      "sha256": "8172d0b9a30d7be2ae9627ccf4d8e897fef8308f6ab81ee367b36cefb540badc",
+      "status": "FAIL"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/android/20261012T181840646673Z/runtime.json",
+      "sha256": "38353a99ffabdf0eb69cadfaea9c0bef8a1db42a8b616440c1a20b2f5bb81e0f",
+      "status": "FAIL"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/android/20261012T183311309666Z/runtime.json",
+      "sha256": "629427870787fa57e4ea91a59b8089356d8cbc99439d845415c21cb71f48546d",
+      "status": "FAIL"
+    },
+    {
+      "path": ".out/qa294-20261012/previous-attempts/android/20261012T183913606629Z/runtime.json",
+      "sha256": "9c3528b27c22c184e472a37fc7c97bf773dc501ab28235984a8145f161ed734f",
+      "status": "FAIL"
+    }
+  ],
+  "provenance_clarification": {
+    "historical_original_build_receipt_path": ".out/qa294-build-source.json",
+    "historical_original_build_receipt_sha256": "0cd5d2f32719f8b941c9038956fde823cd12fa6dce7401ac7882a17c17517e3e",
+    "historical_upstream_path": ".out/qa302-20261012/final-build-source.json",
+    "historical_upstream_path_current_file_overwritten": true,
+    "preserved_upstream_proof_path": ".out/qa302-20261012/build-before-connected-dock-category-source.json",
+    "preserved_upstream_proof_sha256": "8a2021b81905e91036398ba2d3aea329f3a9114655ca7e8829475263ccc9d7e6",
+    "archived_upstream_bytes_match_original_reference": true,
+    "scope": "Archived root upstream proof is byte-identical to the receipt referenced at the guarded copy. Own immutable build receipt, source-map, dist and measured runtime hashes are unchanged; later source freezes are separate evidence."
+  }
+}

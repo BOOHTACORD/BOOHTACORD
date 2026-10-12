@@ -1,0 +1,5 @@
+import {readFileSync} from 'node:fs'
+import {chromium,login,api,status} from '../client_lifecycle/request.mjs'
+const input=JSON.parse(readFileSync(process.env.QA_INPUT,'utf8')),browser=await chromium.launch(),context=await browser.newContext({ignoreHTTPSErrors:true}),page=await context.newPage()
+try{await login(page,'qa_admin',input.password);const peer=await api(page,'/auth/register','POST',{login:'qa_a11y_peer',password:input.password});status(peer,201);const category=await api(page,'/admin/categories','POST',{name:'AccessLab'});status(category,201);for(const[name,kind]of[['AccessText','TEXT'],['AccessVoice','VOICE']])status(await api(page,`/admin/categories/${category.body.id}/channels`,'POST',{name,kind}),201);status(await api(page,'/direct-messages','POST',{participant_id:peer.body.id}),201);status(await api(page,'/me','PATCH',{display_name:'Проверка доступности'}),200);console.log('Owned native fixtures seeded through actual API')}
+finally{await context.close();await browser.close()}

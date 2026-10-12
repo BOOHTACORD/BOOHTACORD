@@ -47,6 +47,7 @@ watch(() => props.accountId, (accountId, previousAccountId) => {
 function containTab(event: KeyboardEvent): void {
   if (event.key !== 'Tab') return
   const items = [...(dialogForm.value?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), select:not(:disabled)') ?? [])].filter((item) => item.offsetParent !== null)
+  if (!items.length) { event.preventDefault(); dialogForm.value?.focus(); return }
   const first = items[0]; const last = items.at(-1)
   if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus() }
   else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus() }
@@ -56,11 +57,15 @@ async function submit(): Promise<void> {
   if (!name.value.trim() || !validCodePointLength(name.value, 1, 80)) { error.value = 'Введите имя до 80 символов.'; return }
   if (kind.value !== 'CATEGORY' && !categoryId.value) { error.value = 'Сначала создайте раздел.'; return }
   busy.value = true; error.value = ''
+  await nextTick(() => dialogForm.value?.focus())
   try {
     if (kind.value === 'CATEGORY') await createMemberCategory(name.value, requestId)
     else await createMemberChannel(categoryId.value, name.value, kind.value, requestId)
     status.value = 'Изменение принято. Обновляем каналы.'; close(true); emit('changed')
-  } catch (cause) { await failed(cause) } finally { busy.value = false }
+  } catch (cause) { await failed(cause) } finally {
+    busy.value = false
+    if (open.value) await nextTick(() => nameInput.value?.focus())
+  }
 }
 async function failed(cause: unknown): Promise<void> {
   error.value = requestFailureMessage(cause, 'Не удалось изменить каналы.')
@@ -103,7 +108,7 @@ async function remove(target: TopologyCategory | TopologyChannel): Promise<void>
   <p v-if="status" class="topology-action-status" aria-live="polite">{{ status }}</p><p v-if="error && !open" class="topology-action-error" role="alert">{{ error }}</p>
   <ChannelNavigation :account-id="accountId" :active-voice-channel-id="activeVoiceChannelId" :selected-channel-id="selectedChannelId" :topology="topology" :permissions="permissions" :voice-presence="voicePresence" :voice-rosters="voiceRosters" @select="emit('select', $event)" @create-global="begin()" @create-in-category="begin" @delete-category="remove" @delete-channel="remove" @changed="emit('changed')" />
   <AdminConfirmation ref="confirmation" id="member-topology-confirm" title="Подтвердите действие" :confirm-label="confirmationLabel" />
-  <Teleport to="body"><div v-if="open" class="topology-dialog-backdrop" @click.self="close()"><form ref="dialogForm" class="topology-dialog" :class="{ 'topology-dialog--category': kind === 'CATEGORY' }" role="dialog" aria-modal="true" aria-labelledby="topology-create-title" @submit.prevent="submit" @keydown.esc.stop.prevent="close()" @keydown.stop="containTab">
+  <Teleport to="body"><div v-if="open" class="topology-dialog-backdrop" @click.self="close()"><form ref="dialogForm" tabindex="-1" :aria-busy="busy" class="topology-dialog" :class="{ 'topology-dialog--category': kind === 'CATEGORY' }" role="dialog" aria-modal="true" aria-labelledby="topology-create-title" @submit.prevent="submit" @keydown.esc.stop.prevent="close()" @keydown.stop="containTab">
     <header class="topology-dialog-header"><h2 id="topology-create-title">{{ kind === 'CATEGORY' ? 'Создать раздел' : 'Создать канал' }}</h2><button type="button" aria-label="Закрыть" :disabled="busy" @click="close()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button></header>
     <p class="topology-dialog-description">{{ kind === 'CATEGORY' ? 'Объедините связанные каналы в одном месте.' : 'Новое место для общения в вашей гильдии.' }}</p>
     <div class="topology-dialog-fields">

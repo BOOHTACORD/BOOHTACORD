@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-12",
+  "status": "COMPLETED_WITH_OPEN_GATES",
+  "issues": [
+    294,
+    295,
+    298,
+    301,
+    302
+  ],
+  "agent_count": 4,
+  "execution": "Five issues assigned concurrently to root and three agents; admin and dialogs share one worker. Owned API/SFU/browser stacks and three Android emulators isolated by ports and IDs. Flutter SDK builds serialized; runtime scenarios overlap after each build.",
+  "base_candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+  "devices": {
+    "android": [
+      "BOOHTACORD_QA_API35 /5554",
+      "BOOHTACORD_QA_283_API35 /5556",
+      "BOOHTACORD_QA_278_API35 /5558"
+    ],
+    "ios": [
+      "153A6432-6806-4B44-927B-B8CDB75FE664",
+      "82C26E13-0F1F-43F9-AF27-866DC22C2456",
+      "57E6A791-8975-4C84-82E6-47321F22C9B8"
+    ],
+    "desktop": "physical macOS27 Apple Silicon; Chromium/WebKit host and isolated official arm64 Linux Firefox fixture"
+  },
+  "confirmed_fixes": [
+    "Web named TEXT/DM history logs no longer expose orphan native list-item roles to accessibility scanners.",
+    "Pending channel creation retains focus inside a dialog when controls are disabled.",
+    "Destructive confirmation Escape no longer closes the background navigation drawer.",
+    "Members status filter keeps full labels readable at narrow and desktop widths.",
+    "Web per-conversation search query, filters, submitted query and actual search scroll are retained in authenticated session memory; reopened results recheck server ACL.",
+    "Native admin selected section is retained while the workspace session remains active and cleared on account exit.",
+    "Web open channel form survives topology refresh/reconnect and retry after API errors.",
+    "Real PostgreSQL role-policy audit binds revision as bigint; transactional role save no longer returns SQLSTATE42P18/HTTP500.",
+    "Web TEXT/DM composer and navigation reserve actual enlarged-text height.",
+    "Connected Web voice participant status declares an accessible image role for its existing localized name.",
+    "Native header/footer and account menu adapt to enlarged text without RenderFlex overflow.",
+    "Web closed navigation reserves actual connected voice dock height and bounds members panel above dock.",
+    "Web category-create error/pending footer remains reachable inside bounded scrolling form.",
+    "Native channel-create validation is fully readable and remains associated with the field in stock Semantics; enlarged dropdowns fit.",
+    "Web enlarged search heading, scope control and metadata reserve their actual text height.",
+    "Native personal settings tabs expose their four visible names to Semantics.",
+    "Web confirmation reserves heading/actions and scrolls message within viewport at320px2x.",
+    "Web confirmation paragraph wraps long object names within narrow enlarged-text dialog."
+  ],
+  "in_progress": [],
+  "closure_policy": "Only complete issue criteria with PASS evidence permit closure. Emulators/component captures/axe are separately scoped from physical readers and devices; NOT_RUN/BLOCKED do not close gates.",
+  "previously_verified_issues_closed": [
+    251,
+    254,
+    258,
+    264,
+    276
+  ],
+  "evidence_records": {
+    "294": "evidence/qa/issue294-dm-composer-runtime-2026-10-12.json",
+    "295": "evidence/qa/issue295-admin-runtime-2026-10-12.json",
+    "298": "evidence/qa/issue298-dialogs-runtime-2026-10-12.json",
+    "301": "evidence/qa/issue301-accessibility-runtime-2026-10-12.json",
+    "302": "evidence/qa/issue302-visual-regression-runtime-2026-10-12.json"
+  },
+  "cleanup": {
+    "status": "PASS_OWNED_EXCEPT_INTENTIONALLY_HELD_301_FIXTURE",
+    "scope": "Owned root302, DM294 and admin295/298 stacks and native sessions cleaned. Accessibility native resources cleaned; isolated4930 API/SFU stack retained for pending human browser certificate handoff. Unrelated qa-client fixture untouched. Per-worker evidence contains exact cleanup receipts."
+  },
+  "ports": {
+    "root302": [
+      4810,
+      4820,
+      4927
+    ],
+    "294": [
+      4940,
+      4943,
+      4942,
+      4992,
+      4993,
+      4994,
+      4944,
+      4945
+    ],
+    "295_298_native": [
+      4950,
+      4951,
+      4952,
+      4990,
+      4991,
+      4995
+    ],
+    "295_298_web": [
+      4960,
+      4961,
+      4962,
+      4996,
+      4997,
+      4999,
+      4957
+    ],
+    "301": [
+      4930,
+      4933,
+      4932,
+      4983,
+      4984,
+      4985,
+      4937
+    ]
+  },
+  "completed_checks": {
+    "web_full_unit": 1496,
+    "flutter_full_before_native_height_fix": 1169,
+    "flutter_skipped": 1,
+    "authorization_real_postgres": 19,
+    "web_accessibility_before_participant_role": 69,
+    "294_android": "PASS_EMULATOR_SCOPED",
+    "294_ios": "PASS_SIMULATOR_SCOPED",
+    "web_accessibility_final": 90,
+    "web_responsive_host": 22,
+    "web_responsive_linux_firefox": 11,
+    "runner_guards": 44,
+    "actual_full_app_1440": "PASS_NO_MOCKS",
+    "actual_full_app_393": "PASS_NO_MOCKS",
+    "flutter_full_before_latest_validation_and_profile_label_fix": 1177,
+    "flutter_full_final": 1183,
+    "301_android_scenarios": 8,
+    "301_ios_nonmedia_scenarios": 7,
+    "admin_dialog_browser_focused": 25,
+    "admin_dialog_native_focused": 61
+  },
+  "frozen_sources": {
+    "web": "88e369ec94660e3e5af73acb0b35a12e3b362144c1eaecd8a26e3e2144a0ef90",
+    "flutter_lib": "31b73f8238b70e1f9b4c5bc681a0bbf1575a781c60a4fdbb15f644e0c8dedf36"
+  },
+  "pending_human_handoff": {
+    "issue": 301,
+    "origin": "https://localhost:4930",
+    "chrome_group": "🔎 QA301 VoiceOver",
+    "status": "WAITING_FOR_USER",
+    "reason": "ComputerUseConfirmationPolicy requires the user to confirm the self-signed certificate interstitial; elapsed time is not approval."
+  },
+  "final_results": {
+    "294": {
+      "path": "evidence/qa/issue294-dm-composer-runtime-2026-10-12.json",
+      "sha256": "7f39fca988a9b1cb11880eaedeaf9223c42c101993b7da3f5cdf586fb82f2ba6",
+      "status": "PARTIAL",
+      "close_issue": false
+    },
+    "295": {
+      "path": "evidence/qa/issue295-admin-runtime-2026-10-12.json",
+      "sha256": "8ca00e4c53601c5c6ef5acb2399b3c66c8ae37e04668041d068242b7b0848a06",
+      "status": "PARTIAL",
+      "close_issue": false
+    },
+    "298": {
+      "path": "evidence/qa/issue298-dialogs-runtime-2026-10-12.json",
+      "sha256": "92d6c48239735cd34c5f9e12e32bb5fd2875c349f63c728d72b11bec79b18ede",
+      "status": "PARTIAL",
+      "close_issue": false
+    },
+    "301": {
+      "path": "evidence/qa/issue301-accessibility-runtime-2026-10-12.json",
+      "sha256": "77b49adade0d5f87fadd65cc5f03553f82a66136904f70d6ac9a5f4f05ea953e",
+      "status": "PARTIAL",
+      "close_issue": false
+    },
+    "302": {
+      "path": "evidence/qa/issue302-visual-regression-runtime-2026-10-12.json",
+      "sha256": "3fd9cb920e5fdeeb3f81d94eb5a213dd573df800d78b61e8d60a47631c4b6632",
+      "status": "PARTIAL",
+      "close_issue": false
+    }
+  },
+  "publication_scope": "All five issues processed concurrently, confirmed product fixes ready for master; no current issue closure because applicable acceptance gates remain unproven."
+}

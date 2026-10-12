@@ -11,6 +11,7 @@ mixin AdminScreenStateAdminSelectSectionBinding on AdminScreenStateContext {
 extension AdminScreenStateAdminSelectSectionBindingAction
     on AdminScreenStateContext {
   void executeAdminSelectSection(AdminSection section) {
+    widget.state.workspace.adminSection = section;
     adminMutateView(() => adminSelectedAdminSection = section);
     adminMediaRefreshTimer?.cancel();
     adminMediaRefreshTimer = null;

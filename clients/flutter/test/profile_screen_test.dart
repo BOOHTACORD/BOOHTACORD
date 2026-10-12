@@ -510,6 +510,18 @@ void main() {
           .role,
       SemanticsRole.tabBar,
     );
+    for (final entry in const {
+      'profile': 'Профиль',
+      'security': 'Безопасность',
+      'notifications': 'Уведомления',
+      'about': 'О приложении',
+    }.entries) {
+      final data = tester
+          .getSemantics(find.byKey(ValueKey('profile-tab-${entry.key}')))
+          .getSemanticsData();
+      expect(data.label, entry.value, reason: entry.key);
+      expect(data.role, SemanticsRole.tab);
+    }
     expect(find.byKey(const ValueKey('profile-tab-profile')), findsOneWidget);
     expect(
       tester

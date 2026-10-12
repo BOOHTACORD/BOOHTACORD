@@ -6,6 +6,7 @@ import { avatarInitials } from '../design/avatar_initials'
 import SystemWelcomeMessage from '../conversation/system_welcome/SystemWelcomeMessage.vue'
 import SearchResultBody from './SearchResultBody.vue'
 import SearchFilters from './filters/SearchFilters.vue'
+import { useSearchSessions, type SearchSession } from './session/state'
 import { useSearchFilters } from './filters/state'
 import { searchDateRange, type SearchDateRange } from './filters/date_range'
 import ArchivePanel from '../channel/readonly_archive/ArchivePanel.vue'
@@ -23,12 +24,28 @@ const activeView = ref<'messages' | 'mentions' | 'archives' | 'pins'>('messages'
 const searchTarget = useSearchTargetStore()
 watch(()=>props.currentConversation,value=>{if(activeView.value==='pins'&&value?.kind!=='CHANNEL')activeView.value='messages'})
 const filters = useSearchFilters()
-const query = ref('')
-const scope = ref<'all' | 'current'>('all')
+const sessions = useSearchSessions()
+const origin = computed(() => props.currentConversation ? `${props.currentConversation.kind}:${props.currentConversation.id}` : 'global')
+const initialSession = sessions.restore(origin.value)
+const query = ref(initialSession?.query ?? '')
+const scope = ref<'all' | 'current'>(initialSession?.scope ?? 'all')
+const submitted = ref(initialSession?.submitted ?? false)
+const panelRoot = ref<HTMLElement | null>(null)
+let scrollHost: HTMLElement | null = null
+let restoringSession = false
+let restoredScrollTop = initialSession?.scrollTop ?? 0
+let restoreScrollPending = initialSession?.submitted ?? false
+function restoreFilters(saved: SearchSession | null): void {
+  filters.authorId = saved?.authorId ?? ''
+  filters.attachment = saved?.attachment ?? 'any'
+  filters.dateFrom = saved?.dateFrom ?? ''
+  filters.dateTo = saved?.dateTo ?? ''
+}
+restoreFilters(initialSession)
 const authors = useAuthorDirectory()
 const messages = ref<SearchMessage[]>([])
 const nextCursor = ref('')
-const activeQuery = ref('')
+const activeQuery = ref(initialSession?.activeQuery ?? '')
 const activeDates = ref<SearchDateRange>({})
 const loading = ref(false)
 const searched = ref(false)
@@ -37,19 +54,41 @@ const queryInput = ref<HTMLInputElement | null>(null)
 let requestSequence = 0
 const canSubmit = computed(() => !loading.value && Boolean(query.value.trim()) && (scope.value === 'all' || Boolean(props.currentConversation)))
 
-function reset(): void { requestSequence++; messages.value = []; nextCursor.value = ''; activeQuery.value = ''; activeDates.value = {}; loading.value = false; searched.value = false; error.value = '' }
-watch(scope, reset)
-watch(() => [filters.authorId, filters.attachment, filters.dateFrom, filters.dateTo], reset)
+function reset(): void { restoreScrollPending = false; restoredScrollTop = 0; submitted.value = false; requestSequence++; messages.value = []; nextCursor.value = ''; activeQuery.value = ''; activeDates.value = {}; loading.value = false; searched.value = false; error.value = '' }
+watch(scope, () => { if (!restoringSession) reset() }, { flush: 'sync' })
+watch(() => [filters.authorId, filters.attachment, filters.dateFrom, filters.dateTo], () => { if (!restoringSession) reset() }, { flush: 'sync' })
 watch(messages, (items) => { for (const item of items) void authors.ensure(item.authorId) })
-watch(() => props.currentConversation?.id, () => { if (scope.value === 'current') { if (!props.currentConversation) scope.value = 'all'; else reset() } })
+function snapshot(): SearchSession {
+  return { query: query.value, activeQuery: activeQuery.value, scope: scope.value, authorId: filters.authorId, attachment: filters.attachment, dateFrom: filters.dateFrom, dateTo: filters.dateTo, submitted: submitted.value, scrollTop: scrollHost?.scrollTop ?? restoredScrollTop }
+}
+function saveSession(): void { if (!restoringSession) sessions.save(origin.value, snapshot()) }
+watch(() => [query.value, activeQuery.value, scope.value, filters.authorId, filters.attachment, filters.dateFrom, filters.dateTo, submitted.value], saveSession, { flush: 'sync' })
+watch(origin, (next, previous) => {
+  sessions.save(previous, snapshot())
+  const saved = sessions.restore(next)
+  restoringSession = true
+  reset()
+  query.value = saved?.query ?? ''
+  activeQuery.value = saved?.activeQuery ?? ''
+  scope.value = saved?.scope ?? 'all'
+  restoreFilters(saved)
+  submitted.value = saved?.submitted ?? false
+  restoredScrollTop = saved?.scrollTop ?? 0
+  restoreScrollPending = saved?.submitted ?? false
+  restoringSession = false
+  if (submitted.value) void runSearch(undefined, saved?.activeQuery)
+}, { flush: 'sync' })
 
-async function runSearch(before?: string): Promise<void> {
-  const searchQuery = before ? activeQuery.value : query.value
-  if (!searchQuery.trim() || !canSubmit.value && !before) return
+async function runSearch(before?: string, restoredQuery?: string): Promise<void> {
+  const searchQuery = before ? activeQuery.value : restoredQuery ?? query.value
+  if (!searchQuery.trim() || loading.value && !before) return
   if (!validCodePointLength(searchQuery.trim(), 1, 256)) { error.value = 'Запрос должен содержать до 256 символов.'; return }
   const conversation = scope.value === 'current' ? props.currentConversation : null
   if (scope.value === 'current' && !conversation) { error.value = 'Выберите беседу или ищите по всем беседам.'; return }
   const sequence = ++requestSequence
+  if (!before && !restoreScrollPending) restoredScrollTop = 0
+  activeQuery.value = searchQuery
+  submitted.value = true
   loading.value = true
   error.value = ''
   try {
@@ -61,6 +100,9 @@ async function runSearch(before?: string): Promise<void> {
     activeQuery.value = searchQuery
     activeDates.value = dates
     searched.value = true
+    await nextTick()
+    if (sequence === requestSequence && !before && scrollHost) scrollHost.scrollTop = restoredScrollTop
+    if (sequence === requestSequence) restoreScrollPending = false
   } catch (reason) {
     if (sequence === requestSequence) error.value = reason instanceof Error ? reason.message : 'Не удалось выполнить поиск сообщений.'
   } finally { if (sequence === requestSequence) loading.value = false }
@@ -70,12 +112,21 @@ function conversationLabel(message: SearchMessage): string {
   return message.kind === 'CHANNEL' ? props.channelLabels[message.channelId] ?? 'Текстовый канал' : props.directMessageLabels[message.directMessageId] ?? 'Личный диалог'
 }
 function formattedDate(value: string): string { return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(new Date(value)) }
-onBeforeUnmount(() => { requestSequence++ })
-onMounted(() => { void nextTick(() => queryInput.value?.focus()) })
+onBeforeUnmount(() => {
+  saveSession()
+  scrollHost?.removeEventListener('scroll', saveSession)
+  requestSequence++
+})
+onMounted(() => {
+  scrollHost = panelRoot.value?.closest<HTMLElement>('.search-aside') ?? panelRoot.value
+  scrollHost?.addEventListener('scroll', saveSession, { passive: true })
+  void nextTick(() => queryInput.value?.focus())
+  if (submitted.value) void runSearch(undefined, initialSession?.activeQuery)
+})
 </script>
 
 <template>
-  <section class="search-panel" aria-labelledby="search-panel-title" data-testid="search-panel">
+  <section ref="panelRoot" class="search-panel" aria-labelledby="search-panel-title" data-testid="search-panel">
     <header class="search-panel-heading"><h1 id="search-panel-title">{{ activeView === 'messages' ? 'Поиск сообщений' : activeView === 'archives' ? 'Архив' : activeView==='pins'?'Закреплённые':'Упоминания' }}</h1><button class="search-close" type="button" aria-label="Закрыть поиск" @click="emit('close')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12" /></svg></button></header>
     <div class="search-view-tabs" role="group" aria-label="Поиск и упоминания">
       <button id="search-messages-tab" type="button" :aria-pressed="activeView === 'messages'" aria-controls="search-messages-view" @click="activeView = 'messages'">Сообщения</button>

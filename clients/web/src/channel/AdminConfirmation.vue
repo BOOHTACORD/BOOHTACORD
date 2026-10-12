@@ -48,6 +48,11 @@ function settle(confirmed: boolean): void {
 onMounted(() => document.addEventListener('click', rememberClickedOpener, true))
 onBeforeUnmount(() => settle(false))
 onBeforeUnmount(() => document.removeEventListener('click', rememberClickedOpener, true))
+function containKeys(event: KeyboardEvent): void {
+  if (event.key === 'Escape') event.stopPropagation()
+  containModalTab(event, dialog.value)
+}
+
 function cancel(): boolean {
   if (!answer) return false
   settle(false)
@@ -57,7 +62,7 @@ defineExpose({ ask, cancel })
 </script>
 
 <template>
-  <dialog ref="dialog" class="admin-confirm-dialog" aria-modal="true" :aria-labelledby="`${props.id}-title`" :aria-describedby="`${props.id}-message`" @cancel.prevent="settle(false)" @close="settle(false)" @keydown="containModalTab($event, dialog)">
+  <dialog ref="dialog" class="admin-confirm-dialog" aria-modal="true" :aria-labelledby="`${props.id}-title`" :aria-describedby="`${props.id}-message`" @cancel.prevent="settle(false)" @close="settle(false)" @keydown="containKeys">
     <h3 :id="`${props.id}-title`">{{ title }}</h3>
     <p :id="`${props.id}-message`">{{ message }}</p>
     <div class="admin-confirm-actions">

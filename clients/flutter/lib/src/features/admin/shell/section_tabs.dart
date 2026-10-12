@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../../../theme.dart';
 import 'tab_control/control.dart';
-
-enum AdminSection { members, roles, channels, audit, media, guild, readiness }
+import 'types.dart';
+export 'types.dart';
 
 /// The admin tab strip owns tab semantics and responsive spacing while the
 /// screen retains selection/loading state. This prevents feature panels from

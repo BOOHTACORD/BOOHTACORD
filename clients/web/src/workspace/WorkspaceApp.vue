@@ -94,10 +94,10 @@ bindWorkspaceReady({ readiness: props.readiness,
           <template v-if="sidebarSection === 'channels'">
             <p v-if="topologyStore.loading" class="state" aria-live="polite">Загружаем каналы…</p>
             <p v-else-if="topologyStore.error" class="state state-error" role="alert">{{ topologyStore.error }} Войдите в аккаунт или повторите попытку.</p>
-            <template v-else-if="topologyStore.topology">
+            <template v-if="topologyStore.topology">
               <ChannelTopologyActions :account-id="props.accountId" :active-voice-channel-id="activeVoiceChannel?.id" :selected-channel-id="selectedChannelId ?? undefined" :topology="topologyStore.topology" :permissions="permissions.snapshot?.permissions ?? { 'channel.text.create': false, 'channel.text.delete': false, 'channel.voice.create': false, 'channel.voice.delete': false, 'category.create': false, 'category.delete': false }" :voice-presence="voiceNavigationPresence" :voice-rosters="voiceRoster.channels.value" @select="requestSelectChannel" @changed="refreshTopology" />
             </template>
-            <p v-else class="state">Каналы пока не созданы.</p>
+            <p v-else-if="!topologyStore.loading && !topologyStore.error" class="state">Каналы пока не созданы.</p>
           </template>
           <DirectMessageNavigation
             v-else

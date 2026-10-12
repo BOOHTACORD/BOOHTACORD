@@ -36,9 +36,9 @@ class WorkspaceGuildHeader extends StatelessWidget {
     decoration: const BoxDecoration(
       border: Border(bottom: BorderSide(color: GcColors.borderSubtle)),
     ),
-    child: SizedBox(
+    child: ConstrainedBox(
       key: const ValueKey('navigation-guild-header'),
-      height: GcLayout.headerHeight,
+      constraints: const BoxConstraints(minHeight: GcLayout.headerHeight),
       child: Padding(
         padding: EdgeInsets.only(left: compact ? 12 : 16, right: 16),
         child: Row(
@@ -47,6 +47,7 @@ class WorkspaceGuildHeader extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

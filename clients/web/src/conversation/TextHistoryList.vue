@@ -17,12 +17,12 @@ const { store, timeline, announcement, jumpCount, historyWindow, onScroll, jumpT
   <p class="gc-sr-only" role="status" aria-atomic="true">{{ announcement }}</p>
   <button v-if="jumpCount" class="message-jump-latest" type="button" @click="jumpToLatest">К новым сообщениям ({{ jumpCount }})</button>
   <ol ref="list" class="messages message-list" :class="{ 'message-list--virtual': true }" role="log" aria-live="off" aria-label="История сообщений" @scroll.passive="onScroll" @focusin="historyWindow.pinFocused" @focusout="historyWindow.releaseFocus">
-    <li v-if="store.nextCursor || store.olderError" class="virtual-history-control" data-history-control>
+    <li role="presentation" v-if="store.nextCursor || store.olderError" class="virtual-history-control" data-history-control>
       <button v-if="store.nextCursor" type="button" :disabled="store.olderLoading" @click="loadOlder">{{ store.olderLoading ? 'Загружаем старые сообщения…' : 'Показать предыдущие сообщения' }}</button>
       <span v-if="store.olderError" class="state state-error" role="alert">{{ store.olderError }} <button type="button" :disabled="store.olderLoading" @click="loadOlder">Повторить</button></span>
     </li>
-    <li v-if="historyWindow.range.value.start" class="virtual-spacer" aria-hidden="true" :style="{ height: `${historyWindow.topSpacer.value}px` }" />
-    <li v-for="entry in historyWindow.renderedRows.value" :key="entry.key" :data-virtual-key="entry.key" :data-message-id="entry.kind === 'message' ? entry.message.id : undefined"
+    <li role="presentation" v-if="historyWindow.range.value.start" class="virtual-spacer" aria-hidden="true" :style="{ height: `${historyWindow.topSpacer.value}px` }" />
+    <li role="presentation" v-for="entry in historyWindow.renderedRows.value" :key="entry.key" :data-virtual-key="entry.key" :data-message-id="entry.kind === 'message' ? entry.message.id : undefined"
       :class="entry.kind === 'date' ? 'history-date' : ['virtual-row', { 'grouped-message': entry.grouped }]" :style="historyWindow.rowStyle(entry)">
       <template v-if="entry.kind === 'date'"><span v-if="entry.showStart" class="history-start" role="status" aria-label="Это начало истории.">Начало</span><time :datetime="entry.dateTime">{{ entry.dateLabel }}</time></template>
       <MessageItem v-else
@@ -41,12 +41,12 @@ const { store, timeline, announcement, jumpCount, historyWindow, onScroll, jumpT
         @edit-state="historyWindow.setEditing(entry.message.id, $event)"
       />
     </li>
-    <li v-if="historyWindow.range.value.end < timeline.length" class="virtual-spacer" aria-hidden="true" :style="{ height: `${historyWindow.bottomSpacer.value}px` }" />
-    <li v-if="store.newerCursor || store.newerError" class="virtual-history-control" data-history-control>
+    <li role="presentation" v-if="historyWindow.range.value.end < timeline.length" class="virtual-spacer" aria-hidden="true" :style="{ height: `${historyWindow.bottomSpacer.value}px` }" />
+    <li role="presentation" v-if="store.newerCursor || store.newerError" class="virtual-history-control" data-history-control>
       <button v-if="store.newerCursor" type="button" :disabled="store.newerLoading" @click="loadNewer">{{ store.newerLoading ? 'Загружаем новые сообщения…' : 'Показать следующие сообщения' }}</button>
       <span v-if="store.newerError" class="state state-error" role="alert">{{ store.newerError }} <button type="button" :disabled="store.newerLoading" @click="loadNewer">Повторить</button></span>
     </li>
-    <li v-if="!store.messages.length && !store.loading" class="state">Сообщений пока нет.</li>
+    <li role="presentation" v-if="!store.messages.length && !store.loading" class="state">Сообщений пока нет.</li>
   </ol>
   </div>
 </template>

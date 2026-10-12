@@ -11,6 +11,7 @@ mixin AdminScreenStateInitStateBinding on AdminScreenStateContext {
 
 extension AdminScreenStateInitStateBindingAction on AdminScreenStateContext {
   void executeAdminInitState() {
+    adminSelectedAdminSection = widget.state.workspace.adminSection;
     adminTopologyMutations = AdminTopologyMutationController(
       api: widget.state.api,
       topologyProvider: () => widget.state.topology,
@@ -46,6 +47,9 @@ extension AdminScreenStateInitStateBindingAction on AdminScreenStateContext {
       if (mounted) {
         adminTitleFocus.requestFocus();
         adminLoadAccounts();
+        if (adminSelectedAdminSection != AdminSection.members) {
+          adminSelectSection(adminSelectedAdminSection);
+        }
       }
     });
   }

@@ -23,7 +23,7 @@ RETURNING text_create, text_delete, voice_create, voice_delete,
 const auditMemberPolicy = `
 INSERT INTO audit_events (actor_user_id, event_type, metadata)
 VALUES ($1, 'MEMBER_PERMISSIONS_UPDATED',
- jsonb_build_object('before', $2::jsonb, 'after', $3::jsonb, 'revision', $4))`
+ jsonb_build_object('before', $2::jsonb, 'after', $3::jsonb, 'revision', $4::bigint))`
 
 func (repository Repository) UpdateMember(ctx context.Context, command rolepolicy.UpdateCommand) (permissionregistry.Policy, error) {
 	transaction, err := repository.database.Begin(ctx)

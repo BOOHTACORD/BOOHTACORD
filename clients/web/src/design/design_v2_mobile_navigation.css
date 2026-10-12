@@ -2,8 +2,10 @@
 .mobile-nav-close { display: none; }
 .voice-dock-headset { display: none; }
 @media (max-width: 720px) {
-  .sidebar.is-open > .nav-drawer { box-sizing: border-box; border-right: 0; padding-top: 76px; padding-bottom: 176px; }
-  .sidebar.is-open > .guild-header { z-index: calc(var(--gc-z-drawer) + 1); padding-left: 12px; }
+  /* Let enlarged header/account text reserve its actual space in the drawer. */
+  .sidebar.is-open { position: fixed; inset: 0 auto 0 0; z-index: var(--gc-z-drawer); display: grid; width: min(320px, calc(100vw - 40px)); grid-template-rows: auto minmax(0, 1fr) auto auto; background: var(--gc-sidebar); }
+  .sidebar.is-open > .nav-drawer { position: relative; inset: auto; box-sizing: border-box; width: 100%; border-right: 0; padding-top: 12px; padding-bottom: 0; overflow: hidden; }
+  .sidebar.is-open > .guild-header { position: relative; inset: auto; width: 100%; z-index: calc(var(--gc-z-drawer) + 1); padding-left: 12px; }
   .sidebar.is-open .guild-chevron { display: none; }
   .sidebar.is-open .mobile-nav-close { position: fixed; top: 10px; left: min(260px, calc(100vw - 100px)); z-index: calc(var(--gc-z-drawer) + 2); display: grid; width: 44px; height: 44px; place-items: center; border: 0; border-radius: 8px; color: #aab2c4; background: transparent; font-size: 1.5rem; font-weight: 300; cursor: pointer; }
   .sidebar.is-open .mobile-nav-close:hover { background: #242833; }
@@ -33,8 +35,8 @@
   .sidebar.is-open .voice-member-share svg { display: none; }
   .sidebar.is-open .voice-member-share::after { content: 'ЭФИР'; }
   .sidebar.is-open .voice-member-row:has(.voice-member-share) .voice-person-state { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-  .sidebar.is-open .mobile-voice-dock.mobile-visible { position: fixed; right: auto; bottom: 64px; left: 0; z-index: calc(var(--gc-z-drawer) + 1); display: flex; box-sizing: border-box; width: min(320px, calc(100vw - 40px)); height: 112px; min-height: 112px; flex-direction: column; align-items: stretch; gap: 0; border: 0; border-top: 1px solid #292d39; padding: 12px 16px; background: #10191a; }
-  .sidebar.is-open .mobile-voice-dock .voice-dock-header { position: relative; display: flex; height: 32px; align-items: flex-start; }
+  .sidebar.is-open .mobile-voice-dock.mobile-visible { position: relative; inset: auto; z-index: calc(var(--gc-z-drawer) + 1); display: flex; box-sizing: border-box; width: 100%; height: auto; min-height: 112px; flex-direction: column; align-items: stretch; gap: 0; border: 0; border-top: 1px solid #292d39; padding: 12px 16px; background: #10191a; }
+  .sidebar.is-open .mobile-voice-dock .voice-dock-header { position: relative; display: flex; height: auto; min-height: 32px; align-items: flex-start; }
   .sidebar.is-open .mobile-voice-dock .voice-dock-headset { position: absolute; top: 0; left: 0; display: block; width: 16px; height: 16px; color: #78e6a0; stroke-width: 1.8; }
   .sidebar.is-open .mobile-voice-dock .voice-status { padding-left: 24px; }
   .sidebar.is-open .mobile-voice-dock .voice-dock-copy { flex: 1; }
@@ -44,7 +46,7 @@
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button svg { position: relative; }
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button--danger { color: #fff; }
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button--danger::before { background: #b80c16; }
-  .sidebar.is-open .user-footer { right: auto; bottom: 0; left: 0; z-index: calc(var(--gc-z-drawer) + 2); box-sizing: border-box; width: min(320px, calc(100vw - 40px)); height: 64px; min-height: 64px; gap: 10px; border-top: 1px solid #292d39; border-right: 0; padding: 12px 14px; background: var(--gc-canvas); }
+  .sidebar.is-open .user-footer { position: relative; inset: auto; z-index: calc(var(--gc-z-drawer) + 2); box-sizing: border-box; width: 100%; height: auto; min-height: 64px; gap: 10px; border-top: 1px solid #292d39; border-right: 0; padding: 12px 14px; background: var(--gc-canvas); }
   .sidebar.is-open .user-footer-profile { gap: 10px; }
   .sidebar.is-open .user-footer .username { gap: 0; }
   .sidebar.is-open .user-footer small { line-height: 1rem; }

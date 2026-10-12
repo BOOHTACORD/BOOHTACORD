@@ -110,9 +110,17 @@ test('the mobile navigation drawer opens inside its available width', async ({ p
     await page.setViewportSize({ width, height: 844 })
     await page.goto('/tests/responsive_shell/fixture.html')
     await page.getByRole('button', { name: 'Открыть навигацию' }).click()
+    const sidebar = await page.getByTestId('workspace-sidebar').boundingBox()
     const drawer = await page.getByTestId('workspace-drawer').boundingBox()
-    expect(drawer?.width).toBe(Math.min(320, width - 40))
     expect(drawer?.x).toBe(0)
+    if (width <= 720) {
+      expect(sidebar?.width).toBe(Math.min(320, width - 40))
+      expect(sidebar?.x).toBe(0)
+      expect(drawer!.width).toBeGreaterThan(0)
+      expect(drawer!.x + drawer!.width).toBeLessThanOrEqual(sidebar!.x + sidebar!.width)
+    } else {
+      expect(drawer?.width).toBe(Math.min(320, width - 40))
+    }
     if (width <= 720) {
       await page.getByTestId('workspace-drawer').getByRole('button', { name: 'Закрыть навигацию' }).click()
     } else {

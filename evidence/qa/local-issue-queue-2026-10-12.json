@@ -271,13 +271,17 @@
       "number": 294,
       "title": "[UIUX-2026][UX-05][P2] DM, поиск и composer: mobile-first flow, пустые состояния и сохранение контекста",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/294",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue294-dm-composer-runtime-2026-10-12.json",
+      "remaining": "Physical platform, spoken reader or approved visual-baseline acceptance remains open; see scoped evidence."
     },
     {
       "number": 295,
       "title": "[UIUX-2026][UX-06][P1] Guild admin: единый контекст, вкладки и desktop/mobile оболочка",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/295",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue295-admin-runtime-2026-10-12.json",
+      "remaining": "Physical platform, spoken reader or approved visual-baseline acceptance remains open; see scoped evidence."
     },
     {
       "number": 297,
@@ -291,19 +295,25 @@
       "number": 298,
       "title": "[UIUX-2026][UX-09][P1] Dialogs и bottom sheets: создание, подтверждение, опасные действия",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/298",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue298-dialogs-runtime-2026-10-12.json",
+      "remaining": "Physical platform, spoken reader or approved visual-baseline acceptance remains open; see scoped evidence."
     },
     {
       "number": 301,
       "title": "[UIUX-2026][UX-12][P1] Accessibility WCAG 2.2 AA + Flutter Semantics для ключевых сценариев",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/301",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue301-accessibility-runtime-2026-10-12.json",
+      "remaining": "Physical platform, spoken reader or approved visual-baseline acceptance remains open; see scoped evidence."
     },
     {
       "number": 302,
       "title": "[UIUX-2026][UX-13][P1] Автотесты UI/UX: viewport matrix, visual snapshots и сценарии E2E",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/302",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue302-visual-regression-runtime-2026-10-12.json",
+      "remaining": "Physical platform, spoken reader or approved visual-baseline acceptance remains open; see scoped evidence."
     },
     {
       "number": 303,
@@ -318,7 +328,7 @@
       "status": "NOT_RUN"
     }
   ],
-  "ordering": "Second parallel batch: mini-player #247; macOS responsive shell #291 and settings #297; Android/iOS navigation #292; root TEXT/DM actions #293. Four agents, three Android AVDs, two iOS simulators, isolated servers. Physical-only criteria remain NOT_RUN without hardware proof.",
+  "ordering": "Third parallel batch: DM/search/composer294; admin295 and dialogs298 sharing one owned session; accessibility301; root visual/e2e302. Four agents, three Android AVDs, three iOS simulators. NativeSDK compilation and foregroundGUI ownership serialized; runtime stacks isolated.",
   "source": "https://github.com/Egkurilov/BOOHTACORD/issues",
   "closure_policy": "Only applicable runtime evidence can close a case; emulator/unit PASS does not establish physical-device or load acceptance.",
   "active_batch": [],
@@ -330,53 +340,53 @@
     276
   ],
   "selected_batch": [
-    247,
-    291,
-    292,
-    293,
-    297
+    294,
+    295,
+    298,
+    301,
+    302
   ],
   "current_batch_completed": [],
   "workers": {
-    "mini_player": {
+    "dm_composer": {
       "issues": [
-        247
+        294
       ],
-      "https": 4830,
-      "android": "BOOHTACORD_QA_278_API35 / emulator-5558",
-      "ios": "BOOHTACORD QA278 iPhone /57E6A791-8975-4C84-82E6-47321F22C9B8"
+      "https": 4940,
+      "android": "emulator-5556 / BOOHTACORD_QA_283_API35",
+      "ios": "82C26E13-0F1F-43F9-AF27-866DC22C2456"
     },
-    "macos_settings_resize": {
+    "admin_dialogs": {
       "issues": [
-        291,
-        297
+        295,
+        298
       ],
-      "https": 4850,
-      "device": "physical macOS window and native profile controls"
+      "https": 4950,
+      "android": "emulator-5554 / BOOHTACORD_QA_API35",
+      "ios": "153A6432-6806-4B44-927B-B8CDB75FE664"
     },
-    "mobile_navigation": {
+    "accessibility": {
       "issues": [
-        292
+        301
       ],
-      "https": 4840,
-      "android": "BOOHTACORD_QA_283_API35 / emulator-5556",
-      "ios": "BOOHTACORD QA iPhone /82C26E13-0F1F-43F9-AF27-866DC22C2456"
+      "https": 4930,
+      "android": "emulator-5558 / BOOHTACORD_QA_278_API35",
+      "ios": "57E6A791-8975-4C84-82E6-47321F22C9B8"
     },
-    "message_actions": {
+    "visual_e2e": {
       "issues": [
-        293
+        302
       ],
-      "https": 4810,
-      "android": "BOOHTACORD_QA_API35 / emulator-5554",
-      "ios": "Simulator82 reused only after navigation worker release"
+      "fixture_http": 4927,
+      "https": 4810
     }
   },
   "processed_batch": [
-    247,
-    291,
-    292,
-    293,
-    297
+    294,
+    295,
+    298,
+    301,
+    302
   ],
   "partial_gates": [
     247,
@@ -387,22 +397,72 @@
     291,
     292,
     293,
-    297
+    294,
+    295,
+    297,
+    298,
+    301,
+    302
   ],
   "parallel_batch_status": "COMPLETED_WITH_OPEN_GATES",
-  "cleanup": "PASS: all current-batch owned stacks, reverse ports and private credential-bearing builds removed; assigned Android emulators and iOS simulators shut down. Reusable device definitions and ignored sanitized captures retained. Foreign services are untouched.",
+  "cleanup": "PASS owned root/DM/admin/native resources; isolated QA3014930 certificate-handoff stack intentionally held pending user. See per-issue cleanup receipts; unrelated resources untouched.",
   "runner_safety_tests": {
     "status": "PASS",
     "count": 44,
-    "receipt": ".out/qa-batch2-ultimate-runners.log",
-    "sha256": "af4b03d17398db5c2ac8f6541ed5e5edc0608698c3a4218b257a59a272199aa7",
-    "scope": "21 local-feature policy/process/native/stack/baseline/doctor/iOS-extension,4 Mac,2 assigned-Android OS Back,4 navigation reverse cleanup,3 native292/293 freshness guards,10 mini-player receipt/control/device guards."
+    "receipt": ".out/qa302-20261012/commit-all-qa-guards-final.log",
+    "sha256": "1c20787d75ebdab774579e0764fc2df8cbec706ba417cab9a84d622645ea5fca",
+    "scope": "6 output-destination,7 lifecycle-runner,4 policy,4 DM-contract,12 accessibility,11 admin guards; final Android7 QA-only cleanup source."
   },
   "current_batch_execution_finished": [
-    247,
-    291,
-    292,
-    293,
-    297
+    294,
+    295,
+    298,
+    301,
+    302
+  ],
+  "batch_history": [
+    {
+      "selected": [
+        247,
+        291,
+        292,
+        293,
+        297
+      ],
+      "processed": [
+        247,
+        291,
+        292,
+        293,
+        297
+      ],
+      "status": "COMPLETED_WITH_OPEN_GATES",
+      "evidence": "evidence/qa/issue-batch-247-291-292-293-297-2026-10-12.json"
+    },
+    {
+      "selected": [
+        294,
+        295,
+        298,
+        301,
+        302
+      ],
+      "processed": [
+        294,
+        295,
+        298,
+        301,
+        302
+      ],
+      "status": "COMPLETED_WITH_OPEN_GATES",
+      "evidence": "evidence/qa/issue-batch-294-295-298-301-302-2026-10-12.json",
+      "previous_runner_safety_tests": {
+        "status": "PASS",
+        "count": 44,
+        "receipt": ".out/qa-batch2-ultimate-runners.log",
+        "sha256": "af4b03d17398db5c2ac8f6541ed5e5edc0608698c3a4218b257a59a272199aa7",
+        "scope": "21 local-feature policy/process/native/stack/baseline/doctor/iOS-extension,4 Mac,2 assigned-Android OS Back,4 navigation reverse cleanup,3 native292/293 freshness guards,10 mini-player receipt/control/device guards."
+      }
+    }
   ]
 }

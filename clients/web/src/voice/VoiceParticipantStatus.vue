@@ -7,7 +7,7 @@ const state = computed(() => props.deafened ? 'Звук и микрофон вы
 </script>
 
 <template>
-  <span class="voice-person-state" :class="{ 'is-muted': microphoneMuted || microphoneUnavailable || deafened, 'is-speaking': isSpeaking, 'is-deafened': deafened }" :aria-label="state" :title="state">
+  <span role="img" class="voice-person-state" :class="{ 'is-muted': microphoneMuted || microphoneUnavailable || deafened, 'is-speaking': isSpeaking, 'is-deafened': deafened }" :aria-label="state" :title="state">
     <svg v-if="isSpeaking" class="voice-person-state-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4" /></svg>
     <template v-else-if="deafened">
       <span class="voice-person-state-icons" aria-hidden="true">

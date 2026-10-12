@@ -73,12 +73,19 @@
       "tests/accessibility/playwright.config.ts"
     ],
     "flutter": [
-      "test/uiux_2026/personal_settings_visual_capture_test.dart"
+      "test/uiux_2026/personal_settings_visual_capture_test.dart",
+      "test/profile_screen_test.dart"
     ],
     "acceptance": {
       "issue297": {
         "native": "tools/qa/macos_ui/run.py",
         "scope": "physical macOS settings; emulator observations and physical reader gates separate"
+      },
+      "issue301": {
+        "browser": "tools/qa/accessibility_runtime/run.py",
+        "native": "tools/qa/accessibility_runtime/native.py",
+        "target": "integration_test/accessibility_qa_test.dart",
+        "scope": "Actual rendered-state axe/keyboard, enlarged-text geometry and native Semantics; missing physical screen readers/platforms keep gate PARTIAL"
       }
     }
   },
@@ -93,8 +100,24 @@
       "tests/accessibility/playwright.config.ts"
     ],
     "flutter": [
-      "test/uiux_2026/admin_visual_capture_test.dart"
-    ]
+      "test/uiux_2026/admin_visual_capture_test.dart",
+      "test/admin_accessibility/section_context_test.dart",
+      "test/admin_accessibility/create_error_readability_test.dart"
+    ],
+    "acceptance": {
+      "issue295": {
+        "browser": "tools/qa/admin_dialogs/run.py",
+        "native": "tools/qa/admin_dialogs/run_native.py",
+        "target": "integration_test/admin_dialogs_qa_test.dart",
+        "scope": "Actual available admin sections and dialogs; simulator/automated observations do not clear physical device gates"
+      },
+      "issue298": {
+        "browser": "tools/qa/admin_dialogs/run.py",
+        "native": "tools/qa/admin_dialogs/run_native.py",
+        "target": "integration_test/admin_dialogs_qa_test.dart",
+        "scope": "Actual available admin sections and dialogs; simulator/automated observations do not clear physical device gates"
+      }
+    }
   },
   "chat": {
     "paths": [
@@ -110,11 +133,14 @@
     ],
     "web": [
       "tests/conversation_action_disclosure/playwright.config.ts",
-      "tests/mentions_inbox/playwright.config.ts"
+      "tests/mentions_inbox/playwright.config.ts",
+      "tests/accessibility/playwright.config.ts",
+      "tests/search_sessions/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart",
-      "test/message_action_menu_test.dart"
+      "test/message_action_menu_test.dart",
+      "test/features/workspace/dm_drafts/widget_test.dart"
     ],
     "acceptance": {
       "issue293": {
@@ -122,6 +148,18 @@
         "native": "tools/qa/message_actions/run_native.py",
         "target": "integration_test/message_actions_qa_test.dart",
         "scope": "Real stack actions; physical touch/reader gate independent"
+      },
+      "issue294": {
+        "browser": "tools/qa/dm_composer/run.py",
+        "native": "tools/qa/dm_composer/run_native.py",
+        "target": "integration_test/dm_composer_qa_test.dart",
+        "scope": "Actual DM drafts/search/composer on owned stack; physical IME, clipboard and image picker remain separate gates"
+      },
+      "issue301": {
+        "browser": "tools/qa/accessibility_runtime/run.py",
+        "native": "tools/qa/accessibility_runtime/native.py",
+        "target": "integration_test/accessibility_qa_test.dart",
+        "scope": "Actual rendered-state axe/keyboard, enlarged-text geometry and native Semantics; missing physical screen readers/platforms keep gate PARTIAL"
       }
     }
   },
@@ -141,12 +179,15 @@
     "web": [
       "tests/responsive_shell/playwright.config.ts",
       "tests/conversation_action_disclosure/playwright.config.ts",
-      "tests/mentions_inbox/playwright.config.ts"
+      "tests/mentions_inbox/playwright.config.ts",
+      "tests/accessibility/playwright.config.ts"
     ],
     "flutter": [
       "test/mobile_navigation_visual_capture_test.dart",
       "test/features/workspace/quick_jump/widget_test.dart",
-      "test/features/workspace/quick_jump/workspace_navigation_test.dart"
+      "test/features/workspace/quick_jump/workspace_navigation_test.dart",
+      "test/workspace_navigation_text_scale_test.dart",
+      "test/workspace_navigation_top_test.dart"
     ],
     "acceptance": {
       "issue292": {
@@ -156,6 +197,16 @@
       "issue291": {
         "native": "tools/qa/macos_ui/run.py",
         "scope": "physical macOS resize; missing Windows and physical mobile remain NOT_RUN"
+      },
+      "issue302": {
+        "browser": "tools/qa/client_lifecycle/run.py",
+        "scope": "Actual disposable-stack smoke and source-sized captures; source archive, D11 and approved pixel baselines require independent evidence"
+      },
+      "issue301": {
+        "browser": "tools/qa/accessibility_runtime/run.py",
+        "native": "tools/qa/accessibility_runtime/native.py",
+        "target": "integration_test/accessibility_qa_test.dart",
+        "scope": "Actual rendered-state axe/keyboard, enlarged-text geometry and native Semantics; missing physical screen readers/platforms keep gate PARTIAL"
       }
     }
   }

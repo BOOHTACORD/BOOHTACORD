@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../core/session/scope.dart';
+import '../../admin/shell/types.dart';
 import '../../../guild_presence_state.dart';
 import '../../../models.dart';
 import '../../../services/api_client.dart';
@@ -47,6 +48,7 @@ class WorkspaceController extends ChangeNotifier {
 
   NavigationSection navigationSection = NavigationSection.channels;
   WorkspacePanel workspacePanel = WorkspacePanel.none;
+  AdminSection adminSection = AdminSection.members;
   SearchMessage? searchContextMessage;
   String searchContextHeading = 'Контекст найденного сообщения';
   List<ChatMessage> searchContextTextMessages = const [];
@@ -79,6 +81,7 @@ class WorkspaceController extends ChangeNotifier {
     selectedChannel = null;
     navigationSection = NavigationSection.channels;
     workspacePanel = WorkspacePanel.none;
+    adminSection = AdminSection.members;
     searchContextMessage = null;
     searchContextHeading = 'Контекст найденного сообщения';
     searchContextTextMessages = const [];

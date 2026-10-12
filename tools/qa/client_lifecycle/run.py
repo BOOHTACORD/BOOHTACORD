@@ -11,6 +11,7 @@ from pathlib import Path
 from .services import local_origin, output, run
 from .stack import Stack
 from .telemetry import verify
+from .destination import fresh_capture_destination
 
 
 VIEWPORT_PROFILES = {
@@ -91,13 +92,17 @@ def main():
     parser.add_argument('--width', type=int, choices=tuple(VIEWPORT_PROFILES), default=1440)
     parser.add_argument('--critical', action='store_true')
     parser.add_argument('--portable-proxy', action='store_true', help='bridge proxy for macOS Colima')
+    parser.add_argument('--output-root', help='fresh per-width capture directory inside checkout .out; existing runs are rejected')
     args = parser.parse_args()
     viewport = viewport_profile(args.width)
     started = time.monotonic()
     root = Path(__file__).resolve().parents[3]
     origin = local_origin('https://localhost:4810')
-    destination = root/'.out/client-lifecycle'/str(args.width)
-    destination.mkdir(parents=True, exist_ok=True)
+    if args.output_root:
+        destination = fresh_capture_destination(root, args.output_root, args.width)
+    else:
+        destination = root/'.out/client-lifecycle'/str(args.width)
+        destination.mkdir(parents=True, exist_ok=True)
     build_environment = dict(os.environ, VITE_PUBLIC_ORIGIN=origin)
     run('npm', 'run', 'build', cwd=root/'clients/web', env=build_environment,
         stdout=subprocess.DEVNULL)

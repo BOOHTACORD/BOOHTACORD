@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
+import postcss from 'postcss'
 import workspace from '../workspace/WorkspaceApp.vue?raw'
 import userFooter from '../workspace/WorkspaceUserFooter.vue?raw'
 const mobileNavigation = readFileSync(new URL('./design_v2_mobile_navigation.css', import.meta.url), 'utf8')
@@ -55,7 +56,13 @@ describe('V2 mobile navigation drawer', () => {
   })
 
   it('matches the handoff search and segmented tabs in the open drawer', () => {
-    expect(mobileNavigation).toContain('.sidebar.is-open > .nav-drawer { box-sizing: border-box; border-right: 0;')
+    const drawer: Record<string, string> = {}
+    postcss.parse(mobileNavigation).walkRules(rule => {
+      if (rule.selector === '.sidebar.is-open > .nav-drawer') {
+        rule.walkDecls(declaration => { drawer[declaration.prop] = declaration.value })
+      }
+    })
+    expect(drawer).toMatchObject({ 'box-sizing': 'border-box', 'border-right': '0' })
     expect(mobileNavigation).toContain('.sidebar.is-open .guild-search-button { padding: 0 10px; border: 0; color: var(--gc-text-muted);')
     expect(mobileNavigation).toContain('.sidebar.is-open .sidebar-tabs { box-sizing: border-box; width: calc(100% - 24px); height: 40px;')
     expect(mobileNavigation).toContain('.sidebar.is-open .sidebar-tabs button { height: 32px; min-height: 32px;')

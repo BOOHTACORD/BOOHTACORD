@@ -1,0 +1,951 @@
+{
+  "schema_version": 1,
+  "issue": 301,
+  "issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/301",
+  "date": "2026-10-12",
+  "status": "PARTIAL",
+  "close_issue": false,
+  "close_gate": "OPEN_SPOKEN_READERS_PHYSICAL_MATRIX_IOS_MEDIA",
+  "base_commit": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+  "leaf_tasks": [
+    {
+      "id": "T-050",
+      "dependencies": [
+        "T-020",
+        "T-022",
+        "T-040"
+      ],
+      "requirements": [
+        "REQ-UI-01",
+        "REQ-UI-02"
+      ]
+    },
+    {
+      "id": "FV2-006",
+      "dependencies": [
+        "FV2-002",
+        "FV2-003",
+        "FV2-004",
+        "FV2-005"
+      ],
+      "requirements": [
+        "REQ-UI-01",
+        "REQ-UI-02",
+        "REQ-QUALITY-01",
+        "REQ-QUALITY-02",
+        "REQ-PLATFORM-01"
+      ]
+    }
+  ],
+  "production_changes": [
+    {
+      "path": "clients/web/src/conversation/TextHistoryList.vue",
+      "sha256": "f9b43d911383af5b262d4448556e0f93195b2145662713bc70b7e4e3c2214525",
+      "bytes": 4626
+    },
+    {
+      "path": "clients/web/src/direct_message/DirectMessageHistoryList.vue",
+      "sha256": "7aa758db2cbf620ba1fe9c1b2a09f17730e9936926ef0d8cf874aa427ac0b2be",
+      "bytes": 7398
+    },
+    {
+      "path": "clients/web/src/design/design_v2_fidelity.css",
+      "sha256": "2be9100bdb0203ebce3a6e463e653c5cd78af7687a96cf47c485af9da31024cd",
+      "bytes": 11833
+    },
+    {
+      "path": "clients/web/src/design/design_v2_mobile_navigation.css",
+      "sha256": "60c34d85f6dd09917e067aa7e3bb6400d4dc560ef9734486285f7a6c6de666db",
+      "bytes": 6138
+    },
+    {
+      "path": "clients/web/src/voice/VoiceParticipantStatus.vue",
+      "sha256": "a5166a2e0e1ab93e92ad158aece2953d1da3e773e24ab2e5519f2e8d94c79ecd",
+      "bytes": 1981
+    },
+    {
+      "path": "clients/web/src/design/responsive_shell.css",
+      "sha256": "9767e89e07549878c01d95de07fb3dd333e8ec7720e9cfbd682988b9ab0409ef",
+      "bytes": 3664
+    },
+    {
+      "path": "clients/web/src/design/design_v2_search_presentation.css",
+      "sha256": "914722de74d1ed5d3b4a8aae54d6ed633b5a95d78981be1889a66852486415dd",
+      "bytes": 5155
+    },
+    {
+      "path": "clients/flutter/lib/src/features/workspace/mobile_navigation/guild_header.dart",
+      "sha256": "d60619d622171ee1316b6efb94f539d8a4a3848fe37b433808b39e045d0f61a8",
+      "bytes": 3237
+    },
+    {
+      "path": "clients/flutter/lib/src/screens/workspace_ui/user_footer/build/handler.dart",
+      "sha256": "86ff118a7f63ecc982381f1b0bd19024628d295403630182792ed29dbe9d3db0",
+      "bytes": 2751
+    },
+    {
+      "path": "clients/flutter/lib/src/screens/workspace_ui/user_footer/build/account_menu/handler.dart",
+      "sha256": "62d44e1a693dc69c6ce57dbafb9400263ccfc0eb579c4122853e6d3831cfb0e0",
+      "bytes": 2209
+    },
+    {
+      "path": "clients/flutter/lib/src/screens/profile_screen.dart",
+      "sha256": "76aae39f8fb7960e64b113967d8e152276cef21342b5baea2a28ec7b37fd0b2b",
+      "bytes": 25202
+    }
+  ],
+  "focused_checks": [
+    {
+      "name": "history_log",
+      "result": "6 RED -> 6 GREEN",
+      "test": "clients/web/tests/accessibility/history_log.browser.spec.ts",
+      "test_sha256": "1256d7cede17b92f33a4fd7737d722d4224a8e80663f26dce6dc97d0a492b9af"
+    },
+    {
+      "name": "compact_participant_named_role",
+      "result": "5 RED -> 5 GREEN",
+      "test": "clients/web/tests/accessibility/voice_participant_status.browser.spec.ts",
+      "test_sha256": "a6143dda62577d4aad5a69810243db3c9e908f4fffc549caac3be0cd31755c48"
+    },
+    {
+      "name": "native_header_footer_menu_text_scale",
+      "result": "6 FAIL/2 PASS -> 10 GREEN including two unchanged normal64px baselines",
+      "test": "clients/flutter/test/workspace_navigation_text_scale_test.dart",
+      "test_sha256": "8c7c4062ae07daa23538e14244b0e5a520ac6720819025f8484f4d9a21db65be"
+    },
+    {
+      "name": "settings_tab_labels",
+      "result": "focused RED unnamed -> whole existing profile21 GREEN",
+      "test": "clients/flutter/test/profile_screen_test.dart",
+      "test_sha256": "811f0124a5cfeb6b81f2a54abcc658048dc2c1e98e42950229762c0798c6eb4e"
+    },
+    {
+      "name": "responsive_nearest",
+      "result": "50 PASS",
+      "test": "clients/web/src/design/mobile_navigation_v2.spec.ts",
+      "test_sha256": "54dd1b9a7a7fb9f5331778fb58071c56fd64c482b4984612537b1764f43e94c7"
+    },
+    {
+      "name": "runner_freshness_required_geometry",
+      "result": "12 PASS; missing scope rows rejected before acceptance",
+      "test": "tools/qa/accessibility_runtime/test_native.py",
+      "test_sha256": "323eab0424252aea6a1ef18a1a63f671aacc4a0c35f7ceb4b0573b3f0801f7fd"
+    }
+  ],
+  "actual_runtime_diagnostics": [
+    {
+      "path": ".out/qa301-20261012/active-voice-overlays-red.json",
+      "sha256": "0486afff75621bd1e2c1ee36f992d25c32aae9fae85a0a48ad4cc184faf01ab0",
+      "status": "FAIL",
+      "css_method": "pinned production dist",
+      "rows": 16,
+      "pass_rows": 10,
+      "scope": "Focused actual runtime RED/GREEN. CSS injection diagnostic is not final binary acceptance."
+    },
+    {
+      "path": ".out/qa301-20261012/active-voice-red.json",
+      "sha256": "a3539c23c91b67974c2da307e01af5cf9952acfc984907227ae5581a4e1a142e",
+      "status": "FAIL",
+      "css_method": "pinned production dist",
+      "rows": 8,
+      "pass_rows": 4,
+      "scope": "Focused actual runtime RED/GREEN. CSS injection diagnostic is not final binary acceptance."
+    },
+    {
+      "path": ".out/qa301-20261012/search-form-red.json",
+      "sha256": "f489e4d00b3f10b0de75dfd9bd9488e8eaebc45585295a5f5c53f60e4a49afee",
+      "status": "FAIL",
+      "css_method": "pinned production dist",
+      "rows": 20,
+      "pass_rows": 18,
+      "scope": "Focused actual runtime RED/GREEN. CSS injection diagnostic is not final binary acceptance."
+    },
+    {
+      "path": ".out/qa301-20261012/search-scope-red.json",
+      "sha256": "0538fca68b9f4a7590e233f4d06ae45b3ef5dbdabe1e506e007f15ea4ef1b187",
+      "status": "FAIL",
+      "css_method": "pinned production dist",
+      "rows": 20,
+      "pass_rows": 18,
+      "scope": "Focused actual runtime RED/GREEN. CSS injection diagnostic is not final binary acceptance."
+    },
+    {
+      "path": ".out/qa301-20261012/text-scale-red.json",
+      "sha256": "9b831ebcadaa2bd9601bc763f91ef2b2be76525ef1f5205d32d0ecd2f0568ef3",
+      "status": null,
+      "css_method": "pinned binary before fix",
+      "rows": 12,
+      "pass_rows": 6,
+      "scope": "Focused actual runtime RED/GREEN. CSS injection diagnostic is not final binary acceptance."
+    },
+    {
+      "path": ".out/qa301-20261012/active-voice-focused-green.json",
+      "sha256": "8b5b174d33e29fbca152d490b760f92649894e3159d29d2a3c99c08311822eec",
+      "status": "PASS",
+      "css_method": "source CSS diagnostic on pinned binary",
+      "rows": 8,
+      "pass_rows": 8,
+      "scope": "Focused actual runtime RED/GREEN. CSS injection diagnostic is not final binary acceptance."
+    },
+    {
+      "path": ".out/qa301-20261012/active-voice-overlays-focused-green.json",
+      "sha256": "d02c7b33f580f2fef3d3397808ea9cbe211c71e4ac05957243a1ecc37ff14210",
+      "status": "PASS",
+      "css_method": "source CSS diagnostic on pinned binary",
+      "rows": 16,
+      "pass_rows": 16,
+      "scope": "Focused actual runtime RED/GREEN. CSS injection diagnostic is not final binary acceptance."
+    },
+    {
+      "path": ".out/qa301-20261012/disconnected-baseline-focused-green.json",
+      "sha256": "bec2377f9c5c901ebf991b1e2c89b5775343bd540fcd1029d7b69158767bd427",
+      "status": null,
+      "css_method": "focused diagnostic: production source CSS appended to pinned older binary",
+      "rows": 12,
+      "pass_rows": 12,
+      "scope": "Focused actual runtime RED/GREEN. CSS injection diagnostic is not final binary acceptance."
+    },
+    {
+      "path": ".out/qa301-20261012/search-form-diagnostic-green.json",
+      "sha256": "9670a4e97ef494c9cf02720edb5eeca30b7c5b489bdfdd9d62bc54e4f6252c10",
+      "status": "PASS",
+      "css_method": "source CSS diagnostic on pinned binary",
+      "rows": 20,
+      "pass_rows": 20,
+      "scope": "Focused actual runtime RED/GREEN. CSS injection diagnostic is not final binary acceptance."
+    },
+    {
+      "path": ".out/qa301-20261012/text-scale-focused-green.json",
+      "sha256": "bec2377f9c5c901ebf991b1e2c89b5775343bd540fcd1029d7b69158767bd427",
+      "status": null,
+      "css_method": "focused diagnostic: production source CSS appended to pinned older binary",
+      "rows": 12,
+      "pass_rows": 12,
+      "scope": "Focused actual runtime RED/GREEN. CSS injection diagnostic is not final binary acceptance."
+    }
+  ],
+  "web": {
+    "status": "PASS_SCOPED_AUTOMATED_AND_VISUAL",
+    "overall_reader_gate": "PARTIAL",
+    "receipt": {
+      "path": ".out/qa301-20261012/web/runtime.json",
+      "sha256": "62200e36f8ecc00300eebbc3191a7acd9ff1c558e4d6839821fce2fdc659427f"
+    },
+    "binary_source_provenance": {
+      "status": "PASS",
+      "base_commit": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+      "web_src_manifest_sha256": "efb8aabf031bcbdc60b76c263e73eb3f4b40ffb01b56520726cf91c0c81119e7",
+      "web_src_files": 1098,
+      "built_dist_manifest_sha256": "87a8755fbaeb8db7846b988257f522817d7c294fbf891e73d03a7e9b7a749007",
+      "origin": "https://localhost:4810",
+      "source_stable_during_unit_and_build": true,
+      "scope": "Final batch3 source including bounded confirmation message scroll and nonshrinking actions."
+    },
+    "binary_source_provenance_sha256": "12415679fc6a38a44704b7fbfb4af31977b79621829ac89e2aeed091e3cba913",
+    "archived_root_proof": ".out/qa302-20261012/build-before-confirmation-wrap-source.json",
+    "original_visual_review": {
+      "path": ".out/qa301-20261012/web/original-visual-review.json",
+      "sha256": "a1f4f9c83804677faebf64a0eeea23bbc0d9ccae197760aef6d9322f48b5029e"
+    },
+    "geometry": {
+      "disconnected_rows": 12,
+      "connected_rows": 20,
+      "widths": [
+        320,
+        393
+      ],
+      "rem_text_scales": [
+        1,
+        2
+      ],
+      "all_pass": true
+    },
+    "axe_states": 16,
+    "axe_violations": 0,
+    "keyboard_flows": 8,
+    "checks": {
+      "axe_guild_navigation": "PASS",
+      "guild_keyboard_trap_escape_restore": "PASS",
+      "axe_chat": "PASS",
+      "axe_dm": "PASS",
+      "chat_dm_keyboard_route": "PASS",
+      "axe_admin_Гильдия": "PASS",
+      "axe_admin_Участники": "PASS",
+      "axe_admin_Роли": "PASS",
+      "axe_admin_Каналы": "PASS",
+      "axe_admin_Аудит": "PASS",
+      "axe_admin_Медиа": "PASS",
+      "axe_admin_Готовность": "PASS",
+      "seven_admin_sections_keyboard_names_state": "PASS",
+      "axe_settings": "PASS",
+      "settings_keyboard_tabs": "PASS",
+      "axe_dialogs": "PASS",
+      "dialog_cancel_first_cycle_escape_restore": "PASS",
+      "axe_voice_prejoin": "PASS",
+      "voice_prejoin_2x_scroll_reachable": "PASS",
+      "voice_prejoin_named_controls": "PASS",
+      "axe_guild_navigation_voice_connected": "PASS",
+      "guild_voice_dock_keyboard_names": "PASS",
+      "axe_stream_setup": "PASS",
+      "stream_setup_keyboard_names": "PASS",
+      "axe_chat_2x": "PASS",
+      "rendered_2x_text_review": "REVIEW_REQUIRED"
+    },
+    "actual_api": true,
+    "actual_sfu": true,
+    "actual_voice_cleanup": "PASS",
+    "mocks": false,
+    "browser": "153.0.8010.12",
+    "limits": [
+      "Rem font resize is not browser or OS zoom.",
+      "Long names/placeholders can truncate. No complete-name/spoken-reader claim.",
+      "Latest global source88e369/dist8eaeb differs only in confirmation paragraph wrapping, verified by issue298; this own receipt pins earlier efb8/87a875 binary."
+    ],
+    "latest_global_delta": {
+      "source_sha256": "88e369ec94660e3e5af73acb0b35a12e3b362144c1eaecd8a26e3e2144a0ef90",
+      "dist_sha256": "8eaeb0166ef31cf2d80dfa24fe679c2e1515ad3eccb27afdf77b6d954ba0f4b0",
+      "scope": "Confirmation paragraph wrapping only; exact current binary acceptance belongs to root/issue298."
+    }
+  },
+  "native": {
+    "android": {
+      "status": "PASS",
+      "runtime_completed": true,
+      "candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+      "flutter": "3.47.6",
+      "dart": "3.13.5",
+      "flutter_framework_revision": "5fc346839b5d0eef006ed8404392afb4dfae428d",
+      "flutter_lib_sha256": "31b73f8238b70e1f9b4c5bc681a0bbf1575a781c60a4fdbb15f644e0c8dedf36",
+      "flutter_lib_file_count": 1102,
+      "qa_target_sha256": "984cfbdba5da12100f3fdfaf784bd4be6e1d2d1f07bd62e5319b680b4a74e077",
+      "qa_driver_sha256": "0dd7b75a21f4e0add4780072575e4e65b4a9c2fe2c9136c6f905af090e5dd094",
+      "qa_handler_sha256": {
+        "native.py": "55635295161d7f994019cdf042030845112c8c88694dfb02e5851225a9502e8d",
+        "run.py": "e83504deeea998eda2f6c008e329cfd293821e062b56b57371a09e19bcb16d40",
+        "stack.py": "ec59369f733487d06ecb45a48703387947f7bf8ae98ff34df33a6a9930fbfdc9",
+        "scenario.mjs": "ed8ddf0c79da76623f5b6d5c6fe52ff2c775bbd8127f158c11b193964fa9f1d0"
+      },
+      "native_executable_sha256": "01d130db2f03ac0327a20412aa4363504057e7c741e8e216fa59e611d8a9a3d2",
+      "platform_version": "sdk_phone64_arm64-userdebug 15 AE3A.240806.019 12368160 test-keys",
+      "physical_device": false,
+      "actual_api": true,
+      "mocks": false,
+      "checks": {
+        "guild_native_navigation_named_keyboard": "PASS",
+        "chat_native_semantics_2x": "PASS",
+        "dm_native_route_semantics_2x": "PASS",
+        "seven_admin_tabs_named_selected_2x": "PASS",
+        "settings_native_tabs_2x": "PASS",
+        "native_dialog_keyboard_cancel_escape_2x": "PASS",
+        "native_voice_prejoin_names_2x": "PASS",
+        "native_stream_setup_names_2x": "PASS"
+      },
+      "semantics": [
+        {
+          "scenario": "login password",
+          "text_field": true,
+          "obscured": true
+        },
+        {
+          "expected_label": "Закрыть навигацию",
+          "name_present": true,
+          "tap_action": true,
+          "is_button": true,
+          "selected": "none"
+        },
+        {
+          "scenario": "native-guild-navigation",
+          "button_count": 10,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-navigation-2x",
+          "button_count": 10,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-chat-composer",
+          "button_count": 3,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-chat-2x",
+          "button_count": 3,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-dm",
+          "button_count": 2,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-dm-2x",
+          "button_count": 2,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-admin-tabs",
+          "button_count": 9,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-admin-2x",
+          "button_count": 6,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-settings",
+          "button_count": 7,
+          "field_count": 2,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-settings-2x",
+          "button_count": 6,
+          "field_count": 2,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "expected_label": "Отмена",
+          "name_present": true,
+          "tap_action": true,
+          "is_button": true,
+          "selected": "none"
+        },
+        {
+          "scenario": "native-dialog",
+          "button_count": 2,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-dialog-2x",
+          "button_count": 2,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "expected_label": "Подключиться без микрофона",
+          "name_present": true,
+          "tap_action": true,
+          "is_button": true,
+          "selected": "none"
+        },
+        {
+          "scenario": "native-voice-prejoin",
+          "button_count": 4,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-voice-2x",
+          "button_count": 3,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "expected_label": "Начать демонстрацию экрана",
+          "name_present": true,
+          "tap_action": true,
+          "is_button": true,
+          "selected": "none"
+        },
+        {
+          "scenario": "native-stream-setup",
+          "button_count": 4,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-stream-2x",
+          "button_count": 3,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        }
+      ],
+      "measurements": [
+        {
+          "scenario": "native-navigation",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-chat",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-dm",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-admin",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-settings",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-dialog",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-voice",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-stream",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        }
+      ],
+      "spoken_screen_reader": "NOT_RUN",
+      "voice_prejoin_navigation_method": "Controlled production state.selectChannel of actual ACL-loaded channel; mobile channel-row pointer autojoin is not this prejoin test.",
+      "owned_reverse_removed": true,
+      "cleanup_errors": [],
+      "receipt": {
+        "path": ".out/qa301-20261012/android/runtime.json",
+        "sha256": "e11eefbe47c80e86df1f06cb6eed00846f9546604697e044c80a78f1f3498c7e"
+      },
+      "visual_review": {
+        "path": ".out/qa301-20261012/android/original-visual-review.json",
+        "sha256": "064d57d9a6eabac121f3d957f231ed362a6bde56a93940c340a668bfb41453a9"
+      },
+      "actual_sfu": true,
+      "actual_voice_cleanup": "PASS"
+    },
+    "ios": {
+      "status": "PARTIAL",
+      "runtime_completed": true,
+      "candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+      "flutter": "3.47.6",
+      "dart": "3.13.5",
+      "flutter_framework_revision": "5fc346839b5d0eef006ed8404392afb4dfae428d",
+      "flutter_lib_sha256": "31b73f8238b70e1f9b4c5bc681a0bbf1575a781c60a4fdbb15f644e0c8dedf36",
+      "flutter_lib_file_count": 1102,
+      "qa_target_sha256": "e540d2531d886963662cd4b582357a63dbd46bce47c6b7626d030cb488e5a9f4",
+      "qa_driver_sha256": "0dd7b75a21f4e0add4780072575e4e65b4a9c2fe2c9136c6f905af090e5dd094",
+      "qa_handler_sha256": {
+        "native.py": "55635295161d7f994019cdf042030845112c8c88694dfb02e5851225a9502e8d",
+        "run.py": "e83504deeea998eda2f6c008e329cfd293821e062b56b57371a09e19bcb16d40",
+        "stack.py": "ec59369f733487d06ecb45a48703387947f7bf8ae98ff34df33a6a9930fbfdc9",
+        "scenario.mjs": "ed8ddf0c79da76623f5b6d5c6fe52ff2c775bbd8127f158c11b193964fa9f1d0"
+      },
+      "native_executable_sha256": "bb3cb5567fd52b87e318d83fe98ce65f721e47766f45ba4a76bda2d40ff3b74f",
+      "platform_version": "Version 27.0 (Build 24A434)",
+      "physical_device": false,
+      "actual_api": true,
+      "mocks": false,
+      "checks": {
+        "guild_native_navigation_named_keyboard": "PASS",
+        "chat_native_semantics_2x": "PASS",
+        "dm_native_route_semantics_2x": "PASS",
+        "seven_admin_tabs_named_selected_2x": "PASS",
+        "settings_native_tabs_2x": "PASS",
+        "native_dialog_keyboard_cancel_escape_2x": "PASS",
+        "native_voice_prejoin_names_2x": "PASS",
+        "native_stream_setup_names_2x": "NOT_RUN"
+      },
+      "semantics": [
+        {
+          "scenario": "login password",
+          "text_field": true,
+          "obscured": true
+        },
+        {
+          "expected_label": "Закрыть навигацию",
+          "name_present": true,
+          "tap_action": true,
+          "is_button": true,
+          "selected": "none"
+        },
+        {
+          "scenario": "native-guild-navigation",
+          "button_count": 10,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-navigation-2x",
+          "button_count": 10,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-chat-composer",
+          "button_count": 3,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-chat-2x",
+          "button_count": 3,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-dm",
+          "button_count": 2,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-dm-2x",
+          "button_count": 2,
+          "field_count": 1,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-admin-tabs",
+          "button_count": 9,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-admin-2x",
+          "button_count": 6,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-settings",
+          "button_count": 7,
+          "field_count": 2,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-settings-2x",
+          "button_count": 5,
+          "field_count": 2,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "expected_label": "Отмена",
+          "name_present": true,
+          "tap_action": true,
+          "is_button": true,
+          "selected": "none"
+        },
+        {
+          "scenario": "native-dialog",
+          "button_count": 2,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-dialog-2x",
+          "button_count": 2,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "expected_label": "Подключиться без микрофона",
+          "name_present": true,
+          "tap_action": true,
+          "is_button": true,
+          "selected": "none"
+        },
+        {
+          "scenario": "native-voice-prejoin",
+          "button_count": 4,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        },
+        {
+          "scenario": "native-voice-2x",
+          "button_count": 3,
+          "field_count": 0,
+          "unnamed_buttons": 0,
+          "unnamed_fields": 0
+        }
+      ],
+      "measurements": [
+        {
+          "scenario": "native-navigation",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-chat",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-dm",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-admin",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-settings",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-dialog",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        },
+        {
+          "scenario": "native-voice",
+          "text_scale": 2,
+          "method": "actual running native app; Flutter engine text-scale override",
+          "layout_exception": false
+        }
+      ],
+      "spoken_screen_reader": "NOT_RUN",
+      "voice_prejoin_navigation_method": "Controlled production state.selectChannel of actual ACL-loaded channel; mobile channel-row pointer autojoin is not this prejoin test.",
+      "owned_reverse_removed": true,
+      "cleanup_errors": [],
+      "receipt": {
+        "path": ".out/qa301-20261012/ios/runtime.json",
+        "sha256": "b7c76c288bbe1d997710fa7ac6f9dba5e0703575f7fb786c5fecc1b50d1f7965"
+      },
+      "visual_review": {
+        "path": ".out/qa301-20261012/ios/original-visual-review.json",
+        "sha256": "12271b00514ecf92861de1facca2e8e774cb518cb4b4ff2ed78f0a9fce6f83a3"
+      },
+      "stream_limit": "Known same-device iOS27 AURemoteIO SIGABRT after actual voice join in prior #247 cleanboot diagnostic; no blind media retry."
+    }
+  },
+  "historical_attempts": [
+    {
+      "path": ".out/qa301-20261012/previous-attempts/android/20261012T183522409382Z/runtime.json",
+      "sha256": "615cca1271e6063c1ecf107c91c839c5b33fe65da38467e5fd4480e567ddbe90",
+      "platform": "android",
+      "status": "FAIL",
+      "runtime_completed": false,
+      "lib_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "native_executable_sha256": "d09c3b97e744bcfbe4798f54866f5d3171719d8470e605fc4cd3eebb6c379ac2",
+      "reason": "QA initialize missing"
+    },
+    {
+      "path": ".out/qa301-20261012/previous-attempts/android/20261012T185252357287Z/runtime.json",
+      "sha256": "95bbc60f06e30e39d9747ff3d366c6f0c568129848689f3221d8b6770e4302c3",
+      "platform": "android",
+      "status": "FAIL",
+      "runtime_completed": false,
+      "lib_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "native_executable_sha256": "a039d55d0d7312b88758495ad4f4f35b9e90d1780464750cf2665ab8854b2c8a",
+      "reason": "QA tooltip not considered name"
+    },
+    {
+      "path": ".out/qa301-20261012/previous-attempts/android/20261012T191838749518Z/runtime.json",
+      "sha256": "4ecd1a173cfe8825ff6372a9af097f4433860b5b830180363bef3970d2ae2d4d",
+      "platform": "android",
+      "status": "FAIL",
+      "runtime_completed": false,
+      "lib_sha256": "01aeceac5e4de962502c70480aacf2f4a3a0cd387afcee5858a498f461c49d35",
+      "native_executable_sha256": "d300c33c9248e1f49155aa572951becf7a4821c2073adc23f60b6e0d102c3ad7",
+      "reason": "Confirmed actual header/footer2x overflow, fixed testfirst"
+    },
+    {
+      "path": ".out/qa301-20261012/previous-attempts/android/20261012T192516346199Z/runtime.json",
+      "sha256": "af4f52baa986ae7e1656c1677899500d2c9ee68fd9be73766d32994f069de0ff",
+      "platform": "android",
+      "status": "FAIL",
+      "runtime_completed": false,
+      "lib_sha256": "274e7210eb3719c16946901b83947bbc7abcfe72eae133d6d1eb7298515a1ade",
+      "native_executable_sha256": "efa9c63adae0803b85b3be53382d3cd9191ebc06dbfb4e8d3862754184980574",
+      "reason": "QA repeated screenshot surface-conversion assertion"
+    },
+    {
+      "path": ".out/qa301-20261012/previous-attempts/android/20261012T194454025036Z/runtime.json",
+      "sha256": "834274737239243558013e0751b49e77befff3732bc1009fd5b90a573cc866e0",
+      "platform": "android",
+      "status": "FAIL",
+      "runtime_completed": false,
+      "lib_sha256": "ba87f89bc7d57763caa858e88b4cb202f6272a22482c57e04dcb2398b59bb98b",
+      "native_executable_sha256": "71d99cd7afd7506d02df3ce7b10175ddebfbe0d183280dfdeac8bd838adcb8c0",
+      "reason": "Confirmed four settings tab semantic labels missing, fixed testfirst"
+    },
+    {
+      "path": ".out/qa301-20261012/previous-attempts/android/20261012T195054883266Z/runtime.json",
+      "sha256": "cdc0c0bd06aff2806377c09c6e6153561ab8a3dadd4a08b3558f535fe3c57a87",
+      "platform": "android",
+      "status": "FAIL",
+      "runtime_completed": false,
+      "lib_sha256": "31b73f8238b70e1f9b4c5bc681a0bbf1575a781c60a4fdbb15f644e0c8dedf36",
+      "native_executable_sha256": "a3873efc93866e82454322a51cd3486972433825023ad7bfcee9849327b66bbb",
+      "reason": "QA stream-dialog Escape did not dismiss; cleanup corrected to visible Cancel"
+    },
+    {
+      "path": ".out/qa301-20261012/previous-attempts/ios/20261012T193453376092Z/runtime.json",
+      "sha256": "c1a813fa34b0474cab19e77580a133544f628739d0e48da3586626015657ed20",
+      "platform": "ios",
+      "status": "FAIL",
+      "runtime_completed": false,
+      "lib_sha256": "31b73f8238b70e1f9b4c5bc681a0bbf1575a781c60a4fdbb15f644e0c8dedf36",
+      "native_executable_sha256": "0d4e8697e3a81827d37234e719063379cfcc28a84f5fa8c6559b1bcc8322bddb",
+      "reason": "QA pointer channel autojoin does not test prejoin; corrected explicit controlled production route"
+    },
+    {
+      "path": ".out/qa301-20261012/previous-attempts/ios/20261012T193731370442Z/runtime.json",
+      "sha256": "33d28afa36f829dd3620651faa7ad9c02f1840c8e1fde195c7fa4b24efab3af9",
+      "platform": "ios",
+      "status": "FAIL",
+      "runtime_completed": false,
+      "lib_sha256": "31b73f8238b70e1f9b4c5bc681a0bbf1575a781c60a4fdbb15f644e0c8dedf36",
+      "native_executable_sha256": "039ee06fa513fd0db5115bef1e04be57d2db93a20af67299205884afd72a522e",
+      "reason": "QA semantics handle late teardown left activeSDKhandle"
+    },
+    {
+      "path": ".out/qa301-20261012/previous-attempts/ios/20261012T194030145852Z/runtime.json",
+      "sha256": "6ffa520597c349024cc253812a289885966df4222fee84b19caa393fd631115e",
+      "platform": "ios",
+      "status": "PARTIAL",
+      "runtime_completed": true,
+      "lib_sha256": "31b73f8238b70e1f9b4c5bc681a0bbf1575a781c60a4fdbb15f644e0c8dedf36",
+      "native_executable_sha256": "e198ebc03a28728754c1f4dc55b0212b334434c08e7407cc82c4a67a7fbc60c6",
+      "reason": "Completed semantics but white captures behind pending OS microphone prompt, not visual PASS"
+    },
+    {
+      "path": ".out/qa301-20261012/previous-attempts/ios/20261012T194318900766Z/runtime.json",
+      "sha256": "b8d2d49625dfe97ec53faafb5ad8de30a07a74d4b4e4f0e781056285cbd8ebb8",
+      "platform": "ios",
+      "status": "PARTIAL",
+      "runtime_completed": true,
+      "lib_sha256": "31b73f8238b70e1f9b4c5bc681a0bbf1575a781c60a4fdbb15f644e0c8dedf36",
+      "native_executable_sha256": "8c1444a44398e259bb3df0d2ba81b50011cd126f4bb37bf3826f1064ddc14a3f",
+      "reason": "CLI permission revoke did not dismiss existing OS prompt; white captures not visual PASS"
+    }
+  ],
+  "screen_readers": {
+    "android_talkback": {
+      "status": "NOT_RUN",
+      "package_installed": false,
+      "reason": "Assigned AOSP emulator has no TalkBack. No ready official downloadable APK found; no third-party package installed.",
+      "sources": [
+        "https://github.com/google/talkback",
+        "https://github.com/google/talkback/releases",
+        "https://support.google.com/accessibility/android/answer/6283677?hl=en"
+      ]
+    },
+    "macos_voiceover": {
+      "status": "NOT_RUN",
+      "reason": "Actual macOS browser certificate warning requires human final action; human handoff remains pending. Reader was not enabled and warning was not bypassed.",
+      "fixture_held": true
+    },
+    "ios_voiceover": {
+      "status": "NOT_RUN",
+      "reason": "Simulator semantics inspected; actual spoken traversal/physical VoiceOver not completed."
+    }
+  },
+  "remaining_gates": [
+    {
+      "status": "NOT_RUN",
+      "case": "Actual spoken-reader traversal and announcements on agreed clients"
+    },
+    {
+      "status": "NOT_RUN",
+      "case": "Physical Android and iOS accessibility matrix"
+    },
+    {
+      "status": "NOT_RUN",
+      "case": "iOS stream setup after actual voice join",
+      "reason": "Known same assigned simulator iOS27 AURemoteIO SIGABRT in issue247; no blind media retry or host audio/TCC changes."
+    },
+    {
+      "status": "NOT_RUN",
+      "case": "Full desktop/platform accessibility gate beyond current scoped Web and native apps",
+      "reason": "Missing physical/Windows reader matrix; other batch tasks have their own receipts."
+    }
+  ],
+  "method_limits": [
+    "Native keyboard events injected through Flutter tester engine, not OS/physical keyboard.",
+    "Native text scale2 is Flutter engine override, not device accessibility setting.",
+    "Prejoin route uses production state.selectChannel of actual ACL-loaded channel; not native pointer navigation (that autojoins).",
+    "Axe/semantics/name/count checks do not prove spoken output or blanket WCAG AA conformance.",
+    "Android stream setup checks modal controls after actual SFU listener connection; it does not publish/capture screen media.",
+    "Old white iOS screenshots and pending OS permission modal are not accepted as visual evidence. Own simulator app microphone permission denied via DeviceHub; no host TCC/CoreAudio/global settings changed."
+  ],
+  "cleanup": {
+    "status": "PARTIAL_INTENTIONAL_FIXTURE_HOLD",
+    "at": "2026-10-12T19:54:18.857614+00:00",
+    "owned_device_guards": "PASS",
+    "foreign_resources_touched": false,
+    "owned_adb_reverses_absent": true,
+    "android_uninstall_command_success": false,
+    "android_qa_package_absent": true,
+    "ios_uninstall_command_success": true,
+    "ios_qa_package_absent": true,
+    "android_owned_shutdown_command_success": true,
+    "ios_owned_shutdown_command_success": true,
+    "ios_owned_state": "Shutdown",
+    "android_owned_serial_absent": true,
+    "private_credential_compiled_copy_removed": true,
+    "owned_finished_raw_logs_removed": 75,
+    "fixture_4930": "INTENTIONALLY_HELD_PENDING_HUMAN_CERTIFICATE_HANDOFF",
+    "held_ports": {
+      "https": 4930,
+      "api": 4933,
+      "tempo": 4932,
+      "sfu_http": 4983,
+      "sfu_tcp": 4984,
+      "sfu_udp": 4985
+    },
+    "held_private_input": "Mode0600 ignored credential input intentionally remains for held owned fixture; never published.",
+    "held_browser_tab": "Own QA301 VoiceOver browser tab awaiting human certificate handoff; no warning bypass."
+  }
+}

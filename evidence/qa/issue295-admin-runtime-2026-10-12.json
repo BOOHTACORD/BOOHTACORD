@@ -1,0 +1,946 @@
+{
+  "schema_version": 1,
+  "tested_at": "2026-10-12",
+  "close_issue": false,
+  "selected_leaf": "FV2-004",
+  "dependencies_read": [
+    "FV2-001",
+    "FV2-014",
+    "FV2-016",
+    "T-014",
+    "T-020",
+    "T-050",
+    "T-051"
+  ],
+  "candidate": "d78e5ea6ef911d37ad4100206abdf5547be8ea95",
+  "runtime_scope": "Disposable owned guild, real Go/PostgreSQL/Tempo/LiveKit, production Vue App or BoohtacordApp; two synthetic listeners. No microphone, audible-quality or hardware capacity claim.",
+  "generated_media_location": ".out/qa295298-20261012 (ignored, never staged)",
+  "remaining_acceptance": {
+    "physical_macOS_native": "NOT_RUN",
+    "physical_Windows": "NOT_RUN",
+    "physical_Android": "NOT_RUN",
+    "physical_iOS": "NOT_RUN",
+    "spoken_NVDA_VoiceOver_TalkBack": "NOT_RUN",
+    "OS_picker_and_physical_IME_gestures": "NOT_RUN",
+    "audible_call_and_hardware_media": "NOT_RUN"
+  },
+  "status": "PARTIAL",
+  "production_source_files_sha256": {
+    "clients/web/src/channel/member_topology/ChannelTopologyActions.vue": "08bcdf64ac5b32927b193e851a8d2c31ebec01cd6fbea210f53c91137dbea153",
+    "clients/web/src/channel/AdminConfirmation.vue": "06704cc8ba119ef852a3e217fb05e601604c333d519a99bfb39c7b438f9a08df",
+    "clients/web/src/design/design_v2_admin_members.css": "ab4f8277952d896475606188179475c1dbd0acc2ed13a45f250b879caefc3105",
+    "clients/web/src/workspace/WorkspaceApp.vue": "75dfbe678ee7deedb77e358103c580b20bee02dd4ada14bc3ad2d24a890ecdd7",
+    "clients/flutter/lib/src/features/admin/shell/types.dart": "d56cd6b36967b0758b99d198fcaeee03b1e18b704aeb708c111444aa2246dc47",
+    "clients/flutter/lib/src/features/admin/shell/section_tabs.dart": "afb3b15c5754984bfe8d00f0f3f961f45193b46c1097df4c12b9df1357c0f84b",
+    "clients/flutter/lib/src/features/workspace/lifecycle/controller.dart": "70757ac6f77536041933e414fa9c2352497983dae54d971c5da40fb92d50190f",
+    "clients/flutter/lib/src/screens/admin_ui/topology_state/fields.dart": "911e861ef85291af566fc74e7f7ef38b8677677b9dbd6cfabe5f96fd84d09585",
+    "clients/flutter/lib/src/screens/admin_ui/init_state/handler.dart": "b82d1b9bfa68330568112dd0245af5ee1970d0d24355c3db9c39ba2eeac695d8",
+    "clients/flutter/lib/src/screens/admin_ui/select_section/handler.dart": "9b373b264cd667607fa7ef5a5e992979b66c55652d79a94475710fc1ed935bec",
+    "backend/internal/authorization/role_policy/postgres/update_repository.go": "80f381020f4837f890178123a6cdd073f365ac4c5f5543f45fccd256d7c8a75e",
+    "clients/web/src/design/design_v2_contextual_overlays.css": "de20a890e497d6e06e4905eb771bc3b358ae47314e76cbe86daa65c0adfed6af",
+    "clients/web/src/design/design_v2_overlays.css": "dd26c56e0f1fd8eb6f2654775c01e0120f3a8de0a0e919ba537a5d7fbf201c34",
+    "clients/flutter/lib/src/widgets/topology_actions/create_dialog.dart": "028fc411c9ce23df6f39d505775803ee3de7227afc6be618f10945a449da2d08"
+  },
+  "focused_regressions": {
+    "browser": {
+      "status": "PASS",
+      "count": 25,
+      "command": "node clients/web/node_modules/@playwright/test/cli.js test --config tools/qa/admin_dialogs/playwright.config.mjs",
+      "coverage": "pending keyboard containment, destructive Escape, filter labels, cached-topology owner, category error footer, confirmation geometry at320/393/1440 normal/enlarged text; normal desktop287px retained"
+    },
+    "flutter": {
+      "status": "PASS",
+      "count": 61,
+      "command": "flutter test test/admin_accessibility test/confirmation_dialog_test.dart test/topology_confirmed_target_test.dart",
+      "new_error_cases": 6,
+      "error_association": "Stock errorText preserved; full field error hint, stock platform live-region, no paragraph ellipsis, reachable Cancel at320/360/393×1/2",
+      "rejected_intermediate": "Custom error widget visually wrapped but lost EditableText semantic error hint; rejected and replaced before final native repeat"
+    },
+    "scoped_analyzer": {
+      "exit_code": 1,
+      "errors": 0,
+      "warnings": 0,
+      "preexisting_infos": 5,
+      "new_infos": 0,
+      "scope": "create_dialog.dart existing curly_braces infos; not full analyzer PASS"
+    },
+    "python_runner": {
+      "status": "PASS",
+      "count": 11,
+      "command": "python3 -m unittest discover -s tools/qa/admin_dialogs -t . -q"
+    },
+    "postgres": {
+      "red": "SQLSTATE42P18;5PASS/1FAIL before cast",
+      "green": "6PASS realPG committed policy/audit revision and stale rejection",
+      "nearest": "19PASS realPG authorization",
+      "receipts": ".out/qa295298-20261012/role-policy/{red,green,nearest}.json"
+    }
+  },
+  "history": {
+    "native_context": "Actual admin reopen previously lost section; focused remount RED then persisted/reset workspace section; final runtime retained readiness",
+    "role_save": "Actual PUT500, realPG SQLSTATE42P18 regression; ::bigint minimal audit revision cast; final Android/iOS realPUT200",
+    "create_error": "Earlier Android original invalid-name message ellipsized; final stock errorText with measured12lines and expanded dropdowns",
+    "category_footer": "Actual320 category error/pending actions clipped, DOM RED; adaptive category content fixed, actual49055 repeatedPASS",
+    "confirmation_footer": "Full Workspace320×2 footer bottom620 exceeded dialog609; focused RED then minimum content height/scroll+nonshrinking heading/actions;25focusedGREEN, final actual320 repeatedPASS with bothbutton pointer/rect and fulltarget paragraph width checks",
+    "confirmation_target": "Actual enlarged-text original clipped a long target token; focused RED scrollWidth246>client238, then wrap-only fix; latest actual320 normal/enlarged target checksPASS, full name rendered."
+  },
+  "cleanup": {
+    "completed_owned_stacks": "PASS",
+    "final_ios_stack": "PASS",
+    "private_compiled_copy_disposal": "PASS (marked own copy removed)",
+    "owned_device_uninstall_shutdown": "PASS (assigned5554 absent, assigned153 Shutdown, ownQA containers absent)",
+    "verification_receipt": ".out/qa295298-20261012/final-owned-resource-check.json",
+    "verification_receipt_sha256": "8a5b8e4e10d91d77a6c2fd14cf8a699106a4496526d9d423af51b246ef613bd5",
+    "private_disposal_receipt": ".out/qa295298-20261012/private-generated-file-disposal.json",
+    "verification": {
+      "registered_TCP_ports_closed": {
+        "4950": true,
+        "4951": true,
+        "4952": true,
+        "4990": true,
+        "4991": true,
+        "4960": true,
+        "4961": true,
+        "4962": true,
+        "4996": true,
+        "4997": true,
+        "4957": true,
+        "4963": true
+      },
+      "own_container_count": 0,
+      "assigned_iOS_shutdown": true,
+      "assigned_android_absent": true,
+      "marked_private_compiled_copy_absent": true,
+      "own_native_private_workdirs_absent": true,
+      "all_current_checks_pass": true,
+      "registered_UDP_ports_bindable": {
+        "4995": true,
+        "4999": true
+      },
+      "own_network_count": 0,
+      "own_image_count": 0
+    },
+    "private_disposal_receipt_sha256": "77c5f36798e3c1f3b820272c0cc13749988665809189299418d7a469cfe320db",
+    "authored_tmp_private_files_disposed_count": 44
+  },
+  "live_validation": "Android17 controlled runtime rows PASS at measuredba87; iOS17 PASS at31b73. Web22 rows perwidth PASS: latest320 measured8eaeb016 plus five normal/enlarged destructive geometry/target checks;393/1440 remain exact historical49055 captures. Physical/spoken-reader gates remain NOT_RUN.",
+  "issue": 295,
+  "issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/295",
+  "contract_read": "docs/design/FLUTTER_ADMIN_RESPONSIVE_LAYOUT.md",
+  "summary": "Controlled Web, Android emulator and iOS simulator observed rows passed; hardware/spoken-reader acceptance remains incomplete and issue stays open.",
+  "platforms": {
+    "320": {
+      "status": "PASS",
+      "web_source_manifest_sha256": "ae988a9020d5980d7843e5ff3aac2dc27030ed78c9b10521bfe57138211b8ef1",
+      "web_artifact_manifest_sha256": "8eaeb0166ef31cf2d80dfa24fe679c2e1515ad3eccb27afdf77b6d954ba0f4b0",
+      "width": 320,
+      "owned_resources_removed": true,
+      "category_footer_checks": [
+        {
+          "phase": "create-invalid",
+          "metrics": [
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            },
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            }
+          ]
+        },
+        {
+          "phase": "create-pending",
+          "metrics": [
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            },
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            }
+          ]
+        },
+        {
+          "phase": "create-network-error",
+          "metrics": [
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            },
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            }
+          ]
+        }
+      ],
+      "confirmation_footer_checks": [
+        {
+          "phase": "delete-category",
+          "metrics": [
+            {
+              "left": 91.140625,
+              "right": 178.34375,
+              "bottom": 859,
+              "dialog_left": 16,
+              "dialog_right": 304,
+              "dialog_bottom": 884,
+              "viewport_width": 320,
+              "viewport_height": 900,
+              "text_right": 161.34375,
+              "hit": true
+            },
+            {
+              "left": 190.34375,
+              "right": 279,
+              "bottom": 859,
+              "dialog_left": 16,
+              "dialog_right": 304,
+              "dialog_bottom": 884,
+              "viewport_width": 320,
+              "viewport_height": 900,
+              "text_right": 263,
+              "hit": true
+            }
+          ]
+        },
+        {
+          "phase": "archive",
+          "metrics": [
+            {
+              "left": 49.75,
+              "right": 136.953125,
+              "bottom": 859,
+              "dialog_left": 16,
+              "dialog_right": 304,
+              "dialog_bottom": 884,
+              "viewport_width": 320,
+              "viewport_height": 900,
+              "text_right": 119.953125,
+              "hit": true
+            },
+            {
+              "left": 148.953125,
+              "right": 279,
+              "bottom": 859,
+              "dialog_left": 16,
+              "dialog_right": 304,
+              "dialog_bottom": 884,
+              "viewport_width": 320,
+              "viewport_height": 900,
+              "text_right": 263,
+              "hit": true
+            }
+          ]
+        },
+        {
+          "phase": "archive-text2",
+          "metrics": [
+            {
+              "left": 143.1875,
+              "right": 279,
+              "bottom": 807,
+              "dialog_left": 16,
+              "dialog_right": 304,
+              "dialog_bottom": 884,
+              "viewport_width": 320,
+              "viewport_height": 900,
+              "text_right": 262,
+              "hit": true
+            },
+            {
+              "left": 61.546875,
+              "right": 279,
+              "bottom": 859,
+              "dialog_left": 16,
+              "dialog_right": 304,
+              "dialog_bottom": 884,
+              "viewport_width": 320,
+              "viewport_height": 900,
+              "text_right": 263,
+              "hit": true
+            }
+          ]
+        },
+        {
+          "phase": "close",
+          "metrics": [
+            {
+              "left": 89.546875,
+              "right": 176.75,
+              "bottom": 859,
+              "dialog_left": 16,
+              "dialog_right": 304,
+              "dialog_bottom": 884,
+              "viewport_width": 320,
+              "viewport_height": 900,
+              "text_right": 159.75,
+              "hit": true
+            },
+            {
+              "left": 188.75,
+              "right": 279,
+              "bottom": 859,
+              "dialog_left": 16,
+              "dialog_right": 304,
+              "dialog_bottom": 884,
+              "viewport_width": 320,
+              "viewport_height": 900,
+              "text_right": 263,
+              "hit": true
+            }
+          ]
+        },
+        {
+          "phase": "close-text2",
+          "metrics": [
+            {
+              "left": 143.1875,
+              "right": 279,
+              "bottom": 807,
+              "dialog_left": 16,
+              "dialog_right": 304,
+              "dialog_bottom": 884,
+              "viewport_width": 320,
+              "viewport_height": 900,
+              "text_right": 262,
+              "hit": true
+            },
+            {
+              "left": 136.03125,
+              "right": 279,
+              "bottom": 859,
+              "dialog_left": 16,
+              "dialog_right": 304,
+              "dialog_bottom": 884,
+              "viewport_width": 320,
+              "viewport_height": 900,
+              "text_right": 263,
+              "hit": true
+            }
+          ]
+        }
+      ],
+      "confirmation_target_checks": [
+        {
+          "phase": "delete-category",
+          "scroll_width": 238,
+          "client_width": 238
+        },
+        {
+          "phase": "archive",
+          "scroll_width": 238,
+          "client_width": 238
+        },
+        {
+          "phase": "archive-text2",
+          "scroll_width": 238,
+          "client_width": 238
+        },
+        {
+          "phase": "close",
+          "scroll_width": 238,
+          "client_width": 238
+        },
+        {
+          "phase": "close-text2",
+          "scroll_width": 238,
+          "client_width": 238
+        }
+      ],
+      "role_save_feedback_pointer_visible": true,
+      "receipt": ".out/qa295298-20261012/320/runtime.json",
+      "receipt_sha256": "c3a6155e916eb6cdfdae59844742c1b791d6600c821f609e0d0b3199b85cc9fe",
+      "real_API_and_SFU": true,
+      "checks": {
+        "295_real_SFU_two_listener_connection": "PASS",
+        "295_actual_guild_layout_context_voice": "PASS",
+        "295_actual_members_layout_context_voice": "PASS",
+        "295_actual_roles_layout_context_voice": "PASS",
+        "295_actual_channels_layout_context_voice": "PASS",
+        "295_actual_audit_layout_context_voice": "PASS",
+        "295_actual_media_layout_context_voice": "PASS",
+        "295_actual_readiness_layout_context_voice": "PASS",
+        "295_admin_reopen_remembers_previous_section": "PASS",
+        "295_admin_return_selected_text_draft_voice": "PASS",
+        "295_MEMBER_admin_API403_no_panel_entry": "PASS"
+      },
+      "screenshot_hashes": {
+        "role-revision-conflict.png": "37898b5217b06ebf225a018d06fbf57f1803c917c68c079826334fbde6635ea6",
+        "confirmation-geometry-archive.png": "623f8434d39a06fbcaf1ce113a9c0cdfb1f70b725041b90b1466ae835f3c8c3a",
+        "admin-readiness.png": "d97c0c84ced9d39b77f37cb22e7042a69d3a2b89aaaf84a8df0321be5c7d3ccc",
+        "admin-guild.png": "16378145cf1d4619bd8b4cdb540abcd28e85ba40789d34c2285e73c8a904ff73",
+        "confirmation-geometry-archive-text2.png": "0272a9d27feee6d1bf173d80bfe7612860a8f73b72c84b31290844a9baeceece",
+        "create-invalid.png": "6b3c60faf8479053e98c0e3f7e4a67cc13e3da7388761b07f32a2b747d6248d2",
+        "admin-media.png": "1f352a112b0385598772da032e6d862e151277a9379c8109857ead6fb75b8f06",
+        "confirmation-geometry-close-text2.png": "9a2f61c3b7d9481cfc0e075e676764975b5309742ace547c4c859eb62b5f20fa",
+        "admin-members.png": "1d7a6a750d4479629d92606890d8cbce6c8483fe28c205b5822b8eea4d2ea245",
+        "admin-channels.png": "7519ac856467c3c87c7ce0f26419cfdf1fc8d0b18d3bb4b5bb51664fdb6151b0",
+        "create-pending.png": "7a3e36befc19d53ebe1cd3225ac1d8fcdad6da83da6ff620aa7bb09a04f44ad6",
+        "create-network-error.png": "f84fd0babc58193eaeb27726b4f605edad085deabc7d2ac72c2e67039f6eb871",
+        "archive-confirmation.png": "623f8434d39a06fbcaf1ce113a9c0cdfb1f70b725041b90b1466ae835f3c8c3a",
+        "stale-confirmation-cancelled.png": "84c6cd3e1b26e6d30d59a00c459fdeba8650214be5b1f863182f57fa0b3ea00f",
+        "role-save-success.png": "4fa10a1fe3978ef1f17ffe0737359a374e482f35f18dcfcc5d506c9283af039d",
+        "admin-audit.png": "1dcd1c9538e87ac9f5100e545a1c14c740157cf9c67e0e6efd23d72ded985cf6",
+        "danger-confirmation.png": "7ca4eaf4b8d32da1d80ec4e9e488dc87a0789cbfce0c7af9da2552ee71cc96df",
+        "confirmation-geometry-delete-category.png": "7ca4eaf4b8d32da1d80ec4e9e488dc87a0789cbfce0c7af9da2552ee71cc96df",
+        "confirmation-geometry-close.png": "a4c14e65aa29af00461222a152644d031a9bb94ed3c3ab10d29fc38ca8e20400",
+        "admin-roles.png": "617deb01cf459976d777d6dfd7e65b495adbf2a8446183120400e783c95bbb13",
+        "close-voice-confirmation-text2.png": "9a2f61c3b7d9481cfc0e075e676764975b5309742ace547c4c859eb62b5f20fa",
+        "created-channel-success.png": "4595d56c50aece7d076253bc81349657ca269936cc85bd2f2692318717021de2",
+        "archive-confirmation-text2.png": "0272a9d27feee6d1bf173d80bfe7612860a8f73b72c84b31290844a9baeceece",
+        "close-voice-confirmation.png": "a4c14e65aa29af00461222a152644d031a9bb94ed3c3ab10d29fc38ca8e20400"
+      }
+    },
+    "393": {
+      "status": "PASS",
+      "web_source_manifest_sha256": "bf14fd7acb3ddb0b93c7b399ad0fe0d9db2bd086b6232cb790399c6674bd7e9f",
+      "web_artifact_manifest_sha256": "49055f427e6ce3b31c2a39316698e6b7f60a206d89896c4a3d17994897809aed",
+      "width": 393,
+      "owned_resources_removed": true,
+      "category_footer_checks": [
+        {
+          "phase": "create-invalid",
+          "metrics": [
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            },
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            }
+          ]
+        },
+        {
+          "phase": "create-pending",
+          "metrics": [
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            },
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            }
+          ]
+        },
+        {
+          "phase": "create-network-error",
+          "metrics": [
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            },
+            {
+              "bottom": 887,
+              "viewport": 900,
+              "dialog_bottom": 900,
+              "hit": true
+            }
+          ]
+        }
+      ],
+      "role_save_feedback_pointer_visible": true,
+      "receipt": ".out/qa295298-20261012/393/runtime.json",
+      "receipt_sha256": "cedfcdb49a637f0dbd9159043e2d24e330c6a52eb0bc0e5e35ea1f293af20fe2",
+      "real_API_and_SFU": true,
+      "checks": {
+        "295_real_SFU_two_listener_connection": "PASS",
+        "295_actual_guild_layout_context_voice": "PASS",
+        "295_actual_members_layout_context_voice": "PASS",
+        "295_actual_roles_layout_context_voice": "PASS",
+        "295_actual_channels_layout_context_voice": "PASS",
+        "295_actual_audit_layout_context_voice": "PASS",
+        "295_actual_media_layout_context_voice": "PASS",
+        "295_actual_readiness_layout_context_voice": "PASS",
+        "295_admin_reopen_remembers_previous_section": "PASS",
+        "295_admin_return_selected_text_draft_voice": "PASS",
+        "295_MEMBER_admin_API403_no_panel_entry": "PASS"
+      },
+      "screenshot_hashes": {
+        "role-revision-conflict.png": "10076f47af8ab68bb54fd7cdbc8c8fbeecff87e24a73ef9fb0e0cfefefc5657a",
+        "admin-readiness.png": "89332ef874c93e542f2b1741f00867d97aac5019d2d87091ba1a172dfee4ce75",
+        "admin-guild.png": "1a810c02a25f47781fe8da6d822e9c144ef086eb434f883adb9c9848432bced4",
+        "create-invalid.png": "2f7cf44120db5e83192af6e182f5e0872e10d4883adbb701122bd03122820b46",
+        "admin-media.png": "c58db07def86a25cd02fc9a2855da835ffee7860966b053a8ddafce1ebcefcad",
+        "admin-members.png": "a4727024467826265c9c27c05934f1d83d7efe5d0ddedfc1061d30b1a12b21e6",
+        "admin-channels.png": "6963b79a3022459c27c7b449feb1fc9140dfaf39b17a8ecc75e9b17f295c6c2b",
+        "create-pending.png": "bdb0082590e1b0a5e6dc5abcd3c952a1536c4d3e1a13bc760f8057c4e3d958b5",
+        "create-network-error.png": "3a6a504b66a91f3cfd37fa8127402bcc82b0541695724905550aa0042b99cc8a",
+        "archive-confirmation.png": "ea7afd338b6b69c7b878621edcfa8de37806898bea10891614ecff175adeeeae",
+        "stale-confirmation-cancelled.png": "b3662fe8b30226409e7cf4ff3350efd5a23d377aecf0d9fce66588ae9c0a7d23",
+        "role-save-success.png": "7e5974d25eb5a18788ae85f1f585dabd716692b56b8b03713678c7cbb74d9dc1",
+        "admin-audit.png": "8f0e4045b67cbb24f8905006709ac454b3350a6a0daaee9dc34cd536571e5805",
+        "danger-confirmation.png": "e088a79373b9d420143518f96cba74025f412cd1fd465353102de10eadb124aa",
+        "admin-roles.png": "e356fde2d7065e7dcbba639cd323d330023f92a6965669d43fbebe0ef6593cc4",
+        "created-channel-success.png": "0b574125e01003e5042ae02f753ecb8e0fe7c4f61e8639d841e23541577355e8",
+        "close-voice-confirmation.png": "7d1222eeea99f98269c39245e06d4ca5a827cb2d210d669ffb54ac004a8a17e7"
+      }
+    },
+    "1440": {
+      "status": "PASS",
+      "web_source_manifest_sha256": "bf14fd7acb3ddb0b93c7b399ad0fe0d9db2bd086b6232cb790399c6674bd7e9f",
+      "web_artifact_manifest_sha256": "49055f427e6ce3b31c2a39316698e6b7f60a206d89896c4a3d17994897809aed",
+      "width": 1440,
+      "owned_resources_removed": true,
+      "category_footer_checks": [
+        {
+          "phase": "create-invalid",
+          "metrics": [
+            {
+              "bottom": 580.5,
+              "viewport": 900,
+              "dialog_bottom": 597.5,
+              "hit": true
+            },
+            {
+              "bottom": 580.5,
+              "viewport": 900,
+              "dialog_bottom": 597.5,
+              "hit": true
+            }
+          ]
+        },
+        {
+          "phase": "create-pending",
+          "metrics": [
+            {
+              "bottom": 576.5,
+              "viewport": 900,
+              "dialog_bottom": 593.5,
+              "hit": true
+            },
+            {
+              "bottom": 576.5,
+              "viewport": 900,
+              "dialog_bottom": 593.5,
+              "hit": true
+            }
+          ]
+        },
+        {
+          "phase": "create-network-error",
+          "metrics": [
+            {
+              "bottom": 580.5,
+              "viewport": 900,
+              "dialog_bottom": 597.5,
+              "hit": true
+            },
+            {
+              "bottom": 580.5,
+              "viewport": 900,
+              "dialog_bottom": 597.5,
+              "hit": true
+            }
+          ]
+        }
+      ],
+      "receipt": ".out/qa295298-20261012/1440/runtime.json",
+      "receipt_sha256": "60152bc02022f16637da48e2362b4b2d52a0f48a748709b1be49b6f88baabf0c",
+      "real_API_and_SFU": true,
+      "checks": {
+        "295_real_SFU_two_listener_connection": "PASS",
+        "295_actual_guild_layout_context_voice": "PASS",
+        "295_actual_members_layout_context_voice": "PASS",
+        "295_actual_roles_layout_context_voice": "PASS",
+        "295_actual_channels_layout_context_voice": "PASS",
+        "295_actual_audit_layout_context_voice": "PASS",
+        "295_actual_media_layout_context_voice": "PASS",
+        "295_actual_readiness_layout_context_voice": "PASS",
+        "295_admin_reopen_remembers_previous_section": "PASS",
+        "295_admin_return_selected_text_draft_voice": "PASS",
+        "295_MEMBER_admin_API403_no_panel_entry": "PASS"
+      },
+      "screenshot_hashes": {
+        "role-revision-conflict.png": "569ac84be244601530d7f897a55bfeeb030e2e4b90a72c5dab4a6a234bcce2d5",
+        "admin-readiness.png": "0f86dea8bae0a54186d0eebc7efc06e9f49eae0b8ec86c7ca64cf4fd2380a302",
+        "admin-guild.png": "ff2071b267d9feebbdb73b7f98b0d25bf29b4a48801ac723e675b6604efe968c",
+        "create-invalid.png": "47ba86b496ac8bb8f508ec2e6830efab7ee8e5cc380a337432ae4b947a11be3b",
+        "admin-media.png": "fa29eeb0ee097d77ed14770072722449f55419161fd9d5401f2b062162cf5c61",
+        "admin-members.png": "faf0b6e93f788023eb63a48649cb0fdb46120a5e81b8704385bd036b3142395f",
+        "admin-channels.png": "81a9dd38ddafbbe5a1084eb8dc489db4984ba4939d5895778c006cf2a325b3e8",
+        "create-pending.png": "5ffad06cc014df3433f30be5c9796dc04d93be503c98ea6401738cdf995904a9",
+        "create-network-error.png": "69b1625b8a9a9d711cc17e2c3fb5358d6e6ec0ffe905a5f2f6c8d87c54c6f861",
+        "archive-confirmation.png": "3225ae53a666b128c93acc18786e98e00282de3f0048e71284750b795a56cc16",
+        "stale-confirmation-cancelled.png": "b8d2a16eedc0549b263f4372a0a0f7c1f04566bfd937f114b7f0e125477026ca",
+        "role-save-success.png": "1952edd7d250703a1906282c84b337810658497846489fe632b1fdec15539df9",
+        "admin-audit.png": "cfede602d5e4d080ececf4beec8f2ecf0f04d3392910a94cea53deb07d492a75",
+        "danger-confirmation.png": "47135a63918b0bb7e7c4c1c3e9bae22712248730bd86a4ec715a3e9d4392c9d0",
+        "admin-roles.png": "568b5d9424d0606810d9e1284b1e5881388388e8252c01129f02edebf9bf3623",
+        "created-channel-success.png": "20c0294d3bf7135202cf6a8d22a645389a083ae3b5911b03b0d5eae1e471f69b",
+        "close-voice-confirmation.png": "8366e7917e1043898ad2211a6ff80b514537f8512d0d56247b9e74599c9d13d7"
+      }
+    },
+    "android": {
+      "status": "PARTIAL",
+      "platform": "android",
+      "build_mode": "debug",
+      "physical_device": false,
+      "flutter_lib_manifest_sha256": "ba87f89bc7d57763caa858e88b4cb202f6272a22482c57e04dcb2398b59bb98b",
+      "native_artifact_sha256": "8b8343044fb04795e7914b4759bd3e089afdffe9daaec617410d2bf02deb6d07",
+      "viewport": {
+        "physical_width": 1080.0,
+        "physical_height": 2400.0,
+        "device_pixel_ratio": 2.625
+      },
+      "owned_resources_removed": true,
+      "physical_OS_gesture": "NOT_RUN",
+      "spoken_screen_reader": "NOT_RUN",
+      "Back_input": "integration binding handlePopRoute; OS hardware Back/gesture not exercised",
+      "native_RTC_transport": {
+        "succeeded_candidate_pairs": 4,
+        "connected_dtls_transports": 2
+      },
+      "peer_RTC_transport": {
+        "succeeded_candidate_pairs": 4,
+        "connected_dtls_transports": 2
+      },
+      "observations": {
+        "admin_reopened_readiness_selected": true,
+        "role_save_HTTP_statuses": [
+          200
+        ]
+      },
+      "receipt": ".out/qa295298-20261012/android/runtime.json",
+      "receipt_sha256": "b72c4ae1dcc2382bc97cc536085f6373d481edba9e32f80512fe277d75a9c82b",
+      "real_API_and_SFU": true,
+      "checks": {
+        "actual_two_listener_SFU_and_RTC_transport": "PASS",
+        "295_actual_section_guild_context_voice": "PASS",
+        "295_actual_section_members_context_voice": "PASS",
+        "295_actual_section_roles_context_voice": "PASS",
+        "295_actual_section_channels_context_voice": "PASS",
+        "295_actual_section_audit_context_voice": "PASS",
+        "295_actual_section_media_context_voice": "PASS",
+        "295_actual_section_readiness_context_voice": "PASS",
+        "295_Close_retains_conversation_draft_and_voice": "PASS",
+        "295_reopen_retains_previous_admin_section": "PASS",
+        "295_real_MEMBER_admin_roles_HTTP403": "PASS"
+      },
+      "screenshot_hashes": {
+        "native-admin-audit.png": "5739b3c96da9a20fe559407e1ab31a470bf0d11ad347448681764b62ab92aedb",
+        "native-admin-readiness.png": "c8aeef64c03e65dca6eadea5c00ca9a185c9ba62312f49ac98e9d344681c8f4a",
+        "native-role-success.png": "07ca82706f87d431c02af378213f0acfb219e07d2afe98d97c404cfa42b346dc",
+        "native-admin-roles.png": "f3a238c9a9deb76865b0fff23883db85bfa29eafdea6b9568ebdc1eda257732f",
+        "native-danger-confirmation.png": "e2bf59e1abeee052257844fcfafcadc02e9a82b28ddf3b3a971a2005aeffc3c9",
+        "native-create-pending.png": "b8f7b673d23f3bbc9b810a29e4409897b0a180b44af925a5e25b7bcd1f9aac7e",
+        "native-connected-voice.png": "e9be3fefa207117d7ce30781a8d547e77fa54d0a6d1c86b4d82e142c931c8767",
+        "native-admin-guild.png": "b70a603cf05e500dbd4b61df4947dead7108a8ea9e09f73b6595d070b35e106c",
+        "native-admin-media.png": "ef46b8ed176aca8014971edd68779d70541960bb64ba53d27a003ff3ee50a09b",
+        "native-create-invalid.png": "fb1cea439abc6881949796ddcfb99e1af92a89015fcd3df549634ef05b1d3833",
+        "native-admin-channels.png": "d99b31aa2b73c2c136c821104da04012d78b71c1440631413581a3cfa893a554",
+        "native-admin-members.png": "c6f11536a937e5cf4e424ca1b0f14d16411c936a59f76a0fb795bf9399e414c8",
+        "native-connected-text-context.png": "f4f8e6c89cf177ccf702f11ea4bc3574d6c5a1b41554a88ff45642be906742be"
+      }
+    },
+    "ios": {
+      "status": "PARTIAL",
+      "platform": "ios",
+      "build_mode": "debug",
+      "physical_device": false,
+      "flutter_lib_manifest_sha256": "31b73f8238b70e1f9b4c5bc681a0bbf1575a781c60a4fdbb15f644e0c8dedf36",
+      "native_artifact_sha256": "7a9fb9c7256dea905bb0f2a2ad8aa67c71bcd9b092ef01b8336e18421d70f746",
+      "viewport": {
+        "physical_width": 1179.0,
+        "physical_height": 2556.0,
+        "device_pixel_ratio": 3.0
+      },
+      "owned_resources_removed": true,
+      "physical_OS_gesture": "NOT_RUN",
+      "spoken_screen_reader": "NOT_RUN",
+      "Back_input": "integration binding handlePopRoute; OS hardware Back/gesture not exercised",
+      "native_RTC_transport": {
+        "succeeded_candidate_pairs": 2,
+        "connected_dtls_transports": 2
+      },
+      "peer_RTC_transport": {
+        "succeeded_candidate_pairs": 2,
+        "connected_dtls_transports": 2
+      },
+      "observations": {
+        "admin_reopened_readiness_selected": true,
+        "role_save_HTTP_statuses": [
+          200
+        ]
+      },
+      "receipt": ".out/qa295298-20261012/ios/runtime.json",
+      "receipt_sha256": "57539960f1e0fdafb0f69b23fdcf2927e095ef7a4f21f3eb60065c5cc6b17916",
+      "real_API_and_SFU": true,
+      "checks": {
+        "actual_two_listener_SFU_and_RTC_transport": "PASS",
+        "295_actual_section_guild_context_voice": "PASS",
+        "295_actual_section_members_context_voice": "PASS",
+        "295_actual_section_roles_context_voice": "PASS",
+        "295_actual_section_channels_context_voice": "PASS",
+        "295_actual_section_audit_context_voice": "PASS",
+        "295_actual_section_media_context_voice": "PASS",
+        "295_actual_section_readiness_context_voice": "PASS",
+        "295_Close_retains_conversation_draft_and_voice": "PASS",
+        "295_reopen_retains_previous_admin_section": "PASS",
+        "295_real_MEMBER_admin_roles_HTTP403": "PASS"
+      },
+      "screenshot_hashes": {
+        "native-admin-audit.png": "6f5ebdc0d96849406f86ce99d10c430c710b8ca0a1989709d439674ddd117dae",
+        "native-admin-readiness.png": "272704451f168a1b6fa93838a303e5822abdd57bbf714965498588fd24ae6721",
+        "native-role-success.png": "12427c34bd1016c5a2aacad602da278b238e49c62a5088e210fdd1fcb636c3c1",
+        "native-admin-roles.png": "a487d28028376392ec2930a8cf0cc03ff278ad264fc3c8e07e1f664b0c1c4c2e",
+        "native-danger-confirmation.png": "dfbe78f91382b08bbf2ca8aedb8e17809423b305fa7be2360d0f3be1823c6ae0",
+        "native-create-pending.png": "743858c6aa388776113cf75214f5fcab68188345b5683c165e923755969dd039",
+        "native-connected-voice.png": "63af5205a932bbe15d3634138c0e0b0888ec6f17bbe64b2479b80f672f6d9e74",
+        "native-admin-guild.png": "bb8839d93f09c9aa34498c33d85f430f515246834da9d140750239eb7365ee79",
+        "native-admin-media.png": "7069b2e9e88edb9ee9c28cfab01c28b24e86996ce7c72af02de7652c645fadeb",
+        "native-create-invalid.png": "16f468198712bf474e2e3f3e8cd88eeb193051405cd39fb4df7da322a3a366d1",
+        "native-admin-channels.png": "244611eadc396f5d7cb902859fb98e5e2c093874c0e1732c0b84cf6113497958",
+        "native-admin-members.png": "ef2c31ad248cb228b365a71eb6bdb87b8494277182f553f79ad76dd1cbb2cc09",
+        "native-connected-text-context.png": "3afd180c31e051d6be995212d830962dce3f837351ca6b9ba06cab08f693201c"
+      }
+    }
+  },
+  "visual_review": {
+    "status": "PASS",
+    "count": 84,
+    "web_originals": 58,
+    "android_originals": 13,
+    "ios_originals": 13,
+    "all_original_images_inspected": true,
+    "receipt": ".out/qa295298-20261012/final-visual-review.json",
+    "receipt_sha256": "7c048c20aef52af4f61be4050145ab5d559d843f3aadabf15112d51458431ea8",
+    "original_pixels": {
+      "web320": [
+        320,
+        900
+      ],
+      "web393": [
+        393,
+        900
+      ],
+      "web1440": [
+        1440,
+        900
+      ],
+      "android": [
+        1080,
+        2400
+      ],
+      "ios": [
+        1179,
+        2556
+      ]
+    },
+    "media_staged": false
+  },
+  "source_scope": {
+    "measured_hashes_preserved": true,
+    "Android": "Measuredba87 before unrelated profile-tab spoken label change. Ownseven admin/dialog production leaf file hashes unchanged in31b73. This scoped statement does not relabel measured APK or prove profile acceptance.",
+    "iOS": "Actual17 rows measured final31b73.",
+    "Web": "Latest320 real App/API/SFU measured8eaeb016;393/1440 measured49055 before later confirmation-only CSS. All25 focused browser regressions repeated after final wrap rule, covering320/393/1440 normal/enlarged and unchanged287px desktop baseline. Historical artifacts are retained, not retagged as latest."
+  },
+  "historical_attempts": [
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/1440/1791831586045933000/runtime.json",
+      "sha256": "09c347204ae346413206a68bed874a67853445d9cbb81456e5b662c3b9fe2518",
+      "status": "FAIL",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": null,
+      "observed_check_count": 11,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/1440/1791832489653193000/runtime.json",
+      "sha256": "3ad3a4abcf4d412057ed733993a8d6586344c2706cacaa2097a796aa258feb48",
+      "status": "PASS",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": "8968a9af57b2d3cccf20cb212b1db1ef83800a61237c50085ba79907bdf1beaf",
+      "observed_check_count": 22,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/320/1791832489653193000/runtime.json",
+      "sha256": "cca6468ee4289828f8dd6de0869c021845be8d2392aa0f574e04c485a9817e6c",
+      "status": "PASS",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": "138aaf2d8a4386ce730f9bfb7360096b81a27e06cba55b856ba0e7e65f404ff7",
+      "observed_check_count": 22,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/320/1791832838630778000/runtime.json",
+      "sha256": "99a31763760fa1f504c4744ef4401cabc1f379e672fc6a9e5b5e9a0af6055757",
+      "status": "PASS",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": "49055f427e6ce3b31c2a39316698e6b7f60a206d89896c4a3d17994897809aed",
+      "observed_check_count": 22,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/320/1791833631420763000/runtime.json",
+      "sha256": "0bc0265770f2ac2cfd43a9c4f64ec981eeff2473e91df4ef5f10961fb05cb147",
+      "status": "PASS",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": "49055f427e6ce3b31c2a39316698e6b7f60a206d89896c4a3d17994897809aed",
+      "observed_check_count": 22,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/320/1791833926887527000/runtime.json",
+      "sha256": "a04981d938519d8069cef1c16708996e2073888f30f90e13b99d383844e32b0d",
+      "status": "PASS",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": "87a8755fbaeb8db7846b988257f522817d7c294fbf891e73d03a7e9b7a749007",
+      "observed_check_count": 22,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/393/1791829192688504000/runtime.json",
+      "sha256": "a2275febebd47ec272302d7419d18bdf5d8e8de414fdfdcbe9f060b9a9e6d189",
+      "status": "FAIL",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": null,
+      "observed_check_count": 11,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/393/1791829444937126000/runtime.json",
+      "sha256": "de1190c7ad1d91cfae9e938e49fbea9e139a464058c78e6af77a7b5aa423c0b8",
+      "status": "FAIL",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": null,
+      "observed_check_count": 11,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/393/1791829957566804000/runtime.json",
+      "sha256": "9eeb105e41df645a6c6dbe2ada5fb757b83413b8e40a636d5bae51acb07bd518",
+      "status": "FAIL",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": null,
+      "observed_check_count": 12,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/393/1791830247809855000/runtime.json",
+      "sha256": "3e7360a30537027f3bdd3b2f84525bfbd82d65c170d95de4478aa858f29deaaa",
+      "status": "FAIL",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": "7050fc1726fcd488520cafddc020f744aaaebbc3ba74930a850fd597ede3daa1",
+      "observed_check_count": 14,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/393/1791831461836010000/runtime.json",
+      "sha256": "26e9b7d4156333590324a63335b8f939c1fdfe0068d8fad51219abd059428e7f",
+      "status": "FAIL",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": "7050fc1726fcd488520cafddc020f744aaaebbc3ba74930a850fd597ede3daa1",
+      "observed_check_count": 14,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/393/1791831586045933000/runtime.json",
+      "sha256": "6bd6f94f29a25cfce54f0d8d166c836fd43733e90cfe9ec0d9813fb8a188f2a2",
+      "status": "FAIL",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": "8968a9af57b2d3cccf20cb212b1db1ef83800a61237c50085ba79907bdf1beaf",
+      "observed_check_count": 20,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/393/1791832489653193000/runtime.json",
+      "sha256": "612f8749b89a7229d742fb4abaf4392ebd50544dc60045c25ac984a19d9f238e",
+      "status": "PASS",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": "8968a9af57b2d3cccf20cb212b1db1ef83800a61237c50085ba79907bdf1beaf",
+      "observed_check_count": 22,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/393/1791832838630778000/runtime.json",
+      "sha256": "04295832975fde8bbb7dcc8653c5939558b0825642357499ec4cf9dc7ae9dda1",
+      "status": "PASS",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": "49055f427e6ce3b31c2a39316698e6b7f60a206d89896c4a3d17994897809aed",
+      "observed_check_count": 22,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/android/1791830268527909000/runtime.json",
+      "sha256": "eb8edd0ae4f988377d3b5281505af1773c3119b344ae92db877a2b3b4e276a01",
+      "status": "FAIL",
+      "flutter_lib_manifest_sha256": null,
+      "web_artifact_manifest_sha256": null,
+      "observed_check_count": 0,
+      "owned_resources_removed": false
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/android/1791830436347167000/runtime.json",
+      "sha256": "e856d15f1394b3b4687d1bf181ca437b5126973e0510a45c18c4f72cb20e99ae",
+      "status": "FAIL",
+      "flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "web_artifact_manifest_sha256": null,
+      "observed_check_count": 0,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/android/1791830761939277000/runtime.json",
+      "sha256": "40a28cc77d5fa6772335e1fa2901226097d9b7d0d1a6a0e2f56e22847c55d0ea",
+      "status": "FAIL",
+      "flutter_lib_manifest_sha256": "09eba39f84648fa87a0494a6b5ee3e585278e47209b1e0a50e95e59a15d23be7",
+      "web_artifact_manifest_sha256": null,
+      "observed_check_count": 14,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/android/1791831618224376000/runtime.json",
+      "sha256": "139e03631f2c22b6d40cf4f35ee87b4e282b4148381d6241dd3e1932c997d479",
+      "status": "FAIL",
+      "flutter_lib_manifest_sha256": "01aeceac5e4de962502c70480aacf2f4a3a0cd387afcee5858a498f461c49d35",
+      "web_artifact_manifest_sha256": null,
+      "observed_check_count": 14,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/android/1791833229303754000/runtime.json",
+      "sha256": "11827e91e89d9cc937c2f6317346c5072c348d80c57b04276db99b74c9d1c3b4",
+      "status": "PARTIAL",
+      "flutter_lib_manifest_sha256": "01aeceac5e4de962502c70480aacf2f4a3a0cd387afcee5858a498f461c49d35",
+      "web_artifact_manifest_sha256": null,
+      "observed_check_count": 17,
+      "owned_resources_removed": true
+    },
+    {
+      "receipt": ".out/qa295298-20261012/previous-harness-runs/ios/1791833566013458000/runtime.json",
+      "sha256": "4fa166811fab0fbf90618929830dbef7876f8e021b5741d78ee41c082ebe765d",
+      "status": "PARTIAL",
+      "flutter_lib_manifest_sha256": "dfa68a25cba8ee12424d0016f18bc927f7bdab5ed2520c055d30946b890d4bd5",
+      "web_artifact_manifest_sha256": null,
+      "observed_check_count": 17,
+      "owned_resources_removed": true
+    }
+  ]
+}

@@ -46,11 +46,11 @@
 .mention-popover .mention-popover-help { margin-top: 5px; padding: 0 8px; color: var(--gc-text-muted); font-size: 0.75rem; white-space: nowrap; }
 
 
-.topology-dialog--category { height: 287px; min-height: 287px; max-height: 287px; }
+.topology-dialog--category { height: auto; min-height: min(287px, calc(100dvh - 32px)); max-height: calc(100dvh - 32px); }
 .topology-dialog--category .topology-dialog-header { min-height: 36px; margin-top: 20px; }
 .topology-dialog--category .topology-dialog-description { margin: 16px 24px 24px; }
-.topology-dialog--category .topology-dialog-fields { gap: 0; }
-.topology-dialog--category .topology-dialog-actions { min-height: 69px; }
+.topology-dialog--category .topology-dialog-fields { min-height: 0; gap: 0; overflow-y: auto; }
+.topology-dialog--category .topology-dialog-actions { min-height: 69px; flex: 0 0 auto; }
 @media (min-width: 1024px) {
   .text-conversation .message-composer textarea { min-height: 34px; height: 34px; padding: 7px 0; font-size: 0.9375rem; resize: none; }
   .text-conversation .message-composer .attachment-trigger,
@@ -78,5 +78,4 @@
   .update-banner nav { gap: 6px; }
   .update-banner .update-summary { font-size: 0.75rem; }
   #app:has(> .update-banner) .text-conversation .message-list { padding-top: 60px; }
-  .topology-dialog--category { max-height: 287px; }
 }

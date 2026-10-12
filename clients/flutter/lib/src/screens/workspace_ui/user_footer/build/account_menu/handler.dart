@@ -28,7 +28,7 @@ extension UserFooterAccountMenuRenderer on WorkspaceUserFooterContext {
                 children: [
                   Icon(Icons.admin_panel_settings_outlined, size: 18),
                   SizedBox(width: 10),
-                  Text('Администрирование'),
+                  Expanded(child: Text('Администрирование')),
                 ],
               ),
             ),
@@ -38,7 +38,7 @@ extension UserFooterAccountMenuRenderer on WorkspaceUserFooterContext {
               children: [
                 Icon(Icons.tune, size: 18),
                 SizedBox(width: 10),
-                Text('Настройки аудио'),
+                Expanded(child: Text('Настройки аудио')),
               ],
             ),
           ),
@@ -48,7 +48,7 @@ extension UserFooterAccountMenuRenderer on WorkspaceUserFooterContext {
               children: [
                 Icon(Icons.person_outline, size: 18),
                 SizedBox(width: 10),
-                Text('Профиль'),
+                Expanded(child: Text('Профиль')),
               ],
             ),
           ),
@@ -58,7 +58,7 @@ extension UserFooterAccountMenuRenderer on WorkspaceUserFooterContext {
               children: [
                 Icon(Icons.logout, size: 18),
                 SizedBox(width: 10),
-                Text('Выйти'),
+                Expanded(child: Text('Выйти')),
               ],
             ),
           ),

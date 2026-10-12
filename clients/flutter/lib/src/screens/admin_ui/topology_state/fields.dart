@@ -16,5 +16,5 @@ mixin AdminTopologyFields {
   String? adminCloseVoiceChannelId;
   ChannelKind adminChannelKind = ChannelKind.voice;
   late final AdminTopologyMutationController adminTopologyMutations;
-  AdminSection adminSelectedAdminSection = AdminSection.members;
+  late AdminSection adminSelectedAdminSection;
 }

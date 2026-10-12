@@ -278,6 +278,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final selected = _selectedSection == section;
     return Semantics(
       key: ValueKey('profile-tab-${section.name}'),
+      label: label,
       button: true,
       selected: selected,
       role: SemanticsRole.tab,
