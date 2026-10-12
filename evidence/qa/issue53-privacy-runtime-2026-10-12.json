@@ -189,7 +189,7 @@
     "trusted_browser_granted_and_denied_os_notification": "NOT_RUN: Mac unlocked, user notification-permission answer pending; actual OS notification observation not completed.",
     "generic_dm_preview_without_private_content": "NOT_RUN in trusted browser; source unit coverage from the preceding full Web run is not OS acceptance.",
     "cross_tab_dedup_logout_account_switch": "NOT_RUN in trusted browser",
-    "three_live_browser_sessions_http_ws_privacy": "PARTIAL: two real browser participants verified create/edit/delete/unread and visible read UI; third-party browser session remains NOT_RUN."
+    "three_live_browser_sessions_http_ws_privacy": "PARTIAL: two actual participant sessions and third administrator UI checked; raw third-browser HTTP/WS and full file acceptance remain NOT_RUN."
   },
   "gate_closed": false,
   "browser_candidate": {
@@ -224,5 +224,18 @@
       "sha256": "b10b3dcdd63cbdd870ac414ae599ebcdb66f0534c9b0b1b1c0e7f587c40699e9",
       "observation": "Recipient DM shows deleted-message placeholder, no unread banner and no unread count; synthetic participants only, no message bodies."
     }
-  ]
+  ],
+  "browser_followup": {
+    "recorded_at": "2026-10-12T11:28:42.372609+00:00",
+    "source_matches_master": "Web and backend source trees, plus JS/CSS bundle hashes, remain identical to 4fa25f8a.",
+    "second_reciprocal_create_edit_delete": "PASS in actual independent browser participants. Native Chrome confirmation accepted for own disposable QA message; both clients show two deleted placeholders and no edited body. No reload.",
+    "third_administrator_ui": "PASS for absence only: actual third Incognito administrator session showed empty DM list/no unread/private body after peer create/edit. Third-browser raw HTTP/WS and file flows remain NOT_RUN.",
+    "proof": {
+      "local_path": "/tmp/boohtacord-qa53-two-deleted.jpg",
+      "sha256": "a7635488dae56768f830347a4958ade493d4d0c661d205eef05974ec0cd79afb",
+      "published": false,
+      "contents": "Only synthetic participants and deletion placeholders; no DM body."
+    },
+    "notification_attempt": "Enable clicked; no completed OS allow/deny choice observed. User permission answer for grant remains pending. No notification permission granted."
+  }
 }

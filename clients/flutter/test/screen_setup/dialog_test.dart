@@ -48,6 +48,12 @@ void main() {
           find.byKey(const ValueKey('screen-preflight-capabilities')),
           findsOneWidget,
         );
+        final audioToggle = find.byKey(const ValueKey('capture-screen-audio'));
+        if (platform == TargetPlatform.fuchsia) {
+          expect(audioToggle, findsNothing);
+        } else {
+          expect(tester.widget<SwitchListTile>(audioToggle).value, isFalse);
+        }
         final audioMessage = switch (platform) {
           TargetPlatform.android => 'Android 10+: понадобится разрешение записи аудио; приложение-источник может запретить захват.',
           TargetPlatform.iOS => 'iOS: звук передаётся через системный ReplayKit broadcast; приложение-источник может ограничить захват.',

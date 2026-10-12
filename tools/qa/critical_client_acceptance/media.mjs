@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { api, channel, expect, openNavigation, status } from '../client_lifecycle/request.mjs'
 import { owned } from './control.mjs'
 import { teardown } from './teardown.mjs'
+import { installRosterFailureObserver } from './roster_observer.mjs'
 async function connected(page) {
   try {
     await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 22000 })
@@ -36,6 +37,7 @@ export async function media(a, b, member, channelId, report, input) {
       socket.send(message)
     })
   })
+  await a.addInitScript(installRosterFailureObserver)
   await a.reload()
   await member.reload()
   const category = await api(a, '/admin/categories', 'POST', { name: 'VoiceLab' }); status(category, 201)
@@ -62,9 +64,13 @@ export async function media(a, b, member, channelId, report, input) {
   if (manualRetryAvailable) await retry.click()
   await expect(banner).toBeHidden()
   // Both listeners now have real WebRTC transports; stop only the owned SFU.
+  const rosterFailuresBefore = await a.evaluate(() => window.__qaRosterUnavailableCount)
   owned('sfu', 'stop', '$owned')
   try {
     await openNavigation(a)
+    // Detection can use one 5s reconciliation period, a shared 5s snapshot deadline
+    // and a bounded 3s SSE write. Check the actual event before its UI consequence.
+    await expect.poll(() => a.evaluate(() => window.__qaRosterUnavailableCount), { timeout: 15000 }).toBeGreaterThan(rosterFailuresBefore)
     await expect(banner).toBeVisible()
     await expect(banner).toContainText('Состав недоступен', { timeout: 20000 })
     await expect(a.getByRole('log')).toHaveCount(0)
@@ -72,7 +78,7 @@ export async function media(a, b, member, channelId, report, input) {
     await a.screenshot({ path: directory+'/sfu-unavailable.png' })
     report.connection_status = { ws_only_failure_real_webrtc_alive: true, targeted_chat_retry: true,
       chat_retry_mode: manualRetryAvailable ? 'manual' : 'automatic',
-      sfu_failure_not_empty_room: true, last_roster_age_visible: /с\. назад/.test(await banner.innerText()) }
+      roster_failure_event_observed: true, sfu_failure_not_empty_room: true, last_roster_age_visible: /с\. назад/.test(await banner.innerText()) }
     assert.equal(report.connection_status.last_roster_age_visible, true)
   } finally { owned('sfu', 'start', '$owned') }
   await expect.poll(async () => (await api(a, '/voice/participants')).status, { timeout: 30000 }).toBe(200)

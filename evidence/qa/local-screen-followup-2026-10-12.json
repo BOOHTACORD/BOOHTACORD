@@ -1,0 +1,315 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-12T11:28:42.372609+00:00",
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "leaf_task": "T-036",
+  "dependencies": [
+    "T-031",
+    "T-032",
+    "T-033",
+    "T-034",
+    "T-022"
+  ],
+  "acceptance_gate": "FV2-006; emulator smoke and selected visual scope only",
+  "base_commit": "4fa25f8a6f5ee8c05d4e19f4e3d21f7cd55e38ed",
+  "production_mutations": false,
+  "changes": [
+    "Add concrete CFBundleDisplayName to ReplayKit upload extension. Before: Simulator installation rejected the appex. After: real iOS installation, authentication, workspace and logout passed.",
+    "Observe real roster-unavailable SSE control event before asserting unavailable UI after stopping the owned SFU. Bounded wait is 15s: 5s reconcile period + shared 5s snapshot deadline + 3s SSE write; UI retention expiry remains separately asserted.",
+    "Keep PR324 Material surface and CI fixes from master; add regression coverage for interactive ink and screen-audio default off/unsupported platform."
+  ],
+  "test_first": {
+    "surface": "Focused surface test failed with ListTile ink visibility FlutterError before implementation; original full run also had 31 failures. Final master uses PR324 Material implementation.",
+    "ios_extension": "Metadata test failed: CFBundleDisplayName was None. Final metadata test and real Simulator installation pass.",
+    "roster_observer": "RED missing helper module, then two observer tests PASS; with request-budget tests, 4 PASS."
+  },
+  "code_sha256": {
+    "clients/flutter/ios/ScreenShareExtension/Info.plist": "ec8a11d96196dc900f240bb9b8a1ba1956f8688c4efa3142e8f97f7d3ade871e",
+    "clients/flutter/test/screen_setup/dialog_test.dart": "6968d365b6e087b039dc61314718f11235f0d751e8585d76b8009de0d0e6d6ee",
+    "clients/flutter/test/screen_setup/surface_test.dart": "065a46830eb32b9eac32741c7291f9a4a4c9d3eaa22e6db1eeb61b0ce9402443",
+    "tools/qa/critical_client_acceptance/media.mjs": "38a3b642e10b995c5d803c401aed196a5918fdbd9133c1d45f338ba30654f43d",
+    "tools/qa/critical_client_acceptance/roster_observer.mjs": "757b2cbbbc88223ecaa6202be4b047d1ad4955b46a972b4af32ed30b4f90d1ff",
+    "tools/qa/critical_client_acceptance/roster_observer.test.mjs": "774978aae6e20bac49da56eea03873fe57db24a7c0c6f5c9217443566c9be7c9",
+    "tools/qa/local_features/features.json": "fe8397d759fb8483996ee39f49745727c0d7668cfb7d7346159663389b9a2137",
+    "tools/qa/local_features/test_ios_extension.py": "10cb7a28c61778c17a3ebc2ffc921011eedafa34ae0da373929892df11e482e7"
+  },
+  "runs": [
+    {
+      "path": ".out/local-features/20261012-140544/report.json",
+      "status": "FAIL",
+      "cause": "Flutter ink/stale expectation failures; iOS extension install rejected missing display name",
+      "source": "448beb2ac198697de2561219e1e513c235effce2 diff-sha256=ad3392174a9275199d12bedd2fda01551914705236c1a7321d5b9a4729fb718d"
+    },
+    {
+      "path": ".out/local-features/20261012-141534/report.json",
+      "source": "448beb2ac198697de2561219e1e513c235effce2 diff-sha256=6e9f4846a7682b540e74aac63833e54f2a74d816ea024aebd9a5cfd3cf0fec6e",
+      "web_stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ],
+      "whole_run_status": "FAIL",
+      "remaining_failure": "One stale iOS label expectation; corrected upstream in PR324."
+    },
+    {
+      "path": ".out/local-features/20261012-142251/report.json",
+      "source": "4fa25f8a6f5ee8c05d4e19f4e3d21f7cd55e38ed diff-sha256=238edf5d6c7142242226b2657f4c4667324ea0cf237f76e2ca9b15da919b8b44",
+      "stages": [
+        {
+          "name": "flutter-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "flutter-component-captures",
+          "status": "PASS"
+        },
+        {
+          "name": "android-runtime",
+          "status": "PASS"
+        },
+        {
+          "name": "ios-runtime",
+          "status": "PASS"
+        }
+      ],
+      "whole_run_status": "REVIEW_REQUIRED"
+    }
+  ],
+  "web_source_equivalence": {
+    "web_tree": "7cf7c82be295f71ee49b91414e38aa600e75bff3",
+    "backend_tree": "2d6e5977ab812db05bce599fea4aa654ba762507",
+    "note": "These trees are identical at 448beb2a and 4fa25f8a. Web unit/build/accessibility/real-stack results remain applicable after PR324, which changed only Flutter files."
+  },
+  "tests": {
+    "web_unit": {
+      "passed": 1491,
+      "files": 466
+    },
+    "web_accessibility": {
+      "passed": 54
+    },
+    "flutter_unit": {
+      "passed": 1145,
+      "skipped": 1
+    },
+    "qa_python": {
+      "passed": 21
+    },
+    "qa_node": {
+      "passed": 4
+    }
+  },
+  "native_scope": "Actual installed debug app, disposable real Go/PostgreSQL API, pinned owned localhost HTTPS: auth, navigation, empty workspace, profile/audio/admin rendering, logout. No native capture picker, paired media, broadcast audio or physical-device result.",
+  "visual": {
+    "status": "PASS_SELECTED_SCOPE",
+    "broad_report_status": "REVIEW_REQUIRED",
+    "web_setup": {
+      "count": 18,
+      "images": [
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/admin_confirmation.browser-5a591-le-at-320x640-compact-phone/screen-share-setup-open.png",
+          "sha256": "f971f84435141dad2c3c3b47999da4a521a13d6e320e9ccd7882fe2f72bebad5"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/admin_confirmation.browser-2db6e--reachable-at-393x852-phone/screen-share-setup-actions.png",
+          "sha256": "1c80357b72cc2bf453d409fc94da0aacea1ed184299cf128de01f47a2bcc58ca"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/admin_confirmation.browser-eb19d-at-390x844-phone-at-2x-text/screen-share-setup-open.png",
+          "sha256": "8d7d0e4dec5f5a1275a9e67a72831ed60e0d54c1b9edcec58debddf115c8a25f"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/admin_confirmation.browser-168ea-chable-at-844x390-landscape/screen-share-setup-actions.png",
+          "sha256": "b6acb86fce0cecc31566ea4eda595d2cb529e2a7d408727c3010448d0d3589c5"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/admin_confirmation.browser-5a591-le-at-320x640-compact-phone/screen-share-setup-actions.png",
+          "sha256": "f971f84435141dad2c3c3b47999da4a521a13d6e320e9ccd7882fe2f72bebad5"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/admin_confirmation.browser-2db6e--reachable-at-393x852-phone/screen-share-setup-open.png",
+          "sha256": "1c80357b72cc2bf453d409fc94da0aacea1ed184299cf128de01f47a2bcc58ca"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/admin_confirmation.browser-eb19d-at-390x844-phone-at-2x-text/screen-share-setup-actions.png",
+          "sha256": "8d7d0e4dec5f5a1275a9e67a72831ed60e0d54c1b9edcec58debddf115c8a25f"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/admin_confirmation.browser-168ea-chable-at-844x390-landscape/screen-share-setup-open.png",
+          "sha256": "b6acb86fce0cecc31566ea4eda595d2cb529e2a7d408727c3010448d0d3589c5"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/accessibility.browser-scre-46abc-uality-options-discoverable/desktop-stream-launch-actions-source-scale-after.png",
+          "sha256": "6b29605a5d2d12762941d29dc205557eb8476edc05f43c46216997ca8e7532f2"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/accessibility.browser-scre-46abc-uality-options-discoverable/desktop-stream-launch-settings-source-scale-after.png",
+          "sha256": "fa12c1c9723345c0ee3930741e515800df8b7749c2d081d77cc5cef6af9a62ab"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/accessibility.browser-scre-e6862-llow-the-1440p-text-profile/screen-share-selector-layout-637x584.png",
+          "sha256": "599bf4c8f66790d4ef83bbcfb0d9b8d96ccb3fc7ebbc82c52c5fceda8e7683a6"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/accessibility.browser-scre-46abc-uality-options-discoverable/mobile-stream-launch-settings-after.png",
+          "sha256": "5355b32ff4ccca99b7a186729a24ba80b739f66a20f9c1b57bd8af4318920d41"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/accessibility.browser-scre-46abc-uality-options-discoverable/desktop-stream-launch-actions-after.png",
+          "sha256": "5a7ad0e5ffe3ab20b9aff709c205a5ea11e0b5e62a31c195bd281a6798fd3a4e"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/accessibility.browser-scre-46abc-uality-options-discoverable/desktop-stream-launch-settings-after.png",
+          "sha256": "5a7ad0e5ffe3ab20b9aff709c205a5ea11e0b5e62a31c195bd281a6798fd3a4e"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/accessibility.browser-scre-46abc-uality-options-discoverable/screen-share-setup-320x640-initial.png",
+          "sha256": "6139b9084e8fc1726b530bfeaa2d7e19773eec9e306936d152c3e8bef304cbf2"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/accessibility.browser-scre-46abc-uality-options-discoverable/screen-share-setup-progressive-options.png",
+          "sha256": "3e2307b4cf83c5123146e96ceee87416311f65e6a7501234ba215afd85ab6e2d"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/accessibility.browser-scre-46abc-uality-options-discoverable/screen-share-setup-recommended-profile.png",
+          "sha256": "51f908f431c0c3e163b17575579218c8fd194e296bacd02f3bb79a8e6a606d89"
+        },
+        {
+          "path": ".out/local-features/20261012-141534/web-accessibility/screen_share_short_desktop-66648--supports-the-1440p-profile/screen-share-quality-1440p.png",
+          "sha256": "599bf4c8f66790d4ef83bbcfb0d9b8d96ccb3fc7ebbc82c52c5fceda8e7683a6"
+        }
+      ],
+      "observations": "320x640, 393x852, 844x390, 2x text and 637x584 1440p choices: readable selection and reachable close/start/cancel actions. Scrollable body may be partly behind the fixed footer. All 18 are byte-identical to the separately inspected preceding run; settings-after was also inspected directly in this run."
+    },
+    "flutter_dialogs": {
+      "count": 3,
+      "images": [
+        {
+          "path": ".out/local-features/20261012-142251/flutter-captures/flutter-screen-share-mobile-ime-2x-393x852.png",
+          "sha256": "250c920a2f72651c7efe91280db6b21cfd1944b135388bfceceff25d512c09ba"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/flutter-captures/flutter-topology-create-desktop-1440x900@2x.png",
+          "sha256": "5a21ebcb5b166a210ed4dcd2f7351936542e26cdc02c84aa1cdfed1fe2999b92"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/flutter-captures/flutter-topology-destructive-desktop-1440x900@2x.png",
+          "sha256": "5c9615c8ba8fae3251a5790929993e4e76cd7dcad43678d84ddce7752a9cabe9"
+        }
+      ],
+      "observations": "Create and destructive confirmation labels/actions fit. At 2x text with 280px IME inset, screen setup keeps close/start visible; capability text occupies a scrollable body. This image does not show the lower audio toggle or prove live capture."
+    },
+    "native": {
+      "count": 14,
+      "images": [
+        {
+          "path": ".out/local-features/20261012-142251/android-runtime/native-auth.png",
+          "sha256": "86983c86e0f867ab23e717dea834482a3cc016462852e74e27fc9b0f5d33e6d1"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/android-runtime/native-navigation.png",
+          "sha256": "55ca01d019e7803a4bd8d0a30a0cf90843c792415fc9d366fde2cbeb01ce6e12"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/android-runtime/native-workspace.png",
+          "sha256": "fe062a76a8a2784212e7c0809d263e7494ce78bdd0ade1f33655f285dfbcd201"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/android-runtime/native-profile.png",
+          "sha256": "84067e7fd93670437e6012291e471e0a4ba4c7652ca7eb4c0ce9c271c501ba44"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/android-runtime/native-audio.png",
+          "sha256": "108b4a705b4d1866876d9f6b728485b479b6f3c98d0712f73e8f3993098b33a6"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/android-runtime/native-admin.png",
+          "sha256": "7fb29534acfda1e1998e2fbe8bbfb40e453c6d90a585d0602488fb60ea543b42"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/android-runtime/native-signed-out.png",
+          "sha256": "86983c86e0f867ab23e717dea834482a3cc016462852e74e27fc9b0f5d33e6d1"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/ios-runtime/native-auth.png",
+          "sha256": "eec4971fc774ec31a36add2040df7bdadcb2d6585cd6a0f2c94492c0f5342f30"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/ios-runtime/native-navigation.png",
+          "sha256": "241d9f7f5282ebc348e873756c648ee9f1c0e8d26d3c2435693d5192608e2b46"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/ios-runtime/native-workspace.png",
+          "sha256": "60879a6867970357cf78f9e0315b63c41395122c703d3812b2d406af683b5a9e"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/ios-runtime/native-profile.png",
+          "sha256": "3e293daec8e76486ccd75d054e67342424d5304d536bee663251bd10e68f227a"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/ios-runtime/native-audio.png",
+          "sha256": "81ab19accdec2732a0ebe780d1ff6193dd0a85817d60da8392cfb552cc5a103a"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/ios-runtime/native-admin.png",
+          "sha256": "6bbd3ea1ad4f188d5e5bdf9966949d23aae3b14db3eb283997922ee64c4fdc1d"
+        },
+        {
+          "path": ".out/local-features/20261012-142251/ios-runtime/native-signed-out.png",
+          "sha256": "eec4971fc774ec31a36add2040df7bdadcb2d6585cd6a0f2c94492c0f5342f30"
+        }
+      ],
+      "observations": "Android/iOS auth and logout forms, empty navigation/workspace, profile, audio inventory and member administration render without error overlays or clipped primary actions. Long settings/admin content scrolls; horizontal settings tabs continue beyond the viewport. Android six images were byte-identical to the inspected preceding run; changed admin and all iOS images were inspected directly."
+    },
+    "web_media_faults": {
+      "images": [
+        {
+          "path": ".out/client-lifecycle/1440/chat-failed-media-connected.png",
+          "sha256": "189a32c24d36f50f6a053c9b1a50ca6b6c6a90bd1c8e32f01f38591c470c32f3"
+        },
+        {
+          "path": ".out/client-lifecycle/1440/sfu-unavailable.png",
+          "sha256": "3389b693b250d6f7c956cce61a72b61bbf26ce3e8719081e94eb3ef3afab0b73"
+        },
+        {
+          "path": ".out/client-lifecycle/393/sfu-unavailable.png",
+          "sha256": "aeff823a113bdd0e18cc1a966c0005e27d4b6d9b81d38f916a2b74d48665287a"
+        },
+        {
+          "path": ".out/client-lifecycle/393/chat-failed-media-connected.png",
+          "sha256": "4a2884fbdb84bd99fb7c8f19fcf1c71cc11e4f6e2527318429eaa4cff70e69f9"
+        }
+      ],
+      "observations": "SFU failure screenshots show unavailable roster, age and retry with disconnected voice. WebSocket-only snapshots show voice still connected, while the asserted chat banner is above the navigation scroll position and outside those images; its DOM assertions are separate evidence."
+    },
+    "limits": "Other screenshots produced by the full unit/accessibility suites are not approved here. No new baseline approved. Render captures do not close media, OS permission, reader or physical-device gates."
+  },
+  "cleanup": {
+    "real_web_runs": "Owned resources removed on both 1440/393 runs.",
+    "native": "Native runner finally closes owned stack and removes only reverses it created.",
+    "old_paired_run": "Old paired QA host/sender stopped to free owned ports. Forced fixture cleanup does not prove normal in-app stop acceptance."
+  },
+  "remaining": {
+    "issue42": "BLOCKED: sustained cadence/live screen audio/current paired candidate/normal stop and physical devices not accepted.",
+    "issue53": "BLOCKED: OS notification granted/denied and dedup/logout/account switch not completed.",
+    "issue54": "PARTIAL: full trusted browser/OS/screen-reader and Flutter roster acceptance remains."
+  }
+}

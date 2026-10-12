@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-12T11:28:42.372609+00:00",
+  "issue": 54,
+  "url": "https://github.com/Egkurilov/BOOHTACORD/issues/54",
+  "leaf_task": "T-050",
+  "dependencies": [
+    "T-020",
+    "T-022",
+    "T-040"
+  ],
+  "status": "PARTIAL",
+  "gate_closed": false,
+  "production_mutations": false,
+  "candidate": "Owned local production Web bundle + Go/PostgreSQL/LiveKit/Tempo, independent disposable sessions. Web/backend trees equal current 4fa25f8a; not a production/trusted-release acceptance claim.",
+  "run_paths": [
+    ".out/local-features/20261012-141534/report.json",
+    ".out/client-lifecycle/1440/report.json",
+    ".out/client-lifecycle/393/report.json"
+  ],
+  "verified_scope": "Real authenticated browser lifecycle at desktop/mobile widths, auth/reset, protected TEXT/DM/history/search/admin scenarios, request burst serialization, actual WebRTC connection during chat-only fault, owned SFU failure shown as unavailable roster and recovery. See exact scenario-source hashes and assertions in the real-stack reports.",
+  "visual_subset_reference": "evidence/qa/local-screen-followup-2026-10-12.json",
+  "remaining": [
+    "Native OS file chooser and image clipboard with/without text",
+    "Complete PNG/JPEG/GIF preview/download/retry/third-participant browser matrix",
+    "Actual screen reader and browser zoom 125/150%",
+    "Saved full screenshot comparison for all listed journeys",
+    "Production prejoin fault correlation and populated roster recovery on both Web and Flutter without microphone"
+  ],
+  "not_inferred": "Unit/axe tests and emulator settings smoke do not replace remaining OS/media/trusted-candidate acceptance."
+}
