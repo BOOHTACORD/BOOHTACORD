@@ -1,0 +1,198 @@
+{
+  "issue": 258,
+  "leaf": "T-041",
+  "dependencies": [
+    "T-040"
+  ],
+  "candidate": "3866a934f734ec281ef5fb3631eae2baabaf9dab",
+  "observed_at": "2026-10-12T12:04:52.813637+00:00",
+  "connection_variable": "VOICE_PLATFORM_TEST_DATABASE_URL",
+  "database": "disposable loopback PostgreSQL; no production data",
+  "corpus_sha256": "53106b4aad1523f61cb3d4d6cf533a63630a6e40f9a86a9a373b51b888a51d3b",
+  "budgets": {
+    "postgres_cpus": 2,
+    "postgres_memory_bytes": 1073741824,
+    "go_cpus": 2,
+    "go_memory_bytes": 2147483648,
+    "timeout_seconds": 900
+  },
+  "command": "go test ./internal/chat/search_messages/postgres -run '^TestRussianSearchQualityReport$' -v -json -count=3",
+  "test_results": [
+    {
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+      "Test": "TestRussianSearchQualityReport",
+      "Elapsed": 0.16
+    },
+    {
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+      "Test": "TestRussianSearchQualityReport",
+      "Elapsed": 0.16
+    },
+    {
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+      "Test": "TestRussianSearchQualityReport",
+      "Elapsed": 0.16
+    },
+    {
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+      "Elapsed": 0.491
+    }
+  ],
+  "synthetic_output": [
+    "IMP-17 config=simple query=\"FrostFox\" expected=[nick-frostfox nick-frostfox-genitive phrase-device] actual=[nick-frostfox nick-frostfox-genitive phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.006..0.007 rows=3 loops=1) |   Recheck Cond: (simple_vector @@ '''frostfox'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.003..0.003 rows=3 loops=1) |         Index Cond: (simple_vector @@ '''frostfox'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.026 ms | Execution Time: 0.017 ms",
+    "IMP-17 config=simple query=\"Лера\" expected=[name-lera] actual=[name-lera] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.005..0.005 rows=1 loops=1) |   Recheck Cond: (simple_vector @@ '''лера'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (simple_vector @@ '''лера'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.017 ms | Execution Time: 0.016 ms",
+    "IMP-17 config=simple query=\"запустить рейд\" expected=[morphology-started] actual=[] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.004..0.005 rows=0 loops=1) |   Recheck Cond: (simple_vector @@ '''запустить'' & ''рейд'''::tsquery) |   Buffers: shared hit=5 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.002..0.002 rows=0 loops=1) |         Index Cond: (simple_vector @@ '''запустить'' & ''рейд'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.015 ms | Execution Time: 0.016 ms",
+    "IMP-17 config=simple query=\"проверить микрофон\" expected=[morphology-checked] actual=[] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.008..0.008 rows=0 loops=1) |   Recheck Cond: (simple_vector @@ '''проверить'' & ''микрофон'''::tsquery) |   Buffers: shared hit=5 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.005..0.005 rows=0 loops=1) |         Index Cond: (simple_vector @@ '''проверить'' & ''микрофон'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.039 ms | Execution Time: 0.021 ms",
+    "IMP-17 config=simple query=\"\\\"настройки устройства\\\"\" expected=[phrase-device] actual=[phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.006..0.006 rows=1 loops=1) |   Recheck Cond: (simple_vector @@ '''настройки'' <-> ''устройства'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (simple_vector @@ '''настройки'' <-> ''устройства'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.016 ms | Execution Time: 0.015 ms",
+    "IMP-17 config=simple query=\"войс\" expected=[phrase-voice] actual=[phrase-voice] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.004..0.005 rows=1 loops=1) |   Recheck Cond: (simple_vector @@ '''войс'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.001..0.001 rows=1 loops=1) |         Index Cond: (simple_vector @@ '''войс'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.011 ms | Execution Time: 0.022 ms",
+    "IMP-17 summary config=simple corpus_rows=5012 recall=0.750 precision=1.000 gin_index_bytes=352256",
+    "IMP-17 config=russian query=\"FrostFox\" expected=[nick-frostfox nick-frostfox-genitive phrase-device] actual=[nick-frostfox nick-frostfox-genitive phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.004..0.004 rows=3 loops=1) |   Recheck Cond: (russian_vector @@ '''frostfox'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.001..0.002 rows=3 loops=1) |         Index Cond: (russian_vector @@ '''frostfox'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.014 ms | Execution Time: 0.012 ms",
+    "IMP-17 config=russian query=\"Лера\" expected=[name-lera] actual=[name-lera name-lera-inflected] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.009..0.009 rows=2 loops=1) |   Recheck Cond: (russian_vector @@ '''лер'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.006..0.006 rows=2 loops=1) |         Index Cond: (russian_vector @@ '''лер'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.015 ms | Execution Time: 0.020 ms",
+    "IMP-17 config=russian query=\"запустить рейд\" expected=[morphology-started] actual=[morphology-started] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.004..0.005 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''запуст'' & ''рейд'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''запуст'' & ''рейд'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.016 ms | Execution Time: 0.015 ms",
+    "IMP-17 config=russian query=\"проверить микрофон\" expected=[morphology-checked] actual=[morphology-checked] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.006..0.006 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''провер'' & ''микрофон'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.003..0.003 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''провер'' & ''микрофон'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.016 ms | Execution Time: 0.018 ms",
+    "IMP-17 config=russian query=\"\\\"настройки устройства\\\"\" expected=[phrase-device] actual=[phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.006..0.006 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''настройк'' <-> ''устройств'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''настройк'' <-> ''устройств'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.019 ms | Execution Time: 0.019 ms",
+    "IMP-17 config=russian query=\"войс\" expected=[phrase-voice] actual=[phrase-voice] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.005..0.005 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''войс'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''войс'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.016 ms | Execution Time: 0.017 ms",
+    "IMP-17 summary config=russian corpus_rows=5012 recall=1.000 precision=0.889 gin_index_bytes=344064",
+    "IMP-17 config=simple query=\"FrostFox\" expected=[nick-frostfox nick-frostfox-genitive phrase-device] actual=[nick-frostfox nick-frostfox-genitive phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.003..0.003 rows=3 loops=1) |   Recheck Cond: (simple_vector @@ '''frostfox'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.002..0.002 rows=3 loops=1) |         Index Cond: (simple_vector @@ '''frostfox'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.015 ms | Execution Time: 0.011 ms",
+    "IMP-17 config=simple query=\"Лера\" expected=[name-lera] actual=[name-lera] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.004..0.004 rows=1 loops=1) |   Recheck Cond: (simple_vector @@ '''лера'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (simple_vector @@ '''лера'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.018 ms | Execution Time: 0.017 ms",
+    "IMP-17 config=simple query=\"запустить рейд\" expected=[morphology-started] actual=[] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.006..0.006 rows=0 loops=1) |   Recheck Cond: (simple_vector @@ '''запустить'' & ''рейд'''::tsquery) |   Buffers: shared hit=5 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.005..0.005 rows=0 loops=1) |         Index Cond: (simple_vector @@ '''запустить'' & ''рейд'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.042 ms | Execution Time: 0.025 ms",
+    "IMP-17 config=simple query=\"проверить микрофон\" expected=[morphology-checked] actual=[] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.003..0.003 rows=0 loops=1) |   Recheck Cond: (simple_vector @@ '''проверить'' & ''микрофон'''::tsquery) |   Buffers: shared hit=5 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.002..0.002 rows=0 loops=1) |         Index Cond: (simple_vector @@ '''проверить'' & ''микрофон'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.016 ms | Execution Time: 0.014 ms",
+    "IMP-17 config=simple query=\"\\\"настройки устройства\\\"\" expected=[phrase-device] actual=[phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.010..0.010 rows=1 loops=1) |   Recheck Cond: (simple_vector @@ '''настройки'' <-> ''устройства'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.003..0.003 rows=1 loops=1) |         Index Cond: (simple_vector @@ '''настройки'' <-> ''устройства'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.027 ms | Execution Time: 0.021 ms",
+    "IMP-17 config=simple query=\"войс\" expected=[phrase-voice] actual=[phrase-voice] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.004..0.004 rows=1 loops=1) |   Recheck Cond: (simple_vector @@ '''войс'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (simple_vector @@ '''войс'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.018 ms | Execution Time: 0.016 ms",
+    "IMP-17 summary config=simple corpus_rows=5012 recall=0.750 precision=1.000 gin_index_bytes=352256",
+    "IMP-17 config=russian query=\"FrostFox\" expected=[nick-frostfox nick-frostfox-genitive phrase-device] actual=[nick-frostfox nick-frostfox-genitive phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.002..0.003 rows=3 loops=1) |   Recheck Cond: (russian_vector @@ '''frostfox'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.001..0.001 rows=3 loops=1) |         Index Cond: (russian_vector @@ '''frostfox'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.014 ms | Execution Time: 0.010 ms",
+    "IMP-17 config=russian query=\"Лера\" expected=[name-lera] actual=[name-lera name-lera-inflected] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.004..0.004 rows=2 loops=1) |   Recheck Cond: (russian_vector @@ '''лер'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.002..0.002 rows=2 loops=1) |         Index Cond: (russian_vector @@ '''лер'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.019 ms | Execution Time: 0.023 ms",
+    "IMP-17 config=russian query=\"запустить рейд\" expected=[morphology-started] actual=[morphology-started] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.002..0.002 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''запуст'' & ''рейд'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.001..0.001 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''запуст'' & ''рейд'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.011 ms | Execution Time: 0.010 ms",
+    "IMP-17 config=russian query=\"проверить микрофон\" expected=[morphology-checked] actual=[morphology-checked] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.004..0.004 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''провер'' & ''микрофон'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''провер'' & ''микрофон'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.017 ms | Execution Time: 0.016 ms",
+    "IMP-17 config=russian query=\"\\\"настройки устройства\\\"\" expected=[phrase-device] actual=[phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.003..0.003 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''настройк'' <-> ''устройств'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''настройк'' <-> ''устройств'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.013 ms | Execution Time: 0.012 ms",
+    "IMP-17 config=russian query=\"войс\" expected=[phrase-voice] actual=[phrase-voice] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.002..0.003 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''войс'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.001..0.001 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''войс'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.013 ms | Execution Time: 0.011 ms",
+    "IMP-17 summary config=russian corpus_rows=5012 recall=1.000 precision=0.889 gin_index_bytes=344064",
+    "IMP-17 config=simple query=\"FrostFox\" expected=[nick-frostfox nick-frostfox-genitive phrase-device] actual=[nick-frostfox nick-frostfox-genitive phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.003..0.003 rows=3 loops=1) |   Recheck Cond: (simple_vector @@ '''frostfox'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.002..0.002 rows=3 loops=1) |         Index Cond: (simple_vector @@ '''frostfox'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.014 ms | Execution Time: 0.012 ms",
+    "IMP-17 config=simple query=\"Лера\" expected=[name-lera] actual=[name-lera] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.002..0.002 rows=1 loops=1) |   Recheck Cond: (simple_vector @@ '''лера'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.001..0.001 rows=1 loops=1) |         Index Cond: (simple_vector @@ '''лера'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.014 ms | Execution Time: 0.012 ms",
+    "IMP-17 config=simple query=\"запустить рейд\" expected=[morphology-started] actual=[] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.003..0.003 rows=0 loops=1) |   Recheck Cond: (simple_vector @@ '''запустить'' & ''рейд'''::tsquery) |   Buffers: shared hit=5 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.002..0.002 rows=0 loops=1) |         Index Cond: (simple_vector @@ '''запустить'' & ''рейд'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.018 ms | Execution Time: 0.015 ms",
+    "IMP-17 config=simple query=\"проверить микрофон\" expected=[morphology-checked] actual=[] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.002..0.002 rows=0 loops=1) |   Recheck Cond: (simple_vector @@ '''проверить'' & ''микрофон'''::tsquery) |   Buffers: shared hit=5 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.002..0.002 rows=0 loops=1) |         Index Cond: (simple_vector @@ '''проверить'' & ''микрофон'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.011 ms | Execution Time: 0.025 ms",
+    "IMP-17 config=simple query=\"\\\"настройки устройства\\\"\" expected=[phrase-device] actual=[phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.004..0.005 rows=1 loops=1) |   Recheck Cond: (simple_vector @@ '''настройки'' <-> ''устройства'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (simple_vector @@ '''настройки'' <-> ''устройства'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.015 ms | Execution Time: 0.015 ms",
+    "IMP-17 config=simple query=\"войс\" expected=[phrase-voice] actual=[phrase-voice] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.002..0.002 rows=1 loops=1) |   Recheck Cond: (simple_vector @@ '''войс'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_simple_gin (actual time=0.001..0.001 rows=1 loops=1) |         Index Cond: (simple_vector @@ '''войс'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.008 ms | Execution Time: 0.010 ms",
+    "IMP-17 summary config=simple corpus_rows=5012 recall=0.750 precision=1.000 gin_index_bytes=352256",
+    "IMP-17 config=russian query=\"FrostFox\" expected=[nick-frostfox nick-frostfox-genitive phrase-device] actual=[nick-frostfox nick-frostfox-genitive phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.003..0.003 rows=3 loops=1) |   Recheck Cond: (russian_vector @@ '''frostfox'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.002..0.002 rows=3 loops=1) |         Index Cond: (russian_vector @@ '''frostfox'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.015 ms | Execution Time: 0.012 ms",
+    "IMP-17 config=russian query=\"Лера\" expected=[name-lera] actual=[name-lera name-lera-inflected] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.002..0.002 rows=2 loops=1) |   Recheck Cond: (russian_vector @@ '''лер'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.001..0.001 rows=2 loops=1) |         Index Cond: (russian_vector @@ '''лер'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.009 ms | Execution Time: 0.009 ms",
+    "IMP-17 config=russian query=\"запустить рейд\" expected=[morphology-started] actual=[morphology-started] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.004..0.004 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''запуст'' & ''рейд'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.003..0.003 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''запуст'' & ''рейд'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.019 ms | Execution Time: 0.013 ms",
+    "IMP-17 config=russian query=\"проверить микрофон\" expected=[morphology-checked] actual=[morphology-checked] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.003..0.003 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''провер'' & ''микрофон'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''провер'' & ''микрофон'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.014 ms | Execution Time: 0.012 ms",
+    "IMP-17 config=russian query=\"\\\"настройки устройства\\\"\" expected=[phrase-device] actual=[phrase-device] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.003..0.004 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''настройк'' <-> ''устройств'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=6 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.002..0.002 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''настройк'' <-> ''устройств'''::tsquery) |         Buffers: shared hit=5 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.013 ms | Execution Time: 0.012 ms",
+    "IMP-17 config=russian query=\"войс\" expected=[phrase-voice] actual=[phrase-voice] plan=Bitmap Heap Scan on imp17_corpus (actual time=0.003..0.003 rows=1 loops=1) |   Recheck Cond: (russian_vector @@ '''войс'''::tsquery) |   Heap Blocks: exact=1 |   Buffers: shared hit=4 |   ->  Bitmap Index Scan on imp17_russian_gin (actual time=0.001..0.001 rows=1 loops=1) |         Index Cond: (russian_vector @@ '''войс'''::tsquery) |         Buffers: shared hit=3 | Planning: |   Buffers: shared hit=1 | Planning Time: 0.014 ms | Execution Time: 0.010 ms",
+    "IMP-17 summary config=russian corpus_rows=5012 recall=1.000 precision=0.889 gin_index_bytes=344064"
+  ],
+  "production_mutations": false,
+  "postgres_version": "PostgreSQL 17.6 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 14.2.0) 14.2.0, 64-bit",
+  "postgres_settings": {
+    "default_text_search_config": "pg_catalog.english",
+    "effective_cache_size": "524288",
+    "jit": "on",
+    "maintenance_work_mem": "65536",
+    "max_connections": "100",
+    "shared_buffers": "16384",
+    "work_mem": "4096"
+  },
+  "images": {
+    "postgres:17.6-alpine": [
+      "postgres@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94"
+    ],
+    "golang:1.26.4-alpine": [
+      "golang@sha256:3ad57304ad93bbec8548a0437ad9e06a455660655d9af011d58b993f6f615648"
+    ]
+  },
+  "wall_seconds": 14.833,
+  "status": "PASS",
+  "exit_code": 0,
+  "remaining_owned_schemas": 0,
+  "postgres_resource_samples": [
+    {
+      "CPUPerc": "0.03%",
+      "MemUsage": "66.38MiB / 1GiB",
+      "MemPerc": "6.48%",
+      "BlockIO": "0B / 8.19kB"
+    },
+    {
+      "CPUPerc": "0.03%",
+      "MemUsage": "66.38MiB / 1GiB",
+      "MemPerc": "6.48%",
+      "BlockIO": "0B / 8.19kB"
+    },
+    {
+      "CPUPerc": "0.02%",
+      "MemUsage": "66.38MiB / 1GiB",
+      "MemPerc": "6.48%",
+      "BlockIO": "0B / 8.19kB"
+    },
+    {
+      "CPUPerc": "0.02%",
+      "MemUsage": "66.38MiB / 1GiB",
+      "MemPerc": "6.48%",
+      "BlockIO": "0B / 8.19kB"
+    },
+    {
+      "CPUPerc": "0.01%",
+      "MemUsage": "66.38MiB / 1GiB",
+      "MemPerc": "6.48%",
+      "BlockIO": "0B / 8.19kB"
+    },
+    {
+      "CPUPerc": "0.01%",
+      "MemUsage": "66.38MiB / 1GiB",
+      "MemPerc": "6.48%",
+      "BlockIO": "0B / 8.19kB"
+    },
+    {
+      "CPUPerc": "4.56%",
+      "MemUsage": "74.16MiB / 1GiB",
+      "MemPerc": "7.24%",
+      "BlockIO": "0B / 8.19kB"
+    }
+  ],
+  "owned_database_removed": true,
+  "checks": {
+    "six_queries_actual_expected_ids": "PASS",
+    "precision_recall_false_positives_exact_nicks": "PASS",
+    "explain_analyze_and_gin_size": "PASS",
+    "three_repeats_same_dataset_and_resource_budget": "PASS",
+    "sanitized_output_and_cleanup": "PASS"
+  },
+  "interpretation": {
+    "measurement_acceptance": "PASS; measures both configurations, does not require equal precision/recall",
+    "simple": {
+      "recall": 0.75,
+      "precision": 1.0,
+      "gin_index_bytes": 352256,
+      "misses": [
+        "запустить рейд",
+        "проверить микрофон"
+      ]
+    },
+    "russian": {
+      "recall": 1.0,
+      "precision": 0.889,
+      "gin_index_bytes": 344064,
+      "false_positive": {
+        "query": "Лера",
+        "synthetic_id": "name-lera-inflected"
+      },
+      "exact_nick_FrostFox_preserved": true
+    },
+    "plans": "All 36 EXPLAIN ANALYZE queries used their matching GIN Bitmap Index Scan",
+    "execution_time_ms_range": [
+      0.009,
+      0.025
+    ]
+  },
+  "limitations": [
+    "5012-row synthetic corpus, not production latency or capacity",
+    "Resource samples at approximately 2s resolution can miss short query CPU peaks",
+    "No change to production search index/config; russian improves recall but loses exact-name precision",
+    "Search ACL and physical client acceptance are separate tasks"
+  ],
+  "gate_closed": true
+}

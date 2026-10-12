@@ -3,7 +3,7 @@
   "cases": [
     {
       "number": 42,
-      "title": "FE-59/61 paired runtime \u2014 Android Emulator \u2192 macOS",
+      "title": "FE-59/61 paired runtime — Android Emulator → macOS",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/42",
       "status": "BLOCKED",
       "evidence": "evidence/qa/issue42-paired-runtime-2026-10-12.json",
@@ -11,111 +11,113 @@
     },
     {
       "number": 53,
-      "title": "QA-03 \u2014 DM/storage privacy",
+      "title": "QA-03 — DM/storage privacy",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/53",
       "status": "BLOCKED",
       "evidence": "evidence/qa/issue53-privacy-runtime-2026-10-12.json",
-      "reason": "PostgreSQL privacy 20 tests + 3 subtests PASS without skips. Two actual browser participants verified DM creation, live edit/delete delivery, hidden-tab unread count and visible read UI. OS notifications and third-party browser checks remain unverified."
+      "reason": "PostgreSQL privacy 20 tests + 3 subtests PASS; paired browsers create/edit/two deletes/unread/read PASS; third admin UI absence PASS. OS notifications and full third-party browser file denial remain open."
     },
     {
       "number": 54,
-      "title": "QA-05 \u2014 Authenticated browser E2E",
+      "title": "QA-05 — Authenticated browser E2E",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/54",
-      "status": "NOT_RUN"
+      "status": "PARTIAL",
+      "evidence": "evidence/qa/issue54-local-browser-progress-2026-10-12.json",
+      "reason": "Local real-stack Web runtime PASS at desktop/mobile sizes; OS/browser file/accessibility and production/Flutter populated roster criteria remain open."
     },
     {
       "number": 55,
-      "title": "QA-06 \u2014 POC-01",
+      "title": "QA-06 — POC-01",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/55",
       "status": "NOT_RUN"
     },
     {
       "number": 57,
-      "title": "QA-07 \u2014 POC-02 \u0438 15 FPS",
+      "title": "QA-07 — POC-02 и 15 FPS",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/57",
       "status": "NOT_RUN"
     },
     {
       "number": 58,
-      "title": "QA-09 \u2014 Capacity",
+      "title": "QA-09 — Capacity",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/58",
       "status": "NOT_RUN"
     },
     {
       "number": 59,
-      "title": "QA-10 \u2014 POC-03",
+      "title": "QA-10 — POC-03",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/59",
       "status": "NOT_RUN"
     },
     {
       "number": 60,
-      "title": "QA-12 \u2014 \u0421\u043e\u0432\u043c\u0435\u0441\u0442\u0438\u043c\u044b\u0439 rollback",
+      "title": "QA-12 — Совместимый rollback",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/60",
       "status": "NOT_RUN"
     },
     {
       "number": 61,
-      "title": "QA-14 \u2014 \u0420\u0435\u0448\u0435\u043d\u0438\u0435 \u043e \u0432\u044b\u043f\u0443\u0441\u043a\u0435",
+      "title": "QA-14 — Решение о выпуске",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/61",
       "status": "NOT_RUN"
     },
     {
       "number": 62,
-      "title": "QA-13 \u2014 Flutter parity \u0438 Android/device release",
+      "title": "QA-13 — Flutter parity и Android/device release",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/62",
       "status": "NOT_RUN"
     },
     {
       "number": 98,
-      "title": "QA-13 \u2014 \u0417\u0430\u0434\u0435\u0440\u0436\u043a\u0430 \u0437\u0430\u043f\u0443\u0441\u043a\u0430 macOS Debug",
+      "title": "QA-13 — Задержка запуска macOS Debug",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/98",
       "status": "NOT_RUN"
     },
     {
       "number": 131,
-      "title": "QA \u2014 \u0441\u0432\u043e\u0434\u043d\u0430\u044f runtime-\u043f\u0440\u0438\u0451\u043c\u043a\u0430 \u0440\u0435\u0430\u043b\u0438\u0437\u043e\u0432\u0430\u043d\u043d\u044b\u0445 \u0444\u0443\u043d\u043a\u0446\u0438\u0439",
+      "title": "QA — сводная runtime-приёмка реализованных функций",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/131",
       "status": "NOT_RUN"
     },
     {
       "number": 132,
-      "title": "QA \u2014 Android screen share \u0438 \u0444\u043e\u043d\u043e\u0432\u044b\u0435 \u043f\u043e\u0442\u043e\u043a\u0438: runtime-\u043f\u0440\u0438\u0451\u043c\u043a\u0430 #40 #42 #48 #49 #51 #86",
+      "title": "QA — Android screen share и фоновые потоки: runtime-приёмка #40 #42 #48 #49 #51 #86",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/132",
       "status": "NOT_RUN"
     },
     {
       "number": 154,
-      "title": "[Tracing][UF-10] \u0421\u043a\u0432\u043e\u0437\u043d\u0430\u044f \u043f\u0440\u0438\u0451\u043c\u043a\u0430 user flow \u0447\u0435\u0440\u0435\u0437 \u0440\u0435\u0430\u043b\u044c\u043d\u044b\u0435 relay, Collector \u0438 Tempo",
+      "title": "[Tracing][UF-10] Сквозная приёмка user flow через реальные relay, Collector и Tempo",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/154",
       "status": "NOT_RUN"
     },
     {
       "number": 173,
-      "title": "[ScreenShare][SS-17][P1] \u041f\u0440\u043e\u0432\u0435\u0441\u0442\u0438 \u0444\u0438\u0437\u0438\u0447\u0435\u0441\u043a\u0443\u044e \u043f\u0430\u0440\u043d\u0443\u044e \u043f\u0440\u0438\u0451\u043c\u043a\u0443 FPS, \u0430\u0440\u0442\u0435\u0444\u0430\u043a\u0442\u043e\u0432, \u0437\u0430\u0434\u0435\u0440\u0436\u043a\u0438 \u0438 \u0437\u0432\u0443\u043a\u0430",
+      "title": "[ScreenShare][SS-17][P1] Провести физическую парную приёмку FPS, артефактов, задержки и звука",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/173",
       "status": "NOT_RUN"
     },
     {
       "number": 174,
-      "title": "[ScreenShare][SS-18][P1] \u041d\u0430\u0433\u0440\u0443\u0437\u043e\u0447\u043d\u0430\u044f \u043f\u0440\u0438\u0451\u043c\u043a\u0430: 10/20/30 \u0443\u0447\u0430\u0441\u0442\u043d\u0438\u043a\u043e\u0432, 4/10/20 \u0441\u0442\u0440\u0438\u043c\u043e\u0432, churn \u0438 soak",
+      "title": "[ScreenShare][SS-18][P1] Нагрузочная приёмка: 10/20/30 участников, 4/10/20 стримов, churn и soak",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/174",
       "status": "NOT_RUN"
     },
     {
       "number": 184,
-      "title": "[MacAudio][MA-07][P1] \u041f\u0440\u043e\u0432\u0435\u0441\u0442\u0438 \u0444\u0438\u0437\u0438\u0447\u0435\u0441\u043a\u0443\u044e macOS \u043f\u0440\u0438\u0451\u043c\u043a\u0443 \u0438 \u0437\u0430\u0444\u0438\u043a\u0441\u0438\u0440\u043e\u0432\u0430\u0442\u044c evidence Debug/Release",
+      "title": "[MacAudio][MA-07][P1] Провести физическую macOS приёмку и зафиксировать evidence Debug/Release",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/184",
       "status": "NOT_RUN"
     },
     {
       "number": 227,
-      "title": "QA \u2014 runtime-\u043f\u0440\u0438\u0451\u043c\u043a\u0430 screen-share implementation #158\u2013#172",
+      "title": "QA — runtime-приёмка screen-share implementation #158–#172",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/227",
       "status": "NOT_RUN"
     },
     {
       "number": 240,
-      "title": "QA \u2014 runtime-\u043f\u0440\u0438\u0451\u043c\u043a\u0430 \u0440\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0439 #133\u2013#141, #145\u2013#153, #155, #157",
+      "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240",
       "status": "NOT_RUN"
     },
@@ -145,49 +147,51 @@
     },
     {
       "number": 251,
-      "title": "QA: \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u043a\u0430\u043d\u0430\u043b\u044b \u0438 \u0441\u0432\u043e\u0440\u0430\u0447\u0438\u0432\u0430\u043d\u0438\u0435 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0439 (#66)",
+      "title": "QA: проверить избранные каналы и сворачивание категорий (#66)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/251",
-      "status": "NOT_RUN"
+      "status": "IN_PROGRESS"
     },
     {
       "number": 254,
-      "title": "[QA] \u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0444\u0430\u0439\u043b\u044b \u0431\u0435\u0441\u0435\u0434\u044b \u0438 ACL \u0434\u043b\u044f TEXT/DM (#75)",
+      "title": "[QA] Проверить файлы беседы и ACL для TEXT/DM (#75)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/254",
-      "status": "NOT_RUN"
+      "status": "SELECTED"
     },
     {
       "number": 257,
-      "title": "[QA] \u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u044f \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0438\u0439 \u0438 \u0441\u043f\u0438\u0441\u043a\u0430 Audio Settings \u043d\u0430 macOS (#182)",
+      "title": "[QA] Проверить состояния разрешений и списка Audio Settings на macOS (#182)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/257",
       "status": "NOT_RUN"
     },
     {
       "number": 258,
-      "title": "[QA] \u0412\u044b\u043f\u043e\u043b\u043d\u0438\u0442\u044c PostgreSQL A/B-\u043f\u0440\u0438\u0451\u043c\u043a\u0443 \u0440\u0443\u0441\u0441\u043a\u043e\u0433\u043e \u043f\u043e\u0438\u0441\u043a\u0430 (#77)",
+      "title": "[QA] Выполнить PostgreSQL A/B-приёмку русского поиска (#77)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/258",
-      "status": "NOT_RUN"
+      "status": "PASS",
+      "evidence": "evidence/qa/issue258-russian-search-runtime-2026-10-12.json",
+      "reason": "Actual disposable PostgreSQL 17.6 A/B measurements, 3 repetitions, 6 queries/config, plans/index sizes/resources; production configuration unchanged."
     },
     {
       "number": 259,
-      "title": "[QA] \u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0445 audio devices \u043f\u0435\u0440\u0435\u0434 Join/reconnect \u043d\u0430 macOS (#181)",
+      "title": "[QA] Проверить восстановление выбранных audio devices перед Join/reconnect на macOS (#181)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/259",
       "status": "NOT_RUN"
     },
     {
       "number": 264,
-      "title": "[QA] \u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c inbox \u0443\u043f\u043e\u043c\u0438\u043d\u0430\u043d\u0438\u0439 \u0438 \u0442\u043e\u0447\u043d\u044b\u0439 \u043f\u0435\u0440\u0435\u0445\u043e\u0434 (#72)",
+      "title": "[QA] Проверить inbox упоминаний и точный переход (#72)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/264",
       "status": "NOT_RUN"
     },
     {
       "number": 272,
-      "title": "[VoiceRoster][VR-07][P1] QA/release: \u043e\u0442\u043a\u0430\u0437\u043e\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u043e\u0441\u0442\u044c roster, ACL \u0438 \u043f\u0440\u0438\u0435\u043c\u043a\u0430 \u043d\u0430 Web + Flutter + production",
+      "title": "[VoiceRoster][VR-07][P1] QA/release: отказоустойчивость roster, ACL и приемка на Web + Flutter + production",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/272",
       "status": "NOT_RUN"
     },
     {
       "number": 276,
-      "title": "[QA] \u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c Flutter \u0430\u043a\u0442\u0443\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u044e \u0438\u043c\u0435\u043d\u0438 \u0438 \u0430\u0432\u0430\u0442\u0430\u0440\u0430 (#65)",
+      "title": "[QA] Проверить Flutter актуализацию имени и аватара (#65)",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/276",
       "status": "NOT_RUN"
     },
@@ -205,90 +209,95 @@
     },
     {
       "number": 287,
-      "title": "[QA] \u041f\u0440\u0438\u0451\u043c\u043a\u0430 \u0437\u0430\u0432\u0435\u0440\u0448\u0451\u043d\u043d\u043e\u0433\u043e \u043f\u0430\u043a\u0435\u0442\u0430 roster, client features \u0438 native hardening",
+      "title": "[QA] Приёмка завершённого пакета roster, client features и native hardening",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/287",
       "status": "NOT_RUN"
     },
     {
       "number": 288,
-      "title": "[Windows][bug] Escape \u043d\u0435 \u0437\u0430\u043a\u0440\u044b\u0432\u0430\u0435\u0442 native \u0434\u0438\u0430\u043b\u043e\u0433 \u0434\u0435\u043c\u043e\u043d\u0441\u0442\u0440\u0430\u0446\u0438\u0438 \u044d\u043a\u0440\u0430\u043d\u0430",
+      "title": "[Windows][bug] Escape не закрывает native диалог демонстрации экрана",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/288",
       "status": "NOT_RUN"
     },
     {
       "number": 289,
-      "title": "[UIUX-2026][EPIC] \u0415\u0434\u0438\u043d\u044b\u0439 UI/UX BOOHTACORD \u2014 Web + Flutter desktop/mobile",
+      "title": "[UIUX-2026][EPIC] Единый UI/UX BOOHTACORD — Web + Flutter desktop/mobile",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/289",
       "status": "NOT_RUN"
     },
     {
       "number": 291,
-      "title": "[UIUX-2026][UX-02][P1] \u0410\u0434\u0430\u043f\u0442\u0438\u0432\u043d\u044b\u0439 workspace shell: desktop density, resize \u0438 split panes",
+      "title": "[UIUX-2026][UX-02][P1] Адаптивный workspace shell: desktop density, resize и split panes",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/291",
       "status": "NOT_RUN"
     },
     {
       "number": 292,
-      "title": "[UIUX-2026][UX-03][P1] \u041c\u043e\u0431\u0438\u043b\u044c\u043d\u0430\u044f \u043d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044f: drawer, Back, \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442 \u043a\u0430\u043d\u0430\u043b\u0430 \u0438 \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u044f",
+      "title": "[UIUX-2026][UX-03][P1] Мобильная навигация: drawer, Back, контекст канала и восстановление состояния",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/292",
       "status": "NOT_RUN"
     },
     {
       "number": 293,
-      "title": "[UIUX-2026][UX-04][P1] TEXT/DM: \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f \u0441 \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f\u043c\u0438 \u0431\u0435\u0437 hover, touch targets \u0438 \u0435\u0434\u0438\u043d\u0430\u044f toolbar",
+      "title": "[UIUX-2026][UX-04][P1] TEXT/DM: действия с сообщениями без hover, touch targets и единая toolbar",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/293",
       "status": "NOT_RUN"
     },
     {
       "number": 294,
-      "title": "[UIUX-2026][UX-05][P2] DM, \u043f\u043e\u0438\u0441\u043a \u0438 composer: mobile-first flow, \u043f\u0443\u0441\u0442\u044b\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u044f \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0438\u0435 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442\u0430",
+      "title": "[UIUX-2026][UX-05][P2] DM, поиск и composer: mobile-first flow, пустые состояния и сохранение контекста",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/294",
       "status": "NOT_RUN"
     },
     {
       "number": 295,
-      "title": "[UIUX-2026][UX-06][P1] Guild admin: \u0435\u0434\u0438\u043d\u044b\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442, \u0432\u043a\u043b\u0430\u0434\u043a\u0438 \u0438 desktop/mobile \u043e\u0431\u043e\u043b\u043e\u0447\u043a\u0430",
+      "title": "[UIUX-2026][UX-06][P1] Guild admin: единый контекст, вкладки и desktop/mobile оболочка",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/295",
       "status": "NOT_RUN"
     },
     {
       "number": 297,
-      "title": "[UIUX-2026][UX-08][P2] \u041b\u0438\u0447\u043d\u044b\u0435 \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438: \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u043e\u043d\u043d\u0430\u044f \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u0430, \u0444\u043e\u0440\u043c\u044b \u0438 \u044f\u0441\u043d\u044b\u0435 save-state",
+      "title": "[UIUX-2026][UX-08][P2] Личные настройки: информационная архитектура, формы и ясные save-state",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/297",
       "status": "NOT_RUN"
     },
     {
       "number": 298,
-      "title": "[UIUX-2026][UX-09][P1] Dialogs \u0438 bottom sheets: \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u0435, \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u0435, \u043e\u043f\u0430\u0441\u043d\u044b\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f",
+      "title": "[UIUX-2026][UX-09][P1] Dialogs и bottom sheets: создание, подтверждение, опасные действия",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/298",
       "status": "NOT_RUN"
     },
     {
       "number": 301,
-      "title": "[UIUX-2026][UX-12][P1] Accessibility WCAG 2.2 AA + Flutter Semantics \u0434\u043b\u044f \u043a\u043b\u044e\u0447\u0435\u0432\u044b\u0445 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0435\u0432",
+      "title": "[UIUX-2026][UX-12][P1] Accessibility WCAG 2.2 AA + Flutter Semantics для ключевых сценариев",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/301",
       "status": "NOT_RUN"
     },
     {
       "number": 302,
-      "title": "[UIUX-2026][UX-13][P1] \u0410\u0432\u0442\u043e\u0442\u0435\u0441\u0442\u044b UI/UX: viewport matrix, visual snapshots \u0438 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0438 E2E",
+      "title": "[UIUX-2026][UX-13][P1] Автотесты UI/UX: viewport matrix, visual snapshots и сценарии E2E",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/302",
       "status": "NOT_RUN"
     },
     {
       "number": 303,
-      "title": "[UIUX-2026][UX-14][P1] \u0424\u0438\u0437\u0438\u0447\u0435\u0441\u043a\u0430\u044f UX-\u043f\u0440\u0438\u0451\u043c\u043a\u0430 macOS/Windows/Android/iOS \u0438 \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u043e\u0433\u043e Web",
+      "title": "[UIUX-2026][UX-14][P1] Физическая UX-приёмка macOS/Windows/Android/iOS и мобильного Web",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/303",
       "status": "NOT_RUN"
     },
     {
       "number": 305,
-      "title": "[UIUX-2026][UX-16][P2] UX release gate: \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f, \u043c\u0435\u0442\u0440\u0438\u043a\u0438 task success \u0438 \u043f\u043b\u0430\u043d \u043e\u0442\u043a\u0430\u0442\u0430",
+      "title": "[UIUX-2026][UX-16][P2] UX release gate: документация, метрики task success и план отката",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/305",
       "status": "NOT_RUN"
     }
   ],
-  "ordering": "Open issues ordered by creation, ascending; one active runtime case at a time.",
+  "ordering": "Within each selected batch, run one browser case at a time; independent PostgreSQL measurement may run while browser cases are prepared. Hardware-dependent older gates remain explicitly open.",
   "source": "https://github.com/Egkurilov/BOOHTACORD/issues",
-  "closure_policy": "Only applicable runtime evidence can close a case; emulator/unit PASS does not establish physical-device or load acceptance."
+  "closure_policy": "Only applicable runtime evidence can close a case; emulator/unit PASS does not establish physical-device or load acceptance.",
+  "active_batch": [
+    251,
+    254,
+    258
+  ]
 }
