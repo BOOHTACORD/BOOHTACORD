@@ -12,7 +12,8 @@ A new flutter plugin project.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'CloudWebRTC' => 'duanweiwei1982@gmail.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'flutter_webrtc/Sources/flutter_webrtc/**/*.{h,m,mm,cpp}', '../common/rnnoise/rnnoise_capture_processor.{h,cc}', '../common/rnnoise/microphone_controls/processor.{h,cc}', '../common/rnnoise/public_include/*.h', '../common/rnnoise/upstream/include/*.h', '../common/rnnoise/upstream/src/*.{h,c}'
+  s.source_files = 'flutter_webrtc/Sources/flutter_webrtc/**/*.{h,m,mm,cpp}', '../common/darwin/Classes/{ScreenAudioSource.cc,ScreenAudioSource.h,ScreenAudioPCMConverter.h,ScreenAudioPCMConverter.mm,ScreenAudioTrackCapturer.h,ScreenAudioTrackCapturer.mm,RTCAudioSource+Private.h,audio_options.h,media_stream_interface.h}', '../common/rnnoise/rnnoise_capture_processor.{h,cc}', '../common/rnnoise/microphone_controls/processor.{h,cc}', '../common/rnnoise/public_include/*.h', '../common/rnnoise/upstream/include/*.h', '../common/rnnoise/upstream/src/*.{h,c}'
+  s.exclude_files = 'flutter_webrtc/Sources/flutter_webrtc/ScreenAudioSource.cc', 'flutter_webrtc/Sources/flutter_webrtc/ScreenAudioSource.h', 'flutter_webrtc/Sources/flutter_webrtc/ScreenAudioPCMConverter.mm', 'flutter_webrtc/Sources/flutter_webrtc/ScreenAudioPCMConverter.h', 'flutter_webrtc/Sources/flutter_webrtc/ScreenAudioTrackCapturer.mm', 'flutter_webrtc/Sources/flutter_webrtc/ScreenAudioTrackCapturer.h'
   s.public_header_files = 'flutter_webrtc/Sources/flutter_webrtc/include/flutter_webrtc/**/*.h'
   s.dependency 'Flutter'
   s.dependency 'WebRTC-SDK', '150.7871.01'
@@ -20,7 +21,7 @@ A new flutter plugin project.
   s.static_framework = true
   s.pod_target_xcconfig = {
     'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
-    'HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/../common/rnnoise/public_include" "${PODS_TARGET_SRCROOT}/../common/rnnoise/upstream/include"',
+    'HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/../common/darwin/Classes" "${PODS_TARGET_SRCROOT}/../common/rnnoise/public_include" "${PODS_TARGET_SRCROOT}/../common/rnnoise/upstream/include"',
     'USER_HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/flutter_webrtc/Sources/flutter_webrtc/include/flutter_webrtc"'
   }
   s.libraries = 'c++'

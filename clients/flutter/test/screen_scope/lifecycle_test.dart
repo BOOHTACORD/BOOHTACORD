@@ -68,6 +68,26 @@ void main() {
       expect(owner.error, isNull);
     },
   );
+
+  test('screen-audio choice reaches the native capture options', () async {
+    final driver = DelayedScreenDriver();
+    final room = FakeScreenRoom();
+    final owner = ScreenShareController(
+      ApiClient(),
+      SessionScope(),
+      readRoom: () => room,
+      voiceReady: () => true,
+      driver: driver,
+    );
+    addTearDown(owner.dispose);
+    final track = FakeScreenTrack();
+    driver.captured.complete(track);
+
+    await owner.startScreenShare(captureScreenAudio: true);
+
+    expect(driver.captureOptions?.captureScreenAudio, isTrue);
+  });
+
   test('logout during publication removes only that attempt track', () async {
     final scope = SessionScope();
     final driver = DelayedScreenDriver()..publication = Completer<void>();

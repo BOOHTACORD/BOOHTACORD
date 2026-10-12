@@ -512,6 +512,42 @@ public class GetUserMediaImpl {
                 ScreenCaptureConstraints.from(constraints);
         final int maximumDimension = captureLimits.maximumDimension;
         final int maximumFrameRate = captureLimits.maximumFrameRate;
+        final ObjectType audioType = constraints.getType("audio");
+        final boolean captureScreenAudio = audioType == ObjectType.Boolean
+                ? constraints.getBoolean("audio")
+                : audioType == ObjectType.Map;
+        if (captureScreenAudio && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            resultError("getDisplayMedia", "System-audio capture requires Android 10 or later.", result);
+            return;
+        }
+        if (captureScreenAudio
+                && applicationContext.checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+                        != PackageManager.PERMISSION_GRANTED) {
+            ArrayList<String> audioPermissions = new ArrayList<>();
+            audioPermissions.add(PERMISSION_AUDIO);
+            requestPermissions(
+                    audioPermissions,
+                    granted -> requestDisplayMediaProjection(
+                            constraints, result, mediaStream,
+                            maximumDimension, maximumFrameRate, true),
+                    denied -> resultError(
+                            "getDisplayMedia",
+                            "Microphone permission is required to capture eligible app playback.",
+                            result));
+            return;
+        }
+        requestDisplayMediaProjection(
+                constraints, result, mediaStream,
+                maximumDimension, maximumFrameRate, captureScreenAudio);
+    }
+
+    private void requestDisplayMediaProjection(
+            final ConstraintsMap constraints,
+            final Result result,
+            final MediaStream mediaStream,
+            final int maximumDimension,
+            final int maximumFrameRate,
+            final boolean captureScreenAudio) {
         if (mediaProjectionData == null) {
             screenRequestPermissions(
                     new ResultReceiver(new Handler(Looper.getMainLooper())) {
@@ -526,13 +562,13 @@ public class GetUserMediaImpl {
                             }
                             getDisplayMedia(
                                     result, mediaStream, mediaProjectionData,
-                                    maximumDimension, maximumFrameRate);
+                                    maximumDimension, maximumFrameRate, captureScreenAudio);
                         }
                     });
         } else {
             getDisplayMedia(
                     result, mediaStream, mediaProjectionData,
-                    maximumDimension, maximumFrameRate);
+                    maximumDimension, maximumFrameRate, captureScreenAudio);
         }
     }
 
@@ -541,17 +577,29 @@ public class GetUserMediaImpl {
             final MediaStream mediaStream,
             final Intent mediaProjectionData,
             final int maximumDimension,
-            final int maximumFrameRate) {
+            final int maximumFrameRate,
+            final boolean captureScreenAudio) {
         /* Create ScreenCapture */
         VideoTrack displayTrack = null;
         VideoCapturer videoCapturer = null;
         String trackId = stateProvider.getNextTrackUUID();
+        ScreenAudioCapture screenAudioCapture = null;
+        if (captureScreenAudio && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
+                applicationContext.checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+                        == PackageManager.PERMISSION_GRANTED) {
+            try {
+                screenAudioCapture = new ScreenAudioCapture(applicationContext);
+            } catch (RuntimeException error) {
+                Log.i(TAG, "screen_audio_source_unavailable");
+            }
+        }
         videoCapturer =
                 new OrientationAwareScreenCapturer(
                         mediaProjectionData,
                         trackId,
                         maximumDimension,
-                        maximumFrameRate);
+                        maximumFrameRate,
+                        screenAudioCapture);
         if (videoCapturer == null) {
             resultError("screenRequestPermissions", "GetDisplayMediaFailed, User revoked permission to capture the screen.", result);
             return;
@@ -582,6 +630,25 @@ public class GetUserMediaImpl {
 
         videoCapturer.startCapture(info.width, info.height, info.fps);
         Log.d(TAG, "OrientationAwareScreenCapturer.startCapture: " + info.width + "x" + info.height + "@" + info.fps);
+
+        if (captureScreenAudio &&
+                (screenAudioCapture == null || !screenAudioCapture.isCapturing())) {
+            try {
+                videoCapturer.stopCapture();
+            } catch (InterruptedException error) {
+                Thread.currentThread().interrupt();
+            } finally {
+                videoCapturer.dispose();
+                surfaceTextureHelper.stopListening();
+                surfaceTextureHelper.dispose();
+                videoSource.dispose();
+            }
+            resultError(
+                    "getDisplayMedia",
+                    "This app or device does not allow playback audio capture.",
+                    result);
+            return;
+        }
 
         mVideoCapturers.put(trackId, info);
 
@@ -621,6 +688,30 @@ public class GetUserMediaImpl {
 
             videoTracks.pushMap(track_);
             mediaStream.addTrack(displayTrack);
+        }
+
+        if (screenAudioCapture != null && screenAudioCapture.isCapturing()) {
+            String audioTrackId = stateProvider.getNextTrackUUID();
+            AudioTrack screenAudioTrack = pcFactory.createAudioTrack(
+                    audioTrackId, screenAudioCapture.audioSource());
+            if (screenAudioTrack != null) {
+                LocalAudioTrack localAudioTrack = new LocalAudioTrack(screenAudioTrack);
+                stateProvider.putLocalTrack(audioTrackId, localAudioTrack);
+                mediaStream.addTrack(screenAudioTrack);
+                ConstraintsMap audioInfo = new ConstraintsMap();
+                audioInfo.putString("id", screenAudioTrack.id());
+                audioInfo.putString("kind", screenAudioTrack.kind());
+                audioInfo.putString("label", screenAudioTrack.id());
+                audioInfo.putBoolean("enabled", screenAudioTrack.enabled());
+                audioInfo.putBoolean("remote", false);
+                audioInfo.putString("readyState", screenAudioTrack.state().toString());
+                audioTracks.pushMap(audioInfo);
+            } else {
+                screenAudioCapture.dispose();
+            }
+        } else if (screenAudioCapture != null) {
+            screenAudioCapture.dispose();
+            screenAudioCapture = null;
         }
 
         String streamId = mediaStream.getId();

@@ -1,0 +1,69 @@
+{
+  "id": "FLUTTER-SCREEN-AUDIO-2026-10-12-001",
+  "kind": "flutter-screen-share-system-audio",
+  "status": "IMPLEMENTED_SOURCE_TESTED_PLATFORM_BUILDS_PASS_RUNTIME_PENDING",
+  "executed_at": "2026-10-12",
+  "source_revision": "9f8926b",
+  "working_tree_changes": true,
+  "summary": "Flutter screen sharing now has an explicit opt-in to publish eligible system/game/app playback as a separate LiveKit screenShareAudio track. Capture paths are wired for Windows, Linux, macOS 13+, Android 10+, and iOS ReplayKit Broadcast Extension. Build and source tests pass; runtime audio acceptance remains unproven.",
+  "checks": [
+    {
+      "name": "Focused Flutter regression tests",
+      "command": "flutter test --no-pub test/screen_scope/native_screen_capture_options_test.dart test/screen_scope/lifecycle_test.dart test/screen_scope/screen_audio_track_registry_test.dart test/screen_setup/capabilities_test.dart packages/livekit_client/test/audio/audio_session_test.dart",
+      "status": "PASS",
+      "observation": "All 61 tests passed, including native capture option propagation, audio-track publish/cleanup, platform capability copy, and avoiding microphone ADM for screenShareAudio. The test runner required localhost socket access."
+    },
+    {
+      "name": "Shared native audio-source regression test",
+      "command": "clang++ -std=c++17 -UNDEBUG -Iclients/flutter/packages/flutter_webrtc/common/darwin/Classes clients/flutter/packages/flutter_webrtc/common/cpp/tests/screen_audio_source_test.cc clients/flutter/packages/flutter_webrtc/common/darwin/Classes/ScreenAudioSource.cc -o /private/tmp/screen_audio_source_test && /private/tmp/screen_audio_source_test",
+      "status": "PASS",
+      "observation": "PCM delivery, volume handling, stopped-source behavior, and sink removal checks passed."
+    },
+    {
+      "name": "Android debug build",
+      "command": "flutter build apk --debug --no-pub",
+      "status": "PASS",
+      "observation": "Built the Flutter APK with Java 17 and the installed Android SDK. This compiles AudioPlaybackCapture, RECORD_AUDIO permission flow, JNI bridge, and native WebRTC source; no emulator playback capture was performed."
+    },
+    {
+      "name": "iOS Simulator build",
+      "command": "flutter build ios --simulator --no-codesign --no-pub",
+      "status": "PASS",
+      "observation": "Xcode built Runner.app and the ReplayKit Broadcast Extension, including the SwiftPM audio bridge wrappers. This is a compile check only."
+    },
+    {
+      "name": "macOS debug build",
+      "command": "flutter build macos --debug --no-pub",
+      "status": "PASS",
+      "observation": "Xcode built BOOHTACORD.app with the ScreenCaptureKit system-audio and cleanup paths. This is a compile check only."
+    },
+    {
+      "name": "Dart analysis",
+      "command": "dart analyze",
+      "status": "PASS_WITH_INFO",
+      "observation": "No analyzer errors; 63 info-level lints remain in the existing Flutter tree. None point to files changed by this feature."
+    },
+    {
+      "name": "Windows native build and playback acceptance",
+      "status": "NOT_RUN",
+      "observation": "This run used a macOS host. Windows WASAPI loopback build and physical audio acceptance remain pending."
+    },
+    {
+      "name": "Linux native build and playback acceptance",
+      "status": "NOT_RUN",
+      "observation": "This run used a macOS host. Linux loopback requires the libpulse development package and a Linux runtime with an available monitor source."
+    },
+    {
+      "name": "Android, iOS, and macOS live playback acceptance",
+      "status": "NOT_RUN",
+      "observation": "No current isolated receiver session was run to prove captured samples reach another participant. App capture policies, OS permissions, and device-specific behavior remain unverified."
+    }
+  ],
+  "limitations": [
+    "Android AudioPlaybackCapture can only return audio allowed by the source app and Android policy; Android 10 or newer and RECORD_AUDIO permission are required.",
+    "iOS capture requires the user to approve the ReplayKit system broadcast picker and depends on ReplayKit app-audio samples.",
+    "macOS capture requires ScreenCaptureKit audio support on macOS 13 or newer and excludes BOOHTACORD's own process audio.",
+    "A successful native build and unit tests do not prove playback audio was captured or published on physical hardware."
+  ],
+  "remaining": "Run an isolated sender/receiver audio sample test on Android, iOS, and macOS; build and test Windows WASAPI on Windows; build and test Linux with libpulse; record runtime evidence for each supported target before claiming end-to-end capability."
+}

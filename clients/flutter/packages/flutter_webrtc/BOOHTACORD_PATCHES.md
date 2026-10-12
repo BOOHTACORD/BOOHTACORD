@@ -112,6 +112,39 @@ Flutter persist a device that the ADM rejected. The device-selection result
 mapping has a standalone C++ regression test. The Windows plugin CMake target
 builds and runs it. Real Windows hardware capture acceptance remains open.
 
+## Native screen-share playback audio
+
+`getDisplayMedia({audio:true})` now returns a separate WebRTC audio track for
+screen playback where the platform provides an eligible capture source. The
+capture is attached to the existing screen-share stream so LiveKit publishes
+it as `screenShareAudio`; it does not use the microphone ADM or combine the
+microphone with captured playback.
+
+- Windows uses the existing desktop loopback route. Linux uses the existing
+  PulseAudio loopback route and requires the `libpulse` development package at
+  build time; the Linux CMake configure warning identifies builds without it.
+- Android 10+ uses `AudioPlaybackCapture` and asks for `RECORD_AUDIO` before
+  starting MediaProjection. Android and the source app can still deny playback
+  capture; that is returned as a capture error instead of a video-only stream.
+- macOS 13+ uses ScreenCaptureKit audio capture and excludes BOOHTACORD's own
+  process audio. Older macOS versions do not expose this route through the
+  current implementation and return no audio track.
+- iOS uses ReplayKit app-audio samples. A Broadcast Upload Extension forwards
+  bounded JPEG/PCM messages over the existing app-group socket; microphone
+  samples are discarded. The user must approve the system broadcast picker.
+
+The shared native WebRTC source accepts bounded signed 16-bit PCM, disables
+voice-specific processing on that already-mixed source, and safely waits for
+active audio sinks to detach before stopping. iOS socket framing and image/audio
+sample sizes are bounded. Runtime acceptance on actual devices and all source
+privacy policies is still required; build and unit tests alone do not claim
+successful playback capture.
+
+SwiftPM only compiles sources inside each plugin package, so iOS and macOS use
+small package-local wrappers for the shared Darwin bridge. CocoaPods excludes
+those wrapper files and compiles the shared implementation directly to avoid
+duplicate symbols.
+
 ## Source and maintenance policy
 
 [UPSTREAM.json](UPSTREAM.json) pins the published upstream archive SHA-256,

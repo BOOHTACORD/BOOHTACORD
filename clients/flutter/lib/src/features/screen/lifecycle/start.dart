@@ -9,6 +9,7 @@ extension ScreenShareStart on ScreenShareController {
     String? sourceId,
     ScreenShareQuality? quality,
     VideoDimensions? sourceDimensions,
+    bool captureScreenAudio = false,
   }) async {
     final ticket = scope.capture();
     final admitted = revision;
@@ -37,6 +38,7 @@ extension ScreenShareStart on ScreenShareController {
       expected,
       sourceId,
       sourceDimensions,
+      captureScreenAudio,
     );
     starting = operation;
     changed();

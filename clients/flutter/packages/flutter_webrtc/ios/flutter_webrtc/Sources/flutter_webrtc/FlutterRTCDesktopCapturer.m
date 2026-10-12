@@ -9,6 +9,8 @@
 
 #import "VideoProcessingAdapter.h"
 #import "LocalVideoTrack.h"
+#import "LocalAudioTrack.h"
+#import "ScreenAudioTrackCapturer.h"
 #if TARGET_OS_OSX
 #import "FlutterScreenCaptureKitCapturer.h"
 #endif
@@ -22,6 +24,10 @@ NSArray<RTCDesktopSource*>* _captureSources;
 @implementation FlutterWebRTCPlugin (DesktopCapturer)
 
 - (void)getDisplayMedia:(NSDictionary*)constraints result:(FlutterResult)result {
+  id audioConstraint = constraints[@"audio"];
+  BOOL captureScreenAudio = [audioConstraint isKindOfClass:[NSNumber class]]
+                                ? [audioConstraint boolValue]
+                                : [audioConstraint isKindOfClass:[NSDictionary class]];
   NSString* mediaStreamId = [[NSUUID UUID] UUIDString];
   RTCMediaStream* mediaStream = [self.peerConnectionFactory mediaStreamWithStreamId:mediaStreamId];
   RTCVideoSource* videoSource = [self.peerConnectionFactory videoSourceForScreenCast:YES];
@@ -48,6 +54,17 @@ NSArray<RTCDesktopSource*>* _captureSources;
     screenCapturer = [[FlutterBroadcastScreenCapturer alloc] initWithDelegate:videoProcessingAdapter];
   } else {
     screenCapturer = [[FlutterRPScreenRecorder alloc] initWithDelegate:[videoProcessingAdapter source]];
+  }
+
+  FlutterScreenAudioTrackCapturer *screenAudioCapturer = nil;
+  if (captureScreenAudio) {
+    screenAudioCapturer = [[FlutterScreenAudioTrackCapturer alloc]
+        initWithFactory:self.peerConnectionFactory];
+    if (useBroadcastExtension) {
+      ((FlutterBroadcastScreenCapturer *)screenCapturer).screenAudioCapturer = screenAudioCapturer;
+    } else {
+      ((FlutterRPScreenRecorder *)screenCapturer).screenAudioCapturer = screenAudioCapturer;
+    }
   }
 
   [screenCapturer startCapture];
@@ -210,6 +227,23 @@ NSArray<RTCDesktopSource*>* _captureSources;
       @"readyState" : @"live"
     }];
   }
+
+#if TARGET_OS_IPHONE
+  if (screenAudioCapturer.audioTrack != nil) {
+    RTCAudioTrack *audioTrack = screenAudioCapturer.audioTrack;
+    [mediaStream addAudioTrack:audioTrack];
+    LocalAudioTrack *localAudioTrack = [[LocalAudioTrack alloc] initWithTrack:audioTrack];
+    [self.localTracks setObject:localAudioTrack forKey:audioTrack.trackId];
+    [audioTracks addObject:@{
+      @"id" : audioTrack.trackId,
+      @"kind" : audioTrack.kind,
+      @"label" : audioTrack.trackId,
+      @"enabled" : @(audioTrack.isEnabled),
+      @"remote" : @(NO),
+      @"readyState" : @"live"
+    }];
+  }
+#endif
 
   self.localStreams[mediaStreamId] = mediaStream;
   result(

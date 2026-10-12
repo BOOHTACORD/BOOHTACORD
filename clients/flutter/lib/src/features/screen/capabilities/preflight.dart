@@ -5,11 +5,13 @@ import 'package:flutter/foundation.dart';
 class ScreenPreflight {
   const ScreenPreflight({
     required this.captureConfigured,
+    required this.captureAudioConfigured,
     required this.videoLabel,
     required this.audioLabel,
     required this.viewerLabel,
   });
   final bool captureConfigured;
+  final bool captureAudioConfigured;
   final String videoLabel, audioLabel, viewerLabel;
   static ScreenPreflight detect({
     required TargetPlatform platform,
@@ -38,10 +40,21 @@ class ScreenPreflight {
         : selecting
         ? 'Видео: доступные экраны и окна; системное разрешение проверяется при запуске.'
         : 'Видео: системный выбор источника и разрешение при запуске.';
+    final audio = !supported
+        ? 'Звук экрана на этой платформе недоступен.'
+        : switch (platform) {
+            TargetPlatform.windows => 'Windows: запрашивается loopback-аудио выбранного источника; доступность зависит от источника и системы.',
+            TargetPlatform.linux => 'Linux: запрашивается аудио через PulseAudio/PipeWire; нужен собранный loopback backend.',
+            TargetPlatform.macOS => 'macOS 13+: запрашивается аудио через ScreenCaptureKit; потребуется разрешение записи экрана.',
+            TargetPlatform.android => 'Android 10+: понадобится разрешение записи аудио; приложение-источник может запретить захват.',
+            TargetPlatform.iOS => 'iOS: звук передаётся через системный ReplayKit broadcast; приложение-источник может ограничить захват.',
+            _ => 'Звук экрана на этой платформе недоступен.',
+          };
     return ScreenPreflight(
       captureConfigured: supported && !sourceError,
+      captureAudioConfigured: supported,
       videoLabel: video,
-      audioLabel: 'Звук экрана не публикуется native-клиентом. Звук игры не передаётся.',
+      audioLabel: audio,
       viewerLabel:
           'Просмотр чужой демонстрации и голосовой канал остаются доступны.',
     );

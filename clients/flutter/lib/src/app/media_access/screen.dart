@@ -35,9 +35,15 @@ mixin AppScreenAccess on AppOwners {
     String? sourceId,
     ScreenShareQuality? quality,
     VideoDimensions? sourceDimensions,
+    bool captureScreenAudio = false,
   }) async {
     final preferences = captureScreenPreferences();
-    await screen.startScreenShare(sourceId: sourceId, quality: quality, sourceDimensions: sourceDimensions);
+    await screen.startScreenShare(
+      sourceId: sourceId,
+      quality: quality,
+      sourceDimensions: sourceDimensions,
+      captureScreenAudio: captureScreenAudio,
+    );
     if (screen.phase == ScreenSharePhase.sharing && screen.error == null) {
       await preferences?.save(screen.quality);
     }
@@ -48,7 +54,9 @@ mixin AppScreenAccess on AppOwners {
   Future<void> updateScreenShareQuality(ScreenShareQuality quality) async {
     final preferences = captureScreenPreferences();
     await screen.updateScreenShareQuality(quality);
-    if (screen.phase == ScreenSharePhase.sharing && screen.error == null && screen.quality == quality) {
+    if (screen.phase == ScreenSharePhase.sharing &&
+        screen.error == null &&
+        screen.quality == quality) {
       await preferences?.save(quality);
     }
   }

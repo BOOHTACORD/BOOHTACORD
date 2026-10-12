@@ -53,6 +53,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
     private final String trackId;
     private final int maximumDimension;
     private final ScreenCaptureFrameRateGate frameRateGate;
+    private final ScreenAudioCapture screenAudioCapture;
 
     /**
      * Constructs a new Screen Capturer.
@@ -64,11 +65,13 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
     public OrientationAwareScreenCapturer(Intent mediaProjectionPermissionResultData,
                                           String trackId,
                                           int maximumDimension,
-                                          int maximumFrameRate) {
+                                          int maximumFrameRate,
+                                          ScreenAudioCapture screenAudioCapture) {
         this.mediaProjectionPermissionResultData = mediaProjectionPermissionResultData;
         this.trackId = trackId;
         this.maximumDimension = maximumDimension;
         this.frameRateGate = new ScreenCaptureFrameRateGate(maximumFrameRate);
+        this.screenAudioCapture = screenAudioCapture;
         this.mediaProjectionCallback = new MediaProjection.Callback() {
             @Override
             public void onStop() {
@@ -171,6 +174,9 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
         mediaProjection.registerCallback(mediaProjectionCallback, surfaceTextureHelper.getHandler());
 
         createVirtualDisplay();
+        if (screenAudioCapture != null && !screenAudioCapture.start(mediaProjection)) {
+            Log.i(TAG, "screen_audio_capture_unavailable");
+        }
         Log.i(TAG, "projection_capture_started display=" + (virtualDisplay != null ? "ready" : "unavailable"));
         capturerObserver.onCapturerStarted(true);
         surfaceTextureHelper.startListening(this);
@@ -190,6 +196,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
             public void run() {
                 surfaceTextureHelper.stopListening();
                 capturerObserver.onCapturerStopped();
+                if (screenAudioCapture != null) screenAudioCapture.stop();
                 if (virtualDisplay != null) {
                     virtualDisplay.release();
                     virtualDisplay = null;
@@ -212,6 +219,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
         isStopped = true;
         surfaceTextureHelper.stopListening();
         capturerObserver.onCapturerStopped();
+        if (screenAudioCapture != null) screenAudioCapture.stop();
         if (virtualDisplay != null) {
             virtualDisplay.release();
             virtualDisplay = null;
@@ -224,6 +232,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
     @Override
     public synchronized void dispose() {
         isDisposed = true;
+        if (screenAudioCapture != null) screenAudioCapture.dispose();
     }
 
     /**

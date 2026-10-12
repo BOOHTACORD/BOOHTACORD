@@ -7,9 +7,11 @@ class ScreenShareSetupSelection {
     required this.sourceId,
     required this.quality,
     this.sourceDimensions,
+    this.captureScreenAudio = false,
   });
 
   final String? sourceId;
   final ScreenShareQuality quality;
   final VideoDimensions? sourceDimensions;
+  final bool captureScreenAudio;
 }

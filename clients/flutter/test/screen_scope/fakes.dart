@@ -38,6 +38,20 @@ class FakeScreenTrack implements LocalVideoTrack {
     stopCalls++;
     return true;
   }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class FakeScreenAudioTrack implements LocalAudioTrack {
+  int stopCalls = 0;
+
+  @override
+  Future<bool> stop() async {
+    stopCalls++;
+    return true;
+  }
+
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -45,6 +59,7 @@ class FakeScreenTrack implements LocalVideoTrack {
 class DelayedScreenDriver implements ScreenShareDriver {
   final captured = Completer<LocalVideoTrack>();
   Completer<void>? publication;
+  ScreenShareCaptureOptions? captureOptions;
   int published = 0;
   int stopCalls = 0;
   int backgroundDisableCalls = 0;
@@ -53,8 +68,11 @@ class DelayedScreenDriver implements ScreenShareDriver {
   @override
   Future<void> prepare(bool Function() active) async {}
   @override
-  Future<LocalVideoTrack> capture(ScreenShareCaptureOptions options) =>
-      captured.future;
+  Future<LocalVideoTrack> capture(ScreenShareCaptureOptions options) {
+    captureOptions = options;
+    return captured.future;
+  }
+
   @override
   Future<void> publish(
     Room room,
@@ -67,9 +85,13 @@ class DelayedScreenDriver implements ScreenShareDriver {
   }
 
   @override
-  Future<bool> updateQuality(Room room, LocalVideoTrack track, ScreenShareQuality quality,
-          VideoDimensions? dimensions, bool Function() isCurrent) async =>
-      isCurrent();
+  Future<bool> updateQuality(
+    Room room,
+    LocalVideoTrack track,
+    ScreenShareQuality quality,
+    VideoDimensions? dimensions,
+    bool Function() isCurrent,
+  ) async => isCurrent();
 
   @override
   Future<void> discard(Room room, LocalVideoTrack track) async {

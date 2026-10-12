@@ -71,12 +71,14 @@ class TracedAppState extends AppState {
     String? sourceId,
     ScreenShareQuality? quality,
     VideoDimensions? sourceDimensions,
+    bool captureScreenAudio = false,
   }) => ClientTelemetry.trace(
     'screen.share.start',
     () => super.startScreenShare(
       sourceId: sourceId,
       quality: quality,
       sourceDimensions: sourceDimensions,
+      captureScreenAudio: captureScreenAudio,
     ),
     failed: () => screenSharePhase == ScreenSharePhase.error,
   );
