@@ -19,7 +19,10 @@ enum ScreenShareDiagnosticEvent {
   remoteTrackUnsubscribed('remote_track_unsubscribed'),
   remoteTrackUnpublished('remote_track_unpublished'),
   senderStatsSampled('sender_stats_sampled'),
-  senderStatsUnavailable('sender_stats_unavailable');
+  senderStatsUnavailable('sender_stats_unavailable'),
+  senderReportStarted('sender_report_started'),
+  senderReportSent('sender_report_sent'),
+  senderReportFailed('sender_report_failed');
 
   const ScreenShareDiagnosticEvent(this.value);
 
@@ -86,6 +89,9 @@ String formatScreenShareDiagnosticLine(
   int? framesSent,
   int? bytesSent,
   int? encodedFramesPerSecond,
+  double? durationMs,
+  String? errorClass,
+  String? httpStatusClass,
   String? errorType,
 }) {
   final fields = <String>[
@@ -105,6 +111,22 @@ String formatScreenShareDiagnosticLine(
   addCounter('frames_sent', framesSent);
   addCounter('bytes_sent', bytesSent);
   addCounter('encoded_fps', encodedFramesPerSecond);
+  if (durationMs != null && durationMs.isFinite && durationMs >= 0) {
+    fields.add('duration_ms=${durationMs.round()}');
+  }
+  if (errorClass != null &&
+      const {
+        'http_timeout',
+        'http_4xx',
+        'http_5xx',
+        'network',
+        'session_invalidated',
+      }.contains(errorClass)) {
+    fields.add('error_class=$errorClass');
+  }
+  if (const {'4xx', '5xx', 'other'}.contains(httpStatusClass)) {
+    fields.add('http_status_class=$httpStatusClass');
+  }
   if (errorType != null &&
       RegExp(r'^[A-Za-z][A-Za-z0-9_]{0,47}$').hasMatch(errorType)) {
     fields.add('error_type=$errorType');
@@ -123,6 +145,9 @@ void logScreenShareDiagnostic(
   int? framesSent,
   int? bytesSent,
   int? encodedFramesPerSecond,
+  double? durationMs,
+  String? errorClass,
+  String? httpStatusClass,
   String? errorType,
 }) {
   debugPrint(
@@ -137,6 +162,9 @@ void logScreenShareDiagnostic(
       framesSent: framesSent,
       bytesSent: bytesSent,
       encodedFramesPerSecond: encodedFramesPerSecond,
+      durationMs: durationMs,
+      errorClass: errorClass,
+      httpStatusClass: httpStatusClass,
       errorType: errorType,
     ),
   );

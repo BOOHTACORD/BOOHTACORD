@@ -1,0 +1,76 @@
+{
+  "id": "ISSUE-325-SENDER-TELEMETRY-2026-10-12",
+  "date": "2026-10-12",
+  "issue": "https://github.com/Egkurilov/BOOHTACORD/issues/325",
+  "task": "T-038 — Flutter screen sender telemetry reliability",
+  "source_revision": "0546d32f38bf923ddfbc25b93d1a696585663ea7",
+  "working_tree": "Changes are uncommitted; existing .gitignore modification was present before this task.",
+  "status": "BLOCKED",
+  "automated_checks": [
+    {
+      "name": "Focused Flutter sender telemetry regression suite",
+      "result": "PASS",
+      "tests_passed": 38,
+      "coverage": [
+        "Sampling and capture observations continue during a stalled HTTP export.",
+        "getStats failure reports unavailable state and recovers on later samples.",
+        "Native getStats requests remain serialized and the one-second collection tick does not reuse stale cache rows.",
+        "Successful reports follow the five-second cadence; failed exports use bounded exponential retry.",
+        "Snapshot age is measured monotonically; unavailable and stale payloads omit invented or expired metrics.",
+        "HTTP stop cancellation and request deadline abort the underlying abortable request.",
+        "Export failure diagnostics contain fixed error/status classes without request or user data."
+      ]
+    },
+    {
+      "name": "Dart analysis for changed Flutter source and focused tests",
+      "result": "PASS",
+      "diagnostics": 0
+    },
+    {
+      "name": "Spec traceability",
+      "result": "PASS",
+      "summary": "39 requirements referenced; approved brief unavailable on this host, committed requirement index validated."
+    }
+  ],
+  "local_feature_acceptance": {
+    "result": "FAIL",
+    "command": "./tools/qa/local_features/check.sh --feature screen --feature screen_metrics --platform android --base HEAD --real-stack",
+    "report": ".out/local-features/20261012-230822/report.json",
+    "stages": {
+      "flutter-unit": "FAIL",
+      "flutter-component-captures": "FAIL",
+      "android-runtime": "BLOCKED"
+    },
+    "limits": [
+      "The Flutter shell runner attempted to write engine.stamp and engine.realm under the read-only /opt/homebrew/share/flutter SDK cache.",
+      "Android runtime had no accepted owned device available.",
+      "No screenshots were generated; visual review is NOT_RUN."
+    ]
+  },
+  "backend_integration": {
+    "result": "NOT_RUN",
+    "detail": "The real-stack attempt could not reach the owned Colima context colima-boohtacord-qa; its Docker context metadata is absent. No backend 204/fallback exchange was observed."
+  },
+  "real_stack_attempt": {
+    "result": "FAIL",
+    "report": ".out/local-features/20261012-225812/report.json",
+    "web_unit": "PASS",
+    "web_build": "PASS",
+    "web_accessibility": "FAIL — local listen on 127.0.0.1:5175 was denied (EPERM)",
+    "web_real_stack": "FAIL — Colima Docker context colima-boohtacord-qa is missing",
+    "flutter_runner": "FAIL — Flutter SDK cache is read-only"
+  },
+  "device_sfu_acceptance": {
+    "result": "NOT_RUN",
+    "detail": "No paired Android, Windows, macOS, iOS or Web sender/SFU run was completed; the five-run degraded-network matrix and physical-device evidence remain open."
+  },
+  "contract_verification": {
+    "result": "BLOCKED",
+    "detail": "No API/backend contract files changed. The contract script could not resolve `python`; its python3 fallback checks could not invoke a usable Go standard library and lacked openapi_spec_validator."
+  },
+  "visual_review": {
+    "result": "NOT_RUN",
+    "observation": "No UI changed and the local-feature runner generated no images because the Flutter runner could not launch."
+  },
+  "gate": "Code and focused regression coverage are complete; issue acceptance remains open until a real backend 204/fallback exchange and device/SFU evidence are recorded."
+}

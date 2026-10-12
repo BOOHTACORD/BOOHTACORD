@@ -64,6 +64,24 @@ void main() {
           'encoded_fps=15',
     ]);
   });
+
+  test(
+    'classifies sender export failures without exposing request details',
+    () {
+      expect(
+        formatScreenShareDiagnosticLine(
+          ScreenShareDiagnosticEvent.senderReportFailed,
+          platform: TargetPlatform.android,
+          durationMs: 55.4,
+          errorClass: 'http_5xx',
+          httpStatusClass: '5xx',
+          errorType: 'ApiFailure(private body and lease)',
+        ),
+        '[screen-share] event=sender_report_failed platform=android '
+        'duration_ms=55 error_class=http_5xx http_status_class=5xx',
+      );
+    },
+  );
 }
 
 class _TrackWithoutNativeState implements LocalTrack {

@@ -1,63 +1,113 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:livekit_client/livekit_client.dart';
 
-import '../../../telemetry/report_media/sender_sample.dart';
+import '../../../core/http/api_failure.dart';
+import '../../../core/session/scope.dart';
+import '../../media/report_metrics/api.dart';
+import '../../../services/screen_share_diagnostics.dart';
 import 'controller.dart';
-import 'livekit_layers.dart';
-import '../../../services/screen_share_metrics.dart';
+import 'report_payload.dart';
 
 extension ScreenReportSample on ScreenShareMetricsController {
-  Future<void> reportSample(
-    ScreenShareSenderReport report,
-    List<ScreenSenderLayerSource> sources,
-    LiveKitScreenLayerSample layerSample,
-    Map<String, Object> measurementFields,
-  ) async {
+  Future<void> reportLatest(LocalVideoTrack track, int revision) async {
+    final ticket = scope.capture();
+    if (revision != gate.generation ||
+        !identical(track, this.track) ||
+        !isSharing()) {
+      return;
+    }
+    if (!ticket.isActive ||
+        reportServerRevision != api.transport.session.serverRevision) {
+      final abort = reportAbort;
+      if (abort != null && !abort.isCompleted) abort.complete();
+      return;
+    }
+    if (reportBusyGeneration == revision ||
+        report == null ||
+        reportAbort == null) {
+      return;
+    }
+
+    final nowMs = sampleClock.elapsedMilliseconds.toDouble();
+    if (!reportCadence.isDue(nowMs)) {
+      return;
+    }
+    final currentReport = report!;
+    final abort = reportAbort!;
+    final payload = buildScreenSenderReportPayload(
+      report: currentReport,
+      measurementFields: reportMeasurementFields,
+      sampledAtMs: sampledAtMonotonicMs,
+      nowMs: nowMs,
+    );
+    reportCadence.markAttempt(nowMs);
+    reportBusyGeneration = revision;
+    logScreenShareDiagnostic(
+      ScreenShareDiagnosticEvent.senderReportStarted,
+      platform: defaultTargetPlatform,
+    );
     try {
-      if (!reportCadence.isDue(sampleClock.elapsedMilliseconds.toDouble())) {
+      await api.reportScreenShareMetrics(
+        payload,
+        timeout: const Duration(seconds: 10),
+        abortTrigger: abort.future,
+      );
+      if (!_isCurrent(ticket, track, revision)) return;
+      final finishedAtMs = sampleClock.elapsedMilliseconds.toDouble();
+      reportCadence.markSuccess(finishedAtMs);
+      logScreenShareDiagnostic(
+        ScreenShareDiagnosticEvent.senderReportSent,
+        platform: defaultTargetPlatform,
+        durationMs: finishedAtMs - nowMs,
+      );
+    } catch (error) {
+      if (revision != gate.generation ||
+          !identical(track, this.track) ||
+          !isSharing()) {
         return;
       }
-      final samples = sources
-          .where(
-            (item) => item.counters.id == layerSample.diagnostics.selected?.id,
-          )
-          .map(
-            (item) => SenderMediaSample(
-              streamId: item.counters.id,
-              timestamp: item.counters.timestampMs,
-              frameWidth: item.width,
-              frameHeight: item.height,
-              packetsSent: item.counters.packetsSent,
-              packetsLost: item.counters.packetsLost,
-              qualityLimitationReason: item.counters.qualityLimitationReason,
-            ),
-          )
-          .toList();
-      await api.reportScreenShareMetrics({
-        ...report.toJson(),
-        ...measurementFields,
-        ...telemetry.fields(
-          samples,
-          readQuality(),
-          readRoom()?.localParticipant?.connectionQuality ??
-              ConnectionQuality.unknown,
-        ),
-      });
-    } catch (_) {
-      // Diagnostic telemetry is best-effort and must not interrupt sharing.
+      final finishedAtMs = sampleClock.elapsedMilliseconds.toDouble();
+      final errorClass = ticket.isActive
+          ? _reportErrorClass(error)
+          : 'session_invalidated';
+      if (ticket.isActive) reportCadence.markFailure(finishedAtMs);
+      logScreenShareDiagnostic(
+        ScreenShareDiagnosticEvent.senderReportFailed,
+        platform: defaultTargetPlatform,
+        durationMs: finishedAtMs - nowMs,
+        errorClass: errorClass,
+        httpStatusClass: _httpStatusClass(error),
+      );
+    } finally {
+      if (reportBusyGeneration == revision) reportBusyGeneration = null;
     }
   }
-}
 
-ScreenShareSenderSnapshot? senderSnapshot(ScreenSenderLayerSource? selected) =>
-    selected == null
-    ? null
-    : screenShareSenderSnapshotFromStats([
-        ScreenShareSenderStats(
-          timestampMs: selected.counters.timestampMs,
-          frameWidth: selected.counters.width,
-          frameHeight: selected.counters.height,
-          bytesSent: selected.counters.bytesSent,
-          framesSent: selected.counters.encodedFrames,
-          roundTripTimeSeconds: selected.roundTripTimeSeconds,
-        ),
-      ]);
+  bool _isCurrent(SessionTicket ticket, LocalVideoTrack track, int revision) =>
+      ticket.isActive &&
+      revision == gate.generation &&
+      identical(track, this.track) &&
+      isSharing();
+
+  String _reportErrorClass(Object error) {
+    if (error is TimeoutException) return 'http_timeout';
+    if (error is ScreenMetricsReportAborted) return 'session_invalidated';
+    if (error is ApiFailure && error.code == 'STALE_SESSION') {
+      return 'session_invalidated';
+    }
+    final status = error is ApiFailure ? error.status : null;
+    if (status != null && status >= 400 && status < 500) return 'http_4xx';
+    if (status != null && status >= 500 && status < 600) return 'http_5xx';
+    return 'network';
+  }
+
+  String? _httpStatusClass(Object error) {
+    if (error is! ApiFailure || error.status == null) return null;
+    final status = error.status!;
+    if (status >= 400 && status < 500) return '4xx';
+    if (status >= 500 && status < 600) return '5xx';
+    return 'other';
+  }
+}

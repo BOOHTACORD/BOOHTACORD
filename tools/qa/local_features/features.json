@@ -57,6 +57,29 @@
       }
     }
   },
+  "screen_metrics": {
+    "paths": [
+      "clients/flutter/lib/src/features/screen/metrics/*",
+      "clients/flutter/lib/src/features/media/report_metrics/*",
+      "clients/flutter/lib/src/telemetry/report_media/sender.dart",
+      "clients/flutter/lib/src/services/screen_share_diagnostics.dart"
+    ],
+    "web": [],
+    "flutter": [
+      "test/screen_share_layer_sampling_test.dart",
+      "test/screen_share_livekit_layers_test.dart",
+      "test/screen_share_metrics_generation_gate_test.dart",
+      "test/screen_share_metrics_test.dart",
+      "test/screen_share_stats_poller_test.dart",
+      "test/screen_share_sender_report_test.dart",
+      "test/screen_share_report_cadence_test.dart",
+      "test/screen_share_report_payload_test.dart",
+      "test/screen_share_report_isolation_test.dart",
+      "test/screen_share_sender_stalled_test.dart",
+      "test/screen_share_diagnostics_test.dart",
+      "test/screen_metrics_report_api_test.dart"
+    ]
+  },
   "settings": {
     "paths": [
       "clients/web/src/profile/*",

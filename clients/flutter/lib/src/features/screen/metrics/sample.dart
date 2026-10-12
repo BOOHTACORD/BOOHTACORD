@@ -8,7 +8,7 @@ import 'controller.dart';
 import 'livekit_layers.dart';
 import 'report_measurements.dart';
 import 'stats_poller.dart';
-import 'report_sample.dart';
+import '../../../telemetry/report_media/sender_sample.dart';
 
 import 'dart:async';
 
@@ -31,6 +31,9 @@ extension ScreenShareSample on ScreenShareMetricsController {
       final List<rtc.StatsReport> reports = sender == null
           ? const []
           : await statsPoller!.read(sender.getStats);
+      final double? measuredAtMs = sender == null
+          ? null
+          : sampleClock.elapsedMilliseconds.toDouble();
       if (!ticket.isActive ||
           revision != gate.generation ||
           !identical(track, this.track) ||
@@ -76,7 +79,33 @@ extension ScreenShareSample on ScreenShareMetricsController {
       );
       previous = current;
       this.report = report;
-      sampledAt = DateTime.now();
+      sampledAt = measuredAtMs == null ? null : DateTime.now();
+      sampledAtMonotonicMs = measuredAtMs;
+      final mediaSamples = sources
+          .where(
+            (item) => item.counters.id == layerSample.diagnostics.selected?.id,
+          )
+          .map(
+            (item) => SenderMediaSample(
+              streamId: item.counters.id,
+              timestamp: item.counters.timestampMs,
+              frameWidth: item.width,
+              frameHeight: item.height,
+              packetsSent: item.counters.packetsSent,
+              packetsLost: item.counters.packetsLost,
+              qualityLimitationReason: item.counters.qualityLimitationReason,
+            ),
+          )
+          .toList(growable: false);
+      reportMeasurementFields = Map.unmodifiable({
+        ...measurementFields,
+        ...telemetry.fields(
+          mediaSamples,
+          readQuality(),
+          readRoom()?.localParticipant?.connectionQuality ??
+              ConnectionQuality.unknown,
+        ),
+      });
       changed();
       unawaited(
         observe?.call(
@@ -87,7 +116,6 @@ extension ScreenShareSample on ScreenShareMetricsController {
           ),
         ),
       );
-      await reportSample(report, sources, layerSample, measurementFields);
     } catch (error) {
       if (!ticket.isActive ||
           revision != gate.generation ||
@@ -95,14 +123,20 @@ extension ScreenShareSample on ScreenShareMetricsController {
         return;
       }
       // Some platform WebRTC implementations do not expose sender stats.
-      report = null;
+      report = ScreenShareSenderReport(
+        platform: nativeScreenMetricsPlatform(defaultTargetPlatform)!,
+        state: 'waiting_first_frame',
+      );
       sampledAt = null;
+      sampledAtMonotonicMs = null;
+      reportMeasurementFields = Map.unmodifiable(unavailableReportFields());
       changed();
       layerSampler.clear();
       layerDiagnostics = const [];
       previous = null;
       previousLayerId = null;
       totalBitrateBps = null;
+      telemetry.clear();
       logScreenShareDiagnostic(
         ScreenShareDiagnosticEvent.senderStatsUnavailable,
         platform: defaultTargetPlatform,
@@ -113,3 +147,17 @@ extension ScreenShareSample on ScreenShareMetricsController {
     }
   }
 }
+
+ScreenShareSenderSnapshot? senderSnapshot(ScreenSenderLayerSource? selected) =>
+    selected == null
+    ? null
+    : screenShareSenderSnapshotFromStats([
+        ScreenShareSenderStats(
+          timestampMs: selected.counters.timestampMs,
+          frameWidth: selected.counters.width,
+          frameHeight: selected.counters.height,
+          bytesSent: selected.counters.bytesSent,
+          framesSent: selected.counters.encodedFrames,
+          roundTripTimeSeconds: selected.roundTripTimeSeconds,
+        ),
+      ]);

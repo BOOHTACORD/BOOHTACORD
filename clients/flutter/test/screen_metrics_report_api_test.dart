@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:boohtacord_desktop/src/screens/screen_receiver_diagnostics.dart';
+import 'package:boohtacord_desktop/src/features/media/report_metrics/api.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/services/screen_receiver_report.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -8,12 +10,30 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
+class AbortAwareHangingClient extends http.BaseClient {
+  final requestReceived = Completer<http.AbortableRequest>();
+  final requestAborted = Completer<void>();
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) {
+    final abortable = request as http.AbortableRequest;
+    requestReceived.complete(abortable);
+    abortable.abortTrigger!.then((_) {
+      if (!requestAborted.isCompleted) requestAborted.complete();
+    });
+    return requestAborted.future.then(
+      (_) => throw http.RequestAbortedException(request.url),
+    );
+  }
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() {
     FlutterSecureStorage.setMockInitialValues({
-      'boohtacord_session_cookie:https://v.bootybay.ru:443': 'session=test-session',
+      'boohtacord_session_cookie:https://v.bootybay.ru:443':
+          'session=test-session',
     });
   });
 
@@ -73,4 +93,38 @@ void main() {
       expect(request.body, isNot(contains('track_id')));
     },
   );
+
+  test('aborts a report request when the share generation stops', () async {
+    final client = AbortAwareHangingClient();
+    final api = ApiClient(client: client);
+    final abort = Completer<void>();
+    final operation = api.reportScreenShareMetrics(
+      const {
+        'platform': 'android_native',
+        'direction': 'sender',
+        'state': 'waiting_first_frame',
+      },
+      abortTrigger: abort.future,
+      timeout: const Duration(seconds: 1),
+    );
+    await client.requestReceived.future;
+    abort.complete();
+
+    await expectLater(operation, throwsA(isA<ScreenMetricsReportAborted>()));
+    await client.requestAborted.future;
+  });
+
+  test('aborts a hanging report when its HTTP deadline expires', () async {
+    final client = AbortAwareHangingClient();
+    final api = ApiClient(client: client);
+    final operation = api.reportScreenShareMetrics(const {
+      'platform': 'android_native',
+      'direction': 'sender',
+      'state': 'waiting_first_frame',
+    }, timeout: const Duration(milliseconds: 10));
+
+    await expectLater(operation, throwsA(isA<TimeoutException>()));
+    await client.requestReceived.future;
+    await client.requestAborted.future;
+  });
 }

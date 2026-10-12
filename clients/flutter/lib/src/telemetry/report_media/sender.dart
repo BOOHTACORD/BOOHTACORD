@@ -41,7 +41,6 @@ class SenderMediaTelemetry {
       'target_resolution': target.resolution,
       'target_fps': target.frameRate,
       'connection_quality': quality.name.toUpperCase(),
-      'sample_age_ms': 0,
       if (loss != null) ...{
         'packet_loss_percent': loss,
         'packet_loss_window_ms': _loss.durationMs!,
