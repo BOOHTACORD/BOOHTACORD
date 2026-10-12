@@ -9,7 +9,7 @@
     "T-044"
   ],
   "source_commit": "4dff4815a3c0414abed470da6f83f702cfe10e8a",
-  "recorded_at": "2026-10-12T08:21:35.275213+00:00",
+  "recorded_at": "2026-10-12T09:57:46.469703+00:00",
   "status": "BLOCKED",
   "production_mutations": false,
   "integration": {
@@ -186,10 +186,10 @@
     }
   },
   "remaining": {
-    "trusted_browser_granted_and_denied_os_notification": "NOT_RUN: Mac locked; real permission and OS notification observation unavailable.",
+    "trusted_browser_granted_and_denied_os_notification": "NOT_RUN: Mac unlocked, user notification-permission answer pending; actual OS notification observation not completed.",
     "generic_dm_preview_without_private_content": "NOT_RUN in trusted browser; source unit coverage from the preceding full Web run is not OS acceptance.",
     "cross_tab_dedup_logout_account_switch": "NOT_RUN in trusted browser",
-    "three_live_browser_sessions_http_ws_privacy": "PARTIAL: two real browser participants verified create/edit/unread; third-party browser session remains NOT_RUN."
+    "three_live_browser_sessions_http_ws_privacy": "PARTIAL: two real browser participants verified create/edit/delete/unread and visible read UI; third-party browser session remains NOT_RUN."
   },
   "gate_closed": false,
   "browser_candidate": {
@@ -213,9 +213,16 @@
     "real_independent_sessions": "PASS: MEMBER sender in Codex in-app browser, MEMBER recipient in Chrome; public registration/login and actual session-backed UI.",
     "create_delivery_and_hidden_unread": "PASS: recipient title and DM navigation showed unread count 1 without reload; actual message visible at both participants. Message body omitted from logs/evidence.",
     "edit_delivery": "PASS: edited body appeared at both participants, original body no longer present at recipient, title remained unread 1; no reload.",
-    "visible_read_cursor": "NOT_RUN: recipient tab remained hidden; opening the DM while hidden did not clear its unread count.",
-    "delete_delivery": "BLOCKED: author delete command opened native confirmation; browser dialog API did not expose it, and Mac locked before confirmation could be handled. No deletion PASS claimed.",
+    "visible_read_cursor": "PASS for visible UI: recipient Chrome QA tab was selected, its title and DM navigation had no unread count; Stay at latest removed the unread banner. Caller-local server cursor has separate PostgreSQL coverage.",
+    "delete_delivery": "PASS: after unlock no confirmation remained; both independent live clients show the deleted-message placeholder and neither contains the edited body. No reload; bodies omitted from logs and evidence.",
     "notifications_available": "PASS for UI capability: recipient settings offered Enable notifications and reported notifications off. No permission granted.",
-    "os_notification_granted_denied_dedup_logout": "NOT_RUN: real OS observation requires unlocked Mac and requested notification permission."
-  }
+    "os_notification_granted_denied_dedup_logout": "NOT_RUN: Mac unlocked; permission request still awaits the user answer. No notification permission granted."
+  },
+  "browser_artifacts": [
+    {
+      "path": "/tmp/boohtacord-qa53-deleted-read.png",
+      "sha256": "b10b3dcdd63cbdd870ac414ae599ebcdb66f0534c9b0b1b1c0e7f587c40699e9",
+      "observation": "Recipient DM shows deleted-message placeholder, no unread banner and no unread count; synthetic participants only, no message bodies."
+    }
+  ]
 }
