@@ -40,7 +40,12 @@ class SetupSurface extends StatelessWidget {
           child: SizedBox(
             width: 960,
             height: height,
-            child: Column(children: children),
+            child: Material(
+              color: GcColors.sidebar,
+              borderRadius: BorderRadius.circular(GcRadii.shell),
+              clipBehavior: Clip.antiAlias,
+              child: Column(children: children),
+            ),
           ),
         ),
       ),

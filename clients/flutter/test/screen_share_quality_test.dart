@@ -237,7 +237,10 @@ void main() {
 
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
-    expect(find.textContaining('только содержимое BOOHTACORD'), findsOneWidget);
+    expect(
+      find.textContaining('Чтобы запросить звук игры или приложения'),
+      findsOneWidget,
+    );
     expect(find.text('Весь экран'), findsNothing);
     await tester.tap(find.byKey(const ValueKey('start-screen-share')));
     await tester.pumpAndSettle();
