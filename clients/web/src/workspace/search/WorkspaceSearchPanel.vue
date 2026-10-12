@@ -64,20 +64,16 @@ async function open(message: SearchMessage): Promise<void> {
 async function openMention(mention: MentionInboxItem): Promise<void> {
   const sequence = ++openSequence
   openError.value = ''
-  let target = targetForMention(
+  // Cached metadata does not establish current access or channel kind.
+  if (mention.kind === 'CHANNEL') await topologyStore.refresh()
+  else await directMessageStore.refreshNavigation()
+  if (sequence !== openSequence) return
+  const refreshFailed = mention.kind === 'CHANNEL' ? Boolean(topologyStore.error) : Boolean(directMessageStore.error)
+  const target = refreshFailed ? null : targetForMention(
     mention,
     navigationChannels.value,
     directMessageStore.directMessages.map(({ id }) => id),
   )
-  if (!target && mention.kind === 'CHANNEL') {
-    await topologyStore.refresh()
-    if (sequence !== openSequence) return
-    target = targetForMention(mention, navigationChannels.value, [])
-  } else if (!target) {
-    await directMessageStore.refreshNavigation()
-    if (sequence !== openSequence) return
-    target = targetForMention(mention, [], directMessageStore.directMessages.map(({ id }) => id))
-  }
   if (!target) {
     openError.value = mention.kind === 'CHANNEL' ? 'Канал с упоминанием больше недоступен.' : 'Личный диалог больше недоступен.'
     return
