@@ -172,6 +172,13 @@ claimed.
 
 ## MW-04 macOS bounded capture diagnostics (#330)
 
+macOS SwiftPM now links the locally built `150.7871.03-boohtacord.1` WebRTC SDK.
+`ScreenAudioSource` reports the custom source type so its sender is excluded
+from AudioState/ADM fan-out. The API extension is enabled only with that binary
+to preserve the existing vtable for iOS/CocoaPods. Pinned source, native routing
+tests and build instructions are in [third_party/patches](third_party/patches/README.md).
+Physical screen-audio playback and track-replacement acceptance remain open.
+
 The macOS plugin exposes `mediaStreamTrackGetCaptureSnapshot(trackId)` for local
 screen-video tracks. It reports raw accepted and processed RTC-delivered frame
 counts/dimensions separately, configured limits only after native start and a

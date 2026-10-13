@@ -2,14 +2,21 @@
 
 `webrtc-sdk-m150-custom-source-routing.patch` is the source-routing subset of [webrtc-sdk/webrtc#292](https://github.com/webrtc-sdk/webrtc/pull/292), draft PR revision `f485a890404fc19189217c6cb00b88309b9f6d6f`. It adds `AudioSourceInterface::SourceType`, carries that value through the sender adapter, and skips `AudioState` / ADM registration for custom-fed streams. The default remains the ADM path, so existing microphone tracks keep their route. The subset excludes the PR's new general-purpose `CustomAudioSource` API.
 
-`boohtacord-screen-audio-source-type.patch` is the matching app-side change: the local WebRTC interface shim gains the same enum and `ScreenAudioSource` identifies itself as `kCustom`.
+The matching app-side change is integrated: the local WebRTC interface shim gains the same enum and `ScreenAudioSource` identifies itself as `kCustom`. It is guarded by `BOOHTACORD_WEBRTC_CUSTOM_SOURCE_ROUTING`, defined only by the macOS SwiftPM target that links the patched framework. iOS and legacy CocoaPods still use their existing binary and vtable.
 
-## Apply and release order
+## Build and install for macOS
 
-1. Apply the SDK patch to the `webrtc-sdk/webrtc` `m150_release` source tree and add a focused regression test that verifies a custom sender is excluded from ADM fan-out while a microphone sender remains registered. Verify `replaceTrack` in both directions and sender stop/start.
-2. Build a new Apple `WebRTC.xcframework` and release it under a new immutable `WebRTC-SDK` version with its checksum.
-3. Update all iOS/macOS CocoaPods and Swift Package Manager pins together in `flutter_webrtc` and `livekit_client`.
-4. Apply the BOOHTACORD patch, then run the macOS local-feature real-stack scenario with system audio enabled and microphone disabled; inspect the native capture and peer playback. Record the SDK build and device evidence before claiming the crash fixed.
+From the repository root:
 
-Do not apply the app-side patch against the currently pinned binary. The framework bundled in the supplied crash has UUID `D58568C4-76D7-34BD-ACBD-B5BD55900541`; the workspace's downloaded framework has the same UUID. Current Apple package manifests pin `WebRTC-SDK` `150.7871.01`, released before PR #292. No patched Apple framework is present in this checkout, so the patch is prepared but not yet integrated or validated against the SDK source.
+```sh
+python3 tools/build/webrtc_sdk/build_macos.py --test
+cd clients/flutter
+flutter run -d macos --dart-define=BOOHTACORD_MACOS_CAPTURE_ENGINE=screen_capture_kit
+```
+
+`../apple-sdk.json` pins the m150.7871.03 source revision and depot_tools. The builder applies the routing and regression-test patches, runs `AudioSendStreamTest.*` when requested, builds arm64 and x64, and installs the universal local XCFramework in `macos/flutter_webrtc/Binary/`. The generated `sdk.json` records the source, patches, binary SHA-256 and UUIDs. Source and build caches live in `.out/webrtc-sdk/`; generated binaries stay out of Git. macOS CI uses the same builder and caches the installed SDK by the manifest, patches and build script.
+
+The regression tests inject ADM frames into a custom stream before and after a codec change and stop/start, verify that only explicit custom frames are encoded, and verify that default device streams still receive ADM frames after restart. `replaceTrack` in both directions and physical system-audio/peer playback with the microphone disabled remain acceptance requirements; unit tests and application startup alone do not close them.
+
+This local SDK is `150.7871.03-boohtacord.1`. It has not been published as an upstream WebRTC-SDK release. A future iOS/CocoaPods integration must switch its binaries and source-type compile flag together. The original crash framework UUID was `D58568C4-76D7-34BD-ACBD-B5BD55900541`; retaining that binary with the new unguarded vtable would be unsafe.
 

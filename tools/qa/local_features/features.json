@@ -48,6 +48,14 @@
       "clients/web/src/voice/screen_profile_metadata/*",
       "clients/flutter/packages/flutter_webrtc/lib/src/native/capture_snapshot.dart",
       "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/*",
+      "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Package.swift",
+      "clients/flutter/packages/flutter_webrtc/common/darwin/Classes/ScreenAudioSource*",
+      "clients/flutter/packages/flutter_webrtc/common/darwin/Classes/media_stream_interface.h",
+      "clients/flutter/packages/flutter_webrtc/common/cpp/tests/screen_audio_source_test.cc",
+      "clients/flutter/packages/flutter_webrtc/common/cpp/tests/CMakeLists.txt",
+      "clients/flutter/packages/flutter_webrtc/third_party/apple-sdk.json",
+      "clients/flutter/packages/flutter_webrtc/third_party/patches/*",
+      "tools/build/webrtc_sdk/*",
       "clients/flutter/packages/livekit_client/lib/src/track/options.dart",
       "clients/flutter/lib/src/screens/screen_receiver_diagnostics.dart",
       "clients/flutter/lib/src/services/api_client.dart",
@@ -75,6 +83,11 @@
       "test/features/screen/capture/dimension_publish_test.dart"
     ],
     "acceptance": {
+      "issue325_audio": {
+        "runtime": "tools/qa/macos_sender/candidate.py",
+        "native": "tools/build/webrtc_sdk/build_macos.py",
+        "scope": "Custom screen-audio source must exclude ADM fan-out across codec changes and stop/start. Native system-audio playback, microphone disabled and sender replacement need physical peer evidence; SDK tests and application startup do not close that gate."
+      },
       "issue247": {
         "browser": "tools/qa/mini_player/run.py",
         "native": "tools/qa/mini_player/native.py",

@@ -41,6 +41,9 @@ class ScreenAudioSource final : public webrtc::AudioSourceInterface {
   void RemoveSink(webrtc::AudioTrackSinkInterface* sink) override;
   const webrtc::AudioOptions options() const override;
   void SetOptions(const webrtc::AudioOptions& options) override;
+#if defined(BOOHTACORD_WEBRTC_CUSTOM_SOURCE_ROUTING)
+  SourceType source_type() const override { return SourceType::kCustom; }
+#endif
 
   // Input contract: interleaved signed 16-bit PCM. The capture APIs may supply
   // mono or stereo frames at their native sample rate and block size.

@@ -48,6 +48,8 @@ class RemovingSink final : public webrtc::AudioTrackSinkInterface {
 int main() {
   auto source = rtc::scoped_refptr<flutter_webrtc_plugin::ScreenAudioSource>(
       new flutter_webrtc_plugin::ScreenAudioSource());
+  assert(source->source_type() ==
+         webrtc::AudioSourceInterface::SourceType::kCustom);
   RecordingSink sink;
   source->AddSink(&sink);
   std::array<int16_t, 960> pcm;

@@ -39,6 +39,9 @@ target_include_directories(screen_audio_source_test PRIVATE
   ../../darwin/Classes
 )
 target_compile_features(screen_audio_source_test PRIVATE cxx_std_17)
+target_compile_definitions(screen_audio_source_test PRIVATE
+  BOOHTACORD_WEBRTC_CUSTOM_SOURCE_ROUTING=1
+)
 if(MSVC)
   target_compile_options(screen_audio_source_test PRIVATE /UNDEBUG)
 else()

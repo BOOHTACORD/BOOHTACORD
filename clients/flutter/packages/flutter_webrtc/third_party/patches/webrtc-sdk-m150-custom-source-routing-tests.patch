@@ -1,0 +1,79 @@
+diff --git a/audio/audio_send_stream_unittest.cc b/audio/audio_send_stream_unittest.cc
+index 7857882..7708742 100644
+--- a/audio/audio_send_stream_unittest.cc
++++ b/audio/audio_send_stream_unittest.cc
+@@ -216,6 +216,13 @@ class ConfigHelper {
+   }
+ 
+   AudioSendStream::Config& config() { return stream_config_; }
++  void DeliverAdmFrame() {
++    int16_t pcm[480] = {};
++    uint32_t new_mic_level = 0;
++    EXPECT_EQ(0, audio_state_->audio_transport()->RecordedDataIsAvailable(
++                     pcm, 480, sizeof(int16_t), 1, 48000, 0, 0, 0, false,
++                     new_mic_level));
++  }
+   MockAudioEncoderFactory& mock_encoder_factory() {
+     return *static_cast<MockAudioEncoderFactory*>(
+         stream_config_.encoder_factory.get());
+@@ -1074,5 +1081,60 @@ TEST(AudioSendStreamTest, UseEncoderBitrateRange) {
+   send_stream->Stop();
+ }
+ 
++TEST(AudioSendStreamTest, CustomSourceExcludesAdmAcrossCodecChangeAndRestart) {
++  ConfigHelper helper(false, true, true);
++  helper.config().source_type = AudioSourceInterface::SourceType::kCustom;
++  auto send_stream = helper.CreateAudioSendStream();
++  int encoded_frames = 0;
++  EXPECT_CALL(*helper.channel_send(), ProcessAndEncodeAudio)
++      .WillRepeatedly([&](std::unique_ptr<AudioFrame>) { ++encoded_frames; });
++  EXPECT_CALL(*helper.channel_send(), StartSend()).Times(2);
++  EXPECT_CALL(*helper.channel_send(), StopSend()).Times(2);
++
++  send_stream->Start();
++  helper.DeliverAdmFrame();
++  EXPECT_EQ(encoded_frames, 0);
++  send_stream->SendAudioData(CreateAudioFrame1kHzSineWave(1200, 10, 48000, 1));
++  EXPECT_EQ(encoded_frames, 1);
++
++  helper.SetupMockForSetupSendCodec(true);
++  helper.config().send_codec_spec =
++      AudioSendStream::Config::SendCodecSpec(111, kOpusFormat);
++  send_stream->Reconfigure(helper.config(), nullptr);
++  helper.DeliverAdmFrame();
++  EXPECT_EQ(encoded_frames, 1);
++
++  send_stream->Stop();
++  helper.DeliverAdmFrame();
++  EXPECT_EQ(encoded_frames, 1);
++  send_stream->Start();
++  helper.DeliverAdmFrame();
++  EXPECT_EQ(encoded_frames, 1);
++  send_stream->SendAudioData(CreateAudioFrame1kHzSineWave(1200, 10, 48000, 1));
++  EXPECT_EQ(encoded_frames, 2);
++  send_stream->Stop();
++}
++
++TEST(AudioSendStreamTest, DeviceSourceKeepsAdmAcrossRestart) {
++  ConfigHelper helper(false, true, true);
++  auto send_stream = helper.CreateAudioSendStream();
++  int encoded_frames = 0;
++  EXPECT_CALL(*helper.channel_send(), ProcessAndEncodeAudio)
++      .WillRepeatedly([&](std::unique_ptr<AudioFrame>) { ++encoded_frames; });
++  EXPECT_CALL(*helper.channel_send(), StartSend()).Times(2);
++  EXPECT_CALL(*helper.channel_send(), StopSend()).Times(2);
++
++  send_stream->Start();
++  helper.DeliverAdmFrame();
++  EXPECT_EQ(encoded_frames, 1);
++  send_stream->Stop();
++  helper.DeliverAdmFrame();
++  EXPECT_EQ(encoded_frames, 1);
++  send_stream->Start();
++  helper.DeliverAdmFrame();
++  EXPECT_EQ(encoded_frames, 2);
++  send_stream->Stop();
++}
++
+ }  // namespace test
+ }  // namespace webrtc

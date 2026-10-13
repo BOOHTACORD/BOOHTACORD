@@ -26,8 +26,9 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "WebRTC",
-            url: "https://github.com/webrtc-sdk/Specs/releases/download/150.7871.01/WebRTC.xcframework.zip",
-            checksum: "03815cdf2f6a0ed328c94d74cce8fd1b8d2b6e95e2b37eab66795012fcecfdfa"
+            // 150.7871.03-boohtacord.1: m150 with custom-source ADM isolation.
+            // Install with tools/build/webrtc_sdk/build_macos.py.
+            path: "Binary/WebRTC.xcframework"
         ),
         .target(
             name: "flutter_webrtc",
@@ -38,6 +39,9 @@ let package = Package(
             ],
             cSettings: [
                 .headerSearchPath("include/flutter_webrtc")
+            ],
+            cxxSettings: [
+                .define("BOOHTACORD_WEBRTC_CUSTOM_SOURCE_ROUTING", to: "1")
             ],
             linkerSettings: [
                 // Ends up weak-linked (LC_LOAD_WEAK_DYLIB) like the podspec's weak_frameworks:
