@@ -7,10 +7,15 @@ import 'package:boohtacord_desktop/src/features/screen/capture/macos_policy.dart
 
 void main() {
   test(
-    'macOS capture rollout is independent and preserves baseline default',
+    'macOS defaults to ScreenCaptureKit and keeps explicit baseline override',
     () {
-      final baseline = nativeScreenCaptureOptions(
+      final defaultOptions = nativeScreenCaptureOptions(
         const ScreenShareCaptureOptions(),
+        TargetPlatform.macOS,
+      );
+      expect(defaultOptions.captureEngine, 'screen_capture_kit');
+      final baseline = nativeScreenCaptureOptions(
+        const ScreenShareCaptureOptions(captureEngine: 'baseline'),
         TargetPlatform.macOS,
       );
       expect(baseline.captureEngine, 'baseline');
@@ -19,16 +24,30 @@ void main() {
         TargetPlatform.macOS,
       );
       expect(candidate.captureEngine, 'screen_capture_kit');
-      expect(
-        nativeScreenCaptureOptions(
-          const ScreenShareCaptureOptions(),
-          TargetPlatform.android,
-        ).captureEngine,
-        isNull,
-      );
+      for (final platform in [
+        TargetPlatform.android,
+        TargetPlatform.iOS,
+        TargetPlatform.windows,
+        TargetPlatform.linux,
+      ]) {
+        expect(
+          nativeScreenCaptureOptions(
+            const ScreenShareCaptureOptions(),
+            platform,
+          ).captureEngine,
+          isNull,
+        );
+      }
       expect(() => macOSCaptureEngine(value: 'other'), throwsArgumentError);
     },
   );
+  test('macOS honors the compile-time rollback override', () {
+    const configured = String.fromEnvironment(
+      'BOOHTACORD_MACOS_CAPTURE_ENGINE',
+      defaultValue: 'screen_capture_kit',
+    );
+    expect(macOSCaptureEngine(), configured);
+  });
   test(
     'iOS screen-audio capture selects the ReplayKit broadcast extension',
     () {

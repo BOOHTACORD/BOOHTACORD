@@ -15,6 +15,7 @@
 #import "FlutterScreenCaptureKitCapturer.h"
 #import "FlutterScreenShareResolutionProcessor.h"
 #import "FlutterScreenCaptureDiagnostics.h"
+#import "FlutterScreenCapturePolicy.h"
 #endif
 
 #if TARGET_OS_OSX
@@ -213,13 +214,10 @@ NSArray<RTCDesktopSource*>* _captureSources;
       }
     }
   }
-  BOOL candidateCapture = [captureEngine isEqualToString:@"screen_capture_kit"];
-  if (candidateCapture) {
-    if (@available(macOS 13.0, *)) {} else {
-      result([FlutterError errorWithCode:@"SCREEN_CAPTURE_ENGINE_UNAVAILABLE" message:@"ScreenCaptureKit video requires macOS 13 or later" details:nil]);
-      return;
-    }
-  }
+  BOOL screenCaptureKitSupported = NO;
+  if (@available(macOS 13.0, *)) screenCaptureKitSupported = YES;
+  BOOL candidateCapture = FlutterScreenCaptureKitWindowRequested(
+      captureEngine, screenCaptureKitSupported);
   RTCDesktopCapturer* desktopCapturer;
   FlutterScreenCaptureKitCapturer* screenCaptureKitCapturer = nil;
   FlutterScreenCaptureKitCapturer* audioOnlyCapturer = nil;

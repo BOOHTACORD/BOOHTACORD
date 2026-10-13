@@ -186,8 +186,11 @@ remains separate; actual sleep/wake hardware acceptance is still required.
 Legacy capture configuration remains unknown.
 
 `video.mandatory.captureEngine` is read once at start: `baseline` retains display
-SCK/window RTCDesktopCapturer routes; `screen_capture_kit` selects exact window
-or display SCK on macOS 13+. Unknown values and unavailable engines fail with a
+SCK/window RTCDesktopCapturer routes. The ordinary client now defaults to
+`screen_capture_kit` (#334), with the
+explicit `baseline` build override retained. Unsupported macOS versions keep
+the previous selected-source route. `screen_capture_kit` selects exact window
+or display SCK on macOS 13+. Unknown values fail with a
 bounded error. No active capture changes route. SCK uses the selected window's
 desktop-independent filter and fails closed when an explicit source disappears.
 Geometry uses filter points and pixel scale on macOS 14+, and matching display
