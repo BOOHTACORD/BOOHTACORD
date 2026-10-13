@@ -71,6 +71,7 @@ extension ScreenShareQualityUpdate on ScreenShareController {
       final intentRevision = qualityIntentRevision;
       pendingQualityUpdate = null;
       final track = activeTrack;
+      descriptor.runtime.configurationChanged();
       bool current() =>
           !disposed &&
           intentRevision == qualityIntentRevision &&

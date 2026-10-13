@@ -10,6 +10,7 @@ import 'audio_track_registry.dart';
 import 'dimensions.dart';
 import '../rollout/policy.dart';
 import '../rollout/publish_plan.dart';
+import 'macos_policy.dart';
 
 abstract class ScreenShareDriver {
   Future<void> prepare(bool Function() active);
@@ -37,6 +38,9 @@ ScreenShareCaptureOptions nativeScreenCaptureOptions(
   ScreenShareCaptureOptions options,
   TargetPlatform platform,
 ) => options.copyWith(
+  captureEngine: platform == TargetPlatform.macOS
+      ? macOSCaptureEngine(value: options.captureEngine)
+      : null,
   useiOSBroadcastExtension:
       platform == TargetPlatform.iOS && options.captureScreenAudio,
 );
@@ -51,6 +55,7 @@ class NativeScreenShareDriver implements ScreenShareDriver {
       prepareAndroidScreenShare(active);
   @override
   Future<LocalVideoTrack> capture(ScreenShareCaptureOptions options) async {
+    options = nativeScreenCaptureOptions(options, defaultTargetPlatform);
     if (!options.captureScreenAudio) {
       return LocalVideoTrack.createScreenShareTrack(options);
     }
@@ -124,7 +129,9 @@ class NativeScreenShareDriver implements ScreenShareDriver {
         quality,
         rollout,
         defaultTargetPlatform,
-        sourceDimensions: defaultTargetPlatform == TargetPlatform.android
+        sourceDimensions: defaultTargetPlatform == TargetPlatform.macOS
+            ? dimensions
+            : defaultTargetPlatform == TargetPlatform.android
             ? null
             : screenShareCaptureDimensions(track) ??
                   (defaultTargetPlatform == TargetPlatform.windows

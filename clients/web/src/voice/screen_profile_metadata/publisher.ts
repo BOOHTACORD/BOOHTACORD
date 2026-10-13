@@ -1,6 +1,6 @@
 import { screenProfile, type ScreenProfile } from '../screen_profile/policy'
 import { SCREEN_DESCRIPTOR_ATTRIBUTE } from './descriptor'
-import type { ScreenDescriptorLayer, ScreenDescriptorOwner, ScreenShareDescriptorV1 } from './types'
+import type { ScreenDescriptorLayer, ScreenDescriptorOwner, ScreenShareDescriptorV1, ScreenProfileMode } from './types'
 
 export interface DescriptorAttributePort { setAttributes(attributes: Record<string, string>): Promise<void> }
 export interface CaptureSnapshot { width: number; height: number }
@@ -9,6 +9,7 @@ export interface SenderEncodingSnapshot { rid?: string; active?: boolean; maxBit
 export class ScreenProfileMetadataPublisher {
   private mediaSessionId: string | undefined
   private lastProfile: ScreenProfile | undefined
+  private lastMode: ScreenProfileMode | undefined
   private lastDescriptor: ScreenShareDescriptorV1 | undefined
   private profileRevision = 0
   private operationRevision = 0
@@ -19,7 +20,7 @@ export class ScreenProfileMetadataPublisher {
     private readonly createId: () => string = () => crypto.randomUUID(),
   ) {}
 
-  async publish(profile: ScreenProfile, generation: number, capture: CaptureSnapshot, encodings: SenderEncodingSnapshot[]): Promise<void> {
+  async publish(profile: ScreenProfile, generation: number, capture: CaptureSnapshot, encodings: SenderEncodingSnapshot[], mode: ScreenProfileMode = 'motion'): Promise<void> {
     if (!Number.isSafeInteger(capture.width) || capture.width < 2 || !Number.isSafeInteger(capture.height) || capture.height < 2) {
       throw new Error('Фактический размер захвата экрана недоступен.')
     }
@@ -28,12 +29,12 @@ export class ScreenProfileMetadataPublisher {
       !Number.isFinite(encoding.maxFramerate) || (encoding.maxFramerate ?? 0) < 1)) {
       throw new Error('Фактические sender encodings демонстрации экрана недоступны.')
     }
-    const nextRevision = this.lastProfile === profile ? this.profileRevision : this.profileRevision + 1
+    const nextRevision = this.lastProfile === profile && this.lastMode === mode ? this.profileRevision : this.profileRevision + 1
     const nextOperation = this.operationRevision + 1
     this.mediaSessionId ??= this.createId()
     this.operationRevision = nextOperation
     const descriptor = buildDescriptor({
-      owner: this.owner, profile, generation, operationRevision: nextOperation, profileRevision: nextRevision,
+      owner: this.owner, profile, mode, generation, operationRevision: nextOperation, profileRevision: nextRevision,
       mediaSessionId: this.mediaSessionId, capture, encodings,
     })
     this.lastDescriptor = descriptor
@@ -41,6 +42,7 @@ export class ScreenProfileMetadataPublisher {
     if (this.operationRevision === nextOperation) {
       this.mediaSessionId = descriptor.scope.media_session_id
       this.lastProfile = profile
+      this.lastMode = mode
       this.profileRevision = nextRevision
     }
   }
@@ -53,13 +55,14 @@ export class ScreenProfileMetadataPublisher {
     }
     this.mediaSessionId = undefined
     this.lastProfile = undefined
+    this.lastMode = undefined
     this.profileRevision = 0
     if (descriptor) await this.participant.setAttributes({ [SCREEN_DESCRIPTOR_ATTRIBUTE]: JSON.stringify(descriptor) })
   }
 }
 
 function buildDescriptor(input: {
-  owner: ScreenDescriptorOwner; profile: ScreenProfile; generation: number; operationRevision: number; profileRevision: number
+  owner: ScreenDescriptorOwner; profile: ScreenProfile; mode: ScreenProfileMode; generation: number; operationRevision: number; profileRevision: number
   mediaSessionId: string; capture: CaptureSnapshot; encodings: SenderEncodingSnapshot[]
 }): ScreenShareDescriptorV1 {
   const target = screenProfile(input.profile)
@@ -80,7 +83,7 @@ function buildDescriptor(input: {
       origin_id: input.owner.originId, account_id: input.owner.accountId, room_id: input.owner.roomId,
       media_session_id: input.mediaSessionId, publication_generation: input.generation, operation_revision: input.operationRevision,
     },
-    mode: target.frameRate === 60 ? 'motion' : 'text', publisher_state: 'sharing', viewer_state: 'idle',
+    mode: input.mode, publisher_state: 'sharing', viewer_state: 'idle',
     requested_profile_id: input.profile,
     effective_profile: {
       capture: { max_width: width, max_height: height, max_fps: captureFps },

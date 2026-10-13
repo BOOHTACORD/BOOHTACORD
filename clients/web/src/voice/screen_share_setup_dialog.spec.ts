@@ -15,11 +15,11 @@ describe('screen-share setup dialog', () => {
 
     expect(html).toContain('Демонстрация экрана')
     expect(html).toContain('Плавность')
-    expect(html).toContain('Игры и видео · 60 FPS')
+    expect(html).toContain('Игры и видео')
     expect(html).toContain('Чёткость текста')
-    expect(html).toContain('Документы и код · 15–30 FPS')
+    expect(html).toContain('Документы и код')
     expect(html).toContain('Максимальное разрешение')
-    expect(html).toContain('Частота кадров для текста')
+    expect(html).toContain('Частота кадров')
     expect(html).toContain('Рекомендуемый профиль')
     expect(html).toContain('<strong>1080p · 60 FPS</strong>')
     expect(html).toContain('Текущий выбор: 1080p · 30 FPS')
@@ -30,35 +30,35 @@ describe('screen-share setup dialog', () => {
     expect(html).toContain('1440p')
     expect(html).toContain('15 FPS')
     expect(html).toContain('30 FPS')
-    expect(html).not.toContain('<span>60 FPS</span>')
+    expect(html).toContain('<span>60 FPS</span>')
     expect([...html.matchAll(/<span>(\d{3,4}p)<\/span>/g)].map((match) => match[1]))
       .toEqual(['720p', '1080p', '1440p'])
     expect([...html.matchAll(/<span>(15|30|60) FPS<\/span>/g)].map((match) => match[1]))
-      .toEqual(['15', '30'])
+      .toEqual(['15', '30', '60'])
     expect(html).toContain('браузер покажет системный запрос')
     expect(html).toContain('Суммарный лимит двух слоёв')
     expect(html).toContain('не гарантированный сетевой расход')
     expect(html).toContain('Начать трансляцию')
   })
 
-  it('keeps motion at 60 FPS while leaving the 1440p option available', async () => {
+  it('keeps content intent independent of all existing FPS choices', async () => {
     const html = await renderToString(createSSRApp(ScreenShareSetupDialog, { initialProfile: 'P1080_60' }))
-    expect(html).toContain('<span class="screen-share-quality__frame-rate-label">Частота кадров для плавности</span>')
-    expect(html).toContain('screen-share-quality__single-value')
-    expect(html).toContain('Игры и видео · 60 FPS')
-    expect(html).toContain('Документы и код · 15–30 FPS')
+    expect(html).toContain('<legend>Частота кадров</legend>')
+    expect(html).not.toContain('screen-share-quality__single-value')
+    expect(html).toContain('Игры и видео')
+    expect(html).toContain('Документы и код')
     expect(html).toMatch(/<input[^>]*name="screen-share-resolution" value="1440"[^>]*>/)
     expect(html).not.toMatch(/<input[^>]*disabled[^>]*value="1440"[^>]*>/)
-    expect(html).toContain('1440p автоматически включает сценарий')
+    expect(html).toContain('Для 1440p доступно до 30 FPS; сценарий выбирается отдельно.')
   })
 
-  it('moves to the compatible text profile when 1440p is selected from motion', () => {
+  it('preserves intent while enforcing the existing 1440p FPS ceiling', () => {
     const motion = { mode: 'motion' as const, resolution: 1080 as const, frameRate: 60 as const }
-    expect(selectScreenQualityResolution(motion, 1440)).toEqual({ mode: 'text', resolution: 1440, frameRate: 30 })
-    expect(selectScreenQualityMode({ ...motion, resolution: 1440 }, 'motion')).toEqual({ mode: 'motion', resolution: 1080, frameRate: 60 })
-    expect(selectScreenQualityMode(motion, 'text')).toEqual({ mode: 'text', resolution: 1080, frameRate: 30 })
+    expect(selectScreenQualityResolution(motion, 1440)).toEqual({ mode: 'motion', resolution: 1440, frameRate: 30 })
+    expect(selectScreenQualityMode({ ...motion, resolution: 1440 }, 'motion')).toEqual({ mode: 'motion', resolution: 1440, frameRate: 30 })
+    expect(selectScreenQualityMode(motion, 'text')).toEqual({ mode: 'text', resolution: 1080, frameRate: 60 })
     expect(normalizeScreenQualitySelection({ mode: 'motion', resolution: 1440, frameRate: 60 }))
-      .toEqual({ mode: 'text', resolution: 1440, frameRate: 30 })
+      .toEqual({ mode: 'motion', resolution: 1440, frameRate: 30 })
   })
 
   it('opens the dialog from both the room action and persistent voice dock', () => {
@@ -73,13 +73,13 @@ describe('screen-share setup dialog', () => {
     expect(pane).not.toContain('Целевой профиль<select')
   })
 
-  it('normalizes a saved 1440p60 profile to a startable 1440p30 text profile', async () => {
+  it('normalizes a saved 1440p60 profile without inventing a text scenario', async () => {
     const html = await renderToString(createSSRApp(ScreenShareSetupDialog, {
       initialProfile: 'P1440_60',
     }))
 
     expect(html).toMatch(/<input[^>]*checked[^>]*name="screen-share-resolution" value="1440"[^>]*>/)
-    expect(html).toMatch(/<input[^>]*checked[^>]*name="screen-share-mode" value="text"[^>]*>/)
+    expect(html).toMatch(/<input[^>]*checked[^>]*name="screen-share-mode" value="motion"[^>]*>/)
     expect(html).toMatch(/<input[^>]*checked[^>]*name="screen-share-frame-rate" value="30"[^>]*>/)
     expect(html).toContain('Текущий выбор: 1440p · 30 FPS')
     expect(html).not.toMatch(/<button[^>]*class="screen-share-setup__start"[^>]*disabled>/)

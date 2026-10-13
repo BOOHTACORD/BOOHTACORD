@@ -117,3 +117,16 @@ defaults without asserting physical acceptance. Independent descriptor and HTTP
 JPEG switches, safe VP8 fallback and per-origin/account native preferences are
 defined in `docs/runbooks/screen-media-rollout.md`. Applied slow adaptation and
 experimental profile enablement remain gated by calibration and pilot evidence.
+
+## 2026-10-13 explicit content scenario clarification (#328)
+
+The existing legacy `P{resolution}_{fps}` IDs carry resolution and frame-rate
+intent; they do not encode motion/text content. The schema already permits
+either scenario for these IDs. Go, Web and Flutter validators must accept that
+explicit choice instead of inferring text from 30 FPS or motion only from
+60 FPS. Named experimental profiles retain their catalog scenario constraints
+and remain gated; this clarification adds no profile IDs or hardware claims.
+New native publisher metadata takes mode from a visible user scenario choice.
+Capture configuration, fresh sender-parameter readback and measured frame
+cadence remain distinct facts. A missing confirmed configuration keeps the
+native writer pending; selected values or desktop defaults cannot fill it.

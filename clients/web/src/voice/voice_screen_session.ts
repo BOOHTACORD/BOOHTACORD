@@ -14,6 +14,7 @@ export class VoiceScreenSession {
   private watchedRoom?: VoiceRoom
   private repairTimer?: ReturnType<typeof setTimeout>
   private repairGeneration = 0
+  private contentMode: 'motion' | 'text' = 'motion'
   private readonly publisher = new ScreenPublisherAdapter<LocalVideoTrack>(() => this.scope())
   private readonly adaptation: ScreenAdaptationBinding<LocalVideoTrack>
   constructor(private readonly current: () => ScreenVoiceSession | null, adaptation: AdaptationRuntimeOptions = {}) {
@@ -21,18 +22,19 @@ export class VoiceScreenSession {
       const session = this.current()
       if (!session || session !== this.publisher.active?.scope.owner) return
       session.screenProfile = profile; this.scheduleRepairWatchdog(session, profile)
-      await session.room.publishScreenProfileMetadata?.(profile).catch(() => undefined)
+      await session.room.publishScreenProfileMetadata?.(profile, this.contentMode).catch(() => undefined)
     })
   }
 
-  async startScreen(profile: ScreenProfile): Promise<ScreenDiagnostics> {
+  async startScreen(profile: ScreenProfile, mode: 'motion' | 'text' = 'motion'): Promise<ScreenDiagnostics> {
     return tracedOperation('screen.share.start', async (within) => {
       const current = this.requireCurrent(); this.watch(current.room)
       activeAction()?.step('publish')
       const diagnostics = await within(() => this.publisher.start(profile))
       if (this.current() !== current) throw new Error('Голосовое подключение закрыто.')
+      this.applyContentMode(mode)
       current.screenProfile = profile; this.scheduleRepairWatchdog(current, profile)
-      await current.room.publishScreenProfileMetadata?.(profile).catch(() => undefined)
+      await current.room.publishScreenProfileMetadata?.(profile, this.contentMode).catch(() => undefined)
       return diagnostics
     })
   }
@@ -46,20 +48,21 @@ export class VoiceScreenSession {
       if (current) current.screenProfile = null
     })
   }
-  async updateScreenProfile(profile: ScreenProfile): Promise<ScreenDiagnostics> {
+  async updateScreenProfile(profile: ScreenProfile, mode: 'motion' | 'text' = this.contentMode): Promise<ScreenDiagnostics> {
     const current = this.requireCurrent()
     if (!current.screenProfile) throw new Error('Демонстрация экрана не запущена.')
     const previous = current.screenProfile
     let diagnostics: ScreenDiagnostics
     try { diagnostics = await this.publisher.update(profile) }
     catch (cause) {
-      if (this.current() === current && previous && this.publisher.active?.profile === previous) await current.room.publishScreenProfileMetadata?.(previous).catch(() => undefined)
+      if (this.current() === current && previous && this.publisher.active?.profile === previous) await current.room.publishScreenProfileMetadata?.(previous, this.contentMode).catch(() => undefined)
       throw cause
     }
     if (this.current() !== current) throw new Error('Голосовое подключение закрыто.')
+    this.applyContentMode(mode)
     current.room.adoptScreenProfile?.(profile); current.screenProfile = profile
     this.scheduleRepairWatchdog(current, profile)
-    await current.room.publishScreenProfileMetadata?.(profile).catch(() => undefined)
+    await current.room.publishScreenProfileMetadata?.(profile, this.contentMode).catch(() => undefined)
     return diagnostics
   }
   async readScreenDiagnostics(): Promise<ScreenDiagnostics> {
@@ -100,7 +103,7 @@ export class VoiceScreenSession {
       const diagnostics = await readScreenShareDiagnostics(session.room)
       if (this.watchdogCurrent(session, profile, generation) && diagnostics.profileCheck?.status === 'drift') {
         await this.publisher.repairCurrent()
-        await session.room.publishScreenProfileMetadata?.(profile).catch(() => undefined)
+        await session.room.publishScreenProfileMetadata?.(profile, this.contentMode).catch(() => undefined)
       }
     } catch { /* diagnostics and repair status remain available through the regular read path */ }
     if (this.watchdogCurrent(session, profile, generation)) this.repairTimer = setTimeout(() => { void this.inspectForRepair(session, profile, generation) }, 5000)
@@ -111,6 +114,11 @@ export class VoiceScreenSession {
   private scope(): ScreenPublisherScope<LocalVideoTrack> | null {
     const current = this.current(), port = current?.room.screenPublisher
     return current && port ? { owner: current, room: current.room, port } : null
+  }
+  private applyContentMode(mode: 'motion' | 'text'): void {
+    this.contentMode = mode
+    const capture = this.publisher.active?.track.mediaStreamTrack
+    if (capture && 'contentHint' in capture) capture.contentHint = mode
   }
   private requireCurrent(): ScreenVoiceSession {
     const current = this.current()

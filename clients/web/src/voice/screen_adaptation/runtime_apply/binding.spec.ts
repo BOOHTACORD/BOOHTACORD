@@ -18,7 +18,7 @@ it('real VoiceScreenSession diagnostic ingress applies classified decisions and 
   expect((await session.readScreenDiagnostics()).adaptationReason).toBe('downgrade-pressure')
   expect(f.port.capture).toHaveBeenCalledTimes(1)
   expect(current.screenProfile).toBe('P720_60')
-  expect(metadata).toHaveBeenLastCalledWith('P720_60')
+  expect(metadata).toHaveBeenLastCalledWith('P720_60', 'motion')
   session.cancel()
 })
 it('default session reads diagnostics without running a classifier or changing media', async () => {

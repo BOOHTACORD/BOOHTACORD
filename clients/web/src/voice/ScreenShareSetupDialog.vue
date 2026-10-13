@@ -2,13 +2,13 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { ScreenProfile } from './livekit_gateway'
 import type { ScreenFrameRate, ScreenResolution } from './media_publishing'
-import { screenProfileMode, screenShareBandwidthEstimate } from './screen_profile_metadata/profile'
+import { screenShareBandwidthEstimate } from './screen_profile_metadata/profile'
 import { containModalTab } from '../accessibility/modal_tab_focus'
 import ScreenCaptureCapabilitySummary from './ScreenCaptureCapabilitySummary.vue'
 import ScreenShareQualityOptions from './ScreenShareQualityOptions.vue'
 import { normalizeScreenQualitySelection, selectScreenQualityMode, selectScreenQualityResolution } from './screen_share_quality_selection'
-const props = defineProps<{ initialProfile: ScreenProfile; updating?: boolean }>()
-const emit = defineEmits<{ cancel: []; start: [profile: ScreenProfile] }>()
+const props = defineProps<{ initialProfile: ScreenProfile; initialMode?: 'motion' | 'text'; updating?: boolean }>()
+const emit = defineEmits<{ cancel: []; start: [profile: ScreenProfile, mode: 'motion' | 'text'] }>()
 const dialog = ref<HTMLDialogElement | null>(null)
 const opener = ref<HTMLElement | null>(null)
 function profileValues(profile: ScreenProfile): { resolution: ScreenResolution; frameRate: ScreenFrameRate } | null {
@@ -18,13 +18,13 @@ function profileValues(profile: ScreenProfile): { resolution: ScreenResolution; 
 }
 const initialValues = profileValues(props.initialProfile)
 const initialSelection = initialValues
-  ? normalizeScreenQualitySelection({ mode: screenProfileMode(props.initialProfile), ...initialValues })
+  ? normalizeScreenQualitySelection({ mode: props.initialMode ?? 'motion', ...initialValues })
   : null
 const resolution = ref<ScreenResolution>(initialSelection?.resolution ?? 1080)
 const frameRate = ref<ScreenFrameRate>(initialSelection?.frameRate ?? 30)
-const mode = ref<'motion' | 'text'>(initialSelection?.mode ?? screenProfileMode(props.initialProfile))
+const mode = ref<'motion' | 'text'>(initialSelection?.mode ?? props.initialMode ?? 'motion')
 const selectedProfile = computed(() => `P${resolution.value}_${frameRate.value}` as ScreenProfile)
-const profileAllowed = computed(() => mode.value !== 'motion' || resolution.value !== 1440)
+const profileAllowed = computed(() => resolution.value !== 1440 || frameRate.value !== 60)
 const bandwidthEstimate = computed(() => screenShareBandwidthEstimate(selectedProfile.value))
 const profileSummary = computed(() => `${resolution.value}p · ${frameRate.value} FPS`)
 const recommendedProfile: ScreenProfile = 'P1080_60'
@@ -32,7 +32,7 @@ const recommendedProfile: ScreenProfile = 'P1080_60'
 function useProfile(profile: ScreenProfile): void {
   const values = profileValues(profile)
   if (!values) return
-  const selection = normalizeScreenQualitySelection({ mode: screenProfileMode(profile), ...values })
+  const selection = normalizeScreenQualitySelection({ mode: mode.value, ...values })
   resolution.value = selection.resolution
   frameRate.value = selection.frameRate
   mode.value = selection.mode
@@ -74,7 +74,7 @@ onBeforeUnmount(() => {
 })
 
 function start(): void {
-  if (profileAllowed.value) emit('start', selectedProfile.value)
+  if (profileAllowed.value) emit('start', selectedProfile.value, mode.value)
 }
 </script>
 
@@ -134,7 +134,7 @@ function start(): void {
           <p class="screen-share-quality__disclaimer">Профиль задаёт цель; фактическое качество зависит от выбранного источника, устройства и сети.</p>
           <p class="screen-share-quality__hint">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 8a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0m-11 4a5 5 0 0 1 8 0m-4 4h.01" /></svg>
-            <span>1440p автоматически включает сценарий «Чёткость текста» и ограничивает частоту до 30 FPS. Суммарный лимит двух слоёв — {{ bandwidthEstimate }}; это не гарантированный сетевой расход.</span>
+            <span>Для 1440p доступно до 30 FPS; сценарий выбирается отдельно. Суммарный лимит двух слоёв — {{ bandwidthEstimate }}; это не гарантированный сетевой расход.</span>
           </p>
         </div>
         <p v-if="updating" class="screen-share-quality__warning"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg><span>При ухудшении сети качество может временно снижаться. Приоритет — голос.</span></p>

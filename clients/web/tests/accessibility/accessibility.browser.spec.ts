@@ -952,7 +952,7 @@ test('screen-share setup shows the recommended profile and keeps all quality opt
   }
 })
 
-test('screen-share selectors fit their options and allow the 1440p text profile', async ({ page }, testInfo) => {
+test('screen-share selectors fit their options and preserve scenario for the 1440p profile', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 637, height: 584 })
   await mountProductionComponent(page, '/src/voice/ScreenShareSetupDialog.vue', { initialProfile: 'P1080_60' })
 
@@ -981,7 +981,7 @@ test('screen-share selectors fit their options and allow the 1440p text profile'
     return { columns, labelsFit, labelFits }
   }))
   const motionLayout = await readSelectorLayout()
-  expect(motionLayout.map(group => group.columns)).toEqual([2, 3, 1])
+  expect(motionLayout.map(group => group.columns)).toEqual([2, 3, 3])
   expect(motionLayout.every(group => group.labelsFit && group.labelFits)).toBe(true)
 
   const resolution = dialog.getByRole('radio', { name: '1440p' })
@@ -991,7 +991,7 @@ test('screen-share selectors fit their options and allow the 1440p text profile'
   await expect(resolution).toBeEnabled()
   await expectAxeClear(page, '.screen-share-setup-dialog')
   await resolution.check()
-  await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
+  await expect(dialog.getByRole('radio', { name: /Плавность/ })).toBeChecked()
   await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
   await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
   await expect(dialog.locator('.screen-share-quality__mode')).toBeInViewport({ ratio: 0.99 })
@@ -1388,7 +1388,7 @@ test('role 409 requires conflict review before a deliberate retry', async ({ pag
 
 test('screen-share setup keeps keyboard focus inside its modal dialog', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
-  await mountProductionComponent(page, '/src/voice/ScreenShareSetupDialog.vue', { initialProfile: 'P1080_30' })
+  await mountProductionComponent(page, '/src/voice/ScreenShareSetupDialog.vue', { initialProfile: 'P1080_30', initialMode: 'text' })
 
   const dialog = page.getByRole('dialog', { name: 'Демонстрация экрана' })
   const close = dialog.getByRole('button', { name: 'Закрыть' })

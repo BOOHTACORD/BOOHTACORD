@@ -1,0 +1,3 @@
+import 'package:flutter_test/flutter_test.dart';
+import '../integration_test/qa98325_stage_scene.dart';
+void main(){test('120Hz vsync emits bounded60Hz unique source updates',(){final ledger=StageFrameLedger();for(var i=0;i<120;i++){ledger.vsync(i*8334);}expect(ledger.snapshot()['source_updates'],60);});test('synthetic marker uses existing12-bit signature and bounded ledger',(){expect(stageMarkerBits(1).take(8).toList(),[false,true,true,false,false,true,false,true]);expect(stageMarkerBits(4097),stageMarkerBits(1));final ledger=StageFrameLedger();for(var i=0;i<250;i++){ledger.vsync(i*16667);ledger.painted();}expect(ledger.snapshot()['vsync_callbacks'],250);expect(ledger.retainedFrames,120);expect(ledger.snapshot()['paint_attempts'],250);});}

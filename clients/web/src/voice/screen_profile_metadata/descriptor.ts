@@ -31,7 +31,7 @@ function valid(value: Data): boolean {
   if (!exact(value, ['schema_version', 'scope', 'mode', 'publisher_state', 'viewer_state', 'requested_profile_id', 'effective_profile', 'layer_topology', 'profile_revision', 'capabilities', 'reason_codes']) || value.schema_version !== 1) return false
   const profile = String(value.requested_profile_id)
   if (!profiles.has(profile) || !validScope(value.scope) || !validEffective(value.effective_profile)) return false
-  if (value.mode !== (profile.endsWith('_60') ? 'motion' : 'text')) return false
+  if (value.mode !== 'motion' && value.mode !== 'text') return false
   if (!publishers.has(String(value.publisher_state)) || !viewers.has(String(value.viewer_state))) return false
   if (!['single-layer', 'bounded-simulcast'].includes(String(value.layer_topology)) || !whole(value.profile_revision)) return false
   if (!validCapabilities(value.capabilities) || !Array.isArray(value.reason_codes) || value.reason_codes.length > 8) return false

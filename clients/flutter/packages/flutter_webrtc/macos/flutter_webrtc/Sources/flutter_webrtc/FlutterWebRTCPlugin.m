@@ -32,6 +32,7 @@
 #import "LocalTrack.h"
 #import "LocalAudioTrack.h"
 #import "LocalVideoTrack.h"
+#import "FlutterScreenCaptureDiagnostics.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wprotocol"
@@ -881,6 +882,12 @@ static void FlutterWebRTCApplyFieldTrials(void) {
       track.isEnabled = enabled.boolValue;
     }
     result(nil);
+  } else if ([@"mediaStreamTrackGetCaptureSnapshot" isEqualToString:call.method]) {
+    id trackId = [call.arguments isKindOfClass:NSDictionary.class] ? call.arguments[@"trackId"] : nil;
+    id<LocalTrack> localTrack = [trackId isKindOfClass:NSString.class] ? self.localTracks[trackId] : nil;
+    FlutterScreenCaptureDiagnostics *diagnostics = [localTrack isKindOfClass:LocalVideoTrack.class]
+        ? ((LocalVideoTrack *)localTrack).processing.captureDiagnostics : nil;
+    result(diagnostics != nil ? diagnostics.snapshot : @{@"schema_version": @1, @"status": @"unavailable", @"config_confirmed": @NO});
   } else if ([@"mediaStreamAddTrack" isEqualToString:call.method]) {
     NSDictionary* argsMap = call.arguments;
     NSString* streamId = argsMap[@"streamId"];

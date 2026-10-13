@@ -1,0 +1,486 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "parent_issue": 326,
+  "status": "COMPLETED_WITH_OPEN_GATES",
+  "selected_issues": [
+    328,
+    329,
+    330,
+    331,
+    332
+  ],
+  "baseline_commit": "2057bb78a7e69a7c541221ef5f386ffd65e22a92",
+  "available_physical_devices": 1,
+  "second_device": "UNAVAILABLE_USER_CONFIRMED",
+  "workers": {
+    "root": 328,
+    "mac_audio_257_259": [
+      329,
+      332
+    ],
+    "composer_geometry": 330,
+    "identity_278": [
+      331,
+      "328 UI contribution"
+    ]
+  },
+  "max_concurrent_agents": 4,
+  "execution": "Parallel preparation, contract/UI/native boundary tests; baseline before capture changes; codec evaluation follows stabilized capture. Shared SDK/API builds serialized. Existing Android/iOS emulators reused for applicable cross-platform regressions; they do not replace physical Mac pair.",
+  "closure_policy": "PASS complete issue DoD only; required second-device/hardware/SLO/release gates remain NOT_RUN until evidence available.",
+  "previous_closed": [
+    327,
+    251,
+    254,
+    258,
+    264,
+    276
+  ],
+  "retained_unrelated_resources": [
+    "QA3014930 certificate-handoff fixture",
+    "unrelated qa-client stack"
+  ],
+  "initial_findings": [
+    "Three validators incorrectly infer legacy content mode from FPS despite schema permitting explicit mode. Shared RED3Go/3Web/3Dart thenGREEN; no new profile IDs.",
+    "Native Objective-C tests found selected-display substitution, inactive/invalid callbacks and oversized/conversion fallback defects; native fixes wait for unchanged baseline.",
+    "Native cached sender.parameters is not native readback; query existing pc.getSenders instead."
+  ],
+  "scope_limits": [
+    "Only one physical Mac; co-hosted measurements are scoped local baselines, not two-device quality acceptance.",
+    "Proposed58median/55p05 FPS thresholds not accepted or retroactively applied.",
+    "No production fault injection or camera/recording/media proxy changes.",
+    "Spec traceability checks committed requirement index only; approved Windows product brief unavailable on this host."
+  ],
+  "phase": "SOURCE_EVIDENCE_COMPLETE_PUBLICATION_GUARDED",
+  "completed_scoped_checks": {
+    "web_full_unit": 1530,
+    "web_required_features": "All10 stagesPASS; source-resolution visual review complete with explicitfixture limits",
+    "main_nearest_before_final_two_small_fixes": 131,
+    "metadata_after_confirmation_loss_fix": 54,
+    "native_capture_functional": 60,
+    "native_bridge_and_options": 12,
+    "native_codec_policy_baseline_and_adapter": 35,
+    "harness_python": 25,
+    "harness_node": 1,
+    "contracts_python": 19,
+    "contracts_openapi": 108,
+    "traceability_requirements_referenced": 39,
+    "flutter_full_unit_skipped": 1,
+    "native_real_API_and_changed_chooser": "Android and iOS emulator PASS; not physical/media",
+    "web_original_visual": "145 paths validated;110 changed unique originals inspected with scoped fixture limitations",
+    "qa_codec_adapter_before_transport_fix": 11,
+    "native_original_visual": "66path hashes checked,52unique original images reviewed; fixture glyph/firstTextscroll limitations retained",
+    "protected_API_real_SFU_ACL_revision": 13,
+    "flutter_full_unit_before_geometry_fix": 1303,
+    "final_flutter_full_unit": {
+      "passed": 1351,
+      "skipped": 1,
+      "source_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+      "receipt_sha256": "58013fa6f425e71262db4296a3e5c4d042af7d68c0c821e8059e59346bc2d873"
+    },
+    "final_flutter_analyze": {
+      "info": 64,
+      "warning": 0,
+      "error": 0,
+      "exit": 0,
+      "policy": "--no-fatal-infos"
+    }
+  },
+  "available_emulators_state": "Both dedicated QA targets used and shut down before media measurement",
+  "candidate_startup_attempt": {
+    "status": "FAIL",
+    "before_media": true,
+    "observed_phase": "connectionError",
+    "own_API_health_http": 200,
+    "TLS_config": "Own CA bytes/defines match historical working scope; not diagnosed as capture failure.",
+    "action": "Retain failure; clean only own namespaced test cookies through historical QA app and retry startup without media."
+  },
+  "candidate_window_local_prototype": {
+    "flow_status": "PASS",
+    "physical_sender": true,
+    "headless_cohosted_viewer": true,
+    "cases": [
+      8,
+      9,
+      10
+    ],
+    "warmup_seconds": 30,
+    "steady_seconds": 60,
+    "capture_median_fps": [
+      57.99,
+      57.04,
+      57.39
+    ],
+    "encoded_and_sent_median_fps": [
+      57.09,
+      57.06,
+      57.06
+    ],
+    "decoded_p05_fps": [
+      54.8,
+      54.79,
+      53.94
+    ],
+    "configured_capture": "1920x1080/60 confirmed",
+    "fresh_encoding_limits": "60fps/8Mbps/scale1.0",
+    "hardware_encoder": "NOT_PROVEN",
+    "proposed_SLO": "NOT_APPROVED_NOT_APPLIED",
+    "physical_presentation": "NOT_RUN",
+    "initial_startup_failure": "Retained; subsequent startup recovered after own fixture cookie cleanup; exact cause unresolved."
+  },
+  "static_local_prototype": {
+    "case": 11,
+    "flow_status": "PASS",
+    "first_frame_id": 0,
+    "unique_content_frames": 1,
+    "scope": "Physical native capture with headless cohosted Web viewer; repeated delivery is not new content.",
+    "native_writer_status": "applied; fresh read/HTTP ACK observed on existing60Motion API"
+  },
+  "display_first_attempt": {
+    "status": "FAIL_BEFORE_CAPTURE",
+    "reason": "Own fullscreen review/control deadline elapsed; guard refused continuation",
+    "capture_or_performance_claim": false,
+    "retry": "One bounded retry on same candidate"
+  },
+  "display_local_prototype": {
+    "case": 12,
+    "flow_status": "PASS",
+    "guard": "Fresh own fullscreen original reviewed; exactly one display checked before capture.",
+    "capture_median_fps": 57.01,
+    "encoded_and_sent_median_fps": 55.92,
+    "decoded_p05_fps": 52.88,
+    "historical_display_before": "NOT_RUN; historical compiled baseline fixture selects window only.",
+    "physical_presentation": "NOT_RUN",
+    "scope": "Physical native sender + headless cohosted viewer; not nonregression/full-matrix/SLO evidence.",
+    "actual_capture": [
+      1920,
+      1246
+    ],
+    "actual_encoder_scale_down_by": 1.0,
+    "encoder_geometry_defect": 333,
+    "profile_bounds_acceptance": "FAIL; native capture long-edge is valid, publisher missing source dimensions bypasses existing both-axis encoded limits"
+  },
+  "linked_discovered_defect": 333,
+  "diagnostics_pair_local_prototype": {
+    "cases": [
+      19,
+      20
+    ],
+    "flow_status": "PASS",
+    "same_artifact": true,
+    "encoded_sent_median_fps": [
+      56.915,
+      56.943
+    ],
+    "decoded_p05_fps": [
+      53.93,
+      53.908
+    ],
+    "off_capture_metrics": "unavailable",
+    "on_capture_median_fps": 57.001,
+    "off_writer": "pending",
+    "on_writer": "applied",
+    "limitations": "No approved overhead threshold; cohosted Debug prototype. OFF also removes configuration/metadata availability, not all telemetry costs; no measured-overhead gate PASS."
+  },
+  "historical_candidate_source": {
+    "main_lib_sha256": "175f99a2378c1640ee4fab8f6b6aa35886ea8dddfdc60b4b68ea1fc3846201e8",
+    "runtime_build_status": "Unsigned physical Mac Debug candidate built; window three-repeat artifact retained separately from later QA status-only incremental.",
+    "canonical_vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+    "canonical_vendor_source_paths": 990,
+    "historical_mixed_vendor_artifact_manifest_sha256": "237e651731a680cdd720f20f0bd14498bd49606ebe4057cee42bd37c56aeeafd",
+    "mixed_manifest_is_canonical_source": false
+  },
+  "current_candidate_source": {
+    "main_lib_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "main_files": 1116,
+    "canonical_vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+    "canonical_vendor_source_paths": 990,
+    "runtime_build_status": "BUILT_AD_HOC_QA_DEBUG_AND_RELEASE",
+    "whole_bundle_manifest_sha256": "3757c1b46d875b096b3fbc0fa828946e70b8112846c1524e8acba1ffcc7260d5",
+    "immutable_build_proof_sha256": "12b6c30e3a572bbf2e90c6de2b3d141a317a09e605da2d0a792e302be6513c3d"
+  },
+  "current_production_reader_roundtrip": {
+    "status": "PASS_SCOPED",
+    "cases": [
+      17,
+      18
+    ],
+    "main_source_sha256": "505453087670e59fe59256fb0a3a6501101078b658631fe3920b7e8a5ce00644",
+    "scope": "Motion30 and Text60 actualNative\u2192currentGo\u2192SFU\u2192currentproductionWebparser, current+lateviewer, independentaccount/origin/room and3foreignscope negatives, one existingvideo subscription; notphysicalpresentationSLO."
+  },
+  "current_lifecycle_roundtrip": {
+    "status": "PASS_SCOPED",
+    "case": 15,
+    "main_source_sha256": "59f9aaa3eb8c6ea7cca6bb41897f00575693b65012ce6ef0d7b416d0374869a7",
+    "scope": "Six Macstate checks: modecompatiblechange, lowerrestartrequired/lowerrestart, higherrestartrequired/higherrestart andlease-rejoin; actualWebparser/newnumberedoutput/one selectedsubscription; noFPSclaim."
+  },
+  "current_display_encoded_bounds": {
+    "status": "PASS_SCOPED",
+    "case": 16,
+    "main_source_sha256": "505453087670e59fe59256fb0a3a6501101078b658631fe3920b7e8a5ce00644",
+    "actual_encoded_decoded": [
+      1662,
+      1079
+    ],
+    "SDK_descriptor_derived": [
+      1662,
+      1078
+    ],
+    "scope": "60positiveoutbound+61decoderobservations within1920x1080, onepixelcodecrounding explicit; unconfirmedcapture paths not inferred."
+  },
+  "actual_isolated_metadata_recovery": {
+    "status": "PASS_SCOPED_RUNTIME",
+    "main_source_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "canonical_vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+    "build_proof": ".out/qa329332-20261013/candidate-network-final-build-proof.json",
+    "build_proof_sha256": "12b6c30e3a572bbf2e90c6de2b3d141a317a09e605da2d0a792e302be6513c3d",
+    "results": {
+      "failure": {
+        "status": "PASS",
+        "viewer_status": "PASS",
+        "cleanup_errors": [],
+        "context_closed": true,
+        "same_publication_recovery": {
+          "actual_failed_attempts": 2,
+          "actual_recovery_http_status": 204,
+          "same_failed_payload_and_operation_recovered": true,
+          "publication_generation_unchanged": true,
+          "capture_progressed": true,
+          "stop_idle_no_new_sender_reports": true,
+          "maximum_pending_descriptors": 1,
+          "scope": "Isolated proxy metadata fault, not a Go authorization failure"
+        },
+        "no_proxy_restart_during_recovery": true,
+        "exact_proxy_original_restored": true,
+        "proxy_original_and_restored_sha256_equal": true,
+        "reference_files": {
+          ".out/qa329332-20261013/metadata-failure/healthy-18.json": "4cf745ed6fd473135996a7fd25fdd7dc839b416a907f873b6366d5bd395a1d37",
+          ".out/qa329332-20261013/metadata-failure/receiver-18.json": "55ff8e90f02ef431ceca153cfc5fceecabd73b5cb26b254abfb0b509fdb5f615",
+          ".out/qa329332-20261013/metadata-failure/stage-case-18.json": "7427307f70ba2f2d5377ac1d5720934cd81ee13bdd633b522fee2f4b8780da74",
+          ".out/qa329332-20261013/metadata-failure/proxy-fault-restoration.json": "304a3f66cf8e028bcb08d3c3bae7d81e66a9233946b65124210cba677f2e23ff"
+        },
+        "metadata_timeout_observations_ms": []
+      },
+      "slow": {
+        "status": "PASS",
+        "viewer_status": "PASS",
+        "cleanup_errors": [],
+        "context_closed": true,
+        "same_publication_recovery": {
+          "actual_failed_attempts": 2,
+          "actual_recovery_http_status": 204,
+          "same_failed_payload_and_operation_recovered": true,
+          "publication_generation_unchanged": true,
+          "capture_progressed": true,
+          "stop_idle_no_new_sender_reports": true,
+          "maximum_pending_descriptors": 1,
+          "scope": "Isolated proxy metadata fault, not a Go authorization failure"
+        },
+        "no_proxy_restart_during_recovery": true,
+        "exact_proxy_original_restored": true,
+        "proxy_original_and_restored_sha256_equal": true,
+        "reference_files": {
+          ".out/qa329332-20261013/metadata-slow/healthy-18.json": "f9301083f44beb74f0f93156cf06d5f2b56041541c75b75bcc2d8fc72916ba63",
+          ".out/qa329332-20261013/metadata-slow/receiver-18.json": "97e1b4edad06b7742a4a14096a29eb92eeb02c3f539402365ea50f49d0c80a4c",
+          ".out/qa329332-20261013/metadata-slow/stage-case-18.json": "04de8fef0ac6c688a4d868b5f55656218024fa0bc2bf4b2fe8968e53130bbb81",
+          ".out/qa329332-20261013/metadata-slow/proxy-fault-restoration.json": "4446322620c62eca9122900d561ba9470dcd48fc57fb8323478592a5d39d73f8"
+        },
+        "metadata_timeout_observations_ms": [
+          4985.878000000001,
+          4998.177
+        ]
+      }
+    },
+    "scope": "Physical Mac native sender\u2192realAPI/SFU\u2192cohostedChromium currentproduction parser. Actual protectedmetadata path fault at ownedproxy, not Go authorization failure. No remotephysical/SLO/audio/signedrelease acceptance.",
+    "receipt_sha256": "ece68867d463cb96b92c45f43e57100a9e0fc93e4c7695427a1d5d74add27290"
+  },
+  "actual_web_to_native_reader": {
+    "status": "PASS_SCOPED_END_TO_END",
+    "native": {
+      "status": "PASS_SCOPED_RUNTIME_AND_VISUAL",
+      "native_receipt": ".out/qa329332-20261013/descriptor-reverse/healthy-18.json",
+      "native_receipt_sha256": "a2de33e1ec6d4b063e0694361c6c8957335c808c6242832c70ba12e94d0ee2b2",
+      "build_proof": ".out/qa329332-20261013/candidate-review-final-build-proof.json",
+      "build_proof_sha256": "a7b13d55d6995f7fa47f9cec752618e046ba4ea89c05d1fad5544a3a3b9cff78",
+      "main_source_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+      "actual_native_modes": [
+        "motion",
+        "text"
+      ],
+      "actual_scoped_parser_subscription_verified": true,
+      "owned_native_process_exited": true,
+      "original_visual": {
+        "bytes": 356139,
+        "sha256": "250da38dc075ab34a9bfe4222282728ae600dec3f32608e75cda402f23db5e63",
+        "dimensions": [
+          2880,
+          1800
+        ],
+        "storage": "CUAinline original only; no exportedPNG",
+        "review": "Actual productionexpandedremote screen/Statistics opened throughCUA. Synthetic remotechecker/colorboard visible, Text/1080p60 andSDKlimits readable. UNKNOWNsourcecaptureage/sendermeasurement remain distinct fromcurrentreceiverstats. Lowerstats require scroll, noallrows-visible claim. SmallQAoverlay excludedfromdecodedproof."
+      },
+      "source_reverse_scope": "Root actual Webpublisher/productionmetadataAPI/SFU\u2192physicalnativeproductionreader. Co-hosted oneMac; nosecondphysicaldevice, signedrelease, audio orFPS_SLO acceptance.",
+      "history": "First2overallNativeFAIL review50sdeadline retained. FirstsmallQAbadge onlyoverlay; correctedLIMIT. ThirdQA-only bounded180sreview/300shostlimit, Nativejoinedfirst, freshSource Motion30/Text/hold180; no productchange."
+    },
+    "native_summary_sha256": "e69c4190a6245ba9ba8bd67129a87dda79f6d5bcfe2905f6494563b6de99e754",
+    "web_counterpart": {
+      "status": "PASS_WEB_COUNTERPART_ONLY",
+      "receipt_sha256": "f3af39396a4c2924f4c51f6809509c6c616608e715e92c9777b649571a1339b8",
+      "metadata_HTTP_statuses": [
+        204,
+        204,
+        204
+      ],
+      "duration_seconds": 180,
+      "motion_seconds": 30,
+      "context_closed": true,
+      "cleanup_errors": []
+    },
+    "source_privacy": "Synthetic source and numerical/enumerated state only; no credential, ID, SDP, IP, real screen or PCM publication."
+  },
+  "closure_audit": {
+    "selected_issues": [
+      328,
+      329,
+      330,
+      331,
+      332
+    ],
+    "selected_complete_issues": [],
+    "linked_complete_defect_after_verified_publication": [
+      333
+    ],
+    "keep_open": [
+      326,
+      328,
+      329,
+      330,
+      331,
+      332
+    ],
+    "remaining": {
+      "328": "Physical voice-progress/audibility under metadata failure, explicit temporal expired-session/lease evidence and remaining revoke/logout/device gates are not established by current video/focused fixtures.",
+      "329": "Historical user18FPS source/build/network is unknown; current local baseline capture\u224825 and candidate\u224857 localize this prototype, not historicalRCA or physicalpresentation/SFUtruth.",
+      "330": "Full source/resize/sleep/audio/colour/Retina/window-display and hardware/Release matrix is incomplete; compile-time SCK remains opt-in and production baseline preserved.",
+      "331": "VP8 is measured locally; H264 negotiated42e034 exceeds admitted common42e01f and is guardedDEFER, so no valid steady H264 A/B or admitted hardware cohort/fallback release proof.",
+      "332": "Only one physicalMac, cohosted/headless endpoints; no approvedpresentation SLO, full4direction matrix, physicalaudio, signednative/stagingcanary or independentproductionrollback acceptance."
+    },
+    "gate_policy": "Unchecked mandatory criteria remain on original issues; source/unit/emulator/localprototype PASS cannot close them."
+  },
+  "actual_ad_hoc_QA_release": {
+    "status": "PASS_SCOPED_RUNTIME",
+    "build_kind": "macOS QA Release, adhoc signed if codesign reports adhoc; NOT production signedrelease acceptance",
+    "signature_observation": {
+      "adhoc": true,
+      "owned_bundle_identifier": true,
+      "production_DeveloperID_or_distribution_signature": false,
+      "scope": "QA Release directory historically named unsigned-release; actual adhoc signing is explicitly distinguished from production signing"
+    },
+    "main_source_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "versions": {
+      "flutter": "3.47.6",
+      "dart": "3.13.5"
+    },
+    "reference_files": {
+      ".out/qa329332-20261013/unsigned-release/healthy-18.json": "ba2687fa5f1cd4aacb956cc38c6e3a8b3ff3ebb7b60db6f946db9227fbff36a7",
+      ".out/qa329332-20261013/unsigned-release/receiver-18.json": "03a6717e9ab7d9aff680521aa87bfe740e2cdae2d57e172a0ee4d50200e7c935",
+      ".out/qa329332-20261013/unsigned-release/stage-case-18.json": "f61d763410a3a4ffddb5bcf7aeb38891ee17aaba5832d17c5b56ce7456f0a8ef",
+      ".out/qa329332-20261013/candidate-unsigned-release-build-proof.json": "8385d73814210a5c415fd485065f5cb6ca38424f32808be58c9ab2ffce201696"
+    },
+    "capture_flow_status": "PASS",
+    "decoder_flow_status": "PASS",
+    "viewer_cleanup_errors": [],
+    "owned_context_closed": true,
+    "window": "30s warmup+60s cohosted diagnostic, noSLO/capacity/hardware claims",
+    "original_visual": {
+      "path": ".out/qa329332-20261013/unsigned-release/receiver-18-synthetic.png",
+      "sha256": "cf3fb75aeb21569a30fd389f0f638070f8bc357a7b5a4ec6b2b881b5c5135f0d",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "review": "Original reviewed at fullresolution: syntheticalphabet/grid/marker/colorblocks visible, no blank output; systembadge partlyoverlapsfirstheading. No visualFPS/coloraccuracy/scroll acceptance."
+    },
+    "root_independent_original_review": {
+      "status": "PASS_SCOPED",
+      "scope": "Original1440x900 viewed: syntheticletters/digits/checker marker/thin grid/colour blocks are visible, no blank or obvious stretching in this representativeframe. Systembadge overlapsfirstheading; no uniqueFPS, calibratedcolour, scroll, physicalscanout or audio claim."
+    },
+    "receipt_sha256": "aee1b46d7851879b0ab9440f40722f97f8900b23a4f21f5273f6f1d5f75dbd9c"
+  },
+  "actual_whole_API_diagnostics": {
+    "status": "PASS_SCOPED_DIAGNOSTICS",
+    "main_source_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "build_proof": ".out/qa329332-20261013/candidate-review-final-build-proof.json",
+    "build_proof_sha256": "a7b13d55d6995f7fa47f9cec752618e046ba4ea89c05d1fad5544a3a3b9cff78",
+    "cases": {
+      "stall": {
+        "status": "PASS",
+        "receipt": ".out/qa329332-20261013/metadata-failure/stall-19.json",
+        "sha256": "22e5fa9067d2fb4f8068ed0e2dab7006c1d897f4ca53a357b61c9f2a3c79747f",
+        "fault_kind": "pause_api",
+        "observed_duration_ms": 20113.793958000002,
+        "sampler_events": 33,
+        "stop_observations": [
+          {
+            "at_ms": 35974.134,
+            "event": "publication_stopped",
+            "maximum_pending_reports": 1,
+            "pending_reports": 0,
+            "maximum_pending_descriptors": 1,
+            "pending_descriptors": 0
+          },
+          {
+            "at_ms": 37976.485,
+            "event": "post_stop_idle",
+            "new_reports": 0,
+            "pending_descriptors": 0
+          }
+        ],
+        "scope": "Whole GoAPI pause/stop also affects voicelease/control/auth; NOT isolatedmetadata writer proof and NOT a FPS/SLO test."
+      },
+      "failure": {
+        "status": "PASS",
+        "receipt": ".out/qa329332-20261013/metadata-failure/failure-20.json",
+        "sha256": "5d9069eb4ecd9ed5aa63ea726ab49ff58a3fd90a0be0f4e368e041d56976dfba",
+        "fault_kind": "stop_api",
+        "observed_duration_ms": 10463.641333,
+        "sampler_events": 35,
+        "stop_observations": [
+          {
+            "at_ms": 37903.21,
+            "event": "publication_stopped",
+            "maximum_pending_reports": 1,
+            "pending_reports": 0,
+            "maximum_pending_descriptors": 1,
+            "pending_descriptors": 0
+          },
+          {
+            "at_ms": 39907.022,
+            "event": "post_stop_idle",
+            "new_reports": 0,
+            "pending_descriptors": 0
+          }
+        ],
+        "scope": "Whole GoAPI pause/stop also affects voicelease/control/auth; NOT isolatedmetadata writer proof and NOT a FPS/SLO test."
+      }
+    },
+    "receipt_sha256": "e8e6f6a23dc28c1bd1b579bfd9357b6924a1adea63fc03703799bd638e8c4c37"
+  },
+  "cleanup": {
+    "status": "PASS",
+    "held_QA301_certificate_fixture_preserved": true,
+    "unrelated_qa_client_stack_preserved": true,
+    "own_qa98325_containers_absent": true,
+    "root_reverse_processes_exited": true,
+    "root_reverse_browser_contexts_closed": true,
+    "own_temporary_keep_awake_stopped": true,
+    "persistent_Codex_sleep_setting": "NOT_CHANGED_TOOL_POLICY_DENIED_COM_OPENAI_CODEX",
+    "own_cleanup_receipt_sha256": {
+      "final-owned-docker-cleanup.json": "b446218a17ff2c99b662a05acc1934a05b1522ca81529713a093a233759d4c38",
+      "final-owned-private-cleanup.json": "daf80d647ea5b10b0dc554e2707702c91cbb222e1d6961f47fac539fec65c4bc"
+    },
+    "root_receipt_sha256": "333eb07da5e16f7cb11c3050cdbae03ce7450747c9d54226d5d58c3f2a2f533f",
+    "scope": "Owned media/application/stack/private credential resources removed; existing emulators stopped; sanitized receipts, original synthetic images, toolchains and managed source worktree retained."
+  },
+  "publication_guard": "Close333 only after this exact tree is verified on master. Parent326/328-332 remain open; immutable remotecommit and verification go in issue comments."
+}

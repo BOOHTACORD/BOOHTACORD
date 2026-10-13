@@ -8,8 +8,8 @@ import { unknownScreenDiagnostics, type ScreenDiagnostics } from './screen_diagn
 export type ScreenShareState = 'IDLE' | 'STARTING' | 'SHARING' | 'STOPPING' | 'ERROR'
 export interface ScreenSession {
   readScreenDiagnostics(): Promise<ScreenDiagnostics>
-  startScreen(profile: ScreenProfile): Promise<ScreenDiagnostics>
-  updateScreenProfile?(profile: ScreenProfile): Promise<ScreenDiagnostics>
+  startScreen(profile: ScreenProfile, mode?: 'motion' | 'text'): Promise<ScreenDiagnostics>
+  updateScreenProfile?(profile: ScreenProfile, mode?: 'motion' | 'text'): Promise<ScreenDiagnostics>
   stopScreen(): Promise<void>
 }
 
@@ -22,12 +22,13 @@ export function createScreenControls(
   screenDiagnostics: Ref<ScreenDiagnostics>,
 ) {
   let refreshingDiagnostics = false
-  async function startScreen(profile: ScreenProfile): Promise<void> {
+  async function startScreen(profile: ScreenProfile, mode?: 'motion' | 'text'): Promise<void> {
     if (!active.value || screenState.value === 'STARTING' || screenState.value === 'STOPPING') return
     if (screenState.value === 'SHARING') {
       try {
         if (!session.updateScreenProfile) throw new Error('Изменение качества во время трансляции недоступно.')
-        screenDiagnostics.value = await session.updateScreenProfile(profile)
+        screenDiagnostics.value = await (mode === undefined
+          ? session.updateScreenProfile(profile) : session.updateScreenProfile(profile, mode))
         screenProfile.value = profile
         screenError.value = screenDiagnosticMessage(screenDiagnostics.value)
       } catch (cause) {
@@ -38,7 +39,8 @@ export function createScreenControls(
     screenState.value = 'STARTING'
     screenError.value = null
     try {
-      screenDiagnostics.value = await session.startScreen(profile)
+      screenDiagnostics.value = await (mode === undefined
+        ? session.startScreen(profile) : session.startScreen(profile, mode))
       screenProfile.value = profile
       screenState.value = 'SHARING'
       screenError.value = screenDiagnosticMessage(screenDiagnostics.value)

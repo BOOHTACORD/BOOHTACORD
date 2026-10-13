@@ -5,6 +5,8 @@ import '../../services/screen_share_metrics.dart';
 import 'package:livekit_client/livekit_client.dart';
 
 import '../../features/screen/profile/quality.dart';
+import '../../features/screen/profile/content_mode.dart';
+import '../../features/screen/sender_metadata/latest_writer.dart';
 import '../../features/screen/lifecycle/controller.dart';
 import '../composition/owners.dart';
 import '../media_preferences/screen.dart';
@@ -28,6 +30,18 @@ mixin AppScreenAccess on AppOwners {
   Map<String, Uint8List> get screenThumbnails => screen.thumbnails;
 
   ScreenShareQuality get screenShareQuality => screen.quality;
+  String get screenShareSelectedProfileId => screen.selectedProfileId;
+  ScreenShareQuality get screenShareSelectedQuality => screen.selectedQuality;
+  ScreenShareContentMode get screenShareContentMode => screen.contentMode;
+  String? get screenShareSenderDescriptorJson =>
+      screen.descriptor.runtime.descriptorJson;
+
+  ScreenDescriptorWriteStatus get screenShareDescriptorStatus =>
+      screen.descriptor.runtime.status;
+  DateTime? get screenShareDescriptorConfirmedAt =>
+      screen.descriptor.runtime.confirmedAt;
+  DateTime? get screenShareDescriptorAppliedAt =>
+      screen.descriptor.runtime.appliedAt;
 
   set screenShareQuality(ScreenShareQuality value) => screen.quality = value;
 
@@ -36,6 +50,7 @@ mixin AppScreenAccess on AppOwners {
     ScreenShareQuality? quality,
     VideoDimensions? sourceDimensions,
     bool captureScreenAudio = false,
+    ScreenShareContentMode? contentMode,
   }) async {
     final preferences = captureScreenPreferences();
     await screen.startScreenShare(
@@ -43,6 +58,7 @@ mixin AppScreenAccess on AppOwners {
       quality: quality,
       sourceDimensions: sourceDimensions,
       captureScreenAudio: captureScreenAudio,
+      contentMode: contentMode,
     );
     if (screen.phase == ScreenSharePhase.sharing && screen.error == null) {
       await preferences?.save(screen.quality);
@@ -50,6 +66,9 @@ mixin AppScreenAccess on AppOwners {
   }
 
   Future<void> stopScreenShare() => screen.stopScreenShare();
+
+  void updateScreenShareContentMode(ScreenShareContentMode value) =>
+      screen.updateScreenShareContentMode(value);
 
   Future<void> updateScreenShareQuality(ScreenShareQuality quality) async {
     final preferences = captureScreenPreferences();

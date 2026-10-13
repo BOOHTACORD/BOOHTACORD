@@ -7,6 +7,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart' as rtc;
 import '../../../core/session/scope.dart';
 import '../../../services/api_client.dart';
 import '../profile/quality.dart';
+import '../profile/content_mode.dart';
 import '../../../services/screen_thumbnail.dart';
 import '../capture/driver.dart';
 import '../metrics/factory.dart';
@@ -18,6 +19,7 @@ import '../runtime_apply/options.dart';
 import '../runtime_apply/runtime.dart';
 import 'stop.dart';
 import 'types.dart';
+import '../sender_metadata/binding.dart';
 export 'types.dart';
 export 'start.dart';
 export 'stop.dart';
@@ -30,10 +32,12 @@ class ScreenShareController extends ChangeNotifier {
     this.scope, {
     required this.readRoom,
     required this.voiceReady,
+    this.readAccountId,
     ScreenShareDriver? driver,
     ScreenAdaptationOptions adaptationOptions = const ScreenAdaptationOptions(),
   }) : driver = driver ?? NativeScreenShareDriver() {
     initializeScreenSharing(this, adaptationOptions);
+    descriptor = NativeScreenDescriptorBinding(this);
     _capturedContentVisibilitySubscription = subscribeCapturedVisibility(
       handleCapturedContentVisibility,
     );
@@ -42,10 +46,18 @@ class ScreenShareController extends ChangeNotifier {
   final SessionScope scope;
   final Room? Function() readRoom;
   final bool Function() voiceReady;
+  final String? Function()? readAccountId;
+  late final NativeScreenDescriptorBinding descriptor;
   final ScreenShareDriver driver;
   late final ScreenShareMetricsController metrics;
   late final ScreenAdaptationRuntime adaptation;
   ScreenShareQuality? userQualityCeiling;
+  ScreenShareQuality get selectedQuality => userQualityCeiling ?? quality;
+  String get selectedProfileId {
+    final selected = selectedQuality;
+    return 'P${selected.resolution}_${selected.frameRate}';
+  }
+
   int manualQualityRevision = 0;
   late final ScreenThumbnailController thumbnail;
   final Map<String, Uint8List> thumbnails = {};
@@ -57,6 +69,7 @@ class ScreenShareController extends ChangeNotifier {
   ScreenSharePhase phase = ScreenSharePhase.idle;
   String? error;
   bool captureRestartRequired = false;
+  ScreenShareContentMode contentMode = ScreenShareContentMode.motion;
   ScreenShareQuality quality =
       defaultTargetPlatform == TargetPlatform.android ||
           defaultTargetPlatform == TargetPlatform.iOS
@@ -92,18 +105,28 @@ class ScreenShareController extends ChangeNotifier {
     if (!disposed) notifyListeners();
   }
 
+  void updateScreenShareContentMode(ScreenShareContentMode value) {
+    if (disposed || contentMode == value) return;
+    contentMode = value;
+    descriptor.refresh();
+    changed();
+  }
+
   Future<void> stopSampling() async {
     metrics.stop();
     await thumbnail.stop();
   }
 
-  Future<void> previewLeaseChanged(String? leaseId) =>
-      thumbnail.changeLease(leaseId);
+  Future<void> previewLeaseChanged(String? leaseId) {
+    descriptor.changeLease(leaseId);
+    return thumbnail.changeLease(leaseId);
+  }
 
   @override
   void dispose() {
     adaptation.invalidate();
     disposed = true;
+    descriptor.dispose();
     unawaited(_capturedContentVisibilitySubscription?.cancel());
     unawaited(stopScreenShare());
     super.dispose();

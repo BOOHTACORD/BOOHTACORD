@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import { placeScreenDiagnostics } from './screen_diagnostics_placement'
 import type { ScreenReceiverMetrics } from './screen_receiver_diagnostics'
-import { screenCaptureLabel, screenEncodingLabel, screenModeLabel, screenTargetLabel, screenTargetSourceLabel, type ScreenProfileSource } from './screen_profile_metadata/presentation'
+import { screenCaptureLabel, screenEncodingLabel, screenModeLabel, screenTargetLabel, screenTargetSourceLabel, screenDescriptorStatusLabel, screenDescriptorProvenanceLabel, screenDescriptorReceivedAge, type ScreenProfileSource } from './screen_profile_metadata/presentation'
+import type { ScreenDiagnostics } from './screen_diagnostics'
 import type { ScreenShareDescriptorV1 } from './screen_profile_metadata/types'
 import { screenSampleAge } from './screen_profile_metadata/profile'
 
@@ -18,7 +19,23 @@ const props = defineProps<{
   profileSource?: ScreenProfileSource
   participantName?: string
   presentedFps?: number | null
+  metadataReceiptKey?: string
+  senderDiagnostics?: ScreenDiagnostics
 }>()
+const receivedAt = ref<number | null>(null)
+const now = ref(Date.now())
+let ageTimer: ReturnType<typeof setInterval> | undefined
+watch(() => [props.metadataReceiptKey, props.descriptor] as const, () => {
+  receivedAt.value = props.descriptor ? Date.now() : null
+}, { immediate: true })
+const descriptorStatus = computed(() => screenDescriptorStatusLabel(props.descriptor))
+const descriptorProvenance = computed(() => screenDescriptorProvenanceLabel(props.descriptor))
+const descriptorAge = computed(() => screenDescriptorReceivedAge(receivedAt.value, now.value))
+const senderFps = computed(() => {
+  const layer = props.isLocal ? props.senderDiagnostics?.selectedLayer : undefined
+  const fps = layer?.framesPerSecond
+  return layer?.state !== 'STALE' && fps !== null && fps !== undefined && Number.isFinite(fps) && fps >= 0 ? `${fps.toFixed(1)} FPS` : 'Нет данных'
+})
 const status = computed(() => props.sampledAt === null ? screenSampleAge(null) : `${new Date(props.sampledAt).toLocaleTimeString('ru-RU')} · ${screenSampleAge(props.sampledAt)}`)
 const value = (number: number | null | undefined, suffix: string) => number === null || number === undefined ? 'Нет данных' : `${number} ${suffix}`
 const percent = (number: number | null | undefined) => number === null || number === undefined ? 'Нет данных' : `${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(number)} %`
@@ -64,10 +81,16 @@ function updatePlacement(): void {
 function close(): void {
   if (diagnostics.value) diagnostics.value.open = false
   isOpen.value = false
+  clearInterval(ageTimer); ageTimer = undefined
   diagnostics.value?.querySelector('summary')?.focus()
 }
 function handleToggle(): void {
   isOpen.value = Boolean(diagnostics.value?.open)
+  clearInterval(ageTimer); ageTimer = undefined
+  if (isOpen.value) {
+    now.value = Date.now()
+    ageTimer = setInterval(() => { now.value = Date.now() }, 1000)
+  }
   if (isOpen.value) void nextTick(() => panel.value?.querySelector<HTMLButtonElement>('header button')?.focus())
   updatePlacement()
 }
@@ -85,6 +108,7 @@ onMounted(() => {
   window.addEventListener('keydown', handleKeydown, true)
 })
 onBeforeUnmount(() => {
+  clearInterval(ageTimer)
   cancelAnimationFrame(placementFrame)
   window.removeEventListener('resize', handleResize)
   window.removeEventListener('scroll', updatePlacement, true)
@@ -98,11 +122,16 @@ onBeforeUnmount(() => {
     <Teleport v-if="isOpen" to="body">
     <button type="button" class="stream-diagnostics-backdrop" aria-label="Закрыть статистику" @click="close" />
     <div ref="panel" class="stream-diagnostics-panel" role="dialog" aria-label="Статистика трансляции" :aria-modal="mobile ? 'true' : undefined"><header><h2>Статистика</h2><button type="button" aria-label="Закрыть статистику" @click="close">×</button></header><p>{{ participantName ? `Экран ${participantName}` : 'Трансляция' }} · {{ status }}</p><dl>
-      <div><dt>Профиль</dt><dd>{{ profile }}</dd></div>
+      <div><dt>Выбрано отправителем</dt><dd>{{ profile }}</dd></div>
       <div><dt>Источник цели</dt><dd>{{ profileSource }}</dd></div>
       <div><dt>Сценарий</dt><dd>{{ mode }}</dd></div>
+      <div><dt>Подтверждение конфигурации</dt><dd>{{ descriptorStatus }}</dd></div>
+      <div><dt>Источник конфигурации</dt><dd>{{ descriptorProvenance }}</dd></div>
+      <div><dt>Получение конфигурации</dt><dd>{{ descriptorAge }}</dd></div>
+      <div><dt>Возраст захвата</dt><dd>Возраст захвата неизвестен</dd></div>
       <div><dt>Размер захвата отправителя</dt><dd>{{ capture }}</dd></div>
       <div><dt>Лимиты кодирования отправителя</dt><dd>{{ encoding }}</dd></div>
+      <div><dt>Измерено у отправителя</dt><dd>{{ senderFps }}</dd></div>
       <div><dt>Сейчас у зрителя</dt><dd>{{ actualVideoQuality }}</dd></div>
       <div><dt>Декодирование</dt><dd>{{ value(metrics?.decodedFps, 'FPS') }}</dd></div>
       <div><dt>Показ кадров</dt><dd>{{ value(presentedFps, 'FPS') }}</dd></div>

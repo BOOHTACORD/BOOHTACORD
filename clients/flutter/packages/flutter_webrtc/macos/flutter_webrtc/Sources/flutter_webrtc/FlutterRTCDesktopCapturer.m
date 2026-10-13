@@ -14,6 +14,7 @@
 #if TARGET_OS_OSX
 #import "FlutterScreenCaptureKitCapturer.h"
 #import "FlutterScreenShareResolutionProcessor.h"
+#import "FlutterScreenCaptureDiagnostics.h"
 #endif
 
 #if TARGET_OS_OSX
@@ -36,7 +37,10 @@ NSArray<RTCDesktopSource*>* _captureSources;
   VideoProcessingAdapter *videoProcessingAdapter = [[VideoProcessingAdapter alloc] initWithRTCVideoSource:videoSource];
   __block FlutterScreenAudioTrackCapturer *screenAudioCapturer = nil;
   __block BOOL deferMediaStreamResult = NO;
+  __block BOOL completedMediaStream = NO;
   void (^completeMediaStream)(void) = ^{
+    if (completedMediaStream) return;
+    completedMediaStream = YES;
     RTCVideoTrack* videoTrack = [self.peerConnectionFactory videoTrackWithSource:videoSource
                                                                          trackId:trackUUID];
     [mediaStream addVideoTrack:videoTrack];
@@ -162,6 +166,8 @@ NSArray<RTCDesktopSource*>* _captureSources;
   BOOL useDefaultScreen = NO;
   NSInteger fps = 30;
   NSInteger maximumResolution = 0;
+  NSString *captureEngine = @"baseline";
+  BOOL captureDiagnosticsEnabled = YES;
   id videoConstraints = constraints[@"video"];
   if ([videoConstraints isKindOfClass:[NSNumber class]] && [videoConstraints boolValue] == YES) {
     useDefaultScreen = YES;
@@ -179,8 +185,8 @@ NSArray<RTCDesktopSource*>* _captureSources;
     if (deviceId != nil && [deviceId isKindOfClass:[NSDictionary class]]) {
       if (deviceId[@"exact"] != nil) {
         sourceId = deviceId[@"exact"];
-        if (sourceId == nil) {
-          result(@{@"error" : @"No deviceId.exact found"});
+        if (![sourceId isKindOfClass:NSString.class] || sourceId.length == 0) {
+          result([FlutterError errorWithCode:@"SCREEN_CAPTURE_SOURCE_MISSING" message:@"Selected capture source unavailable" details:nil]);
           return;
         }
       }
@@ -190,10 +196,28 @@ NSArray<RTCDesktopSource*>* _captureSources;
     }
     id mandatory = videoConstraints[@"mandatory"];
     if (mandatory != nil && [mandatory isKindOfClass:[NSDictionary class]]) {
+      id requestedEngine = mandatory[@"captureEngine"];
+      if (requestedEngine != nil) {
+        if (![requestedEngine isKindOfClass:NSString.class]
+            || ![@[@"baseline", @"screen_capture_kit"] containsObject:requestedEngine]) {
+          result([FlutterError errorWithCode:@"SCREEN_CAPTURE_ENGINE_INVALID" message:@"Unsupported capture engine" details:nil]);
+          return;
+        }
+        captureEngine = requestedEngine;
+      }
+      id diagnosticsEnabled = mandatory[@"captureDiagnosticsEnabled"];
+      if ([diagnosticsEnabled isKindOfClass:NSNumber.class]) captureDiagnosticsEnabled = [diagnosticsEnabled boolValue];
       id frameRate = mandatory[@"frameRate"];
       if (frameRate != nil && [frameRate isKindOfClass:[NSNumber class]]) {
         fps = [frameRate integerValue];
       }
+    }
+  }
+  BOOL candidateCapture = [captureEngine isEqualToString:@"screen_capture_kit"];
+  if (candidateCapture) {
+    if (@available(macOS 13.0, *)) {} else {
+      result([FlutterError errorWithCode:@"SCREEN_CAPTURE_ENGINE_UNAVAILABLE" message:@"ScreenCaptureKit video requires macOS 13 or later" details:nil]);
+      return;
     }
   }
   RTCDesktopCapturer* desktopCapturer;
@@ -207,10 +231,10 @@ NSArray<RTCDesktopSource*>* _captureSources;
   } else {
     source = [self getSourceById:sourceId];
     if (source == nil) {
-      result(@{@"error" : [NSString stringWithFormat:@"No source found for id: %@", sourceId]});
+      result([FlutterError errorWithCode:@"SCREEN_CAPTURE_SOURCE_MISSING" message:@"Selected capture source unavailable" details:nil]);
       return;
     }
-    if (source.sourceType == RTCDesktopSourceTypeScreen) {
+    if (source.sourceType == RTCDesktopSourceTypeScreen || candidateCapture) {
       useScreenCaptureKit = YES;
     } else {
       desktopCapturer = [[RTCDesktopCapturer alloc] initWithSource:source
@@ -219,12 +243,24 @@ NSArray<RTCDesktopSource*>* _captureSources;
     }
   }
 
+  FlutterScreenShareResolutionProcessor *resolutionProcessor = nil;
   if (maximumResolution > 0) {
-    FlutterScreenShareResolutionProcessor *resolutionProcessor =
+    resolutionProcessor =
         [[FlutterScreenShareResolutionProcessor alloc]
             initWithMaximumResolution:maximumResolution];
     [videoProcessingAdapter addProcessing:resolutionProcessor];
   }
+
+  FlutterScreenCaptureDiagnostics *captureDiagnostics = captureDiagnosticsEnabled ? [FlutterScreenCaptureDiagnostics new] : nil;
+  BOOL modernScreenCapture = NO;
+  if (@available(macOS 13.0, *)) modernScreenCapture = useScreenCaptureKit;
+  NSUInteger captureGeneration = [captureDiagnostics beginWithEngine:
+      modernScreenCapture ? @"screen_capture_kit" : @"rtc_desktop_capturer"
+      sourceClass:(useDefaultScreen || source.sourceType == RTCDesktopSourceTypeScreen) ? @"display" : @"window"];
+  videoProcessingAdapter.captureDiagnostics = captureDiagnostics;
+  videoProcessingAdapter.captureGeneration = captureGeneration;
+  resolutionProcessor.captureDiagnostics = captureDiagnostics;
+  resolutionProcessor.diagnosticsGeneration = captureGeneration;
 
   if (useScreenCaptureKit) {
     // ScreenCaptureKit can create a live track without delivering frames on
@@ -232,6 +268,17 @@ NSArray<RTCDesktopSource*>* _captureSources;
     if (@available(macOS 13.0, *)) {
       screenCaptureKitCapturer =
           [[FlutterScreenCaptureKitCapturer alloc] initWithDelegate:videoProcessingAdapter];
+      screenCaptureKitCapturer.captureDiagnostics = captureDiagnostics;
+      screenCaptureKitCapturer.diagnosticsGeneration = captureGeneration;
+      videoProcessingAdapter.captureRecordsSourceFrames = NO;
+      __weak FlutterWebRTCPlugin *weakPlugin = self;
+      screenCaptureKitCapturer.onCaptureEnded = ^{
+        FlutterWebRTCPlugin *plugin = weakPlugin;
+        id<LocalTrack> localTrack = plugin.localTracks[trackUUID];
+        if (localTrack) localTrack.track.isEnabled = NO;
+        postEvent(plugin.eventSink, @{@"onTrackEnded": @{@"trackId": trackUUID}});
+      };
+      deferMediaStreamResult = YES;
       if (captureScreenAudio) {
         screenAudioCapturer = [[FlutterScreenAudioTrackCapturer alloc]
             initWithFactory:self.peerConnectionFactory];
@@ -241,26 +288,21 @@ NSArray<RTCDesktopSource*>* _captureSources;
       [screenCaptureKitCapturer startCaptureWithFPS:fps
                                  maximumResolution:maximumResolution
                                            sourceId:sourceId
+                                        sourceClass:(useDefaultScreen || source.sourceType == RTCDesktopSourceTypeScreen) ? @"display" : @"window"
                                           onStarted:^(NSError * _Nullable error) {
                                             if (error != nil) {
-                                              NSLog(@"ScreenCaptureKit start failed: %@", error);
-                                              if (captureScreenAudio) {
                                                 [screenCaptureKitCapturer stopCaptureWithCompletion:^{
                                                   [screenAudioCapturer stop];
                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                    [self.videoCapturerStopHandlers removeObjectForKey:trackUUID];
                                                     result([FlutterError
-                                                        errorWithCode:@"SCREEN_AUDIO_CAPTURE_FAILED"
-                                                             message:error.localizedDescription
+                                                        errorWithCode:@"SCREEN_CAPTURE_FAILED"
+                                                             message:@"Screen capture failed before readiness"
                                                              details:nil]);
                                                   });
                                                 }];
                                                 return;
-                                              }
                                             } else {
-                                              NSLog(@"start screencapturekit capture: for  sourceId: %@, fps: %lu",
-                                                    sourceId, fps);
-                                            }
-                                            if (captureScreenAudio) {
                                               dispatch_async(dispatch_get_main_queue(), completeMediaStream);
                                             }
                                           }];
@@ -297,6 +339,7 @@ NSArray<RTCDesktopSource*>* _captureSources;
                                                  [audioOnlyCapturer stopCaptureWithCompletion:^{
                                                    [screenAudioCapturer stop];
                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                     [self.videoCapturerStopHandlers removeObjectForKey:trackUUID];
                                                      result([FlutterError
                                                          errorWithCode:@"SCREEN_AUDIO_CAPTURE_FAILED"
                                                               message:error.localizedDescription
@@ -312,22 +355,18 @@ NSArray<RTCDesktopSource*>* _captureSources;
 
   if (screenCaptureKitCapturer == nil) {
     [desktopCapturer startCaptureWithFPS:fps];
-    NSLog(@"start desktop capture: sourceId: %@, type: %@, fps: %lu", sourceId,
-          source.sourceType == RTCDesktopSourceTypeScreen ? @"screen" : @"window", fps);
 
     self.videoCapturerStopHandlers[trackUUID] = ^(CompletionHandler handler) {
-      NSLog(@"stop desktop capture: sourceId: %@, type: %@, trackID %@", sourceId,
-            source.sourceType == RTCDesktopSourceTypeScreen ? @"screen" : @"window", trackUUID);
-      [desktopCapturer stopCapture];
-      if (audioOnlyCapturer != nil) {
-        [audioOnlyCapturer stopCaptureWithCompletion:handler];
-      } else {
-        handler();
-      }
+      videoProcessingAdapter.captureStopped = YES;
+      [captureDiagnostics stop];
+      [desktopCapturer stopCaptureWithCompletionHandler:^{
+        if (audioOnlyCapturer != nil) [audioOnlyCapturer stopCaptureWithCompletion:handler];
+        else handler();
+      }];
     };
   } else {
     self.videoCapturerStopHandlers[trackUUID] = ^(CompletionHandler handler) {
-      NSLog(@"stop screencapturekit capture: trackID %@", trackUUID);
+      videoProcessingAdapter.captureStopped = YES;
       [screenCaptureKitCapturer stopCaptureWithCompletion:handler];
     };
   }

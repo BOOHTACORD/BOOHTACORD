@@ -169,3 +169,59 @@ viewer exposes an immediate explicit retry action. The subscription lifecycle
 rebinds the selected LiveKit track through its normal renderer path.
 Focused Flutter/device acceptance remains pending; no hardware behavior is
 claimed.
+
+## MW-04 macOS bounded capture diagnostics (#330)
+
+The macOS plugin exposes `mediaStreamTrackGetCaptureSnapshot(trackId)` for local
+screen-video tracks. It reports raw accepted and processed RTC-delivered frame
+counts/dimensions separately, configured limits only after native start and a
+valid current-stream frame, and a session generation. Unknown platforms/tracks
+return unavailable; Dart does not infer settings from defaults. Numeric counters
+and a 256-sample processing-time ring are session-owned. MethodChannel
+serialization runs only on query, never on a per-frame callback. `frame_age_ms`
+uses the native monotonic clock since the latest accepted callback; it is not
+capture-to-delivery latency. This continuous clock includes time suspended
+during sleep, so queued frames do not appear fresh after wake. CoreMedia PTS
+remains separate; actual sleep/wake hardware acceptance is still required.
+Legacy capture configuration remains unknown.
+
+`video.mandatory.captureEngine` is read once at start: `baseline` retains display
+SCK/window RTCDesktopCapturer routes; `screen_capture_kit` selects exact window
+or display SCK on macOS 13+. Unknown values and unavailable engines fail with a
+bounded error. No active capture changes route. SCK uses the selected window's
+desktop-independent filter and fails closed when an explicit source disappears.
+Geometry uses filter points and pixel scale on macOS 14+, and matching display
+pixel-mode scale on macOS 13; output keeps aspect ratio and even dimensions.
+An acknowledged geometry update needs a matching fresh frame to confirm limits.
+User quality changes remain explicit restart-required operations.
+
+Native start requires both OS start acknowledgment and the first valid delivered
+frame, with a five-second deadline for video with or without playback audio.
+Validity, complete-frame status, finite monotonic PTS and stream/session identity
+are checked. Video has one processing and one replaceable pending sample, a
+100 ms queue-age limit and an OS queue depth of three. Audio runs on a separate
+queue and is not subject to the video drop policy. Stop invalidates callbacks
+and fences both processing queues before completion. Permission/source errors
+end the matching track; no source title/ID or sample content is logged.
+Startup error paths remove the unreturned track's stop-handler registry entry
+before returning FlutterError, so failed starts cannot retain a capture/source
+which the caller has no track ID to dispose.
+
+In-profile buffers remain unchanged. Oversized native CVPixelBuffer frames use
+one retained CIContext/color space and a four-buffer output pool; native I420
+buffers scale directly without a full-size BGRA roundtrip. Processing/pool
+failure drops the frame, never forwards oversized input.
+Resized RGB buffers carry explicit sRGB color labels and their current aperture
+and display dimensions; source HDR/color/geometry attachments are not copied.
+Direct/no-resize buffers retain their original attachments. No HDR capability
+is claimed. Snapshot counters distinguish pool requests/first-seen buffers,
+resize and pass-through operations;
+total heap allocations and capture timestamp latency remain unknown.
+`captureDiagnosticsEnabled=false` disables metrics on a new start. Queue timing
+required by the video policy remains active; turning off snapshot polling alone
+does not disable native metrics.
+
+The focused Objective-C harness is `tools/qa/native_capture_boundary`; physical
+capture/performance and independent second-device acceptance remain separate
+gates. Package pins, upstream archive hashes, licenses and existing patches are
+unchanged.

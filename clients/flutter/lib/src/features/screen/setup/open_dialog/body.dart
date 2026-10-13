@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart' as rtc;
 
 import '../../../../services/screen_share_quality.dart';
+import '../../profile/content_mode.dart';
 import '../../capabilities/preflight.dart';
 import '../../capabilities/notice.dart';
 import '../selection/result.dart';
 import '../select_source/inventory.dart';
 import '../select_source/grid.dart';
 import '../quality/picker.dart';
+import '../quality/mode_picker.dart';
 import 'header.dart';
 import 'footer.dart';
 import 'quality_content.dart';
@@ -22,8 +24,10 @@ class SetupBody extends StatefulWidget {
     required this.allowSourceSelection,
     required this.updating,
     this.capturer,
+    this.initialContentMode = ScreenShareContentMode.motion,
   });
   final ScreenShareQuality initialQuality;
+  final ScreenShareContentMode initialContentMode;
   final bool allowSourceSelection, updating;
   final rtc.DesktopCapturer? capturer;
   @override
@@ -32,12 +36,14 @@ class SetupBody extends StatefulWidget {
 
 class _SetupState extends State<SetupBody> {
   late ScreenShareQuality quality;
+  late ScreenShareContentMode contentMode;
   bool captureScreenAudio = false;
   late SourceInventory inventory;
   @override
   void initState() {
     super.initState();
     quality = widget.initialQuality;
+    contentMode = widget.initialContentMode;
     inventory =
         SourceInventory(
             enabled: widget.allowSourceSelection,
@@ -82,10 +88,19 @@ class _SetupState extends State<SetupBody> {
         (!widget.allowSourceSelection ||
             (inventory.selected != null &&
                 (platform != TargetPlatform.windows || dimensions != null)));
-    final picker = QualityPicker(
-      quality: quality,
-      onChanged: (value) => setState(() => quality = value),
-      advancedInitiallyExpanded: widget.updating,
+    final picker = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        QualityPicker(
+          quality: quality,
+          onChanged: (value) => setState(() => quality = value),
+          advancedInitiallyExpanded: widget.updating,
+        ),
+        ContentModePicker(
+          value: contentMode,
+          onChanged: (value) => setState(() => contentMode = value),
+        ),
+      ],
     );
     return SetupSurface(
       children: [
@@ -147,6 +162,7 @@ class _SetupState extends State<SetupBody> {
               quality: quality,
               sourceDimensions: dimensions,
               captureScreenAudio: captureScreenAudio,
+              contentMode: contentMode,
             ),
           ),
         ),

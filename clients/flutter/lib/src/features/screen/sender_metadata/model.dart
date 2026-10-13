@@ -8,6 +8,12 @@ class ScreenShareSenderDescriptor {
     required this.operationRevision,
     required this.mode,
     required this.requestedProfileId,
+    this.effectiveProfile,
+    this.publisherState,
+    this.viewerState,
+    this.layerTopology,
+    this.profileRevision,
+    this.reasonCodes = const [],
   });
 
   final String originId;
@@ -18,4 +24,8 @@ class ScreenShareSenderDescriptor {
   final int operationRevision;
   final String mode;
   final String requestedProfileId;
+  final Map<String, Object?>? effectiveProfile;
+  final String? publisherState, viewerState, layerTopology;
+  final int? profileRevision;
+  final List<String> reasonCodes;
 }

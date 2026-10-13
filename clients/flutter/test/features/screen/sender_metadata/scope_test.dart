@@ -16,7 +16,7 @@ void main() {
     expect(parse(descriptor()..['schema_version'] = 99), isNull);
     expect(parse(descriptor()..['mode'] = 'cinema'), isNull);
     expect(parse(descriptor()..['requested_profile_id'] = 'P999_60'), isNull);
-    expect(parse(descriptor()..['requested_profile_id'] = 'P1080_30'), isNull);
+    expect(parse(descriptor()..['requested_profile_id'] = 'P1080_45'), isNull);
     expect(parse(descriptor()..['unexpected'] = true), isNull);
     final missingRoom = descriptor();
     (missingRoom['scope'] as Map<String, Object?>).remove('room_id');

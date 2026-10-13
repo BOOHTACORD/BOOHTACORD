@@ -139,6 +139,18 @@ class ScreenShareCaptureOptions extends VideoCaptureOptions {
   /// `screenShareAudio` track where the native platform supports it.
   final bool captureScreenAudio;
 
+  /// macOS capture-path selection, applied only when a new capture starts.
+  /// `baseline` preserves the existing routes; `screen_capture_kit` requests
+  /// exact-window/display ScreenCaptureKit on supported macOS versions.
+  /// This option is independent of sender codec and frame-rate policy.
+  final String? captureEngine;
+
+  /// macOS diagnostics instrumentation switch, applied when capture starts.
+  /// Null preserves the native default. False disables capture snapshots too,
+  /// so confirmed configuration and actual-frame health remain unavailable.
+  /// Capture queue-policy clocks remain active independently of this option.
+  final bool? captureDiagnosticsEnabled;
+
   /// for browser only, if true, will capture current tab.
   final bool preferCurrentTab;
 
@@ -148,6 +160,8 @@ class ScreenShareCaptureOptions extends VideoCaptureOptions {
   const ScreenShareCaptureOptions({
     this.useiOSBroadcastExtension = false,
     this.captureScreenAudio = false,
+    this.captureEngine,
+    this.captureDiagnosticsEnabled,
     this.preferCurrentTab = false,
     this.selfBrowserSurface,
     String? sourceId,
@@ -158,6 +172,8 @@ class ScreenShareCaptureOptions extends VideoCaptureOptions {
   ScreenShareCaptureOptions.from({
     this.useiOSBroadcastExtension = false,
     this.captureScreenAudio = false,
+    this.captureEngine,
+    this.captureDiagnosticsEnabled,
     this.preferCurrentTab = false,
     this.selfBrowserSurface,
     required VideoCaptureOptions captureOptions,
@@ -166,6 +182,8 @@ class ScreenShareCaptureOptions extends VideoCaptureOptions {
   ScreenShareCaptureOptions copyWith({
     bool? useiOSBroadcastExtension,
     bool? captureScreenAudio,
+    String? captureEngine,
+    bool? captureDiagnosticsEnabled,
     VideoParameters? params,
     String? sourceId,
     double? maxFrameRate,
@@ -174,6 +192,8 @@ class ScreenShareCaptureOptions extends VideoCaptureOptions {
   }) => ScreenShareCaptureOptions(
     useiOSBroadcastExtension: useiOSBroadcastExtension ?? this.useiOSBroadcastExtension,
     captureScreenAudio: captureScreenAudio ?? this.captureScreenAudio,
+    captureEngine: captureEngine ?? this.captureEngine,
+    captureDiagnosticsEnabled: captureDiagnosticsEnabled ?? this.captureDiagnosticsEnabled,
     params: params ?? this.params,
     sourceId: sourceId ?? deviceId,
     maxFrameRate: maxFrameRate ?? this.maxFrameRate,
@@ -194,6 +214,12 @@ class ScreenShareCaptureOptions extends VideoCaptureOptions {
       if (maxFrameRate != 0.0) {
         constraints['mandatory'] = {'frameRate': maxFrameRate};
       }
+    }
+    if (lkPlatformIs(PlatformType.macOS) && (captureEngine != null || captureDiagnosticsEnabled != null)) {
+      final mandatory = Map<String, dynamic>.from(constraints['mandatory'] as Map? ?? const {});
+      if (captureEngine != null) mandatory['captureEngine'] = captureEngine;
+      if (captureDiagnosticsEnabled != null) mandatory['captureDiagnosticsEnabled'] = captureDiagnosticsEnabled;
+      constraints['mandatory'] = mandatory;
     }
     return constraints;
   }

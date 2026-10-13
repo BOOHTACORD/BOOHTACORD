@@ -1,6 +1,7 @@
 import 'package:livekit_client/livekit_client.dart';
 
 import '../../../services/screen_share_quality.dart';
+import '../profile/content_mode.dart';
 import 'controller.dart';
 import 'publish_capture.dart';
 
@@ -8,6 +9,7 @@ extension ScreenShareStart on ScreenShareController {
   Future<void> startScreenShare({
     String? sourceId,
     ScreenShareQuality? quality,
+    ScreenShareContentMode? contentMode,
     VideoDimensions? sourceDimensions,
     bool captureScreenAudio = false,
   }) async {
@@ -26,6 +28,7 @@ extension ScreenShareStart on ScreenShareController {
     phase = ScreenSharePhase.starting;
     error = null;
     this.quality = quality ?? this.quality;
+    this.contentMode = contentMode ?? this.contentMode;
     userQualityCeiling = this.quality;
     manualQualityRevision++;
     adaptation.invalidate();

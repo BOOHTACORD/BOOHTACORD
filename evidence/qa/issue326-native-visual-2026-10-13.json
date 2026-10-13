@@ -1,0 +1,81 @@
+{
+  "schema": "boohtacord.qa.native_visual.v1",
+  "issue": 326,
+  "executed_at": "2026-10-13",
+  "status": "SCOPED_NATIVE_VISUAL_COMPLETE_WITH_LIMITS",
+  "parent_quality_gate": "OPEN",
+  "report_source": "2057bb78a7e69a7c541221ef5f386ffd65e22a92 diff-sha256=6ba3bb8604d28bfd8988c8fbb48e0681b333adca6f4d13762e331b349f06dda6",
+  "report_sha256": "d4414edc6fb07d152bc773c9ae4d1e69b7f87f5cf16a7e614e9975014184915f",
+  "report_status_preserved": "REVIEW_REQUIRED",
+  "report_stages": [
+    {
+      "name": "flutter-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "flutter-component-captures",
+      "status": "PASS"
+    },
+    {
+      "name": "android-runtime",
+      "status": "PASS"
+    },
+    {
+      "name": "ios-runtime",
+      "status": "PASS"
+    }
+  ],
+  "review_index_sha256": "70a9d7cbb3f8002b6a21d4a33ec4a33ad432ae326c7706af02e0cdda24e020bd",
+  "capture_manifest_sha256": "d6a36161a5dbaed4abdd1cbefa0367367b9709a74bd75c8c3be461dc6e59c62f",
+  "counts": {
+    "report_paths": 48,
+    "widget_fixture_paths": 34,
+    "android_runtime_paths": 7,
+    "ios_runtime_paths": 7,
+    "report_unique_originals": 46,
+    "supplemental_paths": 18,
+    "supplemental_exact_sha_reuse_paths": 12,
+    "supplemental_new_unique_originals": 6,
+    "total_paths": 66,
+    "total_viewed_unique_originals": 52
+  },
+  "runtime_scope": {
+    "android": "Actual production app/API in emulator; physical_device=false",
+    "ios": "Actual production app/API in simulator; physical_device=false",
+    "screens": "Auth, authenticated workspace/navigation, profile/audio/admin, logout",
+    "mocks": false,
+    "media": "NOT_RUN"
+  },
+  "supplemental_chooser": {
+    "source_sha256": "179acb7ae964902aa470f09bb4cf8455b66cc86da681a2a6e693da3d2e6e6995",
+    "proof_sha256": "e6baa598910cb00f830237f6c316d9754a3beeb6e688b16691423b7be16cf07d",
+    "scope": "Production authenticated native workspace opens actual quality chooser; explicit Text/Motion preserves current FPS; Cancel leaves intent/capture state unchanged. No capture is started.",
+    "android_motion_text": "Visible 720p/15 FPS retained independently of mode; cancel/start fit.",
+    "ios_motion": "Visible 720p/15 FPS retained independently of mode; cancel/start fit.",
+    "ios_text": "Current target readable; selected toggle partial at scroll boundary, integration assertion supplies functional evidence only.",
+    "screen_capture": "NOT_RUN"
+  },
+  "fixture_readability_limit": {
+    "capture_sha256": "0ec431e7d63973d1e128ac29840fb60172380f49cb657b627b156b7df83dcbef",
+    "status": "LIMITED_CAPTURE_FONT",
+    "observation": "Maintenance banner widget text shows missing glyphs; placement visible, warning readability not accepted; actual device maintenance state not exercised."
+  },
+  "source_scope": {
+    "scenario_mismatch_paths": [
+      "clients/flutter/integration_test/local_qa_test.dart"
+    ],
+    "current_worktree_runtime_identity_claimed": false
+  },
+  "limitations": [
+    "Widget captures do not prove device runtime or media quality.",
+    "Review every selected feature; untested device scenarios remain NOT_RUN.",
+    "Widget captures are controlled fixtures, not OS device or media acceptance. Android is emulator and iOS simulator, both physical_device=false.",
+    "All images reviewed at original size without alteration, montage, cropping, or golden approval. Partial scroll states and loading states do not prove unseen elements.",
+    "Maintenance banner widget warning has missing-glyph squares: readability LIMITED_CAPTURE_FONT; actual device maintenance state not exercised.",
+    "No audio audibility, actual screen capture, FPS, codec, capacity, latency, two-device hardware or sleep/wake PASS is inferred.",
+    "Supplemental integration target opens production chooser and cancels without starting capture. iOS Text toggle partly outside captured scroll viewport.",
+    "Historical browser repeated-strip fixture limitation remains applicable only to those old bytes; this native review establishes no browser renderer or product parity claim."
+  ],
+  "privacy": "Public record contains hashes, counts and bounded layout observations only; screenshots, credentials, tokens, message bodies and identifiers are not copied.",
+  "actionable_product_findings": []
+}

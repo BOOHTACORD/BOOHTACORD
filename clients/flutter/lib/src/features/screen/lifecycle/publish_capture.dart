@@ -7,6 +7,7 @@ import '../../telemetry/action_scope/action.dart';
 import '../../telemetry/action_scope/failure.dart';
 import 'controller.dart';
 import '../capture/cancelled.dart';
+import '../capture/confirmed_dimensions.dart';
 
 extension ScreenShareCapturePublish on ScreenShareController {
   Future<void> publishCapture(
@@ -47,6 +48,12 @@ extension ScreenShareCapturePublish on ScreenShareController {
         platform: defaultTargetPlatform,
         trackEnabled: screenShareTrackEnabled(pending),
       );
+      final confirmedDimensions = await readScreenCaptureDimensions(
+        pending,
+        platform: defaultTargetPlatform,
+        isCurrent: active,
+      );
+      if (!active()) return;
       publishing = true;
       logScreenShareDiagnostic(
         ScreenShareDiagnosticEvent.publishStarted,
@@ -55,7 +62,14 @@ extension ScreenShareCapturePublish on ScreenShareController {
         localScreenPublications: screenShareLocalPublicationCount(room),
       );
       ActionScope.current?.step('publish');
-      await driver.publish(room, pending, quality, dimensions);
+      await driver.publish(
+        room,
+        pending,
+        quality,
+        defaultTargetPlatform == TargetPlatform.macOS
+            ? confirmedDimensions
+            : dimensions,
+      );
       if (!active()) return;
       logScreenShareDiagnostic(
         ScreenShareDiagnosticEvent.publishCompleted,

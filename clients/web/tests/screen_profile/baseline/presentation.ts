@@ -3,6 +3,7 @@ import { readFrameMarker } from './frame_marker'
 
 export class BaselinePresentation {
   private connectedAt = 0
+  private videoAttachmentRevision = 0
   private firstFrameLatencyMs: number | null = null
   private firstFrameResolver: ((value: number) => void) | null = null
   private presentedFrameCallbacks = 0
@@ -21,7 +22,9 @@ export class BaselinePresentation {
   }
 
   attach(track: RemoteTrack, video: HTMLVideoElement, numberedSource = false) {
-    if (track.kind !== Track.Kind.Video || this.remoteTrack) return
+    if (track.kind !== Track.Kind.Video || this.remoteTrack === track) return
+    if (this.remoteTrack) this.stop()
+    this.videoAttachmentRevision++
     this.remoteTrack = track
     this.video = video
     this.numberedSource = numberedSource
@@ -76,6 +79,7 @@ export class BaselinePresentation {
     this.timestampCursor = this.presentationTimestamps.length
     this.frameIdCursor = this.presentedFrameIds.length
     return {
+      videoAttachmentRevision: this.videoAttachmentRevision,
       firstFrameLatencyMs: this.firstFrameLatencyMs,
       presentedFrameCallbacks: this.presentedFrameCallbacks,
       presentationTimestamps: timestamps,
@@ -91,6 +95,10 @@ export class BaselinePresentation {
     if (this.video) this.video.srcObject = null
     this.remoteTrack = null
     this.video = null
+    this.firstFrameLatencyMs = null
+    this.firstFrameResolver = null
+    this.presentedFrameCallbacks = 0
+    this.presentationTimestamps = []
     this.presentedFrameIds = []
     this.timestampCursor = 0
     this.frameIdCursor = 0

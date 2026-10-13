@@ -69,8 +69,8 @@ class ScreenShareQuality {
         platform: platform,
       );
 
-  /// Caps the longer source edge at the selected profile without changing
-  /// orientation or stretching portrait captures.
+  /// Fits both encoded dimensions within the oriented profile bounds without
+  /// stretching the capture. Native capture ceilings are a separate policy.
   double scaleResolutionDownBy(VideoDimensions source) =>
       ScreenProfileGeometry.scaleDownBy(source: source, target: parameters.dimensions);
 

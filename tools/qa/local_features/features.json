@@ -44,17 +44,35 @@
       "clients/flutter/lib/src/widgets/screen*",
       "clients/flutter/packages/livekit_client/lib/src/widgets/video_track_renderer*",
       "clients/flutter/ios/ScreenShareExtension/*",
-      "clients/flutter/lib/src/services/pinned_screen_mini_player_policy.dart"
+      "clients/flutter/lib/src/services/pinned_screen_mini_player_policy.dart",
+      "clients/web/src/voice/screen_profile_metadata/*",
+      "clients/flutter/packages/flutter_webrtc/lib/src/native/capture_snapshot.dart",
+      "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/*",
+      "clients/flutter/packages/livekit_client/lib/src/track/options.dart",
+      "clients/flutter/lib/src/screens/screen_receiver_diagnostics.dart",
+      "clients/flutter/lib/src/services/api_client.dart",
+      "clients/flutter/lib/src/telemetry/traced_app_state.dart"
     ],
     "web": [
-      "tests/accessibility/playwright.config.ts"
+      "tests/accessibility/playwright.config.ts",
+      "tests/screen_profile/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart",
       "test/video_track_renderer_stream_lifecycle_test.dart",
       "test/screen_setup/surface_test.dart",
       "test/pinned_screen_mini_player_layout_test.dart",
-      "test/pinned_screen_mini_player_policy_test.dart"
+      "test/pinned_screen_mini_player_policy_test.dart",
+      "test/screen_setup/content_mode_test.dart",
+      "test/features/screen/sender_metadata/api_test.dart",
+      "test/features/screen/sender_metadata/latest_writer_test.dart",
+      "test/features/screen/sender_metadata/confirmed_profile_test.dart",
+      "test/features/screen/sender_metadata/native_readback_test.dart",
+      "test/features/screen/sender_metadata/runtime_test.dart",
+      "test/features/screen_rollout/native_codec_contract_test.dart",
+      "test/features/screen_rollout/native_codec_policy_test.dart",
+      "test/features/screen/capture/confirmed_dimensions_test.dart",
+      "test/features/screen/capture/dimension_publish_test.dart"
     ],
     "acceptance": {
       "issue247": {
@@ -62,6 +80,41 @@
         "native": "tools/qa/mini_player/native.py",
         "target": "integration_test/mini_player_qa_test.dart",
         "scope": "Actual selected synthetic SFU source; exact target availability recorded in evidence"
+      },
+      "issue328": {
+        "runtime": "tools/qa/macos_sender/run.py",
+        "target": "tools/qa/macos_sender/native_app.dart",
+        "scope": "Protected native descriptor API/SFU round-trip; selected, confirmed, measured and viewer values remain separate. Unknown native configuration stays pending.",
+        "focused": "clients/flutter/test/features/screen/sender_metadata/",
+        "browser": "clients/web/tests/screen_profile/metadata_diagnostics.browser.spec.ts",
+        "setup_browser": "clients/web/tests/screen_profile/quality_dialog.browser.spec.ts",
+        "api_acl": "tools/qa/macos_sender/descriptor_acl.mjs",
+        "reverse": "tools/qa/macos_sender/descriptor_reverse.mjs"
+      },
+      "issue330": {
+        "native": "tools/qa/native_capture_boundary/run.py",
+        "runtime": "tools/qa/macos_sender/run.py",
+        "scope": "Exact source and capture generation guards, native numeric snapshot and candidate runtime. Synthetic native boundary tests are not hardware throughput evidence."
+      },
+      "issue331": {
+        "preflight": "tools/qa/macos_sender/codec_experiment.py",
+        "runtime": "tools/qa/macos_sender/run.py",
+        "scope": "Controlled codec experiments only after actual negotiation/capture proof. Default VP8 remains independent of capture flag."
+      },
+      "issue332": {
+        "runtime": "tools/qa/macos_sender/run.py",
+        "observer": "tools/qa/macos_sender/stage_receiver.mjs",
+        "scope": "Disposable HTTPS API/SFU with valid native CA chain and unique synthetic frame IDs. Same-host/headless observations do not close physical two-device or release gates.",
+        "focused": [
+          "tools/qa/macos_sender/test_run.py",
+          "tools/qa/macos_sender/test_policy.py",
+          "tools/qa/macos_sender/descriptor_observer_test.dart"
+        ]
+      },
+      "issue333": {
+        "focused": "clients/flutter/test/features/screen/capture/",
+        "runtime": "tools/qa/macos_sender/stage_baseline.py",
+        "scope": "Confirmed native capture dimensions enforce existing both-axis encoded geometry at guarded publish/update boundaries. Native long-edge capture policy preserved; actual display regression required."
       }
     }
   },
@@ -93,6 +146,18 @@
         "runtime": "tools/qa/macos_sender/run.py",
         "target": "tools/qa/macos_sender/native_app.dart",
         "scope": "Actual physical macOS secure-cookie API/SFU sender and isolated Keychain startup. Other platform/fault/lifecycle gates explicitly remain open."
+      },
+      "issue329": {
+        "runtime": "tools/qa/macos_sender/run.py",
+        "observer": "tools/qa/macos_sender/stage_receiver.mjs",
+        "scope": "Bounded native capture/process/encode/transport/viewer stages. Missing counters remain null with reason; no hardware SLO claim from selected FPS.",
+        "focused": [
+          "clients/flutter/test/screen_share_layer_sampling_test.dart",
+          "clients/flutter/test/screen_share_livekit_layers_test.dart",
+          "tools/qa/macos_sender/test_stage_baseline.py",
+          "tools/qa/macos_sender/test_process_resources.py",
+          "tools/qa/macos_sender/capture_observer_test.dart"
+        ]
       }
     }
   },

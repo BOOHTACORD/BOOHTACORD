@@ -4,6 +4,7 @@ import { SCREEN_DESCRIPTOR_ATTRIBUTE } from './descriptor'
 import { screenDescriptorMetadataEnabled } from './enabled'
 import { ScreenProfileMetadataPublisher } from './publisher'
 import type { ScreenProfile } from '../screen_profile/policy'
+import type { ScreenProfileMode } from './types'
 
 export function bindLiveKitScreenMetadata(room: Room, screenSource: Track.Source, generation: () => number) {
   if (!screenDescriptorMetadataEnabled()) {
@@ -11,6 +12,7 @@ export function bindLiveKitScreenMetadata(room: Room, screenSource: Track.Source
   }
   let leaseId = ''
   let activeProfile: ScreenProfile | undefined
+  let activeMode: ScreenProfileMode = 'motion'
   let publisher: ScreenProfileMetadataPublisher | undefined
   const videoTrack = () => room.localParticipant.getTrackPublication(screenSource)?.videoTrack as (LocalVideoTrack & { sender?: RTCRtpSender }) | undefined
 
@@ -28,7 +30,7 @@ export function bindLiveKitScreenMetadata(room: Room, screenSource: Track.Source
     }, { originId: window.location.origin, accountId: '', roomId: room.name })
   }
 
-  async function publish(profile: ScreenProfile): Promise<void> {
+  async function publish(profile: ScreenProfile, mode: ScreenProfileMode = activeMode): Promise<void> {
     const track = videoTrack(), settings = track?.mediaStreamTrack.getSettings()
     if (!track || !settings?.width || !settings.height || !publisher) return
     const actualEncodings = track.sender?.getParameters().encodings
@@ -38,7 +40,8 @@ export function bindLiveKitScreenMetadata(room: Room, screenSource: Track.Source
       maxFramerate: encoding.maxFramerate, scaleResolutionDownBy: encoding.scaleResolutionDownBy,
     })) ?? []
     activeProfile = profile
-    await publisher.publish(profile, Math.max(1, generation()), { width: settings.width, height: settings.height }, encodings)
+    activeMode = mode
+    await publisher.publish(profile, Math.max(1, generation()), { width: settings.width, height: settings.height }, encodings, mode)
   }
 
   async function clear(): Promise<void> {
@@ -47,7 +50,7 @@ export function bindLiveKitScreenMetadata(room: Room, screenSource: Track.Source
   }
 
   function reconnected(): void {
-    if (activeProfile) void publish(activeProfile).catch(() => undefined)
+    if (activeProfile) void publish(activeProfile, activeMode).catch(() => undefined)
   }
 
   return { bindLease, publish, clear, reconnected }

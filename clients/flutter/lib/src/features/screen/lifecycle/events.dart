@@ -23,6 +23,7 @@ extension ScreenShareEvents on ScreenShareController {
       metrics.start(track);
     }
     unawaited(thumbnail.start(room, track));
+    descriptor.published();
     changed();
   }
 

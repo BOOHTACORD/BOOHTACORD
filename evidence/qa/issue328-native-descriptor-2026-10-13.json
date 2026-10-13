@@ -1,0 +1,704 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "issue": 328,
+  "parent_issue": 326,
+  "status": "PARTIAL",
+  "closure_eligible": false,
+  "baseline_commit": "2057bb78a7e69a7c541221ef5f386ffd65e22a92",
+  "implementation": {
+    "transport": "Existing protected PUT voice lease screen-profile/v1; secure session cookie and Origin from shared transport; no alternate endpoint or client metadata privilege.",
+    "writer": "Latest-wins single in-flight/one queued snapshot, stable idempotent retries, five-second abortable HTTP deadline and epoch/account/origin/room/publication guards. Media lifecycle never awaits this writer.",
+    "confirmation": "Native capture start acknowledgement plus first valid frame and fresh getSenders encoding limits are required. Missing mandatory v1 configuration remains pending. Legacy window command FPS is not confirmed capture FPS.",
+    "mode": "Explicit motion/text independent of existing supported FPS/profile catalogue; no profile IDs added.",
+    "readers": "Selected intent, declared SDK limits, sender measurements and viewer measurements/provenance/age remain distinct. Unknown capture age remains unknown.",
+    "recovery": "Two HTTP attempts per wave, five-second monotonic cooldown, same immutable failed body/revision on current active offers. Transient 5xx, deadline, socket and HTTP-client failures retry; explicit abort/TLS/ACL failures do not. No new writer timer or lifetime wave budget; idle clear has only its single bounded wave."
+  },
+  "checks": [
+    {
+      "name": "shared_explicit_mode_contract",
+      "status": "PASS",
+      "scope": "Go/TypeScript/Dart shared fixtures, motion30/motion15/text60; HTTP shape validation unchanged."
+    },
+    {
+      "name": "protected_descriptor_api",
+      "status": "PASS",
+      "cases": 5,
+      "scope": "Cookie/Origin/path/body, redirect refusal, ACL failure, scope abort and HTTP deadline focused tests."
+    },
+    {
+      "name": "main_nearest_before_freshness_fix",
+      "status": "PASS",
+      "tests": 131
+    },
+    {
+      "name": "full_flutter_analyze_before_final_metrics",
+      "status": "PASS",
+      "infos": 64,
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "name": "web_full_unit",
+      "status": "PASS",
+      "tests": 1530
+    },
+    {
+      "name": "web_screen_profile_browser",
+      "status": "PASS",
+      "passed": 18,
+      "skipped": 1,
+      "skip_reason": "Hardware SFU baseline requires explicit runtime fixture; separately owned runtime work."
+    },
+    {
+      "name": "web_accessibility_changed_mode",
+      "status": "PASS",
+      "tests": 3,
+      "scope": "Retained WCAG, geometry, focus trap and profile bounds after independent mode selection."
+    },
+    {
+      "name": "confirmation_loss_epoch_guard",
+      "status": "PASS",
+      "red_failures": 1,
+      "green_metadata_tests": 54,
+      "analyzer": "No issues",
+      "scope": "Lost native confirmation cancels pending old write and clears freshness; retained snapshot is previous only. Late ACK cannot restore current applied status."
+    },
+    {
+      "name": "web_required_feature_checks",
+      "status": "PASS_SCOPED",
+      "features": [
+        "screen",
+        "screen_metrics",
+        "screen_track_name",
+        "shell",
+        "voice"
+      ],
+      "scope": "All unit/build/browser and real API/SFU 1440/393 stages pass. Source-resolution visual review completed separately in issue326-web-visual-2026-10-13.json; no golden approval."
+    },
+    {
+      "name": "contracts",
+      "status": "PASS",
+      "python_tests": 19,
+      "openapi_cases": 108
+    },
+    {
+      "name": "spec_traceability",
+      "status": "PASS",
+      "requirements_referenced": 39,
+      "limitation": "Committed requirement index only; approved Windows brief unavailable on this host."
+    },
+    {
+      "name": "native_required_features_and_changed_chooser",
+      "status": "PASS_SCOPED_NOT_MEDIA",
+      "full_unit_passed": 1303,
+      "full_unit_skipped": 1,
+      "component_captures": "PASS",
+      "basic_real_API_runtime_targets": [
+        "Android emulator API35 arm64",
+        "iOS QA Simulator"
+      ],
+      "changed_UI": "Both targets actual authenticated workspace opens production chooser; Text/Motion preserves FPS and Cancel leaves intent/capture unchanged. Source-resolution review completed in issue326-native-visual-2026-10-13.json, including the documented iOS first Text screenshot scroll-state limitation.",
+      "source_sha256": "179acb7ae964902aa470f09bb4cf8455b66cc86da681a2a6e693da3d2e6e6995",
+      "capture_or_physical_device_acceptance": false
+    },
+    {
+      "name": "real_protected_API_SFU_ACL_revision",
+      "status": "PASS",
+      "checks": 13,
+      "receipt_sha256": "13c168b0304a1a632f338d075076aa28f9367233cd181d05d60b1aeb7ee76910",
+      "runner_source_sha256": "d8f15454a1571f783b71ae47f4a47e7132a927d29119682e7d1411a0c5f5d247",
+      "backend_source_sha256": "d797fd43c7ccc9e0aaba7435ddb2a29e5084e77b1d0ab01f68be1d2943ba60db",
+      "API_image_sha256": "sha256:dcbc484a86cfa47478c0e905ec95d47fe966e596ab92c10c2d17366c0e131a9d",
+      "scope": "Real cookie/Origin/account/lease/idempotent/stale/conflict and revoked lease/session checks. Server-canonical scope and retained current revision observed in actual LiveKit attributes. Zero video subscriptions. Minimal acceptance scope parser; Full current production Web reader is separately verified in cases17/18 on its immutable build.",
+      "checks_detail": [
+        {
+          "name": "foreign_origin",
+          "status": "PASS",
+          "expected_HTTP": 403,
+          "actual_HTTP": 403
+        },
+        {
+          "name": "missing_origin",
+          "status": "PASS",
+          "expected_HTTP": 403,
+          "actual_HTTP": 403
+        },
+        {
+          "name": "no_session_cookie",
+          "status": "PASS",
+          "expected_HTTP": 401,
+          "actual_HTTP": 401
+        },
+        {
+          "name": "cross_account_lease",
+          "status": "PASS",
+          "expected_HTTP": 404,
+          "actual_HTTP": 404
+        },
+        {
+          "name": "own_valid_update",
+          "status": "PASS",
+          "expected_HTTP": 204,
+          "actual_HTTP": 204
+        },
+        {
+          "name": "real_SFU_server_canonical_scope",
+          "status": "PASS",
+          "subscribed_video_count": 0,
+          "source": "Real participant metadata/attributes; independently read account/channel. Minimal test scope parser, not production Web parser acceptance."
+        },
+        {
+          "name": "identical_retry",
+          "status": "PASS",
+          "expected_HTTP": 204,
+          "actual_HTTP": 204
+        },
+        {
+          "name": "same_revision_changed_payload",
+          "status": "PASS",
+          "expected_HTTP": 409,
+          "actual_HTTP": 409
+        },
+        {
+          "name": "explicit_text60_new_revision",
+          "status": "PASS",
+          "expected_HTTP": 204,
+          "actual_HTTP": 204
+        },
+        {
+          "name": "stale_revision",
+          "status": "PASS",
+          "expected_HTTP": 409,
+          "actual_HTTP": 409
+        },
+        {
+          "name": "rejected_requests_keep_current_SFU_attribute",
+          "status": "PASS",
+          "subscribed_video_count": 0
+        },
+        {
+          "name": "revoked_lease",
+          "status": "PASS",
+          "expected_HTTP": 404,
+          "actual_HTTP": 404
+        },
+        {
+          "name": "revoked_authenticated_session",
+          "status": "PASS",
+          "expected_HTTP": 401,
+          "actual_HTTP": 401
+        }
+      ],
+      "owned_contexts_closed": true,
+      "cleanup_errors": [],
+      "limits": "Owned headless browser context ignores browser certificate errors; native valid-chain acceptance separately established. Explicit expired-session and media failure/lifecycle scenarios are not inferred from these checks."
+    },
+    {
+      "name": "final_main_exact_frozen_source",
+      "status": "PASS",
+      "main_lib_sha256": "505453087670e59fe59256fb0a3a6501101078b658631fe3920b7e8a5ce00644",
+      "files": 1116,
+      "tests_passed": 1337,
+      "skipped": 1,
+      "analyze": {
+        "info": 64,
+        "warning": 0,
+        "error": 0
+      },
+      "pinned_Flutter": "3.47.5",
+      "pinned_Dart": "3.13.4",
+      "receipt_sha256": "2840ebe61d14dc9fe698ce9df94f711f92a1679507b7ee8b425ff86d3ba8eb52"
+    },
+    {
+      "name": "unchanged_descriptor_failure_recovery",
+      "status": "PASS",
+      "new_regressions": 7,
+      "writer_tests": 14,
+      "nearest_metadata_tests": 61,
+      "analyzer": "No issues",
+      "receipt_sha256": "55fc367611ff753e76f04023ab2805db2af368507ae3ec7d7a8ec4f651d638bd",
+      "source_sha256": {
+        "clients/flutter/lib/src/features/screen/sender_metadata/latest_writer.dart": "4d4ea62d2c6cf58100a449b1f4a8c77a8a61d465eedb61116ca10f83da98ffee",
+        "clients/flutter/test/features/screen/sender_metadata/latest_writer_test.dart": "9d0db04bde259a83da7f280aedc8776df6c021ceef5baa98408693d16aa871ac"
+      },
+      "scope": "Test-first recovery after transient HTTP failure/timeout, stable revision/payload, cooldown, latest wins and owner/permanent-error guards. Actual final native isolated503/deadline recovery is recorded separately."
+    },
+    {
+      "name": "final_main_after_metadata_recovery",
+      "status": "PASS",
+      "main_lib_sha256": "59f9aaa3eb8c6ea7cca6bb41897f00575693b65012ce6ef0d7b416d0374869a7",
+      "files": 1116,
+      "full_unit_passed": 1344,
+      "full_unit_skipped": 1,
+      "framework_tool_version": "3.47.5",
+      "dart_tool_version": "3.13.4",
+      "analyze_counts": {
+        "info": 64,
+        "warning": 0,
+        "error": 0
+      },
+      "analyze_policy": "Explicit --no-fatal-infos; existing informational diagnostics retained. Default invocation exited1 with64INFO/0warnings/0errors.",
+      "receipt_sha256": "51eed159a399f9476fa386ab544ebf44448607623d4b9be76a500e107bc747e2",
+      "scope": "New recovery source only changes latest_writer; prior actual5054 round trips remain separately identified, pending new compiled runtime."
+    },
+    {
+      "name": "transient_transport_failure_recovery",
+      "status": "PASS_FOCUSED_TRANSPORT",
+      "red_failed": 3,
+      "new_regressions": 7,
+      "writer_tests": 21,
+      "nearest_metadata_tests": 68,
+      "analyzer_files": 2,
+      "analyzer": "No issues",
+      "receipt_sha256": "eaa35030ad0cc1bca662ef3da038a31c686e87adb8a867ca1c42dfd5def232d1",
+      "source_sha256": {
+        "clients/flutter/lib/src/features/screen/sender_metadata/latest_writer.dart": "4e53ecd20dadbaf1fb40de2dafb92b2d9a20d521661f114e3b6dc4966f07ba72",
+        "clients/flutter/test/features/screen/sender_metadata/latest_writer_test.dart": "8552e73cd13975a71def9a7692fd0518063099da1cf33d7ffe2a11a07e0e481d"
+      },
+      "scope": "Production descriptor ApiClient and actual IOClient see truncated loopback HTTP as ClientException: two failedPUTs then same immutablebody/revision recover after five-second cooldown. Socket/client errors retry; explicit request abort, scope cancellation, TLS rejection and ACL never auto retry unchanged state. Final native503/deadline recovery is separately proven; real IOClient transport disconnection is established by the loopback focused boundary, not claimed as a physical voice/network matrix."
+    },
+    {
+      "name": "final_main_after_network_recovery",
+      "status": "PASS",
+      "main_lib_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+      "files": 1116,
+      "framework_tool_version": "3.47.5",
+      "dart_tool_version": "3.13.4",
+      "pub_get_offline": "PASS",
+      "package_flutter_root_matches_pinned_tool": true,
+      "full_unit_passed": 1351,
+      "full_unit_skipped": 1,
+      "analyze_counts": {
+        "info": 64,
+        "warning": 0,
+        "error": 0
+      },
+      "analyze_exit": 0,
+      "analyze_policy": "Explicit --no-fatal-infos; existing informational diagnostics retained.",
+      "source_after_checks_matches_freeze": true,
+      "log_sha256": {
+        "main-network-full-unit.log": "66b09ef5bf07b33f2249c48e666c44a367dc65c7c5541038575bbb9d7b362418",
+        "main-network-analyze.log": "f2e8de08f4835b3cddb9eabf9d025c26cd250a5a35bb6d9ba2060ba7bccbfe2c",
+        "main-network-pub-offline.log": "ed04333b5dd38c271dacbc87d6df53fcd2c3676c7c83f39da26cd09d8deba83c"
+      },
+      "receipt_sha256": "58013fa6f425e71262db4296a3e5c4d042af7d68c0c821e8059e59346bc2d873",
+      "scope": "Exact final main sources after transient transport classifier; includes all unit tests and full analyzer. Older actual59/5054 observations remain separately identified."
+    }
+  ],
+  "pending": [
+    "Physical voice progress/audibility during metadata failure is not measured by listener-only video fixtures.",
+    "Explicit temporal expired-session/expired-lease acceptance is not established by missing-cookie, revoked-session or JWT tests; existing server lease/session contracts need separately mapped evidence.",
+    "Remaining real-device failure/revoke/logout and device gates linked to #173/#227 are not inferred from unit tests or one co-hosted Mac."
+  ],
+  "public_data_policy": "Synthetic labels, aggregate numeric counters and digests only; no IDs/cookies/tokens/SDP/IP/private pixels or audio.",
+  "discovered_encoder_gap": {
+    "status": "VALIDATED_SCOPED_RUNTIME_PUBLICATION_GUARDED",
+    "observed_capture": [
+      1920,
+      1246
+    ],
+    "observed_encoder_scale": 1.0,
+    "reason": "Confirmed native dimensions now feed existing ADR018 encoded bounds. Actual display runtime16 and unchanged-source focused/final tests prove the scoped fix; unknown legacy/diagnostics-off paths retain unknown fallback.",
+    "linked_issue": 333,
+    "actual_fixed_encoded_decoded": [
+      1662,
+      1079
+    ],
+    "SDK_derived": [
+      1662,
+      1078
+    ]
+  },
+  "harness_attempts": {
+    "retained_initial_setup_failure": "Original FAIL preserved locally; no product RCA assigned.",
+    "corrected_expectations": "Wrong foreign-Origin no-store assumption and ErrDenied403 expectation corrected to actual existing outer middleware and documented404 response contract.",
+    "login_rate_limit": "429/Retry-After honored; reused exactly the same pre-created owned fixtures after cooldown, no reset/IP rotation/limiter bypass."
+  },
+  "actual_current_production_reader_roundtrip": [
+    {
+      "case": 17,
+      "status": "PASS_SCOPED",
+      "main_source_sha256": "505453087670e59fe59256fb0a3a6501101078b658631fe3920b7e8a5ce00644",
+      "immutable_build_proof_sha256": "9f747892d09947d3ad3f3150ebaa6f1299eb0362dbbd76ad5bd67f256f576a20",
+      "receiver_receipt_sha256": "b9188d8abb0e9366554b218b7b67147d6b791878eec2d2152c42374e87cbb644",
+      "case_receipt_sha256": "07fb2c4fd81f14a3afdb71dfda4b56d1b3ad4b3f53955c722a1b6ec7bc2e570c",
+      "current": {
+        "attributePresent": true,
+        "descriptorValidForIndependentOwner": true,
+        "rejectsForeignOwnerScopes": true,
+        "subscribedVideoCount": 1,
+        "descriptor": {
+          "schema_version": 1,
+          "mode": "motion",
+          "requested_profile_id": "P1080_30",
+          "publisher_state": "sharing",
+          "profile_revision": 2,
+          "publication_generation": 1,
+          "operation_revision": 2,
+          "capture": {
+            "max_width": 1920,
+            "max_height": 1080,
+            "max_fps": 30
+          },
+          "codec": "VP8",
+          "layers": [
+            {
+              "width": 1920,
+              "height": 1080,
+              "max_fps": 30,
+              "max_bitrate_bps": 5000000,
+              "scale_down_by": 1,
+              "active": true
+            }
+          ]
+        }
+      },
+      "late": {
+        "attributePresent": true,
+        "descriptorValidForIndependentOwner": true,
+        "rejectsForeignOwnerScopes": true,
+        "subscribedVideoCount": 1,
+        "descriptor": {
+          "schema_version": 1,
+          "mode": "motion",
+          "requested_profile_id": "P1080_30",
+          "publisher_state": "sharing",
+          "profile_revision": 2,
+          "publication_generation": 1,
+          "operation_revision": 2,
+          "capture": {
+            "max_width": 1920,
+            "max_height": 1080,
+            "max_fps": 30
+          },
+          "codec": "VP8",
+          "layers": [
+            {
+              "width": 1920,
+              "height": 1080,
+              "max_fps": 30,
+              "max_bitrate_bps": 5000000,
+              "scale_down_by": 1,
+              "active": true
+            }
+          ]
+        }
+      },
+      "late_first_callback_ms": 283.59999999403954,
+      "parser_provenance": "Actual current production module with origin/account/room independently obtained from authenticated API session and authorized topology; no additional subscription",
+      "owned_context_closed": true,
+      "cleanup_errors": [],
+      "scope": "Actual physical macOS capture/encoding \u2192 real current Go API/SFU \u2192 current production Web parser in headless Chromium on same host. Valid browser certificate chain and physical presentation are not established."
+    },
+    {
+      "case": 18,
+      "status": "PASS_SCOPED",
+      "main_source_sha256": "505453087670e59fe59256fb0a3a6501101078b658631fe3920b7e8a5ce00644",
+      "immutable_build_proof_sha256": "9f747892d09947d3ad3f3150ebaa6f1299eb0362dbbd76ad5bd67f256f576a20",
+      "receiver_receipt_sha256": "67e2669ae321c3eed1afa525139bae337e082da74b3647b6f0f7717097b181c7",
+      "case_receipt_sha256": "98c748e2512a03e4d8ada1847496650786e6597fc539f62b5e6278f40558510c",
+      "current": {
+        "attributePresent": true,
+        "descriptorValidForIndependentOwner": true,
+        "rejectsForeignOwnerScopes": true,
+        "subscribedVideoCount": 1,
+        "descriptor": {
+          "schema_version": 1,
+          "mode": "text",
+          "requested_profile_id": "P1080_60",
+          "publisher_state": "sharing",
+          "profile_revision": 2,
+          "publication_generation": 1,
+          "operation_revision": 2,
+          "capture": {
+            "max_width": 1920,
+            "max_height": 1080,
+            "max_fps": 60
+          },
+          "codec": "VP8",
+          "layers": [
+            {
+              "width": 1920,
+              "height": 1080,
+              "max_fps": 60,
+              "max_bitrate_bps": 8000000,
+              "scale_down_by": 1,
+              "active": true
+            }
+          ]
+        }
+      },
+      "late": {
+        "attributePresent": true,
+        "descriptorValidForIndependentOwner": true,
+        "rejectsForeignOwnerScopes": true,
+        "subscribedVideoCount": 1,
+        "descriptor": {
+          "schema_version": 1,
+          "mode": "text",
+          "requested_profile_id": "P1080_60",
+          "publisher_state": "sharing",
+          "profile_revision": 2,
+          "publication_generation": 1,
+          "operation_revision": 2,
+          "capture": {
+            "max_width": 1920,
+            "max_height": 1080,
+            "max_fps": 60
+          },
+          "codec": "VP8",
+          "layers": [
+            {
+              "width": 1920,
+              "height": 1080,
+              "max_fps": 60,
+              "max_bitrate_bps": 8000000,
+              "scale_down_by": 1,
+              "active": true
+            }
+          ]
+        }
+      },
+      "late_first_callback_ms": 276.2000000178814,
+      "parser_provenance": "Actual current production module with origin/account/room independently obtained from authenticated API session and authorized topology; no additional subscription",
+      "owned_context_closed": true,
+      "cleanup_errors": [],
+      "scope": "Actual physical macOS capture/encoding \u2192 real current Go API/SFU \u2192 current production Web parser in headless Chromium on same host. Valid browser certificate chain and physical presentation are not established."
+    }
+  ],
+  "actual_lifecycle_acceptance": {
+    "status": "PASS_SCOPED",
+    "case": 15,
+    "main_source_sha256": "59f9aaa3eb8c6ea7cca6bb41897f00575693b65012ce6ef0d7b416d0374869a7",
+    "immutable_build_proof_sha256": "145b8c63ceb1738e6e4bc1d412f407fa8282a59060601425a927717adcb45728",
+    "receipt_sha256": {
+      "stage-case-15.json": "0b6502539d2e79e991408018a8b185efcfa89fb44fdad7219bbac91b9124b1e3",
+      "restart-15.json": "41bea4de33543680d5dba270eb0f9ffd2d6c4f73f6b0d9483fcac1842e9d460f",
+      "receiver-15.json": "9afd4272c03e84c96a04374cba7ac1f7f46e636d5229d2d81ba873254d422e13"
+    },
+    "native_steps": [
+      {
+        "at_ms": 22559.318,
+        "event": "lifecycle_acceptance",
+        "step": "compatible_mode",
+        "assertions_passed": true,
+        "profile": "P1080_60",
+        "selected_profile": "P1080_60",
+        "mode": "text",
+        "sharing": true,
+        "restart_required": false,
+        "same_initial_track": true,
+        "live_track": true,
+        "lease_replaced": false
+      },
+      {
+        "at_ms": 25563.731,
+        "event": "lifecycle_acceptance",
+        "step": "lower_restart_required",
+        "assertions_passed": true,
+        "profile": "P1080_60",
+        "selected_profile": "P720_30",
+        "mode": "motion",
+        "sharing": true,
+        "restart_required": true,
+        "same_initial_track": true,
+        "live_track": true,
+        "lease_replaced": false
+      },
+      {
+        "at_ms": 28774.48,
+        "event": "lifecycle_acceptance",
+        "step": "lower_restart_completed",
+        "assertions_passed": true,
+        "profile": "P720_30",
+        "selected_profile": "P720_30",
+        "mode": "motion",
+        "sharing": true,
+        "restart_required": false,
+        "same_initial_track": false,
+        "live_track": true,
+        "lease_replaced": false
+      },
+      {
+        "at_ms": 28775.338,
+        "event": "lifecycle_acceptance",
+        "step": "higher_restart_required",
+        "assertions_passed": true,
+        "profile": "P720_30",
+        "selected_profile": "P1080_60",
+        "mode": "motion",
+        "sharing": true,
+        "restart_required": true,
+        "same_initial_track": false,
+        "live_track": true,
+        "lease_replaced": false
+      },
+      {
+        "at_ms": 31996.977,
+        "event": "lifecycle_acceptance",
+        "step": "higher_restart_completed",
+        "assertions_passed": true,
+        "profile": "P1080_60",
+        "selected_profile": "P1080_60",
+        "mode": "motion",
+        "sharing": true,
+        "restart_required": false,
+        "same_initial_track": false,
+        "live_track": true,
+        "lease_replaced": false
+      },
+      {
+        "at_ms": 35387.5,
+        "event": "lifecycle_acceptance",
+        "step": "lease_rejoin_completed",
+        "assertions_passed": true,
+        "profile": "P1080_60",
+        "selected_profile": "P1080_60",
+        "mode": "motion",
+        "sharing": true,
+        "restart_required": false,
+        "same_initial_track": false,
+        "live_track": true,
+        "lease_replaced": true
+      }
+    ],
+    "viewer": "Actual current production metadata parser, one selected subscription, new numbered output and publication generations1\u21922\u21923\u21924 during mode change, lower-profile restart, higher-profile restart and new-lease rejoin.",
+    "owned_context_closed": true,
+    "cleanup_errors": [],
+    "scope": "Functional same-host integration only, no steady FPS/SLO or physical audio/presentation claim. Mac static capture options intentionally require restart for changed dimensions/FPS; no compatible hot mutation is invented."
+  },
+  "actual_isolated_metadata_recovery": {
+    "status": "PASS_SCOPED_RUNTIME",
+    "main_source_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "canonical_vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+    "build_proof": ".out/qa329332-20261013/candidate-network-final-build-proof.json",
+    "build_proof_sha256": "12b6c30e3a572bbf2e90c6de2b3d141a317a09e605da2d0a792e302be6513c3d",
+    "results": {
+      "failure": {
+        "status": "PASS",
+        "viewer_status": "PASS",
+        "cleanup_errors": [],
+        "context_closed": true,
+        "same_publication_recovery": {
+          "actual_failed_attempts": 2,
+          "actual_recovery_http_status": 204,
+          "same_failed_payload_and_operation_recovered": true,
+          "publication_generation_unchanged": true,
+          "capture_progressed": true,
+          "stop_idle_no_new_sender_reports": true,
+          "maximum_pending_descriptors": 1,
+          "scope": "Isolated proxy metadata fault, not a Go authorization failure"
+        },
+        "no_proxy_restart_during_recovery": true,
+        "exact_proxy_original_restored": true,
+        "proxy_original_and_restored_sha256_equal": true,
+        "reference_files": {
+          ".out/qa329332-20261013/metadata-failure/healthy-18.json": "4cf745ed6fd473135996a7fd25fdd7dc839b416a907f873b6366d5bd395a1d37",
+          ".out/qa329332-20261013/metadata-failure/receiver-18.json": "55ff8e90f02ef431ceca153cfc5fceecabd73b5cb26b254abfb0b509fdb5f615",
+          ".out/qa329332-20261013/metadata-failure/stage-case-18.json": "7427307f70ba2f2d5377ac1d5720934cd81ee13bdd633b522fee2f4b8780da74",
+          ".out/qa329332-20261013/metadata-failure/proxy-fault-restoration.json": "304a3f66cf8e028bcb08d3c3bae7d81e66a9233946b65124210cba677f2e23ff"
+        },
+        "metadata_timeout_observations_ms": []
+      },
+      "slow": {
+        "status": "PASS",
+        "viewer_status": "PASS",
+        "cleanup_errors": [],
+        "context_closed": true,
+        "same_publication_recovery": {
+          "actual_failed_attempts": 2,
+          "actual_recovery_http_status": 204,
+          "same_failed_payload_and_operation_recovered": true,
+          "publication_generation_unchanged": true,
+          "capture_progressed": true,
+          "stop_idle_no_new_sender_reports": true,
+          "maximum_pending_descriptors": 1,
+          "scope": "Isolated proxy metadata fault, not a Go authorization failure"
+        },
+        "no_proxy_restart_during_recovery": true,
+        "exact_proxy_original_restored": true,
+        "proxy_original_and_restored_sha256_equal": true,
+        "reference_files": {
+          ".out/qa329332-20261013/metadata-slow/healthy-18.json": "f9301083f44beb74f0f93156cf06d5f2b56041541c75b75bcc2d8fc72916ba63",
+          ".out/qa329332-20261013/metadata-slow/receiver-18.json": "97e1b4edad06b7742a4a14096a29eb92eeb02c3f539402365ea50f49d0c80a4c",
+          ".out/qa329332-20261013/metadata-slow/stage-case-18.json": "04de8fef0ac6c688a4d868b5f55656218024fa0bc2bf4b2fe8968e53130bbb81",
+          ".out/qa329332-20261013/metadata-slow/proxy-fault-restoration.json": "4446322620c62eca9122900d561ba9470dcd48fc57fb8323478592a5d39d73f8"
+        },
+        "metadata_timeout_observations_ms": [
+          4985.878000000001,
+          4998.177
+        ]
+      }
+    },
+    "scope": "Physical Mac native sender\u2192realAPI/SFU\u2192cohostedChromium currentproduction parser. Actual protectedmetadata path fault at ownedproxy, not Go authorization failure. No remotephysical/SLO/audio/signedrelease acceptance.",
+    "receipt_sha256": "ece68867d463cb96b92c45f43e57100a9e0fc93e4c7695427a1d5d74add27290"
+  },
+  "actual_web_to_native_reader": {
+    "status": "PASS_SCOPED_END_TO_END",
+    "native": {
+      "status": "PASS_SCOPED_RUNTIME_AND_VISUAL",
+      "native_receipt": ".out/qa329332-20261013/descriptor-reverse/healthy-18.json",
+      "native_receipt_sha256": "a2de33e1ec6d4b063e0694361c6c8957335c808c6242832c70ba12e94d0ee2b2",
+      "build_proof": ".out/qa329332-20261013/candidate-review-final-build-proof.json",
+      "build_proof_sha256": "a7b13d55d6995f7fa47f9cec752618e046ba4ea89c05d1fad5544a3a3b9cff78",
+      "main_source_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+      "actual_native_modes": [
+        "motion",
+        "text"
+      ],
+      "actual_scoped_parser_subscription_verified": true,
+      "owned_native_process_exited": true,
+      "original_visual": {
+        "bytes": 356139,
+        "sha256": "250da38dc075ab34a9bfe4222282728ae600dec3f32608e75cda402f23db5e63",
+        "dimensions": [
+          2880,
+          1800
+        ],
+        "storage": "CUAinline original only; no exportedPNG",
+        "review": "Actual productionexpandedremote screen/Statistics opened throughCUA. Synthetic remotechecker/colorboard visible, Text/1080p60 andSDKlimits readable. UNKNOWNsourcecaptureage/sendermeasurement remain distinct fromcurrentreceiverstats. Lowerstats require scroll, noallrows-visible claim. SmallQAoverlay excludedfromdecodedproof."
+      },
+      "source_reverse_scope": "Root actual Webpublisher/productionmetadataAPI/SFU\u2192physicalnativeproductionreader. Co-hosted oneMac; nosecondphysicaldevice, signedrelease, audio orFPS_SLO acceptance.",
+      "history": "First2overallNativeFAIL review50sdeadline retained. FirstsmallQAbadge onlyoverlay; correctedLIMIT. ThirdQA-only bounded180sreview/300shostlimit, Nativejoinedfirst, freshSource Motion30/Text/hold180; no productchange."
+    },
+    "native_summary_sha256": "e69c4190a6245ba9ba8bd67129a87dda79f6d5bcfe2905f6494563b6de99e754",
+    "web_counterpart": {
+      "status": "PASS_WEB_COUNTERPART_ONLY",
+      "receipt_sha256": "f3af39396a4c2924f4c51f6809509c6c616608e715e92c9777b649571a1339b8",
+      "metadata_HTTP_statuses": [
+        204,
+        204,
+        204
+      ],
+      "duration_seconds": 180,
+      "motion_seconds": 30,
+      "context_closed": true,
+      "cleanup_errors": []
+    },
+    "source_privacy": "Synthetic source and numerical/enumerated state only; no credential, ID, SDP, IP, real screen or PCM publication."
+  },
+  "historical_source_freeze": {
+    "main_lib_sha256": "175f99a2378c1640ee4fab8f6b6aa35886ea8dddfdc60b4b68ea1fc3846201e8",
+    "canonical_vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+    "scope": "Actual local window8\u201310/static11/display12 main source; subsequent publisher geometry fix will receive a separate source freeze and actual retest. Historical mixed artifact/vendor manifests are not canonical source."
+  },
+  "source_freeze": {
+    "main_lib_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "main_files": 1116,
+    "canonical_vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+    "canonical_vendor_paths": 990,
+    "scope": "Final main source after geometry and metadata failure/network recovery; older runtime histories keep their actual5054/59/175f source identities."
+  },
+  "backlog_mapping": {
+    "task": "T-036",
+    "depends_on": [
+      "T-031",
+      "T-032",
+      "T-033",
+      "T-034",
+      "T-022"
+    ],
+    "scope": "Existing Flutter publisher lifecycle leaf; profile/metrics/harness dependencies retain their evidence and behavior."
+  }
+}

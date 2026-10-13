@@ -13,3 +13,44 @@ Do not start physical window capture or claim visible presentation while the Mac
 All attempts archive old receipts before preflight and write RUNNING/FAIL/PASS only from fresh native events with a matching case index. Only the returned subprocess PID is terminated, never other apps. Cleanup must finish the owned namespace case, stop the browser peer, close the owned app, then send the worker Enter to remove labelled resources and private builds. Original synthetic screenshots remain under ignored .out; never stage generated media. Missing physical platforms, audible quality, historical startup root cause and broader lifecycle/hardware cases remain NOT_RUN/PARTIAL.
 
 The published classifier regression reproduces a Dart HTTP TimeoutException being mislabeled network because LiveKit exports an identically named exception. Narrowing the classifier import preserves the transport deadline and cancellation behavior. The direct-loopback IO probe creates a real IOClient inside a test-only HttpOverrides scope so the Flutter-test default HTTP400 stub cannot substitute for the real transport; five requests are checked in one test. Physical retries retain their original build/source hashes.
+
+## Stage baseline and regression runtime (#329, #332)
+
+This is the same physical Mac entry, owned stack and existing Web screen-profile viewer. It is not a second media harness. `stage_baseline` verifies a fresh BUILT proof and exact executable SHA before starting either endpoint. Keep the original baseline application library, backend image and Web source manifests separate from every instrumented/candidate artifact. Candidate copies use the canonical SOURCE ONLY vendor file list, not Android `.cxx`, Pods, ephemeral symlinks or build directories. A private codec overlay is recorded before calculating the compiled library digest; it never modifies production composition.
+
+The diagnostic prototype uses 30 seconds of warmup and 60 seconds of steady observations. Run after the coordinated build lease is released and other QA compilers/emulators have stopped:
+
+```sh
+BOOHTACORD_QA_RUN_NAME=qa329332-20261013 python3 -m tools.qa.macos_sender.stage_baseline --work .out/qa329332-20261013/owned-candidate --indices 8 --capture-counters --source-proof candidate-build-proof.json
+BOOHTACORD_QA_RUN_NAME=qa329332-20261013 python3 -m tools.qa.macos_sender.stage_analysis --indices 8
+```
+
+Each case archives previous readiness, measurements and negotiation receipts before preflight. Existing bounded viewer accounts are re-used only when a prior same-case owned readiness record proves creation/login; the next session still authenticates through the real API. This avoids needless registration retries and honors server login/registration limits. Never reset the limiter or rotate identities/IPs to evade it.
+
+`--metadata` reads the native publisher account once through the authenticated API, binds its private cache to the owned configuration, derives the authorized room independently from API topology and imports the current production descriptor parser. It checks foreign origin/account/room rejection, one video subscription, then disconnects/reconnects the same viewer with a refreshed credential and validates a late-viewer attribute. The old baseline Web scaffold and current parser have separate source manifests. Current independent motion30/text60 behavior requires the current API image; the historical baseline API rejected those pairs.
+
+`--display` is permitted only for an opaque fullscreen synthetic scene on the single enumerated display. The native entry pauses at `verify_fullscreen_display`; review an original through documented Computer Use before continuing the matching case. Inline-only originals have byte length/digest receipts, never an invented exported PNG. A nominal profile ID does not prove actual dimensions: capture longer-edge limits and encoder both-axis bounds are distinct and are measured separately.
+
+`QA_NATIVE_CAPTURE_DIAGNOSTICS=0|1` runs off/on with one exact binary. Off counters and native configuration confirmation are unavailable, not zero. Queue-policy clocks remain active, and the metadata writer may remain pending while counters are off; record that confound. Rates use host monotonic sample gaps; RTC stamps are only freshness/reset guards. Encoded/sent FPS, selected publisher transport, reported encoder name/efficiency, codec-dependent QP and decoded callbacks are separate observations. No stage silently fills unknowns from requested FPS. Static callbacks can repeat one content frame and do not prove unique motion.
+
+A same-host 90-second prototype cannot close the five-minute/two-physical-device presentation gate or establish hardware capacity. Signed Release, approved overhead budget, audio fidelity, static idle cadence and unobserved stages remain explicit NOT_RUN. Generated originals stay under ignored `.out`. Before publishing, run the two known-key namespace cleanup with the current signing identity, stop only owned processes, dispose all compiled/private credential files and remove the separately tagged current API image in addition to the original worker resources. Preserve sanitized historical receipts and source-attributed failures.
+
+## Protected descriptor API acceptance (#328)
+
+After the owned current API and Vite viewer are ready, with no performance window active, run:
+
+```sh
+QA_STAGE_INPUT=<owned-work>/browser-private.json QA_DESCRIPTOR_ACL_OUT=<ignored-output>/descriptor-acl-runtime.json node tools/qa/macos_sender/descriptor_acl.mjs
+```
+
+The test creates exactly two disposable fixture accounts, authenticates each through the secure-cookie API and joins the real SFU. It checks Origin, missing authentication, cross-account ownership, identical retries, revision conflicts/staleness, explicit Text60, revoked lease/session and server-canonical scope in real attributes. It creates no video subscriptions. The small acceptance scope parser is identified separately from the production Web reader round-trip.
+
+For a retry in the same owned stack after these two accounts have already been created by this test, set `QA_DESCRIPTOR_ACL_EXISTING_FIXTURE=1`; it reuses exactly those accounts and authenticates normally. Respect `429/Retry-After`; do not reset limits or rotate identities. Fresh setup requires successful creation rather than silently adopting an arbitrary existing account. Reports include only fixed case names, numeric status/revision checks and cleanup outcomes. Raw attributes, account/lease IDs and credentials remain in memory. The headless browser certificate-error exemption is explicit and does not claim browser trust-chain acceptance.
+
+For the reverse reader check, serve `tests/screen_profile/descriptor_sender.html` with its current production metadata modules in the owned Vite copy, then run:
+
+```sh
+QA_STAGE_INPUT=<owned-work>/browser-private.json QA_DESCRIPTOR_REVERSE_OUT=<ignored-output>/reverse328 QA_DESCRIPTOR_REVERSE_DURATION=180 QA_DESCRIPTOR_REVERSE_MOTION=30 node tools/qa/macos_sender/descriptor_reverse.mjs
+```
+
+It reuses the same owned ACL source account, sets its fixed synthetic display label, publishes one moving canvas and sends metadata through the production publisher/client with fresh track settings and sender parameters. The Node secure-cookie context bridges only the exact protected descriptor request; no SDK metadata privileges are added. Start the same candidate native receiver branch first and wait for its actual SFU-joined observation, then launch this source. Motion is initially published; the command switches to Text after30 seconds and holds a bounded180-second lifetime. The source accepts60–180 seconds total and15–70 seconds Motion; defaults use120 seconds total and half that interval for Motion. Native mode observation stays bounded85 seconds, visual acknowledgment180 seconds, and the receiver host workflow300 seconds. Open the actual production viewer/Statistics, review an original screenshot, and acknowledge the owned review control; the small QA pattern overlay is not decoded-media evidence. A Web counterpart PASS alone cannot pass the native reader gate; join both current receipts. Reports retain declared configuration, measured dimensions and physical presentation unknowns separately. Retries archive old readiness/results, and cleanup unpublishes, releases the lease and logs out.

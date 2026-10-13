@@ -21,6 +21,7 @@ void configureMedia(AppOwners app) {
     app.api,
     app.session.scope,
     readRoom: () => app.voice.room,
+    readAccountId: () => app.session.user?.accountId,
     voiceReady: () =>
         app.voice.voicePhase == VoicePhase.connected ||
         app.voice.voicePhase == VoicePhase.listener,

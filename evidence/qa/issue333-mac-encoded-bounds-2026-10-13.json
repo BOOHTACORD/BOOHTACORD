@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "issue": 333,
+  "parent_issue": 326,
+  "status": "VALIDATED_PENDING_PUBLICATION",
+  "closure_eligible": false,
+  "baseline_commit": "2057bb78a7e69a7c541221ef5f386ffd65e22a92",
+  "defect": "macOS publisher missing desktop settings bypasses existing both-axis encoded profile bounds. Capture long-edge policy itself is unchanged.",
+  "observed_before": {
+    "source_class": "physical Mac display + headless cohosted Web viewer",
+    "profile": "P1080_60",
+    "capture_dimensions": [
+      1920,
+      1246
+    ],
+    "encoder_scale_down_by": 1.0,
+    "source_main_sha256": "175f99a2378c1640ee4fab8f6b6aa35886ea8dddfdc60b4b68ea1fc3846201e8",
+    "historical_18FPS_RCA": false
+  },
+  "implementation": {
+    "capture_long_edge_unchanged": true,
+    "nominal_profile": "P1080_60",
+    "actual_capture_dimensions": [
+      1920,
+      1246
+    ],
+    "existing_geometry_expected_encoded": [
+      1662,
+      1078
+    ],
+    "native_snapshot": "single macOS query at publish/update; schema1 active config_confirmed true and actual dims2..8192; 1 second timeout",
+    "mac_logical_settings_or_preview_fallback": false,
+    "unknown_snapshot": "null dimensions; no fabricated size; existing unknown behavior retained",
+    "stale_owner": "pre/post await guard; capture discarded before publish or SDK update omitted",
+    "nonMac": "existing settings and Windows preview fallback retained"
+  },
+  "checks": {
+    "focused_behavior_RED_failures": 2,
+    "focused_GREEN": 23,
+    "nearest_GREEN": 24,
+    "analyzer": "No issues,6 paths",
+    "receipt_sha256": "939ea7da954eeff4bf83b40d2afef7e202144abecad90b9fe8d333bb9c9fb3e3",
+    "source_manifest_sha256": "2c08d0ef9104b1e8bda711dbf04972e07574f8e6359b16ce22064265654297b0",
+    "source_files": {
+      "clients/flutter/lib/src/features/screen/capture/confirmed_dimensions.dart": {
+        "sha256": "e436bf484f2b94de5aa5e3f91538ff64dbdf71f2fcf3edbc66053af54116c999",
+        "bytes": 1579
+      },
+      "clients/flutter/lib/src/features/screen/capture/driver.dart": {
+        "sha256": "cc89aa7554350c186c3096609894ce28c658dd396da4c9e43d29b7b2b7a128ea",
+        "bytes": 6811
+      },
+      "clients/flutter/lib/src/features/screen/lifecycle/publish_capture.dart": {
+        "sha256": "93b6cd8b706739f283f7d18b0ca1451b9616e1368e310a143470e886353cff02",
+        "bytes": 4228
+      },
+      "clients/flutter/lib/src/features/screen/profile/update.dart": {
+        "sha256": "044503798023966737b1ca1000b7bcf52d8bd78e125b91acbea4bbbd3850fd07",
+        "bytes": 1702
+      },
+      "clients/flutter/test/features/screen/capture/confirmed_dimensions_test.dart": {
+        "sha256": "2a63bde863ac4bb5145fda084cbe11b6ec0a17a2671658037da84a97263193df",
+        "bytes": 5900
+      },
+      "clients/flutter/test/features/screen/capture/dimension_publish_test.dart": {
+        "sha256": "5bfcdb33b9c4e9788e49bfc097fd1cf8c816dd1fcb05177d455efc0d76fb1690",
+        "bytes": 8581
+      }
+    },
+    "final_exact_bytes_full_check": {
+      "status": "PASS",
+      "tests_passed": 1337,
+      "skipped": 1,
+      "analyze": {
+        "info": 64,
+        "warning": 0,
+        "error": 0
+      },
+      "pinned_Flutter": "3.47.5",
+      "pinned_Dart": "3.13.4",
+      "receipt_sha256": "2840ebe61d14dc9fe698ce9df94f711f92a1679507b7ee8b425ff86d3ba8eb52"
+    }
+  },
+  "candidate_main_lib_sha256": "505453087670e59fe59256fb0a3a6501101078b658631fe3920b7e8a5ce00644",
+  "vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+  "actual_after": {
+    "status": "PASS_BOUNDS_AND_ASPECT_SCOPED",
+    "current_case": 16,
+    "historical_failing_case": 12,
+    "capture_dimensions": [
+      1920,
+      1246
+    ],
+    "requested_nominal_profile": "P1080_60",
+    "fresh_encoder_scale_down_by": 1.1552346570397112,
+    "configured_geometry_descriptor_dimensions": [
+      1662,
+      1078
+    ],
+    "native_outbound_stats_dimensions": [
+      [
+        1662,
+        1079
+      ],
+      [
+        null,
+        null
+      ]
+    ],
+    "actual_decoder_dimensions": [
+      [
+        1662,
+        1079
+      ]
+    ],
+    "declared_vs_decoded_rounding": "One pixel height difference retained explicitly; descriptor is configured geometry, not decoded pixel proof",
+    "two_device_release_gate": "NOT_RUN",
+    "receiver_receipt_sha256": "8cbaed41a84e7bb3f87b1ac0e21a507cf51149b742f5b3fa95c52630897a0857",
+    "native_receipt_sha256": "569547eb72c38d5420e2b852cb0303bff271c80a3fdc73a3f28197a0e2658853",
+    "source_build_proof_sha256": "9f747892d09947d3ad3f3150ebaa6f1299eb0362dbbd76ad5bd67f256f576a20",
+    "receipt_sha256": "ab92149467271c9e9a012fc3a9bb548ad11ce1a80f4cc5f847ccfb9c33edc9f7",
+    "capture_median_fps": 57.929,
+    "encoded_median_fps": 56.499,
+    "decoded_p05_fps": 53.881,
+    "performance_claim": "Local same-host prototype only, not SLO/physical presentation acceptance.",
+    "visual_review": "Original1440\u00d7900 receiver reviewed by runtime agent: nonblank synthetic scene; neutral black top band/system indicator; no private pixels. Fullscreen own-source original independently reviewed before capture.",
+    "all_fresh_positive_native_steady_samples": 60,
+    "all_fresh_positive_decoder_dimension_observations": 61,
+    "decoder_steady_rate_intervals": 60,
+    "all_both_axis_limits_pass": true,
+    "case_receipt_sha256": "453f169cdfbc88d7ae64dbd7fbd167fbed42b13a0b1d3f3c39e1afb81fa1820a",
+    "original_source_review_sha256": "0eac09a6eda13042dcb6b9d35603a0c26cd9136262312e04f61a6cde710b20ff",
+    "original_receiver_image_sha256": "8346b44cc9cf782e26fe03a4da0ac969b0c96fc23b6932b9f1bbc69b480f5d78",
+    "receiver_original_review": {
+      "dimensions": [
+        1440,
+        900
+      ],
+      "observation": "Own synthetic marker/text/blocks/fine grid readable and nonblank; neutral top band and system capture indicator; no private pixels; no colorimetry/physicalscanout assertion"
+    }
+  },
+  "publication": "CLOSURE_GUARD: exact source/evidence tree must be verified on master; immutable commit SHA and branch verification are recorded in the issue closure comment.",
+  "scope_limits": "Resolution correctness only; not two-device performance, historical18FPS causality, audio, signed release or production rollout acceptance.",
+  "closure_eligible_after_verified_publication": true,
+  "independent_source_review": {
+    "status": "PASS_SCOPED",
+    "reviewer": "composer_geometry",
+    "scope": "Capture/processor lifecycle and publisher geometry integration; own source hashes match, no actionable blocker. Unconfirmed legacy/diagnostics-off paths preserve unknown fallback and are not claimed bounded by this evidence.",
+    "actual_vs_declared": "SDK/descriptor1662x1078; actual encoded/decoded1662x1079, one pixel codec rounding remains explicitly distinct."
+  },
+  "post_recovery_source_checks": {
+    "status": "PASS",
+    "main_lib_sha256": "59f9aaa3eb8c6ea7cca6bb41897f00575693b65012ce6ef0d7b416d0374869a7",
+    "full_unit_passed": 1344,
+    "full_unit_skipped": 1,
+    "analyze": "64INFO/0warning/0error; explicit --no-fatal-infos exit0",
+    "receipt_sha256": "51eed159a399f9476fa386ab544ebf44448607623d4b9be76a500e107bc747e2",
+    "scope": "Only metadata latest_writer changes from actual geometry runtime5054; geometry source files unchanged. Does not retag historical runtime as newbuild."
+  },
+  "post_network_recovery_source_checks": {
+    "status": "PASS",
+    "main_lib_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "full_unit_passed": 1351,
+    "full_unit_skipped": 1,
+    "analyze": "64INFO/0warning/0error; explicit --no-fatal-infos exit0",
+    "receipt_sha256": "58013fa6f425e71262db4296a3e5c4d042af7d68c0c821e8059e59346bc2d873",
+    "scope": "Geometry source unchanged from actual5054 display run; later changes only metadata recovery classifier. Historical measurements retain their actualsource/build."
+  }
+}

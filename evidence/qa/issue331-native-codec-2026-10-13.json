@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "issue": 331,
+  "status": "PARTIAL",
+  "close_issue": false,
+  "close_gate": "OPEN_FULL_MATRIX_HARDWARE_COHORT_AND_EXECUTED_FALLBACK",
+  "source_base_commit": "2057bb78a7e69a7c541221ef5f386ffd65e22a92",
+  "scope": "Conservative native codec implementation/tests plus one physical Mac/cohost Chromium 720p60 window prototype; no independent device, production release or load acceptance.",
+  "decision": "Retain production VP8. Actual H264 readback exceeded conservative common envelope; no admitted H264 steady comparison or measured cohort win.",
+  "production": {
+    "default_codec": "vp8",
+    "independent_compiletime_request": "BOOHTACORD_NATIVE_SCREEN_CODEC",
+    "all_current_requests_fail_closed_to_existing_VP8": true,
+    "H264_cohort_admitted": false,
+    "bounded_simulcast_default": false,
+    "backup_encoder_default": false,
+    "automatic_codec_switch_or_reconnect_added": false,
+    "fallback_suggestion_budget": 1,
+    "fallback_suggestion_is_not_executed_runtime_retry": true,
+    "hardware_proven": false
+  },
+  "checks": [
+    {
+      "id": "feature_owned_policy_and_default_publish_plan",
+      "status": "PASS_SCOPED",
+      "scope": "Executable VP8 resolver; pure typed known/unknown/unsupported/failure/mixed-viewer decisions, one fallback suggestion maximum, not runtime fallback lifecycle",
+      "receipt": {
+        "path": ".out/qa-batch5-20261013/codec331/policy-receipt.json",
+        "sha256": "10de4f6e94fbec585870982202d1bfe5ebe632d86483e90515bc7f9dbfda5a3a",
+        "bytes": 2881
+      }
+    },
+    {
+      "id": "QA_capability_and_readback_safety",
+      "status": "PASS_SCOPED",
+      "scope": "Strict known codec/profile gate, environment SHA/ownership/schema, sanitized admission/readback, bounded async deadline rejecting late success",
+      "receipt": {
+        "path": ".out/qa-batch5-20261013/reader328/receiver-observer-receipt.json",
+        "sha256": "0a69851e277b4c1a7963e25093bb6156196fbeab022b5d7f4c7c3423cabdb758",
+        "bytes": 3030
+      }
+    },
+    {
+      "id": "actual_VP8_720p60_window_pilot",
+      "status": "PASS_SCOPED",
+      "scope": "Real physical native capture→owned Go/SFU→cohost headless Chromium,30s warmup/60s steady, actual codec and fresh encoder config readback; not full FPS/SLO/capacity gate",
+      "receipt": {
+        "path": ".out/qa-batch5-20261013/codec331/codec-pilot-result.json",
+        "sha256": "2519006de1cb3012fddf49918b81b45365561f7eacea8d3276b5278b6b261be4",
+        "bytes": 8060
+      }
+    },
+    {
+      "id": "actual_H264_admission_readback",
+      "status": "DEFERRED",
+      "native_run_status": "FAIL",
+      "viewer_run_status": "FAIL",
+      "scope": "Actually negotiated H26442e034/PM1/asymmetry1 outside common42e01f:1; stopped with preserved actual readback. No H264 steady result or fallback relabel",
+      "receipt": {
+        "path": ".out/qa329332-20261013/healthy-14.json",
+        "sha256": "32797ac32442bcf68f1a1d8f0e8a2764c7b7311dcc6c8760b5691169a05a686e",
+        "bytes": 17036
+      }
+    },
+    {
+      "id": "original_VP8_visual_review",
+      "status": "PASS_SCOPED",
+      "scope": "Original 1440×900 synthetic receiver frame readable secondline/grid/marker/color; first heading partly covered by capture badge; no H264/motion/latency/colorimetry PASS",
+      "receipt": {
+        "path": ".out/qa-batch5-20261013/codec331/codec-pilot-original-review.json",
+        "sha256": "80214578a6f940bae4ef5323f3495f328f1df8db5d5fb0375ed0e06f0679c3e7",
+        "bytes": 688
+      }
+    }
+  ],
+  "actual_experiment": {
+    "path": ".out/qa-batch5-20261013/codec331/codec-pilot-result.json",
+    "sha256": "2519006de1cb3012fddf49918b81b45365561f7eacea8d3276b5278b6b261be4",
+    "bytes": 8060
+  },
+  "runtime_identity": {
+    "common_build": {
+      "path": ".out/qa329332-20261013/candidate-codec-pilot-build-proof.json",
+      "sha256": "9f747892d09947d3ad3f3150ebaa6f1299eb0362dbbd76ad5bd67f256f576a20",
+      "bytes": 6100
+    },
+    "SDK_tests": {
+      "Flutter": "3.47.5",
+      "Dart": "3.13.4"
+    },
+    "SDK_actual_build": {
+      "Flutter": "3.47.6",
+      "Dart": "3.13.5"
+    },
+    "browser": "Chromium153.0.8010.12 cohost headless",
+    "sfu": {
+      "path": ".out/qa-batch5-20261013/codec331/sfu-runtime-identity.json",
+      "sha256": "456b32a3f39ae04ca208a3ff767eab76dd10b9d9c8a5aec54de5457752a2543d",
+      "bytes": 578
+    },
+    "actual_API_image_and_source": {
+      "path": ".out/qa329332-20261013/current-api-refresh.json",
+      "sha256": "937ba320df1c920a6f54e23e1a85648dbbc67237290c392ee580cdbf8c278512",
+      "bytes": 1241
+    },
+    "main_lib_sha256": "505453087670e59fe59256fb0a3a6501101078b658631fe3920b7e8a5ce00644",
+    "canonical_vendor_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+    "actual_QA_codec_driver_sha256": "7c3e6dc90eb75f8c832790c673ebd26b7879b8a432414f621f2e2e13c3b6f5d7",
+    "bundle_manifest_is_Dart_payload_proof_launcher_SHA_alone_is_insufficient": true,
+    "capabilities_are_not_hardware_proof": true
+  },
+  "historical_focused_receipts": [
+    {
+      "path": ".out/qa-batch5-20261013/codec331/policy-receipt.json",
+      "sha256": "10de4f6e94fbec585870982202d1bfe5ebe632d86483e90515bc7f9dbfda5a3a",
+      "bytes": 2881
+    },
+    {
+      "path": ".out/qa-batch5-20261013/codec331/adapter-negotiation-receipt.json",
+      "sha256": "ae77830f825bdaf14a6c057fda1de0f8714bfec36e9d450c43ad9a844d756643",
+      "bytes": 2482
+    },
+    {
+      "path": ".out/qa-batch5-20261013/codec331/capture-override-receipt.json",
+      "sha256": "6aeb9222f6e77f4751a83889084851d9570d173c1a459a558774bbe034ddd46e",
+      "bytes": 3140
+    },
+    {
+      "path": ".out/qa-batch5-20261013/codec331/environment-admission-receipt.json",
+      "sha256": "309aa31176439e738d4facd788c64e2e9ad8bb86f985478fe6d079911b00ea0c",
+      "bytes": 2402
+    },
+    {
+      "path": ".out/qa-batch5-20261013/reader328/receiver-observer-receipt.json",
+      "sha256": "0a69851e277b4c1a7963e25093bb6156196fbeab022b5d7f4c7c3423cabdb758",
+      "bytes": 3030
+    }
+  ],
+  "earlier_setup_attempts_preserved": [
+    {
+      "receipt": {
+        "path": ".out/qa329332-20261013/previous/1791894149818841000/stage-case-13.json",
+        "sha256": "d0ab86ce5bcc909b1b49eb2192a02f8a9f7f09fc03c7189276a47c01fa8a8b8f",
+        "bytes": 718
+      },
+      "status": "FAIL",
+      "scope": "Earlier setup/pre-admission failure; not a measured codec result",
+      "error_type": "TimeoutExpired"
+    },
+    {
+      "receipt": {
+        "path": ".out/qa329332-20261013/previous/1791897893162910000/stage-case-13.json",
+        "sha256": "07fb6aae2bec8e13e6c554f620bb321b7f57ec7c915c04b0fdd7b83d97fc08d9",
+        "bytes": 718
+      },
+      "status": "FAIL",
+      "scope": "Earlier setup/pre-admission failure; not a measured codec result",
+      "error_type": "TimeoutExpired"
+    },
+    {
+      "receipt": {
+        "path": ".out/qa329332-20261013/previous/1791898291794147000/stage-case-13.json",
+        "sha256": "e7d475c94e994648da3ba39b82175a725577659bb90fe5bb7c76cb1588d6901e",
+        "bytes": 653
+      },
+      "status": "FAIL",
+      "scope": "Earlier setup/pre-admission failure; not a measured codec result",
+      "error_type": "RuntimeError"
+    },
+    {
+      "receipt": {
+        "path": ".out/qa329332-20261013/previous/1791894150899261000/healthy-13.json",
+        "sha256": "9dd0a96ff1ce087b9ba427c66d45908fa83a3d0111b9bf2a1ff6a06a562d521d",
+        "bytes": 7785
+      },
+      "status": "FAIL",
+      "scope": "Earlier native pre-capture attempt, no successful codec readback; not performance evidence",
+      "error_type": "RuntimeError"
+    },
+    {
+      "receipt": {
+        "path": ".out/qa329332-20261013/previous/1791898292883970000/healthy-13.json",
+        "sha256": "c59752c9a2717f3250aaf3f7e301a913e3a79885161fbbcff6194711c8616484",
+        "bytes": 7784
+      },
+      "status": "FAIL",
+      "scope": "Earlier native pre-capture attempt, no successful codec readback; not performance evidence",
+      "error_type": "RuntimeError"
+    }
+  ],
+  "historical_capture_stage_context": {
+    "receipt": {
+      "path": ".out/qa-batch5-20261013/codec331/vp8-candidate-stage-context.json",
+      "sha256": "c67872ed2f7162ccbf39fccc2ce388d5b66f2b082df654b47a6e4658eb2c45ac",
+      "bytes": 4168
+    },
+    "scope": "Earlier175f main/window capture measurements and own immutable build; not retagged as5054 codec comparison or isolated codec/RCA proof"
+  },
+  "ui328_reader_fixture_receipt": {
+    "path": ".out/qa-batch5-20261013/reader328/final-ui-receipt.json",
+    "sha256": "45f0e94bbf35c057ba2621591658c2f6181753bf626ddcc52161bd170060146e",
+    "bytes": 11078
+  },
+  "source_refs": [
+    {
+      "path": "clients/flutter/lib/src/features/screen/rollout/native_codec_policy.dart",
+      "sha256": "24098e43dd43fc00c0db44eb184d31f511a884028f5bb23905f2b3e42838ae06",
+      "bytes": 4443
+    },
+    {
+      "path": "clients/flutter/lib/src/features/screen/rollout/publish_plan.dart",
+      "sha256": "1a3e379692919d3acacc884a12f4bff0bf8b740a59db0d34fae234a699c7449d",
+      "bytes": 1361
+    },
+    {
+      "path": "clients/flutter/test/features/screen_rollout/native_codec_policy_test.dart",
+      "sha256": "09ceddcfe4e272fc63b9cdef8eb6b4f674eed2e8fe6f0aabb99daef65e82b36d",
+      "bytes": 6276
+    },
+    {
+      "path": "clients/flutter/test/features/screen_rollout/native_codec_contract_test.dart",
+      "sha256": "2c04cb9d1ac7f887e9648c0835c2c8a3ac05a55bf81d79437edf99db465a1898",
+      "bytes": 1941
+    },
+    {
+      "path": "clients/flutter/test/features/screen_rollout/qa_codec_adapter_test.dart",
+      "sha256": "31aaabe08038e20651d7bbdf827daf00073cc880622cdb6ad98ff2ecfa8b4deb",
+      "bytes": 13499
+    },
+    {
+      "path": "tools/qa/macos_sender/codec_driver.dart",
+      "sha256": "7c3e6dc90eb75f8c832790c673ebd26b7879b8a432414f621f2e2e13c3b6f5d7",
+      "bytes": 23673
+    },
+    {
+      "path": "tools/qa/macos_sender/codec_experiment.py",
+      "sha256": "04bbe5402b136502ed2462608fb4cabc3018c5b796e8dcc881f063425615ee77",
+      "bytes": 10057
+    },
+    {
+      "path": "tools/qa/macos_sender/test_codec_experiment.py",
+      "sha256": "92884b8ab920ad3bee871e53a4e174729300ea1237828fbc5dd67fef92c32e25",
+      "bytes": 9191
+    },
+    {
+      "path": "tools/qa/macos_sender/codec_experiment.md",
+      "sha256": "0bbc5518d4f3425a90daca6d3ca4721d2706b57292f1ac1a3b46cc2aad7accf2",
+      "bytes": 5481
+    },
+    {
+      "path": "tools/qa/macos_sender/receiver_observer.dart",
+      "sha256": "abc03f6fbd90bd2dcc3426c5bde2e963b9f4be647ded09bb0a0c22348e99e852",
+      "bytes": 3058
+    },
+    {
+      "path": "tools/qa/macos_sender/receiver_observer_test.dart",
+      "sha256": "09eef8bf463cac54d92433136aa65e6624583a3c2e1328b2ea5e222953e943e6",
+      "bytes": 4196
+    },
+    {
+      "path": "docs/adr/ADR-026-native-screen-codec-policy.md",
+      "sha256": "05207ade939a4b650b5de8771d11fa4d62327a83635e643bbfd71489ac4af948",
+      "bytes": 7242
+    }
+  ],
+  "remaining_gates": [
+    {
+      "id": "full_three_pair_window_display_720p60_1080p60_1080p30_matrix",
+      "status": "NOT_RUN",
+      "reason": "Only one 720p60 window pilot measured; H264 stopped outside current guard, no admitted matched pair, 180s steady or alternating repeats"
+    },
+    {
+      "id": "physical_source_pixels_and_real_display_pacing",
+      "status": "NOT_RUN",
+      "reason": "Native accepted/output1280×720 and Flutter logical 1280×720 observed; physical source window pixels/scanout and glass-to-glass not phase-measured"
+    },
+    {
+      "id": "native_hardware_encoder_path_GPU_thermal_attribution",
+      "status": "UNKNOWN",
+      "reason": "Capabilities, SDK implementation labels/counters and own-process CPU/RSS do not independently prove hardware"
+    },
+    {
+      "id": "independent_physical_Mac_receiver",
+      "status": "NOT_RUN_UNAVAILABLE",
+      "reason": "User confirmed only this Mac; cohostChromium is not second physical device"
+    },
+    {
+      "id": "supported_Safari_native_other_released_receiver_cohort",
+      "status": "NOT_RUN",
+      "reason": "No global codec change or compatibility claim based on one cohost Chromium"
+    },
+    {
+      "id": "executed_bounded_codec_fallback_stop_restart_reconnect_late_viewer_rollback_and_mixed_viewers",
+      "status": "NOT_RUN",
+      "reason": "Production H264 disabled; typed fallback suggestions are not executed publisher lifecycle acceptance"
+    },
+    {
+      "id": "motion_text_latency_voice_and_screen_audio_no_regression",
+      "status": "PARTIAL",
+      "reason": "Synthetic video-only shortpilot; full agreed motion/readability/latency/voice/system-audio gate absent"
+    },
+    {
+      "id": "explained_original_18FPS_encoder_bottleneck",
+      "status": "UNKNOWN",
+      "reason": "No admitted codec comparison or encoder-isolated RCA; earlier capture-path evidence has a different main/source context"
+    }
+  ],
+  "cleanup": {
+    "own_component_fixture5097": "EXITED_NO_LISTENER",
+    "own_private_analyzer_and_shared_temporary_testcontext_copies": "REMOVED",
+    "own_native_devices_stack_or_compiled_private_app_created": false,
+    "pilot_native_processes": {
+      "13": "EXITED",
+      "14": "EXITED"
+    },
+    "pilot_receiver_contexts": {
+      "13": "CLOSED_NO_ERRORS",
+      "14": "CLOSED_WITH_TWO_GENERIC_Error_CLEANUP_REPORTS"
+    },
+    "shared_physical_sender_stack_and_private_app": "OWNED_BY_MAC_AGENT_STILL_NEEDED_FOR_OTHER_BATCH_CASES; finalcleanup is separately recorded by that owner",
+    "shared_stack_cleanup_claimed_complete": false,
+    "held_fixture4930": "UNTOUCHED"
+  },
+  "privacy": "No passwords/tokens/rawSDP/rawparticipantattributes/account ortrackIDs/user media exported; generated synthetic PNG remains ignoredlocalartifact.",
+  "historical_receipt_interpretation": "Referenced historical receipt bytes/hash remain immutable; their source stamps describe the files at that earlier run, not the current working tree. Final current source refs and common pilot bundle are separate."
+}

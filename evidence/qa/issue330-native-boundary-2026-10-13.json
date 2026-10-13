@@ -1,0 +1,230 @@
+{
+  "schema": "boohtacord.qa.issue330.native_boundary.v4",
+  "issue": 330,
+  "issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/330",
+  "executed_at": "2026-10-13",
+  "status": "OPEN",
+  "scope": "Implemented native candidate and bounded diagnostics after preserved #329 prechange baseline. Default remains baseline. Functional tests do not close MW-04 hardware/release gates or parent #326.",
+  "backlog_leaf": "T-032",
+  "baseline_revision": "2057bb78a7e69a7c541221ef5f386ffd65e22a92",
+  "baseline_native_source_sha256": {
+    "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/FlutterScreenCaptureKitCapturer.m": "72502828c15fa82139ef3aed72759d65847d50975b0a24e1a643495911b7364c",
+    "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/FlutterScreenShareResolutionProcessor.m": "3a6a9e56f8d62549d272ca8cd10e3118a0dd782de4f2e05865574a9cfd02cf33"
+  },
+  "source_sha256": {
+    "tools/qa/native_capture_boundary/boundary_test.m": "75ccab94c5d78f3d804e2447a4e1b29f32451a8dc590593b5ba11f6eeaedee01",
+    "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/FlutterScreenCaptureKitCapturer.m": "d7f8651c5c8e5c5679189af61c4d1b4f8fbb4245bc694178a6c51cd053f8e40e",
+    "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/FlutterScreenCaptureDiagnostics.m": "4c469a7923d3cf34d001b537b39349cceaf450f2bc41f00939140af5681b1559",
+    "tools/qa/native_capture_boundary/processor_test.m": "0d5a25211b8ef4d783fc81d74ba376d7be09e7d63d83852a12c33d4bf5941721",
+    "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/FlutterScreenShareResolutionProcessor.m": "e0bfb4ec046d51e5ce27adf5e2b20d18f6189fbf37b47ea5fa7d2fb0a7086bd5",
+    "tools/qa/native_capture_boundary/diagnostics_test.m": "048cf67e31dd5c52194db33e5c7c4662400c6fac4af107c9382dd8a9d1d78d05",
+    "tools/qa/native_capture_boundary/lifecycle_test.m": "7575b6063010efebc8b59908fafd7283d8c94ed279c4e49c3c9fe8667d23862d",
+    "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/FlutterRTCDesktopCapturer.m": "1955a2d365a6684d46c4b16cb4ec43f7c01f2a4078663d2c9cec2e5fcf5f7b4b",
+    "tools/qa/native_capture_boundary/startup_test.m": "38524d19084293779065b413e16420dad5ee6875320645a31f7612aadaf6b482",
+    "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/VideoProcessingAdapter.m": "0fcf52f4af32e28c95522bf922b5ef10ee56bf477dbd7be7bd6a2d15d2dcd5fb",
+    "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/LocalVideoTrack.m": "294bf2c001b854a1f21e495bb3798ca4bab2dcecf1140f981833ea8e8685b185",
+    "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/LocalAudioTrack.m": "a427b428e55821b234151f83a97d7d021acf7fabc8bbc9166d6aeeca4787df7c",
+    "clients/flutter/packages/livekit_client/lib/src/track/options.dart": "3dfa67562e828ce7b4c175ad25f2835d9a80a41f5b4ae305cd7c3e8912a6361a",
+    "clients/flutter/packages/livekit_client/test/options/screen_capture_engine_test.dart": "0b9c27894b24fcd6502fd10309bc670a01531f998acd91415c745949a1a579ec"
+  },
+  "candidate_vendor_manifest_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+  "native_framework": {
+    "package": "WebRTC 150.7871.01, existing pinned SwiftPM macOS framework",
+    "binary_sha256": "c33685c8d823266071a4001def1cfe38a69ce9189e78625c337525220f70a47f"
+  },
+  "policy": {
+    "capture_engine_default": "baseline",
+    "candidate": "screen_capture_kit",
+    "flag_application": "new capture only; independent of codec",
+    "legacy_window_config_confirmed": false,
+    "metrics_default_enabled": true,
+    "metrics_false_scope": "Metric counters off; queue-policy clocks retained. Polling off is not native counters off.",
+    "frame_age_basis": "Native continuous clock since latest accepted callback, including suspended time; not capture timestamp latency.",
+    "capture_quality_update": "restart_required; geometry updates use acknowledged SCK configuration plus matching fresh frame."
+  },
+  "checks": [
+    {
+      "name": "Preimplementation native boundary and processor RED",
+      "status": "PASS_RED_REPRODUCTION",
+      "observation": "Frozen 2057 actual native SCK: 16 cases 4 PASS/12 FAIL; processor: 5 cases 3 PASS/2 FAIL. Reproduced missing explicit-display fallback, stale callbacks, status/PTS guards and unnecessary conversion/oversized failure. Original RED hashes are historical, not current source claims."
+    },
+    {
+      "name": "boundary actual native synthetic suite",
+      "status": "PASS",
+      "cases": 22,
+      "passed": 22,
+      "runner": "tools/qa/native_capture_boundary/run.py --suite boundary",
+      "test": "tools/qa/native_capture_boundary/boundary_test.m",
+      "limitations": [
+        "Private stream identity seam bypasses startup; does not validate permissions, actual capture, queue age, audio, performance or physical selection."
+      ]
+    },
+    {
+      "name": "processor actual native synthetic suite",
+      "status": "PASS",
+      "cases": 11,
+      "passed": 11,
+      "runner": "tools/qa/native_capture_boundary/run.py --suite processor",
+      "test": "tools/qa/native_capture_boundary/processor_test.m",
+      "limitations": [
+        "Old generic conversion helper is a spy; real WebRTC I420 scaling and CV pool exhaustion/reuse are tested. Processing performance and total heap allocations are not measured."
+      ]
+    },
+    {
+      "name": "diagnostics actual native synthetic suite",
+      "status": "PASS",
+      "cases": 14,
+      "passed": 14,
+      "runner": "tools/qa/native_capture_boundary/run.py --suite diagnostics",
+      "test": "tools/qa/native_capture_boundary/diagnostics_test.m",
+      "limitations": [
+        "Does not prove native bridge dispatch, actual capture, pipeline timing or hardware throughput."
+      ]
+    },
+    {
+      "name": "lifecycle actual native synthetic suite",
+      "status": "PASS",
+      "cases": 11,
+      "passed": 11,
+      "runner": "tools/qa/native_capture_boundary/run.py --suite lifecycle",
+      "test": "tools/qa/native_capture_boundary/lifecycle_test.m",
+      "limitations": [
+        "Native stream identities/start acknowledgments and audio sink are synthetic. No permissions, OS startup, PCM decoding or physical audio/capture acceptance is proved."
+      ]
+    },
+    {
+      "name": "Color/aperture metadata RED to GREEN",
+      "status": "PASS",
+      "observation": "P3 source labels and old aperture/display dimensions were wrongly copied onto resized sRGB output. Two focused failures became green with current RGB/geometry labels. Direct/no-resize identity retains original attachments. This does not prove physical color fidelity or HDR capability."
+    },
+    {
+      "name": "Suspended virtual-clock gap RED to GREEN",
+      "status": "PASS",
+      "observation": "Native queue/frame age now uses mach_continuous_time per primary SDK header. A queued sample separated by a synthetic ten-second suspended gap is dropped and its snapshot age increases correctly; actual OS sleep/wake was not performed."
+    },
+    {
+      "name": "Startup failure ownership RED to GREEN",
+      "status": "PASS",
+      "cases": 2,
+      "passed": 2,
+      "runner": "tools/qa/native_capture_boundary/run.py --suite startup",
+      "test": "tools/qa/native_capture_boundary/startup_test.m",
+      "observation": "Actual DesktopCapturer/SCK injected enumeration failure with video and audio=false/true originally retained one stop handler and RTC source per failed start. Both now retain zero handlers and release the source. Both owned error paths remove registry ownership before FlutterError.",
+      "limitations": [
+        "Factory, audio owner and FlutterError are fakes; no native permission, real factory, playback or OS capture behavior is proved.",
+        "Legacy RTC window/audio-only startup failure is not exercised by this two-case suite; its cleanup is symmetric and compilation-checked."
+      ]
+    },
+    {
+      "name": "Dart snapshot bridge tests",
+      "status": "PASS",
+      "cases": 4,
+      "test": "clients/flutter/packages/flutter_webrtc/test/unit/capture_snapshot_bridge_test.dart",
+      "observation": "Pinned Flutter 3.47.5; unavailable/old plugin/malformed schema does not invent confirmation, exact track query and null fields preserved."
+    },
+    {
+      "name": "LiveKit captureEngine option tests",
+      "status": "PASS",
+      "cases": 4,
+      "test": "clients/flutter/packages/livekit_client/test/options/screen_capture_engine_test.dart",
+      "observation": "Root ran pinned SDK tests after correcting the test to use concrete capture options. Source ID/FPS/audio and optional flag survive copyWith; omitted flag preserves constraints."
+    },
+    {
+      "name": "Native minimum deployment availability",
+      "status": "PASS",
+      "observation": "Changed capture/processor/adapter/diagnostics translation units pass clang syntax at macOS 10.15 with unguarded availability treated as error; no compiler warnings/errors. This is not a full Release app build. After startup cleanup, DesktopCapturer was rechecked with the same macOS 10.15 availability guard and produced no diagnostics."
+    },
+    {
+      "name": "Vendored public header guard",
+      "status": "PASS",
+      "observation": "python3 -m unittest tools.verify.test_flutter_webrtc_public_headers; one test passed."
+    },
+    {
+      "name": "Actual candidate OS capture in unsigned Debug prototype",
+      "status": "PASS_SCOPED_RUNTIME",
+      "observation": "Preserved physical Mac own synthetic-window cases8-10 and static first-receiver case11 are recorded in issue329/332; geometry-fixed own full-display case16 is recorded in issue333. One physical publisher plus cohosted headless browser only. Exact source/build receipts remain in those records; native accepted/postprocessed counters and bridge are actually sampled. No two-device, SLO, audio or signed release PASS is inferred.",
+      "evidence": [
+        "evidence/qa/issue329-stage-runtime-2026-10-13.json",
+        "evidence/qa/issue332-screen-regression-runtime-2026-10-13.json",
+        "evidence/qa/issue333-mac-encoded-bounds-2026-10-13.json"
+      ]
+    },
+    {
+      "name": "Ad-hoc QA Release build and owned window capture flow",
+      "status": "PASS_SCOPED_RUNTIME",
+      "observation": "Exact f339 main with canonical vendor81b3: actual QA Release capture and cohosted headless decoder flow PASS, 30s warmup/60s steady. codesign reports ad-hoc, not production Developer ID/distribution. Original synthetic receiver reviewed by runtime agent; no blank output, system badge partially overlaps first heading. This is not signed installed/deployed acceptance, SLO, Retina/DPI, color fidelity, audio/voice or paired physical hardware proof.",
+      "runtime_proof_sha256": "aee1b46d7851879b0ab9440f40722f97f8900b23a4f21f5273f6f1d5f75dbd9c",
+      "main_source_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+      "vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+      "signature": {
+        "adhoc": true,
+        "production_DeveloperID_or_distribution": false
+      },
+      "runtime_proof": ".out/qa329332-20261013/release-qa-runtime.json"
+    },
+    {
+      "name": "Performance, static first frame, resize/DPI, failure lifecycle and resource-return matrix",
+      "status": "PARTIAL",
+      "observation": "Local Debug window/display prototype counters and a static first-receiver case have actual receipts; the complete multi-profile resize/DPI, source-loss/permission, stop/start/resource return and Release matrix is not closed. Performance is cohosted and thresholds are unapproved. Native pool first-seen/acquisition counters do not measure total heap allocations or zero-copy performance."
+    },
+    {
+      "name": "Physical playback audio and voice invariants",
+      "status": "NOT_RUN",
+      "observation": "Synthetic queue-isolation spy is not PCM or physical A/V synchronization. Window-filter playback audio scope, own-process exclusion and unchanged voice need device evidence."
+    },
+    {
+      "name": "Actual sleep/wake and independent two-device/remote receiver acceptance",
+      "status": "NOT_RUN",
+      "observation": "User keeps this Mac awake and only this Mac is available. Virtual-clock tests cannot close actual sleep/wake; independent device/stage and parent quality gates remain open."
+    },
+    {
+      "name": "Production signed installed and deployment acceptance",
+      "status": "NOT_RUN",
+      "observation": "Ad-hoc QA Release signing does not establish production Developer ID/distribution signature, installed-update or deployed-client acceptance."
+    }
+  ],
+  "limitations": [
+    "No causal claim that this pipeline caused the reported 18 FPS.",
+    "Synthetic exact-source records and private stream/start-ack seams do not prove actual source selection, permissions or OS startup.",
+    "No frame pixels, source titles/IDs, audio payloads or authentication data are included in this public record.",
+    "Capture timestamp latency and total heap allocations remain unknown; no HDR or hardware capacity capability is claimed."
+  ],
+  "candidate_source_manifest": {
+    "schema": "boohtacord.capture_candidate_source_freeze.v4",
+    "file_count": 990,
+    "packages": {
+      "flutter_webrtc": {
+        "file_count": 456,
+        "sha256": "53e9b7c458a984b08f6ba2942d87fde4107b66128094b721678f249a8d029a3b"
+      },
+      "livekit_client": {
+        "file_count": 534,
+        "sha256": "bea247975c17bdfb5e6c4280eac8111d0e907cf69d19e35817b807c4cf4cb236"
+      }
+    },
+    "algorithm": "git cached plus nonignored new package files; exclude .cxx/.dart_tool/Pods/ephemeral/plugin_symlinks/.symlinks and package build roots, preserve tracked generated sources/binaries/licenses",
+    "historical_mixed_v3_v4": "Preserved privately; includes generated artifacts and is not canonical source proof."
+  },
+  "diagnostics_sdk_switch": {
+    "default": null,
+    "native_default_enabled": true,
+    "false_snapshot": "unavailable; config_confirmed=false; confirmed-profile writer pending",
+    "queue_policy_clocks_retained": true,
+    "tests_red_green": 4,
+    "total_options_pass": 8,
+    "analyze": "No issues",
+    "objc_delta": false,
+    "runtime_overhead": "PASS_SCOPED_MEASUREMENT only: actual sequential same-binary OFF19/ON20, 30s warmup/60s steady. Approved overhead budget gate NOT_RUN; metadata-writer and scheduling/thermal confounds retained.",
+    "runtime_comparison_sha256": "6eea2e969cf3cc02aed36678a34fed58e2c9c2144bd06a64ce548b0cc625bda2",
+    "runtime_confounds": [
+      "OFF disables native metrics/config confirmation and leaves descriptor writer pending while ON includes applied metadata requests",
+      "Queue policy clocks remain active when diagnostics disabled",
+      "Host process scheduling and thermal changes not controlled"
+    ]
+  },
+  "runtime_scope_corrections": {
+    "capture_vs_encoding": "Native capture preserves legacy long-edge policy. P1080_60 display may capture1920x1246; #333 publisher uses confirmed actual dimensions for existing both-axis encoder bounds. Configured geometry1662x1078 differs by one decoder height pixel1662x1079, explicitly retained.",
+    "unknown_capture_bridge": "Legacy RTC window and explicit diagnostics-off do not invent native configuration; writer pending and unknown-dimension publisher behavior remains unchanged. #333 acceptance covers confirmed native capture only.",
+    "open_gates": "Second physical device, physical scanout/SLO, audio/voice invariants, Retina/DPI/color matrix, actual sleep/wake and production signed installed/deployment acceptance remain open. Ad-hoc QA Release owned window flow has scoped proof."
+  }
+}

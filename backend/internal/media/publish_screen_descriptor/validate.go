@@ -19,11 +19,7 @@ func Validate(value Descriptor) bool {
 	if !profileIDs[value.RequestedProfileID] || publisherStates[value.PublisherState] == false || viewerStates[value.ViewerState] == false {
 		return false
 	}
-	wantMode := "text"
-	if strings.HasSuffix(value.RequestedProfileID, "_60") {
-		wantMode = "motion"
-	}
-	if value.Mode != wantMode || (value.LayerTopology != "single-layer" && value.LayerTopology != "bounded-simulcast") {
+	if (value.Mode != "motion" && value.Mode != "text") || (value.LayerTopology != "single-layer" && value.LayerTopology != "bounded-simulcast") {
 		return false
 	}
 	if value.EffectiveProfile.Capture.MaxWidth < 2 || value.EffectiveProfile.Capture.MaxHeight < 2 || value.EffectiveProfile.Capture.MaxFPS < 1 {

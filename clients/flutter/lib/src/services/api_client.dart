@@ -9,6 +9,7 @@ import '../features/admin/guild_settings/facade.dart';
 import '../features/conversation/delivery/lookup_facade.dart';
 import '../features/telemetry/export/facade.dart';
 import '../features/media/report_metrics/facade.dart';
+import '../features/screen/sender_metadata/facade.dart';
 import '../features/profile/edit/facade.dart';
 import '../features/profile/avatar/facade.dart';
 import '../features/workspace/topology/facade.dart';
@@ -56,6 +57,7 @@ class ApiClient extends ApiFacadeBase
         DeliveryLookupFacade,
         TelemetryExportFacade,
         ScreenMetricsReportFacade,
+        ScreenProfileDescriptorFacade,
         OwnProfileFacade,
         AvatarFacade,
         TopologyFacade,

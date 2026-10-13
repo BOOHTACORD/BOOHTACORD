@@ -3,7 +3,7 @@ import { createRequire } from 'node:module'
 
 const require = createRequire(import.meta.url)
 
-test('scenario names stay readable and selecting 1440p chooses the supported text profile', async ({ page }, testInfo) => {
+test('scenario names stay readable and selecting 1440p preserves the scenario and supported FPS ceiling', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 637, height: 584 })
   await page.goto('/tests/screen_profile/quality_dialog.fixture.html')
 
@@ -18,7 +18,7 @@ test('scenario names stay readable and selecting 1440p chooses the supported tex
   await expect(scenarios).toHaveCount(2)
   await expect(page.getByRole('heading', { name: 'Качество изображения' })).toBeVisible()
   await expect(page.getByRole('radio', { name: '1440p' })).toBeVisible()
-  await expect(page.locator('.screen-share-quality__single-value')).toBeInViewport({ ratio: 0.99 })
+  await expect(page.locator('.screen-share-quality__row--frame-rate [role="radiogroup"]')).toBeInViewport({ ratio: 0.99 })
   await expect(scenarios.first()).toBeInViewport({ ratio: 0.99 })
   await expect(scenarios.nth(1)).toBeInViewport({ ratio: 0.99 })
   await expect(page.getByRole('radio', { name: '1080p' })).toBeInViewport({ ratio: 0.99 })
@@ -31,9 +31,9 @@ test('scenario names stay readable and selecting 1440p chooses the supported tex
   expect(scenarioOptionsBox!.y).toBeGreaterThanOrEqual(scenarioLegendBox!.y + scenarioLegendBox!.height)
   expect(scenarioOptionsBox!.width).toBeGreaterThan(bodyBox!.width * 0.9)
   await expect(scenarios.nth(0)).toContainText('Плавность')
-  await expect(scenarios.nth(0)).toContainText('Игры и видео · 60 FPS')
+  await expect(scenarios.nth(0)).toContainText('Игры и видео')
   await expect(scenarios.nth(1)).toContainText('Чёткость текста')
-  await expect(scenarios.nth(1)).toContainText('Документы и код · 15–30 FPS')
+  await expect(scenarios.nth(1)).toContainText('Документы и код')
 
   for (const option of await scenarios.all()) {
     const label = option.locator('.screen-share-quality__scenario-title')
@@ -43,8 +43,8 @@ test('scenario names stay readable and selecting 1440p chooses the supported tex
 
   const resolution1440 = page.getByRole('radio', { name: '1440p' })
   await expect(resolution1440).toBeEnabled()
-  await expect(page.locator('.screen-share-quality__single-value')).toHaveText('60 FPS')
-  const fpsGroup = page.locator('.screen-share-quality__single-value')
+  await expect(page.locator('.screen-share-quality__row--frame-rate [role="radiogroup"]')).toContainText('60 FPS')
+  const fpsGroup = page.locator('.screen-share-quality__row--frame-rate [role="radiogroup"]')
   const fpsGroupBox = await fpsGroup.boundingBox()
   const resolutionGroupBox = await page.locator('[aria-label="Верхний предел разрешения трансляции"]').boundingBox()
   expect(fpsGroupBox?.width).toBeCloseTo(resolutionGroupBox!.width, 1)
@@ -58,7 +58,7 @@ test('scenario names stay readable and selecting 1440p chooses the supported tex
   await expect(keyboardFocusedQuality).toHaveCount(1)
   await expect(page.getByRole('radio', { name: '1080p' })).toBeFocused()
   await page.keyboard.press('ArrowRight')
-  await expect(page.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
+  await expect(page.getByRole('radio', { name: /Плавность/ })).toBeChecked()
   await expect(resolution1440).toBeChecked()
   await expect(keyboardFocusedQuality).toHaveCount(1)
   expect(await keyboardFocusedQuality.evaluate(element => getComputedStyle(element).outlineStyle)).toBe('solid')
@@ -96,7 +96,7 @@ test('shows quality choices without hiding them and lets the user click 1440p di
   const settings = dialog.locator('.screen-share-quality__settings')
   await expect(settings).toBeVisible()
   await expect(dialog.getByRole('radio', { name: '1440p' })).toBeVisible()
-  await expect(dialog.locator('.screen-share-quality__single-value')).toBeInViewport({ ratio: 0.99 })
+  await expect(dialog.locator('.screen-share-quality__row--frame-rate [role="radiogroup"]')).toBeInViewport({ ratio: 0.99 })
 
   const scenarioCards = dialog.locator('.screen-share-quality__scenario-option')
   await expect(scenarioCards).toHaveCount(2)
@@ -133,7 +133,7 @@ test('shows quality choices without hiding them and lets the user click 1440p di
   expect(await body.evaluate(element => element.scrollTop)).toBeGreaterThan(0)
   await resolution.click()
   await expect(resolution).toBeChecked()
-  await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
+  await expect(dialog.getByRole('radio', { name: /Плавность/ })).toBeChecked()
   await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
   await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
   expect(await body.evaluate(element => element.scrollTop)).toBeGreaterThan(0)
@@ -168,7 +168,7 @@ test('normalizes a saved 1440p60 profile to a startable 1440p30 selection', asyn
 
   const dialog = page.getByRole('dialog')
   await expect(dialog.getByRole('radio', { name: '1440p' })).toBeChecked()
-  await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
+  await expect(dialog.getByRole('radio', { name: /Плавность/ })).toBeChecked()
   await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
   await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
   await expect(dialog.getByRole('button', { name: 'Начать трансляцию' })).toBeEnabled()
@@ -190,12 +190,12 @@ test.describe('source-sized mobile chooser captures', () => {
     await expect(dialog.getByRole('radio', { name: '720p' })).toBeVisible()
     await expect(dialog.getByRole('radio', { name: '1080p' })).toBeVisible()
     await expect(dialog.getByRole('radio', { name: '1440p' })).toBeVisible()
-    await expect(dialog.locator('.screen-share-quality__single-value')).toHaveText('60 FPS')
+    await expect(dialog.locator('.screen-share-quality__row--frame-rate [role="radiogroup"]')).toContainText('60 FPS')
     await page.screenshot({ path: testInfo.outputPath('mobile-stream-launch-actions-current.png') })
 
     await dialog.getByRole('radio', { name: '1440p' }).click()
     await expect(dialog.getByRole('radio', { name: '1440p' })).toBeChecked()
-    await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
+    await expect(dialog.getByRole('radio', { name: /Плавность/ })).toBeChecked()
     await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
     await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
     await dialog.locator('.screen-share-setup__body').evaluate(element => { element.scrollTop = 0 })
@@ -225,14 +225,14 @@ test.describe('source-sized desktop chooser captures', () => {
     await expect(dialog.getByRole('radio', { name: '720p' })).toBeVisible()
     await expect(dialog.getByRole('radio', { name: '1080p' })).toBeVisible()
     await expect(dialog.getByRole('radio', { name: '1440p' })).toBeVisible()
-    await expect(dialog.locator('.screen-share-quality__single-value')).toHaveText('60 FPS')
+    await expect(dialog.locator('.screen-share-quality__row--frame-rate [role="radiogroup"]')).toContainText('60 FPS')
     await expect(dialog.getByRole('button', { name: 'Отмена', exact: true })).toBeVisible()
     await expect(dialog.getByRole('button', { name: 'Начать трансляцию', exact: true })).toBeVisible()
     await page.screenshot({ path: testInfo.outputPath('desktop-stream-launch-actions-current.png') })
 
     await dialog.getByRole('radio', { name: '1440p' }).click()
     await expect(dialog.getByRole('radio', { name: '1440p' })).toBeChecked()
-    await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()
+    await expect(dialog.getByRole('radio', { name: /Плавность/ })).toBeChecked()
     await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
     await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
     await page.screenshot({ path: testInfo.outputPath('desktop-stream-launch-settings-1440p-current.png') })

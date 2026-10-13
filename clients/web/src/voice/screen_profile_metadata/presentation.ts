@@ -30,3 +30,20 @@ export function screenEncodingLabel(descriptor?: ScreenShareDescriptorV1): strin
     return `${index + 1}: ${layer.width} × ${layer.height}, до ${layer.max_fps} FPS и ${bitrate} Мбит/с`
   }).join(' · ')
 }
+
+export function screenDescriptorStatusLabel(descriptor?: ScreenShareDescriptorV1): string {
+  if (!descriptor) return 'Нет подтверждения от отправителя'
+  if (descriptor.publisher_state === 'updating' || descriptor.publisher_state === 'publishing' || descriptor.publisher_state === 'capturing') return 'Обновление конфигурации ожидается'
+  if (descriptor.publisher_state !== 'sharing') return 'Предыдущая конфигурация · трансляция завершена'
+  return 'Конфигурация передана отправителем'
+}
+
+export function screenDescriptorProvenanceLabel(descriptor?: ScreenShareDescriptorV1): string {
+  return descriptor ? 'SDK отправителя · лимиты, не измеренный FPS' : 'Источник конфигурации неизвестен'
+}
+
+export function screenDescriptorReceivedAge(receivedAt: number | null, now = Date.now()): string {
+  if (receivedAt === null || !Number.isFinite(receivedAt) || !Number.isFinite(now)) return 'Время получения неизвестно'
+  const seconds = Math.max(0, Math.floor((now - receivedAt) / 1000))
+  return `Получено этим клиентом ${seconds} с назад${seconds > 15 ? ' · данные могут быть устаревшими' : ''}`
+}

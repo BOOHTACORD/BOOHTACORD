@@ -1,0 +1,99 @@
+{
+  "schema": "boohtacord.qa.issue326.web_visual.v1",
+  "issue": 326,
+  "executed_at": "2026-10-13",
+  "status": "SCOPED_WEB_VISUAL_COMPLETE_WITH_LIMITS",
+  "parent_gate_status": "OPEN",
+  "source": "2057bb78a7e69a7c541221ef5f386ffd65e22a92 diff-sha256=fb84ae5acc03c59ad9884dbc126485fc12094eb274c4e4289ec5289ece56921f",
+  "report_sha256": "b7076dfb49909d80d031902d8fe647aa01dffb163938e829d4f3bf5b1aebd6c5",
+  "capture_manifest_sha256": "3254b8cc71dc1ec6d8a9d15374e6ab7f22b92b8b1edfadcea427ccc08996f23a",
+  "review_index_sha256": "e26a76301cf015f68302248a085f64dfdf2cbc1ee6e9df06d03612d73bfd1365",
+  "inventory": {
+    "total_paths": 145,
+    "full_app_paths": 67,
+    "component_fixture_paths": 78,
+    "all_path_sha256_valid": true,
+    "exact_prior_review_paths": 20,
+    "new_path_count": 125,
+    "new_unique_originals_reviewed": 110,
+    "supplemental_original_receipt_images": 13
+  },
+  "checks": [
+    {
+      "name": "Reported selected Web stages",
+      "status": "PASS",
+      "stages": 10,
+      "scope": "Existing mandatory report stage results; report visual status remains REVIEW_REQUIRED."
+    },
+    {
+      "name": "All screenshot path integrity",
+      "status": "PASS",
+      "paths": 145
+    },
+    {
+      "name": "Changed unique source-resolution visual inspection",
+      "status": "PASS_SCOPED",
+      "images": 110
+    },
+    {
+      "name": "Exact prior/supplemental proof integrity",
+      "status": "PASS_SCOPED",
+      "prior_paths": 20,
+      "supplemental_images": 13
+    },
+    {
+      "name": "Physical device, native capture, audio, performance, load/release and parent quality acceptance",
+      "status": "NOT_RUN",
+      "scope": "Not established by Web UI screenshots or this review."
+    }
+  ],
+  "method": "All145 path SHA validated. Every110 changed unique PNG loaded through view_image with detail original and forwarded detail original. Exact20 prior hashes reuse scoped proof.13 supplemental quality/reader original receipts also SHA validated.",
+  "observations": [
+    "No actionable product defect established by these screenshots. Desktop200% composer placeholder, control row and helper text remain visible; new mobile old-page-delete/channel-log placeholders are fully visible.",
+    "Scenario and FPS controls remain separate. Reader component prior originals retain unknown-measurement wording and scrolled panel limits.",
+    "Current responsive HTML fixture originals appear settled; fixture scope does not prove full production geometry."
+  ],
+  "focused_capture_proofs": [
+    {
+      "index": 88,
+      "name": "web-real-stack/393/old-page-delete.png",
+      "sha256": "f2b0321284c270caa95b0d731e7451532c111e8d10e3e79df97d3267d837c4f5",
+      "review_method": "VIEW_IMAGE_DETAIL_ORIGINAL",
+      "observations": "Old-page-delete captured message area reaches scroll boundary; composer placeholder now fully visible in this new image, no inherited clipped-prefix claim."
+    },
+    {
+      "index": 106,
+      "name": "web-real-stack/393/channel-log.png",
+      "sha256": "40c8ba28cb1f9cd31a0d91fb844aa100479be02306f2f9a99a0d941da2aaf5b9",
+      "review_method": "VIEW_IMAGE_DETAIL_ORIGINAL",
+      "observations": "Channel log composer placeholder fully visible in this new image; action overlay visible; prior clipped-prefix limitation does not apply to these new bytes."
+    },
+    {
+      "index": 124,
+      "name": "web-real-stack/1440/channel-text-200.png",
+      "sha256": "fe9619ccb51d0948b02501df05d89ea8b698738bf4a4f0c58cfc9aaf162af675",
+      "review_method": "VIEW_IMAGE_DETAIL_ORIGINAL",
+      "observations": "Desktop 200% composer placeholder fully visible vertically in adaptive-height field; add/mention/emoji/send and helper row fit. Sidebar ellipses and partial roster rows are captured viewport boundaries."
+    },
+    {
+      "index": 128,
+      "name": "web-real-stack/1440/channel-participants-200.png",
+      "sha256": "fe9619ccb51d0948b02501df05d89ea8b698738bf4a4f0c58cfc9aaf162af675",
+      "review_method": "IDENTICAL_SHA256_TO_NEW_ORIGINAL_REVIEW",
+      "observations": "Desktop 200% composer placeholder fully visible vertically in adaptive-height field; add/mention/emoji/send and helper row fit. Sidebar ellipses and partial roster rows are captured viewport boundaries."
+    }
+  ],
+  "limits": [
+    "Component/HTML fixtures, including flutter-captures filenames, do not prove native runtime, hardware capture, audio, media quality or production full-app states outside their fixture.",
+    "Dialog body, message history, participants/member lists and settings may show partial rows at a scroll viewport boundary; simultaneous visibility of every action is not established by one image.",
+    "Prior review limitations are retained on exact-byte reuse. Earlier repeated-strip responsive fixture raster and mobile clipped-prefix observations remain historical limitations, not claims about changed new captures. New responsive originals are settled; new mobile old-page-delete/channel-log placeholders are fully visible.",
+    "Controlled authentication/SFU/service errors and synthetic measurement rows do not establish physical media performance, latency, capacity or release readiness.",
+    "All images are inspected as originals or reuse verified exact SHA256 proof. No montage, crop, masking, alteration or golden/baseline approval; no new device/media PASS."
+  ],
+  "scenario_source_hash_review": {
+    "status": "SOURCE_DELTA_AFTER_REPORT",
+    "mismatch_count": 1
+  },
+  "baseline_approval": false,
+  "privacy": "Public record contains hashes, dimensions/counts and bounded UI observations; no pixels, message/DM bodies, passwords/tokens, raw lease/account/source IDs or participant names copied from captures."
+}

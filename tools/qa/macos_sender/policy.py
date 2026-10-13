@@ -14,3 +14,20 @@ def cleanup(resources,owner):
         try:remove_owned(name,owner,kind);resources.remove((kind,name))
         except Exception as error:errors.append({'kind':kind,'error_type':type(error).__name__})
     return errors
+
+def output_name(value):
+    if not re.fullmatch(r'qa[0-9]{3,8}-[0-9]{8}',value):raise ValueError('Owned QA output name required')
+    return value
+
+def backend_arguments(args,original,replacement):
+    if tuple(args[:2])!=('docker','build'):return tuple(args)
+    values=list(args)
+    if '--file' not in values:raise ValueError('Unexpected Docker build')
+    index=values.index('--file')+1
+    if values[index]!=str(original)+'/Dockerfile' or values[-1]!=str(original):raise ValueError('Foreign Docker build context')
+    values[index]=str(replacement)+'/Dockerfile';values[-1]=str(replacement)
+    return tuple(values)
+
+def observation_poll_count(receiver):
+    if not isinstance(receiver,bool):raise ValueError('Explicit bounded receiver workflow required')
+    return 1200 if receiver else 720

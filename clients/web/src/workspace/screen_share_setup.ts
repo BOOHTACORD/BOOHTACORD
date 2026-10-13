@@ -5,25 +5,27 @@ import { readScreenProfilePreference, saveScreenProfilePreference, type ScreenSh
 
 export function useScreenShareSetup(
   screenState: () => string,
-  startScreen: (profile: ScreenProfile) => Promise<void>,
+  startScreen: (profile: ScreenProfile, mode?: 'motion' | 'text') => Promise<void>,
   accountId: string,
   originId = appOrigin(),
   storage = appStorage(),
 ) {
   const selectedScreenProfile = ref<ScreenProfile>(readScreenProfilePreference(storage, originId, accountId) ?? 'P1080_30')
+  const selectedScreenMode = ref<'motion' | 'text'>('motion')
   const screenShareSetupOpen = ref(false)
   function openScreenShareSetup(profile = selectedScreenProfile.value): void {
     if (screenState() === 'STARTING' || screenState() === 'STOPPING') return
     selectedScreenProfile.value = profile
     screenShareSetupOpen.value = true
   }
-  function confirmScreenShare(profile: ScreenProfile): void {
+  function confirmScreenShare(profile: ScreenProfile, mode: 'motion' | 'text' = selectedScreenMode.value): void {
     selectedScreenProfile.value = profile
     saveScreenProfilePreference(storage, originId, accountId, profile)
     screenShareSetupOpen.value = false
-    void startScreen(profile)
+    selectedScreenMode.value = mode
+    void startScreen(profile, mode)
   }
-  return { confirmScreenShare, openScreenShareSetup, screenShareSetupOpen, selectedScreenProfile }
+  return { confirmScreenShare, openScreenShareSetup, screenShareSetupOpen, selectedScreenProfile, selectedScreenMode }
 }
 
 function appOrigin(): string {

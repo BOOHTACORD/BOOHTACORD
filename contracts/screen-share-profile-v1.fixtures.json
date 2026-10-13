@@ -24,7 +24,10 @@
     { "name": "unknown-reason-code-rejected", "overrides": { "reason_codes": ["account-a"] }, "accepted": false },
     { "name": "candidate-profile-mode-mismatch-rejected", "overrides": { "mode": "motion", "requested_profile_id": "text-1080p30-v1" }, "accepted": false },
     { "name": "negative-profile-revision-rejected", "overrides": { "profile_revision": -1 }, "accepted": false },
-    { "name": "observation-cannot-masquerade-as-descriptor", "overrides": { "observed": { "presented_fps": 60 } }, "accepted": false }
+    { "name": "observation-cannot-masquerade-as-descriptor", "overrides": { "observed": { "presented_fps": 60 } }, "accepted": false },
+    {"name": "legacy-motion-30-explicit", "overrides": {"mode": "motion", "requested_profile_id": "P1080_30"}, "accepted": true},
+    {"name": "legacy-motion-15-explicit", "overrides": {"mode": "motion", "requested_profile_id": "P720_15"}, "accepted": true},
+    {"name": "legacy-text-60-explicit", "overrides": {"mode": "text", "requested_profile_id": "P1080_60"}, "accepted": true}
   ],
   "legacyPublicationNames": [
     { "name": "screenshare-720p-15fps", "profileId": "P720_15", "accepted": true },

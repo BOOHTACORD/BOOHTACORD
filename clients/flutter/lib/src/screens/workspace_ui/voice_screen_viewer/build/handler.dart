@@ -36,8 +36,31 @@ extension WorkspaceVoiceScreenViewerBuildAction
         senderSampledAt: showingLocalScreen
             ? state.screenShareSenderSampledAt
             : null,
+        senderSelectedProfileId: showingLocalScreen
+            ? state.screenShareSelectedProfileId
+            : null,
+        senderSelectedMode: showingLocalScreen
+            ? state.screenShareContentMode.name
+            : null,
+        senderConfigurationStatus: showingLocalScreen
+            ? state.screenShareDescriptorStatus
+            : null,
+        senderConfirmedAt: showingLocalScreen
+            ? state.screenShareDescriptorConfirmedAt
+            : null,
+        senderAppliedAt: showingLocalScreen
+            ? state.screenShareDescriptorAppliedAt
+            : null,
+        publicationKey: showingLocalScreen
+            ? state.room?.localParticipant
+                  ?.getTrackPublicationBySource(TrackSource.screenShareVideo)
+                  ?.sid
+            : workspaceSelectedVoiceScreenSender(
+                screens,
+                selectedIdentity,
+              )?.getTrackPublicationBySource(TrackSource.screenShareVideo)?.sid,
         senderDescriptorJson: showingLocalScreen
-            ? null
+            ? state.screenShareSenderDescriptorJson
             : workspaceSelectedVoiceScreenSender(
                 screens,
                 selectedIdentity,

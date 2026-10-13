@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:livekit_client/livekit_client.dart';
 
-import '../capture/dimensions.dart';
+import '../capture/confirmed_dimensions.dart';
 import 'quality.dart';
 import '../rollout/policy.dart';
 import '../rollout/publish_plan.dart';
@@ -13,14 +13,24 @@ Future<bool> updateScreenShareProfile(
   VideoDimensions? dimensions,
   bool Function() isCurrent,
 ) async {
+  if (!isCurrent()) return false;
   final participant = room.localParticipant;
   if (participant == null) throw StateError('Голосовое подключение закрыто.');
   final previous = track.lastPublishOptions;
   if (previous == null) throw StateError('Профиль демонстрации недоступен.');
-  final source = screenShareCaptureDimensions(track) ??
+  final confirmedDimensions = await readScreenCaptureDimensions(
+    track,
+    platform: defaultTargetPlatform,
+    isCurrent: isCurrent,
+  );
+  if (!isCurrent()) return false;
+  final source =
+      confirmedDimensions ??
       (defaultTargetPlatform == TargetPlatform.windows ? dimensions : null);
   final profile = nativeScreenPublishPlan(
-    quality, ScreenMediaRollout(boundedSimulcast: previous.simulcast), defaultTargetPlatform,
+    quality,
+    ScreenMediaRollout(boundedSimulcast: previous.simulcast),
+    defaultTargetPlatform,
     sourceDimensions: source,
   );
   final publication = await participant.updateScreenShareTrackProfile(

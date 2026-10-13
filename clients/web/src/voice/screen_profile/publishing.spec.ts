@@ -49,7 +49,7 @@ describe('screen session uses the operation adapter', () => {
     vi.mocked(f.port.publish).mockRejectedValueOnce(new Error('temporary publish failure'))
     await expect(f.session.updateScreenProfile('P720_30')).rejects.toThrow('прежняя конфигурация восстановлена')
     expect(f.active.screenProfile).toBe('P1080_30')
-    expect(f.room.publishScreenProfileMetadata).toHaveBeenNthCalledWith(2, 'P1080_30')
+    expect(f.room.publishScreenProfileMetadata).toHaveBeenNthCalledWith(2, 'P1080_30', 'motion')
     expect(f.port.publish).toHaveBeenCalledTimes(2)
   })
   it('refreshes metadata after the repair watchdog repairs a drifted publication', async () => {
@@ -61,7 +61,7 @@ describe('screen session uses the operation adapter', () => {
       }))
       await vi.advanceTimersByTimeAsync(5000)
       expect(f.port.repair).toHaveBeenCalledWith(f.track, 'P1080_30', expect.any(Function))
-      expect(f.room.publishScreenProfileMetadata).toHaveBeenNthCalledWith(2, 'P1080_30')
+      expect(f.room.publishScreenProfileMetadata).toHaveBeenNthCalledWith(2, 'P1080_30', 'motion')
       await f.session.stopScreen()
     } finally { vi.useRealTimers() }
   })

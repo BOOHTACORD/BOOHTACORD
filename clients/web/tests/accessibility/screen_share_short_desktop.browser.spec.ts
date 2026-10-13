@@ -15,7 +15,7 @@ test('screen-share setup keeps full scenario labels and supports the 1440p profi
 
   const dialog = page.getByRole('dialog', { name: 'Демонстрация экрана' })
   await expect(dialog).toBeVisible()
-  for (const label of ['Плавность', 'Игры и видео · 60 FPS', 'Чёткость текста', 'Документы и код · 15–30 FPS']) {
+  for (const label of ['Плавность', 'Игры и видео', 'Чёткость текста', 'Документы и код']) {
     await expect(dialog.getByText(label, { exact: true })).toBeVisible()
   }
 
@@ -39,6 +39,8 @@ test('screen-share setup keeps full scenario labels and supports the 1440p profi
   expect(radioBounds!.width).toBeGreaterThanOrEqual(labelBounds!.width - 2)
   expect(radioBounds!.height).toBeGreaterThanOrEqual(labelBounds!.height - 2)
 
+  await dialog.getByRole('radio', { name: /Чёткость текста/ }).check()
+  await expect(dialog.getByRole('radio', { name: '60 FPS', exact: true })).toBeChecked()
   await resolutionOption.click()
   await expect(dialog.getByRole('radio', { name: '1440p' })).toBeChecked()
   await expect(dialog.getByRole('radio', { name: /Чёткость текста/ })).toBeChecked()

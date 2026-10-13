@@ -11,6 +11,7 @@ import '../features/screen/receiver_metrics/models.dart';
 import '../features/screen/receiver_metrics/compare.dart';
 import '../features/screen/receiver_metrics/read.dart';
 import '../features/screen/sender_metadata/descriptor.dart';
+import '../features/screen/sender_metadata/latest_writer.dart';
 import '../features/screen/sender_metadata/presentation.dart';
 import '../features/screen/metrics/stats_poller.dart';
 import '../services/screen_receiver_report.dart';
@@ -36,6 +37,12 @@ class ScreenReceiverDiagnostics extends StatefulWidget {
     this.expectedSenderOrigin,
     this.expectedSenderAccountId,
     this.expectedRoomId,
+    this.publicationKey,
+    this.senderSelectedProfileId,
+    this.senderSelectedMode,
+    this.senderConfigurationStatus,
+    this.senderConfirmedAt,
+    this.senderAppliedAt,
   });
 
   final RemoteVideoTrack? track;
@@ -51,6 +58,9 @@ class ScreenReceiverDiagnostics extends StatefulWidget {
   final String? expectedSenderOrigin;
   final String? expectedSenderAccountId;
   final String? expectedRoomId;
+  final String? publicationKey, senderSelectedProfileId, senderSelectedMode;
+  final ScreenDescriptorWriteStatus? senderConfigurationStatus;
+  final DateTime? senderConfirmedAt, senderAppliedAt;
 
   @override
   State<ScreenReceiverDiagnostics> createState() =>
@@ -81,32 +91,70 @@ class _ScreenReceiverDiagnosticsState extends State<ScreenReceiverDiagnostics>
   bool _popoverOpen = false;
   String _sampleStatus = 'Ожидание статистики приёмника';
   ScreenShareSenderDescriptor? _senderDescriptor;
+  ScreenShareSenderDescriptor? _publicationFloor;
+  bool _floorRequiresNewGeneration = false;
+  DateTime? _descriptorReceivedAt;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _senderDescriptor = _parseSenderDescriptor();
+    _descriptorReceivedAt = _senderDescriptor == null ? null : DateTime.now();
     _restartSampling();
   }
 
   @override
   void didUpdateWidget(covariant ScreenReceiverDiagnostics oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final changedOwner = oldWidget.expectedSenderAccountId !=
-            widget.expectedSenderAccountId ||
+    final changedOwner =
+        oldWidget.expectedSenderAccountId != widget.expectedSenderAccountId ||
         oldWidget.expectedSenderOrigin != widget.expectedSenderOrigin ||
         oldWidget.expectedRoomId != widget.expectedRoomId ||
         oldWidget.selectedStreamId != widget.selectedStreamId;
-    if (changedOwner) {
+    final changedPublication =
+        oldWidget.publicationKey != widget.publicationKey ||
+        ((oldWidget.publicationKey == null && widget.publicationKey == null) &&
+            oldWidget.track != widget.track) ||
+        oldWidget.sourceTrackName != widget.sourceTrackName;
+    if (widget.isLocal) {
       _senderDescriptor = _parseSenderDescriptor();
-    } else if (oldWidget.senderDescriptorJson != widget.senderDescriptorJson) {
+    } else if (changedOwner) {
+      _publicationFloor = null;
+      _floorRequiresNewGeneration = false;
+      _senderDescriptor = _parseSenderDescriptor();
+      _descriptorReceivedAt = _senderDescriptor == null ? null : DateTime.now();
+    } else if (changedPublication ||
+        oldWidget.senderDescriptorJson != widget.senderDescriptorJson) {
+      if (changedPublication) {
+        if (oldWidget.publicationKey != widget.publicationKey ||
+            (oldWidget.publicationKey == null &&
+                widget.publicationKey == null &&
+                oldWidget.track != widget.track)) {
+          _floorRequiresNewGeneration = true;
+        }
+        _publicationFloor = _senderDescriptor ?? _publicationFloor;
+        _senderDescriptor = null;
+        _descriptorReceivedAt = null;
+      }
       final candidate = _parseSenderDescriptor();
       if (candidate == null) {
         _senderDescriptor = null;
-      } else if (_senderDescriptor == null ||
-          isNewerScreenShareDescriptor(candidate, _senderDescriptor!)) {
+      } else if ((_publicationFloor == null ||
+              candidate.mediaSessionId != _publicationFloor!.mediaSessionId ||
+              candidate.publicationGeneration >
+                  _publicationFloor!.publicationGeneration ||
+              (!_floorRequiresNewGeneration &&
+                  isNewerScreenShareDescriptor(
+                    candidate,
+                    _publicationFloor!,
+                  ))) &&
+          (_senderDescriptor == null ||
+              isNewerScreenShareDescriptor(candidate, _senderDescriptor!))) {
         _senderDescriptor = candidate;
+        _publicationFloor = null;
+        _floorRequiresNewGeneration = false;
+        _descriptorReceivedAt = DateTime.now();
       }
     }
     if (oldWidget.track != widget.track ||
@@ -118,6 +166,9 @@ class _ScreenReceiverDiagnosticsState extends State<ScreenReceiverDiagnostics>
   }
 
   ScreenShareSenderDescriptor? _parseSenderDescriptor() {
+    if (widget.isLocal) {
+      return parseScreenShareDescriptor(widget.senderDescriptorJson);
+    }
     if (widget.expectedSenderOrigin == null ||
         widget.expectedSenderAccountId == null ||
         widget.expectedRoomId == null) {
@@ -254,13 +305,21 @@ class _ScreenReceiverDiagnosticsState extends State<ScreenReceiverDiagnostics>
       }
       final next = stats;
       if (_previous?.timestampMs == next.timestampMs) return;
-      if (_previous?.streamId != next.streamId || _previous?.ssrc != next.ssrc) _lossWindow.clear();
+      if (_previous?.streamId != next.streamId ||
+          _previous?.ssrc != next.ssrc) {
+        _lossWindow.clear();
+      }
       final measured = compareScreenReceiverStats(_previous, next);
       final metrics = ScreenReceiverMetrics(
-        statsWindowMs: measured.statsWindowMs, collectionState: measured.collectionState,
-        decodeMsPerFrame: measured.decodeMsPerFrame, jitterBufferMsPerFrame: measured.jitterBufferMsPerFrame,
-        nackPerSecond: measured.nackPerSecond, pliPerSecond: measured.pliPerSecond, firPerSecond: measured.firPerSecond,
-        freezeCount: measured.freezeCount, freezeDurationMs: measured.freezeDurationMs,
+        statsWindowMs: measured.statsWindowMs,
+        collectionState: measured.collectionState,
+        decodeMsPerFrame: measured.decodeMsPerFrame,
+        jitterBufferMsPerFrame: measured.jitterBufferMsPerFrame,
+        nackPerSecond: measured.nackPerSecond,
+        pliPerSecond: measured.pliPerSecond,
+        firPerSecond: measured.firPerSecond,
+        freezeCount: measured.freezeCount,
+        freezeDurationMs: measured.freezeDurationMs,
         bitrateKbps: measured.bitrateKbps,
         receivedFps: measured.receivedFps,
         decodedFps: measured.decodedFps,
@@ -417,9 +476,53 @@ class _ScreenReceiverDiagnosticsState extends State<ScreenReceiverDiagnostics>
                                 ),
                               ),
                             ],
-                            if (widget.isLocal)
-                              ..._senderRows(widget.senderReport)
-                            else ...[
+                            if (!widget.isLocal) ...[
+                              for (final entry in senderConfigurationLabels(
+                                _senderDescriptor,
+                              ).entries)
+                                _DiagnosticRow(
+                                  label: entry.key,
+                                  value: entry.value,
+                                ),
+                              _DiagnosticRow(
+                                label: 'Получение конфигурации',
+                                value: senderMetadataReceiptAge(
+                                  _descriptorReceivedAt,
+                                  DateTime.now(),
+                                ),
+                              ),
+                              const _DiagnosticRow(
+                                label: 'Измерено у отправителя',
+                                value: 'Нет данных',
+                              ),
+                            ],
+                            if (widget.isLocal) ...[
+                              for (final entry
+                                  in localSenderConfigurationLabels(
+                                    _senderDescriptor,
+                                    selectedProfileId:
+                                        widget.senderSelectedProfileId,
+                                    selectedMode: widget.senderSelectedMode,
+                                    writeStatus:
+                                        widget.senderConfigurationStatus?.name,
+                                    confirmedAt: widget.senderConfirmedAt,
+                                  ).entries)
+                                _DiagnosticRow(
+                                  label: entry.key,
+                                  value: entry.value,
+                                ),
+                              if (widget.senderConfirmedAt case final time?)
+                                _DiagnosticRow(
+                                  label: 'Подтверждено в SDK',
+                                  value: _formatTime(time),
+                                ),
+                              if (widget.senderAppliedAt case final time?)
+                                _DiagnosticRow(
+                                  label: 'Записано сервером в',
+                                  value: _formatTime(time),
+                                ),
+                              ..._senderRows(widget.senderReport),
+                            ] else ...[
                               _DiagnosticRow(
                                 label: 'Сейчас у зрителя',
                                 value: _formatResolution(_current),
@@ -669,4 +772,5 @@ String? _boundedReceiverDetail(String? value) {
       : '${normalized.substring(0, 61)}…';
 }
 
-bool _finiteNonNegative(double? value) => value != null && value.isFinite && value >= 0;
+bool _finiteNonNegative(double? value) =>
+    value != null && value.isFinite && value >= 0;

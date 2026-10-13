@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:boohtacord_desktop/src/app.dart';
 import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
+import 'package:boohtacord_desktop/src/screens/workspace_ui/show_screen_share_setup/component.dart';
 
 class QaTls extends HttpOverrides {
   QaTls(this.pin);
@@ -75,6 +76,45 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byTooltip('Закрыть навигацию').hitTestable(), findsNothing);
     await binding.takeScreenshot('native-workspace');
+    // Exercise the changed production chooser on a real native surface. Cancel
+    // before capture: this confirms UI behaviour, not MediaProjection/media.
+    final selectedQuality = state.screenShareSelectedQuality;
+    final setup = workspaceShowScreenShareSetup(
+      tester.element(find.byType(Scaffold).last),
+      state,
+    );
+    await tester.pumpAndSettle();
+    final textMode = find.byKey(const ValueKey('screen-content-text'));
+    final motionMode = find.byKey(const ValueKey('screen-content-motion'));
+    await tester.ensureVisible(textMode);
+    await tester.tap(textMode);
+    await tester.pumpAndSettle();
+    expect(tester.widget<ChoiceChip>(textMode).selected, isTrue);
+    await tester.ensureVisible(find.text('Дополнительные настройки качества'));
+    await tester.tap(find.text('Дополнительные настройки качества'));
+    await tester.pumpAndSettle();
+    Finder frameRateSelector() => find.descendant(
+      of: find.byKey(const ValueKey('frame-rate-segments')),
+      matching: find.byType(SegmentedButton<int>),
+    );
+    expect(tester.widget<SegmentedButton<int>>(frameRateSelector()).selected, {
+      selectedQuality.frameRate,
+    });
+    await tester.ensureVisible(textMode);
+    await binding.takeScreenshot('native-screen-text-independent-fps');
+    await tester.tap(motionMode);
+    await tester.pumpAndSettle();
+    expect(tester.widget<ChoiceChip>(motionMode).selected, isTrue);
+    expect(tester.widget<SegmentedButton<int>>(frameRateSelector()).selected, {
+      selectedQuality.frameRate,
+    });
+    await binding.takeScreenshot('native-screen-motion-independent-fps');
+    await tester.tap(find.text('Отмена'));
+    await tester.pumpAndSettle();
+    await setup;
+    expect(state.screenShareSelectedQuality, selectedQuality);
+    expect(state.screenSharePhase, ScreenSharePhase.idle);
+    expect(tester.takeException(), isNull);
     for (final panel in [
       WorkspacePanel.profile,
       WorkspacePanel.audio,

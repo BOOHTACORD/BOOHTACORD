@@ -10,12 +10,14 @@ Future<void> workspaceShowScreenShareSetup(
       defaultTargetPlatform == TargetPlatform.iOS;
   final selection = await ScreenShareSetupDialog.show(
     context,
-    initialQuality: state.screenShareQuality,
+    initialQuality: state.screenShareSelectedQuality,
+    initialContentMode: state.screenShareContentMode,
     allowSourceSelection: !mobile && !updating,
     updating: updating,
   );
   if (!context.mounted || selection == null) return;
   if (updating) {
+    state.updateScreenShareContentMode(selection.contentMode);
     await state.updateScreenShareQuality(selection.quality);
     return;
   }
@@ -24,5 +26,6 @@ Future<void> workspaceShowScreenShareSetup(
     quality: selection.quality,
     sourceDimensions: selection.sourceDimensions,
     captureScreenAudio: selection.captureScreenAudio,
+    contentMode: selection.contentMode,
   );
 }

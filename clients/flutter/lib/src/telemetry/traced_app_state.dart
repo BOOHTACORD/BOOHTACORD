@@ -5,6 +5,7 @@ import 'package:livekit_client/livekit_client.dart';
 import '../app_state.dart';
 import '../services/client_telemetry.dart';
 import '../features/screen/profile/quality.dart';
+import '../features/screen/profile/content_mode.dart';
 
 class TracedAppState extends AppState {
   TracedAppState(super.api, {super.audioDeviceBootstrap}) {
@@ -70,6 +71,7 @@ class TracedAppState extends AppState {
   Future<void> startScreenShare({
     String? sourceId,
     ScreenShareQuality? quality,
+    ScreenShareContentMode? contentMode,
     VideoDimensions? sourceDimensions,
     bool captureScreenAudio = false,
   }) => ClientTelemetry.trace(
@@ -77,6 +79,7 @@ class TracedAppState extends AppState {
     () => super.startScreenShare(
       sourceId: sourceId,
       quality: quality,
+      contentMode: contentMode,
       sourceDimensions: sourceDimensions,
       captureScreenAudio: captureScreenAudio,
     ),

@@ -41,7 +41,7 @@ export interface VoiceRoom {
   connect(url: string, token: string, options?: { autoSubscribe?: boolean }): Promise<void>
   disconnect(): Promise<void>
   bindScreenPreviewLease?(leaseId: string): Promise<void> | void
-  publishScreenProfileMetadata?(profile: ScreenProfile): Promise<void>
+  publishScreenProfileMetadata?(profile: ScreenProfile, mode?: 'motion' | 'text'): Promise<void>
   clearScreenProfileMetadata?(): Promise<void>
   stopScreenPreview?(): Promise<void>
   applyScreenPreview?(leaseId: string, bytes: Uint8Array): void

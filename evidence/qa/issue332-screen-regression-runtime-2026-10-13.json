@@ -1,0 +1,650 @@
+{
+  "date": "2026-10-13",
+  "status": "PARTIAL",
+  "closure_allowed": false,
+  "source_base_commit": "2057bb78a7e69a7c541221ef5f386ffd65e22a92",
+  "physical_devices": {
+    "Mac": 1,
+    "second_device": 0
+  },
+  "scope": "PhysicalMac publisher +co-hosted headlessChromium receiver, syntheticownedwindow only; localdiagnostic prototype, not releaseSLO",
+  "versions": {
+    "Flutter": "3.47.6",
+    "Dart": "3.13.5",
+    "FlutterLiveKit": "2.13.0",
+    "FlutterWebRTC": "1.6.2+hotfix.3",
+    "WebLiveKit": "2.22.3",
+    "Chromium": "153.0.8010.12",
+    "nativeWebRTC": "150.7871.01",
+    "macOS": "27.0.1",
+    "architecture": "arm64"
+  },
+  "builds": {
+    "baseline": {
+      "status": "PASS",
+      "base_commit": "2057bb78a7e69a7c541221ef5f386ffd65e22a92",
+      "production_lib_manifest_sha256": "4fa5a6b098669a9864d026f580ff23e82032406acba6b8a36d6e8e812f658707",
+      "bundle_manifest_sha256": "86e9177b4ed96c424997880d698ee931c4958fcecbcdc287a2eef16bf411b09c",
+      "launcher_sha256": "c985a5a50f81c5c303223545a2d24156790f80935a2e03f27523998cd086eef7",
+      "QA_sources_measured_after_build": {
+        "integration_test/qa98325_native_app.dart": "a6e6b308bb0a6c00b20d67ef82df01928be3682681775983aa79ac2f5e2c7abd",
+        "integration_test/qa98325_stage_scene.dart": "ea32b77eb33e42502500c431d9f55d5832e0112c46aa977d6ed5f272ac762213",
+        "test/qa98325_stage_scene_test.dart": "91b52453c94a0e8eebb3e9b8514c39c20d5f4a8dd66bae607532c81c086746c3",
+        "integration_test/qa98325_namespace_storage.dart": "fc1eac78ba56e457cd2abdf12f4215a860ed3caab9f8a8bbf44957837499b70e",
+        "integration_test/qa98325_http_observer.dart": "ffa47ae32e79fab7d34bf42737c03e6ae9a6dddacf2e02e6308b0695dbe03111",
+        "test/qa98325_namespace_storage_test.dart": "efe0d2abd971cc005416be0116ead5233dbadef8cf50dd4e35ee29680315fda6",
+        "test/qa98325_http_observer_test.dart": "20d475cdabdd32f728b80a879afd81f23147e27b68a398c7e3d6fb9f45b85791",
+        "test/qa98325_real_http_deadline_test.dart": "b40311a75ba90c82c44773448806f6bafe638c888350f2bf8a92bae41ad06594"
+      },
+      "prepared_runtime_QA_hashes": "Historical before final QA scene calibration; this postbuild proof is authoritative",
+      "build_mode": "Debug",
+      "Flutter": "3.47.6",
+      "Dart": "3.13.5",
+      "native_TLS": "Exact own CA SecurityContext, no badCertificateCallback for this build",
+      "CA_sha256": "70930efffb7e1cee262ad0b08167d38552ea36e4aa9793050fa37cad696a6fc6",
+      "Go_API_image_id": "sha256:3dfb01276d36ac146dd03b71777b7a2960c7c79e706ee133ca5e719e310ac056",
+      "Go_source_manifest": "backend-source-manifest.json",
+      "Web_product_source_snapshot": "pre-change-source.json",
+      "synthetic_scene": "60Hz frame-ID updates by vsync bucket; scene paint attempts are not capture accepted-frame evidence",
+      "focused_stage_unit": "PASS2",
+      "nearest_private_test_summary": "00:09 +21: All tests passed!",
+      "analyzer": "exit1,4INFO,0warning,0error"
+    },
+    "instrumentation_oldpath": {
+      "status": "PASS",
+      "phase": "BUILT",
+      "production_lib_sha256": "4fa5a6b098669a9864d026f580ff23e82032406acba6b8a36d6e8e812f658707",
+      "instrumentation_vendor_manifest": "1beda56eeb0e4a9d13d2ac78dbd862b987928fd3d3d32245d9a0825aeddf0636",
+      "capture_path": "unchanged legacywindow",
+      "codec_policy": "unchangedVP8",
+      "native_TLS": "normalchain validation via exactownCA",
+      "SDK": "Flutter3.47.6/Dart3.13.5",
+      "bundle_manifest_sha256": "dba29f9e1b6f1e6b93388029e804e3e97bd1676279c4e9c0917aaad1674afa9c",
+      "launcher_sha256": "6df9a8058e50e219db215e21f03fec99b0085183786f467a73cf1e969089d54c",
+      "QA_sources": {
+        "integration_test/qa98325_native_app.dart": "da6120b8818d3963d028b2f64583ed84170176f6f5d97176e757415d6e6c092a",
+        "integration_test/qa98325_stage_scene.dart": "ea32b77eb33e42502500c431d9f55d5832e0112c46aa977d6ed5f272ac762213",
+        "test/qa98325_stage_scene_test.dart": "91b52453c94a0e8eebb3e9b8514c39c20d5f4a8dd66bae607532c81c086746c3",
+        "integration_test/qa98325_capture_observer.dart": "96bbf5c37638b419f59434aa61b2cb34df3ebbf2b36f9bbdb8b0413e8d2e04a4",
+        "test/qa98325_capture_observer_test.dart": "5a23044ca02aa19274e16d87bb1fa65bd9f4206eafd47ce79a483606f3a17a14",
+        "integration_test/qa98325_namespace_storage.dart": "fc1eac78ba56e457cd2abdf12f4215a860ed3caab9f8a8bbf44957837499b70e",
+        "integration_test/qa98325_http_observer.dart": "ffa47ae32e79fab7d34bf42737c03e6ae9a6dddacf2e02e6308b0695dbe03111",
+        "test/qa98325_namespace_storage_test.dart": "efe0d2abd971cc005416be0116ead5233dbadef8cf50dd4e35ee29680315fda6",
+        "test/qa98325_http_observer_test.dart": "20d475cdabdd32f728b80a879afd81f23147e27b68a398c7e3d6fb9f45b85791",
+        "test/qa98325_real_http_deadline_test.dart": "b40311a75ba90c82c44773448806f6bafe638c888350f2bf8a92bae41ad06594"
+      }
+    }
+  },
+  "window": {
+    "logical": [
+      1280,
+      720
+    ],
+    "captured_source": [
+      2560,
+      1440
+    ],
+    "coded1080": [
+      1920,
+      1080
+    ],
+    "display_refresh": null,
+    "refresh_reason": "actualvsync120Hz/sourcepaint60 observations are not OSdisplay-refresh readback",
+    "power_source_current_readonly": "AC",
+    "historical_effective_power_flags": null,
+    "display_refresh_current_readonly": {
+      "maximum_refresh_hz": 120,
+      "backing_scale": 2,
+      "low_power_mode": false,
+      "scope": "NSScreen/ProcessInfo read-only observation aftercases1–7, not historicalOSreadback oractualscanout guarantee"
+    }
+  },
+  "intervals": {
+    "warmup_seconds": 30,
+    "steady_seconds": 60,
+    "repetitions_1080p60": 3,
+    "other_profile_repetitions": 1,
+    "clock_alignment": "Separatemonotonicwindows, no unsynchronizedglass-to-glass subtraction",
+    "thresholds_approved": false
+  },
+  "cleanup": {
+    "status": "PASS",
+    "docker_receipt": ".out/qa329332-20261013/final-owned-docker-cleanup.json",
+    "private_receipt": ".out/qa329332-20261013/final-owned-private-cleanup.json",
+    "shared_stack_active": false,
+    "all_assigned_ports_closed": true
+  },
+  "private_media": false,
+  "generated_media_staged": false,
+  "issue": 332,
+  "leaf_tasks": [
+    "T-032",
+    "T-036",
+    "T-038"
+  ],
+  "reused_harness": [
+    "tools/qa/macos_sender",
+    "clients/web/tests/screen_profile"
+  ],
+  "mapping": {
+    "173": "localsynthetic readability/capture/decoder/contextonly; independentphysicalpresentation/audio/quality/capacity NOT_RUN",
+    "227": "localprototype beforehashes andcleanup; two-device/signing/rollout/rollback NOT_RUN"
+  },
+  "baseline_receipts": [
+    {
+      "index": 1,
+      "native_sha256": "8c7c3f34bd63b66e73882b1d4f38bca307aee1c40a592af7ce890c10e07ff127",
+      "receiver_sha256": "eeecacb2481359fa84fd670966787eccef05984fda63818a65dfd80a785171fe"
+    },
+    {
+      "index": 2,
+      "native_sha256": "fb975d29b8f1fe14cc6fef4379b2b467c75577f06b87f6714e2525daddd478f1",
+      "receiver_sha256": "60319426d97b440524609c3dd41ae4476c423300467d1e1d4e81880f7c21c28a"
+    },
+    {
+      "index": 3,
+      "native_sha256": "d6c8d59cc9dc2c150abed94546ad67e8c5eeee0e92637d2dae0b8b3258999769",
+      "receiver_sha256": "08ef20b9413beea177964566cf08bda63d7d7d6e843a8f0e83fcec5b1ac780cf"
+    },
+    {
+      "index": 4,
+      "native_sha256": "70c7a150dc6ffa0ee093459b40ccaef0463a5cdb348c21f816678102dd565f2e",
+      "receiver_sha256": "2e0b051ab9275981c1a1cd0201e2695333b969045c01ac5c4c2c224038b0dd18"
+    },
+    {
+      "index": 5,
+      "native_sha256": "d7aa93a7a1d8c9b9a34bdd6791da1ac588ab1c5a65aacf56e00df340b7d895be",
+      "receiver_sha256": "6b866217a3347b56ee7a2fc69518b9c9a0ede4e2e542828d7aef1c838b12796a"
+    },
+    {
+      "index": 6,
+      "native_sha256": "58a57c658f108fd7eafceeee3391070c8df3a6b860d68e9c1c9aa271f8cef05c",
+      "receiver_sha256": "2dd69b50ab7d05fc2d53f4e3095cf23dd08ee8471a877726e3b85a2f61bd6bed"
+    },
+    {
+      "index": 7,
+      "native_sha256": "f1c8163648be7e60f77abec9d39c50d5ca91edaef68c1456e7150599c2b69ca5",
+      "receiver_sha256": "ad5e007b9588ee9ee8db8ffbcfad797e19bad0b5336ad9234e940953da8c9292"
+    }
+  ],
+  "original_visual_review": [
+    {
+      "path": ".out/qa329332-20261013/receiver-1-synthetic.png",
+      "sha256": "54c3493dc80e7d396ca81a8b2d89d502be05dda6a0fc7fa0536d76c728fc6d86",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "review": "Originalview_image inspected; synthetictext/geometry/marker readable, contained; includednativeheader/trafficlights overlaptitle are fixturelimitations; no physicalcolour/scanout guarantee"
+    },
+    {
+      "path": ".out/qa329332-20261013/receiver-2-synthetic.png",
+      "sha256": "ed604542a7fb2254682e06e1faa54e12c36ea9385cd36b3756b6aa7bb5e8631a",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "review": "Originalview_image inspected; synthetictext/geometry/marker readable, contained; includednativeheader/trafficlights overlaptitle are fixturelimitations; no physicalcolour/scanout guarantee"
+    },
+    {
+      "path": ".out/qa329332-20261013/receiver-3-synthetic.png",
+      "sha256": "2862a2ab3f8d4e145da98d33869855da2becb300a00047574fef8f1c613cc886",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "review": "Originalview_image inspected; synthetictext/geometry/marker readable, contained; includednativeheader/trafficlights overlaptitle are fixturelimitations; no physicalcolour/scanout guarantee"
+    },
+    {
+      "path": ".out/qa329332-20261013/receiver-4-synthetic.png",
+      "sha256": "56480c791bbe2184fc4c0e07f1f40756e7a6565149f06d0949ba05857fb09404",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "review": "Originalview_image inspected; synthetictext/geometry/marker readable, contained; includednativeheader/trafficlights overlaptitle are fixturelimitations; no physicalcolour/scanout guarantee"
+    },
+    {
+      "path": ".out/qa329332-20261013/receiver-5-synthetic.png",
+      "sha256": "823c2b51f5c8aedf846212d6fe67cd93ffb0f4e4dbea8dd491fcd187b4bf7be5",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "review": "Originalview_image inspected; synthetictext/geometry/marker readable, contained; includednativeheader/trafficlights overlaptitle are fixturelimitations; no physicalcolour/scanout guarantee"
+    },
+    {
+      "path": ".out/qa329332-20261013/receiver-6-synthetic.png",
+      "sha256": "69fbf5bee01db63991df05eede70f99dbb9763c1d9062e9b4b42b06b0455d612",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "review": "Originalview_image inspected; synthetictext/geometry/marker readable, contained; includednativeheader/trafficlights overlaptitle are fixturelimitations; no physicalcolour/scanout guarantee"
+    },
+    {
+      "path": ".out/qa329332-20261013/receiver-7-synthetic.png",
+      "sha256": "c1b2449bf2fbcbae03af3e5cef2be91a3ab59d8d5a7cda0d991bf14d60c589e5",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "review": "Originalview_image inspected; synthetictext/geometry/marker readable, contained; includednativeheader/trafficlights overlaptitle are fixturelimitations; no physicalcolour/scanout guarantee"
+    }
+  ],
+  "acceptance_rows": [
+    {
+      "criterion": "reuseexistingrunner/pairedboundedlaunch/freshness",
+      "status": "PASS_SCOPED",
+      "evidence": "stage_baseline existingobserve+oneexistingSDKviewer; freshready/resultgenerations archived,110sproducer/30s+60sreceiver; Python10guards"
+    },
+    {
+      "criterion": "nativevalidTLSchain",
+      "status": "PASS_SCOPED",
+      "evidence": "SecurityContext exactownCA, normalhostname/chain validation foractualAPI+WSS; no hosttrustmutations"
+    },
+    {
+      "criterion": "browservalidTLSchain",
+      "status": "NOT_RUN",
+      "reason": "DisposablePlaywrightcontext ignoreHTTPSErrors explicitly scoped; not trustchainacceptance"
+    },
+    {
+      "criterion": "syntheticsourceunique IDs/motion/static",
+      "status": "PASS_SCOPED",
+      "evidence": "vsyncbucket60paintupdates notphysicalscanout; motionuniquemarkers actualdecoded; static1438callbacks/1437duplicates/oneuniquecontentframe"
+    },
+    {
+      "criterion": "scrollingfine text /display /resize /ultrawideportrait",
+      "status": "NOT_RUN",
+      "reason": "Onlyfixedfinetext/movinggeometry ownwindow baseline; no private desktoppixelscaptured"
+    },
+    {
+      "criterion": "full2device/direction/profilematrix",
+      "status": "NOT_RUN",
+      "reason": "OnlyonephysicalMac; co-hostedheadlessviewer, profiles3x1080p60+one720p60/1080p30/static"
+    },
+    {
+      "criterion": "integratedcandidate #328/330/331 stage/descriptor",
+      "status": "RUNNING",
+      "reason": "Old2057baseline andinstrumentation-only recorded; integratedcandidatepending"
+    },
+    {
+      "criterion": "physicalpresentation/SLOagreement",
+      "status": "NOT_RUN",
+      "reason": "No seconddevice, no validatedphysicalcompositor observation, thresholdsnotapproved"
+    },
+    {
+      "criterion": "lifecycle/voice/systemaudio/networkfailure/compatibility",
+      "status": "NOT_RUN",
+      "reason": "Healthywindow start/stop onlythisbatch; no hearing/systemaudio/sleepwake/UDP shapedphysicalmatrix"
+    },
+    {
+      "criterion": "signedbuildretention/capturecodecindependentrollback",
+      "status": "NOT_RUN",
+      "reason": "DebugQAonly; no signedreleasecohort/stagingrolloutevidence"
+    },
+    {
+      "criterion": "releaseGO",
+      "status": "NOT_RUN",
+      "reason": "Mandatorymissinghardware/RCA/physicalSLO/rollback blocksGO"
+    },
+    {
+      "criterion": "ownedresourcescleanup",
+      "status": "RUNNING",
+      "reason": "Currentisolatedstack stillneeded; finalexactcleanup pending"
+    }
+  ],
+  "candidate_completed_runtime": [
+    {
+      "index": 8,
+      "flow_status": "PASS",
+      "scope": "co-hosted window prototype; 30s warmup/60s steady, not release SLO",
+      "source_build_proof": ".out/qa329332-20261013/candidate-window-build-proof.json",
+      "source_build_proof_sha256": "85131f4e2d321afa5225924b41f1e8d42ff40a476c576f2dcb894602bf033ce6",
+      "source_kind": "window",
+      "capture_diagnostics_enabled": null,
+      "accepted_capture_fps": {
+        "count": 59,
+        "min": 56.05128692753875,
+        "median": 57.98846029640099,
+        "max": 59.0071988782629
+      },
+      "encoded_fps": {
+        "count": 60,
+        "min": 53.83848454636092,
+        "median": 57.08564275698544,
+        "max": 59.0
+      },
+      "sent_fps": {
+        "count": 60,
+        "min": 53.83848454636092,
+        "median": 57.08564275698544,
+        "max": 59.0
+      },
+      "receiver_decoded_p05_fps": 54.79725017337865,
+      "summary_path": ".out/qa329332-20261013/stage-summary-8.json",
+      "summary_sha256": "1f466c7bd17eda5cc534e8e4f9a40ab65633a0e83de804cab3c8023a93362cd4",
+      "interpretation": "Co-hosted observation only, no threshold capacityacceptance"
+    },
+    {
+      "index": 9,
+      "flow_status": "PASS",
+      "scope": "co-hosted window prototype; 30s warmup/60s steady, not release SLO",
+      "source_build_proof": ".out/qa329332-20261013/candidate-window-build-proof.json",
+      "source_build_proof_sha256": "85131f4e2d321afa5225924b41f1e8d42ff40a476c576f2dcb894602bf033ce6",
+      "source_kind": "window",
+      "capture_diagnostics_enabled": null,
+      "accepted_capture_fps": {
+        "count": 59,
+        "min": 55.99244102046253,
+        "median": 57.04027043092455,
+        "max": 58.110002234229185
+      },
+      "encoded_fps": {
+        "count": 60,
+        "min": 54.89021956087824,
+        "median": 57.05705705705706,
+        "max": 58.11623246492986
+      },
+      "sent_fps": {
+        "count": 60,
+        "min": 54.89021956087824,
+        "median": 57.05705705705706,
+        "max": 58.11623246492986
+      },
+      "receiver_decoded_p05_fps": 54.79179119444088,
+      "summary_path": ".out/qa329332-20261013/stage-summary-9.json",
+      "summary_sha256": "6d805dd20358f93457a50e6111046e08e9ceb5414beff57d10b4940542dd8b81",
+      "interpretation": "Co-hosted observation only, no threshold capacityacceptance"
+    },
+    {
+      "index": 10,
+      "flow_status": "PASS",
+      "scope": "co-hosted window prototype; 30s warmup/60s steady, not release SLO",
+      "source_build_proof": ".out/qa329332-20261013/candidate-window-build-proof.json",
+      "source_build_proof_sha256": "85131f4e2d321afa5225924b41f1e8d42ff40a476c576f2dcb894602bf033ce6",
+      "source_kind": "window",
+      "capture_diagnostics_enabled": null,
+      "accepted_capture_fps": {
+        "count": 59,
+        "min": 55.86385977373112,
+        "median": 57.39312509524287,
+        "max": 58.20715927987757
+      },
+      "encoded_fps": {
+        "count": 60,
+        "min": 53.89221556886228,
+        "median": 57.05705705705706,
+        "max": 59.0
+      },
+      "sent_fps": {
+        "count": 60,
+        "min": 53.89221556886228,
+        "median": 57.05705705705706,
+        "max": 59.0
+      },
+      "receiver_decoded_p05_fps": 53.94066526852613,
+      "summary_path": ".out/qa329332-20261013/stage-summary-10.json",
+      "summary_sha256": "ad66d2c49a893d24ebbd555c79a0f6eae381282e720eaad1c16a812777675f10",
+      "interpretation": "Co-hosted observation only, no threshold capacityacceptance"
+    },
+    {
+      "index": 11,
+      "flow_status": "PASS",
+      "scope": "co-hosted window prototype; 30s warmup/60s steady, not release SLO",
+      "source_build_proof": ".out/qa329332-20261013/candidate-diagnostics-build-proof.json",
+      "source_build_proof_sha256": "3ec2a12385d0df6f2fd50cea0448c04fbb4d03916f8a4a742a2f6c31bfa13826",
+      "source_kind": "window",
+      "capture_diagnostics_enabled": true,
+      "accepted_capture_fps": {
+        "count": 59,
+        "min": 50.01535471389684,
+        "median": 54.0182041347934,
+        "max": 57.009919726033104
+      },
+      "encoded_fps": {
+        "count": 60,
+        "min": 48.95104895104895,
+        "median": 53.892269246207434,
+        "max": 57.17151454363089
+      },
+      "sent_fps": {
+        "count": 60,
+        "min": 48.95104895104895,
+        "median": 53.892269246207434,
+        "max": 57.17151454363089
+      },
+      "receiver_decoded_p05_fps": 49.86536351761079,
+      "summary_path": ".out/qa329332-20261013/stage-summary-11.json",
+      "summary_sha256": "d44835f4064d90b67ee5eaaab5066c23e3722282a16b5e0c8639baf1530bc292",
+      "interpretation": "Static one uniquecontentframe with repeated callbacks"
+    },
+    {
+      "index": 12,
+      "flow_status": "PASS",
+      "scope": "co-hosted window prototype; 30s warmup/60s steady, not release SLO",
+      "source_build_proof": ".out/qa329332-20261013/candidate-diagnostics-build-proof.json",
+      "source_build_proof_sha256": "3ec2a12385d0df6f2fd50cea0448c04fbb4d03916f8a4a742a2f6c31bfa13826",
+      "source_kind": "display",
+      "capture_diagnostics_enabled": true,
+      "accepted_capture_fps": {
+        "count": 59,
+        "min": 55.26510671692059,
+        "median": 57.010204826664186,
+        "max": 58.08084854116972
+      },
+      "encoded_fps": {
+        "count": 60,
+        "min": 51.89620758483034,
+        "median": 55.916139748475075,
+        "max": 58.05805805805806
+      },
+      "sent_fps": {
+        "count": 60,
+        "min": 51.89620758483034,
+        "median": 55.916139748475075,
+        "max": 58.05805805805806
+      },
+      "receiver_decoded_p05_fps": 52.87837972599984,
+      "summary_path": ".out/qa329332-20261013/stage-summary-12.json",
+      "summary_sha256": "afa97f6cbf1600e7cf5c3aeb54b5a458a0455fbd9b4588e9b983792d080b2a44",
+      "interpretation": "Display encoderboth-axisbounds FAIL onhistoricalartifact; capturelongedge itselfconsistent"
+    },
+    {
+      "index": 19,
+      "flow_status": "PASS",
+      "scope": "co-hosted window prototype; 30s warmup/60s steady, not release SLO",
+      "source_build_proof": ".out/qa329332-20261013/candidate-diagnostics-build-proof.json",
+      "source_build_proof_sha256": "3ec2a12385d0df6f2fd50cea0448c04fbb4d03916f8a4a742a2f6c31bfa13826",
+      "source_kind": "window",
+      "capture_diagnostics_enabled": false,
+      "accepted_capture_fps": null,
+      "encoded_fps": {
+        "count": 60,
+        "min": 53.73134328358209,
+        "median": 56.914642243983565,
+        "max": 58.11623246492986
+      },
+      "sent_fps": {
+        "count": 60,
+        "min": 53.73134328358209,
+        "median": 56.914642243983565,
+        "max": 58.11623246492986
+      },
+      "receiver_decoded_p05_fps": 53.92989114087396,
+      "summary_path": ".out/qa329332-20261013/stage-summary-19.json",
+      "summary_sha256": "171c45c5a0fedfa80225d738bf9d044b2a56c9b2c2a410255ceedb0d428d25a3",
+      "interpretation": "Co-hosted observation only, no threshold capacityacceptance"
+    },
+    {
+      "index": 20,
+      "flow_status": "PASS",
+      "scope": "co-hosted window prototype; 30s warmup/60s steady, not release SLO",
+      "source_build_proof": ".out/qa329332-20261013/candidate-diagnostics-build-proof.json",
+      "source_build_proof_sha256": "3ec2a12385d0df6f2fd50cea0448c04fbb4d03916f8a4a742a2f6c31bfa13826",
+      "source_kind": "window",
+      "capture_diagnostics_enabled": true,
+      "accepted_capture_fps": {
+        "count": 59,
+        "min": 55.927149491307986,
+        "median": 57.00079801117273,
+        "max": 58.10784816619645
+      },
+      "encoded_fps": {
+        "count": 60,
+        "min": 53.83848454636092,
+        "median": 56.943056943056945,
+        "max": 58.17452357071214
+      },
+      "sent_fps": {
+        "count": 60,
+        "min": 53.83848454636092,
+        "median": 56.943056943056945,
+        "max": 58.17452357071214
+      },
+      "receiver_decoded_p05_fps": 53.908355795789795,
+      "summary_path": ".out/qa329332-20261013/stage-summary-20.json",
+      "summary_sha256": "8538897ef5de1e1dc6a8fce6fdd3a8c013d257d6dec49e91aee9423892424b44",
+      "interpretation": "Co-hosted observation only, no threshold capacityacceptance"
+    }
+  ],
+  "candidate_remaining_runtime": {
+    "status": "NONE_WITHIN_COMPLETED_LOCAL_SCOPE",
+    "items": [],
+    "physical_second_device_and_signed_release": "NOT_RUN",
+    "still_unproven": [
+      "Two physical endpoints/non-cohosted capacity",
+      "Approved five-minute/58FPS acceptance cohort",
+      "Hardware encoder/thermal/GPU attribution",
+      "Spoken audio/physicalpresentation/colorimetric/scrolling-motion acceptance",
+      "Sourcewindow-close and pending-start cancellation runtime; boundary/unit tests are separate evidence, not substitutes"
+    ]
+  },
+  "diagnostics_off_on": {
+    "path": ".out/qa329332-20261013/diagnostics-off-on-comparison.json",
+    "sha256": "6eea2e969cf3cc02aed36678a34fed58e2c9c2144bd06a64ce548b0cc625bda2",
+    "status": "PASS_SCOPED_MEASUREMENT",
+    "overhead_budget_gate": "NOT_RUN"
+  },
+  "actual_current_roundtrip_checkpoint": {
+    "receipts": {
+      "13": {
+        "stage-case-13.json": {
+          "path": ".out/qa329332-20261013/stage-case-13.json",
+          "sha256": "a4ecba6af928f675dd226b533adaba1f5c7dbc89c199ecc6ca3ef8283fa1391d"
+        },
+        "receiver-13.json": {
+          "path": ".out/qa329332-20261013/receiver-13.json",
+          "sha256": "5fc1963f366e4afb7af385869ee25aea198b0da9785c301cd0f12123a3e81e1b"
+        },
+        "healthy-13.json": {
+          "path": ".out/qa329332-20261013/healthy-13.json",
+          "sha256": "e4bd746a429615eda1d95bf706c092742061d747111d11b3e646878de4ba72ec"
+        }
+      },
+      "14": {
+        "stage-case-14.json": {
+          "path": ".out/qa329332-20261013/stage-case-14.json",
+          "sha256": "49e578292f8eb4a8fa6afc6fcafd5a93add27f0d321ed4d2c6d8fe0490fac38f"
+        },
+        "receiver-14.json": {
+          "path": ".out/qa329332-20261013/receiver-14.json",
+          "sha256": "546b25324df166b461d5f74fa8eaeb7d0c6888f6fcc2f56607fdc4d933d3818d"
+        },
+        "healthy-14.json": {
+          "path": ".out/qa329332-20261013/healthy-14.json",
+          "sha256": "32797ac32442bcf68f1a1d8f0e8a2764c7b7311dcc6c8760b5691169a05a686e"
+        }
+      },
+      "15": {
+        "stage-case-15.json": {
+          "path": ".out/qa329332-20261013/stage-case-15.json",
+          "sha256": "0b6502539d2e79e991408018a8b185efcfa89fb44fdad7219bbac91b9124b1e3"
+        },
+        "receiver-15.json": {
+          "path": ".out/qa329332-20261013/receiver-15.json",
+          "sha256": "9afd4272c03e84c96a04374cba7ac1f7f46e636d5229d2d81ba873254d422e13"
+        },
+        "restart-15.json": {
+          "path": ".out/qa329332-20261013/restart-15.json",
+          "sha256": "41bea4de33543680d5dba270eb0f9ffd2d6c4f73f6b0d9483fcac1842e9d460f"
+        }
+      },
+      "16": {
+        "stage-case-16.json": {
+          "path": ".out/qa329332-20261013/stage-case-16.json",
+          "sha256": "453f169cdfbc88d7ae64dbd7fbd167fbed42b13a0b1d3f3c39e1afb81fa1820a"
+        },
+        "receiver-16.json": {
+          "path": ".out/qa329332-20261013/receiver-16.json",
+          "sha256": "8cbaed41a84e7bb3f87b1ac0e21a507cf51149b742f5b3fa95c52630897a0857"
+        },
+        "healthy-16.json": {
+          "path": ".out/qa329332-20261013/healthy-16.json",
+          "sha256": "569547eb72c38d5420e2b852cb0303bff271c80a3fdc73a3f28197a0e2658853"
+        }
+      },
+      "17": {
+        "stage-case-17.json": {
+          "path": ".out/qa329332-20261013/stage-case-17.json",
+          "sha256": "07fb2c4fd81f14a3afdb71dfda4b56d1b3ad4b3f53955c722a1b6ec7bc2e570c"
+        },
+        "receiver-17.json": {
+          "path": ".out/qa329332-20261013/receiver-17.json",
+          "sha256": "b9188d8abb0e9366554b218b7b67147d6b791878eec2d2152c42374e87cbb644"
+        },
+        "healthy-17.json": {
+          "path": ".out/qa329332-20261013/healthy-17.json",
+          "sha256": "577f6beb26bc2e3624acc18fda9d9c398527a9dd058ae206dafce18a193489b4"
+        }
+      },
+      "18": {
+        "stage-case-18.json": {
+          "path": ".out/qa329332-20261013/stage-case-18.json",
+          "sha256": "98c748e2512a03e4d8ada1847496650786e6597fc539f62b5e6278f40558510c"
+        },
+        "receiver-18.json": {
+          "path": ".out/qa329332-20261013/receiver-18.json",
+          "sha256": "67e2669ae321c3eed1afa525139bae337e082da74b3647b6f0f7717097b181c7"
+        },
+        "healthy-18.json": {
+          "path": ".out/qa329332-20261013/healthy-18.json",
+          "sha256": "02093b94c6b6a8f01c9c2bb73b9da4f9b6fcc7c4c38b93aeb8b324323f1ea334"
+        }
+      }
+    },
+    "source_attribution": "Cases13/14/16/17/18 measured main5054/vendor81b3 with immutable candidate-codec-pilot-build-proof. Case15 final measured newer main59f9/vendor81b3 and candidate-recovery-confirmed-build-proof; prior FAIL/partial attempts archived unchanged. This does not retag historical175f/baseline2057 samples.",
+    "codec_VP8_pilot": "PASS actual fresh VP8/capture1280x720/60 on common binary; no hardware or full A/B acceptance",
+    "codec_H264_pilot": "DEFERRED actual FMTP42e034 exceeds admitted42e01f:1; no steady H264 comparison. Historical receiver cleanup_errors=[Error,Error] retained; shared final cleanup still pending.",
+    "display_geometry": "PASS actual capture1920x1246; SDK declared1662x1078 distinct from measured1662x1079. All60 native steady/61 decoded positive observations within1920x1080, aspect error<0.1%. geometry-fixed-display-runtime.json exact proof.",
+    "Motion30_and_Text60": "PASS currentGo→SFU→currentproductionWebparser, independentAPIowner+authorizedroom scopes, 3foreignscope negatives, single subscription, late viewer fresh decoded callback.",
+    "lifecycle_final": "PASS sameprofile Motion→Text compatible on same track; Mac lower/higher quality changes both require restart and preserve applied old profile until stop/start. Six native checks plus new generations/publication/attachment observations1→2→3→4 and lease replacement.",
+    "harness_failures_preserved": "Initial Mac quality-compatible expectation was wrong; corrected to static-capture restart contract. Subsequent flattened-metadata-layer assertion mismatch was QA-only; both original FAILs remain historical, fresh repeated flow passed.",
+    "visual_review": ".out/qa329332-20261013/functional-and-metadata-original-review.json"
+  },
+  "actual_isolated_metadata_faults": {
+    "status": "PASS_SCOPED_RUNTIME",
+    "receipt": ".out/qa329332-20261013/metadata-isolated-recovery-runtime.json",
+    "receipt_sha256": "ece68867d463cb96b92c45f43e57100a9e0fc93e4c7695427a1d5d74add27290",
+    "original_review": ".out/qa329332-20261013/metadata-fault-original-review.json",
+    "main_source_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "separation": "Only actual metadataPUT ownedproxy route503/14sdelay; nativeunchangedCA/hostnamevalidatedTLS, otherAPI/SFUunchanged. Proxyenablefile removed withoutreload, samefullfailedbodyboolean/op/generation recovered204. Nativecapture and30successive decodedcallback observations progressed. Bothcontextsclosed/cleanup_errors[], maxpendingDescriptors1/stopidle, exactoriginalproxyrestored. Sharedfinalstackcleanupstillpending."
+  },
+  "final_runtime_and_cleanup": {
+    "status": "PASS_SCOPED_LOCAL_QA",
+    "references": {
+      ".out/qa329332-20261013/metadata-isolated-recovery-runtime.json": "ece68867d463cb96b92c45f43e57100a9e0fc93e4c7695427a1d5d74add27290",
+      ".out/qa329332-20261013/descriptor-reverse-runtime.json": "e69c4190a6245ba9ba8bd67129a87dda79f6d5bcfe2905f6494563b6de99e754",
+      ".out/qa329332-20261013/release-qa-runtime.json": "aee1b46d7851879b0ab9440f40722f97f8900b23a4f21f5273f6f1d5f75dbd9c",
+      ".out/qa329332-20261013/whole-api-diagnostics-runtime.json": "e8e6f6a23dc28c1bd1b579bfd9357b6924a1adea63fc03703799bd638e8c4c37",
+      ".out/qa329332-20261013/final-owned-docker-cleanup.json": "b446218a17ff2c99b662a05acc1934a05b1522ca81529713a093a233759d4c38",
+      ".out/qa329332-20261013/final-owned-private-cleanup.json": "daf80d647ea5b10b0dc554e2707702c91cbb222e1d6961f47fac539fec65c4bc"
+    },
+    "source_main_final_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "source_vendor_canonical_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+    "release_signature": "Actual ad-hoc QA Release; NOT production signed-release acceptance",
+    "reverse_actual": "Third Native-first end-to-end PASS, actual scoped Motion/Text attrs, expandedremotechecker/colorboard/Statistics originals. Old2overallFAIL controldeadline preserved. FirstsmallQAbadge corrected tooverlay/LIMIT, not decodedproof.",
+    "cleanup": "Known2ownKeychainkeys cleared with currentReleaseartifact.5containers/2APIimages/1network removed byexactownerlabel; remaining0.3markedprivateworkdirs and33privatehistoryfiles deleted; assignedTCP5060..5066/UDP5065 bindable. Sanitizedreceipts/source-onlybaseline/ignoredoriginalimages retained; no globalprune or primarycheckout changes."
+  },
+  "acceptance_limit_note": "Local feasibility checkpoint completed; broader original issue gates listed NOT_RUN remain open."
+}

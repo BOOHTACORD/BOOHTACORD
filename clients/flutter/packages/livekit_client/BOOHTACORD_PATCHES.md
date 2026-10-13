@@ -3,6 +3,24 @@
 This package is based on the `livekit_client` 2.13.0 release. Its upstream
 license and source are retained.
 
+ScreenShareCaptureOptions carries an optional macOS `captureEngine` through
+construction, `copyWith` and `video.mandatory` constraints without altering exact
+source selection, audio or FPS. `baseline` preserves existing capture routes;
+`screen_capture_kit` is an explicit new-start candidate independent of codec.
+An omitted engine keeps upstream constraints unchanged. Keep
+`test/options/screen_capture_engine_test.dart` when rebasing. This vendored patch
+does not change package versions/pins or claim device/performance acceptance.
+
+Optional nullable macOS `captureDiagnosticsEnabled` is forwarded at capture
+start through construction, `from`, `copyWith` and `video.mandatory`. Omission
+preserves native instrumentation default true. Explicit false removes metrics
+and capture snapshots: configuration/actual-frame health is unavailable and the
+confirmed-profile writer remains pending. Continuous clocks needed for queue
+policy stay active. Same-artifact off/on QA must disclose this metadata-writer
+confound; polling off alone is not instrumentation off. Eight focused options
+tests cover both seams, including explicit false preservation. Native pipeline
+source is unchanged by this SDK option.
+
 The local change aligns the SDK's bounded reconnect delays and jitter with the
 web client's `BoundedVoiceReconnectPolicy` in
 `clients/web/src/voice/bounded_voice_reconnect_policy.ts`. Keep the focused policy

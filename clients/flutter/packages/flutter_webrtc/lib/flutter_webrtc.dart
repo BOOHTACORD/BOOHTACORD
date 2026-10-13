@@ -19,6 +19,9 @@ export 'src/native/rtc_video_view_impl.dart'
 export 'src/native/utils.dart'
     if (dart.library.js_interop) 'src/web/utils.dart';
 export 'src/native/adapter_type.dart';
+export 'src/native/capture_snapshot.dart'
+    if (dart.library.js_interop) 'src/web/capture_snapshot.dart'
+    show mediaStreamTrackGetCaptureSnapshot;
 export 'src/native/camera_utils.dart';
 export 'src/native/audio_management.dart';
 export 'src/native/android/audio_configuration.dart';

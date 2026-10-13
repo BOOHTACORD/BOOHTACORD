@@ -40,7 +40,7 @@ const props = defineProps<{ role: 'MEMBER' | 'ADMINISTRATOR'; accountId: string;
 const emit = defineEmits<{ sessionExpired: []; loggedOut: [] }>()
 const adminSection = ref<AdminSection>('members')
 const { activeVoiceChannel, audioSettings, loadAudioDevices, joinVoice, leaveVoice, selectAudioDevice, selectedChannel, selectedChannelId, selectChannel: selectWorkspaceChannel, selectDirectMessage: selectWorkspaceDirectMessage, startScreen, topologyStore, voiceActivation, voiceConnection } = useWorkspaceVoiceControls(props.accountId)
-const { confirmScreenShare, openScreenShareSetup, screenShareSetupOpen, selectedScreenProfile } = useScreenShareSetup(() => voiceConnection.screenState, startScreen, props.accountId)
+const { confirmScreenShare, openScreenShareSetup, screenShareSetupOpen, selectedScreenProfile, selectedScreenMode } = useScreenShareSetup(() => voiceConnection.screenState, startScreen, props.accountId)
 const { activePanel, closeDrawers, directMessageStore, memberHeaderExpandedState, membersOpen, modalDrawer, navOpen, openDirectMessageFromMember, returnToVoice, selectedDirectMessage, selectChannel, selectDirectMessage, selectOpenedDirectMessage, sidebarSection, toggleMembers, toggleNavigation, togglePanel, voiceStageWide } = useWorkspaceNavigation(props.role, selectedChannel, topologyStore, selectWorkspaceChannel, selectWorkspaceDirectMessage)
 const profileSettings = ref<{ hasUnsavedChanges: boolean } | null>(null)
 const profileExitConfirmation = ref<{ ask: (message: string) => Promise<boolean> } | null>(null)
@@ -134,7 +134,7 @@ bindWorkspaceReady({ readiness: props.readiness,
       <aside v-else-if="activePanel === 'search'" id="search-aside-panel" class="members search-aside" :class="{ 'is-open': activePanel === 'search' }" :role="modalDrawer === 'search' ? 'dialog' : undefined" :aria-modal="modalDrawer === 'search' ? 'true' : undefined" aria-label="Поиск сообщений" tabindex="-1" data-testid="search-aside-panel"><WorkspaceSearchPanel @open-channel="selectChannel" @open-direct-message="selectDirectMessage" @close="activePanel = 'none'" /></aside>
       <button v-if="navOpen || membersOpen || activePanel === 'search'" class="drawer-scrim" type="button" aria-label="Закрыть навигацию и участников" @click="requestWorkspaceScrimClose" />
     </div>
-    <ScreenShareSetupDialog v-if="screenShareSetupOpen" :initial-profile="voiceConnection.screenProfile ?? selectedScreenProfile" :updating="voiceConnection.screenState === 'SHARING'" @cancel="screenShareSetupOpen = false" @start="confirmScreenShare" />
+    <ScreenShareSetupDialog v-if="screenShareSetupOpen" :initial-profile="voiceConnection.screenProfile ?? selectedScreenProfile" :initial-mode="selectedScreenMode" :updating="voiceConnection.screenState === 'SHARING'" @cancel="screenShareSetupOpen = false" @start="confirmScreenShare" />
     <AdminConfirmation ref="profileExitConfirmation" id="profile-unsaved-exit" title="Несохранённые изменения" confirm-label="Выйти без сохранения" />
   </div>
 </template>
