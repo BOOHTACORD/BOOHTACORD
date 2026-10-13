@@ -1,0 +1,80 @@
+name: Patched macOS WebRTC SDK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: boohtacord-webrtc-sdk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: arm64
+            runner: macos-26
+          - arch: x64
+            runner: macos-26-intel
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build pinned SDK and focused native routing regressions
+        run: python3 -m tools.build.webrtc_macos.run build --arch '${{ matrix.arch }}' --workspace .out/webrtc/sdk --output .out/sdk-assets
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdk-${{ matrix.arch }}
+          path: .out/sdk-assets/
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: macos-26
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: sdk-arm64
+          path: .out/sdk-inputs/arm64
+      - uses: actions/download-artifact@v4
+        with:
+          name: sdk-x64
+          path: .out/sdk-inputs/x64
+      - name: Assemble the matching universal macOS XCFramework
+        run: python3 -m tools.build.webrtc_macos.run assemble --inputs .out/sdk-inputs --output .out/sdk-release
+      - name: Publish new immutable SDK assets
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const recipe = JSON.parse(fs.readFileSync('tools/build/webrtc_macos/recipe.json'));
+            const {owner, repo} = context.repo;
+            try {
+              await github.rest.repos.getReleaseByTag({owner, repo, tag: recipe.version});
+              throw new Error('SDK version already exists; choose a new immutable version.');
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+            const {data: release} = await github.rest.repos.createRelease({
+              owner, repo, tag_name: recipe.version, target_commitish: context.sha,
+              name: 'WebRTC m150 — BOOHTACORD custom screen-audio routing r1',
+              make_latest: 'false',
+              body: 'Universal macOS SDK from pinned m150 source with custom audio routing. Contains focused native route regressions and checksums. Physical playback acceptance is recorded separately in #335. Existing upstream assets are unchanged.'
+            });
+            for (const name of ['WebRTC-macos.xcframework.zip', 'sdk-manifest.json', 'SHA256SUMS']) {
+              await github.rest.repos.uploadReleaseAsset({owner, repo, release_id: release.id,
+                name, data: fs.readFileSync('.out/sdk-release/' + name)});
+            }

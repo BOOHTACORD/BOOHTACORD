@@ -40,7 +40,8 @@
     "macos/flutter_webrtc.podspec",
     "macos/flutter_webrtc/Sources/flutter_webrtc/FlutterWebRTCPlugin.m",
     "macos/flutter_webrtc/Sources/flutter_webrtc/VideoProcessingAdapter.m",
-    "macos/flutter_webrtc/Sources/flutter_webrtc/include/flutter_webrtc/VideoProcessingAdapter.h"
+    "macos/flutter_webrtc/Sources/flutter_webrtc/include/flutter_webrtc/VideoProcessingAdapter.h",
+    "macos/flutter_webrtc/Package.swift"
   ],
   "added_patch_files": [
     "lib/src/native/factory_bootstrap.dart",
@@ -98,6 +99,8 @@
     "test/unit/capture_snapshot_bridge_test.dart",
     "macos/flutter_webrtc/Sources/flutter_webrtc/FlutterScreenCaptureDiagnostics.m",
     "macos/flutter_webrtc/Sources/flutter_webrtc/include/flutter_webrtc/FlutterScreenCaptureDiagnostics.h",
-    "macos/flutter_webrtc/Sources/flutter_webrtc/include/flutter_webrtc/FlutterScreenCapturePolicy.h"
+    "macos/flutter_webrtc/Sources/flutter_webrtc/include/flutter_webrtc/FlutterScreenCapturePolicy.h",
+    "macos/BoohtacordWebRTC.podspec",
+    "third_party/patches/webrtc-sdk-m150-custom-source-regression.patch"
   ]
 }

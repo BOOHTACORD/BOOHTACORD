@@ -22,17 +22,6 @@ jobs:
           cache: true
       - name: Verify Flutter toolchain
         run: flutter --version
-      - name: Cache patched macOS WebRTC SDK
-        id: webrtc-sdk-cache
-        uses: actions/cache@v4
-        with:
-          path: clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Binary/
-          key: webrtc-macos-${{ runner.arch }}-${{ hashFiles('clients/flutter/packages/flutter_webrtc/third_party/apple-sdk.json', 'clients/flutter/packages/flutter_webrtc/third_party/patches/webrtc-sdk-*.patch', 'tools/build/webrtc_sdk/build_macos.py') }}
-      - name: Build patched macOS WebRTC SDK
-        if: steps.webrtc-sdk-cache.outputs.cache-hit != 'true'
-        run: python3 tools/build/webrtc_sdk/build_macos.py --test
-      - name: Verify installed WebRTC SDK
-        run: python3 tools/build/webrtc_sdk/build_macos.py --verify
       - name: Resolve locked Flutter dependencies
         working-directory: clients/flutter
         run: flutter pub get --enforce-lockfile

@@ -296,7 +296,11 @@
     return;
   }
   if (@available(macOS 13.0, *)) {
-    if (type == SCStreamOutputTypeAudio) { [self.screenAudioCapturer appendSampleBuffer:sample]; return; }
+    if (type == SCStreamOutputTypeAudio) {
+      if (![self.screenAudioCapturer appendSampleBuffer:sample])
+        [self fail:@"audio_format_unsupported" generation:generation];
+      return;
+    }
   }
   if (type != SCStreamOutputTypeScreen || stream != self.stream) return;
   CFArrayRef attachments = CMSampleBufferGetSampleAttachmentsArray(sample, NO);

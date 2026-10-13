@@ -26,9 +26,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "WebRTC",
-            // 150.7871.03-boohtacord.1: m150 with custom-source ADM isolation.
-            // Install with tools/build/webrtc_sdk/build_macos.py.
-            path: "Binary/WebRTC.xcframework"
+            url: "https://github.com/Egkurilov/BOOHTACORD/releases/download/webrtc-m150-boohtacord-r2/WebRTC-macos.xcframework.zip",
+            checksum: "0617e131f303f4a76acbdcf4f9538fc1e359fc56e7ba1234f3e8bda40bc23de2"
         ),
         .target(
             name: "flutter_webrtc",

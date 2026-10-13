@@ -27,21 +27,13 @@ flutter test
 flutter run -d <device-id>
 ```
 
-macOS SwiftPM использует WebRTC `150.7871.03-boohtacord.1` с изоляцией
-ScreenCaptureKit PCM от аудиокадров AudioDeviceModule. Перед первой сборкой
-macOS соберите закреплённые исходники SDK из корня репозитория:
-
-```bash
-python3 tools/build/webrtc_sdk/build_macos.py --test
-cd clients/flutter
-flutter run -d macos --dart-define=BOOHTACORD_MACOS_CAPTURE_ENGINE=screen_capture_kit
-```
-
-Сборщик устанавливает universal XCFramework в локальный `Binary/` пакета
-`flutter_webrtc`; исходники, зависимости и бинарники исключены из Git.
-macOS CI выполняет ту же сборку и кеширует результат по ревизии и патчам SDK.
-Пины iOS/CocoaPods сохраняют прежний SDK; новый виртуальный метод источника
-компилируется только вместе с исправленным macOS SwiftPM фреймворком.
+macOS SwiftPM загружает закреплённый immutable XCFramework WebRTC m150 с
+изоляцией ScreenCaptureKit PCM от AudioDeviceModule и проверяет SHA-256.
+Обычная сборка не требует предварительно компилировать SDK или устанавливать
+локальный `Binary/`. ScreenCaptureKit включён по умолчанию.
+Рецепт SDK, базовые проверки и CocoaPods-интеграция описаны в
+[runbook](../../docs/runbooks/macos-screen-audio-sdk.md).
+Изменение виртуального интерфейса изолировано от прежних iOS/Android SDK.
 
 Android release APK: `flutter build apk --release` с локально настроенной подписью. iOS: `flutter build ios --release` с локальной командой подписи Xcode, затем установка подписанного `.app` через Xcode или `xcrun devicectl`. Для macOS и Windows запускайте сборки на соответствующих ОС. Имена поддержанных устройств покажет `flutter devices`; текущая iOS-сборка требует macOS, Xcode и генерируемый Flutter Swift Package.
 

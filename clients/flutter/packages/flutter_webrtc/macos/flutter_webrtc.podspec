@@ -19,10 +19,11 @@ A new flutter plugin project.
   s.dependency 'FlutterMacOS'
   s.frameworks = 'CoreAudio'
   s.weak_frameworks = 'ScreenCaptureKit'
-  s.dependency 'WebRTC-SDK', '150.7871.01'
+  s.dependency 'BoohtacordWebRTC', '150.7871.3'
   s.osx.deployment_target = '10.15'
   s.pod_target_xcconfig = {
     'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
+    'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) BOOHTACORD_WEBRTC_CUSTOM_SOURCE_ROUTING=1',
     'HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/../common/darwin/Classes" "${PODS_TARGET_SRCROOT}/../common/rnnoise/public_include" "${PODS_TARGET_SRCROOT}/../common/rnnoise/upstream/include"',
     'USER_HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/flutter_webrtc/Sources/flutter_webrtc/include/flutter_webrtc"'
   }

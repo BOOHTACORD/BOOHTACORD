@@ -26,7 +26,11 @@ NSData *FlutterScreenAudioPCMDataFromSampleBuffer(CMSampleBufferRef sampleBuffer
   const AudioStreamBasicDescription *format =
       description == NULL ? NULL : CMAudioFormatDescriptionGetStreamBasicDescription(description);
   if (format == NULL || format->mFormatID != kAudioFormatLinearPCM ||
-      format->mSampleRate <= 0 || format->mChannelsPerFrame == 0 ||
+      !std::isfinite(format->mSampleRate) || format->mSampleRate < 8000 ||
+      format->mSampleRate > 96000 ||
+      std::floor(format->mSampleRate) != format->mSampleRate ||
+      static_cast<int>(format->mSampleRate) % 100 != 0 ||
+      format->mChannelsPerFrame == 0 || format->mChannelsPerFrame > 2 ||
       (format->mFormatFlags & kAudioFormatFlagIsBigEndian) != 0) {
     return nil;
   }
@@ -59,7 +63,7 @@ NSData *FlutterScreenAudioPCMDataFromSampleBuffer(CMSampleBufferRef sampleBuffer
   const bool nonInterleaved = (format->mFormatFlags & kAudioFormatFlagIsNonInterleaved) != 0;
 
   if (status != noErr || buffers->mNumberBuffers == 0 || frameCount == 0 || frameCount > 96000 ||
-      format->mSampleRate < 8000 || format->mSampleRate > 96000 || sourceChannels > 8 ||
+      format->mSampleRate < 8000 || format->mSampleRate > 96000 || sourceChannels > 2 ||
       bytesPerSample == 0 ||
       (!isFloat && !isSigned)) {
     free(buffers);

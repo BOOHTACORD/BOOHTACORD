@@ -274,3 +274,14 @@ index a8f3bbd08a..6098196408 100644
  
  class AudioRtpSender : public DtmfProviderInterface, public RtpSenderBase {
 
+diff --git a/api/media_stream_interface.cc b/api/media_stream_interface.cc
+--- a/api/media_stream_interface.cc
++++ b/api/media_stream_interface.cc
+@@ -20 +20,7 @@
++// Exported delivery marker. The app links this only with the matching vtable.
++extern "C" RTC_EXPORT const char* BoohtacordScreenAudioRoutingRevision() {
++  return "m150-038565-custom-source-r2";
++}
++
++
+ namespace webrtc {

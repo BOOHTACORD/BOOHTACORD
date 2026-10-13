@@ -34,7 +34,7 @@
 @property(nonatomic) NSUInteger samples;
 @end
 @implementation AudioSink
-- (void)appendSampleBuffer:(CMSampleBufferRef)sample { self.samples++; }
+- (BOOL)appendSampleBuffer:(CMSampleBufferRef)sample { self.samples++; return YES; }
 - (void)stop {}
 @end
 static uint64_t virtualNow;

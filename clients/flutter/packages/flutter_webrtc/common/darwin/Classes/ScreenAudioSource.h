@@ -9,6 +9,7 @@
 #define FLUTTER_WEBRTC_SCREEN_AUDIO_SOURCE_H_
 
 #include <atomic>
+#include <array>
 #include <cstdint>
 #include <mutex>
 #include <vector>
@@ -64,6 +65,11 @@ class ScreenAudioSource final : public webrtc::AudioSourceInterface {
   std::vector<webrtc::ObserverInterface*> observers_;
   std::vector<AudioObserver*> audioObservers_;
   std::vector<webrtc::AudioTrackSinkInterface*> sinks_;
+  // At most one 10 ms interleaved block. Guarded by capture_mutex_.
+  std::array<int16_t, 1920> pending_pcm_{};
+  size_t pending_samples_ = 0;
+  int pending_sample_rate_ = 0;
+  size_t pending_channels_ = 0;
 };
 
 }  // namespace flutter_webrtc_plugin

@@ -2,6 +2,7 @@ name: Android Release
 
 # A matching android-v* tag publishes signed APKs using repository signing secrets.
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'android-v*'

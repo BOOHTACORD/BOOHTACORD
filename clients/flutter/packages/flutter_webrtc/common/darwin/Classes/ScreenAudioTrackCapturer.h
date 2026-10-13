@@ -9,8 +9,8 @@
 @property(nonatomic, strong, readonly) RTCAudioTrack *audioTrack;
 
 - (instancetype)initWithFactory:(RTCPeerConnectionFactory *)factory;
-- (void)appendSampleBuffer:(CMSampleBufferRef)sampleBuffer;
-- (void)appendPCMData:(NSData *)data
+- (BOOL)appendSampleBuffer:(CMSampleBufferRef)sampleBuffer;
+- (BOOL)appendPCMData:(NSData *)data
            sampleRate:(int)sampleRate
              channels:(size_t)channels
                 frames:(size_t)frames;

@@ -118,7 +118,8 @@ namespace webrtc {
         virtual const AudioOptions options() const { return AudioOptions{}; }
         virtual void SetOptions(const AudioOptions& options) {}
 #if defined(BOOHTACORD_WEBRTC_CUSTOM_SOURCE_ROUTING)
-        // Appended to the vtable only when the matching patched SDK is linked.
+        // macOS-only: matches the rebuilt SDK's appended virtual method.
+        // iOS and Android retain the ABI of their existing native SDK.
         enum class SourceType { kAudioDeviceModule, kCustom };
         virtual SourceType source_type() const {
           return SourceType::kAudioDeviceModule;

@@ -145,6 +145,19 @@ small package-local wrappers for the shared Darwin bridge. CocoaPods excludes
 those wrapper files and compiles the shared implementation directly to avoid
 duplicate symbols.
 
+## macOS custom screen-audio SDK (#335)
+
+The macOS package uses a separately rebuilt, pinned WebRTC m150 XCFramework.
+Source classification reaches AudioSendStream, so custom screen audio avoids
+ADM registration on start, stop and encoder changes while microphone delivery
+keeps its original route. The macOS-only interface macro and strong SDK marker
+link isolate this ABI change from the original iOS/Android binaries.
+The shared PCM source accumulates/splits owned samples into exact 10 ms blocks,
+preserving rate, channel order and a bounded residual that clears on format,
+sink/session or stop transitions. Unsupported SCK audio formats fail explicitly.
+See [the SDK runbook](../../../../docs/runbooks/macos-screen-audio-sdk.md) for
+build provenance, CocoaPods integration and basic physical acceptance scope.
+
 ## Source and maintenance policy
 
 [UPSTREAM.json](UPSTREAM.json) pins the published upstream archive SHA-256,
@@ -171,13 +184,6 @@ Focused Flutter/device acceptance remains pending; no hardware behavior is
 claimed.
 
 ## MW-04 macOS bounded capture diagnostics (#330)
-
-macOS SwiftPM now links the locally built `150.7871.03-boohtacord.1` WebRTC SDK.
-`ScreenAudioSource` reports the custom source type so its sender is excluded
-from AudioState/ADM fan-out. The API extension is enabled only with that binary
-to preserve the existing vtable for iOS/CocoaPods. Pinned source, native routing
-tests and build instructions are in [third_party/patches](third_party/patches/README.md).
-Physical screen-audio playback and track-replacement acceptance remain open.
 
 The macOS plugin exposes `mediaStreamTrackGetCaptureSnapshot(trackId)` for local
 screen-video tracks. It reports raw accepted and processed RTC-delivered frame
@@ -233,5 +239,5 @@ does not disable native metrics.
 
 The focused Objective-C harness is `tools/qa/native_capture_boundary`; physical
 capture/performance and independent second-device acceptance remain separate
-gates. Package pins, upstream archive hashes, licenses and existing patches are
-unchanged.
+gates. Upstream package archive hashes and licenses are unchanged; the separate
+macOS SDK dependency is documented above.

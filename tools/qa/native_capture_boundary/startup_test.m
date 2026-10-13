@@ -36,8 +36,8 @@ static __weak NSObject *lastSource;
 - (instancetype)initWithFactory:(RTCPeerConnectionFactory *)factory { return [super init]; }
 - (RTCAudioTrack *)audioTrack { return nil; }
 - (void)stop {}
-- (void)appendSampleBuffer:(CMSampleBufferRef)sample {}
-- (void)appendPCMData:(NSData *)data sampleRate:(int)rate channels:(size_t)channels frames:(size_t)frames {}
+- (BOOL)appendSampleBuffer:(CMSampleBufferRef)sample { return YES; }
+- (BOOL)appendPCMData:(NSData *)data sampleRate:(int)rate channels:(size_t)channels frames:(size_t)frames { return YES; }
 @end
 void postEvent(FlutterEventSink sink, id event) {}
 @interface AudioManager : NSObject

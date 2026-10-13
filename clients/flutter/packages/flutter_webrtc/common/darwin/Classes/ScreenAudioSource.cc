@@ -94,6 +94,7 @@ void ScreenAudioSource::RemoveSink(webrtc::AudioTrackSinkInterface* sink) {
   std::lock_guard<std::recursive_mutex> capture_lock(capture_mutex_);
   std::lock_guard<std::mutex> lock(mutex_);
   sinks_.erase(std::remove(sinks_.begin(), sinks_.end(), sink), sinks_.end());
+  if (sinks_.empty()) pending_samples_ = 0;
 }
 
 const webrtc::AudioOptions ScreenAudioSource::options() const {
@@ -114,36 +115,66 @@ void ScreenAudioSource::CaptureFrame(const void* audioData,
   if (audioData == nullptr || bitsPerSample != 16 || sampleRate <= 0 || channels == 0 || frames == 0) {
     return;
   }
-  if (sampleRate < 8000 || sampleRate > 96000 || channels > 2 ||
+  if (sampleRate < 8000 || sampleRate > 96000 || sampleRate % 100 != 0 || channels > 2 ||
       frames > 96000 || frames > SIZE_MAX / channels) {
     return;
   }
 
   std::lock_guard<std::recursive_mutex> capture_lock(capture_mutex_);
   double volume;
-  std::vector<webrtc::AudioTrackSinkInterface*> sinks;
   {
     std::lock_guard<std::mutex> lock(mutex_);
-    if (state_ != kLive) return;
+    if (state_ != kLive || sinks_.empty()) return;
     volume = volume_;
-    sinks = sinks_;
   }
 
   const int16_t* input = static_cast<const int16_t*>(audioData);
-  std::vector<int16_t> adjusted;
-  const int16_t* data = input;
-  if (std::abs(volume - 1.0) > 0.0001) {
-    adjusted.resize(frames * channels);
-    for (size_t i = 0; i < adjusted.size(); ++i) {
-      const double sample = static_cast<double>(input[i]) * volume;
-      adjusted[i] = static_cast<int16_t>(std::clamp(sample, -32768.0, 32767.0));
-    }
-    data = adjusted.data();
+  if (pending_sample_rate_ != sampleRate || pending_channels_ != channels) {
+    pending_samples_ = 0;
+    pending_sample_rate_ = sampleRate;
+    pending_channels_ = channels;
   }
+  const size_t block_frames = static_cast<size_t>(sampleRate / 100);
+  const size_t block_samples = block_frames * channels;
+  size_t remaining = frames * channels;
+  while (remaining > 0) {
+    {
+      std::lock_guard<std::mutex> lock(mutex_);
+      if (state_ != kLive || sinks_.empty()) return;
+    }
+    const size_t copied = std::min(remaining, block_samples - pending_samples_);
+    std::copy_n(input, copied, pending_pcm_.begin() + pending_samples_);
+    pending_samples_ += copied;
+    input += copied;
+    remaining -= copied;
+    if (pending_samples_ != block_samples) continue;
 
-  for (auto* sink : sinks) {
-    if (sink == nullptr || state() != kLive) break;
-    sink->OnData(data, bitsPerSample, sampleRate, channels, frames);
+    // Own the complete block across synchronous OnData, including a sink
+    // reentrantly removing itself or stopping this source. No OS buffer escapes.
+    std::array<int16_t, 1920> block;
+    std::copy_n(pending_pcm_.begin(), block_samples, block.begin());
+    pending_samples_ = 0;
+    if (std::abs(volume - 1.0) > 0.0001) {
+      for (size_t i = 0; i < block_samples; ++i) {
+        const double sample = static_cast<double>(block[i]) * volume;
+        block[i] = static_cast<int16_t>(std::clamp(sample, -32768.0, 32767.0));
+      }
+    }
+    std::vector<webrtc::AudioTrackSinkInterface*> sinks;
+    {
+      std::lock_guard<std::mutex> lock(mutex_);
+      if (state_ != kLive || sinks_.empty()) return;
+      sinks = sinks_;
+    }
+    for (auto* sink : sinks) {
+      bool active;
+      {
+        std::lock_guard<std::mutex> lock(mutex_);
+        active = state_ == kLive &&
+            std::find(sinks_.begin(), sinks_.end(), sink) != sinks_.end();
+      }
+      if (active) sink->OnData(block.data(), bitsPerSample, sampleRate, channels, block_frames);
+    }
   }
 }
 
@@ -154,6 +185,7 @@ void ScreenAudioSource::Stop() {
     std::lock_guard<std::mutex> lock(mutex_);
     if (state_ == kEnded) return;
     state_ = kEnded;
+    pending_samples_ = 0;
     sinks_.clear();
     observers = observers_;
   }

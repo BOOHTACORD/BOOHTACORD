@@ -2,21 +2,16 @@
 
 `webrtc-sdk-m150-custom-source-routing.patch` is the source-routing subset of [webrtc-sdk/webrtc#292](https://github.com/webrtc-sdk/webrtc/pull/292), draft PR revision `f485a890404fc19189217c6cb00b88309b9f6d6f`. It adds `AudioSourceInterface::SourceType`, carries that value through the sender adapter, and skips `AudioState` / ADM registration for custom-fed streams. The default remains the ADM path, so existing microphone tracks keep their route. The subset excludes the PR's new general-purpose `CustomAudioSource` API.
 
-The matching app-side change is integrated: the local WebRTC interface shim gains the same enum and `ScreenAudioSource` identifies itself as `kCustom`. It is guarded by `BOOHTACORD_WEBRTC_CUSTOM_SOURCE_ROUTING`, defined only by the macOS SwiftPM target that links the patched framework. iOS and legacy CocoaPods still use their existing binary and vtable.
+`webrtc-sdk-m150-custom-source-regression.patch` adds two focused SDK tests using the real AudioState/AudioTransport/send-stream path. They check exclusion after an encoder update and restoration of microphone delivery across source-type changes. They are not a race simulation or physical playback evidence.
 
-## Build and install for macOS
+The integrated app-side change extends the Darwin interface shim and returns `kCustom` only when `BOOHTACORD_WEBRTC_CUSTOM_SOURCE_ROUTING` is defined by the macOS plugin. iOS and Android retain their original SDK ABI. The earlier unguarded app-side sketch was removed; it must not be applied to the old iOS framework.
 
-From the repository root:
+## Apply and release order
 
-```sh
-python3 tools/build/webrtc_sdk/build_macos.py --test
-cd clients/flutter
-flutter run -d macos --dart-define=BOOHTACORD_MACOS_CAPTURE_ENGINE=screen_capture_kit
-```
+1. Build pinned source `0385653a83f21acf3c916466d4088b29fe2f160b` with both retained SDK patches using `tools/build/webrtc_macos/recipe.json` and `run.py`.
+2. Publish a new immutable macOS-only XCFramework with architecture receipts, routing-test results and SHA-256 checksum. Existing upstream SDK assets remain unchanged.
+3. Pin that same macOS binary in Swift Package Manager and the shared `BoohtacordWebRTC` CocoaPods dependency. Keep iOS manifests and the macro-disabled Darwin interface unchanged.
+4. Build the ordinary release. Its strong link to `BoohtacordScreenAudioRoutingRevision` rejects the old SDK. Inspect the embedded framework, then record the short physical Mac/Web smoke and audible playback separately.
 
-`../apple-sdk.json` pins the m150.7871.03 source revision and depot_tools. The builder applies the routing and regression-test patches, runs `AudioSendStreamTest.*` when requested, builds arm64 and x64, and installs the universal local XCFramework in `macos/flutter_webrtc/Binary/`. The generated `sdk.json` records the source, patches, binary SHA-256 and UUIDs. Source and build caches live in `.out/webrtc-sdk/`; generated binaries stay out of Git. macOS CI uses the same builder and caches the installed SDK by the manifest, patches and build script.
-
-The regression tests inject ADM frames into a custom stream before and after a codec change and stop/start, verify that only explicit custom frames are encoded, and verify that default device streams still receive ADM frames after restart. `replaceTrack` in both directions and physical system-audio/peer playback with the microphone disabled remain acceptance requirements; unit tests and application startup alone do not close them.
-
-This local SDK is `150.7871.03-boohtacord.1`. It has not been published as an upstream WebRTC-SDK release. A future iOS/CocoaPods integration must switch its binaries and source-type compile flag together. The original crash framework UUID was `D58568C4-76D7-34BD-ACBD-B5BD55900541`; retaining that binary with the new unguarded vtable would be unsafe.
+The original crash used upstream `WebRTC-SDK` `150.7871.01`, before the routing patch. The new macOS SDK has a public source-revision marker; the app shim and this binary form one ABI change. Runtime race checks remain enabled. Build/unit success alone cannot close #335. See `docs/runbooks/macos-screen-audio-sdk.md` and its evidence record for delivery and physical acceptance status.
 
