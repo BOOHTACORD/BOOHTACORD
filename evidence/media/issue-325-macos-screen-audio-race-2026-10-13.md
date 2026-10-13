@@ -10,6 +10,12 @@
 - WebRTC-SDK draft PR [#292](https://github.com/webrtc-sdk/webrtc/pull/292) addresses this exact structure by propagating a source type and keeping custom sources out of ADM fan-out. The focused SDK patch and app-side adapter patch are in `clients/flutter/packages/flutter_webrtc/third_party/patches/`.
 - The report says the microphone was not published. No microphone-specific cause is inferred.
 
+## Additional crash report (2026-10-13 23:56 local)
+
+- A second report from the same app build and the same WebRTC binary UUID (`D58568C4-76D7-34BD-ACBD-B5BD55900541`) shows `SIGABRT` from `webrtc_checks_impl::FatalLog` on `com.apple.audio.IOThread.client`. Its stack reaches WebRTC through AVFAudio's `InputAvailable` callback.
+- At the same time, the report's `boohtacord.sck.audio` stack is delivering ScreenCaptureKit PCM through `FlutterScreenAudioTrackCapturer::appendPCMData` into `ScreenAudioSource::CaptureFrame` and WebRTC. The capture thread is not the crashing thread, but these concurrent WebRTC audio paths corroborate the sender-routing/race hypothesis from the first report.
+- This second report does not include a readable failed-check expression or a symbolized WebRTC frame name. It therefore does not independently prove the precise race-check site or prove that the ADM callback carried microphone input. The user confirmed the microphone was not published.
+
 ## Not yet proven
 
 - The SDK patch has not been applied to a WebRTC source checkout or built. The matching source tree and build configuration are not vendored here.
