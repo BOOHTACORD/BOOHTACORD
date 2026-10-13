@@ -117,3 +117,40 @@ be observed or reported by the user, not inferred from publication/stats.
 
 #335 remains open until its required basic audible smoke passes. This change
 does not close #334 or the screen-sharing epic #326 and its hardware gates.
+
+## Final-source build and delivery checkpoint
+
+Fix commit: `936fa2282e61272e6b4abc517b939b387462083e`.
+macOS 1.0.42 (77) was rebuilt with Flutter 3.47.7 / Dart 3.13.5 and the shared
+`macos-direct-stable-r56` identity. Signature inspection passed (ad-hoc), both
+architectures are present and the distribution manifest reports this exact
+source with `source_dirty=false`. Every embedded SDK executable `__TEXT`
+section matches the downloaded public r2 framework; its revision marker is
+present. Embedded framework SHA-256:
+`20419d9a76e9e2a5ecd0c149778bc602888b9d807ff2af63992935705f2da427`.
+The published [macOS ZIP](https://github.com/Egkurilov/BOOHTACORD/releases/tag/macos-v1.0.42)
+has SHA-256 `623af9ffc5c3033f2b562e5bddf8f306b7d0605c1825090a3d546dd8e820bea1`,
+confirmed by the GitHub asset digest. Manifest/checksums/component notices are
+attached. The final client is open at login; physical smoke remains NOT_RUN.
+
+The iOS arm64 unsigned device archive also passed on Flutter 3.47.7 with the
+TestFlight/beta identity. 1353 relevant runtime source files were compared with
+the fix commit; only the three documented local signing/bundle packaging
+overlays differ. Host and ReplayKit extension both have 1.0.42 (77), with a
+matching extension selector. IPA/TestFlight remain BLOCKED by the missing
+App Group parent and extension distribution profiles; features were retained.
+
+Build server [38482998048](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38482998048)
+and production deployment [38484288236](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38484288236)
+passed for the fix source, rebuilding and deploying API/Web through the existing
+signed bundle workflow. Android's required Flutter gate passed; signed packaging
+is still in the native signing queue at this checkpoint.
+
+Windows release 38483751676 and the corresponding main-CI Windows gate failed
+before app tests when cold Flutter startup made the machine-version output
+unparseable. Both Windows workflows now initialize Flutter before requesting
+JSON. A separate build recipe in `codex/issue335-sdk` checks out the immutable
+fix source and retains the same tests/analyzer/build/publisher; it does not move
+the Windows release tag or bypass gates. Its version probe passed and required
+tests are running in
+[38485185006](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38485185006).

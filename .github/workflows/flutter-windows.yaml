@@ -32,6 +32,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+      - name: Initialize Flutter before reading machine JSON
+        run: flutter --version
       - name: Test and analyze app and vendor packages
         run: python -m tools.ci.native.flutter
       - name: Test GitHub release publisher

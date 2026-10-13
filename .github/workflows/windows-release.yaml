@@ -29,6 +29,8 @@ jobs:
           node-version-file: .node-version
       - name: Test release publisher
         run: node --test tools/release/android/publish.test.mjs tools/release/android/publish_retries.test.mjs tools/release/android/publish_conflicts.test.mjs tools/release/windows/publish.test.mjs
+      - name: Initialize Flutter before reading machine JSON
+        run: flutter --version
       - name: Test and analyze app and vendor packages
         run: python -m tools.ci.native.flutter
       - name: Build and inspect Windows distribution
