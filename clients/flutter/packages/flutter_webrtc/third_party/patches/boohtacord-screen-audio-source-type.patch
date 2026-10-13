@@ -1,0 +1,39 @@
+diff --git a/clients/flutter/packages/flutter_webrtc/common/darwin/Classes/media_stream_interface.h b/clients/flutter/packages/flutter_webrtc/common/darwin/Classes/media_stream_interface.h
+--- a/clients/flutter/packages/flutter_webrtc/common/darwin/Classes/media_stream_interface.h
++++ b/clients/flutter/packages/flutter_webrtc/common/darwin/Classes/media_stream_interface.h
+@@ -107,13 +107,19 @@ namespace webrtc {
+         // TODO(tommi): This method should be on the track and ideally volume should
+         // be applied in the track in a way that does not affect clones of the track.
+         virtual void SetVolume(double volume) {}
+         virtual double GetVolume() const { return 1.0; }
+         // Registers/unregisters observers to the audio source.
+         virtual void RegisterAudioObserver(AudioObserver* observer) {}
+         virtual void UnregisterAudioObserver(AudioObserver* observer) {}
+         // TODO(tommi): Make pure virtual.
+         virtual void AddSink(AudioTrackSinkInterface* sink) {}
+         virtual void RemoveSink(AudioTrackSinkInterface* sink) {}
+         virtual const AudioOptions options() const { return AudioOptions{}; }
+         virtual void SetOptions(const AudioOptions& options) {}
++        // This source receives PCM directly from ScreenCaptureKit. Do not also
++        // route ADM capture into its AudioSendStream.
++        enum class SourceType { kAudioDeviceModule, kCustom };
++        virtual SourceType source_type() const {
++          return SourceType::kAudioDeviceModule;
++        }
+     };
+ }
+ namespace rtc {
+diff --git a/clients/flutter/packages/flutter_webrtc/common/darwin/Classes/ScreenAudioSource.h b/clients/flutter/packages/flutter_webrtc/common/darwin/Classes/ScreenAudioSource.h
+--- a/clients/flutter/packages/flutter_webrtc/common/darwin/Classes/ScreenAudioSource.h
++++ b/clients/flutter/packages/flutter_webrtc/common/darwin/Classes/ScreenAudioSource.h
+@@ -40,7 +40,10 @@ class ScreenAudioSource final : public webrtc::AudioSourceInterface {
+   void AddSink(webrtc::AudioTrackSinkInterface* sink) override;
+   void RemoveSink(webrtc::AudioTrackSinkInterface* sink) override;
+   const webrtc::AudioOptions options() const override;
+   void SetOptions(const webrtc::AudioOptions& options) override;
++  SourceType source_type() const override {
++    return SourceType::kCustom;
++  }
+ 
+   // Input contract: interleaved signed 16-bit PCM. The capture APIs may supply
+   // mono or stereo frames at their native sample rate and block size.

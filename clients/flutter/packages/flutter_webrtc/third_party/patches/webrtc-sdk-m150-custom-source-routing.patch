@@ -1,0 +1,276 @@
+# Focused extraction from webrtc-sdk/webrtc PR #292 (draft), commit f485a890404fc19189217c6cb00b88309b9f6d6f.
+# Applies the AudioSourceInterface::SourceType routing only; it intentionally excludes the PR's new CustomAudioSource public API.
+# Source: https://github.com/webrtc-sdk/webrtc/pull/292
+
+diff --git a/api/media_stream_interface.h b/api/media_stream_interface.h
+index 643b5f273b..ce9892b9ec 100644
+--- a/api/media_stream_interface.h
++++ b/api/media_stream_interface.h
+@@ -270,6 +270,19 @@ class RTC_EXPORT AudioSourceInterface : public MediaSourceInterface {
+   // audio network adaptation on the source is the wrong layer of abstraction).
+   virtual const AudioOptions options() const;
+   virtual void SetOptions(const AudioOptions & /* options */) {}
++
++  // Where this source's samples come from. Decides whether AudioState feeds
++  // device capture into the send streams fed by this source.
++  enum class SourceType {
++    // Fed by the AudioDeviceModule through AudioState. The default.
++    kAudioDeviceModule,
++    // Fed by the application through the source's own AddSink delivery
++    // path. AudioState must not also push device audio into it.
++    kCustom,
++  };
++  virtual SourceType source_type() const {
++    return SourceType::kAudioDeviceModule;
++  }
+ };
+ 
+ // Interface of the audio processor used by the audio track to collect
+diff --git a/audio/audio_send_stream.cc b/audio/audio_send_stream.cc
+index e9e72b48e7..9559055847 100644
+--- a/audio/audio_send_stream.cc
++++ b/audio/audio_send_stream.cc
+@@ -119,6 +119,9 @@ AudioAllocationConfig::AudioAllocationConfig(
+ }
+ 
+ namespace internal {
++
++using SourceType = AudioSourceInterface::SourceType;
++
+ AudioSendStream::AudioSendStream(
+     const Environment& env,
+     const webrtc::AudioSendStream::Config& config,
+@@ -377,8 +380,13 @@ void AudioSendStream::Start() {
+   }
+   channel_send_->StartSend();
+   sending_ = true;
+-  audio_state()->AddSendingStream(this, encoder_sample_rate_hz_,
+-                                  encoder_num_channels_);
++  // Only ADM-fed streams register with AudioState. Custom sources deliver
++  // audio directly via AddSink, so AudioState must not also push
++  // device-captured audio into them.
++  if (config_.source_type == SourceType::kAudioDeviceModule) {
++    audio_state()->AddSendingStream(this, encoder_sample_rate_hz_,
++                                    encoder_num_channels_);
++  }
+ }
+ 
+ void AudioSendStream::Stop() {
+@@ -390,7 +398,10 @@ void AudioSendStream::Stop() {
+   RemoveBitrateObserver();
+   channel_send_->StopSend();
+   sending_ = false;
+-  audio_state()->RemoveSendingStream(this);
++  // Only unregister if we registered (ADM-fed streams only).
++  if (config_.source_type == SourceType::kAudioDeviceModule) {
++    audio_state()->RemoveSendingStream(this);
++  }
+ }
+ 
+ void AudioSendStream::SendAudioData(std::unique_ptr<AudioFrame> audio_frame) {
+@@ -581,7 +592,7 @@ void AudioSendStream::StoreEncoderProperties(int sample_rate_hz,
+                                              size_t num_channels) {
+   encoder_sample_rate_hz_ = sample_rate_hz;
+   encoder_num_channels_ = num_channels;
+-  if (sending_) {
++  if (sending_ && config_.source_type == SourceType::kAudioDeviceModule) {
+     // Update AudioState's information about the stream.
+     audio_state()->AddSendingStream(this, sample_rate_hz, num_channels);
+   }
+diff --git a/audio/audio_send_stream_unittest.cc b/audio/audio_send_stream_unittest.cc
+index 78578829b6..85bd6103d8 100644
+--- a/audio/audio_send_stream_unittest.cc
++++ b/audio/audio_send_stream_unittest.cc
+@@ -386,6 +386,7 @@ TEST(AudioSendStreamTest, ConfigToString) {
+       "send_transport: null, "
+       "min_bitrate_bps: 12000, max_bitrate_bps: 34000, has "
+       "audio_network_adaptor_config: false, has_dscp: true, "
++      "source_type: audio_device_module, "
+       "send_codec_spec: {nack_enabled: true, "
+       "enable_non_sender_rtt: false, cng_payload_type: 42, "
+       "red_payload_type: 43, payload_type: 103, "
+diff --git a/call/BUILD.gn b/call/BUILD.gn
+index 69eff3f733..d504075b70 100644
+--- a/call/BUILD.gn
++++ b/call/BUILD.gn
+@@ -44,6 +44,7 @@ rtc_library("call_interfaces") {
+     ":video_send_stream_api",
+     "../api:fec_controller_api",
+     "../api:frame_transformer_interface",
++    "../api:media_stream_interface",
+     "../api:network_state_predictor_api",
+     "../api:ref_count",
+     "../api:rtp_headers",
+diff --git a/call/audio_send_stream.cc b/call/audio_send_stream.cc
+index 94bfe16223..bbda1c9c7e 100644
+--- a/call/audio_send_stream.cc
++++ b/call/audio_send_stream.cc
+@@ -38,6 +38,10 @@ std::string AudioSendStream::Config::ToString() const {
+   ss << ", has audio_network_adaptor_config: "
+      << (audio_network_adaptor_config ? "true" : "false");
+   ss << ", has_dscp: " << (has_dscp ? "true" : "false");
++  ss << ", source_type: "
++     << (source_type == AudioSourceInterface::SourceType::kCustom
++             ? "custom"
++             : "audio_device_module");
+   ss << ", send_codec_spec: "
+      << (send_codec_spec ? send_codec_spec->ToString() : "<unset>");
+   ss << "}";
+diff --git a/call/audio_send_stream.h b/call/audio_send_stream.h
+index 40bfd812a4..9dbfc61e33 100644
+--- a/call/audio_send_stream.h
++++ b/call/audio_send_stream.h
+@@ -24,6 +24,7 @@
+ #include "api/crypto/crypto_options.h"
+ #include "api/crypto/frame_encryptor_interface.h"
+ #include "api/frame_transformer_interface.h"
++#include "api/media_stream_interface.h"
+ #include "api/rtp_headers.h"
+ #include "api/rtp_parameters.h"
+ #include "api/rtp_sender_interface.h"
+@@ -176,6 +177,12 @@ class AudioSendStream : public AudioSender {
+     // An optional frame transformer used by insertable streams to transform
+     // encoded frames.
+     scoped_refptr<webrtc::FrameTransformerInterface> frame_transformer;
++
++    // Where the stream's audio comes from. Only kAudioDeviceModule streams
++    // register with AudioState, which pushes device-captured audio into them.
++    // kCustom streams are fed directly through the source's AddSink path.
++    AudioSourceInterface::SourceType source_type =
++        AudioSourceInterface::SourceType::kAudioDeviceModule;
+   };
+ 
+   ~AudioSendStream() override = default;
+diff --git a/media/BUILD.gn b/media/BUILD.gn
+index 54657a7b8a..dfd52a118f 100644
+--- a/media/BUILD.gn
++++ b/media/BUILD.gn
+@@ -153,6 +153,7 @@ rtc_library("adapted_video_track_source") {
+ 
+ rtc_source_set("audio_source") {
+   sources = [ "base/audio_source.h" ]
++  deps = [ "../api:media_stream_interface" ]
+ }
+ 
+ rtc_library("video_adapter") {
+diff --git a/media/base/audio_source.h b/media/base/audio_source.h
+index 04a7d19dfa..73e4af9620 100644
+--- a/media/base/audio_source.h
++++ b/media/base/audio_source.h
+@@ -15,6 +15,8 @@
+ #include <cstdint>
+ #include <optional>
+ 
++#include "api/media_stream_interface.h"
++
+ namespace webrtc {
+ 
+ // Abstract interface for providing the audio data.
+@@ -49,6 +51,13 @@ class AudioSource {
+   // to the source at a time.
+   virtual void SetSink(Sink* sink) = 0;
+ 
++  // Mirrors AudioSourceInterface::source_type() for the voice engine, which
++  // only sees this adapter. kAudioDeviceModule streams register with
++  // AudioState, kCustom streams do not.
++  virtual AudioSourceInterface::SourceType source_type() const {
++    return AudioSourceInterface::SourceType::kAudioDeviceModule;
++  }
++
+  protected:
+   virtual ~AudioSource() {}
+ };
+diff --git a/media/engine/webrtc_voice_engine.cc b/media/engine/webrtc_voice_engine.cc
+index fc5f93d109..1ff237792b 100644
+--- a/media/engine/webrtc_voice_engine.cc
++++ b/media/engine/webrtc_voice_engine.cc
+@@ -923,6 +923,19 @@ class WebRtcVoiceSendChannel::WebRtcAudioSendStream : public AudioSource::Sink {
+   void SetSource(AudioSource* source) {
+     RTC_DCHECK_RUN_ON(&worker_thread_checker_);
+     RTC_DCHECK(source);
++    // If the source type changed (a custom source replacing an ADM-fed
++    // source or vice versa), update the config so AudioState registration
++    // matches. Evaluated before the early return below because on track
++    // replacement the adapter object stays the same while the underlying
++    // source type may change. The stream is stopped across the flip so that
++    // its AudioState registration is always added and removed under the same
++    // type, then restarted under the new one.
++    if (source->source_type() != config_.source_type) {
++      stream_->Stop();
++      config_.source_type = source->source_type();
++      ReconfigureAudioSendStream(nullptr);
++      UpdateSendState();
++    }
+     if (source_) {
+       RTC_DCHECK(source_ == source);
+       return;
+diff --git a/pc/rtp_sender.cc b/pc/rtp_sender.cc
+index b360be5ec6..46eb7d8d73 100644
+--- a/pc/rtp_sender.cc
++++ b/pc/rtp_sender.cc
+@@ -1265,6 +1265,17 @@ void AudioRtpSender::SetSend() {
+   if (stopped_) {
+     return;
+   }
++
++  // Forward the source type from the track's source to the sink adapter so
++  // the voice engine knows whether to keep ADM audio out of this stream.
++  // Assigned unconditionally (a sourceless track uses the ADM path) so track
++  // replacement in either direction updates the type. can_send_track() above
++  // guarantees a track.
++  AudioSourceInterface* track_source = audio_track()->GetSource();
++  sink_adapter_->set_source_type(
++      track_source ? track_source->source_type()
++                   : AudioSourceInterface::SourceType::kAudioDeviceModule);
++
+   AudioOptions options;
+   const bool track_enabled = track_->enabled();
+   std::optional<AudioOptions> track_source_options;
+diff --git a/pc/rtp_sender.h b/pc/rtp_sender.h
+index a8f3bbd08a..6098196408 100644
+--- a/pc/rtp_sender.h
++++ b/pc/rtp_sender.h
+@@ -18,6 +18,7 @@
+ #include <stddef.h>
+ #include <stdint.h>
+ 
++#include <atomic>
+ #include <memory>
+ #include <optional>
+ #include <string>
+@@ -368,6 +369,16 @@ class LocalAudioSinkAdapter : public AudioTrackSinkInterface,
+   LocalAudioSinkAdapter();
+   ~LocalAudioSinkAdapter() override;
+ 
++  // Reports where the local track's source gets its audio. Forwarded from
++  // AudioSourceInterface so the voice engine can keep AudioState from feeding
++  // device audio into custom-source streams. Written on the signaling thread
++  // (AudioRtpSender::SetSend) and read on the worker thread inside the same
++  // call's BlockingCall, which orders the write before the read; the atomic
++  // keeps the cross-thread access race-free.
++  void set_source_type(AudioSourceInterface::SourceType source_type) {
++    source_type_ = source_type;
++  }
++
+  private:
+   // AudioSinkInterface implementation.
+   void OnData(const void* audio_data,
+@@ -394,10 +405,17 @@ class LocalAudioSinkAdapter : public AudioTrackSinkInterface,
+   // webrtc::AudioSource implementation.
+   void SetSink(AudioSource::Sink* sink) override;
+ 
++  // webrtc::AudioSource implementation.
++  AudioSourceInterface::SourceType source_type() const override {
++    return source_type_;
++  }
++
+   AudioSource::Sink* sink_;
+   // Critical section protecting `sink_`.
+   Mutex lock_;
+   int num_preferred_channels_ = -1;
++  std::atomic<AudioSourceInterface::SourceType> source_type_{
++      AudioSourceInterface::SourceType::kAudioDeviceModule};
+ };
+ 
+ class AudioRtpSender : public DtmfProviderInterface, public RtpSenderBase {
+
