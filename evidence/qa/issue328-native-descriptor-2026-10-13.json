@@ -284,6 +284,18 @@
       },
       "receipt_sha256": "58013fa6f425e71262db4296a3e5c4d042af7d68c0c821e8059e59346bc2d873",
       "scope": "Exact final main sources after transient transport classifier; includes all unit tests and full analyzer. Older actual59/5054 observations remain separately identified."
+    },
+    {
+      "name": "post_CI_portability_final_main",
+      "status": "LOCAL_PASS_REMOTE_CI_PENDING",
+      "evidence": "evidence/qa/issue326-ci-followup-2026-10-13.json",
+      "main_lib_sha256": "25bacecafbade30fb1eb4a0cb1db1dd63e3c914fdf3aa529f3e8e9bc3c4b8d30",
+      "full_unit_passed": 1351,
+      "full_unit_skipped": 1,
+      "analyze": "64 INFO / 0 warning / 0 error; --no-fatal-infos exit0",
+      "local_contract_gate": "PASS",
+      "receipt_sha256": "2aa07493b0dc90df015d8be9f0c329bc2bd90f54eae5e48009b3408f0879fa46",
+      "scope": "Test bridge dependency is optional and null selects the unchanged native bridge. Existing actual media receipts retain their original source/build and are not retagged."
     }
   ],
   "pending": [
@@ -389,7 +401,7 @@
       "parser_provenance": "Actual current production module with origin/account/room independently obtained from authenticated API session and authorized topology; no additional subscription",
       "owned_context_closed": true,
       "cleanup_errors": [],
-      "scope": "Actual physical macOS capture/encoding \u2192 real current Go API/SFU \u2192 current production Web parser in headless Chromium on same host. Valid browser certificate chain and physical presentation are not established."
+      "scope": "Actual physical macOS capture/encoding → real current Go API/SFU → current production Web parser in headless Chromium on same host. Valid browser certificate chain and physical presentation are not established."
     },
     {
       "case": 18,
@@ -464,7 +476,7 @@
       "parser_provenance": "Actual current production module with origin/account/room independently obtained from authenticated API session and authorized topology; no additional subscription",
       "owned_context_closed": true,
       "cleanup_errors": [],
-      "scope": "Actual physical macOS capture/encoding \u2192 real current Go API/SFU \u2192 current production Web parser in headless Chromium on same host. Valid browser certificate chain and physical presentation are not established."
+      "scope": "Actual physical macOS capture/encoding → real current Go API/SFU → current production Web parser in headless Chromium on same host. Valid browser certificate chain and physical presentation are not established."
     }
   ],
   "actual_lifecycle_acceptance": {
@@ -563,7 +575,7 @@
         "lease_replaced": true
       }
     ],
-    "viewer": "Actual current production metadata parser, one selected subscription, new numbered output and publication generations1\u21922\u21923\u21924 during mode change, lower-profile restart, higher-profile restart and new-lease rejoin.",
+    "viewer": "Actual current production metadata parser, one selected subscription, new numbered output and publication generations1→2→3→4 during mode change, lower-profile restart, higher-profile restart and new-lease rejoin.",
     "owned_context_closed": true,
     "cleanup_errors": [],
     "scope": "Functional same-host integration only, no steady FPS/SLO or physical audio/presentation claim. Mac static capture options intentionally require restart for changed dimensions/FPS; no compatible hot mutation is invented."
@@ -631,7 +643,7 @@
         ]
       }
     },
-    "scope": "Physical Mac native sender\u2192realAPI/SFU\u2192cohostedChromium currentproduction parser. Actual protectedmetadata path fault at ownedproxy, not Go authorization failure. No remotephysical/SLO/audio/signedrelease acceptance.",
+    "scope": "Physical Mac native sender→realAPI/SFU→cohostedChromium currentproduction parser. Actual protectedmetadata path fault at ownedproxy, not Go authorization failure. No remotephysical/SLO/audio/signedrelease acceptance.",
     "receipt_sha256": "ece68867d463cb96b92c45f43e57100a9e0fc93e4c7695427a1d5d74add27290"
   },
   "actual_web_to_native_reader": {
@@ -659,7 +671,7 @@
         "storage": "CUAinline original only; no exportedPNG",
         "review": "Actual productionexpandedremote screen/Statistics opened throughCUA. Synthetic remotechecker/colorboard visible, Text/1080p60 andSDKlimits readable. UNKNOWNsourcecaptureage/sendermeasurement remain distinct fromcurrentreceiverstats. Lowerstats require scroll, noallrows-visible claim. SmallQAoverlay excludedfromdecodedproof."
       },
-      "source_reverse_scope": "Root actual Webpublisher/productionmetadataAPI/SFU\u2192physicalnativeproductionreader. Co-hosted oneMac; nosecondphysicaldevice, signedrelease, audio orFPS_SLO acceptance.",
+      "source_reverse_scope": "Root actual Webpublisher/productionmetadataAPI/SFU→physicalnativeproductionreader. Co-hosted oneMac; nosecondphysicaldevice, signedrelease, audio orFPS_SLO acceptance.",
       "history": "First2overallNativeFAIL review50sdeadline retained. FirstsmallQAbadge onlyoverlay; correctedLIMIT. ThirdQA-only bounded180sreview/300shostlimit, Nativejoinedfirst, freshSource Motion30/Text/hold180; no productchange."
     },
     "native_summary_sha256": "e69c4190a6245ba9ba8bd67129a87dda79f6d5bcfe2905f6494563b6de99e754",
@@ -681,14 +693,14 @@
   "historical_source_freeze": {
     "main_lib_sha256": "175f99a2378c1640ee4fab8f6b6aa35886ea8dddfdc60b4b68ea1fc3846201e8",
     "canonical_vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
-    "scope": "Actual local window8\u201310/static11/display12 main source; subsequent publisher geometry fix will receive a separate source freeze and actual retest. Historical mixed artifact/vendor manifests are not canonical source."
+    "scope": "Actual local window8–10/static11/display12 main source; subsequent publisher geometry fix will receive a separate source freeze and actual retest. Historical mixed artifact/vendor manifests are not canonical source."
   },
   "source_freeze": {
-    "main_lib_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "main_lib_sha256": "25bacecafbade30fb1eb4a0cb1db1dd63e3c914fdf3aa529f3e8e9bc3c4b8d30",
     "main_files": 1116,
     "canonical_vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
     "canonical_vendor_paths": 990,
-    "scope": "Final main source after geometry and metadata failure/network recovery; older runtime histories keep their actual5054/59/175f source identities."
+    "scope": "Current main source after optional native snapshot test dependency forwarding. Default bridge unchanged; physical runtime remains on f339 and earlier exact hashes."
   },
   "backlog_mapping": {
     "task": "T-036",
@@ -700,5 +712,12 @@
       "T-022"
     ],
     "scope": "Existing Flutter publisher lifecycle leaf; profile/metrics/harness dependencies retain their evidence and behavior."
+  },
+  "post_network_recovery_source_freeze": {
+    "main_lib_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "main_files": 1116,
+    "canonical_vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+    "canonical_vendor_paths": 990,
+    "scope": "Final main source after geometry and metadata failure/network recovery; older runtime histories keep their actual5054/59/175f source identities."
   }
 }

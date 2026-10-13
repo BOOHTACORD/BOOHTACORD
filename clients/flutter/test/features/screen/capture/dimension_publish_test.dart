@@ -11,6 +11,8 @@ import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_webrtc/src/native/capture_snapshot.dart'
+    show CaptureSnapshotBridge;
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:livekit_client/livekit_client.dart';
@@ -92,7 +94,15 @@ void main() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, null);
   });
+  late Future<Map<String, dynamic>> Function(String) snapshotReader;
   void bridge(Future<Object?> Function() read) {
+    // Flutter's target override does not change dart:io's host OS. Exercise the
+    // existing SDK bridge's explicit supported seam on every test host.
+    snapshotReader = CaptureSnapshotBridge(
+      supported: true,
+      invoke: (method, arguments) =>
+          channel.invokeMethod<Object?>(method, arguments),
+    ).read;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, (call) async {
           if (call.method == 'mediaStreamTrackGetCaptureSnapshot') {
@@ -122,6 +132,7 @@ void main() {
         readRoom: () => room,
         voiceReady: () => true,
         driver: driver,
+        captureSnapshotReader: snapshotReader,
       );
       await owner.publishCapture(
         room,
@@ -154,6 +165,7 @@ void main() {
       readRoom: () => room,
       voiceReady: () => true,
       driver: driver,
+      captureSnapshotReader: snapshotReader,
     );
     await owner.publishCapture(
       room,
@@ -187,6 +199,7 @@ void main() {
         readRoom: () => room,
         voiceReady: () => true,
         driver: driver,
+        captureSnapshotReader: snapshotReader,
       );
       final work = owner.publishCapture(
         room,
@@ -242,6 +255,7 @@ void main() {
           const ScreenShareQuality(resolution: 1080, frameRate: 60),
           const VideoDimensions(999, 999),
           () => true,
+          readSnapshot: snapshotReader,
         ),
         true,
       );
@@ -274,6 +288,7 @@ void main() {
         const ScreenShareQuality(resolution: 1080, frameRate: 60),
         null,
         () => current,
+        readSnapshot: snapshotReader,
       );
       await called.future;
       current = false;

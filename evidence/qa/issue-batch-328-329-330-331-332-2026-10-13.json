@@ -51,7 +51,7 @@
     "No production fault injection or camera/recording/media proxy changes.",
     "Spec traceability checks committed requirement index only; approved Windows product brief unavailable on this host."
   ],
-  "phase": "SOURCE_EVIDENCE_COMPLETE_PUBLICATION_GUARDED",
+  "phase": "CI_FOLLOWUP_LOCAL_PASS_REMOTE_PENDING",
   "completed_scoped_checks": {
     "web_full_unit": 1530,
     "web_required_features": "All10 stagesPASS; source-resolution visual review complete with explicitfixture limits",
@@ -191,13 +191,13 @@
     "mixed_manifest_is_canonical_source": false
   },
   "current_candidate_source": {
-    "main_lib_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "main_lib_sha256": "25bacecafbade30fb1eb4a0cb1db1dd63e3c914fdf3aa529f3e8e9bc3c4b8d30",
     "main_files": 1116,
     "canonical_vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
     "canonical_vendor_source_paths": 990,
-    "runtime_build_status": "BUILT_AD_HOC_QA_DEBUG_AND_RELEASE",
-    "whole_bundle_manifest_sha256": "3757c1b46d875b096b3fbc0fa828946e70b8112846c1524e8acba1ffcc7260d5",
-    "immutable_build_proof_sha256": "12b6c30e3a572bbf2e90c6de2b3d141a317a09e605da2d0a792e302be6513c3d"
+    "runtime_build_status": "NOT_REBUILT_AFTER_OPTIONAL_TEST_DEPENDENCY_FORWARDING",
+    "default_native_bridge_unchanged": true,
+    "actual_media_source_retagged": false
   },
   "current_production_reader_roundtrip": {
     "status": "PASS_SCOPED",
@@ -206,7 +206,7 @@
       18
     ],
     "main_source_sha256": "505453087670e59fe59256fb0a3a6501101078b658631fe3920b7e8a5ce00644",
-    "scope": "Motion30 and Text60 actualNative\u2192currentGo\u2192SFU\u2192currentproductionWebparser, current+lateviewer, independentaccount/origin/room and3foreignscope negatives, one existingvideo subscription; notphysicalpresentationSLO."
+    "scope": "Motion30 and Text60 actualNative→currentGo→SFU→currentproductionWebparser, current+lateviewer, independentaccount/origin/room and3foreignscope negatives, one existingvideo subscription; notphysicalpresentationSLO."
   },
   "current_lifecycle_roundtrip": {
     "status": "PASS_SCOPED",
@@ -291,7 +291,7 @@
         ]
       }
     },
-    "scope": "Physical Mac native sender\u2192realAPI/SFU\u2192cohostedChromium currentproduction parser. Actual protectedmetadata path fault at ownedproxy, not Go authorization failure. No remotephysical/SLO/audio/signedrelease acceptance.",
+    "scope": "Physical Mac native sender→realAPI/SFU→cohostedChromium currentproduction parser. Actual protectedmetadata path fault at ownedproxy, not Go authorization failure. No remotephysical/SLO/audio/signedrelease acceptance.",
     "receipt_sha256": "ece68867d463cb96b92c45f43e57100a9e0fc93e4c7695427a1d5d74add27290"
   },
   "actual_web_to_native_reader": {
@@ -319,7 +319,7 @@
         "storage": "CUAinline original only; no exportedPNG",
         "review": "Actual productionexpandedremote screen/Statistics opened throughCUA. Synthetic remotechecker/colorboard visible, Text/1080p60 andSDKlimits readable. UNKNOWNsourcecaptureage/sendermeasurement remain distinct fromcurrentreceiverstats. Lowerstats require scroll, noallrows-visible claim. SmallQAoverlay excludedfromdecodedproof."
       },
-      "source_reverse_scope": "Root actual Webpublisher/productionmetadataAPI/SFU\u2192physicalnativeproductionreader. Co-hosted oneMac; nosecondphysicaldevice, signedrelease, audio orFPS_SLO acceptance.",
+      "source_reverse_scope": "Root actual Webpublisher/productionmetadataAPI/SFU→physicalnativeproductionreader. Co-hosted oneMac; nosecondphysicaldevice, signedrelease, audio orFPS_SLO acceptance.",
       "history": "First2overallNativeFAIL review50sdeadline retained. FirstsmallQAbadge onlyoverlay; correctedLIMIT. ThirdQA-only bounded180sreview/300shostlimit, Nativejoinedfirst, freshSource Motion30/Text/hold180; no productchange."
     },
     "native_summary_sha256": "e69c4190a6245ba9ba8bd67129a87dda79f6d5bcfe2905f6494563b6de99e754",
@@ -347,9 +347,7 @@
       332
     ],
     "selected_complete_issues": [],
-    "linked_complete_defect_after_verified_publication": [
-      333
-    ],
+    "linked_complete_defect_after_verified_publication": [],
     "keep_open": [
       326,
       328,
@@ -360,12 +358,18 @@
     ],
     "remaining": {
       "328": "Physical voice-progress/audibility under metadata failure, explicit temporal expired-session/lease evidence and remaining revoke/logout/device gates are not established by current video/focused fixtures.",
-      "329": "Historical user18FPS source/build/network is unknown; current local baseline capture\u224825 and candidate\u224857 localize this prototype, not historicalRCA or physicalpresentation/SFUtruth.",
+      "329": "Historical user18FPS source/build/network is unknown; current local baseline capture≈25 and candidate≈57 localize this prototype, not historicalRCA or physicalpresentation/SFUtruth.",
       "330": "Full source/resize/sleep/audio/colour/Retina/window-display and hardware/Release matrix is incomplete; compile-time SCK remains opt-in and production baseline preserved.",
       "331": "VP8 is measured locally; H264 negotiated42e034 exceeds admitted common42e01f and is guardedDEFER, so no valid steady H264 A/B or admitted hardware cohort/fallback release proof.",
       "332": "Only one physicalMac, cohosted/headless endpoints; no approvedpresentation SLO, full4direction matrix, physicalaudio, signednative/stagingcanary or independentproductionrollback acceptance."
     },
-    "gate_policy": "Unchecked mandatory criteria remain on original issues; source/unit/emulator/localprototype PASS cannot close them."
+    "gate_policy": "Unchecked mandatory criteria remain on original issues; source/unit/emulator/localprototype PASS cannot close them.",
+    "linked_complete_defect_after_verified_publication_and_CI": [
+      333
+    ],
+    "keep_open_pending_CI": [
+      333
+    ]
   },
   "actual_ad_hoc_QA_release": {
     "status": "PASS_SCOPED_RUNTIME",
@@ -482,5 +486,25 @@
     "root_receipt_sha256": "333eb07da5e16f7cb11c3050cdbae03ce7450747c9d54226d5d58c3f2a2f533f",
     "scope": "Owned media/application/stack/private credential resources removed; existing emulators stopped; sanitized receipts, original synthetic images, toolchains and managed source worktree retained."
   },
-  "publication_guard": "Close333 only after this exact tree is verified on master. Parent326/328-332 remain open; immutable remotecommit and verification go in issue comments."
+  "publication_guard": "Close333 only after exact follow-up tree publication and required CI success;326/328-332 remain open. Immutable commit and CI proof go in issue comments.",
+  "last_physically_built_candidate_source": {
+    "main_lib_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "main_files": 1116,
+    "canonical_vendor_source_sha256": "81b3c2d639a498d22bf2920892685379c39cedb3126f3b9feeaf9bb86a7e123f",
+    "canonical_vendor_source_paths": 990,
+    "runtime_build_status": "BUILT_AD_HOC_QA_DEBUG_AND_RELEASE",
+    "whole_bundle_manifest_sha256": "3757c1b46d875b096b3fbc0fa828946e70b8112846c1524e8acba1ffcc7260d5",
+    "immutable_build_proof_sha256": "12b6c30e3a572bbf2e90c6de2b3d141a317a09e605da2d0a792e302be6513c3d"
+  },
+  "CI_followup": {
+    "status": "LOCAL_PASS_REMOTE_CI_PENDING",
+    "evidence": "evidence/qa/issue326-ci-followup-2026-10-13.json",
+    "main_lib_sha256": "25bacecafbade30fb1eb4a0cb1db1dd63e3c914fdf3aa529f3e8e9bc3c4b8d30",
+    "full_unit_passed": 1351,
+    "full_unit_skipped": 1,
+    "analyze": "64 INFO / 0 warning / 0 error; --no-fatal-infos exit0",
+    "local_contract_gate": "PASS",
+    "receipt_sha256": "2aa07493b0dc90df015d8be9f0c329bc2bd90f54eae5e48009b3408f0879fa46",
+    "scope": "Test bridge dependency is optional and null selects the unchanged native bridge. Existing actual media receipts retain their original source/build and are not retagged."
+  }
 }

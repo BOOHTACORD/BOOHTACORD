@@ -1,5 +1,8 @@
+import subprocess
+import tempfile
 import unittest
-from .dart import violations
+from pathlib import Path
+from .dart import discover_sources, violations
 
 
 class DartImportTests(unittest.TestCase):
@@ -23,3 +26,73 @@ class DartImportTests(unittest.TestCase):
         sources = {'clients/flutter/lib/src/features/voice/controller.dart': "import '../../app/composition/owners.dart';",
                    'clients/flutter/lib/src/app/composition/owners.dart': ''}
         self.assertIn('depends on application UI', violations(sources)[0])
+
+
+class DartSourceDiscoveryTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
+
+    def write(self, name, source, tracked=False):
+        path = self.root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(source, encoding='utf-8')
+        if tracked:
+            subprocess.run(['git', 'add', '--', name], cwd=self.root, check=True)
+
+    def test_tracked_qa_dependency_and_transitive_cycle_are_discovered(self):
+        self.write('clients/flutter/test/codec_test.dart',
+                   "import '../../../tools/qa/codec/driver.dart';", tracked=True)
+        self.write('tools/qa/codec/driver.dart', "export 'caps.dart';", tracked=True)
+        self.write('tools/qa/codec/caps.dart',
+                   "import 'driver.dart';\nimport 'package:boohtacord_desktop/src/api.dart';", tracked=True)
+        self.write('clients/flutter/lib/src/api.dart', "import 'dart:async';", tracked=True)
+        # This tracked QA entry is copied into a private build before use; it is
+        # not an import edge of the checked Flutter lib/test project.
+        self.write('tools/qa/unrelated/private_test.dart',
+                   "import '../integration_test/private.dart';", tracked=True)
+        sources = discover_sources(self.root)
+        self.assertEqual(violations(sources), [])
+        self.assertIn('tools/qa/codec/caps.dart', sources)
+        self.assertNotIn('tools/qa/unrelated/private_test.dart', sources)
+
+    def test_nonignored_qa_dependency_is_checked_before_staging(self):
+        self.write('clients/flutter/test/codec_test.dart',
+                   "import '../../../tools/qa/codec/driver.dart';")
+        self.write('tools/qa/codec/driver.dart', "import 'dart:async';")
+        self.assertEqual(violations(discover_sources(self.root)), [])
+        self.assertIn('tools/qa/codec/driver.dart', discover_sources(self.root))
+
+    def test_existing_ignored_qa_dependency_is_not_accepted(self):
+        self.write('.gitignore', 'tools/qa/codec/ignored.dart\n', tracked=True)
+        self.write('clients/flutter/test/codec_test.dart',
+                   "import '../../../tools/qa/codec/ignored.dart';", tracked=True)
+        self.write('tools/qa/codec/ignored.dart', '')
+        sources = discover_sources(self.root)
+        self.assertNotIn('tools/qa/codec/ignored.dart', sources)
+        self.assertIn('absent or ignored', violations(sources)[0])
+
+    def test_missing_transitive_qa_dependency_is_rejected(self):
+        self.write('clients/flutter/test/codec_test.dart',
+                   "import '../../../tools/qa/codec/driver.dart';", tracked=True)
+        self.write('tools/qa/codec/driver.dart', "part 'missing.dart';", tracked=True)
+        errors = violations(discover_sources(self.root))
+        self.assertEqual(len(errors), 1)
+        self.assertIn('tools/qa/codec/missing.dart', errors[0])
+
+    def test_deleted_tracked_dependency_remains_absent(self):
+        self.write('clients/flutter/test/codec_test.dart',
+                   "import '../../../tools/qa/codec/driver.dart';", tracked=True)
+        self.write('tools/qa/codec/driver.dart', '', tracked=True)
+        (self.root / 'tools/qa/codec/driver.dart').unlink()
+        self.assertIn('absent or ignored', violations(discover_sources(self.root))[0])
+
+    def test_production_lib_cannot_import_even_a_tracked_qa_adapter(self):
+        self.write('clients/flutter/lib/src/api.dart',
+                   "import '../../../../tools/qa/codec/driver.dart';", tracked=True)
+        self.write('tools/qa/codec/driver.dart', '', tracked=True)
+        errors = violations(discover_sources(self.root))
+        self.assertEqual(len(errors), 1)
+        self.assertIn('production Dart imports QA', errors[0])

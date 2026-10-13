@@ -33,6 +33,7 @@ class ScreenShareController extends ChangeNotifier {
     required this.readRoom,
     required this.voiceReady,
     this.readAccountId,
+    this.captureSnapshotReader,
     ScreenShareDriver? driver,
     ScreenAdaptationOptions adaptationOptions = const ScreenAdaptationOptions(),
   }) : driver = driver ?? NativeScreenShareDriver() {
@@ -47,6 +48,10 @@ class ScreenShareController extends ChangeNotifier {
   final Room? Function() readRoom;
   final bool Function() voiceReady;
   final String? Function()? readAccountId;
+
+  /// Optional dependency for deterministic native bridge tests. Null uses the
+  /// real bridge and its actual operating-system support policy.
+  final Future<Map<String, dynamic>> Function(String)? captureSnapshotReader;
   late final NativeScreenDescriptorBinding descriptor;
   final ScreenShareDriver driver;
   late final ScreenShareMetricsController metrics;

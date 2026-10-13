@@ -1,6 +1,7 @@
 package publish_screen_descriptor
 
 import (
+	"bytes"
 	"encoding/json"
 	"os"
 	"testing"
@@ -36,11 +37,11 @@ func TestLegacyProfileScenarioUsesExplicitSharedFixture(t *testing.T) {
 				t.Fatal(err)
 			}
 			var descriptor Descriptor
-			err = json.Unmarshal(payload, &descriptor)
-			// Extra fields are rejected by the HTTP shape boundary, not this DTO.
-			if row.Name == "observation-cannot-masquerade-as-descriptor" {
-				t.Skip("unknown fields are covered by the HTTP shape tests")
-			}
+			// Match the existing HTTP boundary: observations and unknown fields
+			// are rejected before DTO/domain validation, not silently discarded.
+			decoder := json.NewDecoder(bytes.NewReader(payload))
+			decoder.DisallowUnknownFields()
+			err = decoder.Decode(&descriptor)
 			accepted := err == nil && Validate(descriptor)
 			if accepted != row.Accepted {
 				t.Fatalf("accepted=%v, expected=%v", accepted, row.Accepted)

@@ -3,7 +3,7 @@
   "date": "2026-10-13",
   "issue": 333,
   "parent_issue": 326,
-  "status": "VALIDATED_PENDING_PUBLICATION",
+  "status": "VALIDATED_LOCAL_PENDING_CI_FOLLOWUP",
   "closure_eligible": false,
   "baseline_commit": "2057bb78a7e69a7c541221ef5f386ffd65e22a92",
   "defect": "macOS publisher missing desktop settings bypasses existing both-axis encoded profile bounds. Capture long-edge policy itself is unchanged.",
@@ -124,7 +124,7 @@
     "encoded_median_fps": 56.499,
     "decoded_p05_fps": 53.881,
     "performance_claim": "Local same-host prototype only, not SLO/physical presentation acceptance.",
-    "visual_review": "Original1440\u00d7900 receiver reviewed by runtime agent: nonblank synthetic scene; neutral black top band/system indicator; no private pixels. Fullscreen own-source original independently reviewed before capture.",
+    "visual_review": "Original1440×900 receiver reviewed by runtime agent: nonblank synthetic scene; neutral black top band/system indicator; no private pixels. Fullscreen own-source original independently reviewed before capture.",
     "all_fresh_positive_native_steady_samples": 60,
     "all_fresh_positive_decoder_dimension_observations": 61,
     "decoder_steady_rate_intervals": 60,
@@ -140,9 +140,9 @@
       "observation": "Own synthetic marker/text/blocks/fine grid readable and nonblank; neutral top band and system capture indicator; no private pixels; no colorimetry/physicalscanout assertion"
     }
   },
-  "publication": "CLOSURE_GUARD: exact source/evidence tree must be verified on master; immutable commit SHA and branch verification are recorded in the issue closure comment.",
+  "publication": "Initial source published as67d9a0172c654054906ad51009c44f480a176aa8;333 reopened after CI portability failures. Closure requires exact follow-up tree publication and green required CI; immutable commit/run proof belongs in closure comment.",
   "scope_limits": "Resolution correctness only; not two-device performance, historical18FPS causality, audio, signed release or production rollout acceptance.",
-  "closure_eligible_after_verified_publication": true,
+  "closure_eligible_after_verified_publication": false,
   "independent_source_review": {
     "status": "PASS_SCOPED",
     "reviewer": "composer_geometry",
@@ -166,5 +166,17 @@
     "analyze": "64INFO/0warning/0error; explicit --no-fatal-infos exit0",
     "receipt_sha256": "58013fa6f425e71262db4296a3e5c4d042af7d68c0c821e8059e59346bc2d873",
     "scope": "Geometry source unchanged from actual5054 display run; later changes only metadata recovery classifier. Historical measurements retain their actualsource/build."
+  },
+  "closure_eligible_after_verified_publication_and_CI": true,
+  "post_CI_portability_source_checks": {
+    "status": "LOCAL_PASS_REMOTE_CI_PENDING",
+    "evidence": "evidence/qa/issue326-ci-followup-2026-10-13.json",
+    "main_lib_sha256": "25bacecafbade30fb1eb4a0cb1db1dd63e3c914fdf3aa529f3e8e9bc3c4b8d30",
+    "full_unit_passed": 1351,
+    "full_unit_skipped": 1,
+    "analyze": "64 INFO / 0 warning / 0 error; --no-fatal-infos exit0",
+    "local_contract_gate": "PASS",
+    "receipt_sha256": "2aa07493b0dc90df015d8be9f0c329bc2bd90f54eae5e48009b3408f0879fa46",
+    "scope": "Test bridge dependency is optional and null selects the unchanged native bridge. Existing actual media receipts retain their original source/build and are not retagged."
   }
 }

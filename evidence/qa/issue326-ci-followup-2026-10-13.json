@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "parent_issue": 326,
+  "linked_issue": 333,
+  "status": "LOCAL_PASS_REMOTE_CI_PENDING",
+  "initial_published_commit": "67d9a0172c654054906ad51009c44f480a176aa8",
+  "initial_CI_runs": [
+    38423231139,
+    38423230945
+  ],
+  "initial_frontend_CI": "PASS",
+  "initial_failures": {
+    "contracts": "Dart dependency verifier did not inventory a Git-tracked QA import reachable from Flutter tests",
+    "backend": "Unknown-field negative fixture was skipped while the strict CI event verifier rejects skips",
+    "flutter_linux_and_windows": "Four native-dimension test cases selected macOS through Flutter TargetPlatform while dart:io still disabled the real native bridge on the runner OS"
+  },
+  "changes": {
+    "contracts": "Discover recursively reachable Git-visible tools/qa Dart dependencies; reject missing, ignored and deleted dependencies and production-lib imports of QA code",
+    "backend": "Use DisallowUnknownFields exactly like the HTTP shape boundary; execute the negative assertion without skip",
+    "flutter": "Inject a typed optional capture snapshot reader into publish/update tests, using the existing controlled native bridge; default null retains the same real operating-system support policy"
+  },
+  "main_lib_sha256": "25bacecafbade30fb1eb4a0cb1db1dd63e3c914fdf3aa529f3e8e9bc3c4b8d30",
+  "main_files": 1116,
+  "checks": {
+    "status": "PASS",
+    "main_lib_sha256": "25bacecafbade30fb1eb4a0cb1db1dd63e3c914fdf3aa529f3e8e9bc3c4b8d30",
+    "framework_tool_version": "3.47.5",
+    "dart_tool_version": "3.13.4",
+    "pub_get_offline": "PASS",
+    "full_unit_passed": 1351,
+    "full_unit_skipped": 1,
+    "analyze_counts": {
+      "info": 64,
+      "warning": 0,
+      "error": 0
+    },
+    "analyze_exit": 0,
+    "analyze_policy": "--no-fatal-infos; existing informational diagnostics retained",
+    "source_after_checks_matches_freeze": true,
+    "historical_actual_media_main_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+    "historical_runtime_retagged": false,
+    "log_sha256": {
+      "main-ci-portable-full-unit.log": "06d0f5658a17b8e4f84c41c08e1e37ae2af9f9a8aea9d138c9649a08d33ae632",
+      "main-ci-portable-analyze.log": "d2c9f1c4ccccf0e8a132fbf2ed2439daf6e4f597b03a7901aa7acaeb4a4ac48b",
+      "main-ci-portable-pub.log": "ed04333b5dd38c271dacbc87d6df53fcd2c3676c7c83f39da26cd09d8deba83c"
+    }
+  },
+  "checks_receipt_sha256": "2aa07493b0dc90df015d8be9f0c329bc2bd90f54eae5e48009b3408f0879fa46",
+  "focused_geometry_receipt_sha256": "39ef90eb6b5bb7aa0f5184d64fe72928eb4d0ebb59f8c6fd5c6e658f475cbe26",
+  "dependency_discovery_receipt_sha256": "331c734403ef4fa053f0c85de9e81a87477c690be4c1f82df8646e2d460bd91d",
+  "nearest_backend": {
+    "passed": 24,
+    "skipped": 0,
+    "failed": 0,
+    "GREEN_json_events_sha256": "33268166fdd2167471550ad0dadbb3c00ef6fe60d52ecc6e0c015d5c6f107824",
+    "RED_event_verifier_log_sha256": "8f1f4e6574603d763397d159c367d403f57525aab9d0602fb201716912a3187c",
+    "RED_json_events_sha256": "c15fb94301f795009c95608565649874bcd51f6f74e729f805ad91d194ac362c"
+  },
+  "local_contract_gate": {
+    "status": "PASS",
+    "entrypoint": "python -m tools.ci.native.contracts",
+    "python_version": "3.12.14",
+    "python_tests": 430,
+    "Dart_sources": 1488,
+    "OpenAPI_operations": 108,
+    "requirement_references": 39,
+    "traceability_scope": "Committed requirement index only; approved Windows brief is unavailable on this Mac",
+    "log_sha256": "777432dc656ed14e9880fb17814d1a70d3d53a5e6600f8e4cd85fc318b778b15",
+    "local_environment": "Owned Python3.12 venv with pinned CI dependencies; owned CLI dispatcher forwards docker compose to existing standalone Docker Compose5.6.0 for read-only configuration checks",
+    "earlier_environment_failures_retained": [
+      "Python3.9 lacks hashlib.file_digest",
+      "Bundled Python3.12 initially had no CI Python dependencies",
+      "Homebrew docker command has no compose plugin; standalone Compose is installed"
+    ]
+  },
+  "production_Default_native_bridge_unchanged": true,
+  "vendor_source_changed": false,
+  "geometry_assertions_weakened_or_skipped": false,
+  "backend_production_changed": false,
+  "historical_actual_media_main_sha256": "f3397241a3416ecbb201e92c3b1001afaf4acc63775ca3ac528a38b3735d6d54",
+  "historical_runtime_retagged": false,
+  "new_physical_runtime": "NOT_RUN; optional dependency defaults to unchanged real bridge; hardware evidence remains on its actual source hashes",
+  "closure_guard": "Keep333 open until this follow-up exact tree is published and required GitHub CI passes; 326/328-332 still have original unproven mandatory acceptance criteria",
+  "public_data_policy": "Source/evidence hashes and counts only; no credentials, IDs, SDP, media, message contents, IP addresses or logs with private payloads",
+  "changed_source_files": {
+    "backend/internal/media/publish_screen_descriptor/explicit_mode_test.go": {
+      "bytes": 1476,
+      "sha256": "941d0b251174c31a5c46dda2f7a2dc1bebaec8e310abeaee67bd68888426dedd"
+    },
+    "clients/flutter/lib/src/features/screen/lifecycle/controller.dart": {
+      "bytes": 4707,
+      "sha256": "f2d134f3dff8f06fc01da5345f3ed62fdcc060834b03cbd010ac9bf861e7e484"
+    },
+    "clients/flutter/lib/src/features/screen/lifecycle/publish_capture.dart": {
+      "bytes": 4273,
+      "sha256": "47c86807fda24e5745639229b3f0f2858155300b85a8a70dc20429c2ef8fd52a"
+    },
+    "clients/flutter/lib/src/features/screen/profile/update.dart": {
+      "bytes": 1800,
+      "sha256": "70038303148c73f2a26377bd7a6c2c12c1287818c80137163c1d65c74a1f18fc"
+    },
+    "clients/flutter/test/features/screen/capture/dimension_publish_test.dart": {
+      "bytes": 9294,
+      "sha256": "e273882c4f4ead2be78af691b43f47b074989556e9a129e8aa8a614b0b50368c"
+    },
+    "tools/verify/dependencies/dart.py": {
+      "bytes": 2608,
+      "sha256": "3ea1e4b5a1e69121ca949bd7b37c913c8510b57bfbd43ea8b92918eea39eb0f8"
+    },
+    "tools/verify/dependencies/test_dart.py": {
+      "bytes": 5480,
+      "sha256": "3bced18b8e181727498818b628ad0338cf33908d208ebf02de70859907194ab0"
+    }
+  }
+}

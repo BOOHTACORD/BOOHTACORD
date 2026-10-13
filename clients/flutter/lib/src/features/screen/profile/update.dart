@@ -11,8 +11,9 @@ Future<bool> updateScreenShareProfile(
   LocalVideoTrack track,
   ScreenShareQuality quality,
   VideoDimensions? dimensions,
-  bool Function() isCurrent,
-) async {
+  bool Function() isCurrent, {
+  Future<Map<String, dynamic>> Function(String)? readSnapshot,
+}) async {
   if (!isCurrent()) return false;
   final participant = room.localParticipant;
   if (participant == null) throw StateError('Голосовое подключение закрыто.');
@@ -22,6 +23,7 @@ Future<bool> updateScreenShareProfile(
     track,
     platform: defaultTargetPlatform,
     isCurrent: isCurrent,
+    readSnapshot: readSnapshot,
   );
   if (!isCurrent()) return false;
   final source =

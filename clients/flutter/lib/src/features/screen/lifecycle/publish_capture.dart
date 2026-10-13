@@ -52,6 +52,7 @@ extension ScreenShareCapturePublish on ScreenShareController {
         pending,
         platform: defaultTargetPlatform,
         isCurrent: active,
+        readSnapshot: captureSnapshotReader,
       );
       if (!active()) return;
       publishing = true;
