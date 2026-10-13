@@ -25,7 +25,15 @@
     ],
     "flutter": [
       "test/voice_disconnect/visual_capture_test.dart"
-    ]
+    ],
+    "acceptance": {
+      "issue272": {
+        "browser": "tools/qa/roster_runtime/run.py",
+        "native": "tools/qa/roster_runtime/native.py",
+        "target": "integration_test/roster_qa_test.dart",
+        "scope": "Actual populated REST/SSE and owned dependency faults; exact missing platform and release gates recorded in evidence"
+      }
+    }
   },
   "screen": {
     "paths": [
@@ -77,8 +85,16 @@
       "test/screen_share_report_isolation_test.dart",
       "test/screen_share_sender_stalled_test.dart",
       "test/screen_share_diagnostics_test.dart",
-      "test/screen_metrics_report_api_test.dart"
-    ]
+      "test/screen_metrics_report_api_test.dart",
+      "test/screen_share_report_error_class_test.dart"
+    ],
+    "acceptance": {
+      "issue325": {
+        "runtime": "tools/qa/macos_sender/run.py",
+        "target": "tools/qa/macos_sender/native_app.dart",
+        "scope": "Actual physical macOS secure-cookie API/SFU sender and isolated Keychain startup. Other platform/fault/lifecycle gates explicitly remain open."
+      }
+    }
   },
   "settings": {
     "paths": [
@@ -145,6 +161,8 @@
   "chat": {
     "paths": [
       "clients/web/src/conversation/*",
+      "clients/web/src/design/design_v2_contextual_overlays.css",
+      "clients/web/tests/accessibility/composer_text_scale.browser.spec.ts",
       "clients/web/src/messages/*",
       "clients/web/src/text*",
       "clients/web/src/direct*",
@@ -166,6 +184,10 @@
       "test/features/workspace/dm_drafts/widget_test.dart"
     ],
     "acceptance": {
+      "composer_text_scale": {
+        "browser_test": "clients/web/tests/accessibility/composer_text_scale.browser.spec.ts",
+        "scope": "Production Vue channel and DM composers at 100% and 200% root rem text scale: empty and single-line field geometry, viewport boundaries, Shift+Enter scrolling and focus; actual stack captures remain a separate gate"
+      },
       "issue293": {
         "browser": "tools/qa/message_actions/run.py",
         "native": "tools/qa/message_actions/run_native.py",
@@ -230,6 +252,29 @@
         "native": "tools/qa/accessibility_runtime/native.py",
         "target": "integration_test/accessibility_qa_test.dart",
         "scope": "Actual rendered-state axe/keyboard, enlarged-text geometry and native Semantics; missing physical screen readers/platforms keep gate PARTIAL"
+      }
+    }
+  },
+  "screen_track_name": {
+    "paths": [
+      "clients/web/src/voice/screen_viewer_types.ts",
+      "clients/web/src/voice/livekit_screen_registry.ts",
+      "clients/web/src/voice/livekit_screen_sdk_boundary.spec.ts",
+      "clients/web/src/voice/livekit_screen_registry*.spec.ts",
+      "clients/web/src/voice/livekit_screen_viewer_metadata.spec.ts",
+      "clients/web/src/voice/screen_profile_metadata/presentation*",
+      "clients/web/src/voice/screen_receiver_panel.spec.ts",
+      "clients/web/tests/track_name/*",
+      "clients/web/src/design/design_v2_stream_diagnostics.css"
+    ],
+    "web": [
+      "tests/track_name/playwright.config.ts"
+    ],
+    "flutter": [],
+    "acceptance": {
+      "issue327": {
+        "browser": "tools/qa/track_name/run.py",
+        "scope": "Actual pinned SDK publish peer via Go voice lease and SFU; synthetic target fallback correctness only, physical Mac/quality gate remains separate"
       }
     }
   }

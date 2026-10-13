@@ -79,7 +79,7 @@ export class LiveKitScreenRegistry {
       const match = /^P(720|1080|1440)_(15|30|60)$/.exec(descriptor.requested_profile_id)
       return { profileSource: 'sender-metadata', targetProfile: match ? `${match[1]}p · ${match[2]} FPS` : undefined }
     }
-    const legacy = screenShareTargetProfile(participant.video?.name)
+    const legacy = screenShareTargetProfile(participant.video?.trackName)
     return { profileSource: legacy ? 'legacy-track-name' : 'unknown', targetProfile: legacy }
   }
 }

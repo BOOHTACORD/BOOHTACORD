@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_client/livekit_client.dart' show LocalVideoTrack;
 
 import '../../../core/http/api_failure.dart';
 import '../../../core/session/scope.dart';

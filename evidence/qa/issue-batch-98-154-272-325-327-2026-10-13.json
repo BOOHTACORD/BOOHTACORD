@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "status": "COMPLETED_WITH_OPEN_GATES",
+  "issues": [
+    98,
+    154,
+    272,
+    325,
+    327
+  ],
+  "agent_count": 5,
+  "base_candidate": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+  "execution": "Root154; Macworker98/325; rosterworker272; WebSDKworker327. Three reusable Android AVDs and three iOS simulators; Flutter SDK and Docker API builds serialized, isolated runtime stacks may overlap. Physical Mac GUI leased to98/325. Additional composer investigator validated and fixed 200% desktop field clipping; five participating agents with four concurrent slots.",
+  "closure_policy": "Only applicable complete PASS evidence closes an issue; existing prior5PASS issues alreadyclosed. Previousbatch294/295/298/301/302 PARTIAL remainsopen because mandatory criteria remain.",
+  "previous_closed": [
+    251,
+    254,
+    258,
+    264,
+    276
+  ],
+  "workers": {
+    "mac_startup_sender": {
+      "issues": [
+        98,
+        325
+      ],
+      "ports": [
+        5060,
+        5061,
+        5062,
+        5063,
+        5064,
+        5065
+      ],
+      "android": "BOOHTACORD_QA_API35",
+      "ios": "153A6432-6806-4B44-927B-B8CDB75FE664"
+    },
+    "roster": {
+      "issues": [
+        272
+      ],
+      "ports": [
+        5070,
+        5071,
+        5072,
+        5073,
+        5074,
+        5075
+      ],
+      "android": "BOOHTACORD_QA_278_API35",
+      "ios": "57E6A791-8975-4C84-82E6-47321F22C9B8"
+    },
+    "screen_sdk": {
+      "issues": [
+        327
+      ],
+      "ports": [
+        5080,
+        5081,
+        5082,
+        5083,
+        5084,
+        5085,
+        5087
+      ],
+      "android": "BOOHTACORD_QA_283_API35",
+      "ios": "82C26E13-0F1F-43F9-AF27-866DC22C2456"
+    },
+    "tracing": {
+      "issues": [
+        154
+      ],
+      "compose_owner": "qa154-20261013",
+      "ports": [
+        14318,
+        18889,
+        13200,
+        15432,
+        17880
+      ]
+    }
+  },
+  "environment_boundaries": [
+    "HeldQA3014930 certificate-handoff fixture and unrelated qa-client fixture untouched.",
+    "No production fault injection, deployment,rollback or publictoken/media logging.",
+    "TracingSDK syntheticbusinesspayload runtime distinguished from actualsecurecookie application runtime."
+  ],
+  "ci_baseline": {
+    "head_sha": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+    "ci": "FAIL",
+    "run_id": 38302882535,
+    "scope": "Linux/Windowscapture_profile_transition_test fake missingconnectionQuality; root reproducingandfixingtestfake only. Buildserver+deploysuccessnotequivalentCIpass."
+  },
+  "confirmed_ci_fixes": [
+    {
+      "scope": "testfake only",
+      "path": "clients/flutter/test/screen_scope/fakes.dart",
+      "trigger": "Windows profile restart accesses participant.connectionQuality; fake lackedgetter",
+      "red": ".out/qa-batch4-20261013/ci-fake-red.log",
+      "red_sha256": "127be081a4c4988bf348db2d99dccbd1578dde3ddc833e033723f4441fdcc998",
+      "green": ".out/qa-batch4-20261013/ci-fake-green.log",
+      "green_sha256": "24d6331cd10064de1f09c67dda6d484fe62ec79bcc4b9d6c3f75109f0455ca49",
+      "green_count": 4
+    },
+    {
+      "scope": "remove unused QA helper only",
+      "path": "clients/flutter/integration_test/accessibility_qa_test.dart",
+      "trigger": "Previous ddbaf618 CI analyzer unused_element warning fatal despite --no-fatal-infos",
+      "verification": "Full final pinned analyzer PASS, no warnings/errors;66 informational lints allowed by existing CI policy."
+    }
+  ],
+  "max_concurrent_agents": 4,
+  "shared_verification": {
+    "pinned_flutter_ci": {
+      "receipt": ".out/qa-batch4-20261013/final-flutter-ci-after-classification-fix-source.json",
+      "sha256": "57c5ba6065f653ce583d377b280fa3f9b4eec4a1b9015302360892c8c04a2e60",
+      "result": {
+        "status": "PASS",
+        "flutter": "3.47.5",
+        "dart": "3.13.4",
+        "framework_revision": "6a19cca56475dbfba1478ee68d7bd0c2ef891da1",
+        "flutter_lib": {
+          "sha256": "4fa5a6b098669a9864d026f580ff23e82032406acba6b8a36d6e8e812f658707",
+          "file_count": 1103
+        },
+        "log": ".out/qa-batch4-20261013/final-flutter-ci-after-classification-fix.log",
+        "sha256": "eb889614e959e459662f2883207a02795557b79e1bda6f0c668846a0099b9886",
+        "suite_totals": [
+          {
+            "pass": 1196,
+            "skip": 1
+          },
+          {
+            "pass": 443,
+            "skip": 1
+          },
+          {
+            "pass": 30,
+            "skip": 0
+          }
+        ],
+        "analyzer": {
+          "exit_code": 0,
+          "informational_lints": 66,
+          "warnings": 0,
+          "errors": 0
+        },
+        "scope": "Full exact CI native entrypoint after production classification fix. Packaged runtime measured separately on SDK3.47.6."
+      }
+    },
+    "web_final_source": {
+      "receipt": ".out/qa-batch4-20261013/final-composer-web-build-source.json",
+      "sha256": "b4dd28d548d4756bf5d0e1aa21e82fcb829c4229eb7e284b173dd79166974f77",
+      "result": {
+        "status": "PASS_SCOPED_FINAL_SOURCE_UNIT_BUILD_BROWSER",
+        "baseline": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+        "runtime_web_src": {
+          "sha256": "d84d44e0ec5a7dcb6669f32a599b4435c5bed4ef9e90c8485f6c357b7465a67a",
+          "file_count": 1099
+        },
+        "final_web_src": {
+          "sha256": "a883a05f3bc837bd212d146245b938f4480ba4be2edd4f5422a920d33d9cc4d0",
+          "file_count": 1099
+        },
+        "dist": {
+          "sha256": "5e4ab6e96e2e60e637b6eead341f1e7f2417c23faadbe1a21414fe7676eb4860",
+          "file_count": 13
+        },
+        "unit": {
+          "pass": 1513,
+          "receipt": ".out/qa-batch4-20261013/composer/final-web-unit-after-adaptive-expectation.log",
+          "sha256": "7d8549b1cbb76c57d7b207696a14c229448ffe0d7ccded595c8baceb848d21ef"
+        },
+        "runtime_stage_receipt": {
+          "path": ".out/local-features/20261013-103738/report.json",
+          "sha256": "dbc8af4672d03836c383193b76bbe452656c617b9b8b332354976e4a63fe6631"
+        },
+        "runtime_stages": [
+          {
+            "name": "web-unit",
+            "status": "FAIL"
+          },
+          {
+            "name": "web-build",
+            "status": "PASS"
+          },
+          {
+            "name": "web-accessibility",
+            "status": "PASS"
+          },
+          {
+            "name": "web-conversation_action_disclosure",
+            "status": "PASS"
+          },
+          {
+            "name": "web-mentions_inbox",
+            "status": "PASS"
+          },
+          {
+            "name": "web-responsive_shell",
+            "status": "PASS"
+          },
+          {
+            "name": "web-search_sessions",
+            "status": "PASS"
+          },
+          {
+            "name": "web-track_name",
+            "status": "PASS"
+          },
+          {
+            "name": "web-real-stack-1440",
+            "status": "PASS"
+          },
+          {
+            "name": "web-real-stack-393",
+            "status": "PASS"
+          }
+        ],
+        "test_only_final_delta": [
+          "clients/web/src/design/design_v2_chat_geometry.spec.ts"
+        ],
+        "scope": "Historical runner report FAIL from stale CSS string expectation; final full1513 unit PASS after expectation update. Other9 stages PASS on unchanged production source. No falsified original runner status. Original visual review separately pending."
+      }
+    },
+    "contracts": {
+      "status": "PASS",
+      "receipt": ".out/qa-batch4-20261013/verify-contracts.log",
+      "sha256": "8e61e67bc22e9bfc3c4f7c5920d4f2a29f14591a83f37b274ceb6c3d81165d27",
+      "scope": "Actual PowerShell verifier, OpenAPI lint,108ops parity,19Python tests"
+    },
+    "original_visual_review": {
+      "receipt": ".out/qa-batch4-20261013/final-mandatory-visual-review.json",
+      "sha256": "f7cdf103e8c13edc0eb5bfd9f94c988dd6a4110d9f6af4f7ee92c05db218f7b9",
+      "original_paths_reviewed": 138,
+      "full_app": 67,
+      "components": 71,
+      "scope": "Desktop200 composer PASS;5 responsive fixture repeat strips and2 mobile captured-scroll placeholder states LIMITED. No golden approval."
+    },
+    "registry_final_guards": {
+      "status": "PASS",
+      "tests": 9,
+      "receipt": ".out/qa-batch4-20261013/registry-final-guards.log",
+      "sha256": "b8c3650c99e71d5db289d1082a07d4b6c6f5f827bb44f8811ba55088faf0b3f6"
+    },
+    "final_native_target_pinned_analyzer": {
+      "status": "PASS",
+      "flutter": "3.47.5",
+      "dart": "3.13.4",
+      "warnings": 0,
+      "errors": 0,
+      "informational_lints": 66,
+      "receipt": ".out/qa-batch4-20261013/final-pinned-analyzer-after-native-target.log",
+      "sha256": "66dd3c39b1f00b0bb6648115ed0f13a3850fe2e9aa89d003388b340ffd9bbb14"
+    }
+  },
+  "runner_safety_tests": {
+    "status": "PASS",
+    "total": 33,
+    "suites": [
+      {
+        "count": 12,
+        "receipt": ".out/qa-batch4-20261013/final-runner-guards-after-supplement.log",
+        "sha256": "9803a6387a468178076dde3df26fdc75d4ec79db9613f09077004ecb287e375d"
+      },
+      {
+        "count": 21,
+        "receipt": ".out/qa-batch4-20261013/final-local-feature-runner-guards.log",
+        "sha256": "9b8e2367d8cef28d9c78eb4d334f28354913540a44605f673bcd209e8e1545d4"
+      }
+    ]
+  },
+  "independent_review": {
+    "status": "PASS_NO_ACTIONABLE_FINDINGS",
+    "reviewer": "composer_geometry",
+    "scope": "73 then-current text candidate paths and61 public path/SHA refs; backend fail-closed ACL, separate lookup/SSE contexts, #327 DoD and privacy. Native272 final report/visual supplemental still pending.",
+    "production_findings": []
+  },
+  "processed_issues": [
+    98,
+    154,
+    272,
+    325,
+    327
+  ],
+  "eligible_to_close_after_publication": [
+    327
+  ],
+  "open_gates": [
+    98,
+    154,
+    272,
+    325
+  ],
+  "case_records": [
+    {
+      "issue": 98,
+      "status": "PARTIAL",
+      "close_eligible": false,
+      "path": "evidence/qa/issue98-startup-runtime-2026-10-13.json",
+      "sha256": "d949e9d5c9a387a8b3042891f42effbb74427fe8dc7f7bb93a48777551e31e71",
+      "bytes": 9495
+    },
+    {
+      "issue": 154,
+      "status": "PARTIAL",
+      "close_eligible": false,
+      "path": "evidence/qa/issue154-tracing-runtime-2026-10-13.json",
+      "sha256": "2b986d0e9a87e2518fd53071cdf6804f33e09abe3006c5a21f4ea478dff52e72",
+      "bytes": 14970
+    },
+    {
+      "issue": 272,
+      "status": "PARTIAL",
+      "close_eligible": false,
+      "path": "evidence/qa/issue272-roster-runtime-2026-10-13.json",
+      "sha256": "9ac2ad466dda1ca065a1851aa855db3b2738f36c25bc588cf32872f93b4f44b0",
+      "bytes": 43087
+    },
+    {
+      "issue": 325,
+      "status": "PARTIAL",
+      "close_eligible": false,
+      "path": "evidence/qa/issue325-sender-runtime-2026-10-13.json",
+      "sha256": "557d92fd58131262202ded39c45edbb385ea1f12f83c1bca777dde5fd5b82430",
+      "bytes": 19180
+    },
+    {
+      "issue": 327,
+      "status": "PASS",
+      "close_eligible": true,
+      "path": "evidence/qa/issue327-track-name-runtime-2026-10-13.json",
+      "sha256": "1b0445d58322c97a83bf36ed49a3acd9da00259163e8e85ac864806a90f7ef47",
+      "bytes": 26013
+    }
+  ],
+  "cleanup": {
+    "status": "PASS",
+    "scope": "Owned batch stacks, private credential inputs/compiled apps, native app installs and test reverses removed. Android/iOS test devices stopped. Managed worktree, ignored sanitized receipts and pinned toolchains retained.",
+    "held_qa301_and_unrelated_stack": "PRESERVED"
+  },
+  "publication": {
+    "target": "master",
+    "method": "Non-force expected-parent compare-and-swap; tree equivalence required",
+    "expected_parent": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+    "closure_order": "Publish verified candidate, then update GitHub issue and close only327"
+  }
+}

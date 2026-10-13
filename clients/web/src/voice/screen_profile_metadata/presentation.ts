@@ -9,7 +9,7 @@ export function screenTargetLabel(profileId?: string, legacyTarget?: string): st
 
 export function screenTargetSourceLabel(source: ScreenProfileSource | undefined): string {
   if (source === 'sender-metadata') return 'Цель передана отправителем'
-  if (source === 'legacy-track-name') return 'Оценка по имени дорожки'
+  if (source === 'legacy-track-name') return 'Профиль при запуске · имя дорожки'
   return 'Цель не передана отправителем'
 }
 

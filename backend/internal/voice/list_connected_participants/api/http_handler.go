@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	authenticatesession "voice-platform/backend/internal/identity/authenticate_session"
 	sessionapi "voice-platform/backend/internal/identity/authenticate_session/api"
 	"voice-platform/backend/internal/security/request_id"
 	listconnectedparticipants "voice-platform/backend/internal/voice/list_connected_participants"
@@ -26,7 +27,9 @@ func NewHandler(lister Lister) http.Handler {
 			writeError(writer, request, http.StatusInternalServerError, "INTERNAL")
 			return
 		}
-		result, err := lister.List(request.Context(), principal.AccountID)
+		snapshot, cancel := context.WithTimeout(request.Context(), authenticatesession.SessionLookupTimeout)
+		defer cancel()
+		result, err := lister.List(snapshot, principal.AccountID)
 		if err != nil && listconnectedparticipants.FailureStatus(err) == http.StatusServiceUnavailable {
 			writer.Header().Set("Retry-After", "1")
 			writeError(writer, request, http.StatusServiceUnavailable, "VOICE_PRESENCE_UNAVAILABLE")

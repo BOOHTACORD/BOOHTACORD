@@ -16,6 +16,8 @@ class FakeScreenParticipant implements LocalParticipant {
   @override
   String get identity => 'local';
   @override
+  ConnectionQuality get connectionQuality => ConnectionQuality.unknown;
+  @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 

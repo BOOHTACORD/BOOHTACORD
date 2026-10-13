@@ -178,14 +178,6 @@ void main() {
       await settle();
     }
 
-    Future<void> select(String label) async {
-      await nav();
-      await tester.tap(find.text('Каналы').last);
-      await settle();
-      await tester.tap(find.text(label).hitTestable().last);
-      await settle();
-    }
-
     void named(Finder target, String expected, {bool tap = true}) {
       final data = tester.getSemantics(target).getSemanticsData();
       expect('${data.label} ${data.tooltip}', contains(expected));

@@ -52,7 +52,7 @@
 .topology-dialog--category .topology-dialog-fields { min-height: 0; gap: 0; overflow-y: auto; }
 .topology-dialog--category .topology-dialog-actions { min-height: 69px; flex: 0 0 auto; }
 @media (min-width: 1024px) {
-  .text-conversation .message-composer textarea { min-height: 34px; height: 34px; padding: 7px 0; font-size: 0.9375rem; resize: none; }
+  .text-conversation .message-composer textarea { min-height: calc(var(--gc-line-body) + 14px); height: calc(var(--gc-line-body) + 14px); padding: 7px 0; font-size: 0.9375rem; resize: none; }
   .text-conversation .message-composer .attachment-trigger,
   .text-conversation .message-composer .mention-picker-trigger,
   .text-conversation .message-composer .emoji-trigger,

@@ -66,7 +66,7 @@ describe('Design V2 chat reference geometry', () => {
 
   it('matches the R01 and R03 desktop composer control sizes', () => {
     expect(overlays).toContain('@media (min-width: 1024px) {')
-    expect(overlays).toContain('.text-conversation .message-composer textarea { min-height: 34px; height: 34px; padding: 7px 0; font-size: 0.9375rem; resize: none; }')
+    expect(overlays).toContain('.text-conversation .message-composer textarea { min-height: calc(var(--gc-line-body) + 14px); height: calc(var(--gc-line-body) + 14px); padding: 7px 0; font-size: 0.9375rem; resize: none; }')
     expect(overlays).toContain('.text-conversation .message-composer .attachment-trigger,')
     expect(overlays).toContain('.text-conversation .message-composer .composer-send { width: 32px; height: 34px; min-height: 34px; flex: 0 0 32px; }')
   })

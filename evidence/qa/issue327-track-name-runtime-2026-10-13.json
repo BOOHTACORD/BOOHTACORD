@@ -1,0 +1,597 @@
+{
+  "schema_version": 1,
+  "issue": 327,
+  "issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/327",
+  "date": "2026-10-13",
+  "status": "PASS",
+  "close_issue": true,
+  "parent_issue": 326,
+  "parent_gate": "OPEN_PHYSICAL_QUALITY_MATRIX",
+  "selected_leaf": "T-031",
+  "dependencies_read": [
+    "T-004",
+    "T-005",
+    "T-022"
+  ],
+  "actual_runtime_leaf": "T-032",
+  "base_commit": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+  "SDK_version": "2.22.3",
+  "summary": "Real LiveKit SDK publication uses trackName; Web previously read nonexistent name. Minimal boundary fix restores native-style launch profile with explicit legacy provenance, preserving SDK publication identity and subscription lifecycle.",
+  "production_changes": [
+    {
+      "path": "clients/web/src/voice/screen_viewer_types.ts",
+      "sha256": "b9e98d3de02ddc139fa4d86da2a18a577654adfdf9213e78e28172191ea12e9e"
+    },
+    {
+      "path": "clients/web/src/voice/livekit_screen_registry.ts",
+      "sha256": "a5ee71b665312ca1d4a57cdf13e90be53cc9a9bc529c663bfb1cc033ef0864c7"
+    },
+    {
+      "path": "clients/web/src/voice/screen_profile_metadata/presentation.ts",
+      "sha256": "d708c8c2e24e97d963258b6d458a541cd8e4be7008280f56d7e510bcd1f6249a"
+    },
+    {
+      "path": "clients/web/src/design/design_v2_stream_diagnostics.css",
+      "sha256": "5636b389f66cd48c14f2a21a8e9636ee91b5d3f7773c70b7f2e02f6f4a21124d"
+    }
+  ],
+  "unchanged_contracts": [
+    "Participant.name remains human display name.",
+    "TrackPublishOptions.name remains SDK publish option.",
+    "Descriptor owner/scope/freshness/generation checks retain precedence.",
+    "No encoder/capture/SFU/media routing/ACL behavior change."
+  ],
+  "focused_checks": {
+    "receipt": ".out/qa327-focused.json",
+    "sha256": "eebe81e54116e34004b5c1d58b3cc9cadaf8ee957411c4ebbdb8bb50b7a95604",
+    "result": {
+      "issue": 327,
+      "candidate": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+      "SDK_version": "2.22.3",
+      "RED": {
+        "actual_RemoteTrackPublication": "11FAIL/4PASS beforeimplementation; ninevalidprofiletargets unknown andlegacylabelnotstartup",
+        "mobile_provenance": "1FAIL/1PASS actualSDKcomponent UI; mobile rowhiddenbyCSS"
+      },
+      "GREEN": {
+        "realSDK_boundary": 17,
+        "nearest_unit": 49,
+        "actual_browser_component": 2,
+        "existing_screen_profile_browser": 12
+      },
+      "typecheck": "PASS0diagnostics",
+      "note": "ActualSDK/protocolconstruction and productionregistry/adapter/component proof; actualGo/SFU integration separatelyrecorded. NoFPS/quality proof.",
+      "private_log_hashes": {
+        "qa327-red.log": "8ffaad409a8afcdb68bd823e1ba9df534022813d0a246af40d4159f3e61c1e02",
+        "qa327-browser-provenance-red.log": "d6e7aff3cd8af45761f9800a1bafa1421f184d1a5828b66809631b51308158dd",
+        "qa327-browser.log": "3cc9af95a5ae0fae01abb1e236d975b388a46223788f19ecd7289e04cc6539a5",
+        "qa327-sdk-final.log": "c753d545382daa968041ebdc486143cb072dfb4d67f005ad382929aa46ca7015",
+        "qa327-nearest.log": "f465508e9bba111b98c68168312b32ebd1e536f6fe0e68951ac5ac7b1c39f614",
+        "qa327-tsc.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "qa327-profile-browser.log": "ff5f93cf025aae41266c9170cd29eacb4761f8e26f75f99f33d558ff4d0fc698"
+      },
+      "screen_profile_browser_skipped": {
+        "count": 1,
+        "case": "opt-in minimal publisher/viewer baseline; nohardware performance claim"
+      }
+    },
+    "typecheck": "PASS0diagnostics",
+    "production_build": {
+      "status": "PASS",
+      "receipt": ".out/qa327-20261013/production-build-proof.json",
+      "sha256": "33922119bf2a7ae9c9b6977c7eb59aa7f4fd407bf024c0f7f3111b6ea68e6ed6",
+      "measured_source": {
+        "status": "PASS_SCOPED_WEB_UNIT_BUILD",
+        "base_sha": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+        "web_src": {
+          "sha256": "1e561bcb9359ca4b21ef016eed2636b89581cf6e0ff7e5169b130e73b8ad8f28",
+          "file_count": 1099
+        },
+        "web_dist": {
+          "sha256": "1ea43394bb1f96ac3e6a1860f5f594c25dfba9c80cd93b0a5e7f1dee2995a636",
+          "file_count": 13
+        },
+        "unit_count": 1513,
+        "unit_log": ".out/local-features/20261013-094121/web-unit.log",
+        "unit_log_sha256": "3957184383d536a711c1cdf088ff840c78f81548e63f0502c0ef38cc7f853edb",
+        "build_log": ".out/local-features/20261013-094121/web-build.log",
+        "build_log_sha256": "1b730e8cd260f0b9be871c9f35a638ed7430b94b43181c52d94eae9e8356f1d9",
+        "scope": "Current shared source after final327 mobile provenance CSS, fullmandatory browser/real-stack stages still running."
+      },
+      "upstream_receipt": ".out/qa-batch4-20261013/final-web-build-source.json",
+      "upstream_sha256": "33922119bf2a7ae9c9b6977c7eb59aa7f4fd407bf024c0f7f3111b6ea68e6ed6"
+    },
+    "mandatory_local_features": {
+      "automated_status": "PASS",
+      "receipt": ".out/local-features/20261013-094121/report.json",
+      "sha256": "e8fdfb1382ca9800b94e2e5b8894b90200082e87568bceba41b5964d952b742c",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-track_name",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ],
+      "source_manifest_sha256": "1e561bcb9359ca4b21ef016eed2636b89581cf6e0ff7e5169b130e73b8ad8f28",
+      "production_dist_manifest_sha256": "1ea43394bb1f96ac3e6a1860f5f594c25dfba9c80cd93b0a5e7f1dee2995a636",
+      "visual_scope": "Own327 actual SDK/SFU desktop/mobile/unknown original captures inspected; mandatory component review has explicit responsive fixture artifact limitation, full-app images reviewed independently by parent owner."
+    },
+    "full_Web_unit": {
+      "status": "PASS",
+      "tests": 1513,
+      "scope": "Parent full frozen productionbuild pipeline; required stage report linked when complete."
+    }
+  },
+  "actual_peer_runtime": {
+    "receipt": ".out/qa327-20261013/runtime.json",
+    "sha256": "8ef24fbd2119cd0418f218044e9ee873754c10fddae75251fba79b171e84edf0",
+    "observed_result": "PASS",
+    "web_source_manifest_sha256": "1e561bcb9359ca4b21ef016eed2636b89581cf6e0ff7e5169b130e73b8ad8f28",
+    "backend_source_manifest_sha256": "55f73b7dea44488b58de78152d9e10e3ccfe403ea70eea73661ff34b38befcba",
+    "backend_image_id": "sha256:643a4526cf7b749a6a42a4f52ef01815b2b476ebda41369477276760f105e05c",
+    "browser": "153.0.8010.12",
+    "SDK_version": "2.22.3",
+    "checks": {
+      "real_SDK_native_style_name_without_descriptor": "PASS",
+      "no_screen_subscription_before_choice": "PASS",
+      "one_selected_renderer_no_repeat_subscription": "PASS",
+      "honest_legacy_startup_UI": "PASS",
+      "reconnect_retains_profile_and_requires_choice": "PASS",
+      "unpublish_republish_replaces_profile": "PASS",
+      "unknown_name_no_invented_target": "PASS",
+      "actual_peer_leave_and_voice_lease_cleanup": "PASS"
+    },
+    "observations": [
+      {
+        "label": "discovered-before-selection",
+        "streams": 1,
+        "target": "1080p · 60 FPS",
+        "provenance": "legacy-track-name",
+        "descriptor_present": false,
+        "SDK_trackName_present": true,
+        "legacy_name_present": false,
+        "desired": false,
+        "subscriptions": 0,
+        "unsubscriptions": 0,
+        "active_video_outputs": 0,
+        "decoded_frames": 0,
+        "width": 0,
+        "height": 0,
+        "actual_room_connected": true
+      },
+      {
+        "label": "selected",
+        "streams": 1,
+        "target": "1080p · 60 FPS",
+        "provenance": "legacy-track-name",
+        "descriptor_present": false,
+        "SDK_trackName_present": true,
+        "legacy_name_present": false,
+        "desired": true,
+        "subscriptions": 1,
+        "unsubscriptions": 0,
+        "active_video_outputs": 1,
+        "decoded_frames": 3,
+        "width": 640,
+        "height": 360,
+        "actual_room_connected": true
+      },
+      {
+        "label": "repeat-selection",
+        "streams": 1,
+        "target": "1080p · 60 FPS",
+        "provenance": "legacy-track-name",
+        "descriptor_present": false,
+        "SDK_trackName_present": true,
+        "legacy_name_present": false,
+        "desired": true,
+        "subscriptions": 1,
+        "unsubscriptions": 0,
+        "active_video_outputs": 1,
+        "decoded_frames": 4,
+        "width": 640,
+        "height": 360,
+        "actual_room_connected": true
+      },
+      {
+        "label": "reconnected",
+        "streams": 1,
+        "target": "1080p · 60 FPS",
+        "provenance": "legacy-track-name",
+        "descriptor_present": false,
+        "SDK_trackName_present": true,
+        "legacy_name_present": false,
+        "desired": false,
+        "subscriptions": 1,
+        "unsubscriptions": 1,
+        "active_video_outputs": 0,
+        "decoded_frames": 0,
+        "width": 0,
+        "height": 0,
+        "actual_room_connected": true
+      },
+      {
+        "label": "replaced",
+        "streams": 1,
+        "target": "720p · 15 FPS",
+        "provenance": "legacy-track-name",
+        "descriptor_present": false,
+        "SDK_trackName_present": true,
+        "legacy_name_present": false,
+        "desired": false,
+        "subscriptions": 2,
+        "unsubscriptions": 2,
+        "active_video_outputs": 0,
+        "decoded_frames": 0,
+        "width": 0,
+        "height": 0,
+        "actual_room_connected": true
+      },
+      {
+        "label": "unknown",
+        "streams": 1,
+        "target": null,
+        "provenance": "unknown",
+        "descriptor_present": false,
+        "SDK_trackName_present": true,
+        "legacy_name_present": false,
+        "desired": false,
+        "subscriptions": 3,
+        "unsubscriptions": 3,
+        "active_video_outputs": 0,
+        "decoded_frames": 0,
+        "width": 0,
+        "height": 0,
+        "actual_room_connected": true
+      }
+    ],
+    "source": {
+      "mode": "synthetic-canvas",
+      "width": 640,
+      "height": 360,
+      "fps": 15
+    },
+    "actual_api": true,
+    "actual_sfu": true,
+    "mocks": false,
+    "method": "Two independent headless Chromium SDK peers; actual Go secure-cookie voice leases and credentials. Production registry/controller/diagnostics UI loaded through isolated Vite5087. Actual SDK track publication name1080p60 denotes launch intent; synthetic canvas source640x360/15 is distinct.",
+    "scope_limit": "This run validates SDK/protocol/subscription/UI correctness; it is not a production-bundle or physical Mac capture benchmark.",
+    "SFU_image": "livekit/livekit-server:v1.13.7@sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+    "SFU_image_proof": {
+      "path": "tools/audio/livekit_fixture.py",
+      "sha256": "7ab0519d76a67e51761c3798d82f8f0368de4db90c7518f1eec5a6fe0531d7ff",
+      "scope": "Pinned IMAGE used by frozen Stack.start; helper bytes equal basecommit, no SFU customizations."
+    }
+  },
+  "visual_review": {
+    "status": "PASS_SCOPED",
+    "images": [
+      {
+        "path": ".out/qa327-20261013/sdk-legacy-target-desktop.png",
+        "sha256": "ab0cbdf2adcd6ca71d7c8b9c84fef772623b6a8a4f80910b932bbcdcd827a0ef",
+        "pixels": [
+          1440,
+          900
+        ],
+        "reviewed_original_resolution": true,
+        "scope": "Actual synthetic SDK/SFU viewer diagnostics"
+      },
+      {
+        "path": ".out/qa327-20261013/sdk-legacy-target-mobile.png",
+        "sha256": "a4dae088e8882ace0d7431d765d9eba28b9de70279027bcd76f3877d19f558e8",
+        "pixels": [
+          393,
+          900
+        ],
+        "reviewed_original_resolution": true,
+        "scope": "Actual synthetic SDK/SFU viewer diagnostics"
+      },
+      {
+        "path": ".out/qa327-20261013/sdk-unknown-target.png",
+        "sha256": "296cf22f0dc9c041ea403c2a77c61036d771fa88041d61f3f2e9a226779f49fa",
+        "pixels": [
+          1440,
+          900
+        ],
+        "reviewed_original_resolution": true,
+        "scope": "Actual synthetic SDK/SFU viewer diagnostics"
+      },
+      {
+        "path": ".out/qa327-profile-browser/quality_dialog.browser-sce-5e277--the-supported-text-profile/screen-share-quality-637x584.png",
+        "sha256": "cc34bcff3a1d0117cb6cb932a90326abfc47f73a6997caec3509f416379c7773",
+        "pixels": [
+          637,
+          584
+        ],
+        "reviewed_original_resolution": true,
+        "scope": "Existing production screen-profile component/encoder fixture; not physical media evidence"
+      },
+      {
+        "path": ".out/qa327-profile-browser/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-quality-1440p-390x640.png",
+        "sha256": "54ddd33580efa2f28539c52a422b719d8cd3df866b98d542e6e5954908013524",
+        "pixels": [
+          390,
+          640
+        ],
+        "reviewed_original_resolution": true,
+        "scope": "Existing production screen-profile component/encoder fixture; not physical media evidence"
+      },
+      {
+        "path": ".out/qa327-profile-browser/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+        "sha256": "643046a9fd117377166688b48337467c4da8e51ea32d4c854c767aa9e7cc3e0e",
+        "pixels": [
+          390,
+          640
+        ],
+        "reviewed_original_resolution": true,
+        "scope": "Existing production screen-profile component/encoder fixture; not physical media evidence"
+      },
+      {
+        "path": ".out/qa327-profile-browser/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
+        "sha256": "bfbb89fa00bbc945335bdb398536296fd667b09269705e14f8d5fba0b3b9e9b2",
+        "pixels": [
+          2880,
+          1800
+        ],
+        "reviewed_original_resolution": true,
+        "scope": "Existing production screen-profile component/encoder fixture; not physical media evidence"
+      },
+      {
+        "path": ".out/qa327-profile-browser/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-settings-1440p-current.png",
+        "sha256": "4c25a633387d977375588f00cd8656be4c163dc0c1d7bd933feada2f878118ff",
+        "pixels": [
+          2880,
+          1800
+        ],
+        "reviewed_original_resolution": true,
+        "scope": "Existing production screen-profile component/encoder fixture; not physical media evidence"
+      },
+      {
+        "path": ".out/qa327-profile-browser/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-actions-current.png",
+        "sha256": "6d46e0169cebc188fcbe70db489dd096b68f392fd685cb3672b264eb37347303",
+        "pixels": [
+          786,
+          1704
+        ],
+        "reviewed_original_resolution": true,
+        "scope": "Existing production screen-profile component/encoder fixture; not physical media evidence"
+      },
+      {
+        "path": ".out/qa327-profile-browser/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
+        "sha256": "88af83cf63a0853669e32640403db0b252047642e135149e1289d9db7d26443d",
+        "pixels": [
+          786,
+          1704
+        ],
+        "reviewed_original_resolution": true,
+        "scope": "Existing production screen-profile component/encoder fixture; not physical media evidence"
+      }
+    ],
+    "observations": [
+      "Desktop and393px mobile diagnostics show1080p60 launch profile and explicit legacy source in wrapped readable text.",
+      "Sender capture/encoding and current receiver measurements remain unavailable; launch intent is not shown as measured encoder plan.",
+      "Unknown SDK publication name shows no invented profile.",
+      "Existing profile chooser shows selected1440p30 text mode; normal/mobile/2x actions readable and fixed atbottom; scrolled detail captures retain controls."
+    ]
+  },
+  "physical_native_to_web": {
+    "status": "PASS",
+    "candidate": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+    "started_at": "2026-10-13T07:09:37.175266+00:00",
+    "web_source_manifest_sha256": "1e561bcb9359ca4b21ef016eed2636b89581cf6e0ff7e5169b130e73b8ad8f28",
+    "qa_handler_sha256": {
+      "observe_native.py": "16ff25bfa431e2c5851e3cdd64bd6501aaa07cb02d06e7e33ead5626ad6c2b7e",
+      "observe_native.mjs": "12953c9d2633e1dba07e3518b2b30012c9f5bc0f57abf18cc07bc57a2f98d8b4"
+    },
+    "owned_observer_resources_removed": true,
+    "issue": 327,
+    "method": "Physical macOS native publisher controlled by separate owner; actual Go/SFU and production registry/controller/diagnostics in isolated Vite observer. Not full production Web-bundle or quality benchmark.",
+    "physical_native_sender": true,
+    "receiver": "headless Chromium source-module fixture",
+    "actual_api": true,
+    "actual_sfu": true,
+    "mocks": false,
+    "hardware_quality": "NOT_RUN",
+    "checks": {
+      "native_trackName_profile_before_subscription": "PASS",
+      "native_profile_rendered_with_legacy_provenance": "PASS",
+      "one_renderer_and_no_repeat_subscription": "PASS",
+      "mobile_native_profile_provenance_visible": "PASS",
+      "own_observer_leave_cleanup": "PASS"
+    },
+    "before_selection": {
+      "streams": 1,
+      "target": "1080p · 30 FPS",
+      "provenance": "legacy-track-name",
+      "descriptor_present": false,
+      "SDK_trackName_present": true,
+      "legacy_name_present": false,
+      "desired": false,
+      "subscriptions": 0,
+      "unsubscriptions": 0,
+      "active_video_outputs": 0,
+      "decoded_frames": 0,
+      "width": 0,
+      "height": 0,
+      "actual_room_connected": true
+    },
+    "selected": {
+      "streams": 1,
+      "target": "1080p · 30 FPS",
+      "provenance": "legacy-track-name",
+      "descriptor_present": false,
+      "SDK_trackName_present": true,
+      "legacy_name_present": false,
+      "desired": true,
+      "subscriptions": 1,
+      "unsubscriptions": 0,
+      "active_video_outputs": 1,
+      "decoded_frames": 3,
+      "width": 1920,
+      "height": 1200,
+      "actual_room_connected": true
+    },
+    "browser": "153.0.8010.12",
+    "completed_at": "2026-10-13T07:09:39.082328+00:00",
+    "screenshots": {
+      "physical-native-legacy-desktop.png": "79a1931b150d897f7279d859a7fc9f2b1e96c9ba9f287bb51e9c00265fe86620",
+      "physical-native-legacy-mobile.png": "02406e9870362dd8727be55e378048b7905d0b1800dd25351b47fabe593e63aa"
+    },
+    "receipt": {
+      "path": ".out/qa327-native-observer/runtime.json",
+      "sha256": "dd9ae144f23a29362353dad1f8efd9c5f8624c021aa6a708f4e6381d2548da5e",
+      "ignored_local_only": true
+    },
+    "visual_review": {
+      "status": "PASS_SCOPED",
+      "reviewer": "root",
+      "method": "Original desktop/mobile PNGs viewed",
+      "findings": "1080p30 launch target and track-name provenance legible in both diagnostics panels. Missing live metrics explicitly unknown; no measured FPS claim. Background is isolated QA window.",
+      "artifact_hashes": {
+        "physical-native-legacy-desktop.png": "79a1931b150d897f7279d859a7fc9f2b1e96c9ba9f287bb51e9c00265fe86620",
+        "physical-native-legacy-mobile.png": "02406e9870362dd8727be55e378048b7905d0b1800dd25351b47fabe593e63aa"
+      }
+    }
+  },
+  "remaining_gates": [
+    "Parent326 fullphysical motion/quality/audio/lifecycle/capacity matrix remains open; noFPS improvement or hardware qualification claimed."
+  ],
+  "privacy": {
+    "tokens_cookies_SDP_private_content_published": false,
+    "captures": "Fixed synthetic content in ignored .out; public path/hash references only.",
+    "rawlogs": "Own private raw logs removed after hash recording. Sanitized ignored runtime/PNG/JSON remain; other workers inputs/resources untouched."
+  },
+  "cleanup": {
+    "own_runtime_services_removed": true,
+    "credential_input_removed": true,
+    "own_native_devices_used": false,
+    "held4930_unrelated_fixture_touched": false,
+    "root_or_Mac5060_resources": "Not owned; untouched.",
+    "own_ports_verified_absent": [
+      5080,
+      5081,
+      5082,
+      5083,
+      5084,
+      5085,
+      5087
+    ],
+    "own_private_raw_logs_removed": [
+      {
+        "name": "qa327-red.log",
+        "sha256": "8ffaad409a8afcdb68bd823e1ba9df534022813d0a246af40d4159f3e61c1e02"
+      },
+      {
+        "name": "qa327-green.log",
+        "sha256": "f01bdee1f2a7e6f6a72410c80592f6b89b238c361a0a972baa724a0ad84045c9"
+      },
+      {
+        "name": "qa327-sdk-final.log",
+        "sha256": "c753d545382daa968041ebdc486143cb072dfb4d67f005ad382929aa46ca7015"
+      },
+      {
+        "name": "qa327-nearest.log",
+        "sha256": "f465508e9bba111b98c68168312b32ebd1e536f6fe0e68951ac5ac7b1c39f614"
+      },
+      {
+        "name": "qa327-tsc.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "qa327-browser.log",
+        "sha256": "3cc9af95a5ae0fae01abb1e236d975b388a46223788f19ecd7289e04cc6539a5"
+      },
+      {
+        "name": "qa327-browser-provenance-red.log",
+        "sha256": "d6e7aff3cd8af45761f9800a1bafa1421f184d1a5828b66809631b51308158dd"
+      },
+      {
+        "name": "qa327-profile-browser.log",
+        "sha256": "ff5f93cf025aae41266c9170cd29eacb4761f8e26f75f99f33d558ff4d0fc698"
+      },
+      {
+        "name": "qa327-runtime.log",
+        "sha256": "374e40fbb45ff861c76434e2a5df7245eea8121e7f769491f854c6506ced04bb"
+      }
+    ]
+  },
+  "acceptance_scope": "MW-01 SDK boundary implementation and actual SDK peer regression; parent326 physical quality acceptance remains OPEN.",
+  "checklist_mapping": [
+    {
+      "criterion": "Real pinned SDK/protocol RED, compile-time boundary and no name field",
+      "status": "PASS",
+      "proof": "17 livekit_screen_sdk_boundary tests construct RemoteTrackPublication from TrackInfo; SDKpublication is assigned to ScreenViewerPublication and field uses TrackPublication.trackName type. Before11FAIL/4PASS proves name mismatch and startup label."
+    },
+    {
+      "criterion": "All supported targets and invalid/empty/unknown names",
+      "status": "PASS",
+      "proof": "Nine legacy name combinations720/1080/1440 ×15/30/60 parsed through actual SDK. Four invalid/empty names remainunknown. Current sender UI normalizes1440p60 to1440p30; existing screen_profile browser12PASS includes saved preference normalization; no new1440p60 offering."
+    },
+    {
+      "criterion": "Fresh owner descriptor priority, stale/foreign guards and changed SID",
+      "status": "PASS",
+      "proof": "Real SDK descriptor guard test plus existing registry/rollout metadata tests cover owner/origin/room, stale revision and publication-generation floor; descriptor beats trackName; no guard implementation changed."
+    },
+    {
+      "criterion": "Late join, publication replacement, reconnect, unpublish and local silent preview",
+      "status": "PASS",
+      "proof": "49 nearest tests include actual SDK adapter latejoin/replacement/refresh and local silent branch plus existing controller/localpreview/subscription tests. Actual8-row integration discovers source late, manually disconnects/reconnects SDK, recognizes same target and safely requires selection again; real unpublish/republish changes target and clears old output. This is controlled reconnect, not physical network/sleep acceptance."
+    },
+    {
+      "criterion": "No eager subscriptions, duplicate subscriptions or renderers; no prototype/getter loss",
+      "status": "PASS",
+      "proof": "ActualGo/SFU discovers with0subscriptions/0video outputs; selection1subscription/1output, repeatedselection stays1/1. RealSDK unit retains exact publication identity, actual isDesired getter and UpdateSubscription events. Production adapter unchanged passes SDK publication directly, no spread."
+    },
+    {
+      "criterion": "Legacy provenance and launch meaning distinct from current encoder plan",
+      "status": "PASS",
+      "proof": "Desktop1440/mobile393 actual panels show launch-profile label; sender capture/encoding remain unavailable without descriptor. Focused mobileRED→GREEN removes only hidden provenance CSS row."
+    },
+    {
+      "criterion": "Nearest tests, typecheck, productionbuild and registered scenario",
+      "status": "PASS",
+      "proof": "49nearest unit,17SDKsubset,2actualSDKprotocol browser,12existingprofilebrowser+1opt-inbaseline skip,typecheck0; full1513Webunit/build and9mandatory stagesPASS. features.screen_track_name registered with browser and actual runtime."
+    },
+    {
+      "criterion": "Real SDK publishing peer without descriptor shows target on Web",
+      "status": "PASS",
+      "proof": "Actual secure-cookie Go voice leases and SFU, SDK2.22.3 synthetic publishing peer;8 checks and3 original diagnostics. Additional physical Mac native→Web source-module observer PASS after unlock with launch1080p30,0→1 subscription/output and mobile provenance. Parent227/173/326 quality and full lifecycle gates remain open."
+    }
+  ],
+  "mandatory_component_visual_review": {
+    "path": ".out/qa-batch4-20261013/mandatory-component-visual-review.json",
+    "sha256": "5e42d62f11c43efb293814f47802fabd72baff4250c3f26f751cd93c631e60cc",
+    "status": "PARTIAL_VISUAL_FIXTURE_LIMIT",
+    "scope": "71paths/61unique originalbyteimages inspected; explicit partialpaint/repeatedstrip observations on isolated responsive fixture, no productdefect inferred and no golden baseline approval. Does not replace native/hardware or own327actualpeer proof."
+  }
+}

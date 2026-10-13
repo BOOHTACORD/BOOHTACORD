@@ -1,3 +1,4 @@
+import type { TrackPublication } from 'livekit-client'
 import type { ScreenShareDescriptorV1 } from './screen_profile_metadata/types'
 
 export interface ScreenViewerTrack {
@@ -9,7 +10,7 @@ export interface ScreenViewerTrack {
 
 export interface ScreenViewerPublication {
   isMuted?: boolean
-  name?: string
+  readonly trackName?: TrackPublication['trackName']
   trackSid?: string
   readonly isDesired?: boolean
   setSubscribed?(subscribed: boolean): void

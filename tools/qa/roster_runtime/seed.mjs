@@ -1,0 +1,7 @@
+import assert from 'node:assert/strict'
+import { readFileSync,writeFileSync } from 'node:fs'
+import {createRequire}from'node:module'
+const require=createRequire(new URL('../../../clients/web/package.json',import.meta.url));const{request}=require('@playwright/test');const path=process.env.QA_INPUT,input=JSON.parse(readFileSync(path,'utf8'));const origin='https://localhost:5070';const ctx=await request.newContext({baseURL:origin,ignoreHTTPSErrors:true,extraHTTPHeaders:{Origin:origin}})
+async function api(p,method='GET',body,expected=200){const r=await ctx.fetch('/api/v1'+p,{method,...body&&{data:body}});assert.equal(r.status(),expected);return expected===204?null:r.json()}
+try{await api('/auth/login','POST',{login:'qa_admin',password:input.password},204);await api('/me','PATCH',{display_name:'QA Администратор'});const member=await api('/auth/register','POST',{login:'qa_roster_member',password:input.password},201);const c=await api('/admin/categories','POST',{name:'RosterLab'},201);const channels={};for(const[name,kind]of[['RosterVoice','VOICE'],['RosterArchive','VOICE'],['RosterText','TEXT']])channels[name]=(await api(`/admin/categories/${c.id}/channels`,'POST',{name,kind},201)).id;await api('/auth/login','POST',{login:'qa_roster_member',password:input.password},204);await api('/me','PATCH',{display_name:'QA Участник'});writeFileSync(path,JSON.stringify({...input,channels,memberId:member.id}));console.log('Two synthetic accounts and actual API topology seeded')}
+finally{await ctx.dispose()}

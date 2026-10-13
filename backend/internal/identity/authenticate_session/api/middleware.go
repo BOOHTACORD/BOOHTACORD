@@ -33,6 +33,16 @@ func Require(authenticator Authenticator) func(http.Handler) http.Handler {
 				return
 			}
 			if err != nil {
+				if errors.Is(err, context.DeadlineExceeded) && (request.URL.Path == "/api/v1/voice/participants" || request.URL.Path == "/api/v1/voice/rosters/events") {
+					writer.Header().Set("Cache-Control", "no-store")
+					writer.Header().Set("Retry-After", "1")
+					writer.Header().Set("Content-Type", "application/json; charset=utf-8")
+					writer.WriteHeader(http.StatusServiceUnavailable)
+					_ = json.NewEncoder(writer).Encode(map[string]any{"error": map[string]string{
+						"code": "VOICE_PRESENCE_UNAVAILABLE", "message": "Не удалось загрузить участников голосовых комнат", "request_id": requestid.From(request.Context()),
+					}})
+					return
+				}
 				writer.WriteHeader(http.StatusInternalServerError)
 				return
 			}

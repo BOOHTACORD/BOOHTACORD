@@ -38,7 +38,7 @@ describe('selected screen receiver panel', () => {
     expect(panel).toContain('packetLossPercent')
     expect(panel).toContain('Нет данных от приёмника')
     expect(metadata).toContain('Нет данных от отправителя')
-    expect(metadata).toContain('Оценка по имени дорожки')
+    expect(metadata).toContain('Профиль при запуске · имя дорожки')
     expect(panel).toContain('Размер захвата отправителя')
     expect(panel).toContain('Лимиты кодирования отправителя')
     expect(panel).toContain("hasAudio ? 'Есть в LiveKit' : 'Нет в LiveKit'")

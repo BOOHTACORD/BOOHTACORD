@@ -18,7 +18,7 @@ describe('LiveKit screen descriptor metadata events', () => {
   it('reads late-join attributes and refreshes the viewer on newer participant attributes', () => {
     vi.stubGlobal('window', { location: { origin: 'https://app.example.test' } })
     const listeners = new Map<string, (...args: any[]) => void>()
-    const video = { name: 'screenshare-1080p-30fps', setSubscribed: vi.fn() }
+    const video = { trackName: 'screenshare-1080p-30fps', setSubscribed: vi.fn() }
     const participant = {
       identity: 'voice-lease:a', metadata: `account:${accountId}`, name: 'Alice',
       attributes: { [attributeKey]: descriptor('P720_60', 2) },

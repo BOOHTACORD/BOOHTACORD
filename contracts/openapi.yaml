@@ -3482,7 +3482,7 @@
           },
           "401": { "description": "No active server-side session", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
-          "503": { "description": "Mandatory DB or LiveKit dependency unavailable; stable roster unavailable body, stream is not opened with a fabricated empty roster", "content": { "text/plain": { "schema": { "type": "string" } } },
+          "503": { "description": "Mandatory DB or LiveKit dependency unavailable; initial authentication lookup timeout returns the standard VOICE_PRESENCE_UNAVAILABLE JSON envelope, later initial roster failure keeps stable text. The stream is not opened with a fabricated empty roster.", "content": { "text/plain": { "schema": { "type": "string" } }, "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
             "headers": {"Retry-After": {"schema": {"type": "string", "enum": ["1"]}}, "X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
           "500": { "description": "Response writer does not support streaming or a known internal roster validation/token defect occurred. Middleware failure may emit an empty body.", "content": { "text/plain": { "schema": { "type": "string" } } },
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},

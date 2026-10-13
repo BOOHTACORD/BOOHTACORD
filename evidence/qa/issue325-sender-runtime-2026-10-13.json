@@ -1,0 +1,501 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "base_commit": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+  "status": "PARTIAL",
+  "close_eligible": false,
+  "versions": {
+    "Flutter": {
+      "frameworkVersion": "3.47.6",
+      "frameworkRevision": "5fc346839b5d0eef006ed8404392afb4dfae428d",
+      "engineRevision": "692136cb6582dbfc5af3fb33c2515a069f2f66d0",
+      "dartSdkVersion": "3.13.5",
+      "channel": "stable"
+    },
+    "not_repo_pinned_version": true,
+    "Debug_signature": {
+      "Identifier": "ru.boohtacord.localqa",
+      "CDHash": "bee4fcdf1f0d2bbed35c8ad19c781a40020e37fb",
+      "Signature": "adhoc"
+    },
+    "signature_command_exit": 0,
+    "native_lib_manifest_sha256": "cbe3b0f27380b57aa8ca63e4176d4134ed8e025f679c299bec448b3eb7a5a645",
+    "native_artifact_sha256": "fc351ff646b106b67765adec0c8ae4f3ed427079a94dc5599ed5a128c9921d99",
+    "SFU_image": "livekit/livekit-server:v1.13.7@sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+    "Web_LiveKit_SDK_version": "2.22.3",
+    "namespace_wrapper_sha256": "fc1eac78ba56e457cd2abdf12f4215a860ed3caab9f8a8bbf44957837499b70e",
+    "Flutter_LiveKit_SDK": "2.13.0",
+    "Flutter_WebRTC_SDK": "1.6.2+hotfix.3",
+    "app_version": "1.0.38+71",
+    "build_mode": "Debug",
+    "repo_pinned_Flutter": "3.47.5",
+    "native_launcher_hash_scope": "initial launcher only; does not hash Dart bundle",
+    "initial_QA_entry_sha256": "1cd8d5f3275b35632a72fe64c8d324825e2e46a0d967af099461cc1a0e5a2cd6"
+  },
+  "production_lib_manifest_sha256": "cbe3b0f27380b57aa8ca63e4176d4134ed8e025f679c299bec448b3eb7a5a645",
+  "stack": {
+    "status": "PASS",
+    "API": "actual Go/PostgreSQL secure session cookie/Origin",
+    "SFU_image": "livekit/livekit-server:v1.13.7@sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+    "assigned_loopback_ports": [
+      5060,
+      5061,
+      5062,
+      5063,
+      5064,
+      5065
+    ],
+    "cleanup_status": "PASS"
+  },
+  "privacy": {
+    "accounts": "owned synthetic fixture only",
+    "credentials": "private0600 input/defines, never public",
+    "capture": "only owned synthetic QA app window; screen audio disabled",
+    "native_storage": "actual installed legacy Keychain plugin, unique QA accountName; no user namespace access, no mock",
+    "user_session_restore": "NOT_RUN"
+  },
+  "visual_review": {
+    "receipt": ".out/qa98325-20261013/native-inline-visual-review.json",
+    "sha256": "ba1ce21cb9d3c1fa31ba6dbae096459c97e2b84c6a66a31dfc430459a6a47965",
+    "format": "original inline CUA JPEG; no disk export provided",
+    "scope": "actual native presentation, not a pixel golden/capacity/quality proof"
+  },
+  "cleanup": {
+    "status": "PASS",
+    "receipt": ".out/qa98325-20261013/cleanup.json",
+    "sha256": "bc82654812b8e7f7065cdd36d34762b3c1db39a017c17b701ebd1ce9715e27a6",
+    "private_credentials_compiled_app_raw_logs_removed": true,
+    "known_namespace_keys_deleted": 2,
+    "owned_resources_remaining": 0,
+    "retained_ignored_sanitized_receipts": true
+  },
+  "issue": 325,
+  "leaf": "T-038",
+  "dependencies": [
+    "T-034",
+    "T-036"
+  ],
+  "scope": "Five actual physical Mac publisher trials with separate sender-only HTTP observation, real API/SFU and persistent real Web peer",
+  "sender_QA_entry_sha256": "61e6436b6dfccbba0bba62a32e2ed7df75a1480505db333a00206697c63767d7",
+  "sender_HTTP_observer_sha256": "ffa47ae32e79fab7d34bf42737c03e6ae9a6dddacf2e02e6308b0695dbe03111",
+  "sender_app_bundle_manifest_sha256": "0ad6a042d135ca22046b802862b065ec8bc0ebf705fbed1d597e81989fc36ebd",
+  "trials": [
+    {
+      "receipt": {
+        "path": ".out/qa98325-20261013/healthy-8.json",
+        "sha256": "babe75b1c72d77fbd49c329bda0afddc8b6ef7ae89bd526dde881abf62b57767",
+        "status": "PASS"
+      },
+      "flow_status": "PASS",
+      "publisher_generations": 1,
+      "sender_HTTP_started": 8,
+      "actual_HTTP_statuses": {
+        "204": 8
+      },
+      "first_HTTP_after_publish_ms": 309.999,
+      "successful_adjacent_response_gaps_ms": [
+        5676.495,
+        5997.78,
+        5999.314,
+        6004.844,
+        6000.632,
+        5995.778,
+        5999.211
+      ],
+      "local_sample_updates": 46,
+      "max_local_sample_update_gap_ms": 1002.004,
+      "collection_states": {
+        "unavailable": 1,
+        "unknown": 1,
+        "active": 9,
+        "inactive": 35
+      },
+      "failures": [],
+      "stop_checks": [
+        {
+          "at_ms": 48793.28,
+          "event": "publication_stopped",
+          "maximum_pending_reports": 1,
+          "pending_reports": 0
+        },
+        {
+          "at_ms": 50795.864,
+          "event": "post_stop_idle",
+          "new_reports": 0
+        }
+      ],
+      "fallback": "unavailable/inactive sampler produces unsupported waiting_first_frame, accepted204; no measuredFPS fabrication"
+    },
+    {
+      "receipt": {
+        "path": ".out/qa98325-20261013/stall-9.json",
+        "sha256": "c43a2b5a17870507104bada724b815909db1ead69a67f95732362e1259cf7d0a",
+        "status": "PASS"
+      },
+      "flow_status": "PASS",
+      "publisher_generations": 1,
+      "sender_HTTP_started": 4,
+      "actual_HTTP_statuses": {
+        "204": 3
+      },
+      "first_HTTP_after_publish_ms": 374.327,
+      "successful_adjacent_response_gaps_ms": [
+        5041.238,
+        5998.102
+      ],
+      "local_sample_updates": 33,
+      "max_local_sample_update_gap_ms": 1003.684,
+      "collection_states": {
+        "unavailable": 1,
+        "unknown": 1,
+        "active": 9,
+        "inactive": 22
+      },
+      "failures": [
+        {
+          "at_ms": 13767.201,
+          "diagnostic_duration_ms": 10014,
+          "diagnostic_error_class": "network"
+        }
+      ],
+      "stop_checks": [
+        {
+          "at_ms": 36113.052,
+          "event": "publication_stopped",
+          "maximum_pending_reports": 1,
+          "pending_reports": 0
+        },
+        {
+          "at_ms": 38115.927,
+          "event": "post_stop_idle",
+          "new_reports": 0
+        }
+      ],
+      "fallback": "unavailable/inactive sampler produces unsupported waiting_first_frame, accepted204; no measuredFPS fabrication",
+      "fault": "pause_api",
+      "fault_measured_duration_ms": 20128.275875,
+      "fault_sample_count_approx": 20,
+      "fault_window_scope": "Native control timestamp plus measured worker fault duration; cross-process scheduling/250ms poll and Docker command overhead apply"
+    },
+    {
+      "receipt": {
+        "path": ".out/qa98325-20261013/failure-10.json",
+        "sha256": "69882a8594df46a620d36b80ed79399d47bb1964c7af5ec4ba658dd55fe338bd",
+        "status": "PASS"
+      },
+      "flow_status": "PASS",
+      "publisher_generations": 1,
+      "sender_HTTP_started": 7,
+      "actual_HTTP_statuses": {
+        "204": 5,
+        "502": 2
+      },
+      "first_HTTP_after_publish_ms": 130.184,
+      "successful_adjacent_response_gaps_ms": [
+        5850.201,
+        5997.221,
+        5992.468
+      ],
+      "local_sample_updates": 35,
+      "max_local_sample_update_gap_ms": 1002.74,
+      "collection_states": {
+        "unavailable": 1,
+        "unknown": 1,
+        "active": 9,
+        "inactive": 24
+      },
+      "failures": [
+        {
+          "at_ms": 15436.205,
+          "diagnostic_duration_ms": 24,
+          "diagnostic_error_class": "http_5xx"
+        },
+        {
+          "at_ms": 18432.897,
+          "diagnostic_duration_ms": 21,
+          "diagnostic_error_class": "http_5xx"
+        }
+      ],
+      "stop_checks": [
+        {
+          "at_ms": 37925.23,
+          "event": "publication_stopped",
+          "maximum_pending_reports": 1,
+          "pending_reports": 0
+        },
+        {
+          "at_ms": 39927.624,
+          "event": "post_stop_idle",
+          "new_reports": 0
+        }
+      ],
+      "fallback": "unavailable/inactive sampler produces unsupported waiting_first_frame, accepted204; no measuredFPS fabrication",
+      "fault": "stop_api",
+      "fault_measured_duration_ms": 10543.360084,
+      "fault_sample_count_approx": 10,
+      "fault_window_scope": "Native control timestamp plus measured worker fault duration; cross-process scheduling/250ms poll and Docker command overhead apply"
+    },
+    {
+      "receipt": {
+        "path": ".out/qa98325-20261013/restart-11.json",
+        "sha256": "4d88e712cc335a40027bb1d9851e19b18d39cace6c3065364f98a3856b7735f1",
+        "status": "PASS"
+      },
+      "flow_status": "PASS",
+      "publisher_generations": 2,
+      "sender_HTTP_started": 5,
+      "actual_HTTP_statuses": {
+        "204": 5
+      },
+      "first_HTTP_after_publish_ms": 80.869,
+      "successful_adjacent_response_gaps_ms": [
+        5858.241,
+        5998.485,
+        4174.38,
+        5983.032
+      ],
+      "local_sample_updates": 28,
+      "max_local_sample_update_gap_ms": 1002.24,
+      "collection_states": {
+        "unavailable": 2,
+        "unknown": 2,
+        "active": 18,
+        "inactive": 6
+      },
+      "failures": [],
+      "stop_checks": [
+        {
+          "at_ms": 29646.498,
+          "event": "publication_stopped",
+          "maximum_pending_reports": 1,
+          "pending_reports": 0
+        },
+        {
+          "at_ms": 31648.838,
+          "event": "post_stop_idle",
+          "new_reports": 0
+        }
+      ],
+      "fallback": "unavailable/inactive sampler produces unsupported waiting_first_frame, accepted204; no measuredFPS fabrication"
+    },
+    {
+      "receipt": {
+        "path": ".out/qa98325-20261013/healthy-12.json",
+        "sha256": "39db8e6ef3d061311794f1ed59193b0e285337a19ed3e2b0fb2d02256106b3ff",
+        "status": "PASS"
+      },
+      "flow_status": "PASS",
+      "publisher_generations": 1,
+      "sender_HTTP_started": 21,
+      "actual_HTTP_statuses": {
+        "204": 21
+      },
+      "first_HTTP_after_publish_ms": 150.938,
+      "successful_adjacent_response_gaps_ms": [
+        5811.828,
+        5998.975,
+        6002.258,
+        5999.378,
+        5995.279,
+        6000.973,
+        6002.508,
+        6001.365,
+        5996.175,
+        6005.759,
+        6000.987,
+        5993.715,
+        5999.858,
+        6000.063,
+        6001.373,
+        5998.188,
+        6001.463,
+        5987.933,
+        6009.738,
+        5989.705
+      ],
+      "local_sample_updates": 121,
+      "max_local_sample_update_gap_ms": 1002.602,
+      "collection_states": {
+        "unavailable": 1,
+        "unknown": 1,
+        "active": 9,
+        "inactive": 110
+      },
+      "failures": [],
+      "stop_checks": [
+        {
+          "at_ms": 123684.992,
+          "event": "publication_stopped",
+          "maximum_pending_reports": 1,
+          "pending_reports": 0
+        },
+        {
+          "at_ms": 125687.133,
+          "event": "post_stop_idle",
+          "new_reports": 0
+        }
+      ],
+      "fallback": "unavailable/inactive sampler produces unsupported waiting_first_frame, accepted204; no measuredFPS fabrication"
+    }
+  ],
+  "historical_unclassified_trials": {
+    "receipts": [
+      {
+        "path": ".out/qa98325-20261013/healthy-6.json",
+        "sha256": "f693a13b423fcfc1bbba05850560832125ba402d3b50b2a82cc408c8ec8565e3",
+        "status": "PASS"
+      },
+      {
+        "path": ".out/qa98325-20261013/healthy-7.json",
+        "sha256": "8ffb76ebae975ba4922bf10380afad06cf45b43a3813a501bacfbe82cf6c0f0f",
+        "status": "PASS"
+      }
+    ],
+    "status": "PASS actual publication only",
+    "excluded_from_sender_only_count": true,
+    "reason": "Old QA HTTP observer also counted local-preview receiver endpoint; corrected QA observer focused RED→GREEN"
+  },
+  "remaining": [
+    {
+      "criterion": "Physical Windows and Android, optional native iOS / Web same-matrix5trials",
+      "status": "NOT_RUN",
+      "reason": "Only physical Mac five-trial sender scope executed; real Web peer and separate327observer do not substitute publisher matrix"
+    },
+    {
+      "criterion": "Actual 409/400/401/500 and stale SDK errors/empty/null sampling injected cases",
+      "status": "NOT_RUN",
+      "reason": "Current physical matrix actual204/502/20s stall only; nearest units separately recorded"
+    },
+    {
+      "criterion": "Pending-request stop, logout, reconnect and server-switch runtime lifecycle matrix",
+      "status": "NOT_RUN",
+      "reason": "Current physical clean stop/rapid republish/2s post-stop idle only"
+    },
+    {
+      "criterion": "FPS/quality/capacity or SLO for other hardware",
+      "status": "NOT_RUN",
+      "reason": "Unproven without required hardware/load evidence"
+    }
+  ],
+  "sender_launcher_sha256": "d0a3e7792a9715f88ef747e70a5fe3e68bdc7342deed41922c4e5480915be736",
+  "bundle_manifest_receipt": {
+    "path": ".out/qa98325-20261013/final-app-bundle-files.json",
+    "sha256": "8a5469d0482aee39f65e2ba7cdbd4e94c5258abb74672b30160d01429fbc5fff",
+    "algorithm": "SHA256 JSON-sorted relative-path→SHA256 file map, includes native launcher, Dart App.framework and assets"
+  },
+  "focused_tests": {
+    "Python_ownership_freshness": "PASS4",
+    "initial_Flutter_nearest": "PASS15 including namespace unit",
+    "additional_QA_HTTP_direction_and_namespace": "PASS2 (namespace repeat;16unique across these selections)",
+    "timeout_classification_regression": "PASS2 published controller cases after deterministic RED; real IO5 requests in1test PASS before/after, no API transport defect",
+    "patched_private_nearest": "PASS22 actual selected tests;3 speculative fast-abort probes remained only in private copy and are excluded from published required-regression count. Private copy deleted; published nearest+QA selection19 unique tests.",
+    "speculative_tests": "GREEN before fix; not RED evidence; shared API regression file restored unchanged. Initial private IO HTTP400/compile setup failures excluded from product RED."
+  },
+  "product_change": {
+    "file": "clients/flutter/lib/src/features/screen/metrics/report_sample.dart",
+    "change": "LiveKit import show LocalVideoTrack",
+    "scope": "HTTP diagnostic classification only; transport/cadence/timeout/cancellation unchanged",
+    "regression": "clients/flutter/test/screen_share_report_error_class_test.dart",
+    "RED": "Dart TimeoutException → network; expected http_timeout",
+    "GREEN": "2 controller regression cases including unrelated RequestAbortedException network",
+    "patched_build": {
+      "status": "PASS",
+      "cause": "LiveKit exported TimeoutException shadowed dart:async type in classifier",
+      "fix": "Narrow LiveKit import to LocalVideoTrack; HTTP deadline/session/request behavior unchanged",
+      "production_lib_manifest_sha256": "4fa5a6b098669a9864d026f580ff23e82032406acba6b8a36d6e8e812f658707",
+      "app_bundle_manifest_sha256": "ef0242e95a60e4feb705a00770339d4e30ba6cb1dc844cc72d49e70126633565",
+      "launcher_sha256": "d0a3e7792a9715f88ef747e70a5fe3e68bdc7342deed41922c4e5480915be736",
+      "production_changed_file": "clients/flutter/lib/src/features/screen/metrics/report_sample.dart",
+      "production_file_sha256": "21317075c9729eb9697691409c9c08cade5a6942f06ce85380182c9b130eed1a",
+      "new_regression": "clients/flutter/test/screen_share_report_error_class_test.dart",
+      "QA_entry_sha256": "61e6436b6dfccbba0bba62a32e2ed7df75a1480505db333a00206697c63767d7",
+      "versions_receipt": "build-versions.json",
+      "focused_log_last_line": "00:07 +22: All tests passed!"
+    }
+  },
+  "final_source_equivalence": {
+    "measured_original_lib_sha256": "cbe3b0f27380b57aa8ca63e4176d4134ed8e025f679c299bec448b3eb7a5a645",
+    "patched_lib_sha256": "4fa5a6b098669a9864d026f580ff23e82032406acba6b8a36d6e8e812f658707",
+    "changed_product_file": "clients/flutter/lib/src/features/screen/metrics/report_sample.dart",
+    "scope": "Only LiveKit import narrowed to LocalVideoTrack for Dart HTTP timeout classification. Startup and visible UI pathways unchanged; measured original hashes retained. Patched timeout has separate actual runtime receipt, not a retagged original trial."
+  },
+  "resolved_classification_defect": {
+    "status": "PASS",
+    "reason": "LiveKit exported TimeoutException shadowed Dart HTTP TimeoutException; reject earlier race hypothesis",
+    "RED_receipt": {
+      "path": ".out/qa98325-20261013/classification-red.json",
+      "sha256": "c9dbbe07f25fff96622af243187c2b04521655c54b7f0a92e72ec8de4e1ca35f"
+    },
+    "actual_before": "stall9 deadline10014ms → network",
+    "actual_after": "stall13 deadline10003ms → http_timeout",
+    "product_file": "clients/flutter/lib/src/features/screen/metrics/report_sample.dart",
+    "transport_changed": false,
+    "request_generation_cancellation_changed": false,
+    "timeout_contract_seconds": 10
+  },
+  "patched_runtime_repeat": {
+    "status": "PASS",
+    "receipt": {
+      "path": ".out/qa98325-20261013/stall-13.json",
+      "sha256": "407e35371a5bae7451752a3a637d72c23da8d622bce1662554286d3f088092cb"
+    },
+    "lib_manifest_sha256": "4fa5a6b098669a9864d026f580ff23e82032406acba6b8a36d6e8e812f658707",
+    "app_bundle_manifest_sha256": "ef0242e95a60e4feb705a00770339d4e30ba6cb1dc844cc72d49e70126633565",
+    "fault_measured_ms": 20115.394917000005,
+    "failures": [
+      {
+        "at_ms": 14068.799,
+        "event": "screen_diagnostic",
+        "diagnostic_event": "sender_report_failed",
+        "diagnostic_duration_ms": 10003,
+        "diagnostic_error_class": "http_timeout"
+      }
+    ],
+    "local_sample_updates": 33,
+    "max_update_gap_ms": 1002.795,
+    "actual_HTTP_statuses": {
+      "204": 3
+    },
+    "stop_checks": [
+      {
+        "at_ms": 36969.548,
+        "event": "publication_stopped",
+        "maximum_pending_reports": 1,
+        "pending_reports": 0
+      },
+      {
+        "at_ms": 38970.915,
+        "event": "post_stop_idle",
+        "new_reports": 0
+      }
+    ],
+    "visual_scope_equivalence": "Classifier import only; actual inline Stats visual measured healthy12 before patch, unchanged UI source."
+  },
+  "peer_recovery_limitation": {
+    "original_leave": "FAIL helper duplicate buttons, contexts finallyclosed",
+    "old_account_rejoin": "3 attempts did not reach expected connected state; cause not established and not counted as product failure or reconnection PASS",
+    "corrected_helper_fresh_account": "PASS realAPI/SFU connect→leave",
+    "receipts": [
+      {
+        "path": ".out/qa98325-20261013/peer-cleanup-original-failure.json",
+        "sha256": "63e196884dc86655ecc5c82a4907c15c0fa8ab5c01cf903ceea47251b562a034"
+      },
+      {
+        "path": ".out/qa98325-20261013/peer-cleanup-retry-first-failure.json",
+        "sha256": "63e196884dc86655ecc5c82a4907c15c0fa8ab5c01cf903ceea47251b562a034"
+      },
+      {
+        "path": ".out/qa98325-20261013/peer-cleanup-retry-second-failure.json",
+        "sha256": "63e196884dc86655ecc5c82a4907c15c0fa8ab5c01cf903ceea47251b562a034"
+      },
+      {
+        "path": ".out/qa98325-20261013/peer-cleanup-retry-third-failure.json",
+        "sha256": "63e196884dc86655ecc5c82a4907c15c0fa8ab5c01cf903ceea47251b562a034"
+      },
+      {
+        "path": ".out/qa98325-20261013/peer-cleanup-fresh-account.json",
+        "sha256": "6e071fae2c1a00a61f85a793417548d3fa3c66ab1f24ecc9c0c3a4ce160da4ef"
+      }
+    ]
+  }
+}

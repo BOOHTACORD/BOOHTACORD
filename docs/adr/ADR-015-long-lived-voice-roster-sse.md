@@ -73,3 +73,11 @@ for equal scopes; different authorized scopes are never merged.
 Synthetic fanout tests/benchmarks demonstrate the software budgets only.
 Production 1/10/25/50/100 watcher by 0/1/5/20 room baselines, latency/error/DB
 wait, CPU/RAM and device freshness acceptance remain separate evidence work.
+
+## Initial authentication and REST database bounds (2026-10-13, #272)
+
+The active-session database lookup uses the existing five-second snapshot/session-revalidation budget. An earlier caller deadline still wins. This lookup context is released after authentication; the original authenticated request context remains live for SSE heartbeats, reconciliation and session revalidation.
+
+REST roster snapshots also receive a five-second child context so initial visibility and post-SFU lease/ACL database reads cannot wait indefinitely. Successful empty and populated results remain authoritative snapshots. On the two roster endpoints, an initial session lookup deadline returns 503, Retry-After: 1 and the standard VOICE_PRESENCE_UNAVAILABLE JSON error envelope with the request ID. Other authentication errors retain existing 401/500 semantics. SSE initial snapshot failures retain their existing plain-text body; no dependency failure is converted to an empty roster.
+
+These software deadlines do not assert a deployment latency SLO or close device, load, production or rollback acceptance gates.

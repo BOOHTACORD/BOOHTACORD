@@ -1,0 +1,792 @@
+{
+  "issue": 272,
+  "url": "https://github.com/Egkurilov/BOOHTACORD/issues/272",
+  "task": "T-022",
+  "dependencies": [
+    "T-006",
+    "T-020"
+  ],
+  "additional_gate": "FV2-006",
+  "recorded_on": "2026-10-13",
+  "status": "PARTIAL",
+  "close_issue": false,
+  "close_gate": "OPEN_PLATFORM_PRODUCTION_AND_ACL_MATRIX",
+  "candidate": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+  "scope": "Local actual disposable Go/PostgreSQL/LiveKit with populated two-account roster, Web Chromium and assigned Android/iOS simulators. No mocked successful API/media transport. No production mutations, rollback or capacity claim.",
+  "fix": {
+    "problem": "Unbounded session database authentication before the roster snapshot deadline, plus unbounded REST snapshot lookup, could keep authenticated roster HTTP requests pending during database pause.",
+    "behavior": "Reuse existing five-second roster lookup budget for session database lookup and REST listing. Initial auth deadline on the two roster routes returns503 standard VOICE_PRESENCE_UNAVAILABLE JSON, Retry-After1 and request ID; original context continues authenticated long-lived SSE. Non-roster authentication500 and invalid-session401 preserved.",
+    "production_files": [
+      {
+        "path": "backend/internal/identity/authenticate_session/service.go",
+        "sha256": "445dadd3b601607a99612c0fb2332524b0ef86cf57627fb2bf21ac0c1a575ae1"
+      },
+      {
+        "path": "backend/internal/identity/authenticate_session/api/middleware.go",
+        "sha256": "5239b990854c5c14a0ce2a9f6af65380e9defd190ca77c107a6b521c267c90a0"
+      },
+      {
+        "path": "backend/internal/voice/list_connected_participants/api/http_handler.go",
+        "sha256": "12eca185c84287bce1b2c7370a917f452b8a79e482ffda8c21d08d5882b71507"
+      },
+      {
+        "path": "contracts/openapi.yaml",
+        "sha256": "cf65a6fb7baeea3df7b864a85ab80467ade99f78ce85efacfd43cc79ffb1d967"
+      },
+      {
+        "path": "docs/adr/ADR-015-long-lived-voice-roster-sse.md",
+        "sha256": "7e3477d64e4494d165bb19ee56c4b038b03efd537d36024f109ade183dfb5090"
+      }
+    ],
+    "focused_tests": [
+      {
+        "path": "backend/internal/identity/authenticate_session/lookup_deadline_test.go",
+        "sha256": "0dd59504faa4d4be5e9b0228319e882f58b8fb439c54243f7147ea90a25d429f"
+      },
+      {
+        "path": "backend/internal/identity/authenticate_session/api/lookup_timeout_test.go",
+        "sha256": "2610f72d0793b582af7dc46b7f145a07792fe43238937066009db4afa6296ede"
+      },
+      {
+        "path": "backend/internal/voice/list_connected_participants/api/snapshot_deadline_test.go",
+        "sha256": "e8918228ecfaa96448470cc1a2861723f379a897b5a7ea07c874ccfee8d4f553"
+      }
+    ],
+    "before_runtime_observation": "Actual DB pause left the request pending until own database resumed; more than275seconds was an operator observation, not a benchmark/SLO. Focused tests failed for missing deadlines/status500 before implementation.",
+    "actual_after_measurements": [
+      {
+        "scenario": "initial_real_sfu_failure",
+        "status": 503,
+        "elapsed_ms": 11,
+        "count": null,
+        "muted": null,
+        "non_json_body": false,
+        "error_code": "VOICE_PRESENCE_UNAVAILABLE",
+        "retry_after": "1",
+        "request_id_present": true
+      },
+      {
+        "scenario": "populated_recovery",
+        "status": 200,
+        "elapsed_ms": 4,
+        "count": 2,
+        "muted": 1,
+        "non_json_body": false,
+        "error_code": null,
+        "retry_after": null,
+        "request_id_present": true
+      },
+      {
+        "scenario": "db_down_bounded_auth_rest",
+        "status": 503,
+        "elapsed_ms": 5003,
+        "count": null,
+        "muted": null,
+        "non_json_body": false,
+        "error_code": "VOICE_PRESENCE_UNAVAILABLE",
+        "retry_after": "1",
+        "request_id_present": true
+      },
+      {
+        "scenario": "db_down_bounded_auth_sse",
+        "status": 503,
+        "retry_after": "1"
+      }
+    ],
+    "timing_scope": "Measured one local fault run; not a new SLO or load/capacity profile."
+  },
+  "api_binary": {
+    "path": ".out/qa272-20261013/fixed-api-build.json",
+    "sha256": "06887bb043d9ac9386951202c9af450214a07352e756ff8520d0112a1e2e1f89"
+  },
+  "api_provenance_scope": "Final fixed executable image uses its build-time backend manifest. Fixture-runtime initial image/source are historical. A later focused-test-only source addition is not retagged as compiled API source.",
+  "web": {
+    "status": "PASS_SCOPED_FUNCTIONAL_WITH_HOLDER_WATCHDOG_FAIL",
+    "runner_final_status": "FAIL",
+    "runner_final_error_type": "TimeoutExpired",
+    "holder_cleanup_note": "Completed actual11PASS scenario remains measured; wrapper1800s holder deadline expired before release, finalFAIL preserved. Graceful holder-close is not claimed; separate exact-resource cleanup verifies removal.",
+    "checks": {
+      "initial_503_no_false_zero": "PASS",
+      "populated_rest_sse_two_accounts": "PASS",
+      "realtime_mute_screen_share": "PASS",
+      "realtime_peer_join_leave": "PASS",
+      "refresh_failure_no_false_zero_recovery": "PASS",
+      "bounded_auth_database_timeout_503": "PASS",
+      "db_outage_recovery_no_false_zero": "PASS",
+      "network_and_browser_engine_freeze_recovery": "PASS",
+      "guest_member_acl_and_revoked_lease_exclusion": "PASS",
+      "revoked_session_clears_roster": "PASS",
+      "one_healthy_eventsource_no_polling": "PASS"
+    },
+    "browser": "153.0.8010.12",
+    "receipt": {
+      "path": ".out/qa272-20261013/web/runtime.json",
+      "sha256": "c7c52e588663e49bc1c16f4b59a53b0a45def58faeb6e7f0b1f72d780177abce"
+    },
+    "scenario": {
+      "path": ".out/qa272-20261013/web/scenario.json",
+      "sha256": "10a7b95e575bbb6e335ac4e8be5714619c10ff23121c0c55f449d5da1b66967e"
+    },
+    "source_manifest_sha256": "1e561bcb9359ca4b21ef016eed2636b89581cf6e0ff7e5169b130e73b8ad8f28",
+    "dist_manifest_sha256": "1ea43394bb1f96ac3e6a1860f5f594c25dfba9c80cd93b0a5e7f1dee2995a636",
+    "immutable_build_proof": {
+      "path": ".out/qa272-root-web-build-source-1e561bcb.json",
+      "sha256": "33922119bf2a7ae9c9b6977c7eb59aa7f4fd407bf024c0f7f3111b6ea68e6ed6"
+    },
+    "own_build_provenance": {
+      "path": ".out/qa272-build-source.json",
+      "sha256": "21d756bc224eac0747de06cad31b3d66974416b26602063e82ceee64b86dd344"
+    },
+    "visual_attempt": {
+      "path": ".out/qa272-20261013/web10-final-immutable/visual-review.json",
+      "sha256": "f40fd1a44fc4871cfbd9c1e6ef87158ee3b0c4d85730016a34e5185d51fb7fcf"
+    },
+    "visual_source_equivalence": "Web10 originals and Web11 functional holder use exactly the same compiled Web dist and fixed API image. Only owned QA control diagnostics changed; latest mutable Web source/composer fix is not relabelled as this binary.",
+    "recovery_mode": {
+      "initial": "Actual rendered manual retry after503, with two newly joined actual SFU publisher accounts",
+      "refresh": "Actual UI publisher leave/rejoin and rendered roster retry after ownedSFU restart"
+    },
+    "observer_counters": {
+      "constructed": 1,
+      "active": 1,
+      "max_active": 1
+    },
+    "watcher_scope": "One active EventSource, unchanged constructor count during12seconds healthy observation. No independent runtime GET polling counter, no unlimited lifetime claim.",
+    "background_scope": "Chromium network offline and CDP engine frozen/active; not physical OS sleep."
+  },
+  "android": {
+    "receipt": {
+      "path": ".out/qa272-20261013/android/runtime.json",
+      "sha256": "acfa9519709626f80d1000477fdf1838833c0458674c417018450a7cb85aca4a"
+    },
+    "scenario": {
+      "path": ".out/qa272-20261013/android/scenario.json",
+      "sha256": "3a6eaf6e3a02d05d11828f3c87f0cca470164095ce599529675b37bee866dbee"
+    },
+    "measured": {
+      "status": "PASS",
+      "runtime_completed": true,
+      "candidate": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+      "flutter": "3.47.6",
+      "dart": "3.13.5",
+      "platform_version": "sdk_phone64_arm64-userdebug 15 AE3A.240806.019 12368160 test-keys",
+      "device_kind": "emulator",
+      "flutter_lib_sha256": "4fa5a6b098669a9864d026f580ff23e82032406acba6b8a36d6e8e812f658707",
+      "native_executable_sha256": "570bff85c640bc12d2583e7679129db466a2a06040c395406fe0765d3f36dbaa",
+      "qa_target_sha256": "c5546cb8d6388b783962738760e76adbc5d1cc422678d95581edbd7eee4ebf21",
+      "qa_driver_sha256": "e59d4c650d8262eedaade4eebb1a89cb6dd0a73d04dd695caec09a1a6a38a362",
+      "qa_handler_sha256": {
+        "native.py": "a188375e3ae5241390a886b8194dc0c9f17515b8ac99bff5d1eeb099acc7a81e",
+        "run.py": "46744ffefee310101fee66ecb35a737cf2c02517c3106613c157f9f8076e247e",
+        "stack.py": "46000d1f6b836a2371ff8650fa64a761524b2170884c89aba8eb8bfcdd054a9e",
+        "scenario.mjs": "a3f2bd9879e7c3550ed51b563773c4c9ad6a17231b27f790366f3108fded05e4",
+        "bridge.py": "9a1c959dc643c051d30147aa2138e78c11f66ad8541904131dbcd8570d75b0b2"
+      },
+      "checks": {
+        "initial_503_no_false_zero": "PASS",
+        "populated_rest_sse_two_accounts": "PASS",
+        "realtime_join_leave": "PASS",
+        "refresh_fault_recovery_no_false_zero": "PASS",
+        "background_foreground": "PASS",
+        "listener_rejoin_cleanup": "PASS",
+        "logout_clears_roster": "PASS",
+        "guest_member_acl": "PASS",
+        "login_after_logout_fresh_scope": "PASS"
+      },
+      "prejoin_route": "Controlled production state.selectChannel of actual ACL-loaded RosterVoice. Not native pointer channel-row navigation (which autojoins).",
+      "logged_out_client_guard": "PASS: closed scope rejects protected request before transport",
+      "guest_acl_method": "Separate real anonymous HTTPS request after production client scope rejects logged-out protected call",
+      "owned_test_handles_closed": true,
+      "owned_sfu_restored": true,
+      "owned_reverse_removed": true
+    },
+    "original_visual_review": {
+      "path": ".out/qa272-20261013/android/visual-review.json",
+      "sha256": "6eca99574d670c31af21051f7f8f5cc1a613c61726139a14a81b8424d24891fb"
+    }
+  },
+  "ios": {
+    "receipt": {
+      "path": ".out/qa272-20261013/ios/runtime.json",
+      "sha256": "0b8abc5f7539c671d5ebf276d9d73b0bb6d47d961f96b072128f63abdf547448"
+    },
+    "scenario": {
+      "path": ".out/qa272-20261013/ios/scenario.json",
+      "sha256": "eb617950161b04240ef68bf67bc767f111e4ecc02da3568e2723549c4dbcf1d1"
+    },
+    "measured": {
+      "status": "PARTIAL",
+      "runtime_completed": true,
+      "candidate": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+      "flutter": "3.47.6",
+      "dart": "3.13.5",
+      "platform_version": "Version 27.0 (Build 24A434)",
+      "device_kind": "simulator",
+      "flutter_lib_sha256": "4fa5a6b098669a9864d026f580ff23e82032406acba6b8a36d6e8e812f658707",
+      "native_executable_sha256": "b3680125199e93beb0c785270d3042976c78fb3788101e438c672095652fe4a9",
+      "qa_target_sha256": "c5546cb8d6388b783962738760e76adbc5d1cc422678d95581edbd7eee4ebf21",
+      "qa_driver_sha256": "e59d4c650d8262eedaade4eebb1a89cb6dd0a73d04dd695caec09a1a6a38a362",
+      "qa_handler_sha256": {
+        "native.py": "a188375e3ae5241390a886b8194dc0c9f17515b8ac99bff5d1eeb099acc7a81e",
+        "run.py": "46744ffefee310101fee66ecb35a737cf2c02517c3106613c157f9f8076e247e",
+        "stack.py": "46000d1f6b836a2371ff8650fa64a761524b2170884c89aba8eb8bfcdd054a9e",
+        "scenario.mjs": "a3f2bd9879e7c3550ed51b563773c4c9ad6a17231b27f790366f3108fded05e4",
+        "bridge.py": "9a1c959dc643c051d30147aa2138e78c11f66ad8541904131dbcd8570d75b0b2"
+      },
+      "checks": {
+        "initial_503_no_false_zero": "PASS",
+        "populated_rest_sse_two_accounts": "PASS",
+        "realtime_join_leave": "PASS",
+        "refresh_fault_recovery_no_false_zero": "PASS",
+        "background_foreground": "NOT_RUN",
+        "listener_rejoin_cleanup": "NOT_RUN",
+        "logout_clears_roster": "PASS",
+        "guest_member_acl": "PASS",
+        "login_after_logout_fresh_scope": "PASS"
+      },
+      "prejoin_route": "Controlled production state.selectChannel of actual ACL-loaded RosterVoice. Not native pointer channel-row navigation (which autojoins).",
+      "logged_out_client_guard": "PASS: closed scope rejects protected request before transport",
+      "guest_acl_method": "Separate real anonymous HTTPS request after production client scope rejects logged-out protected call",
+      "owned_test_handles_closed": true,
+      "owned_sfu_restored": true,
+      "owned_reverse_removed": true
+    },
+    "original_visual_review": {
+      "path": ".out/qa272-20261013/ios/visual-review.json",
+      "sha256": "24c5f86534aee53ac908a12b2b60f466649c7561b6cdf2f7cab6e32d02f123a4"
+    }
+  },
+  "android_visual_supplement": {
+    "receipt": {
+      "path": ".out/qa272-20261013/android-visual-supplement/runtime.json",
+      "sha256": "0e250208662c4da0ee8dd6796ba64e234e15f32ba7739fb5911ccdd3ef3c0e12"
+    },
+    "scenario": {
+      "path": ".out/qa272-20261013/android-visual-supplement/scenario.json",
+      "sha256": "90bee1f72e30628959d2eae3359757e79c358b2377967cbaf688d59e7b749f02"
+    },
+    "measured": {
+      "status": "PASS",
+      "runtime_completed": true,
+      "candidate": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+      "flutter": "3.47.6",
+      "dart": "3.13.5",
+      "platform_version": "sdk_phone64_arm64-userdebug 15 AE3A.240806.019 12368160 test-keys",
+      "device_kind": "emulator",
+      "flutter_lib_sha256": "4fa5a6b098669a9864d026f580ff23e82032406acba6b8a36d6e8e812f658707",
+      "native_executable_sha256": "940e35762dae92183c5e24716ba74d8621c28e3a45b228e6d88ea78c32038278",
+      "qa_target_sha256": "4dc6bead332c65b55556e4e8dc0bd9eeb210edadd24af2febedceb8cf156c147",
+      "qa_driver_sha256": "e59d4c650d8262eedaade4eebb1a89cb6dd0a73d04dd695caec09a1a6a38a362",
+      "qa_handler_sha256": {
+        "native.py": "c111152a458d221134428853c8d1fb2d78ede30ac00e4f5002756d4bbbd3555e",
+        "run.py": "46744ffefee310101fee66ecb35a737cf2c02517c3106613c157f9f8076e247e",
+        "stack.py": "46000d1f6b836a2371ff8650fa64a761524b2170884c89aba8eb8bfcdd054a9e",
+        "scenario.mjs": "a3f2bd9879e7c3550ed51b563773c4c9ad6a17231b27f790366f3108fded05e4",
+        "bridge.py": "51953af19c4883d83835f5988362bf5cf00380af298ebfbe6c33540fe0229290"
+      },
+      "checks": {
+        "background_foreground": "PASS",
+        "listener_framebuffer": "PASS",
+        "cleanup": "PASS"
+      },
+      "prejoin_route": "Controlled production state.selectChannel of actual ACL-loaded RosterVoice. Not native pointer channel-row navigation (which autojoins).",
+      "owned_test_handles_closed": true,
+      "owned_reverse_removed": true
+    },
+    "original_visual_review": {
+      "path": ".out/qa272-20261013/android-visual-supplement/visual-review.json",
+      "sha256": "65dd88559e874de05db07d51eb0a4c7277bfe3edec76bbb590c04a20d0165872"
+    }
+  },
+  "visual": {
+    "original_captures": [
+      {
+        "path": ".out/qa272-20261013/web10-final-immutable/db-unavailable.png",
+        "sha256": "28e5e46c3d87752bd08ff8331c72aa293e89ab74dcece89af8b0df0a675a76fa",
+        "width": 1440,
+        "height": 1000,
+        "review": "PASS_SCOPED_ORIGINAL",
+        "scope": "Actual synthetic roster states at source resolution; initial unavailable shows error and no zero; stale snapshots retain participants and warning; recovered populated rows and controls visible. Names may ellipsize; no spoken accessibility claim."
+      },
+      {
+        "path": ".out/qa272-20261013/web10-final-immutable/final-populated-recovered.png",
+        "sha256": "1a7b7f84f49801e53c696de36ed54e777716c6946bc01ed73ccd67474d545cac",
+        "width": 1440,
+        "height": 1000,
+        "review": "PASS_SCOPED_ORIGINAL",
+        "scope": "Actual synthetic roster states at source resolution; initial unavailable shows error and no zero; stale snapshots retain participants and warning; recovered populated rows and controls visible. Names may ellipsize; no spoken accessibility claim."
+      },
+      {
+        "path": ".out/qa272-20261013/web10-final-immutable/initial-503-unavailable.png",
+        "sha256": "22d199cad34df7e881c5332e633afe503f89f936e6b05ec35201a6b954c54e94",
+        "width": 1440,
+        "height": 1000,
+        "review": "PASS_SCOPED_ORIGINAL",
+        "scope": "Actual synthetic roster states at source resolution; initial unavailable shows error and no zero; stale snapshots retain participants and warning; recovered populated rows and controls visible. Names may ellipsize; no spoken accessibility claim."
+      },
+      {
+        "path": ".out/qa272-20261013/web10-final-immutable/peer-left-one-participant.png",
+        "sha256": "8c09e3179517849d29461e143fed0283b059ca0da989bf30e57f6decbce44346",
+        "width": 1440,
+        "height": 1000,
+        "review": "PASS_SCOPED_ORIGINAL",
+        "scope": "Actual synthetic roster states at source resolution; initial unavailable shows error and no zero; stale snapshots retain participants and warning; recovered populated rows and controls visible. Names may ellipsize; no spoken accessibility claim."
+      },
+      {
+        "path": ".out/qa272-20261013/web10-final-immutable/populated-mute-screen-share.png",
+        "sha256": "cac30c0b93054525a7e3ba85deb0335ba06f1128a54a91f59505b7614546478b",
+        "width": 1440,
+        "height": 1000,
+        "review": "PASS_SCOPED_ORIGINAL",
+        "scope": "Actual synthetic roster states at source resolution; initial unavailable shows error and no zero; stale snapshots retain participants and warning; recovered populated rows and controls visible. Names may ellipsize; no spoken accessibility claim."
+      },
+      {
+        "path": ".out/qa272-20261013/web10-final-immutable/populated-two-account-prejoin.png",
+        "sha256": "1a0b762cc605ea85971888109ad0f175d9fdb8f98f89eb73a6aae2282435b898",
+        "width": 1440,
+        "height": 1000,
+        "review": "PASS_SCOPED_ORIGINAL",
+        "scope": "Actual synthetic roster states at source resolution; initial unavailable shows error and no zero; stale snapshots retain participants and warning; recovered populated rows and controls visible. Names may ellipsize; no spoken accessibility claim."
+      },
+      {
+        "path": ".out/qa272-20261013/web10-final-immutable/refresh-sfu-unavailable.png",
+        "sha256": "f6d477901290014f27c3e3da4632688b55ba88ec93710328d1699f04e027f2bd",
+        "width": 1440,
+        "height": 1000,
+        "review": "PASS_SCOPED_ORIGINAL",
+        "scope": "Actual synthetic roster states at source resolution; initial unavailable shows error and no zero; stale snapshots retain participants and warning; recovered populated rows and controls visible. Names may ellipsize; no spoken accessibility claim."
+      },
+      {
+        "path": ".out/qa272-20261013/web10-final-immutable/revoked-lease-excluded.png",
+        "sha256": "6649e55533f9444b5bf03ae96c8ae78dae6515fb9e5ee70a3bee9a926a384080",
+        "width": 1440,
+        "height": 1000,
+        "review": "PASS_SCOPED_ORIGINAL",
+        "scope": "Actual synthetic roster states at source resolution; initial unavailable shows error and no zero; stale snapshots retain participants and warning; recovered populated rows and controls visible. Names may ellipsize; no spoken accessibility claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android/native-after-background.png",
+        "sha256": "9786b3d17289af101daf4b51ecb5bdab87f74ceb893e493a91cf3b09e75b43a8",
+        "width": 1080,
+        "height": 2400,
+        "status": "BLOCKED_CAPTURE",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original black background capture is not visual proof; paired supplemental actual OS framebuffer verifies populated prejoin after resume."
+      },
+      {
+        "path": ".out/qa272-20261013/android/native-initial-503.png",
+        "sha256": "eb82465782b10b66deb4186fef250f34baf069fae7680bb81b2f4841b373436d",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android/native-listener-connected.png",
+        "sha256": "dcf09c4d344038e6667248d0958f4d828c73d745245d68adcd1121f8b9c9ec3a",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android/native-logout-cleared.png",
+        "sha256": "583136996e6bee4f1ebd001ca71d19427023b66f2fdceae72619534254fa27eb",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android/native-peer-left.png",
+        "sha256": "3ddb8fcee39458f6fbeca623b74d8eb1caa7f151a240cf165462daf3fc63ba64",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android/native-populated-two.png",
+        "sha256": "9786b3d17289af101daf4b51ecb5bdab87f74ceb893e493a91cf3b09e75b43a8",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android/native-recovered-populated.png",
+        "sha256": "9786b3d17289af101daf4b51ecb5bdab87f74ceb893e493a91cf3b09e75b43a8",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android/native-refresh-unavailable.png",
+        "sha256": "da1ac835412c58a744f0df0f8ebc8a8c5df15af45d36cdd22dde336974f0495f",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/ios/native-initial-503.png",
+        "sha256": "ed3ed6852991e42cf2d237ebb81878b55ac834d8fbe6cf82bcb5e0d3912abf67",
+        "width": 1179,
+        "height": 2556,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/ios/native-logout-cleared.png",
+        "sha256": "833719925f5079540b486fbe421bf62a4b64d78db215ebea3b1218b2c08d9d01",
+        "width": 1179,
+        "height": 2556,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/ios/native-peer-left.png",
+        "sha256": "1fb8a45ba078d81836487304d66e937d37b17488b4bff55de2e8d3de48f23b76",
+        "width": 1179,
+        "height": 2556,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/ios/native-populated-two.png",
+        "sha256": "197f5dbd63a1d6f811951b70654d3b0d7485f64eab7509884f34ff47ce85a4a1",
+        "width": 1179,
+        "height": 2556,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/ios/native-recovered-populated.png",
+        "sha256": "197f5dbd63a1d6f811951b70654d3b0d7485f64eab7509884f34ff47ce85a4a1",
+        "width": 1179,
+        "height": 2556,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/ios/native-refresh-unavailable.png",
+        "sha256": "0605d14c3b5e5ed06d51fea9be9e0168625be2222d7f36102010a6bed4dc9a05",
+        "width": 1179,
+        "height": 2556,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android-visual-supplement/native-after-background-binding.png",
+        "sha256": "4f6c473b0ce2f6f4dc7ce8638a9b55208004c7a7331a72acacc0a9cc2774b2d7",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android-visual-supplement/native-background-framebuffer.png",
+        "sha256": "0ff28aefd1ee3b65262e1ccfca82cc4b1d0b7bd95e4ec46f4bd7078fd4bb2b40",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "adb exec-out screencap -p actual OS framebuffer",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android-visual-supplement/native-before-background.png",
+        "sha256": "4f6c473b0ce2f6f4dc7ce8638a9b55208004c7a7331a72acacc0a9cc2774b2d7",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android-visual-supplement/native-listener-binding.png",
+        "sha256": "dcf09c4d344038e6667248d0958f4d828c73d745245d68adcd1121f8b9c9ec3a",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "integration binding actual Flutter surface",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      },
+      {
+        "path": ".out/qa272-20261013/android-visual-supplement/native-listener-framebuffer.png",
+        "sha256": "8ce8137abc1170d9bac6cc5cca652f280023142c74cde8b8c76004e3bbe42ba5",
+        "width": 1080,
+        "height": 2400,
+        "status": "PASS_SCOPED_ORIGINAL",
+        "method": "adb exec-out screencap -p actual OS framebuffer",
+        "review": "Original reviewed at source resolution: populated/error/stale/recovered roster and controls visible; no false-zero or control overlap in captured state. Names/header subtitle may ellipsize. No physical-device or spoken-reader claim."
+      }
+    ],
+    "scope": "Originals source-resolution reviewed; static synthetic names only, no real user media or message bodies. One Android4 after-background binding image is black and remains BLOCKED_CAPTURE. Separate same-phase ADB framebuffer and supplemental binding captures show populated prejoin2 and listener3 with visible controls. Exact cause of that single black binding capture is not asserted. Header/name ellipsis remains visible at available width; no spoken accessibility claim.",
+    "root_independent_android_framebuffer": {
+      "path": ".out/qa-batch4-20261013/root-android-framebuffer-review.json",
+      "sha256": "8358011b821a268e32ff4c5ee32d7e4de7abcc57a04e649996309e1db140c433"
+    }
+  },
+  "nearest_tests": {
+    "path": ".out/qa272-20261013/focused-tests.json",
+    "sha256": "037931ebb7858223fdb208002e69408ec8bcb3a87bb9a05e11ee06474205ecd5"
+  },
+  "root_pinned_native_analyzer": {
+    "path": ".out/qa-batch4-20261013/final-pinned-analyzer-after-native-target.log",
+    "sha256": "66dd3c39b1f00b0bb6648115ed0f13a3850fe2e9aa89d003388b340ffd9bbb14"
+  },
+  "attempt_history": [
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/fixture-seed-login-status-fail.json",
+        "sha256": "b6fd2d71a4cf61d7f569c80864a67c8fea700da2acde7e4b94e9184202a5dc56"
+      },
+      "status": "FAIL",
+      "note": "QA seed expected login200; real secure-cookie login returns204. Owned failed fixture removed."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/android/20261013T075141016573Z/runtime.json",
+        "sha256": "02a6891c4d37f55233fcd0bf5d86a529bd6b44f2b70259859004fbb7900ef9a1"
+      },
+      "status": "FAIL",
+      "failed_at": "initial SFU unavailable",
+      "checks": {},
+      "note": "Android1 QA selected topology before asynchronous topology load completed; null assertion. Fixed bounded actual-topology wait."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/android/20261013T075749879054Z/runtime.json",
+        "sha256": "ba01e29aecf354af233611c6ab0bf637ba77cb03589f68c834939dcb389e04c4"
+      },
+      "status": "FAIL",
+      "failed_at": "recovery two actual peer accounts",
+      "checks": {
+        "initial_503_no_false_zero": "PASS"
+      },
+      "note": "Android2 rendered assertion ran with default mobile drawer open/paint not settled; controlled route followed by actual Close navigation UI and bounded settle."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/android/20261013T080121066400Z/runtime.json",
+        "sha256": "5a5ad72afb1201d140d70a57442dbb47211e03325d7dd690ca65cdc3f8e93ed9"
+      },
+      "status": "FAIL",
+      "failed_at": "member ACL and logout clears roster",
+      "checks": {
+        "initial_503_no_false_zero": "PASS",
+        "populated_rest_sse_two_accounts": "PASS",
+        "realtime_join_leave": "PASS",
+        "refresh_fault_recovery_no_false_zero": "PASS",
+        "background_foreground": "PASS",
+        "listener_rejoin_cleanup": "PASS",
+        "logout_clears_roster": "PASS"
+      },
+      "note": "Android3 first7 scoped checks PASS; invalid QA expected401 from already closed production ApiClient. Client correctly rejected before transport (no HTTPstatus); separate anonymous actual HTTPS401 added."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/web/20261013T063827629049Z/runtime.json",
+        "sha256": "810b4c1793ab855576c85294b663e770b9853a9584a871a043bd4756cec552db"
+      },
+      "status": "FAIL",
+      "failed_at": null,
+      "checks": {},
+      "note": "Initial QA journey incomplete; wrapper stopped before complete functional/visual proof."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/web/20261013T064158787467Z/runtime.json",
+        "sha256": "38033d12a846abdef6843adf897232a08677e518bd250e0d32fab81a78261a46"
+      },
+      "status": "FAIL",
+      "failed_at": "initial recovery populated",
+      "checks": {
+        "initial_503_no_false_zero": "PASS"
+      },
+      "note": "Initial publisher recovery failed with inherited synthetic lease/session preconditions; actual owned leases/sessions reset before subsequent runs."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/web/20261013T064535511494Z/runtime.json",
+        "sha256": "d007a363a75e9605873023afb008961accd9dc564c4fda3768051422fa1095ac"
+      },
+      "status": "FAIL",
+      "failed_at": "clean prior synthetic leases",
+      "checks": {},
+      "note": "QA own-session helper used nonexistent auth/sessions route; corrected to documented me/sessions route."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/web/20261013T064942594664Z/runtime.json",
+        "sha256": "ddbbdf1a2a1de950bd5be1563f2851f771e213cd9ee858c49b07b4cf43c9796a"
+      },
+      "status": "FAIL",
+      "failed_at": "clean prior synthetic leases",
+      "checks": {},
+      "note": "QA own-session helper corrected endpoint and account ownership header before next attempt."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/web/20261013T065159198824Z/runtime.json",
+        "sha256": "1d62ffc1fd4b6fc9e2a3725630b3bca098ed45dc6b544d4c77373e836b40970b"
+      },
+      "status": "FAIL",
+      "failed_at": "database outage",
+      "checks": {
+        "initial_503_no_false_zero": "PASS",
+        "populated_rest_sse_two_accounts": "PASS",
+        "realtime_mute_screen_share": "PASS",
+        "realtime_peer_join_leave": "PASS",
+        "refresh_failure_no_false_zero_recovery": "PASS"
+      },
+      "note": "QA stopped a tmpfs PostgreSQL container, destroying fixture schema; not a database continuity/recovery PASS. Only disposable fixture recreated through real migrations/seeding."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/web/20261013T065548535007Z/runtime.json",
+        "sha256": "a1a3c6130efea2beca38dc750086e4a1fd884f27f9956fadbc0b05bd4780884d"
+      },
+      "status": "FAIL",
+      "failed_at": "clean prior synthetic leases",
+      "checks": {},
+      "note": "Missing schema in destroyed disposable fixture prevented login; real fixture recreated before pause-based fault injection."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/web/20261013T070322605976Z/runtime.json",
+        "sha256": "9e2caeb84e2009e41bc3b1983539d57794d6d320d27db585801526e01189a13c"
+      },
+      "status": "FAIL",
+      "failed_at": "database outage",
+      "checks": {
+        "initial_503_no_false_zero": "PASS",
+        "populated_rest_sse_two_accounts": "PASS",
+        "realtime_mute_screen_share": "PASS",
+        "realtime_peer_join_leave": "PASS",
+        "refresh_failure_no_false_zero_recovery": "PASS"
+      },
+      "note": "Before product fix: authenticated request remained pending during actual PostgreSQL pause; manual owned database resume ended wait. Cleanup repeated-unpause error masked final assertion. Source and focused RED established missing initial-auth/REST lookup deadline; operator observed more than275seconds pending, not a formal timing instrument."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/web/20261013T072655859855Z/runtime.json",
+        "sha256": "427eae9ccf229fe81fdc2409f91541377f9bb9cd02d489b2dce257e2c8d1b113"
+      },
+      "status": "FAIL",
+      "failed_at": "database outage",
+      "checks": {
+        "initial_503_no_false_zero": "PASS",
+        "populated_rest_sse_two_accounts": "PASS",
+        "realtime_mute_screen_share": "PASS",
+        "realtime_peer_join_leave": "PASS",
+        "refresh_failure_no_false_zero_recovery": "PASS"
+      },
+      "note": "Before fixed API binary: QA AbortSignal produced no successful HTTP503 proof; refresh retry raced fresh UI. Fresh FAIL preserved."
+    },
+    {
+      "receipt": {
+        "path": ".out/qa272-20261013/previous-attempts/web/20261013T074154553990Z/runtime.json",
+        "sha256": "6f093ce5a778506789c36665cc7af0c9983eeb27676be3f1f0b38414a100e2e2"
+      },
+      "status": "PASS",
+      "failed_at": null,
+      "checks": {
+        "initial_503_no_false_zero": "PASS",
+        "populated_rest_sse_two_accounts": "PASS",
+        "realtime_mute_screen_share": "PASS",
+        "realtime_peer_join_leave": "PASS",
+        "refresh_failure_no_false_zero_recovery": "PASS",
+        "bounded_auth_database_timeout_503": "PASS",
+        "db_outage_recovery_no_false_zero": "PASS",
+        "network_and_browser_engine_freeze_recovery": "PASS",
+        "guest_member_acl_and_revoked_lease_exclusion": "PASS",
+        "revoked_session_clears_roster": "PASS",
+        "one_healthy_eventsource_no_polling": "PASS"
+      },
+      "note": "Web10 all11PASS on fixed API; immutable copy separately retained. Holder later exposed insufficient diagnostic/readiness in native QA control, not retagged as new handler."
+    }
+  ],
+  "remaining_gates": [
+    {
+      "gate": "iOS audio listener rejoin and OS background",
+      "status": "NOT_RUN",
+      "reason": "Nonmedia7checks only; previous same-simulator iOS27 AURemoteIO abort remains unresolved. No blind audio retry. OS background not exercised."
+    },
+    {
+      "gate": "macOS and Windows populated runtime matrix",
+      "status": "NOT_RUN",
+      "reason": "Not executed for this leaf. Previous historical empty/self Windows evidence cannot establish this populated matrix."
+    },
+    {
+      "gate": "physical Android/iOS platform matrix",
+      "status": "NOT_RUN",
+      "reason": "Assigned devices are emulator/simulator."
+    },
+    {
+      "gate": "different visibility sets, blocked-account and complete permission mutation matrix",
+      "status": "NOT_RUN",
+      "reason": "Actual guest401/member403 and lease/session revocation verified. Current guild topology exposes all unarchived voice rooms to unblocked authenticated actors; per-account private-room visibility not provided by current model. Different-scoped visibility/blocked-account matrix not fabricated."
+    },
+    {
+      "gate": "native different-account switch and native session revocation",
+      "status": "NOT_RUN",
+      "reason": "Native logout clears roster/watcher and same-account new login restores fresh scope. Different account and external session revoke tested in Web only where stated; native complete matrix missing."
+    },
+    {
+      "gate": "production canary/promote/rollback and monitor window",
+      "status": "NOT_RUN",
+      "reason": "Local disposable environment only; no deployment mutation authorized as part of this test."
+    },
+    {
+      "gate": "full dependency timeout/load/capacity matrix",
+      "status": "NOT_RUN",
+      "reason": "Owned SFU outage and actual PostgreSQL pause/initialauth/REST/SSE bounded503 verified; no independent slow-SFU RPC sweep, physical load or capacity evidence."
+    }
+  ],
+  "cleanup": {
+    "receipt": {
+      "path": ".out/qa272-20261013/cleanup.json",
+      "sha256": "a03189f8ee59887b2d6dc7e00c1c9ed6aaa8ba62a04567ccfe06d4a842673782"
+    },
+    "measured": {
+      "issue": 272,
+      "status": "PASS",
+      "scope": "Only exact assigned QA272 devices and owner-labelled fixture; separate QA301 held4930 untouched",
+      "browser_holder_watchdog": "Web11 measured11PASS, then1800s holder deadline expired before release; freshFAIL preserved. Own Node/run process absent, no success claimed for graceful holder close.",
+      "android_package_absent": true,
+      "android_own_reverses_absent": true,
+      "ios_shutdown": true,
+      "ios_package_absent": true,
+      "ios_absence_method": "Owned shutdown simulator bundle Info.plist CFBundleIdentifier inventory, not a failed shutdown RPC",
+      "private_flutter_compiled_copy_removed": true,
+      "android_device_offline": true,
+      "remaining_owned_containers": 0,
+      "remaining_owned_images": 0,
+      "remaining_owned_networks": 0,
+      "private_fixture_input_removed": true,
+      "native_uninstall_scope": "First owned cleanup requested uninstall; this final receipt establishes actual absence instead of retroactively claiming individual uninstall exit codes.",
+      "android_emulator_console_absent": true
+    },
+    "private_logs": {
+      "path": ".out/qa272-20261013/private-log-cleanup.json",
+      "sha256": "b81887fd1f50d7a12825c8bb37fd0890a00554c721e1b80c14e3e802b313c914"
+    }
+  },
+  "privacy": "No passwords, cookies, CSRF/reset/media tokens, message/DM bodies, generated account/channel IDs or private crash payload included. Ignored originals retained locally; no generated media intended for staging."
+}

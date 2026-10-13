@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "base_commit": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+  "status": "PARTIAL",
+  "close_eligible": false,
+  "versions": {
+    "Flutter": {
+      "frameworkVersion": "3.47.6",
+      "frameworkRevision": "5fc346839b5d0eef006ed8404392afb4dfae428d",
+      "engineRevision": "692136cb6582dbfc5af3fb33c2515a069f2f66d0",
+      "dartSdkVersion": "3.13.5",
+      "channel": "stable"
+    },
+    "not_repo_pinned_version": true,
+    "Debug_signature": {
+      "Identifier": "ru.boohtacord.localqa",
+      "CDHash": "bee4fcdf1f0d2bbed35c8ad19c781a40020e37fb",
+      "Signature": "adhoc"
+    },
+    "signature_command_exit": 0,
+    "native_lib_manifest_sha256": "cbe3b0f27380b57aa8ca63e4176d4134ed8e025f679c299bec448b3eb7a5a645",
+    "native_artifact_sha256": "fc351ff646b106b67765adec0c8ae4f3ed427079a94dc5599ed5a128c9921d99",
+    "SFU_image": "livekit/livekit-server:v1.13.7@sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+    "Web_LiveKit_SDK_version": "2.22.3",
+    "namespace_wrapper_sha256": "fc1eac78ba56e457cd2abdf12f4215a860ed3caab9f8a8bbf44957837499b70e",
+    "Flutter_LiveKit_SDK": "2.13.0",
+    "Flutter_WebRTC_SDK": "1.6.2+hotfix.3",
+    "app_version": "1.0.38+71",
+    "build_mode": "Debug",
+    "repo_pinned_Flutter": "3.47.5",
+    "native_launcher_hash_scope": "initial launcher only; does not hash Dart bundle",
+    "initial_QA_entry_sha256": "1cd8d5f3275b35632a72fe64c8d324825e2e46a0d967af099461cc1a0e5a2cd6"
+  },
+  "production_lib_manifest_sha256": "cbe3b0f27380b57aa8ca63e4176d4134ed8e025f679c299bec448b3eb7a5a645",
+  "stack": {
+    "status": "PASS",
+    "API": "actual Go/PostgreSQL secure session cookie/Origin",
+    "SFU_image": "livekit/livekit-server:v1.13.7@sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+    "assigned_loopback_ports": [
+      5060,
+      5061,
+      5062,
+      5063,
+      5064,
+      5065
+    ],
+    "cleanup_status": "PASS"
+  },
+  "privacy": {
+    "accounts": "owned synthetic fixture only",
+    "credentials": "private0600 input/defines, never public",
+    "capture": "only owned synthetic QA app window; screen audio disabled",
+    "native_storage": "actual installed legacy Keychain plugin, unique QA accountName; no user namespace access, no mock",
+    "user_session_restore": "NOT_RUN"
+  },
+  "visual_review": {
+    "receipt": ".out/qa98325-20261013/native-inline-visual-review.json",
+    "sha256": "ba1ce21cb9d3c1fa31ba6dbae096459c97e2b84c6a66a31dfc430459a6a47965",
+    "format": "original inline CUA JPEG; no disk export provided",
+    "scope": "actual native presentation, not a pixel golden/capacity/quality proof"
+  },
+  "cleanup": {
+    "status": "PASS",
+    "receipt": ".out/qa98325-20261013/cleanup.json",
+    "sha256": "bc82654812b8e7f7065cdd36d34762b3c1db39a017c17b701ebd1ce9715e27a6",
+    "private_credentials_compiled_app_raw_logs_removed": true,
+    "known_namespace_keys_deleted": 2,
+    "owned_resources_remaining": 0,
+    "retained_ignored_sanitized_receipts": true
+  },
+  "issue": 98,
+  "leaf": "T-051",
+  "dependencies": [
+    "T-050",
+    "T-020",
+    "T-022",
+    "T-040"
+  ],
+  "scope": "Current physical Mac Debug startup/session restore characterization; historical QA160 six-minute episode still unexplained",
+  "rows": [
+    {
+      "case": "cold_isolated_service",
+      "receipt": {
+        "path": ".out/qa98325-20261013/startup-0.json",
+        "sha256": "6ba524d01a070f64bbf83ee660137e4bf8f181613c227136258830ec33e27e5c",
+        "status": "PASS"
+      },
+      "status": "PASS",
+      "GUI": "NOT_RUN Mac locked at measurement",
+      "restored_session": false,
+      "process_to_observed_completion_ms": 3207.592917,
+      "dart_entry_to_first_flutter_frame_ms": 331.645,
+      "max_observed_keychain_operation_ms": 254.785,
+      "poll_interval_ms": 250,
+      "host_context": {
+        "logical_CPUs": 12,
+        "load_average_at_launch": [
+          4.8447265625,
+          4.5517578125,
+          4.240234375
+        ],
+        "macOS_version": "27.0.1",
+        "other_QA_work": "coordinated parallel QA; not asserted idle"
+      }
+    },
+    {
+      "case": "warm_restore",
+      "receipt": {
+        "path": ".out/qa98325-20261013/startup-1.json",
+        "sha256": "ad855e38675aa142f8b261ff3aaf5d5fdef9fd8940195196367a97267d59de88",
+        "status": "PASS"
+      },
+      "status": "PASS",
+      "GUI": "NOT_RUN Mac locked at measurement",
+      "restored_session": true,
+      "process_to_observed_completion_ms": 1047.0303749999998,
+      "dart_entry_to_first_flutter_frame_ms": 283.421,
+      "max_observed_keychain_operation_ms": 223.434,
+      "poll_interval_ms": 250,
+      "host_context": {
+        "logical_CPUs": 12,
+        "load_average_at_launch": [
+          2.85546875,
+          3.8173828125,
+          3.99755859375
+        ],
+        "macOS_version": "27.0.1",
+        "other_QA_work": "coordinated parallel QA; not asserted idle"
+      }
+    },
+    {
+      "case": "warm_restore",
+      "receipt": {
+        "path": ".out/qa98325-20261013/startup-2.json",
+        "sha256": "2b73143fe9ced5d8aae6f0b0791b60d21c61f1c5515f3e4fe4dad1142273db92",
+        "status": "PASS"
+      },
+      "status": "PASS",
+      "GUI": "NOT_RUN Mac locked at measurement",
+      "restored_session": true,
+      "process_to_observed_completion_ms": 1045.255416,
+      "dart_entry_to_first_flutter_frame_ms": 284.907,
+      "max_observed_keychain_operation_ms": 205.772,
+      "poll_interval_ms": 250,
+      "host_context": {
+        "logical_CPUs": 12,
+        "load_average_at_launch": [
+          2.70654296875,
+          3.7705078125,
+          3.97998046875
+        ],
+        "macOS_version": "27.0.1",
+        "other_QA_work": "coordinated parallel QA; not asserted idle"
+      }
+    },
+    {
+      "case": "warm_restore",
+      "receipt": {
+        "path": ".out/qa98325-20261013/startup-3.json",
+        "sha256": "29b20efa9052b52e0d84cee57ca5e635d63121c1f8274dc414662f5724bc673c",
+        "status": "PASS"
+      },
+      "status": "PASS",
+      "GUI": "NOT_RUN Mac locked at measurement",
+      "restored_session": true,
+      "process_to_observed_completion_ms": 1050.363208,
+      "dart_entry_to_first_flutter_frame_ms": 282.24,
+      "max_observed_keychain_operation_ms": 203.653,
+      "poll_interval_ms": 250,
+      "host_context": {
+        "logical_CPUs": 12,
+        "load_average_at_launch": [
+          2.70654296875,
+          3.7705078125,
+          3.97998046875
+        ],
+        "macOS_version": "27.0.1",
+        "other_QA_work": "coordinated parallel QA; not asserted idle"
+      }
+    },
+    {
+      "case": "warm_restore",
+      "receipt": {
+        "path": ".out/qa98325-20261013/startup-4.json",
+        "sha256": "14ec51a6a22c0b7aab0f30e921c1cf46227d91bf64b4d69ded5f385274b2ac1b",
+        "status": "PASS"
+      },
+      "status": "PASS",
+      "GUI": "NOT_RUN Mac locked at measurement",
+      "restored_session": true,
+      "process_to_observed_completion_ms": 1043.982583,
+      "dart_entry_to_first_flutter_frame_ms": 281.948,
+      "max_observed_keychain_operation_ms": 199.485,
+      "poll_interval_ms": 250,
+      "host_context": {
+        "logical_CPUs": 12,
+        "load_average_at_launch": [
+          2.70654296875,
+          3.7705078125,
+          3.97998046875
+        ],
+        "macOS_version": "27.0.1",
+        "other_QA_work": "coordinated parallel QA; not asserted idle"
+      }
+    },
+    {
+      "case": "warm_restore",
+      "receipt": {
+        "path": ".out/qa98325-20261013/startup-5.json",
+        "sha256": "8c059f7e0af97d8a5eea9945e6054a985aab61acff05ed8422b548faa1d2222d",
+        "status": "PASS"
+      },
+      "status": "PASS",
+      "GUI": "PASS actual unlocked original/prejoin",
+      "restored_session": true,
+      "process_to_observed_completion_ms": 1563.023625,
+      "dart_entry_to_first_flutter_frame_ms": 386.191,
+      "max_observed_keychain_operation_ms": 277.209,
+      "poll_interval_ms": 250,
+      "host_context": {
+        "logical_CPUs": 12,
+        "load_average_at_launch": [
+          2.533203125,
+          2.43359375,
+          2.90966796875
+        ],
+        "macOS_version": "27.0.1",
+        "other_QA_work": "coordinated parallel QA; not asserted idle"
+      }
+    }
+  ],
+  "remaining": [
+    {
+      "criterion": "Find historical cause of startup exceeding six minutes",
+      "status": "NOT_RUN",
+      "reason": "No original episode trace; current isolated native Keychain service cannot identify historical production credentials/network/host cause"
+    },
+    {
+      "criterion": "Idle-host production-network baseline",
+      "status": "NOT_RUN",
+      "reason": "Concurrent QA load measured; no idle claim"
+    },
+    {
+      "criterion": "Entire QA-13 release gate / physical Android startup",
+      "status": "NOT_RUN",
+      "reason": "Separate parent gate outside this Mac Debug characterization"
+    }
+  ],
+  "final_source_equivalence": {
+    "measured_original_lib_sha256": "cbe3b0f27380b57aa8ca63e4176d4134ed8e025f679c299bec448b3eb7a5a645",
+    "patched_lib_sha256": "4fa5a6b098669a9864d026f580ff23e82032406acba6b8a36d6e8e812f658707",
+    "changed_product_file": "clients/flutter/lib/src/features/screen/metrics/report_sample.dart",
+    "scope": "Only LiveKit import narrowed to LocalVideoTrack for Dart HTTP timeout classification. Startup and visible UI pathways unchanged; measured original hashes retained. Patched timeout has separate actual runtime receipt, not a retagged original trial."
+  }
+}

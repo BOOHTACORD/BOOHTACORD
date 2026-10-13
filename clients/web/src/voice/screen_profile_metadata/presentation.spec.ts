@@ -17,7 +17,7 @@ describe('screen descriptor presentation', () => {
 
   it('labels legacy hints as estimates and missing publisher data as unavailable', () => {
     expect(screenTargetLabel(undefined, '1080p · 30 FPS')).toBe('1080p · 30 FPS')
-    expect(screenTargetSourceLabel('legacy-track-name')).toBe('Оценка по имени дорожки')
+    expect(screenTargetSourceLabel('legacy-track-name')).toBe('Профиль при запуске · имя дорожки')
     expect(screenTargetSourceLabel('unknown')).toBe('Цель не передана отправителем')
     expect(screenModeLabel(undefined)).toBe('Нет данных от отправителя')
     expect(screenCaptureLabel()).toBe('Нет данных от отправителя')

@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs'
 const descriptorFixture = JSON.parse(readFileSync(new URL('../../../../contracts/screen-share-profile-v1.fixtures.json', import.meta.url), 'utf8')).validDescriptor
 
 function publication() {
-  return { setSubscribed: vi.fn(), name: 'screenshare-1080p-30fps' }
+  return { setSubscribed: vi.fn(), trackName: 'screenshare-1080p-30fps' }
 }
 
 function participant(identity: string, video = publication(), audio?: ReturnType<typeof publication>): ScreenParticipantPublication {
@@ -102,7 +102,7 @@ describe('LiveKit screen registry', () => {
   it('uses the owner-checked latest descriptor instead of a stale track name', () => {
     const registry = new LiveKitScreenRegistry('https://app.example.test', 'voice:channel-a')
     const publicationWithMetadata: ScreenParticipantPublication = {
-      ...participant('lease-a', { ...publication(), name: 'screenshare-1080p-30fps' }),
+      ...participant('lease-a', { ...publication(), trackName: 'screenshare-1080p-30fps' }),
       accountId: '11111111-1111-4111-8111-111111111111',
       attributes: { 'boohtacord.screen-share.v1': descriptor('P720_60', 4, 12) },
     }

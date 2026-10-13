@@ -1,0 +1,7 @@
+# Issue327 real SDK track-name boundary
+
+Leaf T-031 and dependencies T-004/T-005/T-022, with actual runtime following T-032. LiveKit JS2.22.3 publishes via TrackPublishOptions.name but receives TrackPublication.trackName; participant.name is independent. Focused tests construct real RemoteTrackPublication from actual protocol TrackInfo, not permissive mocks.
+
+Own API+SFU fixture: HTTPS5080,Tempo5081,API5082,SFU5083HTTP/5084TCP/5085UDP; Vite browser5087. Acquire root Docker API-build lease before actual runtime. No physical Mac GUI/Flutter build is needed for this synthetic peer regression. Actual Go secure-cookie login→voicelease→credential authorizes two independent browser SDK peers. Source is canvas640x360 at15fps; target name1080p60 is launch intent, never measured encoder/performance.
+
+Run scoped tests via `node node_modules/vitest/vitest.mjs run src/voice/livekit_screen_sdk_boundary.spec.ts` in clients/web; browser component via `node node_modules/@playwright/test/cli.js test -c tests/track_name/playwright.config.ts`. Run actual isolated Go/SFU via `python3 -m tools.qa.track_name.run` from repository root after Docker lease. Old attempts are archived, current RUNNING written before setup, required rows/captures checked before PASS. Own processes/containers/tempcredentials removed in finally; public receipt contains only synthetic numeric aggregates and hashes. Keep physical Mac↔Web, motion/FPS/quality, screen-audio and other release gates separate under #326/#227/#173.

@@ -1,0 +1,405 @@
+{
+  "issue": 154,
+  "date": "2026-10-13",
+  "status": "PARTIAL",
+  "close_issue": false,
+  "leaf_task": "T-052",
+  "baseline_commit": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+  "source": {
+    "base_sha": "fd2f015b54fe4250a61f6c3c6442ad08f05f87da",
+    "web_src": {
+      "sha256": "1e561bcb9359ca4b21ef016eed2636b89581cf6e0ff7e5169b130e73b8ad8f28",
+      "file_count": 1099
+    },
+    "flutter_lib": {
+      "sha256": "cbe3b0f27380b57aa8ca63e4176d4134ed8e025f679c299bec448b3eb7a5a645",
+      "file_count": 1103
+    },
+    "backend_go": {
+      "sha256": "9004ab58e708d529111cabe68de7afe6cf2d2182084934f140f4d7e0379096ac",
+      "file_count": 1360
+    },
+    "scope": "Final Web327 mobile-provenance fix; first browser tracing attempt overlapped CSSdelta and must repeat before final acceptance."
+  },
+  "environment": {
+    "host": "macOS arm64",
+    "go": "1.26.4",
+    "native_runtime_flutter": "3.47.6",
+    "native_runtime_dart": "3.13.5",
+    "pinned_ci_flutter": "3.47.5",
+    "services": [
+      {
+        "service": "collector",
+        "image_ref": "otel/opentelemetry-collector:0.161.0",
+        "image_id": "sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913",
+        "owner": "qa154-20261013"
+      },
+      {
+        "service": "postgres",
+        "image_ref": "postgres:17.6-alpine",
+        "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94",
+        "owner": "qa154-20261013"
+      },
+      {
+        "service": "tempo",
+        "image_ref": "grafana/tempo:2.10.3",
+        "image_id": "sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703",
+        "owner": "qa154-20261013"
+      },
+      {
+        "service": "livekit",
+        "image_ref": "livekit/livekit-server:v1.13.7",
+        "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+        "owner": "qa154-20261013"
+      }
+    ],
+    "owner": "qa154-20261013",
+    "synthetic_only": true
+  },
+  "dependencies": {
+    "issues": "145 through 153",
+    "status": "all CLOSED verified through GitHub REST",
+    "receipt": ".out/qa-batch4-20261013/tracing-dependencies/index.json"
+  },
+  "results": {
+    "browser_go_tests": 3,
+    "browser_duration_seconds": 127.849,
+    "native_sdk_engine_tests": 1,
+    "native_duration_seconds": 3.73,
+    "durable_worker_tests": 3,
+    "durable_duration_seconds": 2.179,
+    "nearest_go_tests_passed": 177,
+    "collector_outage": {
+      "scenario": "actual owned Collector outage",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 1.533,
+      "owner": "qa154-20261013"
+    },
+    "tempo_outage": {
+      "status": "PASS",
+      "actual_outage_accept_observed": true,
+      "exit_code": 0,
+      "elapsed_seconds": 9.154,
+      "scope": "Actual owned Tempo outage while Collector queues; bounded restart/recovery, not production outage/capacity."
+    },
+    "traceql": "Actual stored Tempo queries HTTP200; counts may be zero, no complete-history claim",
+    "browser_summary": {
+      "status": "PASS",
+      "browser_runtime_duration_seconds": 127.849,
+      "stored_trace_actions": [
+        {
+          "profile": "synthetic-two-client-runtime",
+          "source": "working-tree",
+          "senderRecords": 50,
+          "receiverRecords": 33,
+          "actions": [
+            {
+              "name": "message.send",
+              "attempt": 1,
+              "outcome": "success",
+              "records": 7
+            },
+            {
+              "name": "screen.view",
+              "attempt": 1,
+              "outcome": "timeout",
+              "records": 5
+            },
+            {
+              "name": "screen.view",
+              "attempt": 2,
+              "outcome": "success",
+              "records": 8
+            }
+          ]
+        }
+      ],
+      "screen_capture_artifacts": [
+        {
+          "path": ".out/qa-batch4-20261013/tracing-browser-captures/receiver-rendered.png",
+          "sha256": "17c0f1d1d924ebbd69f77432b3def4c55f6ec85aafa443b07056dde4b6454c08",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "path": ".out/qa-batch4-20261013/tracing-browser-captures/sender-rendered.png",
+          "sha256": "17c0f1d1d924ebbd69f77432b3def4c55f6ec85aafa443b07056dde4b6454c08",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "path": ".out/qa-batch4-20261013/tracing-browser-captures/synthetic-first-frame.png",
+          "sha256": "52e90d1a71515b7681566fafcfd0d0c84a9ce68b4f82eb303644b552f5d54f89",
+          "width": 1440,
+          "height": 900
+        }
+      ],
+      "scope": "Two actual browser SDKs/Vue message render with syntheticbusiness responses +real Go relay/Collector/Tempo. Render/timeout/retry/visits/logoutbatch/privacy verified; not actualauthenticated fullapp/mediaacceptance. QA reaction response fixedRED→GREEN; finaloriginalvisualreviewpending."
+    },
+    "visual_review": {
+      "status": "PASS_SCOPED",
+      "reviewer": "root",
+      "method": "Original PNGs viewed with view_image after QA reaction-response correction",
+      "scope": "Synthetic isolated Vue message fixture; two identical renders verified by SHA, synthetic gray first-frame canvas. Not full app or quality acceptance.",
+      "artifacts": [
+        {
+          "path": ".out/qa-batch4-20261013/tracing-browser-captures/receiver-rendered.png",
+          "sha256": "17c0f1d1d924ebbd69f77432b3def4c55f6ec85aafa443b07056dde4b6454c08",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "path": ".out/qa-batch4-20261013/tracing-browser-captures/sender-rendered.png",
+          "sha256": "17c0f1d1d924ebbd69f77432b3def4c55f6ec85aafa443b07056dde4b6454c08",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "path": ".out/qa-batch4-20261013/tracing-browser-captures/synthetic-first-frame.png",
+          "sha256": "52e90d1a71515b7681566fafcfd0d0c84a9ce68b4f82eb303644b552f5d54f89",
+          "width": 1440,
+          "height": 900
+        }
+      ],
+      "findings": "Message, author, reactions visible without previous reaction error. Gray 320x180 synthetic frame appears only in frame scenario."
+    }
+  },
+  "matrix": [
+    {
+      "scenario": "voice_join_screen_view",
+      "status": "PARTIAL",
+      "scope": "Synthetic first presented frame and actual SDKs; full authenticated lease/connect/publish graph not run."
+    },
+    {
+      "scenario": "first_frame_timeout_retry",
+      "status": "PASS_SCOPED",
+      "scope": "Real SDK observer timeout then synthetic rendered frame; stored Tempo assertions."
+    },
+    {
+      "scenario": "message_lost_response",
+      "status": "PASS_SCOPED",
+      "scope": "Actual Vue SDK render and real relay/Tempo; synthetic business API and dedup fixture."
+    },
+    {
+      "scenario": "parallel_visits",
+      "status": "PASS_SCOPED",
+      "scope": "Two actual browser contexts with independent visits; authenticated shared-cookie product path not run."
+    },
+    {
+      "scenario": "logout_pending_batch",
+      "status": "PASS_SCOPED",
+      "scope": "SDK pending-batch invalidation and privacy verified; full A/B authenticated journey not run."
+    },
+    {
+      "scenario": "origin_switch_late_native",
+      "status": "NOT_RUN",
+      "scope": "Packaged platform/origin-switch journey missing."
+    },
+    {
+      "scenario": "websocket_replay_resync",
+      "status": "PARTIAL",
+      "scope": "Native Go contract tests passed; integrated two-client runtime not run."
+    },
+    {
+      "scenario": "durable_admin_revoke_worker",
+      "status": "PASS_SCOPED",
+      "scope": "Actual PostgreSQL committed cause and real SFU participant-absence confirmed after retry; connected media peer not used."
+    },
+    {
+      "scenario": "relay_compatibility_privacy",
+      "status": "PASS_SCOPED",
+      "scope": "Real mixed-batch rejection/sanitization and stored trace; nearest Go regressions 177 passed."
+    },
+    {
+      "scenario": "collector_tempo_fault_sampling",
+      "status": "PARTIAL",
+      "scope": "Actual owned outages recovered; integrated 429/sampling/pilot completeness not run."
+    }
+  ],
+  "resource_measurement": {
+    "samples": 12,
+    "scope": "Bounded synthetic fixture under concurrent QA; not app capacity/pilot SLO",
+    "receipt": ".out/qa-batch4-20261013/tracing-container-resource-samples.json",
+    "observed_ranges": {
+      "collector": {
+        "cpu_percent_min": 0.04,
+        "cpu_percent_max": 0.52,
+        "memory_mib_min": 19.12,
+        "memory_mib_max": 19.57,
+        "samples": 12
+      },
+      "tempo": {
+        "cpu_percent_min": 0.22,
+        "cpu_percent_max": 6.38,
+        "memory_mib_min": 74.92,
+        "memory_mib_max": 79.28,
+        "samples": 12
+      },
+      "postgres": {
+        "cpu_percent_min": 0.0,
+        "cpu_percent_max": 0.48,
+        "memory_mib_min": 30.78,
+        "memory_mib_max": 32.08,
+        "samples": 12
+      },
+      "livekit": {
+        "cpu_percent_min": 0.03,
+        "cpu_percent_max": 0.27,
+        "memory_mib_min": 13.08,
+        "memory_mib_max": 13.09,
+        "samples": 12
+      }
+    }
+  },
+  "remaining": [
+    "Full authenticated voice/media graph and original two-client business flows",
+    "Packaged Android/iOS/Windows tracing runs and origin/generation switch",
+    "Integrated websocket replay and 429/sampling fault matrix",
+    "Diagnostic 100% pilot export latency/completeness and cardinality acceptance",
+    "Dashboard fixture dataset handoff and production visualization are separate"
+  ],
+  "attempt_history": [
+    "Missing Go preflight retained, official isolated pinned Go installed",
+    "Incorrect go -C invocation retained then corrected",
+    "Earlier Web CSS overlap repeated with frozen source",
+    "Synthetic reaction endpoint returned wrong shape; enabled-reaction regression RED then harness-only correction and final GREEN"
+  ],
+  "privacy": {
+    "real_credentials_or_message_bodies_published": false,
+    "media_artifacts_committed": false,
+    "synthetic_trace_ids_only": true
+  },
+  "receipts": [
+    {
+      "path": ".out/qa-batch4-20261013/tracing-before-reaction-fixture-fix.log",
+      "sha256": "f480223352bdb3817fc0326f9b74a05cfc2c3926fffb1630877f65ad72794264",
+      "bytes": 5714,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-browser-summary.json",
+      "sha256": "a722831b8d6314db4ef4feec4df0e04391930051f9e86e388686785cd407c374",
+      "bytes": 1699,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-collector-outage.json",
+      "sha256": "13612f03bc28e74fab9dbc134c34a387c0ea4a706ad67e8275dcfb249f187869",
+      "bytes": 145,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-collector-outage.log",
+      "sha256": "485146ab9420f6bbdc1db4a31491d6390c00e832b008de977602cfdcdc2732db",
+      "bytes": 333,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-container-resource-samples.json",
+      "sha256": "3392cc8ea8101f89f407d4b7abbebadad25cec5ddca259837522b4d906c1bc44",
+      "bytes": 17857,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-durable-worker.log",
+      "sha256": "7dfd0f8bad66b7f35f7d5c0187f1651775e6fd2f740c5dce7c9255be8a374ef9",
+      "bytes": 4379,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-native-engine-preflight-missing-go.log",
+      "sha256": "025bf64c7bdce1024f03c785adf40427cc39ed808c775e3361bc8dcb3eb77b59",
+      "bytes": 29,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-native-engine.log",
+      "sha256": "3f5ae30bada7db318447133f5dc9e432e268e9cacf0034083129e707a1dfbe3c",
+      "bytes": 614,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-nearest-tests.jsonl",
+      "sha256": "52e2a318d2d9a3eaa05f6135535eba7bcfe6a31df46eac4456073a88ff74b0f0",
+      "bytes": 190331,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-reaction-fixture-red.log",
+      "sha256": "5d03b968db8bec650f497ad1f323763914c7369b3de43acf8c4877bdbbe1a867",
+      "bytes": 3181,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-relay-browser-before-mobile-provenance-fix.log",
+      "sha256": "8991771843c9bbc1e2344572d21bab4036aa440f4c96b5175efd7bc56e0da94e",
+      "bytes": 7157,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-relay-browser-preflight-missing-go.log",
+      "sha256": "025bf64c7bdce1024f03c785adf40427cc39ed808c775e3361bc8dcb3eb77b59",
+      "bytes": 29,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-relay-browser.log",
+      "sha256": "ecdc2398382a1ac91951a14fa97374073d6c07b9034d26b2d92e3688c87f6e83",
+      "bytes": 5714,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-repeat-invocation-failed.log",
+      "sha256": "23f5ab7347483464cea1f71c0f170ab3ea249f734ce07a137f4bb4885df855f7",
+      "bytes": 219,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-source-before-mobile-provenance-fix.json",
+      "sha256": "895d5f7fb92fb0b1e59dc104974d76b4eaf8f073bf18bba2c4f6da6a4b9a2029",
+      "bytes": 600,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-source.json",
+      "sha256": "3a9325b76934247219c63f083a75f75d1ad9b51e16044ec19292ac136c0de99a",
+      "bytes": 584,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-stack-start.log",
+      "sha256": "dbfc7565098757b4b430197c0feace22a50427bf17b084820af3079c10667750",
+      "bytes": 6681,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-tempo-outage.json",
+      "sha256": "c552ba7bdd84f33bbf256376f261e12f0d8f2c51ca33f2743f5e2fee1d02d714",
+      "bytes": 232,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-tempo-outage.log",
+      "sha256": "ff85b520bd8620e83f53da2758e81594c6242f771992b1b6126a6068208df8e8",
+      "bytes": 411,
+      "ignored_local_receipt": true
+    },
+    {
+      "path": ".out/qa-batch4-20261013/tracing-traceql-checks.log",
+      "sha256": "f1308a6ad6949b9eb54072aadaf805508bd559d217e6a7aad120d138f01aeb7d",
+      "bytes": 609,
+      "ignored_local_receipt": true
+    }
+  ],
+  "cleanup": {
+    "status": "PASS",
+    "owner": "qa154-20261013",
+    "remaining_containers": 0,
+    "only_owned_compose_resources_removed": true,
+    "receipt": {
+      "path": ".out/qa-batch4-20261013/tracing-cleanup.log",
+      "sha256": "7a06f1089f72e185b0a466ed3e7c1df82d1c29e8a8435588c481b26211f4b34e"
+    }
+  }
+}

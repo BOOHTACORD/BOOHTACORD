@@ -1,4 +1,6 @@
 import { test,expect } from '@playwright/test'
+import { mkdir } from 'node:fs/promises'
+import { join } from 'node:path'
 const binding=process.env.TRACE_QA_SESSION,relay=process.env.TRACE_QA_RELAY_URL,tempo=process.env.TRACE_QA_TEMPO_URL
 test.skip(!binding||!relay||!tempo,'requires Go QA relay and isolated Collector/Tempo')
 test('actual sender/receiver render, independent visits, first frame and stale batch survive sanitization',async({page,browser,request})=>{
@@ -12,6 +14,7 @@ test('actual sender/receiver render, independent visits, first frame and stale b
     await route.fulfill({status:response.status(),headers:response.headers(),body:await response.body()});return
    }
    if(url.includes('/members/')){await route.fulfill({json:{user_id:'00000000-0000-4000-8000-000000000001',login:'fixture',display_name:'Fixture',role:'MEMBER',presence:'online'}});return}
+   if(url.includes('/message-reactions?')){await route.fulfill({json:{reactions:[],can_pin:false}});return}
    if(req.method()==='POST'){
     posts++;const body=req.postDataJSON();stored={id:'00000000-0000-4000-8000-000000000003',channel_id:'00000000-0000-4000-8000-000000000002',author_id:'00000000-0000-4000-8000-000000000001',client_message_id:body.client_message_id,body:body.body,revision:1,created_at:new Date().toISOString(),attachments:[],mention_user_ids:[]}
     await route.abort('connectionreset');return
@@ -27,11 +30,21 @@ test('actual sender/receiver render, independent visits, first frame and stale b
  await expect(page.locator('.message-row')).toHaveCount(1)
  await receiver.evaluate(()=>(window as any).tracingQA.receive())
  await expect(receiver.locator('.message-row')).toHaveCount(1);expect(posts).toBe(1)
+ await expect(page.getByRole('button',{name:'Реакция 👍',exact:true})).toBeEnabled()
+ await expect(receiver.getByRole('button',{name:'Реакция 👍',exact:true})).toBeEnabled()
+ if(process.env.TRACE_QA_CAPTURE_DIR){
+  await mkdir(process.env.TRACE_QA_CAPTURE_DIR,{recursive:true})
+  await page.screenshot({path:join(process.env.TRACE_QA_CAPTURE_DIR,'sender-rendered.png'),fullPage:true})
+  await receiver.screenshot({path:join(process.env.TRACE_QA_CAPTURE_DIR,'receiver-rendered.png'),fullPage:true})
+ }
  for(const p of [page,receiver]){const status=await p.evaluate(()=>(window as any).tracingQA.flush());expect(status.accepted,JSON.stringify(status)).toBeGreaterThan(0)}
  const viewID=await page.evaluate(()=>(window as any).tracingQA.select(false))
  await expect.poll(()=>page.evaluate(()=>(window as any).tracingQA.spans().filter((s:any)=>s.attrs['app.flow.outcome']==='timeout').length),{timeout:125000}).toBe(1)
  await page.evaluate(()=>(window as any).tracingQA.select(true))
  await expect.poll(()=>page.evaluate(()=>(window as any).tracingQA.spans().filter((s:any)=>s.attrs['app.flow.name']==='screen.view'&&s.attrs['app.flow.outcome']==='success').length)).toBe(1)
+ if(process.env.TRACE_QA_CAPTURE_DIR){
+  await page.screenshot({path:join(process.env.TRACE_QA_CAPTURE_DIR,'synthetic-first-frame.png'),fullPage:true})
+ }
  for(const p of [page,receiver]){
   const status=await p.evaluate(()=>(window as any).tracingQA.flush());expect(status.rejected).toBe(0);expect(status.accepted).toBeGreaterThan(0)
  }
