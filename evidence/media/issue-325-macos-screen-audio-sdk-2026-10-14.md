@@ -1,7 +1,7 @@
 # macOS custom screen-audio SDK integration
 
 **Leaf:** T-038 (#325), dependencies T-034/T-036.
-**Status:** SDK/build/startup `PASS`; physical media acceptance `NOT_RUN`; visual review `BLOCKED` while the Mac is locked.
+**Status:** SDK/build/startup and native window visual review `PASS`; physical media acceptance `NOT_RUN`.
 
 ## Integrated SDK
 
@@ -34,7 +34,7 @@ Host: macOS 26.6.1 / Xcode 27.0 (27A266a). User-upgraded Flutter 3.47.7 / Dart 3
 | Local-feature policy/public-header/toolchain tests and workflow policy | `PASS` | native/public-header policy and committed toolchain/workflow checks |
 | Patched universal SDK verification and debug app build | `PASS` | `.out/webrtc-sdk/sdk.json`, `build.log`, `app-build.log` |
 | Fresh app process with requested define | `PASS` for startup | `.out/webrtc-sdk/app-run.log`: build succeeds, files sync, Dart VM service starts; no lost connection/fatal check observed at startup |
-| Native window screenshot review | `BLOCKED` | Computer-use observation reports a locked Mac; manual unlock requested |
+| Native window screenshot review | `PASS` for the displayed window | After the user confirmed manual unlock on 2026-10-14, the exact workspace debug app was inspected at source screenshot resolution (1440 × 900). Navigation, message history, composer and participant panels render; no startup error dialog or obvious overlapping controls is visible. Private channel content was not copied into repository evidence. |
 
 Launch command:
 
