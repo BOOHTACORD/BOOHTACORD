@@ -28,3 +28,14 @@ Validation:
   acceptance. This documentation change does not close those gates.
 
 Screenshots are local review artifacts and are not committed.
+
+Follow-up: the user reported `ERR_BLOCKED_BY_CLIENT` on GitHub's asset host.
+All three published asset links return HTTP 302 to
+`release-assets.githubusercontent.com`; signed redirect URLs are not retained.
+Primary buttons now open the official release page in another tab. Each card
+keeps a separate stable direct-file link and explains the browser-blocking
+limitation. This does not claim to remove a client-side block of the asset host.
+
+- PASS — `node tools/verify/landing_downloads/downloads.test.cjs`: fallback
+  links and a newer release response keep release-page navigation and direct
+  file links separate, including the detected-platform hero button.
