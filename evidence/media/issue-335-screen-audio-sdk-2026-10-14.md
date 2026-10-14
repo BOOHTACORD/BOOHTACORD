@@ -245,3 +245,24 @@ The current browser App Store Connect session is also expired. Local sign-in
 and 2FA were requested; the signing/provisioning blocker itself is resolved.
 No Transporter software license was accepted by the agent. Physical audible
 Mac/Web smoke and #335 closure remain pending independently.
+
+## TestFlight delivery completed
+
+After the user restored the existing Apple Account session, Xcode uploaded the
+signed 1.0.42 (77) archive successfully (`EXPORT SUCCEEDED`). App Store Connect
+completed processing for build `6840cacb-16f4-43f3-8676-696884944291`. The export
+questionnaire records standard encryption from transport libraries and no France
+distribution, as explicitly confirmed by the user. The existing internal group
+“Команда” was assigned to this build; its build list shows 1.0.42 (77) with status
+“Тестируется”. TestFlight publication and group delivery: PASS.
+
+Apple reported a non-blocking Upload Symbols Failed warning for the existing
+iOS WebRTC.framework dSYM. Native WebRTC crash symbolication is limited by the
+missing vendor symbols; the package was accepted and enabled for testing.
+The final group screenshot and updated signing receipt are retained locally.
+Temporary signing keychain was locked and removed from the current user search
+list; the owned plaintext keychain password was removed. Provided .p12/profiles,
+private keys, raw Apple authentication logs and generated binaries were not staged.
+
+This completes the previously blocked iOS distribution delivery. It does not
+replace the independent physical audible Mac/Web acceptance required by #335.
