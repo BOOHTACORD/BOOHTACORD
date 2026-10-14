@@ -19,6 +19,24 @@
 using winrt::Windows::Data::Json::JsonObject;
 using winrt::Windows::Data::Json::JsonValue;
 namespace fs = std::filesystem;
+// Extended paths keep the per-user cache/baseline usable without changing the
+// machine-wide LongPathsEnabled policy (or requiring administrator rights).
+static fs::path NativePath(const fs::path &path) {
+  std::wstring value = fs::absolute(path).lexically_normal().wstring();
+  if (value.rfind(L"\\\\?\\", 0) == 0)
+    return fs::path(value);
+  if (value.rfind(L"\\\\", 0) == 0)
+    return fs::path(L"\\\\?\\UNC\\" + value.substr(2));
+  return fs::path(L"\\\\?\\" + value);
+}
+static std::wstring ShellPath(const fs::path &path) {
+  const auto value = path.wstring();
+  if (value.rfind(L"\\\\?\\UNC\\", 0) == 0)
+    return L"\\\\" + value.substr(8);
+  if (value.rfind(L"\\\\?\\", 0) == 0)
+    return value.substr(4);
+  return value;
+}
 static constexpr auto exeName = L"boohtacord_desktop.exe";
 static JsonObject Read(const fs::path &file, std::uintmax_t maximum = 65536) {
   if (!fs::is_regular_file(file) || fs::file_size(file) > maximum)
@@ -47,8 +65,8 @@ static void Atomic(const fs::path &file, const JsonObject &json) {
     throw std::runtime_error("rename");
 }
 static bool Within(const fs::path &root, const fs::path &child) {
-  auto a = root.lexically_normal().wstring(),
-       b = child.lexically_normal().wstring();
+  auto a = NativePath(root).lexically_normal().wstring(),
+       b = NativePath(child).lexically_normal().wstring();
   std::transform(a.begin(), a.end(), a.begin(), ::towlower);
   std::transform(b.begin(), b.end(), b.begin(), ::towlower);
   return b.size() > a.size() && b.compare(0, a.size(), a) == 0 &&
@@ -149,9 +167,10 @@ static bool OwnProcess(DWORD pid, const fs::path &executable) {
     return false;
   wchar_t name[32768];
   DWORD length = 32768;
-  bool same = WaitForSingleObject(process, 0) == WAIT_TIMEOUT &&
-              QueryFullProcessImageNameW(process, 0, name, &length) &&
-              _wcsicmp(name, executable.c_str()) == 0;
+  bool same =
+      WaitForSingleObject(process, 0) == WAIT_TIMEOUT &&
+      QueryFullProcessImageNameW(process, 0, name, &length) &&
+      _wcsicmp(NativePath(name).c_str(), NativePath(executable).c_str()) == 0;
   CloseHandle(process);
   return same;
 }
@@ -182,9 +201,10 @@ static void Launch(const fs::path &directory) {
   SHELLEXECUTEINFOW info{};
   info.cbSize = sizeof(info);
   info.fMask = SEE_MASK_FLAG_NO_UI;
-  auto file = directory / exeName;
+  auto file = ShellPath(directory / exeName);
+  auto working = ShellPath(directory);
   info.lpFile = file.c_str();
-  info.lpDirectory = directory.c_str();
+  info.lpDirectory = working.c_str();
   info.nShow = SW_SHOWNOACTIVATE;
   ShellExecuteExW(&info);
 }
@@ -195,7 +215,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
     auto argv = CommandLineToArgvW(GetCommandLineW(), &argc);
     if (argc < 3 || std::wstring(argv[1]) != L"--plan")
       return 2;
-    fs::path planPath = fs::weakly_canonical(argv[2]);
+    fs::path planPath = fs::weakly_canonical(NativePath(argv[2]));
     LocalFree(argv);
     wchar_t local[32768];
     DWORD count = GetEnvironmentVariableW(L"LOCALAPPDATA", local, 32768);
@@ -208,7 +228,8 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
          newBuild = Value(plan, L"new_build"),
          oldBuild = Value(plan, L"old_build"),
          release = Value(plan, L"new_release");
-    fs::path target = Value(plan, L"target"), backup = Value(plan, L"backup"),
+    fs::path target = NativePath(Value(plan, L"target")),
+             backup = NativePath(Value(plan, L"backup")),
              root = planPath.parent_path();
     if (!std::regex_match(transaction, std::wregex(L"[A-Fa-f0-9-]{36}")) ||
         !Within(local, target) || target.filename() != L"current" ||

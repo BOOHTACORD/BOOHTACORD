@@ -19,7 +19,11 @@ class DesktopCheckpointStore {
   final Directory root;
   final Future<SecretKey> Function() _key;
   Future<SecretKey>? _cachedKey;
-  Future<SecretKey> _loadKey() => _cachedKey ??= _key();
+  Future<SecretKey> _loadKey() =>
+      _cachedKey ??= _key().catchError((Object error) {
+        _cachedKey = null;
+        throw error;
+      });
   final Map<String, Future<void>> _writes = {};
   static Future<SecretKey> _secureKey() async {
     final storage = sessionStorage();

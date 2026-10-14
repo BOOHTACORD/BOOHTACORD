@@ -19,6 +19,10 @@ def main():
     release = flutter / 'build/windows/x64/runner/Release'
     for required in ('boohtacord_desktop.exe', 'flutter_windows.dll', 'libwebrtc.dll', 'data/flutter_assets'):
         if not (release / required).exists(): raise RuntimeError('Incomplete Windows release: ' + required)
+    from tools.build.windows.runtime import retain_runtime
+    retain_runtime(release)
+    import shutil
+    shutil.copyfile(ROOT / 'tools/build/desktop_updater/licenses/Velopack-1.2.161.txt', release / 'LICENSE-Velopack.txt')
     signing = json.loads(output('pwsh', '-NoProfile', '-File', str(ROOT / 'tools/build/windows/signature.ps1'),
                                 '-Path', str(release / 'boohtacord_desktop.exe')))
     write(release, 'windows', ['x64'], 'boohtacord_desktop', signing)

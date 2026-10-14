@@ -10,7 +10,10 @@ Build with the shared native identity using `python -m tools.build.macos.run` or
 `python -m tools.build.windows.run`. These restore hash-pinned official SDKs.
 macOS additionally compiles and embeds the fixed-purpose recovery monitor;
 `tools/build/macos/package.sh` seals/verifies the entire app and creates the ZIP.
-Windows produces both the ordinary directory and Velopack Setup/full NUPKG in
+Windows bundles the Microsoft CRT from the installed Visual Studio redistributable
+folder beside the app, so the per-user install does not require a machine-wide
+CRT installation. The recovery monitor uses the static CRT because it runs outside
+that app directory. Windows produces both the ordinary directory and Velopack Setup/full NUPKG in
 `.out/releases/windows`. The SDKs and build outputs are never committed.
 
 The owner-held Ed25519 private key is outside the checkout, at

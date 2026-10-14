@@ -23,6 +23,8 @@ def main():
     helper = macos()
     resources = client('flutter') / 'build/macos/Build/Products/Release/BOOHTACORD.app/Contents/Resources'
     shutil.copytree(helper, resources / helper.name, dirs_exist_ok=True)
+    from tools.ci.native.process import ROOT
+    shutil.copyfile(ROOT / 'tools/build/desktop_updater/licenses/Sparkle-2.10.0.txt', resources / 'LICENSE-Sparkle.txt')
 
 
 if __name__ == '__main__':

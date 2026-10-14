@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.15)
 project(runner LANGUAGES CXX)
 
 # Define the application target. To change its name, change BINARY_NAME in the
@@ -58,6 +58,7 @@ add_custom_command(TARGET ${BINARY_NAME} POST_BUILD
 # Compiled local monitor, copied outside current/ at consented apply.
 add_executable(BOOHTACORDRecovery WIN32 "../../native/desktop_recovery/windows.cpp")
 target_compile_features(BOOHTACORDRecovery PRIVATE cxx_std_17)
+set_property(TARGET BOOHTACORDRecovery PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 target_compile_definitions(BOOHTACORDRecovery PRIVATE UNICODE _UNICODE NOMINMAX)
 target_link_libraries(BOOHTACORDRecovery PRIVATE windowsapp version shell32 advapi32 user32 bcrypt)
 add_dependencies(${BINARY_NAME} BOOHTACORDRecovery)

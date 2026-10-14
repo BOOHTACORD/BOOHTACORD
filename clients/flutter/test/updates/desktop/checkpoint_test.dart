@@ -20,6 +20,26 @@ void main() {
     await root.delete(recursive: true);
   });
   test(
+    'transient Keychain refusal can be retried after the user grants access',
+    () async {
+      var attempts = 0;
+      final retryable = DesktopCheckpointStore(
+        root,
+        key: () async {
+          if (attempts++ == 0) throw StateError('keychain_locked');
+          return SecretKey(List<int>.filled(32, 2));
+        },
+      );
+      await expectLater(
+        retryable.save(a, 'workspace', {'draft': 'preserve'}),
+        throwsStateError,
+      );
+      await retryable.save(a, 'workspace', {'draft': 'preserve'});
+      expect((await retryable.read(a, 'workspace'))!['draft'], 'preserve');
+      expect(attempts, 2);
+    },
+  );
+  test(
     'workspace is encrypted, origin scoped and restart consumes exactly once',
     () async {
       final value = {
