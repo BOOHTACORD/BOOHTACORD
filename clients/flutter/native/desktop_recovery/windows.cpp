@@ -1,5 +1,8 @@
 // Fixed-purpose local monitor. No downloads or command interpreter.
+#include <windows.h>
+
 #include <algorithm>
+#include <bcrypt.h>
 #include <chrono>
 #include <cwctype>
 #include <filesystem>
@@ -11,15 +14,14 @@
 #include <thread>
 #include <tlhelp32.h>
 #include <vector>
-#include <windows.h>
 #include <winrt/Windows.Data.Json.h>
 #include <winrt/base.h>
 using winrt::Windows::Data::Json::JsonObject;
 using winrt::Windows::Data::Json::JsonValue;
 namespace fs = std::filesystem;
 static constexpr auto exeName = L"boohtacord_desktop.exe";
-static JsonObject Read(const fs::path &file) {
-  if (!fs::is_regular_file(file) || fs::file_size(file) > 65536)
+static JsonObject Read(const fs::path &file, std::uintmax_t maximum = 65536) {
+  if (!fs::is_regular_file(file) || fs::file_size(file) > maximum)
     return nullptr;
   std::ifstream stream(file, std::ios::binary);
   std::string bytes((std::istreambuf_iterator<char>(stream)), {});
@@ -76,6 +78,69 @@ static std::wstring Build(const fs::path &app) {
       size < sizeof(*info) || info->dwSignature != 0xfeef04bd)
     return L"";
   return std::to_wstring(LOWORD(info->dwFileVersionLS));
+}
+static std::wstring Digest(const fs::path &file) {
+  BCRYPT_ALG_HANDLE algorithm = nullptr;
+  BCRYPT_HASH_HANDLE hash = nullptr;
+  if (BCryptOpenAlgorithmProvider(&algorithm, BCRYPT_SHA256_ALGORITHM, nullptr,
+                                  0) < 0)
+    return L"";
+  if (BCryptCreateHash(algorithm, &hash, nullptr, 0, nullptr, 0, 0) < 0) {
+    BCryptCloseAlgorithmProvider(algorithm, 0);
+    return L"";
+  }
+  std::ifstream stream(file, std::ios::binary);
+  char bytes[65536];
+  bool valid = stream.is_open();
+  while (stream) {
+    stream.read(bytes, sizeof(bytes));
+    auto size = stream.gcount();
+    if (size > 0 && BCryptHashData(hash, reinterpret_cast<PUCHAR>(bytes),
+                                   static_cast<ULONG>(size), 0) < 0) {
+      valid = false;
+      break;
+    }
+  }
+  if (stream.bad())
+    valid = false;
+  unsigned char result[32];
+  if (BCryptFinishHash(hash, result, 32, 0) < 0)
+    valid = false;
+  BCryptDestroyHash(hash);
+  BCryptCloseAlgorithmProvider(algorithm, 0);
+  if (!valid)
+    return L"";
+  std::wstring output;
+  const wchar_t *digits = L"0123456789abcdef";
+  for (auto byte : result) {
+    output += digits[byte >> 4];
+    output += digits[byte & 15];
+  }
+  return output;
+}
+static bool BaselineValid(const fs::path &root, const fs::path &backup) {
+  auto manifest = Read(root / L"baseline.json", 2097152);
+  if (!manifest || manifest.GetNamedNumber(L"schema_version", 0) != 1)
+    return false;
+  auto files = manifest.GetNamedObject(L"files");
+  if (files.Size() == 0 || files.Size() > 5000)
+    return false;
+  std::size_t count = 0;
+  for (auto &entry : fs::recursive_directory_iterator(backup))
+    if (entry.is_regular_file())
+      count++;
+  if (count != files.Size())
+    return false;
+  for (auto &pair : files) {
+    fs::path relative = std::wstring(pair.Key());
+    auto expected = std::wstring(pair.Value().GetString());
+    if (relative.is_absolute() || relative.wstring().size() > 1024 ||
+        !Within(backup, fs::weakly_canonical(backup / relative)) ||
+        !std::regex_match(expected, std::wregex(L"[0-9a-f]{64}")) ||
+        Digest(backup / relative) != expected)
+      return false;
+  }
+  return true;
 }
 static bool OwnProcess(DWORD pid, const fs::path &executable) {
   HANDLE process =
@@ -187,7 +252,8 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
         finish(L"manualRecovery", L"baseline_identity");
       return 0;
     }
-    if (!SafeTree(backup) || Build(backup) != oldBuild) {
+    if (!SafeTree(backup) || Build(backup) != oldBuild ||
+        !BaselineValid(root, backup)) {
       finish(L"manualRecovery", L"baseline_identity");
       return 2;
     }

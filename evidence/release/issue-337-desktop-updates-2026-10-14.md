@@ -47,3 +47,28 @@ Windows Authenticode is measured by existing packaging tools, not assumed.
 
 Do not close #337 or describe in-app desktop updating as accepted until the real
 OS gates above pass. Unit tests and native compilation do not replace them.
+
+## Follow-up observations (2026-10-15)
+
+- Public draft PR #338 retains implementation for native CI, not acceptance.
+- First Windows run exposed asynchronous writer-lock cleanup (OS error 32).
+  Closing is now awaitable/coalesced and the regression teardown waits for it.
+- Full tools regression: 434 PASS. Feature/UI import boundary check PASS after
+  moving AppState integration into `app/desktop_updates`.
+- Added ZIP local/central-name agreement and extra-field restrictions before
+  extraction, credential-free HTTP retry/Range tests, Windows baseline file
+  hashes, and running/declaration package-identity conflict rejection.
+  Current desktop-focused suite: 25 PASS on macOS.
+- Web: 1530 tests PASS; production build PASS using explicit public origin.
+- Backend: native `go build ./...` PASS; Docker image build PASS,
+  local tag `boohtacord-issue337-api:3443928049c1` (not deployed).
+- iOS 1.0.43 (78) device release compilation PASS with `--no-codesign`;
+  this is not a signed IPA/TestFlight publication.
+- Local Android release build stopped because the previous Android signing key
+  is absent on this Mac. The candidate workflow uses existing repository signing
+  secrets; no replacement/debug signing identity is substituted.
+- Isolated macOS baseline installed under `~/Applications/BOOHTACORD-337-QA`.
+  Actual authentication/state-restore acceptance currently awaits the user's
+  system Keychain confirmation. Computer Use rejects SecurityAgent access;
+  no security bypass was attempted.
+- No genuine installed N → N+1 or rollback gate is PASS yet.

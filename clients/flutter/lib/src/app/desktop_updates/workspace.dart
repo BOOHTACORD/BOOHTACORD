@@ -66,15 +66,18 @@ class DesktopWorkspacePersistence {
 
   Future<Map<String, dynamic>> capture() async {
     final account = state.user?.accountId;
-    if (account == null) throw const FormatException('checkpoint_account');
     final bounds = await windowManager.getBounds();
     return {
       'channel': state.selectedChannel?.id,
       'direct': state.selectedDirectMessage?.id,
       'navigation': state.navigationSection.name,
       'panel': state.workspacePanel.name,
-      'drafts': ComposerDraftMemory.exportForAccount(account),
-      'scroll': ConversationScrollMemory.exportForAccount(account),
+      'drafts': account == null
+          ? <Object>[]
+          : ComposerDraftMemory.exportForAccount(account),
+      'scroll': account == null
+          ? <Object>[]
+          : ConversationScrollMemory.exportForAccount(account),
       'search': {
         for (final e in state.workspace.searchSessions.entries)
           e.key: {

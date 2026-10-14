@@ -82,6 +82,31 @@ void main() {
       expect(artifact.size, 1024);
     },
   );
+  test('a running package conflicting with its declared build cannot stage an update', () async {
+    await expectLater(
+      trust.verify(
+        await signed(),
+        local: const LocalUpdateIdentity(
+          releaseId: 'win-1',
+          releaseOrder: 1,
+          platform: 'windows',
+          packageName: 'boohtacord_desktop',
+          version: '1.0.1',
+          installedVersion: '9.0.0',
+          nativeBuild: '1',
+          installedBuild: '1',
+        ),
+        target: target,
+        selector: selector,
+        environment: const UpdateEnvironment(
+          osVersion: '10.0.19045',
+          arch: 'x64',
+        ),
+        highestOrder: 1,
+      ),
+      throwsA(isA<ArtifactFailure>()),
+    );
+  });
   test(
     'unknown server supplied key and tampered signed bytes fail closed',
     () async {

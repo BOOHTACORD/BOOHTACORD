@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
+
+import 'baseline.dart';
 
 import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart';
@@ -51,7 +54,10 @@ class DesktopRecovery {
     } else {
       // Preserve the whole known-running version, never a server-selected file.
       final current = File(Platform.resolvedExecutable).parent;
-      await _copyTree(current, Directory(path.join(root.path, 'previous')));
+      final source = current.path, destination = root.path;
+      await Isolate.run(
+        () => retainWindowsBaseline(Directory(source), Directory(destination)),
+      );
       await File(path.join(current.path, 'BOOHTACORDRecovery.exe'))
           .copy(path.join(root.path, 'BOOHTACORDRecovery.exe'));
     }
@@ -174,19 +180,5 @@ class DesktopRecovery {
       }
     } catch (_) {}
     return null;
-  }
-}
-
-Future<void> _copyTree(Directory source, Directory destination) async {
-  await destination.create(recursive: true);
-  await for (final entry in source.list(followLinks: false)) {
-    final name = path.join(destination.path, path.basename(entry.path));
-    if (entry is File) {
-      await entry.copy(name);
-    } else if (entry is Directory) {
-      await _copyTree(entry, Directory(name));
-    } else {
-      throw const ArtifactFailure('recovery_link');
-    }
   }
 }

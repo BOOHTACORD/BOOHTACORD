@@ -85,7 +85,9 @@ class ArtifactTrust {
   }) async {
     try {
       final root = _roots[envelope.keyId];
-      if (root == null || root.length != 32 || envelope.payload.length > 16384) {
+      if (root == null ||
+          root.length != 32 ||
+          envelope.payload.length > 16384) {
         throw const ArtifactFailure('publisher');
       }
       final bytes = base64Decode(envelope.payload),
@@ -132,12 +134,21 @@ class ArtifactTrust {
           v['schema_version'] != 1 ||
           v['application_family'] != 'boohtacord' ||
           v['package_id'] != local.packageName ||
+          (local.expectedPackageName != null &&
+              local.packageName != local.expectedPackageName) ||
+          (local.version != null && local.installedVersion != local.version) ||
+          !packageBuildMatches(
+            platform: selector.platform,
+            arch: selector.arch,
+            declared: local.nativeBuild,
+            installed: local.installedBuild,
+          ) ||
           v['release_id'] != target.releaseId ||
           v['release_order'] != target.releaseOrder ||
           v['version'] != target.version ||
           v['native_build'] != target.nativeBuild ||
           v['platform'] != selector.platform ||
-          (selector.platform=='windows' && v['arch']!='x64') ||
+          (selector.platform == 'windows' && v['arch'] != 'x64') ||
           v['distribution'] != selector.distribution ||
           v['channel'] != selector.channel ||
           !(v['arch'] == selector.arch || v['arch'] == 'any') ||
