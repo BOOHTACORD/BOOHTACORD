@@ -9,14 +9,14 @@
   <meta name="robots" content="index,follow">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ru_RU">
-  <meta property="og:title" content="BOOHTACORD — свои люди, свой голос, свои правила">
-  <meta property="og:description" content="Собери друзей в одном месте: голос, чаты и трансляции со звуком. Self-hosted платформа без подписки.">
+  <meta property="og:title" content="BOOHTACORD — голос и чаты на вашем сервере">
+  <meta property="og:description" content="Голосовые каналы, переписка и демонстрация экрана. Приложения и инструкция по развёртыванию своего сервера.">
   <meta property="og:url" content="https://egkurilov.github.io/BOOHTACORD/">
   <meta property="og:image" content="https://raw.githubusercontent.com/Egkurilov/BOOHTACORD/master/clients/web/public/social/boohtacord-og-1200x630.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://egkurilov.github.io/BOOHTACORD/">
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Egkurilov/BOOHTACORD/master/clients/web/public/favicon.png">
-  <title>BOOHTACORD — твой голос. Твоя территория.</title>
+  <title>BOOHTACORD — голос и чаты на вашем сервере</title>
   <style>
     :root {
       --bg:#0a0911;--bg2:#100f19;--surface:#151420;--surface2:#1c1b2a;
@@ -58,7 +58,7 @@
     .hero-eyebrow{border:1px solid rgba(166,143,255,.26);border-radius:99px;background:rgba(132,103,228,.095);padding:10px 13px}
     .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px rgba(164,244,219,.105),0 0 15px rgba(164,244,219,.35)}
     h1,h2,h3,p{margin-top:0}
-    h1{margin:26px 0 24px;font-size:clamp(52px,5.1vw,79px);line-height:1.025;font-weight:860;letter-spacing:-.075em;max-width:690px}
+    h1{margin:26px 0 24px;font-size:clamp(48px,4.5vw,68px);line-height:1.08;font-weight:800;letter-spacing:-.06em;max-width:690px}
     .gradient-text{color:#b8a4ff;background:linear-gradient(93deg,#a48bff 10%,#e0b3ff 60%,#c6bdff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
     .hero-lead{font-size:17px;line-height:1.78;color:#bab7ca;max-width:495px;margin-bottom:30px}
     .hero-lead strong{color:#eeeafd;font-weight:650}
@@ -169,6 +169,29 @@
     .step h3{font-size:21px;margin:0 0 9px;letter-spacing:-.04em}.step p{font-size:13px;color:#a8a4b7;line-height:1.7;margin:0;max-width:340px}
     .step a{color:#d5c5ff;text-decoration:underline;text-underline-offset:3px}
 
+    /* Deployment guide */
+    .deploy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .deploy-card{min-width:0;padding:27px;border:1px solid var(--line);border-radius:19px;background:var(--surface)}
+    .deploy-card h3{font-size:22px;line-height:1.3;margin-bottom:14px;letter-spacing:-.025em}
+    .deploy-card p,.deploy-card li{font-size:14px;line-height:1.75;color:var(--muted)}
+    .deploy-card p:last-child{margin-bottom:0}.deploy-card ul,.deploy-card ol{padding-left:21px;margin:0}.deploy-card li+li{margin-top:9px}
+    .deploy-section a:not(.btn){color:#d5c5ff;text-decoration:underline;text-underline-offset:3px}
+    .deploy-section code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;color:#ddd4f7;overflow-wrap:anywhere}
+    .deploy-guide{margin-top:22px;padding:24px 27px;border:1px solid var(--line-strong);border-radius:19px;background:#12111d}
+    .deploy-guide summary{font-size:20px;line-height:1.4}.deploy-guide>p{margin-right:0;font-size:14px}
+    .deploy-steps{padding:0;margin:25px 0 0;list-style:none;counter-reset:deployment}
+    .deploy-steps>li{counter-increment:deployment;border-top:1px solid var(--line);padding-top:23px;margin-top:25px;min-width:0}
+    .deploy-steps h3{font-size:18px;font-weight:750;margin-bottom:10px;line-height:1.4}
+    .deploy-steps h3::before{content:counter(deployment,decimal-leading-zero) " / ";color:#bca7ff}
+    .deploy-steps p{margin:10px 0;color:var(--muted);font-size:14px;line-height:1.75}
+    .deploy-section pre{max-width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:11px;padding:17px 19px;background:#0b0a12;margin:15px 0;line-height:1.75;tab-size:2}
+    .deploy-section pre code{font-size:12px;white-space:pre;overflow-wrap:normal}
+    .deploy-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:0;margin:15px 0;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+    .deploy-fields dt,.deploy-fields dd{margin:0;padding:12px 16px;font-size:13px;line-height:1.7;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+    .deploy-fields dt{background:rgba(164,138,255,.045)}.deploy-fields dd{color:var(--muted)}.deploy-fields dt:last-of-type,.deploy-fields dd:last-child{border-bottom:0}
+    .deploy-docs{display:flex;flex-wrap:wrap;gap:10px 24px;margin:23px 0 0;font-size:13px}
+    @media(max-width:650px){.deploy-grid{grid-template-columns:1fr}.deploy-card,.deploy-guide{padding:22px 18px}.deploy-guide summary{font-size:18px}.deploy-fields{grid-template-columns:1fr}.deploy-fields dt{border-bottom:0;padding-bottom:3px}.deploy-fields dd{padding-top:3px}.deploy-section pre{padding:14px}.deploy-docs{gap:12px}.deploy-guide .deploy-steps p{margin-right:0}}
+
     /* Downloads */
     .download-section{position:relative}
     .download-section::before{content:"";position:absolute;z-index:-1;top:20%;left:5%;width:50%;height:60%;background:radial-gradient(ellipse,rgba(122,86,216,.09),transparent 66%)}
@@ -261,7 +284,8 @@
       </a>
       <nav class="nav-links" aria-label="Основная навигация">
         <a href="#features">Возможности</a>
-        <a href="#how">Как это работает</a>
+        <a href="#how">Как подключиться</a>
+        <a href="#deploy">Развёртывание</a>
         <a href="#faq">Вопросы</a>
         <a href="https://github.com/Egkurilov/BOOHTACORD" target="_blank" rel="noopener noreferrer">GitHub</a>
       </nav>
@@ -273,9 +297,9 @@
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-copy">
-          <div class="eyebrow hero-eyebrow"><span class="live-dot"></span> ПЛАТФОРМА ДЛЯ СВОИХ</div>
-          <h1 id="hero-title">Свои люди.<br><span class="gradient-text">Свой голос.</span><br>Свои правила.</h1>
-          <p class="hero-lead"><strong>BOOHTACORD</strong> — место, где друзья собираются вместе. Голосовые комнаты, переписки и демонстрация экрана со звуком. <strong>На вашем сервере, без подписки и лишнего шума.</strong></p>
+          <div class="eyebrow hero-eyebrow"><span class="live-dot"></span> ГОЛОСОВЫЕ КАНАЛЫ И ЧАТЫ</div>
+          <h1 id="hero-title">Голос и чаты<br><span class="gradient-text">на вашем<br>сервере.</span></h1>
+          <p class="hero-lead"><strong>BOOHTACORD</strong> — приложение для общения с друзьями и командой. Голосовые каналы, переписка и демонстрация экрана. Сервер размещаете и настраиваете вы.</p>
           <div class="actions">
             <a class="btn btn-primary" id="hero-download" href="#download"><svg class="icon" aria-hidden="true"><use href="#ic-arrow-down"/></svg><span id="hero-download-text">Скачать BOOHTACORD</span></a>
             <a class="btn btn-secondary" href="https://v.bootybay.ru/" target="_blank" rel="noopener noreferrer">Открыть веб-клиент<svg class="icon" aria-hidden="true"><use href="#ic-arrow-up-right"/></svg></a>
@@ -343,42 +367,113 @@
 
     <hr class="thin-rule">
     <div class="proof-strip" aria-label="Ключевые преимущества"><div class="container proof-items">
-      <span><svg class="icon" aria-hidden="true"><use href="#ic-headphones"/></svg> Голос без лишних шагов</span>
+      <span><svg class="icon" aria-hidden="true"><use href="#ic-headphones"/></svg> Голосовые каналы</span>
       <span><svg class="icon" aria-hidden="true"><use href="#ic-monitor"/></svg> Трансляции экрана</span>
       <span><svg class="icon" aria-hidden="true"><use href="#ic-server"/></svg> Своя инфраструктура</span>
-      <span><svg class="icon" aria-hidden="true"><use href="#ic-message"/></svg> Чаты и личка</span>
+      <span><svg class="icon" aria-hidden="true"><use href="#ic-message"/></svg> Чаты и личные сообщения</span>
     </div></div>
     <hr class="thin-rule">
 
     <section class="section" id="features" aria-labelledby="features-title">
       <div class="container">
-        <div class="section-heading"><span class="eyebrow">ВСЁ НУЖНОЕ, НИЧЕГО ЛИШНЕГО</span><h2 id="features-title">Общение, в которое<br><span class="gradient-text">хочется возвращаться.</span></h2><p>Для пары друзей после работы, игрового клана или своего сообщества. BOOHTACORD собирает привычные инструменты в одном месте.</p></div>
+        <div class="section-heading"><span class="eyebrow">ВОЗМОЖНОСТИ</span><h2 id="features-title">Для общения<br><span class="gradient-text">с друзьями и командой.</span></h2><p>Голос, переписка и общие каналы в одном приложении. Подойдёт для небольшой команды, игрового клана или сообщества.</p></div>
         <div class="features-grid">
           <article class="feature-card"><span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="#ic-headphones"/></svg></span><span class="feature-tag">ВОЙТИ В ГОЛОС</span><h3>Голосовые комнаты</h3><p>Заходите в канал, общайтесь, переключайте микрофон, используйте Push-to-Talk и настройки аудио.</p><div class="feature-illustration"><svg class="icon"><use href="#ic-headphones"/></svg></div></article>
-          <article class="feature-card"><span class="feature-icon mint"><svg class="icon" aria-hidden="true"><use href="#ic-monitor"/></svg></span><h3>Показывайте игру</h3><p>Демонстрация экрана и передача звука на поддерживаемых платформах. Вместе даже тогда, когда играет один.</p><div class="feature-illustration"><svg class="icon"><use href="#ic-monitor"/></svg></div></article>
+          <article class="feature-card"><span class="feature-icon mint"><svg class="icon" aria-hidden="true"><use href="#ic-monitor"/></svg></span><h3>Демонстрация экрана</h3><p>Показывайте приложение или экран собеседникам. Передача звука доступна на поддерживаемых платформах.</p><div class="feature-illustration"><svg class="icon"><use href="#ic-monitor"/></svg></div></article>
           <article class="feature-card"><span class="feature-icon pink"><svg class="icon" aria-hidden="true"><use href="#ic-message"/></svg></span><h3>Чаты и личные сообщения</h3><p>Общие обсуждения, переписка один на один, ответы, упоминания и история — всё на своём месте.</p><div class="feature-illustration"><svg class="icon"><use href="#ic-message"/></svg></div></article>
           <article class="feature-card"><span class="feature-icon mint"><svg class="icon" aria-hidden="true"><use href="#ic-server"/></svg></span><h3>Сервер под вашим контролем</h3><p>Разворачиваете систему у себя и сами управляете инфраструктурой. Один сервер BOOHTACORD — одно сообщество.</p><div class="feature-illustration"><svg class="icon"><use href="#ic-server"/></svg></div></article>
           <article class="feature-card"><span class="feature-icon"><svg class="icon" aria-hidden="true"><use href="#ic-file"/></svg></span><h3>Вложения и поиск сообщений</h3><p>Делитесь вложениями, находите нужные сообщения и не теряйте полезное в потоке разговора.</p><div class="feature-illustration"><svg class="icon"><use href="#ic-file"/></svg></div></article>
-          <article class="feature-card"><span class="feature-icon pink"><svg class="icon" aria-hidden="true"><use href="#ic-shield"/></svg></span><h3>Удобное управление</h3><p>Категории, текстовые и голосовые каналы, администраторы и разрешения для участников — порядок без хаоса.</p><div class="feature-illustration"><svg class="icon"><use href="#ic-shield"/></svg></div></article>
+          <article class="feature-card"><span class="feature-icon pink"><svg class="icon" aria-hidden="true"><use href="#ic-shield"/></svg></span><h3>Каналы и разрешения</h3><p>Категории, текстовые и голосовые каналы, администраторы и разрешения для участников — порядок без хаоса.</p><div class="feature-illustration"><svg class="icon"><use href="#ic-shield"/></svg></div></article>
         </div>
-        <div class="ownership"><div><h3>Не арендованный уголок интернета. <span class="gradient-text">Ваше пространство.</span></h3><p>Нет необходимости зависеть от чужой структуры серверов и платных тарифов общения. Выбирайте, где разворачивать BOOHTACORD, и управляйте своим сообществом сами.</p></div><a class="btn btn-secondary" href="https://github.com/Egkurilov/BOOHTACORD" target="_blank" rel="noopener noreferrer">Исходный код <svg class="icon" aria-hidden="true"><use href="#ic-arrow-up-right"/></svg></a></div>
+        <div class="ownership"><div><h3><span class="gradient-text">Собственный сервер</span> для одного сообщества</h3><p>Вы выбираете хостинг, создаёте каналы и управляете разрешениями. Один экземпляр BOOHTACORD обслуживает одно изолированное сообщество.</p></div><a class="btn btn-secondary" href="https://github.com/Egkurilov/BOOHTACORD" target="_blank" rel="noopener noreferrer">Исходный код <svg class="icon" aria-hidden="true"><use href="#ic-arrow-up-right"/></svg></a></div>
       </div>
     </section>
 
     <section class="section how-section" id="how" aria-labelledby="how-title">
       <div class="container">
-        <div class="section-heading"><span class="eyebrow">БЕЗ СЛОЖНЫХ РИТУАЛОВ</span><h2 id="how-title">Ваше место.<br><span class="gradient-text">Три простых шага.</span></h2><p>Сервер на вашей инфраструктуре, знакомый интерфейс и ваши люди рядом. Для администратора потребуется развернуть backend и медиасервер.</p></div>
+        <div class="section-heading"><span class="eyebrow">НАЧАЛО РАБОТЫ</span><h2 id="how-title">Как подключиться<br><span class="gradient-text">к серверу.</span></h2><p>Пользователю нужен адрес сервера от администратора. Если своего сервера ещё нет, начните с инструкции по развёртыванию ниже.</p></div>
         <div class="steps">
-          <div class="step"><span class="step-num">01 / СЕРВЕР</span><h3>Разверните BOOHTACORD</h3><p>Запустите собственный экземпляр через Docker Compose. <a href="https://github.com/Egkurilov/BOOHTACORD#начало-работы" target="_blank" rel="noopener noreferrer">Инструкции в GitHub</a>.</p></div>
-          <div class="step"><span class="step-num">02 / ПРИЛОЖЕНИЕ</span><h3>Выберите, где общаться</h3><p>Скачайте приложение для Windows, macOS или Android либо используйте веб-клиент своего сервера.</p></div>
-          <div class="step"><span class="step-num">03 / КОМПАНИЯ</span><h3>Соберите своих</h3><p>Передайте друзьям адрес своего сервера, организуйте каналы и встречайтесь в голосе, когда удобно.</p></div>
+          <div class="step"><span class="step-num">01 / СЕРВЕР</span><h3>Разверните BOOHTACORD</h3><p>Администратор устанавливает сервер и создаёт первую учётную запись. <a href="#deploy">Инструкция по развёртыванию</a>.</p></div>
+          <div class="step"><span class="step-num">02 / ПРИЛОЖЕНИЕ</span><h3>Установите приложение</h3><p>Скачайте приложение для Windows, macOS или Android либо используйте веб-клиент своего сервера.</p></div>
+          <div class="step"><span class="step-num">03 / ПОДКЛЮЧЕНИЕ</span><h3>Введите адрес сервера</h3><p>Укажите адрес сервера в приложении, войдите или зарегистрируйтесь, если администратор разрешил регистрацию. Затем выберите канал.</p></div>
         </div>
+      </div>
+    </section>
+
+    <section class="section deploy-section" id="deploy" aria-labelledby="deploy-title">
+      <div class="container">
+        <div class="section-heading"><span class="eyebrow">ДЛЯ АДМИНИСТРАТОРА</span><h2 id="deploy-title">Развёртывание<br><span class="gradient-text">своего сервера.</span></h2><p>Сервер включает API, веб-клиент, PostgreSQL, Caddy и медиасервер LiveKit. Ниже — подготовка, тестовый запуск из исходников и порядок установки рабочего выпуска.</p></div>
+        <div class="deploy-grid">
+          <article class="deploy-card">
+            <h3>Что понадобится</h3>
+            <ul>
+              <li>Linux-сервер с Docker Engine и плагином Docker Compose. Для запуска из исходников — Git; для рабочего выпуска — также Python 3, OpenSSL и Bash.</li>
+              <li>Домен с DNS-записью на сервер и его доступный извне IP-адрес. Caddy обслуживает сайт по HTTPS.</li>
+              <li>Открытые входящие порты: <code>80/tcp</code>, <code>443/tcp</code>, <code>7882/tcp</code> и <code>50000–50100/udp</code>. Последние два нужны для медиа LiveKit.</li>
+              <li>PostgreSQL, API и управляющий порт LiveKit остаются в приватной сети Compose. Не открывайте их в интернет.</li>
+            </ul>
+          </article>
+          <article class="deploy-card">
+            <h3>Для рабочего сервера</h3>
+            <p>Рабочее окружение использует подписанный server bundle с готовыми образами API и web одной ревизии. Сборка на сервере через dev overlay предназначена для тестового запуска.</p>
+            <ol>
+              <li>Подготовьте runtime <code>.env</code> и доверенный публичный ключ подписи на сервере. Настройте trusted builder и окружение <code>production</code> в своём GitHub-репозитории.</li>
+              <li>Получите успешный <strong>Build server</strong> для полного SHA из <code>master</code>. Доставка через <strong>Deploy production</strong> проверяет bundle и устанавливает готовые образы.</li>
+              <li>Для повторной установки используйте <strong>Install retained release</strong> с ID успешной сборки и тем же SHA. Порядок подготовки хоста, установки и обновлений — в <a href="https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/runbooks/releases.md" target="_blank" rel="noopener noreferrer">инструкции по выпускам</a>.</li>
+            </ol>
+          </article>
+        </div>
+        <details class="deploy-guide" open>
+          <summary>Тестовый запуск через Docker Compose <span class="faq-plus" aria-hidden="true">+</span></summary>
+          <p>Команды ниже выполняются в Bash на тестовом Linux-сервере. Используйте отдельное окружение и свой домен. Они собирают API и web из исходников; для рабочего окружения следуйте порядку установки подписанного выпуска выше.</p>
+          <ol class="deploy-steps">
+            <li>
+              <h3>Скачайте проект и подготовьте настройки</h3>
+              <pre><code>git clone --branch master https://github.com/Egkurilov/BOOHTACORD.git
+cd BOOHTACORD
+cp .env.example .env
+chmod 600 .env</code></pre>
+              <p>Откройте <code>.env</code> в редакторе. Замените значения <code>replace-before-running</code> собственными случайными секретами для <code>POSTGRES_PASSWORD</code>, <code>LIVEKIT_API_KEY</code> и <code>LIVEKIT_API_SECRET</code>. Файл хранится только у владельца сервера.</p>
+              <dl class="deploy-fields">
+                <dt><code>PUBLIC_HOST</code></dt><dd>Домен сервера, например <code>voice.example.com</code>, без протокола.</dd>
+                <dt><code>PUBLIC_ORIGIN</code> и <code>VITE_PUBLIC_ORIGIN</code></dt><dd>Одинаковый HTTPS-адрес: <code>https://voice.example.com</code>. Вторую переменную добавьте в файл.</dd>
+                <dt><code>LIVEKIT_PUBLIC_WS_URL</code></dt><dd><code>wss://voice.example.com/rtc</code> — публичный адрес LiveKit через Caddy.</dd>
+                <dt><code>LIVEKIT_NODE_IP</code></dt><dd>Доступный извне IP-адрес медиасервера. Для удалённых клиентов значение <code>127.0.0.1</code> не подходит.</dd>
+                <dt><code>API_IMAGE</code> и <code>WEB_IMAGE</code></dt><dd>Для этого тестового запуска оставьте <code>voice-platform-api:dev</code> и <code>voice-platform-web:dev</code> из шаблона.</dd>
+              </dl>
+              <p>Оставьте <code>LIVEKIT_PRIVATE_HTTP_URL=http://livekit:7880</code>. Если приватная подсеть конфликтует с сетью хоста, меняйте <code>PRIVATE_NETWORK_SUBNET</code>, <code>PRIVATE_PROXY_IP</code> и <code>TRUSTED_PROXY_CIDRS</code> согласованно — <a href="https://github.com/Egkurilov/BOOHTACORD/blob/master/deploy/README.md" target="_blank" rel="noopener noreferrer">подробности конфигурации</a>.</p>
+            </li>
+            <li>
+              <h3>Проверьте конфигурацию и запустите сервисы</h3>
+              <pre><code>docker compose --env-file .env -f deploy/compose.yaml --profile operator config --quiet
+docker compose --env-file .env -f deploy/compose.yaml -f deploy/compose.dev.yaml up --build -d
+docker compose --env-file .env -f deploy/compose.yaml ps</code></pre>
+              <p>Compose запускает PostgreSQL, выполняет миграции и поднимает остальные сервисы. Дождитесь успешного завершения <code>migrate</code> и готовности сервисов, прежде чем создавать администратора.</p>
+            </li>
+            <li>
+              <h3>Создайте первого администратора</h3>
+              <p>Выполните bootstrap до открытия регистрации. Пароль вводится скрыто и передаётся через stdin, а не аргумент командной строки. В примере логин администратора — <code>owner</code>.</p>
+              <pre><code>read -r -s -p 'Пароль администратора: ' BOOTSTRAP_PASSWORD
+printf '\n'
+printf '%s\n' "$BOOTSTRAP_PASSWORD" | docker compose --env-file .env -f deploy/compose.yaml --profile operator run --rm -T bootstrap-admin --login owner --password-stdin
+unset BOOTSTRAP_PASSWORD</code></pre>
+              <p>Повторный bootstrap не меняет существующего администратора или его пароль. Восстановление доступа выполняется отдельно — <a href="https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/runbooks/administrator.md" target="_blank" rel="noopener noreferrer">операционная инструкция</a>.</p>
+            </li>
+            <li>
+              <h3>Проверьте доступность и подключите клиент</h3>
+              <pre><code>curl --fail https://voice.example.com/api/v1/health</code></pre>
+              <p>Замените домен в команде своим. Откройте тот же HTTPS-адрес в браузере или укажите его в приложении и войдите как <code>owner</code>. Настройте каналы и разрешения, затем передайте адрес участникам.</p>
+              <p>Health проверяет доступность API. Отдельно проверьте голос между двумя клиентами и демонстрацию экрана: успешный ответ API ещё не подтверждает работу медиа.</p>
+            </li>
+          </ol>
+        </details>
+        <div class="deploy-docs"><a href="https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/runbooks/development.md" target="_blank" rel="noopener noreferrer">Разработка и тестовое окружение ↗</a><a href="https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/runbooks/releases.md" target="_blank" rel="noopener noreferrer">Рабочие выпуски и обновления ↗</a><a href="https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/runbooks/administrator.md" target="_blank" rel="noopener noreferrer">Администрирование ↗</a></div>
       </div>
     </section>
 
     <section class="section download-section" id="download" aria-labelledby="download-title">
       <div class="container">
-        <div class="download-head"><div class="section-heading"><span class="eyebrow">ЗАХОДИ В ГОЛОС</span><h2 id="download-title">Скачай.<br><span class="gradient-text">Зови своих.</span></h2><p>Официальные сборки лежат в GitHub Releases. Кнопки ведут напрямую к файлам — а версии обновляются на этой странице автоматически.</p></div><a class="release-link" href="https://github.com/Egkurilov/BOOHTACORD/releases" target="_blank" rel="noopener noreferrer">Все версии на GitHub <svg class="icon" aria-hidden="true"><use href="#ic-arrow-up-right"/></svg></a></div>
+        <div class="download-head"><div class="section-heading"><span class="eyebrow">ПРИЛОЖЕНИЯ</span><h2 id="download-title">Скачать<br><span class="gradient-text">BOOHTACORD.</span></h2><p>Официальные сборки лежат в GitHub Releases. Кнопки ведут напрямую к файлам — а версии обновляются на этой странице автоматически.</p></div><a class="release-link" href="https://github.com/Egkurilov/BOOHTACORD/releases" target="_blank" rel="noopener noreferrer">Все версии на GitHub <svg class="icon" aria-hidden="true"><use href="#ic-arrow-up-right"/></svg></a></div>
         <div class="download-grid">
           <article class="download-card" data-platform="windows"><span class="recommended-label">ДЛЯ ВАС</span><div class="os-row"><span class="os-logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M2 5.5 14 3.9v12H2Zm14.5-1.9L30 1.5V16H16.5ZM2 18h12v12L2 28.4Zm14.5 0H30v12.5l-13.5-2Z"/></svg></span><div class="os-name"><h3>Windows</h3><small>64-bit · ZIP</small></div></div><p class="os-description">Приложение для ПК. Распакуйте архив и запустите BOOHTACORD. Сборка пока без цифровой подписи.</p><a class="btn btn-primary" data-download="windows" href="https://github.com/Egkurilov/BOOHTACORD/releases/download/windows-v1.0.42/BOOHTACORD-windows-v1.0.42-x64.zip"><svg class="icon" aria-hidden="true"><use href="#ic-arrow-down"/></svg> Скачать для Windows</a><div class="version-row"><span data-version="windows">v1.0.42 · ZIP</span><a data-release="windows" href="https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.42" target="_blank" rel="noopener noreferrer">О релизе</a></div></article>
           <article class="download-card" data-platform="macos"><span class="recommended-label">ДЛЯ ВАС</span><div class="os-row"><span class="os-logo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M24.5 16.4c0-3.8 3.1-5.7 3.2-5.8-1.8-2.7-4.6-3.1-5.6-3.1-2.4-.3-4.7 1.4-5.9 1.4s-3-1.4-5-1.3C8.5 7.7 6 9.2 4.6 11.5c-2.8 4.5-.7 11 2 15 1.3 1.9 2.8 4 4.9 3.9 1.9-.1 2.6-1.2 4.9-1.2s2.9 1.2 5 1.2 3.3-1.8 4.5-3.7c1.5-2.2 2.1-4.4 2.1-4.5-.1-.1-3.5-1.5-3.5-5.8ZM20.8 4.9C21.9 3.5 22.6 1.7 22.5 0c-1.7.1-3.7 1.1-4.9 2.4-1.1 1.2-2.1 3.2-1.9 4.9 1.9.1 3.8-1 5.1-2.4Z"/></svg></span><div class="os-name"><h3>macOS</h3><small>Apple Silicon + Intel · ZIP</small></div></div><p class="os-description">Универсальная сборка для Mac. Приложение пока не нотарифицировано Apple — может понадобиться разрешить запуск.</p><a class="btn btn-primary" data-download="macos" href="https://github.com/Egkurilov/BOOHTACORD/releases/download/macos-v1.0.42/BOOHTACORD-macos-v1.0.42.zip"><svg class="icon" aria-hidden="true"><use href="#ic-arrow-down"/></svg> Скачать для macOS</a><div class="version-row"><span data-version="macos">v1.0.42 · ZIP</span><a data-release="macos" href="https://github.com/Egkurilov/BOOHTACORD/releases/tag/macos-v1.0.42" target="_blank" rel="noopener noreferrer">О релизе</a></div></article>
@@ -390,10 +485,10 @@
 
     <section class="faq" id="faq" aria-labelledby="faq-title">
       <div class="container faq-grid">
-        <div class="section-heading"><span class="eyebrow">ПО ДЕЛУ</span><h2 id="faq-title">Частые<br><span class="gradient-text">вопросы.</span></h2><p>Остальное можно узнать в документации и репозитории проекта.</p></div>
+        <div class="section-heading"><span class="eyebrow">СПРАВКА</span><h2 id="faq-title">Частые<br><span class="gradient-text">вопросы.</span></h2><p>Остальное можно узнать в документации и репозитории проекта.</p></div>
         <div class="faq-list">
           <details><summary>BOOHTACORD действительно бесплатный? <span class="faq-plus" aria-hidden="true">+</span></summary><p>Клиенты и опубликованные сборки доступны бесплатно. Подписка для голосовых каналов не нужна. Собственный хостинг, домен и интернет-трафик оплачиваются вами, если их предоставляет платный провайдер.</p></details>
-          <details><summary>Можно просто скачать приложение и начать общаться? <span class="faq-plus" aria-hidden="true">+</span></summary><p>Для общения понадобится сервер BOOHTACORD: свой или тот, адрес которого вам дал администратор. Приложение подключается к этому серверу. <a href="https://github.com/Egkurilov/BOOHTACORD" target="_blank" rel="noopener noreferrer">Инструкции по развёртыванию — на GitHub</a>.</p></details>
+          <details><summary>Можно просто скачать приложение и начать общаться? <span class="faq-plus" aria-hidden="true">+</span></summary><p>Для общения понадобится сервер BOOHTACORD: свой или тот, адрес которого вам дал администратор. Приложение подключается к этому серверу. <a href="#deploy">Инструкция по развёртыванию — на этой странице</a>.</p></details>
           <details><summary>Демонстрация экрана работает со звуком? <span class="faq-plus" aria-hidden="true">+</span></summary><p>В проекте реализована передача экрана и работа со звуком на поддерживаемых платформах. Конкретные возможности зависят от ОС, устройства и текущей сборки. Мы не обещаем одинаковое качество и частоту кадров для всех устройств.</p></details>
           <details><summary>Почему Windows и macOS могут предупреждать об установке? <span class="faq-plus" aria-hidden="true">+</span></summary><p>Текущие Windows-сборки выпускаются без Authenticode-подписи, а macOS-сборки не нотарифицированы Apple. Скачивайте файлы только из <a href="https://github.com/Egkurilov/BOOHTACORD/releases" target="_blank" rel="noopener noreferrer">официальных GitHub Releases</a> и при необходимости проверяйте контрольные суммы.</p></details>
           <details><summary>А что с iPhone и iPad? <span class="faq-plus" aria-hidden="true">+</span></summary><p>iOS-клиент есть в исходном проекте, но публичного релиза для установки сейчас нет. Как только такой релиз появится, ссылку можно будет добавить на эту страницу.</p></details>
@@ -401,10 +496,10 @@
       </div>
     </section>
 
-    <section class="final-section" aria-labelledby="final-title"><div class="container"><div class="final-box"><span class="eyebrow" style="margin-bottom:17px">ВАШИ ЛЮДИ УЖЕ РЯДОМ</span><h2 id="final-title">Хороший вечер начинается<br><span class="gradient-text">с «заходи в голос».</span></h2><p>Скачивай BOOHTACORD, зови друзей и создавай место, куда хочется возвращаться.</p><div class="actions"><a class="btn btn-primary" href="#download"><svg class="icon" aria-hidden="true"><use href="#ic-arrow-down"/></svg> Выбрать платформу</a><a class="btn btn-secondary" href="https://github.com/Egkurilov/BOOHTACORD" target="_blank" rel="noopener noreferrer">Посмотреть проект <svg class="icon" aria-hidden="true"><use href="#ic-arrow-up-right"/></svg></a></div></div></div></section>
+    <section class="final-section" aria-labelledby="final-title"><div class="container"><div class="final-box"><span class="eyebrow" style="margin-bottom:17px">ПОДКЛЮЧЕНИЕ</span><h2 id="final-title">Начните с приложения<br><span class="gradient-text">или своего сервера.</span></h2><p>Если сервер уже есть, скачайте клиент. Если вы администратор, откройте инструкцию по развёртыванию.</p><div class="actions"><a class="btn btn-primary" href="#download"><svg class="icon" aria-hidden="true"><use href="#ic-arrow-down"/></svg> Выбрать платформу</a><a class="btn btn-secondary" href="#deploy">Развернуть сервер <svg class="icon" aria-hidden="true"><use href="#ic-arrow-right"/></svg></a></div></div></div></section>
   </main>
 
-  <footer class="site-footer"><div class="container"><div class="footer-main"><a class="logo" href="#top" aria-label="BOOHTACORD, наверх"><svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true"><path fill="#b49cff" d="M15 9C22 3 42 3 49 9c7 6 11 22 9 36-1 8-5 13-11 13-5 0-7-8-15-8s-10 8-15 8C11 58 7 53 6 45 4 31 8 15 15 9Z"/><ellipse fill="#24163e" cx="23" cy="33" rx="5.4" ry="7" transform="rotate(20 23 33)"/><ellipse fill="#24163e" cx="41" cy="33" rx="5.4" ry="7" transform="rotate(-20 41 33)"/></svg><span>BOOH<span>TACORD</span></span></a><nav class="footer-links" aria-label="Ссылки проекта"><a href="#features">Возможности</a><a href="#download">Скачать</a><a href="https://github.com/Egkurilov/BOOHTACORD" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://github.com/Egkurilov/BOOHTACORD/blob/master/README.md" target="_blank" rel="noopener noreferrer">Документация ↗</a><a href="https://v.bootybay.ru/" target="_blank" rel="noopener noreferrer">Веб-клиент ↗</a></nav></div><div class="footer-bottom"><span>© <span id="year">2026</span> BOOHTACORD · Создано для своих.</span><span>Сайт — витрина проекта. Сервер и медиа работают отдельно.</span></div></div></footer>
+  <footer class="site-footer"><div class="container"><div class="footer-main"><a class="logo" href="#top" aria-label="BOOHTACORD, наверх"><svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true"><path fill="#b49cff" d="M15 9C22 3 42 3 49 9c7 6 11 22 9 36-1 8-5 13-11 13-5 0-7-8-15-8s-10 8-15 8C11 58 7 53 6 45 4 31 8 15 15 9Z"/><ellipse fill="#24163e" cx="23" cy="33" rx="5.4" ry="7" transform="rotate(20 23 33)"/><ellipse fill="#24163e" cx="41" cy="33" rx="5.4" ry="7" transform="rotate(-20 41 33)"/></svg><span>BOOH<span>TACORD</span></span></a><nav class="footer-links" aria-label="Ссылки проекта"><a href="#features">Возможности</a><a href="#deploy">Развёртывание</a><a href="#download">Скачать</a><a href="https://github.com/Egkurilov/BOOHTACORD" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://github.com/Egkurilov/BOOHTACORD/blob/master/README.md" target="_blank" rel="noopener noreferrer">Документация ↗</a><a href="https://v.bootybay.ru/" target="_blank" rel="noopener noreferrer">Веб-клиент ↗</a></nav></div><div class="footer-bottom"><span>© <span id="year">2026</span> BOOHTACORD · Голосовые каналы и чаты.</span><span>Сайт — витрина проекта. Сервер и медиа работают отдельно.</span></div></div></footer>
 
   <script>
     (() => {
