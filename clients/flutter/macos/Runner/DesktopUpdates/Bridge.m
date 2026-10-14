@@ -136,8 +136,11 @@
                                                  kSecCSDefaultFlags, &code)
                    : errSecCSBadBundleFormat;
       if (status == errSecSuccess)
-        status = SecStaticCodeCheckValidity(
-            code, kSecCSCheckAllArchitectures | kSecCSCheckNestedCode, NULL);
+        status = SecStaticCodeCheckValidity(code,
+                                            kSecCSCheckAllArchitectures |
+                                                kSecCSCheckNestedCode |
+                                                kSecCSStrictValidate,
+                                            NULL);
       if (code)
         CFRelease(code);
       dispatch_async(dispatch_get_main_queue(), ^{

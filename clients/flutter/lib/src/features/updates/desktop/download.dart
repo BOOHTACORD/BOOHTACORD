@@ -20,7 +20,31 @@ class DownloadCancellation {
 
 /// Intentionally separate from ApiClient: no session headers, cookies or tokens.
 class DesktopArtifactDownloader {
+  DesktopArtifactDownloader({HttpClient Function()? clientFactory})
+    : _clientFactory = clientFactory ?? HttpClient.new;
+  final HttpClient Function() _clientFactory;
   Future<File> download(
+    VerifiedInstallArtifact artifact,
+    File partial,
+    DownloadCancellation cancellation,
+    DownloadProgress progress,
+  ) async {
+    for (var attempt = 0; ; attempt++) {
+      try {
+        return await _once(artifact, partial, cancellation, progress);
+      } on ArtifactFailure catch (error) {
+        if (attempt >= 2 ||
+            !['network', 'truncated', 'http'].contains(error.code))
+          rethrow;
+        for (var tick = 0; tick < (attempt + 1) * 10; tick++) {
+          cancellation.check();
+          await Future<void>.delayed(const Duration(milliseconds: 100));
+        }
+      }
+    }
+  }
+
+  Future<File> _once(
     VerifiedInstallArtifact artifact,
     File partial,
     DownloadCancellation cancellation,
@@ -54,7 +78,7 @@ class DesktopArtifactDownloader {
       await partial.writeAsBytes([]);
       offset = 0;
     }
-    final client = HttpClient()
+    final client = _clientFactory()
       ..connectionTimeout = const Duration(seconds: 20)
       ..idleTimeout = const Duration(seconds: 30);
     cancellation._client = client;

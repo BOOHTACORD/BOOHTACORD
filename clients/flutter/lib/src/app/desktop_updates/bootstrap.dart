@@ -6,18 +6,18 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-import '../../../app_state.dart';
-import '../api.dart';
-import '../controller.dart';
-import '../identity.dart';
-import '../restore/checkpoint.dart';
-import '../restore/workspace.dart';
-import 'artifact.dart';
-import 'coordinator.dart';
-import 'macos.dart';
-import 'staging.dart';
-import 'recovery.dart';
-import 'velopack.dart';
+import '../../app_state.dart';
+import '../../features/updates/api.dart';
+import '../../features/updates/controller.dart';
+import '../../features/updates/identity.dart';
+import '../../features/updates/restore/checkpoint.dart';
+import 'workspace.dart';
+import '../../features/updates/desktop/artifact.dart';
+import '../../features/updates/desktop/coordinator.dart';
+import '../../features/updates/desktop/macos.dart';
+import '../../features/updates/desktop/staging.dart';
+import '../../features/updates/desktop/recovery.dart';
+import '../../features/updates/desktop/velopack.dart';
 
 Future<UpdateController> createNativeUpdateController(AppState state) async {
   final identity = await NativeUpdateIdentity.load();

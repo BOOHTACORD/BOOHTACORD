@@ -11,7 +11,7 @@ import 'src/services/api_client.dart';
 import 'src/services/third_party_audio_licenses.dart';
 import 'src/services/client_telemetry.dart';
 import 'src/telemetry/traced_app_state.dart';
-import 'src/features/updates/desktop/bootstrap.dart';
+import 'src/app/desktop_updates/bootstrap.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -19,7 +19,7 @@ def main():
     flutter = client('flutter')
     native_version = version('android')
     tag = 'android-v' + native_version.split('+')[0]
-    if not args.debug and os.environ.get('GITHUB_REF_NAME', tag) != tag: raise ValueError('Release tag differs from pubspec version')
+    if not args.debug and os.environ.get('GITHUB_REF_TYPE') == 'tag' and os.environ.get('GITHUB_REF_NAME') != tag: raise ValueError('Release tag differs from pubspec version')
     run('flutter', 'pub', 'get', '--enforce-lockfile', cwd=flutter)
     command = ('--debug',) if args.debug else ('--release', '--split-per-abi')
     with provision():

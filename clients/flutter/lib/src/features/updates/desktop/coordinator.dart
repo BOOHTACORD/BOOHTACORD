@@ -306,7 +306,10 @@ class DesktopUpdateCoordinator extends ChangeNotifier {
   void nativeFailed({String reason = 'native_apply'}) {
     final transaction = _recoveryTransaction, directory = _directory;
     if (transaction != null && directory != null) {
-      unawaited(cancelRecovery?.call(transaction, directory) ?? Future.value());
+      unawaited(
+        (cancelRecovery?.call(transaction, directory) ?? Future<void>.value())
+            .catchError((Object _) {}),
+      );
     }
     phase = DesktopUpdatePhase.failed;
     failure = reason;
@@ -406,7 +409,9 @@ class DesktopUpdateCoordinator extends ChangeNotifier {
     } catch (error) {
       final transaction = _recoveryTransaction;
       if (transaction != null) {
-        await cancelRecovery?.call(transaction, directory);
+        try {
+          await cancelRecovery?.call(transaction, directory);
+        } catch (_) {}
       }
       phase = DesktopUpdatePhase.failed;
       failure = error is ArtifactFailure ? error.code : 'apply';

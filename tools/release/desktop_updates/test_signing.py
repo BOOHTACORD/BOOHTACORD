@@ -10,7 +10,7 @@ from .sign import sign
 from .verify import verify
 from .promote import promote
 
-OPENSSL=os.environ.get('BOOHTACORD_TEST_OPENSSL',shutil.which('openssl'))
+OPENSSL=os.environ.get('BOOHTACORD_TEST_OPENSSL') or ('/opt/homebrew/opt/openssl@3/bin/openssl' if Path('/opt/homebrew/opt/openssl@3/bin/openssl').is_file() else shutil.which('openssl'))
 
 class PublisherTest(unittest.TestCase):
     def setUp(self):

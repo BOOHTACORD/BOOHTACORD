@@ -30,8 +30,11 @@ static BOOL ValidCode(NSString *app, NSString *build) {
       (__bridge CFURLRef)[NSURL fileURLWithPath:app], kSecCSDefaultFlags,
       &code);
   if (status == errSecSuccess)
-    status = SecStaticCodeCheckValidity(
-        code, kSecCSCheckAllArchitectures | kSecCSCheckNestedCode, NULL);
+    status = SecStaticCodeCheckValidity(code,
+                                        kSecCSCheckAllArchitectures |
+                                            kSecCSCheckNestedCode |
+                                            kSecCSStrictValidate,
+                                        NULL);
   if (code)
     CFRelease(code);
   return status == errSecSuccess;

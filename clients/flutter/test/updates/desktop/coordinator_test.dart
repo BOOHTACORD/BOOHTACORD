@@ -13,7 +13,7 @@ import 'package:boohtacord_desktop/src/features/updates/desktop/staging.dart';
 
 class Native implements DesktopNativeUpdater {
   int staged = 0, applied = 0;
-  bool support = true;
+  bool support = true, failApply = false;
   @override
   Future<bool> capable() async => support;
   @override
@@ -34,6 +34,7 @@ class Native implements DesktopNativeUpdater {
     String extracted,
   ) async {
     applied++;
+    if (failApply) throw const ArtifactFailure("native_apply");
   }
 
   @override
@@ -45,6 +46,7 @@ void main() {
   late Native native;
   late DesktopUpdateCoordinator coordinator;
   var scope = 'account-1', checkpointCount = 0, shutdownCount = 0;
+  var cancelFails = false;
   late UpdateTarget target;
   setUp(() async {
     root = await Directory.systemTemp.createTemp('update-coordinator-test-');
@@ -93,6 +95,7 @@ void main() {
     scope = 'account-1';
     checkpointCount = 0;
     shutdownCount = 0;
+    cancelFails = false;
     coordinator = DesktopUpdateCoordinator(
       trust: ArtifactTrust({'test': public}),
       local: const LocalUpdateIdentity(
@@ -105,6 +108,9 @@ void main() {
       store: DesktopUpdateStore(root),
       native: native,
       currentScope: () => scope,
+      cancelRecovery: (id, directory) async {
+        if (cancelFails) throw const FileSystemException("fixture");
+      },
       preparePackage: (a, dir, cancel, progress) async {
         await Future<void>.delayed(const Duration(milliseconds: 10));
         await File('${dir.path}/${a.packageFileName}')
@@ -121,6 +127,7 @@ void main() {
   });
   tearDown(() async {
     coordinator.dispose();
+    await coordinator.store.releaseWriter();
     await root.delete(recursive: true);
   });
   test(
@@ -152,6 +159,17 @@ void main() {
       expect(coordinator.phase, isNot(DesktopUpdatePhase.readyToRestart));
       await coordinator.restart();
       expect(checkpointCount, 0);
+    },
+  );
+  test(
+    'cleanup errors do not leave a failed native apply stuck in Applying',
+    () async {
+      await coordinator.prepare(target);
+      native.failApply = true;
+      cancelFails = true;
+      await coordinator.restart();
+      expect(coordinator.phase, DesktopUpdatePhase.failed);
+      expect(coordinator.failure, 'native_apply');
     },
   );
   test('changed compatibility policy prevents checkpoint and helper', () async {

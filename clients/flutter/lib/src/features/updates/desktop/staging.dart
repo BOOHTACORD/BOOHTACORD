@@ -20,7 +20,8 @@ Future<void> verifyPackageDigest(
     final file = File(input);
     if (!await file.exists() ||
         await file.length() != size ||
-        (await crypto.sha256.bind(file.openRead()).first).toString() != digest) {
+        (await crypto.sha256.bind(file.openRead()).first).toString() !=
+            digest) {
       throw const ArtifactFailure('digest');
     }
   });
@@ -115,6 +116,52 @@ Future<void> _scanZip(File file) async {
           (((attributes >> 16) & 0xf000) == 0xa000 && declared > 1024)) {
         throw const ArtifactFailure('archive_size');
       }
+      final nameSize = central.getUint16(cursor + 28, Endian.little),
+          extraSize = central.getUint16(cursor + 30, Endian.little);
+      final nameStart = cursor + 46, extraStart = nameStart + nameSize;
+      if (nameSize == 0 ||
+          nameSize > 4096 ||
+          extraStart + extraSize > central.lengthInBytes)
+        throw const ArtifactFailure('archive_directory');
+      final expectedName = central.buffer.asUint8List(
+        central.offsetInBytes + nameStart,
+        nameSize,
+      );
+      _zipExtra(
+        central.buffer.asUint8List(
+          central.offsetInBytes + extraStart,
+          extraSize,
+        ),
+      );
+      final localOffset = central.getUint32(cursor + 42, Endian.little);
+      if (localOffset + 30 > offset)
+        throw const ArtifactFailure('archive_directory');
+      await io.setPosition(localOffset);
+      final local = ByteData.sublistView(await io.read(30));
+      if (local.lengthInBytes != 30 ||
+          local.getUint32(0, Endian.little) != 0x04034b50 ||
+          local.getUint16(26, Endian.little) != nameSize ||
+          local.getUint16(8, Endian.little) !=
+              central.getUint16(cursor + 10, Endian.little) ||
+          local.getUint16(6, Endian.little) !=
+              central.getUint16(cursor + 8, Endian.little))
+        throw const ArtifactFailure('archive_directory');
+      final localExtraSize = local.getUint16(28, Endian.little);
+      if (localOffset +
+              30 +
+              nameSize +
+              localExtraSize +
+              central.getUint32(cursor + 20, Endian.little) >
+          offset)
+        throw const ArtifactFailure('archive_directory');
+      final localName = await io.read(nameSize);
+      if (localName.length != expectedName.length ||
+          List.generate(
+            localName.length,
+            (i) => localName[i] == expectedName[i],
+          ).contains(false))
+        throw const ArtifactFailure('archive_directory');
+      _zipExtra(await io.read(localExtraSize));
       cursor +=
           46 +
           central.getUint16(cursor + 28, Endian.little) +
@@ -127,14 +174,41 @@ Future<void> _scanZip(File file) async {
   }
 }
 
+// Extraction must not interpret a second filename/link supplied by an extra
+// field that differs from the complete virtual tree validated above.
+void _zipExtra(Uint8List bytes) {
+  final data = ByteData.sublistView(bytes);
+  var cursor = 0;
+  const safe = {
+    0x5855,
+    0x5455,
+    0x7875,
+    0x000a,
+  }; // Unix/extended/NTFS timestamps and uid/gid.
+  while (cursor < data.lengthInBytes) {
+    if (cursor + 4 > data.lengthInBytes)
+      throw const ArtifactFailure('archive_directory');
+    final kind = data.getUint16(cursor, Endian.little),
+        size = data.getUint16(cursor + 2, Endian.little);
+    cursor += 4 + size;
+    if (!safe.contains(kind) || cursor > data.lengthInBytes)
+      throw const ArtifactFailure('archive_extra');
+  }
+}
+
 /// Paths are derived from validated release IDs only, never from URLs or filenames.
 class DesktopUpdateStore {
   DesktopUpdateStore(this.root);
   final Directory root;
   static final Set<String> _writers = {};
   RandomAccessFile? _lock;
+  Future<void>? _releasing;
   Future<void> _writes = Future.value();
   Future<bool> acquireWriter() async {
+    if (_releasing != null) {
+      await _releasing;
+      _releasing = null;
+    }
     if (_lock != null) return true;
     final key = path.normalize(root.absolute.path);
     if (!_writers.add(key)) return false;
@@ -153,16 +227,20 @@ class DesktopUpdateStore {
     }
   }
 
-  Future<void> releaseWriter() async {
+  Future<void> releaseWriter() {
+    final pending = _releasing;
+    if (pending != null) return pending;
     final handle = _lock;
-    if (handle == null) return;
+    if (handle == null) return Future.value();
     _lock = null;
-    try {
-      await handle.unlock();
-    } finally {
-      await handle.close();
-      _writers.remove(path.normalize(root.absolute.path));
-    }
+    return _releasing = () async {
+      try {
+        await handle.unlock();
+      } finally {
+        await handle.close();
+        _writers.remove(path.normalize(root.absolute.path));
+      }
+    }();
   }
 
   Future<Directory> transaction(String releaseId) async {

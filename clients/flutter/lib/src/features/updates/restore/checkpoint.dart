@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:cryptography/cryptography.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../../../core/platform/session_storage.dart';
+
 import 'package:path/path.dart' as path;
 
 String desktopScope(String origin, String account) =>
@@ -20,7 +22,7 @@ class DesktopCheckpointStore {
   Future<SecretKey> _loadKey() => _cachedKey ??= _key();
   final Map<String, Future<void>> _writes = {};
   static Future<SecretKey> _secureKey() async {
-    const storage = FlutterSecureStorage();
+    final storage = sessionStorage();
     const name = 'boohtacord.desktop-update-state-key.v1';
     var encoded = await storage.read(key: name);
     if (encoded == null) {

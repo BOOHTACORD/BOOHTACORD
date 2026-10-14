@@ -1,19 +1,19 @@
 import 'dart:async';
 import 'dart:ui';
 
-import '../../../models.dart';
-import '../../../services/client_telemetry.dart';
+import '../../models.dart';
+import '../../services/client_telemetry.dart';
 
 import 'package:window_manager/window_manager.dart';
 
-import '../../../app_state.dart';
-import '../../realtime/lifecycle/close.dart';
-import '../../../services/composer_draft_memory.dart';
-import '../../../services/conversation_scroll_memory.dart';
-import '../../workspace/search/session.dart';
-import '../desktop/artifact.dart';
-import 'checkpoint.dart';
-import 'window_bounds.dart';
+import '../../app_state.dart';
+import '../../features/realtime/lifecycle/close.dart';
+import '../../services/composer_draft_memory.dart';
+import '../../services/conversation_scroll_memory.dart';
+import '../../features/workspace/search/session.dart';
+import '../../features/updates/desktop/artifact.dart';
+import '../../features/updates/restore/checkpoint.dart';
+import '../../features/updates/restore/window_bounds.dart';
 
 import 'package:screen_retriever/screen_retriever.dart';
 
