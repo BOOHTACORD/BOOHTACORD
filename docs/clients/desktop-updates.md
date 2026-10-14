@@ -15,6 +15,10 @@ folder beside the app, so the per-user install does not require a machine-wide
 CRT installation. The recovery monitor uses the static CRT because it runs outside
 that app directory. Windows produces both the ordinary directory and Velopack Setup/full NUPKG in
 `.out/releases/windows`. The SDKs and build outputs are never committed.
+The Windows build checks the exact installed packager version using
+`dotnet tool list --tool-path`; the pinned CLI does not support `vpk --version`.
+CI retains the measured native directory even if later packaging/recovery fails,
+so a failed candidate can be diagnosed without presenting it as an approved release.
 
 The owner-held Ed25519 private key is outside the checkout, at
 `~/.config/boohtacord/desktop-updates/publisher-ed25519.pem` on the release Mac.

@@ -55,6 +55,8 @@ jobs:
           dotnet-version: '8.0.x'
       - name: Initialize Flutter before reading machine JSON
         run: flutter --version
+      - name: Verify the pinned Velopack tool before the full test run
+        run: python -c "from tools.build.windows.installer import prepare_packager; prepare_packager()"
       - name: Test and analyze app and vendor packages
         run: python -m tools.ci.native.flutter
       - name: Test GitHub release publisher
@@ -72,6 +74,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 30
       - name: Retain Windows build as workflow artifact
+        if: ${{ always() && hashFiles('clients/flutter/build/windows/x64/runner/Release/artifact-manifest.json') != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: BOOHTACORD-windows-x64-${{ github.sha }}
@@ -79,6 +82,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Retain per-user Windows installer and full update package
+        if: ${{ always() && hashFiles('.out/releases/windows/build-identity.json') != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: BOOHTACORD-windows-installer-x64-${{ github.sha }}

@@ -37,12 +37,12 @@ Windows Authenticode is measured by existing packaging tools, not assumed.
 
 | Gate | Status |
 |---|---|
-| Flutter regression and analysis | PASS 1370 / 146 focused; final CI pending |
-| Windows native build + per-user Setup/full package | NOT_RUN |
+| Flutter regression and analysis | PASS locally and in CI at `34274936`; 27 current desktop-focused cases |
+| Windows native build + per-user Setup/full package | Native compile PASS; packaging failed on unsupported `vpk --version`; fix/retry pending |
 | Actual installed macOS N → N+1 with UI/state restoration | NOT_RUN |
 | Actual installed Windows N → N+1 with UI/state restoration | NOT_RUN |
 | Failed-bootstrap/apply recovery on both operating systems | NOT_RUN |
-| Final web, Android, iOS rebuilds and backend build | NOT_RUN |
+| Web, Android, iOS rebuilds and backend build | PASS compilation; iOS is unsigned, not an IPA/TestFlight delivery |
 | Published immutable packages + signed metadata + catalog promotion | NOT_RUN |
 
 Do not close #337 or describe in-app desktop updating as accepted until the real
@@ -72,3 +72,45 @@ OS gates above pass. Unit tests and native compilation do not replace them.
   system Keychain confirmation. Computer Use rejects SecurityAgent access;
   no security bypass was attempted.
 - No genuine installed N → N+1 or rollback gate is PASS yet.
+
+## Latest build observations (2026-10-15)
+
+- Product-source candidate `3427493618ec2e6c6c9b084827ea886ea64a4036`:
+  universal macOS ZIP built, whole bundle re-sealed and verified, signed metadata
+  produced separately for arm64/x64 using the locally retained publisher key.
+  The actual ZIP passed the client's signature/digest/extraction code and nested
+  codesign afterwards. Sparkle 2.10.0's upstream native Ed25519 verification
+  accepted its archive signature and rejected a changed signature. These are
+  package/component checks, not an installed-client upgrade.
+- Four native macOS monitor preflight tests PASS with real ad-hoc signed fixtures:
+  writable-parent cancellation, denied replacement directory, missing directory
+  and invalid invocation. The app, monitor and Sparkle are all universal; embedded
+  trust root and expanded sandbox Mach service entitlements were inspected.
+- A malformed resumed HTTP 206 with a changed ETag now discards both partial bytes
+  and validator before a bounded full retry. Its regression failed before the fix
+  and passed afterwards. Desktop-focused suite: 27 PASS.
+- Local tools/contracts suite: 442 PASS, OpenAPI parity: 19 PASS. CI run
+  [38649725893](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38649725893)
+  passed contracts, Linux backend, Vue, Flutter/vendor tests and analysis.
+- Signed Android candidate run
+  [38649718967](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38649718967)
+  PASS. All three retained APKs were independently checked with apksigner/aapt:
+  original release certificate, `ru.boohtacord.app`, 1.0.43, expected ABI version
+  codes 1078/2078/4078, full source-bound manifest hashes. No new Android key.
+- Web production build, native Go build and local API Docker image build PASS.
+  Image `86e6163bb009`, local tag `boohtacord-issue337-api:3427493618ec`.
+  iOS release device compilation PASS with `--no-codesign`.
+- Windows Flutter release compilation PASS in job 116145477829. Packaging then
+  failed because pinned Velopack 1.2.161 does not expose `--version`. The packager
+  now measures the installed tool through `dotnet tool list --tool-path`; focused
+  tests cover the exact version and rejection of a different version. The native
+  recovery component gate remains pending packaging; no fabricated ACK is used.
+- Separate autonomous lifecycle run
+  [38649725629](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38649725629)
+  FAIL: no `roster-unavailable` event observed within 15 seconds after stopping the
+  owned SFU. This failure was retained without weakening the check. Its cause has
+  not been established by a baseline reproduction.
+- Actual macOS UI acceptance is BLOCKED while the Mac is locked and system
+  Keychain access requires user action. SecurityAgent automation is denied by
+  Computer Use. Windows N → N+1/UI restoration is still NOT_RUN. Production
+  catalog remains revision 29, PR #338 remains a draft, and #337 stays open.
