@@ -23,7 +23,9 @@ def main():
     run('flutter', 'pub', 'get', '--enforce-lockfile', cwd=flutter)
     command = ('--debug',) if args.debug else ('--release', '--split-per-abi')
     with provision():
-        run('flutter', 'build', 'apk', *command, '--no-pub', *flutter_version_args('android'), *dart_defines('android'), cwd=flutter)
+        # Flutter regenerates the release-only plugin registrant only with pub
+        # enabled; --no-pub leaves dev plugins from the preceding pub get.
+        run('flutter', 'build', 'apk', *command, *flutter_version_args('android'), *dart_defines('android'), cwd=flutter)
     destination = ROOT / '.out/native/android-debug' if args.debug else flutter / 'build/release-assets'
     destination.mkdir(parents=True, exist_ok=True)
     architectures = ['universal'] if args.debug else ['arm64-v8a', 'armeabi-v7a', 'x86_64']
