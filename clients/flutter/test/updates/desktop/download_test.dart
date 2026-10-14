@@ -103,4 +103,42 @@ void main() {
     );
     expect(calls, 1);
   });
+  test(
+    'changed ETag on 206 discards partial before a bounded full retry',
+    () async {
+      final bytes = List<int>.generate(128, (i) => i);
+      await file.writeAsBytes(bytes.take(5).toList());
+      await File('${file.path}.etag').writeAsString('"old"');
+      var calls = 0;
+      server.listen((request) async {
+        calls++;
+        if (calls == 1) {
+          expect(request.headers.value(HttpHeaders.rangeHeader), 'bytes=5-');
+          request.response.statusCode = 206;
+          request.response.headers.set(HttpHeaders.etagHeader, '"changed"');
+          request.response.headers.set(
+            HttpHeaders.contentRangeHeader,
+            'bytes 5-127/128',
+          );
+          request.response.add(bytes.skip(5).toList());
+        } else {
+          expect(request.headers.value(HttpHeaders.rangeHeader), isNull);
+          expect(request.headers.value(HttpHeaders.ifRangeHeader), isNull);
+          request.response.contentLength = bytes.length;
+          request.response.add(bytes);
+        }
+        await request.response.close();
+      });
+      await DesktopArtifactDownloader(clientFactory: () => _LocalTransport(uri))
+          .download(
+            await testPackage(bytes),
+            file,
+            DownloadCancellation(),
+            (_, _) {},
+          );
+      expect(calls, 2);
+      expect(await file.readAsBytes(), bytes);
+      expect(await File('${file.path}.etag').exists(), isFalse);
+    },
+  );
 }

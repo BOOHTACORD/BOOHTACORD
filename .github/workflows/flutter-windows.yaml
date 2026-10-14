@@ -61,6 +61,16 @@ jobs:
         run: node --test tools/release/android/publish.test.mjs tools/release/android/publish_retries.test.mjs tools/release/android/publish_conflicts.test.mjs
       - name: Build and inspect Windows distribution
         run: python -m tools.build.windows.run
+      - name: Exercise recovery and real Flutter relaunch after an absent replacement
+        run: python -m tools.qa.desktop_updates.windows_recovery --release clients/flutter/build/windows/x64/runner/Release --output .out/desktop-recovery/windows-smoke.json
+      - name: Retain native recovery component evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-recovery-windows-${{ github.sha }}
+          path: .out/desktop-recovery/windows-smoke.json
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain Windows build as workflow artifact
         uses: actions/upload-artifact@v4
         with:

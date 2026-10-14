@@ -34,7 +34,7 @@ class DesktopArtifactDownloader {
         return await _once(artifact, partial, cancellation, progress);
       } on ArtifactFailure catch (error) {
         if (attempt >= 2 ||
-            !['network', 'truncated', 'http'].contains(error.code))
+            !['network', 'truncated', 'http', 'range'].contains(error.code))
           rethrow;
         for (var tick = 0; tick < (attempt + 1) * 10; tick++) {
           cancellation.check();
@@ -126,6 +126,10 @@ class DesktopArtifactDownloader {
             range == null ||
             !range.startsWith('bytes $offset-') ||
             !range.endsWith('/${artifact.size}')) {
+          // A broken If-Range response cannot be appended or reused on Retry.
+          // Drop its validator and bytes before the bounded full download.
+          await partial.writeAsBytes([], flush: true);
+          if (await validatorFile.exists()) await validatorFile.delete();
           throw const ArtifactFailure('range');
         }
       } else {
