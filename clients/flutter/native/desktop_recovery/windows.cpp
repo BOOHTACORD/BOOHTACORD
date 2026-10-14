@@ -15,6 +15,8 @@
 #include <tlhelp32.h>
 #include <vector>
 #include <winrt/Windows.Data.Json.h>
+#include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.Foundation.h>
 #include <winrt/base.h>
 using winrt::Windows::Data::Json::JsonObject;
 using winrt::Windows::Data::Json::JsonValue;
@@ -149,7 +151,7 @@ static bool BaselineValid(const fs::path &root, const fs::path &backup) {
       count++;
   if (count != files.Size())
     return false;
-  for (auto &pair : files) {
+  for (const auto &pair : files) {
     fs::path relative = std::wstring(pair.Key());
     auto expected = std::wstring(pair.Value().GetString());
     if (relative.is_absolute() || relative.wstring().size() > 1024 ||
