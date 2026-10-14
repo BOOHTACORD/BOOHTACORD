@@ -117,6 +117,12 @@ class DesktopRecovery {
           return;
         }
       } catch (_) {}
+      final result = await outcome(transaction, transactionId);
+      if (result?['status'] == 'manualRecovery') {
+        if (['replace_denied', 'recovery_volume'].contains(result?['reason']))
+          throw const ArtifactFailure('installation_location');
+        throw const ArtifactFailure('recovery_identity');
+      }
       await Future<void>.delayed(const Duration(milliseconds: 100));
     }
     throw const ArtifactFailure('recovery_start');

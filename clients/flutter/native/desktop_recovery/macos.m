@@ -169,6 +169,27 @@ int main(int argc, const char *argv[]) {
           [root stringByAppendingPathComponent:@"cancel.json"])[@"transaction"]
           isEqual:transaction];
     };
+    // The rollback monitor runs as this user, so reject an installation it
+    // could not restore. Probe only after explicit apply consent, before Ready.
+    struct stat installedVolume, recoveryVolume;
+    NSString *parent = target.stringByDeletingLastPathComponent;
+    if (stat(parent.fileSystemRepresentation, &installedVolume) != 0 ||
+        stat(root.fileSystemRepresentation, &recoveryVolume) != 0 ||
+        installedVolume.st_dev != recoveryVolume.st_dev) {
+      finish(@"manualRecovery", @"recovery_volume");
+      return 0;
+    }
+    NSString *probe = [parent
+        stringByAppendingPathComponent:
+            [@".boohtacord-update-" stringByAppendingString:transaction]];
+    int probeDescriptor =
+        open(probe.fileSystemRepresentation, O_CREAT | O_EXCL | O_WRONLY, 0600);
+    if (probeDescriptor < 0) {
+      finish(@"manualRecovery", @"replace_denied");
+      return 0;
+    }
+    close(probeDescriptor);
+    unlink(probe.fileSystemRepresentation);
     Atomic(@{@"transaction" : transaction},
            [root stringByAppendingPathComponent:@"recovery-ready.json"]);
     pid_t oldPID = [plan[@"old_pid"] intValue];
