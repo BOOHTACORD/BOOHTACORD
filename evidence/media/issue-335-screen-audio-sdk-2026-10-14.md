@@ -219,3 +219,29 @@ Final remaining gaps: iOS distribution provisioning BLOCKED; physical audible
 Mac/Web smoke NOT_RUN. These are not reported as passing or used to close #335.
 Owned temporary signing keychain was locked and removed from the current search
 list without replacing other user keychains; owned plaintext passwords removed.
+
+## iOS distribution provisioning resolved
+
+The replacement App Store profiles supplied on 2026-10-14 were validated and
+assigned to the two Release targets in the private iOS packaging checkout. Both
+profiles authorize `group.ru.boohtacord.app`, the existing team and the same
+Apple Distribution certificate/private key. The old parent profile is no longer
+selected. The app remains `ru.boohtacord.app.test`; the embedded extension remains
+`ru.boohtacord.app.test.ScreenShareExtension`. No screen-sharing feature was removed.
+
+Signed archive and IPA export: PASS, Flutter 3.47.7, version 1.0.42 (77),
+TestFlight/beta/r56 identity, runtime source 936fa228. Strict codesign verification
+passed for the exported app and extension. Actual embedded profile UUIDs,
+application identifiers, App Group entitlements, certificate digests and both
+version/build values matched the expected replacement profiles.
+IPA bytes: 34,508,630. SHA-256:
+`c3f97db758f22801408661df441f2920add94a6d53323818fea526ae5ec0b794`.
+The signed IPA and verification receipt are retained locally; certificates,
+profiles, private signing material and generated binaries are excluded from Git.
+
+TestFlight upload is BLOCKED at this checkpoint: Xcode `exportArchive` with
+destination upload returned `Failed to Use Accounts` for the existing team.
+The current browser App Store Connect session is also expired. Local sign-in
+and 2FA were requested; the signing/provisioning blocker itself is resolved.
+No Transporter software license was accepted by the agent. Physical audible
+Mac/Web smoke and #335 closure remain pending independently.
