@@ -154,3 +154,68 @@ fix source and retains the same tests/analyzer/build/publisher; it does not move
 the Windows release tag or bypass gates. Its version probe passed and required
 tests are running in
 [38485185006](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38485185006).
+
+## Release build recovery
+
+Windows run 38485185006 passed its Flutter tests/analyzer, release build,
+measured signing inspection, ZIP packaging and artifact retention. Only the
+publication step failed because the one-off recipe used the branch name in the
+ZIP filename. The retained artifact was downloaded without rebuilding. Its
+manifest reports source `936fa2282e61272e6b4abc517b939b387462083e`,
+`source_dirty=false`, version 1.0.42+77 and Authenticode `unsigned`. All packaged
+file sizes/digests and SHA256SUMS passed verification. The inner distribution
+ZIP SHA-256 is `f8928ae5a7db3a31fac4001e5ed5929854a896ec3aef2ae3cc7fc8667647aa9a`.
+
+Android run 38483584503 passed the existing Flutter quality gate, including
+Android debug compilation, but signed release compilation failed because
+Flutter 3.47.7 omitted dev-only Gradle plugins while the Java registrant left by
+`pub get` still referenced `integration_test`. The Android builder's `--no-pub`
+flag skipped Flutter's release-mode tooling regeneration. The supported build
+command now allows that regeneration after enforced lockfile resolution. The
+focused command regression failed before the change and passed afterwards;
+nine command/signing boundary tests passed. Fix commit:
+`768b7f9ea27f0166bb4ffbf979f1d51a9201ab57`. Application runtime files and native
+version are unchanged from the SDK/audio fix. The immutable Android tag is
+retained; a clean checkout of this build-command commit explicitly records its
+true source in the APK manifest. The original Flutter quality result is reused
+for unchanged app sources; no additional simulation or device matrix is run.
+Signed rebuild run: [38487779735](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38487779735).
+
+Follow-up backend/Web build 38486317671 and deployment 38487492666 also passed
+at source 4791b7f5f58efe3c600fe2b5f963d30679a95fd1. Main CI for that source was
+cancelled by the subsequent Android-command commit, not reported as PASS.
+Physical audible smoke remains NOT_RUN and #335 remains open. The rebuilt final
+macOS client is still at login. No credential entry or audible result is inferred.
+
+## Completed publication
+
+[Android 1.0.42](https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.42):
+run 38487779735 passed. All three APKs passed actual apksigner verification,
+application/version/ABI version-code inspection, signer continuity and size
+inspection. The downloaded public manifest and SHA256SUMS were verified against
+GitHub asset digests; every published asset digest matches the checksums.
+Source `768b7f9ea27f0166bb4ffbf979f1d51a9201ab57`, source_dirty=false,
+version 1.0.42+77, certificate SHA-256
+`394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b`.
+APK sizes: arm64-v8a 20,367,092 bytes; armeabi-v7a 18,233,444; x86_64 21,726,910.
+Arm64 APK SHA-256:
+`0f8601a296e8130859429b30c2401d53fbc0e12ba3438bdebca0ff4bb10ce2c0`.
+
+[Windows 1.0.42](https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.42):
+publication-only recovery run 38489064490 passed without compilation or app-test
+repetition. The retained ZIP, manifest and SHA256SUMS are published and all three
+GitHub asset digests match the previously verified local artifact. An interrupted
+browser upload had left an invisible-to-anonymous starter with the declared full
+ZIP size and no digest. Recovery removed only that observed owned ID in starter
+state; the completed manifest and all completed releases were preserved.
+Signing remains explicitly unsigned. The release tag/source remains 936fa228.
+
+Latest build server run 38487722716 and production deployment 38488760578 passed
+at source 768b7f9e, delivering API/Web through the normal immutable bundle.
+No simulations, new device matrices or optional load campaigns were initiated
+for this request. Existing mandatory CI/release workflows were retained.
+
+Final remaining gaps: iOS distribution provisioning BLOCKED; physical audible
+Mac/Web smoke NOT_RUN. These are not reported as passing or used to close #335.
+Owned temporary signing keychain was locked and removed from the current search
+list without replacing other user keychains; owned plaintext passwords removed.
