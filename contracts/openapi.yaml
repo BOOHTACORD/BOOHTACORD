@@ -7413,7 +7413,8 @@
           "summary":{"type":"string","maxLength":1000},
           "release_notes_url":{"type":["string","null"],"maxLength":2048},
           "requirements":{"type":"object","additionalProperties":false,"required":["supported_arches"],"properties":{"min_os_version":{"type":"string"},"min_android_sdk":{"type":"integer","minimum":1},"supported_arches":{"type":"array","minItems":1,"items":{"enum":["any","arm64","x64","armv7"]}}}},
-          "action":{"type":"object","additionalProperties":false,"required":["kind","url"],"properties":{"kind":{"enum":["reload","open_download_page","open_store","open_instructions"]},"url":{"type":["string","null"],"maxLength":2048}}}
+          "action":{"type":"object","additionalProperties":false,"required":["kind","url"],"properties":{"kind":{"enum":["reload","open_download_page","open_store","open_instructions"]},"url":{"type":["string","null"],"maxLength":2048}}},
+          "install_artifact": {"type":"object","additionalProperties":false,"required":["schema_version","key_id","payload","signature"],"properties":{"schema_version":{"const":1},"key_id":{"type":"string","pattern":"^[A-Za-z0-9._-]{1,96}$"},"payload":{"type":"string","maxLength":16384,"contentEncoding":"base64","description":"Ed25519 authenticated desktop-update-artifact.schema.json bytes; the client authenticates with an embedded publisher root, never a key from the server."},"signature":{"type":"string","minLength":88,"maxLength":88,"contentEncoding":"base64"}}}
         }
       },
       "MaintenanceStatus": {

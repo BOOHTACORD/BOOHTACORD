@@ -31,6 +31,9 @@ extension WorkspaceDirectConversationStateWorkspaceRememberDraftForAction
       ComposerDraft<DirectChatMessage>(
         body: workspaceController.text,
         replyTarget: workspaceReplyTarget,
+        pendingReplyId: workspaceReplyTarget == null
+            ? workspacePendingReplyId
+            : null,
         attachments: workspaceAttachments,
         mentionUserIds: workspaceMentionUserIds.toList(growable: false),
       ),

@@ -23,17 +23,18 @@ type Entry struct {
 }
 
 type Target struct {
-	ReleaseID       string       `json:"release_id"`
-	ReleaseOrder    int          `json:"release_order"`
-	Version         string       `json:"version"`
-	NativeBuild     *string      `json:"native_build"`
-	Priority        string       `json:"priority"`
-	PublishedAt     string       `json:"published_at"`
-	ExpiresAt       string       `json:"expires_at,omitempty"`
-	Summary         string       `json:"summary"`
-	ReleaseNotesURL *string      `json:"release_notes_url"`
-	Requirements    Requirements `json:"requirements"`
-	Action          Action       `json:"action"`
+	InstallArtifact *InstallArtifact `json:"install_artifact,omitempty"`
+	ReleaseID       string           `json:"release_id"`
+	ReleaseOrder    int              `json:"release_order"`
+	Version         string           `json:"version"`
+	NativeBuild     *string          `json:"native_build"`
+	Priority        string           `json:"priority"`
+	PublishedAt     string           `json:"published_at"`
+	ExpiresAt       string           `json:"expires_at,omitempty"`
+	Summary         string           `json:"summary"`
+	ReleaseNotesURL *string          `json:"release_notes_url"`
+	Requirements    Requirements     `json:"requirements"`
+	Action          Action           `json:"action"`
 }
 
 type Requirements struct {

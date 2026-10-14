@@ -41,8 +41,10 @@
         "expires_at": {"type": "string", "format": "date-time"},
         "summary": {"type": "string", "maxLength": 1000},
         "release_notes_url": {"type": ["string", "null"], "maxLength": 2048},
-        "requirements": {"$ref": "#/$defs/requirements"},
-        "action": {"$ref": "#/$defs/action"}
+        "installArtifact": {"type":"object","additionalProperties":false,"required":["schema_version","key_id","payload","signature"],"properties":{"schema_version":{"const":1},"key_id":{"type":"string","pattern":"^[A-Za-z0-9._-]{1,96}$"},"payload":{"type":"string","maxLength":16384,"contentEncoding":"base64","description":"Ed25519 authenticated desktop-update-artifact.schema.json bytes; the client authenticates with an embedded publisher root, never a key from the server."},"signature":{"type":"string","minLength":88,"maxLength":88,"contentEncoding":"base64"}}},
+    "requirements": {"$ref": "#/$defs/requirements"},
+        "action": {"$ref": "#/$defs/action"},
+        "install_artifact": {"$ref": "#/$defs/installArtifact"}
       }
     },
     "requirements": {

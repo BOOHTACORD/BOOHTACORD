@@ -46,3 +46,21 @@ target_include_directories(${BINARY_NAME} PRIVATE "${CMAKE_SOURCE_DIR}")
 
 # Run the Flutter tool portions of the build. This must not be removed.
 add_dependencies(${BINARY_NAME} flutter_assemble)
+
+# Official Velopack native SDK, restored and hash-verified before Flutter build.
+set(BOOH_VPK "${CMAKE_SOURCE_DIR}/Updaters")
+target_include_directories(${BINARY_NAME} PRIVATE "${BOOH_VPK}/include")
+target_link_libraries(${BINARY_NAME} PRIVATE "${BOOH_VPK}/lib/velopack_libc_win_x64_msvc.dll.lib")
+add_custom_command(TARGET ${BINARY_NAME} POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${BOOH_VPK}/lib/velopack_libc_win_x64_msvc.dll" "$<TARGET_FILE_DIR:${BINARY_NAME}>")
+
+# Compiled local monitor, copied outside current/ at consented apply.
+add_executable(BOOHTACORDRecovery WIN32 "../../native/desktop_recovery/windows.cpp")
+target_compile_features(BOOHTACORDRecovery PRIVATE cxx_std_17)
+target_compile_definitions(BOOHTACORDRecovery PRIVATE UNICODE _UNICODE NOMINMAX)
+target_link_libraries(BOOHTACORDRecovery PRIVATE windowsapp version shell32 advapi32 user32)
+add_dependencies(${BINARY_NAME} BOOHTACORDRecovery)
+add_custom_command(TARGET ${BINARY_NAME} POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "$<TARGET_FILE:BOOHTACORDRecovery>" "$<TARGET_FILE_DIR:${BINARY_NAME}>/BOOHTACORDRecovery.exe")

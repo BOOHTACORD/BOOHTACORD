@@ -29,6 +29,8 @@ jobs:
         run: node tools/observability/flow_contract/generate.mjs --check
       - name: Install pinned CI verification dependencies
         run: python -m pip install -r tools/requirements-ci.txt -r tools/verify/openapi_parity/requirements.txt
+      - name: Verify publisher signatures and desktop promotion guards
+        run: python3 -m unittest tools.release.desktop_updates.test_signing
       - name: Verify API and requirement traceability
         shell: pwsh
         run: |

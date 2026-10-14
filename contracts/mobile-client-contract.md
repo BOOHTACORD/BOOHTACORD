@@ -166,3 +166,15 @@ health checkpoints также могут потеряться во время ou
 ## Политика изменений
 
 Mobile implementation обязан использовать проверенную ревизию OpenAPI/JSON Schema. Изменение endpoint method/path, required field, enum, authentication transport, ACL outcome, websocket event, LiveKit credential claim или error semantics требует согласованного изменения канонических contracts, этого руководства, contract verifier и release notes.
+
+### Desktop install artifact extension (#337)
+
+A native client update target may carry optional `install_artifact` without
+changing existing `action` fallback semantics. The envelope binds exact decoded
+`desktop-update-artifact.schema.json` bytes using Ed25519 with the domain
+`BOOHTACORD-DESKTOP-ARTIFACT-v1` followed by a newline. Publisher roots are
+embedded in the application, never supplied by the deployment. A successful
+policy response or SHA256SUMS alone does not authorize executable installation.
+Android/iOS/web retain their existing action handling. Desktop updater capability
+must fail closed if native adapter/package trust or supported installation
+location is unavailable. No command/script field is accepted.

@@ -37,6 +37,65 @@ class ClientTelemetry {
     span.end();
   }
 
+  static void desktopUpdate(
+    String phase, {
+    String? reason,
+    String? version,
+    int durationMs = 0,
+  }) {
+    const phases = {
+      'check',
+      'download',
+      'verify',
+      'stage',
+      'ready',
+      'apply',
+      'restart',
+      'restore',
+      'completed',
+      'rollback',
+      'failed',
+      'cancelled',
+    };
+    const reasons = {
+      'signature',
+      'publisher',
+      'identity',
+      'source',
+      'digest',
+      'size',
+      'network',
+      'http',
+      'disk_space',
+      'installation_location',
+      'scope_changed',
+      'cancelled',
+      'native_apply',
+      'bootstrap_identity',
+      'other',
+    };
+    if (!enabled || !phases.contains(phase)) return;
+    final platform = defaultTargetPlatform.name.toLowerCase();
+    if (!{'macos', 'windows'}.contains(platform)) return;
+    final span = OTel.tracer().startSpan(
+      'desktop.update',
+      kind: SpanKind.client,
+    );
+    span.setStringAttribute('platform', platform);
+    span.setStringAttribute('phase', phase);
+    if (reason != null)
+      span.setStringAttribute(
+        'reason',
+        reasons.contains(reason) ? reason : 'other',
+      );
+    if (version != null &&
+        RegExp(r'^\d{1,6}\.\d{1,6}\.\d{1,6}$').hasMatch(version))
+      span.setStringAttribute('version', version);
+    span.setIntAttribute('duration_ms', durationMs.clamp(0, 1800000));
+    if (phase == 'failed') span.setStatus(SpanStatusCode.Error);
+    span.end();
+  }
+
   static Map<String, String> currentTraceHeaders() {
     final headers = <String, String>{};
     final span = Context.current.spanContext;

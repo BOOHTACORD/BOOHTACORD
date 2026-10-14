@@ -10,6 +10,8 @@ from tools.build.client_identity import dart_defines, flutter_version_args
 def main():
     if sys.platform != 'win32': raise RuntimeError('Windows build requires a Windows host')
     require_version('flutter', json.loads(output('flutter', '--version', '--machine'))['frameworkVersion'])
+    from tools.build.desktop_updater.sdk import prepare
+    prepare('windows')
     flutter = client('flutter')
     run('flutter', 'pub', 'get', '--enforce-lockfile', cwd=flutter)
     with configured_plugins(flutter):
@@ -20,6 +22,8 @@ def main():
     signing = json.loads(output('pwsh', '-NoProfile', '-File', str(ROOT / 'tools/build/windows/signature.ps1'),
                                 '-Path', str(release / 'boohtacord_desktop.exe')))
     write(release, 'windows', ['x64'], 'boohtacord_desktop', signing)
+    from tools.build.windows.installer import package
+    package(release)
     print('Retained Windows artifact, checksums and measured signing metadata: ' + str(release))
 
 

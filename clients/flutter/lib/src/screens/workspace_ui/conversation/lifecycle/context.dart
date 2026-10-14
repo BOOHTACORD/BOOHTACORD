@@ -1,5 +1,6 @@
 import '../../native_bindings.dart';
 import '../../../../services/conversation_scroll_memory.dart';
+import '../../../../services/conversation_scroll_restore.dart';
 
 import 'widget.dart';
 
@@ -16,8 +17,11 @@ abstract class WorkspaceConversationStateContext
   List<MessageAttachment> workspaceAttachments = const [];
   bool workspaceAttachmentsPending = false;
   ChatMessage? workspaceReplyTarget;
+  String? workspacePendingReplyId;
   bool workspaceFollowLatest = true;
   double? workspaceRestoreScrollOffset;
+  ConversationScrollPosition? workspacePendingScroll;
+  bool workspaceRestoringScroll = false;
   int workspaceScrollMemoryEpoch = 0;
   bool workspaceLatestLayoutConfirmed = false;
   String? workspaceObservedChannelId;
@@ -27,15 +31,24 @@ abstract class WorkspaceConversationStateContext
   bool workspaceRestoringDraft = false;
   void workspaceRememberDraft();
   void workspaceRememberScrollPosition() {
-    if (!workspaceScroll.hasClients) return;
+    if (!workspaceScroll.hasClients ||
+        workspaceRestoringScroll ||
+        workspacePendingScroll != null)
+      return;
     final accountId = workspaceDraftAccountId;
     if (accountId == null) return;
+    final anchor = captureConversationAnchor(
+      workspaceMessageKeys,
+      widget.channel.id,
+    );
     ConversationScrollMemory.save(
       accountId: accountId,
       channelId: widget.channel.id,
       offset: workspaceScroll.position.pixels,
       followLatest: workspaceFollowLatest,
       epoch: workspaceScrollMemoryEpoch,
+      anchorId: anchor?.id,
+      anchorOffset: anchor?.offset ?? 0,
     );
   }
 

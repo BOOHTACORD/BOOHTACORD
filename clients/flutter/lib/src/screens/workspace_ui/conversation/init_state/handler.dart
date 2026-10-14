@@ -24,9 +24,10 @@ extension WorkspaceConversationStateInitStateAction
         ? null
         : ConversationScrollMemory.load(accountId, widget.channel.id);
     if (savedScroll != null) {
+      workspacePendingScroll = savedScroll;
       workspaceFollowLatest = savedScroll.followLatest;
       if (!savedScroll.followLatest) {
-        workspaceRestoreScrollOffset = savedScroll.offset;
+        workspaceRestoreScrollOffset = null;
       }
     }
     workspaceController.addListener(workspaceRememberDraft);

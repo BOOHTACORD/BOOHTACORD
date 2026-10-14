@@ -4,9 +4,14 @@
 
 #include "flutter_window.h"
 #include "utils.h"
+#include "Velopack.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
                       _In_ wchar_t *command_line, _In_ int show_command) {
+  vpkc_set_logger([](void*, const char*, const char*) {}, nullptr);
+  vpkc_app_set_auto_apply_on_startup(false);
+  vpkc_app_run(nullptr);
+
   // Attach to console when present (e.g., 'flutter run') or create a
   // new console when running with a debugger.
   if (!::AttachConsole(ATTACH_PARENT_PROCESS) && ::IsDebuggerPresent()) {
