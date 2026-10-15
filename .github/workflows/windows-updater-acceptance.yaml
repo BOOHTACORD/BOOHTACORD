@@ -1,0 +1,90 @@
+name: Installed Windows updater acceptance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/issue337-desktop-updates]
+    paths:
+      - .github/workflows/windows-updater-acceptance.yaml
+      - clients/flutter/integration_test/desktop_updates/windows_app.dart
+      - tools/qa/desktop_updates/windows_*.py
+      - tools/qa/desktop_updates/build_windows.py
+      - tools/qa/desktop_updates/loopback_proxy/**
+
+permissions:
+  contents: read
+
+jobs:
+  installed-update:
+    runs-on: windows-2022
+    timeout-minutes: 85
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enable long paths for the native build
+        run: git config --system core.longpaths true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.7
+          cache: true
+      - name: Verify confined pinned fixture tools
+        run: python -m unittest tools.qa.desktop_updates.test_windows_tools
+      - name: Resolve locked dependencies and analyze the release UI driver
+        working-directory: clients/flutter
+        run: |
+          flutter pub get --enforce-lockfile
+          flutter analyze --no-pub integration_test/desktop_updates
+      - name: Build real 78 and 79 beta clients, Setup and full packages
+        run: python -m tools.qa.desktop_updates.build_windows
+      - name: Publish immutable QA79 package, never latest
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const folder = '.out/issue337-windows-packages';
+            const {data: release} = await github.rest.repos.createRelease({
+              owner: context.repo.owner, repo: context.repo.repo,
+              tag_name: `qa337-windows-1.0.44-beta-${context.sha}`,
+              target_commitish: context.sha,
+              name: 'QA #337 — Windows installed update 78 to 79',
+              body: fs.readFileSync(`${folder}/QA-NOTES.txt`, 'utf8'),
+              draft: false, prerelease: true, make_latest: 'false'
+            });
+            const names = fs.readdirSync(`${folder}/79`).filter(n => n.endsWith('-full.nupkg'));
+            if (names.length !== 1) throw new Error('One native full package required');
+            for (const [file, name] of [
+              [`${folder}/79/${names[0]}`, names[0]],
+              [`${folder}/79/qa-identity.json`, 'qa-identity.json'],
+              [`${folder}/QA-NOTES.txt`, 'QA-NOTES.txt']
+            ]) {
+              const data = fs.readFileSync(file);
+              await github.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner, repo: context.repo.repo,
+                release_id: release.id, name, data,
+                headers: {'content-type': 'application/octet-stream', 'content-length': data.length}
+              });
+            }
+            core.notice(`WAITING FOR OWNER SIGNATURE: ${release.html_url}`);
+      - name: Run real installed update with native loopback API, PostgreSQL and SFU
+        run: python -m tools.qa.desktop_updates.windows_journey --source $env:GITHUB_SHA --wait-seconds 1800
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-installed-update-${{ github.sha }}
+          path: |
+            .out/issue337-windows-acceptance/
+            .out/issue337-windows-packages/78/qa-identity.json
+            .out/issue337-windows-packages/79/qa-identity.json
+          if-no-files-found: ignore
+          retention-days: 30
