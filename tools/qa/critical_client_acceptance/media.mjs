@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { api, channel, expect, openNavigation, status } from '../client_lifecycle/request.mjs'
-import { owned } from './control.mjs'
+import { controlOwnedSfu } from './sfu_control.mjs'
 import { teardown } from './teardown.mjs'
 import { installRosterFailureObserver } from './roster_observer.mjs'
 import { rosterCounters } from './roster_diagnostics.mjs'
@@ -69,8 +69,8 @@ export async function media(a, b, member, channelId, report, input) {
   await expect.poll(() => a.evaluate(() => window.__qaRosterTransportSource?.readyState), { timeout: 15000 }).toBe(1)
   // Both listeners now have real WebRTC transports; stop only the owned SFU.
   const rosterFailuresBefore = await a.evaluate(() => window.__qaRosterUnavailableCount)
-  owned('sfu', 'stop', '$owned')
   try {
+    await controlOwnedSfu('stop')
     await openNavigation(a)
     // Detection can use one 5s reconciliation period, a shared 5s snapshot deadline
     // and a bounded 3s SSE write. Check the actual event before its UI consequence.
@@ -102,7 +102,7 @@ export async function media(a, b, member, channelId, report, input) {
       chat_retry_mode: manualRetryAvailable ? 'manual' : 'automatic',
       roster_failure_event_observed: true, sfu_failure_not_empty_room: true, last_roster_age_visible: /с\. назад/.test(await banner.innerText()) }
     assert.equal(report.connection_status.last_roster_age_visible, true)
-  } finally { owned('sfu', 'start', '$owned') }
+  } finally { await controlOwnedSfu('start') }
   await expect.poll(async () => (await api(a, '/voice/participants')).status, { timeout: 30000 }).toBe(200)
   await openNavigation(a)
   const refreshRoster = banner.getByRole('button', { name: 'Обновить состав' })

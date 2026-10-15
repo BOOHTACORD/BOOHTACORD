@@ -257,3 +257,49 @@ status. It does not certify the full installed upgrade gates.
 - Source 1cdf2b46 full CI 38736051682 PASS across contracts, backend, Vue, Flutter
   and Windows. Native candidate run 38736045575 PASS. New home/typography fixes
   require the next source-bound native builds and live acceptance.
+
+## Responsive browser fault injection and rebuilt clients (2026-10-15)
+
+- The failed full browser journey used synchronous Docker stop/start calls in
+  the Playwright driver. Docker's graceful SFU shutdown blocked that driver's
+  WebSocket proxy and request callbacks. Replaced only SFU fault control with
+  asynchronous execFile calls; exact container name and owner-label checks
+  remain mandatory. Three new focused tests cover event-loop responsiveness,
+  foreign-resource rejection and invalid owner/action rejection. Ten Node QA
+  tests PASS. The original 15-second roster-event assertion is unchanged.
+- Actual local TLS/API/PostgreSQL/LiveKit/Tempo browser journeys PASS at both
+  1440 and 1024, using the changed driver on product source 30ad2bfc. Real
+  roster-unavailable events were observed after SFU shutdown; chat-only failure
+  kept real WebRTC alive, targeted recovery succeeded and owned resources were
+  removed. Reports include source digests. Inspected both actual SFU-failure
+  screenshots: readable status and retry action, retained participants, no
+  misleading empty-room state. This is local evidence; the new Linux CI
+  journey has not yet run and earlier failed runs remain FAIL.
+- Full source-30ad2bfc CI
+  [38739317432](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38739317432)
+  PASS across contracts, backend, Vue, Flutter and Windows. The Windows job
+  built the real app, per-user installer and full package, and passed the
+  native absent-replacement recovery/relaunch component gate. This does not
+  establish installed N-to-N+1 acceptance.
+- Signed Android candidate run 38739308401 PASS. All three downloaded APKs
+  independently pass apksigner verification with the existing publisher
+  certificate, application ID ru.boohtacord.app and version 1.0.43; ABI version
+  codes are 1078/2078/4078. Workflow archive and manifest hashes were verified.
+- Ordinary universal macOS 1.0.43 (78) rebuilt from clean source 30ad2bfc.
+  Packaged ZIP: 47,347,184 bytes; SHA256
+  8cc944f07ffc98c8c01df0e22787c53d456b96b5e1597f9d3a1f0e2a1762bc5b.
+  Source manifest, archive contents and strict nested ad-hoc signature verified.
+  Packaging initially refused a leftover local Development signature after
+  rebuilding nested code; the known owned build candidate was explicitly
+  returned to the established ad-hoc identity and verification rerun. No
+  Developer ID or notarization claim is made.
+- iOS device Release compile PASS from 30ad2bfc with --no-codesign: version
+  1.0.43 (78), application ID ru.boohtacord.app. This is an unsigned app build,
+  not an IPA or TestFlight delivery.
+- Isolated macOS QA launch remains BLOCKED before main in
+  libsecinit_appsandbox after restoring ad-hoc signing. A sample confirms no
+  application window/bootstrap started; the exact owned stalled process was
+  stopped with SIGTERM. Security dialogs remain user-operated. No container
+  data, permissions, trust settings or OS protections were reset. Installed
+  macOS update and Windows N-to-N+1 acceptance remain unproven; #337 stays open
+  and production catalog revision 29 is unchanged.
