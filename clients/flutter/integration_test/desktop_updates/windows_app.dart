@@ -12,6 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:screen_retriever/screen_retriever.dart';
 
 import 'package:boohtacord_desktop/src/app.dart';
 import 'package:boohtacord_desktop/src/widgets/formatted_message_body.dart';
@@ -19,6 +20,7 @@ import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/features/updates/desktop/coordinator.dart';
 import 'package:boohtacord_desktop/src/features/updates/desktop/failure.dart';
 import 'package:boohtacord_desktop/src/features/updates/identity.dart';
+import 'package:boohtacord_desktop/src/features/updates/restore/window_bounds.dart';
 
 import 'native_app.dart' as native;
 
@@ -128,7 +130,18 @@ class Journey {
   }
 
   Future<void> before() async {
-    await windowManager.setBounds(const Rect.fromLTWH(40, 40, 1200, 800));
+    final displays = await screenRetriever.getAllDisplays();
+    require(displays.isNotEmpty, 'fixture_display_missing');
+    final frames = [
+      for (final display in displays)
+        (display.visiblePosition ?? Offset.zero) &
+            (display.visibleSize ?? display.size),
+    ];
+    // The runner can have a smaller desktop than a developer's monitor.
+    // Start within its work area so the legitimate restore clamp is a no-op.
+    await windowManager.setBounds(
+      visibleWindowBounds(const Rect.fromLTWH(40, 40, 1200, 800), frames),
+    );
     await tap(find.text('Update VOICE'), at: 'voice_open');
     await tap(find.text('Подключиться без микрофона'), at: 'voice_listener');
     await until(

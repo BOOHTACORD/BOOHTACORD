@@ -760,3 +760,18 @@ macOS installed-update acceptance is not claimed by these component tests.
   New runs of this gate supersede older runs on the same branch. This closes
   the filter omission that initially left the native working-directory fix
   without a fresh full installed-client transition.
+- Native CWD regression GREEN at c4af4b7d: run 38823416269 / job
+  116725143298 PASS, including rename while the monitor is alive, the actual
+  120-second failed-apply deadline, real Flutter relaunch and one-shot cleanup.
+  Retained report 12014048293 is 400 bytes, archive SHA-256
+  `1626d19260855eb01c1c7ffc320b818f8075c39f7a4ab76d609f95790f06019a`.
+- The release driver now starts with bounds fitted to the actual CI display's
+  visible work area. Its former hardcoded 1200x800 could exceed that desktop;
+  production restore deliberately clamps offscreen windows. The unchanged
+  strict pre/post comparison now tests a valid baseline on the same monitor.
+  Focused bounds/idempotence and message/dialog tests (5) and analyzer PASS.
+- Ordinary 8b19b75a macOS was rebuilt and all clean-source/signature/manifest
+  checks PASS: ZIP 47,400,173 bytes, SHA-256
+  `d7ab08a745f888034aa41ee7dcecae3d88b1d602154cf0d7479e286daffdbb0f`.
+  iOS 8b19b75a device Release compiles unsigned in 26.8 seconds; no IPA or
+  TestFlight upload is claimed. The subsequent display change is QA-driver-only.
