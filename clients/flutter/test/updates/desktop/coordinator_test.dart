@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart' as crypto;
 
 import 'package:cryptography/cryptography.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/services.dart';
 import 'package:boohtacord_desktop/src/features/updates/model.dart';
 import 'package:boohtacord_desktop/src/features/updates/desktop/artifact.dart';
 import 'package:boohtacord_desktop/src/features/updates/desktop/coordinator.dart';
@@ -16,6 +17,7 @@ class Native implements DesktopNativeUpdater {
   int staged = 0, applied = 0;
   bool support = true, failApply = false;
   Future<void> Function()? duringApply;
+  Object? stageError;
   @override
   Future<bool> capable() async => support;
   @override
@@ -27,6 +29,7 @@ class Native implements DesktopNativeUpdater {
     String extracted,
   ) async {
     staged++;
+    if (stageError != null) throw stageError!;
   }
 
   @override
@@ -281,6 +284,22 @@ void main() {
       expect(coordinator.phase, DesktopUpdatePhase.restarting);
     },
   );
+  test('native stage errors retain a bounded support reason', () async {
+    native.stageError = PlatformException(
+      code: 'bundle_signature',
+      message: 'never show private native details',
+    );
+    await coordinator.prepare(target);
+    expect(coordinator.failure, 'bundle_signature');
+  });
+  test('unrecognized native details never become a support reason', () async {
+    native.stageError = PlatformException(
+      code: '/private/untrusted',
+      message: 'private native details',
+    );
+    await coordinator.prepare(target);
+    expect(coordinator.failure, 'prepare');
+  });
   test('changed compatibility policy prevents checkpoint and helper', () async {
     await coordinator.prepare(target);
     coordinator.validateBeforeApply = (_) async => false;

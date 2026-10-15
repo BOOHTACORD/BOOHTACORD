@@ -423,3 +423,61 @@ status. It does not certify the full installed upgrade gates.
 - This establishes the isolated launch-handshake regression and its fix. It does
   not identify the user's current security dialog or prove a successful installed
   app upgrade. Those observations remain pending independently.
+
+## Live repeat after user screenshot (2026-10-15)
+
+- The supplied screenshot shows the normal client, not a system request. The
+  dialog-text wait is resolved. The old test app's unknown-presence state and
+  visible late draft were confirmed. Its exact process was closed normally;
+  the repaired QA78 bundle replaced only the owned test app, with prior bundles
+  retained and no protected profile/permission changes.
+- Account and channel restored and real presence became Online. The previous
+  late draft was empty after replacing the old baseline: retain this as FAIL.
+  A fresh synthetic draft on the repaired baseline then survived an ordinary
+  close/relaunch, visually verified. No body is copied into this record.
+- Full source-887cc904 CI 38760035022 PASS. Signed Android candidates pass
+  independent APK signature, identity, ABI-build and manifest checks. All 53
+  Windows manifest files match the full NUPKG; Setup and canonical SDK DLL exist.
+  Artifact source 330e8320 is the verified merge of master 3e6ac963 and 887cc904.
+  Real native Windows recovery/relaunch passes in 124 seconds. Installed Windows
+  N-to-N+1 UI acceptance remains NOT_RUN.
+- Latest browser lifecycle 38760034617 attempt 1 passes the complete 1440 journey
+  and Tempo checks, then FAIL at the initial 1024 login. Its masked capture shows
+  Failed to fetch; bounded diagnostics show login_status=null, session_status=200,
+  workspace_present=false and form_error_present=true. No cause is asserted;
+  earlier complete PASS 38755510212 remains historical. An attempted isolated
+  rerun received a connector transport error and was not assumed dispatched.
+- QA79 run 38760026200 initially could not obtain a runner and was cancelled
+  before any steps. Its isolated retry passes native tests, builds and publishes
+  the source-887cc904 prerelease. Published ZIP is 47,460,038 bytes, SHA256
+  1c4be0406b1c96e975699513e9227be05927a729fef920c48dd01d7b9d65aee0.
+  Downloaded bytes, strict bundle signature and identity pass. Publisher-envelope
+  verification and the actual pinned Sparkle verifier pass; the key remains local.
+  Only the private owned QA catalog changed to revision 3. Production remains 29.
+- The native client downloads that real target in the background while a real
+  voice connection remains active, with microphone and incoming audio disabled.
+  Navigation and draft editing work during download; actual server active-lease
+  count is 1. No media payload/capacity claim follows from this listener session.
+- Preparation still FAIL after download. The same Dart verifier/extractor and
+  strict codesign pass independently on the published package. Added bounded
+  support codes in About after failing tests, preserving only known native
+  reason enums and never exception messages/paths. Actual About now identifies
+  recovery_busy: an earlier cancelled, unstarted recovery plan blocked retry.
+- New macOS retry cleanup uses the same BSD monitor lock and preserves its inode
+  across attempts. It archives only cancelled or terminal inactive state; active
+  monitors and unmatched cancellation remain blocked. No success receipt is
+  synthesized. New plans have transaction-specific filenames, and monitors
+  recheck the plan after locking. Retired copies are bounded to three; the next
+  consented helper cleans matching old login registrations. Windows behavior is
+  unchanged by this macOS-specific cleanup.
+- 88 update/realtime Flutter tests PASS, focused analyzer has no issues, and
+  14 native tests PASS (13-suite plus added unique-plan test). Native regressions
+  cover actual cross-process lock refusal, unchanged lock inode, cancellation
+  matching, bounded history and partial-cleanup retry. The launch test still
+  requires a callback within five seconds; it now independently waits for real
+  preflight readiness because launch completion can precede Ready.
+- Actual retry on that same protected-profile installation now reaches Ready
+  for the verified QA79 package. Only the application's ordinary retry code
+  performed inactive-state retirement. No shell access to the protected cache,
+  fabricated receipt, permission reset or profile deletion was used. The actual
+  N-to-N+1 apply/relaunch is still the next gate.

@@ -22,7 +22,12 @@ class DesktopRecovery {
     Directory transaction,
   ) async {
     final root = _root(transaction);
-    if (await root.exists()) {
+    if (Platform.isMacOS) {
+      await root.create(recursive: true);
+      final reset = await const MethodChannel('boohtacord/desktop_updates')
+          .invokeMethod<bool>('resetRecovery', {'directory': root.path});
+      if (reset != true) throw const ArtifactFailure('recovery_busy');
+    } else if (await root.exists()) {
       final plan = File(path.join(root.path, 'plan.json'));
       final outcome = File(path.join(root.path, 'recovery-outcome.json'));
       if (await plan.exists() && !await outcome.exists()) {
@@ -76,7 +81,12 @@ class DesktopRecovery {
       final old = File(path.join(root.path, name));
       if (await old.exists()) await old.delete();
     }
-    final plan = File(path.join(root.path, 'plan.json'));
+    final plan = File(
+      path.join(
+        root.path,
+        Platform.isMacOS ? 'plan-$transactionId.json' : 'plan.json',
+      ),
+    );
     await plan.writeAsString(
       jsonEncode({
         'schema_version': 1,

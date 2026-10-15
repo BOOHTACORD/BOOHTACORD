@@ -70,6 +70,12 @@ void main() {
         );
         expect(find.textContaining('Текущая версия сохранена'), findsNothing);
         expect(find.text('Открыть официальные выпуски'), findsOneWidget);
+        expect(
+          find.text(
+            'Код ошибки: ${manualRecovery ? 'manual_recovery' : 'native_apply'}',
+          ),
+          findsOneWidget,
+        );
         expect(tester.takeException(), isNull);
       },
     );

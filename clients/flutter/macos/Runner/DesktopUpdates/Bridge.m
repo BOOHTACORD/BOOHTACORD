@@ -4,6 +4,7 @@
 #import <objc/runtime.h>
 #import <pwd.h>
 #import <unistd.h>
+#import "../../../native/desktop_recovery/macos_state.h"
 
 @interface BOOHDesktopUpdates : NSObject <SPUUserDriver, SPUUpdaterDelegate>
 @property(nonatomic, strong) FlutterMethodChannel *channel;
@@ -64,10 +65,20 @@
     result(attributes[NSFileSystemFreeSize] ?: @0);
     return;
   }
+  if ([call.method isEqualToString:@"resetRecovery"]) {
+    NSString *directory = args[@"directory"];
+    if (![directory isKindOfClass:NSString.class] || ![self ownedPath:directory] ||
+        ![directory.lastPathComponent isEqual:@"recovery"]) {
+      [self fail:result code:@"recovery_path"];
+      return;
+    }
+    result(@(ResetInactiveRecovery(directory)));
+    return;
+  }
   if ([call.method isEqualToString:@"armRecovery"]) {
     NSString *plan = args[@"plan"];
     if (![plan isKindOfClass:NSString.class] || ![self ownedPath:plan] ||
-        ![plan.lastPathComponent isEqual:@"plan.json"]) {
+        !RecoveryPlanName(plan.lastPathComponent)) {
       [self fail:result code:@"recovery_path"];
       return;
     }

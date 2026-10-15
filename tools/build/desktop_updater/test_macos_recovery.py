@@ -1,5 +1,6 @@
 """Real monitor preflight tests; these do not certify an application upgrade."""
 import json
+import fcntl
 import os
 import plistlib
 import shutil
@@ -165,8 +166,14 @@ int main(int argc, const char *argv[]) {
                                     capture_output=True, text=True)
             # A completed preflight is separate from LaunchServices reporting
             # successful launch; both must happen before cancelling this fixture.
-            self.assertTrue((self.recovery / 'recovery-ready.json').exists())
+            deadline = time.monotonic() + 5
+            ready = self.recovery / 'recovery-ready.json'
+            outcome = self.recovery / 'recovery-outcome.json'
+            while not ready.exists() and not outcome.exists() and time.monotonic() < deadline:
+                time.sleep(.05)
             self.assertEqual(result.stdout.strip(), 'LAUNCHED')
+            reason = json.loads(outcome.read_text()).get('reason') if outcome.exists() else 'no_outcome'
+            self.assertTrue(ready.exists(), 'preflight:' + reason)
         finally:
             (self.recovery / 'cancel.json').write_text(json.dumps({
                 'transaction': self.transaction,
@@ -176,6 +183,74 @@ int main(int argc, const char *argv[]) {
             while not outcome.exists() and time.monotonic() < deadline:
                 time.sleep(.05)
             self.assertTrue(outcome.exists(), 'Owned monitor must honor cancellation')
+
+    def reset_recovery(self):
+        source = self.root / 'reset.m'
+        header = Path(__file__).resolve().parents[3] / 'clients/flutter/native/desktop_recovery/macos_state.h'
+        source.write_text('#import "' + str(header) + '"\nint main(int argc, const char *argv[]) { @autoreleasepool { return ResetInactiveRecovery(@(argv[1])) ? 0 : 3; } }\n')
+        binary = self.root / 'reset'
+        subprocess.run(['xcrun', 'clang', '-fobjc-arc', '-framework', 'Foundation', str(source), '-o', str(binary)], check=True, capture_output=True)
+        return subprocess.run([str(binary), str(self.recovery)], capture_output=True).returncode
+
+    def pending_recovery(self, cancelled=True):
+        self.plan.write_text(json.dumps({'transaction': self.transaction}))
+        if cancelled:
+            (self.recovery / 'cancel.json').write_text(json.dumps({'transaction': self.transaction}))
+        lock = self.recovery / 'recovery.lock'
+        lock.touch()
+        return lock
+
+    def test_cancelled_unstarted_monitor_can_retry_without_replacing_lock_inode(self):
+        lock = self.pending_recovery()
+        inode = lock.stat().st_ino
+        self.assertEqual(self.reset_recovery(), 0)
+        self.assertEqual(lock.stat().st_ino, inode)
+        self.assertFalse(self.plan.exists())
+        retired = list((self.recovery / 'retired').iterdir())
+        self.assertEqual(len(retired), 1)
+        self.assertTrue((retired[0] / 'previous.app/Contents/MacOS/Fixture').is_file())
+        self.assertTrue((retired[0] / 'plan.json').is_file())
+        self.assertEqual(self.reset_recovery(), 0)
+
+    def test_an_active_monitor_cannot_be_reset_even_with_cancellation(self):
+        lock = self.pending_recovery()
+        with lock.open('rb') as stream:
+            fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            self.assertEqual(self.reset_recovery(), 3)
+            self.assertTrue(self.plan.exists())
+            self.assertTrue((self.recovery / 'previous.app').is_dir())
+
+    def test_partial_retirement_can_resume_without_overwriting_history(self):
+        self.pending_recovery()
+        archive = self.recovery / 'retired' / self.transaction
+        archive.mkdir(parents=True)
+        self.assertEqual(self.reset_recovery(), 0)
+        self.assertTrue((archive / 'plan.json').exists())
+        self.assertTrue((archive / 'previous.app').is_dir())
+
+    def test_finished_attempt_is_retired_and_history_is_bounded(self):
+        lock = self.pending_recovery(cancelled=False)
+        inode = lock.stat().st_ino
+        for _ in range(5):
+            self.transaction = str(uuid.uuid4())
+            self.plan.write_text(json.dumps({'transaction': self.transaction}))
+            (self.recovery / 'recovery-outcome.json').write_text(json.dumps({'transaction': self.transaction, 'status': 'completed'}))
+            self.assertEqual(self.reset_recovery(), 0)
+        self.assertEqual(lock.stat().st_ino, inode)
+        self.assertEqual(len(list((self.recovery / 'retired').iterdir())), 3)
+
+    def test_uncancelled_or_mismatched_attempt_is_preserved(self):
+        self.pending_recovery(cancelled=False)
+        self.assertEqual(self.reset_recovery(), 3)
+        (self.recovery / 'cancel.json').write_text(json.dumps({'transaction': str(uuid.uuid4())}))
+        self.assertEqual(self.reset_recovery(), 3)
+        self.assertTrue(self.plan.exists())
+
+    def test_unique_transaction_plan_does_not_reuse_legacy_path(self):
+        self.plan = self.recovery / ('plan-' + self.transaction + '.json')
+        result = self.run_monitor(self.parent / 'BOOHTACORD.app')
+        self.assertEqual(result['status'], 'cancelled')
+        self.assertFalse((self.recovery / 'plan.json').exists())
 
     def test_missing_plan_argument_is_rejected(self):
         result = subprocess.run([str(self.monitor)], capture_output=True)

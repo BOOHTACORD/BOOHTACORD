@@ -4,6 +4,7 @@
 #import <sys/stat.h>
 #import <unistd.h>
 #import <pwd.h>
+#import "macos_state.h"
 
 static NSString *const PackageID = @"ru.boohtacord.boohtacordDesktop";
 // LaunchServices can inherit a sandbox's CFFIXED_USER_HOME. It must not
@@ -112,6 +113,25 @@ static void RemoveRegistration(NSString *transaction) {
   // RunAtLoad has no KeepAlive: the already-running job exits after this
   // attempt.
 }
+static void CleanupRetiredRegistrations(NSString *root, NSString *target) {
+  NSString *history = [root stringByAppendingPathComponent:@"retired"];
+  NSFileManager *files = NSFileManager.defaultManager;
+  for (NSString *name in [files contentsOfDirectoryAtPath:history error:nil]) {
+    if (![[NSUUID alloc] initWithUUIDString:name]) continue;
+    NSString *directory = [history stringByAppendingPathComponent:name];
+    NSDictionary *cancel = Read([directory stringByAppendingPathComponent:@"cancel.json"]);
+    NSDictionary *outcome = Read([directory stringByAppendingPathComponent:@"recovery-outcome.json"]);
+    for (NSString *file in [files contentsOfDirectoryAtPath:directory error:nil]) {
+      if (!RecoveryPlanName(file)) continue;
+      NSDictionary *plan = Read([directory stringByAppendingPathComponent:file]);
+      NSString *identifier = plan[@"transaction"];
+      if (![identifier isKindOfClass:NSString.class] || ![[NSUUID alloc] initWithUUIDString:identifier] ||
+          ![plan[@"target"] isEqual:target]) continue;
+      if ([cancel[@"transaction"] isEqual:identifier] || [outcome[@"transaction"] isEqual:identifier])
+        RemoveRegistration(identifier);
+    }
+  }
+}
 int main(int argc, const char *argv[]) {
   @autoreleasepool {
     NSArray<NSString *> *arguments = NSProcessInfo.processInfo.arguments;
@@ -142,6 +162,8 @@ int main(int argc, const char *argv[]) {
              O_CREAT | O_RDWR, 0600);
     if (descriptor < 0 || flock(descriptor, LOCK_EX | LOCK_NB) != 0)
       return 0;
+    // A queued launch may have read an older plan before acquiring the lock.
+    if (![Read(planPath)[@"transaction"] isEqual:transaction]) return 0;
     NSString *outcome =
                  [root stringByAppendingPathComponent:@"recovery-outcome.json"],
              *ack = [root stringByAppendingPathComponent:@"bootstrap-ack.json"];
@@ -187,6 +209,7 @@ int main(int argc, const char *argv[]) {
       monitorExecutable = [retained stringByAppendingPathComponent:
           @"Contents/MacOS/BOOHTACORDRecovery"];
     }
+    CleanupRetiredRegistrations(root, target);
     if (![arguments containsObject:@"--resumed"])
       Register(planPath, transaction, monitorExecutable);
     if (!ValidCode(backup, plan[@"old_build"])) {

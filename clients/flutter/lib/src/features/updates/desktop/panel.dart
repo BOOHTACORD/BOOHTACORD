@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../controller.dart';
 import 'coordinator.dart';
+import 'failure.dart';
 
 class DesktopUpdatePanel extends StatelessWidget {
   const DesktopUpdatePanel({
@@ -103,6 +104,10 @@ class DesktopUpdatePanel extends StatelessWidget {
                   title,
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
+                if (inSettings && desktop.phase == DesktopUpdatePhase.failed)
+                  Text(
+                    'Код ошибки: ${desktopUpdateFailureCode(desktop.failure)}',
+                  ),
                 if (desktop.phase == DesktopUpdatePhase.downloading) ...[
                   const SizedBox(height: 8),
                   LinearProgressIndicator(

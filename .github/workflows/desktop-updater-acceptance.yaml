@@ -4,7 +4,13 @@ on:
   workflow_dispatch:
   push:
     branches: [codex/issue337-desktop-updates]
-    paths: [.github/workflows/desktop-updater-acceptance.yaml]
+    paths:
+      - .github/workflows/desktop-updater-acceptance.yaml
+      - clients/flutter/lib/src/features/updates/desktop/**
+      - clients/flutter/lib/src/app/desktop_updates/**
+      - clients/flutter/native/desktop_recovery/**
+      - clients/flutter/macos/Runner/DesktopUpdates/**
+      - tools/build/desktop_updater/**
 
 permissions:
   contents: read

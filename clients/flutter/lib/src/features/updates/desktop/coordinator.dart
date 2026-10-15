@@ -8,6 +8,7 @@ import 'package:uuid/uuid.dart';
 import '../model.dart';
 import '../../../services/client_telemetry.dart';
 import 'artifact.dart';
+import 'failure.dart';
 import 'download.dart';
 import 'native_adapter.dart';
 import 'staging.dart';
@@ -247,7 +248,7 @@ class DesktopUpdateCoordinator extends ChangeNotifier {
         }
       }
       phase = DesktopUpdatePhase.failed;
-      failure = error is ArtifactFailure ? error.code : 'prepare';
+      failure = desktopUpdateFailureReason(error, fallback: 'prepare');
       _changed();
     }
   }
@@ -452,7 +453,7 @@ class DesktopUpdateCoordinator extends ChangeNotifier {
       await _resumeStoppedWorkspace(epoch, scope);
       if (_disposed || epoch != _epoch || scope != currentScope()) return;
       phase = DesktopUpdatePhase.failed;
-      failure = error is ArtifactFailure ? error.code : 'apply';
+      failure = desktopUpdateFailureReason(error, fallback: 'apply');
       _changed();
     }
   }
