@@ -48,7 +48,7 @@ class VelopackDesktopUpdater implements DesktopNativeUpdater {
   static DynamicLibrary _library() => DynamicLibrary.open(
     path.join(
       File(Platform.resolvedExecutable).parent.path,
-      'velopack_libc_win_x64_msvc.dll',
+      'velopack_libc.dll',
     ),
   );
   static Pointer<Void> _manager(DynamicLibrary library, String source) {

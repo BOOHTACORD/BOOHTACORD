@@ -4,8 +4,6 @@ This component gate covers failed apply, real relaunch and one-shot recovery.
 It does not certify an N -> N+1 UI journey or workspace restoration.
 """
 import argparse
-import ctypes
-from ctypes import wintypes
 import hashlib
 import json
 import os
@@ -17,68 +15,15 @@ import tempfile
 import time
 import uuid
 
+from .windows_process import running_at, close_owned
+
 
 def digest(file):
     with file.open('rb') as stream:
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
-def running_at(executable):
-    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
-    kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
-    kernel.OpenProcess.restype = wintypes.HANDLE
-    kernel.QueryFullProcessImageNameW.argtypes = [
-        wintypes.HANDLE, wintypes.DWORD, wintypes.LPWSTR,
-        ctypes.POINTER(wintypes.DWORD)]
-    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
-    kernel.K32EnumProcesses.argtypes = [ctypes.POINTER(wintypes.DWORD),
-                                      wintypes.DWORD, ctypes.POINTER(wintypes.DWORD)]
-    process_ids = (wintypes.DWORD * 8192)()
-    used = wintypes.DWORD()
-    if not kernel.K32EnumProcesses(process_ids, ctypes.sizeof(process_ids),
-                                  ctypes.byref(used)):
-        raise OSError('Could not inspect owned test processes')
-    result = []
-    for process_id in process_ids[:used.value // ctypes.sizeof(wintypes.DWORD)]:
-        handle = kernel.OpenProcess(0x1000, False, process_id)
-        if not handle:
-            continue
-        try:
-            buffer = ctypes.create_unicode_buffer(32768)
-            length = wintypes.DWORD(len(buffer))
-            if kernel.QueryFullProcessImageNameW(handle, 0, buffer,
-                                                ctypes.byref(length)):
-                if os.path.normcase(buffer.value) == os.path.normcase(str(executable)):
-                    result.append(process_id)
-        finally:
-            kernel.CloseHandle(handle)
-    return result
-
-
-def close_owned(executable):
-    processes = set(running_at(executable))
-    user = ctypes.WinDLL('user32', use_last_error=True)
-    callback_type = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
-    user.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
-    user.PostMessageW.argtypes = [wintypes.HWND, wintypes.UINT, wintypes.WPARAM, wintypes.LPARAM]
-
-    @callback_type
-    def close(window, _):
-        owner = wintypes.DWORD()
-        user.GetWindowThreadProcessId(window, ctypes.byref(owner))
-        if owner.value in processes:
-            user.PostMessageW(window, 0x0010, 0, 0)  # WM_CLOSE, never TerminateProcess.
-        return True
-
-    user.EnumWindows(close, 0)
-    deadline = time.monotonic() + 15
-    while running_at(executable) and time.monotonic() < deadline:
-        time.sleep(0.25)
-    if running_at(executable):
-        raise RuntimeError('Owned restored app did not accept graceful close')
-
-
-def run(release, build, output):
+def run(release, build, output, monitor_override=None):
     if sys.platform != 'win32':
         raise RuntimeError('This native gate requires Windows')
     import winreg
@@ -94,7 +39,7 @@ def run(release, build, output):
     target.parent.mkdir()
     executable = target / 'boohtacord_desktop.exe'
     monitor = recovery / 'BOOHTACORDRecovery.exe'
-    shutil.copy2(release / monitor.name, monitor)
+    shutil.copy2(monitor_override or release / monitor.name, monitor)
     backup = recovery / 'previous'
     shutil.copytree(release, backup)
     files = {file.relative_to(backup).as_posix(): digest(file)
@@ -125,7 +70,7 @@ def run(release, build, output):
         while not ready.exists() and process.poll() is None and time.monotonic() < deadline:
             time.sleep(0.1)
         if not ready.exists():
-            raise RuntimeError('Recovery did not arm for the real retained baseline')
+            raise RuntimeError('Recovery did not arm; native exit=' + str(process.poll()))
         # Simulate only the failed replacement (no target). The shipping monitor,
         # its actual 120s deadline, real app files and relaunch are not mocked.
         if process.wait(timeout=170) != 0:
@@ -171,18 +116,37 @@ def run(release, build, output):
             'one_shot_registration_removed': True,
             'n_to_n1_ui_acceptance': 'NOT_RUN',
         }, indent=2) + '\n')
+    except Exception:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        result = {'schema_version': 1, 'status': 'FAIL', 'monitor_exit': process.poll(),
+                  'elapsed_seconds': round(time.monotonic() - started)}
+        outcome_file = recovery / 'recovery-outcome.json'
+        if outcome_file.exists():
+            value = json.loads(outcome_file.read_text())
+            for key in ['status', 'reason']:
+                observed = value.get(key)
+                if isinstance(observed, str) and len(observed) <= 64:
+                    result['native_' + key] = observed
+        output.write_text(json.dumps(result, indent=2) + '\n')
+        raise
     finally:
         if process.poll() is None:
             (recovery / 'cancel.json').write_text(json.dumps({'transaction': transaction}))
             process.wait(timeout=10)
         close_owned(executable)
-        with winreg.OpenKey(winreg.HKEY_CURRENT_USER,
+        try:
+            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
                             r'Software\Microsoft\Windows\CurrentVersion\RunOnce',
-                            0, winreg.KEY_SET_VALUE) as key:
+                            0, winreg.KEY_SET_VALUE)
+        except FileNotFoundError:
+            key = None
+        if key is not None:
             try:
                 winreg.DeleteValue(key, 'BOOHTACORDRecovery-' + transaction)
             except FileNotFoundError:
                 pass
+            finally:
+                key.Close()
         if marker.read_text() == 'issue337\n':
             shutil.rmtree(root)
 
@@ -192,6 +156,7 @@ if __name__ == '__main__':
     parser.add_argument('--release', type=Path, required=True)
     parser.add_argument('--build')
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--monitor', type=Path)
     args = parser.parse_args()
     from tools.build.client_identity import load
-    run(args.release, args.build or load('windows')['native_build'], args.output)
+    run(args.release, args.build or load('windows')['native_build'], args.output, args.monitor)

@@ -211,21 +211,30 @@ static void Launch(const fs::path &directory) {
   ShellExecuteExW(&info);
 }
 int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
+  // Bounded startup codes let native acceptance distinguish a loader failure
+  // from invalid local paths or baseline validation, without logging paths.
+  int startup = 10;
   try {
     winrt::init_apartment();
+    startup = 11;
     int argc;
     auto argv = CommandLineToArgvW(GetCommandLineW(), &argc);
     if (argc < 3 || std::wstring(argv[1]) != L"--plan")
       return 2;
+    startup = 12;
     fs::path planPath = fs::weakly_canonical(NativePath(argv[2]));
     LocalFree(argv);
+    if (!fs::is_regular_file(planPath))
+      return 2;
     wchar_t local[32768];
     DWORD count = GetEnvironmentVariableW(L"LOCALAPPDATA", local, 32768);
+    startup = 13;
     if (!count || count >= 32768 || !Within(local, planPath))
-      return 2;
+      return startup;
+    startup = 14;
     auto plan = Read(planPath);
     if (!plan)
-      return 2;
+      return startup;
     auto transaction = Value(plan, L"transaction"),
          newBuild = Value(plan, L"new_build"),
          oldBuild = Value(plan, L"old_build"),
@@ -233,11 +242,13 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
     fs::path target = NativePath(Value(plan, L"target")),
              backup = NativePath(Value(plan, L"backup")),
              root = planPath.parent_path();
+    startup = 15;
     if (!std::regex_match(transaction, std::wregex(L"[A-Fa-f0-9-]{36}")) ||
         !Within(local, target) || target.filename() != L"current" ||
         backup != root / L"previous" ||
         root.wstring().find(L"DesktopUpdates") == std::wstring::npos)
-      return 2;
+      return startup;
+    startup = 16;
     auto lock = root / L"recovery.lock";
     HANDLE exclusive =
         CreateFileW(lock.c_str(), GENERIC_READ | GENERIC_WRITE, 0, nullptr,
@@ -246,12 +257,13 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
       return 0;
     auto outcome = root / L"recovery-outcome.json",
          ack = root / L"bootstrap-ack.json";
+    startup = 17;
     HKEY registry;
     const wchar_t *key =
         L"Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce";
     if (RegCreateKeyExW(HKEY_CURRENT_USER, key, 0, nullptr, 0, KEY_SET_VALUE,
                         nullptr, &registry, nullptr) != ERROR_SUCCESS)
-      return 2;
+      return startup;
     auto label = L"BOOHTACORDRecovery-" + transaction;
     auto finish = [&](const wchar_t *status, const wchar_t *reason) {
       JsonObject v;
@@ -268,6 +280,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
       RegDeleteValueW(registry, label.c_str());
       return 0;
     }
+    startup = 18;
     if (!fs::is_directory(backup)) {
       if (Build(target) == oldBuild)
         finish(L"rolledBack", L"restore_interrupted");
@@ -280,6 +293,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
       finish(L"manualRecovery", L"baseline_identity");
       return 2;
     }
+    startup = 19;
     wchar_t self[32768];
     GetModuleFileNameW(nullptr, self, 32768);
     if (planPath.wstring().find(L'"') != std::wstring::npos)
@@ -381,6 +395,6 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
     CloseHandle(exclusive);
     return 0;
   } catch (...) {
-    return 2;
+    return startup;
   }
 }

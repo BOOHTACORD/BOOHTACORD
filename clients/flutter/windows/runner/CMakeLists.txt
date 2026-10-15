@@ -53,7 +53,7 @@ target_include_directories(${BINARY_NAME} PRIVATE "${BOOH_VPK}/include")
 target_link_libraries(${BINARY_NAME} PRIVATE "${BOOH_VPK}/lib/velopack_libc_win_x64_msvc.dll.lib")
 add_custom_command(TARGET ${BINARY_NAME} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    "${BOOH_VPK}/lib/velopack_libc_win_x64_msvc.dll" "$<TARGET_FILE_DIR:${BINARY_NAME}>")
+    "${BOOH_VPK}/lib/velopack_libc_win_x64_msvc.dll" "$<TARGET_FILE_DIR:${BINARY_NAME}>/velopack_libc.dll")
 
 # Compiled local monitor, copied outside current/ at consented apply.
 add_executable(BOOHTACORDRecovery WIN32 "../../native/desktop_recovery/windows.cpp")

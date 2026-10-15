@@ -1,6 +1,7 @@
 """One Windows build command for local use and hosted CI."""
 import json
 import sys
+from pathlib import Path
 from tools.ci.native.process import ROOT, client, output, require_version, run
 from tools.release.native_artifact.manifest import write
 from .plugins import configured_plugins
@@ -21,6 +22,9 @@ def main():
         if not (release / required).exists(): raise RuntimeError('Incomplete Windows release: ' + required)
     from tools.build.windows.runtime import retain_runtime
     retain_runtime(release)
+    import os
+    from tools.build.windows.imports import verify_runtime
+    verify_runtime(release, Path(os.environ['SystemRoot']) / 'System32')
     import shutil
     shutil.copyfile(ROOT / 'tools/build/desktop_updater/licenses/Velopack-1.2.161.txt', release / 'LICENSE-Velopack.txt')
     signing = json.loads(output('pwsh', '-NoProfile', '-File', str(ROOT / 'tools/build/windows/signature.ps1'),

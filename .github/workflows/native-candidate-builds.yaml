@@ -9,6 +9,44 @@ permissions:
   contents: read
 
 jobs:
+  windows-recovery-component:
+    runs-on: windows-2022
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      # Pinned real 1.0.43 app fixture from the preceding complete native build.
+      # It exercises monitor changes quickly while the full release rebuild runs.
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 38652029184
+          name: BOOHTACORD-windows-x64-b8efcf44f056b78a4680b9f6cd8221a5f70e53cb
+          path: .out/issue337-windows-fixture
+      - name: Verify every retained fixture file before supplying the canonical SDK loader name
+        run: python -m tools.qa.desktop_updates.windows_fixture --directory .out/issue337-windows-fixture --expected-source b8efcf44f056b78a4680b9f6cd8221a5f70e53cb
+      - name: Compile current standalone recovery monitor
+        shell: cmd
+        run: |
+          for /f "usebackq tokens=*" %%v in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do call "%%v\Common7\Tools\VsDevCmd.bat" -arch=x64 -no_logo
+          if not defined VCToolsInstallDir exit /b 1
+          if not exist "%RUNNER_TEMP%\desktop-recovery-fast" mkdir "%RUNNER_TEMP%\desktop-recovery-fast"
+          cl.exe /nologo /std:c++17 /EHsc /MT /DUNICODE /D_UNICODE /DNOMINMAX clients\flutter\native\desktop_recovery\windows.cpp /Fo"%RUNNER_TEMP%\desktop-recovery-fast\Recovery.obj" /Fe"%RUNNER_TEMP%\desktop-recovery-fast\Recovery.exe" /link /SUBSYSTEM:WINDOWS windowsapp.lib version.lib shell32.lib advapi32.lib user32.lib bcrypt.lib
+          if errorlevel 1 exit /b 1
+      - name: Run the real recovery component against the retained native app
+        shell: pwsh
+        run: python -m tools.qa.desktop_updates.windows_recovery --release .out/issue337-windows-fixture --monitor "$env:RUNNER_TEMP\desktop-recovery-fast\Recovery.exe" --build 78 --output .out/desktop-recovery/windows-fast.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: desktop-recovery-fast-${{ github.sha }}
+          path: .out/desktop-recovery/windows-fast.json
+          if-no-files-found: ignore
+          retention-days: 30
   android-candidate:
     runs-on: ubuntu-24.04
     steps:
