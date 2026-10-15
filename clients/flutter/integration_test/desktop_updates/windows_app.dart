@@ -17,6 +17,7 @@ import 'package:boohtacord_desktop/src/app.dart';
 import 'package:boohtacord_desktop/src/widgets/formatted_message_body.dart';
 import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/features/updates/desktop/coordinator.dart';
+import 'package:boohtacord_desktop/src/features/updates/desktop/failure.dart';
 import 'package:boohtacord_desktop/src/features/updates/identity.dart';
 
 import 'native_app.dart' as native;
@@ -39,9 +40,11 @@ void require(bool value, String reason) {
 }
 
 class Journey {
-  Journey(this.output);
+  Journey(this.output, {WidgetController? controller})
+    : driver = controller ?? LiveWidgetController(WidgetsBinding.instance);
   final Directory output;
-  final driver = LiveWidgetController(WidgetsBinding.instance);
+  String step = 'startup';
+  final WidgetController driver;
   BoohtacordApp get app =>
       driver.widget<BoohtacordApp>(find.byType(BoohtacordApp));
   AppState get state => app.state;
@@ -51,14 +54,16 @@ class Journey {
     matching: find.byType(EditableText),
   );
 
-  Future<void> tap(Finder finder) async {
-    await until(() => finder.evaluate().isNotEmpty, 'control_missing');
-    await driver.tap(finder.first);
-    await driver.pump(const Duration(milliseconds: 120));
+  Future<void> tap(Finder finder, {required String at}) async {
+    step = at;
+    final visible = finder.hitTestable();
+    await until(() => visible.evaluate().isNotEmpty, 'control_missing');
+    await driver.tap(visible.first);
+    await driver.pump(const Duration(milliseconds: 350));
   }
 
   Future<void> edit(String value) async {
-    await tap(composer);
+    await tap(composer, at: 'composer');
     driver
         .state<EditableTextState>(composer)
         .updateEditingValue(
@@ -124,8 +129,8 @@ class Journey {
 
   Future<void> before() async {
     await windowManager.setBounds(const Rect.fromLTWH(40, 40, 1200, 800));
-    await tap(find.text('Update VOICE'));
-    await tap(find.text('Подключиться без микрофона'));
+    await tap(find.text('Update VOICE'), at: 'voice_open');
+    await tap(find.text('Подключиться без микрофона'), at: 'voice_listener');
     await until(
       () =>
           state.voicePhase == VoicePhase.connected ||
@@ -133,12 +138,14 @@ class Journey {
       'voice_not_connected',
     );
     require(state.microphoneMuted, 'microphone_not_muted');
-    if (!state.deafened) await tap(find.byTooltip('Выключить удалённый звук'));
+    if (!state.deafened) {
+      await tap(find.byTooltip('Выключить удалённый звук'), at: 'deafen');
+    }
     require(state.deafened, 'incoming_audio_not_muted');
-    await tap(find.text('Update TEXT'));
+    await tap(find.text('Update TEXT'), at: 'text_open');
     await until(() => state.messages.length >= 50, 'history_not_loaded');
     await edit('Owned updater draft before download');
-    await tap(find.widgetWithText(FilledButton, 'Обновить'));
+    await tap(find.widgetWithText(FilledButton, 'Обновить'), at: 'download');
     await until(
       () => desktop.phase == DesktopUpdatePhase.downloading,
       'download_not_observed',
@@ -162,6 +169,7 @@ class Journey {
     await edit(
       'Owned updater draft changed during actual download and after Ready',
     );
+    step = 'history_position';
     await driver.timedDrag(
       find.byKey(const ValueKey('text-channel-messages')),
       const Offset(0, 1200),
@@ -176,21 +184,42 @@ class Journey {
     await File(path.join(output.path, 'expected.json'))
         .writeAsString(jsonEncode(expected), flush: true);
     await capture('before-installed-update');
-    await tap(find.widgetWithText(FilledButton, 'Перезапустить'));
-    await tap(find.text('Продолжить работу'));
+    await tap(
+      find.widgetWithText(FilledButton, 'Перезапустить'),
+      at: 'restart_open',
+    );
+    await tap(find.text('Продолжить работу'), at: 'restart_decline');
+    await until(
+      () => find.byType(AlertDialog).evaluate().isEmpty,
+      'decline_dialog_not_closed',
+    );
     require(
       desktop.phase == DesktopUpdatePhase.readyToRestart &&
           state.voiceChannel != null,
       'decline_restart_interrupted_work',
     );
-    await tap(find.widgetWithText(FilledButton, 'Перезапустить'));
+    await tap(
+      find.widgetWithText(FilledButton, 'Перезапустить'),
+      at: 'restart_open',
+    );
     await tap(
       find.descendant(
         of: find.byType(AlertDialog),
         matching: find.widgetWithText(FilledButton, 'Перезапустить'),
       ),
+      at: 'restart_consent',
     );
-    // Native apply terminates this process only after actual user-consent actions.
+    step = 'native_apply';
+    // A real successful apply exits this process. Report native rejection here
+    // rather than continuing a new scripted action or waiting without context.
+    await until(
+      () =>
+          desktop.phase == DesktopUpdatePhase.failed ||
+          desktop.phase == DesktopUpdatePhase.rolledBack,
+      'native_apply_did_not_exit',
+      seconds: 60,
+    );
+    throw StateError('native_apply_rejected');
   }
 
   Future<void> after() async {
@@ -198,6 +227,7 @@ class Journey {
       () => desktop.phase == DesktopUpdatePhase.completed,
       'native_bootstrap_not_completed',
     );
+    step = 'restored_state';
     await driver.pump(const Duration(seconds: 2));
     final expected = jsonDecode(
       await File(path.join(output.path, 'expected.json')).readAsString(),
@@ -236,8 +266,8 @@ class Journey {
       'media_restarted_without_consent',
     );
     await capture('after-installed-update');
-    await tap(find.text('Update VOICE'));
-    await tap(find.text('Подключиться без микрофона'));
+    await tap(find.text('Update VOICE'), at: 'voice_open');
+    await tap(find.text('Подключиться без микрофона'), at: 'voice_listener');
     await until(
       () =>
           state.voicePhase == VoicePhase.connected ||
@@ -287,14 +317,18 @@ Future<void> main() async {
     'owned_fixture_required',
   );
   output.createSync(recursive: true);
+  Journey? journey;
+  String? installedBuild;
   try {
     await native.main();
     final identity = await NativeUpdateIdentity.load();
-    final journey = Journey(output);
+    installedBuild = identity.local.installedBuild;
+    final activeJourney = Journey(output);
+    journey = activeJourney;
     await until(
       () =>
           find.byType(BoohtacordApp).evaluate().isNotEmpty &&
-          journey.state.phase == AppPhase.ready,
+          activeJourney.state.phase == AppPhase.ready,
       'workspace_not_ready',
     );
     require(
@@ -302,10 +336,10 @@ Future<void> main() async {
       'compiled_native_build_mismatch',
     );
     if (identity.local.installedBuild == '78') {
-      await journey.before();
+      await activeJourney.before();
     } else {
       require(identity.local.installedBuild == '79', 'unexpected_native_build');
-      await journey.after();
+      await activeJourney.after();
     }
   } catch (error) {
     // Raw exceptions may contain paths or application data. Retain only this
@@ -323,7 +357,17 @@ Future<void> main() async {
       // Keep the original bounded failure when no rendered fixture exists.
     }
     await File(path.join(output.path, 'failure.json')).writeAsString(
-      jsonEncode({'status': 'FAIL', 'reason': reason}),
+      jsonEncode({
+        'status': 'FAIL',
+        'reason': reason,
+        'step': journey?.step ?? 'startup',
+        'installed_build': installedBuild,
+        if (journey != null &&
+            find.byType(BoohtacordApp).evaluate().isNotEmpty) ...{
+          'update_phase': journey.desktop.phase.name,
+          'native_failure': desktopUpdateFailureCode(journey.desktop.failure),
+        },
+      }),
       flush: true,
     );
   }

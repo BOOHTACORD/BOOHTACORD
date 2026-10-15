@@ -7,6 +7,53 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../integration_test/desktop_updates/windows_app.dart';
 
 void main() {
+  testWidgets(
+    'driver consents through the visible dialog instead of its covered panel',
+    (tester) async {
+      var consented = false;
+      late BuildContext panelContext;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              panelContext = context;
+              return Scaffold(
+                body: FilledButton(
+                  onPressed: () {},
+                  child: const Text('Перезапустить'),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+      showDialog<void>(
+        context: panelContext,
+        builder: (context) => AlertDialog(
+          actions: [
+            FilledButton(
+              onPressed: () {
+                consented = true;
+                Navigator.pop(context);
+              },
+              child: const Text('Перезапустить'),
+            ),
+          ],
+        ),
+      );
+      await tester.pumpAndSettle();
+      final journey = Journey(Directory.systemTemp, controller: tester);
+      await journey.tap(
+        find.widgetWithText(FilledButton, 'Перезапустить'),
+        at: 'restart_consent',
+      );
+      await tester.pumpAndSettle();
+      expect(consented, isTrue);
+      expect(find.byType(AlertDialog), findsNothing);
+      expect(journey.step, 'restart_consent');
+    },
+  );
+
   testWidgets('anchor uses visible rows and ignores cached offscreen rows', (
     tester,
   ) async {

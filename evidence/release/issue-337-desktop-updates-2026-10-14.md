@@ -694,3 +694,32 @@ macOS installed-update acceptance is not claimed by these component tests.
   `38dde09d23e138dd12fbe05e6f99c3b84ec5584d64f63c5830499b91e11b2e93`)
   and unsigned iOS device Release compile. The current driver-only correction
   does not change their shipping entrypoint or application behavior.
+
+## Windows consent/apply diagnosis remains open (2026-10-15)
+
+- Source 109513ad full CI 38816000280, browser 38816000282 and signed native
+  candidates 38815993186 PASS. Final Android ZIP 12011705236, all APK signatures
+  and manifest hashes PASS. Windows distribution source 76119c94 is an actual
+  merge of master 3e6ac963 and head 109513ad; its complete source tree equals
+  that head. Installer/portable/recovery artifacts pass authenticated archive
+  verification and the portable manifest's per-file hashes. The stable full
+  package also passes its release hash/size, CRC, x64 PE and publisher root.
+- The real installed run 38815993370 again failed, this time after history
+  measurement and a genuine before-update image. Authenticated artifact
+  12012192108 SHA-256
+  `b44685f4bc86b8dccd5100f011c75fc28132e15c1482e4d3ad4d71eebe9d1f51`
+  contains before/failure images and bounded result `control_missing`.
+  Visual inspection confirms voice connected with microphone and incoming
+  audio off, Ready banner, scrolled history and the late draft before consent.
+  The failure image shows the application's failed-update banner. Neither
+  the exact failed control nor installed native build was retained by that
+  driver, so this is not enough to name the native cause or accept N-to-N+1.
+- The follow-up driver waits for hit-testable controls, lets dialog animations
+  settle and verifies the decline dialog actually closed. It records only
+  bounded step/build/phase and allowlisted native failure codes, and explicitly
+  detects an apply rejection while the original process is alive. No profile,
+  draft, message, token, raw exception or local path is added to diagnostics.
+- A focused real widget dialog test independently reproduces the old first-match
+  selector choosing the covered panel instead of the dialog's identically named
+  consent button. The old selector was observed FAIL; the hit-testable selector
+  passes. This proves a driver defect, not the still-unknown native failure cause.
