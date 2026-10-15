@@ -37,6 +37,15 @@ jobs:
           if not exist "%RUNNER_TEMP%\desktop-recovery-fast" mkdir "%RUNNER_TEMP%\desktop-recovery-fast"
           cl.exe /nologo /std:c++17 /EHsc /MT /DUNICODE /D_UNICODE /DNOMINMAX clients\flutter\native\desktop_recovery\windows.cpp /Fo"%RUNNER_TEMP%\desktop-recovery-fast\Recovery.obj" /Fe"%RUNNER_TEMP%\desktop-recovery-fast\Recovery.exe" /link /SUBSYSTEM:WINDOWS windowsapp.lib version.lib shell32.lib advapi32.lib user32.lib bcrypt.lib
           if errorlevel 1 exit /b 1
+      - name: Compile and exercise native Unicode and extended-path regression
+        shell: cmd
+        run: |
+          for /f "usebackq tokens=*" %%v in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do call "%%v\Common7\Tools\VsDevCmd.bat" -arch=x64 -no_logo
+          if not defined VCToolsInstallDir exit /b 1
+          cl.exe /nologo /std:c++17 /EHsc /MT /DUNICODE /D_UNICODE /DNOMINMAX tools\qa\desktop_updates\windows_paths_test.cpp /Fo"%RUNNER_TEMP%\desktop-recovery-fast\Paths.obj" /Fe"%RUNNER_TEMP%\desktop-recovery-fast\Paths.exe" /link windowsapp.lib version.lib shell32.lib advapi32.lib user32.lib bcrypt.lib
+          if errorlevel 1 exit /b 1
+          "%RUNNER_TEMP%\desktop-recovery-fast\Paths.exe"
+          if errorlevel 1 exit /b 1
       - name: Run the real recovery component against the retained native app
         shell: pwsh
         run: python -m tools.qa.desktop_updates.windows_recovery --release .out/issue337-windows-fixture --monitor "$env:RUNNER_TEMP\desktop-recovery-fast\Recovery.exe" --build 78 --output .out/desktop-recovery/windows-fast.json

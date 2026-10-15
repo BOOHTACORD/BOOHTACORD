@@ -24,9 +24,10 @@ namespace fs = std::filesystem;
 // Extended paths keep the per-user cache/baseline usable without changing the
 // machine-wide LongPathsEnabled policy (or requiring administrator rights).
 static fs::path NativePath(const fs::path &path) {
-  std::wstring value = fs::absolute(path).lexically_normal().wstring();
+  std::wstring value = path.wstring();
   if (value.rfind(L"\\\\?\\", 0) == 0)
-    return fs::path(value);
+    return path;
+  value = fs::absolute(path).lexically_normal().wstring();
   if (value.rfind(L"\\\\", 0) == 0)
     return fs::path(L"\\\\?\\UNC\\" + value.substr(2));
   return fs::path(L"\\\\?\\" + value);
