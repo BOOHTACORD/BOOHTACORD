@@ -598,3 +598,45 @@ macOS installed-update acceptance is not claimed by these component tests.
   38803217778 PASS. Final rebuilt installed-client verification is pending.
 - Issue #337 remains open, PR #338 draft, production catalog revision 29 and
   master unchanged. Test prereleases do not become latest or production targets.
+
+## Installed Windows gate and native API startup (2026-10-15)
+
+- Added a release-mode Flutter integration entrypoint around the unchanged
+  shipping main. Actual framework input drives voice/text, edits during real
+  download and after Ready, decline/confirm restart and explicit voice rejoin.
+  It compares draft/account/origin/channel digests, real visible-row geometry,
+  window bounds and audio intent. It never writes bootstrap acknowledgements,
+  successful recovery outcomes or simulated installer results.
+- The native Windows gate builds actual per-user Setup 78 and full package 79.
+  Source 7b6c787b published immutable beta release 414288660; package asset
+  645210707 is 30,775,469 bytes, SHA256
+  fca57dbf7017c115df024e4703b477410c3887cbeca886d1a278e2fbb1fa224c.
+  Published digest/size, CRC, NUSPEC identity, native x64 executable, recovery
+  helper, SDK and embedded publisher root were independently verified on Mac.
+  Its Windows CRLF public-key file contains exactly the same two key lines.
+  The owner signed the verified artifact locally; no private key entered CI.
+- Only public nonexecutable signature metadata was then supplied for the
+  already-running source-7b gate. Its original source/build checks continued;
+  the data-only commit did not claim fresh code-validation results.
+- Actual installed Windows acceptance remains NOT_RUN: run 38808113380 failed
+  during native dependency startup, before installing the client. The generic
+  diagnostic did not identify which process exited. Source inspection found
+  a definite blocker: the API's non-Linux filesystem implementation always
+  returns ErrInvalidSpace, so that API cannot start on native Windows.
+- Added native Windows GetDiskFreeSpaceEx capacity measurement with bounds and
+  cancellation checks, leaving Linux behavior unchanged. Focused Windows tests
+  cover real temporary-volume capacity, invalid paths and cancelled context;
+  cross-compilation PASS, actual execution awaits the Windows runner. The host
+  package tests PASS. This does not advertise a Windows server deployment.
+- Added a native-stack preflight before expensive client builds and bounded
+  startup diagnostics (fixed role, numeric exit, enumerated reason only).
+  Private service output and configuration remain outside uploaded artifacts.
+  Six focused Python fixture tests PASS, including refusal to close an existing
+  user installation and rejection of untrusted tool archive paths/digests.
+- Ordinary universal macOS 1.0.43 (78) was rebuilt, strict signatures and all
+  manifest digests verified. iOS device Release compiles unsigned; it is not
+  an exported IPA or TestFlight upload. The second actual macOS 78-to-79
+  replacement/local bootstrap succeeded; authentication is waiting for the
+  new build's OS Keychain access, so final state restoration is still pending.
+- No release acceptance, issue closure, master merge or production catalog
+  promotion is claimed while these native gates remain outstanding.
