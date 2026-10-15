@@ -114,3 +114,49 @@ OS gates above pass. Unit tests and native compilation do not replace them.
   Keychain access requires user action. SecurityAgent automation is denied by
   Computer Use. Windows N → N+1/UI restoration is still NOT_RUN. Production
   catalog remains revision 29, PR #338 remains a draft, and #337 stays open.
+
+### Follow-up: 2026-10-15, native recovery and isolated acceptance
+
+This section supersedes the earlier pending Windows packaging and locked-Mac
+status. It does not certify the full installed upgrade gates.
+
+- Windows component gate PASS at `8cffb9fa8d7f324dcfce700e68b79ad85bf473ed`,
+  [run 38687983343](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38687983343),
+  job 116267141330. The shipping monitor used its actual 120-second deadline,
+  restored every retained real Flutter app file, launched that executable, kept
+  the synthetic external profile intact, removed its RunOnce registration and
+  treated a replay of the finished transaction as a no-op. This is a failed-apply
+  recovery component gate, not an installed N → N+1 UI/state acceptance.
+- Native Windows regression checks PASS for Unicode/spaces, repeated extended
+  paths, long paths, canonical parent identity, scope boundaries, sibling
+  rejection and POSIX-separated names in the retained-file manifest. Recovery
+  now resolves 8.3 aliases consistently with long paths before scope checks and
+  normalizes paths before opening retained files.
+- Actual PE imports exposed a missing canonical `velopack_libc.dll` loader name.
+  The build now supplies that name from the pinned verified SDK and checks the
+  reachable native dependency graph. The retained historical app fixture used
+  by the fast gate is manifest-verified before adding the canonical loader alias;
+  that historical installer itself must not be promoted as healthy.
+- The runtime catalog's optional `install_artifact` schema reference initially
+  pointed at a misplaced definition. New regression tests failed on resolution
+  and on accidental acceptance of an internal camel-case field. The definition
+  is now in `$defs`; both tests and publisher signing tests PASS (5).
+- Local complete contracts/tools gate PASS: 447 tests, 19 OpenAPI parity tests,
+  39 requirement references. Approved brief remains unavailable on this host;
+  the verifier reports that limitation. Reachable integration-test helpers are
+  now checked by the Dart import graph; production imports of QA remain forbidden.
+- User unlocked the Mac and granted native Keychain access. The installed normal
+  candidate connected. A separate installed beta 1.0.43 (78) now uses the actual
+  API and native secure storage against an owned loopback HTTPS/PostgreSQL/SFU
+  stack, separate preference prefix and secure-storage namespace. No production
+  cookie was read/copied for this acceptance. Three namespace-isolation tests and
+  focused analysis PASS. A synthetic channel/draft was prepared through the UI.
+- The QA N+1 app is built with the shipping application and updater through a
+  separate entrypoint. Its private local configuration and local CA private key
+  are never included in the app or public assets. The dedicated workflow publishes
+  a fresh explicitly beta/prerelease artifact, never latest; publisher signing
+  stays on this Mac. Production catalog remains revision 29.
+- macOS installed N → N+1, failed-bootstrap rollback, Windows installed N → N+1
+  and UI/state restoration remain NOT_RUN until their actual observed results
+  are recorded. PR #338 stays draft and #337 stays open. The independent lifecycle
+  failure above has not been waived or established as pre-existing.
