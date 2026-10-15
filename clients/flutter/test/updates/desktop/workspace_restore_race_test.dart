@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:boohtacord_desktop/src/features/admin/shell/types.dart';
+
 import 'package:flutter/services.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -54,6 +56,12 @@ class RestoreState extends AppState {
   @override
   Future<void> refreshDirectMessages() async {}
   @override
+  Future<void> showDirectMessages() async {
+    workspace.navigationSection = NavigationSection.directMessages;
+    selectedChannel = null;
+  }
+
+  @override
   Future<void> selectChannel(GuildChannel channel) async {
     selectedChannel = channel;
   }
@@ -76,6 +84,91 @@ void main() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(const MethodChannel('window_manager'), null);
   });
+  for (final admin in [false, true]) {
+    test('restores settings sections with current admin ACL: $admin', () async {
+      final state = RestoreState()
+        ..phase = AppPhase.ready
+        ..user = SessionUser(
+          accountId: 'fixture',
+          role: admin ? 'ADMINISTRATOR' : 'MEMBER',
+        );
+      final store = RestoreStore();
+      final persistence = DesktopWorkspacePersistence(state, store);
+      addTearDown(() {
+        persistence.dispose();
+        state.dispose();
+      });
+      persistence.start();
+      await store.requested.future;
+      store.loaded.complete({
+        'panel': 'admin',
+        'profile_section': 'about',
+        'admin_section': 'roles',
+      });
+      final captured = await store.saved.future.timeout(
+        const Duration(seconds: 2),
+      );
+      expect(state.workspace.profileSection, ProfileSection.about);
+      expect(
+        state.workspace.adminSection,
+        admin ? AdminSection.roles : AdminSection.members,
+      );
+      expect(
+        state.workspacePanel,
+        admin ? WorkspacePanel.admin : WorkspacePanel.none,
+      );
+      expect(captured['profile_section'], 'about');
+      expect(captured['admin_section'], admin ? 'roles' : 'members');
+    });
+  }
+
+  test(
+    'fresh settings sections and navigation win over delayed disk state',
+    () async {
+      final state = RestoreState()
+        ..phase = AppPhase.ready
+        ..user = const SessionUser(accountId: 'fixture', role: 'ADMINISTRATOR');
+      final store = RestoreStore();
+      final persistence = DesktopWorkspacePersistence(state, store);
+      addTearDown(() {
+        persistence.dispose();
+        state.dispose();
+      });
+      persistence.start();
+      await store.requested.future;
+      state.workspace.profileSection = ProfileSection.notifications;
+      state.workspace.adminSection = AdminSection.audit;
+      state.workspace.navigationSection = NavigationSection.directMessages;
+      store.loaded.complete({
+        'navigation': 'channels',
+        'profile_section': 'about',
+        'admin_section': 'roles',
+      });
+      await store.saved.future.timeout(const Duration(seconds: 2));
+      expect(state.workspace.profileSection, ProfileSection.notifications);
+      expect(state.workspace.adminSection, AdminSection.audit);
+      expect(state.navigationSection, NavigationSection.directMessages);
+    },
+  );
+
+  test('restores the DM list even without a selected conversation', () async {
+    final state = RestoreState()
+      ..phase = AppPhase.ready
+      ..user = const SessionUser(accountId: 'fixture', role: 'MEMBER');
+    final store = RestoreStore();
+    final persistence = DesktopWorkspacePersistence(state, store);
+    addTearDown(() {
+      persistence.dispose();
+      state.dispose();
+    });
+    persistence.start();
+    await store.requested.future;
+    store.loaded.complete({'navigation': 'directMessages'});
+    await store.saved.future.timeout(const Duration(seconds: 2));
+    expect(state.navigationSection, NavigationSection.directMessages);
+    expect(state.selectedDirectMessage, isNull);
+  });
+
   test(
     'fresh panel, search, scroll and audio choices win over a delayed restore',
     () async {

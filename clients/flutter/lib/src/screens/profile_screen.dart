@@ -13,8 +13,6 @@ import '../theme.dart';
 import '../widgets/authenticated_avatar.dart';
 import 'workspace_ui/profile_panel_toolbar/component.dart';
 
-enum _ProfileSection { profile, security, notifications, about }
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
     super.key,
@@ -40,11 +38,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _leaving = false;
   String? _status;
   String? _profileSaveStatus;
-  _ProfileSection _selectedSection = _ProfileSection.profile;
+  late ProfileSection _selectedSection;
 
   @override
   void initState() {
     super.initState();
+    _selectedSection = widget.state.workspace.profileSection;
     _displayName.text = widget.state.profile?.displayName ?? '';
     _displayName.addListener(_onDisplayNameChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -63,6 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void didUpdateWidget(covariant ProfileScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
+    _selectedSection = widget.state.workspace.profileSection;
     final value = widget.state.profile?.displayName ?? '';
     if (!_displayName.selection.isValid && _displayName.text != value) {
       _displayName.text = value;
@@ -266,15 +266,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void _selectSection(_ProfileSection section) {
+  void _selectSection(ProfileSection section) {
     if (_selectedSection == section) return;
     setState(() {
       _selectedSection = section;
+      widget.state.workspace.profileSection = section;
       _status = null;
     });
+    widget.state.workspace.changed();
   }
 
-  Widget _sectionTab(String label, _ProfileSection section) {
+  Widget _sectionTab(String label, ProfileSection section) {
     final selected = _selectedSection == section;
     return Semantics(
       key: ValueKey('profile-tab-${section.name}'),
@@ -329,13 +331,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _sectionTab('Профиль', _ProfileSection.profile),
+            _sectionTab('Профиль', ProfileSection.profile),
             const SizedBox(width: 8),
-            _sectionTab('Безопасность', _ProfileSection.security),
+            _sectionTab('Безопасность', ProfileSection.security),
             const SizedBox(width: 8),
-            _sectionTab('Уведомления', _ProfileSection.notifications),
+            _sectionTab('Уведомления', ProfileSection.notifications),
             const SizedBox(width: 8),
-            _sectionTab('О приложении', _ProfileSection.about),
+            _sectionTab('О приложении', ProfileSection.about),
           ],
         ),
       ),
@@ -640,10 +642,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
     if (profile == null) return const SizedBox.shrink();
     return switch (_selectedSection) {
-      _ProfileSection.profile => _profileSection(profile),
-      _ProfileSection.security => _securitySection(profile),
-      _ProfileSection.notifications => _notificationsSection(),
-      _ProfileSection.about => _aboutSection(),
+      ProfileSection.profile => _profileSection(profile),
+      ProfileSection.security => _securitySection(profile),
+      ProfileSection.notifications => _notificationsSection(),
+      ProfileSection.about => _aboutSection(),
     };
   }
 

@@ -640,3 +640,35 @@ macOS installed-update acceptance is not claimed by these component tests.
   new build's OS Keychain access, so final state restoration is still pending.
 - No release acceptance, issue closure, master merge or production catalog
   promotion is claimed while these native gates remain outstanding.
+
+## Final route/tab checkpoint audit (2026-10-15)
+
+- Actual failing tests reproduced two additional restoration omissions: a DM
+  navigation list with no selected conversation returned to channels, and an
+  unmounted/remounted profile panel discarded its selected settings tab.
+  A third widget regression confirmed an already mounted admin panel ignored
+  a restored admin section. All three were observed failing before their fixes.
+- Workspace checkpoints now include bounded profile/admin section enum names;
+  no profile or password form contents are added. Admin section restoration
+  requires the current administrator role. Choices made while disk reads are
+  pending win, and workspace clear discards the former account's profile tab.
+  Section changes notify ordinary persistence, not just update checkpoints.
+- Validation: 121 focused update, realtime-scope, workspace, profile and admin
+  tests PASS; focused analyzer PASS. An initial test command named a nonexistent
+  `test/realtime` directory; the corrected `test/realtime_scope` run passed.
+  A new admin fixture initially used `ADMIN` instead of the actual contract's
+  `ADMINISTRATOR`; the fixture was corrected without relaxing production ACL.
+- Source c8b7b5e3: full CI 38811407816 and browser lifecycle 38811407776 PASS.
+  Actual native Windows filesystem tests and native PostgreSQL/API/TLS/LiveKit
+  preflight in 38811398713 PASS. Signed Android candidate 12009470848 passes
+  authenticated archive digest/CRC, all manifest digests/sizes, clean source
+  identity and the actual signatures of all three ABI APKs.
+- Windows immutable QA package 414312598 / asset 645287520 is 30,775,474 bytes,
+  SHA-256 `fe2d6783bf205a30aa5c6c820e87c3df0da2d0f3768cff4ba4f8900a19092169`.
+  Local checks pass published digest, CRC, package identity/version, x64 PE,
+  embedded native SDK/helper/public root, and publisher signature verification.
+  Only the public envelope was supplied to the running native acceptance job.
+  Installed update acceptance is still pending its actual runtime result.
+- The second Mac transition has genuinely installed build 79 and acknowledged
+  local bootstrap; session restoration is pending a manual macOS Keychain grant.
+  This entry does not declare that outstanding real acceptance PASS.

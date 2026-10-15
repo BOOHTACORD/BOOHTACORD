@@ -3,6 +3,7 @@ export 'status/handler.dart';
 export 'error/handler.dart';
 export 'visible_admin_accounts/handler.dart';
 export 'init_state/handler.dart';
+export 'did_update_widget/handler.dart';
 export 'dispose/handler.dart';
 export 'on_topology_mutation_changed/handler.dart';
 export 'did_change_app_lifecycle_state/handler.dart';

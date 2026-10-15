@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import '../../models.dart';
+import '../../features/admin/shell/types.dart';
 import '../../services/client_telemetry.dart';
 
 import 'package:window_manager/window_manager.dart';
@@ -82,6 +83,8 @@ class DesktopWorkspacePersistence {
       'direct': state.selectedDirectMessage?.id,
       'navigation': state.navigationSection.name,
       'panel': state.workspacePanel.name,
+      'profile_section': state.workspace.profileSection.name,
+      'admin_section': state.workspace.adminSection.name,
       'drafts': account == null
           ? <Object>[]
           : ComposerDraftMemory.exportForAccount(account),
@@ -165,6 +168,8 @@ class DesktopWorkspacePersistence {
     final scrollRevision = ConversationScrollMemory.revision;
     final initialRoute = _route;
     final initialPanel = state.workspacePanel;
+    final initialProfileSection = state.workspace.profileSection;
+    final initialAdminSection = state.workspace.adminSection;
     final initialSearch = Map.of(state.workspace.searchSessions);
     final initialAudio = (
       state.microphoneMuted,
@@ -196,6 +201,9 @@ class DesktopWorkspacePersistence {
             .firstOrNull;
         if (_route != initialRoute) {
           // A user navigation made while local storage/network was loading wins.
+        } else if (snapshot['navigation'] == 'directMessages' &&
+            direct == null) {
+          await state.showDirectMessages();
         } else if (direct != null) {
           await state.showDirectMessages();
           await state.openDirectConversation(direct);
@@ -298,6 +306,21 @@ class DesktopWorkspacePersistence {
             (panel != WorkspacePanel.admin || state.user!.isAdmin) &&
             panel != WorkspacePanel.searchContext) {
           state.workspacePanel = panel;
+        }
+        final profileSection = ProfileSection.values
+            .where((section) => section.name == snapshot['profile_section'])
+            .firstOrNull;
+        if (profileSection != null &&
+            state.workspace.profileSection == initialProfileSection) {
+          state.workspace.profileSection = profileSection;
+        }
+        final adminSection = AdminSection.values
+            .where((section) => section.name == snapshot['admin_section'])
+            .firstOrNull;
+        if (adminSection != null &&
+            state.user!.isAdmin &&
+            state.workspace.adminSection == initialAdminSection) {
+          state.workspace.adminSection = adminSection;
         }
         final search = snapshot['search'];
         if (search is Map) {
