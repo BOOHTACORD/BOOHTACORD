@@ -340,3 +340,38 @@ status. It does not certify the full installed upgrade gates.
   The actual 1024 screenshot was inspected: readable roster age/retry, retained
   muted local participant and no empty-room success. The next independent CI
   journey is still pending at this observation.
+
+## Connected macOS repeat and independent CI results (2026-10-15)
+
+- Full source-d4b5af51 CI 38745575364 PASS: contracts, backend, Vue, Flutter and
+  Windows, including the real recovery/relaunch component and installer build.
+  Product sources are unchanged from the independently verified 30ad2bfc
+  client packages; subsequent changes affect the acceptance driver/evidence.
+- Independent browser CI 38745575464 attempt 1 passes the previously failing
+  roster-event gate, then FAIL at lease-notification delivery during blocked
+  REST: zero observed WS hints within the unchanged 20-second deadline, outbox
+  pending=2/claimed=0/emitted=1 and zero connected transports. The unchanged-code
+  rerun FAIL earlier, at initial login's five-second app-shell assertion. Neither
+  attempt establishes full acceptance; no backend cause is asserted.
+- Added failed-login diagnostics with numeric status and fixed UI booleans only.
+  Failure captures mask every input/textarea; raw credentials, bodies, URLs and
+  cookie values are not retained. Three focused regressions PASS, including
+  preserving the original assertion if capture fails. Seventeen Node QA tests
+  PASS. Added only aggregate pending-kick/queue-age data to the existing owned
+  notification-failure query. All acceptance deadlines/assertions are unchanged.
+- After the user's system-dialog actions, the exact isolated QA78 app connected
+  with its existing real account/session. Actual visual inspection confirms
+  normal compact Material typography in the update banner and status card.
+  Download/verification reached Ready; Later left the client running, a real
+  draft was changed after Ready, and declining the restart confirmation retained
+  the prepared package. No synthetic draft body is copied into this record.
+- Actual apply attempt 3 FAIL before replacement: after explicit confirmation,
+  the UI showed state saving, then a safe preparation failure with Retry. The
+  installed bundle still reports 1.0.43 (78); no new-version launch is claimed.
+  The user reports another system request; its exact text is pending. Reading
+  this application's protected container from the shell was denied by macOS;
+  no alternate access, permission reset or bypass was attempted. Recovery
+  receipts are therefore unobserved, rather than assumed absent.
+- The source remains ad-hoc signed; it was not changed again during this repeat.
+  macOS N-to-N+1, Windows N-to-N+1 and production promotion remain unaccepted.
+  Issue #337 stays open and PR #338 stays draft.

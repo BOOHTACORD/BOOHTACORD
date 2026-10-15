@@ -1,5 +1,6 @@
 import { createRequire } from 'node:module'
 import assert from 'node:assert/strict'
+import { withLoginDiagnostics } from './login_diagnostics.mjs'
 const require = createRequire(new URL('../../../clients/web/package.json', import.meta.url))
 export const { chromium, expect } = require('@playwright/test')
 export const origin = process.env.QA_ORIGIN
@@ -13,12 +14,15 @@ export async function api(page, path, method = 'GET', body) {
   }, { path, method, body })
 }
 export function status(result, expected) { assert.equal(result.status, expected) }
-export async function login(page, loginName, password) {
-  await page.goto(origin)
-  await page.getByLabel('Логин', { exact: true }).fill(loginName)
-  await page.getByLabel('Пароль', { exact: true }).fill(password)
-  await page.getByRole('button', { name: 'Войти', exact: true }).click()
-  await expect(page.getByTestId('app-shell')).toBeVisible()
+export async function login(page, loginName, password, diagnosticsDirectory) {
+  const perform = async () => {
+    await page.goto(origin)
+    await page.getByLabel('Логин', { exact: true }).fill(loginName)
+    await page.getByLabel('Пароль', { exact: true }).fill(password)
+    await page.getByRole('button', { name: 'Войти', exact: true }).click()
+    await expect(page.getByTestId('app-shell')).toBeVisible()
+  }
+  return diagnosticsDirectory ? withLoginDiagnostics(page, diagnosticsDirectory, perform) : perform()
 }
 export async function openNavigation(page) {
   const scrim = page.locator('.drawer-scrim')
