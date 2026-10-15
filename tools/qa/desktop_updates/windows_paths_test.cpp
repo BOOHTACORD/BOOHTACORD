@@ -23,6 +23,14 @@ int wmain() {
     check(native == NativePath(native), "native-idempotent");
     check(fs::is_regular_file(NativePath(native)), "native-repeated-file");
     auto canonical = NativePath(fs::weakly_canonical(native));
+    auto shape = [](const fs::path &value) {
+      std::string result;
+      for (auto c : value.wstring()) result += (c == L'\\' || c == L'/' || c == L':' || c == L'?') ? static_cast<char>(c) : 'x';
+      return result;
+    };
+    if (canonical.parent_path() != NativePath(directory))
+      std::cout << "redacted-canonical: " << shape(canonical.parent_path())
+                << "\nredacted-parent: " << shape(NativePath(directory)) << '\n';
     check(fs::is_regular_file(canonical), "canonical-native-file");
     check(canonical.parent_path() == NativePath(directory), "canonical-parent-identity");
     check(Within(root, file) && Within(root, canonical), "native-scope");

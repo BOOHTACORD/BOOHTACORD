@@ -26,8 +26,8 @@ namespace fs = std::filesystem;
 static fs::path NativePath(const fs::path &path) {
   std::wstring value = path.wstring();
   if (value.rfind(L"\\\\?\\", 0) == 0)
-    return path;
-  value = fs::absolute(path).lexically_normal().wstring();
+    return fs::path(value).make_preferred();
+  value = fs::absolute(path).lexically_normal().make_preferred().wstring();
   if (value.rfind(L"\\\\", 0) == 0)
     return fs::path(L"\\\\?\\UNC\\" + value.substr(2));
   return fs::path(L"\\\\?\\" + value);
