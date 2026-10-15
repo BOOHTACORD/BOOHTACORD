@@ -723,3 +723,23 @@ macOS installed-update acceptance is not claimed by these component tests.
   selector choosing the covered panel instead of the dialog's identically named
   consent button. The old selector was observed FAIL; the hit-testable selector
   passes. This proves a driver defect, not the still-unknown native failure cause.
+
+## Windows directory-lock regression (2026-10-15)
+
+- Source 36 full CI/native/browser checks PASS, but installed run 38819673574
+  fails. Authenticated artifact 12012703013 (136,315 bytes, SHA-256
+  `305dd1cd19e1838313e87c2928d4f6359545861ec9ea8d8f0c4aad7908f89380`)
+  reports step `text_open`, installed build `78`, failed phase and
+  `bootstrap_identity`. This confirms the observed app is still build 78,
+  not a successful accepted 79. The published 79 AOT data contains compiled
+  release `windows-qa337-r58`, not `r57`; package/resource checks also pass.
+- Source inspection identifies a definite directory lock: the owned launcher
+  starts the baseline with `cwd=current`, and DesktopRecovery.arm launches
+  the external monitor without a working directory override. The monitor
+  retains that inherited directory while waiting for replacement. Microsoft
+  documents that a running process's current directory cannot be renamed:
+  https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setcurrentdirectory
+- Added a real Windows monitor regression: launch it from the target directory,
+  wait for its actual Ready file, then rename that directory while the monitor
+  is alive before the existing failed-apply/real-Flutter-relaunch assertions.
+  This specific regression awaits execution before the implementation fix.

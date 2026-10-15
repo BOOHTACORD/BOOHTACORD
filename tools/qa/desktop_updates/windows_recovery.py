@@ -62,8 +62,11 @@ def run(release, build, output, monitor_override=None):
         'old_build': build, 'new_build': str(int(build) + 1),
         'new_release': 'owned-failed-apply',
     }), encoding='utf-8')
+    # Match the shipping client's launch: its working directory may be current.
+    # The external monitor must release that directory before declaring Ready.
+    target.mkdir()
     started = time.monotonic()
-    process = subprocess.Popen([str(monitor), '--plan', str(plan)])
+    process = subprocess.Popen([str(monitor), '--plan', str(plan)], cwd=target)
     try:
         ready = recovery / 'recovery-ready.json'
         deadline = time.monotonic() + 20
@@ -71,6 +74,12 @@ def run(release, build, output, monitor_override=None):
             time.sleep(0.1)
         if not ready.exists():
             raise RuntimeError('Recovery did not arm; native exit=' + str(process.poll()))
+        moved = target.parent / 'moved-current'
+        try:
+            target.rename(moved)
+        except OSError:
+            raise RuntimeError('Recovery retained a lock on inherited current directory') from None
+        moved.rmdir()
         # Simulate only the failed replacement (no target). The shipping monitor,
         # its actual 120s deadline, real app files and relaunch are not mocked.
         if process.wait(timeout=170) != 0:
@@ -110,6 +119,7 @@ def run(release, build, output, monitor_override=None):
             'schema_version': 1, 'status': 'PASS', 'native_build': build,
             'elapsed_seconds': round(time.monotonic() - started),
             'real_monitor': True, 'real_flutter_relaunch': True,
+            'inherited_current_directory_released': True,
             'whole_baseline_hashes_match': True, 'unicode_paths': True,
             'synthetic_external_profile_retained': True,
             'finished_transaction_replay_noop': True,
