@@ -17,7 +17,7 @@ def macos():
         slices.append(str(target))
     subprocess.run(['/usr/bin/lipo','-create',*slices,'-output',str(binary)],check=True)
     for target in slices:Path(target).unlink()
-    (output/'Contents/Info.plist').write_bytes(plistlib.dumps({'CFBundleIdentifier':'ru.boohtacord.updateRecovery','CFBundleExecutable':'BOOHTACORDRecovery','CFBundleName':'BOOHTACORDRecovery','CFBundleVersion':'1','CFBundlePackageType':'APPL','LSBackgroundOnly':True,'LSMinimumSystemVersion':'13.0'}))
+    (output/'Contents/Info.plist').write_bytes(plistlib.dumps({'CFBundleIdentifier':'ru.boohtacord.updateRecovery','CFBundleExecutable':'BOOHTACORDRecovery','CFBundleName':'BOOHTACORDRecovery','CFBundleVersion':'1','CFBundlePackageType':'APPL','LSBackgroundOnly':True,'LSMinimumSystemVersion':'13.0','CFBundleDocumentTypes':[{'CFBundleTypeName':'BOOHTACORD recovery transaction','CFBundleTypeRole':'Viewer','LSHandlerRank':'None','LSItemContentTypes':['public.folder']}]}))
     subprocess.run(['/usr/bin/codesign','--force','--sign','-',str(output)],check=True)
     return output
 

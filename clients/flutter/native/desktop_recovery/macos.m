@@ -5,6 +5,8 @@
 #import <unistd.h>
 #import <pwd.h>
 #import "macos_state.h"
+#import "macos_handoff.h"
+#import <os/log.h>
 
 static NSString *const PackageID = @"ru.boohtacord.boohtacordDesktop";
 // LaunchServices can inherit a sandbox's CFFIXED_USER_HOME. It must not
@@ -135,15 +137,59 @@ static void CleanupRetiredRegistrations(NSString *root, NSString *target) {
 int main(int argc, const char *argv[]) {
   @autoreleasepool {
     NSArray<NSString *> *arguments = NSProcessInfo.processInfo.arguments;
-    if (arguments.count < 3 || ![arguments[1] isEqual:@"--plan"])
+    NSUInteger position = [arguments indexOfObject:@"--plan"];
+    os_log(OS_LOG_DEFAULT,
+           "BOOHTACORD recovery: recovery_process_started argc=%{public}u plan_position=%{public}d",
+           (unsigned)MIN(arguments.count, 64), position == NSNotFound ? -1 : (int)MIN(position, 64));
+    BOOL documents = arguments.count == 1;
+    if (!documents && (arguments.count < 3 || ![arguments[1] isEqual:@"--plan"])) {
+      os_log_error(OS_LOG_DEFAULT, "BOOHTACORD recovery: recovery_arguments");
       return 2;
+    }
+    // Complete Cocoa startup before file access, signature validation or copying
+    // the baseline. Those operations can block; LaunchServices must still be
+    // able to report that the monitor started, independently of preflight.
+    NSApplication *application = NSApplication.sharedApplication;
+    [application setActivationPolicy:NSApplicationActivationPolicyProhibited];
+    __attribute__((objc_precise_lifetime)) RecoveryDocumentHandoff *handoff =
+        documents ? [RecoveryDocumentHandoff new] : nil;
+    if (handoff) application.delegate = handoff;
+    [application finishLaunching];
+    os_log(OS_LOG_DEFAULT, "BOOHTACORD recovery: recovery_cocoa_started");
+    NSString *requestedTransaction = nil;
+    NSString *requestedPlan = nil;
+    if (documents) {
+      if (!handoff.received) {
+        NSTimer *timeout = [NSTimer scheduledTimerWithTimeInterval:10 repeats:NO
+            block:^(NSTimer *timer) { StopRecoveryDocumentWait(application); }];
+        // AppKit dispatches document-open events through its event loop.
+        [application run];
+        [timeout invalidate];
+      }
+      requestedPlan = RecoveryDocumentPlan(handoff.directory, UserHome(), &requestedTransaction);
+      if (!requestedPlan) {
+        os_log_error(OS_LOG_DEFAULT, "BOOHTACORD recovery: recovery_document_handoff");
+        return 2;
+      }
+    } else {
+      requestedPlan = arguments[2];
+    }
     NSString *planPath =
-        arguments[2].stringByStandardizingPath.stringByResolvingSymlinksInPath;
+        requestedPlan.stringByStandardizingPath.stringByResolvingSymlinksInPath;
     if (![planPath
             hasPrefix:[UserHome() stringByAppendingString:@"/"]] ||
-        ![planPath containsString:@"/DesktopUpdates/"])
+        ![planPath containsString:@"/DesktopUpdates/"]) {
+      os_log_error(OS_LOG_DEFAULT, "BOOHTACORD recovery: recovery_plan_path");
       return 2;
+    }
     NSDictionary *plan = Read(planPath);
+    if (!plan) {
+      // Fixed support reason only: never log a plan, user path or transaction.
+      os_log_error(OS_LOG_DEFAULT, "BOOHTACORD recovery: recovery_plan_unreadable");
+      fputs("recovery_plan_unreadable\n", stderr);
+      return 2;
+    }
+    os_log(OS_LOG_DEFAULT, "BOOHTACORD recovery: recovery_plan_loaded");
     NSString *transaction = plan[@"transaction"],
              *target = [plan[@"target"] stringByStandardizingPath],
              *backup = plan[@"backup"],
@@ -154,14 +200,24 @@ int main(int argc, const char *argv[]) {
         [target hasPrefix:[UserHome()
                               stringByAppendingString:@"/Applications/"]];
     if (!uuid || !permitted ||
-        ![backup isEqual:[root stringByAppendingPathComponent:@"previous.app"]])
+        (documents && ![requestedTransaction isEqual:transaction]) ||
+        ![backup isEqual:[root stringByAppendingPathComponent:@"previous.app"]]) {
+      os_log_error(OS_LOG_DEFAULT, "BOOHTACORD recovery: recovery_plan_identity");
       return 2;
+    }
     int descriptor =
         open([[root stringByAppendingPathComponent:@"recovery.lock"]
                  fileSystemRepresentation],
              O_CREAT | O_RDWR, 0600);
-    if (descriptor < 0 || flock(descriptor, LOCK_EX | LOCK_NB) != 0)
+    if (descriptor < 0) {
+      os_log_error(OS_LOG_DEFAULT, "BOOHTACORD recovery: recovery_lock_open");
       return 0;
+    }
+    if (flock(descriptor, LOCK_EX | LOCK_NB) != 0) {
+      os_log_error(OS_LOG_DEFAULT, "BOOHTACORD recovery: recovery_lock_busy");
+      close(descriptor);
+      return 0;
+    }
     // A queued launch may have read an older plan before acquiring the lock.
     if (![Read(planPath)[@"transaction"] isEqual:transaction]) return 0;
     NSString *outcome =
@@ -185,7 +241,7 @@ int main(int argc, const char *argv[]) {
           RemoveRegistration(transaction);
         };
     NSString *monitorExecutable = NSBundle.mainBundle.executablePath;
-    if ([arguments containsObject:@"--retain-installed"]) {
+    if (documents || [arguments containsObject:@"--retain-installed"]) {
       NSString *embedded = [target stringByAppendingPathComponent:
           @"Contents/Resources/BOOHTACORDRecovery.app"];
       if (![NSBundle.mainBundle.bundlePath.stringByResolvingSymlinksInPath
@@ -219,12 +275,6 @@ int main(int argc, const char *argv[]) {
         finish(@"manualRecovery", @"baseline_identity");
       return 0;
     }
-    // NSWorkspace waits for the Cocoa launch handshake before completing the
-    // parent's armRecovery request. A CLI-style main loop never sends it, even
-    // when preflight has already written recovery-ready.json.
-    NSApplication *application = NSApplication.sharedApplication;
-    [application setActivationPolicy:NSApplicationActivationPolicyProhibited];
-    [application finishLaunching];
     BOOL (^cancelled)(void) = ^BOOL {
       return [Read(
           [root stringByAppendingPathComponent:@"cancel.json"])[@"transaction"]

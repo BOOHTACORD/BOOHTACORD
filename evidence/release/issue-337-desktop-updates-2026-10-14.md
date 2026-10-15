@@ -481,3 +481,49 @@ status. It does not certify the full installed upgrade gates.
   performed inactive-state retirement. No shell access to the protected cache,
   fabricated receipt, permission reset or profile deletion was used. The actual
   N-to-N+1 apply/relaunch is still the next gate.
+
+## Sandboxed macOS launch failure and document handoff (2026-10-15)
+
+- Full CI [38794373579](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38794373579)
+  passes for `b2495833`: contracts, backend, Vue, Flutter/Android and Windows
+  packaging plus actual recovery/relaunch. Independent browser acceptance
+  [38794373277](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38794373277)
+  passes on attempt 2; attempt 1 failed before a journey with Chromium
+  `ERR_NETWORK_CHANGED`. The first failure is retained, not treated as an app
+  behavior pass. Signed Android candidates also pass.
+- Ordinary macOS `b2495833` package passes all source/manifest digests. iOS
+  device Release compiles, unsigned; no IPA or TestFlight upload is claimed.
+- Fresh immutable beta-only macOS 1.0.44 (79) package from `b2495833`:
+  [QA release](https://github.com/Egkurilov/BOOHTACORD/releases/tag/qa337-macos-1.0.44-beta-b2495833a99984c25795a990de5869d4068464cb),
+  47,472,021 bytes, SHA256
+  `b41841ce02fa4f15862a74d1722f0320fc8deb513c6d9edd2a9165cfee72de2e`.
+  Published bytes, ZIP CRC, strict nested codesign, bundle version, local
+  publisher signature and actual Sparkle verifier all pass. Private owned QA
+  policy advanced to revision 4; production policy remains revision 29.
+- Actual installed QA78 rejects a previously prepared target after policy
+  changes with `compatibility_changed`, before shutdown; voice remains
+  connected. An old cached archive is rejected with `digest`; retry downloads
+  the fresh package. Actual 45.3 MiB background download, editing the unsent
+  draft, Ready, Later and cancelling restart all pass while real voice remains
+  connected with the microphone muted and incoming audio disabled.
+- The subsequent real apply fails before replacement with `recovery_start`.
+  QA78 remains installed. Fixed, bounded native diagnostics establish that
+  the helper receives `argc=1`, with no plan argument. This matches Apple's
+  documented [App Sandbox restriction on NSWorkspace arguments](https://developer.apple.com/documentation/appkit/nsworkspace/openconfiguration/arguments).
+  Earlier non-sandboxed native launch tests could not prove that boundary.
+- The native bridge now opens only the owned recovery directory as a document
+  in the exact embedded helper. AppKit's document event supplies the directory;
+  a bounded local request binds its plan filename and transaction. The helper
+  validates both, retains scoped access for its lifetime, and preserves the
+  existing CLI path for resumed recovery. No sandbox, signature, Gatekeeper,
+  quarantine or TLS protection is disabled. No protected profile is read or
+  modified through the shell.
+- The new real Cocoa document-handoff test fails before implementation and
+  passes afterwards: launch, actual baseline retention, Ready and cancellation.
+  Sixteen native tests pass, plus a focused native test rejecting an unowned
+  directory, traversal and a changed transaction. Eighty-eight focused Flutter
+  update/realtime tests pass; analyzer reports no issues. The Dart arm test
+  first fails without `launch.json`, then passes with the matching request.
+- Installed macOS N-to-N+1 and rollback remain unaccepted pending the next
+  actual installed run with this bridge. Windows installed N-to-N+1 remains
+  NOT_RUN. #337 stays open and PR #338 stays draft.

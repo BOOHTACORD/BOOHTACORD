@@ -61,6 +61,14 @@ void main() {
           methods.add(call.method);
           armed = (call.arguments as Map)['plan'] as String;
           final plan = jsonDecode(await File(armed!).readAsString()) as Map;
+          final launch = jsonDecode(
+            await File('${root.path}/launch.json').readAsString(),
+          ) as Map;
+          expect(launch, {
+            'schema_version': 1,
+            'transaction': transaction,
+            'plan': 'plan-$transaction.json',
+          });
           await File('${root.path}/recovery-ready.json')
               .writeAsString(jsonEncode({'transaction': plan['transaction']}));
           return null;

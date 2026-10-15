@@ -90,9 +90,16 @@
     NSWorkspaceOpenConfiguration *configuration =
         [NSWorkspaceOpenConfiguration configuration];
     configuration.activates = NO;
-    configuration.arguments = @[ @"--plan", plan, @"--retain-installed" ];
+    configuration.addsToRecentItems = NO;
+    configuration.createsNewApplicationInstance = YES;
+    configuration.allowsRunningApplicationSubstitution = NO;
+    NSURL *directory = [NSURL fileURLWithPath:plan.stringByDeletingLastPathComponent
+                                 isDirectory:YES];
+    // App Sandbox ignores NSWorkspace launch arguments. The document-open
+    // event carries this owned directory and its scoped access instead.
     [NSWorkspace.sharedWorkspace
-        openApplicationAtURL:helper
+        openURLs:@[ directory ]
+        withApplicationAtURL:helper
                configuration:configuration
            completionHandler:^(NSRunningApplication *app, NSError *error) {
              dispatch_async(dispatch_get_main_queue(), ^{

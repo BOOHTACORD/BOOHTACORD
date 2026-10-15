@@ -104,6 +104,14 @@ class DesktopRecovery {
       flush: true,
     );
     if (Platform.isMacOS) {
+      await File(path.join(root.path, 'launch.json')).writeAsString(
+        jsonEncode({
+          'schema_version': 1,
+          'transaction': transactionId,
+          'plan': path.basename(plan.path),
+        }),
+        flush: true,
+      );
       await const MethodChannel('boohtacord/desktop_updates')
           .invokeMethod<void>('armRecovery', {'plan': plan.path});
     } else {

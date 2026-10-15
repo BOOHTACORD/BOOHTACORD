@@ -71,6 +71,13 @@ class MacRecoveryPreflightTests(unittest.TestCase):
                        check=True, timeout=15, capture_output=True, env=environment)
         return json.loads((self.recovery / 'recovery-outcome.json').read_text())
 
+    def test_missing_plan_reports_only_a_fixed_startup_reason(self):
+        result = subprocess.run([str(self.monitor), '--plan', str(self.plan),
+                                 '--resumed'], capture_output=True, timeout=5)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn(b'recovery_plan_unreadable', result.stderr)
+        self.assertNotIn(str(self.plan).encode(), result.stderr)
+
     def installed_monitor(self):
         target = self.parent / 'BOOHTACORD.app'
         shutil.copytree(self.recovery / 'previous.app', target)
@@ -130,6 +137,12 @@ class MacRecoveryPreflightTests(unittest.TestCase):
         self.assertTrue((self.recovery / 'previous.app').is_dir())
 
     def test_launch_services_reports_started_while_monitor_waits(self):
+        self.assert_launch_services_ready()
+
+    def test_document_handoff_works_without_command_arguments(self):
+        self.assert_launch_services_ready(document=True)
+
+    def assert_launch_services_ready(self, document=False):
         target, monitor = self.installed_monitor()
         shutil.rmtree(self.recovery / 'previous.app')
         self.plan.write_text(json.dumps({
@@ -137,6 +150,10 @@ class MacRecoveryPreflightTests(unittest.TestCase):
             'target': str(target), 'backup': str(self.recovery / 'previous.app'),
             'old_pid': os.getpid(), 'old_build': '77', 'new_build': '78',
             'new_release': 'native-test',
+        }))
+        (self.recovery / 'launch.json').write_text(json.dumps({
+            'schema_version': 1, 'transaction': self.transaction,
+            'plan': self.plan.name,
         }))
         source = self.root / 'launch.m'
         source.write_text(r'''#import <Cocoa/Cocoa.h>
@@ -159,6 +176,14 @@ int main(int argc, const char *argv[]) {
   }
 }
 ''')
+        if document:
+            program = source.read_text().replace(
+                'config.arguments = @[@"--plan", @(argv[2]), @"--resumed", @"--retain-installed"];',
+                'config.createsNewApplicationInstance = YES; config.addsToRecentItems = NO;')
+            program = program.replace(
+                'openApplicationAtURL:[NSURL fileURLWithPath:@(argv[1])]',
+                'openURLs:@[[NSURL fileURLWithPath:[@(argv[2]) stringByDeletingLastPathComponent] isDirectory:YES]] withApplicationAtURL:[NSURL fileURLWithPath:@(argv[1])]')
+            source.write_text(program)
         launcher = self.root / 'launch'
         subprocess.run(['xcrun', 'clang', '-fobjc-arc', '-framework', 'Cocoa',
                         str(source), '-o', str(launcher)], check=True, capture_output=True)
@@ -185,6 +210,25 @@ int main(int argc, const char *argv[]) {
             while not outcome.exists() and time.monotonic() < deadline:
                 time.sleep(.05)
             self.assertTrue(outcome.exists(), 'Owned monitor must honor cancellation')
+
+    def test_document_handoff_rejects_unowned_paths_and_changed_plan(self):
+        header = Path(__file__).resolve().parents[3] / 'clients/flutter/native/desktop_recovery/macos_handoff.h'
+        source = self.root / 'document.m'
+        source.write_text('#import "' + str(header) + '"\nint main(int argc, const char *argv[]) { @autoreleasepool { NSString *transaction = nil; return RecoveryDocumentPlan([NSURL fileURLWithPath:@(argv[1])], @(argv[2]), &transaction) ? 0 : 3; } }\n')
+        binary = self.root / 'document'
+        subprocess.run(['xcrun', 'clang', '-fobjc-arc', '-framework', 'Cocoa', str(source), '-o', str(binary)], check=True, capture_output=True)
+        self.plan.write_text(json.dumps({'transaction': self.transaction}))
+        request = self.recovery / 'launch.json'
+        value = {'schema_version': 1, 'transaction': self.transaction, 'plan': self.plan.name}
+        def result(directory=self.recovery):
+            return subprocess.run([str(binary), str(directory), str(Path.home())], capture_output=True).returncode
+        request.write_text(json.dumps(value))
+        self.assertEqual(result(), 0)
+        self.assertEqual(result(self.parent), 3)
+        request.write_text(json.dumps(dict(value, plan='../plan.json')))
+        self.assertEqual(result(), 3)
+        request.write_text(json.dumps(dict(value, transaction=str(uuid.uuid4()))))
+        self.assertEqual(result(), 3)
 
     def reset_recovery(self):
         source = self.root / 'reset.m'
