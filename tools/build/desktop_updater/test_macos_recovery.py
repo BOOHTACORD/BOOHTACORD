@@ -1,6 +1,5 @@
 """Real monitor preflight tests; these do not certify an application upgrade."""
 import json
-import fcntl
 import os
 import plistlib
 import shutil
@@ -10,6 +9,9 @@ import tempfile
 import time
 import unittest
 import uuid
+
+if sys.platform == 'darwin':
+    import fcntl
 from pathlib import Path
 
 from .recovery import macos
