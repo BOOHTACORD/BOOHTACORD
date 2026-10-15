@@ -19,6 +19,11 @@ int wmain() {
     auto file = directory / L"plan.json";
     { std::ofstream out(file); out << "{}"; }
     auto native = NativePath(file);
+    fs::create_directories(directory / L"nested" / L"folder");
+    const auto digestFile = directory / L"nested" / L"folder" / L"digest.bin";
+    { std::ofstream out(digestFile); out << "synthetic-digest-probe"; }
+    const auto mixed = NativePath(directory) / fs::path(L"nested/folder/digest.bin");
+    check(!Digest(mixed).empty() && Digest(mixed) == Digest(digestFile), "extended-manifest-posix-separators");
     check(fs::is_regular_file(native), "native-unicode-file");
     check(native == NativePath(native), "native-idempotent");
     check(fs::is_regular_file(NativePath(native)), "native-repeated-file");

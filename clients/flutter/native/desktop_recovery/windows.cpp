@@ -50,7 +50,7 @@ static constexpr auto exeName = L"boohtacord_desktop.exe";
 static JsonObject Read(const fs::path &file, std::uintmax_t maximum = 65536) {
   if (!fs::is_regular_file(file) || fs::file_size(file) > maximum)
     return nullptr;
-  std::ifstream stream(file, std::ios::binary);
+  std::ifstream stream(NativePath(file), std::ios::binary);
   std::string bytes((std::istreambuf_iterator<char>(stream)), {});
   JsonObject result{nullptr};
   JsonObject::TryParse(winrt::to_hstring(bytes), result);
@@ -116,7 +116,7 @@ static std::wstring Digest(const fs::path &file) {
     BCryptCloseAlgorithmProvider(algorithm, 0);
     return L"";
   }
-  std::ifstream stream(file, std::ios::binary);
+  std::ifstream stream(NativePath(file), std::ios::binary);
   char bytes[65536];
   bool valid = stream.is_open();
   while (stream) {
@@ -305,7 +305,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
     if (!SafeTree(backup) || Build(backup) != oldBuild ||
         !BaselineValid(root, backup)) {
       finish(L"manualRecovery", L"baseline_identity");
-      return 2;
+      return 18;
     }
     startup = 19;
     wchar_t self[32768];
