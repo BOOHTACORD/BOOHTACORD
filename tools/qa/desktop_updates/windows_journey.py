@@ -112,7 +112,7 @@ def run(source, wait_seconds):
         if driver.is_dir():
             import shutil
             for name in ('before-installed-update.png', 'after-installed-update.png',
-                         'after-explicit-voice-rejoin.png', 'failure.json'):
+                         'after-explicit-voice-rejoin.png', 'failure.png', 'failure.json'):
                 if (driver / name).is_file():
                     shutil.copyfile(driver / name, result / name)
         if root.exists():

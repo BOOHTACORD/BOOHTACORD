@@ -14,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:boohtacord_desktop/src/app.dart';
+import 'package:boohtacord_desktop/src/widgets/formatted_message_body.dart';
 import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/features/updates/desktop/coordinator.dart';
 import 'package:boohtacord_desktop/src/features/updates/identity.dart';
@@ -74,10 +75,9 @@ class Journey {
       find.byKey(const ValueKey('text-channel-messages')),
     );
     final visible = <({int ordinal, double top})>[];
-    for (final element in find.byType(Text).evaluate()) {
-      final text = element.widget as Text;
-      final match = RegExp(r'^Update history row (\d+)$')
-          .firstMatch(text.data ?? '');
+    for (final element in find.byType(FormattedMessageBody).evaluate()) {
+      final body = element.widget as FormattedMessageBody;
+      final match = RegExp(r'^Update history row (\d+)$').firstMatch(body.body);
       final box = element.findRenderObject();
       if (match == null || box is! RenderBox || !box.attached) continue;
       final rect = box.localToGlobal(Offset.zero) & box.size;
@@ -314,6 +314,14 @@ Future<void> main() async {
         error is StateError && RegExp(r'^[a-z_]{1,64}$').hasMatch(error.message)
         ? error.message
         : 'native_journey';
+    try {
+      if (find.byType(BoohtacordApp).evaluate().isNotEmpty &&
+          Journey(output).state.phase == AppPhase.ready) {
+        await Journey(output).capture('failure');
+      }
+    } catch (_) {
+      // Keep the original bounded failure when no rendered fixture exists.
+    }
     await File(path.join(output.path, 'failure.json')).writeAsString(
       jsonEncode({'status': 'FAIL', 'reason': reason}),
       flush: true,

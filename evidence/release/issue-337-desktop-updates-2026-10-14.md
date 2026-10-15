@@ -672,3 +672,25 @@ macOS installed-update acceptance is not claimed by these component tests.
 - The second Mac transition has genuinely installed build 79 and acknowledged
   local bootstrap; session restoration is pending a manual macOS Keychain grant.
   This entry does not declare that outstanding real acceptance PASS.
+
+## Windows runtime observation correction (2026-10-15)
+
+- Run 38811398713 reached the actual installed baseline, real voice listener,
+  background download and prepared package. Its UI driver then failed before
+  consenting to apply: bounded result `history_anchor_missing`, artifact
+  12010447817 (authenticated SHA-256
+  `ce781211fa5f6cfcbcb7c20aeda4b3eb2edfef5a0307a2d7d811deeec1fa3f5c`).
+  No completed Windows update is claimed.
+- The measurement mistakenly searched ordinary Text widgets, while shipping
+  message bodies use FormattedMessageBody with SelectableText.rich. A widget
+  test rendering the actual body reproduced this exact failure before the fix.
+  The driver now measures the rendered message body, retaining clipping,
+  ordinal and pixel-offset assertions. A second test covers partly visible
+  rows and cached offscreen rows. Ready/consent/apply/bootstrap assertions are
+  unchanged. Failures after authenticated fixture readiness now also retain
+  a rendered image of that owned synthetic fixture, without raw error data.
+- The latest ordinary app source 838cd41d has a verified universal macOS ZIP
+  (47,400,174 bytes; SHA-256
+  `38dde09d23e138dd12fbe05e6f99c3b84ec5584d64f63c5830499b91e11b2e93`)
+  and unsigned iOS device Release compile. The current driver-only correction
+  does not change their shipping entrypoint or application behavior.
