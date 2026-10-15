@@ -743,3 +743,15 @@ macOS installed-update acceptance is not claimed by these component tests.
   wait for its actual Ready file, then rename that directory while the monitor
   is alive before the existing failed-apply/real-Flutter-relaunch assertions.
   This specific regression awaits execution before the implementation fix.
+- Actual Windows RED confirmed at source e0fef828: native component run
+  38823253138 / job 116724611684 fails exactly with
+  `Recovery retained a lock on inherited current directory`, after the real
+  monitor reached Ready. This is not a mock or a static assertion.
+- The fix supplies LOCALAPPDATA as the child's working directory and the
+  standalone monitor independently switches to that validated ancestor before
+  Ready. All monitor paths remain absolute; the application's own process cwd
+  is unchanged. A short ancestor also avoids Windows child-launch limitations
+  for a current directory beyond MAX_PATH. The pinned Velopack 1.2.161 manager
+  already launches Update.exe from its parent, so it needs no workaround.
+- Local recovery retry/baseline tests (3) and focused analyzer PASS. The corrected
+  native regression and full installed transition now require a fresh Windows run.

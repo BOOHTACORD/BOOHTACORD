@@ -115,10 +115,18 @@ class DesktopRecovery {
       await const MethodChannel('boohtacord/desktop_updates')
           .invokeMethod<void>('armRecovery', {'plan': plan.path});
     } else {
-      await Process.start(path.join(root.path, 'BOOHTACORDRecovery.exe'), [
-        '--plan',
-        plan.path,
-      ], mode: ProcessStartMode.detached);
+      final perUser = Platform.environment['LOCALAPPDATA'];
+      if (perUser == null || !path.isAbsolute(perUser)) {
+        throw const ArtifactFailure('installation_location');
+      }
+      // An external executable can still lock current through an inherited
+      // working directory. Launch it from outside the installed image.
+      await Process.start(
+        path.join(root.path, 'BOOHTACORDRecovery.exe'),
+        ['--plan', plan.path],
+        workingDirectory: perUser,
+        mode: ProcessStartMode.detached,
+      );
     }
     final ready = File(path.join(root.path, 'recovery-ready.json'));
     final deadline = DateTime.now().add(const Duration(seconds: 10));

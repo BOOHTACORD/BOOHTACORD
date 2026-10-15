@@ -240,6 +240,13 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
     startup = 13;
     if (!count || count >= 32768 || !Within(local, planPath))
       return startup;
+    // The app may have started us with cwd=current. Keeping that directory
+    // open would prevent Velopack from renaming it after the app exits.
+    // LOCALAPPDATA is the already-validated ancestor, outside the target;
+    // keep a short cwd so future CreateProcess/ShellExecute calls remain valid.
+    startup = 24;
+    if (!SetCurrentDirectoryW(local))
+      return startup;
     startup = 14;
     auto plan = Read(planPath);
     if (!plan)
