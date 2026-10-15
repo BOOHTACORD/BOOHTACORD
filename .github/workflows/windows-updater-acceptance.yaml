@@ -7,10 +7,20 @@ on:
     paths:
       - .github/workflows/windows-updater-acceptance.yaml
       - clients/flutter/integration_test/desktop_updates/windows_app.dart
+      - clients/flutter/lib/src/app/desktop_updates/**
+      - clients/flutter/lib/src/features/updates/**
+      - clients/flutter/native/desktop_recovery/**
+      - clients/flutter/windows/runner/**
+      - tools/build/desktop_updater/**
+      - tools/build/windows/installer.py
       - tools/qa/desktop_updates/windows_*.py
       - tools/qa/desktop_updates/build_windows.py
       - tools/qa/desktop_updates/loopback_proxy/**
       - backend/internal/storage/reserve_upload_space/**
+
+concurrency:
+  group: installed-windows-updater-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
