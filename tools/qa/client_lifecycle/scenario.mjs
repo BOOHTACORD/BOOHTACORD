@@ -4,6 +4,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { api, channel, chromium, expect, login, openNavigation, origin, status } from './request.mjs'
 import { guild } from './guild.mjs'
 import { sessions } from './sessions.mjs'
+import { searchTabs } from './search_tabs.mjs'
 import { registration, rateLimit } from '../critical_client_acceptance/auth.mjs'
 import { resetLinks } from '../critical_client_acceptance/reset.mjs'
 import { bursts } from '../critical_client_acceptance/bursts.mjs'
@@ -86,6 +87,7 @@ try {
   }
   report.catalog_message_actions = { open: true, close: true, pointer: input.viewport.has_touch ? 'touch' : 'mouse' }
   console.log('stage=qa-member-message-actions-complete')
+  await searchTabs(guest, input, report)
 
   await channel(guest, 'Voice')
   await expect(guest.getByRole('heading', { name: 'Вы не подключены', exact: true })).toBeVisible()

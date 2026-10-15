@@ -133,6 +133,11 @@ tasks:
     requirements: [REQ-STORAGE-01, REQ-STORAGE-02, REQ-STORAGE-03, REQ-NOBACKUP-01]
     depends_on: [T-040, T-041]
     evidence: [backend-storage-tests]
+  - id: DW-01
+    title: Web search aside tabs without horizontal overflow (GitHub #340, epic #339)
+    requirements: [REQ-SEARCH-01, REQ-UI-01, REQ-UI-02]
+    depends_on: [T-041, T-050]
+    evidence: [clients/web/tests/search_sessions/tabs.browser.spec.ts, clients/web/tests/search_sessions/retention.browser.spec.ts, evidence/qa/dw01-search-tabs-2026-10-15.json]
   - id: T-050
     title: Desktop Russian UI and accessibility
     requirements: [REQ-UI-01, REQ-UI-02]

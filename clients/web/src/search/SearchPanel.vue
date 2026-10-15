@@ -160,8 +160,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.search-view-tabs { display: flex; gap: 8px; margin: 12px 20px; }
-.search-view-tabs button { background: transparent; border: 1px solid var(--gc-border, #363a46); border-radius: 999px; color: inherit; cursor: pointer; min-height: 36px; padding: 6px 12px; }
+.search-view-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); gap: 8px; margin: 12px 20px; }
+.search-view-tabs button { min-width: 0; white-space: normal; overflow-wrap: anywhere; background: transparent; border: 1px solid var(--gc-border, #363a46); border-radius: var(--gc-radius-sm); color: inherit; cursor: pointer; min-height: 44px; padding: 6px 8px; }
 .search-view-tabs button[aria-pressed="true"] { background: var(--gc-surface-raised, #20232d); border-color: var(--gc-accent, #6974f5); }
 .search-view-tabs button:focus-visible { outline: 2px solid var(--gc-accent, #6974f5); outline-offset: 2px; }
 </style>
