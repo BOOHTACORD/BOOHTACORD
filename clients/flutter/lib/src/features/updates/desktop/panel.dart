@@ -56,6 +56,13 @@ class DesktopUpdatePanel extends StatelessWidget {
           return const SizedBox.shrink();
         }
         final ready = desktop.phase == DesktopUpdatePhase.readyToRestart;
+        final needsInstaller = const {
+          'manual_recovery',
+          'native_apply',
+          'apply',
+          'recovery_identity',
+          'bootstrap_identity',
+        }.contains(desktop.failure);
         final title = switch (desktop.phase) {
           DesktopUpdatePhase.downloading => 'Скачиваем обновление в фоне',
           DesktopUpdatePhase.verifying => 'Проверяем подпись и пакет',
@@ -72,6 +79,10 @@ class DesktopUpdatePanel extends StatelessWidget {
                       : 'Один раз установите BOOHTACORD через Setup в профиль пользователя. После этого обновления будут доступны внутри приложения.')
                 : desktop.failure == 'disk_space'
                 ? 'Недостаточно свободного места для обновления.'
+                : desktop.failure == 'manual_recovery'
+                ? 'Автоматическое восстановление не удалось. Откройте официальные выпуски и установите рабочую версию приложения.'
+                : needsInstaller
+                ? 'Не удалось завершить обновление. Повторите попытку или установите рабочую версию из официальных выпусков.'
                 : 'Не удалось подготовить обновление. Текущая версия сохранена.',
           DesktopUpdatePhase.completed => 'Новая версия запущена. Подключение к голосу и демонстрацию экрана при необходимости включите заново.',
           DesktopUpdatePhase.rolledBack =>
@@ -105,7 +116,8 @@ class DesktopUpdatePanel extends StatelessWidget {
               Wrap(
                 spacing: 8,
                 children: [
-                  if (desktop.failure == 'installation_location')
+                  if (desktop.failure == 'installation_location' ||
+                      needsInstaller)
                     TextButton(
                       onPressed: () => launchUrl(
                         Uri.parse(

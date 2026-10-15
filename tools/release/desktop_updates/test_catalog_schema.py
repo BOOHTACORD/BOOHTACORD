@@ -1,7 +1,7 @@
 """The public runtime-catalog schema must resolve the optional signed envelope."""
 import json
 from pathlib import Path
-import pytest
+import unittest
 from jsonschema import Draft202012Validator, ValidationError
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -28,11 +28,11 @@ def validator():
     return Draft202012Validator(json.loads((ROOT / 'contracts/client-release-catalog.schema.json').read_text()))
 
 
-def test_optional_install_envelope_resolves_in_public_catalog_schema():
-    validator().validate(catalog(install_artifact=envelope()))
-    validator().validate(catalog())
+class CatalogSchemaTests(unittest.TestCase):
+    def test_optional_install_envelope_resolves_in_public_catalog_schema(self):
+        validator().validate(catalog(install_artifact=envelope()))
+        validator().validate(catalog())
 
-
-def test_camel_case_internal_definition_cannot_be_used_as_a_target_field():
-    with pytest.raises(ValidationError):
-        validator().validate(catalog(installArtifact=envelope()))
+    def test_camel_case_internal_definition_cannot_be_used_as_a_target_field(self):
+        with self.assertRaises(ValidationError):
+            validator().validate(catalog(installArtifact=envelope()))

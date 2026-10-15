@@ -7,9 +7,17 @@ import 'package:ffi/ffi.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:path/path.dart' as path;
 
+import '../../../app_version.dart';
 import 'artifact.dart';
 import 'native_adapter.dart';
 import 'windows_identity.dart';
+
+String velopackFeedFileName(String channel) {
+  if (!const {'stable', 'beta', 'development'}.contains(channel)) {
+    throw const ArtifactFailure('native_channel');
+  }
+  return 'releases.$channel.json';
+}
 
 final class _Options extends Struct {
   @Bool()
@@ -51,7 +59,12 @@ class VelopackDesktopUpdater implements DesktopNativeUpdater {
       'velopack_libc.dll',
     ),
   );
-  static Pointer<Void> _manager(DynamicLibrary library, String source) {
+  static Pointer<Void> _manager(
+    DynamicLibrary library,
+    String source, {
+    String channelName = appChannel,
+  }) {
+    velopackFeedFileName(channelName);
     final create = library
         .lookupFunction<
           Bool Function(
@@ -70,7 +83,7 @@ class VelopackDesktopUpdater implements DesktopNativeUpdater {
     final options = calloc<_Options>(),
         output = calloc<Pointer<Void>>(),
         url = source.toNativeUtf8(),
-        channel = 'stable'.toNativeUtf8();
+        channel = channelName.toNativeUtf8();
     try {
       options.ref.allowDowngrade = false;
       options.ref.channel = channel;
@@ -163,26 +176,28 @@ class VelopackDesktopUpdater implements DesktopNativeUpdater {
     await source.create(recursive: true);
     final filename = artifact.downloadUrl.pathSegments.last;
     await File(archive).copy(path.join(source.path, filename));
-    await File(path.join(source.path, 'releases.stable.json')).writeAsString(
-      jsonEncode({
-        'Assets': [
-          {
-            'PackageId': artifact.packageId,
-            'Version': artifact.version,
-            'Type': 'Full',
-            'FileName': filename,
-            'SHA1': '',
-            'SHA256': artifact.sha256,
-            'Size': artifact.size,
-            'NotesMarkdown': '',
-            'NotesHtml': '',
-          },
-        ],
-      }),
-      flush: true,
-    );
+    final channel = artifact.values['channel'] as String;
+    await File(path.join(source.path, velopackFeedFileName(channel)))
+        .writeAsString(
+          jsonEncode({
+            'Assets': [
+              {
+                'PackageId': artifact.packageId,
+                'Version': artifact.version,
+                'Type': 'Full',
+                'FileName': filename,
+                'SHA1': '',
+                'SHA256': artifact.sha256,
+                'Size': artifact.size,
+                'NotesMarkdown': '',
+                'NotesHtml': '',
+              },
+            ],
+          }),
+          flush: true,
+        );
     final library = _library(),
-        manager = _manager(_library(), source.path),
+        manager = _manager(_library(), source.path, channelName: channel),
         info = calloc<Pointer<_Info>>();
     try {
       final check = library

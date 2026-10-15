@@ -121,8 +121,9 @@ Future<void> _scanZip(File file) async {
       final nameStart = cursor + 46, extraStart = nameStart + nameSize;
       if (nameSize == 0 ||
           nameSize > 4096 ||
-          extraStart + extraSize > central.lengthInBytes)
+          extraStart + extraSize > central.lengthInBytes) {
         throw const ArtifactFailure('archive_directory');
+      }
       final expectedName = central.buffer.asUint8List(
         central.offsetInBytes + nameStart,
         nameSize,
@@ -134,8 +135,9 @@ Future<void> _scanZip(File file) async {
         ),
       );
       final localOffset = central.getUint32(cursor + 42, Endian.little);
-      if (localOffset + 30 > offset)
+      if (localOffset + 30 > offset) {
         throw const ArtifactFailure('archive_directory');
+      }
       await io.setPosition(localOffset);
       final local = ByteData.sublistView(await io.read(30));
       if (local.lengthInBytes != 30 ||
@@ -144,23 +146,26 @@ Future<void> _scanZip(File file) async {
           local.getUint16(8, Endian.little) !=
               central.getUint16(cursor + 10, Endian.little) ||
           local.getUint16(6, Endian.little) !=
-              central.getUint16(cursor + 8, Endian.little))
+              central.getUint16(cursor + 8, Endian.little)) {
         throw const ArtifactFailure('archive_directory');
+      }
       final localExtraSize = local.getUint16(28, Endian.little);
       if (localOffset +
               30 +
               nameSize +
               localExtraSize +
               central.getUint32(cursor + 20, Endian.little) >
-          offset)
+          offset) {
         throw const ArtifactFailure('archive_directory');
+      }
       final localName = await io.read(nameSize);
       if (localName.length != expectedName.length ||
           List.generate(
             localName.length,
             (i) => localName[i] == expectedName[i],
-          ).contains(false))
+          ).contains(false)) {
         throw const ArtifactFailure('archive_directory');
+      }
       _zipExtra(await io.read(localExtraSize));
       cursor +=
           46 +
@@ -186,13 +191,15 @@ void _zipExtra(Uint8List bytes) {
     0x000a,
   }; // Unix/extended/NTFS timestamps and uid/gid.
   while (cursor < data.lengthInBytes) {
-    if (cursor + 4 > data.lengthInBytes)
+    if (cursor + 4 > data.lengthInBytes) {
       throw const ArtifactFailure('archive_directory');
+    }
     final kind = data.getUint16(cursor, Endian.little),
         size = data.getUint16(cursor + 2, Endian.little);
     cursor += 4 + size;
-    if (!safe.contains(kind) || cursor > data.lengthInBytes)
+    if (!safe.contains(kind) || cursor > data.lengthInBytes) {
       throw const ArtifactFailure('archive_extra');
+    }
   }
 }
 

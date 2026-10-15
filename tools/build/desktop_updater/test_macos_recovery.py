@@ -2,6 +2,7 @@
 import json
 import os
 import plistlib
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -16,7 +17,8 @@ from .recovery import macos
 class MacRecoveryPreflightTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.monitor = macos() / 'Contents/MacOS/BOOHTACORDRecovery'
+        cls.monitor_app = macos()
+        cls.monitor = cls.monitor_app / 'Contents/MacOS/BOOHTACORDRecovery'
 
     def setUp(self):
         applications = Path.home() / 'Applications'
@@ -48,7 +50,7 @@ class MacRecoveryPreflightTests(unittest.TestCase):
         self.parent.chmod(0o700)
         self.temporary.cleanup()
 
-    def run_monitor(self, target):
+    def run_monitor(self, target, monitor=None, retain=False):
         self.plan.write_text(json.dumps({
             'schema_version': 1, 'transaction': self.transaction,
             'target': str(target), 'backup': str(self.recovery / 'previous.app'),
@@ -60,9 +62,39 @@ class MacRecoveryPreflightTests(unittest.TestCase):
         (self.recovery / 'cancel.json').write_text(json.dumps({
             'transaction': self.transaction,
         }))
-        subprocess.run([str(self.monitor), '--plan', str(self.plan), '--resumed'],
+        subprocess.run([str(monitor or self.monitor), '--plan', str(self.plan),
+                        '--resumed', *(['--retain-installed'] if retain else [])],
                        check=True, timeout=15, capture_output=True)
         return json.loads((self.recovery / 'recovery-outcome.json').read_text())
+
+    def installed_monitor(self):
+        target = self.parent / 'BOOHTACORD.app'
+        shutil.copytree(self.recovery / 'previous.app', target)
+        embedded = target / 'Contents/Resources/BOOHTACORDRecovery.app'
+        shutil.copytree(self.monitor_app, embedded)
+        subprocess.run(['/usr/bin/codesign', '--force', '--sign', '-', str(target)],
+                       check=True, capture_output=True)
+        return target, embedded / 'Contents/MacOS/BOOHTACORDRecovery'
+
+    def test_installed_monitor_retains_verified_baseline_and_itself(self):
+        target, monitor = self.installed_monitor()
+        shutil.rmtree(self.recovery / 'previous.app')
+        result = self.run_monitor(target, monitor, retain=True)
+        self.assertEqual(result['status'], 'cancelled')
+        baseline = self.recovery / 'previous.app'
+        self.assertEqual((baseline / 'Contents/MacOS/Fixture').read_bytes(),
+                         (target / 'Contents/MacOS/Fixture').read_bytes())
+        retained = self.recovery / 'BOOHTACORDRecovery.app'
+        self.assertEqual((retained / 'Contents/MacOS/BOOHTACORDRecovery').read_bytes(),
+                         monitor.read_bytes())
+        subprocess.run(['/usr/bin/codesign', '--verify', '--deep', '--strict',
+                        str(baseline)], check=True, capture_output=True)
+
+    def test_retention_rejects_monitor_outside_installed_bundle(self):
+        target, _ = self.installed_monitor()
+        result = self.run_monitor(target, retain=True)
+        self.assertEqual(result['reason'], 'monitor_identity')
+        self.assertFalse((self.recovery / 'recovery-ready.json').exists())
 
     def test_unwritable_parent_rejects_before_ready(self):
         self.parent.chmod(0o500)

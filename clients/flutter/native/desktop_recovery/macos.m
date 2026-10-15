@@ -72,7 +72,7 @@ static NSString *Registration(NSString *transaction) {
                         @"Library/LaunchAgents/ru.boohtacord.recovery.%@.plist",
                         transaction]];
 }
-static void Register(NSString *plan, NSString *transaction) {
+static void Register(NSString *plan, NSString *transaction, NSString *executable) {
   NSString *file = Registration(transaction);
   [NSFileManager.defaultManager
             createDirectoryAtPath:file.stringByDeletingLastPathComponent
@@ -84,7 +84,7 @@ static void Register(NSString *plan, NSString *transaction) {
   NSDictionary *job = @{
     @"Label" : [@"ru.boohtacord.recovery." stringByAppendingString:transaction],
     @"ProgramArguments" :
-        @[ NSBundle.mainBundle.executablePath, @"--plan", plan, @"--resumed" ],
+        @[ executable, @"--plan", plan, @"--resumed" ],
     @"RunAtLoad" : @YES,
     @"StandardOutPath" : @"/dev/null",
     @"StandardErrorPath" : @"/dev/null"
@@ -145,8 +145,6 @@ int main(int argc, const char *argv[]) {
       RemoveRegistration(transaction);
       return 0;
     }
-    if (![arguments containsObject:@"--resumed"])
-      Register(planPath, transaction);
     void (^finish)(NSString *, NSString *) =
         ^(NSString *status, NSString *reason) {
           Atomic(@{
@@ -157,6 +155,33 @@ int main(int argc, const char *argv[]) {
                  outcome);
           RemoveRegistration(transaction);
         };
+    NSString *monitorExecutable = NSBundle.mainBundle.executablePath;
+    if ([arguments containsObject:@"--retain-installed"]) {
+      NSString *embedded = [target stringByAppendingPathComponent:
+          @"Contents/Resources/BOOHTACORDRecovery.app"];
+      if (![NSBundle.mainBundle.bundlePath.stringByResolvingSymlinksInPath
+              isEqual:embedded.stringByResolvingSymlinksInPath] ||
+          !ValidCode(target, plan[@"old_build"])) {
+        finish(@"manualRecovery", @"monitor_identity");
+        return 0;
+      }
+      // Copy only the verified, locally running installation. Never execute a
+      // helper produced by the sandbox, downloaded separately or named by a
+      // server field. Its retained copy survives replacement of the outer app.
+      NSFileManager *files = NSFileManager.defaultManager;
+      NSString *retained = [root stringByAppendingPathComponent:
+          @"BOOHTACORDRecovery.app"];
+      if (![files copyItemAtPath:target toPath:backup error:nil] ||
+          !ValidCode(backup, plan[@"old_build"]) ||
+          ![files copyItemAtPath:embedded toPath:retained error:nil]) {
+        finish(@"manualRecovery", @"baseline_copy");
+        return 0;
+      }
+      monitorExecutable = [retained stringByAppendingPathComponent:
+          @"Contents/MacOS/BOOHTACORDRecovery"];
+    }
+    if (![arguments containsObject:@"--resumed"])
+      Register(planPath, transaction, monitorExecutable);
     if (!ValidCode(backup, plan[@"old_build"])) {
       if (ValidCode(target, plan[@"old_build"]))
         finish(@"rolledBack", @"restore_interrupted");

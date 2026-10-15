@@ -2,9 +2,15 @@
 export function installRosterFailureObserver(browser = window) {
   const Native = browser.EventSource
   browser.__qaRosterUnavailableCount = 0
+  browser.__qaRosterTransport = { created: 0, opened: 0, failed: 0 }
+  browser.__qaRosterTransportSource = null
   browser.EventSource = new Proxy(Native, { construct(target, args, newTarget) {
     const source = Reflect.construct(target, args, newTarget)
     if (new URL(args[0], browser.location.href).pathname === '/api/v1/voice/rosters/events') {
+      browser.__qaRosterTransport.created++
+      browser.__qaRosterTransportSource = source
+      source.addEventListener('open', () => { browser.__qaRosterTransport.opened++ })
+      source.addEventListener('error', () => { browser.__qaRosterTransport.failed++ })
       source.addEventListener('roster-unavailable', () => { browser.__qaRosterUnavailableCount++ })
     }
     return source

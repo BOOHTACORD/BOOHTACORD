@@ -44,13 +44,8 @@ class DesktopRecovery {
       if (!await helper.exists()) {
         throw const ArtifactFailure('recovery_missing');
       }
-      for (final pair in [
-        (bundle.path, path.join(root.path, 'previous.app')),
-        (helper.path, path.join(root.path, 'BOOHTACORDRecovery.app')),
-      ]) {
-        final copied = await Process.run('/usr/bin/ditto', [pair.$1, pair.$2]);
-        if (copied.exitCode != 0) throw const ArtifactFailure('recovery_copy');
-      }
+      // The bundled native monitor retains these after explicit apply consent.
+      // Executables written here by the sandbox cannot be launched on macOS.
     } else {
       // Preserve the whole known-running version, never a server-selected file.
       final current = File(Platform.resolvedExecutable).parent;
@@ -119,8 +114,9 @@ class DesktopRecovery {
       } catch (_) {}
       final result = await outcome(transaction, transactionId);
       if (result?['status'] == 'manualRecovery') {
-        if (['replace_denied', 'recovery_volume'].contains(result?['reason']))
+        if (['replace_denied', 'recovery_volume'].contains(result?['reason'])) {
           throw const ArtifactFailure('installation_location');
+        }
         throw const ArtifactFailure('recovery_identity');
       }
       await Future<void>.delayed(const Duration(milliseconds: 100));

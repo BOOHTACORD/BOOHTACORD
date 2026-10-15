@@ -70,7 +70,19 @@ export async function media(a, b, member, channelId, report, input) {
     await openNavigation(a)
     // Detection can use one 5s reconciliation period, a shared 5s snapshot deadline
     // and a bounded 3s SSE write. Check the actual event before its UI consequence.
+    try {
     await expect.poll(() => a.evaluate(() => window.__qaRosterUnavailableCount), { timeout: 15000 }).toBeGreaterThan(rosterFailuresBefore)
+    } catch (error) {
+      // Diagnose real SSE delivery without retaining URLs, payloads or identities.
+      const transport = await a.evaluate(() => ({
+        ...window.__qaRosterTransport,
+        ready_state: window.__qaRosterTransportSource?.readyState ?? null,
+        unavailable: window.__qaRosterUnavailableCount,
+      }))
+      const presenceStatus = (await api(a, '/voice/participants')).status
+      console.error('roster-failure-diagnostics='+JSON.stringify({ ...transport, presence_status: presenceStatus }))
+      throw error
+    }
     await expect(banner).toBeVisible()
     await expect(banner).toContainText('Состав недоступен', { timeout: 20000 })
     await expect(a.getByRole('log')).toHaveCount(0)

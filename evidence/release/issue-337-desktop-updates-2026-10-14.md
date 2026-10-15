@@ -38,10 +38,10 @@ Windows Authenticode is measured by existing packaging tools, not assumed.
 | Gate | Status |
 |---|---|
 | Flutter regression and analysis | PASS locally and in CI at `34274936`; 27 current desktop-focused cases |
-| Windows native build + per-user Setup/full package | Native compile PASS; packaging failed on unsupported `vpk --version`; fix/retry pending |
-| Actual installed macOS N → N+1 with UI/state restoration | NOT_RUN |
+| Windows native build + per-user Setup/full package | PASS run 38688760886; retained and verified |
+| Actual installed macOS N → N+1 with UI/state restoration | FAIL first attempt; monitor fix built, repeat pending |
 | Actual installed Windows N → N+1 with UI/state restoration | NOT_RUN |
-| Failed-bootstrap/apply recovery on both operating systems | NOT_RUN |
+| Failed-bootstrap/apply recovery on both operating systems | Windows native component PASS; complete two-OS gate pending |
 | Web, Android, iOS rebuilds and backend build | PASS compilation; iOS is unsigned, not an IPA/TestFlight delivery |
 | Published immutable packages + signed metadata + catalog promotion | NOT_RUN |
 
@@ -160,3 +160,41 @@ status. It does not certify the full installed upgrade gates.
   and UI/state restoration remain NOT_RUN until their actual observed results
   are recorded. PR #338 stays draft and #337 stays open. The independent lifecycle
   failure above has not been waived or established as pre-existing.
+
+
+## Installed macOS attempt and fresh Windows artifacts (2026-10-15)
+
+- Real isolated installed macOS beta 1.0.43 (78) authenticated against an owned
+  HTTPS Go API/PostgreSQL stack using scoped native Keychain storage. Published
+  CI package 1.0.44 (79) downloaded and reached Ready. Later kept the app running;
+  the existing draft remained visible, and a later draft edit was made before
+  the explicit restart confirmation.
+- Actual apply attempt FAIL before replacement: the sandbox-created monitor copy
+  had quarantine flags and macOS refused execution. No bootstrap ACK or completed
+  outcome was fabricated; the installed bundle remained build 78. Failed journal
+  and artifacts are retained locally. This is not an accepted upgrade.
+- Fix: launch the monitor sealed in the installed bundle. After apply consent,
+  that monitor validates the installed bundle and retains its baseline and helper
+  itself, then registers the retained executable for recovery. No quarantine
+  flags or OS protections are disabled. Six real native macOS preflight tests
+  PASS, including retained whole signed baseline and embedded monitor identity
+  rejection. The rebuilt isolated beta78 is awaiting native Keychain permission
+  for another live attempt.
+- Fresh full Windows job 116269703551 in
+  [run 38688760886](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38688760886)
+  PASS: native compile, required DLL dependency graph, per-user Setup and full
+  NUPKG. Retained source merge SHA `7c9474df66fa9912af51fc333d756616a5e69758`.
+  Downloaded artifacts 11951762001, 11952181829, 11951537139; archive hashes and
+  all 53 native manifest file hashes verified independently. Canonical
+  `velopack_libc.dll` is present in the app and the full package.
+- Fresh Windows recovery evidence PASS: actual monitor, 124 seconds, whole
+  baseline hashes preserved, real Flutter relaunch, Unicode paths, external
+  synthetic profile retained, completed transaction replay no-op, one-shot
+  registration removed. N-to-N+1 UI acceptance remains NOT_RUN.
+- Fixed beta/development Velopack feed selection and misleading manual-recovery
+  UI; added focused regressions. Schema tests now use the CI unittest runner,
+  without an unavailable pytest dependency. Tools/contracts: 451 PASS locally;
+  OpenAPI parity: 19 PASS; traceability: 39 repository-index requirements.
+- Independent lifecycle run 38688760738 still fails the unchanged 15-second
+  roster-unavailable SSE gate. Added bounded event-transport diagnostics only;
+  no payloads/identities retained and no deadline or assertion weakened.

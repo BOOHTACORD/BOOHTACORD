@@ -71,14 +71,15 @@
       [self fail:result code:@"recovery_path"];
       return;
     }
-    NSURL *helper = [NSURL
-        fileURLWithPath:
-            [[plan stringByDeletingLastPathComponent]
-                stringByAppendingPathComponent:@"BOOHTACORDRecovery.app"]];
+    // Sandbox-created executable copies receive quarantine flags. Launch only
+    // the monitor sealed inside this installed app; it retains its own trusted
+    // copy and baseline outside the application sandbox after apply consent.
+    NSURL *helper = [NSBundle.mainBundle.resourceURL
+        URLByAppendingPathComponent:@"BOOHTACORDRecovery.app"];
     NSWorkspaceOpenConfiguration *configuration =
         [NSWorkspaceOpenConfiguration configuration];
     configuration.activates = NO;
-    configuration.arguments = @[ @"--plan", plan ];
+    configuration.arguments = @[ @"--plan", plan, @"--retain-installed" ];
     [NSWorkspace.sharedWorkspace
         openApplicationAtURL:helper
                configuration:configuration

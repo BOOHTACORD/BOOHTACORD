@@ -7,7 +7,7 @@ int wmain() {
   const auto count = GetTempPathW(32768, temporary);
   if (!count || count >= 32768) return 1;
   const auto root = fs::path(temporary) / (L"BOOHTACORD-path-test-" + std::to_wstring(GetCurrentProcessId()));
-  fs::create_directory(root);
+  if (!fs::create_directory(root)) return 1;
   int failures = 0;
   auto check = [&](bool valid, const char *label) {
     std::cout << label << ": " << (valid ? "PASS" : "FAIL") << '\n';

@@ -34,8 +34,9 @@ class DesktopArtifactDownloader {
         return await _once(artifact, partial, cancellation, progress);
       } on ArtifactFailure catch (error) {
         if (attempt >= 2 ||
-            !['network', 'truncated', 'http', 'range'].contains(error.code))
+            !['network', 'truncated', 'http', 'range'].contains(error.code)) {
           rethrow;
+        }
         for (var tick = 0; tick < (attempt + 1) * 10; tick++) {
           cancellation.check();
           await Future<void>.delayed(const Duration(milliseconds: 100));
