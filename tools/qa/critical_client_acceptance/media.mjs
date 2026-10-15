@@ -63,6 +63,9 @@ export async function media(a, b, member, channelId, report, input) {
   const manualRetryAvailable = await retry.isVisible()
   if (manualRetryAvailable) await retry.click()
   await expect(banner).toBeHidden()
+  // Chat recovery replaces the roster source asynchronously. Fault injection
+  // must start with a live SSE stream, rather than an initial/retry HTTP fetch.
+  await expect.poll(() => a.evaluate(() => window.__qaRosterTransportSource?.readyState), { timeout: 15000 }).toBe(1)
   // Both listeners now have real WebRTC transports; stop only the owned SFU.
   const rosterFailuresBefore = await a.evaluate(() => window.__qaRosterUnavailableCount)
   owned('sfu', 'stop', '$owned')

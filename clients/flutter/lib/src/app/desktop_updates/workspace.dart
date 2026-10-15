@@ -29,6 +29,7 @@ class DesktopWorkspacePersistence {
   Timer? _timer;
   String? _loadedScope;
   bool _restoring = false;
+  bool _disposed = false;
   Future<void> _writes = Future.value();
   String? _lastSnapshot;
   String get scope => desktopScope(
@@ -43,7 +44,9 @@ class DesktopWorkspacePersistence {
   }
 
   void _changed() {
-    if (state.phase != AppPhase.ready || state.user == null) return;
+    if (_disposed || state.phase != AppPhase.ready || state.user == null) {
+      return;
+    }
     if (_loadedScope != scope) {
       if (!_restoring) unawaited(_restore());
       return;
@@ -52,7 +55,8 @@ class DesktopWorkspacePersistence {
   }
 
   void _schedule() {
-    if (_restoring ||
+    if (_disposed ||
+        _restoring ||
         state.phase != AppPhase.ready ||
         state.user == null ||
         _timer?.isActive == true) {
@@ -103,17 +107,19 @@ class DesktopWorkspacePersistence {
 
   Future<void> flush() async {
     final ticket = scope;
-    if (state.phase != AppPhase.ready || _loadedScope != ticket) return;
+    if (_disposed || state.phase != AppPhase.ready || _loadedScope != ticket) {
+      return;
+    }
     final snapshot = await capture();
-    if (ticket != scope) return;
+    if (_disposed || ticket != scope) return;
     final fingerprint = snapshot.toString();
     if (fingerprint == _lastSnapshot) return;
-    _lastSnapshot = fingerprint;
     final previous = _writes;
     _writes = previous
         .catchError((Object _) {})
         .then((_) => store.save(ticket, 'workspace', snapshot));
     await _writes;
+    if (!_disposed && ticket == scope) _lastSnapshot = fingerprint;
   }
 
   Future<void> checkpoint(
@@ -124,7 +130,9 @@ class DesktopWorkspacePersistence {
     final ticket = scope;
     final snapshot = await capture();
     if (ticket != scope) throw const FormatException('checkpoint_scope');
-    await _writes;
+    // A transient earlier background save must not poison every later restart.
+    // The fresh writes below must still succeed before applying any update.
+    await _writes.catchError((Object _) {});
     await store.save(ticket, 'workspace', snapshot);
     await store.save(ticket, 'restart', {
       'transaction': transaction,
@@ -145,20 +153,28 @@ class DesktopWorkspacePersistence {
     _restoring = true;
     final ticket = scope;
     final draftRevision = ComposerDraftMemory.revision;
+    final scrollRevision = ConversationScrollMemory.revision;
     final initialRoute = _route;
+    final initialPanel = state.workspacePanel;
+    final initialSearch = Map.of(state.workspace.searchSessions);
+    final initialAudio = (
+      state.microphoneMuted,
+      state.deafened,
+      state.voice.mutedBeforeDeafen,
+    );
     if (_loadedScope != null && _loadedScope != ticket) {
       ComposerDraftMemory.clear();
       ConversationScrollMemory.clear();
     }
     try {
       final snapshot = await store.read(ticket, 'workspace');
-      if (ticket != scope || state.phase != AppPhase.ready) return;
+      if (_disposed || ticket != scope || state.phase != AppPhase.ready) return;
       if (snapshot != null) {
         // Reload authorized resources; cached route IDs never grant access.
         await state.refreshTopology();
-        if (ticket != scope) return;
+        if (_disposed || ticket != scope) return;
         await state.refreshDirectMessages();
-        if (ticket != scope) return;
+        if (_disposed || ticket != scope) return;
         final account = state.user!.accountId;
         final direct = state.directMessages
             .where((e) => e.id == snapshot['direct'])
@@ -177,7 +193,7 @@ class DesktopWorkspacePersistence {
         } else if (channel != null) {
           await state.selectChannel(channel);
         }
-        if (ticket != scope) return;
+        if (_disposed || ticket != scope) return;
         final savedScroll = snapshot['scroll'] as List<dynamic>? ?? [];
         final scrollKey = state.selectedDirectMessage == null
             ? state.selectedChannel?.id
@@ -195,7 +211,8 @@ class DesktopWorkspacePersistence {
             page < 40 && DateTime.now().isBefore(deadline);
             page++
           ) {
-            if (ticket != scope ||
+            if (_disposed ||
+                ticket != scope ||
                 state.workspace.selectionRevision != selection) {
               break;
             }
@@ -212,8 +229,12 @@ class DesktopWorkspacePersistence {
             }
           }
         }
-        if (ticket != scope) return;
-        ConversationScrollMemory.importForAccount(account, savedScroll);
+        if (_disposed || ticket != scope) return;
+        ConversationScrollMemory.importForAccount(
+          account,
+          savedScroll,
+          unchangedSince: scrollRevision,
+        );
         final replies = <String, Object>{
           for (final m in state.messages) m.id: m,
           for (final m in state.directMessageHistory) m.id: m,
@@ -253,7 +274,7 @@ class DesktopWorkspacePersistence {
             }
           } catch (_) {}
         }
-        if (ticket != scope) return;
+        if (_disposed || ticket != scope) return;
         ComposerDraftMemory.importForAccount(
           account,
           snapshot['drafts'] as List<dynamic>? ?? [],
@@ -264,6 +285,7 @@ class DesktopWorkspacePersistence {
             .where((p) => p.name == snapshot['panel'])
             .firstOrNull;
         if (panel != null &&
+            state.workspacePanel == initialPanel &&
             (panel != WorkspacePanel.admin || state.user!.isAdmin) &&
             panel != WorkspacePanel.searchContext) {
           state.workspacePanel = panel;
@@ -273,6 +295,10 @@ class DesktopWorkspacePersistence {
           for (final e in search.entries.take(20)) {
             final v = e.value;
             if (e.key is String &&
+                identical(
+                  state.workspace.searchSessions[e.key],
+                  initialSearch[e.key],
+                ) &&
                 v is Map &&
                 v['query'] is String &&
                 v['scope'] is String &&
@@ -287,7 +313,13 @@ class DesktopWorkspacePersistence {
             }
           }
         }
-        if (state.voiceChannel == null) {
+        if (state.voiceChannel == null &&
+            (
+                  state.microphoneMuted,
+                  state.deafened,
+                  state.voice.mutedBeforeDeafen,
+                ) ==
+                initialAudio) {
           state.microphoneMuted = snapshot['muted'] != false;
           state.deafened = snapshot['deafened'] == true;
           state.voice.mutedBeforeDeafen =
@@ -310,7 +342,7 @@ class DesktopWorkspacePersistence {
               height >= 400 &&
               height <= 4000) {
             final displays = await screenRetriever.getAllDisplays();
-            if (ticket != scope) return;
+            if (_disposed || ticket != scope) return;
             await windowManager.setBounds(
               visibleWindowBounds(
                 Rect.fromLTWH(
@@ -328,7 +360,7 @@ class DesktopWorkspacePersistence {
             );
           }
         }
-        if (ticket == scope) {
+        if (!_disposed && ticket == scope) {
           state.notifyListeners();
           ClientTelemetry.desktopUpdate('restore');
         }
@@ -338,6 +370,15 @@ class DesktopWorkspacePersistence {
       if (ticket == scope) _loadedScope = ticket;
     } finally {
       _restoring = false;
+      // Edits made during restoration must be persisted even when no later
+      // user action occurs. A changed account must start its own restoration.
+      if (!_disposed) {
+        if (ticket == scope) {
+          _schedule();
+        } else {
+          _changed();
+        }
+      }
     }
   }
 
@@ -357,6 +398,7 @@ class DesktopWorkspacePersistence {
   }
 
   void dispose() {
+    _disposed = true;
     _timer?.cancel();
     state.removeListener(_changed);
     ComposerDraftMemory.changed = null;

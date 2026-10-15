@@ -19,6 +19,8 @@ class ConversationScrollPosition {
 abstract final class ConversationScrollMemory {
   static final Map<String, ConversationScrollPosition> _positions = {};
   static int _epoch = 0;
+  static int revision = 0;
+  static final Map<String, int> _edits = {};
   static void Function()? changed;
   static List<Map<String, dynamic>> exportForAccount(String account) => [
     for (final entry in _positions.entries)
@@ -31,19 +33,25 @@ abstract final class ConversationScrollMemory {
           'anchor_offset': entry.value.anchorOffset,
         },
   ];
-  static void importForAccount(String account, List<dynamic> values) {
+  static void importForAccount(
+    String account,
+    List<dynamic> values, {
+    int? unchangedSince,
+  }) {
     _epoch++;
     for (final value in values.take(100)) {
       if (value is! Map ||
           value['channel'] is! String ||
           value['offset'] is! num ||
           !(value['offset'] as num).isFinite ||
-          (value['offset'] as num) < 0)
+          (value['offset'] as num) < 0) {
         continue;
-      _positions[_key(
-        account,
-        value['channel'] as String,
-      )] = ConversationScrollPosition(
+      }
+      final key = _key(account, value['channel'] as String);
+      if (unchangedSince != null && (_edits[key] ?? 0) > unchangedSince) {
+        continue;
+      }
+      _positions[key] = ConversationScrollPosition(
         offset: (value['offset'] as num).toDouble(),
         followLatest: value['follow_latest'] == true,
         restoredFromDisk: true,
@@ -75,7 +83,9 @@ abstract final class ConversationScrollMemory {
     double anchorOffset = 0,
   }) {
     if (epoch != _epoch || !offset.isFinite || offset < 0) return;
-    _positions[_key(accountId, channelId)] = ConversationScrollPosition(
+    final key = _key(accountId, channelId);
+    _edits[key] = ++revision;
+    _positions[key] = ConversationScrollPosition(
       offset: offset,
       followLatest: followLatest,
       anchorId: anchorId,
@@ -87,5 +97,7 @@ abstract final class ConversationScrollMemory {
   static void clear() {
     _epoch++;
     _positions.clear();
+    _edits.clear();
+    revision++;
   }
 }

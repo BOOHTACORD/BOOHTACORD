@@ -198,3 +198,29 @@ status. It does not certify the full installed upgrade gates.
 - Independent lifecycle run 38688760738 still fails the unchanged 15-second
   roster-unavailable SSE gate. Added bounded event-transport diagnostics only;
   no payloads/identities retained and no deadline or assertion weakened.
+
+
+## Workspace restoration and SSE isolation follow-up (2026-10-15)
+
+- Added failing regressions for delayed workspace restoration overwriting fresh
+  panel/search/scroll/audio choices, missing persistence after restore, mutation
+  after disposal, unchanged-snapshot retry after a failed save, and restart
+  checkpoint retry after an earlier background failure. All are now PASS;
+  complete focused desktop/draft/workspace screen suite: 136 PASS. Scoped Dart
+  analysis: no issues. Existing encrypted/account-scoped storage remains in use.
+- Latest tools/contracts run: 451 PASS; OpenAPI parity: 19 PASS. The SSE observer
+  unit tests PASS and the actual media journey syntax check PASS.
+- Browser run 38692019424 FAIL retains the original 15-second event assertion.
+  Bounded diagnostics: 2 sources created, 2 opened, 2 transport errors, latest
+  readyState CLOSED, zero roster-unavailable events, participants HTTP 503.
+  The next journey additionally requires an OPEN roster stream before stopping
+  the owned SFU; no post-fault assertion or deadline is relaxed.
+- Independent real TLS wire probe against the owned Go API/Caddy/PostgreSQL/SFU
+  delivered the actual roster-unavailable control event after SFU shutdown.
+  The owned SFU was restarted in finally. This is a component result; it does
+  not turn the failed full browser journey into PASS.
+- Source 09e31d9a CI: contracts, Linux backend, Vue and Windows native monitor
+  component PASS; signed Android candidate PASS. Full Windows app job and
+  Flutter Android build-mode job are still running at this observation.
+- macOS repeat remains waiting for native Keychain approval. Do not close #337,
+  merge/promote production packages or claim either installed OS gate PASS.
