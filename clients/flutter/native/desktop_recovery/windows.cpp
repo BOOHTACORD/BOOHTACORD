@@ -222,7 +222,9 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
     if (argc < 3 || std::wstring(argv[1]) != L"--plan")
       return 2;
     startup = 12;
-    fs::path planPath = fs::weakly_canonical(NativePath(argv[2]));
+    // weakly_canonical may remove the extended prefix. Keep all compared paths
+    // in one representation, including paths reconstructed from the local plan.
+    fs::path planPath = NativePath(fs::weakly_canonical(NativePath(argv[2])));
     LocalFree(argv);
     if (!fs::is_regular_file(planPath))
       return 2;
@@ -243,11 +245,16 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int) {
              backup = NativePath(Value(plan, L"backup")),
              root = planPath.parent_path();
     startup = 15;
-    if (!std::regex_match(transaction, std::wregex(L"[A-Fa-f0-9-]{36}")) ||
-        !Within(local, target) || target.filename() != L"current" ||
-        backup != root / L"previous" ||
-        root.wstring().find(L"DesktopUpdates") == std::wstring::npos)
+    if (!std::regex_match(transaction, std::wregex(L"[A-Fa-f0-9-]{36}")))
       return startup;
+    if (!Within(local, target))
+      return 20;
+    if (target.filename() != L"current")
+      return 21;
+    if (backup != NativePath(root / L"previous"))
+      return 22;
+    if (root.wstring().find(L"DesktopUpdates") == std::wstring::npos)
+      return 23;
     startup = 16;
     auto lock = root / L"recovery.lock";
     HANDLE exclusive =
