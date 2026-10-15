@@ -68,6 +68,7 @@ def run(source, wait_seconds):
     executable = installed / 'current/boohtacord_desktop.exe'
     result = ROOT / '.out/issue337-windows-acceptance'
     result.mkdir(parents=True, exist_ok=False)
+    owned_installation = False
     config = Path(os.environ['APPDATA']) / 'ru.boohtacord/boohtacord_desktop/issue337-acceptance-private.json'
     try:
         if installed.exists() or config.exists():
@@ -77,6 +78,7 @@ def run(source, wait_seconds):
         config.parent.mkdir(parents=True, exist_ok=True)
         with config.open('x') as handle:
             json.dump(stack.private_configuration(), handle)
+        owned_installation = True
         subprocess.run([str(installer), '--silent', '--installto', str(installed)], check=True,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
         if not executable.is_file() or not (installed / 'Update.exe').is_file():
@@ -104,7 +106,7 @@ def run(source, wait_seconds):
             time.sleep(.25)
         raise RuntimeError('Native installed update journey timed out')
     finally:
-        if executable.exists() and running_at(executable):
+        if owned_installation and executable.exists() and running_at(executable):
             close_owned(executable)
         driver = root / 'driver'
         if driver.is_dir():
