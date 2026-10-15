@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 import uuid
 from pathlib import Path
@@ -124,6 +125,57 @@ class MacRecoveryPreflightTests(unittest.TestCase):
         self.assertTrue((self.recovery / 'recovery-ready.json').exists())
         self.assertEqual(list(self.parent.iterdir()), [])
         self.assertTrue((self.recovery / 'previous.app').is_dir())
+
+    def test_launch_services_reports_started_while_monitor_waits(self):
+        target, monitor = self.installed_monitor()
+        shutil.rmtree(self.recovery / 'previous.app')
+        self.plan.write_text(json.dumps({
+            'schema_version': 1, 'transaction': self.transaction,
+            'target': str(target), 'backup': str(self.recovery / 'previous.app'),
+            'old_pid': os.getpid(), 'old_build': '77', 'new_build': '78',
+            'new_release': 'native-test',
+        }))
+        source = self.root / 'launch.m'
+        source.write_text(r'''#import <Cocoa/Cocoa.h>
+int main(int argc, const char *argv[]) {
+  @autoreleasepool {
+    __block BOOL done = NO, launched = NO;
+    NSWorkspaceOpenConfiguration *config = [NSWorkspaceOpenConfiguration configuration];
+    config.activates = NO;
+    config.arguments = @[@"--plan", @(argv[2]), @"--resumed", @"--retain-installed"];
+    [NSWorkspace.sharedWorkspace openApplicationAtURL:[NSURL fileURLWithPath:@(argv[1])]
+      configuration:config completionHandler:^(NSRunningApplication *app, NSError *error) {
+        launched = app != nil && error == nil;
+        done = YES;
+      }];
+    NSDate *deadline = [NSDate dateWithTimeIntervalSinceNow:5];
+    while (!done && [NSDate.date compare:deadline] == NSOrderedAscending)
+      [NSRunLoop.currentRunLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.05]];
+    puts(done ? (launched ? "LAUNCHED" : "FAILED") : "TIMED_OUT");
+    return 0;
+  }
+}
+''')
+        launcher = self.root / 'launch'
+        subprocess.run(['xcrun', 'clang', '-fobjc-arc', '-framework', 'Cocoa',
+                        str(source), '-o', str(launcher)], check=True, capture_output=True)
+        try:
+            result = subprocess.run([str(launcher), str(monitor.parent.parent.parent),
+                                     str(self.plan)], check=True, timeout=10,
+                                    capture_output=True, text=True)
+            # A completed preflight is separate from LaunchServices reporting
+            # successful launch; both must happen before cancelling this fixture.
+            self.assertTrue((self.recovery / 'recovery-ready.json').exists())
+            self.assertEqual(result.stdout.strip(), 'LAUNCHED')
+        finally:
+            (self.recovery / 'cancel.json').write_text(json.dumps({
+                'transaction': self.transaction,
+            }))
+            deadline = time.monotonic() + 5
+            outcome = self.recovery / 'recovery-outcome.json'
+            while not outcome.exists() and time.monotonic() < deadline:
+                time.sleep(.05)
+            self.assertTrue(outcome.exists(), 'Owned monitor must honor cancellation')
 
     def test_missing_plan_argument_is_rejected(self):
         result = subprocess.run([str(self.monitor)], capture_output=True)

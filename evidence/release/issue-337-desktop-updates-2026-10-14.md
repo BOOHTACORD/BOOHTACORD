@@ -405,3 +405,21 @@ status. It does not certify the full installed upgrade gates.
 - These focused/component checks are not a successful installed N-to-N+1 run.
   The system request's exact text remains pending; no signing identity, OS
   security policy, protected container permission or production catalog changed.
+
+## Native LaunchServices handshake regression (2026-10-15)
+
+- Added a real NSWorkspace launch test before changing the monitor. It launches
+  the genuinely signed embedded monitor from an owned temporary app, using only
+  a synthetic local plan and deliberately cancelling the fixture afterward.
+  It does not access the installed QA profile or create a login registration.
+- The old monitor completed preflight and wrote recovery-ready.json, yet the
+  caller timed out waiting for LaunchServices to report a started application.
+  A directly executed command-line preflight did not cover this failure mode.
+- The background monitor now completes Cocoa initialization with finishLaunching
+  and services its main run loop while waiting. It remains prohibited from
+  activating a foreground UI. The new launch callback test now PASS, and all
+  eight native preflight/retention/cancellation tests PASS in 3.245 seconds.
+  See Apple's [finishLaunching documentation](https://developer.apple.com/documentation/appkit/nsapplication/finishlaunching()).
+- This establishes the isolated launch-handshake regression and its fix. It does
+  not identify the user's current security dialog or prove a successful installed
+  app upgrade. Those observations remain pending independently.

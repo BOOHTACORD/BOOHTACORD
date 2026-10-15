@@ -196,6 +196,12 @@ int main(int argc, const char *argv[]) {
         finish(@"manualRecovery", @"baseline_identity");
       return 0;
     }
+    // NSWorkspace waits for the Cocoa launch handshake before completing the
+    // parent's armRecovery request. A CLI-style main loop never sends it, even
+    // when preflight has already written recovery-ready.json.
+    NSApplication *application = NSApplication.sharedApplication;
+    [application setActivationPolicy:NSApplicationActivationPolicyProhibited];
+    [application finishLaunching];
     BOOL (^cancelled)(void) = ^BOOL {
       return [Read(
           [root stringByAppendingPathComponent:@"cancel.json"])[@"transaction"]
@@ -236,7 +242,8 @@ int main(int argc, const char *argv[]) {
       if (!old || old.terminated ||
           ![old.bundleURL.path.stringByStandardizingPath isEqual:target])
         break;
-      [NSThread sleepForTimeInterval:.25];
+      [NSRunLoop.currentRunLoop
+          runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.25]];
     }
     NSRunningApplication *old =
         [NSRunningApplication runningApplicationWithProcessIdentifier:oldPID];
@@ -259,7 +266,8 @@ int main(int argc, const char *argv[]) {
         finish(@"completed", @"bootstrap");
         return 0;
       }
-      [NSThread sleepForTimeInterval:.25];
+      [NSRunLoop.currentRunLoop
+          runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.25]];
     }
     NSDictionary *current = Info(target);
     NSString *build = current[@"CFBundleVersion"];
@@ -275,7 +283,8 @@ int main(int argc, const char *argv[]) {
       NSDate *quitDeadline = [NSDate dateWithTimeIntervalSinceNow:15];
       while (Instances(target).count > 0 &&
              [NSDate.date compare:quitDeadline] == NSOrderedAscending)
-        [NSThread sleepForTimeInterval:.25];
+        [NSRunLoop.currentRunLoop
+          runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.25]];
       if (Instances(target).count > 0) {
         finish(@"manualRecovery", @"new_process_running");
         return 0;
