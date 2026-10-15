@@ -7,8 +7,12 @@
 #import "macos_state.h"
 #import "macos_handoff.h"
 #import <os/log.h>
+#import <CoreServices/CoreServices.h>
 
-static NSString *const PackageID = @"ru.boohtacord.boohtacordDesktop";
+#ifndef BOOH_RECOVERY_PACKAGE_ID
+#define BOOH_RECOVERY_PACKAGE_ID @"ru.boohtacord.boohtacordDesktop"
+#endif
+static NSString *const PackageID = BOOH_RECOVERY_PACKAGE_ID;
 // LaunchServices can inherit a sandbox's CFFIXED_USER_HOME. It must not
 // redefine this user's permitted installation or login recovery directory.
 static NSString *UserHome(void) {
@@ -145,6 +149,14 @@ int main(int argc, const char *argv[]) {
     if (!documents && (arguments.count < 3 || ![arguments[1] isEqual:@"--plan"])) {
       os_log_error(OS_LOG_DEFAULT, "BOOHTACORD recovery: recovery_arguments");
       return 2;
+    }
+    if (documents) {
+      OSStatus registered = LSRegisterURL((__bridge CFURLRef)NSBundle.mainBundle.bundleURL, true);
+      if (registered != noErr) {
+        os_log_error(OS_LOG_DEFAULT,
+            "BOOHTACORD recovery: recovery_registration code=%{public}d", registered);
+        return 2;
+      }
     }
     // Complete Cocoa startup before file access, signature validation or copying
     // the baseline. Those operations can block; LaunchServices must still be

@@ -216,7 +216,7 @@ int main(int argc, const char *argv[]) {
         source = self.root / 'document.m'
         source.write_text('#import "' + str(header) + '"\nint main(int argc, const char *argv[]) { @autoreleasepool { NSString *transaction = nil; return RecoveryDocumentPlan([NSURL fileURLWithPath:@(argv[1])], @(argv[2]), &transaction) ? 0 : 3; } }\n')
         binary = self.root / 'document'
-        subprocess.run(['xcrun', 'clang', '-fobjc-arc', '-framework', 'Cocoa', str(source), '-o', str(binary)], check=True, capture_output=True)
+        subprocess.run(['xcrun', 'clang', '-fobjc-arc', '-framework', 'Cocoa', '-framework', 'CoreServices', str(source), '-o', str(binary)], check=True, capture_output=True)
         self.plan.write_text(json.dumps({'transaction': self.transaction}))
         request = self.recovery / 'launch.json'
         value = {'schema_version': 1, 'transaction': self.transaction, 'plan': self.plan.name}
@@ -229,6 +229,30 @@ int main(int argc, const char *argv[]) {
         self.assertEqual(result(), 3)
         request.write_text(json.dumps(dict(value, transaction=str(uuid.uuid4()))))
         self.assertEqual(result(), 3)
+
+    def test_real_sandboxed_parent_can_hand_off_its_own_transaction(self):
+        repository = Path(__file__).resolve().parents[3]
+        target = self.parent / 'SandboxParent.app'
+        binary = target / 'Contents/MacOS/SandboxParent'
+        binary.parent.mkdir(parents=True)
+        package = 'ru.boohtacord.recoveryFixture.' + uuid.uuid4().hex
+        source = repository / 'tools/qa/desktop_updates/macos_sandbox_parent.m'
+        subprocess.run(['xcrun', 'clang', '-fobjc-arc', '-framework', 'Cocoa', '-framework', 'CoreServices', str(source), '-o', str(binary)], check=True, capture_output=True)
+        (target / 'Contents/Info.plist').write_bytes(plistlib.dumps({
+            'CFBundleIdentifier': package, 'CFBundleVersion': '77',
+            'CFBundleExecutable': 'SandboxParent', 'CFBundlePackageType': 'APPL',
+            'LSBackgroundOnly': True,
+        }))
+        helper = target / 'Contents/Resources/BOOHTACORDRecovery.app'
+        shutil.copytree(self.monitor_app, helper)
+        subprocess.run(['xcrun', 'clang', '-fobjc-arc', '-framework', 'Cocoa', '-framework', 'Security', '-framework', 'CoreServices', '-DBOOH_RECOVERY_PACKAGE_ID=@"' + package + '"', str(repository / 'clients/flutter/native/desktop_recovery/macos.m'), '-o', str(helper / 'Contents/MacOS/BOOHTACORDRecovery')], check=True, capture_output=True)
+        subprocess.run(['/usr/bin/codesign', '--force', '--sign', '-', str(helper)], check=True, capture_output=True)
+        entitlements = self.root / 'sandbox.plist'
+        entitlements.write_bytes(plistlib.dumps({'com.apple.security.app-sandbox': True}))
+        subprocess.run(['/usr/bin/codesign', '--force', '--sign', '-', '--entitlements', str(entitlements), str(target)], check=True, capture_output=True)
+        result = subprocess.run([str(binary), self.transaction], capture_output=True, text=True, timeout=40)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn('SANDBOX launched=1 ready=1 cancelled=1', result.stdout)
 
     def reset_recovery(self):
         source = self.root / 'reset.m'

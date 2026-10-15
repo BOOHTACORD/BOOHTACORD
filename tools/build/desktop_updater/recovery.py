@@ -13,11 +13,11 @@ def macos():
     slices=[]
     for architecture in ['arm64','x86_64']:
         target=binary.with_suffix('.'+architecture)
-        subprocess.run(['xcrun','clang','-fobjc-arc','-arch',architecture,'-mmacosx-version-min=13.0','-framework','Cocoa','-framework','Security',str(source),'-o',str(target)],check=True)
+        subprocess.run(['xcrun','clang','-fobjc-arc','-arch',architecture,'-mmacosx-version-min=13.0','-framework','Cocoa','-framework','Security','-framework','CoreServices',str(source),'-o',str(target)],check=True)
         slices.append(str(target))
     subprocess.run(['/usr/bin/lipo','-create',*slices,'-output',str(binary)],check=True)
     for target in slices:Path(target).unlink()
-    (output/'Contents/Info.plist').write_bytes(plistlib.dumps({'CFBundleIdentifier':'ru.boohtacord.updateRecovery','CFBundleExecutable':'BOOHTACORDRecovery','CFBundleName':'BOOHTACORDRecovery','CFBundleVersion':'1','CFBundlePackageType':'APPL','LSBackgroundOnly':True,'LSMinimumSystemVersion':'13.0','CFBundleDocumentTypes':[{'CFBundleTypeName':'BOOHTACORD recovery transaction','CFBundleTypeRole':'Viewer','LSHandlerRank':'None','LSItemContentTypes':['public.folder']}]}))
+    (output/'Contents/Info.plist').write_bytes(plistlib.dumps({'CFBundleIdentifier':'ru.boohtacord.updateRecovery','CFBundleExecutable':'BOOHTACORDRecovery','CFBundleName':'BOOHTACORDRecovery','CFBundleVersion':'2','CFBundlePackageType':'APPL','LSBackgroundOnly':True,'LSMinimumSystemVersion':'13.0','CFBundleDocumentTypes':[{'CFBundleTypeName':'BOOHTACORD recovery transaction','CFBundleTypeRole':'Viewer','LSHandlerRank':'None','LSItemContentTypes':['public.folder']}]}))
     subprocess.run(['/usr/bin/codesign','--force','--sign','-',str(output)],check=True)
     return output
 

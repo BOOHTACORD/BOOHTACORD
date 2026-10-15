@@ -527,3 +527,34 @@ status. It does not certify the full installed upgrade gates.
 - Installed macOS N-to-N+1 and rollback remain unaccepted pending the next
   actual installed run with this bridge. Windows installed N-to-N+1 remains
   NOT_RUN. #337 stays open and PR #338 stays draft.
+
+## Existing helper registration and a real sandbox parent (2026-10-15)
+
+The installed document-handoff attempt still fails before replacement. Bounded
+native NSError diagnostics establish Cocoa 256 with underlying OSStatus -10820:
+`kLSAppDoesNotClaimTypeErr`, which the current Apple SDK describes as an
+unsupported document type for sandboxed callers. The helper is executable,
+strictly signed, and has no quarantine attribute; no attribute is removed.
+
+A new native parent fixture runs with App Sandbox enabled and proves denial of
+writes outside its own container. A unique compile-time test package identity
+keeps this fixture separate from the real application's protected data. Only
+the fixture itself reads/writes its new application-support directory; the
+Python driver never reads an application container. The fixture also confirms
+that registering the nested helper from the sandboxed parent returns -10819.
+That rejected approach is not used in the shipping bridge.
+
+The bridge now first launches the exact embedded helper without arguments.
+Before completing Cocoa startup, the helper refreshes its own document claims
+using the public LSRegisterURL API. Only then does the parent open the one owned
+recovery directory in that running helper. The helper's bundle version advances
+to 2. This updates its own registration and does not select a default handler,
+change sandbox entitlements, grant broad filesystem access or alter OS trust.
+Errors retain at most four fixed-domain/numeric underlying causes, without
+paths, arguments, credentials or userInfo content.
+
+All 18 native tests pass in 24.843 seconds, including actual sandbox enforcement,
+the complete launch/document/Ready/cancel journey and independent path/identity
+failures. The universal QA78 candidate compiles, packages and passes strict
+nested codesign. A new installed run with a matching fresh QA79 is pending;
+macOS installed-update acceptance is not claimed by these component tests.

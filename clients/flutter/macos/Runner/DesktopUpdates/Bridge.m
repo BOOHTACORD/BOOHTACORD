@@ -4,6 +4,7 @@
 #import <objc/runtime.h>
 #import <pwd.h>
 #import <unistd.h>
+#import <os/log.h>
 #import "../../../native/desktop_recovery/macos_state.h"
 
 @interface BOOHDesktopUpdates : NSObject <SPUUserDriver, SPUUpdaterDelegate>
@@ -95,21 +96,43 @@
     configuration.allowsRunningApplicationSubstitution = NO;
     NSURL *directory = [NSURL fileURLWithPath:plan.stringByDeletingLastPathComponent
                                  isDirectory:YES];
-    // App Sandbox ignores NSWorkspace launch arguments. The document-open
-    // event carries this owned directory and its scoped access instead.
-    [NSWorkspace.sharedWorkspace
-        openURLs:@[ directory ]
-        withApplicationAtURL:helper
-               configuration:configuration
-           completionHandler:^(NSRunningApplication *app, NSError *error) {
+    void (^complete)(NSRunningApplication *, NSError *) =
+        ^(NSRunningApplication *app, NSError *error) {
              dispatch_async(dispatch_get_main_queue(), ^{
                if (error || !app) {
+                 // Fixed domains and numeric OS codes only, never userInfo,
+                 // paths, plan content or credentials.
+                 NSError *cause = error;
+                 for (unsigned depth = 0; cause && depth < 4; depth++) {
+                   const char *domain = [cause.domain isEqual:NSOSStatusErrorDomain] ? "osstatus" :
+                       [cause.domain isEqual:NSCocoaErrorDomain] ? "cocoa" :
+                       [cause.domain isEqual:NSPOSIXErrorDomain] ? "posix" : "other";
+                   os_log_error(OS_LOG_DEFAULT,
+                       "BOOHTACORD recovery launch failed depth=%{public}u domain=%{public}s code=%{public}ld",
+                       depth, domain, (long)cause.code);
+                   id underlying = cause.userInfo[NSUnderlyingErrorKey];
+                   cause = [underlying isKindOfClass:NSError.class] ? underlying : nil;
+                 }
                  [self fail:result code:@"recovery_start"];
                  return;
                }
                result(nil);
              });
-           }];
+           };
+    // Launch without arguments first. The helper refreshes its own document
+    // claims before finishing Cocoa startup; a sandboxed parent cannot do that.
+    [NSWorkspace.sharedWorkspace openApplicationAtURL:helper
+        configuration:configuration
+        completionHandler:^(NSRunningApplication *app, NSError *error) {
+          dispatch_async(dispatch_get_main_queue(), ^{
+            if (error || !app) { complete(app, error); return; }
+            NSWorkspaceOpenConfiguration *delivery = [configuration copy];
+            delivery.createsNewApplicationInstance = NO;
+            [NSWorkspace.sharedWorkspace openURLs:@[ directory ]
+                withApplicationAtURL:helper configuration:delivery
+                completionHandler:complete];
+          });
+        }];
     return;
   }
   if ([call.method isEqualToString:@"acknowledge"]) {
