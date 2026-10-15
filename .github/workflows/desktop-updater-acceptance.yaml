@@ -31,6 +31,8 @@ jobs:
         run: |
           flutter test --no-pub test/updates/acceptance_storage_test.dart
           flutter analyze --no-pub integration_test/desktop_updates
+      - name: Verify actual recovery monitor launch, retention and cancellation
+        run: python3 -m unittest tools.build.desktop_updater.test_macos_recovery
       - name: Build the beta-only app with the shipping updater
         run: python3 -m tools.qa.desktop_updates.build_macos
       - name: Publish a fresh immutable QA prerelease (never latest)
