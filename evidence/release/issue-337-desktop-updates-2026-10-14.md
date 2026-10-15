@@ -375,3 +375,33 @@ status. It does not certify the full installed upgrade gates.
 - The source remains ad-hoc signed; it was not changed again during this repeat.
   macOS N-to-N+1, Windows N-to-N+1 and production promotion remain unaccepted.
   Issue #337 stays open and PR #338 stays draft.
+
+## Failed apply retains a connected workspace (2026-10-15)
+
+- Source-ffeecfef full CI 38755510496 PASS across contracts, backend, Vue,
+  Flutter/Android modes and Windows packaging/recovery. Independent lifecycle
+  CI 38755510212 PASS, including both real TLS/API browser journeys and actual
+  attachment-reservation/single-writer checks. Earlier intermittent login and
+  notification failures remain recorded; this pass does not prove their cause.
+- After macOS attempt 3, the actual composer still visibly retained the late
+  draft. Presence became unknown after graceful shutdown. Source inspection
+  confirmed that the retained client never reconnected realtime on failed apply.
+  No draft body is retained in evidence; no draft-loss conclusion is made.
+- Added focused regressions before implementation: failed synchronous/asynchronous
+  native apply must resume background connectivity exactly once; failures before
+  shutdown do not resume it; a changed account/session, disposed workspace and
+  stale cleanup from an earlier retry cannot affect the current session. Tests
+  also reproduce a shutdown background flush overwriting saved mute/deafen with
+  the temporary values set by leaving voice.
+- On failed apply, the same active origin/account/session now reconnects realtime
+  and retains prior audio intent, unless the user has since changed it. Voice
+  and screen sharing are not restarted. Persistence is suspended during consented
+  shutdown so its temporary media state cannot overwrite the fresh checkpoint;
+  failed-apply recovery resumes ordinary saving. A native error arriving before
+  apply returns cannot be overwritten with the Restarting state.
+- Validation: 84 update/realtime Flutter tests PASS; focused analyzer reports
+  no issues. The shutdown-flush and stale-cleanup regressions failed before
+  their fixes, then passed with the existing tests.
+- These focused/component checks are not a successful installed N-to-N+1 run.
+  The system request's exact text remains pending; no signing identity, OS
+  security policy, protected container permission or production catalog changed.

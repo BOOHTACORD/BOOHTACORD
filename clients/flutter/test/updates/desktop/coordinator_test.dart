@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -14,6 +15,7 @@ import 'package:boohtacord_desktop/src/features/updates/desktop/staging.dart';
 class Native implements DesktopNativeUpdater {
   int staged = 0, applied = 0;
   bool support = true, failApply = false;
+  Future<void> Function()? duringApply;
   @override
   Future<bool> capable() async => support;
   @override
@@ -34,6 +36,7 @@ class Native implements DesktopNativeUpdater {
     String extracted,
   ) async {
     applied++;
+    await duringApply?.call();
     if (failApply) throw const ArtifactFailure("native_apply");
   }
 
@@ -46,7 +49,10 @@ void main() {
   late Native native;
   late DesktopUpdateCoordinator coordinator;
   var scope = 'account-1', checkpointCount = 0, shutdownCount = 0;
-  var cancelFails = false;
+  var cancelFails = false, checkpointFails = false;
+  var resumeCount = 0;
+  Future<void> Function()? duringShutdown;
+  Completer<void>? cancelWait;
   late UpdateTarget target;
   setUp(() async {
     root = await Directory.systemTemp.createTemp('update-coordinator-test-');
@@ -96,6 +102,10 @@ void main() {
     checkpointCount = 0;
     shutdownCount = 0;
     cancelFails = false;
+    checkpointFails = false;
+    resumeCount = 0;
+    duringShutdown = null;
+    cancelWait = null;
     coordinator = DesktopUpdateCoordinator(
       trust: ArtifactTrust({'test': public}),
       local: const LocalUpdateIdentity(
@@ -109,6 +119,7 @@ void main() {
       native: native,
       currentScope: () => scope,
       cancelRecovery: (id, directory) async {
+        await cancelWait?.future;
         if (cancelFails) throw const FileSystemException("fixture");
       },
       preparePackage: (a, dir, cancel, progress) async {
@@ -119,9 +130,14 @@ void main() {
       },
       checkpoint: (transaction, artifact) async {
         checkpointCount++;
+        if (checkpointFails) throw const FileSystemException('fixture');
+      },
+      resumeAfterFailure: () async {
+        resumeCount++;
       },
       shutdown: () async {
         shutdownCount++;
+        await duringShutdown?.call();
       },
     );
   });
@@ -170,6 +186,99 @@ void main() {
       await coordinator.restart();
       expect(coordinator.phase, DesktopUpdatePhase.failed);
       expect(coordinator.failure, 'native_apply');
+    },
+  );
+  test(
+    'failed native apply resumes the stopped workspace despite cleanup failure',
+    () async {
+      await coordinator.prepare(target);
+      native.failApply = true;
+      cancelFails = true;
+      await coordinator.restart();
+      expect(shutdownCount, 1);
+      expect(resumeCount, 1);
+      expect(coordinator.failure, 'native_apply');
+    },
+  );
+  test('failure before shutdown does not resume a running workspace', () async {
+    await coordinator.prepare(target);
+    checkpointFails = true;
+    await coordinator.restart();
+    expect(shutdownCount, 0);
+    expect(resumeCount, 0);
+  });
+  test(
+    'a native failure after apply acceptance resumes exactly once',
+    () async {
+      await coordinator.prepare(target);
+      await coordinator.restart();
+      await coordinator.nativeFailed();
+      await coordinator.nativeFailed();
+      expect(resumeCount, 1);
+      expect(coordinator.phase, DesktopUpdatePhase.failed);
+    },
+  );
+  test(
+    'account replacement during shutdown cannot resume or fail the new scope',
+    () async {
+      await coordinator.prepare(target);
+      duringShutdown = () async {
+        scope = 'account-2';
+        coordinator.scopeChanged();
+      };
+      await coordinator.restart();
+      expect(resumeCount, 0);
+      expect(native.applied, 0);
+      expect(coordinator.phase, DesktopUpdatePhase.idle);
+      expect(coordinator.failure, isNull);
+    },
+  );
+  test(
+    'an early native failure callback cannot be overwritten by restarting',
+    () async {
+      await coordinator.prepare(target);
+      native.duringApply = () => coordinator.nativeFailed();
+      await coordinator.restart();
+      expect(coordinator.phase, DesktopUpdatePhase.failed);
+      expect(coordinator.failure, 'native_apply');
+      expect(resumeCount, 1);
+    },
+  );
+  test('partial shutdown failure still resumes the retained client', () async {
+    await coordinator.prepare(target);
+    duringShutdown = () async {
+      throw const FileSystemException('fixture');
+    };
+    await coordinator.restart();
+    expect(native.applied, 0);
+    expect(resumeCount, 1);
+    expect(coordinator.failure, 'apply');
+  });
+  test(
+    'late cleanup from a previous attempt cannot resume a newer shutdown',
+    () async {
+      await coordinator.prepare(target);
+      await coordinator.restart();
+      final cleanup = Completer<void>();
+      cancelWait = cleanup;
+      final oldFailure = coordinator.nativeFailed();
+      await coordinator.prepare(target);
+      final entered = Completer<void>(), stopped = Completer<void>();
+      duringShutdown = () async {
+        entered.complete();
+        await stopped.future;
+      };
+      final retry = coordinator.restart();
+      await entered.future;
+      cleanup.complete();
+      await oldFailure;
+      final resumedDuringNewShutdown = resumeCount;
+      final phaseDuringNewShutdown = coordinator.phase;
+      stopped.complete();
+      await retry;
+      expect(resumedDuringNewShutdown, 0);
+      expect(phaseDuringNewShutdown, DesktopUpdatePhase.applying);
+      expect(coordinator.phase, DesktopUpdatePhase.restarting);
     },
   );
   test('changed compatibility policy prevents checkpoint and helper', () async {

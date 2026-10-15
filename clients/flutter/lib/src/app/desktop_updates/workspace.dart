@@ -7,7 +7,8 @@ import '../../services/client_telemetry.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../app_state.dart';
-import '../../features/realtime/lifecycle/close.dart';
+import '../../features/realtime/lifecycle/controller.dart';
+import '../../core/session/scope.dart';
 import '../../services/composer_draft_memory.dart';
 import '../../services/conversation_scroll_memory.dart';
 import '../../features/workspace/search/session.dart';
@@ -47,6 +48,10 @@ class DesktopWorkspacePersistence {
     if (_disposed || state.phase != AppPhase.ready || state.user == null) {
       return;
     }
+    if (_shutdown != null &&
+        (_shutdown!.scope != scope || !_shutdown!.ticket.isActive)) {
+      _shutdown = null;
+    }
     if (_loadedScope != scope) {
       if (!_restoring) unawaited(_restore());
       return;
@@ -57,6 +62,7 @@ class DesktopWorkspacePersistence {
   void _schedule() {
     if (_disposed ||
         _restoring ||
+        _shutdown != null ||
         state.phase != AppPhase.ready ||
         state.user == null ||
         _timer?.isActive == true) {
@@ -107,11 +113,14 @@ class DesktopWorkspacePersistence {
 
   Future<void> flush() async {
     final ticket = scope;
-    if (_disposed || state.phase != AppPhase.ready || _loadedScope != ticket) {
+    if (_disposed ||
+        _shutdown != null ||
+        state.phase != AppPhase.ready ||
+        _loadedScope != ticket) {
       return;
     }
     final snapshot = await capture();
-    if (_disposed || ticket != scope) return;
+    if (_disposed || _shutdown != null || ticket != scope) return;
     final fingerprint = snapshot.toString();
     if (fingerprint == _lastSnapshot) return;
     final previous = _writes;
@@ -382,19 +391,75 @@ class DesktopWorkspacePersistence {
     }
   }
 
+  ({
+    String scope,
+    SessionTicket ticket,
+    (bool, bool, bool) audio,
+    (bool, bool, bool) stoppedAudio,
+  })?
+  _shutdown;
+  (bool, bool, bool) get _audio =>
+      (state.microphoneMuted, state.deafened, state.voice.mutedBeforeDeafen);
+
   Future<void> gracefulShutdown() async {
+    _timer?.cancel();
+    final current = scope,
+        ticket = state.session.scope.capture(),
+        audio = _audio;
+    bool active() =>
+        !_disposed && !state.disposed && ticket.isActive && current == scope;
+    _shutdown = (
+      scope: current,
+      ticket: ticket,
+      audio: audio,
+      stoppedAudio: audio,
+    );
     try {
       await state.stopScreenShare().timeout(const Duration(seconds: 4));
     } catch (_) {}
+    if (!active()) return;
     try {
       await state.leaveVoice().timeout(const Duration(seconds: 4));
     } catch (_) {}
+    if (!active()) return;
     try {
       await state.room?.disconnect().timeout(const Duration(seconds: 3));
     } catch (_) {}
+    if (!active()) return;
     try {
       await state.realtime.close().timeout(const Duration(seconds: 2));
     } catch (_) {}
+    if (active()) {
+      _shutdown = (
+        scope: current,
+        ticket: ticket,
+        audio: audio,
+        stoppedAudio: _audio,
+      );
+    }
+  }
+
+  Future<void> resumeAfterFailedUpdate() async {
+    final stopped = _shutdown;
+    _shutdown = null;
+    if (stopped == null ||
+        _disposed ||
+        state.disposed ||
+        !stopped.ticket.isActive ||
+        stopped.scope != scope ||
+        state.phase != AppPhase.ready ||
+        state.user == null) {
+      return;
+    }
+    // Restore intent only when no fresh choice was made during failure cleanup.
+    // Do not rejoin voice, start capture or enable any media track.
+    if (_audio == stopped.stoppedAudio) {
+      state.microphoneMuted = stopped.audio.$1;
+      state.deafened = stopped.audio.$2;
+      state.voice.mutedBeforeDeafen = stopped.audio.$3;
+    }
+    unawaited(state.realtime.connect());
+    state.notifyListeners();
   }
 
   void dispose() {

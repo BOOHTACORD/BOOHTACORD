@@ -48,6 +48,7 @@ class DesktopUpdateCoordinator extends ChangeNotifier {
     this.prepareRecovery,
     this.armRecovery,
     this.cancelRecovery,
+    this.resumeAfterFailure,
   });
   final ArtifactTrust trust;
   final LocalUpdateIdentity local;
@@ -58,6 +59,8 @@ class DesktopUpdateCoordinator extends ChangeNotifier {
   final String Function() currentScope;
   final Future<void> Function(String, VerifiedInstallArtifact) checkpoint;
   final Future<void> Function() shutdown;
+  final Future<void> Function()? resumeAfterFailure;
+  (int, String)? _shutdownContext;
   final PrepareDesktopPackage? preparePackage;
   final Future<void> Function(String, Directory)? cancelRecovery;
   String? _recoveryTransaction;
@@ -294,6 +297,7 @@ class DesktopUpdateCoordinator extends ChangeNotifier {
 
   void scopeChanged() {
     if (_scope == null || _scope == currentScope()) return;
+    _shutdownContext = null;
     ++_epoch;
     _cancel?.cancel();
     artifact = null;
@@ -303,18 +307,41 @@ class DesktopUpdateCoordinator extends ChangeNotifier {
     _changed();
   }
 
-  void nativeFailed({String reason = 'native_apply'}) {
+  Future<void> nativeFailed({String reason = 'native_apply'}) async {
+    if (_disposed || (_scope != null && _scope != currentScope())) return;
+    final epoch = _epoch, scope = currentScope();
     final transaction = _recoveryTransaction, directory = _directory;
-    if (transaction != null && directory != null) {
-      unawaited(
-        (cancelRecovery?.call(transaction, directory) ?? Future<void>.value())
-            .catchError((Object _) {}),
-      );
-    }
+    _recoveryTransaction = null;
     phase = DesktopUpdatePhase.failed;
     failure = reason;
     bannerVisible = true;
     _changed();
+    try {
+      if (transaction != null && directory != null) {
+        await cancelRecovery?.call(transaction, directory);
+      }
+    } catch (_) {
+      // A failed cleanup must not keep the retained application offline.
+    } finally {
+      await _resumeStoppedWorkspace(epoch, scope);
+    }
+  }
+
+  Future<void> _resumeStoppedWorkspace(int epoch, String scope) async {
+    final context = _shutdownContext;
+    if (context != (epoch, scope)) return;
+    _shutdownContext = null;
+    if (context == null ||
+        _disposed ||
+        context.$1 != _epoch ||
+        context.$2 != currentScope()) {
+      return;
+    }
+    try {
+      await resumeAfterFailure?.call();
+    } catch (_) {
+      // Preserve the apply error; ordinary reconnect policy handles network loss.
+    }
   }
 
   void recovered({required bool rolledBack}) {
@@ -371,6 +398,7 @@ class DesktopUpdateCoordinator extends ChangeNotifier {
     phase = DesktopUpdatePhase.applying;
     failure = null;
     _changed();
+    String? recoveryTransaction;
     try {
       if (await validateBeforeApply?.call(current) == false) {
         throw const ArtifactFailure('compatibility_changed');
@@ -386,6 +414,7 @@ class DesktopUpdateCoordinator extends ChangeNotifier {
         current,
       ).timeout(const Duration(seconds: 15));
       _ensureCurrent(epoch, scope);
+      _shutdownContext = (epoch, scope);
       await shutdown().timeout(const Duration(seconds: 15));
       _ensureCurrent(epoch, scope);
       await store.writeJournal({
@@ -396,23 +425,32 @@ class DesktopUpdateCoordinator extends ChangeNotifier {
         'transaction': transaction,
         'artifact': current.envelope.toJson(),
       });
+      recoveryTransaction = transaction;
       _recoveryTransaction = transaction;
       await armRecovery?.call(transaction, current, directory);
+      _ensureCurrent(epoch, scope);
       // No helper is created by download, Later, focus or lifecycle timers.
       await native.apply(
         current,
         path.join(directory.path, current.packageFileName),
         path.join(directory.path, 'payload'),
       );
+      _ensureCurrent(epoch, scope);
+      // A native failure callback may arrive before apply returns.
+      if (phase != DesktopUpdatePhase.applying) return;
       phase = DesktopUpdatePhase.restarting;
       _changed();
     } catch (error) {
-      final transaction = _recoveryTransaction;
+      final transaction = recoveryTransaction;
       if (transaction != null) {
         try {
           await cancelRecovery?.call(transaction, directory);
         } catch (_) {}
       }
+      if (_disposed || epoch != _epoch || scope != currentScope()) return;
+      _recoveryTransaction = null;
+      await _resumeStoppedWorkspace(epoch, scope);
+      if (_disposed || epoch != _epoch || scope != currentScope()) return;
       phase = DesktopUpdatePhase.failed;
       failure = error is ArtifactFailure ? error.code : 'apply';
       _changed();

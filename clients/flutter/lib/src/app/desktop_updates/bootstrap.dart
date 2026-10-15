@@ -62,6 +62,7 @@ Future<UpdateController> createNativeUpdateController(AppState state) async {
     currentScope: () => workspace.scope,
     checkpoint: workspace.checkpoint,
     shutdown: workspace.gracefulShutdown,
+    resumeAfterFailure: workspace.resumeAfterFailedUpdate,
     prepareRecovery: recovery.stage,
     armRecovery: recovery.arm,
     cancelRecovery: recovery.cancel,
@@ -102,7 +103,7 @@ Future<UpdateController> createNativeUpdateController(AppState state) async {
     native.channel.setMethodCallHandler((call) async {
       if (call.method == 'failed') {
         await native.closeFeed();
-        desktop.nativeFailed();
+        await desktop.nativeFailed();
       }
     });
   }
@@ -179,11 +180,11 @@ Future<UpdateController> createNativeUpdateController(AppState state) async {
           state.addListener(() => consume().catchError((Object _) {}));
           await consume();
         } catch (_) {
-          desktop.nativeFailed(reason: 'bootstrap_identity');
+          await desktop.nativeFailed(reason: 'bootstrap_identity');
         }
       };
     } catch (_) {
-      desktop.nativeFailed(reason: 'bootstrap_identity');
+      await desktop.nativeFailed(reason: 'bootstrap_identity');
     }
   }
   return updates;
