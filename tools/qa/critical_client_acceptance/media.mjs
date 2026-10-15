@@ -4,6 +4,7 @@ import { controlOwnedSfu } from './sfu_control.mjs'
 import { teardown } from './teardown.mjs'
 import { installRosterFailureObserver } from './roster_observer.mjs'
 import { rosterCounters } from './roster_diagnostics.mjs'
+import { observeRosterNetwork } from './roster_network.mjs'
 async function connected(page) {
   try {
     await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 22000 })
@@ -39,6 +40,7 @@ export async function media(a, b, member, channelId, report, input) {
     })
   })
   await a.addInitScript(installRosterFailureObserver)
+  const rosterNetwork = observeRosterNetwork(a)
   await a.reload()
   await member.reload()
   const category = await api(a, '/admin/categories', 'POST', { name: 'VoiceLab' }); status(category, 201)
@@ -67,10 +69,11 @@ export async function media(a, b, member, channelId, report, input) {
   // Chat recovery replaces the roster source asynchronously. Fault injection
   // must start with a live SSE stream, rather than an initial/retry HTTP fetch.
   await expect.poll(() => a.evaluate(() => window.__qaRosterTransportSource?.readyState), { timeout: 15000 }).toBe(1)
-  // Both listeners now have real WebRTC transports; stop only the owned SFU.
+  // Both listeners have real WebRTC transports. Suspend only the owned SFU;
+  // retain its network interface so this tests an SFU outage, not a host change.
   const rosterFailuresBefore = await a.evaluate(() => window.__qaRosterUnavailableCount)
   try {
-    await controlOwnedSfu('stop')
+    await controlOwnedSfu('pause')
     await openNavigation(a)
     // Detection can use one 5s reconciliation period, a shared 5s snapshot deadline
     // and a bounded 3s SSE write. Check the actual event before its UI consequence.
@@ -84,7 +87,10 @@ export async function media(a, b, member, channelId, report, input) {
         unavailable: window.__qaRosterUnavailableCount,
       }))
       const presenceStatus = (await api(a, '/voice/participants')).status
-      console.error('roster-failure-diagnostics='+JSON.stringify({ ...transport, presence_status: presenceStatus }))
+      console.error('roster-failure-diagnostics='+JSON.stringify({ ...transport, presence_status: presenceStatus,
+        network: rosterNetwork(), workspace_present: await a.getByTestId('app-shell').count() > 0 }))
+      // Only this journey's owned synthetic accounts are present in the capture.
+      try { await a.screenshot({ path: directory+'/roster-event-failure.png' }) } catch { /* Preserve the actual event assertion. */ }
       try {
         // The fixture owns the loopback API on 4820. Never fetch production
         // telemetry, send a cookie or retain the original metric response.
@@ -102,7 +108,7 @@ export async function media(a, b, member, channelId, report, input) {
       chat_retry_mode: manualRetryAvailable ? 'manual' : 'automatic',
       roster_failure_event_observed: true, sfu_failure_not_empty_room: true, last_roster_age_visible: /с\. назад/.test(await banner.innerText()) }
     assert.equal(report.connection_status.last_roster_age_visible, true)
-  } finally { await controlOwnedSfu('start') }
+  } finally { await controlOwnedSfu('unpause') }
   await expect.poll(async () => (await api(a, '/voice/participants')).status, { timeout: 30000 }).toBe(200)
   await openNavigation(a)
   const refreshRoster = banner.getByRole('button', { name: 'Обновить состав' })

@@ -303,3 +303,40 @@ status. It does not certify the full installed upgrade gates.
   data, permissions, trust settings or OS protections were reset. Installed
   macOS update and Windows N-to-N+1 acceptance remain unproven; #337 stays open
   and production catalog revision 29 is unchanged.
+
+## Linux fault scope diagnosis (2026-10-15)
+
+- Linux lifecycle run 38742662353 still FAIL with asynchronous Docker controls;
+  local macOS PASS did not establish the Linux gate. Reproduced that failure
+  using the actual production browser journey in a separate owned Linux
+  Chromium container on this Mac, with the real bridged TLS/API/SFU stack.
+- New bounded diagnostics distinguish a native transport failure from an
+  explicit client close. Observed latest_closed_by_client=false,
+  ERR_NETWORK_CHANGED, subsequent roster HTTP 503 and the workspace still
+  mounted. Docker stop removes a network interface on the Linux browser host;
+  Chromium aborts unrelated open streams before the SFU control event arrives.
+  The actual failure screenshot shows the unavailable roster/retry UI, not an
+  empty-room success. No private response/error text is retained.
+- Changed this isolated dependency-fault injection to pause/unpause only the
+  exact owner-labelled SFU. Its real process is suspended, so the actual API
+  must detect the unavailable dependency; its network interface remains intact.
+  The unchanged 15-second event assertion, UI checks, media teardown and
+  targeted recovery checks remain mandatory. No browser network behavior,
+  production code, timeout or assertion was disabled to obtain a result.
+- Fourteen focused Node tests PASS, including explicit rejection of stop/start
+  in this fault controller, foreign-resource protection and bounded browser
+  network diagnostics. The actual Linux 1440 journey now PASS end-to-end,
+  including media failure/recovery, real Tempo verification and owned-resource
+  cleanup. Report SHA256:
+  3778c10f1bf736399daab6a3c08a85d88c9677ad00efe9d4aadafc31ce3f3297.
+  Its screenshot was inspected: readable unavailable status/retry, muted state
+  and retained local participant; no fabricated empty-room status.
+- The first local Linux 1024 follow-up stopped before the scenario at the
+  initial login's unchanged five-second app-shell assertion. It remains FAIL;
+  no roster/media acceptance was obtained from that run. A fresh isolated
+  repeat PASS at 1024 with all assertions unchanged, real media/Tempo checks
+  and owned-resource cleanup. Report SHA256:
+  eead1992efa8a21539a60ba55cc264b16065c5e6544ee9396447f9750c9a87c9.
+  The actual 1024 screenshot was inspected: readable roster age/retry, retained
+  muted local participant and no empty-room success. The next independent CI
+  journey is still pending at this observation.
