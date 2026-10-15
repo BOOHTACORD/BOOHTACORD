@@ -10,12 +10,32 @@ on:
       - tools/qa/desktop_updates/windows_*.py
       - tools/qa/desktop_updates/build_windows.py
       - tools/qa/desktop_updates/loopback_proxy/**
+      - backend/internal/storage/reserve_upload_space/**
 
 permissions:
   contents: read
 
 jobs:
+  native-stack:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+      - name: Check fixture ownership and bounded startup diagnostics
+        run: python -m unittest tools.qa.desktop_updates.test_windows_tools tools.qa.desktop_updates.test_windows_journey tools.qa.desktop_updates.test_windows_stack
+      - name: Test actual Windows filesystem capacity API
+        working-directory: backend
+        run: go test ./internal/storage/reserve_upload_space
+      - name: Verify native API, PostgreSQL and SFU before rebuilding clients
+        run: python -m tools.qa.desktop_updates.windows_stack
   installed-update:
+    needs: native-stack
     runs-on: windows-2022
     timeout-minutes: 85
     permissions:

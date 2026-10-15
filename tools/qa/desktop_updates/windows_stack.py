@@ -16,6 +16,24 @@ from tools.ci.native.process import ROOT
 from .windows_tools import prepare
 
 
+def startup_failure(role, code, raw):
+    if role not in {'api', 'sfu', 'proxy'} or not isinstance(code, int):
+        raise ValueError('Unsupported startup diagnostic')
+    text = raw[-8192:].decode('utf-8', errors='replace').lower()
+    reason = 'unclassified'
+    if all(word in text for word in ('filesystem', 'space', 'invalid')):
+        reason = 'invalid_space'
+    elif 'access is denied' in text or 'permission denied' in text:
+        reason = 'access_denied'
+    elif 'not supported' in text or 'not implemented' in text:
+        reason = 'unsupported'
+    elif 'configure' in text or 'error parsing' in text:
+        reason = 'configuration'
+    elif 'bind' in text or 'address already in use' in text:
+        reason = 'listen'
+    return {'service': role, 'exit_code': code, 'reason': reason}
+
+
 class Stack:
     def __init__(self, root):
         if sys.platform != 'win32':
@@ -31,10 +49,13 @@ class Stack:
         return subprocess.run(list(map(str, args)), check=True,
                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, **kwargs)
 
-    def launch(self, executable, *args, **kwargs):
+    def launch(self, role, executable, *args, **kwargs):
+        if role not in {'api', 'sfu', 'proxy'}:
+            raise ValueError('Unsupported native service')
+        log = (self.root / ('private-' + role + '.log')).open('xb')
         process = subprocess.Popen([str(executable), *map(str, args)],
-                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, **kwargs)
-        self.processes.append(process)
+                                   stdout=log, stderr=subprocess.STDOUT, **kwargs)
+        self.processes.append((role, process, log))
         return process
 
     def start(self):
@@ -78,7 +99,7 @@ class Stack:
         self.run(self.bin / 'bootstrap.exe', '--login', 'qa_admin', '--password-stdin',
                  input=self.password + '\n', text=True, env=self.environment)
         self.write_catalog(None)
-        self.launch(self.bin / 'api.exe', env=self.environment)
+        self.launch('api', self.bin / 'api.exe', env=self.environment)
         config = self.root / 'livekit.yaml'
         config.write_text('''port: 4912
 bind_addresses: ["127.0.0.1"]
@@ -93,12 +114,19 @@ webhook:
   api_key: qa-only
   urls: ["http://127.0.0.1:4911/internal/livekit/roster"]
 ''')
-        self.launch(self.livekit, '--config', config, '--node-ip', '127.0.0.1')
-        self.launch(self.bin / 'proxy.exe', '--work', self.root)
+        self.launch('sfu', self.livekit, '--config', config, '--node-ip', '127.0.0.1')
+        self.launch('proxy', self.bin / 'proxy.exe', '--work', self.root)
         deadline = time.monotonic() + 45
         while time.monotonic() < deadline:
-            if any(p.poll() is not None for p in self.processes):
-                raise RuntimeError('Owned native dependency exited')
+            for role, process, log in self.processes:
+                code = process.poll()
+                if code is not None:
+                    log.flush()
+                    with Path(log.name).open('rb') as stream:
+                        stream.seek(max(0, Path(log.name).stat().st_size - 8192))
+                        detail = startup_failure(role, code, stream.read(8192))
+                    print(json.dumps({'startup_failure': detail}), flush=True)
+                    raise RuntimeError('Owned native dependency exited: ' + role)
             try:
                 self.context = ssl.create_default_context(cafile=str(self.root / 'owned-root.crt'))
                 if self.request('/health')[0] == 200:
@@ -178,9 +206,36 @@ webhook:
     def close(self):
         if not self.root.exists() or (self.root / 'owner.txt').read_text() != self.owner:
             raise RuntimeError('Refusing foreign fixture cleanup')
-        for process in reversed(self.processes):
-            if process.poll() is None:
-                process.terminate()
-                process.wait(timeout=15)
+        for _, process, log in reversed(self.processes):
+            try:
+                if process.poll() is None:
+                    process.terminate()
+                    process.wait(timeout=15)
+            finally:
+                log.close()
         if self.database_started:
             self.run(self.pg / 'pg_ctl.exe', '-D', self.data, '-m', 'fast', '-w', 'stop')
+
+
+def main():
+    root = Path(os.environ['RUNNER_TEMP']) / ('qa337-' + secrets.token_hex(8))
+    stack = Stack(root)
+    try:
+        stack.start()
+        client = http.client.HTTPSConnection('localhost', 4910, context=stack.context, timeout=10)
+        try:
+            client.request('GET', '/qa-sfu/')
+            response = client.getresponse()
+            response.read()
+            if response.status != 200:
+                raise RuntimeError('Owned SFU HTTPS signaling route is not healthy')
+        finally:
+            client.close()
+        print('PASS: native PostgreSQL, API, TLS/SFU and synthetic authenticated history', flush=True)
+    finally:
+        if root.exists():
+            stack.close()
+
+
+if __name__ == '__main__':
+    main()
