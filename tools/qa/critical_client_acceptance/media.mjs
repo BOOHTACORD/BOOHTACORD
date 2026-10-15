@@ -3,6 +3,7 @@ import { api, channel, expect, openNavigation, status } from '../client_lifecycl
 import { owned } from './control.mjs'
 import { teardown } from './teardown.mjs'
 import { installRosterFailureObserver } from './roster_observer.mjs'
+import { rosterCounters } from './roster_diagnostics.mjs'
 async function connected(page) {
   try {
     await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 22000 })
@@ -84,6 +85,12 @@ export async function media(a, b, member, channelId, report, input) {
       }))
       const presenceStatus = (await api(a, '/voice/participants')).status
       console.error('roster-failure-diagnostics='+JSON.stringify({ ...transport, presence_status: presenceStatus }))
+      try {
+        // The fixture owns the loopback API on 4820. Never fetch production
+        // telemetry, send a cookie or retain the original metric response.
+        const response = await fetch('http://127.0.0.1:4820/metrics', { signal: AbortSignal.timeout(2000) })
+        if (response.ok) console.error('roster-server-counters='+JSON.stringify(rosterCounters(await response.text())))
+      } catch { /* Keep the original actual-event acceptance failure. */ }
       throw error
     }
     await expect(banner).toBeVisible()

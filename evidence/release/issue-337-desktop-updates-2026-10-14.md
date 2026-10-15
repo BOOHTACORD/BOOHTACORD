@@ -224,3 +224,36 @@ status. It does not certify the full installed upgrade gates.
   Flutter Android build-mode job are still running at this observation.
 - macOS repeat remains waiting for native Keychain approval. Do not close #337,
   merge/promote production packages or claim either installed OS gate PASS.
+
+
+## Container-home guard and actual banner rendering (2026-10-15)
+
+- A clean restart after Keychain approval connected the QA78 client with its
+  existing real session. A second download reached Ready; Later kept the client
+  running, and a synthetic draft was changed after Ready before explicit apply.
+  Actual apply again FAIL before replacement: no monitor-ready receipt appeared.
+- Added a native regression with CFFIXED_USER_HOME/HOME pointing to a container.
+  It reproduced helper exit 2: NSHomeDirectory incorrectly changed the permitted
+  user installation prefix. The helper now derives the user's real home from
+  getpwuid(getuid()) for plan/installation checks and LaunchAgents. Seven native
+  preflight tests PASS. Actual installed upgrade remains unaccepted.
+- Visual inspection found the update banner inheriting Flutter's red/yellow
+  48-point error text style outside a Material ancestor. Three regressions
+  reproduced that rendering at the real standalone banner/panel boundary. Both
+  components now supply transparent Material typography. Focused update,
+  draft and workspace suite: 167 PASS; scoped analysis: no issues.
+- Rebuilt QA78 with these fixes. A local Apple Development signing experiment
+  stalled in libsecinit_appsandbox before main/window startup, with AppleEvent
+  timeout -1712. No permission/entitlement was widened. The pre-main owned QA
+  process was terminated with SIGTERM; the established ad-hoc signatures were
+  restored and strict nested verification PASS. The system launch remains
+  blocked pending the user's response to any outstanding container dialog.
+  Do not treat this attempt as a completed update or migration.
+- Tools/contracts: 452 PASS, OpenAPI parity: 19 PASS. Added two privacy regressions
+  for bounded roster diagnostic metric parsing; all seven Node QA tests PASS.
+  Future failed browser journeys retain only fixed enum/count metrics from their
+  owned loopback API, not raw telemetry or identifiers. The unchanged full SSE
+  gate still FAIL in run 38736051523, even with an OPEN stream before injection.
+- Source 1cdf2b46 full CI 38736051682 PASS across contracts, backend, Vue, Flutter
+  and Windows. Native candidate run 38736045575 PASS. New home/typography fixes
+  require the next source-bound native builds and live acceptance.

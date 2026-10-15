@@ -89,66 +89,73 @@ class DesktopUpdatePanel extends StatelessWidget {
             'Предыдущая рабочая версия восстановлена',
           _ => 'Подготовка обновления приостановлена',
         };
-        return Container(
-          key: const ValueKey('desktop-update-transaction'),
-          padding: const EdgeInsets.all(12),
-          color: inSettings ? Colors.transparent : const Color(0xff173b63),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-              if (desktop.phase == DesktopUpdatePhase.downloading) ...[
-                const SizedBox(height: 8),
-                LinearProgressIndicator(
-                  value: desktop.total > 0
-                      ? desktop.received / desktop.total
-                      : null,
-                ),
+        return Material(
+          type: MaterialType.transparency,
+          child: Container(
+            key: const ValueKey('desktop-update-transaction'),
+            padding: const EdgeInsets.all(12),
+            color: inSettings ? Colors.transparent : const Color(0xff173b63),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
-                  '${(desktop.received / 1048576).toStringAsFixed(1)} / ${(desktop.total / 1048576).toStringAsFixed(1)} МБ',
+                  title,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-                TextButton(
-                  onPressed: desktop.cancel,
-                  child: const Text('Приостановить'),
+                if (desktop.phase == DesktopUpdatePhase.downloading) ...[
+                  const SizedBox(height: 8),
+                  LinearProgressIndicator(
+                    value: desktop.total > 0
+                        ? desktop.received / desktop.total
+                        : null,
+                  ),
+                  Text(
+                    '${(desktop.received / 1048576).toStringAsFixed(1)} / ${(desktop.total / 1048576).toStringAsFixed(1)} МБ',
+                  ),
+                  TextButton(
+                    onPressed: desktop.cancel,
+                    child: const Text('Приостановить'),
+                  ),
+                ],
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    if (desktop.failure == 'installation_location' ||
+                        needsInstaller)
+                      TextButton(
+                        onPressed: () => launchUrl(
+                          Uri.parse(
+                            'https://github.com/Egkurilov/BOOHTACORD/releases',
+                          ),
+                          mode: LaunchMode.externalApplication,
+                        ),
+                        child: const Text('Открыть официальные выпуски'),
+                      ),
+                    if (ready)
+                      FilledButton(
+                        onPressed: () => _restart(context, desktop),
+                        child: const Text('Перезапустить'),
+                      ),
+                    if (updates.policy?.target != null &&
+                        [
+                          DesktopUpdatePhase.failed,
+                          DesktopUpdatePhase.available,
+                        ].contains(desktop.phase))
+                      TextButton(
+                        onPressed: () =>
+                            desktop.prepare(updates.policy!.target!),
+                        child: const Text('Повторить'),
+                      ),
+                    if (!inSettings && !desktop.working)
+                      TextButton(
+                        onPressed: desktop.later,
+                        child: const Text('Позже'),
+                      ),
+                  ],
                 ),
               ],
-              Wrap(
-                spacing: 8,
-                children: [
-                  if (desktop.failure == 'installation_location' ||
-                      needsInstaller)
-                    TextButton(
-                      onPressed: () => launchUrl(
-                        Uri.parse(
-                          'https://github.com/Egkurilov/BOOHTACORD/releases',
-                        ),
-                        mode: LaunchMode.externalApplication,
-                      ),
-                      child: const Text('Открыть официальные выпуски'),
-                    ),
-                  if (ready)
-                    FilledButton(
-                      onPressed: () => _restart(context, desktop),
-                      child: const Text('Перезапустить'),
-                    ),
-                  if (updates.policy?.target != null &&
-                      [
-                        DesktopUpdatePhase.failed,
-                        DesktopUpdatePhase.available,
-                      ].contains(desktop.phase))
-                    TextButton(
-                      onPressed: () => desktop.prepare(updates.policy!.target!),
-                      child: const Text('Повторить'),
-                    ),
-                  if (!inSettings && !desktop.working)
-                    TextButton(
-                      onPressed: desktop.later,
-                      child: const Text('Позже'),
-                    ),
-                ],
-              ),
-            ],
+            ),
           ),
         );
       },

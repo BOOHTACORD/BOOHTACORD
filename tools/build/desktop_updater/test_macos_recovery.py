@@ -50,7 +50,7 @@ class MacRecoveryPreflightTests(unittest.TestCase):
         self.parent.chmod(0o700)
         self.temporary.cleanup()
 
-    def run_monitor(self, target, monitor=None, retain=False):
+    def run_monitor(self, target, monitor=None, retain=False, environment=None):
         self.plan.write_text(json.dumps({
             'schema_version': 1, 'transaction': self.transaction,
             'target': str(target), 'backup': str(self.recovery / 'previous.app'),
@@ -64,7 +64,7 @@ class MacRecoveryPreflightTests(unittest.TestCase):
         }))
         subprocess.run([str(monitor or self.monitor), '--plan', str(self.plan),
                         '--resumed', *(['--retain-installed'] if retain else [])],
-                       check=True, timeout=15, capture_output=True)
+                       check=True, timeout=15, capture_output=True, env=environment)
         return json.loads((self.recovery / 'recovery-outcome.json').read_text())
 
     def installed_monitor(self):
@@ -95,6 +95,16 @@ class MacRecoveryPreflightTests(unittest.TestCase):
         result = self.run_monitor(target, retain=True)
         self.assertEqual(result['reason'], 'monitor_identity')
         self.assertFalse((self.recovery / 'recovery-ready.json').exists())
+
+    def test_container_home_does_not_redefine_the_users_installation_directory(self):
+        target, monitor = self.installed_monitor()
+        shutil.rmtree(self.recovery / 'previous.app')
+        container = self.root / 'ContainerHome'
+        container.mkdir()
+        environment = dict(os.environ, CFFIXED_USER_HOME=str(container), HOME=str(container))
+        result = self.run_monitor(target, monitor, retain=True, environment=environment)
+        self.assertEqual(result['status'], 'cancelled')
+        self.assertTrue((self.recovery / 'recovery-ready.json').exists())
 
     def test_unwritable_parent_rejects_before_ready(self):
         self.parent.chmod(0o500)

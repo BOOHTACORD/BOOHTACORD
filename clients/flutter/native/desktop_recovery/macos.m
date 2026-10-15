@@ -3,8 +3,15 @@
 #import <sys/file.h>
 #import <sys/stat.h>
 #import <unistd.h>
+#import <pwd.h>
 
 static NSString *const PackageID = @"ru.boohtacord.boohtacordDesktop";
+// LaunchServices can inherit a sandbox's CFFIXED_USER_HOME. It must not
+// redefine this user's permitted installation or login recovery directory.
+static NSString *UserHome(void) {
+  struct passwd *user = getpwuid(getuid());
+  return user ? [NSString stringWithUTF8String:user->pw_dir] : nil;
+}
 static NSDictionary *Read(NSString *file) {
   NSData *data = [NSData dataWithContentsOfFile:file];
   if (data.length > 65536)
@@ -66,7 +73,7 @@ static void Launch(NSString *target) {
       runUntilDate:[NSDate dateWithTimeIntervalSinceNow:2]];
 }
 static NSString *Registration(NSString *transaction) {
-  return [NSHomeDirectory()
+  return [UserHome()
       stringByAppendingPathComponent:
           [NSString stringWithFormat:
                         @"Library/LaunchAgents/ru.boohtacord.recovery.%@.plist",
@@ -113,7 +120,7 @@ int main(int argc, const char *argv[]) {
     NSString *planPath =
         arguments[2].stringByStandardizingPath.stringByResolvingSymlinksInPath;
     if (![planPath
-            hasPrefix:[NSHomeDirectory() stringByAppendingString:@"/"]] ||
+            hasPrefix:[UserHome() stringByAppendingString:@"/"]] ||
         ![planPath containsString:@"/DesktopUpdates/"])
       return 2;
     NSDictionary *plan = Read(planPath);
@@ -124,7 +131,7 @@ int main(int argc, const char *argv[]) {
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:transaction];
     BOOL permitted =
         [target hasPrefix:@"/Applications/"] ||
-        [target hasPrefix:[NSHomeDirectory()
+        [target hasPrefix:[UserHome()
                               stringByAppendingString:@"/Applications/"]];
     if (!uuid || !permitted ||
         ![backup isEqual:[root stringByAppendingPathComponent:@"previous.app"]])

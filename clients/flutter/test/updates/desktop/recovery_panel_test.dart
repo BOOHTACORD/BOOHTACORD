@@ -48,14 +48,25 @@ void main() {
         }
         await tester.pumpWidget(
           MaterialApp(
-            home: Scaffold(
-              body: DesktopUpdatePanel(
-                updates: updates,
-                appBusy: false,
-                inSettings: true,
-              ),
+            home: DesktopUpdatePanel(
+              updates: updates,
+              appBusy: false,
+              inSettings: true,
             ),
           ),
+        );
+        final rendered = tester.widget<RichText>(
+          find
+              .descendant(
+                of: find.byKey(const ValueKey('desktop-update-transaction')),
+                matching: find.byType(RichText),
+              )
+              .first,
+        );
+        expect(rendered.text.style?.fontSize, lessThan(24));
+        expect(
+          rendered.text.style?.decoration,
+          isNot(TextDecoration.underline),
         );
         expect(find.textContaining('Текущая версия сохранена'), findsNothing);
         expect(find.text('Открыть официальные выпуски'), findsOneWidget);

@@ -55,65 +55,68 @@ class ClientUpdateBanner extends StatelessWidget {
     if (!updates.visible) return const SizedBox.shrink();
     final summary =
         updates.policy?.target?.summary ?? 'Доступно обновление BOOHTACORD.';
-    return Semantics(
-      liveRegion: true,
-      child: Container(
-        key: const ValueKey('client-update-banner'),
-        width: double.infinity,
-        color: const Color(0xff173b63),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          spacing: 12,
-          runSpacing: 8,
-          children: [
-            SizedBox(
-              width: 340,
-              child: Text(
-                summary,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  decoration: TextDecoration.none,
+    return Material(
+      type: MaterialType.transparency,
+      child: Semantics(
+        liveRegion: true,
+        child: Container(
+          key: const ValueKey('client-update-banner'),
+          width: double.infinity,
+          color: const Color(0xff173b63),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 12,
+            runSpacing: 8,
+            children: [
+              SizedBox(
+                width: 340,
+                child: Text(
+                  summary,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    decoration: TextDecoration.none,
+                  ),
                 ),
               ),
-            ),
-            FilledButton(
-              onPressed: () =>
-                  performUpdateAction(context, updates, appBusy: appBusy),
-              child: Text(
-                updates.policy?.target?.actionKind == 'open_store'
-                    ? 'Открыть магазин'
-                    : updates.desktop != null &&
-                          updates.policy?.target?.installArtifact != null
-                    ? 'Обновить'
-                    : 'Скачать обновление',
-              ),
-            ),
-            TextButton(
-              onPressed: () => _details(context),
-              child: const Text(
-                'Что нового',
-                style: TextStyle(
-                  color: Colors.white,
-                  decoration: TextDecoration.none,
+              FilledButton(
+                onPressed: () =>
+                    performUpdateAction(context, updates, appBusy: appBusy),
+                child: Text(
+                  updates.policy?.target?.actionKind == 'open_store'
+                      ? 'Открыть магазин'
+                      : updates.desktop != null &&
+                            updates.policy?.target?.installArtifact != null
+                      ? 'Обновить'
+                      : 'Скачать обновление',
                 ),
               ),
-            ),
-            TextButton(
-              onPressed: updates.later,
-              child: const Text(
-                'Позже',
-                style: TextStyle(
-                  color: Colors.white,
-                  decoration: TextDecoration.none,
+              TextButton(
+                onPressed: () => _details(context),
+                child: const Text(
+                  'Что нового',
+                  style: TextStyle(
+                    color: Colors.white,
+                    decoration: TextDecoration.none,
+                  ),
                 ),
               ),
-            ),
-          ],
+              TextButton(
+                onPressed: updates.later,
+                child: const Text(
+                  'Позже',
+                  style: TextStyle(
+                    color: Colors.white,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
