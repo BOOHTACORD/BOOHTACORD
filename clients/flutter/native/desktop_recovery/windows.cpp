@@ -24,13 +24,19 @@ namespace fs = std::filesystem;
 // Extended paths keep the per-user cache/baseline usable without changing the
 // machine-wide LongPathsEnabled policy (or requiring administrator rights).
 static fs::path NativePath(const fs::path &path) {
+  auto extended = [](std::wstring value) {
+    if (value.rfind(L"\\\\?\\", 0) == 0)
+      return fs::path(value).make_preferred();
+    if (value.rfind(L"\\\\", 0) == 0)
+      return fs::path(L"\\\\?\\UNC\\" + value.substr(2)).make_preferred();
+    return fs::path(L"\\\\?\\" + value).make_preferred();
+  };
   std::wstring value = path.wstring();
-  if (value.rfind(L"\\\\?\\", 0) == 0)
-    return fs::path(value).make_preferred();
-  value = fs::absolute(path).lexically_normal().make_preferred().wstring();
-  if (value.rfind(L"\\\\", 0) == 0)
-    return fs::path(L"\\\\?\\UNC\\" + value.substr(2));
-  return fs::path(L"\\\\?\\" + value);
+  if (value.rfind(L"\\\\?\\", 0) != 0)
+    value = fs::absolute(path).lexically_normal().make_preferred().wstring();
+  // LOCALAPPDATA can contain an 8.3 alias while weakly_canonical resolves the
+  // plan to its long name. Resolve every path identically before scope checks.
+  return extended(fs::weakly_canonical(extended(value)).wstring());
 }
 static std::wstring ShellPath(const fs::path &path) {
   const auto value = path.wstring();
