@@ -755,3 +755,8 @@ macOS installed-update acceptance is not claimed by these component tests.
   already launches Update.exe from its parent, so it needs no workaround.
 - Local recovery retry/baseline tests (3) and focused analyzer PASS. The corrected
   native regression and full installed transition now require a fresh Windows run.
+- Installed acceptance now also triggers for native runner/recovery, update
+  bootstrap/adapter and packaging changes, not only changes to its UI driver.
+  New runs of this gate supersede older runs on the same branch. This closes
+  the filter omission that initially left the native working-directory fix
+  without a fresh full installed-client transition.
