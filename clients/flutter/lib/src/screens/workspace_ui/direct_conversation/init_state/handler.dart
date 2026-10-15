@@ -20,6 +20,6 @@ extension WorkspaceDirectConversationStateInitStateAction
     workspaceController.addListener(workspaceRememberDraft);
     workspaceRestoreDraft(widget.conversation.id);
     workspaceLoadSavedScroll();
-    workspaceScroll.addListener(workspaceRememberScroll);
+    workspaceScroll.addListener(workspaceRememberScrollAfterLayout);
   }
 }

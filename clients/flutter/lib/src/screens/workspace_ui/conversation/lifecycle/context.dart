@@ -33,8 +33,9 @@ abstract class WorkspaceConversationStateContext
   void workspaceRememberScrollPosition() {
     if (!workspaceScroll.hasClients ||
         workspaceRestoringScroll ||
-        workspacePendingScroll != null)
+        workspacePendingScroll != null) {
       return;
+    }
     final accountId = workspaceDraftAccountId;
     if (accountId == null) return;
     final anchor = captureConversationAnchor(
@@ -47,6 +48,8 @@ abstract class WorkspaceConversationStateContext
       offset: workspaceScroll.position.pixels,
       followLatest: workspaceFollowLatest,
       epoch: workspaceScrollMemoryEpoch,
+      userInitiated:
+          workspaceScroll.position.userScrollDirection != ScrollDirection.idle,
       anchorId: anchor?.id,
       anchorOffset: anchor?.offset ?? 0,
     );

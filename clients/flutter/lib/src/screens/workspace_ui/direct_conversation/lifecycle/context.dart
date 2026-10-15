@@ -20,8 +20,9 @@ abstract class WorkspaceDirectConversationStateContext
     if (account == null ||
         !workspaceScroll.hasClients ||
         workspaceRestoringScroll ||
-        workspacePendingScroll != null)
+        workspacePendingScroll != null) {
       return;
+    }
     final anchor = captureConversationAnchor(
       workspaceDirectMessageKeys,
       widget.conversation.id,
@@ -32,9 +33,24 @@ abstract class WorkspaceDirectConversationStateContext
       offset: workspaceScroll.position.pixels,
       followLatest: workspaceScroll.position.extentAfter < 24,
       epoch: workspaceScrollMemoryEpoch,
+      userInitiated:
+          workspaceScroll.position.userScrollDirection != ScrollDirection.idle,
       anchorId: anchor?.id,
       anchorOffset: anchor?.offset ?? 0,
     );
+  }
+
+  void workspaceRememberScrollAfterLayout() {
+    workspaceRememberScroll();
+    final conversation = widget.conversation.id;
+    final epoch = workspaceScrollMemoryEpoch;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted &&
+          widget.conversation.id == conversation &&
+          epoch == ConversationScrollMemory.epoch) {
+        workspaceRememberScroll();
+      }
+    });
   }
 
   void workspaceLoadSavedScroll() {

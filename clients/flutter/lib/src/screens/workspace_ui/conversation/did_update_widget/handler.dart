@@ -41,6 +41,9 @@ extension WorkspaceConversationStateDidUpdateWidgetAction
           ? null
           : ConversationScrollMemory.load(currentAccountId, widget.channel.id);
       workspaceFollowLatest = workspacePendingScroll?.followLatest ?? true;
+      if (workspacePendingScroll != null) {
+        workspaceScheduleVisibleRead(widget.state.messages);
+      }
     }
     if (oldWidget.channel.id != widget.channel.id) {
       workspaceFollowLatest = workspacePendingScroll?.followLatest ?? true;

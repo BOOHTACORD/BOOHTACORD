@@ -38,7 +38,8 @@ extension WorkspaceDirectConversationStateDidUpdateWidgetAction
       workspaceRestoreDraft(widget.conversation.id);
     }
     if (workspaceScrollMemoryEpoch != ConversationScrollMemory.epoch ||
-        oldWidget.conversation.id != widget.conversation.id)
+        oldWidget.conversation.id != widget.conversation.id) {
       workspaceLoadSavedScroll();
+    }
   }
 }

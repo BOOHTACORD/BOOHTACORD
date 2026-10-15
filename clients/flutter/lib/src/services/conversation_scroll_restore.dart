@@ -39,6 +39,10 @@ Future<void> restoreConversationScroll({
   double low = 0, high = double.infinity;
   final index = saved.restoredFromDisk ? ids.indexOf(saved.anchorId ?? '') : -1;
   for (var attempt = 0; attempt < 14; attempt++) {
+    // Restoration can begin in a post-frame callback after a delayed disk read.
+    // Request the next frame explicitly; endOfFrame alone does not do so while
+    // the binding is already dispatching post-frame callbacks.
+    WidgetsBinding.instance.scheduleFrame();
     await WidgetsBinding.instance.endOfFrame;
     if (!active() || !scroll.hasClients) return;
     final position = scroll.position;
@@ -68,8 +72,9 @@ Future<void> restoreConversationScroll({
         if (visible.isNotEmpty) {
           if (index < visible.first) {
             high = position.pixels;
-          } else if (index > visible.last)
+          } else if (index > visible.last) {
             low = position.pixels;
+          }
         }
         high = high.clamp(low, position.maxScrollExtent);
         target = high.isFinite

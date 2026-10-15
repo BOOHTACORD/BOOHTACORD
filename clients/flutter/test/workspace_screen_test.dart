@@ -3599,6 +3599,105 @@ void main() {
     state.dispose();
   });
 
+  for (final direct in [false, true]) {
+    for (final freshScroll in [false, true]) {
+      testWidgets(
+        'late desktop checkpoint ${freshScroll ? 'keeps fresh user scroll' : 'restores history after initial layout'} (${direct ? 'DM' : 'channel'})',
+        (tester) async {
+          final state = AppState(
+            _PortraitApi(
+              withHistory: true,
+              historyCount: 70,
+              includeDirectMessage: direct,
+              paginatedDirectHistory: direct,
+              directHistoryCount: 70,
+            ),
+          );
+          await state.initialize();
+          if (direct) {
+            await state.openDirectConversation(state.directMessages.single);
+          }
+          Widget workspace() => MaterialApp(
+            home: AnimatedBuilder(
+              animation: state,
+              builder: (_, _) => WorkspaceScreen(state: state),
+            ),
+          );
+          await tester.pumpWidget(workspace());
+          await tester.pumpAndSettle();
+          final list = find.byKey(
+            ValueKey(
+              direct ? 'direct-message-messages' : 'text-channel-messages',
+            ),
+          );
+          var scroll = tester.widget<ListView>(list).controller!;
+          scroll.jumpTo(scroll.position.maxScrollExtent / 2);
+          await tester.pumpAndSettle();
+          final account = state.user!.accountId;
+          final conversation = direct
+              ? 'dm:${state.selectedDirectMessage!.id}'
+              : state.selectedChannel!.id;
+          final snapshot = ConversationScrollMemory.exportForAccount(account);
+          final position = snapshot.singleWhere(
+            (e) => e['channel'] == conversation,
+          );
+          final anchorId = position['anchor'] as String;
+          final anchorText = direct
+              ? state.directMessageHistory
+                    .singleWhere((m) => m.id == anchorId)
+                    .body
+              : state.messages.singleWhere((m) => m.id == anchorId).body;
+          final beforeTop = tester.getTopLeft(find.text(anchorText)).dy;
+          await tester.pumpWidget(const SizedBox.shrink());
+          ConversationScrollMemory.clear();
+          // The disk/network restore can finish after the initial layout.
+          // Its automatic movement is not a fresh user scroll choice.
+          final beforeRead = ConversationScrollMemory.revision;
+          await tester.pumpWidget(workspace());
+          await tester.pumpAndSettle();
+          scroll = tester.widget<ListView>(list).controller!;
+          if (freshScroll) {
+            // A real input gesture during the delayed read must win, including
+            // after the gesture ends and userScrollDirection returns to idle.
+            final offsetBeforeGesture = scroll.position.pixels;
+            await tester.drag(
+              list,
+              Offset(0, offsetBeforeGesture < 160 ? -160 : 160),
+            );
+            await tester.pumpAndSettle();
+            expect(scroll.position.pixels, isNot(offsetBeforeGesture));
+          }
+          final freshOffset = scroll.position.pixels;
+          ConversationScrollMemory.importForAccount(
+            account,
+            snapshot,
+            unchangedSince: beforeRead,
+          );
+          expect(
+            ConversationScrollMemory.load(
+              account,
+              conversation,
+            )?.restoredFromDisk,
+            !freshScroll,
+          );
+          state.notifyListeners();
+          await tester.pumpAndSettle();
+          if (freshScroll) {
+            expect(scroll.position.pixels, closeTo(freshOffset, 1));
+          } else {
+            expect(find.text(anchorText), findsOneWidget);
+            expect(
+              tester.getTopLeft(find.text(anchorText)).dy,
+              closeTo(beforeTop, 1),
+            );
+          }
+          await tester.pumpWidget(const SizedBox.shrink());
+          state.dispose();
+        },
+      );
+    }
+  }
+
   testWidgets('preserves the visible text anchor when loading an older page', (
     tester,
   ) async {

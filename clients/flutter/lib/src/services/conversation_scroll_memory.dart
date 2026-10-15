@@ -81,10 +81,11 @@ abstract final class ConversationScrollMemory {
     required int epoch,
     String? anchorId,
     double anchorOffset = 0,
+    bool userInitiated = true,
   }) {
     if (epoch != _epoch || !offset.isFinite || offset < 0) return;
     final key = _key(accountId, channelId);
-    _edits[key] = ++revision;
+    if (userInitiated) _edits[key] = ++revision;
     _positions[key] = ConversationScrollPosition(
       offset: offset,
       followLatest: followLatest,

@@ -558,3 +558,43 @@ the complete launch/document/Ready/cancel journey and independent path/identity
 failures. The universal QA78 candidate compiles, packages and passes strict
 nested codesign. A new installed run with a matching fresh QA79 is pending;
 macOS installed-update acceptance is not claimed by these component tests.
+
+## Actual macOS replacement and history restoration regression (2026-10-15)
+
+- Source 747884d0: the real sandboxed installed QA client 1.0.43 (78)
+  downloaded the signed immutable QA release and Sparkle replaced it with
+  1.0.44 (79), launched from the same permanent user installation directory.
+  The new version displayed the real completed-bootstrap banner. Account,
+  server, selected text channel and exact unsent draft were retained, including
+  changes made during download and after Ready. No draft body is logged here.
+- The source application had a real SFU voice connection during download;
+  Later/declining restart retained the live client. After consented restart,
+  voice and capture did not silently start. Explicit listener-only rejoin
+  connected successfully with both microphone and incoming audio still off.
+- Native launch previously failed because a sandboxed NSWorkspace caller drops
+  arguments, and the installed helper did not claim directory documents. The
+  helper now registers only itself before Cocoa startup; its exact running
+  instance receives the owned recovery directory as a document. Transaction
+  identity and confined plan paths remain mandatory. Eighteen actual native
+  monitor tests PASS, including an actual sandboxed Cocoa parent that cannot
+  write outside its own fresh fixture container. No OS trust/sandbox settings,
+  quarantine or protected-profile permissions were changed.
+- The complete live macOS acceptance still FAIL: history opened at synthetic
+  row 65 instead of row 39. This is retained as a regression, not represented as
+  a full successful state restoration. Windows installed N-to-N+1 remains
+  NOT_RUN; its real native recovery/relaunch component is not a substitute.
+- Added a failing actual workspace widget regression before the scroll fix.
+  History anchors were captured synchronously before lazy rows completed
+  layout; initial automatic movement could also defeat a delayed disk import.
+  Imported channel positions additionally lacked a scheduled restore frame.
+  Capture now refreshes after layout, only user movement blocks disk restore,
+  and imported positions explicitly schedule restoration and its next frame.
+  The same behavior applies to DM history. Four cases cover delayed channel/DM
+  restoration and an actual fresh user gesture winning over old disk state.
+- Validation: 189 focused update, realtime and workspace tests PASS. One earlier
+  invocation named a nonexistent test directory; it was corrected without
+  changing assertions. Independent source-747 browser lifecycle CI
+  38803225363 PASS; signed Android candidate and Windows recovery component
+  38803217778 PASS. Final rebuilt installed-client verification is pending.
+- Issue #337 remains open, PR #338 draft, production catalog revision 29 and
+  master unchanged. Test prereleases do not become latest or production targets.

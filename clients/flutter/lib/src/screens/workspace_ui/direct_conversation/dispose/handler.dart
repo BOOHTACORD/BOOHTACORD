@@ -15,7 +15,7 @@ extension WorkspaceDirectConversationStateDisposeAction
   void executeWorkspaceDirectConversationStateDispose() {
     workspaceRememberDraft();
     workspaceRememberScroll();
-    workspaceScroll.removeListener(workspaceRememberScroll);
+    workspaceScroll.removeListener(workspaceRememberScrollAfterLayout);
     workspaceController.removeListener(workspaceRememberDraft);
     workspaceController.dispose();
     workspaceComposerFocus.dispose();
