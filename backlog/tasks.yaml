@@ -143,6 +143,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02]
     depends_on: [T-020, T-022, T-040]
     evidence: [frontend-ui-tests, screenshots]
+  - id: DW-02
+    title: Web DM candidate picker in a managed modal (GitHub #341, epic #339)
+    requirements: [REQ-DM-01, REQ-UI-01, REQ-UI-02]
+    depends_on: [T-041, T-050]
+    evidence: [clients/web/tests/dm_starter/overlay.browser.spec.ts, evidence/qa/dw02-dm-starter-2026-10-15.json]
   - id: T-051
     title: Android native client and APK
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUTH-01, REQ-SECURITY-01, REQ-VOICE-01]

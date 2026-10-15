@@ -254,7 +254,8 @@
       "tests/conversation_action_disclosure/playwright.config.ts",
       "tests/mentions_inbox/playwright.config.ts",
       "tests/accessibility/playwright.config.ts",
-      "tests/search_sessions/playwright.config.ts"
+      "tests/search_sessions/playwright.config.ts",
+      "tests/dm_starter/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart",
@@ -287,6 +288,10 @@
       "issue340": {
         "browser_test": "clients/web/tests/search_sessions/tabs.browser.spec.ts",
         "scope": "Actual Vue search-aside at 320/375/390/768/1024/1440 CSS px, 100/200 percent root text scale, four modes, keyboard focus, long labels and retained query/scope. Real stack and browser zoom acceptance recorded separately."
+      },
+      "issue341": {
+        "browser_test": "clients/web/tests/dm_starter/overlay.browser.spec.ts",
+        "scope": "Native modal in top layer, focus containment/restoration, Escape/outside cancellation, wrapped names, pagination, retries and one DM open. Root text scale is not native browser zoom; real stack separately required."
       }
     }
   },

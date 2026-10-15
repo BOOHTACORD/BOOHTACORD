@@ -1,0 +1,14 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DM starter overlay regression</title><div id="app"></div>
+<script type="module">
+import {createApp,h,ref} from 'vue'
+import {createPinia} from 'pinia'
+import DirectMessageNavigation from '/src/direct_message/DirectMessageNavigation.vue'
+import '/src/style.css'
+const active=ref('existing-dm'),draft=ref('Unsaved draft')
+createApp({render:()=>h('main',[
+ h('aside',{style:{width:'240px',height:'340px',overflow:'hidden',transform:'translateZ(0)'}},[
+ h(DirectMessageNavigation,{directMessages:[{id:'existing-dm',otherParticipantId:'existing-peer',otherParticipantDisplayName:'Existing peer',createdAt:'2026-10-15T12:00:00Z',unreadCount:0,mentionCount:0}],loading:false,error:null,selectedDirectMessageId:active.value,onOpen:id=>{active.value=id},onSelect:id=>{active.value=id}})
+ ]),h('output',{'aria-label':'Active DM'},active.value),
+ h('textarea',{'aria-label':'Draft',value:draft.value,onInput:e=>{draft.value=e.target.value}})
+])}).use(createPinia()).mount('#app')
+</script></html>
