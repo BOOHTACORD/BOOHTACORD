@@ -8,6 +8,9 @@ on:
       - .github/workflows/desktop-updater-acceptance.yaml
       - clients/flutter/lib/src/features/updates/desktop/**
       - clients/flutter/lib/src/app/desktop_updates/**
+      - clients/flutter/lib/src/services/conversation_scroll*.dart
+      - clients/flutter/lib/src/screens/workspace_ui/conversation/**
+      - clients/flutter/lib/src/screens/workspace_ui/direct_conversation/**
       - clients/flutter/native/desktop_recovery/**
       - clients/flutter/macos/Runner/DesktopUpdates/**
       - tools/build/desktop_updater/**
