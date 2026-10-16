@@ -2,7 +2,8 @@
 
 Started 2026-10-14; ongoing 2026-10-16. Candidate branch
 `codex/issue337-desktop-updates`, based on `3e6ac963`. This is an implementation
-record, not release approval. No production catalog promotion has occurred.
+record. Installed desktop acceptance is complete; final branch checks are
+required before merge. No production catalog promotion has occurred.
 
 ## Current acceptance snapshot (2026-10-16)
 
@@ -13,16 +14,64 @@ later compilation or component tests.
 | Gate | Current status |
 |---|---|
 | Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38849881724, source 317 |
-| Browser lifecycle acceptance | 317 PASS; 910 repeat FAIL twice; AE1 repeat FAIL with actual login `network_changed`; read-only browser readiness barrier locally tested, CI acceptance pending; prior failures retained |
+| Browser lifecycle acceptance | PASS, run 38855655443 / head f7535012: real 1440/1024 journeys, baseline and upload reservations; prior 910/AE1 failures retained below |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
-| macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED on locked Mac / system Keychain access |
+| macOS installed 78 → 79 | PASS, final live verification 2026-10-16 05:38 UTC: actual installed build 79, account/channel, exact late draft, same visible message/offset, window and explicit voice rejoin with mute/deafen retained |
 | Windows installed 78 → 79 | PASS, run 38849877552 / source 317: real 79 apply/bootstrap, late state/scroll/window/audio restoration, explicit voice rejoin and old/new process checks |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
 Ordinary shipping source is unchanged by the later QA navigation/diagnostic
-entrypoint changes. Verified distribution records are retained below. #337 and
-draft PR #338 remain open until both genuine installed UI gates pass.
+entrypoint changes. Verified distribution records are retained below. Both
+genuine installed UI gates now pass. PR #338 / #337 await final branch checks
+and merge; this evidence-only update does not modify the tested shipping code.
+
+### Final genuine macOS acceptance (2026-10-16 05:38 UTC)
+
+The user confirmed the existing OS access grant and unlocked the Mac. One
+ordinary Retry Connection action restored the existing account without login.
+The already-updated installed app was preserved throughout this check; no
+replacement, re-signing, credential injection or profile reset was performed.
+The installed bundle reports version 1.0.44 / build 79 and its process is
+running from the permanent per-user acceptance installation. This completes
+the genuine source-454caa8266fd870afd208ec2e76b6a1e2bf099c5 N → N+1
+replacement/local-bootstrap attempt retained in the earlier record.
+
+The existing account, owned origin and selected text channel were restored.
+Original 2880×1800 before/after captures inspected in Computer Use show the
+same first visible synthetic row 54 at the same viewport-relative position,
+with the same window dimensions. AX cached rows 51–53 are outside the visible
+viewport and are not substituted for the visual anchor. The exact restored
+draft compared equal to the pre-consent in-memory value, including edits made
+during download and after Ready. A fresh typed edit was then present and
+removing only that new probe from the observed UI value compared equal again;
+only boolean outcomes are recorded, never the draft body.
+
+Before explicit action there was no voice connection or screen capture.
+The user-visible listener action rejoined the actual previous voice room:
+connected, one participant, excellent quality / 1 ms ping. Controls remained
+“Enable microphone” and “Enable remote sound”, and the participant status
+showed both off. Screen capture remained stopped. The source-sized connected
+capture was visually inspected: controls are readable, without overlap. The
+test voice session was then disconnected and the text channel reopened.
+This is a real installed-app check, not a simulated apply/ACK or a component
+screenshot. The previous row-39→65 failure remains historical FAIL below.
+
+### Final browser readiness acceptance (2026-10-16 05:39 UTC)
+
+Run 38855655443 passed on head f7535012. Artifact 12026374122 is authenticated
+at 10042588 bytes and SHA-256
+`f7c27176079427c2ddf98e93f4426de0309994bef2ff6e5ae614bfbd720a710d`,
+with valid ZIP CRC and safe paths. Reports bind the actual PR merge checkout
+`b6c2302f20e96988108e9ec5e83584a1f3e758cb`; both 1440 and 1024 journeys
+report real services (`mocks: false`), persisted state after API restart and
+owned resource cleanup. Each registered once, retained the Unicode password
+through the deliberately failed login, then used a manual login action.
+Actual 429 checks retained one request / manual retry only. Baseline and
+attachment-reservation reports also PASS with cleanup. Original 2880×1800
+and 1024×768 prejoin captures inspected at source size show readable, separate
+join/listener actions and no hidden connection. The preparation barrier did
+not replay authentication/registration POSTs. Earlier failed runs stay FAIL.
 
 ### Browser readiness repeat (2026-10-16 05:25 UTC)
 
