@@ -12,11 +12,11 @@ later compilation or component tests.
 
 | Gate | Current status |
 |---|---|
-| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38847165606, source 4F24 |
-| Browser lifecycle acceptance | 4F24 PASS (run 38847165561); 969 attempt 2 PASS, attempt 1 remains FAIL with login transport `network_changed`; 1F08/81F/CBA also PASS |
+| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38849881724, source 317 |
+| Browser lifecycle acceptance | 317 PASS (run 38849881720); 4F24/969 repeat also PASS; 969 first attempt remains FAIL with login transport `network_changed` |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED on locked Mac / system Keychain access |
-| Windows installed 78 → 79 | 4F24 installed 79/bootstrap completed, reference offset mismatch 18.718 px; baseline-idle observation repeat being prepared; full UI gate FAIL |
+| Windows installed 78 → 79 | 4F24 installed 79/bootstrap completed, reference offset mismatch 18.718 px; 317 real baseline-idle repeat running; full UI gate not yet PASS |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -161,6 +161,17 @@ After the idle observation, a further two seconds leave the offset unchanged.
 Twelve focused driver/privacy tests PASS, including wrong-anchor rejection.
 The native repeat must prove this baseline-timing hypothesis; no successful gate
 or shipping restoration fix is claimed from the new regression alone.
+
+The 317 native preflight (116808509719) passed actual API/PostgreSQL/TLS/SFU,
+including catalog revision 1→2 in 8733 ms. Its log checkout/source was checked as
+317 (04:17 UTC), independently of earlier runs with a similar readiness value.
+Full CI 38849881724, browser 38849881720 and native candidates 38849877564 pass.
+Web shipping paths are unchanged from the authenticated 969 visual acceptance.
+QA79 release 414541435 / asset 646145552 authenticated at 30789118 bytes, SHA-256
+`aca4e6fed5b53997672a862ea98fd218eac04016fb1f72474e06210541c31f31`.
+CRC, safe paths, NUSPEC identity/version, native x64, helper/SDK and publisher root
+passed before local owner signing/verification. Only the public signed envelope
+is committed; actual installed-state acceptance is still pending separately.
 
 Publisher: locally generated Ed25519 root `boohtacord-desktop-478919e9652ab825`.
 Private key is outside the repository with mode 0600, parent 0700. Only the public
