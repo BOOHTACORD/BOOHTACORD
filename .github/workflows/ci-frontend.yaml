@@ -55,6 +55,14 @@ jobs:
           path: .out/issue343/browser/**
           if-no-files-found: ignore
           retention-days: 30
+      - name: Retain synthetic navigation density and browser zoom evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-navigation-${{ github.sha }}
+          path: .out/issue344/browser/**
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain sanitized real-SFU screen-share smoke evidence
         if: always()
         uses: actions/upload-artifact@v4

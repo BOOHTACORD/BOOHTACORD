@@ -8,8 +8,10 @@ root.innerHTML = `
   <div class="app-frame">
     <div class="gc-shell" data-testid="workspace-shell">
       <aside class="sidebar" data-testid="workspace-sidebar">
-        <nav class="nav-drawer" data-testid="workspace-drawer">
-          <button class="mobile-nav-close" aria-label="Закрыть навигацию">×</button>
+        <button class="guild-header" type="button">Тестовая гильдия</button>
+        <button class="mobile-nav-close" aria-label="Закрыть навигацию">×</button>
+        <div class="nav-drawer" data-testid="workspace-drawer">
+          <div class="nav-content">
           <div class="channel-navigation">
             <section class="channel-category">
               <div class="channel-row" data-testid="channel-favorite-row">
@@ -21,12 +23,13 @@ root.innerHTML = `
           </div>
           <button aria-label="Открыть канал" class="channel-button selected">общее</button>
           <button class="channel-button" aria-label="Выбрать канал">Перейти в канал</button>
-        </nav>
-        <footer class="user-footer">Егор · В сети</footer>
+          </div>
+        </div>
         <div class="mobile-voice-dock mobile-visible" data-testid="mobile-voice-dock">
           <span>Голос подключён</span>
           <button>Отключиться</button>
         </div>
+        <footer class="user-footer">Егор · В сети</footer>
       </aside>
       <main class="main" data-testid="workspace-main" data-channel-id="general">
         <section class="text-conversation">

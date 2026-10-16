@@ -1,0 +1,889 @@
+{
+  "schema_version": 1,
+  "base": "aa264a74c2501dea78b90044fcbf95e68aab64d4",
+  "accepted_source": "09915b193b2b8942d2096746191c8851e8d7c147 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "accepted_run": ".out/local-features/20261016-122127",
+  "report_sha256": "e3a3c522014a7a120a2c42b2e46977726a62bc445458910aa365c65287028a85",
+  "scope": "Synthetic production Vue components and matching sidebar structure, not the unavailable historical private tour. Geometry before switching to DM; captures preserve existing nav scroll on sidebar tab changes. Separate authenticated real-stack stages passed; no native/media QoE claim.",
+  "stages": [
+    {
+      "name": "web-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "web-build",
+      "status": "PASS"
+    },
+    {
+      "name": "web-accessibility",
+      "status": "PASS"
+    },
+    {
+      "name": "web-control_consistency",
+      "status": "PASS"
+    },
+    {
+      "name": "web-conversation_action_disclosure",
+      "status": "PASS"
+    },
+    {
+      "name": "web-mentions_inbox",
+      "status": "PASS"
+    },
+    {
+      "name": "web-microcopy",
+      "status": "PASS"
+    },
+    {
+      "name": "web-navigation_density",
+      "status": "PASS"
+    },
+    {
+      "name": "web-password_generation",
+      "status": "PASS"
+    },
+    {
+      "name": "web-quick_jump_people",
+      "status": "PASS"
+    },
+    {
+      "name": "web-readonly_archive",
+      "status": "PASS"
+    },
+    {
+      "name": "web-responsive_shell",
+      "status": "PASS"
+    },
+    {
+      "name": "web-screen_profile",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_sessions",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-1440",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-393",
+      "status": "PASS"
+    }
+  ],
+  "viewports": [
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "before": {
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 266,
+          "width": 255,
+          "height": 36,
+          "bottom": 302
+        },
+        "category": {
+          "x": 12,
+          "y": 226,
+          "width": 255,
+          "height": 36,
+          "bottom": 262
+        },
+        "list": {
+          "x": 0,
+          "y": 128,
+          "width": 279,
+          "height": 464,
+          "bottom": 592
+        },
+        "dock": {
+          "x": 0,
+          "y": 592,
+          "width": 279,
+          "height": 112,
+          "bottom": 704
+        },
+        "footer": {
+          "x": 0,
+          "y": 704,
+          "width": 279,
+          "height": 64,
+          "bottom": 768
+        },
+        "scrolls": [
+          "nav-content",
+          "voice-roster-members"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "after": {
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 262,
+          "width": 255,
+          "height": 32,
+          "bottom": 294
+        },
+        "category": {
+          "x": 12,
+          "y": 222,
+          "width": 255,
+          "height": 36,
+          "bottom": 258
+        },
+        "list": {
+          "x": 0,
+          "y": 128,
+          "width": 279,
+          "height": 464,
+          "bottom": 592
+        },
+        "dock": {
+          "x": 0,
+          "y": 592,
+          "width": 279,
+          "height": 112,
+          "bottom": 704
+        },
+        "footer": {
+          "x": 0,
+          "y": 704,
+          "width": 279,
+          "height": 64,
+          "bottom": 768
+        },
+        "scrolls": [
+          "nav-content"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "screenshots": [
+        {
+          "name": "channels-top.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-1024px/channels-top.png",
+            "sha256": "7d333efce9c96e53db430d8a6a28faa7062180125fc9ff1e1c196c6fabc09fca"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-top.png",
+            "sha256": "582a6376e9576e52bf96c209f16cbdc1a0c245e45a4a0acb048930ae4317c162"
+          }
+        },
+        {
+          "name": "channels-bottom.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-1024px/channels-bottom.png",
+            "sha256": "298c37fee1db1a86678a078bb7077a88d73e67332a0e2a930b6c0294aca9c6a9"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-bottom.png",
+            "sha256": "96c30b874a8bf2a84aaf4bdb8e819bd48e41a42b653db8fbc0360e93ca94d020"
+          }
+        },
+        {
+          "name": "direct-messages.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-1024px/direct-messages.png",
+            "sha256": "79c1b69730df83838f32ae29b8dee4505d4745cfcc00bb2fd134797b54f7f874"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/direct-messages.png",
+            "sha256": "62773cd4dab33f386bb61b7c4b41d0c831fe14995459a8d4b63b1b808684e6b1"
+          }
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 768
+      },
+      "before": {
+        "viewport": {
+          "width": 1440,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 266,
+          "width": 255,
+          "height": 36,
+          "bottom": 302
+        },
+        "category": {
+          "x": 12,
+          "y": 226,
+          "width": 255,
+          "height": 36,
+          "bottom": 262
+        },
+        "list": {
+          "x": 0,
+          "y": 128,
+          "width": 279,
+          "height": 464,
+          "bottom": 592
+        },
+        "dock": {
+          "x": 0,
+          "y": 592,
+          "width": 279,
+          "height": 112,
+          "bottom": 704
+        },
+        "footer": {
+          "x": 0,
+          "y": 704,
+          "width": 279,
+          "height": 64,
+          "bottom": 768
+        },
+        "scrolls": [
+          "nav-content",
+          "voice-roster-members"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "after": {
+        "viewport": {
+          "width": 1440,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 262,
+          "width": 255,
+          "height": 32,
+          "bottom": 294
+        },
+        "category": {
+          "x": 12,
+          "y": 222,
+          "width": 255,
+          "height": 36,
+          "bottom": 258
+        },
+        "list": {
+          "x": 0,
+          "y": 128,
+          "width": 279,
+          "height": 464,
+          "bottom": 592
+        },
+        "dock": {
+          "x": 0,
+          "y": 592,
+          "width": 279,
+          "height": 112,
+          "bottom": 704
+        },
+        "footer": {
+          "x": 0,
+          "y": 704,
+          "width": 279,
+          "height": 64,
+          "bottom": 768
+        },
+        "scrolls": [
+          "nav-content"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "screenshots": [
+        {
+          "name": "channels-top.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+            "sha256": "adac685816ab43ab78257f2b085d687724ec055b2d704ac73f5afe5de824bc43"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+            "sha256": "0ad6bf5ce8a3cdf4030276fa923cd5fd768a2628cc8a9d3010f05336035a9d10"
+          }
+        },
+        {
+          "name": "channels-bottom.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-1440px/channels-bottom.png",
+            "sha256": "12f3d9afe2010cef47ea3b7959d344cabd599536c1ce3fd97296ca0747b7f2b2"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-bottom.png",
+            "sha256": "5896238d222285ca04da2af82d1e1af9ad6f9358a56395f682a3642856d93b91"
+          }
+        },
+        {
+          "name": "direct-messages.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-1440px/direct-messages.png",
+            "sha256": "942a08ed88265744ab465c0489279dc0a50e0f1c8a7d1cc498b7df4870586b73"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/direct-messages.png",
+            "sha256": "ab93c2f056dd0b71e1d0dc45a2bea7312e66d023a19a4a169519afe41037f1a0"
+          }
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 768
+      },
+      "before": {
+        "viewport": {
+          "width": 1920,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 266,
+          "width": 255,
+          "height": 36,
+          "bottom": 302
+        },
+        "category": {
+          "x": 12,
+          "y": 226,
+          "width": 255,
+          "height": 36,
+          "bottom": 262
+        },
+        "list": {
+          "x": 0,
+          "y": 128,
+          "width": 279,
+          "height": 464,
+          "bottom": 592
+        },
+        "dock": {
+          "x": 0,
+          "y": 592,
+          "width": 279,
+          "height": 112,
+          "bottom": 704
+        },
+        "footer": {
+          "x": 0,
+          "y": 704,
+          "width": 279,
+          "height": 64,
+          "bottom": 768
+        },
+        "scrolls": [
+          "nav-content",
+          "voice-roster-members"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "after": {
+        "viewport": {
+          "width": 1920,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 262,
+          "width": 255,
+          "height": 32,
+          "bottom": 294
+        },
+        "category": {
+          "x": 12,
+          "y": 222,
+          "width": 255,
+          "height": 36,
+          "bottom": 258
+        },
+        "list": {
+          "x": 0,
+          "y": 128,
+          "width": 279,
+          "height": 464,
+          "bottom": 592
+        },
+        "dock": {
+          "x": 0,
+          "y": 592,
+          "width": 279,
+          "height": 112,
+          "bottom": 704
+        },
+        "footer": {
+          "x": 0,
+          "y": 704,
+          "width": 279,
+          "height": 64,
+          "bottom": 768
+        },
+        "scrolls": [
+          "nav-content"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "screenshots": [
+        {
+          "name": "channels-top.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-1920px/channels-top.png",
+            "sha256": "5c333cf06eca2f3acc0941a0b99b5ed1d75a60bc7585a8097766b6eb47aad55e"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-top.png",
+            "sha256": "e6ef552bec70a8b6135f5ba18e627c2517bdb08310223a907edf083424ec5144"
+          }
+        },
+        {
+          "name": "channels-bottom.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-1920px/channels-bottom.png",
+            "sha256": "10a6a24398085460c85c59a85b4caa15e6cb359e690790c3854a43dbffc8b3af"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-bottom.png",
+            "sha256": "d099867d986612fe69cf58ba8f02358db5e900137e8de01d6de77606e635f636"
+          }
+        },
+        {
+          "name": "direct-messages.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-1920px/direct-messages.png",
+            "sha256": "b3018b5fc2d63d9e752b9274f35e4730cd8dfc068f4a1959144300b84b311fe3"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/direct-messages.png",
+            "sha256": "8b7f97ed07e4259a58f0e0897aa39a4506e40b10de93c16a346fc69b2d6024f6"
+          }
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 320,
+        "height": 768
+      },
+      "before": {
+        "viewport": {
+          "width": 320,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 278,
+          "width": 255,
+          "height": 44,
+          "bottom": 322
+        },
+        "category": {
+          "x": 12,
+          "y": 230,
+          "width": 255,
+          "height": 44,
+          "bottom": 274
+        },
+        "list": {
+          "x": 0,
+          "y": 124,
+          "width": 279,
+          "height": 464,
+          "bottom": 588
+        },
+        "dock": {
+          "x": 0,
+          "y": 588,
+          "width": 279,
+          "height": 112,
+          "bottom": 700
+        },
+        "footer": {
+          "x": 0,
+          "y": 700,
+          "width": 279,
+          "height": 68,
+          "bottom": 768
+        },
+        "scrolls": [
+          "nav-content",
+          "voice-roster-members"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "after": {
+        "viewport": {
+          "width": 320,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 274,
+          "width": 255,
+          "height": 44,
+          "bottom": 318
+        },
+        "category": {
+          "x": 12,
+          "y": 226,
+          "width": 255,
+          "height": 44,
+          "bottom": 270
+        },
+        "list": {
+          "x": 0,
+          "y": 124,
+          "width": 279,
+          "height": 464,
+          "bottom": 588
+        },
+        "dock": {
+          "x": 0,
+          "y": 588,
+          "width": 279,
+          "height": 112,
+          "bottom": 700
+        },
+        "footer": {
+          "x": 0,
+          "y": 700,
+          "width": 279,
+          "height": 68,
+          "bottom": 768
+        },
+        "scrolls": [
+          "nav-content"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "screenshots": [
+        {
+          "name": "channels-top.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-320px/channels-top.png",
+            "sha256": "9c66eec766396a8d4f36f7c73fc7558e5f356ba4212202ba14fb4d1bd5ba15eb"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-top.png",
+            "sha256": "ae85f7ff0db26542d1da162d53b93555de3384079cc2721245dfc0f467d3ca5e"
+          }
+        },
+        {
+          "name": "channels-bottom.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-320px/channels-bottom.png",
+            "sha256": "2c2d97017fded8a7d7462b3aed8dae3a6a732d48337632f51af7f00735ba5e8c"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-bottom.png",
+            "sha256": "5709e35a59cac74f5b3bf009999404dfc10743761978d4aee6df4a3047b6d0d9"
+          }
+        },
+        {
+          "name": "direct-messages.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-320px/direct-messages.png",
+            "sha256": "1541f7ea65558cc5020776b26ac5b95e740f607d70862def324e247679e40e36"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-320px/direct-messages.png",
+            "sha256": "3977e5932983ced7b5da2bdbd229cf4fc1e98ffabfd1acb9726d13026204c7bb"
+          }
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 768
+      },
+      "before": {
+        "viewport": {
+          "width": 390,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 278,
+          "width": 295,
+          "height": 44,
+          "bottom": 322
+        },
+        "category": {
+          "x": 12,
+          "y": 230,
+          "width": 295,
+          "height": 44,
+          "bottom": 274
+        },
+        "list": {
+          "x": 0,
+          "y": 124,
+          "width": 319,
+          "height": 464,
+          "bottom": 588
+        },
+        "dock": {
+          "x": 0,
+          "y": 588,
+          "width": 319,
+          "height": 112,
+          "bottom": 700
+        },
+        "footer": {
+          "x": 0,
+          "y": 700,
+          "width": 319,
+          "height": 68,
+          "bottom": 768
+        },
+        "scrolls": [
+          "nav-content",
+          "voice-roster-members"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "after": {
+        "viewport": {
+          "width": 390,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 274,
+          "width": 295,
+          "height": 44,
+          "bottom": 318
+        },
+        "category": {
+          "x": 12,
+          "y": 226,
+          "width": 295,
+          "height": 44,
+          "bottom": 270
+        },
+        "list": {
+          "x": 0,
+          "y": 124,
+          "width": 319,
+          "height": 464,
+          "bottom": 588
+        },
+        "dock": {
+          "x": 0,
+          "y": 588,
+          "width": 319,
+          "height": 112,
+          "bottom": 700
+        },
+        "footer": {
+          "x": 0,
+          "y": 700,
+          "width": 319,
+          "height": 68,
+          "bottom": 768
+        },
+        "scrolls": [
+          "nav-content"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "screenshots": [
+        {
+          "name": "channels-top.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-390px/channels-top.png",
+            "sha256": "d3749e5896fee665f216f4d5ecc633411c962a926e51e2a15305fb90fdbd7dfe"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-top.png",
+            "sha256": "34b0fec858dedab44e58a3ddf861c44e47ae5437c61956838f06d0a8aa67e278"
+          }
+        },
+        {
+          "name": "channels-bottom.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-390px/channels-bottom.png",
+            "sha256": "d4b6e1059942b0f932a961915d62d2e232f175d504d3e3971814ac298a6620a0"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-bottom.png",
+            "sha256": "ea9f3c348bd0f8c9317e41bb913f56d23c5494f2d2b382ec1a789b61f579ccdd"
+          }
+        },
+        {
+          "name": "direct-messages.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-390px/direct-messages.png",
+            "sha256": "69b3859441551a045997babf767dbf044474adee0cc4b7999a00ff3602da5c5b"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-390px/direct-messages.png",
+            "sha256": "08ef8a87fcb97ceed0c0a242a664bc8eb643d9f675206a8e63d39d0ae6fe66e7"
+          }
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 768
+      },
+      "before": {
+        "viewport": {
+          "width": 768,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 250,
+          "width": 295,
+          "height": 44,
+          "bottom": 294
+        },
+        "category": {
+          "x": 12,
+          "y": 210,
+          "width": 295,
+          "height": 36,
+          "bottom": 246
+        },
+        "list": {
+          "x": 0,
+          "y": 112,
+          "width": 319,
+          "height": 656,
+          "bottom": 768
+        },
+        "dock": {
+          "x": 0,
+          "y": 715,
+          "width": 768,
+          "height": 53,
+          "bottom": 768
+        },
+        "footer": {
+          "x": 0,
+          "y": 651,
+          "width": 320,
+          "height": 64,
+          "bottom": 715
+        },
+        "scrolls": [
+          "nav-content",
+          "voice-roster-members"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "after": {
+        "viewport": {
+          "width": 768,
+          "height": 768
+        },
+        "row": {
+          "x": 12,
+          "y": 274,
+          "width": 295,
+          "height": 44,
+          "bottom": 318
+        },
+        "category": {
+          "x": 12,
+          "y": 226,
+          "width": 295,
+          "height": 44,
+          "bottom": 270
+        },
+        "list": {
+          "x": 0,
+          "y": 124,
+          "width": 319,
+          "height": 463,
+          "bottom": 587
+        },
+        "dock": {
+          "x": 0,
+          "y": 587,
+          "width": 319,
+          "height": 112,
+          "bottom": 699
+        },
+        "footer": {
+          "x": 0,
+          "y": 699,
+          "width": 319,
+          "height": 69,
+          "bottom": 768
+        },
+        "scrolls": [
+          "nav-content"
+        ],
+        "horizontal": false,
+        "documentOverflow": false
+      },
+      "screenshots": [
+        {
+          "name": "channels-top.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-768px/channels-top.png",
+            "sha256": "e80188659317ba4fab1328cf8b8b1aa5de3ae92b6a5d2c1902944cb138ad511e"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-top.png",
+            "sha256": "f1082b9cdf2436b9de033351bf98cf721378ad13c8f6348c0edbb5d1a7a09ed1"
+          }
+        },
+        {
+          "name": "channels-bottom.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-768px/channels-bottom.png",
+            "sha256": "59a8e1fdf13bf337b6ae9fa08c2868ffb205c30824559793daf9719a256783be"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-bottom.png",
+            "sha256": "4d3388506b4e4ec7695c1c2f18392eaf1d7920fee089d5df641bed146fe3ccbe"
+          }
+        },
+        {
+          "name": "direct-messages.png",
+          "before": {
+            "path": ".out/issue344/before/navigation.browser-inventory-production-navigation-768px/direct-messages.png",
+            "sha256": "29e40daa0971a66db9b54efe2beef199520bc01b7d3a31f690e99f96469131f3"
+          },
+          "after": {
+            "path": ".out/local-features/20261016-122127/web-navigation_density/navigation.browser-inventory-production-navigation-768px/direct-messages.png",
+            "sha256": "645c0f68c6b1269cb5a7fbe5edb181af0f47d9c6b330026c912af9a07f5e07be"
+          }
+        }
+      ]
+    }
+  ],
+  "production_source_hashes": {
+    "clients/web/src/channel/ChannelNavigation.vue": "b088c46d39b546468c3d43a59081dff43d1f9d2ad052555e5c45c8e8971cc768",
+    "clients/web/src/design/design_v2_channel_tree.css": "a1ca8287ebd5f7c73f0b68204d164e8757f44aaf30e5375c3902f27995275984",
+    "clients/web/src/design/design_v2_direct_messages.css": "392dc05b1863b0b507931298143c4ff4db4867fce5c52aee23ce6fd95c46edcc",
+    "clients/web/src/design/design_v2_mobile_navigation.css": "77447702b299b5aadaf8828f2e89836382414b4caa24399026e336ca06612c73",
+    "clients/web/src/design/design_v2_navigation_controls.css": "ee338986035bcb44fd2ee6f8c1be373853b132d34eeefdf334842733a9648f3f",
+    "clients/web/src/direct_message/DirectMessageNavigation.vue": "227eaf885f924e2e628d03880b48442b92eee81cdc27ff61f364d8573ac6e4c8",
+    "clients/web/src/shared/action_hint/directive.ts": "e19b4c9cf86fe2c0ff01c0dff93995273a4a95b4dd2eaf9cd6d1d3c620c97578"
+  }
+}

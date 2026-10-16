@@ -309,7 +309,8 @@
       "tests/accessibility/playwright.config.ts",
       "tests/control_consistency/playwright.config.ts",
       "tests/readonly_archive/playwright.config.ts",
-      "tests/microcopy/playwright.config.ts"
+      "tests/microcopy/playwright.config.ts",
+      "tests/navigation_density/playwright.config.ts"
     ],
     "flutter": [
       "test/mobile_navigation_visual_capture_test.dart",
@@ -344,6 +345,10 @@
       "issue343": {
         "browser": "clients/web/tests/microcopy/playwright.config.ts",
         "scope": "Source-bound static copy inventory, keyboard/touch help and warning retention; browser zoom and action hints are separate from physical media acceptance"
+      },
+      "issue344": {
+        "browser": "clients/web/tests/navigation_density/playwright.config.ts",
+        "scope": "Actual production navigation components with 36 channels/three categories, keyboard/touch, single scroll surface, persisted favorites/collapse and 320–1920px/actual 200% browser zoom. Real-stack workspace journeys are separate; no native/media acceptance claim."
       }
     }
   },
