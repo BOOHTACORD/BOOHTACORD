@@ -73,10 +73,10 @@ async function panel(page) {
 async function loaded(page) {
   const p=await panel(page)
   phase = 'files initial latest page'
-  await expect(p.locator('tbody tr')).toHaveCount(1)
+  await expect(p.locator('.result-row')).toHaveCount(1)
   phase = 'load older file cursor'
   await p.getByRole('button',{name:'Показать более старые файлы',exact:true}).click()
-  await expect(p.locator('tbody tr')).toHaveCount(3)
+  await expect(p.locator('.result-row')).toHaveCount(3)
   return p
 }
 async function capture(p, name) {
@@ -94,18 +94,19 @@ async function metadata(p,names) {
     await document.fonts.ready
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))
   })
-  const fits = await p.locator('th').evaluateAll(headers => headers.every(header => {
+  await expect(p.locator('.result-meta > *')).not.toHaveCount(0)
+  const fits = await p.locator('.result-meta > *').evaluateAll(headers => headers.every(header => {
     const range = document.createRange(); range.selectNodeContents(header)
     const ink = range.getBoundingClientRect(), cell = header.getBoundingClientRect()
     const style = getComputedStyle(header)
     return ink.left >= cell.left + parseFloat(style.paddingLeft) - 0.5 && ink.right <= cell.right - parseFloat(style.paddingRight) + 0.5
   }))
-  assert.ok(fits, 'File table headings must fit their own padded cells')
+  assert.ok(fits, 'File metadata must fit its compact result row')
   for (const name of names) {
-    const row=p.locator('tbody tr').filter({hasText:name})
+    const row=p.locator('.result-row').filter({hasText:name})
     await expect(row).toHaveCount(1)
-    await expect(row.locator('td').nth(0)).toHaveText('PNG')
-    await expect(row.locator('td').nth(2)).toHaveText(png.length+' Б')
+    await expect(row.locator('.result-meta > span').nth(0)).toHaveText('PNG')
+    await expect(row.locator('.result-meta > span').nth(1)).toHaveText(png.length+' Б')
     await expect(row.locator('time')).toHaveAttribute('datetime',/\d{4}-\d{2}-\d{2}T/)
   }
 }
@@ -154,10 +155,10 @@ try {
   report.text_delete_http_status = textDeleted.status
   status(textDeleted,204)
   await pageDelay(a,600)
-  report.text_delete_observation = {ws_counts:{...observed.get(a)}, rows:await p.locator('tbody tr').count(), visibility:await a.evaluate(()=>document.visibilityState)}
+  report.text_delete_observation = {ws_counts:{...observed.get(a)}, rows:await p.locator('.result-row').count(), visibility:await a.evaluate(()=>document.visibilityState)}
   const oldHistory = await api(a,`/channels/${first.body.id}/messages?at=${textOld.id}&limit=20`)
   report.text_delete_observation.server_deleted = oldHistory.status===200 && oldHistory.body.messages.some(m=>m.id===textOld.id && m.deleted && m.attachments.length===0)
-  await expect(p.locator('tbody tr')).toHaveCount(1)
+  await expect(p.locator('.result-row')).toHaveCount(1)
   report.text_deleted_file_statuses=await fileStatuses(a,'/channels/'+first.body.id,textOld.attachments[0].id)
   assert.deepEqual(report.text_deleted_file_statuses,[404,404])
   report.checks.text_previous_page_peer_delete_live='PASS'
@@ -199,25 +200,25 @@ try {
   const dmDeleted = await api(b,`/direct-messages/${primary.body.id}/messages/${dmOld.id}`,'DELETE')
   report.dm_delete_http_status = dmDeleted.status
   status(dmDeleted,204)
-  await expect(p.locator('tbody tr')).toHaveCount(1)
+  await expect(p.locator('.result-row')).toHaveCount(1)
   assert.deepEqual(await fileStatuses(a,'/direct-messages/'+primary.body.id,dmOld.attachments[0].id),[404,404])
   report.checks.dm_previous_page_peer_delete_live_and_deleted_object_denied='PASS'
   phase='scope changes and close reopen refresh'
   await text(a,'QaFilesB'); p=await panel(a)
   await expect(p.getByText('В этой беседе пока нет файлов.',{exact:true})).toBeVisible()
   await text(a,'QaFilesA'); p=await panel(a)
-  await expect(p.locator('tbody tr')).toHaveCount(1)
-  await expect(p.locator('tbody tr')).toContainText('text-new.png')
+  await expect(p.locator('.result-row')).toHaveCount(1)
+  await expect(p.locator('.result-row')).toContainText('text-new.png')
   await dm(a,'qa_admin');p=await panel(a)
   await expect(p.getByText('В этой беседе пока нет файлов.',{exact:true})).toBeVisible()
   await dm(a,'qa_files_b');p=await panel(a)
-  await expect(p.locator('tbody tr')).toHaveCount(1)
+  await expect(p.locator('.result-row')).toHaveCount(1)
   await p.getByRole('button',{name:'Закрыть',exact:true}).click()
-  p=await panel(a);await expect(p.locator('tbody tr')).toHaveCount(1)
+  p=await panel(a);await expect(p.locator('.result-row')).toHaveCount(1)
   await a.reload();await dm(a,'qa_files_b');p=await panel(a)
   await p.getByRole('button',{name:'Показать более старые файлы',exact:true}).click()
-  await expect(p.locator('tbody tr')).toHaveCount(1)
-  await expect(p.locator('tbody tr')).toContainText('dm-new.png')
+  await expect(p.locator('.result-row')).toHaveCount(1)
+  await expect(p.locator('.result-row')).toContainText('dm-new.png')
   await capture(p,'dm-files-after-delete-refresh.png')
   report.checks.scope_changes_no_rows_or_tombstones_leak='PASS'
   report.checks.close_reopen_refresh_cursor_recovery='PASS'

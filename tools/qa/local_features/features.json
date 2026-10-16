@@ -262,7 +262,9 @@
       "tests/quick_jump_people/playwright.config.ts",
       "tests/chat_rhythm/playwright.config.ts",
       "tests/message_social/playwright.config.ts",
-      "tests/dm_starter/playwright.config.ts"
+      "tests/dm_starter/playwright.config.ts",
+      "tests/search_presentation/playwright.config.ts",
+      "tests/search_dates/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart",
@@ -303,6 +305,11 @@
       "issue341": {
         "browser_test": "clients/web/tests/dm_starter/overlay.browser.spec.ts",
         "scope": "Native top-layer DM picker: long labels, focus cycle/return, Escape/outside and pending cancellation, pagination/retry/single open. CSS widths 320–1920, root text scale plus independently measured actual 200% browser zoom. Actual API/touch separately required."
+      },
+      "issue346": {
+        "browser": "clients/web/tests/search_presentation/playwright.config.ts",
+        "actual": "tools/qa/client_lifecycle/search_presentation.mjs",
+        "scope": "Six production Vue result surfaces, collapsed active filters/reset, compact file rows and full-name disclosure; 320/390/1024/1440, root text and actual browser zoom 200%, keyboard/touch/axe. Denied stale rows cleared, transient paging retry retained. Actual API filter-message-return with nonzero scroll, uploads/files, pins, mentions, archive reader and quick jump at desktop1440/touch393 separately required."
       }
     }
   },

@@ -1,0 +1,73 @@
+/* Shared result hierarchy; controllers and authenticated routes remain owners of data. */
+.result-list { list-style: none; display: grid; align-content: start; gap: 0; margin: 0; padding: 0; min-width: 0; }
+.result-row { box-sizing: border-box; min-width: 0; padding: 12px 0; border-bottom: 1px solid var(--gc-border-subtle); overflow-wrap: anywhere; }
+.result-row > article { min-width: 0; }
+.result-title { min-width: 0; color: var(--gc-text-primary); font-weight: 600; }
+.result-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; min-width: 0; color: var(--gc-text-muted); font-size: .75rem; line-height: 1.4; }
+.result-meta > span { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.result-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.result-row .result-open { box-sizing: border-box; display: grid; gap: 6px; width: 100%; min-width: 0; min-height: 44px; border: 0; border-radius: var(--gc-radius-sm); padding: 8px; background: transparent; color: var(--gc-text-primary); text-align: start; cursor: pointer; }
+.result-row .result-open:hover { background: var(--gc-surface-hover); }
+.result-row .result-open:focus-visible, .file-name-detail summary:focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 2px; }
+.result-snippet { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; max-height: 4.5em; overflow: hidden; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .875rem; line-height: 1.5; }
+.result-action-label { font-size: .75rem; color: var(--gc-accent-text); }
+.result-row .gc-button { justify-self: start; min-height: 44px; max-width: 100%; }
+.result-row .result-open .result-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.result-row .result-open:focus .result-title { white-space: normal; overflow-wrap: anywhere; }
+.search-panel-heading { min-height: 48px; padding: 4px 16px; }
+.search-panel-heading h1 { overflow-wrap: anywhere; }
+.search-form { gap: 8px; padding: 0 16px 12px; }
+.search-panel .search-view-tabs { margin: 8px 16px; }
+.search-form-meta { height: auto; min-width: 0; }
+.search-form .search-scope-label { display: block; margin: 0; min-width: 0; max-width: 100%; }
+.search-form .search-scope-label select { width: auto; min-height: 44px; height: auto; max-width: 100%; padding: 6px 28px 6px 8px; font-size: .875rem; appearance: auto; }
+.search-filter-controls { min-width: 0; }
+.search-filter-disclosure > summary { min-height: 44px; align-content: center; cursor: pointer; color: var(--gc-text-secondary); font-size: .875rem; }
+.search-filter-disclosure > summary:focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 2px; }
+.search-filter-disclosure .search-filters { padding: 8px 0; }
+.search-filter-disclosure .search-filters label { flex: 1 1 130px; min-width: 0; max-width: 100%; }
+.search-filter-disclosure .search-filters select { max-width: 100%; }
+.search-active-filters { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; }
+.search-active-filters button { display: inline-flex; align-items: center; gap: 6px; min-width: 0; max-width: 100%; min-height: 44px; border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-sm); padding: 4px 8px; background: var(--gc-surface-raised); color: var(--gc-text-primary); font-size: .75rem; cursor: pointer; }
+.search-active-filters button span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-active-filters .search-clear-filters { background: transparent; }
+.search-results { gap: 0; }
+.search-result.result-row { min-height: 0; border: 0; border-bottom: 1px solid var(--gc-border-subtle); border-radius: 0; padding: 12px 4px; background: transparent; }
+.search-result article > header { overflow-wrap: anywhere; }
+.search-result-author { height: auto; min-height: 24px; margin-top: 6px; flex-wrap: wrap; }
+.search-result-author strong { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-result-avatar { width: 1.25rem; height: 1.25rem; flex-basis: 1.25rem; line-height: 1; white-space: nowrap; }
+.search-result .search-result-body { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; max-height: 4.5em; overflow: hidden; line-height: 1.5; }
+.search-result article > button { border-radius: 4px; }
+.search-panel .archive-panel, .search-panel .pin-panel { gap: 8px; padding: 8px 16px; }
+.search-panel .mention-inbox-toolbar { margin: 8px 16px; }
+.archive-messages article { border: 0; padding: 0; }
+.archive-messages article p { font-size: .875rem; line-height: 1.5; }
+.quick-jump-panel > .search-query-label { display: block; margin: 8px 16px; }
+.quick-jump-panel > .search-query-label input { width: 100%; }
+.quick-jump-panel .quick-jump-results { gap: 0; margin: 8px 16px; }
+.conversation-files .result-row { display: grid; gap: 8px; }
+.conversation-files .result-row > button { justify-self: start; }
+@media (max-width: 720px) {
+  .search-panel-heading { min-height: 48px; padding: 4px 12px 4px 16px; }
+  .search-form { padding-bottom: 12px; }
+}
+
+.mention-inbox-toolbar { margin: 8px 16px; }
+.archive-panel .archive-messages article { border: 0; padding: 0; }
+.search-result-author:has(.search-result-avatar) { display: grid; grid-template-columns: 1.25rem minmax(0, 1fr); }
+
+/* Header and mode controls sit outside the single result scroll region. */
+.gc-shell.search-active > .search-aside { display: flex; flex-direction: column; overflow: hidden; }
+.search-aside .search-panel { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.search-aside .workspace-search-modes { flex-shrink: 0; }
+.search-aside #search-mode-content { flex: 1; min-height: 0; overflow: auto; }
+.search-aside .quick-jump-results { flex: 1; min-height: 0; overflow-y: auto; }
+.search-aside .conversation-files { flex: 1; min-height: 0; }
+
+.search-result article > header.result-meta { display: flex; }
+.result-source { display: block; width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.search-result:focus-within .result-source, .search-result:focus-within .search-result-author strong, .pin-panel .result-open:focus .result-meta > span { white-space: normal; overflow-wrap: anywhere; }
+
+.search-result.result-row:hover, .search-result.result-row:focus-within { background: var(--gc-surface-hover); }

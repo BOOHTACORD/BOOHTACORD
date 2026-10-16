@@ -73,6 +73,14 @@ jobs:
             .out/dw02-dm-starter/**
           if-no-files-found: ignore
           retention-days: 30
+      - name: Retain compact search and related result surface evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-search-presentation-${{ github.sha }}
+          path: .out/issue346/browser/**
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain synthetic TEXT and DM rhythm and browser zoom evidence
         if: always()
         uses: actions/upload-artifact@v4

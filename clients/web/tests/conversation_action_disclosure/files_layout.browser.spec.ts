@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 for (const kind of ['CHANNEL', 'DIRECT_MESSAGE']) {
   for (const width of [320, 393, 1440]) {
-    test(`${kind} file metadata stays inside its table cells at ${width}px`, async ({ page }, testInfo) => {
+    test(`${kind} file metadata and actions stay inside compact rows at ${width}px`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 900 })
       await page.route('**/api/v1/**/qa-files/messages', route => route.fulfill({
         json: { messages: [{
@@ -22,9 +22,10 @@ for (const kind of ['CHANNEL', 'DIRECT_MESSAGE']) {
         document.body.innerHTML = '<div id="mount"></div>'
         createApp({ render: () => h(Files, { kind, conversationId: 'qa-files' }) }).mount('#mount')
       }, kind)
-      await expect(page.locator('.conversation-files tbody tr')).toHaveCount(3)
+      await expect(page.locator('.conversation-files .result-row')).toHaveCount(3)
+      await expect(page.getByRole('table')).toHaveCount(0)
       await page.evaluate(() => document.fonts.ready)
-      const cells = await page.locator('.conversation-files th').evaluateAll(headers => headers.map(header => {
+      const cells = await page.locator('.conversation-files .result-meta > *').evaluateAll(headers => headers.map(header => {
         const range = document.createRange()
         range.selectNodeContents(header)
         const ink = range.getBoundingClientRect()

@@ -15,10 +15,10 @@ onMounted(() => input.value?.focus())
     <header class="search-panel-heading"><h1 id="quick-jump-title">Каналы и люди</h1></header>
     <label class="search-query-label"><span class="visually-hidden">Найти канал или человека</span><input ref="input" class="gc-field" v-model="query" type="search" autocomplete="off" placeholder="Канал или имя человека"></label>
     <p v-if="status" class="search-status search-status--visible" role="status" aria-live="polite">{{ status }}</p>
-    <ol v-if="entries.length" class="quick-jump-results" aria-label="Каналы и участники гильдии">
-      <li v-for="entry in entries" :key="`${entry.kind}:${entry.id}`">
-        <button class="gc-button gc-button--secondary" type="button" :data-kind="entry.kind" @click="emit('select', { kind: entry.kind, id: entry.id })">
-          <span>{{ entry.title }}</span><small>{{ entry.subtitle }}</small>
+    <ol v-if="entries.length" class="quick-jump-results result-list" aria-label="Каналы и участники гильдии">
+      <li v-for="entry in entries" :key="`${entry.kind}:${entry.id}`" class="result-row">
+        <button class="result-open" type="button" :data-kind="entry.kind" @click="emit('select', { kind: entry.kind, id: entry.id })">
+          <span class="result-title" :title="entry.title">{{ entry.title }}</span><small class="result-meta">{{ entry.subtitle }}</small>
         </button>
       </li>
     </ol>
@@ -28,10 +28,3 @@ onMounted(() => input.value?.focus())
     <button v-else-if="hasMore" class="gc-button gc-button--secondary" type="button" :disabled="peopleLoading" :aria-busy="peopleLoading" @click="emit('next')">Показать ещё участников</button>
   </section>
 </template>
-
-<style scoped>
-.quick-jump-results { display: grid; gap: 8px; list-style: none; margin: 16px 0; padding: 0; }
-.quick-jump-results .gc-button { flex-wrap: wrap; justify-content: space-between; min-height: 44px; text-align: left; width: 100%; }
-.quick-jump-results span, .quick-jump-results small { min-width: 0; overflow-wrap: anywhere; }
-.quick-jump-results small { color: var(--gc-text-muted); }
-</style>

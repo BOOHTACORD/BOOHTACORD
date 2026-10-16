@@ -21,6 +21,8 @@ def main():
     run("npm", "run", "test:controls", cwd=client("web"))
     run("npm", "run", "test:microcopy", cwd=client("web"))
     run("npm", "run", "test:search-sessions", cwd=client("web"))
+    run("npm", "run", "test:search-presentation", cwd=client("web"))
+    run("npm", "run", "test:search-dates", cwd=client("web"))
     run("npm", "run", "test:dm-starter", cwd=client("web"))
     run("npm", "run", "test:chat-rhythm", cwd=client("web"))
     run("npm", "run", "test:message-social", cwd=client("web"))

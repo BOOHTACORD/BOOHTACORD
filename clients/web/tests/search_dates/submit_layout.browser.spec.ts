@@ -10,6 +10,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       return route.fulfill({ json: { messages: [] } })
     })
     await page.goto('/tests/search_dates/fixture.html')
+  await page.locator('.search-filter-disclosure > summary').click()
     await page.getByLabel('С даты', { exact: true }).fill('2026-03-08')
     await page.getByLabel('По дату включительно', { exact: true }).fill('2026-03-08')
     await page.getByRole('searchbox').fill('orbit')

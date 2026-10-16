@@ -13,6 +13,7 @@ export async function searchTabs(page, input, report) {
   async function bounds() {
     expect(await aside.evaluate(e => e.scrollWidth - e.clientWidth)).toBeLessThanOrEqual(1)
     expect(await aside.evaluate(e => e.scrollLeft)).toBe(0)
+    expect(await panel.locator('#search-mode-content').evaluate(e => e.scrollWidth - e.clientWidth)).toBeLessThanOrEqual(1)
     const edge = await aside.boundingBox()
     for (const tab of await tabs.all()) {
       const box = await tab.boundingBox()
@@ -27,7 +28,7 @@ export async function searchTabs(page, input, report) {
   await expect(tabs.last()).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(tabs.last()).toHaveAttribute('aria-pressed', 'true')
-  await expect(panel.locator('.pin-panel > button').first()).toBeEnabled()
+  await expect(panel.locator('.pin-panel .result-toolbar button').first()).toBeEnabled()
   await expect(panel.getByRole('alert')).toHaveCount(0)
   await bounds()
   await page.screenshot({ path: input.directory + '/search-tabs-pinned.png' })
@@ -43,5 +44,6 @@ export async function searchTabs(page, input, report) {
   await tabs.first().click()
   await expect(query).toHaveValue('Synthetic preserved search')
   await panel.getByRole('button', { name: 'Закрыть поиск', exact: true }).click()
+  await expect(panel).not.toBeVisible()
   report.search_tabs = { four_modes: true, no_horizontal_overflow: true, keyboard_last_tab: true, touch: input.viewport.has_touch, query_retained: true }
 }
