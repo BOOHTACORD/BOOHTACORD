@@ -182,6 +182,26 @@ class Journey {
     throw StateError('scroll_not_restored');
   }
 
+  Future<void> waitForIdleHistory({
+    Duration timeout = const Duration(seconds: 45),
+  }) async {
+    final deadline = DateTime.now().add(timeout);
+    var stable = 0;
+    do {
+      await driver.pump(const Duration(milliseconds: 50));
+      final scrollable = find
+          .descendant(
+            of: find.byKey(const ValueKey('text-channel-messages')),
+            matching: find.byType(Scrollable),
+          )
+          .first;
+      final position = driver.state<ScrollableState>(scrollable).position;
+      stable = position.isScrollingNotifier.value ? 0 : stable + 1;
+      if (stable >= 2) return;
+    } while (DateTime.now().isBefore(deadline));
+    throw StateError('history_not_idle');
+  }
+
   Future<void> capture(String name) async {
     await driver.pump(const Duration(milliseconds: 100));
     final boundary = driver.renderObject<RenderRepaintBoundary>(
@@ -270,15 +290,7 @@ class Journey {
       const Offset(0, 1200),
       const Duration(milliseconds: 500),
     );
-    await driver.pump(const Duration(milliseconds: 700));
-    final expected = await snapshot();
-    require(
-      (expected['anchor'] as Map)['ordinal'] < 60,
-      'history_not_scrolled',
-    );
-    await File(path.join(output.path, 'expected.json'))
-        .writeAsString(jsonEncode(expected), flush: true);
-    await capture('before-installed-update');
+    await waitForIdleHistory();
     await tap(
       find.widgetWithText(FilledButton, 'Перезапустить'),
       at: 'restart_open',
@@ -293,6 +305,17 @@ class Journey {
           state.voiceChannel != null,
       'decline_restart_interrupted_work',
     );
+    // Snapshot the settled current UI immediately before the final consent.
+    // A timed drag can still be ballistic after an arbitrary 700 ms delay.
+    await waitForIdleHistory();
+    final expected = await snapshot();
+    require(
+      (expected['anchor'] as Map)['ordinal'] < 60,
+      'history_not_scrolled',
+    );
+    await File(path.join(output.path, 'expected.json'))
+        .writeAsString(jsonEncode(expected), flush: true);
+    await capture('before-installed-update');
     await tap(
       find.widgetWithText(FilledButton, 'Перезапустить'),
       at: 'restart_open',

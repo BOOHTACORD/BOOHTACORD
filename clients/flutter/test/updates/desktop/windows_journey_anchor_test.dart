@@ -8,6 +8,55 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../integration_test/desktop_updates/windows_app.dart';
 
 void main() {
+  testWidgets('restart baseline waits for real ballistic scrolling to stop', (
+    tester,
+  ) async {
+    final scroll = ScrollController();
+    addTearDown(scroll.dispose);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              key: const ValueKey('text-channel-messages'),
+              height: 380,
+              child: ListView(
+                controller: scroll,
+                itemExtent: 106,
+                physics: const ClampingScrollPhysics(),
+                children: [
+                  for (var i = 0; i < 70; i++)
+                    FormattedMessageBody(
+                      body: 'Update history row $i',
+                      color: Colors.black,
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    scroll.jumpTo(scroll.position.maxScrollExtent);
+    await tester.pumpAndSettle();
+    final journey = Journey(Directory.systemTemp, controller: tester);
+    await tester.timedDrag(
+      find.byKey(const ValueKey('text-channel-messages')),
+      const Offset(0, 1200),
+      const Duration(milliseconds: 500),
+    );
+    await tester.pump(const Duration(milliseconds: 700));
+    expect(scroll.position.isScrollingNotifier.value, isTrue);
+    final movingOffset = scroll.offset;
+    await journey.waitForIdleHistory(timeout: const Duration(seconds: 2));
+    expect(scroll.position.isScrollingNotifier.value, isFalse);
+    final settledOffset = scroll.offset;
+    expect((settledOffset - movingOffset).abs(), greaterThan(2));
+    await tester.pump(const Duration(seconds: 2));
+    expect(scroll.offset, settledOffset);
+  });
+
   testWidgets(
     'installed acceptance waits for the real delayed message anchor',
     (tester) async {
@@ -74,7 +123,10 @@ void main() {
         rejected = error;
       }
       expect(rejected, isStateError);
-      expect(scroll.offset, 50); // The acceptance observer never moves the list.
+      expect(
+        scroll.offset,
+        50,
+      ); // The acceptance observer never moves the list.
     },
   );
 

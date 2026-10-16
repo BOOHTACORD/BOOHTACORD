@@ -12,11 +12,11 @@ later compilation or component tests.
 
 | Gate | Current status |
 |---|---|
-| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38844315360, source 969 |
+| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38847165606, source 4F24 |
 | Browser lifecycle acceptance | 4F24 PASS (run 38847165561); 969 attempt 2 PASS, attempt 1 remains FAIL with login transport `network_changed`; 1F08/81F/CBA also PASS |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED on locked Mac / system Keychain access |
-| Windows installed 78 → 79 | 969 actual replacement/build 79/bootstrap completed; account/channel/late draft/mute checks PASS, scroll assertion FAIL; 4F24 corrected observation repeat running |
+| Windows installed 78 → 79 | 4F24 installed 79/bootstrap completed, reference offset mismatch 18.718 px; baseline-idle observation repeat being prepared; full UI gate FAIL |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -137,6 +137,30 @@ CRC, safe paths, package identity/version, x64 PE, helper/SDK and publisher root
 passed before local owner signing and verification. Public metadata is supplied
 to the actual installed journey; no private publisher key enters Git or CI.
 This publication/readiness record is not a successful installed-update result.
+
+### Windows 4F24 measured mismatch and baseline timing (2026-10-16)
+
+Run 38847160799 / job 116801721082 again reached installed 79 and native phase
+`completed`, but the full UI gate is FAIL at `scroll_not_restored`. The same
+reference row 47 measured expected top `37.74934909564308` and observed top
+`56.46735381039207` (18.718 px difference). Waiting for restoration and selecting
+the same reference did not resolve this mismatch; it remains a failed attempt.
+Artifact 12024199167 authenticated: 109576 bytes, SHA-256
+`b6d0737bf01f594b3a5d1002552ed981bdf7a4d73087b4153199fb0244ee7810`.
+Original before/failure captures were inspected; new-version bootstrap and late
+draft are visible. Window/rejoin and outer final process checks did not run.
+
+The baseline was sampled 700 ms after a timed drag, before the decline/reopen
+consent sequence. That delay does not guarantee that ballistic scrolling ended.
+A real ClampingScrollPhysics widget regression now reproduces the same drag:
+at 700 ms `isScrollingNotifier=true`, and the eventual offset differs by >2 px.
+The corrected observer waits for the real scrolling activity to become idle on
+two frames, and samples the current baseline after declining the first restart,
+immediately before final consent. It never stops or moves the scroll controller.
+After the idle observation, a further two seconds leave the offset unchanged.
+Twelve focused driver/privacy tests PASS, including wrong-anchor rejection.
+The native repeat must prove this baseline-timing hypothesis; no successful gate
+or shipping restoration fix is claimed from the new regression alone.
 
 Publisher: locally generated Ed25519 root `boohtacord-desktop-478919e9652ab825`.
 Private key is outside the repository with mode 0600, parent 0700. Only the public
