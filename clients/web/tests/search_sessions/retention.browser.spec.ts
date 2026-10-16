@@ -3,6 +3,7 @@ test('SearchPanel retains independent query/scope/filters across close, origin s
  await page.route('**/api/v1/members?**',r=>r.fulfill({json:{members:[{user_id:'qa-self',login:'qa-self',display_name:'Self',role:'MEMBER',presence:'online'}]}}))
  await page.goto('/tests/search_sessions/fixture.html')
  const panel=page.getByTestId('search-panel'),query=panel.getByRole('searchbox',{name:'Запрос',exact:true}),author=panel.locator('.search-filters select').nth(0),attachment=panel.locator('.search-filters select').nth(1)
+ await panel.locator('.search-filter-disclosure > summary').click()
  await query.fill('Draft search B')
  await panel.getByLabel('Область поиска').selectOption('current')
  await author.selectOption('qa-self')
@@ -68,14 +69,14 @@ test('reopening preserves an unsubmitted edit while rechecking the last submitte
  expect(reads).toEqual(['Submitted A','Submitted A'])
 })
 
-test('reopening restores the actual search-aside scroll owner after fresh results',async({page})=>{
+test('reopening restores the actual search result scroll owner after fresh results',async({page})=>{
  const account='11111111-1111-4111-8111-111111111111',conversation='22222222-2222-4222-8222-222222222222'
  let reads=0
  await page.route('**/api/v1/members?**',r=>r.fulfill({json:{members:[{user_id:account,login:'qa-self',display_name:'Self',role:'MEMBER',presence:'online'}]}}))
  await page.route('**/api/v1/members/*',r=>r.fulfill({json:{user_id:account,login:'qa-self',display_name:'Self',role:'MEMBER',presence:'online'}}))
  await page.route('**/api/v1/search/messages?**',r=>{reads++;return r.fulfill({json:{messages:Array.from({length:30},(_,i)=>({id:`00000000-0000-4000-8000-${String(i).padStart(12,'0')}`,kind:'DIRECT_MESSAGE',direct_message_id:conversation,author_id:account,body:'Synthetic scroll result',created_at:'2026-10-12T10:00:00Z',revision:1}))}})})
  await page.goto('/tests/search_sessions/fixture.html')
- const panel=page.getByTestId('search-panel'),host=page.locator('.search-aside')
+ const panel=page.getByTestId('search-panel'),host=page.locator('#search-mode-content')
  await panel.getByRole('searchbox',{name:'Запрос',exact:true}).fill('Synthetic scroll')
  await panel.getByRole('button',{name:'Найти',exact:true}).click()
  await expect(panel.locator('.search-result')).toHaveCount(30)

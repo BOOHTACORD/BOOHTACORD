@@ -4,7 +4,7 @@ import { readPins,pinMessage,type Pin } from './client'
 import { subscribeSocialHints,notifyLocalPinChange } from '../reactions/hints'
 import { useAuthorDirectory } from '../../identity/author_directory'
 import type { SearchTarget } from '../../search/search_target_store'
-const props=defineProps<{channelId:string}>(),emit=defineEmits<{open:[target:SearchTarget]}>()
+const props=defineProps<{channelId:string;embedded?:boolean}>(),emit=defineEmits<{open:[target:SearchTarget]}>()
 const authors=useAuthorDirectory(),pins=ref<Pin[]>([]),cursor=ref(''),canManage=ref(false),loading=ref(false),busy=ref(false),error=ref('')
 let sequence=0,alive=true
 async function load(more=false):Promise<void>{
@@ -25,9 +25,9 @@ const stop=subscribeSocialHints(hint=>{if(!hint||hint.kind==='CHANNEL'&&hint.con
 onBeforeUnmount(()=>{alive=false;sequence++;stop()})
 </script>
 <template>
-  <section class="pin-panel" aria-label="Закреплённые сообщения"><h2>Закреплённые сообщения</h2><button type="button" :disabled="loading||busy" @click="load()">Обновить закрепления</button><p v-if="loading" role="status">Загрузка…</p><p v-if="error" role="alert">{{error}}</p><p v-else-if="!loading&&!pins.length">Закреплений пока нет.</p>
-    <ol><li v-for="pin in pins" :key="pin.messageId"><button type="button" @click="emit('open',{kind:'CHANNEL',conversationId:channelId,messageId:pin.messageId})"><span>{{authors.displayName(pin.authorId)}} · {{new Date(pin.messageCreatedAt).toLocaleString('ru-RU')}}</span><p>{{pin.preview||'Сообщение с вложением'}}</p><span>Открыть закреплённое сообщение</span></button><button v-if="canManage" type="button" :disabled="busy||loading" @click="remove(pin.messageId)">Снять закрепление</button></li></ol>
-    <button v-if="cursor" type="button" :disabled="loading||busy" @click="load(true)">Ещё закрепления</button>
+  <section class="pin-panel" aria-label="Закреплённые сообщения"><h2 v-if="!embedded">Закреплённые сообщения</h2><div class="result-toolbar"><span class="result-meta">{{pins.length||''}}</span><button class="gc-button gc-button--secondary" type="button" :disabled="loading||busy" @click="load()">Обновить закрепления</button></div><p v-if="loading" role="status">Загрузка…</p><p v-if="error" role="alert">{{error}}</p><p v-else-if="!loading&&!pins.length">Закреплений пока нет.</p>
+    <ol class="result-list"><li v-for="pin in pins" :key="pin.messageId" class="result-row"><button class="result-open" type="button" @click="emit('open',{kind:'CHANNEL',conversationId:channelId,messageId:pin.messageId})"><span class="result-meta"><span :title="authors.displayName(pin.authorId)">{{authors.displayName(pin.authorId)}}</span> · <time :datetime="pin.messageCreatedAt">{{new Date(pin.messageCreatedAt).toLocaleString('ru-RU')}}</time></span><p class="result-snippet">{{pin.preview||'Сообщение с вложением'}}</p><span class="result-action-label">К сообщению</span><span class="gc-sr-only">Открыть закреплённое сообщение</span></button><button v-if="canManage" class="gc-button gc-button--secondary" type="button" :disabled="busy||loading" @click="remove(pin.messageId)">Снять закрепление</button></li></ol>
+    <button v-if="cursor" class="gc-button gc-button--secondary" type="button" :disabled="loading||busy" @click="load(true)">Ещё закрепления</button>
   </section>
 </template>
-<style scoped>.pin-panel{padding:16px 20px;display:grid;gap:12px}.pin-panel ol{list-style:none;padding:0}.pin-panel li{border-bottom:1px solid var(--gc-border);padding:12px 0;display:grid;gap:8px}.pin-panel li>button:first-child{text-align:left}.pin-panel p{white-space:pre-wrap;overflow-wrap:anywhere}.pin-panel button{min-height:36px}</style>
+<style scoped>.pin-panel{padding:8px 16px;display:grid;gap:12px}.pin-panel ol{list-style:none;padding:0}.pin-panel li{border-bottom:1px solid var(--gc-border);padding:12px 0;display:grid;gap:8px}.pin-panel li>button:first-child{text-align:left}.pin-panel p{white-space:pre-wrap;overflow-wrap:anywhere}.pin-panel button{min-height:44px}</style>

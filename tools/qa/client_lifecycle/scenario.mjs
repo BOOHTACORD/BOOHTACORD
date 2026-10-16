@@ -5,6 +5,7 @@ import { api, channel, chromium, expect, login, openNavigation, origin, status }
 import { guild } from './guild.mjs'
 import { sessions } from './sessions.mjs'
 import { searchTabs } from './search_tabs.mjs'
+import { searchPresentation } from './search_presentation.mjs'
 import { registration, rateLimit } from '../critical_client_acceptance/auth.mjs'
 import { resetLinks } from '../critical_client_acceptance/reset.mjs'
 import { bursts } from '../critical_client_acceptance/bursts.mjs'
@@ -88,6 +89,7 @@ try {
   report.catalog_message_actions = { open: true, close: true, pointer: input.viewport.has_touch ? 'touch' : 'mouse' }
   console.log('stage=qa-member-message-actions-complete')
   await searchTabs(guest, input, report)
+  await searchPresentation(guest, b, value, input, report)
 
   await channel(guest, 'Voice')
   await expect(guest.getByRole('heading', { name: 'Вы не подключены', exact: true })).toBeVisible()
@@ -201,6 +203,7 @@ try {
   await expect(globalSearch.getByLabel('Область поиска')).toHaveValue('all')
   await expect(globalSearch.getByLabel('Автор')).toHaveValue('')
   await expect(globalSearch.getByLabel('Вложения')).toHaveValue('any')
+  await globalSearch.locator('.search-filter-disclosure > summary').click()
   await expect(globalSearch.getByLabel('С даты')).toBeVisible()
   await expect(globalSearch.getByLabel('По дату включительно')).toBeVisible()
   await expect(globalSearch.getByRole('button', { name: 'Найти', exact: true })).toBeDisabled()

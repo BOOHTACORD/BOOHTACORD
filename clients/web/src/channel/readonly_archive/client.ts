@@ -4,10 +4,13 @@ import { loadMessagePage, type MessageRequest } from '../../conversation/message
 import { searchMessages } from '../../search/search_messages_client'
 export interface ArchivedChannel { id: string; name: string; description: string; category_name: string; archived_at: string }
 export interface ArchivePage { revision: number; channels: ArchivedChannel[]; next_cursor?: string; can_manage: boolean }
+export class ArchiveRequestError extends Error {
+  constructor(readonly status: number) { super(`Не удалось загрузить архив (${status}).`) }
+}
 function invalid(): never { throw new Error('Сервер вернул некорректный архив.') }
 export async function loadArchives(cursor?: string, request: MessageRequest = tracedFetch): Promise<ArchivePage> {
   const response = await request(`${apiBaseUrl}/archives/text-channels${cursor ? `?cursor=${encodeURIComponent(cursor)}` : ''}`, { method: 'GET', credentials: 'same-origin', headers: { accept: 'application/json' } })
-  if (!response.ok) throw new Error(`Не удалось загрузить архив (${response.status}).`)
+  if (!response.ok) throw new ArchiveRequestError(response.status)
   const page = await response.json() as ArchivePage
   if (!page || !Number.isInteger(page.revision) || page.revision < 1 || typeof page.can_manage !== 'boolean' || !Array.isArray(page.channels) || (page.next_cursor !== undefined && typeof page.next_cursor !== 'string')) return invalid()
   for (const channel of page.channels) if (!channel || !/^[0-9a-f-]{36}$/i.test(channel.id) || typeof channel.name !== 'string' || typeof channel.description !== 'string' || typeof channel.category_name !== 'string' || !Number.isFinite(Date.parse(channel.archived_at))) return invalid()

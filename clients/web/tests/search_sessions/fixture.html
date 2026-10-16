@@ -12,6 +12,6 @@ createApp({render:()=>h('main',[
  h('button',{onClick:()=>{open.value=false}},'Hide search'),
  h('button',{onClick:()=>{current.value='c';open.value=true}},'Search C'),
  h('button',{onClick:()=>{open.value=false;clearAuthenticatedState(pinia)}},'End account'),
- open.value?h('aside',{class:'members search-aside',style:{display:'block',position:'relative',inset:'auto',height:'650px',overflow:'auto'}},[h(SearchPanel,{currentConversation:conversations[current.value],channelLabels:{},directMessageLabels:{},onClose:()=>{open.value=false}})]):null
+ open.value?h('aside',{class:'members search-aside',style:{display:'flex',flexDirection:'column',position:'relative',inset:'auto',height:'650px',overflow:'auto'}},[h(SearchPanel,{currentConversation:conversations[current.value],channelLabels:{},directMessageLabels:{},onClose:()=>{open.value=false}})]):null
 ])}).use(pinia).mount('#app')
 </script></html>

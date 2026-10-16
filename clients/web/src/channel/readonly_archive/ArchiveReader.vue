@@ -4,6 +4,7 @@ import { archiveHistory, archiveSearch, archiveDownloadUrl } from './client'
 import type { TextMessage } from '../../conversation/message_client'
 import type { SearchMessage } from '../../search/search_messages_client'
 import { useAuthorDirectory } from '../../identity/author_directory'
+import { MessageRequestError } from '../../conversation/message_client'
 const props = defineProps<{ channelId: string }>()
 const authors = useAuthorDirectory()
 const messages = ref<(TextMessage | SearchMessage)[]>([])
@@ -18,7 +19,7 @@ async function load(more = false, search = false): Promise<void> {
     messages.value = more ? [...messages.value, ...page.messages] : page.messages
     cursor.value = page.nextCursor ?? ''; activeQuery.value = text
     for (const message of page.messages) void authors.ensure(message.authorId)
-  } catch (reason) { if (ticket === sequence) error.value = reason instanceof Error ? reason.message : 'Не удалось прочитать архив.' }
+  } catch (reason) { if (ticket === sequence) { if (reason instanceof MessageRequestError && [401, 403, 404].includes(reason.status)) { messages.value = []; cursor.value = '' }; error.value = reason instanceof Error ? reason.message : 'Не удалось прочитать архив.' } }
   finally { if (ticket === sequence) loading.value = false }
 }
 watch(() => props.channelId, () => { sequence++; messages.value = []; cursor.value = ''; query.value = ''; void load() }, { immediate: true })
@@ -29,7 +30,7 @@ onBeforeUnmount(() => { sequence++ })
     <p role="note">Архив доступен только для чтения. Отправка и изменение сообщений отключены.</p>
     <form role="search" @submit.prevent="load(false, true)"><label>Поиск в архиве <input class="gc-field" v-model="query" type="search" maxlength="256" :disabled="loading"></label><button class="gc-button" :aria-busy="loading" :disabled="loading || !query.trim()">Найти</button><button class="gc-button gc-button--secondary" type="button" :disabled="loading" @click="load()">Вся история</button></form>
     <p v-if="error" role="alert">{{ error }}</p><p v-if="loading" role="status">Загрузка…</p><p v-else-if="!messages.length && !error" role="status">Сообщений нет.</p>
-    <ol class="archive-messages"><li v-for="message in messages" :key="message.id"><article><header>{{ authors.displayName(message.authorId) }} · <time :datetime="message.createdAt">{{ new Date(message.createdAt).toLocaleString('ru-RU') }}</time></header><p>{{ 'deleted' in message && message.deleted ? 'Сообщение удалено' : message.body }}</p><ul v-if="'attachments' in message"><li v-for="file in message.attachments" :key="file.id"><a :href="archiveDownloadUrl(channelId, file.id)" download>{{ file.originalName }}</a></li></ul></article></li></ol>
+    <ol class="archive-messages result-list"><li v-for="message in messages" :key="message.id" class="result-row"><article><header class="result-meta"><span :title="authors.displayName(message.authorId)">{{ authors.displayName(message.authorId) }}</span> · <time :datetime="message.createdAt">{{ new Date(message.createdAt).toLocaleString('ru-RU') }}</time></header><p>{{ 'deleted' in message && message.deleted ? 'Сообщение удалено' : message.body }}</p><ul v-if="'attachments' in message"><li v-for="file in message.attachments" :key="file.id"><a :href="archiveDownloadUrl(channelId, file.id)" download>{{ file.originalName }}</a></li></ul></article></li></ol>
     <button v-if="cursor" class="gc-button gc-button--secondary" type="button" :disabled="loading" @click="load(true)">Показать ещё</button>
   </section>
 </template>

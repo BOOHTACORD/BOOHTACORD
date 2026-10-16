@@ -1,0 +1,1607 @@
+{
+  "task": "DW-007",
+  "issue": 346,
+  "date": "2026-10-16",
+  "status": "PASS",
+  "scope": "Local Web implementation, registered integration and scoped manual visual review. Remote CI/merge proof is kept in the PR.",
+  "base": "2ee7e9ec62684f56acf9dd3e456791766a732fa6",
+  "accepted_source": "16a1a39789efccfee8e810dfe513c85f7848c834 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "accepted_code_sha256": {
+    ".github/workflows/ci-frontend.yaml": "99525673cf7fd75d50dd0f7ef965136689a7e81f89bdf31092b6b91528d87b30",
+    "backlog/tasks.yaml": "38a9690fd221cd5216047d7593c5556d92e39e2a2e236bfadb8e4c682e8e0939",
+    "clients/web/package.json": "8a84df6bf48661eb4a6237a74db0135a94142c6708f0a806b5b2e14784b23272",
+    "clients/web/src/channel/readonly_archive/ArchivePanel.vue": "0cede8b3e3bdaaef388beb65b22ec8036894ba1e62ead9ecf37810c714213183",
+    "clients/web/src/channel/readonly_archive/ArchiveReader.vue": "9cc500e0a91c5dfe7184971e1c0baf77d2189beb42dcb103a00faf373225d8b0",
+    "clients/web/src/channel/readonly_archive/client.ts": "0da6631fa4c2feb53bdc549eb9290bec3ddf0330d59ca9122868d632920b205d",
+    "clients/web/src/conversation/files_panel/ConversationFilesPanel.vue": "8ae352e0ec25be15123f4ef08260df662f85f34aad464e408d4575e3a17c4fd9",
+    "clients/web/src/conversation/pins/PinPanel.vue": "e36f2767739b978ed9bc2131b1d57b004afecd9eab53a5106dbf2057f2e10038",
+    "clients/web/src/design/design_v2_search_results.css": "e9a604820c4d17df68d97f8fbc8d9f17dedb942251e5a774f509ca1260b58092",
+    "clients/web/src/design/search_panel_contract.spec.ts": "d36ad583036f0d7668df3e0bdedebd965940806c24240f6d9017cffac4beb575",
+    "clients/web/src/search/PersonalMentionsPanel.vue": "0b9e2b1f8e72b0795eedc2ff3d0ed1b5b28a93ede512c7d0a4c3cfac626786be",
+    "clients/web/src/search/QuickJumpPanel.vue": "79937a86d9171db45bb717a4918c928af41d3b6f05b966460c01c3b9329e8d4a",
+    "clients/web/src/search/SearchPanel.vue": "a00e55a782f1a92ac8599f13106506f04317f9050f1039f0b5b2b3253fc34d85",
+    "clients/web/src/search/SearchResultBody.vue": "7487406f9bf800fe885fcc4a7795d7bc1550903a1766f5de36be56e47edb6689",
+    "clients/web/src/search/filters/SearchFilters.vue": "beb146b808ef20e7a39308e00069e8dce78bfe1d72aac1927c6a0af865ff02b8",
+    "clients/web/src/search/mention_inbox_controller.spec.ts": "06b54c80532144c3de6de3786934b94618a18e34ed41a33f865da92e82097b23",
+    "clients/web/src/search/mention_inbox_controller.ts": "edab4d711280f4fca0dd0f2223fbe1b8c1fd1d858943a4b424d314c0db6667ab",
+    "clients/web/src/search/result_snippet.spec.ts": "e75bbe0bebc53e198c6c227211f516f02c4e281d34e1d30636d40ebc6959bdec",
+    "clients/web/src/search/result_snippet.ts": "3c8aac7bcb34936236004c15b78e7eef685bac43385747ef031b27dacb4ad3c1",
+    "clients/web/src/style.css": "6e86d5b82541a7b11afa7923ec0b9abc684be69b5984cb44f52f4e031192a2da",
+    "clients/web/tests/control_consistency/behavior.browser.spec.ts": "32175d492168c6d64aa3f02e0e8ab4e6da05a9077f0c60325172107b29e54395",
+    "clients/web/tests/control_consistency/controls.browser.spec.ts": "348e45a3db644da94743f2eb29cc05216e9ec398fb0dea4a10344df2f4be6fd8",
+    "clients/web/tests/conversation_action_disclosure/files_layout.browser.spec.ts": "945e178f8212c0ab2dcdb2a1c0f9652769fba6190c9be196585592db61cbd0cb",
+    "clients/web/tests/mentions_inbox/mentions_inbox.browser.spec.ts": "6074335fac03a853c274b98b5c4ec5776f7373fe691e2054dcd2718f22fc2535",
+    "clients/web/tests/search_dates/dates.browser.spec.ts": "4e47b0198ea509d2b90e5932481b95f4cb53861722c5653b0472f5e1724196cc",
+    "clients/web/tests/search_dates/submit_layout.browser.spec.ts": "6948b37b4eea92549280f63a22511f1dc6db1b32aef7f1ae4df72eb1988d051d",
+    "clients/web/tests/search_presentation/filters.browser.spec.ts": "d75d9a31371be2268a5e62b773a3ef5dc776b79b00e8f3d2354bb7e241129c68",
+    "clients/web/tests/search_presentation/fixture.html": "9f6fcaf82404ab997931e64b1d9a740f4f7d4ca5d1d01f3fe839e96e13c720ef",
+    "clients/web/tests/search_presentation/fixture.ts": "0c3acaab0966cd8ea4607865f10ed0cbf9b4552a4ba5c800d0b9e10882094976",
+    "clients/web/tests/search_presentation/fixture_api.ts": "01e88105a3bd02c09532d887c5804bf05a1c6ab53b2d63b8abae80fd47434c7b",
+    "clients/web/tests/search_presentation/focus.browser.spec.ts": "06b78436dd67341716b1a7024fdef011a6bf4e2c0a74de748017ee726ba2fabd",
+    "clients/web/tests/search_presentation/layout.browser.spec.ts": "6c750c3c65797a43b97dd9d049628adab0add3b3fb4e198127dfcbd6d74437f9",
+    "clients/web/tests/search_presentation/playwright.config.ts": "fd7313f23e244406eb98f898dc27c0ee8bca07b80481e06d18ae68b94e4699c8",
+    "clients/web/tests/search_presentation/states.browser.spec.ts": "77d98bd572db5a84dbf62f072bb2465e8d39583d81783892392502b4acefce2b",
+    "clients/web/tests/search_presentation/zoom.browser.spec.ts": "4c7f983d59fa8b4818a1751d30fdb0efa0b6cebbc2e099452e4b37548b4d6de6",
+    "clients/web/tests/search_sessions/fixture.html": "af951ada3857518404b6684de99ad657622aa4db14be38e737ab8a03893c2298",
+    "clients/web/tests/search_sessions/retention.browser.spec.ts": "13cd5e6d55b00818ae5324a967fcc28bb6fa55de82a31ca4caf0bf69caac5d39",
+    "clients/web/tests/search_sessions/tab_scroll.browser.spec.ts": "a0b07000c73401cc290a271b5c128f7f3383cd3f82c71b87e4fb2f3861659dc8",
+    "tools/ci/native/web.py": "5ef736b4365e70c3a8076bf536db01400ecbc2f11a2ed3e1cbb6723098f749bc",
+    "tools/qa/accessibility_runtime/active_voice_scale.mjs": "ced3fce4914914791997c962ab5dd6c23c0cc9a71a17ced981a06226baf2d2f0",
+    "tools/qa/client_lifecycle/scenario.mjs": "46fd9133696beb92899d8aef851cb4b6db087eca88d6dc2d339118f29207984a",
+    "tools/qa/client_lifecycle/search_presentation.mjs": "c155ab798271bae899f9f331017d05ec9d8a69d10bbd52a8398ac0718fbbb849",
+    "tools/qa/client_lifecycle/search_tabs.mjs": "3ac1928f4da700363218b6809bcee945ca9ed20c9d044230c212665330426424",
+    "tools/qa/conversation_files/scenario.mjs": "504f0ca6eba46a9daa714e31f56a9685ebb737438b3ef9661032736a101a7f2a",
+    "tools/qa/dm_composer/scenario.mjs": "ffcfe369d56779cd9419a3f9ae7412ade6402441771653431709fcf02e250351",
+    "tools/qa/local_features/features.json": "a06bc5898ed288f0174a684b9f31ad53c2552bae11ad60de8e103d068a0bcbd6"
+  },
+  "automated_gate": {
+    "path": ".out/local-features/20261016-201130/report.json",
+    "sha256": "160a0fb4b84b6dd94b2b7d93628e34c75d517299896e74a8b7223198588bf960",
+    "raw_status": "REVIEW_REQUIRED",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "PASS"
+      },
+      {
+        "name": "web-chat_rhythm",
+        "status": "PASS"
+      },
+      {
+        "name": "web-control_consistency",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-dm_starter",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-message_social",
+        "status": "PASS"
+      },
+      {
+        "name": "web-microcopy",
+        "status": "PASS"
+      },
+      {
+        "name": "web-navigation_density",
+        "status": "PASS"
+      },
+      {
+        "name": "web-password_generation",
+        "status": "PASS"
+      },
+      {
+        "name": "web-quick_jump_people",
+        "status": "PASS"
+      },
+      {
+        "name": "web-readonly_archive",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_profile",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_dates",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_presentation",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_sessions",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "features": [
+      "admin",
+      "auth",
+      "chat",
+      "screen",
+      "settings",
+      "shell",
+      "voice"
+    ],
+    "platforms": [
+      "web"
+    ]
+  },
+  "fixture_visual_review": {
+    "scope": "DW-007 component visual review only; real-API integration is recorded separately.",
+    "candidate_commit": "869e3a1266442add5fb12a711037334b0618b108",
+    "base": "2ee7e9ec62684f56acf9dd3e456791766a732fa6",
+    "status": "PASS",
+    "frames": [
+      {
+        "path": ".out/issue346/before-wide/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+        "sha256": "7b076dba8ac66431ea923d9a742b06a7a278baa4558778100cb99057bb1b5f5b",
+        "width": 320,
+        "height": 1000,
+        "group": "before",
+        "surface": "search",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+        "sha256": "14ca001f7e2855c84c0173b6a639d333febfdf90228a036faf6833aa42a67173",
+        "width": 320,
+        "height": 1000,
+        "group": "after",
+        "surface": "search",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/before-wide/layout.browser-pins-result-layout-at-320px-100-text/pins-layout.png",
+        "sha256": "1bee148f7db3c538d2410de0b51b27830db7f0b81ca62380c72a866b19dcdc0d",
+        "width": 320,
+        "height": 1000,
+        "group": "before",
+        "surface": "pins",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-pins-result-layout-at-320px-100-text/pins-layout.png",
+        "sha256": "cc5786625dc3a884bb6f75e2f8456d845741d2091d3a31251f90cfadbf173936",
+        "width": 320,
+        "height": 1000,
+        "group": "after",
+        "surface": "pins",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/before-wide/layout.browser-archive-result-layout-at-320px-100-text/archive-layout.png",
+        "sha256": "01e2bfc21ff8749ae9b98830c45063f16ad82d8ecc8f9f4b718e71c27d4f776e",
+        "width": 320,
+        "height": 1000,
+        "group": "before",
+        "surface": "archive",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-archive-result-layout-at-320px-100-text/archive-layout.png",
+        "sha256": "b38e912ab0c15338aa7b82b8ef61825e6d28c9aa7d1b69a6a14c7ae3c09fad7e",
+        "width": 320,
+        "height": 1000,
+        "group": "after",
+        "surface": "archive",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/before-wide/layout.browser-mentions-result-layout-at-320px-100-text/mentions-layout.png",
+        "sha256": "ebfc4463022c8ef701b4b5b94fce665d98ef51031b7a019abca0d9739b8d247c",
+        "width": 320,
+        "height": 1000,
+        "group": "before",
+        "surface": "mentions",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-mentions-result-layout-at-320px-100-text/mentions-layout.png",
+        "sha256": "14fa84721af28062fbec6f6eaf16e72376af7e452f2d67a48ad450a8cb3ba5c9",
+        "width": 320,
+        "height": 1000,
+        "group": "after",
+        "surface": "mentions",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/before-wide/layout.browser-quick-result-layout-at-320px-100-text/quick-layout.png",
+        "sha256": "c7c932fa761b450c1a94c3704a62301ba0376f0201f7524a59721de9d3dc0496",
+        "width": 320,
+        "height": 1000,
+        "group": "before",
+        "surface": "quick",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-quick-result-layout-at-320px-100-text/quick-layout.png",
+        "sha256": "20514ee7031ccdc0ba06994a34d2b500a6b7d0a988e76b345a7b089a805d7620",
+        "width": 320,
+        "height": 1000,
+        "group": "after",
+        "surface": "quick",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/before-wide/layout.browser-files-result-layout-at-320px-100-text/files-layout.png",
+        "sha256": "66412eea108a45ff44dfced0bdb0d9401abe08798d38ff32273bcdf353c1831f",
+        "width": 320,
+        "height": 1000,
+        "group": "before",
+        "surface": "files",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-files-result-layout-at-320px-100-text/files-layout.png",
+        "sha256": "59d44a2b779a1ec0684b572ccffb84e41a4817f73251011d76187a1f183f45ac",
+        "width": 320,
+        "height": 1000,
+        "group": "after",
+        "surface": "files",
+        "css_width": 320
+      },
+      {
+        "path": ".out/issue346/before-corrected/layout.browser-search-result-layout-at-390px-100-text/search-layout.png",
+        "sha256": "be72a5fb7e39b39cfd474ef57bfc68ba1ecbb9fce991419fa95b06c2cc099600",
+        "width": 390,
+        "height": 1000,
+        "group": "before",
+        "surface": "search",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-search-result-layout-at-390px-100-text/search-layout.png",
+        "sha256": "1acfc5087b2fb7cb28c201dcf91d9c9cdcef9e7a627be9bbd885716673f4e03b",
+        "width": 390,
+        "height": 1000,
+        "group": "after",
+        "surface": "search",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/before-corrected/layout.browser-pins-result-layout-at-390px-100-text/pins-layout.png",
+        "sha256": "6e9672a5f719294db63105a4b6de69e16f16392037e854f5f748b614926303ec",
+        "width": 390,
+        "height": 1000,
+        "group": "before",
+        "surface": "pins",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-pins-result-layout-at-390px-100-text/pins-layout.png",
+        "sha256": "efecf5277a49b59973739a82dd8a0f8d96284522175c08331d325d7b923ba794",
+        "width": 390,
+        "height": 1000,
+        "group": "after",
+        "surface": "pins",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/before-corrected/layout.browser-archive-result-layout-at-390px-100-text/archive-layout.png",
+        "sha256": "27a014f20f7be71e68434b8225c898ba574972d83dbd9334f70591c5dd8d2e03",
+        "width": 390,
+        "height": 1000,
+        "group": "before",
+        "surface": "archive",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-archive-result-layout-at-390px-100-text/archive-layout.png",
+        "sha256": "bb04794d41b6fa246864fa1cfe814c80b94f8ba555082f735bb538abb6874aa3",
+        "width": 390,
+        "height": 1000,
+        "group": "after",
+        "surface": "archive",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/before-corrected/layout.browser-mentions-result-layout-at-390px-100-text/mentions-layout.png",
+        "sha256": "cd2a7ff3ca7a1f1055b73dd0adea951bcc4acb7d625654e2bef95fc5b8c8499a",
+        "width": 390,
+        "height": 1000,
+        "group": "before",
+        "surface": "mentions",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-mentions-result-layout-at-390px-100-text/mentions-layout.png",
+        "sha256": "9cb4ff53411748ddbd41675c94ee757d2306cddc9305c146b52467bef53ae77a",
+        "width": 390,
+        "height": 1000,
+        "group": "after",
+        "surface": "mentions",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/before-corrected/layout.browser-quick-result-layout-at-390px-100-text/quick-layout.png",
+        "sha256": "7ff5826644285621124147f6ba88d951cd9eeb2db22986ded376cbd74787ff6c",
+        "width": 390,
+        "height": 1000,
+        "group": "before",
+        "surface": "quick",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-quick-result-layout-at-390px-100-text/quick-layout.png",
+        "sha256": "50af80dd737c0a76f2acb5ae9f8a96c2621d7b4e0cc41f9389b3101cbeaee28b",
+        "width": 390,
+        "height": 1000,
+        "group": "after",
+        "surface": "quick",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/before-corrected/layout.browser-files-result-layout-at-390px-100-text/files-layout.png",
+        "sha256": "ee37e785fe5c0ee9a0a75190f4c4594281720cb02e3c525f298ae09a3bdde962",
+        "width": 390,
+        "height": 1000,
+        "group": "before",
+        "surface": "files",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-files-result-layout-at-390px-100-text/files-layout.png",
+        "sha256": "4b3aa22b46156d64860df0122f7726325ad9a6c1cc291bfc344a40a19e9d1eda",
+        "width": 390,
+        "height": 1000,
+        "group": "after",
+        "surface": "files",
+        "css_width": 390
+      },
+      {
+        "path": ".out/issue346/before-wide/layout.browser-search-result-layout-at-1440px-100-text/search-layout.png",
+        "sha256": "1e76e9aac0f4c5c421ca8000ffe5faec0a262760083c3f1338063d10d75f5b7e",
+        "width": 1440,
+        "height": 1000,
+        "group": "before",
+        "surface": "search",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-search-result-layout-at-1440px-100-text/search-layout.png",
+        "sha256": "8cf4073287c06068f80bb42c45b5480bcea479811226b096d3cdb12efd3cd07d",
+        "width": 1440,
+        "height": 1000,
+        "group": "after",
+        "surface": "search",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/before-wide/layout.browser-pins-result-layout-at-1440px-100-text/pins-layout.png",
+        "sha256": "49f6c6dcf79869fc46f762c4b4f345b869f785af5e05da56284a95322f3c7b5d",
+        "width": 1440,
+        "height": 1000,
+        "group": "before",
+        "surface": "pins",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-pins-result-layout-at-1440px-100-text/pins-layout.png",
+        "sha256": "3e9a41e9eb38e52aa5ea3494a49795f60a45a9de115e4dd478f39bbd2091e027",
+        "width": 1440,
+        "height": 1000,
+        "group": "after",
+        "surface": "pins",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/before-wide/layout.browser-archive-result-layout-at-1440px-100-text/archive-layout.png",
+        "sha256": "ab80d05cb11e3a7321337a895e4ec0e82ebf21ae3d33f5c8a58936f599876f82",
+        "width": 1440,
+        "height": 1000,
+        "group": "before",
+        "surface": "archive",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-archive-result-layout-at-1440px-100-text/archive-layout.png",
+        "sha256": "43d0bd3c31b9461ffd5ac05332684683b6060786a76207b33bca428c21ebff59",
+        "width": 1440,
+        "height": 1000,
+        "group": "after",
+        "surface": "archive",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/before-wide/layout.browser-mentions-result-layout-at-1440px-100-text/mentions-layout.png",
+        "sha256": "94b3040c448d66a64643815a250650ed8e227acb9ea21eebd4ab8ab32c0cbb67",
+        "width": 1440,
+        "height": 1000,
+        "group": "before",
+        "surface": "mentions",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-mentions-result-layout-at-1440px-100-text/mentions-layout.png",
+        "sha256": "bc7dffa6d6f7fc6257ec64507b9ddbb36c5659f176a256c1ab1dd48a390cb815",
+        "width": 1440,
+        "height": 1000,
+        "group": "after",
+        "surface": "mentions",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/before-wide/layout.browser-quick-result-layout-at-1440px-100-text/quick-layout.png",
+        "sha256": "1291c02cfca92b7b99db7a4c3e62b8b3e5f9363beaa43e9f2831cfbaa9a95001",
+        "width": 1440,
+        "height": 1000,
+        "group": "before",
+        "surface": "quick",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-quick-result-layout-at-1440px-100-text/quick-layout.png",
+        "sha256": "df9f567a1ec190b185430c1fe8c3d0e4c1093c3c764fc5a9e93d86a9ecc0380d",
+        "width": 1440,
+        "height": 1000,
+        "group": "after",
+        "surface": "quick",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/before-wide/layout.browser-files-result-layout-at-1440px-100-text/files-layout.png",
+        "sha256": "43ea3db197b634d3ea54649dfe86ab3f47a7140ddf7a47129795e0742a55692f",
+        "width": 1440,
+        "height": 1000,
+        "group": "before",
+        "surface": "files",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-files-result-layout-at-1440px-100-text/files-layout.png",
+        "sha256": "eea9123951d2af24ba5585a7a9b0a5821d54ac9fdd25cf39f1af111eb4540501",
+        "width": 1440,
+        "height": 1000,
+        "group": "after",
+        "surface": "files",
+        "css_width": 1440
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-search-result-layout-at-320px-200-text/search.png",
+        "sha256": "36233fc04bce62030b6d26c5fb1620ce06fbedf59f9151c12c552ab9ca637601",
+        "width": 320,
+        "height": 1000,
+        "group": "large-text",
+        "surface": "search",
+        "css_width": 320,
+        "root_percent": 200
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-pins-result-layout-at-320px-200-text/pins.png",
+        "sha256": "f2dbf47b9455f41c7be9b523225e53f8fd6edadf45d5609514234e7473fea22c",
+        "width": 320,
+        "height": 1000,
+        "group": "large-text",
+        "surface": "pins",
+        "css_width": 320,
+        "root_percent": 200
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-archive-result-layout-at-320px-200-text/archive.png",
+        "sha256": "d9d87adb6cf9b7b81b9a1cf821c7ceef4e80e87ae0d9763fa9fbb11e33b12a9d",
+        "width": 320,
+        "height": 1000,
+        "group": "large-text",
+        "surface": "archive",
+        "css_width": 320,
+        "root_percent": 200
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-mentions-result-layout-at-320px-200-text/mentions.png",
+        "sha256": "6d737679265a99b0bf45d75417c70e0c65ee1aaf3d663fe927f4e95a57a6ae3a",
+        "width": 320,
+        "height": 1000,
+        "group": "large-text",
+        "surface": "mentions",
+        "css_width": 320,
+        "root_percent": 200
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-quick-result-layout-at-320px-200-text/quick.png",
+        "sha256": "b6a300a259855470cbded2d4b76c8025ac9e78d1a8044aa1fa451778c13774cc",
+        "width": 320,
+        "height": 1000,
+        "group": "large-text",
+        "surface": "quick",
+        "css_width": 320,
+        "root_percent": 200
+      },
+      {
+        "path": ".out/issue346/after-reviewed/layout.browser-files-result-layout-at-320px-200-text/files.png",
+        "sha256": "9b1e6cea85be32590f9d9ec2eedf53dc826a721f6b4bad3237bc3b87d7f11e17",
+        "width": 320,
+        "height": 1000,
+        "group": "large-text",
+        "surface": "files",
+        "css_width": 320,
+        "root_percent": 200
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-329b1-l-200-browser-zoom-in-780px/archive-zoom.png",
+        "sha256": "2a0329fdd9b948efcebbfc39d6e04b148292897488d2f7dac9259b89050b5973",
+        "width": 780,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "archive",
+        "geometry": {
+          "outerWidth": 780,
+          "innerWidth": 390,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-329b1-l-200-browser-zoom-in-780px/files-zoom.png",
+        "sha256": "a31d73736208006dd44b99735ab529dc868a2b6efb94405e07bd047245a1cbbf",
+        "width": 780,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "files",
+        "geometry": {
+          "outerWidth": 780,
+          "innerWidth": 390,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-329b1-l-200-browser-zoom-in-780px/mentions-zoom.png",
+        "sha256": "01fed29de8f76113db0a53c1d8c078b24bd189b4895636d477dadce9b21dfd3b",
+        "width": 780,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "mentions",
+        "geometry": {
+          "outerWidth": 780,
+          "innerWidth": 390,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-329b1-l-200-browser-zoom-in-780px/pins-zoom.png",
+        "sha256": "a3b150a6b1dc7aa56a61dc557a243cafa79e47ef49e2d70a1fed177b7216498d",
+        "width": 780,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "pins",
+        "geometry": {
+          "outerWidth": 780,
+          "innerWidth": 390,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-329b1-l-200-browser-zoom-in-780px/quick-zoom.png",
+        "sha256": "0e5699c8e6ba20d0f2ac5d5a7e4dc83f7596fadf182c028a4a470a17363eee11",
+        "width": 780,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "quick",
+        "geometry": {
+          "outerWidth": 780,
+          "innerWidth": 390,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-329b1-l-200-browser-zoom-in-780px/search-zoom.png",
+        "sha256": "3bcd2c907aef773ec1896dc21f01d28edb354449c5d8d63da5416cc14fe7514a",
+        "width": 780,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "search",
+        "geometry": {
+          "outerWidth": 780,
+          "innerWidth": 390,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-83cae--200-browser-zoom-in-2048px/archive-zoom.png",
+        "sha256": "d9dae8b888ce0f2e9d5cf2b10f145811fc96fdbb237b7c0015b2827ffa982050",
+        "width": 2048,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "archive",
+        "geometry": {
+          "outerWidth": 2048,
+          "innerWidth": 1024,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-83cae--200-browser-zoom-in-2048px/files-zoom.png",
+        "sha256": "59cb1ac56116a2e1395a70ae68d28d107e62510a4c4a11e8ff328b92537f29f8",
+        "width": 2048,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "files",
+        "geometry": {
+          "outerWidth": 2048,
+          "innerWidth": 1024,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-83cae--200-browser-zoom-in-2048px/mentions-zoom.png",
+        "sha256": "c69b77584d04017a4a4aa1c10c69dcbede7313f9914a67ee4f2678ff3520f143",
+        "width": 2048,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "mentions",
+        "geometry": {
+          "outerWidth": 2048,
+          "innerWidth": 1024,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-83cae--200-browser-zoom-in-2048px/pins-zoom.png",
+        "sha256": "aa35ba15ccb5be15b9a0232da25f750b98da343df25bd3a678ec3133fc5aac21",
+        "width": 2048,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "pins",
+        "geometry": {
+          "outerWidth": 2048,
+          "innerWidth": 1024,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-83cae--200-browser-zoom-in-2048px/quick-zoom.png",
+        "sha256": "6ff1fde924cf4ff839fa660e72018a4ef4d68a33a5dd17a8386cf0c7c1c028aa",
+        "width": 2048,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "quick",
+        "geometry": {
+          "outerWidth": 2048,
+          "innerWidth": 1024,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-83cae--200-browser-zoom-in-2048px/search-zoom.png",
+        "sha256": "ced0f18d8f5e1802b7c67eeb3729b666e0ba9076ccc30c4753f5233ff4235268",
+        "width": 2048,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "search",
+        "geometry": {
+          "outerWidth": 2048,
+          "innerWidth": 1024,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-841c7--200-browser-zoom-in-2880px/archive-zoom.png",
+        "sha256": "cbd8255c26ad50d96916f7043b3538f092936b0e93342901ee965b540d47616f",
+        "width": 2880,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "archive",
+        "geometry": {
+          "outerWidth": 2880,
+          "innerWidth": 1440,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-841c7--200-browser-zoom-in-2880px/files-zoom.png",
+        "sha256": "88752393e445e68c13dbf95f2c1d299c7bb0a16bf93fbe469bd1afbf1ada242e",
+        "width": 2880,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "files",
+        "geometry": {
+          "outerWidth": 2880,
+          "innerWidth": 1440,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-841c7--200-browser-zoom-in-2880px/mentions-zoom.png",
+        "sha256": "996218b47370055605c89558e4c444f2d796e1ecb7f94b50edf0712173233e97",
+        "width": 2880,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "mentions",
+        "geometry": {
+          "outerWidth": 2880,
+          "innerWidth": 1440,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-841c7--200-browser-zoom-in-2880px/pins-zoom.png",
+        "sha256": "f7e21342951fd2f84f2e0220d3f407488da0fb6870ace48eb3ce01120c4b24c2",
+        "width": 2880,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "pins",
+        "geometry": {
+          "outerWidth": 2880,
+          "innerWidth": 1440,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-841c7--200-browser-zoom-in-2880px/quick-zoom.png",
+        "sha256": "5b662ca99e5f60a6d0f5f3c279c759e7a3a766943b65d45a300483ef8081c0f0",
+        "width": 2880,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "quick",
+        "geometry": {
+          "outerWidth": 2880,
+          "innerWidth": 1440,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-841c7--200-browser-zoom-in-2880px/search-zoom.png",
+        "sha256": "40751f2013d6d0a40883030ec26ce16fde8c4f2d5c404f812333e05e9a8b5788",
+        "width": 2880,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "search",
+        "geometry": {
+          "outerWidth": 2880,
+          "innerWidth": 1440,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-92d1e-l-200-browser-zoom-in-640px/archive-zoom.png",
+        "sha256": "8f82ce1fa78f4d2f4cd4cb02ff85e2af2c02a89dd8e59d144a6ef46bcb666513",
+        "width": 640,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "archive",
+        "geometry": {
+          "outerWidth": 640,
+          "innerWidth": 320,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-92d1e-l-200-browser-zoom-in-640px/files-zoom.png",
+        "sha256": "201b7e5b8cfab01c68b43a65b5c250a992e1320a9175cfb3c3b8f2b19558d015",
+        "width": 640,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "files",
+        "geometry": {
+          "outerWidth": 640,
+          "innerWidth": 320,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-92d1e-l-200-browser-zoom-in-640px/mentions-zoom.png",
+        "sha256": "8838fa59502c99a306c0ee6770688c7c378b754277bcdb58eca5d792ec4401bf",
+        "width": 640,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "mentions",
+        "geometry": {
+          "outerWidth": 640,
+          "innerWidth": 320,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-92d1e-l-200-browser-zoom-in-640px/pins-zoom.png",
+        "sha256": "bcbcb7ee3293144192365cba3ee4ab7d651c7ef9b2d8cc6c080e492ee86b26ff",
+        "width": 640,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "pins",
+        "geometry": {
+          "outerWidth": 640,
+          "innerWidth": 320,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-92d1e-l-200-browser-zoom-in-640px/quick-zoom.png",
+        "sha256": "a9389845b85e480cef1fce0200a52cf38a84b1a3c43797e4f3b4dd766550f60f",
+        "width": 640,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "quick",
+        "geometry": {
+          "outerWidth": 640,
+          "innerWidth": 320,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/after-reviewed/zoom.browser-six-result-su-92d1e-l-200-browser-zoom-in-640px/search-zoom.png",
+        "sha256": "67603ccbd909c29a628b031addcd91634316255a79ac818ba9d7b311d0aef06a",
+        "width": 640,
+        "height": 913,
+        "group": "browser-zoom-200",
+        "surface": "search",
+        "geometry": {
+          "outerWidth": 640,
+          "innerWidth": 320,
+          "dpr": 2,
+          "root": "16px",
+          "cssZoom": "1",
+          "pinch": 1
+        }
+      },
+      {
+        "path": ".out/issue346/visual/2048-archive-zoom.png",
+        "sha256": "2f9ad45bc3ce2ed6d4909c2b2b8011aec1a88426908bfdb85eefd2437dd367be",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/2048-files-zoom.png",
+        "sha256": "7421ccbe2d8f41bb608be7f45b70ad2bef4097a85851b48fbd5358f8087ca448",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/2048-mentions-zoom.png",
+        "sha256": "417bd16d78921643ca3f9a0983f8cdf60260ba53c736a68c7f0b0b18c7d18e96",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/2048-pins-zoom.png",
+        "sha256": "a20fc36a9f9905496988e0254ae9aac5905b0862294a7e65248a7d6753c28faf",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/2048-quick-zoom.png",
+        "sha256": "95fc78468c3c792cfd61d6944bbfb9f7b04b1bbdf023f478de7693cc98c4f0ff",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/2048-search-zoom.png",
+        "sha256": "348e20d43b4add151688a5421518347a84f38fa3e5a1bfd6efda61a22730bf67",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/2880-archive-zoom.png",
+        "sha256": "c040a939cede458ec3c597ee77dcb9d64c2729054925d8d020ba02f0e3284aea",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/2880-files-zoom.png",
+        "sha256": "c6cb4e98f6afc12266f073555742b1c80ec9ced2c566e64acc0255679d6ba168",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/2880-mentions-zoom.png",
+        "sha256": "ca888c79596b42ac8ae8ca4b92adf98a758846a235390e1b30a559e8a8b86f13",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/2880-pins-zoom.png",
+        "sha256": "41cd851bd95d8427d19534a90ab1c4b42913865e7d7e769522dca9cfb2034127",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/2880-quick-zoom.png",
+        "sha256": "defe01ec10a384d61097f9bef93cdab68ce3eaeda0e85bb847ae990b16c51f40",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/2880-search-zoom.png",
+        "sha256": "d0d99191f57b3b198f00a4d619a4e37d6154a3378ebf82460ea231e919e6e201",
+        "width": 760,
+        "height": 913,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/after-1440-archive.png",
+        "sha256": "5ed2fb160dc37675e466da29bd797d46ca78b6906231ae25055481f817b4b80c",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/after-1440-files.png",
+        "sha256": "511d4f57b27b1218cbe3e74d3ef57b804e9b867ae761cca70664d20015629b3d",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/after-1440-mentions.png",
+        "sha256": "bdbfe8d312f382a130d62dcf546aacc6f7a320f9738337a852e1ba49ea014463",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/after-1440-pins.png",
+        "sha256": "e6150159e96a2fcbc61041c4ad3e12c686984495e88f0b0effccd5a07d2bb38c",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/after-1440-quick.png",
+        "sha256": "767b924c0b6bdd08ec5b2e36892c0a5e81319d2fe6c77dca66eac1de78683870",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/after-1440-search.png",
+        "sha256": "1d06ff67dbbd509f82c6df657f9fa3ff84919e7b7d502a9b42b8bf2b6c513e02",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/before-1440-archive.png",
+        "sha256": "735513715b5d048f7d758043af3b30fa4bf3a47257318ab79b851a16f9e2df91",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/before-1440-files.png",
+        "sha256": "8e4bd1d8f91b0bf31d9f26f368dcf59a80e309ff89db41a5e87471b8b5cc5aad",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/before-1440-mentions.png",
+        "sha256": "8162e3efc3941777065a51411f5925e67fcf5fefdc6a57f902243a874ff83f60",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/before-1440-pins.png",
+        "sha256": "42b42cd13eb06d331633aa443befb902a814a5896c5adca9ea838d8f44580020",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/before-1440-quick.png",
+        "sha256": "96e963fd24ac9e7ecadc055f2327a8beca2da98e80f04e11a34b3fbeef077477",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      },
+      {
+        "path": ".out/issue346/visual/before-1440-search.png",
+        "sha256": "cc13677afd7898dd23a28dc1d65eb9debe2e11baf484366fc42e99ccb6a1a007",
+        "width": 380,
+        "height": 1000,
+        "group": "native-resolution-crop",
+        "crop": "rightmost 380px (CSS 1440) or 760px (actual browser zoom); no scaling"
+      }
+    ],
+    "observations": [
+      "Before/After inspected at 320/390/1440: advanced filters are disclosed; result metadata, bounded snippets and action rows fit the rail; pins/archive no duplicate headings.",
+      "File list replaces crushed table columns; complete filenames available by disclosure. Quick-jump rows remain compact and unnumbered.",
+      "All six surfaces inspected at actual browser zoom 200% (outer 640/780/2048/2880, CSS 320/390/1024/1440); focused full names wrap inside the vertical content scroll owner.",
+      "All six inspected with root text 200% at 320; avatar initials remain on one line; archive reader retains full readonly details with vertical scrolling.",
+      "Wide-frame crops preserve source pixels with CoreGraphics cropping; full sources and their hashes are retained; no screenshot baseline was approved."
+    ]
+  },
+  "before_provenance": {
+    "base": "2ee7e9ec62684f56acf9dd3e456791766a732fa6",
+    "tracked_src_matches_base": true,
+    "new_stylesheet_unimported": true,
+    "sources": {
+      "clients/web/src/channel/readonly_archive/ArchivePanel.vue": "6e1bc901e17a3a9766f057d359bdc063fe12996824a5cb4840f29e687905f2ae",
+      "clients/web/src/channel/readonly_archive/ArchiveReader.vue": "764e2bfbe3d84ea7215fa4c3cd5fc1f06f6a945434b86d04a3a1fcf729ec221e",
+      "clients/web/src/channel/readonly_archive/client.ts": "4171162778b368dc6593fd031aa3c3e3fdb6a1aa9e47bf8e20aed9549399c336",
+      "clients/web/src/conversation/files_panel/ConversationFilesPanel.vue": "cf7c13b69f0e05ca78cd881507b40c9a0dd6baa5b168822d3b8510285cbd02fa",
+      "clients/web/src/conversation/pins/PinPanel.vue": "797316bf52c8d4ceb1d8531f8ea71ed4e3e573a11466070f47382ea926a34498",
+      "clients/web/src/design/search_panel_contract.spec.ts": "1506707ffad49fb38d00bdc67f3f1fe92490af6ed4410447448d353a4c078c24",
+      "clients/web/src/search/PersonalMentionsPanel.vue": "8106a0d807312cfd7dfa12e70565341a00e3c13333ef9b59ae2a33b8874ceaad",
+      "clients/web/src/search/QuickJumpPanel.vue": "2f00e69726150fd824f0c5919514b3b019c6f4b7734b827629dcdb1851477897",
+      "clients/web/src/search/SearchPanel.vue": "14a6e9183027e339c950a19cc144a56bc1eafacc144141263117f3c15d752210",
+      "clients/web/src/search/filters/SearchFilters.vue": "d816fec3f710b7ac370bc9f9a71076a2c2a2b87d5a80b0f3f90e7f0ac13d87fc",
+      "clients/web/src/search/mention_inbox_controller.spec.ts": "4939dd66c0665f698bcb7df3d38186dbebbc699b6377f923c67e1fea06566160",
+      "clients/web/src/search/mention_inbox_controller.ts": "d74a1c1521ed59103b48e3d3e61b784745cee051fb8cff0ee3bcb4cb36b23380",
+      "clients/web/src/style.css": "dd813b42124c488516821da7eee350821a30678120e1b961a9e9553a7df9ec07"
+    },
+    "expected_red_exit": 1
+  },
+  "runtime_results": {
+    "1440": {
+      "path": ".out/client-lifecycle/1440/browser.json",
+      "sha256": "41814b99b9d0d613c66a6ee03989b110add40df94a37aa7a91c906f79688717c",
+      "search_presentation": {
+        "six_surfaces": true,
+        "actual_api": true,
+        "upload_file_context": true,
+        "draft_retained": true,
+        "filter_message_return": true,
+        "nonzero_result_scroll_restored": true,
+        "query_and_filters_restored": true,
+        "pinned_and_mention_context": true,
+        "archive_reader": true,
+        "quick_jump": true,
+        "touch": false
+      }
+    },
+    "393": {
+      "path": ".out/client-lifecycle/393/browser.json",
+      "sha256": "9b3519d9aa0c8a2dee74f3c1651510cab0e46a74a2be27dc1645a0839aa7259e",
+      "search_presentation": {
+        "six_surfaces": true,
+        "actual_api": true,
+        "upload_file_context": true,
+        "draft_retained": true,
+        "filter_message_return": true,
+        "nonzero_result_scroll_restored": true,
+        "query_and_filters_restored": true,
+        "pinned_and_mention_context": true,
+        "archive_reader": true,
+        "quick_jump": true,
+        "touch": true
+      }
+    }
+  },
+  "runtime_visual_review": {
+    "status": "PASS",
+    "source": "16a1a39789efccfee8e810dfe513c85f7848c834",
+    "frames": [
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/compact-archive.png",
+        "sha256": "10fa630ed1ec52f55cdc2dff4cce1ae76921ffffb9140f307187613e344ad86f",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/compact-files.png",
+        "sha256": "3e3530628b9e27034f747200a5b429b8a8d21867378e147f0fd0eef519596394",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/compact-mentions.png",
+        "sha256": "53c77ef4a3f4398fa8c94536bfa50fa1245f7383339abab1b3d26f941ebbdf15",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/compact-pins.png",
+        "sha256": "95173549b7da727fbaa07d099d10a12897e244f76c11dab96cff863910020260",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/compact-quick-jump.png",
+        "sha256": "12c11476b1cb5e931c9519eb0c24571c0c2e64f24ba2fc3aefd2fde6e1b1ca55",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/compact-search-filters.png",
+        "sha256": "72c763b595fadb590cde50f77b56b791170d1546c12ab86576f0ae7553f3227c",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/compact-search-return.png",
+        "sha256": "0b932295fd308d819d931778ab81093e19366207b1a7a22d87afaba84b3c3ac1",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/files-content.png",
+        "sha256": "10882f1dd8b5df6cb91e6b72c788917722783a71e6a290ad3cb39417b2c9cbdf",
+        "width": 1800,
+        "height": 800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/right-compact-archive.png",
+        "sha256": "9b1b39358c16e1f16302b2373bf5f67be174c52a1f1d720a7ef1f9175300ece2",
+        "width": 1000,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/right-compact-mentions.png",
+        "sha256": "0f1af93fad73a09108daab53fa9b387154088c01b1755180a2a6be243dc45279",
+        "width": 1000,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/right-compact-pins.png",
+        "sha256": "8c17b91be36d7c5e1878f7e31bbe4fef8e4bce774051caed5ddb1e7c1e26b999",
+        "width": 1000,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/right-compact-quick-jump.png",
+        "sha256": "89f6e35a79a80cc991e92e241e14d76cc1f218f81a48d0a0e4d0e98b0763e533",
+        "width": 1000,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/right-compact-search-filters.png",
+        "sha256": "47087d89159446b5a9d4e172e4b5cd26bc9f6daf2078e53cde2eb608bb22d309",
+        "width": 1000,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/1440/right-compact-search-return.png",
+        "sha256": "a52e18b037497c7082e03ca1863e6af1a9cfc8d2fcf057a28b9b5730fb545859",
+        "width": 1000,
+        "height": 1800
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/bottom-compact-archive.png",
+        "sha256": "f85a7043684e5264a26121a90cbae18427c1b72f6bc381f142163411316883fa",
+        "width": 1179,
+        "height": 956
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/bottom-compact-files.png",
+        "sha256": "42665b47983ee11c5954762da24edc9ec22981a9355fbbeeb4342e1e26e73638",
+        "width": 1179,
+        "height": 956
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/bottom-compact-mentions.png",
+        "sha256": "b1ff7fd5a60dd632cf554188f8bdef0f535502bdcaefa71983f3872a5df7823c",
+        "width": 1179,
+        "height": 956
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/bottom-compact-pins.png",
+        "sha256": "b1ff7fd5a60dd632cf554188f8bdef0f535502bdcaefa71983f3872a5df7823c",
+        "width": 1179,
+        "height": 956
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/bottom-compact-quick-jump.png",
+        "sha256": "b1ff7fd5a60dd632cf554188f8bdef0f535502bdcaefa71983f3872a5df7823c",
+        "width": 1179,
+        "height": 956
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/bottom-compact-search-filters.png",
+        "sha256": "291c193f0f5199fecb9e164cec0f6f2b359135900b07ccb0f237ca00e4556b0c",
+        "width": 1179,
+        "height": 956
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/bottom-compact-search-return.png",
+        "sha256": "6dc2a2d0d116f48bf25c8c295fb14df10bc39db6a224f116b06febe1602d0161",
+        "width": 1179,
+        "height": 956
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/compact-archive.png",
+        "sha256": "05679815f730bcc878c8b211694ebecf6a55780a5932edd78dd35532ceae2597",
+        "width": 1179,
+        "height": 2556
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/compact-files.png",
+        "sha256": "68f91c41940ffc842fa3649cba4e31f08a049465bffdead37d95c4ba30a5ce26",
+        "width": 1179,
+        "height": 2556
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/compact-mentions.png",
+        "sha256": "c9a91f1c446989edadd86198a972d4b4bc643e8958c2d12818727cd5c56b6bcc",
+        "width": 1179,
+        "height": 2556
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/compact-pins.png",
+        "sha256": "5d866483581aa6fafb07f6a5bdcdf7a30308dc6517da55aafa6056d9310d2fc4",
+        "width": 1179,
+        "height": 2556
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/compact-quick-jump.png",
+        "sha256": "51c6ddafb96347bad92d47abcad8f43c5378995b649784c4709c89328d1ad088",
+        "width": 1179,
+        "height": 2556
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/compact-search-filters.png",
+        "sha256": "e9648b06616934dcdebcd755a06e630d1c40ecd178b184a0064f4fed6c355894",
+        "width": 1179,
+        "height": 2556
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/compact-search-return.png",
+        "sha256": "2d347278536b83e9dbcabb685f32ae35982220d517691d03db61e719b99c97d6",
+        "width": 1179,
+        "height": 2556
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/top-compact-archive.png",
+        "sha256": "5b1a6aa05332df1e76fdd926f29e1a67d5cf18bae0430c55cb0c58e48dc8e63b",
+        "width": 1179,
+        "height": 1600
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/top-compact-files.png",
+        "sha256": "8208c1714dfcf19ec3697cfb3adc301e3626a2ccdedd15a437a4633dc64e6e1a",
+        "width": 1179,
+        "height": 1600
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/top-compact-mentions.png",
+        "sha256": "43ea8bf7aa90175ab5775377acb0ddf151bb9432c0c62d10792668fa290ea989",
+        "width": 1179,
+        "height": 1600
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/top-compact-pins.png",
+        "sha256": "df0464f0bbe51e12c1da3e1ce5cef1295047ef821f63328e1670b591ccbbb6af",
+        "width": 1179,
+        "height": 1600
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/top-compact-quick-jump.png",
+        "sha256": "d002340704a6d473a3850331894221d96cba09f33d00b0a22fcad251e6061bb7",
+        "width": 1179,
+        "height": 1600
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/top-compact-search-filters.png",
+        "sha256": "2a48fc35877977ba711c33a46460b162e6d45cfb9ec1f16bd29ac1a2ca34054c",
+        "width": 1179,
+        "height": 1600
+      },
+      {
+        "path": ".out/issue346/runtime-notification-attempt/393/top-compact-search-return.png",
+        "sha256": "5361e4897923bcfb1fd9f19a4bebe4d1b10375bfa96534bb19651e0e8e4e6cc1",
+        "width": 1179,
+        "height": 1600
+      }
+    ],
+    "notes": [
+      "Reviewed all six real-API surfaces on desktop and touch at source resolution using exact crops. These selected frames precede the later notification timeout in run 20261016-200345; that overall run remains FAIL. The final gate reruns the identical production code and all exact-target/restoration assertions.",
+      "Desktop files content crop: x550/y140/1800x800; other desktop crops: rightmost 1000 pixels. Touch: 1179px wide, split at y1600; no scaling. Originals retained with hashes.",
+      "Touch screenshots retain transient browser tap highlighting and an existing toolbar hint after the menu action. No immutable visual baseline was approved.",
+      "Active filter badges/reset remain visible below the collapsed disclosure; restored result position intentionally scrolls the query above the content viewport. Native file details expose the complete name; contextual actions and readonly archive text are reachable."
+    ]
+  },
+  "retained_failed_attempts": [
+    {
+      "path": ".out/local-features/20261016-195533/report.json",
+      "sha256": "9073acb43ba259b414330e05825c724be7a4b6e714c9e5ef5959aa1257b7e052",
+      "status": "FAIL",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-control_consistency",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "FAIL"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-microcopy",
+          "status": "PASS"
+        },
+        {
+          "name": "web-navigation_density",
+          "status": "PASS"
+        },
+        {
+          "name": "web-password_generation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-readonly_archive",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ],
+      "reason": "Old mentions-inbox copy assertion; corrected without dropping metadata/privacy/paging/target coverage."
+    },
+    {
+      "path": ".out/local-features/20261016-200345/report.json",
+      "sha256": "ffdefbcdcd66dae5a5baa7c1866ce1a39476495745c9f8cf702a3ffa940b024d",
+      "status": "FAIL",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-control_consistency",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-microcopy",
+          "status": "PASS"
+        },
+        {
+          "name": "web-navigation_density",
+          "status": "PASS"
+        },
+        {
+          "name": "web-password_generation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-readonly_archive",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "FAIL"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ],
+      "reason": "Desktop media lease notification timeout after all six DW-007 journeys; touch passed. Retried unchanged source, no checks skipped."
+    }
+  ],
+  "not_run": [
+    "Android/iOS/native desktop release acceptance",
+    "physical-device/media QoE or capacity",
+    "historical full conversation-files gate",
+    "pending-upload queue editing acceptance"
+  ],
+  "independent_observation": "Touch pending-upload preparation showed a zero-width composer in diagnostic probes 2/3. No production composer or queue code changed; no runtime baseline attribution is claimed. DW-007 result data uses the actual authenticated upload+publish API, with draft retention checked."
+}

@@ -23,6 +23,7 @@ try{
    await openNavigation(page);await page.locator('.guild-search-button').click();await expect(page.getByTestId('search-aside-panel')).toBeVisible()
    const search=await page.locator('.search-close').evaluate(e=>{const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return{close_inside_viewport:r.top>=0&&r.bottom<=innerHeight,close_hit_target:e.contains(hit),full_modal:document.querySelector('.search-aside').getBoundingClientRect().bottom===innerHeight}})
    const scope=page.getByRole('combobox',{name:'Область поиска',exact:true});await scope.focus();await scope.press('ArrowDown');await scope.press('ArrowUp');await expect(scope).toHaveValue('all')
+   await page.locator('.search-filter-disclosure > summary').click()
    const scopeGeometry=await scope.evaluate(e=>{
     const css=getComputedStyle(e),canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');ctx.font=`${css.fontWeight} ${css.fontSize} ${css.fontFamily}`
     const rect=e.getBoundingClientRect(),meta=e.closest('.search-form-meta').getBoundingClientRect(),heading=document.querySelector('.search-panel-heading').getBoundingClientRect(),title=document.querySelector('.search-panel-heading h1').getBoundingClientRect(),modes=document.querySelector('.workspace-search-modes').getBoundingClientRect(),filters=document.querySelector('.search-filters').getBoundingClientRect()

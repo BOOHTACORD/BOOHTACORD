@@ -23,7 +23,7 @@ async function open(page: Page, surface: string, scale = 100) {
   if (surface === 'guild') await expect(page.getByLabel('Название гильдии', { exact: true })).toBeEnabled()
   if (surface === 'audio') await page.getByText('Режим и диагностика обработки', { exact: true }).click()
   if (surface === 'archive') { await expect(page.getByLabel('Канал', { exact: true })).toBeVisible(); await page.getByLabel('Канал', { exact: true }).selectOption(id) }
-  if (surface === 'files') await expect(page.locator('.conversation-files tbody tr')).toHaveCount(1)
+  if (surface === 'files') await expect(page.locator('.conversation-files .result-row')).toHaveCount(1)
   await page.evaluate(() => document.fonts.ready)
 }
 function action(page: Page, surface: string): Locator {

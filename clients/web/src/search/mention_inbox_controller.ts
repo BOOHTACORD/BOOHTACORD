@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { listMyMentions, type MentionInboxItem, type MentionInboxPage } from './mentions_inbox_client'
+import { MessageRequestError } from '../conversation/message_client'
 
 export function createMentionInboxController(load: (cursor?: string) => Promise<MentionInboxPage> = listMyMentions) {
   const mentions = ref<MentionInboxItem[]>([]), nextCursor = ref(''), loading = ref(false), error = ref('')
@@ -28,7 +29,10 @@ export function createMentionInboxController(load: (cursor?: string) => Promise<
       mentions.value = [...mentions.value, ...page.mentions.filter((item) => { const key = `${item.kind}:${item.messageId}`; if (seen.has(key)) return false; seen.add(key); return true })]
       nextCursor.value = page.nextCursor ?? ''
     } catch (cause) {
-      if (current === generation) error.value = cause instanceof Error ? cause.message : 'Не удалось загрузить страницу.'
+      if (current === generation) {
+        if (cause instanceof MessageRequestError && [401, 403, 404].includes(cause.status)) { mentions.value = []; nextCursor.value = '' }
+        error.value = cause instanceof Error ? cause.message : 'Не удалось загрузить страницу.'
+      }
     } finally { if (current === generation) loading.value = false }
   }
 

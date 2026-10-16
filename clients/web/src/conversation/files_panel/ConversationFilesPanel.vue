@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { formatFileSize, loadConversationFilePage, mapConversationFiles, type ConversationFileItem, type ConversationFileMessage } from './files_panel'
+import { MessageRequestError } from '../message_client'
+import { DirectMessageRequestError } from '../../direct_message/direct_message_client'
 
 const props = defineProps<{ kind: 'CHANNEL' | 'DIRECT_MESSAGE'; conversationId: string; deletedMessageIds?: readonly string[] }>()
 const emit = defineEmits<{ close: []; openMessage: [messageId: string] }>()
@@ -26,8 +28,11 @@ async function loadPage(): Promise<void> {
     files.value = [...existing.values()].filter((file) => !props.deletedMessageIds?.includes(file.messageId))
     cursor.value = page.nextCursor
     loaded.value = true
-  } catch {
-    if (current === generation) error.value = 'Не удалось загрузить файлы беседы.'
+  } catch (cause) {
+    if (current === generation) {
+      if ((cause instanceof MessageRequestError || cause instanceof DirectMessageRequestError) && [401, 403, 404].includes(cause.status)) { files.value = []; cursor.value = undefined; loaded.value = false }
+      error.value = 'Не удалось загрузить файлы беседы.'
+    }
   } finally {
     if (current === generation) pending.value = false
   }
@@ -55,14 +60,13 @@ onMounted(() => title.value?.focus())
     <p v-if="pending && !loaded" role="status">Загружаем файлы…</p>
     <p v-if="error" role="alert">{{ error }} <button class="gc-button gc-button--secondary" type="button" :disabled="pending" @click="loadPage">Повторить</button></p>
     <p v-if="loaded && !files.length && !cursor" role="status">В этой беседе пока нет файлов.</p>
-    <table v-if="files.length">
-      <thead><tr><th scope="col">Тип</th><th scope="col">Имя</th><th scope="col">Размер</th><th scope="col">Дата</th><th scope="col">Сообщение</th></tr></thead>
-      <tbody><tr v-for="file in files" :key="file.id">
-        <td>{{ file.typeLabel }}</td><td class="conversation-files__name">{{ file.originalName }}</td><td>{{ formatFileSize(file.sizeBytes) }}</td>
-        <td><time :datetime="file.createdAt">{{ new Date(file.createdAt).toLocaleDateString('ru-RU') }}</time></td>
-        <td><button class="gc-button gc-button--secondary" type="button" :aria-label="`Перейти к сообщению с файлом ${file.originalName}`" @click="emit('openMessage', file.messageId)">К сообщению</button></td>
-      </tr></tbody>
-    </table>
+    <ol v-if="files.length" class="result-list" aria-label="Файлы беседы" :aria-busy="pending">
+      <li v-for="file in files" :key="file.id" class="result-row">
+        <details class="file-name-detail"><summary class="result-title" :title="file.originalName">{{ file.originalName }}</summary><p>{{ file.originalName }}</p></details>
+        <div class="result-meta"><span>{{ file.typeLabel }}</span><span>{{ formatFileSize(file.sizeBytes) }}</span><time :datetime="file.createdAt">{{ new Date(file.createdAt).toLocaleDateString('ru-RU') }}</time></div>
+        <button class="gc-button gc-button--secondary" type="button" :aria-label="`Перейти к сообщению с файлом ${file.originalName}`" @click="emit('openMessage', file.messageId)">К сообщению</button>
+      </li>
+    </ol>
     <button v-if="cursor" class="gc-button gc-button--secondary" type="button" :aria-busy="pending" :disabled="pending" @click="loadPage">{{ pending ? 'Загружаем…' : 'Показать более старые файлы' }}</button>
   </section>
 </template>
@@ -70,18 +74,8 @@ onMounted(() => title.value?.focus())
 <style scoped>
 .conversation-files { display: flex; flex-direction: column; gap: var(--gc-space-3); padding: var(--gc-space-4); overflow: auto; background: var(--gc-content); color: var(--gc-text-primary); }
 .conversation-files header { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gc-space-3); }
-.conversation-files header h3 { flex: 1; min-width: 0; }
-.conversation-files table { width: 100%; border-collapse: collapse; }
-.conversation-files th, .conversation-files td { border-bottom: 1px solid var(--gc-border-subtle); padding: var(--gc-space-2); text-align: start; }
-.conversation-files th { overflow-wrap: anywhere; color: var(--gc-text-muted); font-weight: var(--gc-weight-medium); }
-.conversation-files__name { overflow-wrap: anywhere; }
-@media (max-width: 600px) {
-  .conversation-files table { table-layout: fixed; }
-  .conversation-files th:first-child { width: 13%; }
-  .conversation-files th:nth-child(2) { width: 19%; }
-  .conversation-files th:nth-child(3) { width: 16%; }
-  .conversation-files th:nth-child(4), .conversation-files th:nth-child(5) { width: 26%; }
-  .conversation-files td { overflow-wrap: anywhere; }
-  .conversation-files tbody button { max-width: 100%; }
-}
+.conversation-files header h3 { flex: 1; min-width: 0; margin: 0; font-size: 1rem; }
+.file-name-detail { min-width: 0; }
+.file-name-detail summary { cursor: pointer; min-height: 44px; align-content: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.file-name-detail p { margin-block: 8px; overflow-wrap: anywhere; user-select: text; }
 </style>

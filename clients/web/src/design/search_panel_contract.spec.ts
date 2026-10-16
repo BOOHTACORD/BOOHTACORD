@@ -40,7 +40,7 @@ describe('GuildChat unified search design contract', () => {
   })
 
   it('renders the V2 search summary, member identity and query highlights through real results', () => {
-    expect(searchPanel).toContain('Найдено {{ messages.length }}')
+    expect(searchPanel).toContain('Найдено: {{ messages.length }}')
     expect(searchPanel).toContain('authors.displayName(message.authorId)')
     expect(searchPanel).toContain('SearchResultBody')
     expect(searchPanel).toContain('emit(\'open\', message)')

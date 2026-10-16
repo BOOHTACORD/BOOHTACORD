@@ -17,6 +17,7 @@ import PersonalMentionsPanel from './PersonalMentionsPanel.vue'
 import { validCodePointLength } from '../validation/unicode_limits/unicode_limits'
 import { searchMessages, type SearchMessage } from './search_messages_client'
 import type { MentionInboxItem } from './mentions_inbox_client'
+import { MessageRequestError } from '../conversation/message_client'
 
 interface SearchConversation { id: string; kind: 'CHANNEL' | 'DIRECT_MESSAGE'; label: string }
 const props = defineProps<{ currentConversation: SearchConversation | null; channelLabels: Record<string, string>; directMessageLabels: Record<string, string> }>()
@@ -110,6 +111,7 @@ async function runSearch(before?: string, restoredQuery?: string): Promise<void>
   if (scope.value === 'current' && !conversation) { error.value = 'Выберите беседу или ищите по всем беседам.'; return }
   const sequence = ++requestSequence
   if (!before && !restoreScrollPending) restoredScrollTop = 0
+  if (!before) { messages.value = []; nextCursor.value = ''; searched.value = false }
   activeQuery.value = searchQuery
   submitted.value = true
   loading.value = true
@@ -127,14 +129,17 @@ async function runSearch(before?: string, restoredQuery?: string): Promise<void>
     if (sequence === requestSequence && !before && scrollHost) scrollHost.scrollTop = restoredScrollTop
     if (sequence === requestSequence) restoreScrollPending = false
   } catch (reason) {
-    if (sequence === requestSequence) error.value = reason instanceof Error ? reason.message : 'Не удалось выполнить поиск сообщений.'
+    if (sequence === requestSequence) {
+      if (!before || reason instanceof MessageRequestError && [401, 403, 404].includes(reason.status)) { messages.value = []; nextCursor.value = ''; searched.value = false }
+      error.value = reason instanceof Error ? reason.message : 'Не удалось выполнить поиск сообщений.'
+    }
   } finally { if (sequence === requestSequence) loading.value = false }
 }
 
 function conversationLabel(message: SearchMessage): string {
   return message.kind === 'CHANNEL' ? props.channelLabels[message.channelId] ?? 'Текстовый канал' : props.directMessageLabels[message.directMessageId] ?? 'Личный диалог'
 }
-function formattedDate(value: string): string { return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(new Date(value)) }
+function formattedDate(value: string): string { return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }).format(new Date(value)) }
 onBeforeUnmount(() => {
   tabSequence++
   saveSession()
@@ -142,7 +147,7 @@ onBeforeUnmount(() => {
   requestSequence++
 })
 onMounted(() => {
-  scrollHost = panelRoot.value?.closest<HTMLElement>('.search-aside') ?? panelRoot.value
+  scrollHost = panelRoot.value?.querySelector<HTMLElement>('#search-mode-content') ?? panelRoot.value
   scrollHost?.addEventListener('scroll', rememberScroll, { passive: true })
   void nextTick(() => queryInput.value?.focus())
   if (submitted.value) void runSearch(undefined, initialSession?.activeQuery)
@@ -154,14 +159,15 @@ onMounted(() => {
     <div class="search-panel-controls">
     <header class="search-panel-heading"><h1 id="search-panel-title">{{ activeView === 'messages' ? 'Поиск сообщений' : activeView === 'archives' ? 'Архив' : activeView==='pins'?'Закреплённые':'Упоминания' }}</h1><button v-action-hint class="search-close" type="button" aria-label="Закрыть поиск" @click="emit('close')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12" /></svg></button></header>
     <div class="search-view-tabs" role="group" aria-label="Поиск и упоминания">
-      <button id="search-messages-tab" type="button" :aria-pressed="activeView === 'messages'" aria-controls="search-messages-view" @click="activeView = 'messages'">Сообщения</button>
-      <button id="search-mentions-tab" type="button" :aria-pressed="activeView === 'mentions'" aria-controls="search-mentions-view" @click="activeView = 'mentions'">Упоминания</button>
-      <button type="button" :aria-pressed="activeView === 'archives'" @click="activeView = 'archives'">Архив</button>
-      <button v-if="currentConversation?.kind==='CHANNEL'" type="button" :aria-pressed="activeView==='pins'" @click="activeView='pins'">Закреплённые</button>
+      <button id="search-messages-tab" type="button" :aria-pressed="activeView === 'messages'" aria-controls="search-mode-content" @click="activeView = 'messages'">Сообщения</button>
+      <button id="search-mentions-tab" type="button" :aria-pressed="activeView === 'mentions'" aria-controls="search-mode-content" @click="activeView = 'mentions'">Упоминания</button>
+      <button type="button" :aria-pressed="activeView === 'archives'" aria-controls="search-mode-content" @click="activeView = 'archives'">Архив</button>
+      <button v-if="currentConversation?.kind==='CHANNEL'" type="button" :aria-pressed="activeView==='pins'" aria-controls="search-mode-content" @click="activeView='pins'">Закреплённые</button>
     </div>
     </div>
-    <PinPanel v-if="activeView==='pins'&&currentConversation?.kind==='CHANNEL'" :channel-id="currentConversation.id" @open="searchTarget.open($event);emit('close')" />
-    <ArchivePanel v-else-if="activeView === 'archives'" />
+    <div id="search-mode-content">
+    <PinPanel v-if="activeView==='pins'&&currentConversation?.kind==='CHANNEL'" embedded :channel-id="currentConversation.id" @open="searchTarget.open($event);emit('close')" />
+    <ArchivePanel v-else-if="activeView === 'archives'" embedded />
     <div v-else-if="activeView === 'mentions'" id="search-mentions-view" role="region" aria-label="Упоминания">
       <PersonalMentionsPanel :channel-labels="channelLabels" :direct-message-labels="directMessageLabels" @open="emit('openMention', $event)" />
     </div>
@@ -174,20 +180,21 @@ onMounted(() => {
       <button class="search-submit" type="submit" :disabled="!canSubmit">{{ loading ? 'Ищем…' : 'Найти' }}</button>
     </form>
     <p v-if="error" id="search-error" class="search-error" role="alert">{{ error }}</p>
-    <p class="search-status" :class="{ 'search-status--visible': loading || (!error && searched && !messages.length) }" role="status" aria-live="polite" :aria-busy="loading">{{ loading ? 'Ищем сообщения…' : searched ? (messages.length ? `Найдено ${messages.length} сообщения` : 'Совпадений нет.') : '' }}</p>
-    <span v-if="searched && messages.length" class="search-result-count" aria-hidden="true">Найдено {{ messages.length }} сообщения</span>
+    <p class="search-status" :class="{ 'search-status--visible': loading || (!error && searched && !messages.length) }" role="status" aria-live="polite" :aria-busy="loading">{{ loading ? 'Ищем сообщения…' : searched ? (messages.length ? `Найдено: ${messages.length}` : 'Совпадений нет.') : '' }}</p>
+    <span v-if="searched && messages.length" class="search-result-count" aria-hidden="true">Найдено: {{ messages.length }}</span>
     <ol v-if="messages.length" class="search-results" aria-label="Результаты поиска">
-      <li v-for="message in messages" :key="`${message.kind}:${message.id}`" class="search-result">
-        <article><header>{{ conversationLabel(message) }} · <time :datetime="message.createdAt">{{ formattedDate(message.createdAt) }}</time></header><div class="search-result-author"><span class="search-result-avatar" :style="{ backgroundColor: avatarBackground(message.authorId), color: avatarForeground(message.authorId) }">{{ avatarInitials(authors.displayName(message.authorId)) }}</span><strong>{{ authors.displayName(message.authorId) }}</strong></div><SystemWelcomeMessage v-if="message.messageKind === 'SYSTEM_WELCOME'" :author-id="message.authorId" :body="message.body" /><SearchResultBody v-else :body="message.body" :query="activeQuery" /><button type="button" :aria-label="`Открыть сообщение от ${authors.displayName(message.authorId)}`" @click="emit('open', message)">Открыть сообщение</button></article>
+      <li v-for="message in messages" :key="`${message.kind}:${message.id}`" class="search-result result-row">
+        <article><header class="result-meta"><span class="result-source" :title="conversationLabel(message)">{{ conversationLabel(message) }}</span><time :datetime="message.createdAt">{{ formattedDate(message.createdAt) }}</time></header><div class="search-result-author"><span class="search-result-avatar" :style="{ backgroundColor: avatarBackground(message.authorId), color: avatarForeground(message.authorId) }">{{ avatarInitials(authors.displayName(message.authorId)) }}</span><strong :title="authors.displayName(message.authorId)">{{ authors.displayName(message.authorId) }}</strong></div><SystemWelcomeMessage v-if="message.messageKind === 'SYSTEM_WELCOME'" :author-id="message.authorId" :body="message.body" /><SearchResultBody v-else :body="message.body" :query="activeQuery" /><button type="button" :aria-label="`Открыть сообщение от ${authors.displayName(message.authorId)}`" @click="emit('open', message)">Открыть сообщение</button></article>
       </li>
     </ol>
-    <button v-if="nextCursor" class="search-more" type="button" :disabled="loading" @click="runSearch(nextCursor)">Показать ещё</button>
+    <button v-if="nextCursor" class="search-more gc-button gc-button--secondary" type="button" :disabled="loading" @click="runSearch(nextCursor)">Показать ещё</button>
+    </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.search-panel-controls { position: sticky; top: 0; z-index: 2; display: flow-root; padding-bottom: 1px; background: var(--gc-sidebar); }
+.search-panel-controls { flex-shrink: 0; display: flow-root; padding-bottom: 1px; background: var(--gc-sidebar); }
 .search-view-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); gap: 8px; margin: 12px 20px; }
 .search-view-tabs button { min-width: 0; white-space: normal; overflow-wrap: anywhere; background: transparent; border: 1px solid var(--gc-border, #363a46); border-radius: var(--gc-radius-sm); color: inherit; cursor: pointer; min-height: 44px; padding: 6px 8px; }
 .search-view-tabs button[aria-pressed="true"] { background: var(--gc-surface-raised, #20232d); border-color: var(--gc-accent, #6974f5); }
