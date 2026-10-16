@@ -13,10 +13,10 @@ later compilation or component tests.
 | Gate | Current status |
 |---|---|
 | Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38841772178, source 1F08 |
-| Browser lifecycle acceptance | PASS, 1F08 run 38841772167, 81F run 38838918911 and CBA run 38832920361; E77's two earlier network failures retained below |
+| Browser lifecycle acceptance | 969 attempt 2 PASS (run 38844315317); attempt 1 remains FAIL with login transport `network_changed`; 1F08/81F/CBA also PASS |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED on locked Mac / system Keychain access |
-| Windows installed 78 → 79 | 1F08 FAIL before download: local candidates present, no remote candidates/pairs observed; private VM media candidate repeat being prepared |
+| Windows installed 78 → 79 | 1F08 FAIL before download: local candidates present, no remote candidates/pairs observed; 969 real repeat with a private VM media candidate running |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -65,6 +65,40 @@ cannot be selected; a missing owned private address fails instead of falling bac
 Eleven native-fixture tests PASS, including binding ownership and rejected ranges.
 No shipping media code or successful-update assertion is changed. The hypothesis
 is still unproven until an actual connection and installed update pass.
+
+The 969 native preflight (job 116791244739) passed on Windows with the owned
+private media interface and real PostgreSQL/API/SFU. The actual HTTPS catalog
+changed from revision 1 to signed revision 2 in 6577 ms before client builds.
+This proves native fixture readiness, not ICE connectivity or successful apply.
+
+The independent 969 browser attempt 1 failed at login: bounded diagnostics report
+`login_status=null`, `session_status=200`, `login_transport_error=network_changed`.
+The 2880×1800 source-resolution screenshot was inspected: credential fields are
+masked and the form displays `Failed to fetch`. Artifact 12022945974 authenticated
+at 574085 bytes, SHA-256
+`3d3d8ecadf9f936915df6866dd8f621c0ec3fd01d63c5bc6ef7a82e21b2349cc`.
+One complete fresh browser-job retry was requested; the failed attempt remains
+FAIL. No auth-POST retry, TLS bypass or Web product-code change was added.
+The PR CI merge commit `d0100fef69e03d5e3afa530a2e70d97430f2c1e7`
+has parents `3e6ac963` and `969c3300` and complete tree
+`2f215de50137c48d2beaba181675b7d86d9092aa`, exactly matching source 969.
+
+The fresh browser attempt 2 passed (job 116793164858). Authenticated artifact
+12023077551: 10117333 bytes, SHA-256
+`acfab24d10ea67a951efb6c30c96749696958b1cb4b2a457701e548960fad729`.
+Both viewport reports, native REST baseline and upload-reservation report are
+PASS; browser `mocks=false`, actual API, restart persistence and owned cleanup
+are confirmed. Original 1440 text-channel (2880×1800 pixels) and 1024 voice-prejoin
+captures were inspected: messages/composer are readable, main controls do not
+overlap, both explicit join actions fit in the prejoin panel. This repeat does
+not replace or reclassify the authenticated failed first attempt.
+
+The 969 QA79 full NUPKG (release 414506573, asset 646005454) was independently
+authenticated at 30784058 bytes, SHA-256
+`c3b5cab37c7c2268c37cad127c94f0dd2a61e8b10b48ce630b5c52c0dc34961b`.
+CRC/safe paths, package ID/version, x64 PE, recovery helper, pinned native SDK and
+bundled publisher root passed inspection before local owner signing/verification.
+Only the public envelope enters Git; the publisher key remains outside Git/CI.
 
 Publisher: locally generated Ed25519 root `boohtacord-desktop-478919e9652ab825`.
 Private key is outside the repository with mode 0600, parent 0700. Only the public
