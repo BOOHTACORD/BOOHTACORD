@@ -1,0 +1,37 @@
+import { test, expect, chromium } from '@playwright/test'
+import { writeFile } from 'node:fs/promises'
+import { expectAxeClear } from '../accessibility/axe'
+import { captureZoomedPage, withBrowserZoom } from '../control_consistency/browser_zoom'
+const longName='ОченьДлинноеИмяУчастникаБезПробелов'.repeat(3)
+for (const width of [640,780,2048,2880]) test(`DM modal at actual 200% zoom in ${width}px window`, async ({},info)=>{
+  await withBrowserZoom(chromium,width,2,async page=>{
+    await page.route('**/api/v1/members?**',r=>r.fulfill({json:{members:[]}}))
+    await page.route('**/api/v1/direct-message-candidates*',r=>r.fulfill({json:{candidates:Array.from({length:30},(_,i)=>({id:`peer-${i}`,display_name:i?`Участник ${i}`:longName}))}}))
+    await page.goto('/tests/dm_starter/fixture.html')
+    const geometry=await page.evaluate(()=>({outerWidth,innerWidth,dpr:devicePixelRatio,rootFont:getComputedStyle(document.documentElement).fontSize,cssZoom:getComputedStyle(document.body).zoom,pinch:visualViewport!.scale}))
+    expect(geometry).toEqual({outerWidth:width,innerWidth:width/2,dpr:2,rootFont:'16px',cssZoom:'1',pinch:1})
+    const trigger=page.getByRole('button',{name:'Начать диалог',exact:true})
+    await trigger.click()
+    const dialog=page.getByRole('dialog',{name:'Новый личный диалог',exact:true})
+    await expect(dialog.getByRole('button',{name:longName,exact:true})).toBeVisible()
+    const bounds=(await dialog.boundingBox())!, height=await page.evaluate(()=>innerHeight)
+    expect(bounds.x).toBeGreaterThanOrEqual(0);expect(bounds.x+bounds.width).toBeLessThanOrEqual(width/2)
+    expect(bounds.y).toBeGreaterThanOrEqual(0);expect(bounds.y+bounds.height).toBeLessThanOrEqual(height)
+    expect(await dialog.evaluate(el=>el.matches(':modal'))).toBe(true)
+    expect(await dialog.evaluate(el=>el.scrollWidth-el.clientWidth)).toBeLessThanOrEqual(1)
+    const name=dialog.getByRole('button',{name:longName,exact:true})
+    expect(await name.evaluate(el=>el.scrollHeight-el.clientHeight)).toBeLessThanOrEqual(1)
+    await page.keyboard.press('Shift+Tab')
+    await expect(dialog.getByRole('button',{name:'Участник 29',exact:true})).toBeFocused()
+    await expect(dialog.getByRole('button',{name:'Участник 29',exact:true})).toBeInViewport()
+    await page.keyboard.press('Tab')
+    await expect(dialog.getByRole('button',{name:'Закрыть выбор участника'})).toBeFocused()
+    const png=await captureZoomedPage(page,info.outputPath('dm-modal-zoom.png'))
+    expect(png.readUInt32BE(16)).toBe(width)
+    await expectAxeClear(page)
+    await page.keyboard.press('Escape');await expect(dialog).not.toBeVisible();await expect(trigger).toBeFocused()
+    await expect(page.getByLabel('Active DM')).toHaveText('existing-dm')
+    await expect(page.getByLabel('Draft')).toHaveValue('Unsaved draft')
+    await writeFile(info.outputPath('browser-zoom.json'),JSON.stringify(geometry,null,2))
+  })
+})

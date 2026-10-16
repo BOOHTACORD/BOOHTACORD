@@ -1,0 +1,103 @@
+{
+  "id": "dw01-search-tabs-2026-10-15",
+  "kind": "web-ui-regression",
+  "status": "PARTIAL",
+  "executed_at": "2026-10-15T23:14:08.077016+03:00",
+  "issue": "https://github.com/Egkurilov/BOOHTACORD/issues/340",
+  "parent": "https://github.com/Egkurilov/BOOHTACORD/issues/339",
+  "observer": "Codex: Playwright geometry/keyboard assertions and source-resolution screenshot inspection",
+  "environment": {
+    "os": "macOS arm64",
+    "browser": "Playwright Chromium 153.0.8010.12 / v1243",
+    "base_revision": "3e6ac96360658e247c08491991a9ce6cc2895246",
+    "dirty_checkout": true,
+    "platforms": [
+      "web"
+    ]
+  },
+  "scenario": {
+    "production_reference": [
+      "16-search.jpg",
+      "19-archive.jpg",
+      "20-pinned.jpg"
+    ],
+    "viewport_widths": [
+      320,
+      375,
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "root_text_scale": [
+      1,
+      2
+    ],
+    "checks": [
+      "aside scrollWidth/clientWidth and scrollLeft",
+      "all four tab bounds and minimum 44px touch height",
+      "Tab to last tab / Enter / Shift+Tab",
+      "pins and archive ready empty states",
+      "query and scope retained across modes",
+      "long unbroken localized label",
+      "existing independent sessions, fresh ACL checks and restored scroll tests"
+    ]
+  },
+  "results": {
+    "before_regression": "FAIL: all 12 width/text cases; 320px / 100% has 136px horizontal overflow",
+    "web_unit": "PASS: 471 files / 1530 tests",
+    "web_build": "PASS",
+    "web_accessibility": "PASS: 110 tests",
+    "web_conversation_action_disclosure": "PASS: 18 tests",
+    "web_mentions_inbox": "PASS",
+    "web_search_sessions": "PASS: 16 tests",
+    "spec_traceability": "PASS: 39 requirement IDs, committed index only",
+    "mandatory_local_feature_run": "FAIL: default QA Docker context absent; both real-stack targets stopped before API startup",
+    "real_stack_retry_1440": "PASS: four search modes, keyboard, query retention, full lifecycle/media faults, Tempo, persistence after restart, owned resource cleanup",
+    "real_stack_retry_393": "PASS: four search modes, keyboard and touch, query retention, full lifecycle/media faults, Tempo, persistence after restart, owned resource cleanup",
+    "browser_zoom_200_percent": "NOT_RUN: root font scale is independently tested, not a browser zoom claim",
+    "release_gate": "NOT_RUN"
+  },
+  "visual_review": {
+    "status": "PASS_FOR_SELECTED_COMPONENT_CAPTURES",
+    "source_resolution": true,
+    "selected": [
+      "before: 320px and 1440px / 100% / messages",
+      "after: 320px / 100% / messages and archive",
+      "after: 320px / 200% / messages and pins",
+      "after: 1440px / 100% / messages and archive",
+      "after: 1440px / 200% / pins"
+    ],
+    "observations": [
+      "Before: pinned tab lies beyond aside edge on desktop and mobile; mobile archive tab also cut.",
+      "After: normal text uses two columns; enlarged text uses one column with readable labels.",
+      "Active tab and keyboard focus ring remain visible inside aside; close remains visible.",
+      "Enlarged text pushes form below fold; aside vertical scrolling is retained.",
+      "Native-style secondary refresh controls remain for DW-03; this change only addresses tab layout.",
+      "Actual desktop stack: search aside fits the workspace; focus ring and all four labels stay visible; reviewed original raster aside crop.",
+      "Actual mobile stack: all four tabs, header and close are visible; pinned view fits horizontally. Full screenshot inspected; browser output downsampled the full 3x raster, source-resolution component images independently reviewed."
+    ]
+  },
+  "artifacts": {
+    "before": ".out/dw01-before",
+    "after": ".out/local-features/20261015-230952/web-search_sessions",
+    "local_feature_report": ".out/local-features/20261015-230952/report.json",
+    "real_stack_retry": ".out/dw01-real-stack",
+    "real_stack_desktop_report": ".out/dw01-real-stack/1440/report.json",
+    "real_stack_mobile_report": ".out/dw01-real-stack/393/report.json"
+  },
+  "source_sha256": {
+    "clients/web/src/search/SearchPanel.vue": "3d55bd93a2cb142d128a0f591fa76b8ee224f32c5bd56a4edf2b1fcec54d3b49",
+    "clients/web/tests/search_sessions/tabs.browser.spec.ts": "6d3f91e4d85f983b4476ded742b8cc401dfaa81842fcb3d98145c4798e5cb364",
+    "clients/web/tests/search_sessions/tabs.html": "a2c9cd903b7aa66431669842850e83c76909d0ea02463a2d51a224357a3c7b27",
+    "tools/qa/client_lifecycle/search_tabs.mjs": "2cbbe25a1072ca725c980e60eed5021fbf5d7092a99ec82e189954b785e2f542",
+    "tools/qa/client_lifecycle/scenario.mjs": "4097777fae70518faedc0ae8f6af964784097a4087b085f7e41d9fdf9fbae09a"
+  },
+  "limitations": [
+    "Approved Windows brief unavailable; committed canonical specification and requirement index consulted.",
+    "Component fixtures are synthetic and do not prove real API or media acceptance.",
+    "No deployment, PR, issue closure or release approval performed.",
+    "Both real-stack reruns PASS on local colima after default context failure; original feature report remains FAIL as historical evidence. Browser 200% zoom and full epic release QA remain NOT_RUN."
+  ],
+  "closes_gate": false
+}

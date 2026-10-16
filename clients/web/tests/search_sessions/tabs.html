@@ -1,0 +1,14 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Search tabs geometry</title><div id="app"></div>
+<script type="module">
+import {createApp,h} from 'vue'
+import {createPinia} from 'pinia'
+import SearchPanel from '/src/search/SearchPanel.vue'
+import '/src/style.css'
+createApp({render:()=>h('main',{class:'gc-shell search-active'},[
+ h('nav',{'aria-label':'Каналы'}),h('section'),
+ h('aside',{class:'members search-aside is-open'},[h(SearchPanel,{
+ currentConversation:{id:'22222222-2222-4222-8222-222222222222',kind:'CHANNEL',label:'Общий'},
+ channelLabels:{},directMessageLabels:{}
+ })])
+])}).use(createPinia()).mount('#app')
+</script></html>

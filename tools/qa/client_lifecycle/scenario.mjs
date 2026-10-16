@@ -4,6 +4,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { api, channel, chromium, expect, login, openNavigation, origin, status } from './request.mjs'
 import { guild } from './guild.mjs'
 import { sessions } from './sessions.mjs'
+import { searchTabs } from './search_tabs.mjs'
 import { registration, rateLimit } from '../critical_client_acceptance/auth.mjs'
 import { resetLinks } from '../critical_client_acceptance/reset.mjs'
 import { bursts } from '../critical_client_acceptance/bursts.mjs'
@@ -86,6 +87,7 @@ try {
   }
   report.catalog_message_actions = { open: true, close: true, pointer: input.viewport.has_touch ? 'touch' : 'mouse' }
   console.log('stage=qa-member-message-actions-complete')
+  await searchTabs(guest, input, report)
 
   await channel(guest, 'Voice')
   await expect(guest.getByRole('heading', { name: 'Вы не подключены', exact: true })).toBeVisible()
@@ -138,7 +140,19 @@ try {
   await expect(dmNavigation).toBeVisible()
   await dmNavigation.getByRole('button', { name: 'Начать диалог', exact: true }).click()
   const dmStarter = guest.getByRole('dialog', { name: 'Новый личный диалог' })
+  await expect(dmStarter.getByRole('button', { name: 'qa_admin', exact: true })).toBeVisible()
+  assert.equal(await dmStarter.evaluate(element => element.matches(':modal')), true)
+  assert.ok(await dmStarter.evaluate(element => element.scrollWidth <= element.clientWidth + 1))
+  const starterBounds = await dmStarter.boundingBox()
+  assert.ok(starterBounds.x >= 0 && starterBounds.x + starterBounds.width <= input.viewport.width)
+  await guest.screenshot({ path: input.directory+'/dm-starter-dialog.png' })
+  await guest.keyboard.press('Escape')
+  await expect(dmStarter).not.toBeVisible()
+  await expect(dmNavigation.getByRole('button', { name: 'Начать диалог', exact: true })).toBeFocused()
+  if (input.viewport.has_touch) await dmNavigation.getByRole('button', { name: 'Начать диалог', exact: true }).tap()
+  else await dmNavigation.getByRole('button', { name: 'Начать диалог', exact: true }).click()
   await dmStarter.getByRole('button', { name: 'qa_admin', exact: true }).click()
+  report.dm_starter_modal = { top_layer: true, fits_viewport: true, escape_and_focus: true, touch: input.viewport.has_touch }
   await expect(guest.getByRole('heading', { name: 'qa_admin', exact: true })).toBeVisible()
   await expect(guest.getByText('Сообщений пока нет.', { exact: true })).toBeVisible()
   console.log('stage=qa-member-dm-empty-complete')

@@ -18,7 +18,15 @@
 .direct-message-empty > p { margin: 0 0 var(--gc-space-2); color: var(--gc-text-muted); font-size: var(--gc-text-small); line-height: 1.4; }
 .direct-message-empty > .direct-message-start-button--prominent { position: static; width: 100%; height: 40px; justify-content: center; gap: var(--gc-space-2); border: 1px solid var(--gc-border-subtle); border-radius: var(--gc-radius-sm); padding: 0 var(--gc-space-3); color: var(--gc-text-primary); background: var(--gc-surface-raised); font-size: var(--gc-text-small); }
 .direct-message-empty > .direct-message-start-button--prominent:hover { background: var(--gc-surface-hover); }
-.direct-message-navigation .starter { position: relative; z-index: 3; }
+.dm-starter-dialog { box-sizing: border-box; width: min(32rem, calc(100vw - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 20px; display: grid; gap: 12px; overflow-y: auto; overscroll-behavior: contain; border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-lg); color: var(--gc-text-primary); background: var(--gc-surface); box-shadow: var(--gc-shadow-popup); }
+.dm-starter-dialog::backdrop { background: var(--gc-overlay); }
+.dm-starter-dialog .starter-header { gap: 12px; }
+.dm-starter-dialog .starter-header h3 { min-width: 0; overflow-wrap: anywhere; font-size: 1rem; line-height: 1.4; }
+.dm-starter-dialog .starter-header button { min-width: 44px; min-height: 44px; flex-shrink: 0; cursor: pointer; }
+.dm-starter-dialog .candidate-list { display: block; max-height: min(52dvh, 28rem); overflow-y: auto; overscroll-behavior: contain; min-width: 0; padding: 4px; }
+.dm-starter-dialog .candidate-list .channel-button + .channel-button { margin-top: 4px; }
+.dm-starter-dialog .channel-button { box-sizing: border-box; display: block; width: 100%; min-width: 0; min-height: 44px; height: auto; padding: 10px 12px; white-space: normal; overflow-wrap: anywhere; text-align: left; }
+.dm-starter-dialog button:focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 2px; }
 .direct-message-conversation .history-start { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 .direct-message-conversation .message-avatar, .direct-message-conversation .message-avatar-spacer { width: 2.25rem; flex-basis: 2.25rem; }
 .direct-message-conversation .message-avatar { height: 36px; font-size: 0.875rem; }

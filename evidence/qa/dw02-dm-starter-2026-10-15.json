@@ -1,0 +1,97 @@
+{
+  "id": "dw02-dm-starter-2026-10-15",
+  "kind": "web-ui-regression",
+  "status": "PARTIAL",
+  "issue": "https://github.com/Egkurilov/BOOHTACORD/issues/341",
+  "parent": "https://github.com/Egkurilov/BOOHTACORD/issues/339",
+  "executed_at": "2026-10-15T23:29:28.195711+03:00",
+  "observer": "Codex: Playwright behaviour and source-resolution component screenshot review",
+  "environment": {
+    "os": "macOS arm64",
+    "browser": "Playwright Chromium v1243",
+    "base_revision": "431d0a34b7f532030d50d3dad64611274ee1b4f5",
+    "dirty_checkout": true,
+    "platforms": [
+      "web"
+    ]
+  },
+  "scenario": {
+    "production_reference": [
+      "24-new-conversation.jpg"
+    ],
+    "viewports": [
+      320,
+      375,
+      390,
+      768,
+      1440,
+      1920
+    ],
+    "root_text_scale": [
+      1,
+      2
+    ],
+    "checks": [
+      "modal top layer escapes clipped transformed sidebar",
+      "long names fit both axes without overlapping neighbours",
+      "focus cycle and focus visibility in long list",
+      "Escape/outside cancellation restores opener and preserves active DM/draft",
+      "loading/empty/failure/retry/load-more",
+      "double click opens one DM",
+      "cancelled pending open cannot change active DM after response",
+      "axe scan",
+      "real API desktop/mobile touch reopen and successful DM selection"
+    ]
+  },
+  "results": {
+    "baseline_modal_regression": "FAIL as expected before implementation; not a native modal",
+    "intermediate_long_name_height": "FAIL: 28px vertical overflow; fixed with intrinsic block rows",
+    "intermediate_keyboard_focus": "FAIL: last candidate focus offscreen; explicit nearest scrolling added",
+    "web_unit_final": "PASS: 471 files / 1530 tests",
+    "focused_component": "PASS: 16 final browser tests including vertical label bounds, visible last-row keyboard focus and axe",
+    "mandatory_local_feature_final": "PASS execution: all stages PASS; report REVIEW_REQUIRED, selected DW-02 visuals reviewed separately without approving global baseline",
+    "real_stack_initial_1440": "PASS before final focus scrolling change",
+    "real_stack_initial_393": "PASS before final focus scrolling change",
+    "real_stack_final_1440": "PASS: exact source hashes match; top-layer modal, viewport bounds, Escape/focus, DM open, full lifecycle/media faults and owned resource cleanup",
+    "real_stack_final_393": "PASS: exact source hashes match; modal, bounds, Escape/focus, touch, DM selection, full lifecycle/media faults and owned resource cleanup",
+    "browser_zoom_200_percent": "NOT_RUN: root text scale independently tested",
+    "spec_traceability": "PASS: 39 requirements via committed index",
+    "release_gate": "NOT_RUN"
+  },
+  "visual_review": {
+    "status": "PASS_FOR_SELECTED_COMPONENT_CAPTURES",
+    "observations": [
+      "Baseline clipped sidebar places participant list in navigation flow; narrow capture shows list laid across other navigation content.",
+      "Final selected 320px/100% and 1440px/200% component captures show centered bounded modal, visible close and wrapped complete first name, separated following candidates.",
+      "320px/200% has multi-line title and a vertically scrolling participant list; no horizontal clipping.",
+      "Actual final desktop/mobile runtime modal crops inspected at source pixel resolution: title, close, names, vertical list and surrounding dimmed workspace are readable; dialog lies above navigation without uncontrolled overlap."
+    ]
+  },
+  "artifacts": {
+    "before_mobile": ".out/dw02-before",
+    "before_desktop": ".out/dw02-before-desktop",
+    "before_desktop_source": "431d0a34 DirectMessageStarter.vue in temporary synthetic clipped navigation fixture; temporary sources removed, hashes retained under .out/dw02-before-desktop/source-hashes.json",
+    "intermediate_vertical_failure": ".out/dw02-name-height-before",
+    "intermediate_focus_failure": ".out/dw02-focus-scroll-before",
+    "component_final": ".out/local-features/20261015-232431/web-dm_starter",
+    "feature_report": ".out/local-features/20261015-232431/report.json",
+    "real_stack_desktop_report": ".out/client-lifecycle/1440/report.json",
+    "desktop_source_detail": ".out/dw02-runtime-desktop-detail.png",
+    "real_stack_mobile_report": ".out/client-lifecycle/393/report.json",
+    "mobile_source_detail": ".out/dw02-runtime-mobile-detail.png"
+  },
+  "source_sha256": {
+    "clients/web/src/direct_message/DirectMessageStarter.vue": "fbf4eb40ca65c00f70b3d59a631dbcf71c3e2178afd79c875f92e0db799ee19f",
+    "clients/web/src/design/design_v2_direct_messages.css": "9a98c80e74e8900b4da4fec16b77966c936a7748d343adf8cb638f413f3d8262",
+    "clients/web/tests/dm_starter/overlay.browser.spec.ts": "5244183f80acd44b6dd5d258fe387bf52afcd0ccf259f42dce3a81388ab3f1dd",
+    "clients/web/tests/dm_starter/fixture.html": "724d35d040a5867228854cc55d62e093e502bd28ce2b8784602e17ca1a818730",
+    "tools/qa/client_lifecycle/scenario.mjs": "a2c6d6668fcf68f4d7e7d2f7a6b1762ba519e716e3830ffe8132fb36abc2683b"
+  },
+  "limitations": [
+    "No API/ACL or candidate store contract changes. Native select and server-side open remain unchanged.",
+    "No new client-side participant filter: existing bounded paginated list retained.",
+    "Component captures do not close integration, physical-device, browser-zoom or media-capacity gates.",
+    "Browser 200% zoom and full epic walkthrough/release QA remain NOT_RUN. Component root text scaling and actual mobile touch are separately PASS. No PR/issue closure or release claim."
+  ],
+  "closes_gate": false
+}

@@ -63,6 +63,16 @@ jobs:
           path: .out/issue344/browser/**
           if-no-files-found: ignore
           retention-days: 30
+      - name: Retain search mode and DM picker actual browser zoom evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-search-dm-picker-${{ github.sha }}
+          path: |
+            .out/qa294-search-session-browser/**
+            .out/dw02-dm-starter/**
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain synthetic TEXT and DM rhythm and browser zoom evidence
         if: always()
         uses: actions/upload-artifact@v4

@@ -1,0 +1,428 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-16",
+  "scope": [
+    "DW-01 #340",
+    "DW-02 #341"
+  ],
+  "status": "PASS_SCOPED",
+  "base": "86ce6458062698c1b2727724ce8313c9b6ecd386",
+  "candidate_source": "3ba2eeed77b2ff3d20789b50987952d210b7e3f8 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "gate_report": ".out/local-features/20261016-151737/report.json",
+  "gate_report_sha256": "fb51a032b5fa7be8267d0d8fd11f7b7cd5778774d004c821213d15d4d1535a26",
+  "stages": [
+    {
+      "name": "web-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "web-build",
+      "status": "PASS"
+    },
+    {
+      "name": "web-accessibility",
+      "status": "PASS"
+    },
+    {
+      "name": "web-chat_rhythm",
+      "status": "PASS"
+    },
+    {
+      "name": "web-control_consistency",
+      "status": "PASS"
+    },
+    {
+      "name": "web-conversation_action_disclosure",
+      "status": "PASS"
+    },
+    {
+      "name": "web-dm_starter",
+      "status": "PASS"
+    },
+    {
+      "name": "web-mentions_inbox",
+      "status": "PASS"
+    },
+    {
+      "name": "web-message_social",
+      "status": "PASS"
+    },
+    {
+      "name": "web-microcopy",
+      "status": "PASS"
+    },
+    {
+      "name": "web-navigation_density",
+      "status": "PASS"
+    },
+    {
+      "name": "web-password_generation",
+      "status": "PASS"
+    },
+    {
+      "name": "web-quick_jump_people",
+      "status": "PASS"
+    },
+    {
+      "name": "web-readonly_archive",
+      "status": "PASS"
+    },
+    {
+      "name": "web-responsive_shell",
+      "status": "PASS"
+    },
+    {
+      "name": "web-screen_profile",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_sessions",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-1440",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-393",
+      "status": "PASS"
+    }
+  ],
+  "before": {
+    "base": "86ce6458062698c1b2727724ce8313c9b6ecd386",
+    "production_sources": {
+      "clients/web/src/search/SearchPanel.vue": "52da4953695c4b3a881f2f669d78255c85a9a6e716a70921765ce0ad92b46209",
+      "clients/web/src/direct_message/DirectMessageStarter.vue": "84799dba4ae415b130adc81562e5bfa6f5e3f1d469a07dfb30efc87b7860d13c",
+      "clients/web/src/design/design_v2_direct_messages.css": "a7bafba5273a89c7354ca453a3597c7bee077b635e3218a0aea9612c82bf0659"
+    },
+    "results": [
+      {
+        "scenario": "search",
+        "exit_code": 1,
+        "expected": "FAIL reproducer on current master before PR 355"
+      },
+      {
+        "scenario": "dm",
+        "exit_code": 1,
+        "expected": "FAIL reproducer on current master before PR 355"
+      }
+    ]
+  },
+  "actual_browser_zoom": {
+    "web-search_sessions/zoom.browser-all-four-sear-28a79-l-200-zoom-in-2880px-window/browser-zoom.json": {
+      "outerWidth": 2880,
+      "innerWidth": 1440,
+      "dpr": 2,
+      "rootFont": "16px",
+      "cssZoom": "1",
+      "pinch": 1
+    },
+    "web-search_sessions/zoom.browser-all-four-sear-26675-al-200-zoom-in-640px-window/browser-zoom.json": {
+      "outerWidth": 640,
+      "innerWidth": 320,
+      "dpr": 2,
+      "rootFont": "16px",
+      "cssZoom": "1",
+      "pinch": 1
+    },
+    "web-search_sessions/zoom.browser-all-four-sear-f0075-al-200-zoom-in-780px-window/browser-zoom.json": {
+      "outerWidth": 780,
+      "innerWidth": 390,
+      "dpr": 2,
+      "rootFont": "16px",
+      "cssZoom": "1",
+      "pinch": 1
+    },
+    "web-search_sessions/zoom.browser-all-four-sear-36828-l-200-zoom-in-2048px-window/browser-zoom.json": {
+      "outerWidth": 2048,
+      "innerWidth": 1024,
+      "dpr": 2,
+      "rootFont": "16px",
+      "cssZoom": "1",
+      "pinch": 1
+    },
+    "web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-2048px-window/browser-zoom.json": {
+      "outerWidth": 2048,
+      "innerWidth": 1024,
+      "dpr": 2,
+      "rootFont": "16px",
+      "cssZoom": "1",
+      "pinch": 1
+    },
+    "web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-780px-window/browser-zoom.json": {
+      "outerWidth": 780,
+      "innerWidth": 390,
+      "dpr": 2,
+      "rootFont": "16px",
+      "cssZoom": "1",
+      "pinch": 1
+    },
+    "web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-640px-window/browser-zoom.json": {
+      "outerWidth": 640,
+      "innerWidth": 320,
+      "dpr": 2,
+      "rootFont": "16px",
+      "cssZoom": "1",
+      "pinch": 1
+    },
+    "web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-2880px-window/browser-zoom.json": {
+      "outerWidth": 2880,
+      "innerWidth": 1440,
+      "dpr": 2,
+      "rootFont": "16px",
+      "cssZoom": "1",
+      "pinch": 1
+    }
+  },
+  "reviewed_selection": [
+    {
+      "path": ".out/client-lifecycle/1440/dm-starter-dialog.png",
+      "sha256": "6d5822cf406d771a50acd45612ee385e3c85dd6430781efd95bc67c7938e03c9",
+      "dimensions": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "path": ".out/client-lifecycle/1440/search-tabs-archive.png",
+      "sha256": "f2635eec7e9811af52f9955f00264915808d849a7cd129a4763e28aece7cf425",
+      "dimensions": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "path": ".out/client-lifecycle/1440/search-tabs-mentions.png",
+      "sha256": "9ed8e882f9171cb93689da20e0da29dec4dbc315fb2c31a1ed494a91b4bab564",
+      "dimensions": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "path": ".out/client-lifecycle/1440/search-tabs-messages.png",
+      "sha256": "b3c9393fab6ea3aa84c1e3d43fbd8d4e4a2a5a36c9e8c903192fbc407a3ddd7d",
+      "dimensions": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "path": ".out/client-lifecycle/1440/search-tabs-pinned.png",
+      "sha256": "756ca59c2ed74e8c61b4c5c7a8abe2aa4bf24681cc5dff117cd57437beb14c07",
+      "dimensions": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "path": ".out/client-lifecycle/393/dm-starter-dialog.png",
+      "sha256": "387da5028780473d70d55a757f5021a9ec6faeeafa653693e05c7ad6096aa4ca",
+      "dimensions": [
+        1179,
+        2556
+      ]
+    },
+    {
+      "path": ".out/client-lifecycle/393/search-tabs-archive.png",
+      "sha256": "5e150d6691e963854ac8890d227cec19a2a519310a66539c4bc3ae88ca5f7a8b",
+      "dimensions": [
+        1179,
+        2556
+      ]
+    },
+    {
+      "path": ".out/client-lifecycle/393/search-tabs-mentions.png",
+      "sha256": "039d99d4a04f5ddad6a631aeec03ba28b2a5e18db250c3d551b26c96b06426e5",
+      "dimensions": [
+        1179,
+        2556
+      ]
+    },
+    {
+      "path": ".out/client-lifecycle/393/search-tabs-messages.png",
+      "sha256": "3f1895ce845fed7699f11e2855bfcff086d62fbe65522d332ccc54c632437f35",
+      "dimensions": [
+        1179,
+        2556
+      ]
+    },
+    {
+      "path": ".out/client-lifecycle/393/search-tabs-pinned.png",
+      "sha256": "32878fc86504f5834a781915795e0129ef3862353b948bc780857306e4272cd4",
+      "dimensions": [
+        1179,
+        2556
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-dm_starter/overlay.browser-modal-esca-4cc99--sidebar-at-1440px-100-text/dm-starter.png",
+      "sha256": "5032d3c80ea4ccac0a4e90b69410fe6a420678be1ef53a2998ab9ff1977e302e",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+      "sha256": "35ffeea77f6ce61c59cfda10f75276eeba45347c5b0dfa395581850a3e78304a",
+      "dimensions": [
+        320,
+        900
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-dm_starter/overlay.browser-modal-esca-accd0-d-sidebar-at-390px-100-text/dm-starter.png",
+      "sha256": "398eb781fc421d7a6ff12dedfdea745f88f70117f5fc1e28710fd10f6d3a129a",
+      "dimensions": [
+        390,
+        900
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-2048px-window/dm-modal-zoom.png",
+      "sha256": "0b6416a679e0acaf466c46be686f582355670a2f956df13358ff21053ba4ddf4",
+      "dimensions": [
+        2048,
+        913
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-2880px-window/dm-modal-zoom.png",
+      "sha256": "c3f2fe39c180a7acfb7f728a129faaf0565583882c12bfebd25f973c856bcab3",
+      "dimensions": [
+        2880,
+        913
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-640px-window/dm-modal-zoom.png",
+      "sha256": "c7141741d1db2a11e2af5f68d09165a2244f5141ac8a44d13929f6d709021295",
+      "dimensions": [
+        640,
+        913
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-780px-window/dm-modal-zoom.png",
+      "sha256": "dc84e2fbeb62a747bed388ba3d9fa8fbc0a484b8aa9f27645f61c330cfa495b3",
+      "dimensions": [
+        780,
+        913
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-search_sessions/tabs.browser-four-search-modes-fit-1440px-at-100-text/search-messages.png",
+      "sha256": "53d30cb95aee2aa59486262ac3920171b492ec38046ca439df0e7191d22d7660",
+      "dimensions": [
+        380,
+        936
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+      "sha256": "c8b7fb93bbcba47f3493e99ef30fc83a4514edef1f9b365347c57a6bc7aedc20",
+      "dimensions": [
+        320,
+        1000
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-search_sessions/tabs.browser-four-search-modes-fit-390px-at-100-text/search-messages.png",
+      "sha256": "983503e8836c7755b6f83236939d1c240fd843828ba4a3b5d8df8d6c30ccdc48",
+      "dimensions": [
+        390,
+        1000
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-search_sessions/zoom.browser-all-four-sear-26675-al-200-zoom-in-640px-window/mode-3-zoom.png",
+      "sha256": "8c824a4c3d5f114627445d37bd15229b25544ce4251fe6befcdfd0e0efbc93ab",
+      "dimensions": [
+        640,
+        913
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-search_sessions/zoom.browser-all-four-sear-28a79-l-200-zoom-in-2880px-window/mode-3-zoom.png",
+      "sha256": "2c265a781d5f8463e193ebbc4a703cb7936cf38612bd98443e8e60d780823371",
+      "dimensions": [
+        2880,
+        913
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-search_sessions/zoom.browser-all-four-sear-36828-l-200-zoom-in-2048px-window/mode-3-zoom.png",
+      "sha256": "50ba7f38d97d7624f036eea76d33d465004695226cbe8c276bfffe1e45617408",
+      "dimensions": [
+        2048,
+        913
+      ]
+    },
+    {
+      "path": ".out/local-features/20261016-151737/web-search_sessions/zoom.browser-all-four-sear-f0075-al-200-zoom-in-780px-window/mode-3-zoom.png",
+      "sha256": "aaec2d8feda56d11e202258f0d70efb0730bcb11fda03f7e1578b3eb2f3a9473",
+      "dimensions": [
+        780,
+        913
+      ]
+    },
+    {
+      "path": ".out/pr355/before-dm/overlay.browser-modal-esca-4cc99--sidebar-at-1440px-100-text/dm-starter.png",
+      "sha256": "7c06f51acaacd7e57dc1df2ee689710dcf30f566c0b84ffc36126d081bb342d9",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "path": ".out/pr355/before-dm/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+      "sha256": "904ecd9b98dc2dc602e0f70e1298af76c2dfc1f0b052529892cfe2d8a0f59355",
+      "dimensions": [
+        320,
+        900
+      ]
+    },
+    {
+      "path": ".out/pr355/before-dm/overlay.browser-modal-esca-accd0-d-sidebar-at-390px-100-text/dm-starter.png",
+      "sha256": "9cb6d07345b70982dc5b8a27308907285da086c77de63133bbf99baae8b06451",
+      "dimensions": [
+        390,
+        900
+      ]
+    },
+    {
+      "path": ".out/pr355/before-search/tabs.browser-four-search-modes-fit-1440px-at-100-text/search-messages.png",
+      "sha256": "b657ce108fb19a0d47eca1ebfeda9afcf004933c237f6fe6cd86d5cc8ff9fd36",
+      "dimensions": [
+        380,
+        936
+      ]
+    },
+    {
+      "path": ".out/pr355/before-search/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+      "sha256": "96ce014207ee48cec78a8a6a964b4bd2e9834911fb15168c7097da4827e7719a",
+      "dimensions": [
+        320,
+        1000
+      ]
+    },
+    {
+      "path": ".out/pr355/before-search/tabs.browser-four-search-modes-fit-390px-at-100-text/search-messages.png",
+      "sha256": "99f659c8105e2daa3b04b6235227991f3d73f08d31c060e9c2cfcd82eba919b8",
+      "dimensions": [
+        390,
+        1000
+      ]
+    }
+  ],
+  "scenario_sources": {
+    "tools/qa/local_features/features.json": "aaa1ac61b2dfe35640cdf51f0bc4ced434bde16501db68684a2f7b2c53ae2d10"
+  },
+  "limits": [
+    "Historical 15 October PARTIAL records preserved.",
+    "Private original walkthrough unavailable; fresh Before is exact current-master production Web sources.",
+    "Full epic #339 / release gate #353, native apps and physical media QoE NOT_RUN.",
+    "Automated report remains REVIEW_REQUIRED; this record supplies scoped manual review only."
+  ]
+}

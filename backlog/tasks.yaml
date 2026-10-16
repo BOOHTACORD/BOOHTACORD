@@ -133,11 +133,21 @@ tasks:
     requirements: [REQ-STORAGE-01, REQ-STORAGE-02, REQ-STORAGE-03, REQ-NOBACKUP-01]
     depends_on: [T-040, T-041]
     evidence: [backend-storage-tests]
+  - id: DW-01
+    title: Web search aside tabs without horizontal overflow (GitHub #340, epic #339)
+    requirements: [REQ-SEARCH-01, REQ-UI-01, REQ-UI-02]
+    depends_on: [T-041, T-050]
+    evidence: [clients/web/tests/search_sessions/tabs.browser.spec.ts, clients/web/tests/search_sessions/retention.browser.spec.ts, evidence/qa/dw01-search-tabs-2026-10-15.json, evidence/qa/pr355-search-dm-acceptance-2026-10-16.md]
   - id: T-050
     title: Desktop Russian UI and accessibility
     requirements: [REQ-UI-01, REQ-UI-02]
     depends_on: [T-020, T-022, T-040]
     evidence: [frontend-ui-tests, screenshots]
+  - id: DW-02
+    title: Web DM candidate picker in a managed modal (GitHub #341, epic #339)
+    requirements: [REQ-DM-01, REQ-UI-01, REQ-UI-02]
+    depends_on: [T-041, T-050]
+    evidence: [clients/web/tests/dm_starter/overlay.browser.spec.ts, evidence/qa/dw02-dm-starter-2026-10-15.json, evidence/qa/pr355-search-dm-acceptance-2026-10-16.md]
   - id: DW-003
     title: Web Design V2 consistent native controls and action states (GitHub #342)
     requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]

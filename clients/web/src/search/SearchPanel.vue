@@ -36,6 +36,8 @@ let scrollHost: HTMLElement | null = null
 let restoringSession = false
 let restoredScrollTop = initialSession?.scrollTop ?? 0
 let restoreScrollPending = initialSession?.submitted ?? false
+let tabSequence = 0
+let switchingView = false
 function restoreFilters(saved: SearchSession | null): void {
   filters.authorId = saved?.authorId ?? ''
   filters.attachment = saved?.attachment ?? 'any'
@@ -60,12 +62,32 @@ watch(scope, () => { if (!restoringSession) reset() }, { flush: 'sync' })
 watch(() => [filters.authorId, filters.attachment, filters.dateFrom, filters.dateTo], () => { if (!restoringSession) reset() }, { flush: 'sync' })
 watch(messages, (items) => { for (const item of items) void authors.ensure(item.authorId) })
 function snapshot(): SearchSession {
-  return { query: query.value, activeQuery: activeQuery.value, scope: scope.value, authorId: filters.authorId, attachment: filters.attachment, dateFrom: filters.dateFrom, dateTo: filters.dateTo, submitted: submitted.value, scrollTop: scrollHost?.scrollTop ?? restoredScrollTop }
+  return { query: query.value, activeQuery: activeQuery.value, scope: scope.value, authorId: filters.authorId, attachment: filters.attachment, dateFrom: filters.dateFrom, dateTo: filters.dateTo, submitted: submitted.value, scrollTop: restoredScrollTop }
 }
-function saveSession(): void { if (!restoringSession) sessions.save(origin.value, snapshot()) }
+function saveSession(): void {
+  if (restoringSession) return
+  sessions.save(origin.value, snapshot())
+}
+function rememberScroll(): void {
+  if (activeView.value === 'messages' && !switchingView && scrollHost) restoredScrollTop = scrollHost.scrollTop
+  saveSession()
+}
+// Other views may be shorter than results and clamp the shared rail to zero.
+// Preserve the message position before DOM replacement, without caching hits/ACL.
+watch(activeView, async (next, previous) => {
+  if (previous === 'messages' && scrollHost) restoredScrollTop = scrollHost.scrollTop
+  const ticket = ++tabSequence
+  switchingView = true
+  await nextTick()
+  if (ticket !== tabSequence) return
+  if (scrollHost) scrollHost.scrollTop = next === 'messages' ? restoredScrollTop : 0
+  switchingView = false
+  saveSession()
+}, { flush: 'pre' })
 watch(() => [query.value, activeQuery.value, scope.value, filters.authorId, filters.attachment, filters.dateFrom, filters.dateTo, submitted.value], saveSession, { flush: 'sync' })
 watch(origin, (next, previous) => {
   sessions.save(previous, snapshot())
+  tabSequence++; switchingView = false
   const saved = sessions.restore(next)
   restoringSession = true
   reset()
@@ -114,13 +136,14 @@ function conversationLabel(message: SearchMessage): string {
 }
 function formattedDate(value: string): string { return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(new Date(value)) }
 onBeforeUnmount(() => {
+  tabSequence++
   saveSession()
-  scrollHost?.removeEventListener('scroll', saveSession)
+  scrollHost?.removeEventListener('scroll', rememberScroll)
   requestSequence++
 })
 onMounted(() => {
   scrollHost = panelRoot.value?.closest<HTMLElement>('.search-aside') ?? panelRoot.value
-  scrollHost?.addEventListener('scroll', saveSession, { passive: true })
+  scrollHost?.addEventListener('scroll', rememberScroll, { passive: true })
   void nextTick(() => queryInput.value?.focus())
   if (submitted.value) void runSearch(undefined, initialSession?.activeQuery)
 })
@@ -128,12 +151,14 @@ onMounted(() => {
 
 <template>
   <section ref="panelRoot" class="search-panel" aria-labelledby="search-panel-title" data-testid="search-panel">
+    <div class="search-panel-controls">
     <header class="search-panel-heading"><h1 id="search-panel-title">{{ activeView === 'messages' ? 'Поиск сообщений' : activeView === 'archives' ? 'Архив' : activeView==='pins'?'Закреплённые':'Упоминания' }}</h1><button v-action-hint class="search-close" type="button" aria-label="Закрыть поиск" @click="emit('close')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12" /></svg></button></header>
     <div class="search-view-tabs" role="group" aria-label="Поиск и упоминания">
       <button id="search-messages-tab" type="button" :aria-pressed="activeView === 'messages'" aria-controls="search-messages-view" @click="activeView = 'messages'">Сообщения</button>
       <button id="search-mentions-tab" type="button" :aria-pressed="activeView === 'mentions'" aria-controls="search-mentions-view" @click="activeView = 'mentions'">Упоминания</button>
       <button type="button" :aria-pressed="activeView === 'archives'" @click="activeView = 'archives'">Архив</button>
       <button v-if="currentConversation?.kind==='CHANNEL'" type="button" :aria-pressed="activeView==='pins'" @click="activeView='pins'">Закреплённые</button>
+    </div>
     </div>
     <PinPanel v-if="activeView==='pins'&&currentConversation?.kind==='CHANNEL'" :channel-id="currentConversation.id" @open="searchTarget.open($event);emit('close')" />
     <ArchivePanel v-else-if="activeView === 'archives'" />
@@ -162,8 +187,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.search-view-tabs { display: flex; gap: 8px; margin: 12px 20px; }
-.search-view-tabs button { background: transparent; border: 1px solid var(--gc-border, #363a46); border-radius: 999px; color: inherit; cursor: pointer; min-height: 36px; padding: 6px 12px; }
+.search-panel-controls { position: sticky; top: 0; z-index: 2; display: flow-root; padding-bottom: 1px; background: var(--gc-sidebar); }
+.search-view-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); gap: 8px; margin: 12px 20px; }
+.search-view-tabs button { min-width: 0; white-space: normal; overflow-wrap: anywhere; background: transparent; border: 1px solid var(--gc-border, #363a46); border-radius: var(--gc-radius-sm); color: inherit; cursor: pointer; min-height: 44px; padding: 6px 8px; }
 .search-view-tabs button[aria-pressed="true"] { background: var(--gc-surface-raised, #20232d); border-color: var(--gc-accent, #6974f5); }
 .search-view-tabs button:focus-visible { outline: 2px solid var(--gc-accent, #6974f5); outline-offset: 2px; }
 </style>
