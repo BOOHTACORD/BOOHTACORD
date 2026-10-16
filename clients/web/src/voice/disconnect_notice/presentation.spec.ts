@@ -9,6 +9,6 @@ it.each(['KICK', 'CHANNEL_CLOSED', 'BANNED', 'TRANSFER', 'TRANSPORT'] as const)(
   expect(html).toContain(notice.message); expect(html).toContain(notice.explanation)
   expect(html).toContain('role="status"'); expect(html).toContain('aria-atomic="true"')
   expect(html).not.toContain('technical error')
-  expect(html).toContain('Подключиться к голосу'); expect(html).toContain('Подключиться без микрофона')
+  expect(html).toContain('Войти'); expect(html).toContain('Без микрофона')
   expect((html.match(/disabled/g) ?? []).length).toBe(notice.reconnectAllowed ? 0 : 2)
 })

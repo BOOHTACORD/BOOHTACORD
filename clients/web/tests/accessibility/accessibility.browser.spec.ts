@@ -568,14 +568,14 @@ test('WCAG smoke covers voice prejoin actions', async ({ page }) => {
     channelId: 'voice-1', voiceError: null, voiceState: 'DISCONNECTED', voiceTransferRequired: false,
     roster: { channelId: 'voice-1', participants: [], revision: 1 },
   })
-  const joinWithMicrophone = page.getByRole('button', { name: 'Подключиться к голосу' })
-  const joinAsListener = page.getByRole('button', { name: 'Подключиться без микрофона' })
+  const joinWithMicrophone = page.getByRole('button', { name: 'Войти' })
+  const joinAsListener = page.getByRole('button', { name: 'Без микрофона' })
   await expect(joinWithMicrophone).toBeVisible()
   await expect(joinAsListener).toBeVisible()
   await expect(joinWithMicrophone).toHaveClass(/gc-button--primary/)
   await expect(joinAsListener).toHaveClass(/gc-button--secondary/)
   expect(await page.locator('.voice-prejoin-actions button').evaluateAll((buttons) => buttons.map(button => button.textContent?.trim()))).toEqual([
-    'Подключиться к голосу', 'Подключиться без микрофона',
+    'Войти', 'Без микрофона',
   ])
   await expectAxeClear(page, '.voice-prejoin')
 })
@@ -587,11 +587,11 @@ test('voice prejoin announces connecting and blocks duplicate joins', async ({ p
     roster: { channelId: 'voice-1', participants: [], revision: 1 },
   })
 
-  await expect(page.getByRole('heading', { name: 'Подключаемся к голосовой комнате' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'Подключаемся к голосовой комнате' })).toHaveAttribute('aria-live', 'polite')
+  await expect(page.getByRole('heading', { name: 'Входим в голос…' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Входим в голос…' })).toHaveAttribute('aria-live', 'polite')
   await expect(page.locator('.voice-prejoin-copy')).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Подключаемся…' })).toBeDisabled()
-  await expect(page.getByRole('button', { name: 'Подключиться без микрофона' })).toBeDisabled()
+  await expect(page.getByRole('button', { name: 'Без микрофона' })).toBeDisabled()
   await expectAxeClear(page, '.voice-prejoin')
 })
 
@@ -615,8 +615,9 @@ test('connected voice room keeps connection status and stream action available',
   })
 
   const intro = page.locator('.room-intro')
-  await expect(page.getByRole('heading', { name: 'Все в сборе' })).toBeVisible()
-  await expect(intro.getByRole('button', { name: 'Показать экран' })).toBeEnabled()
+  await expect(intro.getByRole('status')).toHaveText('В голосе')
+  await expect(intro.getByRole('status')).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true })).toBeEnabled()
   await expect(page.getByRole('button', { name: 'Выйти из голосового канала' })).toBeEnabled()
   await expectAxeClear(page, '#mount')
   await page.screenshot({ path: testInfo.outputPath('desktop-voice-room-after.png'), fullPage: true })
@@ -637,7 +638,7 @@ test('voice prejoin explains a missing microphone and keeps the listener path av
   })
 
   await expect(page.getByRole('alert')).toContainText('Микрофон не найден')
-  await expect(page.getByRole('button', { name: 'Подключиться без микрофона' })).toBeEnabled()
+  await expect(page.getByRole('button', { name: 'Без микрофона' })).toBeEnabled()
   await expectAxeClear(page, '.voice-prejoin')
   await page.screenshot({ path: testInfo.outputPath('voice-prejoin-microphone-missing.png') })
   await page.setViewportSize({ width: 1440, height: 900 })

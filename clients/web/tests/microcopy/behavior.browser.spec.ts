@@ -5,12 +5,13 @@ import { routes } from './routes'
 test.beforeEach(async ({ page }) => { await routes(page) })
 test('prejoin is concise and retains named join, listener and joining announcements', async ({ page }) => {
   await page.goto('/tests/microcopy/fixture.html?surface=prejoin')
-  await expect(page.locator('.voice-prejoin-copy')).toHaveText('Подключитесь с микрофоном или слушайте.')
-  const listener = page.getByRole('button', { name: 'Подключиться без микрофона' })
+  await expect(page.locator('.voice-prejoin-copy')).toHaveCount(0)
+  await expect(page.getByRole('heading', { name: 'Войти в голос' })).toBeVisible()
+  const listener = page.getByRole('button', { name: 'Без микрофона' })
   await listener.focus(); await listener.press('Enter')
   await expect(page.getByTestId('result')).toHaveText('listener')
   await page.goto('/tests/microcopy/fixture.html?surface=prejoin&phase=joining')
-  await expect(page.getByRole('heading', { name: 'Подключаемся к голосовой комнате' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Входим в голос…' })).toBeVisible()
   await expect(page.locator('.voice-prejoin-copy')).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Подключаемся…', exact: true })).toBeDisabled()
   await expectAxeClear(page, 'main')
@@ -61,8 +62,8 @@ test('icon hints work on focus and hover, are hoverable and dismiss without losi
 
 test('revocation and denied microphone guidance remain visible with safe actions', async ({ page }) => {
   await page.goto('/tests/microcopy/fixture.html?surface=prejoin&phase=revoked')
-  await expect(page.getByRole('button', { name: 'Подключиться к голосу', exact: true })).toBeDisabled()
-  await expect(page.getByRole('button', { name: 'Подключиться без микрофона', exact: true })).toBeDisabled()
+  await expect(page.getByRole('button', { name: 'Войти', exact: true })).toBeDisabled()
+  await expect(page.getByRole('button', { name: 'Без микрофона', exact: true })).toBeDisabled()
   await expect(page.locator('.voice-prejoin')).toContainText('Подключение к этому каналу недоступно.')
   await page.goto('/tests/microcopy/fixture.html?surface=dock&phase=denied')
   await expect(page.locator('.voice-dock-mic-notice')).toContainText('браузер запретил доступ к микрофону')

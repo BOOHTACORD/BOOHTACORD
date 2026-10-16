@@ -1,0 +1,1703 @@
+{
+  "schema_version": 1,
+  "issue": 347,
+  "leaf": "DW-008",
+  "status": "PASS",
+  "scope": "Web UI acceptance for #347; no native/hardware/media quality or release-gate claim",
+  "base": "4cda8f5c464e006f1b3d7c65c2c16395656f3bab",
+  "tested_source": "aa959a2d72c474a5a96ec51f01445dabaacdaa5d",
+  "timestamp_utc": "2026-10-16T19:41:30.978338+00:00",
+  "environment": {
+    "host": "macOS 27.0.1 (26A434), arm64",
+    "browser": "Playwright 1.63.0 pinned Chromium",
+    "stack": "owned loopback HTTPS API / PostgreSQL / LiveKit / Tempo; synthetic accounts",
+    "platforms": [
+      "Web desktop1440",
+      "Web touch393 (emulated touch)"
+    ]
+  },
+  "unit_tests": 1555,
+  "unit_files": 473,
+  "focused_browser_cases": 24,
+  "state_axe_scans": 88,
+  "responsive_shell_cases": 11,
+  "traceability": {
+    "status": "PASS",
+    "requirements": 39,
+    "source_validation": "committed index; approved Windows brief unavailable"
+  },
+  "full_gate": {
+    "stages": 22,
+    "all_pass": true,
+    "raw_runner_status": "REVIEW_REQUIRED",
+    "report": {
+      "path": ".out/local-features/20261016-222648/report.json",
+      "sha256": "262e691f140603c3fd3a6f51a1b475901da8d4396a9382843155166dc8592a46",
+      "bytes": 202778
+    }
+  },
+  "source_files": {
+    ".github/workflows/ci-frontend.yaml": "a223bbfbdd01daebbf845df953654bf130d66e00c27a08172b6ac24e5f7a9db5",
+    "backlog/tasks.yaml": "99ebf6a62a66c1f40044bb42e82aa1e98feb1d3c7f44303c65c5b4a93bea287f",
+    "clients/web/package.json": "67791827e14a6b5af46e46d980d66e0b5126baeff24b63900066e0d2140c1b9c",
+    "clients/web/src/conversation/ConversationPane.vue": "aa48620e9780b3c49bffc5fd406ceec5db2c6cf7667aa6ea4317bd1b0674254f",
+    "clients/web/src/design/design_v2_voice_dock.css": "b9e86d9ff68731af7e02ff718d64a1654d869aa5c2a9343fae800c566fc4e63f",
+    "clients/web/src/design/design_v2_voice_room.css": "a5e105ce13728e261c1e3997e3a2d4d411ba6d5033eeee2bc1826c56ab516e5f",
+    "clients/web/src/design/voice_room_footer.css": "26d2d1d6bf6e0f5f8724d558b077aaae40933e0a5a7fc42b79158883699af018",
+    "clients/web/src/voice/VoiceDock.vue": "d8b680fa4ed2ce69ef86e3b65066282faadfa8eedb4add608d2b8df21c031f67",
+    "clients/web/src/voice/VoiceParticipantVolumes.vue": "56ab7d3f1cb2654e4b098e15aac39d517d8e0a8b12ad1c3baa368ff844f93082",
+    "clients/web/src/voice/VoicePrejoin.vue": "4a30ffb95b68b171938225380aecac41b5b92f07f5ece17c457d07e315632952",
+    "clients/web/src/voice/VoiceRoomConnected.vue": "0353fef83dd9a15b0d128fdececa3e5c87dbdf478541f24b8a19405ed62e20de",
+    "clients/web/src/voice/VoiceRoomControls.vue": "4967de1cfbd703ecf05da120f9e19ef39f5ee0683b4213fb168090bea5e3f6d9",
+    "clients/web/src/voice/VoiceRoomFooter.vue": "bea637c4511e40f8adfa4b35b3dd39b1160b2e53b31a750b91bfbd97c9dd4ea9",
+    "clients/web/src/voice/disconnect_notice/presentation.spec.ts": "ffd195d679abd60203c6c82e931c2b0e4ddacbdebdb2048fb2df941187431b77",
+    "clients/web/src/voice/disconnected_voice_presentation.spec.ts": "e49a8d4a97e1dab97519089c91f7ae90b5151a49fc495f9845396396a9c81e28",
+    "clients/web/src/voice/participant_screen_actions.spec.ts": "47de8776516c0dc8f9e227a8763e9d673ca4b4e7c928ccce7bd5e1d4e7013dc2",
+    "clients/web/src/voice/screen_viewer_reference.spec.ts": "6d9b076b82a7602bec563e01afbcf3d9628af2c6e945630d9de177f0aee9f778",
+    "clients/web/src/voice/voice_dock_design_icons.spec.ts": "73d9ee316386709468136a28b797b8e816e6971a9ff3734a54d14eb8201b7c2f",
+    "clients/web/src/voice/voice_prejoin_joining_copy.spec.ts": "a6bd8628f5d710f8cf6d39e4ab45fc9807a8b92f9c57f9ce5bde5e8b82ea1f52",
+    "clients/web/src/voice/voice_room_copy.spec.ts": "2db7a971069992aad2a35ff1af9b6f1a1646bbb708972efc6d0ad24bb62aa6db",
+    "clients/web/src/voice/voice_room_copy.ts": "ed941722caceb17efc69910b3df876a8c2e739272c7a42d125bb191b123b3dfe",
+    "clients/web/src/voice/voice_room_footer_reference.spec.ts": "fab24cad31698b4f669fc2282edafb9fcd00734c1037328c28fb2178de442c83",
+    "clients/web/src/voice/voice_room_presentation.spec.ts": "bdce032f6a78c5fb2ffe31759376c504e4a4cfb64c4573193743381c30b3a6d2",
+    "clients/web/src/workspace/WorkspaceApp.vue": "76c8ffaf411d49be26e074d4dc9768abc5f4aca6481a96ec18181e164012bbde",
+    "clients/web/src/workspace/WorkspaceMain.vue": "fa33ec089126d9737363ced560f5d1b8fbf0a877f17c53eb4bcaf1b19f72a5ee",
+    "clients/web/src/workspace/WorkspaceMembersPanel.vue": "c18055fbf595afcaf54444b368ef0612b02410aae0bd694ca3b434470dae0702",
+    "clients/web/tests/accessibility/accessibility.browser.spec.ts": "1f7ed53bc0e5c0c668643f2cff96b7cd224fa83e25ab4620e75981d3c8d031a4",
+    "clients/web/tests/microcopy/behavior.browser.spec.ts": "c8e3d8e148055dd2580e3bfd79e87559ada139527d6f2aec5d981ad3b2488198",
+    "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts": "7433735f4b013ff82db73b336bda520974863b8dceaf75e0fb2b5c3b4ae6433a",
+    "clients/web/tests/voice_disconnect_notice/notice.browser.spec.ts": "692c64767e5d3f938df66c8cc456273f8fa14053c41741f28704edca862dcb4a",
+    "clients/web/tests/voice_interface/controls.browser.spec.ts": "4be37bffca38fbe3e66b589e11b76dbbdc09fea363d62d281cfb6fac97d93ef5",
+    "clients/web/tests/voice_interface/fixture.html": "9f6957d0969e5916166ff6e38933162b85ce6dcc22f6cf91f901e61d66ec634a",
+    "clients/web/tests/voice_interface/fixture.ts": "e9adb449d753aeb73fad21d720cac2207cec5de2633bbea0c7b7c35f540bf5d8",
+    "clients/web/tests/voice_interface/playwright.config.ts": "6cb1d1e15f9133a8b4e3f832fbda3165296aa2fb1127fbab7315c020b689d20b",
+    "clients/web/tests/voice_interface/zoom.browser.spec.ts": "574429ac5c6df4f7ec54ee382b7fd0155f29a55456dc87cc3893af1b520e4150",
+    "tools/ci/native/web.py": "0a4475e08ad80bd99806b6039703dda63686762e85019eec78a08ab7acb57cf9",
+    "tools/qa/accessibility_runtime/active_voice_scale.mjs": "81c829ecdcaceb3768a1e779cf0e3e261a4f50a13168f9fe8125a18c16f50a56",
+    "tools/qa/accessibility_runtime/scenario.mjs": "506e753b7dbefc36be53f67dd1c9f6a43b5dcc08aa5e99361c54b28cc2f0b0f2",
+    "tools/qa/admin_dialogs/scenario.mjs": "7417d0b1e18255ecc50690fd466e43c74ba4e89ce31480e343dc1c172744c7cc",
+    "tools/qa/client_lifecycle/scenario.mjs": "c60d39e1ecbde34bf64de4229be1ec52edb9340afc5e6db0e7903bc97b191231",
+    "tools/qa/critical_client_acceptance/media.mjs": "95b82b23c38091ef4d680627c357aa60b5b7a03c85433fbbd20d7d0957d27834",
+    "tools/qa/critical_client_acceptance/teardown.mjs": "958c7021b8d28e0c97364bc9900f8eb41b4a1db7d9e591c91fc2ba6ddd034057",
+    "tools/qa/critical_client_acceptance/voice_interface.mjs": "27b5765d93379c940a9acb3a73ea1436662a956a5a550348922ed5a07c5a18d4",
+    "tools/qa/local_features/features.json": "07662991c6c434919587ef517bace6ac0ded8da70e2479befac2d5ed9eb491e7",
+    "tools/qa/macos_sender/peer.mjs": "d84669b3ec15bd9912ff9c54b6e48dc882bb3b2a5e5f6049319e5e8b248914c4",
+    "tools/qa/macos_ui/web_scenario.mjs": "b9b9b76eaf9b2dbfd302215247c4ff197607172f40e0553a7e5b97962bab5d63",
+    "tools/qa/mini_player/scenario.mjs": "1ea4dd280de42c21b926168faa470c74ed204144db90efc8f6dcefc97849824c",
+    "tools/qa/navigation_preferences/scenario.mjs": "9f198600dd2c55779cfa638ca4bff5229ee6b4241beae3e137aaf76295b62e2a",
+    "tools/qa/next_client_acceptance/cache_acl.mjs": "29ef7d4cc5facd86e946b00ff48bde7aa67ae00eff30311815d8f192067212de",
+    "tools/qa/next_client_acceptance/navigation.mjs": "d7bfc01e0cabef4864ab3036c1f8f8c2895dd347116435a1297360b0415906ae",
+    "tools/qa/quickjump/scenario.mjs": "b4322756df02a04d4df53cffa997120874552204fc84492738e198c5702cea52",
+    "tools/qa/roster_runtime/scenario.mjs": "3f633785c93bab1eb5ea478390d6dc6aebbabbac13166948e89066d42d3be770"
+  },
+  "phases": [
+    {
+      "report": {
+        "path": ".out/local-features/20261016-215855/report.json",
+        "sha256": "d8689824dc36561a598cc8824c7f2f31785193ddb83df219af0a0e59ec39b370",
+        "bytes": 201075
+      },
+      "source": "da34ee002eb8b38dda25c03dde1e58b469e56e5a diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_status": "REVIEW_REQUIRED",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-control_consistency",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-microcopy",
+          "status": "PASS"
+        },
+        {
+          "name": "web-navigation_density",
+          "status": "PASS"
+        },
+        {
+          "name": "web-password_generation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-readonly_archive",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "report": {
+        "path": ".out/local-features/20261016-221259/report.json",
+        "sha256": "c8d6db8d7f078a579771a1c63a3af247ce0c331d44ae0d6f23101fedf7a05b3c",
+        "bytes": 197686
+      },
+      "source": "30e60c90939e4fb8bc3346f6c6b5d4c7148936d6 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_status": "FAIL",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-control_consistency",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-microcopy",
+          "status": "PASS"
+        },
+        {
+          "name": "web-navigation_density",
+          "status": "PASS"
+        },
+        {
+          "name": "web-password_generation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-readonly_archive",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "FAIL"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "report": {
+        "path": ".out/local-features/20261016-222648/report.json",
+        "sha256": "262e691f140603c3fd3a6f51a1b475901da8d4396a9382843155166dc8592a46",
+        "bytes": 202778
+      },
+      "source": "aa959a2d72c474a5a96ec51f01445dabaacdaa5d diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_status": "REVIEW_REQUIRED",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-control_consistency",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-microcopy",
+          "status": "PASS"
+        },
+        {
+          "name": "web-navigation_density",
+          "status": "PASS"
+        },
+        {
+          "name": "web-password_generation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-readonly_archive",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ]
+    }
+  ],
+  "visual": {
+    "source": "aa959a2d72c474a5a96ec51f01445dabaacdaa5d",
+    "before": [
+      {
+        "path": ".out/issue347/before/1440-connected.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "fabce7eb82ae106613f50d29865dd250732a6cfa3dae217261888a9546872327"
+      },
+      {
+        "path": ".out/issue347/before/1440-deafened.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "310f85c630753e861292eea3e69e3b46cc6cc1a9c5390bd2aa71b484c2fa5ddc"
+      },
+      {
+        "path": ".out/issue347/before/1440-joining.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "4b2744188114ec4f74cfa1f5ceeeb2c09b6c31cc1bdb4c1ff7fb2cfae35e2543"
+      },
+      {
+        "path": ".out/issue347/before/1440-muted.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "e927362cba1190ce523fe679e5d1eb2b1093a0dc96c7bdedff4a187ec919bf35"
+      },
+      {
+        "path": ".out/issue347/before/1440-prejoin.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "364f61ab20e05d1979b6b7b1f252c393714fa6cfec824d432f804d74b167b344"
+      },
+      {
+        "path": ".out/issue347/before/1440-reconnecting.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "87d29bed9c90f640c4ed4e74bc34ab7e3f1f28b3f412c9cc2d250f5adfff2bcd"
+      },
+      {
+        "path": ".out/issue347/before/390-connected.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "810143f5069729f7ce78b86f1145c74220fac2c247611a64781e791340d0dca8"
+      },
+      {
+        "path": ".out/issue347/before/390-deafened.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "6b16b65ef11f899e06868806f9f27fc29152347306aa97685f27fa1fe56a7eba"
+      },
+      {
+        "path": ".out/issue347/before/390-joining.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "03e4047448ef5f84f284c6c4a525199228ea67f4ccde1aa43487e97d974efc2b"
+      },
+      {
+        "path": ".out/issue347/before/390-muted.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "a9b29270f390c35a80565190fae9b33d26a11bad0e9890e32d7b4756b029139d"
+      },
+      {
+        "path": ".out/issue347/before/390-prejoin.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "8cf74e4b7b4f943b78ba79662e42e6fd46fd30f7c2dd43437d2b81acd8831df3"
+      },
+      {
+        "path": ".out/issue347/before/390-reconnecting.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "7dafc17fdbc501b3ba83942367c542ae930c80c4fdaad5fd2c8362fdb0f224f5"
+      }
+    ],
+    "focused_generated": [
+      {
+        "path": ".out/issue347/browser/controls.browser-a-pending-985f3-d-blocks-microphone-actions/pending-active-join.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "f704593dc280e917539cb50dcf0236546a0341a1a86f8333df392d42011ec5e9",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/connected.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "9fdf4d1741e6e6b78fe65189d0c8fa43dac523038fc8634092bf1960953295c7",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/deafened.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "bc1894c8fd3a8368b2797582ed26109fd4e35fdb2326b00b03ac86f7c62f900b",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/denied.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "a8a1cc23bb25b516343e6c6882b0f3b2d3a2ca05fa02748bb111286b661ccc7f",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/joining.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "d9c2779a9221684c436b581a25de9cf82c403a1885e509b7eac18059b7f0a9f2",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/leaving.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "fb37565eab2d3787def2d8ce5cc1722a2fb11a78e5c00fdca50bc664ccc43e40",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/muted.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "7f6afcaee22d91cda2ebecaadf834264325d53470fe94b246bd4d2924d2ce5de",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/prejoin.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "51f2ebc4706dc8ff62ba152b6214741ac12a02aafb67f9e0ce3ac8da94a64431",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/reconnecting.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "2e60df1f80b4d99229c0db8f4d00a80677513d4495f2e480869d8e517a40589a",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/sharing.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "e95fbd718ec0a34a2a5758862f25d8dba907f0425148a49a7920bb4a38373ab7",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/starting.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "fdd886cd47caa168c0e9089ad090fedf98fdd11e4cd3bc23dd5033265c48bbe0",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/stopping.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "fdd886cd47caa168c0e9089ad090fedf98fdd11e4cd3bc23dd5033265c48bbe0",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/connected.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "6655c3147d374eb5f51e627faafff02ea0620ffff20510b839019914fa9c4c83",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/deafened.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "d397467c63f12151bb0c25b73eadc5ff75800ba8a692314e1ee6ea4de6c7a9a8",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/denied.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "798c809fa8dd9dfdc3e6b143d5761f3848a43e6a63f2c1ad53d357a1150c8599",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/joining.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "0134d8df691a5fb59da3674f57b215d73243128d5cfe35caab53c904d1ab727f",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/leaving.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "6ffa5685935ce46d9ee8fd242a2045358797e129ed60c645100954d27dd76ee3",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/muted.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "f11cb0ed6c36a21b77942b78b1949af7c885faf0e8065e324a8affbbb2bb90ff",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/prejoin.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "fef862c16962e078e758825c7f2e45818eb8751a70fb77f97a525cb1b7efd1da",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/reconnecting.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "7ff3f9b31e285a650d7778ce0b8b543c89013d61085a9935e5ea90983849a2c5",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/sharing.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "9877fdadf726a094c1495c1f798c7607d91e998f985e7f83bd30f5b046ff4869",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/starting.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "4ddf1c659712232a54081b7565e0f02be9df61977b06f852581a1b3b18783259",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/stopping.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "4ddf1c659712232a54081b7565e0f02be9df61977b06f852581a1b3b18783259",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/connected.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "1c4772a1241cf900ef75ad3a3e3f9bcf7ecafcc7b9e7e8cf6f550184d93170f2",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/deafened.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "cd7db40a0471ed905ba0ccc04ac1624b8ab1ac849acb049488a6409c91aae36a",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/denied.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "5cbcbc8adb0aa0aedd1b51cf2e0ed31f231e57dfdcfecb8837ead6418fe41638",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/joining.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "73a43cdb5e4b3a6c6a9fa8d68d6367a99fa8986dc1d50507fecaa1453ef45c69",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/leaving.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "ba7d1fa23e863ef50b26accc361982ef5af2f0470269585429603d28960a8228",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/muted.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "7dff877982d38167339efcebb499beac1730337d0ba9cb9133dd67c5cb2f8f0a",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/prejoin.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "dadb22746e7fe5d79ec45327df264cf0a88298a744e6238b1dbbfdddf3bd1ade",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/reconnecting.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "d2247ae4baeddeb474a0fdca8f6a1836ed4f3e19d08689af1f127e0884828e38",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/sharing.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "3f2f2372f2f36d73fd04782997846ab6af302c0a55dfb46c5a3dbf6be6681f9a",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/starting.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "d7d5ab5e92848dc122b24439726545244eb2b9901e8f13528fd09ed510c16dc7",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/stopping.png",
+        "width": 1024,
+        "height": 900,
+        "sha256": "d7d5ab5e92848dc122b24439726545244eb2b9901e8f13528fd09ed510c16dc7",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/connected.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "157d15a1d463bac60d47a49503e2750a009027b6fd4d0a7fd01b8b62a8e46dad",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/deafened.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "75b0ed8d0de0fdc3a13d4602767ebaa50dd3c4a58e34cfb1d3dcfcaf382f89f2",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/denied.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "342bd30445aed27d76f9f05f1509f3ece9df9909db17f983630bd0db74e4cb0c",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/joining.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "1417608cc3733ca2e8e14b837cfc1ae3eb46470605ce2fe60f5b91f45ecc3390",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/leaving.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "2fef59578615b02bbf2996b664af064696e06b85a3bbbaa0c32767061a714a5f",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/muted.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "f726b792516cc880868f7368efbbd22fedf55234daaa5eb8e8fb787084fecb1c",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/prejoin.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "4e423bc6655ce414532b7d70b9e3dc2ca0b7018168d8e22970de084f4003d584",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/reconnecting.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "7165b4161787d5433113976ed988a09a284b9f25c4af7f7cd64ff6a77d05e5a1",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/sharing.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "f4dcdfd13baca175b97437b3ba8f95b8d73c80432eb1ebefb5a21ae41d87a012",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/starting.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "b553688a8f750ee23247488b3c278c027d3510b78bfe92bbe4226a82a23ff32f",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/stopping.png",
+        "width": 1440,
+        "height": 900,
+        "sha256": "b553688a8f750ee23247488b3c278c027d3510b78bfe92bbe4226a82a23ff32f",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-100-/connected.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "83ff1ccd281dcdd726166870dbd4ec1ce490ba53f0acebe7190268c46409769f",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-100-/deafened.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "eaaa975edeeca3d33bba512c337c6ae9b7c3a3f6eec8a6a02938666a75187b58",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-100-/denied.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "e39b8ccd5f6e0a1aee5657cfc0735c9037d40101ae17b830064b34fc4057f900",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-100-/joining.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "6ad2391c59cdff0ec3cf18adf358202e81296e76c5b59f97bdf57f4d9706dcf1",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-100-/leaving.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "b2675eaa4c5fa4cc10a7f0a73a698a6bd64deaba36e1aeb5ccc376311c627029",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-100-/muted.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "6d4fca333e2ae8ce9f445eeb8a38ce7d11f5e2da1f0b747de05a510f0c8e6538",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-100-/prejoin.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "912aa4e6a3f85627eea1cded4455802dbbabcea5aaece3f35ca03541a6772579",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-100-/reconnecting.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "536ce0c86371cc0123a609a6388a99126e9ce665c5c6dd3521d12b6caba46038",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-100-/sharing.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "1318c5a60c946dc105f989407b5e1bf353fbb4513228927b70f6cbb7aef60ad1",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-100-/starting.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "c5062913c7d7eee4167e81c03662f205c7cb265c97c8e4ecf4406b14420e5f00",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-100-/stopping.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "bb561463364454cb6e6ca8d32c2e389ed64b96b598a1ec3a1d78da84f6cb172f",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-200-/connected.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "3f8984792b9b61a337fe72b557bd50edaca6a91b594bc52266752bb363942b7f",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-200-/deafened.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "971abcd99f28f01c0da7d341fa57f307de348887c7e133ec2b7e11b0a8863226",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-200-/denied.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "1c52daa8cb4a5baa514b97f9540aa9f9de96df8671e99c2a0dd7b4c9228534cd",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-200-/joining.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "51da02c41205ca7db341968cf5927836a1b99b5692151966da91a81bbc552711",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-200-/leaving.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "2b1d6991563803b5ca7c0f56f8fe7704344e78dba5f65e90117fd1bab867851e",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-200-/muted.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "25e49d109c6e7905a6dde741a34292a1b530a867231057abde23c4401d598479",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-200-/prejoin.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "a4866ce31e4d29cccebc48ab012bbb356adf4a379f63aa015337b95b827117f3",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-200-/reconnecting.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "592f5ec12a6e70676e9e4ba330b5efeffc353897557e6c29aba696025d10eb36",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-200-/sharing.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "9542b02d5680ab634ad06d30bb29081ad97488ccf895c0dacb84d5c6cfbb1fec",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-200-/starting.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "e08c003f3ad0f1fa9e2213dabf163a53e7da87184eb485db25ea7d0e7834b4ad",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-320px-text-200-/stopping.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "e08c003f3ad0f1fa9e2213dabf163a53e7da87184eb485db25ea7d0e7834b4ad",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "1a7c9e30c4db4e2d4ab870868692b95bbd453e016c4d2c4619ab086c11caab0b",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-100-/deafened.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "b9afa4df5e7dcb48de3c0b40e2f47503a8a3d32f080a6283f573df052ec00d86",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-100-/denied.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "30079779fd4a42209cbbe5bfeb0628540fec521c9fba19b30a75f87606a1dfed",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-100-/joining.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "f2178efbe136fa9f3265d18390ad901043eb596cd41e7ff17f72997f8d03199e",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-100-/leaving.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "41044f9912ed6c2e8f38518422119e2adeb62b6e14ed3095dd739806b9252c65",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-100-/muted.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "c5a7f149adb70d89987eb2caec6a47364d2a6350b511f5c6949343c28dade09a",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-100-/prejoin.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "f8125216ddb575de837dac83af3542018c843bf4fbea3073f0b30ed332908757",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-100-/reconnecting.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "052ac548ab53515659e12138d5028a908aa9f17b7dca1696fc162ff7263bb1e7",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-100-/sharing.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "d8665d3a8c5ea4e65cb524c5998b7b3573164ec31532d1f5c0ea7fe5dd55da31",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-100-/starting.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "6da3553135901bf6ee2e841ad402359f99e90bdb7f845155842224fcd68dcdc7",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-100-/stopping.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "6da3553135901bf6ee2e841ad402359f99e90bdb7f845155842224fcd68dcdc7",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-200-/connected.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "1f38319b2dc20016bc3fafe0109ae882178156625fdfb732e1e7c3115d8422b2",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-200-/deafened.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "e13b8785cd8bfb67c57262865e5a259d8ce5d1491893fcdfff96a5dfdc8076b6",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-200-/denied.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "c07e80261cd4bcabaa90e050d119e35a13cfdedd943265e4d74181693ba91a93",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-200-/joining.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "b0b86462875f9e69617a56c8a9ea59b5ff2820cb4cd1bdea8e4662e1a5536be5",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-200-/leaving.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "7feb5b1cc90f6ade4f68512a09b1e268049e9d014df92e80f29dc63719d3a0b8",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-200-/muted.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "99390c68d0fe318b9e485591de20e4f490c92e4ef4d9bb550ec575e527a0adc1",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-200-/prejoin.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "8522bf2c68652061b180ffcfa5fe77ed2856044e96e714c3a274741808c0f0ec",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-200-/reconnecting.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "58618e43b9dde31b1065acd2b8f4be29eadea6f10c9899a80035b5fe5c10a189",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-200-/sharing.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "ea57913bd63026d58b6371b225fe0a17f41a83019999e404f9c9b25f57cca593",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-200-/starting.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "48e413d9bcc8c4b8b965f011d38593249b57be3e58ec8f40d89431c7a936bf1b",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-compact-voice-states-fit-at-390px-text-200-/stopping.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "48e413d9bcc8c4b8b965f011d38593249b57be3e58ec8f40d89431c7a936bf1b",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-failed-co-e339a-licit-retry-actions-visible/join-failed.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "301012bf4737e8e3a290666b0b416df779a4090dd981ebcc30ab5b12374dd453",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-mobile-do-3f210-ith-drawer-closed-text-200-/closed-deafened.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "14a519e9b503724e447ecb769f2b914ea8b561ffe959b0b715b896e3d6bb295b",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-mobile-do-5f18e-ith-drawer-closed-text-100-/closed-deafened.png",
+        "width": 320,
+        "height": 900,
+        "sha256": "4514433ceed6a5a5154322f299282a8e2f52fd7919c18dcaa75af2622f4262ec",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/controls.browser-unsupport-67918-voice-and-leave-stay-usable/capture-unavailable.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "431e91de7de433bf9f511afa32f0d9d737e94c902f0b5c408f0d7d9ff78cf55f",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/zoom.browser-touch-primary-aa232-y-details-open-deliberately/touch-details.png",
+        "width": 390,
+        "height": 900,
+        "sha256": "c6835f1a7a97da5a6df122aa76c5e910f9e098fa3bb247aded21b2e0d8767761",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/zoom.browser-voice-at-actual-200-browser-zoom-in-2048px/muted-zoom.png",
+        "width": 2048,
+        "height": 913,
+        "sha256": "e69b2dfe5fbcd408b8490a91b9fbdd950aeef2788a04eee8e4104e0bbcbff565",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/zoom.browser-voice-at-actual-200-browser-zoom-in-2048px/prejoin-zoom.png",
+        "width": 2048,
+        "height": 913,
+        "sha256": "4f5e934e88224312bea055648cc39632d6d896fb1715f8cc0475352d9c56bc6f",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/zoom.browser-voice-at-actual-200-browser-zoom-in-2880px/muted-zoom.png",
+        "width": 2880,
+        "height": 913,
+        "sha256": "65b3f80f49b186bdb12d6c8d576b213569ac278865b2387d7d73464bd4112e29",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/zoom.browser-voice-at-actual-200-browser-zoom-in-2880px/prejoin-zoom.png",
+        "width": 2880,
+        "height": 913,
+        "sha256": "9c887f76613f5df684c4f76c088fa32c72b1eeda077f43e1c6016500d8d37fbd",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/zoom.browser-voice-at-actual-200-browser-zoom-in-640px/muted-zoom.png",
+        "width": 640,
+        "height": 913,
+        "sha256": "39f3e4b334a8b6b7feb9f61f1abd9e74465433f27faf99462be1275336d30317",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/zoom.browser-voice-at-actual-200-browser-zoom-in-640px/prejoin-zoom.png",
+        "width": 640,
+        "height": 913,
+        "sha256": "71d01e9f2e6e0d655d6b0d7508df43c068a0d7eda2dc473bbc3442e77daddd70",
+        "manually_reviewed": true
+      },
+      {
+        "path": ".out/issue347/browser/zoom.browser-voice-at-actual-200-browser-zoom-in-780px/muted-zoom.png",
+        "width": 780,
+        "height": 913,
+        "sha256": "f0ed920c616490ae60ac50886c954f8077ba6db4b478fb2d8ed20e904e3a6c59",
+        "manually_reviewed": false
+      },
+      {
+        "path": ".out/issue347/browser/zoom.browser-voice-at-actual-200-browser-zoom-in-780px/prejoin-zoom.png",
+        "width": 780,
+        "height": 913,
+        "sha256": "0657a82bd20af23bac6135f11047296faa46d7e9c3247b4fa2f0f44eb0c3de38",
+        "manually_reviewed": false
+      }
+    ],
+    "selected_focused_count": 38,
+    "crops": [
+      {
+        "path": ".out/issue347/zoom2880-dock.png",
+        "width": 560,
+        "height": 913,
+        "sha256": "f01fc46a75b03103437a88f2796397cd158f223dbcfd38b7eb61afdf7b868e23"
+      },
+      {
+        "path": ".out/issue347/zoom2880-main.png",
+        "width": 1600,
+        "height": 913,
+        "sha256": "837b3317982235cf2a6964f7b207b2a9c1bf9ff4e5041258dc107d1bddedd2cb"
+      },
+      {
+        "path": ".out/issue347/zoom2880-prejoin.png",
+        "width": 1600,
+        "height": 913,
+        "sha256": "cc4ddfda751baa3a1e862bde0d14b7d7aef1a821a3c6dccacde4659e0d82decf"
+      }
+    ]
+  },
+  "focused_gate_comparison": [
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-a-pending-985f3-d-blocks-microphone-actions/pending-active-join.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/denied.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-v-d1727-tes-fit-at-1024px-text-200-/sharing.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/connected.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/muted.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/prejoin.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-v-f60f7-tes-fit-at-1440px-text-100-/reconnecting.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/connected.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/deafened.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/denied.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/joining.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/leaving.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/muted.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/prejoin.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/reconnecting.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/sharing.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/starting.png",
+      "same": true,
+      "animated": true
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/stopping.png",
+      "same": true,
+      "animated": true
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/deafened.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/denied.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/joining.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/leaving.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/muted.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/prejoin.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/reconnecting.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/sharing.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/starting.png",
+      "same": true,
+      "animated": true
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/stopping.png",
+      "same": false,
+      "animated": true
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-failed-co-e339a-licit-retry-actions-visible/join-failed.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-mobile-do-3f210-ith-drawer-closed-text-200-/closed-deafened.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-mobile-do-5f18e-ith-drawer-closed-text-100-/closed-deafened.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/controls.browser-unsupport-67918-voice-and-leave-stay-usable/capture-unavailable.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/zoom.browser-touch-primary-aa232-y-details-open-deliberately/touch-details.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/zoom.browser-voice-at-actual-200-browser-zoom-in-2880px/muted-zoom.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/zoom.browser-voice-at-actual-200-browser-zoom-in-2880px/prejoin-zoom.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/zoom.browser-voice-at-actual-200-browser-zoom-in-640px/muted-zoom.png",
+      "same": true,
+      "animated": false
+    },
+    {
+      "path": ".out/local-features/20261016-222648/web-voice_interface/zoom.browser-voice-at-actual-200-browser-zoom-in-640px/prejoin-zoom.png",
+      "same": true,
+      "animated": false
+    }
+  ],
+  "runtime": [
+    {
+      "width": 1440,
+      "status": "PASS",
+      "source": "aa959a2d72c474a5a96ec51f01445dabaacdaa5d",
+      "api_image_id": "sha256:4ea3b371859f0cd2ac46d925e12999893b4385f79101be37a46e58d46ac2d18f",
+      "owned_resources_removed": true,
+      "checks": {
+        "actual_two_listener_sessions": true,
+        "compact_primary_controls": true,
+        "deafen_state": true,
+        "share_dialog_cancel_without_capture": true,
+        "focus_return": true,
+        "text_drawer_resize_retains_same_transport": true,
+        "all_four_mobile_dock_actions_without_drawer": true,
+        "hardware_capture_or_audio_quality": "NOT_RUN",
+        "post_leave_interactive_roster_or_streams": 0,
+        "cleanup_observed_within_ms": 17,
+        "observation": "Bounded live transition; no persistent old-roster defect inferred from the original tour frame."
+      },
+      "report": {
+        "path": ".out/client-lifecycle/1440/report.json",
+        "sha256": "3777599089ee348745c5a598d2432907341979348a3e035afdb24c2d92159479",
+        "bytes": 40388
+      },
+      "captures": [
+        {
+          "path": ".out/client-lifecycle/1440/voice-prejoin.png",
+          "sha256": "9f669ba6de92a765fcb32cf762ebf7b2cd875ccb713e390e52f9bbebdb422acd",
+          "bytes": 152659,
+          "width": 2880,
+          "height": 1800
+        },
+        {
+          "path": ".out/client-lifecycle/1440/voice-connected-compact.png",
+          "sha256": "01f26486798376258e2e16fa2603fba9e1cfce16898f55f15aa64486250952d3",
+          "bytes": 185700,
+          "width": 2880,
+          "height": 1800
+        },
+        {
+          "path": ".out/client-lifecycle/1440/voice-deafened-compact.png",
+          "sha256": "0d14062f32ebefc3a5d49117a3168335e68ee7c0b942d75a61395d2bf413aed9",
+          "bytes": 194210,
+          "width": 2880,
+          "height": 1800
+        },
+        {
+          "path": ".out/client-lifecycle/1440/voice-text-navigation.png",
+          "sha256": "06b989b88ff8e5e2628edbcd98f6e926a71fb0827018010fb3d4e71de1826e70",
+          "bytes": 442310,
+          "width": 2880,
+          "height": 1800
+        },
+        {
+          "path": ".out/client-lifecycle/1440/voice-after-leave.png",
+          "sha256": "353e4d3f0dd72715f9468e8d5b74d8b3b60e4f179c319816aa8cf2e30dc311dc",
+          "bytes": 168645,
+          "width": 2880,
+          "height": 1800
+        }
+      ]
+    },
+    {
+      "width": 393,
+      "status": "PASS",
+      "source": "aa959a2d72c474a5a96ec51f01445dabaacdaa5d",
+      "api_image_id": "sha256:c04dbf92c1900870e0db143dec54d3a40a815c7850fc40b5187b8a15af96ab4b",
+      "owned_resources_removed": true,
+      "checks": {
+        "actual_two_listener_sessions": true,
+        "compact_primary_controls": true,
+        "deafen_state": true,
+        "share_dialog_cancel_without_capture": true,
+        "focus_return": true,
+        "text_drawer_resize_retains_same_transport": true,
+        "all_four_mobile_dock_actions_without_drawer": true,
+        "hardware_capture_or_audio_quality": "NOT_RUN",
+        "post_leave_interactive_roster_or_streams": 0,
+        "cleanup_observed_within_ms": 17,
+        "observation": "Bounded live transition; no persistent old-roster defect inferred from the original tour frame."
+      },
+      "report": {
+        "path": ".out/client-lifecycle/393/report.json",
+        "sha256": "4e29b892ca30b70b372c5707dbbd51ecb90d497645d43f44ede6dfe3d8ca3367",
+        "bytes": 40585
+      },
+      "captures": [
+        {
+          "path": ".out/client-lifecycle/393/voice-prejoin.png",
+          "sha256": "520bcb10fa6266e3b4aace500ddc4a92a4ae363b7b12dd841d0eec247d4cef74",
+          "bytes": 59947,
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/client-lifecycle/393/voice-connected-compact.png",
+          "sha256": "7f2af40be3ef4cca47be817ede66cf38db599a855fe8039072cf9ffbefdf18cf",
+          "bytes": 114267,
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/client-lifecycle/393/voice-deafened-compact.png",
+          "sha256": "9409a59d471cc0b4234f4edb87a6cca2c383758d02ed75caaf8100557ba732ef",
+          "bytes": 120533,
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/client-lifecycle/393/voice-text-navigation.png",
+          "sha256": "afc6152f9c0e40fe43a0dcd78ec964764444a6ad1a48d8fc708ef3dda550b299",
+          "bytes": 242023,
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/client-lifecycle/393/voice-after-leave.png",
+          "sha256": "f31498a2f08ac7f502700c01d31f543c505a76b2af8a71287aebc753ce819e56",
+          "bytes": 163845,
+          "width": 1179,
+          "height": 2556
+        }
+      ]
+    }
+  ],
+  "runtime_unscaled_crops": [
+    {
+      "source": ".out/client-lifecycle/1440/voice-prejoin.png",
+      "crop": ".out/issue347/runtime-crops/1440-voice-prejoin-main.png",
+      "x": 560,
+      "y": 0,
+      "width": 1800,
+      "height": 1200
+    },
+    {
+      "source": ".out/client-lifecycle/1440/voice-prejoin.png",
+      "crop": ".out/issue347/runtime-crops/1440-voice-prejoin-dock.png",
+      "x": 0,
+      "y": 1200,
+      "width": 560,
+      "height": 600
+    },
+    {
+      "source": ".out/client-lifecycle/1440/voice-connected-compact.png",
+      "crop": ".out/issue347/runtime-crops/1440-voice-connected-compact-main.png",
+      "x": 560,
+      "y": 0,
+      "width": 1800,
+      "height": 1200
+    },
+    {
+      "source": ".out/client-lifecycle/1440/voice-connected-compact.png",
+      "crop": ".out/issue347/runtime-crops/1440-voice-connected-compact-dock.png",
+      "x": 0,
+      "y": 1200,
+      "width": 560,
+      "height": 600
+    },
+    {
+      "source": ".out/client-lifecycle/1440/voice-deafened-compact.png",
+      "crop": ".out/issue347/runtime-crops/1440-voice-deafened-compact-main.png",
+      "x": 560,
+      "y": 0,
+      "width": 1800,
+      "height": 1200
+    },
+    {
+      "source": ".out/client-lifecycle/1440/voice-deafened-compact.png",
+      "crop": ".out/issue347/runtime-crops/1440-voice-deafened-compact-dock.png",
+      "x": 0,
+      "y": 1200,
+      "width": 560,
+      "height": 600
+    },
+    {
+      "source": ".out/client-lifecycle/1440/voice-text-navigation.png",
+      "crop": ".out/issue347/runtime-crops/1440-voice-text-navigation-main.png",
+      "x": 560,
+      "y": 0,
+      "width": 1800,
+      "height": 1200
+    },
+    {
+      "source": ".out/client-lifecycle/1440/voice-text-navigation.png",
+      "crop": ".out/issue347/runtime-crops/1440-voice-text-navigation-dock.png",
+      "x": 0,
+      "y": 1200,
+      "width": 560,
+      "height": 600
+    },
+    {
+      "source": ".out/client-lifecycle/1440/voice-after-leave.png",
+      "crop": ".out/issue347/runtime-crops/1440-voice-after-leave-main.png",
+      "x": 560,
+      "y": 0,
+      "width": 1800,
+      "height": 1200
+    },
+    {
+      "source": ".out/client-lifecycle/1440/voice-after-leave.png",
+      "crop": ".out/issue347/runtime-crops/1440-voice-after-leave-dock.png",
+      "x": 0,
+      "y": 1200,
+      "width": 560,
+      "height": 600
+    },
+    {
+      "source": ".out/client-lifecycle/393/voice-prejoin.png",
+      "crop": ".out/issue347/runtime-crops/393-voice-prejoin-top.png",
+      "x": 0,
+      "y": 0,
+      "width": 1179,
+      "height": 1400
+    },
+    {
+      "source": ".out/client-lifecycle/393/voice-prejoin.png",
+      "crop": ".out/issue347/runtime-crops/393-voice-prejoin-bottom.png",
+      "x": 0,
+      "y": 1400,
+      "width": 1179,
+      "height": 1156
+    },
+    {
+      "source": ".out/client-lifecycle/393/voice-connected-compact.png",
+      "crop": ".out/issue347/runtime-crops/393-voice-connected-compact-top.png",
+      "x": 0,
+      "y": 0,
+      "width": 1179,
+      "height": 1400
+    },
+    {
+      "source": ".out/client-lifecycle/393/voice-connected-compact.png",
+      "crop": ".out/issue347/runtime-crops/393-voice-connected-compact-bottom.png",
+      "x": 0,
+      "y": 1400,
+      "width": 1179,
+      "height": 1156
+    },
+    {
+      "source": ".out/client-lifecycle/393/voice-deafened-compact.png",
+      "crop": ".out/issue347/runtime-crops/393-voice-deafened-compact-top.png",
+      "x": 0,
+      "y": 0,
+      "width": 1179,
+      "height": 1400
+    },
+    {
+      "source": ".out/client-lifecycle/393/voice-deafened-compact.png",
+      "crop": ".out/issue347/runtime-crops/393-voice-deafened-compact-bottom.png",
+      "x": 0,
+      "y": 1400,
+      "width": 1179,
+      "height": 1156
+    },
+    {
+      "source": ".out/client-lifecycle/393/voice-text-navigation.png",
+      "crop": ".out/issue347/runtime-crops/393-voice-text-navigation-top.png",
+      "x": 0,
+      "y": 0,
+      "width": 1179,
+      "height": 1400
+    },
+    {
+      "source": ".out/client-lifecycle/393/voice-text-navigation.png",
+      "crop": ".out/issue347/runtime-crops/393-voice-text-navigation-bottom.png",
+      "x": 0,
+      "y": 1400,
+      "width": 1179,
+      "height": 1156
+    },
+    {
+      "source": ".out/client-lifecycle/393/voice-after-leave.png",
+      "crop": ".out/issue347/runtime-crops/393-voice-after-leave-top.png",
+      "x": 0,
+      "y": 0,
+      "width": 1179,
+      "height": 1400
+    },
+    {
+      "source": ".out/client-lifecycle/393/voice-after-leave.png",
+      "crop": ".out/issue347/runtime-crops/393-voice-after-leave-bottom.png",
+      "x": 0,
+      "y": 1400,
+      "width": 1179,
+      "height": 1156
+    }
+  ],
+  "observations": [
+    "Fresh Before from exact base; original private tour frames 30–32/43 unavailable. Scenario comparison, no original pixel-baseline claim.",
+    "38 selected focused frames inspected at source resolution; 37 byte-identical in final full gate, one animated stopping spinner frame independently inspected again. Other 64 generated fixture frames have automated geometry/axe coverage, not a claim of individual manual review.",
+    "12 fresh Before frames and 10 final actual-stack frames inspected through unscaled crops. Crop boundaries do not imply application clipping.",
+    "Normal connected room removes repeated boilerplate/zero-screen metadata. Muted/deafened slash icons and persistent red paint agree in room and drawer. Disabled states dim; denied guidance remains visible and does not overlap the header.",
+    "At 200% root text, the main room scrolls naturally while all four dock actions remain available. Long room labels use existing ellipsis with full text and title preserved. Focused tooltips and transient touch highlights are explicitly captured, not approved as stable baselines.",
+    "Actual touch post-leave frame retains the open navigation drawer from the fault-recovery journey; underlying prejoin and zero interactive voice/stream elements were independently asserted. The fixture also covers an unobscured post-leave/prejoin and deliberately stale screen selection.",
+    "Actual leave cleanup observed within 17 ms at desktop and touch in these runs; this is a test observation, not a media or production latency SLO.",
+    "Manual-leave reason retains its existing red notice style. Read-only prejoin roster remains legitimate; interactive old room/stream/popover controls are absent."
+  ],
+  "not_run": [
+    "physical microphone/picker/system permissions",
+    "native Android/iOS/macOS/Windows UI",
+    "actual screen publication/game audio, QoE/capacity",
+    "physical screen readers and original private-tour pixel baseline"
+  ],
+  "baseline_approved": false
+}

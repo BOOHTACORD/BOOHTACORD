@@ -12,7 +12,7 @@ describe('voice participant screen actions', () => {
 
     expect(pane).toContain('screenViewerCards.length || selectedScreenStreamId || screenViewerEnded')
     expect(pane).toContain('v-show="selectedScreenStreamId !== null"')
-    expect(pane).toContain('<div v-if="!selectedScreenStreamId" class="room-wrap">')
+    expect(pane).toContain(`!voiceIsActive || voiceState === 'LEAVING' || !selectedScreenStreamId`)
     expect(pane).toContain('@watch-screen="watchScreen"')
     expect(pane).toContain('ref="screenViewerRef"')
     expect(pane).toContain('@clear="clearScreenPreview"')

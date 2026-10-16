@@ -1,0 +1,167 @@
+import { expect, test, type Page } from '@playwright/test'
+import axe from 'axe-core'
+
+const patch = (page: Page, value: Record<string, unknown>) => page.evaluate(value => (window as any).__voiceFixture.patch(value), value)
+async function open(page: Page, width = 1440, scale = 100) {
+  await page.setViewportSize({ width, height: 900 })
+  await page.route('**/api/**', route => route.fulfill({ status: 200, contentType: 'application/json', body: '{}' }))
+  await page.goto(`/tests/voice_interface/fixture.html?scale=${scale}`)
+  await expect(page.locator('.voice-room-controls').first()).toBeVisible()
+}
+
+test('prejoin has two short explicit actions, retains listener mode and blocks double joins', async ({ page }) => {
+  await open(page, 390)
+  await patch(page, { active: false, state: 'IDLE' })
+  const join = page.getByRole('button', { name: 'Войти', exact: true })
+  await expect(join).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Без микрофона', exact: true })).toBeEnabled()
+  await join.focus(); await page.keyboard.press('Enter')
+  await expect(page.getByRole('button', { name: 'Подключаемся…' })).toBeDisabled()
+  await expect(page.getByRole('button', { name: 'Без микрофона', exact: true })).toBeDisabled()
+  await patch(page, { state: 'IDLE' })
+  await page.getByRole('button', { name: 'Без микрофона', exact: true }).click()
+  expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['join', 'listener'])
+})
+
+test('room and dock share icons, named states and keyboard actions without opening details', async ({ page }) => {
+  await open(page)
+  for (const scope of [page.locator('.room-wrap'), page.getByTestId('voice-dock')]) {
+    const mute = scope.getByRole('button', { name: 'Выключить микрофон', exact: true })
+    await mute.focus(); await page.keyboard.press('Space')
+    await expect(scope.getByRole('button', { name: 'Включить микрофон', exact: true })).toHaveAttribute('data-state', 'muted')
+    await expect(scope.locator('[data-state=muted] svg .voice-control-slash')).toHaveCount(1)
+    await scope.getByRole('button', { name: 'Включить микрофон', exact: true }).click()
+    await scope.getByRole('button', { name: 'Выключить удалённый звук', exact: true }).focus(); await page.keyboard.press('Enter')
+    await expect(scope.getByRole('button', { name: 'Включить удалённый звук', exact: true })).toHaveAttribute('aria-pressed', 'true')
+    await expect(scope.getByRole('button', { name: 'Включить микрофон', exact: true })).toBeDisabled()
+    await scope.getByRole('button', { name: 'Включить удалённый звук', exact: true }).click()
+    await scope.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true }).click()
+    await expect(scope.getByRole('button', { name: 'Запускаем демонстрацию экрана', exact: true })).toBeDisabled()
+    await patch(page, { screen: 'SHARING' })
+    await expect(scope.getByRole('button', { name: 'Остановить демонстрацию экрана', exact: true })).toHaveAttribute('aria-pressed', 'true')
+    await scope.getByRole('button', { name: 'Остановить демонстрацию экрана', exact: true }).click()
+    await expect(scope.locator('[data-state=stopping]')).toBeDisabled()
+    await patch(page, { screen: 'IDLE' })
+  }
+  await expect(page.locator('.voice-advanced')).not.toHaveAttribute('open')
+  await expect(page.getByText('Микрофон и звук трансляции управляются отдельно.', { exact: true })).not.toBeVisible()
+})
+
+test('permission denial and PTT keep the existing retry and activation contract in both places', async ({ page }) => {
+  await open(page)
+  await patch(page, { state: 'LISTENER', denied: true })
+  await expect(page.getByTestId('voice-dock').getByRole('status').filter({ hasText: 'браузер запретил' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Повторить доступ к микрофону', exact: true })).toHaveCount(2)
+  for (const retry of await page.getByRole('button', { name: 'Повторить доступ к микрофону', exact: true }).all()) await expect(retry).toBeEnabled()
+  await patch(page, { mode: 'PTT' })
+  await expect(page.getByRole('button', { name: 'Микрофон управляется push-to-talk', exact: true })).toHaveCount(2)
+  for (const mic of await page.getByRole('button', { name: 'Микрофон управляется push-to-talk', exact: true }).all()) await expect(mic).toBeDisabled()
+  await expect(page.getByRole('button', { name: 'Повторить доступ к микрофону', exact: true })).toHaveCount(0)
+})
+
+test('reconnect remains actionable; leaving immediately removes stale streams and roster actions', async ({ page }) => {
+  await open(page)
+  await patch(page, { state: 'RECONNECTING' })
+  await expect(page.locator('.room-wrap').getByRole('status')).toContainText('Восстанавливаем')
+  await expect(page.getByTestId('voice-dock').getByRole('button', { name: 'Начать демонстрацию экрана', exact: true })).toBeDisabled()
+  await expect(page.getByTestId('voice-dock').getByRole('button', { name: 'Выйти из голосового канала' })).toBeEnabled()
+  await patch(page, { state: 'CONNECTED', screen: 'SHARING' })
+  await expect(page.getByRole('button', { name: 'Смотреть экран', exact: true })).toBeVisible()
+  await page.getByTestId('voice-dock').getByRole('button', { name: 'Выйти из голосового канала' }).click()
+  await expect(page.locator('.participant-watch, .participant-volume, .screen-viewer')).toHaveCount(0)
+  await patch(page, { active: false, state: 'IDLE', selected: 'screen-peer' })
+  await expect(page.getByRole('button', { name: 'Войти', exact: true })).toBeVisible()
+  await expect(page.locator('.screen-viewer, .stream-rail, .participant-watch')).toHaveCount(0)
+})
+
+test('leaving removes the members rail and an already open voice participant popover', async ({ page }) => {
+  await open(page)
+  await page.goto('/tests/voice_interface/fixture.html?members')
+  await page.locator('.members-voice-roster').getByRole('button', { name: /Профиль: Тестовый участник/ }).click()
+  await expect(page.getByTestId('member-popover')).toBeVisible()
+  await patch(page, { state: 'LEAVING' })
+  await expect(page.locator('.members-voice-roster')).toHaveCount(0)
+  await expect(page.getByTestId('member-popover')).toHaveCount(0)
+})
+
+for (const width of [320, 390, 1024, 1440]) for (const scale of [100, 200]) test(`compact voice states fit at ${width}px / text ${scale}%`, async ({ page }, info) => {
+  await open(page, width, scale)
+  for (const [name, value] of Object.entries({ connected: {}, muted: { muted: true }, deafened: { deafened: true }, denied: { deafened: false, denied: true, state: 'LISTENER' }, reconnecting: { state: 'RECONNECTING' }, starting: { screen: 'STARTING' }, sharing: { screen: 'SHARING' }, stopping: { screen: 'STOPPING' }, leaving: { state: 'LEAVING', screen: 'SHARING' }, prejoin: { active: false, state: 'IDLE' }, joining: { active: false, state: 'JOINING' } })) {
+    await patch(page, { state: 'CONNECTED', active: true, muted: false, deafened: false, denied: false, screen: 'IDLE', ...value })
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    const target = page.locator('.room-wrap')
+    for (const button of await target.getByRole('button').all()) if (await button.isVisible()) {
+      const rect = await button.boundingBox()
+      expect(rect!.x).toBeGreaterThanOrEqual(0); expect(rect!.x + rect!.width).toBeLessThanOrEqual(width + 1)
+      expect(rect!.height).toBeGreaterThanOrEqual(40)
+    }
+    await page.addScriptTag({ content: axe.source })
+    const violations = await page.evaluate(async () => (await (window as any).axe.run('#app', { runOnly: { type: 'tag', values: ['wcag2a','wcag2aa','wcag21aa'] } })).violations)
+    expect(violations, name).toEqual([])
+    await page.screenshot({ path: info.outputPath(`${name}.png`), fullPage: true })
+  }
+})
+
+for (const scale of [100, 200]) test(`mobile dock exposes all four actions with drawer closed, text ${scale}%`, async ({ page }, info) => {
+  await open(page, 320, scale)
+  await page.goto(`/tests/voice_interface/fixture.html?closed&scale=${scale}`)
+  const dock = page.getByTestId('voice-dock')
+  const buttons = dock.locator('.voice-actions button')
+  await expect(buttons).toHaveCount(4)
+  for (const button of await buttons.all()) {
+    await expect(button).toBeVisible()
+    const rect = await button.boundingBox()
+    expect(rect!.width).toBeGreaterThanOrEqual(44); expect(rect!.height).toBeGreaterThanOrEqual(44)
+  }
+  await dock.getByRole('button', { name: 'Выключить удалённый звук', exact: true }).focus()
+  await page.keyboard.press('Space')
+  await expect(dock.getByRole('button', { name: 'Включить удалённый звук', exact: true })).toHaveAttribute('aria-pressed', 'true')
+  await page.screenshot({ path: info.outputPath('closed-deafened.png'), fullPage: true })
+})
+
+test('mobile painted mute background and enlarged denied notice do not obscure their state', async ({ page }) => {
+  await open(page, 320, 200)
+  await patch(page, { muted: true })
+  const mic = page.getByTestId('voice-dock').locator('[data-state=muted]')
+  expect(await mic.evaluate(button => getComputedStyle(button, '::before').backgroundColor)).toBe('rgb(185, 28, 28)')
+  await patch(page, { denied: true, state: 'LISTENER' })
+  const subtitle = await page.locator('.voice-dock-subtitle').boundingBox()
+  const notice = await page.locator('.voice-dock-mic-notice').boundingBox()
+  expect(notice!.y).toBeGreaterThanOrEqual(subtitle!.y + subtitle!.height)
+})
+
+
+test('a pending active join never claims to be connected and blocks microphone actions', async ({ page }, info) => {
+  await open(page, 390)
+  await patch(page, { state: 'JOINING', active: true })
+  await expect(page.locator('.room-wrap').getByRole('status')).toHaveText('Подключаемся…')
+  await expect(page.locator('.room-wrap').getByRole('button', { name: 'Выключить микрофон', exact: true })).toBeDisabled()
+  await page.screenshot({ path: info.outputPath('pending-active-join.png') })
+  await patch(page, { state: 'CONNECTED', deafenChanging: true })
+  await expect(page.locator('.room-wrap').getByRole('button', { name: 'Выключить микрофон', exact: true })).toBeDisabled()
+  await expect(page.getByTestId('voice-dock').getByRole('button', { name: 'Выключить удалённый звук', exact: true })).toBeDisabled()
+})
+
+test('unsupported capture keeps a visible explanation while voice and leave stay usable', async ({ page }, info) => {
+  await page.addInitScript(() => { Object.defineProperty(navigator.mediaDevices, 'getDisplayMedia', { value: undefined }) })
+  await open(page, 390)
+  await expect(page.locator('.room-wrap').getByRole('status').filter({ hasText: 'Этот браузер не поддерживает показ экрана' })).toBeVisible()
+  const share = page.locator('.voice-room-controls button').nth(2)
+  await expect(share).toBeDisabled()
+  await expect(share).toHaveAccessibleName(/Используйте браузер на ПК/)
+  await expect(page.locator('.room-wrap').getByRole('button', { name: 'Выключить микрофон', exact: true })).toBeEnabled()
+  await expect(page.locator('.room-wrap').getByRole('button', { name: 'Выйти из голосового канала' })).toBeEnabled()
+  await page.screenshot({ path: info.outputPath('capture-unavailable.png') })
+})
+
+test('failed connection keeps the failure and explicit retry actions visible', async ({ page }, info) => {
+  await open(page, 390)
+  await patch(page, { state: 'ERROR', active: false, error: 'Не удалось подключиться. Проверьте связь и повторите вход.' })
+  await expect(page.locator('.voice-prejoin').getByRole('alert')).toContainText('Проверьте связь')
+  const retry = page.getByRole('button', { name: 'Войти', exact: true })
+  await expect(retry).toBeEnabled()
+  await expect(page.getByRole('button', { name: 'Без микрофона', exact: true })).toBeEnabled()
+  await page.screenshot({ path: info.outputPath('join-failed.png') })
+  await retry.focus(); await page.keyboard.press('Enter')
+  expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['join'])
+})

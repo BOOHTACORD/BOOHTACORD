@@ -33,6 +33,7 @@ def main():
     run("npm", "run", "test:own-sessions", cwd=client("web"))
     run("npm", "run", "test:delivery", cwd=client("web"))
     run("npm", "run", "test:guild-lifecycle", cwd=client("web"))
+    run("npm", "run", "test:voice-interface", cwd=client("web"))
     run("npm", "run", "test:voice-shortcuts", cwd=client("web"))
     run("npm", "run", "test:voice-disconnect-notice", cwd=client("web"))
     run("npm", "run", "test:audio:quality", cwd=client("web"))

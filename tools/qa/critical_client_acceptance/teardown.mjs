@@ -3,7 +3,7 @@ import { owned } from './control.mjs'
 import { api, channel, expect, login, security, status } from '../client_lifecycle/request.mjs'
 async function join(page) {
   await channel(page, 'VoiceLab')
-  await page.getByRole('button', { name: 'Подключиться без микрофона', exact: true }).click()
+  await page.getByRole('button', { name: 'Без микрофона', exact: true }).click()
   await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 22000 })
 }
 async function mediaClosed(page) {
