@@ -12,17 +12,34 @@ later compilation or component tests.
 
 | Gate | Current status |
 |---|---|
-| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38835907719, source 809 |
+| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38838918669, source 81F |
 | Browser lifecycle acceptance | PASS, 81F run 38838918911, 809 run 38835907611 and CBA run 38832920361; E77's two earlier network failures retained below |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED awaiting system Keychain access |
-| Windows installed 78 → 79 | 809 FAIL before download with actual SDK ICE connection error; target availability PASS, 81F TCP-only loopback repeat running |
+| Windows installed 78 → 79 | 809 and 81F FAIL before download with actual SDK ICE connection error; target availability PASS; bounded real ICE diagnostics being added |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
 Ordinary shipping source is unchanged by the later QA navigation/diagnostic
 entrypoint changes. Verified distribution records are retained below. #337 and
 draft PR #338 remain open until both genuine installed UI gates pass.
+
+### Windows 81F connection failure (2026-10-16)
+
+Actual run 38838913385, installed job 116775696513 failed before download:
+`voice_not_connected`, step `voice_listener`, native build 78, phase `idle`.
+The real check returned `ok/updateAvailable`, banner visible, target present,
+policy not stale; the SDK classified the connection failure as `ice_connect`.
+TCP-only loopback configuration therefore did not resolve the fixture failure.
+Native startup and actual catalog revision 1 → 2 observation passed (8719 ms).
+Failure artifact 12021187887 is authenticated by its 45407-byte size and SHA-256
+`d2333de3e27f501108a2b2e4a513eeaed3ca33c6aceb37e816d63832b79a05c5`.
+
+The UPD-017 driver now observes actual pending/connected room stats while joining,
+retaining only bounded candidate counts, protocol/state enums and boolean address
+classes/request/response presence. No raw candidate address, SDP, identity, token
+or stats payload is written. This diagnostic does not retry the connection,
+change media policy or relax any successful-update acceptance assertion.
 
 Publisher: locally generated Ed25519 root `boohtacord-desktop-478919e9652ab825`.
 Private key is outside the repository with mode 0600, parent 0700. Only the public

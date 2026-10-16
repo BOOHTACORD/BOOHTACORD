@@ -1,6 +1,7 @@
 // Release-mode integration driver around the unchanged shipping entrypoint.
 // It never acknowledges bootstrap, writes recovery outcomes or simulates apply.
 // ignore_for_file: depend_on_referenced_packages
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -377,6 +378,8 @@ Future<void> main() async {
   Journey? journey;
   String? installedBuild;
   final voiceDiagnostics = AcceptanceVoiceDiagnostics();
+  Timer? statsObservation;
+  var readingStats = false;
   final sdkObservation = Logger('livekit').onRecord.listen((record) {
     voiceDiagnostics.observe(record.loggerName, record.message);
   });
@@ -386,6 +389,22 @@ Future<void> main() async {
     installedBuild = identity.local.installedBuild;
     final activeJourney = Journey(output);
     journey = activeJourney;
+    statsObservation = Timer.periodic(const Duration(milliseconds: 500), (
+      _,
+    ) async {
+      if (readingStats || find.byType(BoohtacordApp).evaluate().isEmpty) return;
+      final voice = activeJourney.state.voice;
+      final room = voice.pendingRoom ?? voice.room;
+      if (room == null) return;
+      readingStats = true;
+      try {
+        voiceDiagnostics.observeStats(await room.getPeerConnectionStats());
+      } catch (_) {
+        // Admission can dispose the actual room while a stats read is pending.
+      } finally {
+        readingStats = false;
+      }
+    });
     await until(
       () =>
           find.byType(BoohtacordApp).evaluate().isNotEmpty &&
@@ -441,11 +460,13 @@ Future<void> main() async {
           'native_failure': desktopUpdateFailureCode(journey.desktop.failure),
           'voice_phase': journey.state.voicePhase.name,
           'voice_connection_codes': voiceDiagnostics.codes,
+          'ice_observation': voiceDiagnostics.ice,
         },
       }),
       flush: true,
     );
   } finally {
+    statsObservation?.cancel();
     await sdkObservation.cancel();
   }
 }
