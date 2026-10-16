@@ -15,7 +15,6 @@
 .audio-device-section > header h2, .audio-activation-section > header h2 { font-size: 1rem; line-height: 1.5rem; font-weight: 600; }
 .audio-device-section > header p, .audio-activation-section > header p { margin-top: 4px; color: var(--gc-text-secondary); font-size: 0.8125rem; line-height: 1.25rem; }
 .audio-device-section label { gap: 8px; color: var(--gc-text-primary); font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
-.workspace-main-panel--audio .audio-device-section select { height: 44px; min-height: 44px; border-radius: 8px; background: var(--gc-sidebar); font-size: 0.875rem; font-weight: 400; }
 .workspace-main-panel--audio .audio-device-check { grid-column: 1 / -1; margin: 0; border: 0; padding: 0; }
 .audio-level-row { display: flex; min-height: 16px; align-items: center; gap: 12px; color: var(--gc-text-muted); font-size: 0.75rem; line-height: 1rem; }
 .audio-level-row > span { width: 100px; flex: none; }
@@ -23,8 +22,6 @@
 .audio-level-meter i { height: 8px; flex: 1; border-radius: 2px; background: var(--gc-surface-hover); }
 .audio-level-meter i.active { background: var(--gc-success); }
 .workspace-main-panel--audio .audio-device-check__actions { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
-.audio-device-check__actions button { display: inline-flex; min-height: 36px; align-items: center; gap: 8px; border: 1px solid var(--gc-border-control); border-radius: 8px; padding: 0 14px; color: var(--gc-text-primary); background: var(--gc-surface-raised); font-weight: 500; }
-.audio-device-check__actions button + button { border-color: transparent; color: var(--gc-text-secondary); background: transparent; }
 .audio-device-check__actions svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; }
 .audio-device-check > p { margin: 8px 0 0; color: var(--gc-text-secondary); font-size: 0.75rem; }
 .audio-check-details { margin-top: 8px; color: var(--gc-text-muted); font-size: 0.75rem; }
@@ -41,8 +38,6 @@
 .audio-shortcut-row > span:first-child { display: grid; gap: 2px; }
 .audio-shortcut-row small { color: var(--gc-text-muted); font-size: 0.75rem; }
 .audio-shortcut-actions { display: flex; align-items: center; gap: 8px; }
-.audio-shortcut-actions button { min-height: 36px; border: 1px solid var(--gc-border-control); border-radius: 8px; padding: 0 12px; color: var(--gc-text-primary); background: var(--gc-surface-raised); }
-.audio-shortcut-actions button + button { border-color: transparent; color: var(--gc-text-secondary); background: transparent; }
 .workspace-main-panel--audio .audio-processing-section { display: block; height: max-content; min-height: 272px; margin: 0; padding: 24px; }
 .audio-processing-section h2 { margin: 0 0 4px; font-size: 1rem; line-height: 1.5rem; font-weight: 600; }
 .audio-processing-row { display: flex; min-height: 65px; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--gc-border-subtle); color: var(--gc-text-primary); font-size: 0.875rem; line-height: 1.25rem; }
@@ -67,7 +62,6 @@
   .workspace-main-panel--audio .audio-device-refresh { top: 24px; right: 16px; }
   .workspace-main-panel--audio .audio-device-section { min-height: 346px; grid-template-columns: 1fr; gap: 20px; padding: 16px; }
   .audio-device-section > header { grid-column: 1; }
-  .workspace-main-panel--audio .audio-device-section select { font-size: 1rem; }
   .workspace-main-panel--audio .audio-device-check { grid-column: 1; margin-top: -20px; }
   .audio-level-row > span { width: 100px; }
   .workspace-main-panel--audio .audio-device-check__actions { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; }

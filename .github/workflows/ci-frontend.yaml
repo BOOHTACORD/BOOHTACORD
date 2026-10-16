@@ -39,6 +39,14 @@ jobs:
           path: .out/responsive-shell-browser-results/**
           if-no-files-found: ignore
           retention-days: 30
+      - name: Retain synthetic Web control and browser zoom captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-controls-${{ github.sha }}
+          path: .out/issue342/browser/**
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain sanitized real-SFU screen-share smoke evidence
         if: always()
         uses: actions/upload-artifact@v4

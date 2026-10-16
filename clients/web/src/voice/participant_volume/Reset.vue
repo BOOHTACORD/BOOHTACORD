@@ -6,7 +6,7 @@ async function reset(): Promise<void> { busy.value = true; try { await props.res
 </script>
 <template>
   <section class="audio-device-section">
-    <button type="button" :disabled="busy" @click="reset">Сбросить настройки аудио</button>
+    <button class="gc-button gc-button--secondary" type="button" :aria-busy="busy" :disabled="busy" @click="reset">Сбросить настройки аудио</button>
     <p>Возвращает громкость участников и демонстраций к 100% на этом устройстве.</p>
     <p v-if="warning" class="state state-error" role="status">{{ warning }}</p>
   </section>

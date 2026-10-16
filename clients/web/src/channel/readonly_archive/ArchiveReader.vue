@@ -27,12 +27,12 @@ onBeforeUnmount(() => { sequence++ })
 <template>
   <section aria-label="История архивного канала">
     <p role="note">Архив доступен только для чтения. Отправка и изменение сообщений отключены.</p>
-    <form role="search" @submit.prevent="load(false, true)"><label>Поиск в архиве <input v-model="query" type="search" maxlength="256" :disabled="loading"></label><button :disabled="loading || !query.trim()">Найти</button><button type="button" :disabled="loading" @click="load()">Вся история</button></form>
+    <form role="search" @submit.prevent="load(false, true)"><label>Поиск в архиве <input class="gc-field" v-model="query" type="search" maxlength="256" :disabled="loading"></label><button class="gc-button" :aria-busy="loading" :disabled="loading || !query.trim()">Найти</button><button class="gc-button gc-button--secondary" type="button" :disabled="loading" @click="load()">Вся история</button></form>
     <p v-if="error" role="alert">{{ error }}</p><p v-if="loading" role="status">Загрузка…</p><p v-else-if="!messages.length && !error" role="status">Сообщений нет.</p>
     <ol class="archive-messages"><li v-for="message in messages" :key="message.id"><article><header>{{ authors.displayName(message.authorId) }} · <time :datetime="message.createdAt">{{ new Date(message.createdAt).toLocaleString('ru-RU') }}</time></header><p>{{ 'deleted' in message && message.deleted ? 'Сообщение удалено' : message.body }}</p><ul v-if="'attachments' in message"><li v-for="file in message.attachments" :key="file.id"><a :href="archiveDownloadUrl(channelId, file.id)" download>{{ file.originalName }}</a></li></ul></article></li></ol>
-    <button v-if="cursor" type="button" :disabled="loading" @click="load(true)">Показать ещё</button>
+    <button v-if="cursor" class="gc-button gc-button--secondary" type="button" :disabled="loading" @click="load(true)">Показать ещё</button>
   </section>
 </template>
 <style scoped>
-.archive-messages { list-style: none; padding: 0; } article { border-bottom: 1px solid var(--gc-border); padding: 12px 0; } article p { white-space: pre-wrap; overflow-wrap: anywhere; } header { color: var(--gc-text-muted); } input { max-width: 100%; } form { display: flex; gap: 8px; flex-wrap: wrap; }
+.archive-messages { list-style: none; padding: 0; } article { border-bottom: 1px solid var(--gc-border); padding: 12px 0; } article p { white-space: pre-wrap; overflow-wrap: anywhere; } header { color: var(--gc-text-muted); } input { max-width: 100%; } form { display: flex; align-items: end; gap: var(--gc-space-2); flex-wrap: wrap; } form label { display: grid; flex: 1 1 100%; min-width: 0; gap: var(--gc-space-2); }
 </style>

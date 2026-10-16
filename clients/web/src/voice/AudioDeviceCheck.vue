@@ -84,8 +84,8 @@ onBeforeUnmount(stopInput)
   <section class="audio-device-check" aria-label="Проверка звука на этом устройстве">
     <div class="audio-level-row"><span>Уровень входа</span><div class="audio-level-meter" role="meter" aria-label="Уровень микрофона" aria-valuemin="0" aria-valuemax="100" :aria-valuenow="level"><i v-for="index in 28" :key="index" :class="{ active: index <= Math.round(level * 28 / 100) }" /></div></div>
     <div class="audio-device-check__actions">
-      <button type="button" :disabled="inputBusy" @click="toggleInput"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>{{ probe ? 'Остановить проверку микрофона' : 'Проверить микрофон' }}</button>
-      <button type="button" :disabled="outputBusy" @click="checkOutput"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 5-6 4H2v6h3l6 4V5ZM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg>Тестовый звук</button>
+      <button class="gc-button gc-button--secondary" type="button" :disabled="inputBusy" @click="toggleInput"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>{{ probe ? 'Остановить проверку микрофона' : 'Проверить микрофон' }}</button>
+      <button class="gc-button gc-button--ghost" type="button" :disabled="outputBusy" @click="checkOutput"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 5-6 4H2v6h3l6 4V5ZM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg>Тестовый звук</button>
     </div>
     <p v-if="probe || inputBusy || inputState !== 'Проверка микрофона выключена.'" role="status">{{ inputState }}</p>
     <p v-if="outputState" role="status">{{ outputState }}</p>

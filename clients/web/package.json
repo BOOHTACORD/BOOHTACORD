@@ -18,6 +18,7 @@
     "test:voice-shortcuts": "playwright test -c tests/voice_shortcuts/playwright.config.ts",
     "test:voice-disconnect-notice": "playwright test -c tests/voice_disconnect_notice/playwright.config.ts",
     "test:responsive-shell": "playwright test -c tests/responsive_shell/playwright.config.ts",
+    "test:controls": "playwright test -c tests/control_consistency/playwright.config.ts",
     "test:accessibility": "playwright test -c tests/accessibility/playwright.config.ts && playwright test -c tests/conversation_action_disclosure/playwright.config.ts --grep axe",
     "test:audio": "playwright test -c tests/audio/playwright.config.ts",
     "test:audio:quality": "node ../../tools/audio/quality_harness.mjs",

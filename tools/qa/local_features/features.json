@@ -254,7 +254,8 @@
       "tests/conversation_action_disclosure/playwright.config.ts",
       "tests/mentions_inbox/playwright.config.ts",
       "tests/accessibility/playwright.config.ts",
-      "tests/search_sessions/playwright.config.ts"
+      "tests/search_sessions/playwright.config.ts",
+      "tests/quick_jump_people/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart",
@@ -303,7 +304,9 @@
       "tests/responsive_shell/playwright.config.ts",
       "tests/conversation_action_disclosure/playwright.config.ts",
       "tests/mentions_inbox/playwright.config.ts",
-      "tests/accessibility/playwright.config.ts"
+      "tests/accessibility/playwright.config.ts",
+      "tests/control_consistency/playwright.config.ts",
+      "tests/readonly_archive/playwright.config.ts"
     ],
     "flutter": [
       "test/mobile_navigation_visual_capture_test.dart",
@@ -330,6 +333,10 @@
         "native": "tools/qa/accessibility_runtime/native.py",
         "target": "integration_test/accessibility_qa_test.dart",
         "scope": "Actual rendered-state axe/keyboard, enlarged-text geometry and native Semantics; missing physical screen readers/platforms keep gate PARTIAL"
+      },
+      "issue342": {
+        "browser_test": "clients/web/tests/control_consistency/controls.browser.spec.ts",
+        "scope": "Production controls across guild/audio/archive/quick jump/files; scoped variants, keyboard, disabled/loading, axe, text scaling and independently measured actual browser zoom. Real-stack Web lifecycle is a separate mandatory gate."
       }
     }
   },
