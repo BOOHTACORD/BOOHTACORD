@@ -1,12 +1,12 @@
 # DW-007 / issue #346 — compact Web result presentation
 
-Status: PASS for scoped local Web acceptance. Remote CI and merge/closure are verified separately in the PR.
+Status: PASS for the final scoped local Web acceptance, including composed queries. Remote CI and merge/closure are verified separately in the PR.
 Date: 2026-10-16. Base: `2ee7e9ec62684f56acf9dd3e456791766a732fa6`.
 Scope: Web search, pins, personal mentions, readonly archive, conversation files and quick jump. Dependencies #340/#342 were completed before this work. Parent #339 and native/media gates are not closed by this record.
 
 ## Implementation and test boundaries
 
-The six surfaces share a list hierarchy and metadata/action styling. Advanced filters are disclosed with active values and reset outside the disclosure. Message snippets are bounded, plain text with literal highlighted query context; links remain usable in the full message reached by the context action. Full names are available on keyboard focus and filenames through a touch/keyboard disclosure. Search modes have one bounded content scroll owner below their persistent header. Query, filters, selected conversation, draft and nonzero result scroll are checked across context navigation and return.
+The six surfaces share a list hierarchy and metadata/action styling. Advanced filters are disclosed with active values and reset outside the disclosure. Message snippets are bounded, plain text with highlighted literal/phrase or positive-word query context; links remain usable in the full message reached by the context action. Full names are available on keyboard focus and filenames through a touch/keyboard disclosure. Search modes have one bounded content scroll owner below their persistent header. Query, filters, selected conversation, draft and nonzero result scroll are checked across context navigation and return.
 
 401/403/404 clear stale search, file (channel and DM), mention and archive rows. Transient pagination failures retain the existing page and retry cursor. Existing authenticated APIs, server ACLs, DM privacy and readonly behavior are preserved; there is no API contract change.
 
@@ -16,7 +16,7 @@ Focused tests preceded the implementation. Local diagnostic logs and captures ar
 
 Fresh Before frames use exact production sources from base master, not a changed screenshot baseline. The private original Web tour is unavailable and was not claimed as inspected. `before-sources.json` records SHA-256 hashes, an empty tracked source diff and the absence of the new stylesheet import during capture. `before-wide.log` intentionally fails new presentation assertions after writing the 320/1440px Before frames. Candidate bytes were restored in a `finally` block. Corrected 390px Before frames are retained separately. After frame hashes and source-resolution observations are recorded in the adjacent JSON.
 
-## Focused results
+## Focused results of the initial phase
 
 - Complete Web unit suite: PASS, 1545 tests / 473 files (`unit-ready.log`).
 - New presentation suite: PASS, 68 cases (`presentation-candidate.log`): six surfaces at 320/390/1024/1440px and 100/200% text, actual Chromium 200% browser zoom, touch, keyboard, axe, inner overflow bounds, filenames, query-context preview, stale ACL state and transient retry.
@@ -41,7 +41,7 @@ Native-resolution comparison found quick-jump rows still showing browser list nu
 
 Clean source `869e3a12` / run `20261016-195533`: overall FAIL, 20/21 stages PASS. Both authenticated real-stack journeys (1440 desktop and 393 touch) passed, including exact message targets, alternate-channel quick jump, preserved draft/filter/query/nonzero scroll, media-fault/reset/tracing regression checks and owned-resource removal. The one failure was the existing mentions-inbox test expecting the deliberately removed redundant “упомянул(а) вас” copy. The test now checks the visible source and exact timestamp instead; its author, private-body absence, pagination and exact DM-message target assertions remain. The failed report is retained; a new complete clean-source gate is required.
 
-## Final local acceptance
+## Previously accepted local phase
 
 PASS: `.out/local-features/20261016-201130` on clean source `16a1a39789efccfee8e810dfe513c85f7848c834` (empty tracked diff SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`). All 21 stages passed: complete unit suite, production build, 17 registered browser suites and authenticated desktop/touch lifecycles with owned resources removed. The earlier `20261016-200345` report remains FAIL for the 20s media lease-notification timeout after all DW-007 journeys; the unchanged-source complete retry passed without removing or weakening checks. The refreshed mentions suite retains privacy, metadata, pagination and exact-target assertions.
 
@@ -50,3 +50,17 @@ Manual visual review: PASS for the selected scope. Before/After inspected for al
 The adjacent JSON records the accepted source, per-file code hashes, raw gate report digest, retained failed attempts, Before source provenance, original/cropped PNG sizes and SHA-256 hashes, and exact real-stack outcome flags. The runner's raw `REVIEW_REQUIRED` status is preserved; this record supplies the separate scoped manual review. Final evidence-only changes do not change accepted application, scenario or CI source. Remote CI and merge/closure proof will be recorded in the pull request.
 
 Android/iOS/native desktop builds, physical device/media QoE, the full historical conversation-files gate, and unrelated upload-queue acceptance: NOT_RUN in this Web-scoped task.
+
+## Composed-query follow-up before merge
+
+Review against the existing PostgreSQL `websearch_to_tsquery('simple', query)` contract found that a bounded literal-only excerpt could omit a late multiword hit. Seven focused tests were added first: six failures in `query-terms-before.log` and the additional whole-word failure in `query-word-boundary-before.log`. The preview now normalizes display whitespace, preserves literal/quoted phrases, and uses positive Unicode word hints when the full query is absent. OR and excluded terms do not select fallback context, and earlier partial words do not displace a whole-word match. This is display-only hinting; server query evaluation and ACL remain authoritative and unchanged.
+
+Two browser cases assert both terms remain inside the clipped excerpt and viewport at 320/390px with 200% text. The real-API journey now issues `Synthetic navigation`, seeds a late separated-term hit, and checks both highlighted terms and the leading excerpt ellipsis before the exact-target/return checks. The final acceptance below replaces the initial-phase evidence for the follow-up. The JSON retains the earlier source and gate as a superseded phase; fresh remote CI is required before merge.
+
+## Final composed-query acceptance
+
+PASS_AFTER_TARGETED_RETRY on clean `c567e282561313379d18e72e3d0cf0088a3b62c5` (empty tracked diff SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`). The raw `.out/local-features/20261016-203803` bundle remains FAIL: 20/21 stages passed, while the touch journey hit the existing 20s native lease-notification timeout after all DW-007 assertions. The unchanged-source full 393px stage was repeated with the pinned project Node runtime and passed, including media-fault/reset/tracing checks and owned-resource cleanup (`.out/issue346/query-touch-retry.log` / source-bound retry receipt). All 21 required stage outcomes are now successful; raw failed reports and original stage statuses are retained, not rewritten. Complete Web unit suite: 1552 tests / 473 files. Presentation suite: 70 cases, including two composed-query viewport/clipping checks at 200% text. Real-API desktop and touch (the latter including its successful targeted repeat) both assert a late separated-term hit for `Synthetic navigation`, exact target IDs, preserved draft/query/filter/nonzero scroll and all six surfaces; owned stack resources were removed.
+
+Manual visual review: PASS. The current gate's 48 selected single-word/large-text/actual-zoom source frames are pixel-identical to the already inspected frames; original/master provenance and all hashes remain in JSON. Both new composed-query captures were inspected, as were the current real-API desktop/touch captures for all six surfaces using unscaled crops. The new highlights are visible inside the clipped excerpt; complete file names and active reset controls remain reachable. No reference baseline was approved.
+
+The previous local phase and its eight remote CI checks passed before this query follow-up; they do not substitute for fresh checks on the final PR head. The adjacent JSON binds the final code, 21-stage report, selected captures and runtime flags to `c567e282561313379d18e72e3d0cf0088a3b62c5`. Only these two evidence files change after this accepted source; final remote CI and merge proof are recorded in the PR.

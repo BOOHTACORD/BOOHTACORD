@@ -32,6 +32,40 @@ describe('search result excerpts', () => {
     expect(parts.filter(part => part.match).map(part => part.value)).toEqual([query])
     expect(Array.from(parts.map(part => part.value).join('')).length).toBeLessThanOrEqual(350)
   })
+  it('does not anchor a whole-word server hit on an earlier partial word', () => {
+    const parts = searchResultSnippet('orbital '.repeat(100) + 'Orbit nearby', 'orbit')
+    expect(parts.filter(part => part.match).map(part => part.value)).toEqual(['Orbit'])
+    expect(parts.map(part => part.value).join('')).toContain('nearby')
+  })
+  it('normalizes query whitespace alongside displayed message whitespace', () => {
+    const parts = searchResultSnippet('prefix '.repeat(100) + 'Orbit   launch nearby', 'orbit   launch')
+    expect(parts.filter(part => part.match).map(part => part.value)).toEqual(['Orbit launch'])
+    expect(parts.map(part => part.value).join('')).toContain('nearby')
+  })
+  it('anchors a multiword full-text result on its first positive term when words are separated', () => {
+    const parts = searchResultSnippet('prefix '.repeat(100) + 'Launch tomorrow; Orbit follows.', 'orbit launch')
+    expect(parts.filter(part => part.match).map(part => part.value)).toEqual(['Launch', 'Orbit'])
+    expect(parts.map(part => part.value).join('')).toContain('tomorrow')
+  })
+  it('finds a quoted web-search phrase without requiring literal quotes in the message', () => {
+    const parts = searchResultSnippet('prefix '.repeat(100) + 'Orbit launch nearby', '"orbit launch"')
+    expect(parts.filter(part => part.match).map(part => part.value)).toEqual(['Orbit launch'])
+  })
+  it('ignores OR and negative terms when selecting fallback context', () => {
+    const parts = searchResultSnippet('hidden order launchpad '.repeat(100) + 'Saturn nearby', 'orbit OR saturn -hidden')
+    expect(parts.filter(part => part.match).map(part => part.value)).toEqual(['Saturn'])
+    expect(parts.map(part => part.value).join('')).toContain('nearby')
+  })
+  it('ignores a negated quoted phrase when selecting fallback context', () => {
+    const parts = searchResultSnippet('hidden phrase '.repeat(100) + 'Orbit nearby', 'orbit -"hidden phrase"')
+    expect(parts.filter(part => part.match).map(part => part.value)).toEqual(['Orbit'])
+  })
+  it('matches fallback words at Unicode word boundaries and preserves composed text', () => {
+    const parts = searchResultSnippet('launchpad орбитальный '.repeat(100) + 'Орбита launch', 'орбита launch')
+    expect(parts.filter(part => part.match).map(part => part.value)).toEqual(['Орбита launch'])
+    const separated = searchResultSnippet('launchpad орбитальный '.repeat(100) + 'Орбита nearby launch', 'орбита launch')
+    expect(separated.filter(part => part.match).map(part => part.value)).toEqual(['Орбита', 'launch'])
+  })
   it('renders formatted content and link destinations as readable, noninteractive preview text', () => {
     const text = searchResultSnippet('**Bold** [site](https://example.org/path)\n\n```\ncode\n```', '').map(part => part.value).join('')
     expect(text).toBe('Bold site (https://example.org/path) code')

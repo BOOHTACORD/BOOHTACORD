@@ -49,12 +49,12 @@ export async function searchPresentation(page, admin, fixture, input, report) {
 
   let pinId
   for (let index = 0; index < 4; index++) { const posted = await api(page, `/channels/${fixture.channelId}/messages`, 'POST', {
-    client_message_id: randomUUID(), body: `Synthetic compact navigation sample ${index}`,
+    client_message_id: randomUUID(), body: (index === 3 ? 'Unrelated '.repeat(70) : '') + `Synthetic compact navigation sample ${index}`,
   }); status(posted, 201); pinId ??= posted.body.id }
   await search()
   const panel = page.getByTestId('search-panel'), owner = panel.locator('#search-mode-content')
   const query = panel.getByRole('searchbox', { name: 'Запрос', exact: true })
-  await query.fill('Synthetic')
+  await query.fill('Synthetic navigation')
   await panel.getByLabel('Область поиска').selectOption('current')
   const disclosure = panel.locator('.search-filter-disclosure > summary')
   await activate(disclosure)
@@ -64,7 +64,10 @@ export async function searchPresentation(page, admin, fixture, input, report) {
   const response = page.waitForResponse(response => new URL(response.url()).pathname === '/api/v1/search/messages' && response.request().method() === 'GET')
   await activate(panel.getByRole('button', { name: 'Найти', exact: true }))
   const searchResult = await (await response).json()
-  await expect.poll(() => panel.locator('.search-result').count()).toBeGreaterThanOrEqual(7)
+  await expect.poll(() => panel.locator('.search-result').count()).toBeGreaterThanOrEqual(4)
+  const excerpt = panel.locator('.search-result-body').first()
+  await expect(excerpt.locator('mark')).toHaveText(['Synthetic', 'navigation'])
+  assert.ok((await excerpt.innerText()).startsWith('…'), 'A multiword full-text hit must expose its late context')
   await owner.evaluate(el => { el.scrollTop = Math.min(80, el.scrollHeight - el.clientHeight); el.dispatchEvent(new Event('scroll')) })
   const open = panel.getByRole('button', { name: /Открыть сообщение от/ }).first()
   await open.focus(); await open.scrollIntoViewIfNeeded()
@@ -74,7 +77,7 @@ export async function searchPresentation(page, admin, fixture, input, report) {
   await activate(open)
   await returned(searchResult.messages[0].id)
   await search()
-  await expect(query).toHaveValue('Synthetic')
+  await expect(query).toHaveValue('Synthetic navigation')
   await expect(panel.getByLabel('Область поиска')).toHaveValue('current')
   await expect(panel.getByLabel('Вложения', { exact: true })).toHaveValue('without')
   await expect(panel.getByLabel('С даты', { exact: true })).toHaveValue('2026-01-01')
@@ -127,7 +130,7 @@ export async function searchPresentation(page, admin, fixture, input, report) {
   await expect(page.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   await expect(draft).toHaveValue('Synthetic compact unsent draft')
   await draft.fill('')
-  report.search_presentation = { six_surfaces: true, actual_api: true, upload_file_context: true, draft_retained: true,
+  report.search_presentation = { six_surfaces: true, actual_api: true, multiword_late_preview: true, upload_file_context: true, draft_retained: true,
     filter_message_return: true, nonzero_result_scroll_restored: true, query_and_filters_restored: true,
     pinned_and_mention_context: true, archive_reader: true, quick_jump: true, touch }
 }
