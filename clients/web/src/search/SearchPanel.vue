@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vActionHint } from '../shared/action_hint/directive'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useAuthorDirectory } from '../identity/author_directory'
 import { avatarBackground, avatarForeground } from '../design/avatar_color'
@@ -127,7 +128,7 @@ onMounted(() => {
 
 <template>
   <section ref="panelRoot" class="search-panel" aria-labelledby="search-panel-title" data-testid="search-panel">
-    <header class="search-panel-heading"><h1 id="search-panel-title">{{ activeView === 'messages' ? 'Поиск сообщений' : activeView === 'archives' ? 'Архив' : activeView==='pins'?'Закреплённые':'Упоминания' }}</h1><button class="search-close" type="button" aria-label="Закрыть поиск" @click="emit('close')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12" /></svg></button></header>
+    <header class="search-panel-heading"><h1 id="search-panel-title">{{ activeView === 'messages' ? 'Поиск сообщений' : activeView === 'archives' ? 'Архив' : activeView==='pins'?'Закреплённые':'Упоминания' }}</h1><button v-action-hint class="search-close" type="button" aria-label="Закрыть поиск" @click="emit('close')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12" /></svg></button></header>
     <div class="search-view-tabs" role="group" aria-label="Поиск и упоминания">
       <button id="search-messages-tab" type="button" :aria-pressed="activeView === 'messages'" aria-controls="search-messages-view" @click="activeView = 'messages'">Сообщения</button>
       <button id="search-mentions-tab" type="button" :aria-pressed="activeView === 'mentions'" aria-controls="search-mentions-view" @click="activeView = 'mentions'">Упоминания</button>
@@ -141,13 +142,14 @@ onMounted(() => {
     </div>
     <div v-else id="search-messages-view" role="region" aria-label="Поиск сообщений">
     <form class="search-form" role="search" @submit.prevent="runSearch()">
-      <label class="search-query-label"><span class="visually-hidden">Запрос</span><input ref="queryInput" v-model="query" type="search" autocomplete="off" placeholder="Поиск сообщений" :disabled="loading" :aria-describedby="error ? 'search-error' : undefined"></label>
-      <div class="search-form-meta"><label class="search-scope-label"><span class="visually-hidden">Область поиска</span><select v-model="scope" :disabled="loading"><option value="all">Везде</option><option v-if="currentConversation" value="current">{{ currentConversation.label }}</option></select></label><span>Enter — найти</span></div>
+      <label class="search-query-label"><span class="visually-hidden">Запрос</span><input ref="queryInput" v-model="query" type="search" autocomplete="off" placeholder="Поиск сообщений" :disabled="loading" :aria-describedby="error ? 'search-error search-query-help' : 'search-query-help'"></label>
+      <p id="search-query-help" class="gc-sr-only">Введите запрос и нажмите Enter или «Найти».</p>
+      <div class="search-form-meta"><label class="search-scope-label"><span class="visually-hidden">Область поиска</span><select v-model="scope" :disabled="loading"><option value="all">Везде</option><option v-if="currentConversation" value="current">{{ currentConversation.label }}</option></select></label></div>
       <SearchFilters v-model:author-id="filters.authorId" v-model:attachment="filters.attachment" v-model:date-from="filters.dateFrom" v-model:date-to="filters.dateTo" :disabled="loading" />
       <button class="search-submit" type="submit" :disabled="!canSubmit">{{ loading ? 'Ищем…' : 'Найти' }}</button>
     </form>
     <p v-if="error" id="search-error" class="search-error" role="alert">{{ error }}</p>
-    <p class="search-status" :class="{ 'search-status--visible': loading || (!error && (!searched || !messages.length)) }" role="status" aria-live="polite" :aria-busy="loading">{{ loading ? 'Ищем сообщения…' : searched ? (messages.length ? `Найдено ${messages.length} сообщения` : 'Совпадений нет.') : 'Введите запрос и нажмите Enter.' }}</p>
+    <p class="search-status" :class="{ 'search-status--visible': loading || (!error && searched && !messages.length) }" role="status" aria-live="polite" :aria-busy="loading">{{ loading ? 'Ищем сообщения…' : searched ? (messages.length ? `Найдено ${messages.length} сообщения` : 'Совпадений нет.') : '' }}</p>
     <span v-if="searched && messages.length" class="search-result-count" aria-hidden="true">Найдено {{ messages.length }} сообщения</span>
     <ol v-if="messages.length" class="search-results" aria-label="Результаты поиска">
       <li v-for="message in messages" :key="`${message.kind}:${message.id}`" class="search-result">

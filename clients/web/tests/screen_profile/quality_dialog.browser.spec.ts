@@ -130,13 +130,21 @@ test('shows quality choices without hiding them and lets the user click 1440p di
   const body = dialog.locator('.screen-share-setup__body')
   await body.evaluate(element => { element.scrollTop = element.scrollHeight })
   await resolution.scrollIntoViewIfNeeded()
-  expect(await body.evaluate(element => element.scrollTop)).toBeGreaterThan(0)
+  // Shorter header copy can make scrollIntoView return to zero. Establish an
+  // explicit scrolled state with the choice still visible, then verify that
+  // selecting quality preserves that position rather than snapping to the top.
+  const scrollBeforeSelection = await body.evaluate(element => {
+    element.scrollTop += 8
+    return element.scrollTop
+  })
+  expect(scrollBeforeSelection).toBeGreaterThan(0)
+  await expect(resolution).toBeInViewport({ ratio: 0.99 })
   await resolution.click()
   await expect(resolution).toBeChecked()
   await expect(dialog.getByRole('radio', { name: /Плавность/ })).toBeChecked()
   await expect(dialog.getByRole('radio', { name: '30 FPS', exact: true })).toBeChecked()
   await expect(dialog.getByText('Текущий выбор: 1440p · 30 FPS', { exact: true })).toBeVisible()
-  expect(await body.evaluate(element => element.scrollTop)).toBeGreaterThan(0)
+  expect(await body.evaluate(element => element.scrollTop)).toBe(scrollBeforeSelection)
   await expect(resolution).toBeInViewport()
   await expect(dialog.getByRole('button', { name: 'Начать трансляцию' })).toBeEnabled()
   const textFrameRate = dialog.getByRole('radio', { name: '30 FPS', exact: true })

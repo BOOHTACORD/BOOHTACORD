@@ -72,7 +72,7 @@ defineExpose({ hasUnsavedChanges })
 
 <template>
   <section class="profile-settings" aria-labelledby="profile-settings-title" data-testid="profile-settings">
-    <header><h1 id="profile-settings-title" ref="title" tabindex="-1">Настройки</h1><p>Ваш профиль и параметры приложения.</p></header>
+    <header><h1 id="profile-settings-title" ref="title" tabindex="-1">Настройки</h1></header>
     <nav class="profile-tabs" role="tablist" aria-label="Настройки аккаунта" @keydown="onProfileTabKeydown">
       <button id="profile-tab-profile" type="button" role="tab" aria-controls="profile-panel-profile" :aria-selected="activeTab === 'profile'" :tabindex="activeTab === 'profile' ? 0 : -1" @click="activeTab = 'profile'">Профиль</button>
       <button id="profile-tab-security" type="button" role="tab" aria-controls="profile-panel-security" :aria-selected="activeTab === 'security'" :tabindex="activeTab === 'security' ? 0 : -1" @click="activeTab = 'security'">Безопасность</button>

@@ -143,6 +143,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
     depends_on: [T-050, T-041, T-022, T-014]
     evidence: [evidence/qa/dw03-controls-2026-10-16.md]
+  - id: DW-004
+    title: Web contextual microcopy and accessible action hints (GitHub #343)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [T-050, T-041, T-022, T-014, DW-003]
+    evidence: [evidence/qa/dw04-microcopy-2026-10-16.md]
   - id: T-051
     title: Android native client and APK
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUTH-01, REQ-SECURITY-01, REQ-VOICE-01]

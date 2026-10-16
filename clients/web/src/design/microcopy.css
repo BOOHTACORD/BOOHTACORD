@@ -1,0 +1,10 @@
+/* Secondary help stays available on demand; warnings and form results are not
+   selected by these rules. Native disclosure works with keyboard and touch. */
+.copy-help { color: var(--gc-text-secondary); font-size: var(--gc-text-body); }
+.copy-help summary { width: fit-content; max-width: 100%; min-height: var(--gc-size-control); display: list-item; align-content: center; cursor: pointer; }
+.copy-help summary:focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 2px; }
+.copy-help p { margin: var(--gc-space-2) 0; }
+.composer-shortcut-help { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.composer-wrap:focus-within .composer-shortcut-help { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; }
+.gc-action-hint { position: fixed; z-index: var(--gc-z-tooltip); max-width: min(30ch, calc(100vw - 16px)); padding: var(--gc-space-2) var(--gc-space-3); border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-sm); color: var(--gc-text-primary); background: var(--gc-surface-raised); font-size: var(--gc-text-body); line-height: var(--gc-line-body); overflow-wrap: anywhere; box-shadow: var(--gc-shadow-popup); }
+@media (max-width: 720px), (pointer: coarse) { .copy-help summary { min-height: var(--gc-size-touch); } }

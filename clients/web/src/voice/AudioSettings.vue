@@ -93,11 +93,12 @@ function toggleNoise(): void { emit('setProcessing', { ...props.processing, nois
 
 <template>
   <section ref="entry" class="audio-settings" aria-label="Настройки аудио" tabindex="-1">
-    <header class="audio-settings-heading"><h1>Настройки аудио</h1><p>Проверьте устройства перед разговором.</p></header>
+    <header class="audio-settings-heading"><h1>Настройки аудио</h1></header>
     <button class="audio-device-refresh gc-button gc-button--ghost" type="button" :disabled="state === 'LOADING'" @click="emit('load')">{{ state === 'LOADING' ? 'Ищем устройства…' : 'Обновить устройства' }}</button>
+    <details class="copy-help"><summary>О настройках аудио</summary><p>Настройки действуют на этом устройстве.</p></details>
     <p v-if="error" class="state state-error" role="alert">{{ error }}</p><p v-if="deviceWarning" class="state state-error" role="status">{{ deviceWarning }}</p>
     <div class="audio-settings-panel">
-      <section class="audio-device-section"><header><h2>Устройства</h2><p>Настройки действуют на этом устройстве.</p></header>
+      <section class="audio-device-section"><header><h2>Устройства</h2></header>
         <template v-if="state === 'READY'">
           <label>Микрофон<select class="gc-field" :value="selectedInput" :title="selectedInputLabel" :disabled="inputSwitching" @change="choose('audioinput', $event)"><option v-if="!devices.inputs.some(device => device.id === 'default')" value="default">Системный микрофон</option><option v-if="selectedInput !== 'default' && !devices.inputs.some(device => device.id === selectedInput)" :value="selectedInput" disabled>Выбранный микрофон недоступен</option><option v-for="device in devices.inputs" :key="device.id" :value="device.id">{{ device.label }}</option></select></label>
           <p v-if="inputSwitching" role="status">Переключаем микрофон…</p><p v-else-if="inputWarning" class="state state-error" role="status">{{ inputWarning }}</p>
@@ -105,7 +106,7 @@ function toggleNoise(): void { emit('setProcessing', { ...props.processing, nois
           <AudioDeviceCheck :input-id="selectedInput" :output-id="selectedOutput" :processing="processing" :connected="connected" :microphone-track="microphoneTrack" />
         </template>
       </section>
-      <section class="audio-activation-section"><header><h2>Активация микрофона</h2><p>Выберите удобный способ общения.</p></header>
+      <section class="audio-activation-section"><header><h2>Активация микрофона</h2></header>
         <div class="audio-activation-selector" role="group" aria-label="Активация микрофона"><button type="button" :aria-pressed="activationMode === 'VAD'" @click="emit('setActivation', 'VAD')">По голосу</button><button type="button" :aria-pressed="activationMode === 'PTT'" @click="emit('setActivation', 'PTT')">По нажатию</button></div>
         <SensitivityControl :vad="activationMode === 'VAD'" />
         <button v-if="activationMode === 'PTT'" class="audio-ptt-button gc-button gc-button--secondary" type="button" @click="recordingPttKey = true" @keydown="capturePttKey">{{ recordingPttKey ? 'Нажмите клавишу…' : pttKey ? `PTT: ${pttKey}` : 'Назначить PTT-клавишу' }}</button>
