@@ -138,6 +138,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02]
     depends_on: [T-020, T-022, T-040]
     evidence: [frontend-ui-tests, screenshots]
+  - id: DW-003
+    title: Web Design V2 consistent native controls and action states (GitHub #342)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [T-050, T-041, T-022, T-014]
+    evidence: [evidence/qa/dw03-controls-2026-10-16.md]
   - id: T-051
     title: Android native client and APK
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUTH-01, REQ-SECURITY-01, REQ-VOICE-01]

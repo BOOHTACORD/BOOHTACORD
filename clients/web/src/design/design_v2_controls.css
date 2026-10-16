@@ -1,0 +1,61 @@
+/* Extend the existing gc-button contract. Only explicit action/field classes;
+   switches, ranges, navigation rows and media controls retain their semantics. */
+.gc-button {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  min-block-size: max(var(--gc-size-control), 2.25rem);
+  block-size: auto;
+  border: 1px solid transparent;
+  border-radius: var(--gc-radius-md);
+  padding: var(--gc-space-2) var(--gc-space-3);
+  color: var(--gc-on-accent);
+  background: var(--gc-accent);
+  font-size: var(--gc-text-body);
+  line-height: var(--gc-line-body);
+  font-weight: var(--gc-weight-medium);
+  overflow-wrap: anywhere;
+  white-space: normal;
+  text-align: center;
+}
+.gc-button--secondary { border-color: var(--gc-border-control); color: var(--gc-text-primary); background: var(--gc-surface-raised); }
+.gc-button--ghost { color: var(--gc-text-secondary); background: transparent; }
+.gc-button--danger { color: var(--gc-on-danger); background: var(--gc-danger-solid); }
+.gc-button:not(:disabled):hover { background: var(--gc-accent-hover); }
+.gc-button:not(:disabled):active { background: var(--gc-accent-pressed); }
+.gc-button--secondary:not(:disabled):hover,
+.gc-button--ghost:not(:disabled):hover { color: var(--gc-text-primary); background: var(--gc-surface-hover); }
+.gc-button--secondary:not(:disabled):active,
+.gc-button--ghost:not(:disabled):active { background: var(--gc-surface-selected); }
+.gc-button--danger:not(:disabled):hover { background: var(--gc-danger-bg); }
+.gc-button--danger:not(:disabled):active { background: var(--gc-danger-solid); }
+.gc-button--icon {
+  inline-size: max(var(--gc-size-control), 2.25rem);
+  block-size: max(var(--gc-size-control), 2.25rem);
+  flex: none;
+  padding: var(--gc-space-1);
+}
+.gc-button:focus-visible, .gc-field:focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 3px; }
+.gc-button:disabled { opacity: .48; cursor: not-allowed; transform: none; }
+.gc-field {
+  box-sizing: border-box;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  inline-size: 100%;
+  min-block-size: max(var(--gc-size-field), 2.75rem);
+  border: 1px solid var(--gc-border-control);
+  border-radius: var(--gc-radius-md);
+  padding: var(--gc-space-2) var(--gc-space-3);
+  color: var(--gc-text-primary);
+  background: var(--gc-input);
+  font: inherit;
+  font-size: var(--gc-text-body);
+  line-height: var(--gc-line-body);
+}
+.gc-field:disabled { opacity: .48; cursor: not-allowed; }
+/* Keep native popup, keyboard, selected-value and platform accessibility. */
+select.gc-field { appearance: auto; color-scheme: dark; }
+@media (max-width: 720px), (pointer: coarse) {
+  .gc-field { font-size: 1rem; }
+  .gc-button { min-block-size: max(var(--gc-size-touch), 2.75rem); }
+  .gc-button--icon { inline-size: max(var(--gc-size-touch), 2.75rem); block-size: max(var(--gc-size-touch), 2.75rem); }
+}

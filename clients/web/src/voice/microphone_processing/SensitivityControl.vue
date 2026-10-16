@@ -16,7 +16,7 @@ function change(event: Event) { setMicrophoneSettings({ ...microphoneSettings.va
       <span :style="{ width: position(microphoneMeter.levelDb) + '%' }" /><i :style="{ left: threshold + '%' }" />
     </div>
     <small>Линия — порог активации. Уровень доступен при включённом микрофоне в звонке.</small>
-    <button type="button" @click="setMicrophoneSettings({ ...microphoneSettings, vadThresholdDb: -50 })">Сбросить чувствительность</button>
+    <button class="gc-button gc-button--secondary" type="button" @click="setMicrophoneSettings({ ...microphoneSettings, vadThresholdDb: -50 })">Сбросить чувствительность</button>
     <p v-if="microphoneMeter.status === 'unsupported' || microphoneMeter.status === 'error'" role="alert">Обработка микрофона недоступна. Отправка звука выключена.</p>
     <p v-if="microphoneSettingsError" role="alert">{{ microphoneSettingsError }}</p>
   </div>

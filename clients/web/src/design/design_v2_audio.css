@@ -4,14 +4,13 @@
 .audio-settings-heading, .audio-settings-panel { grid-column: 1 / -1; }
 .audio-settings-heading h1 { margin: 0; color: var(--gc-text-primary); font-size: var(--gc-text-page); line-height: var(--gc-line-page); }
 .audio-settings-heading p { margin: var(--gc-space-2) 0 0; color: var(--gc-text-muted); }
-.audio-device-refresh { position: absolute; top: 0; right: 0; min-height: var(--gc-size-control-sm); border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-sm); padding: 0 var(--gc-space-3); color: var(--gc-text-secondary); background: var(--gc-surface); }
+.audio-device-refresh { position: absolute; top: 0; right: 0; }
 .audio-settings-panel { display: grid; height: 282px; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gc-space-6); overflow: auto; border: 1px solid var(--gc-border-subtle); border-radius: var(--gc-radius-lg); padding: var(--gc-space-6); background: var(--gc-surface); }
 .audio-device-section, .audio-activation-section, .audio-shortcuts-section { display: grid; align-content: start; gap: var(--gc-space-3); }
 .audio-device-section > header h2, .audio-activation-section > header h2, .audio-shortcuts-section > header h2 { margin: 0; color: var(--gc-text-primary); font-size: var(--gc-text-section); }
 .audio-device-section > header p, .audio-activation-section > header p, .audio-shortcuts-section > header p { margin: var(--gc-space-1) 0 0; color: var(--gc-text-muted); font-size: var(--gc-text-caption); }
 .audio-device-section label, .audio-activation-section label, .audio-processing-section label { display: grid; gap: var(--gc-space-2); color: var(--gc-text-secondary); }
-.audio-device-section select, .audio-activation-section select, .audio-processing-section select { width: 100%; min-height: var(--gc-size-control); border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-sm); padding: 0 var(--gc-space-3); color: var(--gc-text-primary); background: var(--gc-input); }
-.audio-ptt-button { justify-self: start; min-height: var(--gc-size-control-sm); border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-sm); padding: 0 var(--gc-space-3); color: var(--gc-text-primary); background: var(--gc-surface-raised); }
+.audio-ptt-button { justify-self: start; }
 .audio-processing-section { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; gap: var(--gc-space-3); margin: 0; border: 1px solid var(--gc-border-subtle); border-radius: var(--gc-radius-md); padding: var(--gc-space-4); }
 .audio-processing-section legend { padding: 0 var(--gc-space-2); color: var(--gc-text-primary); font-weight: var(--gc-weight-semibold); }
 .audio-processing-section p, .audio-device-section .state { margin: 0; color: var(--gc-text-muted); font-size: var(--gc-text-caption); }
