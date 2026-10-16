@@ -1,5 +1,6 @@
 """Own native PostgreSQL, API, HTTPS signaling proxy and LiveKit on Windows."""
 import http.client
+import ipaddress
 from http.cookies import SimpleCookie
 import json
 import os
@@ -34,19 +35,40 @@ def startup_failure(role, code, raw):
     return {'service': role, 'exit_code': code, 'reason': reason}
 
 
-def loopback_sfu_configuration():
-    # Pinned LiveKit RTCConfig.force_tcp is explicitly a test transport option.
-    # Keep actual WebRTC/DTLS media on direct loopback TCP in this updater gate;
-    # neither its success nor failure establishes UDP/network capacity evidence.
+def private_media_sfu_configuration(media_ip):
+    address = ipaddress.IPv4Address(media_ip)
+    if not any(address in ipaddress.ip_network(network)
+               for network in ('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16')):
+        raise ValueError('Only one RFC1918 VM media address is permitted')
+    # Management stays loopback. The pinned RTC TCP mux already listens on all
+    # interfaces; advertise only the one owned private VM interface, never a
+    # public address or wildcard. Media remains direct WebRTC/DTLS, not a proxy.
     return {
         'port': 4912, 'bind_addresses': ['127.0.0.1'],
         'rtc': {'tcp_port': 4914, 'udp_port': 0, 'force_tcp': True,
-                'use_external_ip': False, 'enable_loopback_candidate': True,
-                'ips': {'includes': ['127.0.0.1/32']}},
+                'use_external_ip': False, 'enable_loopback_candidate': False,
+                'ips': {'includes': [str(address) + '/32']}},
         'keys': {'qa-only': 'qa-local-only-secret-12345'},
         'webhook': {'api_key': 'qa-only',
                     'urls': ['http://127.0.0.1:4911/internal/livekit/roster']},
     }
+
+
+def owned_private_media_address():
+    # Do not use an external discovery service or change routes/interfaces.
+    # A successful bind proves the candidate belongs to this ephemeral host.
+    candidates = socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET,
+                                    socket.SOCK_STREAM)
+    for candidate in candidates:
+        address = candidate[4][0]
+        try:
+            private_media_sfu_configuration(address)
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+                probe.bind((address, 0))
+            return address
+        except (ValueError, OSError):
+            continue
+    raise RuntimeError('No owned RFC1918 VM media interface is available')
 
 
 class Stack:
@@ -76,6 +98,7 @@ class Stack:
     def start(self):
         self.root.mkdir(parents=True, exist_ok=False)
         (self.root / 'owner.txt').write_text(self.owner)
+        self.media_ip = owned_private_media_address()
         for port in (4910, 4911, 4912, 4914, 55437):
             with socket.socket() as listener:
                 listener.bind(('127.0.0.1', port))
@@ -114,8 +137,8 @@ class Stack:
         self.write_catalog(None)
         self.launch('api', self.bin / 'api.exe', env=self.environment)
         config = self.root / 'livekit.yaml'
-        config.write_text(json.dumps(loopback_sfu_configuration()))
-        self.launch('sfu', self.livekit, '--config', config, '--node-ip', '127.0.0.1')
+        config.write_text(json.dumps(private_media_sfu_configuration(self.media_ip)))
+        self.launch('sfu', self.livekit, '--config', config, '--node-ip', self.media_ip)
         self.launch('proxy', self.bin / 'proxy.exe', '--work', self.root)
         deadline = time.monotonic() + 45
         while time.monotonic() < deadline:

@@ -12,11 +12,11 @@ later compilation or component tests.
 
 | Gate | Current status |
 |---|---|
-| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38838918669, source 81F |
-| Browser lifecycle acceptance | PASS, 81F run 38838918911, 809 run 38835907611 and CBA run 38832920361; E77's two earlier network failures retained below |
+| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38841772178, source 1F08 |
+| Browser lifecycle acceptance | PASS, 1F08 run 38841772167, 81F run 38838918911 and CBA run 38832920361; E77's two earlier network failures retained below |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
-| macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED awaiting system Keychain access |
-| Windows installed 78 → 79 | 809 and 81F FAIL before download with actual SDK ICE connection error; target availability PASS; bounded real ICE diagnostics being added |
+| macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED on locked Mac / system Keychain access |
+| Windows installed 78 → 79 | 1F08 FAIL before download: local candidates present, no remote candidates/pairs observed; private VM media candidate repeat being prepared |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -40,6 +40,31 @@ retaining only bounded candidate counts, protocol/state enums and boolean addres
 classes/request/response presence. No raw candidate address, SDP, identity, token
 or stats payload is written. This diagnostic does not retry the connection,
 change media policy or relax any successful-update acceptance assertion.
+
+### Windows 1F08 real ICE observation (2026-10-16)
+
+Run 38841768001, installed job 116784842438 failed before download with the same
+`voice_not_connected/ice_connect` result; actual update availability remains PASS.
+Twenty-six actual stats observations saw at most 12 local candidates (TCP/UDP,
+non-loopback present), zero remote candidates and no candidate pairs, requests,
+responses or selected pair. This identifies the missing remote-candidate/pair
+stage; it does not alone distinguish server gathering from client filtering.
+Authenticated failure artifact 12022691779: 45514 bytes, SHA-256
+`cc896d2f2bf942b9d827c2dbf13abb14fa3b9adf4cdf3d88cf5706ef4fd7c5c8`.
+Its source-resolution screenshot shows the available-update banner and the
+disconnected voice panel, consistent with failure before the updater transaction.
+Full CI, native candidate builds and browser acceptance for 1F08 are PASS.
+
+The next fixture uses one bind-verified RFC1918 address belonging to the disposable
+Windows VM for its direct ICE/TCP candidate, with a single-address `/32` filter.
+Management/API/PostgreSQL remain loopback. The pinned upstream TCP mux already
+binds its media listener independently of HTTP `bind_addresses`; changing the
+advertised candidate does not change that listener, firewall or TLS validation.
+Public, wildcard, loopback, link-local, IPv6 and documentation-range addresses
+cannot be selected; a missing owned private address fails instead of falling back.
+Eleven native-fixture tests PASS, including binding ownership and rejected ranges.
+No shipping media code or successful-update assertion is changed. The hypothesis
+is still unproven until an actual connection and installed update pass.
 
 Publisher: locally generated Ed25519 root `boohtacord-desktop-478919e9652ab825`.
 Private key is outside the repository with mode 0600, parent 0700. Only the public

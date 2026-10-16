@@ -3,12 +3,27 @@ import unittest
 import ipaddress
 from unittest.mock import patch
 
-from .windows_stack import Stack, startup_failure, loopback_sfu_configuration
+from .windows_stack import (Stack, startup_failure, private_media_sfu_configuration,
+                            owned_private_media_address)
 
 
-class LoopbackMediaConfigurationTests(unittest.TestCase):
-    def test_updater_fixture_uses_real_ice_tcp_with_loopback_candidates_only(self):
-        config = loopback_sfu_configuration()
+class PrivateMediaConfigurationTests(unittest.TestCase):
+    def test_advertised_address_must_bind_on_this_host_without_public_fallback(self):
+        answers = [(None, None, None, None, (address, 0))
+                   for address in ('8.8.8.8', '10.0.0.1', '10.0.0.2')]
+        with patch('tools.qa.desktop_updates.windows_stack.socket.getaddrinfo', return_value=answers), \
+                patch('tools.qa.desktop_updates.windows_stack.socket.socket') as factory:
+            bind = factory.return_value.__enter__.return_value.bind
+            bind.side_effect = [OSError('not local'), None]
+            self.assertEqual(owned_private_media_address(), '10.0.0.2')
+            self.assertEqual([call.args for call in bind.call_args_list],
+                             [(('10.0.0.1', 0),), (('10.0.0.2', 0),)])
+        with patch('tools.qa.desktop_updates.windows_stack.socket.getaddrinfo', return_value=[]):
+            with self.assertRaisesRegex(RuntimeError, 'No owned RFC1918'):
+                owned_private_media_address()
+
+    def test_management_stays_loopback_while_media_uses_one_private_vm_interface(self):
+        config = private_media_sfu_configuration('10.23.45.67')
         self.assertTrue(config['bind_addresses'])
         self.assertTrue(all(ipaddress.ip_address(value).is_loopback
                             for value in config['bind_addresses']))
@@ -17,14 +32,19 @@ class LoopbackMediaConfigurationTests(unittest.TestCase):
         self.assertEqual(rtc['udp_port'], 0)
         self.assertEqual(rtc['tcp_port'], 4914)
         self.assertFalse(rtc['use_external_ip'])
-        self.assertTrue(rtc['enable_loopback_candidate'])
-        self.assertTrue(rtc['ips']['includes'])
-        for value in rtc['ips']['includes']:
-            network = ipaddress.ip_network(value)
-            self.assertTrue(network.network_address.is_loopback)
-            self.assertTrue(network.broadcast_address.is_loopback)
+        self.assertFalse(rtc['enable_loopback_candidate'])
+        self.assertEqual(rtc['ips']['includes'], ['10.23.45.67/32'])
         self.assertEqual(config['webhook']['urls'],
                          ['http://127.0.0.1:4911/internal/livekit/roster'])
+
+    def test_never_advertises_public_loopback_link_local_or_wildcard_media(self):
+        for address in ('8.8.8.8', '127.0.0.1', '0.0.0.0', '169.254.1.2',
+                        '::1', 'fc00::1', '192.0.2.1', '10.0.0.1/8'):
+            with self.subTest(address=address), self.assertRaises(ValueError):
+                private_media_sfu_configuration(address)
+        for address in ('10.0.0.5', '172.16.0.5', '192.168.0.5'):
+            self.assertEqual(private_media_sfu_configuration(address)['rtc']['ips']['includes'],
+                             [address + '/32'])
 
 
 class CatalogReadinessTests(unittest.TestCase):
