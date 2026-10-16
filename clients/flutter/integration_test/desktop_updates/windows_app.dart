@@ -49,6 +49,7 @@ class Journey {
     : driver = controller ?? LiveWidgetController(WidgetsBinding.instance);
   final Directory output;
   String step = 'startup';
+  Map<String, num>? restorationExpectedAnchor, restorationObservedAnchor;
   final WidgetController driver;
   BoohtacordApp get app =>
       driver.widget<BoohtacordApp>(find.byType(BoohtacordApp));
@@ -122,27 +123,63 @@ class Journey {
     await driver.pump(const Duration(milliseconds: 100));
   }
 
-  Map<String, num> anchor() {
+  Map<String, num> anchor({int? referenceOrdinal}) {
     final viewport = driver.getRect(
       find.byKey(const ValueKey('text-channel-messages')),
     );
     final visible = <({int ordinal, double top})>[];
-    for (final element in find.byType(FormattedMessageBody).evaluate()) {
+    // A reference row can become fractionally clipped at the viewport edge.
+    // Read its actual cached geometry; the unchanged offset tolerance below
+    // still rejects scrolling to a different position.
+    for (final element
+        in find
+            .byType(
+              FormattedMessageBody,
+              skipOffstage: referenceOrdinal == null,
+            )
+            .evaluate()) {
       final body = element.widget as FormattedMessageBody;
       final match = RegExp(r'^Update history row (\d+)$').firstMatch(body.body);
       final box = element.findRenderObject();
       if (match == null || box is! RenderBox || !box.attached) continue;
       final rect = box.localToGlobal(Offset.zero) & box.size;
-      if (rect.overlaps(viewport)) {
-        visible.add((
-          ordinal: int.parse(match[1]!),
-          top: rect.top - viewport.top,
-        ));
+      final ordinal = int.parse(match[1]!);
+      if (referenceOrdinal == null
+          ? rect.overlaps(viewport)
+          : ordinal == referenceOrdinal) {
+        visible.add((ordinal: ordinal, top: rect.top - viewport.top));
       }
     }
     visible.sort((a, b) => a.top.compareTo(b.top));
     require(visible.isNotEmpty, 'history_anchor_missing');
     return {'ordinal': visible.first.ordinal, 'top': visible.first.top};
+  }
+
+  Future<void> waitForRestoredAnchor(
+    Map expected, {
+    Duration timeout = const Duration(seconds: 45),
+  }) async {
+    restorationExpectedAnchor = {
+      'ordinal': expected['ordinal'] as num,
+      'top': expected['top'] as num,
+    };
+    final deadline = DateTime.now().add(timeout);
+    var stable = 0;
+    do {
+      await driver.pump(const Duration(milliseconds: 50));
+      try {
+        final observed = anchor(referenceOrdinal: expected['ordinal'] as int);
+        restorationObservedAnchor = observed;
+        final matches =
+            observed['ordinal'] == expected['ordinal'] &&
+            (observed['top']! - (expected['top'] as num)).abs() < 2;
+        stable = matches ? stable + 1 : 0;
+        if (stable >= 2) return;
+      } on StateError {
+        stable = 0; // The lazily rendered reference message is not mounted yet.
+      }
+    } while (DateTime.now().isBefore(deadline));
+    throw StateError('scroll_not_restored');
   }
 
   Future<void> capture(String name) async {
@@ -158,7 +195,7 @@ class Journey {
     image.dispose();
   }
 
-  Future<Map<String, dynamic>> snapshot() async {
+  Future<Map<String, dynamic>> snapshot({int? referenceOrdinal}) async {
     final window = await windowManager.getBounds();
     return {
       'account_digest': digest(state.user!.accountId),
@@ -167,7 +204,7 @@ class Journey {
       'draft_digest': digest(
         driver.widget<EditableText>(composer).controller.text,
       ),
-      'anchor': anchor(),
+      'anchor': anchor(referenceOrdinal: referenceOrdinal),
       'window': [window.left, window.top, window.width, window.height],
       'muted': state.microphoneMuted,
       'deafened': state.deafened,
@@ -290,7 +327,11 @@ class Journey {
     final expected = jsonDecode(
       await File(path.join(output.path, 'expected.json')).readAsString(),
     ) as Map;
-    final actual = await snapshot();
+    final beforeAnchor = expected['anchor'] as Map;
+    await waitForRestoredAnchor(beforeAnchor);
+    final actual = await snapshot(
+      referenceOrdinal: beforeAnchor['ordinal'] as int,
+    );
     for (final key in [
       'account_digest',
       'origin_digest',
@@ -301,8 +342,7 @@ class Journey {
     ]) {
       require(actual[key] == expected[key], '${key}_not_restored');
     }
-    final beforeAnchor = expected['anchor'] as Map,
-        afterAnchor = actual['anchor'] as Map;
+    final afterAnchor = actual['anchor'] as Map;
     require(
       beforeAnchor['ordinal'] == afterAnchor['ordinal'] &&
           ((beforeAnchor['top'] as num) - (afterAnchor['top'] as num)).abs() <
@@ -461,6 +501,8 @@ Future<void> main() async {
           'voice_phase': journey.state.voicePhase.name,
           'voice_connection_codes': voiceDiagnostics.codes,
           'ice_observation': voiceDiagnostics.ice,
+          'expected_anchor': journey.restorationExpectedAnchor,
+          'observed_anchor': journey.restorationObservedAnchor,
         },
       }),
       flush: true,

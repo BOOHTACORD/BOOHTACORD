@@ -12,11 +12,11 @@ later compilation or component tests.
 
 | Gate | Current status |
 |---|---|
-| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38841772178, source 1F08 |
+| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38844315360, source 969 |
 | Browser lifecycle acceptance | 969 attempt 2 PASS (run 38844315317); attempt 1 remains FAIL with login transport `network_changed`; 1F08/81F/CBA also PASS |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED on locked Mac / system Keychain access |
-| Windows installed 78 → 79 | 1F08 FAIL before download: local candidates present, no remote candidates/pairs observed; 969 real repeat with a private VM media candidate running |
+| Windows installed 78 → 79 | 969 actual replacement/build 79/bootstrap completed; account/channel/late draft/mute checks PASS, scroll assertion FAIL; corrected observation repeat being prepared |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -99,6 +99,33 @@ authenticated at 30784058 bytes, SHA-256
 CRC/safe paths, package ID/version, x64 PE, recovery helper, pinned native SDK and
 bundled publisher root passed inspection before local owner signing/verification.
 Only the public envelope enters Git; the publisher key remains outside Git/CI.
+
+### Windows 969 actual apply and anchor observation (2026-10-16)
+
+Run 38844313081 genuinely reached installed build 79, native phase `completed`,
+check `upToDate`. The private VM media candidate allowed the baseline listener
+connection and background download/staging; the ready screenshot shows a real
+connected room, muted microphone and deafened audio. Account, origin, channel,
+late draft and mute/deafen comparisons all passed after the native restart.
+The journey still reported FAIL at `scroll_not_restored`, before window/rejoin
+and outer final process checks; full installed acceptance is therefore not PASS.
+Authenticated artifact 12023435911: 108383 bytes, SHA-256
+`f9ce43bc5d1f240fb4b1b0f7a074b3c1ca9dcea30779574344c78e64eb520de4`.
+Original 1008×720 before/failure captures were inspected: row 47 appears at the
+same vertical position, with the final draft intact. The failure report lacks
+numeric anchor measurements, so its exact mismatch cannot be determined yet.
+
+The QA observer now waits for actual laid-out reference-message geometry,
+requiring the same message and the existing strict <2 px offset tolerance on
+two consecutive frames; it does not scroll, write state or acknowledge apply.
+It compares that same reference message even when its last fraction becomes
+clipped, rather than substituting a different first-visible message. A real
+widget regression reproduces delayed layout and the 49.5→50 px clipping edge,
+and rejects an incorrect anchor while proving that observation leaves the
+controller offset unchanged. Eleven focused driver/privacy tests PASS and
+analysis is clean. Numeric expected/observed anchors are retained on failure.
+This addresses an observational race/boundary hypothesis; another real installed
+transition must still pass. No shipping restoration or media code changed here.
 
 Publisher: locally generated Ed25519 root `boohtacord-desktop-478919e9652ab825`.
 Private key is outside the repository with mode 0600, parent 0700. Only the public

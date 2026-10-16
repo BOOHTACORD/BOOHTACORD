@@ -8,6 +8,76 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../integration_test/desktop_updates/windows_app.dart';
 
 void main() {
+  testWidgets(
+    'installed acceptance waits for the real delayed message anchor',
+    (tester) async {
+      final scroll = ScrollController();
+      addTearDown(scroll.dispose);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(
+                key: const ValueKey('text-channel-messages'),
+                height: 100,
+                child: ListView(
+                  controller: scroll,
+                  itemExtent: 50,
+                  children: [
+                    for (var i = 0; i < 6; i++)
+                      FormattedMessageBody(
+                        body: 'Update history row ${50 + i}',
+                        color: Colors.black,
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      final journey = Journey(Directory.systemTemp, controller: tester);
+      expect(journey.anchor()['ordinal'], 50);
+      Future<void>.delayed(
+        const Duration(milliseconds: 250),
+        () => scroll.jumpTo(60),
+      );
+      await journey.waitForRestoredAnchor({
+        'ordinal': 51,
+        'top': -10,
+      }, timeout: const Duration(seconds: 2));
+      expect(journey.anchor(), {'ordinal': 51, 'top': -10});
+      expect(journey.restorationObservedAnchor, {'ordinal': 51, 'top': -10});
+      // A subpixel change can hide the last fraction of the old first row.
+      // Compare that same message's offset, rather than selecting a different
+      // first-visible message and incorrectly rejecting a <2 px restoration.
+      scroll.jumpTo(49.5);
+      await tester.pump();
+      final boundaryAnchor = journey.anchor();
+      expect(boundaryAnchor, {'ordinal': 50, 'top': -49.5});
+      scroll.jumpTo(50);
+      await tester.pump();
+      expect(journey.anchor()['ordinal'], 51);
+      await journey.waitForRestoredAnchor(
+        boundaryAnchor,
+        timeout: const Duration(seconds: 2),
+      );
+      expect(journey.restorationObservedAnchor, {'ordinal': 50, 'top': -50});
+      Object? rejected;
+      try {
+        await journey.waitForRestoredAnchor({
+          'ordinal': 55,
+          'top': 0,
+        }, timeout: Duration.zero);
+      } catch (error) {
+        rejected = error;
+      }
+      expect(rejected, isStateError);
+      expect(scroll.offset, 50); // The acceptance observer never moves the list.
+    },
+  );
+
   for (final drawer in [false, true]) {
     testWidgets(
       'voice prejoin uses quick jump without drawer autojoin ($drawer)',
