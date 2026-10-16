@@ -13,6 +13,9 @@ for (const width of [320, 390, 1024, 1440]) test(`settings 200% text fits ${widt
     if (surface === 'roles') await page.getByRole('checkbox', { name: 'Создавать текстовые каналы', exact: true }).uncheck()
     await page.screenshot({ path: info.outputPath(surface + '-200.png') })
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    if (surface === 'audio') {
+      expect(await page.locator('.audio-activation-section').evaluate(e => e.scrollWidth <= e.clientWidth)).toBe(true)
+    }
     if (surface === 'roles') {
       const warning = page.locator('.role-permission-notice')
       expect(await warning.evaluate(e => e.scrollWidth <= e.clientWidth)).toBe(true)

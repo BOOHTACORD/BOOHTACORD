@@ -8,6 +8,8 @@
 .workspace-main-panel--audio .audio-processing-section { min-width: 0; min-height: 0; padding: 16px; gap: 12px; }
 .workspace-main-panel--audio .audio-device-check { margin-top: 0; }
 .audio-device-check__actions button { min-height: 44px; max-width: 100%; overflow-wrap: anywhere; }
+.audio-activation-selector { min-width: 0; max-width: 100%; flex-wrap: wrap; }
+.audio-activation-selector button { min-width: 0; flex: 1 1 7rem; white-space: normal; overflow-wrap: anywhere; }
 .audio-advanced { min-width: 0; display: block; }
 .audio-advanced > summary { min-height: 44px; align-content: center; color: var(--gc-text-primary); cursor: pointer; }
 .audio-advanced > summary:focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 2px; }
