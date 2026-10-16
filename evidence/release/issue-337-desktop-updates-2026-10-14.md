@@ -13,7 +13,7 @@ later compilation or component tests.
 | Gate | Current status |
 |---|---|
 | Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38849881724, source 317 |
-| Browser lifecycle acceptance | 317 PASS (run 38849881720); 4F24/969 repeat also PASS; 969 first attempt remains FAIL with login transport `network_changed` |
+| Browser lifecycle acceptance | 317 PASS; evidence-only 910 repeat FAIL twice (login `network_changed`, then missing recovery control); bounded diagnostic repeat being prepared; prior failures retained |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED on locked Mac / system Keychain access |
 | Windows installed 78 → 79 | PASS, run 38849877552 / source 317: real 79 apply/bootstrap, late state/scroll/window/audio restoration, explicit voice rejoin and old/new process checks |
@@ -206,6 +206,29 @@ preserved for final UI verification after the user unlocks/permits Keychain acce
 No SecurityAgent or protected-container workaround was used. #337 / PR #338 stay
 open until this genuine macOS UI/state gate also passes; production revision 29
 remains unchanged.
+
+### Evidence-head browser recheck (2026-10-16)
+
+The evidence-only 910 commit does not change shipping client code or the accepted
+Windows driver. Its independent browser run 38852567904 failed twice: attempt 1
+(116816829383) reports `login_status=null`, `session_status=200`, transport
+`network_changed`; attempt 2 (116818704425) timed out before registration on the
+`Как восстановить доступ` button. No registration diagnostics existed at that
+early point, so the second failure's cause is not established or classified as
+the first network error. Both attempts remain FAIL; prior 317 acceptance remains
+a separate passed run, not a replacement for these outcomes.
+
+GitHub lists failed artifacts 12026175639 (574084 bytes, SHA-256
+`86dbd8a97789f61685d91ba5111bf4ad8450bb730e15475abf268c761b94bb0d`)
+and 12026550094 (7394859 bytes, SHA-256
+`597e4af6e09edc20c674636320167c4b860311d8d385258903e2ada983c5a0d2`).
+These are artifact metadata, not a new authenticated visual acceptance claim.
+The existing bounded login/session diagnostic now also wraps the registration
+scenario before its context closes. It masks every editable field, preserves the
+original failure, and does not retry requests, change waits or weaken assertions.
+Seven focused privacy/navigation tests and Node syntax checking PASS, including
+session-screen failure before any auth controls appear. Registration product code
+is unchanged. The next real browser run must establish its own result.
 
 Publisher: locally generated Ed25519 root `boohtacord-desktop-478919e9652ab825`.
 Private key is outside the repository with mode 0600, parent 0700. Only the public

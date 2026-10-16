@@ -79,6 +79,20 @@ test('successful login returns normally without diagnostic output or screenshot'
   assert.equal(f.logs.length, 0)
   assert.equal(f.listeners.size, 0)
 })
+test('bootstrap failure before auth controls records session state without credentials', async () => {
+  const f = fixture(), original = new Error('authentication control unavailable')
+  f.page.locator = selector => ({ selector, count: async () => selector === '.session-state' ? 1 : 0 })
+  await assert.rejects(withLoginDiagnostics(f.page, '/owned/.out/1024', async () => {
+    f.listeners.get('requestfailed')({ url: () => 'https://localhost:4810/api/v1/auth/session',
+      failure: () => ({ errorText: 'net::ERR_NETWORK_CHANGED' }) })
+    throw original
+  }, value => f.logs.push(value)), error => error === original)
+  assert.equal(f.logs[0].session_transport_error, 'network_changed')
+  assert.equal(f.logs[0].session_screen_present, true)
+  assert.equal(f.logs[0].form_error_present, false)
+  assert.equal(f.images[0].mask[0].selector, 'input, textarea')
+  assert.equal(f.listeners.size, 0)
+})
 test('diagnostic capture failure cannot replace the original assertion', async () => {
   const f = fixture(), original = new Error('original assertion')
   f.page.screenshot = async () => { throw new Error('capture unavailable') }
