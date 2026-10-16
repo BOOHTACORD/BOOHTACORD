@@ -867,7 +867,7 @@ test('voice and settings icon targets meet desktop and mobile minimum dimensions
   await page.screenshot({ path: testInfo.outputPath('voice-settings-targets-mobile.png') })
 })
 
-test('screen-share setup shows the recommended profile and keeps all quality options discoverable', async ({ page, browser }, testInfo) => {
+test('screen-share setup keeps selection primary and capabilities discoverable', async ({ page, browser }, testInfo) => {
   await page.setViewportSize({ width: 320, height: 640 })
   await page.goto('/')
   await page.evaluate(async () => {
@@ -887,23 +887,20 @@ test('screen-share setup shows the recommended profile and keeps all quality opt
   const header = dialog.locator('.screen-share-setup__header')
   const qualitySettings = dialog.locator('.screen-share-quality__settings')
   const capabilityDetails = dialog.locator('.screen-share-capabilities__details')
-  await expect(dialog.locator('.screen-share-capabilities__availability')).toContainText('Поддержка видео до выбора источника')
   await expect(capabilityDetails).not.toHaveAttribute('open', '')
-  await expect(dialog.getByText('Рекомендуемый профиль', { exact: true })).toBeVisible()
-  await expect(dialog.getByText('1080p · 60 FPS', { exact: true })).toBeVisible()
+  await expect(dialog.locator('.screen-share-capabilities__availability')).not.toBeVisible()
+  await expect(dialog.getByText('Рекомендуемый профиль', { exact: true })).toHaveCount(0)
   await expect(dialog.getByText('Текущий выбор: 1080p · 30 FPS', { exact: true })).toBeVisible()
   await expect(header).toBeInViewport({ ratio: 0.99 })
   await expect(dialog.locator('.screen-share-setup__footer')).toBeInViewport({ ratio: 0.99 })
-  // On a 320px screen the primary chooser takes priority; the optional recommendation is available by body scroll.
   await page.screenshot({ path: testInfo.outputPath('screen-share-setup-320x640-initial.png') })
-  const recommendedProfile = dialog.getByRole('button', { name: 'Применить рекомендованный профиль' })
-  await recommendedProfile.scrollIntoViewIfNeeded()
-  await expect(recommendedProfile).toBeInViewport()
+  await capabilityDetails.locator('summary').click()
+  await expect(dialog.locator('.screen-share-capabilities__availability')).toContainText('Поддержка видео до выбора источника')
+  await page.screenshot({ path: testInfo.outputPath('screen-share-setup-capabilities.png') })
+  await capabilityDetails.locator('summary').click()
   await expect(qualitySettings).toBeVisible()
   await expect(dialog.getByRole('radio', { name: '1440p' })).toBeVisible()
-  await page.screenshot({ path: testInfo.outputPath('screen-share-setup-recommended-profile.png') })
-
-  await dialog.getByRole('button', { name: 'Применить рекомендованный профиль' }).click()
+  await dialog.getByRole('radio', { name: '60 FPS', exact: true }).check()
   await expect(dialog.getByText('Текущий выбор: 1080p · 60 FPS', { exact: true })).toBeVisible()
   await dialog.getByRole('radio', { name: '720p' }).check()
   await expect(dialog.getByText('Текущий выбор: 720p · 60 FPS', { exact: true })).toBeVisible()

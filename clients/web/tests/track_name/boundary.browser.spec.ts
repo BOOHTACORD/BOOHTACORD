@@ -6,6 +6,8 @@ for (const width of [393,1440]) {
   await page.evaluate(()=> (window as any).qa327.protocolFixture('screenshare-1080p-60fps'))
   await page.locator('.stream-diagnostics > summary').click()
   await expect(page.getByText('1080p · 60 FPS',{exact:true})).toBeVisible()
+  await expect(page.getByText('Профиль при запуске · имя дорожки',{exact:true})).not.toBeVisible()
+  await page.locator('.stream-diagnostics-technical > summary').click()
   await expect(page.getByText('Профиль при запуске · имя дорожки',{exact:true})).toBeVisible()
   await expect(page.getByText('Нет данных от отправителя',{exact:true})).toHaveCount(3)
   const state=await page.evaluate(()=> (window as any).qa327.snapshot())

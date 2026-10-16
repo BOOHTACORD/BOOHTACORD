@@ -1,0 +1,614 @@
+{
+  "issue": 348,
+  "leaf": "DW-009",
+  "base": "1784d2cd209e0a4d23efd5a77300d1b92c571bcf",
+  "accepted_source": "fc08c8766324e3a717a8b950209081391b436217",
+  "source_files_sha256": {
+    ".github/workflows/ci-frontend.yaml": "35c86d06e2b58beed52f62b4633960aa25bd8cdc3c99c4821340e32a38b5ccb1",
+    "backlog/tasks.yaml": "92826365b4d36da235990229ed102b9088ac360b43f784bdefddcb47260a88ca",
+    "clients/web/package.json": "6a603d47409b56899a5ca17f88ca1344632f9928d3cee67544a9d0fb25e08569",
+    "clients/web/src/design/design_v2_screen_quality.css": "a2fc0d4377b46bd341efde411f543b9f9489c1165f603ffd6ec77fff816cd518",
+    "clients/web/src/design/design_v2_stream_diagnostics.css": "68360b1aed47eeb6297a6885c1752022da8f947f81583b9146e331ed1d133350",
+    "clients/web/src/voice/ScreenCaptureCapabilitySummary.vue": "fd130dd0dbb5cb3a943ace3e90647fe9f99483441722e347a46b7aaf6dcabcb3",
+    "clients/web/src/voice/ScreenDiagnosticsPanel.vue": "8b87df065e4f63ecd1773129b6cb8d45aed08223e4e46af54eaa492d841214d8",
+    "clients/web/src/voice/ScreenReceiverDiagnosticsPanel.vue": "1f5cb09fbcd43833c136cb63951a224e0ce0524dbf4cffb1f5454b6be8ddfeba",
+    "clients/web/src/voice/ScreenShareSetupDialog.vue": "ed924475eea6270d8e8f82ff41aa3fe44c47abd7f22c7333cf5b715dc7b96124",
+    "clients/web/src/voice/screen_feedback.spec.ts": "fad6bde6fd49cf55ebec6494afe3a2568a828ba15f00d5fc19861cb26d78a103",
+    "clients/web/src/voice/screen_feedback.ts": "69998e525decaff43d9d4ef5ae4220558f808585f1e8b0f180089a8494739bcb",
+    "clients/web/src/voice/screen_share_setup_dialog.spec.ts": "334e34c86c9f8c3664bbc64896878263ef057641750695eadd651904470f0cef",
+    "clients/web/tests/accessibility/accessibility.browser.spec.ts": "43a670094e16e6c1693255c3db61db82ecf622166e2feafc5ecacd040aa56bb3",
+    "clients/web/tests/accessibility/admin_confirmation.browser.spec.ts": "6525394c4e517ddda669759f18ae8438c2f5bbd14a8b56b6a32ec182a3f8aad7",
+    "clients/web/tests/microcopy/behavior.browser.spec.ts": "ab20f3b9d99e67efa22cc112e9ff4c23f833fa9378a33638b9619d8173df9f7a",
+    "clients/web/tests/screen_profile/metadata_diagnostics.browser.spec.ts": "dbbaa7001fe09b1b6c5e69922e23b55bb0bce26ff9fba9c88745a21eca83003d",
+    "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts": "8b7d0a8ca62945c00401254680881479b182d5e15010032b9f713c976da24172",
+    "clients/web/tests/screen_share_ui/fixture.html": "9f6957d0969e5916166ff6e38933162b85ce6dcc22f6cf91f901e61d66ec634a",
+    "clients/web/tests/screen_share_ui/fixture.ts": "faf0c2400e4eade7de9ecd12377ed90ee7732e9a0355a48fc684281239cf131d",
+    "clients/web/tests/screen_share_ui/playwright.config.ts": "1883db922f204b2ab9090cd3422db5ece0aa893ed5338c4fef560f608db79507",
+    "clients/web/tests/screen_share_ui/zoom.browser.spec.ts": "9b7d8a77630f8e5f78e3561490afed7b50ad03522ec0f2df626e271f10a4bc2c",
+    "clients/web/tests/track_name/boundary.browser.spec.ts": "681922d2004bb3d97621595eaebd236a3613fcbb73172e847bb2202c2ae2d788",
+    "tools/ci/native/web.py": "33ff4d68c0adc501fb4ac45c12f7b1d700a4dd17e75862a2cd73a67bd0533614",
+    "tools/qa/critical_client_acceptance/media.mjs": "95d9c2b2efba1a1b77491b40409051fcb6fed390ef4ece35333d8eccfaddd321",
+    "tools/qa/critical_client_acceptance/screen_share_ui.mjs": "4919b781b914e2a92728ce894a92b54b239263c77c3f9e7884c95f83fd5ae4ab",
+    "tools/qa/local_features/features.json": "dbe43fecab9e3e23d0bfffd382c01de5f2d4d4ba86c79c14df69692bab5e8306"
+  },
+  "gate": {
+    "run": "/Users/shaneque/.codex/worktrees/local-feature-qa/BOOHTACORD/.out/local-features/20261017-000830",
+    "source": "fc08c8766324e3a717a8b950209081391b436217 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_status": "FAIL",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "PASS"
+      },
+      {
+        "name": "web-chat_rhythm",
+        "status": "PASS"
+      },
+      {
+        "name": "web-control_consistency",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-dm_starter",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-message_social",
+        "status": "PASS"
+      },
+      {
+        "name": "web-microcopy",
+        "status": "PASS"
+      },
+      {
+        "name": "web-navigation_density",
+        "status": "PASS"
+      },
+      {
+        "name": "web-password_generation",
+        "status": "PASS"
+      },
+      {
+        "name": "web-quick_jump_people",
+        "status": "PASS"
+      },
+      {
+        "name": "web-readonly_archive",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_profile",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_share_ui",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_dates",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_presentation",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_sessions",
+        "status": "PASS"
+      },
+      {
+        "name": "web-track_name",
+        "status": "PASS"
+      },
+      {
+        "name": "web-voice_interface",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "FAIL"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "raw_report_sha256": "b7704a976ab32969d9f056e18e2c1d809a9658c93da31d8db67ac1bf56130c1a",
+    "verification_status": "PASS_AFTER_TARGETED_RETRY",
+    "targeted_retry": {
+      "source": "fc08c8766324e3a717a8b950209081391b436217",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": "python3 -m tools.qa.client_lifecycle.run --critical --portable-proxy --width 1440",
+      "exit_code": 0,
+      "elapsed_seconds": 92.22,
+      "log_sha256": "3123ecb9bcd097ad940390b99b34a01976b88085fd2f0c98f3dc9caf217a2501"
+    },
+    "selected_manual_visual_review": "PASS",
+    "new_fixture_hashes_matching_review": 19
+  },
+  "intermediate_gate": {
+    "run": ".out/local-features/20261016-235839",
+    "status": "24/24 PASS on463c4282; superseded only by copy feedback repositioning and its regression test"
+  },
+  "earlier_gate": {
+    "run": ".out/local-features/20261016-234713",
+    "raw_status": "FAIL",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "PASS"
+      },
+      {
+        "name": "web-chat_rhythm",
+        "status": "PASS"
+      },
+      {
+        "name": "web-control_consistency",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-dm_starter",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-message_social",
+        "status": "PASS"
+      },
+      {
+        "name": "web-microcopy",
+        "status": "FAIL"
+      },
+      {
+        "name": "web-navigation_density",
+        "status": "PASS"
+      },
+      {
+        "name": "web-password_generation",
+        "status": "PASS"
+      },
+      {
+        "name": "web-quick_jump_people",
+        "status": "PASS"
+      },
+      {
+        "name": "web-readonly_archive",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_profile",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_share_ui",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_dates",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_presentation",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_sessions",
+        "status": "PASS"
+      },
+      {
+        "name": "web-track_name",
+        "status": "FAIL"
+      },
+      {
+        "name": "web-voice_interface",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "FAIL"
+      }
+    ],
+    "source": "16d441665d6ccbfa4258c709d328b849b8ed5f93 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "report_sha256": "91e29845559275623f5648c796a10a3a8ceae2b9b6faf064005e4cf8000c1ee8"
+  },
+  "visual_review": {
+    "before_source": "1784d2cd209e0a4d23efd5a77300d1b92c571bcf",
+    "accepted_source": "fc08c8766324e3a717a8b950209081391b436217",
+    "status": "PASS_SELECTED_FRAMES",
+    "baseline_approved": false,
+    "frames": [
+      {
+        "path": ".out/issue348/before/launch-1440.png",
+        "kind": "before",
+        "width": 1440,
+        "height": 900,
+        "sha256": "266828ff4400f83cd719cbee4e7b3ae959b86f9a52248dc22d422d3f74ad31d4",
+        "review": "Exact master source; synthetic production-component fixture; original private tour unavailable."
+      },
+      {
+        "path": ".out/issue348/before/launch-390.png",
+        "kind": "before",
+        "width": 390,
+        "height": 900,
+        "sha256": "3db19bdccf7662757ac362bc81c601328987366619d3e4228df35e852354318f",
+        "review": "Exact master source; synthetic production-component fixture; original private tour unavailable."
+      },
+      {
+        "path": ".out/issue348/before/receiver-1440.png",
+        "kind": "before",
+        "width": 1440,
+        "height": 900,
+        "sha256": "b8c6585dc5828ecc8af2a9afa97d44d3db43fcda320ab80773d720ec100ea5fd",
+        "review": "Exact master source; synthetic production-component fixture; original private tour unavailable."
+      },
+      {
+        "path": ".out/issue348/before/receiver-390.png",
+        "kind": "before",
+        "width": 390,
+        "height": 900,
+        "sha256": "57948dedbab2bc06767be58de09344327260538d459889318ec2c04148c03274",
+        "review": "Exact master source; synthetic production-component fixture; original private tour unavailable."
+      },
+      {
+        "path": ".out/issue348/before/sender-1440.png",
+        "kind": "before",
+        "width": 1440,
+        "height": 900,
+        "sha256": "20f52d1e6dac11138d57cb3ae4086d820920c758c66e135c54f82899f5faa465",
+        "review": "Exact master source; synthetic production-component fixture; original private tour unavailable."
+      },
+      {
+        "path": ".out/issue348/before/sender-390.png",
+        "kind": "before",
+        "width": 390,
+        "height": 900,
+        "sha256": "04058f1ebbe863f87b0bf04ba6ddf6d70c82633624153342170d93736f0c69dc",
+        "review": "Exact master source; synthetic production-component fixture; original private tour unavailable."
+      },
+      {
+        "path": ".out/issue348/before/updating-1440.png",
+        "kind": "before",
+        "width": 1440,
+        "height": 900,
+        "sha256": "ccd1d9ddb7584ac3af22abcc38412970000feb8031be1a6aec6b276aefc534f0",
+        "review": "Exact master source; synthetic production-component fixture; original private tour unavailable."
+      },
+      {
+        "path": ".out/issue348/before/updating-390.png",
+        "kind": "before",
+        "width": 390,
+        "height": 900,
+        "sha256": "3e35cd9502dbf5791cf92a23bec0810e8de08b88660886aea3944ca5bdceab0a",
+        "review": "Exact master source; synthetic production-component fixture; original private tour unavailable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-390px-text-100-/launch-390-100.png",
+        "kind": "after",
+        "width": 390,
+        "height": 900,
+        "sha256": "4d644ef264d9ed6adf41c155ace792cec048965e8898e452e766d7105fd3261f",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-390px-text-100-/updating-390-100.png",
+        "kind": "after",
+        "width": 390,
+        "height": 900,
+        "sha256": "9f366d40732fb79b67367a9c32c5705c47a5605e091d691ad92aae04d43a8bee",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-390px-text-100-/sender-390-100.png",
+        "kind": "after",
+        "width": 390,
+        "height": 900,
+        "sha256": "8c97dccc8c35f331956509d1875aa77a8e4ef7344ce9e89bad93f39291326bb1",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-390px-text-100-/receiver-390-100.png",
+        "kind": "after",
+        "width": 390,
+        "height": 900,
+        "sha256": "f6444b3d754ad82718fff4c3a2678060770aae07e21e20839759725b9490b17b",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-390px-text-100-/technical-sender-390-100.png",
+        "kind": "after",
+        "width": 390,
+        "height": 900,
+        "sha256": "86871e74ac101c59ccf634af89520029e654f647d68233b3ae60b0490929c873",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-390px-text-100-/technical-receiver-390-100.png",
+        "kind": "after",
+        "width": 390,
+        "height": 900,
+        "sha256": "787d94653943dd22a4e91a9f899dfa7bd22d71699d59073c6c1fdaf627da0bfd",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-1440px-text-100-/launch-1440-100.png",
+        "kind": "after",
+        "width": 1440,
+        "height": 900,
+        "sha256": "c1eaac9d8b964c15ec5a99805f2a3d0472c9c8f06ad1d3db5a276f3d44532760",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-1440px-text-100-/updating-1440-100.png",
+        "kind": "after",
+        "width": 1440,
+        "height": 900,
+        "sha256": "4af930c2f0ec3a859dbfc027b721ef348ddaeaf11f0fd185c3280782f8bd69bb",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-1440px-text-100-/receiver-1440-100.png",
+        "kind": "after",
+        "width": 1440,
+        "height": 900,
+        "sha256": "c7f6bf4569f01601cff22a19434fdfa4eb5f350556baec861704ac4c1a7f2271",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-320px-text-200-/launch-320-200.png",
+        "kind": "after",
+        "width": 320,
+        "height": 900,
+        "sha256": "abe86d331d6dcac09387bfc63a83bc925b2e4ea9d43d3e888cb4c7a62758b768",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-320px-text-200-/details-launch-320-200.png",
+        "kind": "after",
+        "width": 320,
+        "height": 900,
+        "sha256": "1cb9a0a73199fb0f39f6364c91b0cfa0055fdacad01255d7939327d8b090d594",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-320px-text-200-/unsupported-320-200.png",
+        "kind": "after",
+        "width": 320,
+        "height": 900,
+        "sha256": "ecea0624ef1bd226c796599525faa01e1d06d20e300bb2943ab0cfbef0cd52b3",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-320px-text-200-/receiver-320-200.png",
+        "kind": "after",
+        "width": 320,
+        "height": 900,
+        "sha256": "8514468c87ab6e0c3ae67d4e6b81348e829c18d0e746cad0578bf24080fdbde2",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/disclosure.browser-layout-and-disclosure-320px-text-200-/updating-320-200.png",
+        "kind": "after",
+        "width": 320,
+        "height": 900,
+        "sha256": "c9d3ff2af8847fc281dbfd701418f75f67186a2e804d7628dca40b6161a75ab5",
+        "review": "Selection and measured output distinct; primary actions reachable. Enlarged text uses a scrolling body and stacked footer; focused Close hint is transient keyboard help. Technical sheets are deliberately scrollable."
+      },
+      {
+        "path": ".out/issue348/browser/zoom.browser-touch-disclos-8e9db-tay-available-without-hover/touch-details.png",
+        "kind": "after",
+        "width": 390,
+        "height": 900,
+        "sha256": "1fd5b275dbbd994874b071ec88085b22773aff3a1b58d97d972f96d437402b5c",
+        "review": "Native browser zoom factor2, verified dpr/innerWidth; no CSS zoom. Source-resolution crop used for widths2048/2880. Touch frame has expected tap highlight."
+      },
+      {
+        "path": ".out/issue348/browser/zoom.browser-share-setup-at-actual-200-browser-zoom-in-640px/launch-zoom.png",
+        "kind": "after",
+        "width": 640,
+        "height": 913,
+        "sha256": "4ad40505277e0573f544fcbf4290d6c1022eeeb38f71bd7d29130ed8ff91ecf0",
+        "review": "Native browser zoom factor2, verified dpr/innerWidth; no CSS zoom. Source-resolution crop used for widths2048/2880. Touch frame has expected tap highlight."
+      },
+      {
+        "path": ".out/issue348/browser/zoom.browser-share-setup-a-b557e--200-browser-zoom-in-2048px/launch-zoom.png",
+        "kind": "after",
+        "width": 2048,
+        "height": 913,
+        "sha256": "29aa3a80844d80636aea653253cc9bd496926136165b0e768707e392c690a213",
+        "review": "Native browser zoom factor2, verified dpr/innerWidth; no CSS zoom. Source-resolution crop used for widths2048/2880. Touch frame has expected tap highlight."
+      },
+      {
+        "path": ".out/issue348/browser/zoom.browser-share-setup-a-6e2af--200-browser-zoom-in-2880px/launch-zoom.png",
+        "kind": "after",
+        "width": 2880,
+        "height": 913,
+        "sha256": "2a49bba6b02b3b54698bd67ae21b1a5779c3ba4deed9abfa9b18cfc6f3e47cc4",
+        "review": "Native browser zoom factor2, verified dpr/innerWidth; no CSS zoom. Source-resolution crop used for widths2048/2880. Touch frame has expected tap highlight."
+      },
+      {
+        "path": ".out/issue348/browser/zoom.browser-share-setup-at-actual-200-browser-zoom-in-780px/launch-zoom.png",
+        "kind": "after",
+        "width": 780,
+        "height": 913,
+        "sha256": "7aeafb2c26d6117af87735bf616593a40e25def59b359a75fccf2c349253094c",
+        "review": "Native browser zoom factor2, verified dpr/innerWidth; no CSS zoom. Source-resolution crop used for widths2048/2880. Touch frame has expected tap highlight."
+      },
+      {
+        "path": ".out/issue348/copy-feedback-1440.png",
+        "kind": "after-focused",
+        "width": 1440,
+        "height": 900,
+        "sha256": "e46cc6da5ffceb38c4ff860c4603d3b41ed295b896a0d5fb22114113a9561bdb",
+        "source": "fc08c8766324e3a717a8b950209081391b436217",
+        "review": "Copy failure near bottom anchor: full message and controls remain visible, panel bottom826 within900px. Source-sized fixture."
+      }
+    ],
+    "exact_crops": [
+      {
+        "path": ".out/issue348/review-crops/zoom-2048-center.png",
+        "kind": "crop",
+        "width": 1200,
+        "height": 913,
+        "sha256": "ad2bfc0854487dae3dc651771f8339bfd7785e45537d731737ac77799042d193",
+        "review": "Exact1200×913 crop; no resizing."
+      },
+      {
+        "path": ".out/issue348/review-crops/zoom-2880-center.png",
+        "kind": "crop",
+        "width": 1200,
+        "height": 913,
+        "sha256": "eac53714e6709529ef9989e88c649b6e2219f4079793e85b4629f437b063c3c8",
+        "review": "Exact1200×913 crop; no resizing."
+      }
+    ]
+  },
+  "actual_api_sfu": [
+    {
+      "viewport": 1440,
+      "result": {
+        "boundary": "synthetic canvas; OS picker NOT_RUN",
+        "actual_api_sfu": true,
+        "cancel_without_publication": true,
+        "permission_denied_visible": true,
+        "retry_publish_view_decode_stop": true,
+        "ended_source_track": true,
+        "voice_retained": true,
+        "selected_configuration_measured_separate": true,
+        "configuration_observed": "Нет подтверждения от отправителя",
+        "diagnostics_optional": true,
+        "captures": 3,
+        "activated": [
+          true,
+          true,
+          true
+        ],
+        "media_quality": "NOT_RUN"
+      },
+      "voice_interface": {
+        "actual_two_listener_sessions": true,
+        "compact_primary_controls": true,
+        "deafen_state": true,
+        "share_dialog_cancel_without_capture": true,
+        "focus_return": true,
+        "text_drawer_resize_retains_same_transport": true,
+        "all_four_mobile_dock_actions_without_drawer": true,
+        "hardware_capture_or_audio_quality": "NOT_RUN",
+        "post_leave_interactive_roster_or_streams": 0,
+        "cleanup_observed_within_ms": 17,
+        "observation": "Bounded live transition; no persistent old-roster defect inferred from the original tour frame."
+      },
+      "report_sha256": "8694d10dab909ed064fbe9a28b60e0f80b9aca1e4bd3f4dbdb9cccd8ebc5da08",
+      "screenshot": {
+        "path": ".out/client-lifecycle/1440/screen-share-compact-statistics.png",
+        "sha256": "aa823f0a2184dd2c0de69356c7eb004a37824e824b226c5703b06383276fa241",
+        "width": 2880,
+        "height": 1800
+      }
+    },
+    {
+      "viewport": 393,
+      "result": {
+        "boundary": "synthetic canvas; OS picker NOT_RUN",
+        "actual_api_sfu": true,
+        "cancel_without_publication": true,
+        "permission_denied_visible": true,
+        "retry_publish_view_decode_stop": true,
+        "ended_source_track": true,
+        "voice_retained": true,
+        "selected_configuration_measured_separate": true,
+        "configuration_observed": "Нет подтверждения от отправителя",
+        "diagnostics_optional": true,
+        "captures": 3,
+        "activated": [
+          true,
+          true,
+          true
+        ],
+        "media_quality": "NOT_RUN"
+      },
+      "voice_interface": {
+        "actual_two_listener_sessions": true,
+        "compact_primary_controls": true,
+        "deafen_state": true,
+        "share_dialog_cancel_without_capture": true,
+        "focus_return": true,
+        "text_drawer_resize_retains_same_transport": true,
+        "all_four_mobile_dock_actions_without_drawer": true,
+        "hardware_capture_or_audio_quality": "NOT_RUN",
+        "post_leave_interactive_roster_or_streams": 0,
+        "cleanup_observed_within_ms": 17,
+        "observation": "Bounded live transition; no persistent old-roster defect inferred from the original tour frame."
+      },
+      "report_sha256": "e156ec2c6d2a9a054ddc23c8c5ce8ebc79a52bb738c0c16dcde26969b76107a4",
+      "screenshot": {
+        "path": ".out/client-lifecycle/393/screen-share-compact-statistics.png",
+        "sha256": "5d555e0c090dceb3c299c21bf07c89223556a7906f7d4962f5a6f312a072f8fa",
+        "width": 1179,
+        "height": 2556
+      }
+    }
+  ],
+  "focused": {
+    "unit": 1556,
+    "screen_share_ui_cases": 20,
+    "axe_state_scans": 72,
+    "legacy_track_cases": 2,
+    "screen_profile_cases": 18,
+    "credential_gated_baseline": "NOT_RUN",
+    "accessibility_cases": 111,
+    "traceability": "PASS 39; committed index only; approved Windows brief unavailable"
+  },
+  "limits": [
+    "original private tour pixels NOT_RUN",
+    "physical OS picker/permissions NOT_RUN",
+    "native platforms/screen readers NOT_RUN",
+    "system/game audio NOT_RUN",
+    "1080p60 quality/capacity NOT_RUN",
+    "No configuration acknowledgement received in owned SFU run; UI keeps it unknown. Fixture separately tests sharing/updating/idle/missing metadata.",
+    "Synthetic canvas at OS picker boundary; real API/SFU/publish/subscribe/decode/stop."
+  ],
+  "baseline_approved": false
+}

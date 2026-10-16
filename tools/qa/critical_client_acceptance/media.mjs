@@ -5,6 +5,7 @@ import { teardown } from './teardown.mjs'
 import { installRosterFailureObserver } from './roster_observer.mjs'
 import { rosterCounters } from './roster_diagnostics.mjs'
 import { observeRosterNetwork } from './roster_network.mjs'
+import { screenShareInterface } from './screen_share_ui.mjs'
 import { voiceInterface, leaveVoiceInterface } from './voice_interface.mjs'
 async function connected(page) {
   try {
@@ -56,6 +57,7 @@ export async function media(a, b, member, channelId, report, input) {
   }
   await connected(a)
   await voiceInterface(a, input, report)
+  await screenShareInterface(a, member, input, report)
   blocked = true
   for (const { socket, server } of chat) { server.close(); socket.close() }
   const banner = a.getByTestId('connection-status')

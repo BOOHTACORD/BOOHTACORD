@@ -4,6 +4,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { ScreenProfile } from './livekit_gateway'
 import type { ScreenFrameRate, ScreenResolution } from './media_publishing'
 import { screenShareBandwidthEstimate } from './screen_profile_metadata/profile'
+import { screenCaptureSupported, screenCaptureUnavailableMessage } from './screen_capture_support'
 import { containModalTab } from '../accessibility/modal_tab_focus'
 import ScreenCaptureCapabilitySummary from './ScreenCaptureCapabilitySummary.vue'
 import ScreenShareQualityOptions from './ScreenShareQualityOptions.vue'
@@ -28,7 +29,8 @@ const selectedProfile = computed(() => `P${resolution.value}_${frameRate.value}`
 const profileAllowed = computed(() => resolution.value !== 1440 || frameRate.value !== 60)
 const bandwidthEstimate = computed(() => screenShareBandwidthEstimate(selectedProfile.value))
 const profileSummary = computed(() => `${resolution.value}p · ${frameRate.value} FPS`)
-const recommendedProfile: ScreenProfile = 'P1080_60'
+const captureSupported = screenCaptureSupported()
+const canStart = computed(() => profileAllowed.value && (props.updating || captureSupported))
 
 function useProfile(profile: ScreenProfile): void {
   const values = profileValues(profile)
@@ -53,10 +55,6 @@ function selectResolution(value: ScreenResolution): void {
   frameRate.value = selection.frameRate
 }
 
-function applyRecommendedProfile(): void {
-  useProfile(recommendedProfile)
-}
-
 watch(() => props.initialProfile, useProfile)
 
 onMounted(async () => {
@@ -75,7 +73,7 @@ onBeforeUnmount(() => {
 })
 
 function start(): void {
-  if (profileAllowed.value) emit('start', selectedProfile.value, mode.value)
+  if (canStart.value) emit('start', selectedProfile.value, mode.value)
 }
 </script>
 
@@ -109,8 +107,9 @@ function start(): void {
     </header>
 
     <div class="screen-share-setup__body">
+      <p v-if="!updating && !captureSupported" class="state state-error" role="alert">{{ screenCaptureUnavailableMessage() }}</p>
       <section class="screen-share-quality" aria-labelledby="screen-share-quality-title">
-        <h3 id="screen-share-quality-title" :class="{ 'gc-sr-only': updating }">
+        <h3 id="screen-share-quality-title" class="gc-sr-only">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9M13 4v6M9 14v6" /></svg>
           Качество трансляции
         </h3>
@@ -124,34 +123,20 @@ function start(): void {
         />
         <p class="screen-share-quality__current" role="status" aria-live="polite">Текущий выбор: {{ profileSummary }}</p>
 
-        <div v-if="!updating" class="screen-share-quality__overview">
-          <div class="screen-share-quality__recommended">
-            <div>
-              <p>Рекомендуемый профиль</p>
-              <strong>1080p · 60 FPS</strong>
-            </div>
-            <button type="button" :disabled="selectedProfile === recommendedProfile" @click="applyRecommendedProfile">Применить рекомендованный профиль</button>
-          </div>
-          <p class="screen-share-quality__disclaimer">Профиль задаёт цель; фактическое качество зависит от выбранного источника, устройства и сети.</p>
-          <p class="screen-share-quality__hint">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 8a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0m-11 4a5 5 0 0 1 8 0m-4 4h.01" /></svg>
-            <span>Для 1440p доступно до 30 FPS; сценарий выбирается отдельно. Суммарный лимит двух слоёв — {{ bandwidthEstimate }}; это не гарантированный сетевой расход.</span>
-          </p>
-        </div>
-        <p v-if="updating" class="screen-share-quality__warning"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg><span>При ухудшении сети качество может временно снижаться. Приоритет — голос.</span></p>
+        <p class="screen-share-quality__disclaimer">Профиль задаёт цель; фактическое качество зависит от источника, устройства и сети.</p>
       </section>
 
       <div v-if="!updating" id="screen-share-setup-guidance" class="screen-share-setup__notice" role="note">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 7v5c0 5-3.7 8-9 10-5.3-2-9-5-9-10V7zm0 5v5m0 3h.01" /></svg>
-        <p>После продолжения браузер покажет системный запрос на выбор экрана или окна. Вы сможете остановить трансляцию в любой момент.</p>
+        <p>Источник выберете в окне браузера. Остановить показ можно в любой момент.</p>
       </div>
 
-      <ScreenCaptureCapabilitySummary v-if="!updating" />
+      <ScreenCaptureCapabilitySummary :bandwidth-estimate="bandwidthEstimate" :updating="updating" />
     </div>
 
     <footer class="screen-share-setup__footer">
       <button class="screen-share-setup__cancel" type="button" @click="emit('cancel')">Отмена</button>
-      <button class="screen-share-setup__start" type="button" :disabled="!profileAllowed" @click="start">
+      <button class="screen-share-setup__start" type="button" :disabled="!canStart" @click="start">
         <svg v-if="!updating" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v13H3zM8 21h8m-4-4v4M12 8v6m-3-3 3-3 3 3" /></svg>
         {{ updating ? 'Применить' : 'Начать трансляцию' }}
       </button>

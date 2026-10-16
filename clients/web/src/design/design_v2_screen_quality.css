@@ -66,3 +66,36 @@
 @media (max-width: 360px) {
   .screen-share-setup-dialog:not(.screen-share-setup-dialog--updating) .screen-share-quality__scenarios { grid-template-columns: minmax(0, 1fr); }
 }
+/* DW-09: selection first; optional capabilities never dominate launch. */
+.screen-share-setup-dialog:not(.screen-share-setup-dialog--updating) { height: max-content; }
+.screen-share-setup-dialog .screen-share-setup__header { min-height: 68px; padding-block: 12px; }
+.screen-share-setup-dialog .screen-share-setup__icon { width: 36px; height: 36px; }
+.screen-share-setup-dialog .screen-share-quality__scenario-option { min-height: 56px; padding: 8px 10px; }
+.screen-share-setup-dialog .screen-share-quality__settings { border: 0; padding: 0; background: transparent; }
+.screen-share-setup-dialog .screen-share-quality__settings h4 { font-size: var(--gc-text-small); color: var(--gc-text-secondary); }
+.screen-share-setup-dialog .screen-share-quality__option { min-height: 44px; }
+.screen-share-setup-dialog .screen-share-setup__notice { display: block; border: 0; padding: 0; background: transparent; font-size: var(--gc-text-small); }
+.screen-share-setup-dialog .screen-share-setup__notice > svg { display: none; }
+.screen-share-setup-dialog .screen-share-setup__start:disabled { opacity: .5; cursor: not-allowed; }
+.screen-share-capabilities__details { overflow-wrap: anywhere; }
+.screen-share-capabilities__details > summary { line-height: 1.4; padding-block: 8px; }
+.screen-share-capabilities__details > p { margin-block: 8px; }
+.screen-share-capabilities { padding: 8px 0; border: 0; border-radius: 0; background: transparent; }
+.screen-share-capabilities > div { flex-wrap: wrap; gap: 4px 12px; }
+.screen-share-capabilities dd { text-align: start; }
+@media (max-width: 600px) {
+  .screen-share-setup-dialog.screen-share-setup-dialog--updating .screen-share-setup__header { min-height: 104px; padding-block: 24px 12px; }
+}
+.screen-share-setup-dialog .screen-share-setup__title h2 { overflow-wrap: anywhere; }
+.screen-share-setup-dialog .screen-share-setup__footer button { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+@media (max-width: 360px) {
+  .screen-share-setup-dialog .screen-share-setup__footer { flex-direction: column; align-items: stretch; }
+  .screen-share-setup-dialog .screen-share-setup__footer button { flex: auto; width: 100%; }
+}
+@media (max-width: 360px) {
+  .screen-share-setup-dialog .screen-share-setup__header { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+  .screen-share-setup-dialog .screen-share-setup__icon { grid-row: 1; }
+  .screen-share-setup-dialog .screen-share-setup__close { position: static; grid-column: 2; grid-row: 1; }
+  .screen-share-setup-dialog .screen-share-setup__title { grid-column: 1 / -1; grid-row: 2; }
+  .screen-share-setup-dialog .screen-share-setup__title h2 { width: auto; }
+}
