@@ -13,7 +13,7 @@ later compilation or component tests.
 | Gate | Current status |
 |---|---|
 | Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38849881724, source 317 |
-| Browser lifecycle acceptance | 317 PASS; evidence-only 910 repeat FAIL twice (login `network_changed`, then missing recovery control); bounded diagnostic repeat being prepared; prior failures retained |
+| Browser lifecycle acceptance | 317 PASS; 910 repeat FAIL twice; AE1 repeat FAIL with actual login `network_changed`; read-only browser readiness barrier locally tested, CI acceptance pending; prior failures retained |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED on locked Mac / system Keychain access |
 | Windows installed 78 → 79 | PASS, run 38849877552 / source 317: real 79 apply/bootstrap, late state/scroll/window/audio restoration, explicit voice rejoin and old/new process checks |
@@ -23,6 +23,32 @@ later compilation or component tests.
 Ordinary shipping source is unchanged by the later QA navigation/diagnostic
 entrypoint changes. Verified distribution records are retained below. #337 and
 draft PR #338 remain open until both genuine installed UI gates pass.
+
+### Browser readiness repeat (2026-10-16 05:25 UTC)
+
+AE1 run 38854495797 / job 116822812901 failed with bounded diagnostics:
+login status absent, session HTTP 200, login transport `network_changed`,
+workspace absent and authentication error present. No authentication request
+is replayed. Artifact 12026571626 metadata reports 7537477 bytes and SHA-256
+`2d12a1f08ae4da5b62bbd9edcf7c480d31339112b6434e11ed00f09352edbd8c`;
+this artifact has not been downloaded/authenticated and is not new visual proof.
+
+Before entering credentials in a fresh disposable browser context, the QA
+fixture now observes a three-second stable interval of actual Chromium GET
+navigations to the owned loopback health endpoint. A known network-change event
+resets that interval; preparation is bounded to fifteen seconds / sixty probes.
+HTTP failure and other navigation errors fail immediately. Only the existing
+initial read retry remains; login/registration mutations and product assertions
+are unchanged. Ten focused Node tests and both changed scenario syntax checks
+pass. This is fixture preparation, not a product authentication fix or a claim
+that the next browser acceptance has passed.
+
+Native candidate run 38854490588 passed both jobs. Main AE1 CI contracts, backend
+and Web jobs passed; Flutter/Windows are still running at this observation.
+The installed Windows source-317 PASS remains valid for the unchanged shipping
+code. Fresh Computer Use observation at 05:24 UTC still reports a locked Mac;
+the final macOS installed-state gate remains BLOCKED. No production catalog
+promotion or master merge has occurred.
 
 ### Windows 81F connection failure (2026-10-16)
 

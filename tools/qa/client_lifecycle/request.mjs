@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module'
 import assert from 'node:assert/strict'
 import { withLoginDiagnostics } from './login_diagnostics.mjs'
-import { navigateOwnedLoopback } from './loopback_navigation.mjs'
+import { prepareOwnedLoopback } from './loopback_navigation.mjs'
 const require = createRequire(new URL('../../../clients/web/package.json', import.meta.url))
 export const { chromium, expect } = require('@playwright/test')
 export const origin = process.env.QA_ORIGIN
@@ -17,7 +17,7 @@ export async function api(page, path, method = 'GET', body) {
 export function status(result, expected) { assert.equal(result.status, expected) }
 export async function login(page, loginName, password, diagnosticsDirectory) {
   const perform = async () => {
-    await navigateOwnedLoopback(page, origin)
+    await prepareOwnedLoopback(page, origin)
     await page.getByLabel('Логин', { exact: true }).fill(loginName)
     await page.getByLabel('Пароль', { exact: true }).fill(password)
     await page.getByRole('button', { name: 'Войти', exact: true }).click()

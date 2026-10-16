@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { api, expect, origin } from '../client_lifecycle/request.mjs'
 import { withLoginDiagnostics } from '../client_lifecycle/login_diagnostics.mjs'
+import { prepareOwnedLoopback } from '../client_lifecycle/loopback_navigation.mjs'
 export async function registration(browser, input, report) {
   const context = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: input.width, height: 900 } })
   context.setDefaultTimeout(15000)
@@ -9,7 +10,7 @@ export async function registration(browser, input, report) {
     let registrations = 0
     page.on('request', request => { if (new URL(request.url()).pathname === '/api/v1/auth/register') registrations++ })
     return await withLoginDiagnostics(page, input.directory, async () => {
-      await page.goto(origin)
+      await prepareOwnedLoopback(page, origin)
       await page.getByRole('button', { name: 'Как восстановить доступ' }).click()
       await expect(page.locator('.authentication-recovery-details')).toContainText('администратора')
       await page.getByRole('button', { name: 'Создать аккаунт', exact: true }).click()

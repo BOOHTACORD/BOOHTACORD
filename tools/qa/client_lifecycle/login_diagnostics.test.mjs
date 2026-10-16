@@ -1,7 +1,58 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { withLoginDiagnostics } from './login_diagnostics.mjs'
-import { navigateOwnedLoopback } from './loopback_navigation.mjs'
+import { navigateOwnedLoopback, prepareOwnedLoopback } from './loopback_navigation.mjs'
+
+function readinessClock() {
+  let time = 0
+  return { now: () => time, wait: async ms => { time += ms } }
+}
+test('auth preparation observes real GET health stability before opening the form', async () => {
+  const clock = readinessClock(), calls = []
+  const health = 'https://localhost:4810/api/v1/health'
+  const page = { goto: async url => {
+    calls.push({ url, time: clock.now() })
+    return { status: () => 200, url: () => url }
+  } }
+  await prepareOwnedLoopback(page, 'https://localhost:4810', clock)
+  assert.equal(calls.at(-1).url, 'https://localhost:4810')
+  const probes = calls.slice(0, -1)
+  assert.ok(probes.every(call => call.url === health))
+  assert.ok(probes.at(-1).time - probes[0].time >= 3000)
+  assert.ok(calls.every(call => !/auth\/(login|register)/.test(call.url)))
+})
+test('known startup network change resets the read-only stability window', async () => {
+  const clock = readinessClock(), healthy = []
+  let failedAt = null
+  const page = { goto: async url => {
+    if (url.endsWith('/health')) {
+      if (clock.now() === 1000) {
+        failedAt = clock.now()
+        throw new Error('net::ERR_NETWORK_CHANGED')
+      }
+      if (failedAt !== null) healthy.push(clock.now())
+    }
+    return { status: () => 200, url: () => url }
+  } }
+  await prepareOwnedLoopback(page, 'https://localhost:4810', clock)
+  assert.equal(failedAt, 1000)
+  assert.ok(healthy.at(-1) - healthy[0] >= 3000)
+})
+test('health preparation is bounded and never retries TLS, HTTP failure or a foreign origin', async () => {
+  const clock = readinessClock()
+  let calls = 0
+  await assert.rejects(prepareOwnedLoopback({ goto: async () => {
+    calls++; throw new Error('net::ERR_NETWORK_CHANGED')
+  } }, 'https://localhost:4810', clock), /did not settle/)
+  assert.ok(calls <= 60)
+  const tls = new Error('net::ERR_CERT_AUTHORITY_INVALID')
+  await assert.rejects(prepareOwnedLoopback({ goto: async () => { throw tls } },
+    'https://localhost:4810', readinessClock()), error => error === tls)
+  await assert.rejects(prepareOwnedLoopback({ goto: async url => ({ status: () => 503, url: () => url }) },
+    'https://localhost:4810', readinessClock()), /health/)
+  await assert.rejects(prepareOwnedLoopback({ goto: async () => assert.fail('Foreign GET') },
+    'https://foreign.test', readinessClock()), /Owned/)
+})
 
 test('owned initial GET tolerates one transient browser network change', async () => {
   let calls = 0
