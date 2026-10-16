@@ -7,6 +7,7 @@ from pathlib import Path
 LIB = 'clients/flutter/lib/'
 TEST = 'clients/flutter/test/'
 QA = 'tools/qa/'
+INTEGRATION = 'clients/flutter/integration_test/'
 
 
 def local_targets(path, source):
@@ -23,7 +24,7 @@ def violations(sources):
         for target in local_targets(path, source):
             if target not in sources:
                 errors.append(f'{path}: local Dart dependency is absent or ignored: {target}')
-            if path.startswith(LIB) and target.startswith(QA):
+            if path.startswith(LIB) and target.startswith((QA, INTEGRATION)):
                 errors.append(f'{path}: production Dart imports QA: {target}')
             if '/lib/src/features/' in path and any(target.startswith(LIB + prefix) for prefix in
                     ('src/app_state.dart', 'src/app.dart', 'src/app/', 'src/screens/', 'src/widgets/')):
@@ -33,7 +34,7 @@ def violations(sources):
 
 def discover_sources(root):
     names = subprocess.check_output(['git', 'ls-files', '--cached', '--others', '--exclude-standard', '-z', '--',
-                                     LIB, TEST, QA], cwd=root).decode().split('\0')
+                                     LIB, TEST, QA, INTEGRATION], cwd=root).decode().split('\0')
     available = {name for name in names if name.endswith('.dart') and (root / name).is_file()}
     pending = sorted(name for name in available if name.startswith((LIB, TEST)))
     sources = {}
@@ -46,7 +47,7 @@ def discover_sources(root):
         # QA entry points can intentionally target a private build context. Only
         # QA imports reachable from this Flutter project belong to its graph.
         pending.extend(target for target in local_targets(name, source)
-                       if target.startswith(QA) and target in available and target not in sources)
+                       if target.startswith((QA, INTEGRATION)) and target in available and target not in sources)
     return sources
 
 

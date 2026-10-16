@@ -27,6 +27,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
       - name: Test release publisher
         run: node --test tools/release/android/publish.test.mjs tools/release/android/publish_retries.test.mjs tools/release/android/publish_conflicts.test.mjs tools/release/windows/publish.test.mjs
       - name: Initialize Flutter before reading machine JSON
@@ -45,6 +48,9 @@ jobs:
           $zip = Join-Path $assets "BOOHTACORD-$tag-x64.zip"
           Compress-Archive -Path "$release/*" -DestinationPath $zip -CompressionLevel Optimal
           Copy-Item "$release/artifact-manifest.json" "$assets/artifact-manifest.json"
+          Copy-Item ".out/releases/windows/*Setup.exe" "$assets/"
+          Copy-Item ".out/releases/windows/*-full.nupkg" "$assets/"
+          Copy-Item ".out/releases/windows/releases.stable.json" "$assets/"
           $lines = Get-ChildItem $assets -File | Sort-Object Name | ForEach-Object {
             "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
           }
@@ -61,7 +67,9 @@ jobs:
         shell: pwsh
         run: |
           $assets = 'clients/flutter/build/release-assets'
-          node tools/release/windows/publish.mjs --tag $env:GITHUB_REF_NAME `
-            --asset "$assets/BOOHTACORD-$env:GITHUB_REF_NAME-x64.zip" `
-            --asset "$assets/artifact-manifest.json" `
-            --asset "$assets/SHA256SUMS"
+          $arguments = @('tools/release/windows/publish.mjs', '--tag', $env:GITHUB_REF_NAME)
+          Get-ChildItem $assets -File | Sort-Object Name | ForEach-Object {
+            $arguments += @('--asset', $_.FullName)
+          }
+          & node @arguments
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

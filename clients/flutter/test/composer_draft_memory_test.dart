@@ -5,6 +5,57 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   setUp(ComposerDraftMemory.clear);
 
+  test(
+    'async restore preserves fresh edits and explicit empty draft tombstones',
+    () {
+      final revision = ComposerDraftMemory.revision;
+      for (final conversation in ['edited', 'cleared']) {
+        ComposerDraftMemory.save(
+          'a',
+          ComposerDraftKind.channel,
+          conversation,
+          ComposerDraft(
+            body: conversation == 'edited' ? 'new' : '',
+            replyTarget: null,
+            attachments: const [],
+            mentionUserIds: const [],
+          ),
+        );
+      }
+      ComposerDraftMemory.importForAccount('a', [
+        for (final conversation in ['edited', 'cleared', 'untouched'])
+          {
+            'kind': 'channel',
+            'conversation': conversation,
+            'body': 'old',
+            'reply_id': 'not-loaded',
+          },
+      ], unchangedSince: revision);
+      expect(
+        ComposerDraftMemory.load<Object>(
+          'a',
+          ComposerDraftKind.channel,
+          'edited',
+        )?.body,
+        'new',
+      );
+      expect(
+        ComposerDraftMemory.load<Object>(
+          'a',
+          ComposerDraftKind.channel,
+          'cleared',
+        ),
+        isNull,
+      );
+      expect(
+        ComposerDraftMemory.exportForAccount('a')
+            .where((e) => e['conversation'] == 'untouched')
+            .single['reply_id'],
+        'not-loaded',
+      );
+    },
+  );
+
   test('keeps drafts isolated by account, kind, and conversation', () {
     final attachment = const MessageAttachment(
       id: 'attachment-1',

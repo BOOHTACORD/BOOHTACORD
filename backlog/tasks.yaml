@@ -528,6 +528,31 @@ tasks:
     requirements: [REQ-QUALITY-01, REQ-PLATFORM-01]
     depends_on: [UPD-011]
     evidence: [evidence/flutter/qa226-client-update-device-acceptance-2026-10-02-001.json]
+  - id: UPD-013
+    title: Publisher-signed desktop install artifact contract
+    requirements: [REQ-PLATFORM-01, REQ-SECURITY-01, REQ-DEPLOY-01]
+    depends_on: [UPD-001, UPD-005, UPD-009]
+    evidence: [desktop-artifact-trust-tests, backend-client-update-tests]
+  - id: UPD-014
+    title: Desktop background update transaction and persistent staging
+    requirements: [REQ-PLATFORM-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [UPD-013]
+    evidence: [desktop-update-coordinator-tests]
+  - id: UPD-015
+    title: Origin and account scoped desktop restart restoration
+    requirements: [REQ-PLATFORM-01, REQ-SECURITY-01, REQ-UI-02]
+    depends_on: [UPD-014]
+    evidence: [desktop-update-checkpoint-tests]
+  - id: UPD-016
+    title: Native Sparkle and Velopack apply adapters and signed packages
+    requirements: [REQ-PLATFORM-01, REQ-SECURITY-01, REQ-DEPLOY-01]
+    depends_on: [UPD-014, UPD-015]
+    evidence: [desktop-native-builds, desktop-updater-package-inspection]
+  - id: UPD-017
+    title: Desktop installed N to N plus one and bounded rollback acceptance
+    requirements: [REQ-PLATFORM-01, REQ-QUALITY-01, REQ-QUALITY-02]
+    depends_on: [UPD-016]
+    evidence: [evidence/release/issue-337-desktop-updates-2026-10-14.md]
   - id: RP-001
     title: Role permissions V1 specification traceability and implementation plan
     requirements: [REQ-ADMIN-01, REQ-CHANNEL-01, REQ-CHANNEL-02]

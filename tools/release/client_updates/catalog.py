@@ -63,11 +63,16 @@ def publisher_lock(path):
         lock.unlink(missing_ok=True)
 
 
-def mutate(path, expected_revision, selector, state, target):
+def mutate(path, expected_revision, selector, state, target, *, allow_new_selector=False):
     with publisher_lock(path):
         document = load(path)
         if document["catalog_revision"] != expected_revision: raise ValueError("catalog revision changed")
         matches = [entry for entry in document["entries"] if tuple(entry[name] for name in SELECTOR) == selector]
+        if not matches and allow_new_selector:
+            if selector not in [('macos','direct','stable','x64'),('macos','direct','stable','arm64')]:
+                raise ValueError('New selector is not a supported desktop distribution')
+            entry=dict(zip(SELECTOR,selector),state='unconfigured',target=None)
+            document['entries'].append(entry);matches=[entry]
         if len(matches) != 1: raise ValueError("selector is not configured exactly once")
         if state == "published":
             if not isinstance(target, dict): raise ValueError("published promotion requires a target")

@@ -49,7 +49,7 @@ export async function teardown(a, b, channelId, input, report, observed) {
       let outbox = 'UNAVAILABLE'
       try {
         outbox = JSON.parse(owned('db', 'exec', '$owned', 'psql', '-U', 'qa', '-d', 'qa', '-Atc',
-          "SELECT json_build_object('pending', count(*) FILTER (WHERE notification_emitted_at IS NULL), 'claimed', count(*) FILTER (WHERE notification_claim_token IS NOT NULL), 'emitted', count(*) FILTER (WHERE notification_emitted_at IS NOT NULL)) FROM voice_sfu_revocations").toString())
+          "SELECT json_build_object('pending', count(*) FILTER (WHERE notification_emitted_at IS NULL), 'claimed', count(*) FILTER (WHERE notification_claim_token IS NOT NULL), 'emitted', count(*) FILTER (WHERE notification_emitted_at IS NOT NULL), 'pending_kicks', count(*) FILTER (WHERE notification_emitted_at IS NULL AND lease.revocation_reason = 'KICK'), 'oldest_pending_seconds', coalesce(floor(max(extract(epoch FROM now() - revocation.requested_at)) FILTER (WHERE notification_emitted_at IS NULL)), 0)) FROM voice_sfu_revocations AS revocation JOIN voice_leases AS lease ON lease.id = revocation.lease_id").toString())
       } catch { /* Keep the original acceptance failure. */ }
       let connected = 'UNAVAILABLE'
       try { connected = await a.evaluate(() => window.__qaPeers.filter(peer => peer.connectionState === 'connected').length) }

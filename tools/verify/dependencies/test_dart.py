@@ -96,3 +96,18 @@ class DartSourceDiscoveryTests(unittest.TestCase):
         errors = violations(discover_sources(self.root))
         self.assertEqual(len(errors), 1)
         self.assertIn('production Dart imports QA', errors[0])
+
+    def test_test_imports_owned_integration_helper_and_checks_its_dependencies(self):
+        self.write('clients/flutter/test/storage_test.dart',
+                   "import '../integration_test/desktop_updates/scoped_storage.dart';", tracked=True)
+        self.write('clients/flutter/integration_test/desktop_updates/scoped_storage.dart',
+                   "import 'package:boohtacord_desktop/src/api.dart';", tracked=True)
+        self.write('clients/flutter/lib/src/api.dart', "import 'dart:io';", tracked=True)
+        self.assertEqual(violations(discover_sources(self.root)), [])
+
+    def test_production_must_not_import_integration_acceptance_helpers(self):
+        self.write('clients/flutter/lib/main.dart',
+                   "import '../integration_test/desktop_updates/scoped_storage.dart';", tracked=True)
+        self.write('clients/flutter/integration_test/desktop_updates/scoped_storage.dart', '', tracked=True)
+        self.assertTrue(any('production Dart imports QA' in error
+                            for error in violations(discover_sources(self.root))))

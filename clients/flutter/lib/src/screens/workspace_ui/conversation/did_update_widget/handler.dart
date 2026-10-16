@@ -1,5 +1,6 @@
 import '../lifecycle/widget.dart';
 import '../../native_bindings.dart';
+import '../../../../services/conversation_scroll_memory.dart';
 
 import '../lifecycle/context.dart';
 import '../handler_bindings.dart';
@@ -33,8 +34,19 @@ extension WorkspaceConversationStateDidUpdateWidgetAction
       workspaceDraftAccountId = currentAccountId;
       workspaceRestoreDraft(widget.channel.id);
     }
+    if (workspaceScrollMemoryEpoch != ConversationScrollMemory.epoch ||
+        oldWidget.channel.id != widget.channel.id) {
+      workspaceScrollMemoryEpoch = ConversationScrollMemory.epoch;
+      workspacePendingScroll = currentAccountId == null
+          ? null
+          : ConversationScrollMemory.load(currentAccountId, widget.channel.id);
+      workspaceFollowLatest = workspacePendingScroll?.followLatest ?? true;
+      if (workspacePendingScroll != null) {
+        workspaceScheduleVisibleRead(widget.state.messages);
+      }
+    }
     if (oldWidget.channel.id != widget.channel.id) {
-      workspaceFollowLatest = true;
+      workspaceFollowLatest = workspacePendingScroll?.followLatest ?? true;
       workspaceLatestLayoutConfirmed = false;
       workspaceRestoreDraft(widget.channel.id);
       workspaceObservedChannelId = null;

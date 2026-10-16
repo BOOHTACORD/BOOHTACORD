@@ -11,9 +11,7 @@ import 'src/services/api_client.dart';
 import 'src/services/third_party_audio_licenses.dart';
 import 'src/services/client_telemetry.dart';
 import 'src/telemetry/traced_app_state.dart';
-import 'src/features/updates/api.dart';
-import 'src/features/updates/controller.dart';
-import 'src/features/updates/identity.dart';
+import 'src/app/desktop_updates/bootstrap.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,11 +42,10 @@ Future<void> main() async {
           }
         : null,
   );
-  final updates = UpdateController(
-    api: UpdateApi(baseUrl: () => api.baseUrl),
-    identity: await NativeUpdateIdentity.load(),
-  );
+  final updates = await createNativeUpdateController(state);
   runApp(BoohtacordApp(state: state, updates: updates));
-  await state.initialize();
+  final initialization = state.initialize();
+  await updates.acknowledgeLocalBootstrap();
+  await initialization;
   updates.start();
 }

@@ -10,10 +10,11 @@ export function releaseMetadata(tag) {
     body: [
       `Windows x64 distribution of BOOHTACORD ${version}.`,
       '',
-      'Download the ZIP, extract the complete directory and launch boohtacord_desktop.exe.',
+      'For a per-user installation, run the Setup.exe asset once. Future compatible releases can then be prepared inside the client.',
+      'The ZIP remains available for manual portable use; it does not become an installed updater automatically.',
       'The archive includes artifact-manifest.json and SHA256SUMS for integrity verification.',
       '',
-      'This build adds client update notifications, safe update actions and current voice and screen sharing fixes.',
+      'The full NUPKG is the in-app update package; users migrating from an older ZIP should use Setup.exe.',
       'The executable signing state is measured in artifact-manifest.json.',
     ].join('\n'),
   }

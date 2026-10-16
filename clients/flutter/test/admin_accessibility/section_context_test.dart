@@ -5,7 +5,30 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'fixture.dart';
 
+import 'package:boohtacord_desktop/src/features/admin/shell/types.dart';
+
 void main() {
+  testWidgets('mounted admin panel follows a restored section', (tester) async {
+    final state = await mountAdmin(tester);
+    state.workspace.adminSection = AdminSection.roles;
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: guildTheme(),
+        home: Scaffold(body: AdminScreen(state: state)),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<Semantics>(
+            find.byKey(const ValueKey('admin-section-tab-roles')),
+          )
+          .properties
+          .selected,
+      true,
+    );
+  });
+
   testWidgets(
     'admin remount restores previous section within its workspace session',
     (tester) async {

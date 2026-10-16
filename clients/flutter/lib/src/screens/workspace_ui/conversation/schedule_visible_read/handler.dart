@@ -1,4 +1,5 @@
 import '../../native_bindings.dart';
+import '../../../../services/conversation_scroll_restore.dart';
 
 import '../lifecycle/context.dart';
 import '../handler_bindings.dart';
@@ -31,6 +32,26 @@ extension WorkspaceConversationStateWorkspaceScheduleVisibleReadAction
           !workspaceScroll.hasClients) {
         return;
       }
+      final saved = workspacePendingScroll;
+      if (saved != null && !workspaceRestoringScroll) {
+        workspacePendingScroll = null;
+        workspaceRestoringScroll = true;
+        final channel = widget.channel.id;
+        unawaited(
+          restoreConversationScroll(
+            scroll: workspaceScroll,
+            saved: saved,
+            keys: workspaceMessageKeys,
+            prefix: channel,
+            ids: renderedMessages.map((e) => e.id).toList(),
+            active: () => mounted && widget.channel.id == channel,
+          ).whenComplete(() {
+            workspaceRestoringScroll = false;
+          }),
+        );
+        return;
+      }
+      if (workspaceRestoringScroll) return;
       final restoreOffset = workspaceRestoreScrollOffset;
       if (restoreOffset != null && !workspaceFollowLatest) {
         final position = workspaceScroll.position;

@@ -48,7 +48,10 @@ func (entry Entry) validate(allowedHosts []string) error {
 	if entry.Target == nil {
 		return fmt.Errorf("published entry has no target")
 	}
-	return entry.Target.validate(allowedHosts, entry.Platform)
+	if err := entry.Target.validate(allowedHosts, entry.Platform); err != nil {
+		return err
+	}
+	return validateInstallArtifact(entry.Target.InstallArtifact, entry.Selector, *entry.Target)
 }
 
 func (target Target) validate(allowedHosts []string, platform string) error {

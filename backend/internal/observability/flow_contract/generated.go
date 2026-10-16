@@ -31,6 +31,7 @@ var Operations = map[string]bool{
 	"screen.view":             true,
 	"media.sample":            true,
 	"audio.input.switch":      true,
+	"desktop.update":          true,
 	"voice.audio.sample":      true,
 	"voice.volume.preference": true,
 	"voice.disconnect":        true,

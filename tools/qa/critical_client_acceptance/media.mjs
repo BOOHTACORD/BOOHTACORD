@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict'
 import { api, channel, expect, openNavigation, status } from '../client_lifecycle/request.mjs'
-import { owned } from './control.mjs'
+import { controlOwnedSfu } from './sfu_control.mjs'
 import { teardown } from './teardown.mjs'
 import { installRosterFailureObserver } from './roster_observer.mjs'
+import { rosterCounters } from './roster_diagnostics.mjs'
+import { observeRosterNetwork } from './roster_network.mjs'
 async function connected(page) {
   try {
     await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 22000 })
@@ -38,6 +40,7 @@ export async function media(a, b, member, channelId, report, input) {
     })
   })
   await a.addInitScript(installRosterFailureObserver)
+  const rosterNetwork = observeRosterNetwork(a)
   await a.reload()
   await member.reload()
   const category = await api(a, '/admin/categories', 'POST', { name: 'VoiceLab' }); status(category, 201)
@@ -63,14 +66,39 @@ export async function media(a, b, member, channelId, report, input) {
   const manualRetryAvailable = await retry.isVisible()
   if (manualRetryAvailable) await retry.click()
   await expect(banner).toBeHidden()
-  // Both listeners now have real WebRTC transports; stop only the owned SFU.
+  // Chat recovery replaces the roster source asynchronously. Fault injection
+  // must start with a live SSE stream, rather than an initial/retry HTTP fetch.
+  await expect.poll(() => a.evaluate(() => window.__qaRosterTransportSource?.readyState), { timeout: 15000 }).toBe(1)
+  // Both listeners have real WebRTC transports. Suspend only the owned SFU;
+  // retain its network interface so this tests an SFU outage, not a host change.
   const rosterFailuresBefore = await a.evaluate(() => window.__qaRosterUnavailableCount)
-  owned('sfu', 'stop', '$owned')
   try {
+    await controlOwnedSfu('pause')
     await openNavigation(a)
     // Detection can use one 5s reconciliation period, a shared 5s snapshot deadline
     // and a bounded 3s SSE write. Check the actual event before its UI consequence.
+    try {
     await expect.poll(() => a.evaluate(() => window.__qaRosterUnavailableCount), { timeout: 15000 }).toBeGreaterThan(rosterFailuresBefore)
+    } catch (error) {
+      // Diagnose real SSE delivery without retaining URLs, payloads or identities.
+      const transport = await a.evaluate(() => ({
+        ...window.__qaRosterTransport,
+        ready_state: window.__qaRosterTransportSource?.readyState ?? null,
+        unavailable: window.__qaRosterUnavailableCount,
+      }))
+      const presenceStatus = (await api(a, '/voice/participants')).status
+      console.error('roster-failure-diagnostics='+JSON.stringify({ ...transport, presence_status: presenceStatus,
+        network: rosterNetwork(), workspace_present: await a.getByTestId('app-shell').count() > 0 }))
+      // Only this journey's owned synthetic accounts are present in the capture.
+      try { await a.screenshot({ path: directory+'/roster-event-failure.png' }) } catch { /* Preserve the actual event assertion. */ }
+      try {
+        // The fixture owns the loopback API on 4820. Never fetch production
+        // telemetry, send a cookie or retain the original metric response.
+        const response = await fetch('http://127.0.0.1:4820/metrics', { signal: AbortSignal.timeout(2000) })
+        if (response.ok) console.error('roster-server-counters='+JSON.stringify(rosterCounters(await response.text())))
+      } catch { /* Keep the original actual-event acceptance failure. */ }
+      throw error
+    }
     await expect(banner).toBeVisible()
     await expect(banner).toContainText('Состав недоступен', { timeout: 20000 })
     await expect(a.getByRole('log')).toHaveCount(0)
@@ -80,7 +108,7 @@ export async function media(a, b, member, channelId, report, input) {
       chat_retry_mode: manualRetryAvailable ? 'manual' : 'automatic',
       roster_failure_event_observed: true, sfu_failure_not_empty_room: true, last_roster_age_visible: /с\. назад/.test(await banner.innerText()) }
     assert.equal(report.connection_status.last_roster_age_visible, true)
-  } finally { owned('sfu', 'start', '$owned') }
+  } finally { await controlOwnedSfu('unpause') }
   await expect.poll(async () => (await api(a, '/voice/participants')).status, { timeout: 30000 }).toBe(200)
   await openNavigation(a)
   const refreshRoster = banner.getByRole('button', { name: 'Обновить состав' })

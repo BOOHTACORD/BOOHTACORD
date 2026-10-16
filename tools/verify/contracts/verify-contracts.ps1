@@ -3,6 +3,7 @@ $ErrorActionPreference = 'Stop'
 $openApiPath = Join-Path $PSScriptRoot '..\..\..\contracts\openapi.yaml'
 $realtimePath = Join-Path $PSScriptRoot '..\..\..\contracts\realtime.schema.json'
 $mobileContractPath = Join-Path $PSScriptRoot '..\..\..\contracts\mobile-client-contract.md'
+$desktopArtifactSchemaPath = Join-Path $PSScriptRoot '..\..\..\contracts\desktop-update-artifact.schema.json'
 $clientUpdateSchemaPath = Join-Path $PSScriptRoot '..\..\..\contracts\client-release-catalog.schema.json'
 $clientUpdateFixturesPath = Join-Path $PSScriptRoot '..\..\..\contracts\client-update-evaluator.fixtures.json'
 $screenShareProfileSchemaPath = Join-Path $PSScriptRoot '..\..\..\contracts\screen-share-profile-v1.schema.json'
@@ -16,7 +17,7 @@ foreach ($path in @($openApiPath, $realtimePath)) {
     }
 }
 
-foreach ($path in @($clientUpdateSchemaPath, $clientUpdateFixturesPath, $screenShareProfileSchemaPath, $screenShareProfileCatalogPath, $screenShareProfileFixturesPath, $screenShareSfuSmokeEvidenceSchemaPath)) {
+foreach ($path in @($desktopArtifactSchemaPath, $clientUpdateSchemaPath, $clientUpdateFixturesPath, $screenShareProfileSchemaPath, $screenShareProfileCatalogPath, $screenShareProfileFixturesPath, $screenShareSfuSmokeEvidenceSchemaPath)) {
     if (-not (Test-Path -LiteralPath $path)) { throw "Client or screen-share contract is unavailable: $path" }
     Get-Content -Raw -LiteralPath $path | ConvertFrom-Json | Out-Null
 }
