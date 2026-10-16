@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vActionHint } from '../shared/action_hint/directive'
 import type { ChannelTopology, TopologyChannel } from './topology_client'
 import { avatarBackground, avatarForeground } from '../design/avatar_color'
 import { avatarInitials } from '../design/avatar_initials'
@@ -71,23 +72,23 @@ async function toggleFavorite(channelId: string, event: MouseEvent): Promise<voi
 
 <template>
   <nav class="channel-navigation" aria-label="Разделы и каналы">
-    <div class="channel-navigation-actions"><span>Каналы</span><button v-if="canCreate()" type="button" aria-label="Создать раздел или канал" @click="emit('createGlobal')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></button></div>
+    <div class="channel-navigation-actions"><span>Каналы</span><button v-action-hint v-if="canCreate()" type="button" aria-label="Создать раздел или канал" @click="emit('createGlobal')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></button></div>
     <label class="channel-search"><span class="gc-sr-only">Поиск каналов</span><input v-model="channelQuery" type="search" placeholder="Найти канал" autocomplete="off" aria-label="Поиск каналов"></label>
     <section v-if="favoriteChannels.length" class="channel-category channel-favorites" aria-label="Избранные каналы">
       <h2><span class="channel-favorites-title">Избранное</span></h2>
-      <button v-for="channel in favoriteChannels" :key="channel.id" type="button" class="channel-button channel-favorite-link" :class="{ selected: props.selectedChannelId === channel.id, 'voice-connected': isConnectedVoice(channel) }" :aria-current="props.selectedChannelId === channel.id ? 'page' : undefined" @click="emit('select', channel)">
-        <span class="channel-icon" aria-hidden="true">{{ channel.kind === 'TEXT' ? '#' : '◖' }}</span><span class="channel-name">{{ channel.name }}</span><span class="channel-favorite-parent">{{ props.topology.categories.find(category => category.channels.some(item => item.id === channel.id))?.name }}</span>
+      <button v-action-hint="channel.name" v-for="channel in favoriteChannels" :key="channel.id" type="button" class="channel-button channel-favorite-link" :class="{ selected: props.selectedChannelId === channel.id, 'voice-connected': isConnectedVoice(channel) }" :aria-current="props.selectedChannelId === channel.id ? 'page' : undefined" @click="emit('select', channel)">
+        <span class="channel-icon" aria-hidden="true">{{ channel.kind === 'TEXT' ? '#' : '◖' }}</span><span class="channel-name">{{ channel.name }}</span><span v-if="isConnectedVoice(channel)" class="channel-connected-mark" role="img" aria-label="Подключено к голосу">✓</span><span v-if="channel.kind === 'TEXT' && channel.unreadCount" class="channel-state" :aria-label="`Непрочитанных сообщений: ${channel.unreadCount}`">{{ channel.unreadCount }}</span><span v-if="channel.kind === 'TEXT' && channel.mentionCount" class="channel-state" :aria-label="`Упоминаний: ${channel.mentionCount}`">@{{ channel.mentionCount }}</span><span class="channel-favorite-parent">{{ props.topology.categories.find(category => category.channels.some(item => item.id === channel.id))?.name }}</span>
       </button>
     </section>
     <section v-for="category in visibleCategories" :key="category.id" class="channel-category" @contextmenu.stop.prevent="categoryContextMenu?.open($event, category)">
-      <h2><button class="channel-category-disclosure" type="button" :aria-label="`${disclosure.isOpen(category.id) ? 'Свернуть' : 'Развернуть'} раздел ${category.name}`" :aria-expanded="disclosure.isOpen(category.id)" @click="disclosure.toggle(category.id)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m8 10 4 4 4-4" /></svg><span>{{ category.name }}</span></button><span v-if="props.permissions" class="channel-category-actions">
-        <button v-if="categoryActions(props.permissions, category.channels.length === 0).createText || categoryActions(props.permissions, category.channels.length === 0).createVoice" type="button" :aria-label="`Создать канал в разделе ${category.name}`" @click="emit('createInCategory', category)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></button>
-        <button v-if="categoryActions(props.permissions, category.channels.length === 0).delete" type="button" :aria-label="`Действия с разделом ${category.name}`" @click="emit('deleteCategory', category)">⋯</button>
+      <h2><button v-action-hint="category.name" class="channel-category-disclosure" type="button" :aria-label="`${disclosure.isOpen(category.id) ? 'Свернуть' : 'Развернуть'} раздел ${category.name}`" :aria-expanded="disclosure.isOpen(category.id)" @click="disclosure.toggle(category.id)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m8 10 4 4 4-4" /></svg><span>{{ category.name }}</span></button><span v-if="props.permissions" class="channel-category-actions">
+        <button v-action-hint v-if="categoryActions(props.permissions, category.channels.length === 0).createText || categoryActions(props.permissions, category.channels.length === 0).createVoice" type="button" :aria-label="`Создать канал в разделе ${category.name}`" @click="emit('createInCategory', category)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></button>
+        <button v-action-hint v-if="categoryActions(props.permissions, category.channels.length === 0).delete" type="button" :aria-label="`Действия с разделом ${category.name}`" @click="emit('deleteCategory', category)">⋯</button>
       </span></h2>
       <p v-if="disclosure.isOpen(category.id) && category.channels.length === 0" class="empty-category">Нет каналов</p>
       <template v-for="channel in disclosure.isOpen(category.id) || channelQuery.trim() ? category.channels : []" :key="channel.id">
         <div class="channel-row" @contextmenu.stop.prevent="props.permissions && channelActions(props.permissions, channel.kind).delete && emit('deleteChannel', channel)"><button
-          class="channel-button"
+          v-action-hint="channel.name" class="channel-button"
           :class="{ selected: props.selectedChannelId === channel.id, 'voice-connected': isConnectedVoice(channel) }"
           :aria-current="props.selectedChannelId === channel.id ? 'page' : undefined"
           type="button"
@@ -97,12 +98,12 @@ async function toggleFavorite(channelId: string, event: MouseEvent): Promise<voi
             <svg v-if="channel.kind === 'TEXT'" viewBox="0 0 24 24"><path d="M5 9h14M4 15h14M11 3 7 21M17 3l-4 18" /></svg>
             <svg v-else viewBox="0 0 24 24"><path d="m11 5-6 4H2v6h3l6 4V5ZM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14" /></svg>
           </span>
-          <span class="channel-name">{{ channel.name }}</span>
+          <span class="channel-name">{{ channel.name }}</span><span v-if="isConnectedVoice(channel)" class="channel-connected-mark" role="img" aria-label="Подключено к голосу">✓</span>
           <span v-if="channel.kind === 'TEXT' && channel.unreadCount" class="channel-state" :aria-label="`Непрочитанных сообщений: ${channel.unreadCount}`">{{ channel.unreadCount }}</span>
           <span v-if="channel.kind === 'TEXT' && channel.mentionCount" class="channel-state" :aria-label="`Упоминаний: ${channel.mentionCount}`">@{{ channel.mentionCount }}</span>
           <span v-if="channel.kind === 'VOICE' && (props.voicePresence?.channelId === channel.id ? props.voicePresence.memberCount > 0 : (rosterFor(channel.id)?.participants.length ?? 0) > 0)" class="channel-member-count" :title="`Участников в голосовом канале: ${props.voicePresence?.channelId === channel.id ? props.voicePresence.memberCount : rosterFor(channel.id)?.participants.length}`">{{ props.voicePresence?.channelId === channel.id ? props.voicePresence.memberCount : rosterFor(channel.id)?.participants.length }}</span>
           <span v-if="channel.admissionClosed" class="channel-state">Вход закрыт</span>
-        </button><button class="channel-favorite-toggle" type="button" :aria-label="`${disclosure.isFavorite(channel.id) ? 'Убрать из избранного' : 'Добавить в избранное'}: ${channel.name}`" :aria-pressed="disclosure.isFavorite(channel.id)" @click.stop="toggleFavorite(channel.id, $event)">{{ disclosure.isFavorite(channel.id) ? '★' : '☆' }}</button><button v-if="props.permissions && channelActions(props.permissions, channel.kind).delete" class="channel-actions-button" type="button" :aria-label="`Действия с каналом ${channel.name}`" @click.stop="emit('deleteChannel', channel)">⋯</button></div>
+        </button><button v-action-hint class="channel-favorite-toggle" type="button" :aria-label="`${disclosure.isFavorite(channel.id) ? 'Убрать из избранного' : 'Добавить в избранное'}: ${channel.name}`" :aria-pressed="disclosure.isFavorite(channel.id)" @click.stop="toggleFavorite(channel.id, $event)">{{ disclosure.isFavorite(channel.id) ? '★' : '☆' }}</button><button v-action-hint v-if="props.permissions && channelActions(props.permissions, channel.kind).delete" class="channel-actions-button" type="button" :aria-label="`Действия с каналом ${channel.name}`" @click.stop="emit('deleteChannel', channel)">⋯</button></div>
         <ul v-if="props.voicePresence && props.voicePresence.channelId === channel.id" class="voice-member-list" aria-label="Участники подключённого голосового канала" data-testid="voice-member-rows">
           <li v-for="member in props.voicePresence.members" :key="member.id" class="voice-member-row" :class="{ 'is-speaking': member.isSpeaking }">
             <span class="voice-member-avatar" :style="{ backgroundColor: avatarBackground(member.id), color: avatarForeground(member.id) }" aria-hidden="true"><img v-if="authors.avatarUrl(member.id)" :src="authors.avatarUrl(member.id)" alt=""><template v-else>{{ avatarInitials(member.name) }}</template></span>

@@ -11,7 +11,7 @@
 .sidebar .sidebar-tabs { width: calc(100% - 24px); height: 40px; flex: 0 0 40px; margin: 0 12px 9px; border: 0; border-radius: 8px; padding: 4px; background: var(--gc-canvas); }
 .sidebar-tabs button { height: 32px; min-height: 32px; padding: 1px 6px; font-size: 0.875rem; }
 .sidebar-tabs button.is-selected { background: var(--gc-surface-raised); }
-@media (max-width: 720px) {
+@media (max-width: 1023px) {
   .sidebar.is-open > .guild-header { padding-right: 70px; }
   .sidebar.is-open .mobile-nav-close { top: 9.5px; }
   .sidebar.is-open .sidebar-tabs { margin-bottom: 8px; }
@@ -24,3 +24,5 @@
   .sidebar.is-open .sidebar-tabs button.is-selected::before { background: var(--gc-surface-raised); }
   .sidebar.is-open .sidebar-tabs button:not(.is-selected):hover::before { background: var(--gc-surface-hover); }
 }
+
+.sidebar-tabs button.is-selected { font-weight: 600; box-shadow: inset 0 -2px currentColor; }

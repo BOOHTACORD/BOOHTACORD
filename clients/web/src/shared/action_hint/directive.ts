@@ -1,19 +1,22 @@
 import type { ObjectDirective } from 'vue'
 
 let nextId = 0
-interface Hint { update: () => void; dispose: () => void }
+interface Hint { update: (text?: string) => void; dispose: () => void }
 const hints = new WeakMap<HTMLElement, Hint>()
 let activeHint: (() => void) | null = null
 
-function install(button: HTMLElement): Hint {
+function install(button: HTMLElement, text?: string): Hint {
+  let explicitText = text
   let tooltip: HTMLDivElement | null = null
+  let visibilityObserver: MutationObserver | null = null
   let timer: ReturnType<typeof setTimeout> | undefined
   let hovered = false, focus = false, dismissed = false
   const id = `gc-action-hint-${++nextId}`
-  const label = () => button.getAttribute('aria-label')?.trim() ?? ''
+  const label = () => explicitText?.trim() || button.getAttribute('aria-label')?.trim() || ''
   function clearTimer() { if (timer !== undefined) clearTimeout(timer); timer = undefined }
   function hide() {
-    clearTimer(); tooltip?.remove(); tooltip = null
+    clearTimer(); visibilityObserver?.disconnect(); visibilityObserver = null
+    tooltip?.remove(); tooltip = null
     if (activeHint === hide) activeHint = null
     const rest = (button.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(value => value && value !== id)
     if (rest.length) button.setAttribute('aria-describedby', rest.join(' ')); else button.removeAttribute('aria-describedby')
@@ -36,6 +39,7 @@ function install(button: HTMLElement): Hint {
     const y = Math.max(top, Math.min(below + origin.height <= bottom ? below : rect.top - origin.height - 8, bottom - origin.height))
     tooltip.style.left = `${x - origin.left}px`; tooltip.style.top = `${y - origin.top}px`
   }
+  function visible() { return button.isConnected && button.getClientRects().length > 0 && getComputedStyle(button).visibility === 'visible' && !button.closest('[inert]') }
   function reflow() {
     const rect = button.getBoundingClientRect()
     if (focus && rect.bottom > 0 && rect.top < innerHeight && rect.right > 0 && rect.left < innerWidth) position()
@@ -43,6 +47,7 @@ function install(button: HTMLElement): Hint {
   }
   function show() {
     clearTimer()
+    if (!visible()) { hide(); return }
     if (dismissed || !label() || button.matches(':disabled') || !button.isConnected) return
     if (activeHint !== hide) activeHint?.()
     activeHint = hide
@@ -54,6 +59,15 @@ function install(button: HTMLElement): Hint {
     // painted behind their backdrop, regardless of its z-index.
     const host = button.closest('dialog[open]') ?? document.body
     host.append(tooltip)
+    // Closing a drawer may hide its row without unmounting or changing props.
+    // Observe only this trigger's ancestors while a hint exists; never leave a
+    // body tooltip intercepting the header after its source becomes hidden.
+    if (!visibilityObserver) {
+      visibilityObserver = new MutationObserver(() => { if (!visible()) hide() })
+      for (let node: HTMLElement | null = button; node; node = node.parentElement) {
+        visibilityObserver.observe(node, { attributes: true, attributeFilter: ['class','style','hidden','inert','open'] })
+      }
+    }
     position()
     const descriptions = new Set((button.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean))
     descriptions.add(id); button.setAttribute('aria-describedby', [...descriptions].join(' '))
@@ -71,16 +85,16 @@ function install(button: HTMLElement): Hint {
   button.addEventListener('focus', onFocus); button.addEventListener('blur', onBlur)
   // The managed hint replaces the native mouse-only title balloon. Its text
   // always follows the existing accessible action name, including toggles.
-  function update() { button.removeAttribute('title'); if (tooltip) { if (button.matches(':disabled')) hide(); else show() } }
-  update()
+  function update(text?: string) { explicitText = text; button.removeAttribute('title'); if (tooltip) { if (button.matches(':disabled')) hide(); else show() } }
+  update(text)
   return { update, dispose() {
     hide(); button.removeEventListener('pointerenter', enter); button.removeEventListener('pointerleave', leave)
     button.removeEventListener('focus', onFocus); button.removeEventListener('blur', onBlur)
   } }
 }
 
-export const vActionHint: ObjectDirective<HTMLElement> = {
-  mounted(button) { hints.set(button, install(button)) },
-  updated(button) { hints.get(button)?.update() },
+export const vActionHint: ObjectDirective<HTMLElement, string | undefined> = {
+  mounted(button, binding) { hints.set(button, install(button, binding.value)) },
+  updated(button, binding) { hints.get(button)?.update(binding.value) },
   unmounted(button) { hints.get(button)?.dispose(); hints.delete(button) },
 }

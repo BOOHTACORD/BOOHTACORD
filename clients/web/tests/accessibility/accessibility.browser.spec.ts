@@ -24,7 +24,7 @@ test('WCAG smoke covers navigation, search and connected voice dock', async ({ p
   await expectAxeClear(page, '#app')
   await page.getByRole('button', { name: 'Открыть навигацию' }).click()
   await expectAxeClear(page, '#app')
-  await page.getByTestId('workspace-drawer').getByRole('button', { name: 'Закрыть навигацию' }).click()
+  await page.getByTestId('workspace-sidebar').getByRole('button', { name: 'Закрыть навигацию' }).click()
   await page.getByRole('button', { name: 'Открыть поиск' }).click()
   await expectAxeClear(page, '#app')
 })

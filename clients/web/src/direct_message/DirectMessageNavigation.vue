@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vActionHint } from '../shared/action_hint/directive'
 import { computed, onMounted } from 'vue'
 import { useMemberDirectory } from '../identity/member_directory'
 import type { DirectMessageListItem } from './direct_message_client'
@@ -34,6 +35,7 @@ onMounted(() => { void memberDirectory.refresh() })
       <DirectMessageStarter prominent @open="emit('open', $event)" />
     </div>
     <button
+      v-action-hint="directMessage.otherParticipantDisplayName"
       v-for="directMessage in props.directMessages"
       :key="directMessage.id"
       class="channel-button"

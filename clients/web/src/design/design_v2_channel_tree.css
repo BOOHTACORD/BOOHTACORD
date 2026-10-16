@@ -14,13 +14,13 @@
 .channel-navigation-actions button svg, .channel-category-actions button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
 .channel-category-actions button svg { width: 18px; height: 18px; }
 .channel-navigation .channel-category + .channel-category { margin-top: 0; }
-.channel-navigation .channel-category h2 { min-height: 36px; gap: 6px; margin: 12px 0 4px; padding: 0 0 0 8px; font-weight: 600; letter-spacing: .6px; }
-.channel-navigation .channel-category-disclosure { height: 36px; flex: 1; gap: 6px; padding: 0; }
-.channel-navigation .channel-category-disclosure span { flex: 1; text-align: left; }
+.channel-navigation .channel-category h2 { min-height: 32px; gap: 4px; margin: 8px 0 4px; padding: 0 0 0 8px; font-weight: 600; letter-spacing: .6px; }
+.channel-navigation .channel-category-disclosure { height: 32px; flex: 1; gap: 6px; padding: 0; }
+.channel-navigation .channel-category-disclosure span { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
 .channel-category-disclosure svg { stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .channel-navigation .channel-row { margin-bottom: 2px; }
-.channel-navigation .channel-button { height: 36px; gap: 10px; padding-inline: 10px; }
-.channel-navigation .channel-button.selected { color: white; font-weight: 400; }
+.channel-navigation .channel-button { min-height: 32px; height: auto; gap: 8px; padding: 4px 10px; }
+.channel-navigation .channel-button.selected { color: var(--gc-text-primary); font-weight: 600; box-shadow: inset 3px 0 currentColor; }
 .channel-navigation .channel-button.voice-connected:not(.selected) { color: var(--gc-text-secondary); }
 .channel-navigation .channel-button.voice-connected::before { display: none; }
 .channel-navigation .channel-icon { width: 18px; height: 18px; flex-basis: 18px; }
@@ -36,7 +36,7 @@
 .channel-navigation .voice-member-share svg { display: none; }
 .channel-navigation .voice-member-share::after { content: 'ЭФИР'; }
 .channel-navigation .voice-member-row:has(.voice-member-share) .voice-person-state { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-@media (max-width: 720px) {
+@media (max-width: 1023px) {
   .sidebar.is-open .channel-navigation-actions { height: 44px; }
   .sidebar.is-open .channel-navigation-actions button, .sidebar.is-open .channel-category-actions button { width: 44px; height: 44px; margin: 0; }
   .sidebar.is-open .channel-navigation .channel-category h2 { min-height: 44px; padding: 0 0 0 8px; }
@@ -49,4 +49,33 @@
 @media (max-width: 1023px) {
   .channel-navigation .channel-row .channel-favorite-toggle,
   .channel-navigation .channel-row .channel-actions-button { width: 44px; height: 44px; flex: 0 0 44px; }
+}
+
+/* The navigation owns one scrollbar, including inactive voice-room previews. */
+.channel-navigation .voice-roster-preview--compact .voice-roster-members { max-height: none; overflow: visible; }
+.channel-navigation .channel-button:has([aria-label^='Непрочитанных']) .channel-name { font-weight: 600; }
+.channel-navigation .channel-connected-mark { flex: 0 0 auto; font-size: .75rem; color: var(--gc-success); }
+.channel-navigation .channel-favorite-parent { max-width: 6ch; flex: 0 1 auto; }
+@media (max-width: 1023px), (hover: none), (pointer: coarse) {
+  .channel-navigation .channel-actions-button,
+  .sidebar.is-open .channel-navigation .channel-actions-button { opacity: 1; }
+  .channel-navigation .channel-row .channel-favorite-toggle,
+  .channel-navigation .channel-row .channel-actions-button,
+  .channel-navigation .channel-navigation-actions button,
+  .channel-navigation .channel-category-actions button { width: 44px; height: 44px; flex: 0 0 44px; }
+  .channel-navigation .channel-row .channel-button { min-height: 44px; height: auto; }
+}
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .channel-navigation .channel-category-actions,
+  .channel-navigation .channel-favorite-toggle:not([aria-pressed='true']) { opacity: 0; }
+  .channel-navigation .channel-category:hover .channel-category-actions,
+  .channel-navigation .channel-category:focus-within .channel-category-actions,
+  .channel-navigation .channel-row:hover .channel-favorite-toggle,
+  .channel-navigation .channel-row:focus-within .channel-favorite-toggle { opacity: 1; }
+}
+
+@media (pointer: coarse) {
+  .channel-navigation .channel-category-disclosure, .channel-navigation .channel-category h2 { min-height: 44px; }
+  .sidebar .sidebar-tabs { height: 52px; flex-basis: 52px; }
+  .sidebar .sidebar-tabs button { height: 44px; min-height: 44px; }
 }
