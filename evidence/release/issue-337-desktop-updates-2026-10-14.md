@@ -16,7 +16,7 @@ later compilation or component tests.
 | Browser lifecycle acceptance | 317 PASS (run 38849881720); 4F24/969 repeat also PASS; 969 first attempt remains FAIL with login transport `network_changed` |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED on locked Mac / system Keychain access |
-| Windows installed 78 → 79 | 4F24 installed 79/bootstrap completed, reference offset mismatch 18.718 px; 317 real baseline-idle repeat running; full UI gate not yet PASS |
+| Windows installed 78 → 79 | PASS, run 38849877552 / source 317: real 79 apply/bootstrap, late state/scroll/window/audio restoration, explicit voice rejoin and old/new process checks |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -172,6 +172,40 @@ QA79 release 414541435 / asset 646145552 authenticated at 30789118 bytes, SHA-25
 CRC, safe paths, NUSPEC identity/version, native x64, helper/SDK and publisher root
 passed before local owner signing/verification. Only the public signed envelope
 is committed; actual installed-state acceptance is still pending separately.
+
+### Windows installed acceptance PASS — 317 (2026-10-16 04:45 UTC)
+
+Run 38849877552 / installed job 116810036638 completed successfully. The actual
+per-user client transitioned 78→79; its real production bootstrap acknowledged
+the installed release. The old process exited and a new process was running at
+the installed executable path. The authenticated result reports PASS for account,
+origin, channel, the draft changed during download and after Ready, the same
+message anchor at strict <2 px offset, all window coordinates at <2 px, mute and
+deafen, and explicit voice rejoin. Media did not restart without consent. The
+declined first restart preserved the ready transaction and active voice session.
+
+Artifact 12026031762: 145594 bytes, SHA-256
+`c85d089ac1d25d0a2b2a7c9b96d27b7fad496cc13ebeee3a8df9aaee40c3732d`.
+Size/digest, ZIP CRC and safe extraction paths were verified before inspection.
+Original 1008×720 before/after/rejoin captures were inspected. The current chat
+position and final draft are retained; the taller post-restart viewport exposes
+more rows below the same anchor. The explicit rejoin screen shows a connected
+room with both microphone and incoming audio disabled. Main controls are readable
+and do not overlap. The driver never writes an apply/acknowledgement outcome or
+moves the list to manufacture restoration; apply and process checks are native.
+
+The settled pre-consent baseline resolves the fixture's false-negative timing:
+previous 969/4F24 attempts remain FAIL, while this fresh real transition passes
+the same restoration tolerance and complete process/window/audio assertions.
+No additional shipping restoration/media change was required for this repeat.
+
+macOS remains BLOCKED: at 04:47 UTC Computer Use still reports a locked Mac and
+cannot unlock it. The owned API answers HTTPS health 200 with normal certificate
+validation. The installed 79 candidate, expected draft and pre-update anchor are
+preserved for final UI verification after the user unlocks/permits Keychain access.
+No SecurityAgent or protected-container workaround was used. #337 / PR #338 stay
+open until this genuine macOS UI/state gate also passes; production revision 29
+remains unchanged.
 
 Publisher: locally generated Ed25519 root `boohtacord-desktop-478919e9652ab825`.
 Private key is outside the repository with mode 0600, parent 0700. Only the public
