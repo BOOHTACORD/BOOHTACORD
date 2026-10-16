@@ -43,7 +43,10 @@ test('production shell CSS stays within the viewport and preserves its workspace
     await expect(dock).toBeVisible()
     const dockBox = await dock.boundingBox()
     if (viewport.width < 1024) {
-      expect(dockBox?.y).toBeGreaterThanOrEqual(viewport.height - 53)
+      expect(dockBox!.height).toBeGreaterThanOrEqual(53)
+      expect(dockBox!.y).toBeGreaterThanOrEqual(main!.y + main!.height - 1)
+      expect(composer!.y + composer!.height).toBeLessThanOrEqual(dockBox!.y)
+      expect(Math.abs(dockBox!.y + dockBox!.height - viewport.height)).toBeLessThanOrEqual(1)
       expect((dockBox?.y ?? 0) + (dockBox?.height ?? 0)).toBeLessThanOrEqual(viewport.height)
     } else {
       const sidebar = await page.getByTestId('workspace-sidebar').boundingBox()

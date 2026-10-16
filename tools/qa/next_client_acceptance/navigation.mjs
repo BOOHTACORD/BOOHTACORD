@@ -12,7 +12,7 @@ async function position(page) {
 export async function navigation(page, fixture, input, report) {
   const voice = await channel(page,fixture.category,'NextVoice','VOICE')
   await select(page,'NextVoice')
-  await page.getByRole('button',{name:'Подключиться без микрофона',exact:true}).click()
+  await page.getByRole('button',{name:'Без микрофона',exact:true}).click()
   await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён',{timeout:25000})
   const lease=()=>sql(`SELECT id FROM voice_leases WHERE user_id='${fixture.admin}' AND revoked_at IS NULL`)
   const originalLease=lease(); assert.ok(originalLease)

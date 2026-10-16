@@ -73,7 +73,7 @@ try {
   await search.fill('')
   report.checks.case_insensitive_search_and_navigation = 'PASS'
   await channel(page,'QaVoice')
-  await page.getByRole('button',{name:'Подключиться без микрофона',exact:true}).click()
+  await page.getByRole('button',{name:'Без микрофона',exact:true}).click()
   const dock = page.getByTestId('voice-dock')
   await expect(dock.locator('.voice-status')).toHaveText('Голос подключён',{timeout:25000})
   await openNavigation(page)

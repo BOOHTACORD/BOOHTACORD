@@ -71,7 +71,7 @@ try{
  assert.equal(joins,0);assert.equal(leases,0);assert.equal(await page.evaluate(()=>window.__qaMicCalls),0)
  report.checks.disconnected_TEXT_DM_no_join_mic_lease='PASS'
  phase='already connected listener TEXT/DM keeps voice session'
- await channel(page,'QaVoice');await page.getByRole('button',{name:'Подключиться без микрофона',exact:true}).click()
+ await channel(page,'QaVoice');await page.getByRole('button',{name:'Без микрофона',exact:true}).click()
  phase='actual SFU listener connection';const dock=page.getByTestId('voice-dock');await expect(dock.locator('.voice-status')).toHaveText('Голос подключён',{timeout:25000})
  phase='connected listener quickjump navigation';const beforeJoin=joins,beforeLease=leases
  phase='connected open TEXT quickjump';p=await quick(page);await p.getByRole('searchbox').fill('QaText');await p.locator('[data-kind="CHANNEL"]').click()

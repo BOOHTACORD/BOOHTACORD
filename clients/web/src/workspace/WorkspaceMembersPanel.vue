@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type { TopologyChannel } from '../channel/topology_client'
 import { avatarBackground, avatarForeground } from '../design/avatar_color'
 import { avatarInitials } from '../design/avatar_initials'
@@ -52,6 +52,7 @@ function voiceStateLabel(muted: boolean, speaking: boolean, unavailable = false)
   if (muted) return 'Микрофон выключен'
   return speaking ? 'Говорит' : 'В голосовом канале'
 }
+watch(voiceRoomVisible, (visible) => { if (!visible && openedFromVoiceRoster.value) closeProfile(false) })
 onMounted(() => { if (!props.selectedVoiceChannel) void loadRoster() })
 </script>
 

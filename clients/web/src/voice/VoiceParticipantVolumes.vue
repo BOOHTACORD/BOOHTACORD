@@ -25,7 +25,7 @@ function watchParticipantScreen(participantId: string): void { const screen = sc
       <span class="avatar lg" :style="{ backgroundColor: avatarBackground(participant.accountId ?? participant.id), color: avatarForeground(participant.accountId ?? participant.id) }" aria-hidden="true">{{ initial(participant.name) }}</span>
       <span class="participant-name">{{ participant.name || 'Участник' }}</span>
       <VoiceParticipantStatus class="participant-status" :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
-      <span v-if="screenForParticipant(participant.id)" class="participant-share-badge" aria-label="Участник показывает экран" title="Показывает экран"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H4zM9 20h6m-3-4v4" /></svg><b aria-hidden="true">ЭФИР</b></span>
+      <span v-if="screenForParticipant(participant.id)" class="participant-share-badge" role="img" aria-label="Участник показывает экран" title="Показывает экран"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H4zM9 20h6m-3-4v4" /></svg><b aria-hidden="true">ЭФИР</b></span>
       <button v-if="screenForParticipant(participant.id)" class="participant-watch" type="button" :aria-pressed="screenForParticipant(participant.id)?.id === selectedScreenStreamId" @click="watchParticipantScreen(participant.id)">Смотреть экран</button>
     </article>
     <article class="participant participant-self voice-participant-self" :class="{ talking: selfSpeaking && !selfDeafened && !selfMicrophoneMuted && !selfMicrophoneUnavailable }" data-testid="participant-card">

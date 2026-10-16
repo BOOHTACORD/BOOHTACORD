@@ -35,7 +35,8 @@
     "test:chat-rhythm": "playwright test -c tests/chat_rhythm/playwright.config.ts",
     "test:message-social": "playwright test -c tests/message_social/playwright.config.ts",
     "test:navigation": "playwright test -c tests/navigation_density/playwright.config.ts",
-    "test:search-presentation": "playwright test -c tests/search_presentation/playwright.config.ts"
+    "test:search-presentation": "playwright test -c tests/search_presentation/playwright.config.ts",
+    "test:voice-interface": "playwright test -c tests/voice_interface/playwright.config.ts"
   },
   "dependencies": {
     "@opentelemetry/api": "1.9.1",

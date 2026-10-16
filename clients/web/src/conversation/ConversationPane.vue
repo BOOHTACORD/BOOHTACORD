@@ -11,7 +11,6 @@ import type { ScreenProfile, VoiceJoinMode } from '../voice/livekit_gateway'
 import type { ScreenDiagnostics } from '../voice/screen_diagnostics'
 import ScreenViewer from '../voice/ScreenViewer.vue'
 import VoicePrejoin from '../voice/VoicePrejoin.vue'
-import VoiceRoomFooter from '../voice/VoiceRoomFooter.vue'
 import VoiceRoomConnected from '../voice/VoiceRoomConnected.vue'
 import type { ScreenViewerCard } from '../voice/screen_viewer_controller'
 import type { VoiceVolumeParticipant } from '../voice/voice_volume_controls'
@@ -31,6 +30,7 @@ const props = withDefaults(defineProps<{
   selfDisplayName: string | null; selfDeafened: boolean
   voiceError: string | null; voiceDisconnectNotice?: VoiceDisconnectNotice | null
   voiceIsActive: boolean
+  deafenChanging?: boolean
   voiceState: VoiceConnectionState
   activationMode: VoiceActivationMode
   voiceTransferRequired: boolean
@@ -89,7 +89,7 @@ function clearScreenPreview(): void {
         <section class="voice-room" :class="{ 'voice-room--screen-expanded': screenExpanded, 'voice-room--mini': miniVisible }">
           <header class="main-header conversation-header">
             <span class="conversation-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9H3ZM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" /></svg></span>
-            <div class="main-title"><h2>{{ voiceChannel.name }}</h2><small>{{ selectedScreenName ? `${voiceVolumeParticipants.length + 1} участника · ${screenViewerCards.length} трансляции` : voiceIsActive ? `${voiceVolumeParticipants.length + 1} участника в голосовом канале` : voiceRosterError ? 'Голосовой канал · состав недоступен' : voiceRoster ? voiceRoster.participants.length ? `Голосовой канал · сейчас: ${voiceRoster.participants.length}` : 'Голосовой канал · пока пусто' : 'Голосовой канал · проверяем состав' }}</small></div>
+            <div class="main-title"><h2>{{ voiceChannel.name }}</h2><small>{{ voiceIsActive && voiceState === 'LEAVING' ? 'Выходим…' : selectedScreenName && voiceIsActive ? `${voiceVolumeParticipants.length + 1} участника · ${screenViewerCards.length} трансляции` : voiceIsActive ? `${voiceVolumeParticipants.length + 1} участника в голосовом канале` : voiceRosterError ? 'Голосовой канал · состав недоступен' : voiceRoster ? voiceRoster.participants.length ? `Голосовой канал · сейчас: ${voiceRoster.participants.length}` : 'Голосовой канал · пока пусто' : 'Голосовой канал · проверяем состав' }}</small></div>
             <WorkspaceHeaderActions :members-expanded="membersOpen" :nav-expanded="navOpen" :show-members="showMembers" @toggle-members="emit('toggleMembers')" @toggle-navigation="emit('toggleNav')">
               <button class="header-action" type="button" aria-label="Найти сообщение" @click="emit('openSearch')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg></button>
               <template #overflow><ConversationOverflowMenu menu-label="Действия голосового канала" :show-members="showMembers" :members-open="membersOpen" @search="emit('openSearch')" @toggle-members="emit('toggleMembers')" /></template>
@@ -100,7 +100,7 @@ function clearScreenPreview(): void {
             <template v-else>Вход в этот канал закрыт администратором. Отзыв media-доступа ещё подтверждается. <span v-if="voiceError">{{ voiceError }}</span></template>
             <button v-if="voiceIsActive" type="button" @click="emit('leave')">Выйти из голосового канала</button>
           </div>
-          <template v-if="screenViewerCards.length || selectedScreenStreamId || screenViewerEnded">
+          <template v-if="voiceIsActive && voiceState !== 'LEAVING' && (screenViewerCards.length || selectedScreenStreamId || screenViewerEnded)">
             <ScreenViewer
               ref="screenViewerRef" v-show="selectedScreenStreamId !== null" :audio-muted="screenAudioMuted" :cards="screenViewerCards" :deafened="selfDeafened" :ended="screenViewerEnded" :error="screenViewerError" :expanded="screenExpanded" :mini="miniVisible" :own-screen-sharing="screenState === 'SHARING'" :pinned="screenPinned" :participant-count="voiceVolumeParticipants.length + 1" :selected-audio-volume="selectedScreenAudioVolume" :selected-id="selectedScreenStreamId"
               @clear="clearScreenPreview" @retry="emit('retryScreenStream', $event)" @select="(id, video, audio) => emit('selectScreenStream', id, video, audio)" @set-audio-volume="emit('setScreenVolume', $event)" @toggle-audio="emit('toggleScreenAudio')"
@@ -108,11 +108,10 @@ function clearScreenPreview(): void {
               :source-diagnostics="screenDiagnostics" @update:expanded="screenExpanded = $event"
             />
           </template>
-          <div v-if="!selectedScreenStreamId" class="room-wrap">
-            <VoiceRoomConnected v-if="!voiceChannel.admissionClosed && voiceIsActive" :room-name="voiceChannel.name" :voice-state="voiceState" :screen-state="screenState" :screen-error="screenError" :screen-diagnostics="screenDiagnostics" :screen-profile="screenProfile" :selected-screen-profile="selectedScreenProfile" :screen-viewer-cards="screenViewerCards" :voice-volume-error="voiceVolumeError" :voice-volume-participants="voiceVolumeParticipants" :self-name="selfDisplayName" :self-deafened="selfDeafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-speaking="selfSpeaking" :toggle-microphone="toggleMicrophone" :toggle-deafen="toggleDeafen" @set-volume="(id, percent) => emit('setParticipantVolume', id, percent)" @watch-screen="watchScreen" @start-screen="emit('startScreen', $event)" @stop-screen="emit('stopScreen')" @leave="emit('leave')" @refresh-screen="emit('refreshScreen')" />
+          <div v-if="!voiceIsActive || voiceState === 'LEAVING' || !selectedScreenStreamId" class="room-wrap">
+            <VoiceRoomConnected :activation-mode="activationMode" :deafen-changing="deafenChanging" v-if="!voiceChannel.admissionClosed && voiceIsActive" :room-name="voiceChannel.name" :voice-state="voiceState" :screen-state="screenState" :screen-error="screenError" :screen-diagnostics="screenDiagnostics" :screen-profile="screenProfile" :selected-screen-profile="selectedScreenProfile" :screen-viewer-cards="screenViewerCards" :voice-volume-error="voiceVolumeError" :voice-volume-participants="voiceVolumeParticipants" :self-name="selfDisplayName" :self-deafened="selfDeafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-speaking="selfSpeaking" :toggle-microphone="toggleMicrophone" :toggle-deafen="toggleDeafen" @set-volume="(id, percent) => emit('setParticipantVolume', id, percent)" @watch-screen="watchScreen" @start-screen="emit('startScreen', $event)" @stop-screen="emit('stopScreen')" @leave="emit('leave')" @refresh-screen="emit('refreshScreen')" />
             <VoicePrejoin :notice="voiceDisconnectNotice" v-else-if="!voiceChannel.admissionClosed" :channel-id="voiceChannel.id" :voice-error="voiceError" :voice-state="voiceState" :voice-transfer-required="voiceTransferRequired" :roster="voiceRoster ?? null" :roster-error="voiceRosterError ?? null" @join="(id, transfer, mode) => emit('join', id, transfer, mode)" @transfer="emit('transfer', $event)" />
           </div>
-          <VoiceRoomFooter v-if="voiceIsActive && !selectedScreenStreamId" :activation-mode="activationMode" :channel-name="voiceChannel.name" :state="voiceState" @leave="emit('leave')" />
         </section>
       </Teleport>
     </template>

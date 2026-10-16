@@ -5,6 +5,7 @@ import { teardown } from './teardown.mjs'
 import { installRosterFailureObserver } from './roster_observer.mjs'
 import { rosterCounters } from './roster_diagnostics.mjs'
 import { observeRosterNetwork } from './roster_network.mjs'
+import { voiceInterface, leaveVoiceInterface } from './voice_interface.mjs'
 async function connected(page) {
   try {
     await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 22000 })
@@ -26,6 +27,9 @@ export async function media(a, b, member, channelId, report, input) {
   const chat = []
   for (const page of [a, member]) await page.addInitScript(() => {
     window.__qaPeers = []
+    window.__qaCaptureRequests = 0
+    const display = navigator.mediaDevices.getDisplayMedia?.bind(navigator.mediaDevices)
+    if (display) navigator.mediaDevices.getDisplayMedia = (...args) => { window.__qaCaptureRequests++; return display(...args) }
     const Native = window.RTCPeerConnection
     window.RTCPeerConnection = new Proxy(Native, { construct(target, args) {
       const peer = Reflect.construct(target, args); window.__qaPeers.push(peer); return peer
@@ -47,10 +51,11 @@ export async function media(a, b, member, channelId, report, input) {
   const room = await api(a, `/admin/categories/${category.body.id}/channels`, 'POST', { name: 'VoiceLab', kind: 'VOICE' }); status(room, 201)
   for (const page of [a, member]) {
     await channel(page, 'VoiceLab')
-    await page.getByRole('button', { name: 'Подключиться без микрофона', exact: true }).click()
+    await page.getByRole('button', { name: 'Без микрофона', exact: true }).click()
     await connected(page)
   }
   await connected(a)
+  await voiceInterface(a, input, report)
   blocked = true
   for (const { socket, server } of chat) { server.close(); socket.close() }
   const banner = a.getByTestId('connection-status')
@@ -115,7 +120,8 @@ export async function media(a, b, member, channelId, report, input) {
   const manualRosterRefreshAvailable = await refreshRoster.isVisible()
   if (manualRosterRefreshAvailable) await refreshRoster.click()
   await expect.poll(async () => await banner.count() === 0 || !(await banner.innerText()).includes('Состав недоступен')).toBe(true)
-  for (const page of [a, member]) {
+  await leaveVoiceInterface(a, input, report)
+  for (const page of [member]) {
     const leave = page.getByTestId('voice-dock').getByRole('button', { name: 'Выйти из голосового канала', exact: true })
     if (await leave.count()) await leave.click()
   }

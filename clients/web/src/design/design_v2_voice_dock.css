@@ -26,7 +26,6 @@
   .sidebar .mobile-voice-dock .voice-dock-headset { position: absolute; top: 2px; left: 0; display: block; width: 16px; height: 16px; color: #78e6a0; stroke-width: 1.8; }
   .sidebar .mobile-voice-dock.connected .voice-status { padding-left: 24px; }
   .sidebar .mobile-voice-dock .voice-dock-subtitle { margin-top: 2px; }
-  .sidebar .mobile-voice-dock .voice-quality--unmeasured:not(.voice-quality--poor):not(.voice-quality--lost) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 }
 @media (max-width: 720px) {
   .sidebar.is-open .voice-dock.connected .voice-status { color: #78e6a0; font-weight: 500; }
@@ -38,3 +37,41 @@
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button:not(.voice-icon-button--danger)::before { background: var(--gc-surface-raised); }
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button:not(.voice-icon-button--danger):hover:not(:disabled)::before { background: var(--gc-surface-hover); }
 }
+
+.voice-dock { position: relative; min-width: 0; max-width: 100%; }
+.voice-dock .voice-dock-copy { min-width: 0; flex: 1; }
+.voice-dock .voice-status { white-space: normal; overflow-wrap: anywhere; }
+.voice-dock:has(.voice-connection-details) .voice-dock-header { padding-right: 36px; }
+.voice-dock .voice-connection-details { margin: 0; border: 0; padding: 0; }
+.voice-dock .voice-connection-details > summary { position: absolute; top: 8px; right: 8px; display: grid; width: 32px; height: 32px; place-items: center; border-radius: 6px; cursor: pointer; list-style: none; }
+.voice-dock .voice-connection-details > summary::-webkit-details-marker { display: none; }
+.voice-dock .voice-connection-details > summary:hover { background: var(--gc-surface-hover); }
+.voice-dock .voice-connection-details > summary:focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 2px; }
+.voice-dock .voice-connection-details dl { display: grid; gap: 6px; margin: 8px 0 0; font-size: .75rem; line-height: 1.5; }
+.voice-dock .voice-connection-details dl > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 8px; }
+.voice-dock .voice-connection-details dt { color: var(--gc-text-muted); }
+.voice-dock .voice-connection-details dd { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+.voice-dock .voice-icon-button.voice-icon-button--sharing, .voice-room-controls button.voice-icon-button--sharing { border-color: var(--gc-success); color: var(--gc-success); }
+.voice-dock .voice-icon-button.voice-icon-button--warning, .voice-room-controls button.voice-icon-button--warning { border-color: var(--gc-warning); color: var(--gc-warning); }
+@media (max-width: 1023px) {
+  .voice-dock .voice-connection-details > summary { width: 44px; height: 44px; top: 4px; right: 4px; }
+  .voice-dock:has(.voice-connection-details) .voice-dock-header { padding-right: 44px; }
+  .sidebar:not(.is-open) .mobile-voice-dock .voice-connection-details { display: none; }
+}
+
+.voice-icon--busy { animation: voice-control-spin 1.2s linear infinite; }
+@keyframes voice-control-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .voice-icon--busy { animation: none; } }
+
+/* Drawer and compact dock paint the same persistent mute/deafen state. */
+.sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button.voice-icon-button--danger-active::before { background: var(--gc-danger-solid); }
+.voice-dock .voice-dock-header, .voice-dock > .state { flex-shrink: 0; }
+.voice-dock .voice-dock-subtitle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 1023px) {
+  .sidebar:not(.is-open) .mobile-voice-dock.mobile-visible { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .sidebar:not(.is-open) .mobile-voice-dock .voice-dock-header { grid-column: 1; grid-row: 1; }
+  .sidebar:not(.is-open) .mobile-voice-dock .voice-actions { display: flex; grid-column: 1; grid-row: 2; width: 100%; gap: 8px; }
+  .sidebar:not(.is-open) .mobile-voice-dock .voice-actions .voice-icon-button { display: grid; min-width: 44px; height: 44px; min-height: 44px; flex: 1 1 0; }
+}
+
+.voice-dock .voice-icon-button:disabled { opacity: .5; }

@@ -16,9 +16,8 @@ const emit = defineEmits<{ join: [channelId: string, transfer?: boolean, joinMod
   <div class="voice-prejoin">
     <article class="voice-prejoin-card" aria-labelledby="voice-prejoin-title">
       <span class="voice-prejoin-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Zm-7 8a7 7 0 0 0 14 0M12 18v3m-4 0h8" /></svg></span>
-      <h3 id="voice-prejoin-title" aria-live="polite" aria-atomic="true">{{ voiceState === 'JOINING' ? 'Подключаемся к голосовой комнате' : 'Вы не подключены' }}</h3>
-      <p v-if="voiceState !== 'JOINING'" class="voice-prejoin-copy">Подключитесь с микрофоном или слушайте.</p>
-      <VoiceRoomRoster v-if="roster" :roster="roster" />
+      <h3 id="voice-prejoin-title" aria-live="polite" aria-atomic="true">{{ voiceState === 'JOINING' ? 'Входим в голос…' : 'Войти в голос' }}</h3>
+      <VoiceRoomRoster v-if="roster" compact :roster="roster" />
       <p v-if="roster && rosterError" class="state state-error" role="status">Состав устарел. Восстанавливаем соединение.</p>
       <p v-else-if="rosterError" class="state state-error" role="status">Не удалось обновить состав комнаты. Повторяем попытку.</p>
       <p v-else-if="!roster" class="state" role="status">Проверяем, кто сейчас в комнате…</p>
@@ -27,8 +26,8 @@ const emit = defineEmits<{ join: [channelId: string, transfer?: boolean, joinMod
       <p v-else-if="voiceError" class="state state-error" role="alert">{{ voiceError }}</p>
       <TransferConfirmation v-if="voiceTransferRequired" @confirm="emit('join', channelId, true, $event)" />
       <div v-else class="voice-prejoin-actions">
-        <button class="gc-button gc-button--primary" type="button" :disabled="voiceState === 'JOINING' || voiceState === 'LEAVING' || notice?.reconnectAllowed === false" @click="emit('join', channelId)">{{ voiceState === 'JOINING' ? 'Подключаемся…' : 'Подключиться к голосу' }}</button>
-        <button class="gc-button gc-button--secondary" type="button" :disabled="voiceState === 'JOINING' || voiceState === 'LEAVING' || notice?.reconnectAllowed === false" @click="emit('join', channelId, false, 'listener')">Подключиться без микрофона</button>
+        <button class="gc-button gc-button--primary" type="button" :disabled="voiceState === 'JOINING' || voiceState === 'LEAVING' || notice?.reconnectAllowed === false" @click="emit('join', channelId)">{{ voiceState === 'JOINING' ? 'Подключаемся…' : 'Войти' }}</button>
+        <button class="gc-button gc-button--secondary" type="button" :disabled="voiceState === 'JOINING' || voiceState === 'LEAVING' || notice?.reconnectAllowed === false" @click="emit('join', channelId, false, 'listener')">Без микрофона</button>
       </div>
     </article>
   </div>
