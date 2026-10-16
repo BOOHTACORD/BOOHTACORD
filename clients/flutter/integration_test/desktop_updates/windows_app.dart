@@ -61,7 +61,16 @@ class Journey {
     final visible = finder.hitTestable();
     await until(() => visible.evaluate().isNotEmpty, 'control_missing');
     await driver.tap(visible.first);
+    await driver.pump();
     await driver.pump(const Duration(milliseconds: 350));
+  }
+
+  Future<void> openChannel(String label, {required String at}) async {
+    final channel = find.text(label);
+    if (channel.hitTestable().evaluate().isEmpty) {
+      await tap(find.byTooltip('Открыть навигацию'), at: 'navigation_open');
+    }
+    await tap(channel, at: at);
   }
 
   Future<void> edit(String value) async {
@@ -142,7 +151,7 @@ class Journey {
     await windowManager.setBounds(
       visibleWindowBounds(const Rect.fromLTWH(40, 40, 1200, 800), frames),
     );
-    await tap(find.text('Update VOICE'), at: 'voice_open');
+    await openChannel('Update VOICE', at: 'voice_open');
     await tap(find.text('Подключиться без микрофона'), at: 'voice_listener');
     await until(
       () =>
@@ -155,7 +164,7 @@ class Journey {
       await tap(find.byTooltip('Выключить удалённый звук'), at: 'deafen');
     }
     require(state.deafened, 'incoming_audio_not_muted');
-    await tap(find.text('Update TEXT'), at: 'text_open');
+    await openChannel('Update TEXT', at: 'text_open');
     await until(() => state.messages.length >= 50, 'history_not_loaded');
     await edit('Owned updater draft before download');
     await tap(find.widgetWithText(FilledButton, 'Обновить'), at: 'download');
@@ -279,7 +288,7 @@ class Journey {
       'media_restarted_without_consent',
     );
     await capture('after-installed-update');
-    await tap(find.text('Update VOICE'), at: 'voice_open');
+    await openChannel('Update VOICE', at: 'voice_open');
     await tap(find.text('Подключиться без микрофона'), at: 'voice_listener');
     await until(
       () =>
@@ -343,6 +352,13 @@ Future<void> main() async {
           find.byType(BoohtacordApp).evaluate().isNotEmpty &&
           activeJourney.state.phase == AppPhase.ready,
       'workspace_not_ready',
+    );
+    require(
+      ![
+        DesktopUpdatePhase.failed,
+        DesktopUpdatePhase.rolledBack,
+      ].contains(activeJourney.desktop.phase),
+      'startup_update_rejected',
     );
     require(
       identity.local.nativeBuild == identity.local.installedBuild,

@@ -7,6 +7,47 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../integration_test/desktop_updates/windows_app.dart';
 
 void main() {
+  for (final drawer in [false, true]) {
+    testWidgets('channel navigation uses the visible UI (drawer: $drawer)', (
+      tester,
+    ) async {
+      var selected = false;
+      var opened = 0;
+      Widget channel(BuildContext context) => TextButton(
+        onPressed: () {
+          selected = true;
+          if (drawer) Navigator.pop(context);
+        },
+        child: const Text('Update VOICE'),
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            appBar: AppBar(
+              leading: Builder(
+                builder: (context) => IconButton(
+                  tooltip: 'Открыть навигацию',
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    opened++;
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
+              ),
+            ),
+            drawer: Drawer(child: Builder(builder: channel)),
+            body: drawer ? const SizedBox.shrink() : Builder(builder: channel),
+          ),
+        ),
+      );
+      final journey = Journey(Directory.systemTemp, controller: tester);
+      await journey.openChannel('Update VOICE', at: 'voice_open');
+      await tester.pumpAndSettle();
+      expect(selected, isTrue);
+      expect(opened, drawer ? 1 : 0);
+    });
+  }
+
   testWidgets(
     'driver consents through the visible dialog instead of its covered panel',
     (tester) async {

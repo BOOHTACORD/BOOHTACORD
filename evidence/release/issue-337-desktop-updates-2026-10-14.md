@@ -775,3 +775,33 @@ macOS installed-update acceptance is not claimed by these component tests.
   `d7ab08a745f888034aa41ee7dcecae3d88b1d602154cf0d7479e286daffdbb0f`.
   iOS 8b19b75a device Release compiles unsigned in 26.8 seconds; no IPA or
   TestFlight upload is claimed. The subsequent display change is QA-driver-only.
+
+## Compact Windows journey navigation (2026-10-16)
+
+- A6 full CI 38824158743, browser 38824158749 and native candidates
+  38824152967 PASS. Android artifact 12015260834 (59,795,219 bytes, SHA-256
+  `4b718f0be838351d2b5da6e18a548052cbbdcf157676d054bd60d3363ca8503e`)
+  passes authenticated archive/CRC, clean A6 source, every manifest hash/size
+  and all three actual APK signatures. Updated Windows ordinary Setup,
+  portable and recovery artifacts also pass independent archive/manifest
+  verification. CI source df5d2ce3 has exactly the A6 tree and master+A6 parents.
+  Stable full package is 30,739,914 bytes, SHA-256
+  `7253d00ff65bc29e3d7fe9cdb7d24b1b02fb7a7b5724eaac482bcd1ecc0996b2`;
+  release hash, CRC, x64 PE, publisher root and absence of QA entrypoint strings
+  in the ordinary app PASS.
+- A6 installed run 38824153046 fails before attempting an update: bounded
+  `control_missing`, step `voice_open`, build 78, phase idle. Authenticated
+  artifact 12014833427 (55,559 bytes, SHA-256
+  `12877e03e73c1040f6cfc23b7d6b1a23a57ab4e2b2c0b87c71757ae208fc6002`)
+  image confirms a working authenticated text channel and compact layout with
+  the navigation menu closed. This is a journey-navigation defect; it does
+  not invalidate the native CWD regression fix or prove a successful update.
+- The driver now uses the real navigation menu when the channel row is not
+  visible, for both initial selection and post-update voice rejoin. Two widget
+  cases exercise visible sidebar and closed drawer. Seven focused tests and
+  analyzer PASS. It also stops immediately on rejected/rolled-back bootstrap,
+  preserving the original bounded native error rather than starting a second
+  scripted baseline journey. Production code and strict state assertions are
+  unchanged. A local initial drawer test needed an initial render-frame pump
+  before advancing its animation clock; it was interrupted and corrected,
+  then all cases passed.
