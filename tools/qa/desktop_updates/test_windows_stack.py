@@ -1,7 +1,38 @@
 """Startup diagnostics must remain bounded even when dependency logs are unsafe."""
 import unittest
+from unittest.mock import patch
 
-from .windows_stack import startup_failure
+from .windows_stack import Stack, startup_failure
+
+
+class CatalogReadinessTests(unittest.TestCase):
+    def test_waits_until_actual_api_serves_the_exact_signed_catalog(self):
+        stack = object.__new__(Stack)
+        envelope = {'payload': 'selected', 'signature': 'owner'}
+        replies = [
+            (200, {'catalog_revision': 1, 'state': 'unconfigured', 'target': None}, {}),
+            (200, {'catalog_revision': 2, 'state': 'published',
+                   'target': {'install_artifact': envelope}}, {}),
+        ]
+        paths = []
+        def request(path):
+            paths.append(path)
+            return replies.pop(0)
+        stack.request = request
+        with patch('tools.qa.desktop_updates.windows_stack.time.sleep'):
+            stack.wait_catalog(envelope)
+        self.assertEqual(len(paths), 2)
+        self.assertTrue(all(path == '/client-updates?platform=windows&distribution=direct&channel=beta&arch=x64'
+                            for path in paths))
+
+    def test_never_starts_client_for_an_old_or_different_catalog(self):
+        stack = object.__new__(Stack)
+        stack.request = lambda _: (200, {'catalog_revision': 2, 'state': 'published',
+                                        'target': {'install_artifact': {'payload': 'other'}}}, {})
+        with patch('tools.qa.desktop_updates.windows_stack.time.monotonic', side_effect=[0, 1, 31]), \
+                patch('tools.qa.desktop_updates.windows_stack.time.sleep'):
+            with self.assertRaisesRegex(RuntimeError, 'signed catalog'):
+                stack.wait_catalog({'payload': 'selected'})
 
 
 class StartupDiagnosticTests(unittest.TestCase):

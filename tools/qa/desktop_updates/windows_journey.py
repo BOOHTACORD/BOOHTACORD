@@ -75,6 +75,7 @@ def run(source, wait_seconds):
             raise RuntimeError('Refusing an existing user installation or fixture configuration')
         stack.start()
         stack.write_catalog(envelope)
+        stack.wait_catalog(envelope)
         config.parent.mkdir(parents=True, exist_ok=True)
         with config.open('x') as handle:
             json.dump(stack.private_configuration(), handle)

@@ -12,11 +12,11 @@ later compilation or component tests.
 
 | Gate | Current status |
 |---|---|
-| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38830061623, source E77 |
+| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38832920366, source CBA |
 | Browser lifecycle acceptance | PASS, CBA run 38832920361; E77's two earlier network failures retained below |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED awaiting system Keychain access |
-| Windows installed 78 → 79 | E77 FAIL before download: compact row autojoined with microphone; explicit prejoin route corrected, CBA repeat running |
+| Windows installed 78 → 79 | CBA FAIL before download: update action absent; exact served-catalog readiness gate added, repeat pending |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -893,3 +893,31 @@ macOS installed-update acceptance is not claimed by these component tests.
   captures. Text, channel list, composer and both voice admission controls are
   readable, with no overlap of primary controls. These browser captures do not
   establish native installed Windows or macOS acceptance.
+
+## Initial served-catalog readiness (2026-10-16)
+
+- CBA full CI 38832920366 and native candidates 38832917717 PASS. Installed
+  run 38832918358 fails before download: `control_missing`, step `download`,
+  build 78, idle update phase, listener voice and no SDK connection error.
+  Authenticated artifact 12018558442 is 58,408 bytes, SHA-256
+  `cdc13c8184d4c417dbcd05e9f1a9d113f0dc509c668aaee45df1ce526d3455f5`.
+  Visual inspection confirms the text channel, real connected voice with both
+  microphone/incoming audio off, original draft, and absent update banner.
+  The corrected explicit listener/prejoin path therefore works in this run.
+- The fixture initially starts the API with empty catalog revision 1, then writes
+  signed revision 2 immediately before installation. The production API reloads
+  catalog files every ten seconds; a client's first 0–5-second check can observe
+  revision 1 and legitimately wait for its next periodic check. The previous
+  driver did not retain the check result/revision, so that exact timing is not
+  claimed as observed in CBA. The missing fixture readiness guarantee is definite.
+- Before starting any installed client, the fixture now waits up to 30 seconds
+  for the real HTTPS endpoint to serve published revision 2 with the exact owner
+  envelope. Native preflight additionally observes real initial revision 1,
+  publishes an existing public signed fixture and confirms revision 2 before
+  rebuilding clients. This changes only fixture ordering, with no production
+  checker changes, forced refresh, simulated policy, signature bypass or relaxed
+  UI assertion. Two readiness regressions failed before implementation; eight
+  current native-fixture unit tests and the driver analyzer PASS.
+- A future failure also retains the check status/result enums, banner/target
+  booleans and stale boolean. No policy payload, path, account or message is
+  added to failure diagnostics.

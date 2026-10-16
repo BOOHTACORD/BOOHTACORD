@@ -433,6 +433,11 @@ Future<void> main() async {
         if (journey != null &&
             find.byType(BoohtacordApp).evaluate().isNotEmpty) ...{
           'update_phase': journey.desktop.phase.name,
+          'check_status': journey.app.updates.status.name,
+          'check_result': journey.app.updates.result?.name,
+          'banner_visible': journey.app.updates.visible,
+          'policy_stale': journey.app.updates.stale,
+          'policy_target_present': journey.app.updates.policy?.target != null,
           'native_failure': desktopUpdateFailureCode(journey.desktop.failure),
           'voice_phase': journey.state.voicePhase.name,
           'voice_connection_codes': voiceDiagnostics.codes,

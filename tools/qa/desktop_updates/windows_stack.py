@@ -194,6 +194,26 @@ webhook:
             'schema_version': 1, 'catalog_revision': 2 if envelope else 1,
             'application_family': 'boohtacord', 'entries': entries}))
 
+    def wait_catalog(self, envelope):
+        # The real API reloads files every ten seconds. A healthy API can still
+        # serve revision 1 immediately after the fixture publishes revision 2.
+        # Observe the actual endpoint before starting a client/check timer.
+        deadline = time.monotonic() + 30
+        while time.monotonic() < deadline:
+            try:
+                status, policy, _ = self.request(
+                    '/client-updates?platform=windows&distribution=direct&channel=beta&arch=x64')
+                if (status == 200 and isinstance(policy, dict) and
+                        policy.get('catalog_revision') == 2 and
+                        policy.get('state') == 'published' and
+                        isinstance(policy.get('target'), dict) and
+                        policy['target'].get('install_artifact') == envelope):
+                    return
+            except (OSError, http.client.HTTPException, json.JSONDecodeError):
+                pass
+            time.sleep(.2)
+        raise RuntimeError('Owned signed catalog was not served before client startup')
+
     def private_configuration(self):
         return {'origin': 'https://localhost:4910/api/v1',
                 'ca_pem': (self.root / 'owned-root.crt').read_text(),
@@ -231,7 +251,22 @@ def main():
                 raise RuntimeError('Owned SFU HTTPS signaling route is not healthy')
         finally:
             client.close()
-        print('PASS: native PostgreSQL, API, TLS/SFU and synthetic authenticated history', flush=True)
+        # An existing public owner-signed fixture also checks hot-reload readiness
+        # before spending time rebuilding the two installed clients. No key or
+        # executable is obtained from the service or executed by this preflight.
+        envelope = json.loads((ROOT / 'evidence/fixtures/desktop-updates/'
+            'windows-cba532a152f85972f3fb823b19719bb41318501f.json').read_text())
+        status, initial, _ = stack.request(
+            '/client-updates?platform=windows&distribution=direct&channel=beta&arch=x64')
+        if (status != 200 or initial.get('catalog_revision') != 1 or
+                initial.get('state') != 'unconfigured'):
+            raise RuntimeError('Owned initial catalog was not served')
+        started = time.monotonic()
+        stack.write_catalog(envelope)
+        stack.wait_catalog(envelope)
+        print(json.dumps({'catalog_readiness': {'initial_revision': 1,
+            'served_revision': 2, 'wait_ms': int((time.monotonic() - started) * 1000)}}), flush=True)
+        print('PASS: native PostgreSQL, API, TLS/SFU, history and served signed catalog', flush=True)
     finally:
         if root.exists():
             stack.close()
