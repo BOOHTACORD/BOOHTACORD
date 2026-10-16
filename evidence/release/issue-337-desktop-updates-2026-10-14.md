@@ -13,10 +13,10 @@ later compilation or component tests.
 | Gate | Current status |
 |---|---|
 | Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38844315360, source 969 |
-| Browser lifecycle acceptance | 969 attempt 2 PASS (run 38844315317); attempt 1 remains FAIL with login transport `network_changed`; 1F08/81F/CBA also PASS |
+| Browser lifecycle acceptance | 4F24 PASS (run 38847165561); 969 attempt 2 PASS, attempt 1 remains FAIL with login transport `network_changed`; 1F08/81F/CBA also PASS |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED on locked Mac / system Keychain access |
-| Windows installed 78 → 79 | 969 actual replacement/build 79/bootstrap completed; account/channel/late draft/mute checks PASS, scroll assertion FAIL; corrected observation repeat being prepared |
+| Windows installed 78 → 79 | 969 actual replacement/build 79/bootstrap completed; account/channel/late draft/mute checks PASS, scroll assertion FAIL; 4F24 corrected observation repeat running |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -126,6 +126,17 @@ controller offset unchanged. Eleven focused driver/privacy tests PASS and
 analysis is clean. Numeric expected/observed anchors are retained on failure.
 This addresses an observational race/boundary hypothesis; another real installed
 transition must still pass. No shipping restoration or media code changed here.
+
+The 4F24 repeat uses the same bind-verified private media fixture. Native preflight
+116800183187 passed, including actual catalog revision 1→2 readiness in 8733 ms.
+Browser run 38847165561 passed on its first attempt; native candidates also pass.
+Web shipping paths are unchanged from 969's authenticated visual acceptance.
+QA79 release 414524338 / asset 646075137 authenticated at 30789923 bytes, SHA-256
+`a5e6f2696208ad0041751a2b32e810659011cb8f9516de27a1074d5939fb84aa`.
+CRC, safe paths, package identity/version, x64 PE, helper/SDK and publisher root
+passed before local owner signing and verification. Public metadata is supplied
+to the actual installed journey; no private publisher key enters Git or CI.
+This publication/readiness record is not a successful installed-update result.
 
 Publisher: locally generated Ed25519 root `boohtacord-desktop-478919e9652ab825`.
 Private key is outside the repository with mode 0600, parent 0700. Only the public
