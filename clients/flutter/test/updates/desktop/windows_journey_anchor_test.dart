@@ -1,12 +1,98 @@
 import 'dart:io';
 
 import 'package:boohtacord_desktop/src/widgets/formatted_message_body.dart';
+import 'package:boohtacord_desktop/src/features/workspace/mobile_navigation/search_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../integration_test/desktop_updates/windows_app.dart';
 
 void main() {
+  for (final drawer in [false, true]) {
+    testWidgets(
+      'voice prejoin uses quick jump without drawer autojoin ($drawer)',
+      (tester) async {
+        var search = false, navigation = false;
+        var selected = 0, autoJoined = 0;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: StatefulBuilder(
+              builder: (context, update) {
+                Widget sidebar(BuildContext context) => Column(
+                  children: [
+                    WorkspaceNavigationSearch(
+                      compact: drawer,
+                      onPressed: () {
+                        if (drawer) Navigator.pop(context);
+                        update(() => search = true);
+                      },
+                    ),
+                    TextButton(
+                      onPressed: () => autoJoined++,
+                      child: const Text('Update VOICE'),
+                    ),
+                  ],
+                );
+                return Scaffold(
+                  appBar: AppBar(
+                    leading: Builder(
+                      builder: (context) => IconButton(
+                        tooltip: 'Открыть навигацию',
+                        icon: const Icon(Icons.menu),
+                        onPressed: () => Scaffold.of(context).openDrawer(),
+                      ),
+                    ),
+                  ),
+                  drawer: Drawer(child: Builder(builder: sidebar)),
+                  body: search
+                      ? Column(
+                          children: [
+                            IconButton(
+                              tooltip: 'Каналы и люди',
+                              onPressed: () => update(() => navigation = true),
+                              icon: const Icon(Icons.people),
+                            ),
+                            if (navigation)
+                              Expanded(
+                                child: ListView(
+                                  key: const ValueKey(
+                                    'guild-quick-jump-results',
+                                  ),
+                                  children: [
+                                    ListTile(
+                                      title: const Text('Update VOICE'),
+                                      subtitle: const Text(
+                                        'Открыть комнату без подключения',
+                                      ),
+                                      onTap: () => update(() {
+                                        selected++;
+                                        search = false;
+                                      }),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ],
+                        )
+                      : drawer
+                      ? const SizedBox.shrink()
+                      : Builder(builder: sidebar),
+                );
+              },
+            ),
+          ),
+        );
+        await Journey(
+          Directory.systemTemp,
+          controller: tester,
+        ).openVoiceWithoutJoining('Update VOICE');
+        await tester.pumpAndSettle();
+        expect(selected, 1);
+        expect(autoJoined, 0);
+      },
+    );
+  }
+
   for (final drawer in [false, true]) {
     testWidgets('channel navigation uses the visible UI (drawer: $drawer)', (
       tester,

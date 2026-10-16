@@ -75,6 +75,39 @@ class Journey {
     await tap(channel, at: at);
   }
 
+  Future<void> openVoiceWithoutJoining(String label) async {
+    final launcher = find.byKey(const ValueKey('navigation-search'));
+    if (launcher.hitTestable().evaluate().isEmpty) {
+      await tap(find.byTooltip('Открыть навигацию'), at: 'navigation_open');
+    }
+    await tap(launcher, at: 'search_open');
+    await tap(find.byTooltip('Каналы и люди'), at: 'quick_jump_open');
+    // Compact drawer rows intentionally autojoin with the normal microphone
+    // mode. Quick jump is the public UI path for opening a room without joining.
+    await tap(
+      find.descendant(
+        of: find.byKey(const ValueKey('guild-quick-jump-results')),
+        matching: find.text(label),
+      ),
+      at: 'voice_open',
+    );
+  }
+
+  Future<void> joinListener() async {
+    final button = find.widgetWithText(
+      OutlinedButton,
+      'Подключиться без микрофона',
+    );
+    step = 'voice_listener';
+    await until(
+      () =>
+          button.hitTestable().evaluate().isNotEmpty &&
+          driver.widget<OutlinedButton>(button).onPressed != null,
+      'listener_control_disabled',
+    );
+    await tap(button, at: 'voice_listener');
+  }
+
   Future<void> edit(String value) async {
     await tap(composer, at: 'composer');
     driver
@@ -153,8 +186,8 @@ class Journey {
     await windowManager.setBounds(
       visibleWindowBounds(const Rect.fromLTWH(40, 40, 1200, 800), frames),
     );
-    await openChannel('Update VOICE', at: 'voice_open');
-    await tap(find.text('Подключиться без микрофона'), at: 'voice_listener');
+    await openVoiceWithoutJoining('Update VOICE');
+    await joinListener();
     await until(
       () =>
           state.voicePhase == VoicePhase.connected ||
@@ -290,8 +323,8 @@ class Journey {
       'media_restarted_without_consent',
     );
     await capture('after-installed-update');
-    await openChannel('Update VOICE', at: 'voice_open');
-    await tap(find.text('Подключиться без микрофона'), at: 'voice_listener');
+    await openVoiceWithoutJoining('Update VOICE');
+    await joinListener();
     await until(
       () =>
           state.voicePhase == VoicePhase.connected ||

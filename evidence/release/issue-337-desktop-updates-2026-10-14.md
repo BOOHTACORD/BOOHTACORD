@@ -1,8 +1,28 @@
 # #337 — desktop update implementation and release acceptance
 
-Started 2026-10-14; ongoing 2026-10-15. Candidate branch
+Started 2026-10-14; ongoing 2026-10-16. Candidate branch
 `codex/issue337-desktop-updates`, based on `3e6ac963`. This is an implementation
 record, not release approval. No production catalog promotion has occurred.
+
+## Current acceptance snapshot (2026-10-16)
+
+The sections below preserve earlier attempts and their results. This snapshot
+supersedes their historical gate tables; failures are not converted to PASS by
+later compilation or component tests.
+
+| Gate | Current status |
+|---|---|
+| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38830061623, source E77 |
+| Browser lifecycle acceptance | Prior A42 PASS, run 38827220068; E77 attempts 1/2 FAIL at login/network and initial GET; bounded bootstrap-read repeat added |
+| Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
+| macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED awaiting system Keychain access |
+| Windows installed 78 → 79 | E77 FAIL before download: compact row autojoined with microphone; explicit prejoin route corrected, repeat pending |
+| Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
+| Production catalog promotion | NOT_RUN; revision 29 unchanged |
+
+Ordinary shipping source is unchanged by the later QA navigation/diagnostic
+entrypoint changes. Verified distribution records are retained below. #337 and
+draft PR #338 remain open until both genuine installed UI gates pass.
 
 Publisher: locally generated Ed25519 root `boohtacord-desktop-478919e9652ab825`.
 Private key is outside the repository with mode 0600, parent 0700. Only the public
@@ -33,7 +53,7 @@ Windows Authenticode is measured by existing packaging tools, not assumed.
   one pre-existing explicit skip. Final added window-bounds guard also covered
   by the focused update/workspace suite: 146 PASS.
 
-## Required release gates still pending
+## Initial gate snapshot (historical; superseded above)
 
 | Gate | Status |
 |---|---|
@@ -822,3 +842,36 @@ macOS installed-update acceptance is not claimed by these component tests.
   does not alter connection/retry/apply behavior. Privacy/category tests (2),
   existing journey/bounds tests (7), and focused analyzer PASS. The original
   connection cause and a successful installed transition remain unproven.
+- E77 browser lifecycle run 38830061579 attempt 1 fails at initial sign-in
+  before workspace entry. Authenticated artifact 12016308632 (574,081 bytes,
+  SHA-256 `5dca4f7de0038e32e81f2324f954f3c96d29476f6237146774676a2237dfa839`)
+  passes archive/CRC checks. Visually inspected masked screenshot shows
+  `Failed to fetch`; bounded diagnostics show no login HTTP response, session
+  status 200, form error present and workspace absent. Its separate previous-
+  client refresh baseline PASS. Web shipping code is unchanged since the
+  previous successful lifecycle run. Only this failed job is retried once;
+  the first failure and its evidence remain retained, not relabeled PASS.
+- E77 installed run 38830056374 fails before downloading with
+  `microphone_not_muted`, build 78, connected voice, no SDK error codes.
+  Authenticated artifact 12017975461 is 33,735 bytes, SHA-256
+  `615bf0b233bc14d4684433006df18b710bbc0344534c6ac2a8d610ee97baf7a4`;
+  its image was visually inspected and confirms an actual connected room with
+  microphone on. Source inspection establishes that compact drawer channel
+  rows deliberately call `enterVoiceChannel` (normal join), while desktop
+  rows only select. The previous driver then tapped a disabled listener button
+  during that automatic admission. This explains E77's wrong initial mode;
+  it does not prove the original A42 connection error's underlying cause.
+- The driver now opens voice through the existing public quick-jump UI,
+  explicitly labeled “Open room without connecting”, then taps an enabled
+  listener button. Both the initial join and explicit post-update rejoin use
+  this route; no production voice behavior is changed or bypassed. Two new
+  sidebar/drawer widget cases assert that the ordinary autojoin row is never
+  tapped. Current focused journey/bounds/privacy tests (11) and analyzer PASS.
+- Browser retry 38830061579 attempt 2 fails earlier in the unchanged-client
+  baseline: Chromium reports `net::ERR_NETWORK_CHANGED` at initial loopback
+  `page.goto`. The fixture now retries that initial GET at most three times,
+  only for that exact error. TLS failures, foreign origins and authentication
+  mutations are never retried by this helper. Six focused navigation/privacy
+  tests PASS. Failed authentication requests additionally retain only an
+  allowlisted transport code for the fixed login/session endpoint, never URL,
+  credentials, body or raw exception. Both first failed attempts stay FAIL.
