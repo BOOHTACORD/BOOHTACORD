@@ -19,5 +19,7 @@ extension WorkspaceDirectConversationStateInitStateAction
     workspaceDraftEpoch = ComposerDraftMemory.epoch;
     workspaceController.addListener(workspaceRememberDraft);
     workspaceRestoreDraft(widget.conversation.id);
+    workspaceLoadSavedScroll();
+    workspaceScroll.addListener(workspaceRememberScrollAfterLayout);
   }
 }

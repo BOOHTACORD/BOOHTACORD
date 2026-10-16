@@ -33,9 +33,10 @@ jobs:
       - name: Analyze Flutter client
         working-directory: clients/flutter
         run: flutter analyze --no-fatal-infos
+      - name: Restore pinned Sparkle SDK
+        run: python3 -m tools.build.desktop_updater.sdk macos
       - name: Build universal macOS release client
-        working-directory: clients/flutter
-        run: flutter build macos --release --no-pub
+        run: python3 -m tools.build.macos.run
       - name: Package macOS CI build and checksum
         shell: bash
         run: |

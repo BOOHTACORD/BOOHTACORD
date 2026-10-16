@@ -39,6 +39,48 @@ jobs:
           path: .out/responsive-shell-browser-results/**
           if-no-files-found: ignore
           retention-days: 30
+      - name: Retain synthetic Web control and browser zoom captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-controls-${{ github.sha }}
+          path: .out/issue342/browser/**
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Retain synthetic microcopy inventory and visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-microcopy-${{ github.sha }}
+          path: .out/issue343/browser/**
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Retain synthetic navigation density and browser zoom evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-navigation-${{ github.sha }}
+          path: .out/issue344/browser/**
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Retain search mode and DM picker actual browser zoom evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-search-dm-picker-${{ github.sha }}
+          path: |
+            .out/qa294-search-session-browser/**
+            .out/dw02-dm-starter/**
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Retain synthetic TEXT and DM rhythm and browser zoom evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-chat-rhythm-${{ github.sha }}
+          path: .out/issue345/browser/**
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain sanitized real-SFU screen-share smoke evidence
         if: always()
         uses: actions/upload-artifact@v4

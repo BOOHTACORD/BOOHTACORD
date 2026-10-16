@@ -24,7 +24,7 @@ test('WCAG smoke covers navigation, search and connected voice dock', async ({ p
   await expectAxeClear(page, '#app')
   await page.getByRole('button', { name: 'Открыть навигацию' }).click()
   await expectAxeClear(page, '#app')
-  await page.getByTestId('workspace-drawer').getByRole('button', { name: 'Закрыть навигацию' }).click()
+  await page.getByTestId('workspace-sidebar').getByRole('button', { name: 'Закрыть навигацию' }).click()
   await page.getByRole('button', { name: 'Открыть поиск' }).click()
   await expectAxeClear(page, '#app')
 })
@@ -588,7 +588,8 @@ test('voice prejoin announces connecting and blocks duplicate joins', async ({ p
   })
 
   await expect(page.getByRole('heading', { name: 'Подключаемся к голосовой комнате' })).toBeVisible()
-  await expect(page.getByText('Соединение устанавливается.')).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Подключаемся к голосовой комнате' })).toHaveAttribute('aria-live', 'polite')
+  await expect(page.locator('.voice-prejoin-copy')).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Подключаемся…' })).toBeDisabled()
   await expect(page.getByRole('button', { name: 'Подключиться без микрофона' })).toBeDisabled()
   await expectAxeClear(page, '.voice-prejoin')

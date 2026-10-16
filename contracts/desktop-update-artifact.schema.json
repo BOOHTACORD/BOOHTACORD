@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Publisher-authenticated desktop artifact payload",
+  "description": "Signature input: UTF-8 BOOHTACORD-DESKTOP-ARTIFACT-v1 followed by newline and the exact decoded payload bytes. Ed25519 public root is embedded in client. Install target remains selected by existing compatibility policy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "package_id",
+    "release_id",
+    "version",
+    "native_build",
+    "download_url",
+    "min_os_version",
+    "expires_at",
+    "schema_version",
+    "application_family",
+    "release_order",
+    "platform",
+    "arch",
+    "distribution",
+    "channel",
+    "package_type",
+    "size",
+    "sha256",
+    "min_api_version",
+    "min_updater_version"
+  ],
+  "properties": {
+    "package_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "release_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9._-]{1,96}$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32,
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "native_build": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16,
+      "pattern": "^\\d+$"
+    },
+    "download_url": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "min_os_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "expires_at": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048,
+      "format": "date-time"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "application_family": {
+      "const": "boohtacord"
+    },
+    "release_order": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "platform": {
+      "enum": [
+        "windows",
+        "macos"
+      ]
+    },
+    "arch": {
+      "enum": [
+        "x64",
+        "arm64",
+        "any"
+      ]
+    },
+    "distribution": {
+      "const": "direct"
+    },
+    "channel": {
+      "enum": [
+        "stable",
+        "beta"
+      ]
+    },
+    "package_type": {
+      "enum": [
+        "sparkle_zip",
+        "velopack_nupkg"
+      ]
+    },
+    "size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1073741824
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "min_api_version": {
+      "const": 1
+    },
+    "min_updater_version": {
+      "const": 1
+    },
+    "native_signature": {
+      "type": "string",
+      "minLength": 88,
+      "maxLength": 88,
+      "contentEncoding": "base64"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "platform": {
+            "const": "macos"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "native_signature"
+        ],
+        "properties": {
+          "package_type": {
+            "const": "sparkle_zip"
+          },
+          "package_id": {
+            "const": "ru.boohtacord.boohtacordDesktop"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "package_type": {
+            "const": "velopack_nupkg"
+          },
+          "package_id": {
+            "const": "boohtacord_desktop"
+          },
+          "arch": {
+            "const": "x64"
+          }
+        }
+      }
+    }
+  ]
+}

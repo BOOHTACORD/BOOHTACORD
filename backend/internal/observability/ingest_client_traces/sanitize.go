@@ -3,6 +3,7 @@ package ingestclienttraces
 import (
 	collectortrace "go.opentelemetry.io/proto/otlp/collector/trace/v1"
 	tracepb "go.opentelemetry.io/proto/otlp/trace/v1"
+	desktopupdate "voice-platform/backend/internal/observability/ingest_client_traces/desktop_update"
 	voiceaudio "voice-platform/backend/internal/observability/ingest_client_traces/voice_audio"
 	voicedisconnect "voice-platform/backend/internal/observability/ingest_client_traces/voice_disconnect"
 	volumepreference "voice-platform/backend/internal/observability/ingest_client_traces/volume_preference"
@@ -18,6 +19,8 @@ func cleanLegacy(span, clean *tracepb.Span, platform string) {
 	clean.Events = safeClientEvents(span)
 	clean.Attributes = audioInputAttributes(span, platform)
 	switch span.Name {
+	case "desktop.update":
+		clean.Attributes = desktopupdate.Clean(span.Attributes, platform)
 	case "voice.audio.sample":
 		clean.Attributes = voiceaudio.Clean(span.Attributes, platform)
 	case "voice.volume.preference":

@@ -49,6 +49,7 @@ class WorkspaceController extends ChangeNotifier {
   NavigationSection navigationSection = NavigationSection.channels;
   WorkspacePanel workspacePanel = WorkspacePanel.none;
   AdminSection adminSection = AdminSection.members;
+  ProfileSection profileSection = ProfileSection.profile;
   SearchMessage? searchContextMessage;
   String searchContextHeading = 'Контекст найденного сообщения';
   List<ChatMessage> searchContextTextMessages = const [];
@@ -82,6 +83,7 @@ class WorkspaceController extends ChangeNotifier {
     navigationSection = NavigationSection.channels;
     workspacePanel = WorkspacePanel.none;
     adminSection = AdminSection.members;
+    profileSection = ProfileSection.profile;
     searchContextMessage = null;
     searchContextHeading = 'Контекст найденного сообщения';
     searchContextTextMessages = const [];

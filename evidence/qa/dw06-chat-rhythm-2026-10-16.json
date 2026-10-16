@@ -1,0 +1,507 @@
+{
+  "scope": "DW-006 Web synthetic fixtures and isolated actual-stack captures; no user media",
+  "base": "efdb4b04597d5f0a130b3b3f1a19ce17b9b1becb",
+  "app_candidate": "2cb8bdc05a2e8e697c682e0561276b216c332b7a",
+  "web_src_tree": "05112d099a978d91ebe3636a8c8f9d4e2db04ca0",
+  "local_gate_report": ".out/local-features/20261016-135848/report.json",
+  "local_gate_report_sha256": "6cac8e2cce808df69d1e949292b28a76f9542d4c14c8ab7fc23583d69367766b",
+  "local_gate_source": "2cb8bdc05a2e8e697c682e0561276b216c332b7a diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stages": [
+    {
+      "name": "web-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "web-build",
+      "status": "PASS"
+    },
+    {
+      "name": "web-accessibility",
+      "status": "PASS"
+    },
+    {
+      "name": "web-chat_rhythm",
+      "status": "PASS"
+    },
+    {
+      "name": "web-control_consistency",
+      "status": "PASS"
+    },
+    {
+      "name": "web-conversation_action_disclosure",
+      "status": "PASS"
+    },
+    {
+      "name": "web-mentions_inbox",
+      "status": "PASS"
+    },
+    {
+      "name": "web-message_social",
+      "status": "PASS"
+    },
+    {
+      "name": "web-microcopy",
+      "status": "PASS"
+    },
+    {
+      "name": "web-navigation_density",
+      "status": "PASS"
+    },
+    {
+      "name": "web-password_generation",
+      "status": "PASS"
+    },
+    {
+      "name": "web-quick_jump_people",
+      "status": "PASS"
+    },
+    {
+      "name": "web-readonly_archive",
+      "status": "PASS"
+    },
+    {
+      "name": "web-responsive_shell",
+      "status": "PASS"
+    },
+    {
+      "name": "web-screen_profile",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_sessions",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-1440",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-393",
+      "status": "PASS"
+    }
+  ],
+  "capture_sources": {
+    "clients/web/tests/chat_rhythm/data.ts": "479c646306c2d8eaecb6ebf4e00d01ea54ec8633f0884dd483ed7d17473ede48",
+    "clients/web/tests/chat_rhythm/fixture.html": "bf1efe4c7fbea8205fa291ea815bf042b34d234f0de79fd943860e86ae28ef94",
+    "clients/web/tests/chat_rhythm/fixture.ts": "6c48051ee902d7ae07bc15562a8bf42c85aa1f9bd45d4ff7d8af160893f1d056",
+    "clients/web/tests/chat_rhythm/helpers.ts": "96e2b068cb87ccc97ddbc829413250914c5291ec08500eea7fe183b3e8cb7af2",
+    "clients/web/tests/chat_rhythm/playwright.config.ts": "179958ac12747691600e37d2057892d7147b12353802245725f6bcb2c77919b0",
+    "clients/web/tests/chat_rhythm/retention.browser.spec.ts": "5c297153b20f6d8e696add192b982e6d99b7ae101532d77354677bdfd16f19a5",
+    "clients/web/tests/chat_rhythm/rhythm.browser.spec.ts": "ebd1c64a07f2cf3b0df82d92483ec4727cec71ad53f5dcdc73a2f3e3705a88dd",
+    "clients/web/tests/chat_rhythm/routes.ts": "c853a61841a37f4aa99157b185893b85dd2ba12737d3b9285c829b028f2b4dd4",
+    "clients/web/tests/chat_rhythm/zoom.browser.spec.ts": "f28aa111cbfe96b5b016214cb37a198d5561275779d37bec98072af92e0809b1"
+  },
+  "rejected_visual_capture": {
+    "path": ".out/local-features/20261016-135848/web-chat_rhythm/rhythm.browser-inventory-CHANNEL-1440px/history-top.png",
+    "sha256": "edc28547b59430cd14fd1fd630210483f9e2d485fbaa19a4c6a7b443c370dc3c",
+    "reason": "partial Chromium paint after virtual scroll; not an approved baseline; clean recapture reviewed after paint synchronization"
+  },
+  "captures": [
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-CHANNEL-1440px/attachments.png",
+      "sha256": "8bd58038128571f7cc510381d45b6716e41f21f2b704e4c2688a6adc89b34358",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-CHANNEL-1440px/history-top.png",
+      "sha256": "1131e8e9cc4faf030a957a4c7fc9aadb71834ff4dd7ec1f40762a4fb28360ea7",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-CHANNEL-1440px/rich-text.png",
+      "sha256": "1bb6a5e5564b2341e7078d1c6d65a97df5d68541ff508eb5baf5d7f659a3778e",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-CHANNEL-320px/attachments.png",
+      "sha256": "be763455ed7598568e4725506d68d975cbc1475db09eb63970400f9bb6dc4490",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-CHANNEL-320px/history-top.png",
+      "sha256": "3b862fbc73bc709aa50322fc3e451fcfaed9b55ff42634b03624931df43695eb",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-CHANNEL-320px/rich-text.png",
+      "sha256": "d7efc91d8390612ca2586b1fe681f4ff5fd9199936a29619e472dd70153b2cfd",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-CHANNEL-390px/attachments.png",
+      "sha256": "a5038e918059235d059e331c9702cec72a72b6dde8be57aa34a469e0240e60f5",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-CHANNEL-390px/history-top.png",
+      "sha256": "9c7902949a9e5d3ea96629099c60add0be96e8d65d506851d1825b61c3f10133",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-CHANNEL-390px/rich-text.png",
+      "sha256": "18fc59f2b200eaae1f15ecdbe40d795858396df0977eec24a7aab7e8cd66e1e7",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-DIRECT-MESSAGE-1440px/attachments.png",
+      "sha256": "584700cacce4c0adea25c2c6d433e462224eb91ca589a9e8853a29fe8ea41340",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-DIRECT-MESSAGE-1440px/history-top.png",
+      "sha256": "603f810264098618d168926715302999610835adf4864647d32318770bf114ef",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-DIRECT-MESSAGE-1440px/rich-text.png",
+      "sha256": "c72e46694763477bc89ab89b9cb613b6fff7394092deb3c8b1fb297db8ea5942",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-DIRECT-MESSAGE-320px/attachments.png",
+      "sha256": "79356e52fe5783e27eb6606f88cbb82d788d534bd5f1595661df5164e73c778d",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-DIRECT-MESSAGE-320px/history-top.png",
+      "sha256": "df4b1d85fb3e2f44f0542a859f7a09585d87f7b6f3d5f356b8bfbb77a9df4d0e",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-DIRECT-MESSAGE-320px/rich-text.png",
+      "sha256": "a5f045c39d8a48534b65ea2e5c27ea8f1356ecbc6613564d836f779f72fd478a",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-DIRECT-MESSAGE-390px/attachments.png",
+      "sha256": "73e2d1b675a5a94b9cf0d46a665a8c1c9ae94726e0f4a7115a3055c5a054ac80",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-DIRECT-MESSAGE-390px/history-top.png",
+      "sha256": "853f8aa7c759584a458870b787409f2a122e1be7ac5befc89bd795e14409eda3",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "before",
+      "path": ".out/issue345/before-valid/rhythm.browser-inventory-DIRECT-MESSAGE-390px/rich-text.png",
+      "sha256": "bd0a09501311fbd45907655ad40b113794d632a7581b6381e5c6a3fb8fe2ab28",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-CHANNEL-ima-acd63-wnload-links-remain-bounded/image-viewer.png",
+      "sha256": "6988db4da6d26787cf9bb91c2a9756b468411340842161a3380cc690222e904c",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-DIRECT-MESS-19df2-wnload-links-remain-bounded/image-viewer.png",
+      "sha256": "2b434f8103fadb2d871d003a195178f86eb26fdb4200d5854c647536853c1c76",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-empty-CHANN-346dd--and-preserves-focus-counts/reaction-count-closed.png",
+      "sha256": "c065085c8befa06e9ab5776a3484510ccc6df15cf4b633d3d83abe951a941765",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-empty-CHANN-346dd--and-preserves-focus-counts/reaction-palette-focus.png",
+      "sha256": "b986ccee11852c24021a2fbb1800a7584fac7d970b118a9878aaebb466a46ce3",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-empty-DIREC-fb3f5--and-preserves-focus-counts/reaction-count-closed.png",
+      "sha256": "2ffaf6b6a583cf8c1a4ba387ab1fc1dbb7f8f56c5f5359a6744ecf5fec774046",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-empty-DIREC-fb3f5--and-preserves-focus-counts/reaction-palette-focus.png",
+      "sha256": "3bd6bfcef4c3db5ecd213d941eef992f735ddf0a7842d9a524b08f47b1bd7167",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-CHANNEL-1440px/attachments.png",
+      "sha256": "49e13836aa258fd677f85eb46e67eae2bec19d2b2a3aab2a2990429b24a37fad",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-CHANNEL-1440px/history-top.png",
+      "sha256": "edc28547b59430cd14fd1fd630210483f9e2d485fbaa19a4c6a7b443c370dc3c",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-CHANNEL-1440px/rich-text.png",
+      "sha256": "3a8f4e1a8db33da5df0e9252974edece2cbf023c2b48617b3607ad8a42736137",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-CHANNEL-320px/attachments.png",
+      "sha256": "78911e418a766754648b22ad94e1972b72778ff75db71176cf6c9da6117646f1",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-CHANNEL-320px/history-top.png",
+      "sha256": "a8b9c552815bd66848cd7e0ebdeb1fda274b8d0db356dcfb1e8084944e169d98",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-CHANNEL-320px/rich-text.png",
+      "sha256": "2b67d058dcfb3c3f502e9d6215f797a9f435660f294319bcf6818700fc5ee224",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-CHANNEL-390px/attachments.png",
+      "sha256": "17fa3c849f27b5699819b0b706328359eaf0d20d74399bbe53f4571f1ff72c13",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-CHANNEL-390px/history-top.png",
+      "sha256": "82a8a5b9f19c07c708164b2184ed2542df54da32c5d30ded58ae4730165a40ee",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-CHANNEL-390px/rich-text.png",
+      "sha256": "6c97ec38a6a98f17f863c0cd8ad40ea929552977a39242037631c2f92513d4f3",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-DIRECT-MESSAGE-1440px/attachments.png",
+      "sha256": "66bd0abff4eaf0400b05fcdd689c9123405a180633f14d374d5fe530c7c756fc",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-DIRECT-MESSAGE-1440px/history-top.png",
+      "sha256": "066134b23179bdb3df87a6f73cb174c36348ff1fb37fde78688bef131baed2b2",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-DIRECT-MESSAGE-1440px/rich-text.png",
+      "sha256": "900d2860dc3168040227909a52c68ee8a4d18a8efb6c3a88c666c426a0edf6ee",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-DIRECT-MESSAGE-320px/attachments.png",
+      "sha256": "7b6e1990e44598592cec51ab0c900d1f393741ab7de6b6beb949f1e67c46512f",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-DIRECT-MESSAGE-320px/history-top.png",
+      "sha256": "afb64c46dbd2d61d5b099fe22fbfb1ca41e9866d119a62be8ec703b003aca1a5",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-DIRECT-MESSAGE-320px/rich-text.png",
+      "sha256": "41248c2057affe5e801e6df01578a123a3738c674212a7b35ec2d69b5aa1842b",
+      "width": 320,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-DIRECT-MESSAGE-390px/attachments.png",
+      "sha256": "9cb0607520fdc6434c22d003f1209a12b9b09cf0a44c6f542e0cd6ce600dcbd0",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-DIRECT-MESSAGE-390px/history-top.png",
+      "sha256": "2eefaeac858f9333faa73f3e71f1057c98b4f46f155dfa4e80a37512a5d12365",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/rhythm.browser-inventory-DIRECT-MESSAGE-390px/rich-text.png",
+      "sha256": "129c669949b1dfda4f6ad700f97d8f9729ddc975f989fc4073790cb0e00f78c7",
+      "width": 390,
+      "height": 900
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/zoom.browser-actual-200-br-8607c-DIRECT-MESSAGE-780px-window/zoom-200-history.png",
+      "sha256": "fe963e87610be2135b889546bcdad7d742e2f6b7250416713a842b9e28b25267",
+      "width": 780,
+      "height": 913
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/zoom.browser-actual-200-br-8607c-DIRECT-MESSAGE-780px-window/zoom-200-rich-text.png",
+      "sha256": "cc67009434c6d53385e6cb5db242888a829c846910a5b83f310caf8dde2569d3",
+      "width": 780,
+      "height": 913
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/zoom.browser-actual-200-br-c9672-IRECT-MESSAGE-1440px-window/zoom-200-history.png",
+      "sha256": "4cf2fbb18ce4ee00856e100030a2c60a8a366d1d004c871135648e4cb43bb5c3",
+      "width": 1440,
+      "height": 913
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/zoom.browser-actual-200-br-c9672-IRECT-MESSAGE-1440px-window/zoom-200-rich-text.png",
+      "sha256": "e48955a7835e0e049bc0bc11967ab0253c549d2ee05ba1668e577d4d16521966",
+      "width": 1440,
+      "height": 913
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/zoom.browser-actual-200-browser-zoom-CHANNEL-1440px-window/zoom-200-history.png",
+      "sha256": "42532b25a9de820d05ee5d474a49a7b779ca6211043bf6758586a9f1e4235729",
+      "width": 1440,
+      "height": 913
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/zoom.browser-actual-200-browser-zoom-CHANNEL-1440px-window/zoom-200-rich-text.png",
+      "sha256": "a984e69ad6ddbec1dc59aa4aa77f41680410c6f17d9ffb44a05b339877a107ee",
+      "width": 1440,
+      "height": 913
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/zoom.browser-actual-200-browser-zoom-CHANNEL-780px-window/zoom-200-history.png",
+      "sha256": "7647da96145f4956e2ca27ebdf34bb83d23281ddd3fe5cec9a1204df5a974015",
+      "width": 780,
+      "height": 913
+    },
+    {
+      "phase": "after",
+      "path": ".out/issue345/final-review/zoom.browser-actual-200-browser-zoom-CHANNEL-780px-window/zoom-200-rich-text.png",
+      "sha256": "454ae7fdb9a392d9ba5c3d606aca9b286337e08d8e3c83236965cc1d84f4ef18",
+      "width": 780,
+      "height": 913
+    },
+    {
+      "phase": "actual-stack",
+      "path": ".out/client-lifecycle/1440/channel-text-actions.png",
+      "sha256": "41bdf035b42801cb8da394ca59e3dc9afd534a5d03c4c79f115f58b4ebe5d449",
+      "width": 2880,
+      "height": 1800
+    },
+    {
+      "phase": "actual-stack",
+      "path": ".out/client-lifecycle/1440/dm-conversation.png",
+      "sha256": "de457a3498366586937059d53b9454ae10758182ec8a924638f04e31ff399870",
+      "width": 2880,
+      "height": 1800
+    },
+    {
+      "phase": "actual-stack",
+      "path": ".out/client-lifecycle/1440/dm-search.png",
+      "sha256": "e4e1fd5d60fab4fd0be526b8338c85953145a9711475cc829706f54bb6718ce2",
+      "width": 2880,
+      "height": 1800
+    },
+    {
+      "phase": "actual-stack",
+      "path": ".out/client-lifecycle/1440/channel-text-200.png",
+      "sha256": "bb9b97dadb24078601ce2b97db416684dbd0b92d584c35dee47f92e0428a0be9",
+      "width": 2880,
+      "height": 1800
+    },
+    {
+      "phase": "actual-stack",
+      "path": ".out/client-lifecycle/393/channel-text-actions.png",
+      "sha256": "bf79e8e94432de0526ab1aa288dc79c0146dcead8f9fae0d0f4636bcd08b719f",
+      "width": 1179,
+      "height": 2556
+    },
+    {
+      "phase": "actual-stack",
+      "path": ".out/client-lifecycle/393/dm-conversation.png",
+      "sha256": "4e23e5fa787d899b4abed35b3f7d9717591cbcebe77150b8c090d40b96db3499",
+      "width": 1179,
+      "height": 2556
+    },
+    {
+      "phase": "actual-stack",
+      "path": ".out/client-lifecycle/393/dm-search.png",
+      "sha256": "f02c00c5af4ccc8d5c3f58632957df3dfbd3233a4cde3e525a76d92af15b12d8",
+      "width": 1179,
+      "height": 2556
+    },
+    {
+      "phase": "actual-stack",
+      "path": ".out/client-lifecycle/393/channel-text-200.png",
+      "sha256": "4dc61257d82e24878a1a4cb90ad04a716f20d665dd7b07b132d86b0f2f29c595",
+      "width": 1179,
+      "height": 2556
+    }
+  ]
+}

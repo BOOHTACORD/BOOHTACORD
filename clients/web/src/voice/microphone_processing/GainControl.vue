@@ -10,7 +10,7 @@ function change(event: Event) { setMicrophoneSettings({ ...microphoneSettings.va
     <p v-if="agc">Управляется автоматически. Ручное значение сохранено: {{ microphoneSettings.microphoneGainPercent }}%.</p>
     <p v-else>Усиление отправляемого сигнала. 100% — без дополнительного усиления.</p>
     <p role="status">{{ microphoneMeter.clipping ? 'Перегрузка: уменьшите громкость микрофона.' : 'Перегрузка не обнаружена.' }}</p>
-    <button type="button" :disabled="agc" @click="setMicrophoneSettings({ ...microphoneSettings, microphoneGainPercent: 100 })">Сбросить громкость</button>
+    <button class="gc-button gc-button--secondary" type="button" :disabled="agc" @click="setMicrophoneSettings({ ...microphoneSettings, microphoneGainPercent: 100 })">Сбросить громкость</button>
   </div>
 </template>
 <style scoped>

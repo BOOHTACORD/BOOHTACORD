@@ -28,9 +28,28 @@ onBeforeUnmount(()=>{alive=false;sequence++;stop()})
 </script>
 <template>
   <div class="reaction-tools" role="group" aria-label="Реакции на сообщение">
-    <button v-for="emoji in emojis" :key="emoji" type="button" :disabled="loading||busy||Boolean(error)" :aria-label="`Реакция ${emoji}`" :aria-pressed="mine(emoji)" @click="toggle(emoji)">{{emoji}}<span v-if="!loading&&!error&&count(emoji)">{{count(emoji)}}</span></button>
-    <slot :can-pin="canPin&&!loading&&!error" />
+    <div v-if="!loading&&!error&&rows.some(row=>row.count>0)" class="reaction-counts" role="group" aria-label="Установленные реакции">
+      <button v-for="reaction in rows.filter(row=>row.count>0)" :key="reaction.emoji" type="button" :disabled="busy" :aria-label="`Реакция ${reaction.emoji}`" :aria-pressed="reaction.mine" @click="toggle(reaction.emoji)">{{reaction.emoji}} <span>{{reaction.count}}</span></button>
+    </div>
+    <details class="reaction-picker">
+      <summary>{{ canPin ? 'Реакции и закрепление' : 'Реакции' }}</summary>
+      <div class="reaction-palette">
+        <button v-for="emoji in emojis" :key="emoji" type="button" :disabled="loading||busy||Boolean(error)" :aria-label="`Реакция ${emoji}`" :aria-pressed="mine(emoji)" @click="toggle(emoji)">{{emoji}}<span v-if="!loading&&!error&&count(emoji)"> {{count(emoji)}}</span></button>
+        <slot :can-pin="canPin&&!loading&&!error" />
+      </div>
+    </details>
     <span v-if="loading" role="status">Загрузка реакций…</span><span v-if="error" role="alert">{{error}} <button type="button" :disabled="loading||busy" @click="load()">Обновить реакции</button></span>
   </div>
 </template>
-<style scoped>.reaction-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px;font-size:0.75rem}.reaction-tools>button{min-height:28px;border:1px solid var(--gc-border);border-radius:14px;background:transparent;color:inherit;padding:3px 8px}.reaction-tools>button[aria-pressed="true"]{border-color:var(--gc-accent);background:var(--gc-panel)}.reaction-tools span{margin-left:4px}@media (max-width:600px),(hover:none),(pointer:coarse){.reaction-tools>button{min-width:44px;min-height:44px}}</style>
+<style scoped>
+.reaction-tools { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 2px; font-size: 0.75rem; }
+.reaction-counts, .reaction-palette { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+.reaction-picker { min-width: 0; max-width: 100%; }
+summary { width: fit-content; min-height: 28px; align-content: center; border-radius: 4px; padding: 2px 4px; color: var(--gc-text-muted); cursor: pointer; }
+.reaction-palette { margin-top: 2px; }
+.reaction-tools button { min-height: 28px; border: 1px solid var(--gc-border); border-radius: 14px; background: transparent; color: inherit; padding: 3px 8px; }
+.reaction-tools button[aria-pressed="true"] { border-color: var(--gc-accent); background: var(--gc-panel); }
+summary:hover { color: var(--gc-text-primary); background: var(--gc-surface-hover); }
+summary:focus-visible, .reaction-tools button:focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 2px; }
+@media (max-width:600px),(hover:none),(pointer:coarse) { summary, .reaction-tools button { min-width: 44px; min-height: 44px; } }
+</style>

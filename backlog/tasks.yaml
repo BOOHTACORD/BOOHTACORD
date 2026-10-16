@@ -137,7 +137,7 @@ tasks:
     title: Web search aside tabs without horizontal overflow (GitHub #340, epic #339)
     requirements: [REQ-SEARCH-01, REQ-UI-01, REQ-UI-02]
     depends_on: [T-041, T-050]
-    evidence: [clients/web/tests/search_sessions/tabs.browser.spec.ts, clients/web/tests/search_sessions/retention.browser.spec.ts, evidence/qa/dw01-search-tabs-2026-10-15.json]
+    evidence: [clients/web/tests/search_sessions/tabs.browser.spec.ts, clients/web/tests/search_sessions/retention.browser.spec.ts, evidence/qa/dw01-search-tabs-2026-10-15.json, evidence/qa/pr355-search-dm-acceptance-2026-10-16.md]
   - id: T-050
     title: Desktop Russian UI and accessibility
     requirements: [REQ-UI-01, REQ-UI-02]
@@ -147,7 +147,27 @@ tasks:
     title: Web DM candidate picker in a managed modal (GitHub #341, epic #339)
     requirements: [REQ-DM-01, REQ-UI-01, REQ-UI-02]
     depends_on: [T-041, T-050]
-    evidence: [clients/web/tests/dm_starter/overlay.browser.spec.ts, evidence/qa/dw02-dm-starter-2026-10-15.json]
+    evidence: [clients/web/tests/dm_starter/overlay.browser.spec.ts, evidence/qa/dw02-dm-starter-2026-10-15.json, evidence/qa/pr355-search-dm-acceptance-2026-10-16.md]
+  - id: DW-003
+    title: Web Design V2 consistent native controls and action states (GitHub #342)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [T-050, T-041, T-022, T-014]
+    evidence: [evidence/qa/dw03-controls-2026-10-16.md]
+  - id: DW-004
+    title: Web contextual microcopy and accessible action hints (GitHub #343)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [T-050, T-041, T-022, T-014, DW-003]
+    evidence: [evidence/qa/dw04-microcopy-2026-10-16.md]
+  - id: DW-005
+    title: Dense Web guild navigation with accessible rows and one scroll surface (GitHub #344)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [T-050, T-020, T-041, T-022, DW-003, DW-004]
+    evidence: [evidence/qa/dw05-navigation-2026-10-16.md]
+  - id: DW-006
+    title: Continuous Web TEXT and DM message rhythm preserving grouping and actions (GitHub #345)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-CHAT-01, REQ-DM-01, REQ-QUALITY-01]
+    depends_on: [T-040, T-041, T-044, T-050, DW-003, DW-004]
+    evidence: [evidence/qa/dw06-chat-rhythm-2026-10-16.md]
   - id: T-051
     title: Android native client and APK
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUTH-01, REQ-SECURITY-01, REQ-VOICE-01]
@@ -538,6 +558,31 @@ tasks:
     requirements: [REQ-QUALITY-01, REQ-PLATFORM-01]
     depends_on: [UPD-011]
     evidence: [evidence/flutter/qa226-client-update-device-acceptance-2026-10-02-001.json]
+  - id: UPD-013
+    title: Publisher-signed desktop install artifact contract
+    requirements: [REQ-PLATFORM-01, REQ-SECURITY-01, REQ-DEPLOY-01]
+    depends_on: [UPD-001, UPD-005, UPD-009]
+    evidence: [desktop-artifact-trust-tests, backend-client-update-tests]
+  - id: UPD-014
+    title: Desktop background update transaction and persistent staging
+    requirements: [REQ-PLATFORM-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [UPD-013]
+    evidence: [desktop-update-coordinator-tests]
+  - id: UPD-015
+    title: Origin and account scoped desktop restart restoration
+    requirements: [REQ-PLATFORM-01, REQ-SECURITY-01, REQ-UI-02]
+    depends_on: [UPD-014]
+    evidence: [desktop-update-checkpoint-tests]
+  - id: UPD-016
+    title: Native Sparkle and Velopack apply adapters and signed packages
+    requirements: [REQ-PLATFORM-01, REQ-SECURITY-01, REQ-DEPLOY-01]
+    depends_on: [UPD-014, UPD-015]
+    evidence: [desktop-native-builds, desktop-updater-package-inspection]
+  - id: UPD-017
+    title: Desktop installed N to N plus one and bounded rollback acceptance
+    requirements: [REQ-PLATFORM-01, REQ-QUALITY-01, REQ-QUALITY-02]
+    depends_on: [UPD-016]
+    evidence: [evidence/release/issue-337-desktop-updates-2026-10-14.md]
   - id: RP-001
     title: Role permissions V1 specification traceability and implementation plan
     requirements: [REQ-ADMIN-01, REQ-CHANNEL-01, REQ-CHANNEL-02]

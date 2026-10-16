@@ -248,13 +248,20 @@
       "clients/flutter/lib/src/features/attachments/*",
       "clients/web/src/search/*",
       "clients/flutter/lib/src/screens/workspace_ui/message_action_menu/*",
-      "clients/flutter/lib/src/screens/workspace_ui/direct_message_action_menu/*"
+      "clients/flutter/lib/src/screens/workspace_ui/direct_message_action_menu/*",
+      "clients/web/src/conversation/history_window/*",
+      "clients/web/src/conversation/reactions/*",
+      "clients/web/src/conversation/system_welcome/*",
+      "clients/web/src/conversation/message_body/*"
     ],
     "web": [
       "tests/conversation_action_disclosure/playwright.config.ts",
       "tests/mentions_inbox/playwright.config.ts",
       "tests/accessibility/playwright.config.ts",
       "tests/search_sessions/playwright.config.ts",
+      "tests/quick_jump_people/playwright.config.ts",
+      "tests/chat_rhythm/playwright.config.ts",
+      "tests/message_social/playwright.config.ts",
       "tests/dm_starter/playwright.config.ts"
     ],
     "flutter": [
@@ -285,13 +292,17 @@
         "target": "integration_test/accessibility_qa_test.dart",
         "scope": "Actual rendered-state axe/keyboard, enlarged-text geometry and native Semantics; missing physical screen readers/platforms keep gate PARTIAL"
       },
+      "issue345": {
+        "browser": "clients/web/tests/chat_rhythm/playwright.config.ts",
+        "scope": "Production Vue TEXT/DM with synthetic multiline, grouped, media, reply, edit, deleted, system and RTL/code fixtures; 320/390/1440px and independently observed actual 200% browser zoom. Existing grouping, action ACL, composer and virtual history retained; actual-stack Web gate separate."
+      },
       "issue340": {
         "browser_test": "clients/web/tests/search_sessions/tabs.browser.spec.ts",
-        "scope": "Actual Vue search-aside at 320/375/390/768/1024/1440 CSS px, 100/200 percent root text scale, four modes, keyboard focus, long labels and retained query/scope. Real stack and browser zoom acceptance recorded separately."
+        "scope": "Actual Vue search rail: all four modes, bounded labels/focus, retained query/filter/result scroll, fresh ACL on reopening; CSS widths 320–1440, root text 200% and independently measured actual browser zoom 200%. Real stack separately required."
       },
       "issue341": {
         "browser_test": "clients/web/tests/dm_starter/overlay.browser.spec.ts",
-        "scope": "Native modal in top layer, focus containment/restoration, Escape/outside cancellation, wrapped names, pagination, retries and one DM open. Root text scale is not native browser zoom; real stack separately required."
+        "scope": "Native top-layer DM picker: long labels, focus cycle/return, Escape/outside and pending cancellation, pagination/retry/single open. CSS widths 320–1920, root text scale plus independently measured actual 200% browser zoom. Actual API/touch separately required."
       }
     }
   },
@@ -306,13 +317,19 @@
       "clients/flutter/lib/src/app*",
       "clients/flutter/lib/src/screens/workspace_ui/*",
       "clients/flutter/lib/src/screens/guild_quick_jump/*",
-      "clients/flutter/lib/src/features/workspace/*"
+      "clients/flutter/lib/src/features/workspace/*",
+      "clients/web/src/shared/action_hint/*",
+      "clients/web/src/shared/workspace_header/*"
     ],
     "web": [
       "tests/responsive_shell/playwright.config.ts",
       "tests/conversation_action_disclosure/playwright.config.ts",
       "tests/mentions_inbox/playwright.config.ts",
-      "tests/accessibility/playwright.config.ts"
+      "tests/accessibility/playwright.config.ts",
+      "tests/control_consistency/playwright.config.ts",
+      "tests/readonly_archive/playwright.config.ts",
+      "tests/microcopy/playwright.config.ts",
+      "tests/navigation_density/playwright.config.ts"
     ],
     "flutter": [
       "test/mobile_navigation_visual_capture_test.dart",
@@ -339,6 +356,18 @@
         "native": "tools/qa/accessibility_runtime/native.py",
         "target": "integration_test/accessibility_qa_test.dart",
         "scope": "Actual rendered-state axe/keyboard, enlarged-text geometry and native Semantics; missing physical screen readers/platforms keep gate PARTIAL"
+      },
+      "issue342": {
+        "browser_test": "clients/web/tests/control_consistency/controls.browser.spec.ts",
+        "scope": "Production controls across guild/audio/archive/quick jump/files; scoped variants, keyboard, disabled/loading, axe, text scaling and independently measured actual browser zoom. Real-stack Web lifecycle is a separate mandatory gate."
+      },
+      "issue343": {
+        "browser": "clients/web/tests/microcopy/playwright.config.ts",
+        "scope": "Source-bound static copy inventory, keyboard/touch help and warning retention; browser zoom and action hints are separate from physical media acceptance"
+      },
+      "issue344": {
+        "browser": "clients/web/tests/navigation_density/playwright.config.ts",
+        "scope": "Actual production navigation components with 36 channels/three categories, keyboard/touch, single scroll surface, persisted favorites/collapse and 320–1920px/actual 200% browser zoom. Real-stack workspace journeys are separate; no native/media acceptance claim."
       }
     }
   },

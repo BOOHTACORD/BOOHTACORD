@@ -6,6 +6,8 @@ test('describes the exact Windows release without claiming a signature', () => {
   const metadata = releaseMetadata('windows-v1.0.26')
   assert.equal(metadata.title, 'BOOHTACORD Windows 1.0.26')
   assert.match(metadata.body, /artifact-manifest\.json/)
+  assert.match(metadata.body, /Setup\.exe/)
+  assert.match(metadata.body, /per-user/)
   assert.doesNotMatch(metadata.body, /signed/i)
 })
 

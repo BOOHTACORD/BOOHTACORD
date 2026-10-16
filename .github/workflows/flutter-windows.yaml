@@ -21,6 +21,24 @@ jobs:
             clients/flutter
             tools
             contracts
+      - name: Compile the standalone recovery monitor before the Flutter toolchain
+        shell: cmd
+        run: |
+          for /f "usebackq tokens=*" %%v in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do call "%%v\Common7\Tools\VsDevCmd.bat" -arch=x64 -no_logo
+          if not defined VCToolsInstallDir exit /b 1
+          if not exist "%RUNNER_TEMP%\desktop-recovery-smoke" mkdir "%RUNNER_TEMP%\desktop-recovery-smoke"
+          cl.exe /nologo /std:c++17 /EHsc /MT /DUNICODE /D_UNICODE /DNOMINMAX clients\flutter\native\desktop_recovery\windows.cpp /Fo"%RUNNER_TEMP%\desktop-recovery-smoke\Recovery.obj" /Fe"%RUNNER_TEMP%\desktop-recovery-smoke\Recovery.exe" /link /SUBSYSTEM:WINDOWS windowsapp.lib version.lib shell32.lib advapi32.lib user32.lib bcrypt.lib
+          if errorlevel 1 exit /b 1
+          dumpbin /dependents "%RUNNER_TEMP%\desktop-recovery-smoke\Recovery.exe" > "%RUNNER_TEMP%\desktop-recovery-smoke\dependencies.txt"
+          findstr /i /c:"VCRUNTIME" /c:"MSVCP" "%RUNNER_TEMP%\desktop-recovery-smoke\dependencies.txt" > nul
+          if not errorlevel 1 exit /b 1
+          exit /b 0
+      - name: Verify the recovery monitor rejects an absent transaction
+        shell: pwsh
+        run: |
+          $directory = Join-Path $env:RUNNER_TEMP 'desktop-recovery-smoke'
+          $process = Start-Process -FilePath (Join-Path $directory 'Recovery.exe') -ArgumentList @('--plan', (Join-Path $directory 'missing-plan.json')) -Wait -PassThru
+          if ($process.ExitCode -ne 2) { throw 'Recovery monitor did not reject the invalid local plan.' }
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: 3.47.7
@@ -32,18 +50,43 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
       - name: Initialize Flutter before reading machine JSON
         run: flutter --version
+      - name: Verify the pinned Velopack tool before the full test run
+        run: python -c "from tools.build.windows.installer import prepare_packager; prepare_packager()"
       - name: Test and analyze app and vendor packages
         run: python -m tools.ci.native.flutter
       - name: Test GitHub release publisher
         run: node --test tools/release/android/publish.test.mjs tools/release/android/publish_retries.test.mjs tools/release/android/publish_conflicts.test.mjs
       - name: Build and inspect Windows distribution
         run: python -m tools.build.windows.run
+      - name: Exercise recovery and real Flutter relaunch after an absent replacement
+        run: python -m tools.qa.desktop_updates.windows_recovery --release clients/flutter/build/windows/x64/runner/Release --output .out/desktop-recovery/windows-smoke.json
+      - name: Retain native recovery component evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-recovery-windows-${{ github.sha }}
+          path: .out/desktop-recovery/windows-smoke.json
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain Windows build as workflow artifact
+        if: ${{ always() && hashFiles('clients/flutter/build/windows/x64/runner/Release/artifact-manifest.json') != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: BOOHTACORD-windows-x64-${{ github.sha }}
           path: clients/flutter/build/windows/x64/runner/Release/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain per-user Windows installer and full update package
+        if: ${{ always() && hashFiles('.out/releases/windows/build-identity.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOOHTACORD-windows-installer-x64-${{ github.sha }}
+          path: .out/releases/windows/
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 30

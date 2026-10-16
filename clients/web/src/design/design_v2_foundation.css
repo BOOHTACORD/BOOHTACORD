@@ -14,7 +14,7 @@ button { border: 0; }
     border-color var(--gc-duration-fast) var(--gc-ease-standard),
     color var(--gc-duration-fast) var(--gc-ease-standard);
 }
-.gc-button:not(:disabled):hover, .role-policy-actions button:not(:disabled):hover,
+.role-policy-actions button:not(:disabled):hover,
 .admin-section-heading > button:not(:disabled):hover,
 .profile-secondary-button:hover, .search-close:hover { background: var(--gc-surface-hover); }
 .gc-button:active:not(:disabled), .role-policy-actions button:active:not(:disabled) { transform: translateY(1px); }
@@ -25,7 +25,7 @@ input:not([type=checkbox]):not([type=radio]), select, textarea {
 }
 input[type=checkbox], input[type=radio] { accent-color: var(--gc-accent); }
 .profile-form input, .admin-table select, .search-form input,
-.search-form select, .workspace-main-panel--audio select {
+.search-form select {
   min-height: var(--gc-size-field);
   border-radius: var(--gc-radius-md);
 }

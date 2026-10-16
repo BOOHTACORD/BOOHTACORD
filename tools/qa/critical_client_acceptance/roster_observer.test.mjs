@@ -4,10 +4,10 @@ import { installRosterFailureObserver } from './roster_observer.mjs'
 
 function fixture() {
   class NativeEventSource {
-    constructor(...args) { this.args = args; this.listeners = new Map() }
+    constructor(...args) { this.args = args; this.listeners = new Map(); this.readyState = 0 }
     addEventListener(name, listener) { this.listeners.set(name, listener) }
-    close() { this.closed = true }
-    emit(name) { this.listeners.get(name)?.({ data: 'unused private payload' }) }
+    close() { this.closed = true; this.readyState = 2 }
+    emit(name) { this.readyState = name === 'open' ? 1 : name === 'error' ? 0 : this.readyState; this.listeners.get(name)?.({ data: 'unused private payload' }) }
   }
   const browser = { EventSource: NativeEventSource, location: { href: 'https://localhost:4810/' } }
   installRosterFailureObserver(browser)
@@ -36,4 +36,33 @@ test('unrelated event streams cannot satisfy the roster failure wait', () => {
   unrelated.emit('roster-unavailable')
   assert.equal(browser.__qaRosterUnavailableCount, 0)
   assert.equal(unrelated.listeners.size, 0)
+})
+
+test('failure diagnostics keep only bounded transport counters and native state', () => {
+  const { browser } = fixture()
+  const first = new browser.EventSource('/api/v1/voice/rosters/events')
+  first.emit('open')
+  first.emit('error')
+  first.emit('roster-unavailable')
+  new browser.EventSource('/api/v1/maintenance/events')
+  assert.deepEqual(browser.__qaRosterTransport, { created: 1, opened: 1, failed: 1, closed_by_client: 0, latest_closed_by_client: false })
+  assert.equal(browser.__qaRosterUnavailableCount, 1)
+  assert.equal(browser.__qaRosterTransportSource, first)
+  assert.equal(browser.__qaRosterTransportSource.readyState, 0)
+  assert.ok(!JSON.stringify(browser.__qaRosterTransport).includes('private payload'))
+})
+
+test('distinguishes an explicit client close from a native transport failure', () => {
+  const { browser } = fixture()
+  const first = new browser.EventSource('/api/v1/voice/rosters/events')
+  const second = new browser.EventSource('/api/v1/voice/rosters/events')
+  first.close()
+  assert.equal(first.closed, true)
+  assert.equal(browser.__qaRosterTransport.closed_by_client, 1)
+  assert.equal(browser.__qaRosterTransport.latest_closed_by_client, false)
+  second.emit('error')
+  assert.equal(browser.__qaRosterTransport.latest_closed_by_client, false)
+  second.close()
+  assert.equal(second.closed, true)
+  assert.equal(browser.__qaRosterTransport.latest_closed_by_client, true)
 })

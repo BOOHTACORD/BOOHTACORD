@@ -1,5 +1,6 @@
 import '../lifecycle/widget.dart';
 import '../../native_bindings.dart';
+import '../../../../services/conversation_scroll_memory.dart';
 
 import '../lifecycle/context.dart';
 import '../handler_bindings.dart';
@@ -35,6 +36,10 @@ extension WorkspaceDirectConversationStateDidUpdateWidgetAction
     }
     if (oldWidget.conversation.id != widget.conversation.id) {
       workspaceRestoreDraft(widget.conversation.id);
+    }
+    if (workspaceScrollMemoryEpoch != ConversationScrollMemory.epoch ||
+        oldWidget.conversation.id != widget.conversation.id) {
+      workspaceLoadSavedScroll();
     }
   }
 }

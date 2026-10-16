@@ -13,6 +13,7 @@ extension AdminScreenStateAdminSelectSectionBindingAction
   void executeAdminSelectSection(AdminSection section) {
     widget.state.workspace.adminSection = section;
     adminMutateView(() => adminSelectedAdminSection = section);
+    widget.state.workspace.changed();
     adminMediaRefreshTimer?.cancel();
     adminMediaRefreshTimer = null;
     if (section == AdminSection.members && adminAccounts.isEmpty) {

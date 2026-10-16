@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import WorkspaceHeaderActions from './WorkspaceHeaderActions.vue'
+import { vActionHint } from '../action_hint/directive'
 
 defineProps<{ panel: 'audio' | 'profile' | 'admin'; navExpanded: boolean }>()
 const emit = defineEmits<{ toggleNavigation: []; close: [] }>()
@@ -24,7 +25,7 @@ const compactTitles = { audio: 'Аудио', profile: 'Настройки', admi
       <span class="settings-workspace-title-full gc-sr-only">{{ labels[panel].title }}</span>
       <span class="settings-workspace-title-compact" aria-hidden="true">{{ compactTitles[panel] }}</span>
     </strong>
-    <button class="settings-workspace-close" type="button" :aria-label="labels[panel].close" @click="emit('close')">
+    <button v-action-hint class="settings-workspace-close" type="button" :aria-label="labels[panel].close" @click="emit('close')">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
     </button>
   </header>

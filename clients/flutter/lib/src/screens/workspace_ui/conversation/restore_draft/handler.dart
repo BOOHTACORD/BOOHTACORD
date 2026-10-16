@@ -27,7 +27,12 @@ extension WorkspaceConversationStateWorkspaceRestoreDraftAction
             channelId,
           );
     workspaceController.value = TextEditingValue(text: draft?.body ?? '');
-    workspaceReplyTarget = draft?.replyTarget;
+    workspacePendingReplyId = draft?.pendingReplyId;
+    workspaceReplyTarget =
+        draft?.replyTarget ??
+        widget.state.messages
+            .where((m) => m.id == workspacePendingReplyId)
+            .firstOrNull;
     workspaceMentionUserIds
       ..clear()
       ..addAll(draft?.mentionUserIds ?? const []);

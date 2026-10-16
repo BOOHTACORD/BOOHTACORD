@@ -49,6 +49,31 @@ class _ProfileSavingState extends AppState {
 }
 
 void main() {
+  testWidgets('selected settings tab survives rebuilding the profile panel', (
+    tester,
+  ) async {
+    final state = AppState(ApiClient())
+      ..profile = const OwnProfile(
+        accountId: 'account-1',
+        login: 'member',
+        displayName: 'Member',
+        role: 'MEMBER',
+      );
+    addTearDown(state.dispose);
+    Widget panel() => MaterialApp(
+      home: Scaffold(body: ProfileScreen(state: state)),
+    );
+    await tester.pumpWidget(panel());
+    await tester.tap(find.text('О приложении'));
+    await tester.pumpAndSettle();
+    expect(find.byType(TextField), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pumpWidget(panel());
+    await tester.pumpAndSettle();
+    expect(find.byType(TextField), findsNothing);
+    expect(find.text('Сохранить профиль'), findsNothing);
+  });
+
   testWidgets(
     'profile save state follows unchanged, dirty, pending, and saved',
     (tester) async {

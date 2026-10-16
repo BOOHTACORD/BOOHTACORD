@@ -1,6 +1,6 @@
 // Code generated from telemetry-flow-v1.json; DO NOT EDIT.
 const flowLimits = {"spans":32,"attributes":32,"events":8,"links":8,"durationSeconds":120,"queue":128,"batch":16,"exportTimeoutMs":3000,"retries":2,"spanNameBytes":64,"attributeKeyBytes":128,"attributeStringBytes":512,"maxBatchBytes":262144,"linkAttributes":8};
-const flowOperations = ["api.request","startup","session.restore","auth.login","message.send","message.render","voice.join","voice.leave","voice.reconnect","realtime.connect","realtime.reconnect","realtime.process","screen.share.start","screen.share.stop","screen.view","media.sample","audio.input.switch","voice.audio.sample","voice.volume.preference","voice.disconnect","telemetry.export.health"];
+const flowOperations = ["api.request","startup","session.restore","auth.login","message.send","message.render","voice.join","voice.leave","voice.reconnect","realtime.connect","realtime.reconnect","realtime.process","screen.share.start","screen.share.stop","screen.view","media.sample","audio.input.switch","desktop.update","voice.audio.sample","voice.volume.preference","voice.disconnect","telemetry.export.health"];
 const flowFields = <String, Map<String, Object>>{
 "app.schema.version": {"type":"integer","min":1,"max":1,"owner":"contract","required":true},
 "session.id": {"type":"id","owner":"server","required":true,"minLength":32,"maxLength":32,"pattern":"^[0-9a-f]{32}\$"},

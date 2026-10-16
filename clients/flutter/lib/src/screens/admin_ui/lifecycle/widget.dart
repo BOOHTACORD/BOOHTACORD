@@ -23,6 +23,7 @@ class AdminScreenState extends AdminScreenStateContext
         AdminScreenStateAdminErrorBinding,
         AdminScreenStateAdminVisibleAdminAccountsBinding,
         AdminScreenStateInitStateBinding,
+        AdminScreenStateDidUpdateWidgetBinding,
         AdminScreenStateDisposeBinding,
         AdminScreenStateAdminOnTopologyMutationChangedBinding,
         AdminScreenStateDidChangeAppLifecycleStateBinding,

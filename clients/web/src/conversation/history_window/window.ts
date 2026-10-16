@@ -31,9 +31,8 @@ export function findVirtualRange(offsets: readonly number[], scrollTop: number, 
 
 export function historyRowGap(kind: HistoryRow['kind'], previous?: HistoryRow, grouped = false, compact = false): number {
   if (!previous) return 0
-  if (kind === 'date') return compact ? 20 : 24
-  if (previous.kind === 'date') return compact ? 24 : 28
-  if (grouped) return compact ? 4 : 4
-  if (previous.hasAttachments) return compact ? 25 : 34
-  return compact ? 20 : 24
+  if (kind === 'date') return 16
+  if (previous.kind === 'date') return 12
+  if (grouped) return 4
+  return compact ? 10 : 12
 }

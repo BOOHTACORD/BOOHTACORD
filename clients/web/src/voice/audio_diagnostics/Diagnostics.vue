@@ -17,7 +17,7 @@ const flag = (value: boolean | null) => value === null ? 'неизвестно' 
 <template>
   <details class="audio-processing-details">
     <summary>Диагностика качества голоса</summary>
-    <label>Профиль следующего подключения<select :value="selected" :disabled="connected" @change="choose"><option v-for="profile in voiceAudioProfiles" :key="profile.id" :value="profile.id">{{ profile.maxBitrate / 1000 }} кбит/с — {{ profile.id }}</option></select></label>
+    <label>Профиль следующего подключения<select class="gc-field" :value="selected" :disabled="connected" @change="choose"><option v-for="profile in voiceAudioProfiles" :key="profile.id" :value="profile.id">{{ profile.maxBitrate / 1000 }} кбит/с — {{ profile.id }}</option></select></label>
     <p>64 и 96 кбит/с — кандидаты для A/B. Улучшение качества ещё не подтверждено.</p>
     <p>Запрошено: Opus, mono, 48 кГц, высокий приоритет, DTX и RED. Фактические параметры — ниже.</p>
     <template v-if="diagnostics">
@@ -34,8 +34,8 @@ const flag = (value: boolean | null) => value === null ? 'неизвестно' 
         <p>{{ metric(sample.bitrateBps == null ? null : sample.bitrateBps / 1000, ' кбит/с') }}; пакеты {{ metric(sample.packets) }}; jitter {{ metric(sample.jitterMs, ' мс') }}; loss {{ metric(sample.lossPercent, '%') }}; concealment {{ metric(sample.concealedSamples) }} samples / {{ metric(sample.concealmentEvents) }} events за интервал.</p>
         <p>Уровень (только локально): {{ metric(sample.audioLevel) }}</p>
       </section>
-      <button type="button" @click="exported = !exported">Показать безопасный отчёт для A/B</button>
-      <textarea v-if="exported" aria-label="Отчёт без идентификаторов и уровней" readonly :value="text" rows="12" style="width: 100%" />
+      <button class="gc-button gc-button--secondary" type="button" @click="exported = !exported">Показать безопасный отчёт для A/B</button>
+      <textarea v-if="exported" class="gc-field" aria-label="Отчёт без идентификаторов и уровней" readonly :value="text" rows="12" style="width: 100%" />
     </template>
     <p v-else>Статистика появляется после подключения и двух измерений. На неподдерживаемой платформе остаётся неизвестной.</p>
   </details>

@@ -43,19 +43,21 @@ void main() {
             size: Size(1280, 900),
             textScaler: TextScaler.linear(2.5),
           ),
-          child: Scaffold(
-            body: Column(
-              children: [
-                ClientUpdateBanner(updates: updates, appBusy: false),
-                const Expanded(child: SizedBox.expand()),
-              ],
-            ),
+          child: Column(
+            children: [
+              ClientUpdateBanner(updates: updates, appBusy: false),
+              const Expanded(child: SizedBox.expand()),
+            ],
           ),
         ),
       ),
     );
 
     final summaryText = tester.widget<Text>(find.text(summary));
+    final rendered = tester.widget<RichText>(
+      find.descendant(of: find.text(summary), matching: find.byType(RichText)),
+    );
+    expect(rendered.text.style?.fontSize, lessThan(24));
     expect(summaryText.maxLines, 2);
     expect(summaryText.style?.decoration, TextDecoration.none);
     expect(
