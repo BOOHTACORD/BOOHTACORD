@@ -13,10 +13,10 @@ later compilation or component tests.
 | Gate | Current status |
 |---|---|
 | Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38830061623, source E77 |
-| Browser lifecycle acceptance | Prior A42 PASS, run 38827220068; E77 attempts 1/2 FAIL at login/network and initial GET; bounded bootstrap-read repeat added |
+| Browser lifecycle acceptance | PASS, CBA run 38832920361; E77's two earlier network failures retained below |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED awaiting system Keychain access |
-| Windows installed 78 → 79 | E77 FAIL before download: compact row autojoined with microphone; explicit prejoin route corrected, repeat pending |
+| Windows installed 78 → 79 | E77 FAIL before download: compact row autojoined with microphone; explicit prejoin route corrected, CBA repeat running |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -875,3 +875,21 @@ macOS installed-update acceptance is not claimed by these component tests.
   tests PASS. Failed authentication requests additionally retain only an
   allowlisted transport code for the fixed login/session endpoint, never URL,
   credentials, body or raw exception. Both first failed attempts stay FAIL.
+
+## CBA browser acceptance (2026-10-16)
+
+- Run 38832920361 PASS: unchanged-client refresh baseline, actual TLS API
+  journeys at 1440/1024, actual attachment reservations/single API writer,
+  persistence after API restart and owned-resource cleanup. The two earlier
+  E77 failures remain recorded above; this is a new successful run.
+- Authenticated artifact 12018402843 is 10,088,240 bytes, archive SHA-256
+  `9e4789f46fcbc830260796a41d46ef3dbd318f2b910add9cb2654606d8282436`.
+  Archive size/hash, CRC and extraction paths PASS. Both viewport reports,
+  previous-client baseline and upload report explicitly report PASS.
+- CI merge commit `4e1e4c3f5abddf5c683b5a8e8f7617fbbfff1cc1` has master
+  `3e6ac963` and candidate `cba532a1` as parents; its entire tree equals the
+  candidate tree `32d82fccc15d53f0fefb8507751077c43d38276d`.
+- Visually inspected source-resolution 1440 text-channel and 1024 voice-prejoin
+  captures. Text, channel list, composer and both voice admission controls are
+  readable, with no overlap of primary controls. These browser captures do not
+  establish native installed Windows or macOS acceptance.
