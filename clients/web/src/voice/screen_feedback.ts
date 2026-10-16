@@ -1,7 +1,11 @@
+import { ScreenPublisherOperationError } from './screen_publisher/types'
 import type { ScreenDiagnostics } from './screen_diagnostics'
 import { screenCaptureUnavailableMessage } from './screen_capture_support'
 
 export function screenFailureMessage(cause: unknown, userAgent?: string): string {
+  for (let depth = 0; depth < 4 && cause instanceof ScreenPublisherOperationError && !cause.recovery; depth++) {
+    cause = cause.operationCause
+  }
   const name = cause instanceof Error ? cause.name : ''
   if (name === 'DeviceUnsupportedError') return screenCaptureUnavailableMessage(userAgent)
   if (name === 'AbortError') return 'Выбор источника отменён. Откройте демонстрацию снова и выберите окно, экран или вкладку.'

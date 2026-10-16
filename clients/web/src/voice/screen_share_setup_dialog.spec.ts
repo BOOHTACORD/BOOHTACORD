@@ -20,8 +20,8 @@ describe('screen-share setup dialog', () => {
     expect(html).toContain('Документы и код')
     expect(html).toContain('Максимальное разрешение')
     expect(html).toContain('Частота кадров')
-    expect(html).toContain('Рекомендуемый профиль')
-    expect(html).toContain('<strong>1080p · 60 FPS</strong>')
+    expect(html).not.toContain('Рекомендуемый профиль')
+    expect(html).toContain('Профиль задаёт цель; фактическое качество зависит')
     expect(html).toContain('Текущий выбор: 1080p · 30 FPS')
     expect(html).toContain('<section class="screen-share-quality__settings" aria-labelledby="screen-share-quality-settings-title">')
     expect(html).toContain('<h4 id="screen-share-quality-settings-title">Качество изображения</h4>')
@@ -35,7 +35,7 @@ describe('screen-share setup dialog', () => {
       .toEqual(['720p', '1080p', '1440p'])
     expect([...html.matchAll(/<span>(15|30|60) FPS<\/span>/g)].map((match) => match[1]))
       .toEqual(['15', '30', '60'])
-    expect(html).toContain('браузер покажет системный запрос')
+    expect(html).toContain('Источник выберете в окне браузера')
     expect(html).toContain('Суммарный лимит двух слоёв')
     expect(html).toContain('не гарантированный сетевой расход')
     expect(html).toContain('Начать трансляцию')
@@ -82,7 +82,7 @@ describe('screen-share setup dialog', () => {
     expect(html).toMatch(/<input[^>]*checked[^>]*name="screen-share-mode" value="motion"[^>]*>/)
     expect(html).toMatch(/<input[^>]*checked[^>]*name="screen-share-frame-rate" value="30"[^>]*>/)
     expect(html).toContain('Текущий выбор: 1440p · 30 FPS')
-    expect(html).not.toMatch(/<button[^>]*class="screen-share-setup__start"[^>]*disabled>/)
+    expect(html).toContain('Этот браузер не поддерживает показ экрана')
   })
 
   it('shows the current stream quality editor only for an updating sender', async () => {
@@ -92,10 +92,10 @@ describe('screen-share setup dialog', () => {
     expect(html).toContain('Качество трансляции')
     expect(html).toContain('Изменения применятся к текущему показу.')
     expect(html).toContain('При ухудшении сети качество может временно снижаться.')
-    expect(html).toContain('<circle cx="12" cy="12" r="9"></circle>')
+    expect(html).toContain('<summary>Возможности и ограничения источника</summary>')
     expect(html).toContain('<section class="screen-share-quality__settings" aria-labelledby="screen-share-quality-settings-title">')
     expect(html).toContain('Применить')
-    expect(html).not.toContain('браузер покажет системный запрос')
+    expect(html).not.toContain('Источник выберете в окне браузера')
   })
 
   it('labels pre-picker support separately from tracks actually received after selection', async () => {

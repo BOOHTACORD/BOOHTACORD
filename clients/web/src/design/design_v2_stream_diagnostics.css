@@ -18,3 +18,23 @@
   .stream-diagnostics-panel dl > div { min-height: 45px; }
   .stream-diagnostics-footnote { display: block; margin-top: 16px; color: var(--gc-text-muted); font-size: 0.6875rem; }
 }
+/* Stats expand on request; every control remains reachable in the mobile sheet. */
+.stream-diagnostics-panel { overflow-wrap: anywhere; }
+.stream-diagnostics-panel header button { min-width: 44px; min-height: 44px; }
+.stream-diagnostics-technical { margin-top: 12px; }
+.stream-diagnostics-technical > summary { min-height: 44px; align-content: center; cursor: pointer; }
+.stream-diagnostics-copy { min-height: 44px; max-width: 100%; margin-top: 12px; border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-sm); padding: 8px 12px; color: var(--gc-text-primary); background: var(--gc-surface); font: inherit; cursor: pointer; }
+.stream-diagnostics-panel :is(button, summary):focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 2px; }
+@media (max-width: 600px) { .stream-diagnostics-panel { height: auto; } }
+@media (max-width: 600px) {
+  .stream-diagnostics-panel dl > div { flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px; padding-block: 8px; }
+  .stream-diagnostics-panel dt, .stream-diagnostics-panel dd { max-width: 100%; text-align: start; }
+}
+
+.screen-sender-summary { min-width: 0; overflow-wrap: anywhere; }
+.screen-sender-summary > p { margin-block: 8px; }
+.screen-sender-summary .screen-diagnostics { gap: 8px; }
+.screen-sender-summary .screen-diagnostics > div { min-width: 0; }
+.screen-sender-details { margin-block: 8px; }
+.screen-sender-details > summary { min-height: 44px; align-content: center; cursor: pointer; }
+.screen-sender-details summary:focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 2px; }

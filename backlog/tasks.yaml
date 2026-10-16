@@ -178,6 +178,11 @@ tasks:
     requirements: [REQ-VOICE-01, REQ-VOICE-02, REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
     depends_on: [T-022, T-050, DW-003, DW-004]
     evidence: [clients/web/tests/voice_interface/playwright.config.ts, evidence/qa/dw08-voice-interface-2026-10-16.md]
+  - id: DW-009
+    title: Compact Web screen sharing setup and progressive sender/receiver diagnostics (GitHub #348)
+    requirements: [REQ-VOICE-02, REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [T-022, T-050, DW-003, DW-004, DW-008]
+    evidence: [clients/web/tests/screen_share_ui/playwright.config.ts, evidence/qa/dw09-screen-share-ui-2026-10-16.md]
   - id: T-051
     title: Android native client and APK
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUTH-01, REQ-SECURITY-01, REQ-VOICE-01]

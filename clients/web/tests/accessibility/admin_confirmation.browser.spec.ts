@@ -117,7 +117,7 @@ for (const viewport of screenShareSetups) {
     const start = dialog.getByRole('button', { name: 'Начать трансляцию' })
     const cancel = dialog.getByRole('button', { name: 'Отмена' })
     await expect(dialog).toBeVisible()
-    await expect(dialog).toContainText('После продолжения браузер покажет системный запрос на выбор экрана или окна.')
+    await expect(dialog).toContainText('Источник выберете в окне браузера.')
     await page.screenshot({ path: testInfo.outputPath('screen-share-setup-open.png') })
 
     for (const control of [start, cancel]) {

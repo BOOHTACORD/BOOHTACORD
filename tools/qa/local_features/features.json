@@ -69,7 +69,8 @@
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
-      "tests/screen_profile/playwright.config.ts"
+      "tests/screen_profile/playwright.config.ts",
+      "tests/screen_share_ui/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart",
@@ -134,6 +135,11 @@
         "focused": "clients/flutter/test/features/screen/capture/",
         "runtime": "tools/qa/macos_sender/stage_baseline.py",
         "scope": "Confirmed native capture dimensions enforce existing both-axis encoded geometry at guarded publish/update boundaries. Native long-edge capture policy preserved; actual display regression required."
+      },
+      "issue348": {
+        "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
+        "actual": "tools/qa/critical_client_acceptance/screen_share_ui.mjs",
+        "scope": "Compact launch, optional capabilities/sender/receiver diagnostics, selected versus confirmed configuration versus measured output; unsupported/cancel/focus/clipboard, 320/390/1024/1440 and 200% text. Existing owned real API/SFU source-publish-view-stop and failure/reconnect journeys. No physical Chrome picker, hardware audio, native or media QoE claim."
       }
     }
   },
