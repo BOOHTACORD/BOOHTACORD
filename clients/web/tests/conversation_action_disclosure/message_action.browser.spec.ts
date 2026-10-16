@@ -123,6 +123,7 @@ test('R02 preserves touch actions and passes WCAG axe scan for grouped, system, 
   expect((await groupedButton.boundingBox())?.height).toBeGreaterThanOrEqual(44)
 
   const reactionGroup = grouped.getByRole('group', { name: 'Реакции на сообщение' })
+  await reactionGroup.locator('summary').click()
   const reactions = reactionGroup.getByRole('button', { name: /^Реакция / })
   await expect(reactions).toHaveCount(6)
   for (const button of await reactions.all()) {

@@ -12,8 +12,10 @@ async function fixture(page:Page,admin=false){
  return {commands,get reads(){return reads}}
 }
 test('real message has six desired-state reactions and recovery refresh; logout releases observers',async({page})=>{
- const state=await fixture(page),like=page.getByRole('button',{name:'Реакция 👍',exact:true})
- await expect(like).toBeEnabled();await expect(page.getByRole('group',{name:'Реакции на сообщение'}).getByRole('button')).toHaveCount(6)
+ const state=await fixture(page)
+ await page.locator('.reaction-picker summary').click()
+ const like=page.locator('.reaction-palette').getByRole('button',{name:'Реакция 👍',exact:true})
+ await expect(like).toBeEnabled();await expect(page.locator('.reaction-palette').getByRole('button')).toHaveCount(6)
  await like.click();await expect(like).toHaveAttribute('aria-pressed','true');await expect(like).toContainText('1')
  await like.click();await expect(like).toHaveAttribute('aria-pressed','false')
  expect(state.commands.map(c=>c.method)).toEqual(['PUT','DELETE']);expect(state.commands.every(c=>c.body===null)).toBeTruthy()
@@ -23,13 +25,14 @@ test('real message has six desired-state reactions and recovery refresh; logout 
 })
 test('DM reaction uses private route and never exposes TEXT pin controls',async({page})=>{
  const state=await fixture(page,true);await page.getByRole('button',{name:'Открыть DM'}).click()
- const like=page.getByRole('button',{name:'Реакция 👍',exact:true});await expect(like).toBeEnabled();await like.click();await expect(like).toHaveAttribute('aria-pressed','true')
+ await page.locator('.reaction-picker summary').click()
+ const like=page.locator('.reaction-palette').getByRole('button',{name:'Реакция 👍',exact:true});await expect(like).toBeEnabled();await like.click();await expect(like).toHaveAttribute('aria-pressed','true')
  expect(state.commands[0].url).toContain(`/direct-messages/${channel}/messages/${message}/reactions/`)
  await expect(page.getByRole('button',{name:'Закрепить сообщение'})).toHaveCount(0)
  await page.getByRole('button',{name:'Открыть поиск'}).click();await expect(page.getByRole('button',{name:'Закреплённые',exact:true})).toHaveCount(0)
 })
 test('TEXT admin pin panel escapes preview, removes pin and opens original ID',async({page})=>{
- const state=await fixture(page,true);await page.getByRole('button',{name:'Закрепить сообщение'}).click();expect(state.commands[0].method).toBe('PUT')
+ const state=await fixture(page,true);await page.locator('.reaction-picker summary').click();await page.getByRole('button',{name:'Закрепить сообщение'}).click();expect(state.commands[0].method).toBe('PUT')
  await page.getByRole('button',{name:'Открыть поиск'}).click();await page.getByRole('button',{name:'Закреплённые',exact:true}).click()
  await expect(page.getByText('<script>unsafe()</script>',{exact:true})).toBeVisible();await expect(page.locator('.pin-panel script')).toHaveCount(0)
  await page.getByRole('button',{name:'Снять закрепление'}).click();await expect(page.getByText('Закреплений пока нет.')).toBeVisible();expect(state.commands.at(-1)?.method).toBe('DELETE')
@@ -40,5 +43,6 @@ test('TEXT admin pin panel escapes preview, removes pin and opens original ID',a
 test('failed metadata clears stale count and provides authoritative retry',async({page})=>{
  await fixture(page);await page.route('**/message-reactions?**',route=>route.fulfill({status:403}))
  await page.getByRole('button',{name:'Переподключиться'}).click();await expect(page.getByRole('alert')).toContainText('403')
- await expect(page.getByRole('button',{name:'Реакция 👍',exact:true})).toBeDisabled();await expect(page.getByRole('button',{name:'Обновить реакции'})).toBeEnabled()
+ await page.locator('.reaction-picker summary').click()
+ await expect(page.locator('.reaction-palette').getByRole('button',{name:'Реакция 👍',exact:true})).toBeDisabled();await expect(page.getByRole('button',{name:'Обновить реакции'})).toBeEnabled()
 })

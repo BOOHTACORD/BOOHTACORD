@@ -20,8 +20,7 @@
 .direct-message-empty > .direct-message-start-button--prominent:hover { background: var(--gc-surface-hover); }
 .direct-message-navigation .starter { position: relative; z-index: 3; }
 .direct-message-conversation .history-start { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
-.direct-message-conversation .message-list > li[data-message-id] + li[data-message-id] { margin-top: 24px; }
-.direct-message-conversation .message-avatar, .direct-message-conversation .message-avatar-spacer { width: 36px; flex-basis: 36px; }
+.direct-message-conversation .message-avatar, .direct-message-conversation .message-avatar-spacer { width: 2.25rem; flex-basis: 2.25rem; }
 .direct-message-conversation .message-avatar { height: 36px; font-size: 0.875rem; }
 .direct-message-conversation .composer-wrap { padding-right: 24px; padding-left: 24px; }
 @media (max-width: 1023px) {

@@ -9,7 +9,7 @@ const blocks = computed(() => decorateMessageMentions(props.body, props.mentions
 
 <template>
   <template v-for="(block, blockIndex) in blocks" :key="blockIndex">
-    <pre v-if="block.kind === 'CODE_BLOCK'" class="message-code"><code>{{ block.value }}</code></pre>
+    <pre v-if="block.kind === 'CODE_BLOCK'" class="message-code" tabindex="0" role="region" aria-label="Код сообщения"><code>{{ block.value }}</code></pre>
     <p v-else>
       <template v-for="(span, spanIndex) in block.spans" :key="spanIndex">
         <strong v-if="span.kind === 'BOLD'">{{ span.value }}</strong>

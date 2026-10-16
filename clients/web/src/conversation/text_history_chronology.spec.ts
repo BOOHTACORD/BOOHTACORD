@@ -42,7 +42,7 @@ describe('TEXT history reading order', () => {
     const html = await renderToString(app)
 
     expect(html).toContain('19 сентября 2026')
-    expect(html.match(/19 сентября 2026/g)).toHaveLength(1)
+    expect(html.match(/<time datetime="2026-09-19">19 сентября 2026<\/time>/g)).toHaveLength(1)
     expect(html.indexOf('18 сентября 2026')).toBeLessThan(html.indexOf('День 18'))
     expect(html.indexOf('19 сентября 2026')).toBeLessThan(html.indexOf('День 19'))
     expect(html.indexOf('20 сентября 2026')).toBeLessThan(html.indexOf('День 20'))

@@ -12,13 +12,23 @@ describe('variable-height message history window', () => {
     expect(range.top + range.rowsHeight + range.bottom).toBe(offsets[count])
   })
 
+  it('keeps compact spacing distinct at group and day boundaries', () => {
+    const previous: HistoryRow = { key: 'message', kind: 'message', estimate: 80, gap: 0 }
+    expect(historyRowGap('message')).toBe(0)
+    expect(historyRowGap('message', previous, true)).toBe(4)
+    expect(historyRowGap('message', previous)).toBe(12)
+    expect(historyRowGap('message', previous, false, true)).toBe(10)
+    expect(historyRowGap('date', previous)).toBe(16)
+    expect(historyRowGap('message', { ...previous, kind: 'date' })).toBe(12)
+  })
+
   it('finds measured variable-height boundaries and preserves spacing classes', () => {
     const rows = ['a', 'b', 'c', 'd'].map((key) => ({ key, estimate: 90, gap: 0 }))
     const offsets = buildVirtualOffsets(rows, new Map([['a', 40], ['b', 140], ['c', 60], ['d', 80]]))
     const attachment: HistoryRow = { key: 'file', kind: 'message', estimate: 90, gap: 0, hasAttachments: true }
 
     expect(findVirtualRange(offsets, 180, 20, 0)).toMatchObject({ start: 2, end: 3, top: 180, rowsHeight: 60, bottom: 80 })
-    expect(historyRowGap('message', attachment)).toBe(34)
-    expect(historyRowGap('message', attachment, false, true)).toBe(25)
+    expect(historyRowGap('message', attachment)).toBe(12)
+    expect(historyRowGap('message', attachment, false, true)).toBe(10)
   })
 })
