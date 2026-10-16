@@ -1,0 +1,1886 @@
+{
+  "issue": 343,
+  "base": "c6e789bb39b25d46a223d85c338959480cebb32e",
+  "scope": "Actual production Vue components with synthetic fixture API; original private web tour unavailable",
+  "metric": "Sum of Unicode code points in CSS-rendered, uncollapsed supporting p/small/summary nodes, including scrollable below-fold text. Excludes message history/results and visually hidden nodes; this is not all page text or a viewport pixel count. Help collapsed; composers unfocused. The bare chat fixture retains the existing header aside-extension contract; full-shell geometry is checked separately by actual-stack captures.",
+  "rows": [
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-eyebrow:nth-of-type(1)",
+      "text": "УПРАВЛЕНИЕ ГИЛЬДИЕЙ",
+      "visible": false,
+      "scene": "admin&section=audit",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=audit"
+    },
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-panel-description:nth-of-type(2)",
+      "text": "Управление гильдией и доступом участников.",
+      "visible": false,
+      "scene": "admin&section=audit",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=audit"
+    },
+    {
+      "selector": "#admin-section-tabs-hint",
+      "text": "Прокрутите список разделов по горизонтали",
+      "visible": false,
+      "scene": "admin&section=audit",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=audit"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-audit > header.admin-section-heading > div > p",
+      "text": "События управления без содержимого сообщений",
+      "visible": true,
+      "scene": "admin&section=audit",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=audit"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-audit > p.admin-audit-results:nth-of-type(1)",
+      "text": "Показано: 0 из 0 загруженных",
+      "visible": true,
+      "scene": "admin&section=audit",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=audit"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-audit > p.admin-audit-scope:nth-of-type(2)",
+      "text": "Фильтры применяются к 0 загруженным записям. Для более ранних событий загрузите следующую страницу.",
+      "visible": true,
+      "scene": "admin&section=audit",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=audit"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-audit > p.state:nth-of-type(3)",
+      "text": "Записей пока нет.",
+      "visible": true,
+      "scene": "admin&section=audit",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=audit"
+    },
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-eyebrow:nth-of-type(1)",
+      "text": "УПРАВЛЕНИЕ ГИЛЬДИЕЙ",
+      "visible": false,
+      "scene": "admin&section=channels",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=channels"
+    },
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-panel-description:nth-of-type(2)",
+      "text": "Управление гильдией и доступом участников.",
+      "visible": false,
+      "scene": "admin&section=channels",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=channels"
+    },
+    {
+      "selector": "#admin-section-tabs-hint",
+      "text": "Прокрутите список разделов по горизонтали",
+      "visible": false,
+      "scene": "admin&section=channels",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=channels"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-topology-controls > div.admin-topology-workspace > nav.admin-topology-tree > p.admin-topology-tree__caption",
+      "text": "СТРУКТУРА КАНАЛОВ",
+      "visible": true,
+      "scene": "admin&section=channels",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=channels"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-topology-controls > div.admin-topology-workspace > nav.admin-topology-tree > section.admin-topology-tree__category > button.admin-topology-tree__category-button:nth-of-type(1) > small",
+      "text": "1",
+      "visible": true,
+      "scene": "admin&section=channels",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=channels"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-topology-controls > div.admin-topology-workspace > div.admin-topology-inspector > header > p",
+      "text": "Каналов: 1 · Порядок: 1",
+      "visible": true,
+      "scene": "admin&section=channels",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=channels"
+    },
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-eyebrow:nth-of-type(1)",
+      "text": "УПРАВЛЕНИЕ ГИЛЬДИЕЙ",
+      "visible": false,
+      "scene": "admin&section=guild",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=guild"
+    },
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-panel-description:nth-of-type(2)",
+      "text": "Управление гильдией и доступом участников.",
+      "visible": false,
+      "scene": "admin&section=guild",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=guild"
+    },
+    {
+      "selector": "#admin-section-tabs-hint",
+      "text": "Прокрутите список разделов по горизонтали",
+      "visible": false,
+      "scene": "admin&section=guild",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=guild"
+    },
+    {
+      "selector": "section.admin-panel > form.guild-settings > p",
+      "text": "Название отображается участникам и на экране входа.",
+      "visible": true,
+      "scene": "admin&section=guild",
+      "decision": "move",
+      "after": "Раскрытие «О названии гильдии» после действий формы.",
+      "capture": "1440/admin&section=guild"
+    },
+    {
+      "selector": "#guild-name-help",
+      "text": "От 1 до 80 символов, без переводов строк.",
+      "visible": true,
+      "scene": "admin&section=guild",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=guild"
+    },
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-eyebrow:nth-of-type(1)",
+      "text": "УПРАВЛЕНИЕ ГИЛЬДИЕЙ",
+      "visible": false,
+      "scene": "admin&section=media",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=media"
+    },
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-panel-description:nth-of-type(2)",
+      "text": "Управление гильдией и доступом участников.",
+      "visible": false,
+      "scene": "admin&section=media",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=media"
+    },
+    {
+      "selector": "#admin-section-tabs-hint",
+      "text": "Прокрутите список разделов по горизонтали",
+      "visible": false,
+      "scene": "admin&section=media",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=media"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-media-diagnostics > header.admin-section-heading > div > p",
+      "text": "Последние 60 секунд · без имён и идентификаторов участников",
+      "visible": true,
+      "scene": "admin&section=media",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=media"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-media-diagnostics > details.admin-media-explain > summary",
+      "text": "Как читать показатели",
+      "visible": true,
+      "scene": "admin&section=media",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=media"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-media-diagnostics > details.admin-media-explain > p",
+      "text": "Данные сообщают сами клиенты. Они не подтверждают содержимое кадра, аппаратный профиль или причину неполадки. Отсутствие отчётов не доказывает, что сеть или сбор телеметрии работают правильно.",
+      "visible": false,
+      "scene": "admin&section=media",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=media"
+    },
+    {
+      "selector": "section.admin-panel.admin-panel--members > header.admin-panel-heading > div > p.admin-eyebrow:nth-of-type(1)",
+      "text": "УПРАВЛЕНИЕ ГИЛЬДИЕЙ",
+      "visible": false,
+      "scene": "admin&section=members",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=members"
+    },
+    {
+      "selector": "section.admin-panel.admin-panel--members > header.admin-panel-heading > div > p.admin-panel-description:nth-of-type(2)",
+      "text": "Управление гильдией и доступом участников.",
+      "visible": false,
+      "scene": "admin&section=members",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=members"
+    },
+    {
+      "selector": "#admin-section-tabs-hint",
+      "text": "Прокрутите список разделов по горизонтали",
+      "visible": false,
+      "scene": "admin&section=members",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=members"
+    },
+    {
+      "selector": "section.admin-panel.admin-panel--members > section.admin-directory > p.state",
+      "text": "Участников пока нет.",
+      "visible": true,
+      "scene": "admin&section=members",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=members"
+    },
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-eyebrow:nth-of-type(1)",
+      "text": "УПРАВЛЕНИЕ ГИЛЬДИЕЙ",
+      "visible": false,
+      "scene": "admin&section=readiness",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=readiness"
+    },
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-panel-description:nth-of-type(2)",
+      "text": "Управление гильдией и доступом участников.",
+      "visible": false,
+      "scene": "admin&section=readiness",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=readiness"
+    },
+    {
+      "selector": "#admin-section-tabs-hint",
+      "text": "Прокрутите список разделов по горизонтали",
+      "visible": false,
+      "scene": "admin&section=readiness",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=readiness"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-readiness > p:nth-of-type(1)",
+      "text": "Публичный health подтверждает только работу API. Здесь проверяются приватные зависимости и запас для следующей загрузки.",
+      "visible": true,
+      "scene": "admin&section=readiness",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=readiness"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-readiness > p:nth-of-type(2)",
+      "text": "Сервисы готовы",
+      "visible": true,
+      "scene": "admin&section=readiness",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=readiness"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-readiness > p:nth-of-type(3)",
+      "text": "Возраст проверки: 0 с. После 15 с результат считается устаревшим.",
+      "visible": true,
+      "scene": "admin&section=readiness",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=readiness"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-readiness > section > p:nth-of-type(1)",
+      "text": "Локальные интервалы браузера, до 5 минут и 50 наблюдений. Запустите прогон и выполните нужные действия в тестовом аккаунте. Это отдельные измерения; они не заменяют утверждённые p95 и проверки оборудования.",
+      "visible": true,
+      "scene": "admin&section=readiness",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=readiness"
+    },
+    {
+      "selector": "section.admin-panel > section.admin-readiness > section > p:nth-of-type(2)",
+      "text": "Нет наблюдений. Неизмеренные интервалы не считаются нулевыми.",
+      "visible": true,
+      "scene": "admin&section=readiness",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=readiness"
+    },
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-eyebrow:nth-of-type(1)",
+      "text": "УПРАВЛЕНИЕ ГИЛЬДИЕЙ",
+      "visible": false,
+      "scene": "admin&section=roles",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=roles"
+    },
+    {
+      "selector": "section.admin-panel > header.admin-panel-heading > div > p.admin-panel-description:nth-of-type(2)",
+      "text": "Управление гильдией и доступом участников.",
+      "visible": false,
+      "scene": "admin&section=roles",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=roles"
+    },
+    {
+      "selector": "#admin-section-tabs-hint",
+      "text": "Прокрутите список разделов по горизонтали",
+      "visible": false,
+      "scene": "admin&section=roles",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/admin&section=roles"
+    },
+    {
+      "selector": "section.admin-panel > section.role-permissions > header.admin-section-heading > div > p",
+      "text": "Настройки применяются ко всем участникам выбранной роли.",
+      "visible": true,
+      "scene": "admin&section=roles",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=roles"
+    },
+    {
+      "selector": "section.admin-panel > section.role-permissions > fieldset.role-permission-fieldset > table.role-permission-table > tbody > tr:nth-of-type(1) > th > span.role-permission-object > span.role-permission-label:nth-of-type(2) > small",
+      "text": "Удаление архивирует историю",
+      "visible": true,
+      "scene": "admin&section=roles",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=roles"
+    },
+    {
+      "selector": "section.admin-panel > section.role-permissions > fieldset.role-permission-fieldset > table.role-permission-table > tbody > tr:nth-of-type(2) > th > span.role-permission-object > span.role-permission-label:nth-of-type(2) > small",
+      "text": "Удаление отключает участников",
+      "visible": true,
+      "scene": "admin&section=roles",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=roles"
+    },
+    {
+      "selector": "section.admin-panel > section.role-permissions > fieldset.role-permission-fieldset > table.role-permission-table > tbody > tr:nth-of-type(3) > th > span.role-permission-object > span.role-permission-label:nth-of-type(2) > small",
+      "text": "Только пустые разделы",
+      "visible": true,
+      "scene": "admin&section=roles",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=roles"
+    },
+    {
+      "selector": "section.admin-panel > section.role-permissions > fieldset.role-permission-fieldset > p.role-permission-notice",
+      "text": "Разрешение удаления действует на любые каналы, в том числе созданные другими участниками и администраторами.",
+      "visible": true,
+      "scene": "admin&section=roles",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/admin&section=roles"
+    },
+    {
+      "selector": "section.archive-panel > section > p",
+      "text": "Архив доступен только для чтения. Отправка и изменение сообщений отключены.",
+      "visible": true,
+      "scene": "archive",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/archive"
+    },
+    {
+      "selector": "section.audio-settings > header.audio-settings-heading > p",
+      "text": "Проверьте устройства перед разговором.",
+      "visible": true,
+      "scene": "audio",
+      "decision": "remove",
+      "after": "Названия устройств и действия проверки остаются.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-device-section:nth-of-type(1) > header > p",
+      "text": "Настройки действуют на этом устройстве.",
+      "visible": true,
+      "scene": "audio",
+      "decision": "move",
+      "after": "Раскрытие «О настройках аудио»; исходный текст сохранён.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-device-section:nth-of-type(1) > section.audio-device-check > details.audio-check-details > summary",
+      "text": "О проверке устройств",
+      "visible": false,
+      "scene": "audio",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-device-section:nth-of-type(1) > section.audio-device-check > details.audio-check-details > p",
+      "text": "Проверка локальная: она не подтверждает слышимость у другого участника.",
+      "visible": false,
+      "scene": "audio",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-activation-section:nth-of-type(2) > header > p",
+      "text": "Выберите удобный способ общения.",
+      "visible": true,
+      "scene": "audio",
+      "decision": "remove",
+      "after": "Режим и выбранное значение остаются явными.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-activation-section:nth-of-type(2) > div.microphone-control:nth-of-type(2) > small",
+      "text": "Линия — порог активации. Уровень доступен при включённом микрофоне в звонке.",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-shortcuts-section:nth-of-type(3) > header > p",
+      "text": "Работают в активной вкладке, кроме полей ввода и диалогов.",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-shortcuts-section:nth-of-type(3) > div.audio-shortcut-row:nth-of-type(1) > span:nth-of-type(1) > small",
+      "text": "Не назначено",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-shortcuts-section:nth-of-type(3) > div.audio-shortcut-row:nth-of-type(2) > span:nth-of-type(1) > small",
+      "text": "Не назначено",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-processing-section:nth-of-type(4) > div.microphone-gain:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "Усиление отправляемого сигнала. 100% — без дополнительного усиления.",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-processing-section:nth-of-type(4) > div.microphone-gain:nth-of-type(1) > p:nth-of-type(2)",
+      "text": "Перегрузка не обнаружена.",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-processing-section:nth-of-type(4) > div.audio-processing-row:nth-of-type(2) > div > small",
+      "text": "Уменьшает фоновый шум",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-processing-section:nth-of-type(4) > label.audio-processing-row:nth-of-type(1) > span > small",
+      "text": "Убирает обратный звук из динамиков",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-processing-section:nth-of-type(4) > label.audio-processing-row:nth-of-type(2) > span > small",
+      "text": "Выравнивает уровень микрофона",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > details.audio-processing-details:nth-of-type(1) > summary",
+      "text": "Режим и диагностика обработки",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > details.audio-processing-details:nth-of-type(1) > div.audio-processing-row > div > small",
+      "text": "Сигнал, когда участник начинает показ экрана",
+      "visible": false,
+      "scene": "audio",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > details.audio-processing-details:nth-of-type(1) > p:nth-of-type(1)",
+      "text": "Уровень усиления: Запрошено: выключено; браузер не сообщил состояние.. Эхо: Запрошено: включено; браузер не сообщил состояние..",
+      "visible": false,
+      "scene": "audio",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > details.audio-processing-details:nth-of-type(1) > p:nth-of-type(2)",
+      "text": "Уменьшает фоновый шум · Неизвестно",
+      "visible": false,
+      "scene": "audio",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > details.audio-processing-details:nth-of-type(1) > p:nth-of-type(3)",
+      "text": "Browser NS — Запрошено: включено; браузер не сообщил состояние.. Источник capture: недоступен. Статус: idle.",
+      "visible": false,
+      "scene": "audio",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > details.audio-processing-details:nth-of-type(1) > p:nth-of-type(4)",
+      "text": "Частота исходного capture: недоступна.",
+      "visible": false,
+      "scene": "audio",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > section.audio-device-section:nth-of-type(5) > p",
+      "text": "Возвращает громкость участников и демонстраций к 100% на этом устройстве.",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > details.audio-processing-details:nth-of-type(2) > summary",
+      "text": "Диагностика качества голоса",
+      "visible": true,
+      "scene": "audio",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > details.audio-processing-details:nth-of-type(2) > p:nth-of-type(1)",
+      "text": "64 и 96 кбит/с — кандидаты для A/B. Улучшение качества ещё не подтверждено.",
+      "visible": false,
+      "scene": "audio",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > details.audio-processing-details:nth-of-type(2) > p:nth-of-type(2)",
+      "text": "Запрошено: Opus, mono, 48 кГц, высокий приоритет, DTX и RED. Фактические параметры — ниже.",
+      "visible": false,
+      "scene": "audio",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.audio-settings > div.audio-settings-panel > details.audio-processing-details:nth-of-type(2) > p:nth-of-type(3)",
+      "text": "Статистика появляется после подключения и двух измерений. На неподдерживаемой платформе остаётся неизвестной.",
+      "visible": false,
+      "scene": "audio",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/audio"
+    },
+    {
+      "selector": "section.text-conversation > div.composer-wrap:nth-of-type(2) > form.message-composer.composer > section.attachment-picker > p.attachment-hint",
+      "text": "До 10 файлов по 25 МБ. Файлы будут прикреплены после отправки сообщения.",
+      "visible": false,
+      "scene": "chat",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/chat"
+    },
+    {
+      "selector": "#text-composer-help",
+      "text": "Enter — отправить · Shift + Enter — новая строка",
+      "visible": true,
+      "scene": "chat",
+      "decision": "conditional",
+      "after": "Текст виден при фокусе внутри редактора; aria-describedby сохраняется. На узком экране прежнее скрытие родителя не меняется.",
+      "capture": "1440/chat"
+    },
+    {
+      "selector": "section.text-conversation > div.composer-wrap:nth-of-type(2) > div.composer-helper > p.composer-helper__limit:nth-of-type(2)",
+      "text": "Файлы до 25 МБ",
+      "visible": true,
+      "scene": "chat",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/chat"
+    },
+    {
+      "selector": "section.direct-message-conversation > header.main-header.conversation-header > div.main-title:nth-of-type(1) > small",
+      "text": "Личный диалог",
+      "visible": true,
+      "scene": "dm",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/dm"
+    },
+    {
+      "selector": "section.direct-message-conversation > div.composer-wrap:nth-of-type(2) > form.message-composer.composer > section.attachment-picker > p.attachment-hint",
+      "text": "До 10 файлов по 25 МБ. Файлы прикрепятся после отправки сообщения.",
+      "visible": false,
+      "scene": "dm",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/dm"
+    },
+    {
+      "selector": "#direct-composer-help",
+      "text": "Enter — отправить · Shift + Enter — новая строка",
+      "visible": true,
+      "scene": "dm",
+      "decision": "conditional",
+      "after": "Текст виден при фокусе внутри редактора; aria-describedby сохраняется. На узком экране прежнее скрытие родителя не меняется.",
+      "capture": "1440/dm"
+    },
+    {
+      "selector": "section.direct-message-conversation > div.composer-wrap:nth-of-type(2) > div.composer-helper > p.composer-helper__limit:nth-of-type(2)",
+      "text": "Файлы до 25 МБ",
+      "visible": true,
+      "scene": "dm",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/dm"
+    },
+    {
+      "selector": "section.voice-dock.connected.mobile-visible > div.voice-dock-header:nth-of-type(1) > div.voice-dock-copy > p.voice-status:nth-of-type(1)",
+      "text": "Голос подключён",
+      "visible": true,
+      "scene": "dock",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/dock"
+    },
+    {
+      "selector": "section.voice-dock.connected.mobile-visible > div.voice-dock-header:nth-of-type(1) > div.voice-dock-copy > p.voice-dock-subtitle:nth-of-type(2)",
+      "text": "Общий чат",
+      "visible": true,
+      "scene": "dock",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/dock"
+    },
+    {
+      "selector": "section.conversation-files > p",
+      "text": "В этой беседе пока нет файлов.",
+      "visible": true,
+      "scene": "files",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/files"
+    },
+    {
+      "selector": "section.mention-inbox > div.mention-inbox-toolbar > p",
+      "text": "Упоминания только для вас",
+      "visible": true,
+      "scene": "mentions",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/mentions"
+    },
+    {
+      "selector": "section.mention-inbox > p.search-status.search-status--visible",
+      "text": "Пока нет упоминаний.",
+      "visible": false,
+      "scene": "mentions",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/mentions"
+    },
+    {
+      "selector": "div.voice-prejoin > article.voice-prejoin-card > p.eyebrow:nth-of-type(1)",
+      "text": "ГОЛОСОВАЯ КОМНАТА",
+      "visible": true,
+      "scene": "prejoin",
+      "decision": "remove",
+      "after": "Удалён повтор типа комнаты; состояние и название канала сохранены.",
+      "capture": "1440/prejoin"
+    },
+    {
+      "selector": "div.voice-prejoin > article.voice-prejoin-card > p.voice-prejoin-copy:nth-of-type(2)",
+      "text": "Посмотрите, кто сейчас в комнате, и выберите удобный способ подключения.",
+      "visible": true,
+      "scene": "prejoin",
+      "decision": "shorten",
+      "after": "Подключитесь с микрофоном или слушайте.",
+      "capture": "1440/prejoin"
+    },
+    {
+      "selector": "div.voice-prejoin > article.voice-prejoin-card > section.voice-roster-preview > p.voice-roster-heading:nth-of-type(1)",
+      "text": "Участники голосового канала",
+      "visible": true,
+      "scene": "prejoin",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/prejoin"
+    },
+    {
+      "selector": "div.voice-prejoin > article.voice-prejoin-card > section.voice-roster-preview > p.voice-roster-empty:nth-of-type(2)",
+      "text": "Пока никого нет.",
+      "visible": true,
+      "scene": "prejoin",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/prejoin"
+    },
+    {
+      "selector": "section.profile-settings > header > p",
+      "text": "Ваш профиль и параметры приложения.",
+      "visible": true,
+      "scene": "profile",
+      "decision": "remove",
+      "after": "Заголовок «Настройки» и именованные вкладки остаются.",
+      "capture": "1440/profile"
+    },
+    {
+      "selector": "#profile-panel-profile > div.profile-avatar-row > div.profile-avatar-copy > p",
+      "text": "@fixture · Администратор",
+      "visible": true,
+      "scene": "profile",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile"
+    },
+    {
+      "selector": "#profile-panel-profile > form.profile-form > label:nth-of-type(1) > small",
+      "text": "Так вас видят другие участники гильдии.",
+      "visible": true,
+      "scene": "profile",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile"
+    },
+    {
+      "selector": "#profile-panel-profile > form.profile-form > label:nth-of-type(2) > small",
+      "text": "Используется для входа.",
+      "visible": true,
+      "scene": "profile",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile"
+    },
+    {
+      "selector": "section.profile-settings > header > p",
+      "text": "Ваш профиль и параметры приложения.",
+      "visible": true,
+      "scene": "profile&tab=Безопасность",
+      "decision": "remove",
+      "after": "Заголовок «Настройки» и именованные вкладки остаются.",
+      "capture": "1440/profile&tab=Безопасность"
+    },
+    {
+      "selector": "#profile-panel-security > form.profile-form.profile-password-form > p",
+      "text": "Изменение пароля требует явного подтверждения кнопкой «Обновить пароль».",
+      "visible": true,
+      "scene": "profile&tab=Безопасность",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile&tab=Безопасность"
+    },
+    {
+      "selector": "#profile-panel-security > section.profile-logout:nth-of-type(1) > p",
+      "text": "Голосовое подключение завершится, а личные данные исчезнут с этого экрана.",
+      "visible": true,
+      "scene": "profile&tab=Безопасность",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile&tab=Безопасность"
+    },
+    {
+      "selector": "#profile-panel-security > section.own-sessions:nth-of-type(2) > p",
+      "text": "Завершённый сеанс потеряет доступ к сообщениям и голосу.",
+      "visible": true,
+      "scene": "profile&tab=Безопасность",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile&tab=Безопасность"
+    },
+    {
+      "selector": "#profile-panel-security > section.own-sessions:nth-of-type(2) > small",
+      "text": "Текущий сеанс останется активным.",
+      "visible": true,
+      "scene": "profile&tab=Безопасность",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile&tab=Безопасность"
+    },
+    {
+      "selector": "section.profile-settings > header > p",
+      "text": "Ваш профиль и параметры приложения.",
+      "visible": true,
+      "scene": "profile&tab=О приложении",
+      "decision": "remove",
+      "after": "Заголовок «Настройки» и именованные вкладки остаются.",
+      "capture": "1440/profile&tab=О приложении"
+    },
+    {
+      "selector": "#profile-panel-about > section.profile-logout > p",
+      "text": "Web 1.0.32 · r-stable-r46 · Ещё не проверено",
+      "visible": true,
+      "scene": "profile&tab=О приложении",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile&tab=О приложении"
+    },
+    {
+      "selector": "section.profile-settings > header > p",
+      "text": "Ваш профиль и параметры приложения.",
+      "visible": true,
+      "scene": "profile&tab=Уведомления",
+      "decision": "remove",
+      "after": "Заголовок «Настройки» и именованные вкладки остаются.",
+      "capture": "1440/profile&tab=Уведомления"
+    },
+    {
+      "selector": "#profile-panel-notifications > section.profile-logout > p:nth-of-type(1)",
+      "text": "Уведомления появляются при скрытой вкладке, пока браузер открыт. Текст личных сообщений в них не показывается.",
+      "visible": true,
+      "scene": "profile&tab=Уведомления",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile&tab=Уведомления"
+    },
+    {
+      "selector": "#profile-panel-notifications > section.profile-logout > p:nth-of-type(2)",
+      "text": "Системные уведомления недоступны в этом браузере.",
+      "visible": true,
+      "scene": "profile&tab=Уведомления",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile&tab=Уведомления"
+    },
+    {
+      "selector": "#profile-panel-notifications > section.profile-logout > section.conversation-notification-settings > p:nth-of-type(1)",
+      "text": "Счётчики непрочитанных сохраняются. В режиме упоминаний проверяется точное сообщение; личный текст в уведомление не попадает.",
+      "visible": true,
+      "scene": "profile&tab=Уведомления",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile&tab=Уведомления"
+    },
+    {
+      "selector": "#profile-panel-notifications > section.profile-logout > section.conversation-notification-settings > p:nth-of-type(2)",
+      "text": "Сначала откройте доступную беседу.",
+      "visible": true,
+      "scene": "profile&tab=Уведомления",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/profile&tab=Уведомления"
+    },
+    {
+      "selector": "section.search-panel.quick-jump-panel > ol.quick-jump-results > li > button.gc-button.gc-button--secondary > small",
+      "text": "Текстовый канал",
+      "visible": true,
+      "scene": "quick",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/quick"
+    },
+    {
+      "selector": "#search-messages-view > form.search-form > fieldset.search-filters > small",
+      "text": "Даты в вашем часовом поясе.",
+      "visible": true,
+      "scene": "search",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/search"
+    },
+    {
+      "selector": "#search-messages-view > p.search-status.search-status--visible",
+      "text": "Введите запрос и нажмите Enter.",
+      "visible": true,
+      "scene": "search",
+      "decision": "move",
+      "after": "Доступное описание поля: «Введите запрос и нажмите Enter или «Найти».»",
+      "capture": "1440/search"
+    },
+    {
+      "selector": "dialog.screen-share-setup-dialog > header.screen-share-setup__header > div.screen-share-setup__title > p",
+      "text": "Выберите источник и качество трансляции",
+      "visible": true,
+      "scene": "share",
+      "decision": "remove",
+      "after": "Именованные параметры, системный запрос и capability warnings сохранены.",
+      "capture": "1440/share"
+    },
+    {
+      "selector": "dialog.screen-share-setup-dialog > div.screen-share-setup__body > section.screen-share-quality > fieldset.screen-share-quality__row.screen-share-quality__mode > div.screen-share-quality__scenarios > label.screen-share-quality__scenario-option:nth-of-type(1) > span.screen-share-quality__scenario-copy > small",
+      "text": "Игры и видео",
+      "visible": true,
+      "scene": "share",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/share"
+    },
+    {
+      "selector": "dialog.screen-share-setup-dialog > div.screen-share-setup__body > section.screen-share-quality > fieldset.screen-share-quality__row.screen-share-quality__mode > div.screen-share-quality__scenarios > label.screen-share-quality__scenario-option:nth-of-type(2) > span.screen-share-quality__scenario-copy > small",
+      "text": "Документы и код",
+      "visible": true,
+      "scene": "share",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/share"
+    },
+    {
+      "selector": "dialog.screen-share-setup-dialog > div.screen-share-setup__body > section.screen-share-quality > p.screen-share-quality__current",
+      "text": "Текущий выбор: 1080p · 60 FPS",
+      "visible": true,
+      "scene": "share",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/share"
+    },
+    {
+      "selector": "dialog.screen-share-setup-dialog > div.screen-share-setup__body > section.screen-share-quality > div.screen-share-quality__overview > div.screen-share-quality__recommended > div > p",
+      "text": "Рекомендуемый профиль",
+      "visible": true,
+      "scene": "share",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/share"
+    },
+    {
+      "selector": "dialog.screen-share-setup-dialog > div.screen-share-setup__body > section.screen-share-quality > div.screen-share-quality__overview > p.screen-share-quality__disclaimer:nth-of-type(1)",
+      "text": "Профиль задаёт цель; фактическое качество зависит от выбранного источника, устройства и сети.",
+      "visible": true,
+      "scene": "share",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/share"
+    },
+    {
+      "selector": "dialog.screen-share-setup-dialog > div.screen-share-setup__body > section.screen-share-quality > div.screen-share-quality__overview > p.screen-share-quality__hint:nth-of-type(2)",
+      "text": "Для 1440p доступно до 30 FPS; сценарий выбирается отдельно. Суммарный лимит двух слоёв — основной слой до ≈ 8.0 Мбит/с; максимум для двух слоёв до ≈ 8.5 Мбит/с; это не гарантированный сетевой расход.",
+      "visible": true,
+      "scene": "share",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/share"
+    },
+    {
+      "selector": "#screen-share-setup-guidance > p",
+      "text": "После продолжения браузер покажет системный запрос на выбор экрана или окна. Вы сможете остановить трансляцию в любой момент.",
+      "visible": true,
+      "scene": "share",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/share"
+    },
+    {
+      "selector": "dialog.screen-share-setup-dialog > div.screen-share-setup__body > div.screen-share-capability-summary:nth-of-type(2) > p.screen-share-capabilities__availability",
+      "text": "Поддержка видео до выбора источника: доступен в браузере",
+      "visible": true,
+      "scene": "share",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/share"
+    },
+    {
+      "selector": "dialog.screen-share-setup-dialog > div.screen-share-setup__body > div.screen-share-capability-summary:nth-of-type(2) > details.screen-share-capabilities__details > summary",
+      "text": "Возможности и ограничения источника",
+      "visible": true,
+      "scene": "share",
+      "decision": "keep",
+      "after": "Сохранены назначение, состояние, ограничение или последствие действия.",
+      "capture": "1440/share"
+    },
+    {
+      "selector": "dialog.screen-share-setup-dialog > div.screen-share-setup__body > div.screen-share-capability-summary:nth-of-type(2) > details.screen-share-capabilities__details > p.screen-share-capabilities__note",
+      "text": "Звук определяется после выбора источника по фактически полученной дорожке; выбранный источник может не передать аудио. Игровой звук не гарантируется.",
+      "visible": false,
+      "scene": "share",
+      "decision": "keep-hidden",
+      "after": "На baseline уже не виден; не учитывается как уменьшение видимого текста.",
+      "capture": "1440/share"
+    }
+  ],
+  "measurements": [
+    {
+      "scene": "admin&section=audit",
+      "width": 390,
+      "before_characters": 229,
+      "after_characters": 229
+    },
+    {
+      "scene": "admin&section=audit",
+      "width": 1440,
+      "before_characters": 188,
+      "after_characters": 188
+    },
+    {
+      "scene": "admin&section=channels",
+      "width": 390,
+      "before_characters": 82,
+      "after_characters": 82
+    },
+    {
+      "scene": "admin&section=channels",
+      "width": 1440,
+      "before_characters": 41,
+      "after_characters": 41
+    },
+    {
+      "scene": "admin&section=guild",
+      "width": 390,
+      "before_characters": 133,
+      "after_characters": 100
+    },
+    {
+      "scene": "admin&section=guild",
+      "width": 1440,
+      "before_characters": 92,
+      "after_characters": 59
+    },
+    {
+      "scene": "admin&section=media",
+      "width": 390,
+      "before_characters": 121,
+      "after_characters": 121
+    },
+    {
+      "scene": "admin&section=media",
+      "width": 1440,
+      "before_characters": 80,
+      "after_characters": 80
+    },
+    {
+      "scene": "admin&section=members",
+      "width": 390,
+      "before_characters": 61,
+      "after_characters": 61
+    },
+    {
+      "scene": "admin&section=members",
+      "width": 1440,
+      "before_characters": 20,
+      "after_characters": 20
+    },
+    {
+      "scene": "admin&section=readiness",
+      "width": 390,
+      "before_characters": 507,
+      "after_characters": 507
+    },
+    {
+      "scene": "admin&section=readiness",
+      "width": 1440,
+      "before_characters": 466,
+      "after_characters": 466
+    },
+    {
+      "scene": "admin&section=roles",
+      "width": 390,
+      "before_characters": 205,
+      "after_characters": 205
+    },
+    {
+      "scene": "admin&section=roles",
+      "width": 1440,
+      "before_characters": 241,
+      "after_characters": 241
+    },
+    {
+      "scene": "archive",
+      "width": 390,
+      "before_characters": 75,
+      "after_characters": 75
+    },
+    {
+      "scene": "archive",
+      "width": 1440,
+      "before_characters": 75,
+      "after_characters": 75
+    },
+    {
+      "scene": "audio",
+      "width": 390,
+      "before_characters": 573,
+      "after_characters": 482
+    },
+    {
+      "scene": "audio",
+      "width": 1440,
+      "before_characters": 573,
+      "after_characters": 482
+    },
+    {
+      "scene": "chat",
+      "width": 390,
+      "before_characters": 48,
+      "after_characters": 0
+    },
+    {
+      "scene": "chat",
+      "width": 1440,
+      "before_characters": 62,
+      "after_characters": 14
+    },
+    {
+      "scene": "dm",
+      "width": 390,
+      "before_characters": 61,
+      "after_characters": 13
+    },
+    {
+      "scene": "dm",
+      "width": 1440,
+      "before_characters": 75,
+      "after_characters": 27
+    },
+    {
+      "scene": "dock",
+      "width": 390,
+      "before_characters": 24,
+      "after_characters": 24
+    },
+    {
+      "scene": "dock",
+      "width": 1440,
+      "before_characters": 24,
+      "after_characters": 24
+    },
+    {
+      "scene": "files",
+      "width": 390,
+      "before_characters": 30,
+      "after_characters": 30
+    },
+    {
+      "scene": "files",
+      "width": 1440,
+      "before_characters": 30,
+      "after_characters": 30
+    },
+    {
+      "scene": "mentions",
+      "width": 390,
+      "before_characters": 25,
+      "after_characters": 25
+    },
+    {
+      "scene": "mentions",
+      "width": 1440,
+      "before_characters": 25,
+      "after_characters": 25
+    },
+    {
+      "scene": "prejoin",
+      "width": 390,
+      "before_characters": 132,
+      "after_characters": 82
+    },
+    {
+      "scene": "prejoin",
+      "width": 1440,
+      "before_characters": 132,
+      "after_characters": 82
+    },
+    {
+      "scene": "profile",
+      "width": 390,
+      "before_characters": 121,
+      "after_characters": 86
+    },
+    {
+      "scene": "profile",
+      "width": 1440,
+      "before_characters": 121,
+      "after_characters": 86
+    },
+    {
+      "scene": "profile&tab=Безопасность",
+      "width": 390,
+      "before_characters": 270,
+      "after_characters": 235
+    },
+    {
+      "scene": "profile&tab=Безопасность",
+      "width": 1440,
+      "before_characters": 270,
+      "after_characters": 235
+    },
+    {
+      "scene": "profile&tab=О приложении",
+      "width": 390,
+      "before_characters": 79,
+      "after_characters": 44
+    },
+    {
+      "scene": "profile&tab=О приложении",
+      "width": 1440,
+      "before_characters": 79,
+      "after_characters": 44
+    },
+    {
+      "scene": "profile&tab=Уведомления",
+      "width": 390,
+      "before_characters": 353,
+      "after_characters": 318
+    },
+    {
+      "scene": "profile&tab=Уведомления",
+      "width": 1440,
+      "before_characters": 353,
+      "after_characters": 318
+    },
+    {
+      "scene": "quick",
+      "width": 390,
+      "before_characters": 15,
+      "after_characters": 15
+    },
+    {
+      "scene": "quick",
+      "width": 1440,
+      "before_characters": 15,
+      "after_characters": 15
+    },
+    {
+      "scene": "search",
+      "width": 390,
+      "before_characters": 58,
+      "after_characters": 27
+    },
+    {
+      "scene": "search",
+      "width": 1440,
+      "before_characters": 58,
+      "after_characters": 27
+    },
+    {
+      "scene": "share",
+      "width": 390,
+      "before_characters": 624,
+      "after_characters": 585
+    },
+    {
+      "scene": "share",
+      "width": 1440,
+      "before_characters": 624,
+      "after_characters": 585
+    }
+  ],
+  "additional_changes": [
+    {
+      "selector": ".search-form-meta > span",
+      "before": "Enter — найти",
+      "after": "Объединено с описанием search-query-help",
+      "decision": "move",
+      "source": "SearchPanel.vue; visible in source-size Before search screenshot"
+    },
+    {
+      "selector": ".voice-prejoin-copy",
+      "before": "Соединение устанавливается.",
+      "after": "Только heading «Подключаемся к голосовой комнате»; disabled и aria-live сохранены",
+      "decision": "conditional",
+      "source": "JOINING SSR/browser regression; not counted in idle paragraph metric"
+    }
+  ],
+  "schema_version": 1,
+  "accepted_source": "f2dc654e285537c71e72e476956440d1d2f84fc4 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "accepted_run": ".out/local-features/20261016-112457",
+  "captures": {
+    "390/admin&section=audit": {
+      "scene": "admin&section=audit",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-admin-section-audit-at-390px/screen.png",
+        "sha256": "2ea33fef78bf275b91cfaa678f6b38ba484d337df1ce4bf4925f069d8b487c92"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-admin-section-audit-at-390px/screen.png",
+        "sha256": "2ea33fef78bf275b91cfaa678f6b38ba484d337df1ce4bf4925f069d8b487c92"
+      }
+    },
+    "1440/admin&section=audit": {
+      "scene": "admin&section=audit",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-admin-section-audit-at-1440px/screen.png",
+        "sha256": "6dcfde4bf493c685fd424ba01a91ff581e05aaea97a03f11ddaa8d88f86cc98e"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-admin-section-audit-at-1440px/screen.png",
+        "sha256": "6dcfde4bf493c685fd424ba01a91ff581e05aaea97a03f11ddaa8d88f86cc98e"
+      }
+    },
+    "390/admin&section=channels": {
+      "scene": "admin&section=channels",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+        "sha256": "f835d96c75702e3e40c6f7d88b1b3b3e3bf724cd9056cae3552ed192d2a2e0cc"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+        "sha256": "f835d96c75702e3e40c6f7d88b1b3b3e3bf724cd9056cae3552ed192d2a2e0cc"
+      }
+    },
+    "1440/admin&section=channels": {
+      "scene": "admin&section=channels",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+        "sha256": "e208f980436d1ee2b03823a6082a596ed4b61de8f333a84d57da214b22ad3e30"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+        "sha256": "e208f980436d1ee2b03823a6082a596ed4b61de8f333a84d57da214b22ad3e30"
+      }
+    },
+    "390/admin&section=guild": {
+      "scene": "admin&section=guild",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-admin-section-guild-at-390px/screen.png",
+        "sha256": "7c03367a54c4e8021d88b16eeb75fbe07c9302cce934797e25218bb0b108e4cf"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-admin-section-guild-at-390px/screen.png",
+        "sha256": "d7a1df12a3a6a94695cbb711739de2562f93fe486a099c95a7a36d5fe21840a4"
+      }
+    },
+    "1440/admin&section=guild": {
+      "scene": "admin&section=guild",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-admin-section-guild-at-1440px/screen.png",
+        "sha256": "b109303b8135442110c6eff6f6607d19230a148b73dde4c5daf86a9a8804197c"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-admin-section-guild-at-1440px/screen.png",
+        "sha256": "8982461eb73bf9bfa20dd464a7f278be22a7bd45248ecb0704e95602afda2a6e"
+      }
+    },
+    "390/admin&section=media": {
+      "scene": "admin&section=media",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-admin-section-media-at-390px/screen.png",
+        "sha256": "173618c100cf7ab6dfe50925aa6b450e98a7f673fb8750a84dd4e4f97c807d8a"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-admin-section-media-at-390px/screen.png",
+        "sha256": "851f49978a55eae98a0b01e9bb2f5a812f0b138ab02708a590943c96dd779f2d"
+      }
+    },
+    "1440/admin&section=media": {
+      "scene": "admin&section=media",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-admin-section-media-at-1440px/screen.png",
+        "sha256": "95db21605b3955e5aa0d0bd36cd18eddffe73887c17e6f938b840c601749e791"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-admin-section-media-at-1440px/screen.png",
+        "sha256": "c81c6b4b5f5a587fca094265dfa727605e379408e15d568cf39485d39ef3fa9e"
+      }
+    },
+    "390/admin&section=members": {
+      "scene": "admin&section=members",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-admin-section-members-at-390px/screen.png",
+        "sha256": "6fe03bcfc759d167f3c43a4f9d8bcc7d674e6fe9b64778224f5bc52b867370de"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-admin-section-members-at-390px/screen.png",
+        "sha256": "6fe03bcfc759d167f3c43a4f9d8bcc7d674e6fe9b64778224f5bc52b867370de"
+      }
+    },
+    "1440/admin&section=members": {
+      "scene": "admin&section=members",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-admin-section-members-at-1440px/screen.png",
+        "sha256": "9d59441c50adc3f5e29aabf1410f80bd62e4fe38c05bcc6206fcd72c43680cad"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-admin-section-members-at-1440px/screen.png",
+        "sha256": "9d59441c50adc3f5e29aabf1410f80bd62e4fe38c05bcc6206fcd72c43680cad"
+      }
+    },
+    "390/admin&section=readiness": {
+      "scene": "admin&section=readiness",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-invento-668ca--section-readiness-at-390px/screen.png",
+        "sha256": "d25986e44a88647b09bd8d37c2143cb28d04332837b7cfd348e97e77a61c686e"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-invento-668ca--section-readiness-at-390px/screen.png",
+        "sha256": "d25986e44a88647b09bd8d37c2143cb28d04332837b7cfd348e97e77a61c686e"
+      }
+    },
+    "1440/admin&section=readiness": {
+      "scene": "admin&section=readiness",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-invento-9b2fb-section-readiness-at-1440px/screen.png",
+        "sha256": "88cabf6281bc703d13f6e172ee86d03d96f22e3a5573e3cef6e1bfe045af3e39"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-invento-9b2fb-section-readiness-at-1440px/screen.png",
+        "sha256": "88cabf6281bc703d13f6e172ee86d03d96f22e3a5573e3cef6e1bfe045af3e39"
+      }
+    },
+    "390/admin&section=roles": {
+      "scene": "admin&section=roles",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-admin-section-roles-at-390px/screen.png",
+        "sha256": "7af7ae065ef67ce24366876f9c7b3d92c50718fb6ea055609519d69e215b6273"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-admin-section-roles-at-390px/screen.png",
+        "sha256": "7af7ae065ef67ce24366876f9c7b3d92c50718fb6ea055609519d69e215b6273"
+      }
+    },
+    "1440/admin&section=roles": {
+      "scene": "admin&section=roles",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-admin-section-roles-at-1440px/screen.png",
+        "sha256": "30e3644fe3bd7583b061b0873b4afafa4fb0ce09e9433833bc4c42f1324e98a9"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-admin-section-roles-at-1440px/screen.png",
+        "sha256": "30e3644fe3bd7583b061b0873b4afafa4fb0ce09e9433833bc4c42f1324e98a9"
+      }
+    },
+    "390/archive": {
+      "scene": "archive",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-archive-at-390px/screen.png",
+        "sha256": "9b32991f20d3d8fba0e8e6a3e97424bdd0de8b15e5f611dd9a7bab05ffb99d45"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-archive-at-390px/screen.png",
+        "sha256": "9b32991f20d3d8fba0e8e6a3e97424bdd0de8b15e5f611dd9a7bab05ffb99d45"
+      }
+    },
+    "1440/archive": {
+      "scene": "archive",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-archive-at-1440px/screen.png",
+        "sha256": "2ae19817dbdf3631c92cb38d8f04b4bc078e1bfa130ff5d2138a594eb15cef2d"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-archive-at-1440px/screen.png",
+        "sha256": "2ae19817dbdf3631c92cb38d8f04b4bc078e1bfa130ff5d2138a594eb15cef2d"
+      }
+    },
+    "390/audio": {
+      "scene": "audio",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-audio-at-390px/screen.png",
+        "sha256": "e169f145459afc5f12d21d1528ee027936d4977e01cbe0a6411ca07d135a0475"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-audio-at-390px/screen.png",
+        "sha256": "b2baee31ec994cf7db1e5b68c391394064c570fb30c0e22d2c046e8556eafec5"
+      }
+    },
+    "1440/audio": {
+      "scene": "audio",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-audio-at-1440px/screen.png",
+        "sha256": "b90b00bfd25924dc5614f49ebfc115b2a3c236fc96db5546bf134f558d4c465f"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-audio-at-1440px/screen.png",
+        "sha256": "666ae3ff902682a28232681a32cdb4f467ea49cf47fd0234ac2faa25733b4317"
+      }
+    },
+    "390/chat": {
+      "scene": "chat",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-chat-at-390px/screen.png",
+        "sha256": "1e17fea7f6b3a2ab8962f3b43f1889abd7424d8d51a14a888e7b9ba5e5e7a074"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-chat-at-390px/screen.png",
+        "sha256": "1e17fea7f6b3a2ab8962f3b43f1889abd7424d8d51a14a888e7b9ba5e5e7a074"
+      }
+    },
+    "1440/chat": {
+      "scene": "chat",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-chat-at-1440px/screen.png",
+        "sha256": "76ee3f0e3f097731261af237fc40025b7156533b33eba9fcf979e45a114d34d1"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-chat-at-1440px/screen.png",
+        "sha256": "e82059754e7bee0689cf966646d9f98731ea38ddee4b9ee698612d29f2a2de29"
+      }
+    },
+    "390/dm": {
+      "scene": "dm",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-dm-at-390px/screen.png",
+        "sha256": "e1fa023ad043d7d5ef048bce0d2795f25fc0eb7988f4e78460040f5675dc858f"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-dm-at-390px/screen.png",
+        "sha256": "e1fa023ad043d7d5ef048bce0d2795f25fc0eb7988f4e78460040f5675dc858f"
+      }
+    },
+    "1440/dm": {
+      "scene": "dm",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-dm-at-1440px/screen.png",
+        "sha256": "622b86f80f33faff7c3ce471f20ab7517ef61efeb42597ad260fb248f88d2667"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-dm-at-1440px/screen.png",
+        "sha256": "e459bd8357325aca64e4212c714b8d782ea3b2d7ef6fb3761b9cc30569daa8f0"
+      }
+    },
+    "390/dock": {
+      "scene": "dock",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-dock-at-390px/screen.png",
+        "sha256": "4933a8326c7fa2933736f4480e00115cc082eb3277e69db4bade283baf192896"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-dock-at-390px/screen.png",
+        "sha256": "4933a8326c7fa2933736f4480e00115cc082eb3277e69db4bade283baf192896"
+      }
+    },
+    "1440/dock": {
+      "scene": "dock",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-dock-at-1440px/screen.png",
+        "sha256": "9021aa953f1b564e8026a8e9f2a16d14df8aa69176cceaf6308092e0d3304782"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-dock-at-1440px/screen.png",
+        "sha256": "9021aa953f1b564e8026a8e9f2a16d14df8aa69176cceaf6308092e0d3304782"
+      }
+    },
+    "390/files": {
+      "scene": "files",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-files-at-390px/screen.png",
+        "sha256": "e6577df2286173e8be42c9e281d24df9ff99ec9189b2c142cc5a28ed014f842c"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-files-at-390px/screen.png",
+        "sha256": "e6577df2286173e8be42c9e281d24df9ff99ec9189b2c142cc5a28ed014f842c"
+      }
+    },
+    "1440/files": {
+      "scene": "files",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-files-at-1440px/screen.png",
+        "sha256": "10b1c31fa2c1c908842ba3c258abe636e033ecc13dea123c11c7a1553547aa40"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-files-at-1440px/screen.png",
+        "sha256": "10b1c31fa2c1c908842ba3c258abe636e033ecc13dea123c11c7a1553547aa40"
+      }
+    },
+    "390/mentions": {
+      "scene": "mentions",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-mentions-at-390px/screen.png",
+        "sha256": "1e2d3c5a84a533bc2f77f326826bf8b5d0441b9bb3837927ce1a7de11ac4a86e"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-mentions-at-390px/screen.png",
+        "sha256": "1e2d3c5a84a533bc2f77f326826bf8b5d0441b9bb3837927ce1a7de11ac4a86e"
+      }
+    },
+    "1440/mentions": {
+      "scene": "mentions",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-mentions-at-1440px/screen.png",
+        "sha256": "213888dcb56d8d7e1632cb1db552ccf398669d2f16017952be4be2fb45e02532"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-mentions-at-1440px/screen.png",
+        "sha256": "213888dcb56d8d7e1632cb1db552ccf398669d2f16017952be4be2fb45e02532"
+      }
+    },
+    "390/prejoin": {
+      "scene": "prejoin",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-prejoin-at-390px/screen.png",
+        "sha256": "a09058b8e7f9e9fa750d49633e8616e8f1dd6d408d85dc8cbdd7c621171b4c52"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-prejoin-at-390px/screen.png",
+        "sha256": "80b1141e3d99d5af031bafafbc0e64764d635248aef20fdc2b6fd1427cecd28d"
+      }
+    },
+    "1440/prejoin": {
+      "scene": "prejoin",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-prejoin-at-1440px/screen.png",
+        "sha256": "3fb825477486794003455802ace1cc63a28ea0b014e4ded8dad3a5970702caba"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-prejoin-at-1440px/screen.png",
+        "sha256": "51df5290914f418ced8d7097ed2fe26a0eeaa45724fa506e061cc0e459998bc1"
+      }
+    },
+    "390/profile": {
+      "scene": "profile",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-profile-at-390px/screen.png",
+        "sha256": "ce8c4f1f18769bd8f5240574fa764703e2a2fab0932bf20ee24fa43a8bc0d555"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-profile-at-390px/screen.png",
+        "sha256": "d0ceef696afb15fc6644d15685170da44082b476f7325bcfdae1768b39c09f72"
+      }
+    },
+    "1440/profile": {
+      "scene": "profile",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-profile-at-1440px/screen.png",
+        "sha256": "87610675fa65002fe3aad86863689d93e31956962e769570d7c1e36e40c7936e"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-profile-at-1440px/screen.png",
+        "sha256": "db7032ad607c06e65f3e17c7ca7dc529c77c798d1943604d34d2956bf92d8188"
+      }
+    },
+    "390/profile&tab=Безопасность": {
+      "scene": "profile&tab=Безопасность",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-invento-467bf-e-tab-Безопасность-at-390px/screen.png",
+        "sha256": "e93f61383aca90872cbd0c286e91fcde85a4920b6e14e57549b906d1290b1c69"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-invento-467bf-e-tab-Безопасность-at-390px/screen.png",
+        "sha256": "a6f70c879126252f19c7334dce8e35f41f833ae343d7792856bd51f48e3770b6"
+      }
+    },
+    "1440/profile&tab=Безопасность": {
+      "scene": "profile&tab=Безопасность",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-invento-e89b8--tab-Безопасность-at-1440px/screen.png",
+        "sha256": "1fc89bd056053f922d2cde55bef5b270a7ba6367f4239cf88ffa9cb0186011a8"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-invento-e89b8--tab-Безопасность-at-1440px/screen.png",
+        "sha256": "fa600b6b84c6e464624a845713cfbf06fc640c4d45947cc5d980df6944a98724"
+      }
+    },
+    "390/profile&tab=О приложении": {
+      "scene": "profile&tab=О приложении",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-invento-38dde-e-tab-О-приложении-at-390px/screen.png",
+        "sha256": "fb49fa66c7ee5fdf93381f98c5070812dceb116224275861dbb7bd88b86f5f05"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-invento-38dde-e-tab-О-приложении-at-390px/screen.png",
+        "sha256": "bcef42cee8df930dab674ff42a7227eb12e9eb9c54988a7db251943509eadb98"
+      }
+    },
+    "1440/profile&tab=О приложении": {
+      "scene": "profile&tab=О приложении",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-invento-6f6e5--tab-О-приложении-at-1440px/screen.png",
+        "sha256": "a1c520ade28830dd8ff81140edc9486550c895ae9a46f5b745b72fb93c750ded"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-invento-6f6e5--tab-О-приложении-at-1440px/screen.png",
+        "sha256": "0de0e684d65acfb756d818d498786f1d4f8967a7cb79c9a945a80d9caf089206"
+      }
+    },
+    "390/profile&tab=Уведомления": {
+      "scene": "profile&tab=Уведомления",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-invento-1fcc0-le-tab-Уведомления-at-390px/screen.png",
+        "sha256": "e13ce58691487b913cd50f133aec91a03ef755e169aff2b045f4075b76cc3408"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-invento-1fcc0-le-tab-Уведомления-at-390px/screen.png",
+        "sha256": "78b3e0a73479eb713925ff62336f7fbfc3622358c4b1d428c144b7f980d94a43"
+      }
+    },
+    "1440/profile&tab=Уведомления": {
+      "scene": "profile&tab=Уведомления",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-invento-ed361-e-tab-Уведомления-at-1440px/screen.png",
+        "sha256": "e8d2a8bb66f1bebc514c402149644f942aac3bad7b5c2f254ab5c56ce2f709fb"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-invento-ed361-e-tab-Уведомления-at-1440px/screen.png",
+        "sha256": "790421834158a5c840c3e2f17ce424b89af2b0d7f0e8bb6131d3f9b94cd67d4d"
+      }
+    },
+    "390/quick": {
+      "scene": "quick",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-quick-at-390px/screen.png",
+        "sha256": "7c46d58bdcd885653b73abf3f7936082e2c104f54a23cb95a22c80fa30bd45d7"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-quick-at-390px/screen.png",
+        "sha256": "7c46d58bdcd885653b73abf3f7936082e2c104f54a23cb95a22c80fa30bd45d7"
+      }
+    },
+    "1440/quick": {
+      "scene": "quick",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-quick-at-1440px/screen.png",
+        "sha256": "a9b78b584a74bf0b8c68b6d8b7105fc6f424621915a79d94bdf4efdd01dcc743"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-quick-at-1440px/screen.png",
+        "sha256": "a9b78b584a74bf0b8c68b6d8b7105fc6f424621915a79d94bdf4efdd01dcc743"
+      }
+    },
+    "390/search": {
+      "scene": "search",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-search-at-390px/screen.png",
+        "sha256": "6f37931dffb0e01747e63e78dd865bef329144643727bd8047c3fb64a42447a3"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-search-at-390px/screen.png",
+        "sha256": "788cbabf9d3dfeab758765ddadfb37c7e8879184e8f6b732e8cc047b7ff29fba"
+      }
+    },
+    "1440/search": {
+      "scene": "search",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-search-at-1440px/screen.png",
+        "sha256": "dc814ac276317796e6176b18035421b783e3b143da01e24bb1816f51407b3bf4"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-search-at-1440px/screen.png",
+        "sha256": "971a0b0d80bf974fba27a306529d755f76633b559ceae66ea9d3f79c54175b5c"
+      }
+    },
+    "390/share": {
+      "scene": "share",
+      "viewport_width": 390,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-share-at-390px/screen.png",
+        "sha256": "068789c4e49cd9d07678854086250eceebbb9ff4091063f296882592b6e58afc"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-share-at-390px/screen.png",
+        "sha256": "c9ee00077b3018de40f46a6bfd5da40099b97fca96bc0b3449dc934127fc65c1"
+      }
+    },
+    "1440/share": {
+      "scene": "share",
+      "viewport_width": 1440,
+      "before": {
+        "path": ".out/issue343/before-final/audit.browser-copy-inventory-share-at-1440px/screen.png",
+        "sha256": "26bcd079e2a9ca1498bf7f28921470271f72dc3cef312c6ee3914207aacb2e17"
+      },
+      "after": {
+        "path": ".out/local-features/20261016-112457/web-microcopy/audit.browser-copy-inventory-share-at-1440px/screen.png",
+        "sha256": "e597178d54c58cf2d876d406788b7ed7f970e4625d403059c2ba091323165442"
+      }
+    }
+  },
+  "production_source_hashes": {
+    "clients/web/src/admin/guild_settings/AdminGuildSettings.vue": "9a8d293a08a23ff6cfd20c27c4773af50ecc274f168c591d5b64931f2b67ff04",
+    "clients/web/src/conversation/ConversationOverflowMenu.vue": "25bdb87260307ff8d3b09ea2df16adfaa596a361586749374e6d406654daaeed",
+    "clients/web/src/conversation/TextConversation.vue": "203293f12d7802217cc2260afe70f3177d9cd0969d8adb17a59b4aa8d223b3c5",
+    "clients/web/src/conversation/TextMessageAttachmentPicker.vue": "75543d2678782928bc8e14f84863aa8daf32b39165f8ff12f4c48ad5cbfb890b",
+    "clients/web/src/design/microcopy.css": "9116c361ff0cd13d72111fc9ef26192aa25035f22900fb7da17eac529001a246",
+    "clients/web/src/direct_message/DirectMessageAttachmentPicker.vue": "04ad8bbf7983fec6a68289062af6a56c88dce1f5058fa88d4857b97a99323d5b",
+    "clients/web/src/direct_message/DirectMessageConversation.vue": "51a082b7e93f491812eb0f890c8d2859311a0b0ec3d43a24fec3714c979a5499",
+    "clients/web/src/identity/ProfileSettings.vue": "d7376f28e268e2f149668b6d2e6bb3ede45c6d2fcf2c1ad32eb0a431a8c05964",
+    "clients/web/src/search/SearchPanel.vue": "52da4953695c4b3a881f2f669d78255c85a9a6e716a70921765ce0ad92b46209",
+    "clients/web/src/shared/action_hint/directive.ts": "d68966da2923d8495fb6bf2554745e2fb73602232f4c7e66bd97d11f797ba165",
+    "clients/web/src/shared/workspace_header/SettingsWorkspaceHeader.vue": "8162006425d291f2584ef9c72e43784b0a73f6543bc55e305cb5657ecaadf7dd",
+    "clients/web/src/shared/workspace_header/WorkspaceHeaderActions.vue": "96c334d5d4489c3ee59f9f4797a181c0738099bb64917555f1459928a6777bd5",
+    "clients/web/src/style.css": "dd813b42124c488516821da7eee350821a30678120e1b961a9e9553a7df9ec07",
+    "clients/web/src/voice/AudioSettings.vue": "c88cb0df6ac35f48dbab95199a64198db9c306eda4e4e83a2bbef73420e6a57c",
+    "clients/web/src/voice/ScreenShareSetupDialog.vue": "4c637d09004470dc7183b1a6bec375febc226b425cffff5bb9df5223dc18c4e8",
+    "clients/web/src/voice/VoiceDock.vue": "ffe6599f26d776ffc857a935da9a94eaa9a911c7ed6e576af57d4befc9e497b0",
+    "clients/web/src/voice/VoicePrejoin.vue": "077d7ebbf87f467a924e9bddf3adedfab502084ef1746a6310da80cde786f500"
+  }
+}

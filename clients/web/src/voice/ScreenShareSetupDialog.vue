@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vActionHint } from '../shared/action_hint/directive'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { ScreenProfile } from './livekit_gateway'
 import type { ScreenFrameRate, ScreenResolution } from './media_publishing'
@@ -93,9 +94,9 @@ function start(): void {
       </span>
       <div class="screen-share-setup__title">
         <h2 id="screen-share-setup-title">{{ updating ? 'Качество трансляции' : 'Демонстрация экрана' }}</h2>
-        <p :id="updating ? 'screen-share-setup-description' : undefined">{{ updating ? 'Изменения применятся к текущему показу.' : 'Выберите источник и качество трансляции' }}</p>
+        <p v-if="updating" id="screen-share-setup-description">Изменения применятся к текущему показу.</p>
       </div>
-      <button
+      <button v-action-hint
         class="screen-share-setup__close"
         type="button"
         aria-label="Закрыть"

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vActionHint } from '../shared/action_hint/directive'
 import { onBeforeUnmount, ref, watch } from 'vue'
 import type { TextMessageAttachment } from '../conversation/message_client'
 import { uploadDirectMessageAttachment } from './direct_message_attachment_upload_client'
@@ -30,7 +31,7 @@ defineExpose({ addPastedFiles })
 <template>
   <section class="attachment-picker" aria-labelledby="dm-attachments-label">
     <input ref="fileInput" id="dm-attachments" class="attachment-input" type="file" multiple tabindex="-1" aria-hidden="true" :disabled="props.disabled" @change="addFiles">
-    <button id="dm-attachments-label" ref="trigger" class="attachment-trigger" type="button" :aria-label="compact ? 'Действия редактора' : 'Прикрепить файлы'" :aria-expanded="compact ? menuOpen : undefined" :disabled="props.disabled" @click="openActions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button v-action-hint id="dm-attachments-label" ref="trigger" class="attachment-trigger" type="button" :aria-label="compact ? 'Действия редактора' : 'Прикрепить файлы'" :aria-expanded="compact ? menuOpen : undefined" :disabled="props.disabled" @click="openActions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
     <div v-if="menuOpen" class="composer-mobile-actions" role="group" aria-label="Действия редактора" @keydown.esc.stop.prevent="close(true)" @focusout="onFocusOut">
       <button ref="firstAction" type="button" @click="chooseFile">Прикрепить файл</button>
       <button type="button" @click="chooseMention">Упомянуть</button>

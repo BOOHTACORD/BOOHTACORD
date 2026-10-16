@@ -11,7 +11,6 @@ onMounted(() => { void state.load() }); onBeforeUnmount(state.dispose)
 <template>
   <form class="guild-settings" aria-label="Настройки гильдии" @submit.prevent="state.save(channels.map(channel => channel.id))">
     <h2>Гильдия</h2>
-    <p>Название отображается участникам и на экране входа.</p>
     <label for="guild-name">Название гильдии</label><input id="guild-name" class="gc-field" v-model="name" :disabled="busy || !revision" autocomplete="off" aria-describedby="guild-name-help">
     <small id="guild-name-help">От 1 до 80 символов, без переводов строк.</small>
     <label for="guild-welcome">Приветствия новых участников</label>
@@ -24,6 +23,7 @@ onMounted(() => { void state.load() }); onBeforeUnmount(state.dispose)
     <p v-if="error" role="alert">{{ error }}</p><p v-if="saved" role="status">Настройки сохранены.</p>
     <button class="gc-button" type="submit" :aria-busy="busy" :disabled="busy || !revision">{{ busy ? 'Сохраняем…' : 'Сохранить' }}</button>
     <button v-if="!revision && !busy" class="gc-button gc-button--secondary" type="button" @click="state.load">Загрузить настройки</button>
+    <details class="copy-help"><summary>О названии гильдии</summary><p>Название отображается участникам и на экране входа.</p></details>
   </form>
 </template>
 <style scoped>
