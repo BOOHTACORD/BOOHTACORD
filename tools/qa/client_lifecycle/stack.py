@@ -100,10 +100,12 @@ FROM generate_series(1, 19) AS member_index;"""
             '-v', 'ON_ERROR_STOP=1', '-c', sql, stdout=subprocess.DEVNULL)
 
     def start_api(self):
+        # Explicit sparse tmpfs ceiling clears the unchanged 2 GiB upload reserve
+        # even on small QA VMs; actual fixture files remain tiny and ephemeral.
         arguments = [
             '--publish', '127.0.0.1:4820:8080',
             '--add-host', 'host.docker.internal:host-gateway',
-            '--tmpfs', '/attachments:rw,noexec,nosuid,nodev,uid=65532,gid=65532,mode=700',
+            '--tmpfs', '/attachments:rw,noexec,nosuid,nodev,size=4g,uid=65532,gid=65532,mode=700',
         ]
         for key, value in self.environment.items():
             arguments.extend(('--env', key+'='+value))

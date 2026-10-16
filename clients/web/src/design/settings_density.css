@@ -1,0 +1,51 @@
+/* Settings hierarchy: primary values and outcomes stay visible; technical
+   processing and synthetic diagnostics remain available through disclosure. */
+.workspace-main-panel--audio .audio-device-refresh { position: static; opacity: 1; justify-self: start; }
+.workspace-main-panel--audio .audio-settings { grid-template-columns: minmax(0, 1fr); }
+.workspace-main-panel--audio .audio-device-section,
+.workspace-main-panel--audio .audio-activation-section,
+.workspace-main-panel--audio .audio-shortcuts-section,
+.workspace-main-panel--audio .audio-processing-section { min-width: 0; min-height: 0; padding: 16px; gap: 12px; }
+.workspace-main-panel--audio .audio-device-check { margin-top: 0; }
+.audio-device-check__actions button { min-height: 44px; max-width: 100%; overflow-wrap: anywhere; }
+.audio-advanced { min-width: 0; display: block; }
+.audio-advanced > summary { min-height: 44px; align-content: center; color: var(--gc-text-primary); cursor: pointer; }
+.audio-advanced > summary:focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 2px; }
+.audio-advanced[open] > * + * { margin-top: 12px; }
+.audio-advanced .audio-processing-details { font-size: var(--gc-text-small); }
+.audio-processing-row { min-height: 52px; }
+.audio-processing-row:last-child { min-height: 52px; }
+.audio-check-details:not([open]) { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
+.audio-check-details > summary { min-height: 44px; align-content: center; cursor: pointer; }
+.workspace-main-panel--admin .role-permissions { gap: 16px; }
+.workspace-main-panel--admin .admin-panel,
+.workspace-main-panel--admin .role-permissions { min-width: 0; grid-template-columns: minmax(0, 1fr); }
+.workspace-main-panel--admin .role-permission-fieldset { min-inline-size: 0; }
+.workspace-main-panel--admin .role-permission-table { table-layout: fixed; }
+.workspace-main-panel--admin .role-permission-table th { overflow-wrap: anywhere; }
+.workspace-main-panel--admin .role-permission-notice span { min-width: 0; overflow-wrap: anywhere; }
+.workspace-main-panel--admin .role-permissions .admin-section-heading > button { position: static; opacity: 1; }
+.workspace-main-panel--admin .role-permissions .admin-section-heading { flex-wrap: wrap; }
+.workspace-main-panel--admin .role-permissions .admin-section-heading > div { min-width: 0; flex: 1 1 12rem; }
+.workspace-main-panel--admin .role-selector { height: auto; flex-wrap: wrap; }
+.workspace-main-panel--admin .role-selector button { min-width: 0; min-height: 44px; flex: 1 1 8rem; white-space: normal; overflow-wrap: anywhere; }
+.workspace-main-panel--admin .role-permissions fieldset { min-height: 0; padding: 16px; }
+.workspace-main-panel--admin .role-permission-table tbody th,
+.workspace-main-panel--admin .role-permission-table tbody td { height: 60px; }
+.workspace-main-panel--admin .role-policy-actions { position: sticky; width: 100%; height: auto; min-height: 64px; bottom: 0; flex-wrap: wrap; padding: 12px; }
+.workspace-main-panel--admin .role-policy-status { display: block; flex: 1 1 100%; margin: 0; overflow-wrap: anywhere; }
+.workspace-main-panel--admin .role-policy-actions button:first-of-type { position: static; opacity: 1; }
+.workspace-main-panel--admin .role-policy-actions button { min-height: 44px; }
+.workspace-main-panel--profile .profile-panel { min-height: 0; }
+.workspace-main-panel--profile .profile-form { gap: 16px; }
+.workspace-main-panel--profile .profile-savebar { position: static; height: auto; min-height: 0; flex-wrap: wrap; margin: 0; padding-top: 16px; }
+.workspace-main-panel--profile .profile-savebar button { min-height: 44px; }
+.admin-readiness > p[role=status] { border-radius: var(--gc-radius-md); }
+.readiness-diagnostics { min-width: 0; }
+.readiness-diagnostics table { max-width: 100%; table-layout: fixed; }
+@media (max-width: 1023px) {
+  .workspace-main-panel--admin .role-permission-table thead th:first-child,
+  .workspace-main-panel--admin .role-permission-table tbody th { width: 44%; }
+  .workspace-main-panel--admin .role-policy-actions button { flex: 1 1 5rem; }
+  .audio-shortcut-row, .audio-shortcut-actions { flex-wrap: wrap; }
+}

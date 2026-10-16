@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { microphoneSettings, microphoneMeter, microphoneSettingsError, setMicrophoneSettings } from './runtime'
+import { microphoneSettings, microphoneMeter, setMicrophoneSettings } from './runtime'
 defineProps<{ vad: boolean }>()
 const position = (db: number) => Math.max(0, Math.min(100, (db + 90) / 90 * 100))
 const threshold = computed(() => position(microphoneSettings.value.vadThresholdDb))
@@ -17,8 +17,6 @@ function change(event: Event) { setMicrophoneSettings({ ...microphoneSettings.va
     </div>
     <small>Линия — порог активации. Уровень доступен при включённом микрофоне в звонке.</small>
     <button class="gc-button gc-button--secondary" type="button" @click="setMicrophoneSettings({ ...microphoneSettings, vadThresholdDb: -50 })">Сбросить чувствительность</button>
-    <p v-if="microphoneMeter.status === 'unsupported' || microphoneMeter.status === 'error'" role="alert">Обработка микрофона недоступна. Отправка звука выключена.</p>
-    <p v-if="microphoneSettingsError" role="alert">{{ microphoneSettingsError }}</p>
   </div>
 </template>
 <style scoped>

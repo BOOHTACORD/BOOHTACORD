@@ -6,6 +6,7 @@ import { guild } from './guild.mjs'
 import { sessions } from './sessions.mjs'
 import { searchTabs } from './search_tabs.mjs'
 import { searchPresentation } from './search_presentation.mjs'
+import { settingsDensity } from './settings_density.mjs'
 import { registration, rateLimit } from '../critical_client_acceptance/auth.mjs'
 import { resetLinks } from '../critical_client_acceptance/reset.mjs'
 import { bursts } from '../critical_client_acceptance/bursts.mjs'
@@ -52,6 +53,7 @@ try {
   await guest.goto(origin)
   const expectedMemberCount = 20 + Number(Boolean(flowAccount))
   const value = await guild(a, b, guest, input.password, report, input.directory, expectedMemberCount)
+  await settingsDensity(a, input, report)
   console.log('stage=reference-guild-journey-complete')
   await login(guest, 'qa_member', input.password, input.directory)
   console.log(`stage=qa-member-login:${input.viewport.width}`)

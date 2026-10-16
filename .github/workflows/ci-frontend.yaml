@@ -81,6 +81,14 @@ jobs:
           path: .out/issue346/browser/**
           if-no-files-found: ignore
           retention-days: 30
+      - name: Retain settings hierarchy and browser zoom evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-settings-density-${{ github.sha }}
+          path: .out/issue351/browser/**
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain synthetic TEXT and DM rhythm and browser zoom evidence
         if: always()
         uses: actions/upload-artifact@v4

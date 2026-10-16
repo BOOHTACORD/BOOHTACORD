@@ -5,6 +5,7 @@ import { teardown } from './teardown.mjs'
 import { installRosterFailureObserver } from './roster_observer.mjs'
 import { rosterCounters } from './roster_diagnostics.mjs'
 import { observeRosterNetwork } from './roster_network.mjs'
+import { activeVoiceSettings } from '../client_lifecycle/settings_density.mjs'
 async function connected(page) {
   try {
     await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 22000 })
@@ -51,6 +52,7 @@ export async function media(a, b, member, channelId, report, input) {
     await connected(page)
   }
   await connected(a)
+  await activeVoiceSettings(a, input, report)
   blocked = true
   for (const { socket, server } of chat) { server.close(); socket.close() }
   const banner = a.getByTestId('connection-status')

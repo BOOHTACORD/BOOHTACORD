@@ -33,7 +33,7 @@ onMounted(() => { void load() })
 
 <template>
   <section class="admin-audit" aria-labelledby="admin-audit-title">
-    <header class="admin-section-heading"><div><h2 id="admin-audit-title">Аудит</h2><p>События управления без содержимого сообщений</p></div>
+    <header class="admin-section-heading"><div><h2 id="admin-audit-title">Аудит</h2></div>
       <button type="button" :disabled="loading" @click="load()">Обновить</button></header>
     <AdminAuditFilters v-model:filters="filters" :events="events" />
     <p class="admin-audit-results" role="status" aria-live="polite">Показано: {{ filtered.length }} из {{ events.length }} загруженных</p>

@@ -187,7 +187,8 @@
       "clients/flutter/lib/src/screens/profile*"
     ],
     "web": [
-      "tests/accessibility/playwright.config.ts"
+      "tests/accessibility/playwright.config.ts",
+      "tests/settings_density/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/personal_settings_visual_capture_test.dart",
@@ -203,6 +204,10 @@
         "native": "tools/qa/accessibility_runtime/native.py",
         "target": "integration_test/accessibility_qa_test.dart",
         "scope": "Actual rendered-state axe/keyboard, enlarged-text geometry and native Semantics; missing physical screen readers/platforms keep gate PARTIAL"
+      },
+      "issue351": {
+        "browser": "clients/web/tests/settings_density/playwright.config.ts",
+        "scope": "Primary audio settings and disclosure, visible permission/processing failures and admin dirty state; real API/SFU lifecycle separately required. No native/media QoE claim."
       }
     }
   },
@@ -214,7 +219,8 @@
       "clients/flutter/lib/src/features/guild/*"
     ],
     "web": [
-      "tests/accessibility/playwright.config.ts"
+      "tests/accessibility/playwright.config.ts",
+      "tests/settings_density/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/admin_visual_capture_test.dart",

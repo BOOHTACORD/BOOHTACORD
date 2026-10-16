@@ -173,6 +173,11 @@ tasks:
     requirements: [REQ-SEARCH-01, REQ-STORAGE-01, REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
     depends_on: [T-041, T-044, T-050, DW-01, DW-003, DW-004, DW-006]
     evidence: [clients/web/tests/search_presentation/playwright.config.ts, evidence/qa/dw07-search-presentation-2026-10-16.md]
+  - id: DW-012
+    title: Clear Web settings hierarchy and compact advanced controls (GitHub #351)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-AUDIO-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [T-014, T-022, T-050, DW-003, DW-004]
+    evidence: [clients/web/tests/settings_density/playwright.config.ts, evidence/qa/dw12-settings-density-2026-10-16.md]
   - id: T-051
     title: Android native client and APK
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUTH-01, REQ-SECURITY-01, REQ-VOICE-01]

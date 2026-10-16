@@ -75,7 +75,7 @@ onBeforeUnmount(() => window.removeEventListener('beforeunload', guard))
 
 <template>
   <section class="role-permissions" aria-labelledby="role-permissions-title">
-    <header class="admin-section-heading"><div><h2 id="role-permissions-title">Роли и разрешения</h2><p>Настройки применяются ко всем участникам выбранной роли.</p></div><button type="button" :disabled="loading" @click="load(false)">Обновить</button></header>
+    <header class="admin-section-heading"><div><h2 id="role-permissions-title">Роли и разрешения</h2></div><button type="button" :disabled="loading" @click="load(false)">Обновить</button></header>
     <div class="role-selector" role="tablist" aria-label="Роль"><button v-for="role in orderedRoles" :key="role.role" type="button" role="tab" :aria-selected="selected === role.role" @click="choose(role.role)">{{ role.role === 'MEMBER' ? 'Пользователь' : role.displayName }}</button></div>
     <p v-if="loading && !roles.length" class="state" aria-live="polite">Загружаем разрешения…</p>
     <fieldset v-else class="role-permission-fieldset" :disabled="selected === 'ADMINISTRATOR' || saving"><legend class="gc-sr-only">Разрешения роли</legend>

@@ -90,8 +90,8 @@ defineExpose({ hasUnsavedChanges })
         <button v-if="props.profile.avatar_url" class="profile-secondary-button" type="button" :disabled="busy" @click="removeAvatar">Удалить</button>
       </div>
       <form class="profile-form" :aria-busy="busyAction === 'name'" @submit.prevent="saveName">
-        <label>Отображаемое имя<input v-model="displayName" autocomplete="nickname" required :disabled="busy" :aria-describedby="error ? 'profile-error' : undefined"><small>Так вас видят другие участники гильдии.</small></label>
-        <label>Логин<input :value="props.profile.login" readonly aria-readonly="true"><small>Используется для входа.</small></label>
+        <label>Отображаемое имя<input v-model="displayName" autocomplete="nickname" required :disabled="busy" :aria-describedby="error ? 'profile-error' : undefined"></label>
+        <label>Логин<input :value="props.profile.login" readonly aria-readonly="true"></label>
         <div class="profile-savebar"><span role="status" aria-live="polite">{{ profileStatus || (nameChanged ? 'Есть несохранённые изменения' : 'Изменения не внесены') }}</span><button type="submit" :disabled="busy || !nameChanged">{{ busyAction === 'name' ? 'Сохраняем…' : 'Сохранить профиль' }}</button></div>
       </form>
       </section>
