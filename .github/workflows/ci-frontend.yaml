@@ -89,6 +89,14 @@ jobs:
           path: .out/issue351/browser/**
           if-no-files-found: ignore
           retention-days: 30
+      - name: Retain compact voice controls and browser zoom evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-voice-interface-${{ github.sha }}
+          path: .out/issue347/browser/**
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain synthetic TEXT and DM rhythm and browser zoom evidence
         if: always()
         uses: actions/upload-artifact@v4

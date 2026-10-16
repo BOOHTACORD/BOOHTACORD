@@ -73,6 +73,7 @@ const emit = defineEmits<{ openSearch: []; returnVoice: [channelId: string]; tog
     :self-microphone-muted="voiceConnection.microphoneMuted"
     :self-microphone-unavailable="voiceConnection.microphonePermissionDenied"
     :self-deafened="voiceConnection.deafened"
+    :deafen-changing="voiceConnection.deafenChanging"
     :self-speaking="voiceConnection.selfSpeaking"
     :voice-error="voiceConnection.error"
     :voice-disconnect-notice="voiceConnection.disconnectNotice"

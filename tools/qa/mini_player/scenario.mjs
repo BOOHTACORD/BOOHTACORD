@@ -82,7 +82,7 @@ try {
  const category = await api(admin,'/admin/categories','POST',{name:'QaScreen'}); status(category,201)
  for (const [name,kind] of [['QaScreen','VOICE'],['QaText','TEXT']]) status(await api(admin,`/admin/categories/${category.body.id}/channels`,'POST',{name,kind}),201)
  status(await api(viewer,'/direct-messages','POST',{participant_id:a.body.id}),201)
- for (const p of [publisher,viewer]) { await p.reload(); await channel(p,'QaScreen'); await p.getByRole('button',{name:'Подключиться без микрофона',exact:true}).click(); await connected(p) }
+ for (const p of [publisher,viewer]) { await p.reload(); await channel(p,'QaScreen'); await p.getByRole('button',{name:'Без микрофона',exact:true}).click(); await connected(p) }
  phase = 'publish actual screen via production UI'
  await publisher.getByTestId('voice-dock').getByRole('button',{name:'Начать демонстрацию экрана',exact:true}).click()
  // The production setup dialog can ask to confirm profile before capture.
@@ -127,8 +127,8 @@ try {
  phase='source removal clears'; await pinnedText(); await publisher.getByTestId('voice-dock').getByRole('button',{name:'Остановить демонстрацию экрана',exact:true}).click(); await clean('publisher removal'); report.checks.source_removal_cleanup='PASS'
  phase='republish'; await publisher.getByTestId('voice-dock').getByRole('button',{name:'Начать демонстрацию экрана',exact:true}).click(); await start.first().click(); await expect(publisher.getByTestId('voice-dock').getByRole('button',{name:'Остановить демонстрацию экрана',exact:true})).toBeVisible({timeout:30000})
  phase='disconnect clears'; await pinnedText(); await viewer.getByTestId('voice-dock').getByRole('button',{name:'Выйти из голосового канала',exact:true}).click(); await clean('voice disconnect'); report.checks.disconnect_cleanup='PASS'
- phase='logout account switch clears'; await channel(viewer,'QaScreen'); await viewer.getByRole('button',{name:'Подключиться без микрофона',exact:true}).click(); await connected(viewer); await pinnedText(); await logout(); await clean('logout'); await login(viewer,'qa_admin',input.password); await clean('other account login'); report.checks.logout_account_switch_cleanup='PASS'
- phase='actual account revoke clears'; await logout(); await login(viewer,'qa_screen_viewer',input.password); await channel(viewer,'QaScreen'); await viewer.getByRole('button',{name:'Подключиться без микрофона',exact:true}).click(); await connected(viewer); await pinnedText(); status(await api(admin,`/admin/accounts/${b.body.id}`,'PATCH',{role:'MEMBER',blocked:true}),200); await expect(viewer.locator('.authentication-page')).toBeVisible({timeout:35000}); await clean('account revoke'); report.checks.revoke_cleanup='PASS'
+ phase='logout account switch clears'; await channel(viewer,'QaScreen'); await viewer.getByRole('button',{name:'Без микрофона',exact:true}).click(); await connected(viewer); await pinnedText(); await logout(); await clean('logout'); await login(viewer,'qa_admin',input.password); await clean('other account login'); report.checks.logout_account_switch_cleanup='PASS'
+ phase='actual account revoke clears'; await logout(); await login(viewer,'qa_screen_viewer',input.password); await channel(viewer,'QaScreen'); await viewer.getByRole('button',{name:'Без микрофона',exact:true}).click(); await connected(viewer); await pinnedText(); status(await api(admin,`/admin/accounts/${b.body.id}`,'PATCH',{role:'MEMBER',blocked:true}),200); await expect(viewer.locator('.authentication-page')).toBeVisible({timeout:35000}); await clean('account revoke'); report.checks.revoke_cleanup='PASS'
  report.status='PASS'; phase='complete'
  writeFileSync(process.env.QA_RESULT,JSON.stringify(report,null,2)+'\n')
  console.log('#247 Web scenarios complete; synthetic publisher available for native receiver')

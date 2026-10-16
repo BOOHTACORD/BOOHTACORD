@@ -12,7 +12,7 @@ export async function cacheAcl(page,fixture,input,report) {
     const member=await context.newPage()
     await login(member,'qa_unread_member',input.password)
     await select(member,'NextVoice')
-    await member.getByRole('button',{name:'Подключиться без микрофона',exact:true}).click()
+    await member.getByRole('button',{name:'Без микрофона',exact:true}).click()
     await expect(member.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён',{timeout:25000})
     const present=async()=>Boolean((await api(page,'/voice/participants')).body.channels.some(room=>room.participants.some(person=>person.account_id===fixture.member)))
     await expect.poll(present,{timeout:10000}).toBe(true)

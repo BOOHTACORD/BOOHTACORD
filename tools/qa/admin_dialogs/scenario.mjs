@@ -39,8 +39,8 @@ try{
  const peer=await client('qa_dialog_peer')
  page.on('request',r=>{const path=new URL(r.url()).pathname;if(r.method()!=='GET'&&/\/voice\/(channels\/[^/]+\/leases|leases\/[^/]+(?:\/credential)?)$/.test(path))admissions++;if(r.method()==='POST'&&path.endsWith('/categories'))creates++})
  phase='real two participant SFU listener room'
- await channel(peer,'QaVoice');await peer.getByRole('button',{name:'Подключиться без микрофона',exact:true}).click();await expect(peer.locator('.voice-status')).toHaveText('Голос подключён')
- await channel(page,'QaVoice');await page.getByRole('button',{name:'Подключиться без микрофона',exact:true}).click();await expect(page.locator('.voice-status')).toHaveText('Голос подключён');admissionBaseline=admissions
+ await channel(peer,'QaVoice');await peer.getByRole('button',{name:'Без микрофона',exact:true}).click();await expect(peer.locator('.voice-status')).toHaveText('Голос подключён')
+ await channel(page,'QaVoice');await page.getByRole('button',{name:'Без микрофона',exact:true}).click();await expect(page.locator('.voice-status')).toHaveText('Голос подключён');admissionBaseline=admissions
  await channel(page,'QaText');await page.locator('#message-body').fill('QA_LOCAL_UNSENT')
  report.checks['295_real_SFU_two_listener_connection']='PASS'
  phase='admin seven sections and layout'

@@ -94,9 +94,9 @@ try {
   await searchPresentation(guest, b, value, input, report)
 
   await channel(guest, 'Voice')
-  await expect(guest.getByRole('heading', { name: 'Вы не подключены', exact: true })).toBeVisible()
-  await expect(guest.getByRole('button', { name: 'Подключиться к голосу', exact: true })).toBeVisible()
-  await expect(guest.getByRole('button', { name: 'Подключиться без микрофона', exact: true })).toBeVisible()
+  await expect(guest.getByRole('heading', { name: 'Войти в голос', exact: true })).toBeVisible()
+  await expect(guest.getByRole('button', { name: 'Войти', exact: true })).toBeVisible()
+  await expect(guest.getByRole('button', { name: 'Без микрофона', exact: true })).toBeVisible()
   await guest.screenshot({ path: input.directory+'/voice-prejoin.png' })
   report.catalog_voice_prejoin = { channel_selected: true, connection_not_started: true, join_modes_visible: true }
   console.log('stage=qa-member-voice-prejoin-complete')

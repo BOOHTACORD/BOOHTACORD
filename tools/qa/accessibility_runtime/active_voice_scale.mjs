@@ -7,7 +7,7 @@ async function channel(name){await openNavigation(page);await page.getByRole('bu
 try{
  await login(page,'qa_admin',input.password);const session=await api(page,'/me/sessions');status(session,200)
  assert.equal(await page.evaluate(async owner=>(await fetch('/api/v1/me/sessions/revoke-others',{method:'POST',headers:{'X-Account-ID':owner},credentials:'same-origin'})).status,session.body.account_id),204)
- await channel('AccessVoice');await page.getByRole('button',{name:'Подключиться без микрофона',exact:true}).click();await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён',{timeout:30000});report.actual_sfu=true
+ await channel('AccessVoice');await page.getByRole('button',{name:'Без микрофона',exact:true}).click();await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён',{timeout:30000});report.actual_sfu=true
  if(process.env.QA_EXTRA_CSS)await page.addStyleTag({content:readFileSync(process.env.QA_EXTRA_CSS,'utf8')})
  for(const width of [393,320])for(const scale of [1,2])for(const kind of ['TEXT','DM']){
   await page.setViewportSize({width,height:900});await page.evaluate(scale=>document.documentElement.style.fontSize=scale===2?'200%':'',scale)

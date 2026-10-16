@@ -13,5 +13,6 @@ function count(value: number): number {
 export function voiceRoomSummary(participants: number, screens: number): string {
   const people = count(participants)
   const shares = count(screens)
+  if (shares === 0) return `${people} ${plural(people, ['участник', 'участника', 'участников'])}`
   return `${people} ${plural(people, ['участник', 'участника', 'участников'])} · ${shares} ${plural(shares, ['демонстрация экрана', 'демонстрации экрана', 'демонстраций экрана'])}`
 }

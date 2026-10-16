@@ -1,8 +1,5 @@
-.voice-room-footer { display: none; flex: 0 0 auto; min-height: 76px; align-items: center; justify-content: space-between; gap: var(--gc-space-4); border-top: 1px solid var(--gc-border-subtle); padding: var(--gc-space-3) var(--gc-space-6); }
+.voice-room-footer { display: block; min-width: 0; flex: 0 0 auto; }
 .voice-room-footer-copy { display: grid; min-width: 0; gap: var(--gc-space-1); }
-.voice-room-footer-copy p, .voice-room-footer-copy small { overflow: hidden; margin: 0; text-overflow: ellipsis; white-space: nowrap; }
-.voice-room-footer-copy p { color: var(--gc-text-secondary); font-size: var(--gc-text-body); }
+.voice-room-footer-copy p, .voice-room-footer-copy small { margin: 0; overflow-wrap: anywhere; }
+.voice-room-footer-copy p { color: var(--gc-text-primary); font-size: var(--gc-text-body); }
 .voice-room-footer-copy small { color: var(--gc-text-muted); font-size: var(--gc-text-caption); }
-.voice-room-footer .gc-button { flex: 0 0 auto; }
-.voice-room-footer .gc-button svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
-@media (min-width: 1024px) { .voice-room-footer { display: flex; } }

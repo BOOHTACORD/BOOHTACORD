@@ -21,7 +21,8 @@
       "clients/flutter/lib/src/services/voice*"
     ],
     "web": [
-      "tests/accessibility/playwright.config.ts"
+      "tests/accessibility/playwright.config.ts",
+      "tests/voice_interface/playwright.config.ts"
     ],
     "flutter": [
       "test/voice_disconnect/visual_capture_test.dart"
@@ -32,6 +33,11 @@
         "native": "tools/qa/roster_runtime/native.py",
         "target": "integration_test/roster_qa_test.dart",
         "scope": "Actual populated REST/SSE and owned dependency faults; exact missing platform and release gates recorded in evidence"
+      },
+      "issue347": {
+        "browser": "clients/web/tests/voice_interface/playwright.config.ts",
+        "actual": "tools/qa/critical_client_acceptance/voice_interface.mjs",
+        "scope": "Shared one-click controls, PTT/denied/reconnect/leaving presentation, stale stream/roster cleanup, compact disclosure. Fixture viewport/text/actual zoom plus actual two-client SFU session continuity, TEXT/drawer/resize and leave. No native, hardware capture or media QoE claim."
       }
     }
   },

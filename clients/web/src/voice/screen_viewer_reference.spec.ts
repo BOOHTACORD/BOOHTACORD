@@ -55,7 +55,7 @@ describe('screen viewer reference composition', () => {
   it('names the selected stream in the stable voice-room header', () => {
     const pane = source('../conversation/ConversationPane.vue')
 
-    expect(pane).toContain('selectedScreenName ?')
+    expect(pane).toContain('selectedScreenName && voiceIsActive ?')
     expect(pane).toContain('${screenViewerCards.length} трансляции')
   })
 
