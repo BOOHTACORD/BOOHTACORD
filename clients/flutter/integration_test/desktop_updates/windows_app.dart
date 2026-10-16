@@ -9,6 +9,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -23,6 +24,7 @@ import 'package:boohtacord_desktop/src/features/updates/identity.dart';
 import 'package:boohtacord_desktop/src/features/updates/restore/window_bounds.dart';
 
 import 'native_app.dart' as native;
+import 'voice_diagnostics.dart';
 
 Future<void> until(
   bool Function() predicate,
@@ -341,6 +343,10 @@ Future<void> main() async {
   output.createSync(recursive: true);
   Journey? journey;
   String? installedBuild;
+  final voiceDiagnostics = AcceptanceVoiceDiagnostics();
+  final sdkObservation = Logger('livekit').onRecord.listen((record) {
+    voiceDiagnostics.observe(record.loggerName, record.message);
+  });
   try {
     await native.main();
     final identity = await NativeUpdateIdentity.load();
@@ -395,9 +401,13 @@ Future<void> main() async {
             find.byType(BoohtacordApp).evaluate().isNotEmpty) ...{
           'update_phase': journey.desktop.phase.name,
           'native_failure': desktopUpdateFailureCode(journey.desktop.failure),
+          'voice_phase': journey.state.voicePhase.name,
+          'voice_connection_codes': voiceDiagnostics.codes,
         },
       }),
       flush: true,
     );
+  } finally {
+    await sdkObservation.cancel();
   }
 }

@@ -805,3 +805,20 @@ macOS installed-update acceptance is not claimed by these component tests.
   unchanged. A local initial drawer test needed an initial render-frame pump
   before advancing its animation clock; it was interrupted and corrected,
   then all cases passed.
+
+## Original Windows connection diagnostics (2026-10-16)
+
+- A42 full CI 38827219912, browser 38827220068 and native candidates
+  38827214675 PASS. Installed run 38827214693 instead fails before download:
+  `voice_not_connected`, step `voice_listener`, build 78, idle update phase.
+  Authenticated artifact 12016043040 is 45,328 bytes, archive SHA-256
+  `24c14683745be21d83d9777e86fc4713a9aec628096b0b04e8295c326153c23f`.
+  Its image was visually inspected: the actual voice channel is open and shows
+  that voice admission ended. No native apply occurred in this attempt.
+- Lease cleanup can replace the original SDK connection error with a generic
+  disconnect notice. The QA entrypoint now observes existing LiveKit warning
+  events and retains only a fixed set of connection categories plus the enum
+  voice phase. It never retains SDK messages, URLs, SDP, credentials or IDs and
+  does not alter connection/retry/apply behavior. Privacy/category tests (2),
+  existing journey/bounds tests (7), and focused analyzer PASS. The original
+  connection cause and a successful installed transition remain unproven.
