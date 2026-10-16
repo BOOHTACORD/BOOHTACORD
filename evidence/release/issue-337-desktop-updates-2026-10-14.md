@@ -12,11 +12,11 @@ later compilation or component tests.
 
 | Gate | Current status |
 |---|---|
-| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38832920366, source CBA |
-| Browser lifecycle acceptance | PASS, CBA run 38832920361; E77's two earlier network failures retained below |
+| Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38835907719, source 809 |
+| Browser lifecycle acceptance | PASS, 809 run 38835907611 and CBA run 38832920361; E77's two earlier network failures retained below |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED awaiting system Keychain access |
-| Windows installed 78 → 79 | CBA FAIL before download: update action absent; exact served-catalog readiness gate added, repeat pending |
+| Windows installed 78 → 79 | CBA FAIL before download: update action absent; exact served-catalog readiness gate PASS, 809 installed repeat running |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -921,3 +921,12 @@ macOS installed-update acceptance is not claimed by these component tests.
 - A future failure also retains the check status/result enums, banner/target
   booleans and stale boolean. No policy payload, path, account or message is
   added to failure diagnostics.
+- Actual Windows preflight at 809, run 38835901544 / job 116764847784 PASS:
+  the real HTTPS endpoint initially serves revision 1, then serves the exact
+  signed revision 2 after 6,561 ms. This confirms a real publication-readiness
+  interval; the installed-client build begins only after it closes. It does
+  not establish the later installed N → N+1 gate.
+- Full 809 CI 38835907719, native candidates 38835901442 and browser lifecycle
+  38835907611 PASS. Ordinary shipping source remains unchanged by these fixture
+  ordering and bounded diagnostic fields. The installed run still needs its
+  genuine native apply/restoration result before acceptance.
