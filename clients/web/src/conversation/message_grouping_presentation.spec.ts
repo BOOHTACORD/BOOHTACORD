@@ -38,6 +38,9 @@ describe('compact continuation presentation', () => {
       expect((html.match(/class="message-author"/g) ?? [])).toHaveLength(1)
       expect(html).toContain('message-row grouped')
       expect(html).toContain('История')
+      expect((html.match(/<time class="message-time" datetime=/g) ?? [])).toHaveLength(2)
+      expect(html).toMatch(/message-avatar-spacer[^>]*><time[^>]*aria-label="[^"]*2026/)
+      expect(html).not.toContain('message-avatar-spacer" aria-hidden')
     }
   })
 })

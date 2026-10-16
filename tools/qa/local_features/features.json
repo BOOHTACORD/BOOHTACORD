@@ -248,14 +248,20 @@
       "clients/flutter/lib/src/features/attachments/*",
       "clients/web/src/search/*",
       "clients/flutter/lib/src/screens/workspace_ui/message_action_menu/*",
-      "clients/flutter/lib/src/screens/workspace_ui/direct_message_action_menu/*"
+      "clients/flutter/lib/src/screens/workspace_ui/direct_message_action_menu/*",
+      "clients/web/src/conversation/history_window/*",
+      "clients/web/src/conversation/reactions/*",
+      "clients/web/src/conversation/system_welcome/*",
+      "clients/web/src/conversation/message_body/*"
     ],
     "web": [
       "tests/conversation_action_disclosure/playwright.config.ts",
       "tests/mentions_inbox/playwright.config.ts",
       "tests/accessibility/playwright.config.ts",
       "tests/search_sessions/playwright.config.ts",
-      "tests/quick_jump_people/playwright.config.ts"
+      "tests/quick_jump_people/playwright.config.ts",
+      "tests/chat_rhythm/playwright.config.ts",
+      "tests/message_social/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart",
@@ -284,6 +290,10 @@
         "native": "tools/qa/accessibility_runtime/native.py",
         "target": "integration_test/accessibility_qa_test.dart",
         "scope": "Actual rendered-state axe/keyboard, enlarged-text geometry and native Semantics; missing physical screen readers/platforms keep gate PARTIAL"
+      },
+      "issue345": {
+        "browser": "clients/web/tests/chat_rhythm/playwright.config.ts",
+        "scope": "Production Vue TEXT/DM with synthetic multiline, grouped, media, reply, edit, deleted, system and RTL/code fixtures; 320/390/1440px and independently observed actual 200% browser zoom. Existing grouping, action ACL, composer and virtual history retained; actual-stack Web gate separate."
       }
     }
   },

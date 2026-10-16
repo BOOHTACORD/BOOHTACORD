@@ -6,6 +6,7 @@ import type { TextMessage, TextMessageAttachment } from './message_client'
 import { avatarFallbackStyle } from './avatar_fallback'
 import { avatarInitials } from '../design/avatar_initials'
 import { useAuthorDirectory } from '../identity/author_directory'
+import MessageTimestamp from './MessageTimestamp.vue'
 import MessageBody from './message_body/MessageBody.vue'
 import { decorateMessageMentions } from './message_body/inline_mentions'
 import MentionPicker from './MentionPicker.vue'
@@ -73,16 +74,16 @@ function remove(): void {
 <template>
   <SystemWelcomeMessage v-if="message.kind === 'SYSTEM_WELCOME'" :body="message.body" :author-id="message.authorId" :created-at="message.createdAt" :deleted="message.deleted" :can-delete="canDelete" @remove="emit('remove')" />
   <article v-else ref="row" class="message-item message-row" :class="{ deleted: message.deleted, grouped: compact }" tabindex="-1" @pointerdown="onRowPointerDown" @pointermove="onRowPointerMove" @pointerup="onRowPointerEnd" @pointercancel="onRowPointerEnd" @focusout="onRowFocusOut">
-    <span v-if="compact" class="message-avatar-spacer" aria-hidden="true"></span>
+    <span v-if="compact" class="message-avatar-spacer"><MessageTimestamp :created-at="message.createdAt" /></span>
     <img v-else-if="authorAvatar && !avatarFailed" class="message-avatar" :src="authorAvatar" alt="" @error="avatarFailed = true">
     <span v-else class="message-avatar" :style="avatarFallbackStyle(message.authorId)" aria-hidden="true">{{ avatarInitials(authorName) }}</span>
     <div class="message-content">
       <div v-if="!compact" class="message-meta">
         <span class="message-author">{{ authorName }}</span>
-        <time class="message-time">{{ new Date(message.createdAt).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) }}</time>
+        <MessageTimestamp :created-at="message.createdAt" />
         <span v-if="message.editedAt" class="message-time">изменено</span>
       </div>
-      <span v-else class="gc-sr-only">{{ authorName }}, <time :datetime="message.createdAt">{{ new Date(message.createdAt).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) }}</time><span v-if="message.editedAt">, изменено</span></span>
+      <span v-else class="gc-sr-only">{{ authorName }}<span v-if="message.editedAt">, изменено</span></span>
       <template v-if="editing">
         <textarea ref="editInput" v-model="body" :disabled="pending" aria-label="Изменённый текст сообщения" :aria-describedby="editError ? `message-edit-error-${message.id}` : undefined" @keydown="onEditKeydown" />
         <MentionPicker v-model="editingMentionIds" :self-id="message.authorId" :disabled="pending" :only-participant="mentionRecipient" />

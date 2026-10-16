@@ -20,6 +20,8 @@ def main():
     run("npm", "run", "test:responsive-shell", cwd=client("web"))
     run("npm", "run", "test:controls", cwd=client("web"))
     run("npm", "run", "test:microcopy", cwd=client("web"))
+    run("npm", "run", "test:chat-rhythm", cwd=client("web"))
+    run("npm", "run", "test:message-social", cwd=client("web"))
     run("npm", "run", "test:navigation", cwd=client("web"))
     run("npm", "run", "test:screen-profile", cwd=client("web"))
     run("npm", "run", "test:member-popover", cwd=client("web"))

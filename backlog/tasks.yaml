@@ -153,6 +153,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
     depends_on: [T-050, T-020, T-041, T-022, DW-003, DW-004]
     evidence: [evidence/qa/dw05-navigation-2026-10-16.md]
+  - id: DW-006
+    title: Continuous Web TEXT and DM message rhythm preserving grouping and actions (GitHub #345)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-CHAT-01, REQ-DM-01, REQ-QUALITY-01]
+    depends_on: [T-040, T-041, T-044, T-050, DW-003, DW-004]
+    evidence: [evidence/qa/dw06-chat-rhythm-2026-10-16.md]
   - id: T-051
     title: Android native client and APK
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUTH-01, REQ-SECURITY-01, REQ-VOICE-01]

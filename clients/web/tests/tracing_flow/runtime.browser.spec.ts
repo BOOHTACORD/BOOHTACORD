@@ -30,8 +30,8 @@ test('actual sender/receiver render, independent visits, first frame and stale b
  await expect(page.locator('.message-row')).toHaveCount(1)
  await receiver.evaluate(()=>(window as any).tracingQA.receive())
  await expect(receiver.locator('.message-row')).toHaveCount(1);expect(posts).toBe(1)
- await expect(page.getByRole('button',{name:'Реакция 👍',exact:true})).toBeEnabled()
- await expect(receiver.getByRole('button',{name:'Реакция 👍',exact:true})).toBeEnabled()
+ await expect(page.locator('.reaction-palette button[aria-label="Реакция 👍"]')).toBeEnabled()
+ await expect(receiver.locator('.reaction-palette button[aria-label="Реакция 👍"]')).toBeEnabled()
  if(process.env.TRACE_QA_CAPTURE_DIR){
   await mkdir(process.env.TRACE_QA_CAPTURE_DIR,{recursive:true})
   await page.screenshot({path:join(process.env.TRACE_QA_CAPTURE_DIR,'sender-rendered.png'),fullPage:true})
