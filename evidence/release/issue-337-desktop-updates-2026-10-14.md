@@ -13,10 +13,10 @@ later compilation or component tests.
 | Gate | Current status |
 |---|---|
 | Full contracts/backend/Web/Flutter/Windows CI | PASS, run 38835907719, source 809 |
-| Browser lifecycle acceptance | PASS, 809 run 38835907611 and CBA run 38832920361; E77's two earlier network failures retained below |
+| Browser lifecycle acceptance | PASS, 81F run 38838918911, 809 run 38835907611 and CBA run 38832920361; E77's two earlier network failures retained below |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED awaiting system Keychain access |
-| Windows installed 78 → 79 | 809 FAIL before download with actual SDK ICE connection error; target availability PASS, TCP-only loopback fixture repeat pending |
+| Windows installed 78 → 79 | 809 FAIL before download with actual SDK ICE connection error; target availability PASS, 81F TCP-only loopback repeat running |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -956,3 +956,9 @@ macOS installed-update acceptance is not claimed by these component tests.
   describes direct ICE/TCP. A focused configuration guard checks loopback-only
   binds/candidates and TCP-only transport; current native fixture tests (9) PASS.
   Actual startup/connection and installed acceptance await the fresh run.
+- Actual Windows 81F native preflight 38838913385 / job 116774215957 PASS:
+  the pinned LiveKit binary starts with the TCP-only JSON/YAML configuration,
+  HTTPS signaling is healthy and the real signed catalog moves from revision
+  1 to 2 after 8,719 ms. Client ICE connection and installation remain separate
+  pending gates. Configuration guards also reject empty bind/candidate filters,
+  which would otherwise fall back to broader server defaults.
