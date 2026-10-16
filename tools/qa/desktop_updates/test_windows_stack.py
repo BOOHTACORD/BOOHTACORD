@@ -1,8 +1,28 @@
 """Startup diagnostics must remain bounded even when dependency logs are unsafe."""
 import unittest
+import ipaddress
 from unittest.mock import patch
 
-from .windows_stack import Stack, startup_failure
+from .windows_stack import Stack, startup_failure, loopback_sfu_configuration
+
+
+class LoopbackMediaConfigurationTests(unittest.TestCase):
+    def test_updater_fixture_uses_real_ice_tcp_with_loopback_candidates_only(self):
+        config = loopback_sfu_configuration()
+        self.assertTrue(all(ipaddress.ip_address(value).is_loopback
+                            for value in config['bind_addresses']))
+        rtc = config['rtc']
+        self.assertTrue(rtc['force_tcp'])
+        self.assertEqual(rtc['udp_port'], 0)
+        self.assertEqual(rtc['tcp_port'], 4914)
+        self.assertFalse(rtc['use_external_ip'])
+        self.assertTrue(rtc['enable_loopback_candidate'])
+        for value in rtc['ips']['includes']:
+            network = ipaddress.ip_network(value)
+            self.assertTrue(network.network_address.is_loopback)
+            self.assertTrue(network.broadcast_address.is_loopback)
+        self.assertEqual(config['webhook']['urls'],
+                         ['http://127.0.0.1:4911/internal/livekit/roster'])
 
 
 class CatalogReadinessTests(unittest.TestCase):

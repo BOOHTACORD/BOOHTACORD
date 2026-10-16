@@ -16,7 +16,7 @@ later compilation or component tests.
 | Browser lifecycle acceptance | PASS, 809 run 38835907611 and CBA run 38832920361; E77's two earlier network failures retained below |
 | Normal native distributions | PASS macOS universal ZIP, signed Android APKs, Windows Setup/full NUPKG and portable; iOS compile-only unsigned |
 | macOS installed 78 → 79 | Real replacement/local bootstrap PASS; final fixed-version account/draft/scroll/audio acceptance BLOCKED awaiting system Keychain access |
-| Windows installed 78 → 79 | CBA FAIL before download: update action absent; exact served-catalog readiness gate PASS, 809 installed repeat running |
+| Windows installed 78 → 79 | 809 FAIL before download with actual SDK ICE connection error; target availability PASS, TCP-only loopback fixture repeat pending |
 | Failed-apply recovery components | Actual macOS helper and Windows monitor/relaunch tests PASS; these do not establish the successful N → N+1 UI gate |
 | Production catalog promotion | NOT_RUN; revision 29 unchanged |
 
@@ -930,3 +930,29 @@ macOS installed-update acceptance is not claimed by these component tests.
   38835907611 PASS. Ordinary shipping source remains unchanged by these fixture
   ordering and bounded diagnostic fields. The installed run still needs its
   genuine native apply/restoration result before acceptance.
+
+## TCP-only Windows updater fixture (2026-10-16)
+
+- Installed run 38835901544 at 809 fails before download with
+  `voice_not_connected` / `voice_listener`, build 78 and SDK category
+  `ice_connect`. Its update check is `ok`, result `updateAvailable`, banner
+  visible, target present and policy not stale. The served-catalog ordering
+  fix therefore reaches the real client with the intended update available.
+- Authenticated artifact 12019419166 is 45,407 bytes, SHA-256
+  `ad5e88dbcfe0d609aefb7bb7eb613dc672c185ea86391e7533b4923e5e3f30aa`.
+  Size/hash, CRC and extraction paths PASS. Visually inspected image shows
+  the available Update action and ended voice admission. No install occurred.
+  The specific OS/network reason for the ICE failure is not established.
+- This basic updater fixture now offers actual ICE/TCP only, with candidate IPs
+  restricted to 127.0.0.1/32, external IP discovery off and management/signaling
+  bound to loopback. It still requires a real Flutter/LiveKit connection before
+  downloading, and the same strict installed-state checks. It does not disable
+  a firewall, change client trust, route RTP through Go or simulate media.
+  UDP acceptance/capacity is not established by this fixture.
+- `force_tcp` is explicitly a testing option in the
+  [pinned LiveKit transport source](https://raw.githubusercontent.com/livekit/mediatransportutil/f234b534b095/pkg/rtcconfig/config.go),
+  selected by [LiveKit 1.13.7's module](https://github.com/livekit/livekit/blob/v1.13.7/go.mod).
+  [Official port documentation](https://docs.livekit.io/transport/self-hosting/ports-firewall/)
+  describes direct ICE/TCP. A focused configuration guard checks loopback-only
+  binds/candidates and TCP-only transport; current native fixture tests (9) PASS.
+  Actual startup/connection and installed acceptance await the fresh run.

@@ -34,6 +34,21 @@ def startup_failure(role, code, raw):
     return {'service': role, 'exit_code': code, 'reason': reason}
 
 
+def loopback_sfu_configuration():
+    # Pinned LiveKit RTCConfig.force_tcp is explicitly a test transport option.
+    # Keep actual WebRTC/DTLS media on direct loopback TCP in this updater gate;
+    # neither its success nor failure establishes UDP/network capacity evidence.
+    return {
+        'port': 4912, 'bind_addresses': ['127.0.0.1'],
+        'rtc': {'tcp_port': 4914, 'udp_port': 0, 'force_tcp': True,
+                'use_external_ip': False, 'enable_loopback_candidate': True,
+                'ips': {'includes': ['127.0.0.1/32']}},
+        'keys': {'qa-only': 'qa-local-only-secret-12345'},
+        'webhook': {'api_key': 'qa-only',
+                    'urls': ['http://127.0.0.1:4911/internal/livekit/roster']},
+    }
+
+
 class Stack:
     def __init__(self, root):
         if sys.platform != 'win32':
@@ -64,8 +79,6 @@ class Stack:
         for port in (4910, 4911, 4912, 4914, 55437):
             with socket.socket() as listener:
                 listener.bind(('127.0.0.1', port))
-        with socket.socket(type=socket.SOCK_DGRAM) as listener:
-            listener.bind(('127.0.0.1', 4915))
         self.pg, self.livekit = prepare(self.root / 'tools')
         password = self.root / 'database-password.txt'
         password.write_text(self.password)
@@ -101,19 +114,7 @@ class Stack:
         self.write_catalog(None)
         self.launch('api', self.bin / 'api.exe', env=self.environment)
         config = self.root / 'livekit.yaml'
-        config.write_text('''port: 4912
-bind_addresses: ["127.0.0.1"]
-rtc:
-  tcp_port: 4914
-  udp_port: 4915
-  use_external_ip: false
-  enable_loopback_candidate: true
-keys:
-  qa-only: qa-local-only-secret-12345
-webhook:
-  api_key: qa-only
-  urls: ["http://127.0.0.1:4911/internal/livekit/roster"]
-''')
+        config.write_text(json.dumps(loopback_sfu_configuration()))
         self.launch('sfu', self.livekit, '--config', config, '--node-ip', '127.0.0.1')
         self.launch('proxy', self.bin / 'proxy.exe', '--work', self.root)
         deadline = time.monotonic() + 45
