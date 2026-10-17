@@ -20,8 +20,11 @@ test('advanced filters disclose on request; active values and reset remain avail
   await expect(page.getByTestId('active-search-filters')).toContainText(name)
   await expect(page.getByTestId('active-search-filters')).toContainText('Без вложений')
   await expect(page.getByTestId('active-search-filters')).toContainText('2026-10-01')
-  await page.getByRole('button', { name: 'Найти', exact: true }).click()
+  const submit = page.getByRole('button', { name: 'Найти', exact: true })
+  await submit.click()
   await expect.poll(() => reads.length).toBe(1)
+  await expect(submit).toHaveText('Найти')
+  await expect(submit).toBeEnabled()
   expect(reads[0].get('author_id')).toBe(author); expect(reads[0].get('has_attachment')).toBe('false')
   await page.screenshot({ path: info.outputPath('active-filters-collapsed.png') })
   await page.getByRole('button', { name: 'Сбросить фильтры', exact: true }).click()
@@ -46,6 +49,17 @@ for (const width of [320, 390]) for (const scale of [1, 2]) test(`expanded calen
       return { width: el.clientWidth, minimum: ctx.measureText('12/31/2026').width + parseFloat(css.paddingLeft) + parseFloat(css.paddingRight) + 28 }
     })
     expect(size.width).toBeGreaterThanOrEqual(size.minimum)
+  }
+  const geometry = await page.locator('.search-aside, .search-panel, .search-form, .search-filters, .search-filter-controls').evaluateAll(elements => elements.map(el => {
+    const box = el.getBoundingClientRect()
+    return { selector: el.className, left: box.left, right: box.right, width: box.width, clientWidth: el.clientWidth, scrollWidth: el.scrollWidth }
+  }))
+  for (const item of geometry) {
+    expect(item.left, JSON.stringify(item)).toBeGreaterThanOrEqual(-1)
+    expect(item.right, JSON.stringify(item)).toBeLessThanOrEqual(width + 1)
+    if (/search-form|search-filters|search-filter-controls/.test(item.selector)) {
+      expect(item.scrollWidth - item.clientWidth, JSON.stringify(item)).toBeLessThanOrEqual(1)
+    }
   }
   await page.screenshot({ path: info.outputPath('expanded-filters.png') })
 })

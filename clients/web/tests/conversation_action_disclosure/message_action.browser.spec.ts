@@ -4,6 +4,11 @@ import { expect, test } from '@playwright/test'
 import { expectAxeClear } from '../accessibility/axe'
 
 test('R02 keeps only the touched message action disclosure open', async ({ page }) => {
+  await page.route(/message-reactions/, route => route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ reactions: [], can_pin: true }),
+  }))
   await page.goto('/')
   await page.evaluate(async () => {
     const load = (path: string) => import(path)
@@ -12,8 +17,8 @@ test('R02 keeps only the touched message action disclosure open', async ({ page 
     const { default: MessageItem } = await load('/src/conversation/MessageItem.vue')
     document.body.innerHTML = '<div id="mount"></div>'
     const messages = [1, 2, 3].map((index) => ({
-      id: `message-${index}`,
-      channelId: 'channel-1',
+      id: `22222222-2222-4222-8222-${String(index).padStart(12, '0')}`,
+      channelId: '11111111-1111-4111-8111-111111111111',
       authorId: `user-${index}`,
       clientMessageId: `client-${index}`,
       body: `Сообщение ${index}`,
@@ -33,6 +38,7 @@ test('R02 keeps only the touched message action disclosure open', async ({ page 
   })
 
   const rows = page.locator('.message-row')
+  await expect(rows.nth(0)).not.toContainText('Некорректная беседа.')
   const firstToggle = rows.nth(0).locator('.message-actions-toggle')
   await expect(page.locator('.message-actions.is-open')).toHaveCount(0)
   await expect(firstToggle).toHaveCSS('opacity', '1')
@@ -160,6 +166,11 @@ test('R02 preserves touch actions and passes WCAG axe scan for grouped, system, 
 })
 
 test('R02 requires explicit confirmation before a message can be deleted', async ({ page }) => {
+  await page.route(/message-reactions/, route => route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ reactions: [], can_pin: true }),
+  }))
   await page.goto('/')
   await page.evaluate(async () => {
     const load = (path: string) => import(path)
@@ -169,8 +180,8 @@ test('R02 requires explicit confirmation before a message can be deleted', async
     document.body.innerHTML = '<div id="mount"></div>'
     document.body.dataset.removeCount = '0'
     const message = {
-      id: 'delete-confirmation-message',
-      channelId: 'channel-1',
+      id: '22222222-2222-4222-8222-222222222225',
+      channelId: '11111111-1111-4111-8111-111111111111',
       authorId: 'user-1',
       clientMessageId: 'client-1',
       body: 'Сообщение перед удалением',
@@ -189,6 +200,7 @@ test('R02 requires explicit confirmation before a message can be deleted', async
   })
 
   const row = page.locator('.message-row')
+  await expect(row).not.toContainText('Некорректная беседа.')
   await row.locator('.message-actions-toggle').tap()
   await expect(row.locator('.message-actions')).toHaveClass(/is-open/)
   const captureDir = process.env.BOOHTACORD_VISUAL_CAPTURE_DIR

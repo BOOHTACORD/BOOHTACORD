@@ -84,8 +84,14 @@ test('leaving removes the members rail and an already open voice participant pop
   await expect(page.getByTestId('member-popover')).toHaveCount(0)
 })
 
-for (const width of [320, 390, 1024, 1440]) for (const scale of [100, 200]) test(`compact voice states fit at ${width}px / text ${scale}%`, async ({ page }, info) => {
+for (const width of [320, 390, 768, 1024, 1440]) for (const scale of [100, 200]) test(`compact voice states fit at ${width}px / text ${scale}%`, async ({ page }, info) => {
   await open(page, width, scale)
+  if (width >= 721 && scale === 200) {
+    const header = await page.locator('.voice-room .conversation-header').boundingBox()
+    const title = await page.locator('.voice-room .conversation-header .main-title').boundingBox()
+    expect(title!.y, 'the enlarged title must remain inside the voice header').toBeGreaterThanOrEqual(header!.y)
+    expect(title!.y + title!.height, 'the enlarged subtitle must remain inside the voice header').toBeLessThanOrEqual(header!.y + header!.height)
+  }
   for (const [name, value] of Object.entries({ connected: {}, muted: { muted: true }, deafened: { deafened: true }, denied: { deafened: false, denied: true, state: 'LISTENER' }, reconnecting: { state: 'RECONNECTING' }, starting: { screen: 'STARTING' }, sharing: { screen: 'SHARING' }, stopping: { screen: 'STOPPING' }, leaving: { state: 'LEAVING', screen: 'SHARING' }, prejoin: { active: false, state: 'IDLE' }, joining: { active: false, state: 'JOINING' } })) {
     await patch(page, { state: 'CONNECTED', active: true, muted: false, deafened: false, denied: false, screen: 'IDLE', ...value })
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
@@ -152,6 +158,21 @@ test('unsupported capture keeps a visible explanation while voice and leave stay
   await expect(page.locator('.room-wrap').getByRole('button', { name: 'Выключить микрофон', exact: true })).toBeEnabled()
   await expect(page.locator('.room-wrap').getByRole('button', { name: 'Выйти из голосового канала' })).toBeEnabled()
   await page.screenshot({ path: info.outputPath('capture-unavailable.png') })
+})
+
+for (const width of [320, 390]) test(`screen-sharing participant cards can scroll above the fixed voice dock at ${width}px / 200% text`, async ({ page }) => {
+  await open(page, width, 200)
+  await patch(page, { state: 'CONNECTED', active: true, screen: 'SHARING' })
+  const room = page.locator('.voice-room .room-wrap')
+  const lastParticipant = room.locator('.voice-participant-volumes .participant').last()
+  const dock = page.locator('.mobile-voice-dock.mobile-visible')
+  await expect(lastParticipant).toBeVisible()
+  await room.evaluate(element => { element.scrollTop = element.scrollHeight })
+  const [participantBox, dockBox, roomBox] = await Promise.all([lastParticipant.boundingBox(), dock.boundingBox(), room.boundingBox()])
+  expect(participantBox).not.toBeNull()
+  expect(dockBox).not.toBeNull()
+  expect(roomBox).not.toBeNull()
+  expect(participantBox!.y + participantBox!.height).toBeLessThanOrEqual(Math.min(dockBox!.y, roomBox!.y + roomBox!.height) + 1)
 })
 
 test('failed connection keeps the failure and explicit retry actions visible', async ({ page }, info) => {

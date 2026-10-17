@@ -22,9 +22,9 @@ function change(event: Event) { setMicrophoneSettings({ ...microphoneSettings.va
   </div>
 </template>
 <style scoped>
-.microphone-control { display:grid; gap:8px; margin-block:16px; }
+.microphone-control { display:grid; min-width:0; grid-template-columns:minmax(0,1fr); gap:8px; margin-block:16px; overflow-wrap:anywhere; }
 label,.microphone-control-labels { display:flex; justify-content:space-between; gap:12px; }
-input { width:100%; } small,.microphone-control-labels { color:var(--text-muted); }
+input { width:100%; box-sizing:border-box; margin-inline:0; } small,.microphone-control-labels { color:var(--text-muted); }
 .microphone-level { position:relative; height:10px; border-radius:5px; background:var(--bg-elevated,#20283a); }
 .microphone-level span { display:block; height:100%; background:var(--accent,#7084ff); border-radius:5px; }
 .microphone-level i { position:absolute; top:-3px; width:2px; height:16px; background:var(--text-primary,#fff); }

@@ -1,6 +1,6 @@
 .stream-diagnostics > summary.stream-tool-button { display: grid; width: 36px; min-width: 36px; height: 36px; min-height: 36px; place-items: center; border: 0; padding: 0; background: transparent; }
 .stream-diagnostics-backdrop { display: none; }
-.stream-diagnostics-panel { box-sizing: border-box; width: 320px; padding: 20px; color: var(--gc-text-primary); background: var(--gc-surface-raised); }
+.stream-diagnostics-panel { box-sizing: border-box; width: min(20rem, calc(100vw - 32px)); padding: 20px; color: var(--gc-text-primary); background: var(--gc-surface-raised); }
 .stream-diagnostics-panel header { display: flex; align-items: center; justify-content: space-between; }
 .stream-diagnostics-panel h2 { margin: 0; font-size: 1rem; line-height: 1.5rem; }
 .stream-diagnostics-panel header button { width: 28px; height: 28px; border: 0; color: var(--gc-text-secondary); background: transparent; font-size: 1.4375rem; cursor: pointer; }
@@ -19,7 +19,7 @@
   .stream-diagnostics-footnote { display: block; margin-top: 16px; color: var(--gc-text-muted); font-size: 0.6875rem; }
 }
 /* Stats expand on request; every control remains reachable in the mobile sheet. */
-.stream-diagnostics-panel { overflow-wrap: anywhere; }
+.stream-diagnostics-panel { overflow-wrap: break-word; }
 .stream-diagnostics-panel header button { min-width: 44px; min-height: 44px; }
 .stream-diagnostics-technical { margin-top: 12px; }
 .stream-diagnostics-technical > summary { min-height: 44px; align-content: center; cursor: pointer; }

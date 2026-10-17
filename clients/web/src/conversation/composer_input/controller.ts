@@ -2,8 +2,10 @@ import { nextTick, type Ref } from 'vue'
 import { insertEmojiAtRange } from '../emoji_insert'
 import { pasteClipboardImages } from '../clipboard_images'
 import { createComposerDrop } from '../upload_queue/drop'
+import { useComposerTextareaAutosize } from './auto_size'
 
 export function useComposerInput(draft: Ref<string>, textarea: Ref<HTMLTextAreaElement | null>, picker: Ref<{ addPastedFiles(files: File[]): void } | null>, enabled: () => boolean) {
+  useComposerTextareaAutosize(draft, textarea)
   const add = (files: File[]) => picker.value?.addPastedFiles(files)
   async function addEmoji(emoji: string): Promise<void> {
     const input = textarea.value

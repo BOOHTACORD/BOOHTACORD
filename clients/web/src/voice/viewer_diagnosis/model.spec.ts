@@ -8,6 +8,12 @@ it('distinguishes no first frame, frozen video, absent audio and stale observati
   expect(diagnose({...base,sampledAt:0}).state).toBe('stale_metrics')
   expect(diagnose({...base,sampledAt:null}).state).toBe('stale_metrics')
 })
+it('keeps a missing-audio diagnosis stable while receiver samples are absent or stale',()=>{
+  for (const sampledAt of [null,0,10000]) {
+    expect(diagnose({...base,hasAudio:false,sampledAt}).state).toBe('no_audio')
+  }
+  expect(diagnose({...base,hasAudio:false,sampledAt:null,presentedFps:0}).state).toBe('frozen')
+})
 it('does not claim playback failure in a hidden tab or before the initial grace interval',()=>{
   expect(diagnose({...base,visible:false,presentedFps:0}).state).toBe('background')
   expect(diagnose({...base,videoReady:false,selectedAt:10000}).state).toBe('connecting')
