@@ -104,12 +104,12 @@
       "screenshots": {
         "captures": 1051,
         "unique": 994,
-        "directly_reviewed_in_this_run": 17,
-        "unreviewed": 873,
+        "directly_reviewed_in_this_run": 24,
+        "unreviewed": 866,
         "visual_gate": "REVIEW_REQUIRED",
         "baseline_approved": false,
         "exact_hash_reused_from_prior_review": 104,
-        "effective_unique_reviewed": 121,
+        "effective_unique_reviewed": 128,
         "directly_reviewed_images": [
           {
             "path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
@@ -271,6 +271,76 @@
             ],
             "visually_reviewed_at_source_resolution": true,
             "observation": "At 768 CSS px, the DM navigation list occupies its rail and scrolls independently; the voice dock and profile/settings controls remain visible at the bottom."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-780px-window/dm-modal-zoom.png",
+            "sha256": "b441c7409c48c74119c73057b688ff0140ed775bcb283ca70e7851d06cbfea5e",
+            "dimensions_px": [
+              780,
+              913
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At actual 200% browser zoom with a 780px window, the bounded DM starter dialog and close action remain visible; the candidate list scrolls within the modal."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png",
+            "sha256": "3980015f5d7893556d96e3fed40046bcdbe5440409d8df1515920a417e614dd3",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At 320 CSS px and 200% text, search modes and expanded filters wrap into a narrow vertical form; the remaining date filter controls continue below the viewport within the scrollable search panel."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-chat_rhythm/zoom.browser-actual-200-br-8607c-DIRECT-MESSAGE-780px-window/zoom-200-rich-text.png",
+            "sha256": "84a8fabd7cac31e00d4ee00203218a54f7290422ecd7b7ed81e32da3f678700e",
+            "dimensions_px": [
+              780,
+              913
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At actual 200% browser zoom with a 780px window, long DM text wraps inside history, long code remains within its own code block, and the composer send action remains visible."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-voice_interface/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/connected.png",
+            "sha256": "b243256f849b2a7b905a6b5aad9dffc82e44207e41e24fe66e93e663bb739c3c",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At 1440 CSS px and 200% text, the connected voice room keeps both participant cards and all four dock actions visible; the mini voice status remains bounded in the navigation rail."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1440px-text-200-/technical-sender-1440-200.png",
+            "sha256": "1cc19f2111d5e96edc43157974bb5da81a0beab4cd0a33c0a108a091eb11c069",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At 1440 CSS px and 200% text, diagnostics distinguish the selected 1080p/60 preset from the measured 1920×654/1 FPS sender reading and track state; the long details continue vertically below the viewport."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+            "sha256": "30c9543b74bb5a82e524f3601c24bfa1615e5e7f6f1c6e9d2e5040eff9d4be48",
+            "dimensions_px": [
+              780,
+              913
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At actual 200% browser zoom with a 780px window, the pinned media controls, DM header, long-message history, composer and voice dock retain separate visible regions."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-header_actions/headers.browser-actual-browser-zoom-200-640/text-zoom.png",
+            "sha256": "ded2f4c92173ad8a8193805ffd6bc47d014450a8bf1547c7ae93f82eb45f2f90",
+            "dimensions_px": [
+              640,
+              913
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At actual 200% browser zoom with a 640px window, the channel title truncates within the compact header while navigation, search, members and overflow actions remain on one row; composer and send control stay on screen."
           }
         ],
         "exact_hash_reused_reviews": [
