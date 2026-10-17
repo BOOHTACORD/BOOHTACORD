@@ -2,7 +2,8 @@ import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
 import { createRequire } from 'node:module'
 import { readFileSync, writeFileSync, existsSync, unlinkSync, renameSync } from 'node:fs'
-import { chromium, expect, login, api, status, openNavigation, security, channel } from '../client_lifecycle/request.mjs'
+import { chromium, expect, api, status, openNavigation, security, channel } from '../client_lifecycle/request.mjs'
+import { login } from './login.mjs'
 import { installSyntheticCapture, installPeerObservation } from './publisher.mjs'
 const require = createRequire(new URL('../../../clients/web/package.json', import.meta.url))
 const { SignalRequest } = require('@livekit/protocol')
@@ -48,6 +49,7 @@ async function snapshot(name, keepIdentity = false) {
  value.subscription_requests = { ...signaling }; report.observations.push(value); writeFileSync(process.env.QA_RESULT,JSON.stringify(report,null,2)+'\n'); return value
 }
 async function capture(name) { await expect(viewer.locator('.voice-stream-alert-notice')).toBeHidden({timeout:10000}); await viewer.evaluate(()=>document.fonts.ready); await viewer.screenshot({path: input.directory+'/'+name+'.png'}) }
+async function returnFull() { await viewer.getByRole('button',{name:'Открепить просмотр и вернуться в голос',exact:true}).click(); await viewer.getByRole('button',{name:'Закрепить просмотр',exact:true}).click() }
 async function pinnedText() { await select(); await viewer.getByRole('button',{name:'Закрепить просмотр',exact:true}).click(); await channel(viewer,'QaText'); await expect(viewer.locator('.voice-room--mini')).toBeVisible() }
 async function clean(name) { await expect.poll(()=>viewer.locator('video.screen-player').count()).toBe(0); const s=await snapshot(name); assert.equal(s.video_outputs,0); assert.equal(s.audio_outputs,0) }
 async function nativePublisherHold() {
@@ -101,24 +103,24 @@ try {
  assert.equal(signaling.subscribe,before.subscribe); assert.equal(signaling.unsubscribe,before.unsubscribe)
  report.checks.pin_TEXT_DM_settings_one_output_no_resubscription = 'PASS'
  phase = 'return full then expanded mini return'
- await viewer.getByRole('button',{name:'К голосу',exact:true}).click(); await snapshot('return full',true)
+ await returnFull(); await snapshot('return full',true)
  await viewer.getByLabel('Дополнительные действия',{exact:true}).click(); await viewer.getByRole('button',{name:'Развернуть на всю область',exact:true}).click()
  await expect(viewer.locator('.voice-room--screen-expanded')).toBeVisible(); await snapshot('expanded',true); await capture('expanded-viewer')
  const actions=viewer.locator('details.stream-more-actions'); if(await actions.getAttribute('open')===null)await actions.locator('summary').click(); await viewer.getByRole('button',{name:'Вернуть в окно канала',exact:true}).click(); await expect(viewer.locator('.voice-room--screen-expanded')).toHaveCount(0); await snapshot('expanded return',true); await channel(viewer,'QaText'); await expect(viewer.locator('.voice-room--mini')).toBeVisible(); await snapshot('full to mini',true)
- await viewer.getByRole('button',{name:'К голосу',exact:true}).click(); await snapshot('mini return full',true)
+ await returnFull(); await snapshot('mini return full',true)
  assert.equal(signaling.subscribe,before.subscribe); assert.equal(signaling.unsubscribe,before.unsubscribe)
  report.checks.full_mini_full_return_preserves_stream = 'PASS'
  phase = 'adaptive viewport keyboard controls'
  await channel(viewer,'QaText')
  for (const width of [1024,768,393,320]) { await viewer.setViewportSize({width,height:900}); const s=await snapshot('viewport '+width,true); assert.equal(s.document_overflow,false)
    const mini=viewer.locator('.voice-room--mini'),box=await mini.boundingBox(); assert.ok(box&&box.x>=0&&box.x+box.width<=width+1)
-   await mini.getByRole('button',{name:'К голосу',exact:true}).focus(); await expect(mini.getByRole('button',{name:'К голосу',exact:true})).toBeFocused(); await capture('mini-width-'+width)
+   await mini.getByRole('button',{name:'Открепить просмотр и вернуться в голос',exact:true}).focus(); await expect(mini.getByRole('button',{name:'Открепить просмотр и вернуться в голос',exact:true})).toBeFocused(); await capture('mini-width-'+width)
  }
  report.checks.viewport_320_adaptive_keyboard_labels = 'PASS'
  await viewer.setViewportSize({width:1440,height:1000})
  phase = 'mute and stop exactly once'
- const mini=viewer.locator('.voice-room--mini'); await mini.getByRole('button',{name:'Выключить звук',exact:true}).click(); await expect(mini.getByRole('button',{name:'Включить звук',exact:true})).toHaveAttribute('aria-pressed','false')
- assert.equal((await snapshot('muted actual output',true)).audio_muted,true); await mini.getByRole('button',{name:'Включить звук',exact:true}).click(); assert.equal((await snapshot('unmuted actual output',true)).audio_muted,false); await expect(mini.getByRole('button',{name:'Выключить звук',exact:true})).toHaveAttribute('aria-pressed','true')
+ const mini=viewer.locator('.voice-room--mini'); await mini.getByRole('button',{name:'Выключить звук трансляции',exact:true}).click(); await expect(mini.getByRole('button',{name:'Включить звук трансляции',exact:true})).toHaveAttribute('aria-pressed','false')
+ assert.equal((await snapshot('muted actual output',true)).audio_muted,true); await mini.getByRole('button',{name:'Включить звук трансляции',exact:true}).click(); assert.equal((await snapshot('unmuted actual output',true)).audio_muted,false); await expect(mini.getByRole('button',{name:'Выключить звук трансляции',exact:true})).toHaveAttribute('aria-pressed','true')
  const stopBefore={...signaling}; await mini.getByRole('button',{name:'Остановить просмотр',exact:true}).click(); await clean('explicit stop'); await viewer.waitForTimeout(300)
  assert.equal(signaling.unsubscribe-stopBefore.unsubscribe,2); assert.equal(signaling.subscribe,stopBefore.subscribe)
  report.checks.stop_two_publications_exactly_once_and_mute = 'PASS'

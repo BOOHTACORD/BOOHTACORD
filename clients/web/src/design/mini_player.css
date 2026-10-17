@@ -1,9 +1,36 @@
-.voice-room.voice-room--mini { display: block; position: fixed; right: var(--gc-space-4); bottom: calc(var(--gc-layout-voice-dock) + var(--gc-space-4)); z-index: 30; width: min(360px, calc(100vw - 2 * var(--gc-space-4))); height: auto; min-height: 0; overflow: hidden; border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-lg); background: var(--gc-surface); box-shadow: 0 14px 36px rgb(0 0 0 / 42%); }
-.voice-room.voice-room--mini > .main-header, .voice-room.voice-room--mini > .room-wrap, .voice-room.voice-room--mini > .voice-room-footer, .voice-room.voice-room--mini > .state { display: none; }
-.voice-room.voice-room--mini .screen-viewer.stream-wrap { display: block; height: auto; flex: none; min-height: 0; padding: var(--gc-space-2); }
-.voice-room.voice-room--mini .screen-stage { width: 100%; aspect-ratio: 16 / 9; min-height: 0; }
+/* The mini dock reserves conversation space; it never occupies the member rail or composer. */
+.workspace-main-layout { display: flex; flex-direction: column; min-width: 0; min-height: 0; height: 100%; }
+.workspace-main-layout > .conversation-pane, .workspace-main-layout > .workspace-main-panel { flex: 1; min-height: 0; height: auto; }
+.screen-mini-dock { flex: none; min-width: 0; }
+.screen-mini-dock:empty { display: none; }
+.voice-room.voice-room--mini { position: relative; display: block; width: 100%; height: auto; min-height: 0; flex: none; overflow: hidden; border-bottom: 1px solid var(--gc-border-subtle); background: var(--gc-surface); }
+.voice-room.voice-room--mini > .main-header, .voice-room.voice-room--mini > .room-wrap, .voice-room.voice-room--mini > .state { display: none; }
+.voice-room.voice-room--mini .screen-viewer.stream-wrap { display: grid; grid-template-columns: 160px minmax(0, 1fr); grid-template-rows: auto; gap: 12px; align-items: center; height: auto; min-height: 0; padding: 8px 16px; }
+.voice-room.voice-room--mini .screen-stage { grid-column: 1; grid-row: 1; width: 100%; height: auto; aspect-ratio: 16 / 9; min-height: 0; border-radius: var(--gc-radius-sm); }
+.voice-room.voice-room--mini .screen-stage > .state { margin: 0; padding: 4px; font-size: 0.75rem; line-height: 1.25; }
+.voice-room.voice-room--mini .screen-viewer > .state-error { grid-row: 2; grid-column: 1 / -1; max-height: 4em; overflow: auto; margin: 0; }
 .voice-room.voice-room--mini .screen-stage-top, .voice-room.voice-room--mini .screen-fullscreen-button, .voice-room.voice-room--mini .stream-quality-row, .voice-room.voice-room--mini .screen-rail-section, .voice-room.voice-room--mini .stream-voice-return { display: none; }
-.screen-mini-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--gc-space-1); padding-bottom: var(--gc-space-2); }
-.screen-mini-toolbar strong { flex: 1 1 100%; overflow: hidden; color: var(--gc-text-primary); font-size: var(--gc-text-small); text-overflow: ellipsis; white-space: nowrap; }
-.screen-mini-toolbar button { min-height: 32px; border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-sm); padding: 0 var(--gc-space-2); color: var(--gc-text-primary); background: var(--gc-surface-raised); }
-@media (max-width: 639px) { .voice-room.voice-room--mini { right: var(--gc-space-2); bottom: calc(var(--gc-layout-voice-dock) + var(--gc-space-2)); width: min(320px, calc(100vw - 2 * var(--gc-space-2))); } }
+.screen-mini-toolbar { grid-column: 2; grid-row: 1; min-width: 0; }
+.screen-mini-toolbar strong { display: block; overflow: hidden; margin-bottom: 4px; color: var(--gc-text-primary); font-size: var(--gc-text-small); text-overflow: ellipsis; white-space: nowrap; }
+.screen-mini-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+.screen-mini-actions button { display: grid; place-items: center; width: 44px; min-width: 44px; height: 44px; min-height: 44px; padding: 0; border: 0; border-radius: var(--gc-radius-sm); color: var(--gc-text-primary); background: transparent; }
+.screen-mini-actions button:hover, .screen-mini-actions button[aria-pressed=true] { background: var(--gc-surface-raised); }
+.screen-mini-actions button:disabled { opacity: .5; cursor: default; }
+.screen-mini-actions svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.screen-pause-label { position: absolute; z-index: 1; left: 8px; bottom: 8px; max-width: calc(100% - 16px); border-radius: 4px; padding: 4px 8px; color: white; background: #111c; font-size: .75rem; }
+@media (max-width: 720px) {
+  .screen-mini-actions { display: grid; grid-template-columns: repeat(3, 44px); }
+  .voice-room.voice-room--mini .screen-viewer.stream-wrap { grid-template-columns: 96px minmax(0, 1fr); gap: 8px; padding: 8px; }
+}
+@media (max-height: 600px) {
+  .screen-mini-actions { display: flex; }
+  .voice-room.voice-room--mini .screen-viewer.stream-wrap { grid-template-columns: 48px minmax(0, 1fr); gap: 4px; padding: 4px; }
+  .screen-mini-toolbar strong { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .voice-room--mini .screen-pause-label { width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+}
+
+/* Keep the full-view stage inside its flex allocation on short windows. */
+.voice-room .screen-stage { min-height: 0; }
+
+/* A shared desktop header must not move across roster rows below the dock. */
+.workspace-main-layout:has(.screen-mini-dock > .voice-room--mini) .text-conversation > .conversation-header { width: 100%; }

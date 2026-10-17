@@ -44,7 +44,7 @@ describe('voice-room visual status and screen presentation', () => {
     const connected = source('./VoiceRoomConnected.vue')
     const viewer = source('./ScreenViewer.vue')
     const members = source('../workspace/WorkspaceMembersPanel.vue')
-    expect(pane).toContain(`voiceIsActive && voiceState !== 'LEAVING' && (screenViewerCards.length || selectedScreenStreamId || screenViewerEnded)`)
+    expect(pane).toContain(`(voiceIsActive || (screenPinned && activeVoiceChannel)) && voiceState !== 'LEAVING' && (screenViewerCards.length || selectedScreenStreamId || screenViewerEnded)`)
     expect(pane).toContain(`!voiceIsActive || voiceState === 'LEAVING' || !selectedScreenStreamId`)
     expect(pane).not.toContain('<VoiceParticipantStrip')
     expect(pane).toContain('voiceVolumeParticipants.length + 1')
@@ -93,7 +93,7 @@ describe('voice-room visual status and screen presentation', () => {
     expect(viewer).toContain('update:expanded')
     expect(viewer).toContain('Escape')
     expect(source('../conversation/ConversationPane.vue')).toContain('voice-room--screen-expanded')
-    expect(source('../conversation/ConversationPane.vue')).toContain('<Teleport to="body" :disabled="!screenExpanded && !miniVisible">')
+    expect(source('../conversation/ConversationPane.vue')).toContain(':disabled="!screenExpanded && !(miniVisible && miniPlayerTarget)"')
   })
 
   it('uses one setup dialog and selected profile from the room and persistent voice dock', () => {

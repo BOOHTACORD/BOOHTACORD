@@ -29,6 +29,7 @@ def main():
     run("npm", "run", "test:navigation", cwd=client("web"))
     run("npm", "run", "test:screen-profile", cwd=client("web"))
     run("npm", "run", "test:screen-share-ui", cwd=client("web"))
+    run("npm", "run", "test:mini-player", cwd=client("web"))
     run("npm", "run", "test:screen-track-name", cwd=client("web"))
     run("npm", "run", "test:member-popover", cwd=client("web"))
     run("npm", "run", "test:password-generation", cwd=client("web"))

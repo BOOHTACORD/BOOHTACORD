@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 def main():
     root = Path(__file__).resolve().parents[3]
     candidate = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
-    os.environ['DOCKER_CONTEXT'] = 'colima-boohtacord-qa'
+    os.environ.setdefault('DOCKER_CONTEXT', 'colima-boohtacord-qa')
     destination = root/'.out/qa247-20261012/web'
     destination.mkdir(parents=True, exist_ok=True)
     archive_previous(destination)

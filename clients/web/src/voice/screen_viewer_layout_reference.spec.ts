@@ -27,7 +27,7 @@ describe('screen viewer layout reference', () => {
     expect(viewer.match(/<video\b/g)).toHaveLength(1)
     expect(viewer.match(/<audio\b/g)).toHaveLength(1)
     expect(viewer).not.toMatch(/<(video|audio)\b[^>]*\bv-if=/)
-    expect(pane).toContain('<Teleport to="body" :disabled="!screenExpanded && !miniVisible">')
+    expect(pane).toContain(':disabled="!screenExpanded && !(miniVisible && miniPlayerTarget)"')
     expect(pane).toContain(':mini="miniVisible"')
     expect(pane).toContain(':pinned="screenPinned"')
   })
