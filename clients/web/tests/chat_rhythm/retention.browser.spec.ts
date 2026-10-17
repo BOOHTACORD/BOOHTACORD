@@ -43,7 +43,18 @@ for (const kind of kinds) for (const width of [320, 390, 768, 1024, 1440, 1920, 
     await page.getByRole('button', { name: 'Показать предыдущие сообщения', exact: true }).click()
     await expect(page.getByRole('button', { name: 'Показать предыдущие сообщения', exact: true })).toHaveCount(0)
     await expect(row(page, 1)).toBeVisible()
-    await expect.poll(async () => { const box=await row(page, 1).boundingBox(); return box?Math.abs(box.y-before):Infinity }).toBeLessThanOrEqual(2)
+    try {
+      await expect.poll(async () => { const box=await row(page, 1).boundingBox(); return box?Math.abs(box.y-before):Infinity }).toBeLessThanOrEqual(2)
+    } catch (error) {
+      const diagnostics = await page.evaluate(() => {
+        const list = document.querySelector<HTMLElement>('.message-list')!
+        const anchor = document.querySelector<HTMLElement>('[data-message-id="00000000-0000-4000-8000-000000000001"]')!
+        return { scrollTop: list.scrollTop, scrollHeight: list.scrollHeight, clientHeight: list.clientHeight,
+          overflowAnchor: getComputedStyle(list).overflowAnchor, anchorTop: anchor.getBoundingClientRect().top }
+      })
+      console.log(`HISTORY_ANCHOR_DIAGNOSTICS ${JSON.stringify({ before, ...diagnostics })}`)
+      throw error
+    }
   })
 }
 test('TEXT keeps 1,000-message DOM bounded and new-message jump retains middle anchor', async ({ page }) => {
