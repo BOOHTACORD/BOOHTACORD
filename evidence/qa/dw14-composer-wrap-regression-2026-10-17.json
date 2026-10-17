@@ -5,12 +5,18 @@
   "recorded_on": "2026-10-17",
   "status": "FIXED_AUTOMATED_PASS_REVIEW_REQUIRED",
   "finding": {
-    "viewport_css_px": [390, 900],
+    "viewport_css_px": [
+      390,
+      900
+    ],
     "root_text_scale_percent": 200,
     "before": {
       "path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
       "sha256": "5699550ec9a4878ff7d896c989b0e4f2067b6556a83b28d996bbf485da5f5422",
-      "dimensions_px": [390, 900],
+      "dimensions_px": [
+        390,
+        900
+      ],
       "observation": "Top line of the two-line DM draft is clipped above the textarea.",
       "browser_metrics": {
         "scroll_height_px": 116,
@@ -20,7 +26,10 @@
     "after": {
       "path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
       "sha256": "3a4a17cf19751f6e1dcb48ac5f4f8fff875cb6790ffffcc259c856ba4b8acf19",
-      "dimensions_px": [390, 900],
+      "dimensions_px": [
+        390,
+        900
+      ],
       "visually_reviewed_at_source_resolution": true,
       "observation": "Both draft lines are visible; the composer send button, pinned player and voice dock remain usable."
     }
@@ -53,8 +62,17 @@
       "status": "PASS",
       "passed": 20,
       "total": 20,
-      "text_scale_percent": [100, 200],
-      "viewport_widths_css_px": [320, 393, 1024, 1280, 1440],
+      "text_scale_percent": [
+        100,
+        200
+      ],
+      "viewport_widths_css_px": [
+        320,
+        393,
+        1024,
+        1280,
+        1440
+      ],
       "explicit_shift_enter_scroll_preserved": true
     },
     "local_feature_acceptance": {
@@ -84,10 +102,306 @@
       "screenshots": {
         "captures": 1051,
         "unique": 995,
-        "directly_reviewed_in_this_run": 1,
-        "unreviewed": 994,
+        "directly_reviewed_in_this_run": 10,
+        "unreviewed": 965,
         "visual_gate": "REVIEW_REQUIRED",
-        "baseline_approved": false
+        "baseline_approved": false,
+        "exact_hash_reused_from_prior_review": 20,
+        "effective_unique_reviewed": 30,
+        "directly_reviewed_images": [
+          {
+            "path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+            "sha256": "3a4a17cf19751f6e1dcb48ac5f4f8fff875cb6790ffffcc259c856ba4b8acf19",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "observation": "Both lines of the 200% DM draft are visible; composer, player and voice dock remain usable."
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-real-stack/1440/mini-player-dm.png",
+            "sha256": "86a53e76c7645a2db8ba8641288c814d225ff01bdca9b7a51426820806e5bd0b",
+            "dimensions_px": [
+              2880,
+              1800
+            ],
+            "observation": "Desktop mini-player, DM history, composer and voice controls remain visible; the share notice occupies its own row."
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-real-stack/393/mini-player-dm.png",
+            "sha256": "fd9e5d9f741ed2d656f11f9c106ae053a622771fa78670d0e995c12bd30ff63d",
+            "dimensions_px": [
+              1179,
+              2556
+            ],
+            "observation": "Mobile mini-player controls, notice, DM history, composer and voice dock fit in the viewport."
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-real-stack/1440/voice-after-leave.png",
+            "sha256": "84b515e11c692f60be581cbdcd5112de8812127310ea514f1001e87074586c97",
+            "dimensions_px": [
+              2880,
+              1800
+            ],
+            "observation": "Voice leave is neutral and offers the join/listen path without error styling."
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-real-stack/393/voice-after-leave.png",
+            "sha256": "de4238dbf09f00cdaf95efec327e674e129c4cdca7740416f7fd3ed2b31f3eed",
+            "dimensions_px": [
+              1179,
+              2556
+            ],
+            "observation": "Mobile voice leave is neutral; join/listen actions remain inside the viewport."
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-real-stack/1440/screen-share-compact-statistics.png",
+            "sha256": "99663160aa6b85e69ea2bafdcfbefe7c37c66e6892030ae3a3c0310e4cdccff6",
+            "dimensions_px": [
+              2880,
+              1800
+            ],
+            "observation": "Desktop statistics distinguish sender selection, absent confirmation and viewer measurements without overlap."
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-real-stack/393/screen-share-compact-statistics.png",
+            "sha256": "9849c0a863e7d3da75c8d61a53006e26bf3b28afe9e916fc86b38b05614b7ae8",
+            "dimensions_px": [
+              1179,
+              2556
+            ],
+            "observation": "Mobile statistics wrap within the sheet; close and copy controls remain visible and viewer readings stay distinct."
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-chat_rhythm/rhythm.browser-inventory-DIRECT-MESSAGE-320px/rich-text.png",
+            "sha256": "e1f3279c612da49196340a24b3927252307505a3344dd3091f9aa85c23a620f2",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "observation": "Narrow DM message content wraps within the history; composer send action remains visible."
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/direct-messages.png",
+            "sha256": "a2881751ac17e00f3442ecb3e851ca39f0dfb8b9bec6df9d9621d56b1c093f99",
+            "dimensions_px": [
+              320,
+              768
+            ],
+            "observation": "DM list scrolls within the narrow navigation rail; voice dock and profile controls remain reachable."
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-100-text/archive-320-100.png",
+            "sha256": "44be22f2cbec4f32bef37ddcf10505ba7ea82d2d3c48592028d65b8c3dc383ee",
+            "dimensions_px": [
+              320,
+              939
+            ],
+            "observation": "Archive form and action controls wrap within the narrow panel without horizontal overflow."
+          }
+        ],
+        "exact_hash_reused_reviews": [
+          {
+            "path": ".out/local-features/20261017-180122/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+            "sha256": "9a3913595ab705c02c7b27c7365733e35b7bee03df5ca7c7a41e1b638aa4c37c",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+            "sha256": "b1c3f60aaeddbd51079c2dd3773cc8745a05c9bde3ebb036d715c8a98fedfe6f",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+            "sha256": "77d23eec78d439f46bf96c484ba9d16ab280c5506dc23cd1208c36ffa4c09c44",
+            "dimensions_px": [
+              393,
+              844
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+            "sha256": "88f1e29c7c3d0862297b2800c0116cb1a8387aab67eef52b9fe744f41b2d4f63",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+            "sha256": "8eecab9fb0ea6abfc124b19c56314a4b33565ddbd0b9aa23ad98c92864418852",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+            "sha256": "b0b788db28091483aef3a799d554382c2d78813517d5f5656a8fbf34c3da0597",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+            "sha256": "bba3c9869a3952172e71c2b6412886a0b4cce1336c3cf02de4156f5a10822106",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
+            "sha256": "de731fb7ca3c419a7c5fe68c7bf52e79bfa8d61e4f624d50a4fd5f1374265fda",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
+            "sha256": "5f1e6708dc3888e7ba8b1a40944f4f2d4000f79e54be73aee057c11b86ba1e97",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
+            "sha256": "4593af1591726370d412a8e4a9772569616581c9d13e6d643224663e5f89e578",
+            "dimensions_px": [
+              1160,
+              64
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
+            "sha256": "4852614a3a015be34bbe2c37d58fc17992a0b6a67aabab828f6e7316d0777892",
+            "dimensions_px": [
+              320,
+              640
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
+            "sha256": "651e362a4cd040703e0d760b520a762081e005d45b8d2073b6c886a0bea3941e",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+            "sha256": "4f37e3fadfdc36d7c87c2d2c7c21751bdb21c978bfe2dbf59d488c219cbe5633",
+            "dimensions_px": [
+              1440,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-diagnostics-1024-100.png",
+            "sha256": "79fd18d09df2bc3f915aa1b428de9d43aecee5f5e6a540b8b6e10406379b8886",
+            "dimensions_px": [
+              830,
+              208
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-100-text/audio-diagnostics-1440-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+            "sha256": "e4e14ba0eb2601df6791c4cdb97d1736d4c9c63190d3a01b886bb96bd2758954",
+            "dimensions_px": [
+              390,
+              1267
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+            "sha256": "9cb03e67fd76706fe800f3cb1ba9133066632b9b256dd5183e410e8c21e27c59",
+            "dimensions_px": [
+              1440,
+              905
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-screen_profile/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
+            "sha256": "ef5af0742ba9be154965d1c659ff5e7223063a903ce0becb923002df4242443c",
+            "dimensions_px": [
+              786,
+              1704
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_profile/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-screen_profile/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
+            "sha256": "cd6691cb350e3d2d4970e0afc696e5988abaec5b0a321124f71553dfad2cb6b9",
+            "dimensions_px": [
+              2880,
+              1800
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_profile/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-320-text-100/dm.png",
+            "sha256": "327a96af7f7e2806ea1f59b323eb3feca4022a1464f2e118a9aea9314ea4eb64",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-320-text-100/dm.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-1440-text-200/text.png",
+            "sha256": "145c45389f327c2e8f3571bb88d2e1ad1f2cb3fcb94d43ec7836fd23200274db",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-1440-text-200/text.png",
+            "exact_hash_match": true
+          }
+        ]
       }
     }
   },
