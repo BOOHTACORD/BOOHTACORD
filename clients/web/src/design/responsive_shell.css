@@ -7,7 +7,7 @@
   .gc-shell.voice-stage-wide .members { position: absolute; inset: 0 0 0 auto; z-index: 31; display: none; width: min(320px, calc(100% - 32px)); border-left: 1px solid var(--gc-border-subtle); box-shadow: var(--gc-shadow-shell); }
   .gc-shell.voice-stage-wide .members.is-open { display: block; }
   .gc-shell.voice-stage-wide .workspace-header-toggle--members { display: grid; }
-  .gc-shell.voice-stage-wide .drawer-scrim { display: block; }
+  .gc-shell.voice-stage-wide .drawer-scrim { position: fixed; inset: 0; z-index: 30; display: block; border: 0; background: var(--gc-overlay); }
 }
 
 @media (min-width: 1024px) and (max-width: 1279px) {

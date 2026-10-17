@@ -1,3 +1,4 @@
+import { voiceMemberProfile } from '../client_lifecycle/member_profile.mjs'
 import assert from 'node:assert/strict'
 import { api, channel, expect, openNavigation, status } from '../client_lifecycle/request.mjs'
 import { controlOwnedSfu } from './sfu_control.mjs'
@@ -58,6 +59,7 @@ export async function media(a, b, member, channelId, report, input) {
     await connected(page)
   }
   await connected(a)
+  await voiceMemberProfile(a, member, input, report)
   await voiceInterface(a, input, report)
   await screenShareInterface(a, member, input, report, miniSubscriptions)
   blocked = true
