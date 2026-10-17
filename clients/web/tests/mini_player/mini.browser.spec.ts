@@ -11,6 +11,15 @@ test('390px at 200% text keeps the DM draft line visible beside the pinned mini 
  await navigate(page,'text');await navigate(page,'dm');await expect(textarea).toHaveValue(draft)
  await page.screenshot({path:info.outputPath('dm-draft-390-text-200.png')})
 })
+test('mobile screen share notice stays clear of the DM composer send button', async ({ page }, info) => {
+ await mount(page,393,844);await navigate(page,'dm')
+ await page.evaluate(()=> (window as any).__miniFixture.showStreamStartNotice())
+ const notice=page.locator('.workspace-stream-alert'),send=page.locator('.composer-send')
+ await expect(notice).toBeVisible();await expect(send).toBeVisible()
+ const overlaps=await notice.evaluate((el,selector)=>{const a=el.getBoundingClientRect(),b=document.querySelector(selector)!.getBoundingClientRect();return a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top},'.composer-send')
+ expect(overlaps).toBe(false)
+ await page.screenshot({path:info.outputPath('mobile-screen-share-notice-dm.png')})
+})
 for(const width of [320,390,1024,1440])for(const scale of [100,200])test(`chat zoning ${width} text ${scale}`,async({page},info)=>{
  await mount(page,width,900,scale)
  for(const view of ['text','dm']){

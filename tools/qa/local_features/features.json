@@ -22,7 +22,8 @@
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
-      "tests/voice_interface/playwright.config.ts"
+      "tests/voice_interface/playwright.config.ts",
+      "tests/voice_disconnect_notice/playwright.config.ts"
     ],
     "flutter": [
       "test/voice_disconnect/visual_capture_test.dart"
@@ -345,7 +346,7 @@
           "clients/web/tests/search_presentation/playwright.config.ts"
         ],
         "actual": "tools/qa/client_lifecycle/run.py",
-        "scope": "Sanitized regression bridge from the 15 October production tour to current-master Vue components: 320/390/768/1024/1440/1920/3440 CSS widths, 100/200% root text, independently measured actual browser zoom, keyboard and coarse-pointer actions. The authenticated actual-stack task journeys and voice/share smoke are separate evidence gates; private tour images are never copied into this registry or repository."
+        "scope": "Sanitized regression bridge from the 15 October production tour to current-master Vue components: 320/390/768/1024/1440/1920/3440 CSS widths, 100/200% root text, independently measured actual browser zoom, keyboard and coarse-pointer actions. Voluntary voice leave stays neutral while server revocations remain errors; the authenticated actual-stack task journeys and voice/share smoke are separate evidence gates. Private tour images are never copied into this registry or repository."
       }
     }
   },

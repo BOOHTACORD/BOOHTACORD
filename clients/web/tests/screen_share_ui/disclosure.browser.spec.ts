@@ -100,6 +100,21 @@ test('missing source audio stays the diagnosis while video receiver samples fluc
   await page.screenshot({ path: info.outputPath('diagnosis-no-audio-mobile-stale.png') })
 })
 
+test('brief screen audio publication changes do not flicker the diagnosis', async ({ page }) => {
+  await open(page, 'diagnosis')
+  const diagnosis = page.locator('.screen-diagnosis > [role="status"]')
+  const noAudio = 'Источник не публикует аудиодорожку.'
+  await expect(diagnosis).toHaveText(noAudio)
+  await page.evaluate(() => (window as any).__screenUI.patch({ hasAudio: true }))
+  await page.waitForTimeout(250)
+  await expect(diagnosis).toHaveText(noAudio)
+  await page.evaluate(() => (window as any).__screenUI.patch({ hasAudio: false }))
+  await page.waitForTimeout(1250)
+  await expect(diagnosis).toHaveText(noAudio)
+  await page.evaluate(() => (window as any).__screenUI.patch({ hasAudio: true }))
+  await expect(diagnosis).toHaveText('Данные о приёме отсутствуют или устарели. Причина качества не определена.', { timeout: 2000 })
+})
+
 test('receiver has selected/applied/measured levels and optional copyable technical data', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write'])
   await open(page, 'receiver')

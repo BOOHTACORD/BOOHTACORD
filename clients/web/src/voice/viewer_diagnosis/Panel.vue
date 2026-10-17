@@ -8,7 +8,15 @@ import type { ScreenDiagnostics } from '../screen_diagnostics'
 const props=defineProps<{selectedId:string|null;ended:boolean;hasAudio:boolean;local:boolean;publisherPaused?:boolean;autoplayBlocked?:boolean;subscriptionFailed?:boolean;stageVisible?:()=>boolean;videoReady:boolean;presentedFps:number|null;presentedFrames?:number|null;sampledAt:number|null;metrics:ScreenReceiverMetrics|null;source?:ScreenDiagnostics}>()
 const emit=defineEmits<{retry:[];autoRetry:[];refresh:[];choose:[]}>()
 const now=ref(Date.now()),selectedAt=ref(Date.now()),visible=ref(true),error=ref(''),help=ref(false),second=ref<Sample[]|null>(null),automaticRecoveryUsed=ref(false),recoverySuppressed=ref(false)
-const diagnosis=computed(()=>diagnose({...props,selected:Boolean(props.selectedId),selectedAt:selectedAt.value,now:now.value,visible:visible.value}))
+const stableHasAudio=ref(props.hasAudio)
+let audioPresenceTimer:ReturnType<typeof setTimeout>|null=null
+watch(()=>[props.selectedId,props.hasAudio] as const,([selectedId,hasAudio],[previousSelectedId])=>{
+  if(audioPresenceTimer)clearTimeout(audioPresenceTimer)
+  audioPresenceTimer=null
+  if(selectedId!==previousSelectedId){stableHasAudio.value=hasAudio;return}
+  audioPresenceTimer=setTimeout(()=>{stableHasAudio.value=hasAudio;audioPresenceTimer=null},1200)
+})
+const diagnosis=computed(()=>diagnose({...props,hasAudio:stableHasAudio.value,selected:Boolean(props.selectedId),selectedAt:selectedAt.value,now:now.value,visible:visible.value}))
 const series=createDiagnosisSeries(()=>{
   const fresh=props.sampledAt!==null&&now.value-props.sampledAt>=0&&now.value-props.sampledAt<=6000
   const source=props.local&&props.source?.sampledAt!==undefined&&now.value-props.source.sampledAt>=0&&now.value-props.source.sampledAt<=6000?props.source:null
@@ -34,7 +42,7 @@ function updateVisibility():void {const at=Date.now(),nextVisible=stageIsVisible
 watch([()=>props.publisherPaused,()=>props.stageVisible],updateVisibility)
 watch([()=>props.subscriptionFailed,()=>props.autoplayBlocked,()=>props.videoReady,visible],attemptAutomaticRecovery)
 onMounted(()=>{updateVisibility();document.addEventListener('visibilitychange',updateVisibility);timer=setInterval(updateVisibility,1000);attemptAutomaticRecovery()})
-onBeforeUnmount(()=>{if(timer) clearInterval(timer);document.removeEventListener('visibilitychange',updateVisibility);series.stop()})
+onBeforeUnmount(()=>{if(timer) clearInterval(timer);if(audioPresenceTimer)clearTimeout(audioPresenceTimer);document.removeEventListener('visibilitychange',updateVisibility);series.stop()})
 </script>
 <template>
   <section class="screen-diagnosis" aria-label="Диагностика просмотра">

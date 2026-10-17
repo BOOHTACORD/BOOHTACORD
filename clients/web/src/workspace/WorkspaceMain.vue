@@ -9,6 +9,7 @@ import { useVoiceConnectionStore } from '../voice/connection_store'
 import type { VoiceRoomRoster } from '../voice/voice_roster_client'
 import SettingsWorkspaceHeader from '../shared/workspace_header/SettingsWorkspaceHeader.vue'
 import type { useWorkspaceVoiceControls } from './voice_controls'
+import { streamStartNotice } from '../voice/stream_start_runtime'
 
 type VoiceConnection = ReturnType<typeof useVoiceConnectionStore>
 type WorkspaceVoiceControls = ReturnType<typeof useWorkspaceVoiceControls>
@@ -40,6 +41,7 @@ const emit = defineEmits<{ openSearch: []; returnVoice: [channelId: string]; tog
 <template>
   <div class="workspace-main-layout">
   <div ref="miniPlayerTarget" class="screen-mini-dock"></div>
+  <p v-if="streamStartNotice && voiceConnection.active" class="workspace-stream-alert" role="status">В канале началась демонстрация экрана</p>
   <div v-if="panel === 'admin'" class="workspace-main-panel workspace-main-panel--admin" data-testid="admin-workspace-panel">
     <SettingsWorkspaceHeader panel="admin" :nav-expanded="navOpen" @toggle-navigation="emit('toggleNav')" @close="emit('closePanel', 'admin')" />
     <slot name="admin" />
