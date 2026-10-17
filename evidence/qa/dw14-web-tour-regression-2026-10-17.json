@@ -623,7 +623,30 @@
         "scope": "Sixteen distinct current-run source-resolution captures were inspected directly. One additional inspected current image (320px search tabs at 200% text) is an exact-hash match in the 79-image carry-forward set and is not double-counted. The current run has 972 selected PNG captures / 923 unique images; 95 have review evidence and 828 remain unreviewed, so status remains REVIEW_REQUIRED.",
         "observations": "The screen-share diagnosis remains “Источник не публикует аудиодорожку.” in desktop and 390px/200% text captures while receiver samples move from absent to fresh to stale; its focused browser regression asserts the exact text at all three states. The 1024px/200% launch and quality dialogs, plus the 637x584 quality selection capture, keep their frames and primary actions visible; the larger dialogs scroll their detail text within the frame. At 390px the receiver drawer keeps the summary and copy action readable, the expanded technical details continue below the capture, and the unsupported-browser warning and profile controls fit; a close-action hint appears beside the close icon. The 320px/200% voice prejoin card fits its two actions while the room title truncates in the header. At 390px/200% the microphone-denied status wraps above the fixed voice controls, which remain visible. A 320px/200% DM header truncates its title but keeps actions visible; search tabs stack vertically with no horizontal overflow, while the query placeholder is clipped by the narrow field. The 320px/200% DM picker stays within the viewport, though a deliberately pathological synthetic name wraps across many lines. At 390px/200% the mini-player and composer remain visible; a long draft wraps and scrolls to its active line, and the focused regression checks one-line draft visibility and retention across navigation. These are synthetic UI fixtures and do not prove physical picker or media quality."
       },
-      "manual_review_limitation": "990 unique screenshots from the current run remain unreviewed."
+      "manual_review_limitation": "990 unique screenshots from the current run remain unreviewed.",
+      "before_after_comparisons": [
+        {
+          "scenario": "Mobile mini-player with active DM composer and screen-share start notice",
+          "viewport_css_px": [
+            393,
+            852
+          ],
+          "image_px": [
+            1179,
+            2556
+          ],
+          "before": {
+            "path": ".out/local-features/20261017-164959/images/web-real-stack/393/mini-player-dm.png",
+            "sha256": "a23dafba0c5f292c1df8b570c128b4e4fff2989a546788977b362d29e739d3b7"
+          },
+          "after": {
+            "path": ".out/local-features/20261017-170617/images/web-real-stack/393/mini-player-dm.png",
+            "sha256": "730d143508aa4dd79e7d3ad2448fba3a1faf335087b1ce028e52a2fe04c32e83"
+          },
+          "observation": "Before: the start notice overlays the composer border and send button. After: it sits in flow between the mini-player and conversation header; the composer and send button are clear. Both captures were inspected at original pixel resolution.",
+          "source": "Before capture is the immediately preceding registered real-stack run; after capture is the latest passing registered real-stack run."
+        }
+      ]
     },
     "rollout_rollback_issue305": "NOT_RUN",
     "supplemental_browser_tests": [
@@ -772,7 +795,18 @@
       "issue": "Mobile screen-share start notice overlapped the DM composer send button",
       "status": "FIXED_AND_TESTED",
       "after": "The notice appears in the workspace flow between the mini-player and chat. The 393px browser test asserts no overlap with the send button.",
-      "evidence": "clients/web/tests/mini_player/mini.browser.spec.ts; .out/local-features/20261017-170617/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png"
+      "evidence": "clients/web/tests/mini_player/mini.browser.spec.ts; .out/local-features/20261017-170617/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+      "before_after_evidence": [
+        {
+          "path": ".out/local-features/20261017-164959/images/web-real-stack/393/mini-player-dm.png",
+          "sha256": "a23dafba0c5f292c1df8b570c128b4e4fff2989a546788977b362d29e739d3b7"
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-real-stack/393/mini-player-dm.png",
+          "sha256": "730d143508aa4dd79e7d3ad2448fba3a1faf335087b1ce028e52a2fe04c32e83"
+        }
+      ],
+      "visual_observation": "Before: the start notice overlays the composer border and send button. After: it sits in flow between the mini-player and conversation header; the composer and send button are clear. Both captures were inspected at original pixel resolution."
     },
     {
       "issue": "Voluntary voice leave appeared as an error",
