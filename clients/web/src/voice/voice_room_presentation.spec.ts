@@ -44,7 +44,7 @@ describe('voice-room visual status and screen presentation', () => {
     const connected = source('./VoiceRoomConnected.vue')
     const viewer = source('./ScreenViewer.vue')
     const members = source('../workspace/WorkspaceMembersPanel.vue')
-    expect(pane).toContain(`(voiceIsActive || (screenPinned && activeVoiceChannel)) && voiceState !== 'LEAVING' && (screenViewerCards.length || selectedScreenStreamId || screenViewerEnded)`)
+    expect(pane).toContain(`(voiceIsActive || (screenPinned && activeVoiceChannel?.id === voiceChannel.id)) && voiceState !== 'LEAVING' && (screenViewerCards.length || selectedScreenStreamId || screenViewerEnded)`)
     expect(pane).toContain(`!voiceIsActive || voiceState === 'LEAVING' || !selectedScreenStreamId`)
     expect(pane).not.toContain('<VoiceParticipantStrip')
     expect(pane).toContain('voiceVolumeParticipants.length + 1')

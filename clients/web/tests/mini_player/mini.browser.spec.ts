@@ -57,3 +57,12 @@ test('long member rail scrolls independently while the mini player and composer 
  await page.locator('.composer textarea').fill('Черновик при прокрутке участников');await geometry(page)
  await page.screenshot({path:info.outputPath('roster-scroll.png')})
 })
+
+test('selecting a different voice room closes the old pinned viewer and keeps the original voice session',async({page})=>{
+ await mount(page);await navigate(page,'other-voice')
+ await expect(page.locator('video.screen-player')).toHaveCount(0)
+ await expect(page.locator('.voice-room--mini')).toHaveCount(0)
+ await expect(page.getByRole('button',{name:'Без микрофона',exact:true})).toBeVisible()
+ await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён')
+ expect(await page.evaluate(()=>(window as any).__miniFixture.connection.active.channelId)).toBe('voice')
+})

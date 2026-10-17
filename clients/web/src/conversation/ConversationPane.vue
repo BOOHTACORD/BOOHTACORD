@@ -108,7 +108,7 @@ function clearScreenPreview(): void {
             <template v-else>Вход в этот канал закрыт администратором. Отзыв media-доступа ещё подтверждается. <span v-if="voiceError">{{ voiceError }}</span></template>
             <button v-if="voiceIsActive" type="button" @click="emit('leave')">Выйти из голосового канала</button>
           </div>
-          <template v-if="(voiceIsActive || (screenPinned && activeVoiceChannel)) && voiceState !== 'LEAVING' && (screenViewerCards.length || selectedScreenStreamId || screenViewerEnded)">
+          <template v-if="(voiceIsActive || (screenPinned && activeVoiceChannel?.id === voiceChannel.id)) && voiceState !== 'LEAVING' && (screenViewerCards.length || selectedScreenStreamId || screenViewerEnded)">
             <ScreenViewer
               ref="screenViewerRef" v-show="selectedScreenStreamId !== null" :audio-muted="screenAudioMuted" :cards="screenViewerCards" :deafened="selfDeafened" :ended="screenViewerEnded" :error="screenViewerError" :expanded="screenExpanded" :mini="miniVisible" :own-screen-sharing="screenState === 'SHARING'" :pinned="screenPinned" :participant-count="voiceVolumeParticipants.length + 1" :selected-audio-volume="selectedScreenAudioVolume" :selected-id="selectedScreenStreamId"
               @clear="clearScreenPreview" @retry="emit('retryScreenStream', $event)" @select="(id, video, audio) => emit('selectScreenStream', id, video, audio)" @set-audio-volume="emit('setScreenVolume', $event)" @toggle-audio="emit('toggleScreenAudio')"

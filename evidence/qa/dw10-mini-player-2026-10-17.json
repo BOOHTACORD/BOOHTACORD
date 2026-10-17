@@ -2,12 +2,12 @@
   "issue": 349,
   "leaf": "DW-010",
   "base": "979d0bd0631e1be9fda8071f648c16220fc32278",
-  "accepted_source": "566395007a9e26d795b1f1c4debe4508721ed8e4",
+  "accepted_source": "adfea086b233944c542c5b595b0776ce14e6cff1",
   "source_files_sha256": {
     ".github/workflows/ci-frontend.yaml": "74b4f908d14d7830394b0b26989ee532139f3ff59531615028c2b59b273e6de2",
     "backlog/tasks.yaml": "f98b9979a11715f1eea4a7acfb08750c97886cace49ee34b9969364e44875b6a",
     "clients/web/package.json": "0b39d4589593e1ff602e821a022511cd39a0e7e7ea2776540ca4205b09bb567c",
-    "clients/web/src/conversation/ConversationPane.vue": "f8612f08f09be0589d4180adf0134d02748ab7640c2c6f626b15e305ca51a3eb",
+    "clients/web/src/conversation/ConversationPane.vue": "dcbe67b91a38c380fe7cbda3d6583893d07e4cbc684e4df0b919f227e4bb9c46",
     "clients/web/src/design/mini_player.css": "a7b32f902252ffcca46b0c2121f3cf4ffac50b497ffaa06849f20d075eec51ee",
     "clients/web/src/voice/ScreenMiniToolbar.vue": "fbce9740951903b990bc1eddba52a21f0acde1cf8b88abaa07f8853dc9b8d090",
     "clients/web/src/voice/ScreenViewer.vue": "9b0c9b369476856d6ea3f1014976f6bacd3a0324922c060efcd900192829eae3",
@@ -15,12 +15,12 @@
     "clients/web/src/voice/screen_viewer_layout_reference.spec.ts": "8cea2cadc87d02e33b2774485af7f4a3a018731b0d2dcd4e3a06e44573ad6d6e",
     "clients/web/src/voice/screen_viewer_reference.spec.ts": "b13045675b971a7b2b0a10dc695085251d008609a33c8d5111bdeda85143e515",
     "clients/web/src/voice/use_conversation_screen_state.ts": "f06a00bdda7ff8a8dc16dc33f37827b7497caa83a07b79b803c4d3ad681a0ce4",
-    "clients/web/src/voice/voice_room_presentation.spec.ts": "404b74f4b805407bd696a430746c6b92f3002c4f164c104adb86c8cf2f6d339e",
+    "clients/web/src/voice/voice_room_presentation.spec.ts": "11787557415048cd8f24099946292bccdbbdea72d64d529abfaa82349afed03d",
     "clients/web/src/workspace/WorkspaceMain.vue": "6b1382ab061993d635461f1b407bd41f0153e5ad0b73ab1ecafef73c37ec9f9e",
     "clients/web/tests/mini_player/fixture.html": "862268c2f9ea169c54e9d237eb47a4f3b33ee889bf211c86687c092793e4c303",
-    "clients/web/tests/mini_player/fixture.ts": "08864ba6f378fd312d0dec3f64a06b27ced67d9600ea3e050d0c339f5b7a98b2",
+    "clients/web/tests/mini_player/fixture.ts": "b211f1165fb0f72fd1ba18bb59f5c7b025029b3228b62e9ad02333d01d0075d6",
     "clients/web/tests/mini_player/helpers.ts": "f9d4ed9e19c76066f2e1b4458da0167982886e69f924fd36d202dadf86368371",
-    "clients/web/tests/mini_player/mini.browser.spec.ts": "7f404507086791d11d5ca5dbd3818d53b83189b7298da5eb861454ca51718dd3",
+    "clients/web/tests/mini_player/mini.browser.spec.ts": "35dd264ab1f34f75067d17b018a21b16df4a22a717a203d4f596b5a170d7d0c2",
     "clients/web/tests/mini_player/playwright.config.ts": "43ad80969f202277f387283eb666cc7a7e192c572f4cfa211ea6a61fb268b178",
     "clients/web/tests/mini_player/routes.ts": "e4cb4631e418e8fee072f5e3093be1bf6d7a847a128b524b2858dd4bae6b803f",
     "clients/web/tests/mini_player/zoom.browser.spec.ts": "79341465f39b9b726de86f2b3f7b6abb5b2eba7c6f0e11c0c30ea5ac79d9b769",
@@ -35,12 +35,397 @@
     "tools/qa/mini_player/scenario.mjs": "81216a2a03866da195f99fdb0dd4114da5b145053ae2ab231b64709a2219a03c"
   },
   "gate": {
-    "run": ".out/local-features/20261017-083105",
-    "raw_status": "FAIL",
+    "run": ".out/local-features/20261017-085309",
+    "raw_status": "REVIEW_REQUIRED",
     "visual_review_raw": "NOT_RUN",
-    "raw_report_sha256": "a56b920438ebb93fbc15cbcf4bf9c8aa2b49a500a88bc8c1ffcae276c979e0b7",
-    "source": "beea54068b571fcbff38ccbc2fe0531846180e99 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source": "adfea086b233944c542c5b595b0776ce14e6cff1 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_report_sha256": "a3b3c63443496108a4601b3df2cf7a197bf78901f1022dee6c9417738f93b212",
     "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "PASS"
+      },
+      {
+        "name": "web-chat_rhythm",
+        "status": "PASS"
+      },
+      {
+        "name": "web-control_consistency",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-dm_starter",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-message_social",
+        "status": "PASS"
+      },
+      {
+        "name": "web-microcopy",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mini_player",
+        "status": "PASS"
+      },
+      {
+        "name": "web-navigation_density",
+        "status": "PASS"
+      },
+      {
+        "name": "web-password_generation",
+        "status": "PASS"
+      },
+      {
+        "name": "web-quick_jump_people",
+        "status": "PASS"
+      },
+      {
+        "name": "web-readonly_archive",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_profile",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_share_ui",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_dates",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_presentation",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_sessions",
+        "status": "PASS"
+      },
+      {
+        "name": "web-track_name",
+        "status": "PASS"
+      },
+      {
+        "name": "web-voice_interface",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "verification_status": "PASS",
+    "targeted_retries": [],
+    "selected_manual_review": "PASS",
+    "matching_reviewed_fixture_frames": 11
+  },
+  "visual_review": {
+    "status": "PASS",
+    "scope": "Selected source-sized captures only; remaining frames checked by browser geometry/axe. Desktop actual-zoom exact crop reviewed separately. Original private tour pixels unavailable.",
+    "frames": [
+      {
+        "kind": "after",
+        "path": ".out/issue349/browser/mini.browser-chat-zoning-1440-text-100/text.png",
+        "sha256": "ba9f75059fc4c408b62fc1d4c0529f73e824e0d51258d474d6e627a9821c52c7",
+        "width": 1440,
+        "height": 900,
+        "gate_path": ".out/local-features/20261017-085309/web-mini_player/mini.browser-chat-zoning-1440-text-100/text.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue349/browser/mini.browser-chat-zoning-320-text-100/text.png",
+        "sha256": "73485a3be00dcf6a56dd6fd97b6fc7f3552329fc8feede70b38f54cd1bacf4bf",
+        "width": 320,
+        "height": 900,
+        "gate_path": ".out/local-features/20261017-085309/web-mini_player/mini.browser-chat-zoning-320-text-100/text.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue349/browser/mini.browser-chat-zoning-320-text-200/dm.png",
+        "sha256": "df131ac4856664bd941838fef18b76ff74137df2011589ff6cfe8a5db6b45d64",
+        "width": 320,
+        "height": 900,
+        "gate_path": ".out/local-features/20261017-085309/web-mini_player/mini.browser-chat-zoning-320-text-200/dm.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue349/browser/mini.browser-chat-zoning-390-text-100/dm.png",
+        "sha256": "84e79da3db703d34950f238a013384f28daba9ca395d4a5d85c74057fc83a488",
+        "width": 390,
+        "height": 900,
+        "gate_path": ".out/local-features/20261017-085309/web-mini_player/mini.browser-chat-zoning-390-text-100/dm.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue349/browser/mini.browser-chat-zoning-390-text-200/text.png",
+        "sha256": "5e47a3bc78c74eb72940fa8ef4b1a631f88d75535dfd6021de6080f5c77423bd",
+        "width": 390,
+        "height": 900,
+        "gate_path": ".out/local-features/20261017-085309/web-mini_player/mini.browser-chat-zoning-390-text-200/text.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue349/browser/mini.browser-chat-zoning-1024-text-100/text.png",
+        "sha256": "034492b42528652f8fb50898c4bbdf6bca21b2c4a0b12ffdcec8e6d186176788",
+        "width": 1024,
+        "height": 900,
+        "gate_path": ".out/local-features/20261017-085309/web-mini_player/mini.browser-chat-zoning-1024-text-100/text.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue349/browser/mini.browser-chat-zoning-1440-text-200/dm.png",
+        "sha256": "df7ec34c3f30ed19ca9a025130d2505292a4b2f3be08eb52ab68d0556e9d95db",
+        "width": 1440,
+        "height": 900,
+        "gate_path": ".out/local-features/20261017-085309/web-mini_player/mini.browser-chat-zoning-1440-text-200/dm.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue349/browser/mini.browser-long-member-r-6f136--and-composer-remain-usable/roster-scroll.png",
+        "sha256": "1783d4e8d8384f52d317ae8c79817b55f7af6708328e97e9b95986f9690edd1f",
+        "width": 1440,
+        "height": 900,
+        "gate_path": ".out/local-features/20261017-085309/web-mini_player/mini.browser-long-member-r-6f136--and-composer-remain-usable/roster-scroll.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue349/browser/zoom.browser-touch-control-c663c-a-resized-keyboard-viewport/touch-short.png",
+        "sha256": "452aeabb6b773ef5c8d1a248e693168b219d28bf5e1cbb225d38958747348000",
+        "width": 390,
+        "height": 460,
+        "gate_path": ".out/local-features/20261017-085309/web-mini_player/zoom.browser-touch-control-c663c-a-resized-keyboard-viewport/touch-short.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue349/browser/zoom.browser-mini-at-actual-200-browser-zoom-640/mini-zoom.png",
+        "sha256": "3e3dc973cd28f40405f1d8ca4186341d6e5367b8e0d9b3ac537b11c8d8f4f850",
+        "width": 640,
+        "height": 913,
+        "gate_path": ".out/local-features/20261017-085309/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-640/mini-zoom.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue349/browser/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+        "sha256": "ab06864a6bb7e16ad19d1c7132d210437c7a012bdcbfcda53e6ab561f547fc6c",
+        "width": 780,
+        "height": 913,
+        "gate_path": ".out/local-features/20261017-085309/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue349/before-browser/before.browser-before-320/text-before.png",
+        "sha256": "78934385f4a51bec6d305c4dd4c82514bb374ad4cd5116a2fa6cdbb02fed9987"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue349/before-browser/before.browser-before-1440/text-before.png",
+        "sha256": "0f0ebb6aa7671abd72e5f95f76513b7a54ecf608a2b9c470c88f982d851d9aec"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue349/before-dm-browser/before.browser-baseline-DM-320/dm-before.png",
+        "sha256": "88583eae69a07150fc17ded94eba4d65711ec6fb1ada36354fffc88f04d77ea8",
+        "source": "979d0bd0631e1be9fda8071f648c16220fc32278",
+        "review": "Isolated tracked master Web source with the same production-component fixture and valid synthetic DM history. Pinned viewer vanishes after DM navigation."
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue349/before-dm-browser/before.browser-baseline-DM-1440/dm-before.png",
+        "sha256": "93de512752ab4c625e82728a8d728c7409f55051e94226a800583b78e2ae4578",
+        "source": "979d0bd0631e1be9fda8071f648c16220fc32278",
+        "review": "Isolated tracked master Web source with the same production-component fixture and valid synthetic DM history. Pinned viewer vanishes after DM navigation."
+      }
+    ],
+    "observations": [
+      "Dock reserves main conversation space; no composer, voice dock or member rail overlap.",
+      "Header stays within chat beside an independently scrolled roster.",
+      "44px controls remain visible on touch and reduced viewport height.",
+      "200% text wraps composer and chat; 200% native browser zoom independently observed.",
+      "Local pause is separate from sound and can be resumed in full view."
+    ],
+    "additional_exact_crops": [
+      {
+        "path": ".out/issue349/actual-touch-text-top.png",
+        "sha256": "c05109c57c21dbafc88d3faa7afae971581dd7dcc72be03f246dbc80110ffcc3"
+      },
+      {
+        "path": ".out/issue349/actual-touch-text-bottom.png",
+        "sha256": "6a6c2f2545765659fb0ca2d928e038f77d3a0b3209ed8c89df07fbf2fbb6189d"
+      },
+      {
+        "path": ".out/issue349/actual-touch-dm-top.png",
+        "sha256": "c81ec4876bf8d777331de458a72e5c85b99b234977903d68a6f068f0d4d9bbbe"
+      },
+      {
+        "path": ".out/issue349/actual-touch-dm-bottom.png",
+        "sha256": "a97d9074bb4ab783fb87a45f70de063dab54f2e7e449ef2f44902d23bdcf8fb6"
+      },
+      {
+        "path": ".out/issue349/actual-desktop-text-top.png",
+        "sha256": "9f7601a08e2197b1014570f178e5986bd1238685a49b91b1df3cf5e34fc74f4d"
+      },
+      {
+        "path": ".out/issue349/actual-desktop-text-bottom.png",
+        "sha256": "31da966e726c01a6b2d7aab0cc7bd72858eb21f826eeef567e34cdd1c6b8d164"
+      },
+      {
+        "path": ".out/issue349/actual-desktop-dm-top.png",
+        "sha256": "d187c753e5e545b6b34be37b2c8ce36158aa35599f438762bce788c13d2903db"
+      },
+      {
+        "path": ".out/issue349/zoom-final-crop.png",
+        "sha256": "64a04f5d9bb9a3ad30c937d69ca04a7f295727add25077f0e5c2e12cb26c3990"
+      }
+    ],
+    "runtime_observations": [
+      "Actual desktop/touch mini controls and main-header boundary are clear; TEXT/DM sends and stream continuity asserted in runtime.",
+      "A pre-existing transient screen-start notice overlays the mobile composer in the immediate runtime captures. These captures are not approved layout baselines. Stable composer safety is reviewed in the source-identical component frames and checked by mini/dock/composer geometry. This review does not claim that other pre-existing notification overlays are fixed."
+    ],
+    "actual_crop_source": "adfea086b233944c542c5b595b0776ce14e6cff1"
+  },
+  "actual_api_sfu": [
+    {
+      "viewport": 1440,
+      "path": ".out/client-lifecycle/1440/report.json",
+      "report_sha256": "1ffa3c24c39922f3271deef74fa30fc7507c66b5f8201d7125d2aa49bc69365f",
+      "mini_player": {
+        "actual_api_sfu": true,
+        "source": "synthetic canvas and quiet oscillator",
+        "text_and_dm_send": true,
+        "same_video_audio_tracks_and_peer_connections": true,
+        "no_extra_subscription_during_navigation": true,
+        "pause_video_only": true,
+        "mute_and_volume_retained": true,
+        "expand_escape_unpin_return": true,
+        "explicit_stop_two_unsubscriptions": true,
+        "composer_and_dock_clear": true,
+        "settings_retains_viewer": true,
+        "pinned_logout_detaches_outputs_and_closes_peers": true,
+        "hardware_capture_and_qoe": "NOT_RUN"
+      },
+      "screen_share": {
+        "boundary": "synthetic canvas and quiet oscillator; OS picker NOT_RUN",
+        "actual_api_sfu": true,
+        "cancel_without_publication": true,
+        "permission_denied_visible": true,
+        "retry_publish_view_decode_stop": true,
+        "ended_source_track": true,
+        "voice_retained": true,
+        "selected_configuration_measured_separate": true,
+        "configuration_observed": "Нет подтверждения от отправителя",
+        "diagnostics_optional": true,
+        "captures": 3,
+        "activated": [
+          true,
+          true,
+          true
+        ],
+        "media_quality": "NOT_RUN"
+      },
+      "selected_frames": [
+        {
+          "path": ".out/client-lifecycle/1440/mini-player-text.png",
+          "sha256": "59d0c552d7567b5272b28f98b00aa320ca8a7e8f40ea79bf3199faae6ba4ed30"
+        },
+        {
+          "path": ".out/client-lifecycle/1440/mini-player-dm.png",
+          "sha256": "25c25ec6283fa025094676bb3cbd31e9a12d0fd9e42638a1cfb7ff16462930de"
+        }
+      ]
+    },
+    {
+      "viewport": 393,
+      "path": ".out/client-lifecycle/393/report.json",
+      "report_sha256": "0b0b4641bd83ea8bf66d738a3200a2eb3bdd10f4f7ba1f1946bbf31904ca93a2",
+      "mini_player": {
+        "actual_api_sfu": true,
+        "source": "synthetic canvas and quiet oscillator",
+        "text_and_dm_send": true,
+        "same_video_audio_tracks_and_peer_connections": true,
+        "no_extra_subscription_during_navigation": true,
+        "pause_video_only": true,
+        "mute_and_volume_retained": true,
+        "expand_escape_unpin_return": true,
+        "explicit_stop_two_unsubscriptions": true,
+        "composer_and_dock_clear": true,
+        "settings_retains_viewer": true,
+        "pinned_logout_detaches_outputs_and_closes_peers": true,
+        "hardware_capture_and_qoe": "NOT_RUN"
+      },
+      "screen_share": {
+        "boundary": "synthetic canvas and quiet oscillator; OS picker NOT_RUN",
+        "actual_api_sfu": true,
+        "cancel_without_publication": true,
+        "permission_denied_visible": true,
+        "retry_publish_view_decode_stop": true,
+        "ended_source_track": true,
+        "voice_retained": true,
+        "selected_configuration_measured_separate": true,
+        "configuration_observed": "Нет подтверждения от отправителя",
+        "diagnostics_optional": true,
+        "captures": 3,
+        "activated": [
+          true,
+          true,
+          true
+        ],
+        "media_quality": "NOT_RUN"
+      },
+      "selected_frames": [
+        {
+          "path": ".out/client-lifecycle/393/mini-player-text.png",
+          "sha256": "56657336f1b1a01e74384dd2088de36b375aca545c6fbeb709dd300149ac6fd7"
+        },
+        {
+          "path": ".out/client-lifecycle/393/mini-player-dm.png",
+          "sha256": "bf2bc19b0170a890db6352d2b30dc2511d48510c821e342be81beef3287d17d4"
+        }
+      ]
+    }
+  ],
+  "focused": {
+    "unit_tests": 1557,
+    "unit_files": 473,
+    "browser_cases": 17,
+    "axe_state_scans": 16,
+    "different_voice_room_retains_original_session_but_clears_screen": true,
+    "traceability": "PASS 39; index only; approved brief unavailable"
+  },
+  "earlier_attempt": {
+    "status": "SUPERSEDED_AFTER_DIFFERENT_VOICE_ROOM_REGRESSION",
+    "published_head": "0d08c6d76bcd717f5230fa1cd4277b0adf073a86",
+    "source": "566395007a9e26d795b1f1c4debe4508721ed8e4",
+    "raw_gate": ".out/local-features/20261017-083105",
+    "raw_status": "FAIL",
+    "raw_stages": [
       {
         "name": "web-unit",
         "status": "PASS"
@@ -142,8 +527,7 @@
         "status": "FAIL"
       }
     ],
-    "verification_status": "PASS_AFTER_HARNESS_FIX_AND_TARGETED_RERUN",
-    "targeted_sources": [
+    "actual_reruns": [
       {
         "viewport": 1440,
         "receipt": {
@@ -258,291 +642,35 @@
         ]
       }
     ],
-    "unchanged_application_and_component_source": true,
-    "only_delta_since_initial_gate": [
-      "tools/qa/critical_client_acceptance/mini_player_ui.mjs"
-    ],
-    "selected_manual_review": "PASS",
-    "matched_selected_fixture_frames": 11
-  },
-  "visual_review": {
-    "status": "PASS",
-    "scope": "Selected source-sized captures only; remaining frames checked by browser geometry/axe. Desktop actual-zoom exact crop reviewed separately. Original private tour pixels unavailable.",
-    "frames": [
+    "failures": [
       {
-        "kind": "after",
-        "path": ".out/issue349/browser/mini.browser-chat-zoning-1440-text-100/text.png",
-        "sha256": "ba9f75059fc4c408b62fc1d4c0529f73e824e0d51258d474d6e627a9821c52c7",
-        "width": 1440,
-        "height": 900,
-        "gate_path": ".out/local-features/20261017-083105/web-mini_player/mini.browser-chat-zoning-1440-text-100/text.png"
+        "file": ".out/issue349/test-first.log",
+        "result": "Expected failing expansion state regression before implementation"
       },
       {
-        "kind": "after",
-        "path": ".out/issue349/browser/mini.browser-chat-zoning-320-text-100/text.png",
-        "sha256": "73485a3be00dcf6a56dd6fd97b6fc7f3552329fc8feede70b38f54cd1bacf4bf",
-        "width": 320,
-        "height": 900,
-        "gate_path": ".out/local-features/20261017-083105/web-mini_player/mini.browser-chat-zoning-320-text-100/text.png"
+        "file": ".out/issue349/actual-focused-1440.log",
+        "result": "FAIL: harness selected new-DM button instead of a conversation. Selector corrected; complete actual journey then PASS."
       },
       {
-        "kind": "after",
-        "path": ".out/issue349/browser/mini.browser-chat-zoning-320-text-200/dm.png",
-        "sha256": "df131ac4856664bd941838fef18b76ff74137df2011589ff6cfe8a5db6b45d64",
-        "width": 320,
-        "height": 900,
-        "gate_path": ".out/local-features/20261017-083105/web-mini_player/mini.browser-chat-zoning-320-text-200/dm.png"
+        "file": ".out/issue349/legacy247.log",
+        "result": "FAIL before login: shared 4810 helper rejects the legacy owned 4830 origin. Strict bounded 4830 login and caller Docker context restored; complete 9-case Web runtime PASS."
       },
       {
-        "kind": "after",
-        "path": ".out/issue349/browser/mini.browser-chat-zoning-390-text-100/dm.png",
-        "sha256": "84e79da3db703d34950f238a013384f28daba9ca395d4a5d85c74057fc83a488",
-        "width": 390,
-        "height": 900,
-        "gate_path": ".out/local-features/20261017-083105/web-mini_player/mini.browser-chat-zoning-390-text-100/dm.png"
+        "file": ".out/issue349/roster-header-test-first.log",
+        "result": "Expected failing geometry regression: desktop header overlapped member rows below dock. Scoped header width corrected before full gate."
       },
       {
-        "kind": "after",
-        "path": ".out/issue349/browser/mini.browser-chat-zoning-390-text-200/text.png",
-        "sha256": "5e47a3bc78c74eb72940fa8ef4b1a631f88d75535dfd6021de6080f5c77423bd",
-        "width": 390,
-        "height": 900,
-        "gate_path": ".out/local-features/20261017-083105/web-mini_player/mini.browser-chat-zoning-390-text-200/text.png"
+        "file": ".out/local-features/20261017-083105/web-real-stack-1440.log",
+        "result": "FAIL after new feature checks: unchanged 20-second notification wait, one pending kick and no connected transports; complete stage rerun PASS."
       },
       {
-        "kind": "after",
-        "path": ".out/issue349/browser/mini.browser-chat-zoning-1024-text-100/text.png",
-        "sha256": "034492b42528652f8fb50898c4bbdf6bca21b2c4a0b12ffdcec8e6d186176788",
-        "width": 1024,
-        "height": 900,
-        "gate_path": ".out/local-features/20261017-083105/web-mini_player/mini.browser-chat-zoning-1024-text-100/text.png"
-      },
-      {
-        "kind": "after",
-        "path": ".out/issue349/browser/mini.browser-chat-zoning-1440-text-200/dm.png",
-        "sha256": "df7ec34c3f30ed19ca9a025130d2505292a4b2f3be08eb52ab68d0556e9d95db",
-        "width": 1440,
-        "height": 900,
-        "gate_path": ".out/local-features/20261017-083105/web-mini_player/mini.browser-chat-zoning-1440-text-200/dm.png"
-      },
-      {
-        "kind": "after",
-        "path": ".out/issue349/browser/mini.browser-long-member-r-6f136--and-composer-remain-usable/roster-scroll.png",
-        "sha256": "1783d4e8d8384f52d317ae8c79817b55f7af6708328e97e9b95986f9690edd1f",
-        "width": 1440,
-        "height": 900,
-        "gate_path": ".out/local-features/20261017-083105/web-mini_player/mini.browser-long-member-r-6f136--and-composer-remain-usable/roster-scroll.png"
-      },
-      {
-        "kind": "after",
-        "path": ".out/issue349/browser/zoom.browser-touch-control-c663c-a-resized-keyboard-viewport/touch-short.png",
-        "sha256": "452aeabb6b773ef5c8d1a248e693168b219d28bf5e1cbb225d38958747348000",
-        "width": 390,
-        "height": 460,
-        "gate_path": ".out/local-features/20261017-083105/web-mini_player/zoom.browser-touch-control-c663c-a-resized-keyboard-viewport/touch-short.png"
-      },
-      {
-        "kind": "after",
-        "path": ".out/issue349/browser/zoom.browser-mini-at-actual-200-browser-zoom-640/mini-zoom.png",
-        "sha256": "3e3dc973cd28f40405f1d8ca4186341d6e5367b8e0d9b3ac537b11c8d8f4f850",
-        "width": 640,
-        "height": 913,
-        "gate_path": ".out/local-features/20261017-083105/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-640/mini-zoom.png"
-      },
-      {
-        "kind": "after",
-        "path": ".out/issue349/browser/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
-        "sha256": "ab06864a6bb7e16ad19d1c7132d210437c7a012bdcbfcda53e6ab561f547fc6c",
-        "width": 780,
-        "height": 913,
-        "gate_path": ".out/local-features/20261017-083105/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png"
-      },
-      {
-        "kind": "before",
-        "path": ".out/issue349/before-browser/before.browser-before-320/text-before.png",
-        "sha256": "78934385f4a51bec6d305c4dd4c82514bb374ad4cd5116a2fa6cdbb02fed9987"
-      },
-      {
-        "kind": "before",
-        "path": ".out/issue349/before-browser/before.browser-before-1440/text-before.png",
-        "sha256": "0f0ebb6aa7671abd72e5f95f76513b7a54ecf608a2b9c470c88f982d851d9aec"
-      },
-      {
-        "kind": "before",
-        "path": ".out/issue349/before-dm-browser/before.browser-baseline-DM-320/dm-before.png",
-        "sha256": "88583eae69a07150fc17ded94eba4d65711ec6fb1ada36354fffc88f04d77ea8",
-        "source": "979d0bd0631e1be9fda8071f648c16220fc32278",
-        "review": "Isolated tracked master Web source with the same production-component fixture and valid synthetic DM history. Pinned viewer vanishes after DM navigation."
-      },
-      {
-        "kind": "before",
-        "path": ".out/issue349/before-dm-browser/before.browser-baseline-DM-1440/dm-before.png",
-        "sha256": "93de512752ab4c625e82728a8d728c7409f55051e94226a800583b78e2ae4578",
-        "source": "979d0bd0631e1be9fda8071f648c16220fc32278",
-        "review": "Isolated tracked master Web source with the same production-component fixture and valid synthetic DM history. Pinned viewer vanishes after DM navigation."
+        "file": ".out/local-features/20261017-083105/web-real-stack-393.log",
+        "result": "FAIL in test: role query omitted the existing CSS-hidden mobile volume range. Only that locator and its scope comment changed; complete stage rerun PASS. Production and component-test sources unchanged."
       }
     ],
-    "observations": [
-      "Dock reserves main conversation space; no composer, voice dock or member rail overlap.",
-      "Header stays within chat beside an independently scrolled roster.",
-      "44px controls remain visible on touch and reduced viewport height.",
-      "200% text wraps composer and chat; 200% native browser zoom independently observed.",
-      "Local pause is separate from sound and can be resumed in full view."
-    ],
-    "additional_exact_crops": [
-      {
-        "path": ".out/issue349/actual-touch-text-top.png",
-        "sha256": "3e86cac6b7a6797e8b10b3a7fb399fed2e751345007834433597cad35a85fbab"
-      },
-      {
-        "path": ".out/issue349/actual-touch-text-bottom.png",
-        "sha256": "c4d8f017161784fe37ce3628cef9cb0862f9f4fdbe0b3e0af9986463c46b6379"
-      },
-      {
-        "path": ".out/issue349/actual-touch-dm-top.png",
-        "sha256": "f88bfaaa400f964e6d3565f85825924a0ca1ee14c7f5434dc89a2327442d4b3f"
-      },
-      {
-        "path": ".out/issue349/actual-touch-dm-bottom.png",
-        "sha256": "a97d9074bb4ab783fb87a45f70de063dab54f2e7e449ef2f44902d23bdcf8fb6"
-      },
-      {
-        "path": ".out/issue349/actual-desktop-text-top.png",
-        "sha256": "2d8bc93352d3eb03b8600379783cba01e21199de7b94768a7a85e83dc40f1aab"
-      },
-      {
-        "path": ".out/issue349/actual-desktop-text-bottom.png",
-        "sha256": "0bb547268559c6312abdc3ef32143b2c925b724ebdf62a66bedaf7c3bdf60f09"
-      },
-      {
-        "path": ".out/issue349/actual-desktop-dm-top.png",
-        "sha256": "aba70d584476325dbe9171698c41473c1266b5bc056bf9508b27a0015e161f9b"
-      },
-      {
-        "path": ".out/issue349/zoom-final-crop.png",
-        "sha256": "64a04f5d9bb9a3ad30c937d69ca04a7f295727add25077f0e5c2e12cb26c3990"
-      }
-    ],
-    "runtime_observations": [
-      "Actual desktop/touch mini controls and main-header boundary are clear; TEXT/DM sends and stream continuity asserted in runtime.",
-      "A pre-existing transient screen-start notice overlays the mobile composer in the immediate runtime captures. These captures are not approved layout baselines. Stable composer safety is reviewed in the source-identical component frames and checked by mini/dock/composer geometry. This review does not claim that other pre-existing notification overlays are fixed."
-    ]
+    "additional_expected_failing_test": ".out/issue349/other-voice-test-first.log",
+    "receipt_sha256": "e2c40d3083b80130b756f8bb4eb2b2564900484a76a8c34f5465ab5f7fa9396a"
   },
-  "actual_api_sfu": [
-    {
-      "viewport": 1440,
-      "receipt": {
-        "source": "566395007a9e26d795b1f1c4debe4508721ed8e4",
-        "source_after": "566395007a9e26d795b1f1c4debe4508721ed8e4",
-        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "command": "python3 -m tools.qa.client_lifecycle.run --critical --portable-proxy --width 1440 --output-root .out/issue349/actual-final-1440",
-        "exit_code": 0,
-        "elapsed_seconds": 105.81,
-        "log_sha256": "b62fb4615e09770675973d0067095d0222695339def3567096a8ddfa54f4838f"
-      },
-      "report_sha256": "2396e7374aa2b88e043c4f29ddec997bbe173cb3e6bd4af759c4facd58c955ee",
-      "mini_player": {
-        "actual_api_sfu": true,
-        "source": "synthetic canvas and quiet oscillator",
-        "text_and_dm_send": true,
-        "same_video_audio_tracks_and_peer_connections": true,
-        "no_extra_subscription_during_navigation": true,
-        "pause_video_only": true,
-        "mute_and_volume_retained": true,
-        "expand_escape_unpin_return": true,
-        "explicit_stop_two_unsubscriptions": true,
-        "composer_and_dock_clear": true,
-        "settings_retains_viewer": true,
-        "pinned_logout_detaches_outputs_and_closes_peers": true,
-        "hardware_capture_and_qoe": "NOT_RUN"
-      },
-      "screen_share": {
-        "boundary": "synthetic canvas and quiet oscillator; OS picker NOT_RUN",
-        "actual_api_sfu": true,
-        "cancel_without_publication": true,
-        "permission_denied_visible": true,
-        "retry_publish_view_decode_stop": true,
-        "ended_source_track": true,
-        "voice_retained": true,
-        "selected_configuration_measured_separate": true,
-        "configuration_observed": "Нет подтверждения от отправителя",
-        "diagnostics_optional": true,
-        "captures": 3,
-        "activated": [
-          true,
-          true,
-          true
-        ],
-        "media_quality": "NOT_RUN"
-      },
-      "selected_frames": [
-        {
-          "path": ".out/issue349/actual-final-1440/1440/mini-player-text.png",
-          "sha256": "e193deac12876ad38d24643e914718c6ab297a3b4dccbe4f4802f2cc317ab97d"
-        },
-        {
-          "path": ".out/issue349/actual-final-1440/1440/mini-player-dm.png",
-          "sha256": "35262857c843f04e625f06c27f429d4d7ccbc738b21bb9262f301be06fb98c25"
-        }
-      ]
-    },
-    {
-      "viewport": 393,
-      "receipt": {
-        "source": "566395007a9e26d795b1f1c4debe4508721ed8e4",
-        "source_after": "566395007a9e26d795b1f1c4debe4508721ed8e4",
-        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "exit_code": 0,
-        "log_sha256": "e82869335e9db05c1ed6f135a98a8b2d4e829d0070435b9efeba509823234e7e",
-        "command": "python3 -m tools.qa.client_lifecycle.run --critical --portable-proxy --width 393 --output-root .out/issue349/actual-final-393"
-      },
-      "report_sha256": "596cfb132261769b48b5cc9fa2982b61facbe3f11adc36e1282ae9813cc04761",
-      "mini_player": {
-        "actual_api_sfu": true,
-        "source": "synthetic canvas and quiet oscillator",
-        "text_and_dm_send": true,
-        "same_video_audio_tracks_and_peer_connections": true,
-        "no_extra_subscription_during_navigation": true,
-        "pause_video_only": true,
-        "mute_and_volume_retained": true,
-        "expand_escape_unpin_return": true,
-        "explicit_stop_two_unsubscriptions": true,
-        "composer_and_dock_clear": true,
-        "settings_retains_viewer": true,
-        "pinned_logout_detaches_outputs_and_closes_peers": true,
-        "hardware_capture_and_qoe": "NOT_RUN"
-      },
-      "screen_share": {
-        "boundary": "synthetic canvas and quiet oscillator; OS picker NOT_RUN",
-        "actual_api_sfu": true,
-        "cancel_without_publication": true,
-        "permission_denied_visible": true,
-        "retry_publish_view_decode_stop": true,
-        "ended_source_track": true,
-        "voice_retained": true,
-        "selected_configuration_measured_separate": true,
-        "configuration_observed": "Нет подтверждения от отправителя",
-        "diagnostics_optional": true,
-        "captures": 3,
-        "activated": [
-          true,
-          true,
-          true
-        ],
-        "media_quality": "NOT_RUN"
-      },
-      "selected_frames": [
-        {
-          "path": ".out/issue349/actual-final-393/393/mini-player-text.png",
-          "sha256": "0d1b6508c4a0b2b6c1b9c1a027a72959e311b5be1f4e8598b825763289d778ff"
-        },
-        {
-          "path": ".out/issue349/actual-final-393/393/mini-player-dm.png",
-          "sha256": "8250cec4d7d8e3dce90c9d7a7d05a4a0deb1dbedaa42aed28fcf109b13ec4995"
-        }
-      ]
-    }
-  ],
   "legacy_actual_web": {
     "status": "PASS",
     "candidate": "979d0bd0631e1be9fda8071f648c16220fc32278",
@@ -560,44 +688,6 @@
     "runtime_report_sha256": "1992f2eea4899cc40e795f0602324810528571fb301f7d20fe185d7cc06c0545",
     "scope": "Focused transport regression before final CSS-only header bound; source/build manifests retained in original runtime report. Native gates remain open."
   },
-  "focused": {
-    "unit_tests": 1557,
-    "unit_files": 473,
-    "new_browser_cases": 16,
-    "axe_state_scans": 16,
-    "legacy_css_widths": [
-      1440,
-      393,
-      320
-    ],
-    "traceability": "PASS: 39 repository-index requirements; approved Windows brief unavailable"
-  },
-  "intermediate_failures": [
-    {
-      "file": ".out/issue349/test-first.log",
-      "result": "Expected failing expansion state regression before implementation"
-    },
-    {
-      "file": ".out/issue349/actual-focused-1440.log",
-      "result": "FAIL: harness selected new-DM button instead of a conversation. Selector corrected; complete actual journey then PASS."
-    },
-    {
-      "file": ".out/issue349/legacy247.log",
-      "result": "FAIL before login: shared 4810 helper rejects the legacy owned 4830 origin. Strict bounded 4830 login and caller Docker context restored; complete 9-case Web runtime PASS."
-    },
-    {
-      "file": ".out/issue349/roster-header-test-first.log",
-      "result": "Expected failing geometry regression: desktop header overlapped member rows below dock. Scoped header width corrected before full gate."
-    },
-    {
-      "file": ".out/local-features/20261017-083105/web-real-stack-1440.log",
-      "result": "FAIL after new feature checks: unchanged 20-second notification wait, one pending kick and no connected transports; complete stage rerun PASS."
-    },
-    {
-      "file": ".out/local-features/20261017-083105/web-real-stack-393.log",
-      "result": "FAIL in test: role query omitted the existing CSS-hidden mobile volume range. Only that locator and its scope comment changed; complete stage rerun PASS. Production and component-test sources unchanged."
-    }
-  ],
   "limits": [
     "Original private tour pixel comparison NOT_RUN; exact-master TEXT/DM Before reproductions used.",
     "Synthetic OS capture boundary only; real API/SFU/session/publish/subscribe/decode/stop.",
