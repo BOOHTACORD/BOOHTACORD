@@ -68,9 +68,9 @@
   .workspace-main-panel--admin .role-permission-table tbody td { height: 64px; }
   .workspace-main-panel--admin .role-permission-label small { display: none; }
   .workspace-main-panel--admin .role-permission-icon { display: none; }
-  .workspace-main-panel--admin .role-permission-notice { display: none; }
-  .workspace-main-panel--admin .role-policy-actions { display: flex; gap: var(--gc-space-2); bottom: -4px; margin-top: 0; padding: 0; }
-  .workspace-main-panel--admin .role-policy-status { display: none; }
+  .workspace-main-panel--admin .role-permission-notice { display: flex; }
+  .workspace-main-panel--admin .role-policy-actions { display: flex; flex-wrap: wrap; gap: var(--gc-space-2); bottom: -4px; margin-top: 0; padding: 0; }
+  .workspace-main-panel--admin .role-policy-status { display: block; flex-basis: 100%; }
   .workspace-main-panel--admin .role-policy-actions button { min-height: 44px; flex: 1; }
 }
 .admin-section-tabs { scrollbar-width: thin; }
@@ -106,3 +106,12 @@
   .admin-mobile-actions { display: flex; gap: var(--gc-space-2); }
   .admin-mobile-actions button { min-height: 44px; flex: 1; border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-md); padding: 0 var(--gc-space-2); color: var(--gc-text-primary); background: var(--gc-surface-raised); }
 }
+
+/* Form actions share one explicit edit/result row; disclosure does not unmount controls. */
+.settings-actions, .profile-savebar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.settings-actions > [role=status], .profile-savebar > [role=status] { flex: 1 1 100%; color: var(--gc-text-secondary); font-size: .875rem; }
+.settings-actions > button, .profile-savebar > button { min-width: 0; max-width: 100%; }
+.settings-diagnostics { min-width: 0; border-top: 1px solid var(--gc-border-subtle); padding-block: 12px; }
+.settings-diagnostics > summary { min-height: 44px; cursor: pointer; overflow-wrap: anywhere; }
+.settings-diagnostics > :not(summary) { margin-top: 12px; }
+.settings-diagnostics dl { margin-inline: 0; }

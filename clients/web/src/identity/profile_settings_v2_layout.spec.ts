@@ -35,7 +35,7 @@ describe('Design V2 account settings', () => {
   it('places profile identity and save controls in the R12 settings shell', () => {
     expect(workspace).toContain("emit('closePanel', 'profile')")
     expect(component).toContain("slice(0, 2).toLocaleUpperCase('ru-RU')")
-    expect(presentation).toContain('.workspace-main-panel--profile .profile-savebar { position: absolute;')
+    expect(presentation).toContain('.workspace-main-panel--profile .profile-savebar { position: static;')
   })
 
   it('preserves tablet gutters and avoids doubling the mobile savebar gap', () => {

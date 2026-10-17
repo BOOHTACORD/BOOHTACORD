@@ -1,0 +1,799 @@
+{
+  "issue": 351,
+  "leaf": "DW-012",
+  "date": "2026-10-17",
+  "timezone": "Europe/Istanbul",
+  "base": "25be6ecac1a404469833da284f6d1ce70a350a47",
+  "accepted_source": "3b9da4eb056316b1c525eb1ed1f5b15dd5deb1a7",
+  "source_files_sha256": {
+    ".github/workflows/ci-frontend.yaml": "487adf100be62f9aa10512dfafad11211995682038bf60e52d92f8b5c5603569",
+    "backlog/tasks.yaml": "532e52240fc8039846e1842bd1ab4748e7b727619754dadf0113d45800a8ff27",
+    "clients/web/package.json": "3a43051388a7a09067a6db0d7bdb6ae0f1aafac0ecbcfc9b7d36dad5f84d57f6",
+    "clients/web/src/admin/audit/AdminAuditSection.vue": "0db8ad705a9553e9c4873a329bf301c439aedbeb9a27e23c750b217b6742b83b",
+    "clients/web/src/admin/guild_settings/AdminGuildSettings.vue": "0cfa0b24b454711e8baa61203948e8a1bd85c784b688ca18e7695ed1507ac41a",
+    "clients/web/src/admin/guild_settings/state.spec.ts": "6de06dce3a4fdbcf7d1d409cddeda0deb1a94a89ea0fead8c36d5b42e1726408",
+    "clients/web/src/admin/guild_settings/state.ts": "8abd314136dbeea576517bfccdf994f96f735f705cf407dbad7c83a6e9cf9110",
+    "clients/web/src/admin/panel/AdminPanel.vue": "bf27f6dafae6eb4ef33891e86dba03e85101aef8535eb218ac8e679f09f3e413",
+    "clients/web/src/admin/readiness/Panel.vue": "cde9999de36a8c0aa91f5cac9d931d2548076dacc38ffc4c77f19adacd610b83",
+    "clients/web/src/admin/role_permissions/role_permissions_v2_layout.spec.ts": "5d9e867c125310bce51f5a74ae647332bd5e03fc5fb2781c964476d7cd79d6ce",
+    "clients/web/src/design/design_v2_admin_members.css": "b447b32d100f1c13763fd1c6b6955fb21807dd04544d347b9c67e71cd39d8d6e",
+    "clients/web/src/design/design_v2_admin_permissions.css": "33ac44fe70381a3c5d1ff81b13fc71299c27916d5753755e188b91bd45ec9d32",
+    "clients/web/src/design/design_v2_admin_readiness.css": "2f6f0249d8988b7c3fc2fee4ff39b0a3827e3056e37f8bd05b627345caa52e0a",
+    "clients/web/src/design/design_v2_audio_presentation.css": "21769d46baa585fae43a506e153230b7c791ebc43de03b1bbc36036944b00464",
+    "clients/web/src/design/design_v2_profile_presentation.css": "c557699e14bb7075c6d062af3b6136df804f4bc4109c1d60d40e8c039c860bb4",
+    "clients/web/src/design/design_v2_settings.css": "effc9cf5652d47ff77128982149443195b55b7961790acb2aae34b4de6e63d16",
+    "clients/web/src/identity/ProfileSettings.vue": "60eaba5d690a6ec2d20b0b5831f68773f6b886bdba5b7aea9c6cdc2a7429d09a",
+    "clients/web/src/identity/profile_settings_v2_layout.spec.ts": "08dfbef5218565948ff7207cdb2c15f7e5d203d73adaa21582d8d3283019d851",
+    "clients/web/src/notification/NotificationSettings.vue": "15374696fe67c4b9b0c520c29e0c96a58fb95c9458f4a1e563cbf9ea1e20ca77",
+    "clients/web/src/notification/conversation_preferences/Settings.vue": "a4911a86705386ce1c9fbfcd39085cf49a0c10fb5fdd631d622fd8967c4f9ab1",
+    "clients/web/src/voice/AudioSettings.vue": "113ddb2a76eed8113ae2b07c08279498694cf8d05159173eaf80b50485df2817",
+    "clients/web/src/voice/ProcessingDetails.vue": "2dafc7b6f6fc68c86042757762ac4f8c27c231c705ba3a9819092266d4e42df9",
+    "clients/web/src/voice/audio_settings_v2_layout.spec.ts": "295107058ea126febe855fa0a7040efb0cc0e473493e5dbb9c9b7c177943ca76",
+    "clients/web/src/voice/microphone_processing/GainControl.vue": "c85255b6e837fbca6938bd47dd4e84b78f3a58194c19c57ca1ace34a2d6a4e28",
+    "clients/web/src/voice/participant_volume/Reset.vue": "7f5f013c0475594846b9af0b01d58171199c8db3b1844d54421bf8a89beaed5e",
+    "clients/web/tests/accessibility/accessibility.browser.spec.ts": "873f4a96f43f1e777c54eecba592b6961512394186a329e918d0e1f8056e38b9",
+    "clients/web/tests/control_consistency/controls.browser.spec.ts": "9548e448514d03e7d1b9b01c32c3bd7e5635d40fb547e532b51d29333a507ae7",
+    "clients/web/tests/microcopy/behavior.browser.spec.ts": "d171aac3ed344728ba18ece2b11f3258eb60161fd37eba541f2e03c24493bf71",
+    "clients/web/tests/settings_hierarchy/fixture.html": "10309ea0ec18e02dd90e7e0615b4322c9ee6b2059054f11752ae08766ae7b941",
+    "clients/web/tests/settings_hierarchy/fixture.ts": "43e02de573106878c99378e3f7b874975c68a5fbaa71546e563d9e12994915e4",
+    "clients/web/tests/settings_hierarchy/hierarchy.browser.spec.ts": "cff5bc460e304eca49623144b1cc998660586df1610080049cf330c6b52481c5",
+    "clients/web/tests/settings_hierarchy/playwright.config.ts": "f1e0aba850bbe3800ab21c2254f29b19aab3409c3a8e4dc36d699a6a5f21a18e",
+    "tools/ci/native/web.py": "bcd2798446f6e4c57887daf3f1a3b0408a924ee37b7fbbe1d7cc33490c87e05d",
+    "tools/qa/client_lifecycle/scenario.mjs": "fe78e323d531fcce848cb21bb04b3b4e68ca2a28e2ed3da1d92025ef01869c74",
+    "tools/qa/client_lifecycle/settings_hierarchy.mjs": "659e0dac6956d133a83ef01532d7d491148f40a5e223a0c3f46b51b7997d26af",
+    "tools/qa/critical_client_acceptance/voice_interface.mjs": "9f4187c77a82c19b8ae1104f1fae5b3c980d957b67ae54844ebf944f1069bbf8",
+    "tools/qa/local_features/features.json": "9988b64d21f4d3fcffaae658a0d6e1b34571b0e2b0206dbd527fdc0ac546ed4e"
+  },
+  "gate": {
+    "run": ".out/local-features/20261017-131717",
+    "raw_report_sha256": "2e0d5939e01331a72ec331afdbed7e62c3bbfb4cc50e3351f00d4f0234bfb566",
+    "source": "3b9da4eb056316b1c525eb1ed1f5b15dd5deb1a7 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_status": "REVIEW_REQUIRED",
+    "raw_visual_review": "NOT_RUN",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "PASS"
+      },
+      {
+        "name": "web-control_consistency",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-member_popover",
+        "status": "PASS"
+      },
+      {
+        "name": "web-member_roster",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-microcopy",
+        "status": "PASS"
+      },
+      {
+        "name": "web-navigation_density",
+        "status": "PASS"
+      },
+      {
+        "name": "web-password_generation",
+        "status": "PASS"
+      },
+      {
+        "name": "web-readonly_archive",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-settings_hierarchy",
+        "status": "PASS"
+      },
+      {
+        "name": "web-voice_interface",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "verification_status": "PASS",
+    "manual_selected_review": "PASS",
+    "selected_features": [
+      "shell",
+      "admin",
+      "settings",
+      "voice",
+      "auth"
+    ],
+    "platform": "web",
+    "native_platforms": "NOT_RUN; Web-only change"
+  },
+  "focused": {
+    "unit_tests": 1567,
+    "unit_files": 474,
+    "new_browser_cases": 19,
+    "inventory_surfaces": 13,
+    "inventory_widths": [
+      390,
+      1024,
+      1440
+    ],
+    "text_scale_percent": [
+      100,
+      200
+    ],
+    "actual_browser_zoom_percent": 200,
+    "native_browser_windows": [
+      780,
+      1440
+    ],
+    "traceability": "PASS 39 requirements; committed index only; approved Windows brief unavailable"
+  },
+  "visual_review": {
+    "status": "PASS_SELECTED_COMPONENT_FRAMES",
+    "before_base": "25be6ecac1a404469833da284f6d1ce70a350a47",
+    "reviewed_fixture_app_source": "bc1ca85a; current source differs only in QA assertions/journey capture",
+    "frames": [
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/admin-section-audit.png",
+        "sha256": "6dcfde4bf493c685fd424ba01a91ff581e05aaea97a03f11ddaa8d88f86cc98e",
+        "review": "source resolution"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/admin-section-channels.png",
+        "sha256": "e208f980436d1ee2b03823a6082a596ed4b61de8f333a84d57da214b22ad3e30",
+        "review": "source resolution"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/admin-section-guild.png",
+        "sha256": "8982461eb73bf9bfa20dd464a7f278be22a7bd45248ecb0704e95602afda2a6e",
+        "review": "source resolution"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/admin-section-media.png",
+        "sha256": "60156fccbb06e81ee6b7d2ce7409e0aa4f72bffa34829cbb092aa1b5c920c447",
+        "review": "source resolution"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/admin-section-members.png",
+        "sha256": "9d59441c50adc3f5e29aabf1410f80bd62e4fe38c05bcc6206fcd72c43680cad",
+        "review": "source resolution"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/admin-section-readiness.png",
+        "sha256": "88cabf6281bc703d13f6e172ee86d03d96f22e3a5573e3cef6e1bfe045af3e39",
+        "review": "source resolution"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/admin-section-roles.png",
+        "sha256": "30e3644fe3bd7583b061b0873b4afafa4fb0ce09e9433833bc4c42f1324e98a9",
+        "review": "source resolution"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/audio-advanced-1.png",
+        "sha256": "8f8985f7a8d7296bec2c18ad71ee360b0e3ff0c42052e2c9fc598c14484c477d",
+        "review": "source-pixel crop at y=1450, upper basic cards reviewed separately",
+        "crop": ".out/issue351/before-audio-diagnostics.png"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/audio.png",
+        "sha256": "666ae3ff902682a28232681a32cdb4f467ea49cf47fd0234ac2faa25733b4317",
+        "review": "source resolution"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/profile-tab-Безопасность.png",
+        "sha256": "679cca738aa0e5b6b8d9fd639403125251b1b7c42ae210c7a7eff71ec0495555",
+        "review": "source resolution"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/profile-tab-О приложении.png",
+        "sha256": "0de0e684d65acfb756d818d498786f1d4f8967a7cb79c9a945a80d9caf089206",
+        "review": "source resolution"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/profile-tab-Уведомления.png",
+        "sha256": "790421834158a5c840c3e2f17ce424b89af2b0d7f0e8bb6131d3f9b94cd67d4d",
+        "review": "source resolution"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue351/before-browser/before.browser-before-inventory-1440/profile.png",
+        "sha256": "db7032ad607c06e65f3e17c7ca7dc529c77c798d1943604d34d2956bf92d8188",
+        "review": "source resolution"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-audit.png",
+        "sha256": "e5992a8d5989853cd6cc22c57a94f7aed2b5fda8d61143c2ec0e9212f05c2a95",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-audit.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-channels.png",
+        "sha256": "e208f980436d1ee2b03823a6082a596ed4b61de8f333a84d57da214b22ad3e30",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-channels.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-guild.png",
+        "sha256": "b2d895c35a294b346f10c03d885deaca1c645f7150c7b628ba7bfac922814928",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-guild.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-media.png",
+        "sha256": "ca944929cd991a02ddf98269b269f67ac424527eb2e637b858116bcd0b57d617",
+        "review": "Final-source reinspection at source resolution; native audio in contiguous y=0/2000/4000 source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-media.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-members.png",
+        "sha256": "4f901348acdea0c17d6f63a3d50a4a4fa5dd2b188036d4cd3fca0a8f7fbeee6c",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-members.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-readiness.png",
+        "sha256": "568b87f71b2814e32cfb667ca39f405b88d800e9815e6be27e9f33c31070bef3",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-readiness.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-roles.png",
+        "sha256": "3e234d105adf259da1ff545e2d69872dc27c75cc71b2b789dc885c75d4305e2b",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/admin-section-roles.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/audio-advanced-1.png",
+        "sha256": "ac5abfa688fedf6ad2c6d52e24f753547c8cc7c7154453bb892609f015744f38",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/audio-advanced-1.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/audio.png",
+        "sha256": "07677694ea4a26cf2ec07f6aab012c4d75f45e1b718e1d7cb870fcb90692b571",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/audio.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/profile-tab-Безопасность.png",
+        "sha256": "44257759d200834304e2bc06bc55a8c416deb4b51f08b3d7d97576bf2d791936",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/profile-tab-Безопасность.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/profile-tab-О приложении.png",
+        "sha256": "8e7f04db7de0d8cd21adcaf7676aed9d2156845cc0c2459971d16859979807ca",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/profile-tab-О приложении.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/profile-tab-Уведомления.png",
+        "sha256": "87f8df851c3d7691edceaa26f4d1a1202d1b7d7e10924d884d9f4c6c43417405",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/profile-tab-Уведомления.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1440px/profile.png",
+        "sha256": "a5bf6507ba1c95f245047db7a45a12ddeb64d748b1a05f21ba84c2bcff9b5705",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1440px/profile.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-audit.png",
+        "sha256": "4028ebf63e4106ed9dc756711bf01f025ebb75c80c734e5aacdaefe625e1344e",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-audit.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-channels.png",
+        "sha256": "f835d96c75702e3e40c6f7d88b1b3b3e3bf724cd9056cae3552ed192d2a2e0cc",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-channels.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-guild.png",
+        "sha256": "f4dd8a6ea665deee3dd64a62768db53eedbb6bae1e61c127f3bb4ecb79041fec",
+        "review": "Final-source reinspection at source resolution; native audio in contiguous y=0/2000/4000 source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-guild.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-media.png",
+        "sha256": "0287d1c6db8f48f49d271d93abe166fb19eca6ae031b2edccb5e04d379fdbc78",
+        "review": "Final-source reinspection at source resolution; native audio in contiguous y=0/2000/4000 source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-media.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-members.png",
+        "sha256": "6fe03bcfc759d167f3c43a4f9d8bcc7d674e6fe9b64778224f5bc52b867370de",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-members.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-readiness.png",
+        "sha256": "39f160b9050919bcda9525545c35063bd48bb06bf49fa09bcd0ef3eb4c971aca",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-readiness.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-roles.png",
+        "sha256": "073c0427fafaceb69688045b3c0ef3da71feb2a1b719684be89456648d90441f",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/admin-section-roles.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-390px/audio-advanced-1.png",
+        "sha256": "eac01a7b1eb646e9fb5659e2853cb70121e631be00ebde0b176fe9441ef940ee",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/audio-advanced-1.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-390px/audio.png",
+        "sha256": "be05018d2346de64d6372e1c73f725af1b75544e71b8633028ec857de925d0c2",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/audio.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-390px/profile-tab-Безопасность.png",
+        "sha256": "e560055cfa7004ff9616cc4299c9b31aecd630cb0321ae63adcf3a3fec1faf61",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/profile-tab-Безопасность.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-390px/profile-tab-О приложении.png",
+        "sha256": "bcef42cee8df930dab674ff42a7227eb12e9eb9c54988a7db251943509eadb98",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/profile-tab-О приложении.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-390px/profile-tab-Уведомления.png",
+        "sha256": "a5db017216433880b78fc1e9d72d9043f2ad4a238e0c5f5d8fff7fad6b1fce94",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/profile-tab-Уведомления.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-390px/profile.png",
+        "sha256": "1b0fd5a968e6569c491ec76cb48e8249ec194335789e22c17eb68302bd5aa96f",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-390px/profile.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1024px/profile.png",
+        "sha256": "9d2b3e20dd6fbfea1afe218eec9a073360ec9bd9f40496cc4af62be599e53d0e",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1024px/profile.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1024px/admin-section-roles.png",
+        "sha256": "77f66d0b80b36db17f485d285d7944ce21a29c8666e51945ca750a06e170d1bb",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1024px/admin-section-roles.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1024px/audio.png",
+        "sha256": "ffc996665b9bbf26c1848fafe46c0a7552baf0dbadb800a009b6d293d49f186f",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1024px/audio.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-settings-inventory-and-hierarchy-1024px/admin-section-readiness.png",
+        "sha256": "f194111d1d300419dec28a3502a54db0493f5da1e207ca623ea445f904f7d7b6",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1024px/admin-section-readiness.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1024px/admin-section-media.png",
+        "sha256": "b30a4e8a6d9c922d3e2e7cbcc8994730b081b20558a10d593326633dae961b9f",
+        "review": "Final-source reinspection at source resolution; native audio in contiguous y=0/2000/4000 source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-settings-inventory-and-hierarchy-1024px/admin-section-media.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-permissi-ee4bb-d-result-remain-visible-390/denied-draft.png",
+        "sha256": "93b6bb8329930fc657e09f6fdcc5a076d7c74f18847da5981cb1ae55d4391751",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-permissi-ee4bb-d-result-remain-visible-390/denied-draft.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-readines-b775e--and-failure-remain-outside/readiness-details.png",
+        "sha256": "5667cb60e08e9e238122628e1a73c2eae0f615885663335af5f358e224c84b2c",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-readines-b775e--and-failure-remain-outside/readiness-details.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-native-b-a5ea7-eeps-settings-reachable-780/profile-tab-Безопасность-zoom.png",
+        "sha256": "3aa96cead1f6ac0771ac1992b98c3659dbb34db167b01cfc20c9f8b9152ddcef",
+        "review": "Final-source reinspection at source resolution; native audio in contiguous y=0/2000/4000 source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-native-b-a5ea7-eeps-settings-reachable-780/profile-tab-Безопасность-zoom.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-native-b-a5ea7-eeps-settings-reachable-780/admin-section-roles-zoom.png",
+        "sha256": "2c3bc26c5392868845697d367e2ac63220effb62e4141ad6e08da6f55d2b0729",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-native-b-a5ea7-eeps-settings-reachable-780/admin-section-roles-zoom.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue351/browser/hierarchy.browser-basic-an-feed4-and-expose-warnings-390-200/advanced-retained.png",
+        "sha256": "9cb6bf7b4527532a24fd5bf3155816ffe4e20d464b766065ab21df3c97ed0d5e",
+        "review": "source resolution; long enlarged audio frames reviewed in source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-basic-an-feed4-and-expose-warnings-390-200/advanced-retained.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-native-b-a5ea7-eeps-settings-reachable-780/audio-advanced-1-zoom.png",
+        "sha256": "7399f00936336918d3506e1ed3063851ec3afdd4bd5242e378712ec7f2f882c5",
+        "review": "Final-source reinspection at source resolution; native audio in contiguous y=0/2000/4000 source-pixel crops",
+        "gate_path": ".out/local-features/20261017-131717/web-settings_hierarchy/hierarchy.browser-native-b-a5ea7-eeps-settings-reachable-780/audio-advanced-1-zoom.png"
+      }
+    ],
+    "notes": [
+      "13 named actual component surfaces across the settings/admin scope; private original Tour pixels unavailable, no original-pixel equivalence asserted.",
+      "390 and 1440 all 13 After surfaces reviewed; 1024 five selected surfaces; additional denied/dirty, readiness expanded, native zoom200 and warning/text-scale200 frames.",
+      "Vertical scroll and horizontal tab navigation remain intentional. Native device select values may truncate; full selected hardware labels remain in title/accessibility data.",
+      "Actual API/SFU screenshots are a separate selected-viewport review, not a substitute for full component forms or native/hardware acceptance."
+    ],
+    "baseline_approved": false,
+    "accepted_source": "3b9da4eb056316b1c525eb1ed1f5b15dd5deb1a7",
+    "reviewed_app_source_tree": "580f3aa7da781d54a3ca914225879b59a8f78799",
+    "accepted_app_source_tree": "580f3aa7da781d54a3ca914225879b59a8f78799",
+    "final_source_reinspected_changed_frames": 6,
+    "crop_references": [
+      ".out/issue351/before-audio-diagnostics.png",
+      ".out/issue351/enlarged-warning-controls.png",
+      ".out/issue351/enlarged-warning-controls-bottom.png",
+      ".out/issue351/final-source-native-0.png",
+      ".out/issue351/final-source-native-2000.png",
+      ".out/issue351/final-source-native-4000.png"
+    ],
+    "crop_hashes": {
+      ".out/issue351/before-audio-diagnostics.png": "2a9607b3e27f2ffb478da2e4d41d1399893df53ef615e86c4044246655da8a3e",
+      ".out/issue351/enlarged-warning-controls.png": "0da5ce9f81db4dc97aa9ee5e4c697f78b2740c9b68abcf16fb4ca9f244b4fb6f",
+      ".out/issue351/enlarged-warning-controls-bottom.png": "d99880a7ca267f27f36feaea7bca913866a8a9233e77008f8997171592512ba5",
+      ".out/issue351/final-source-native-0.png": "6ddcb78722ac790ff828b466eee4a2d8b2e67b025e1f30ed7ea528cb31865f28",
+      ".out/issue351/final-source-native-2000.png": "6df949a9b8f0bffb09a24e96fb9fdb93c81cb8e5bb4801fe9d2314b39ef282c6",
+      ".out/issue351/final-source-native-4000.png": "a2255db6307f5f8e438331be9c4d6a23c42ee556a3a751ba0fe2752aee5479c7"
+    }
+  },
+  "actual_api_sfu": [
+    {
+      "viewport": 1440,
+      "source_revision": "3b9da4eb056316b1c525eb1ed1f5b15dd5deb1a7",
+      "status": "PASS",
+      "report_path": ".out/issue351/accepted-actual/1440/report.json",
+      "report_sha256": "50ab26844085237a7f608cc3da2324c0d5a939dd852defb52738cc7f38d0e5dc",
+      "mocks": false,
+      "is_mobile": false,
+      "device_scale_factor": 2,
+      "has_touch": false,
+      "settings_hierarchy": {
+        "actual_profile_cancel_without_write": true,
+        "explicit_save_and_restore_confirmed_by_api": true,
+        "password_cancel_clears_draft": true,
+        "notification_privacy_visible": true,
+        "advanced_keeps_control_values": true,
+        "actual_voice_settings_navigation": true,
+        "actual_advanced_controls_in_viewport": true,
+        "same_voice_transport_after_settings": true
+      },
+      "owned_resources_removed": true,
+      "persisted_after_restart": true,
+      "frames": [
+        {
+          "path": ".out/issue351/accepted-actual/1440/settings-audio-advanced.png",
+          "sha256": "d4c2dfcdff9316499362eb19806db93dd5f3c325532c30d088188e407532d8f0"
+        },
+        {
+          "path": ".out/issue351/accepted-actual/1440/settings-audio-basic.png",
+          "sha256": "5ee130132c05149d7b7c318e4adc478a2109117edd700224758d081df972e3f4"
+        },
+        {
+          "path": ".out/issue351/accepted-actual/1440/settings-notifications.png",
+          "sha256": "e7e3a44397348ab7a89338b2adaa5e52f009800ada6154aaadb9bbc14f8cea14"
+        },
+        {
+          "path": ".out/issue351/accepted-actual/1440/settings-profile-saved.png",
+          "sha256": "f89ea1ccd249a298e38582e61072a71f41f60ed56c8d484536c6ad15829cd9e3"
+        },
+        {
+          "path": ".out/issue351/accepted-actual/1440/settings-security-cancelled.png",
+          "sha256": "bc5d3c243adad9ac587db3b4bb4597793c5aae3ff6165cdbcd1674bef606ab2b"
+        }
+      ]
+    },
+    {
+      "viewport": 393,
+      "source_revision": "3b9da4eb056316b1c525eb1ed1f5b15dd5deb1a7",
+      "status": "PASS",
+      "report_path": ".out/issue351/accepted-actual/393/report.json",
+      "report_sha256": "63a2f80010b99eca345409f80da0c3a9949d36c35adcc3c74d32d6f37559fcc7",
+      "mocks": false,
+      "is_mobile": true,
+      "device_scale_factor": 3,
+      "has_touch": true,
+      "settings_hierarchy": {
+        "actual_profile_cancel_without_write": true,
+        "explicit_save_and_restore_confirmed_by_api": true,
+        "password_cancel_clears_draft": true,
+        "notification_privacy_visible": true,
+        "advanced_keeps_control_values": true,
+        "actual_voice_settings_navigation": true,
+        "actual_advanced_controls_in_viewport": true,
+        "same_voice_transport_after_settings": true
+      },
+      "owned_resources_removed": true,
+      "persisted_after_restart": true,
+      "frames": [
+        {
+          "path": ".out/issue351/accepted-actual/393/settings-audio-advanced.png",
+          "sha256": "86e67536e4961b2e2b9ba322255ebf91cd25c7c97d7dfdac52d3ecce0b8e9411"
+        },
+        {
+          "path": ".out/issue351/accepted-actual/393/settings-audio-basic.png",
+          "sha256": "287a9df25b8862910dcce936abd20406ed0c322ca30ee6c946ec24f281a96aec"
+        },
+        {
+          "path": ".out/issue351/accepted-actual/393/settings-notifications.png",
+          "sha256": "e68b19b88a4388134723e4d358788b01db4ced7385891f6c73096ec670233a79"
+        },
+        {
+          "path": ".out/issue351/accepted-actual/393/settings-profile-saved.png",
+          "sha256": "738466cec26a813775f56b03be894d8661671930ff0dd1fc8a677a8f9cbe55f6"
+        },
+        {
+          "path": ".out/issue351/accepted-actual/393/settings-security-cancelled.png",
+          "sha256": "a8074e3f7a655ec8308b5abb2494ddf7296793711f2c36c9a369379084cdbc1b"
+        }
+      ]
+    }
+  ],
+  "actual_visual_review": {
+    "status": "PASS_SELECTED_ACTUAL_FRAMES",
+    "source": "3b9da4eb056316b1c525eb1ed1f5b15dd5deb1a7",
+    "frames": [
+      {
+        "path": ".out/issue351/accepted-actual/1440/settings-profile-saved.png",
+        "sha256": "f89ea1ccd249a298e38582e61072a71f41f60ed56c8d484536c6ad15829cd9e3",
+        "crop": ".out/issue351/final-live-profile-1440.png",
+        "crop_sha256": "d1d78d91736b0a6a070dbb558e20f1ddb7c6797ca884dc2c83e33f5b93277279",
+        "review": "Source-pixel selected viewport crop; source screenshot preserved separately"
+      },
+      {
+        "path": ".out/issue351/accepted-actual/1440/settings-security-cancelled.png",
+        "sha256": "bc5d3c243adad9ac587db3b4bb4597793c5aae3ff6165cdbcd1674bef606ab2b",
+        "crop": ".out/issue351/final-live-security-1440.png",
+        "crop_sha256": "f56bfea31a4cd3c88ece5b0b504b21e4266bb131e66ed43e320bd8eb566f8249",
+        "review": "Source-pixel selected viewport crop; source screenshot preserved separately"
+      },
+      {
+        "path": ".out/issue351/accepted-actual/1440/settings-audio-advanced.png",
+        "sha256": "d4c2dfcdff9316499362eb19806db93dd5f3c325532c30d088188e407532d8f0",
+        "crop": ".out/issue351/final-live-audio-1440.png",
+        "crop_sha256": "b82c70364bcc788e5d2acb32dc35fc858a10c4916a20de9dfb329f5844786cc4",
+        "review": "Source-pixel selected viewport crop; source screenshot preserved separately"
+      },
+      {
+        "path": ".out/issue351/accepted-actual/393/settings-profile-saved.png",
+        "sha256": "738466cec26a813775f56b03be894d8661671930ff0dd1fc8a677a8f9cbe55f6",
+        "crop": ".out/issue351/actual-profile-393.png",
+        "crop_sha256": "1c189f829d29c79a297cde5498c519d35f40caa8187824b5cbd663f1ef2cba5d",
+        "review": "Source-pixel selected viewport crop; source screenshot preserved separately"
+      },
+      {
+        "path": ".out/issue351/accepted-actual/393/settings-notifications.png",
+        "sha256": "e68b19b88a4388134723e4d358788b01db4ced7385891f6c73096ec670233a79",
+        "crop": ".out/issue351/actual-notifications-393.png",
+        "crop_sha256": "d2bf83bf35e87886016af6a6b691590479451090d9e365bc24c8a680ea98f0f7",
+        "review": "Source-pixel selected viewport crop; source screenshot preserved separately"
+      },
+      {
+        "path": ".out/issue351/accepted-actual/393/settings-audio-advanced.png",
+        "sha256": "86e67536e4961b2e2b9ba322255ebf91cd25c7c97d7dfdac52d3ecce0b8e9411",
+        "crop": ".out/issue351/final-live-audio-393.png",
+        "crop_sha256": "a82f6f89c6ebcbf748a6e88429c6f9a888942dfc03014043f598b1c68d0db6ca",
+        "review": "Source-pixel selected viewport crop; source screenshot preserved separately"
+      }
+    ],
+    "observations": [
+      "Profile save acknowledgement and disabled unchanged Save/Cancel are visible.",
+      "Security fields cleared after Cancel; logout/session consequences remain visible.",
+      "Notification privacy and actual denied browser permission are visible.",
+      "Actual expanded processing controls show remembered manual gain under AGC, NS/echo/current switches and volume reset scope. No media peer was replaced.",
+      "Selected scroll-position crops; full component forms and additional actual screenshots are retained separately."
+    ]
+  },
+  "earlier_attempts": {
+    "interrupted": {
+      "status": "SUPERSEDED_PARTIAL_TEST_ADAPTATION",
+      "source": "bc1ca85a",
+      "output": ".out/local-features/20261017-130348",
+      "failure": "Existing readiness dashboard geometry test measured collapsed capacity disclosure; must open it before inspecting retained values and dimensions. No assertion removed. Stopped before actual API/SFU stages."
+    },
+    "complete_previous": {
+      "run": ".out/local-features/20261017-130646",
+      "raw_report_sha256": "3095cdadfaad91dd096d966138561ec24bd4422602ddd30854312e62838fb85b",
+      "source": "20499ba1890a05425244ecfe20ebddd86db9ede2 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": "FAIL",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-control_consistency",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-member_popover",
+          "status": "PASS"
+        },
+        {
+          "name": "web-member_roster",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-microcopy",
+          "status": "FAIL"
+        },
+        {
+          "name": "web-navigation_density",
+          "status": "PASS"
+        },
+        {
+          "name": "web-password_generation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-readonly_archive",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-settings_hierarchy",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ],
+      "cause": "Microcopy suite did not start because orphan owned Vite held its port. Both actual API/SFU stages passed. After verified cleanup, full microcopy retry ran 59 passing cases and one old explanatory-copy assertion failed; replaced with stronger explicit dirty/pending/cancel behavior. Final complete gate rerun on new clean source."
+    },
+    "focused_logs": [
+      {
+        "path": ".out/issue351/red-unit.log",
+        "sha256": "ca25193086f4ddded637d8856246cee425ad8c94c6c42a7222dee79d0c58f4a1"
+      },
+      {
+        "path": ".out/issue351/red-browser.log",
+        "sha256": "c25b8c027f90a3a81a69c8f6fe33f76c4c7879cd4118de58a6b059a5d899b20b"
+      },
+      {
+        "path": ".out/issue351/green-unit.log",
+        "sha256": "a7c7dd2f09f8878dd5fc7a6a2eee0f39fbe4483097d1942958e238f46f2e46ad"
+      },
+      {
+        "path": ".out/issue351/readiness-adaptation.log",
+        "sha256": "70c21e749af03af382ca7646c7bde2df350c400a1218c0fbb5616e332314e639"
+      },
+      {
+        "path": ".out/issue351/microcopy-retry.log",
+        "sha256": "ee81af33e7a1c6f434229dffe6721ff043d302ac94b09b0f9099109fdbced0db"
+      },
+      {
+        "path": ".out/issue351/password-adaptation.log",
+        "sha256": "fc6aa21729cd4a0f3fc09cf1fbeb826f087aebe44c0442cb0883d97935b62e3c"
+      },
+      {
+        "path": ".out/issue351/traceability.log",
+        "sha256": "17ff753f6b2fc1a23f300b33e40e73728dc2c3e11d55f4c50e1aecb568fca75a"
+      }
+    ]
+  },
+  "publication_gate": "Fresh PR checks at the final published head plus exact-tree master merge/issue closure; receipt in PR body. Early partial/FAIL attempts are retained and do not constitute acceptance.",
+  "limits": [
+    "Web scope only; no Android/iOS/macOS native or physical screen-reader acceptance claim.",
+    "Private original Tour 03–15 unavailable. Exact-base master component Before captures and named actual surfaces are used; no original pixel comparison or new golden baseline approval.",
+    "Synthetic devices/controlled faults in component fixtures. Separate actual owned Go API/PostgreSQL/LiveKit integration uses synthetic accounts/media; no hardware capture, acoustic quality, throughput or capacity claim.",
+    "Long forms scroll vertically; existing narrow tab strips scroll horizontally. Native hardware select text may truncate, with full selected value retained in title/accessibility data.",
+    "Approved Windows product brief unavailable; traceability checks committed requirement index only."
+  ],
+  "baseline_approved": false
+}

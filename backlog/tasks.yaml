@@ -193,6 +193,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-SECURITY-02, REQ-VOICE-01, REQ-QUALITY-01]
     depends_on: [T-050, T-014, T-020, T-022, DW-003, DW-005, DW-010]
     evidence: [clients/web/tests/member_roster/playwright.config.ts, evidence/qa/dw11-member-panel-2026-10-17.md]
+  - id: DW-012
+    title: Clear Web settings and admin form hierarchy with mounted audio Advanced controls (GitHub #351)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-ADMIN-01, REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [T-050, T-014, T-020, T-022, DW-003, DW-004]
+    evidence: [clients/web/tests/settings_hierarchy/playwright.config.ts, evidence/qa/dw12-settings-hierarchy-2026-10-17.md]
   - id: T-051
     title: Android native client and APK
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUTH-01, REQ-SECURITY-01, REQ-VOICE-01]

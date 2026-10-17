@@ -101,7 +101,7 @@
 }
 
 .admin-readiness > button,
-.admin-readiness > section[aria-labelledby="journey-title"] button {
+.admin-readiness section[aria-labelledby="journey-title"] button {
   width: fit-content;
   max-width: 100%;
   min-height: var(--gc-size-touch);
@@ -116,7 +116,7 @@
 }
 
 .admin-readiness > button:disabled,
-.admin-readiness > section[aria-labelledby="journey-title"] button:disabled {
+.admin-readiness section[aria-labelledby="journey-title"] button:disabled {
   color: var(--gc-text-disabled);
   cursor: not-allowed;
 }
@@ -130,7 +130,7 @@
   background: var(--gc-danger-bg);
 }
 
-.admin-readiness > section[aria-labelledby="journey-title"] {
+.admin-readiness section[aria-labelledby="journey-title"] {
   display: grid;
   min-width: 0;
   gap: var(--gc-space-4);
@@ -140,7 +140,7 @@
   background: var(--gc-surface);
 }
 
-.admin-readiness > section[aria-labelledby="journey-title"] h3 {
+.admin-readiness section[aria-labelledby="journey-title"] h3 {
   margin: 0;
   color: var(--gc-text-primary);
   font-size: var(--gc-text-title);
@@ -148,14 +148,14 @@
   line-height: var(--gc-line-title);
 }
 
-.admin-readiness > section[aria-labelledby="journey-title"] p {
+.admin-readiness section[aria-labelledby="journey-title"] p {
   margin: 0;
   color: var(--gc-text-muted);
   font-size: var(--gc-text-small);
   line-height: var(--gc-line-body);
 }
 
-.admin-readiness > section[aria-labelledby="journey-title"] table {
+.admin-readiness section[aria-labelledby="journey-title"] table {
   width: 100%;
   min-width: 0;
   border-collapse: collapse;
@@ -164,15 +164,15 @@
   text-align: left;
 }
 
-.admin-readiness > section[aria-labelledby="journey-title"] th,
-.admin-readiness > section[aria-labelledby="journey-title"] td {
+.admin-readiness section[aria-labelledby="journey-title"] th,
+.admin-readiness section[aria-labelledby="journey-title"] td {
   min-width: 0;
   border-bottom: 1px solid var(--gc-border-subtle);
   padding: var(--gc-space-3) var(--gc-space-2);
   overflow-wrap: anywhere;
 }
 
-.admin-readiness > section[aria-labelledby="journey-title"] th {
+.admin-readiness section[aria-labelledby="journey-title"] th {
   color: var(--gc-text-muted);
   font-weight: var(--gc-weight-medium);
 }
@@ -192,7 +192,7 @@
 
   .readiness-dependencies > div,
   .readiness-capacity > div,
-  .admin-readiness > section[aria-labelledby="journey-title"] {
+  .admin-readiness section[aria-labelledby="journey-title"] {
     padding: var(--gc-space-3);
   }
 }

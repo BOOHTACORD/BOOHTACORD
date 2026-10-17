@@ -37,7 +37,7 @@ onMounted(() => { void load() })
       <button type="button" :disabled="loading" @click="load()">Обновить</button></header>
     <AdminAuditFilters v-model:filters="filters" :events="events" />
     <p class="admin-audit-results" role="status" aria-live="polite">Показано: {{ filtered.length }} из {{ events.length }} загруженных</p>
-    <p class="admin-audit-scope">Фильтры применяются к {{ events.length }} загруженным записям. Для более ранних событий загрузите следующую страницу.</p>
+    <p class="admin-audit-scope">Фильтр по загруженным записям. Более ранние события — на следующей странице.</p>
     <p v-if="loading && !events.length" class="state" aria-live="polite">Загружаем аудит…</p>
     <p v-else-if="!loading && !events.length && !error" class="state">Записей пока нет.</p>
     <p v-else-if="!filtered.length && hasFilter" class="state">Среди загруженных записей совпадений нет.</p>

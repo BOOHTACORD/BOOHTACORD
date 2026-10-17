@@ -90,9 +90,9 @@ defineExpose({ hasUnsavedChanges })
         <button v-if="props.profile.avatar_url" class="profile-secondary-button" type="button" :disabled="busy" @click="removeAvatar">Удалить</button>
       </div>
       <form class="profile-form" :aria-busy="busyAction === 'name'" @submit.prevent="saveName">
-        <label>Отображаемое имя<input v-model="displayName" autocomplete="nickname" required :disabled="busy" :aria-describedby="error ? 'profile-error' : undefined"><small>Так вас видят другие участники гильдии.</small></label>
-        <label>Логин<input :value="props.profile.login" readonly aria-readonly="true"><small>Используется для входа.</small></label>
-        <div class="profile-savebar"><span role="status" aria-live="polite">{{ profileStatus || (nameChanged ? 'Есть несохранённые изменения' : 'Изменения не внесены') }}</span><button type="submit" :disabled="busy || !nameChanged">{{ busyAction === 'name' ? 'Сохраняем…' : 'Сохранить профиль' }}</button></div>
+        <label>Отображаемое имя<input v-model="displayName" autocomplete="nickname" required :disabled="busy" :aria-describedby="error ? 'profile-error' : undefined"></label>
+        <label>Логин<input :value="props.profile.login" readonly aria-readonly="true"></label>
+        <div class="profile-savebar"><span role="status" aria-live="polite">{{ profileStatus || (nameChanged ? 'Есть несохранённые изменения' : 'Изменения не внесены') }}</span><button class="profile-secondary-button" type="button" :disabled="busy || !nameChanged" @click="displayName = props.profile?.display_name ?? ''; profileStatus = null; error = null">Отменить</button><button type="submit" :disabled="busy || !nameChanged">{{ busyAction === 'name' ? 'Сохраняем…' : 'Сохранить профиль' }}</button></div>
       </form>
       </section>
     </template>
@@ -102,8 +102,7 @@ defineExpose({ hasUnsavedChanges })
         <h2>Изменить пароль</h2>
         <label>Текущий пароль<input v-model="currentPassword" type="password" autocomplete="current-password" required :disabled="busy" :aria-describedby="error ? 'profile-error' : undefined"></label>
         <label>Новый пароль<input v-model="newPassword" type="password" autocomplete="new-password" required :disabled="busy" :aria-describedby="error ? 'profile-error' : undefined"></label>
-        <p role="status" aria-live="polite">{{ passwordStatus || (passwordChanged ? 'Пароль пока не изменён. Нажмите «Обновить пароль», чтобы сохранить его.' : 'Изменение пароля требует явного подтверждения кнопкой «Обновить пароль».') }}</p>
-        <button type="submit" :disabled="busy">Обновить пароль</button>
+        <div class="profile-savebar"><span role="status" aria-live="polite">{{ passwordStatus || (passwordChanged ? 'Есть несохранённые изменения' : 'Изменения не внесены') }}</span><button class="profile-secondary-button" type="button" :disabled="busy || !passwordChanged" @click="currentPassword = ''; newPassword = ''; passwordStatus = null; error = null">Отменить</button><button type="submit" :disabled="busy || !passwordChanged">Обновить пароль</button></div>
       </form>
       <section class="profile-logout" aria-labelledby="profile-logout-title">
         <h2 id="profile-logout-title">Выход из аккаунта</h2>

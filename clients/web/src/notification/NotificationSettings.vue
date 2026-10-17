@@ -18,7 +18,8 @@ const status = computed(() => {
 <template>
   <section class="profile-logout" aria-labelledby="profile-notifications-title">
     <h2 id="profile-notifications-title">Уведомления</h2>
-    <p>Уведомления появляются при скрытой вкладке, пока браузер открыт. Текст личных сообщений в них не показывается.</p>
+    <p>Текст личных сообщений в уведомлениях не показывается.</p>
+    <details class="copy-help"><summary>Когда приходят уведомления</summary><p>При скрытой вкладке, пока браузер открыт.</p></details>
     <p aria-live="polite">{{ status }}</p>
     <button v-if="notifications.enabled" class="profile-secondary-button" type="button" @click="notifications.disable()">Отключить уведомления</button>
     <button v-else class="profile-secondary-button" type="button" :disabled="!notifications.available || notifications.permission === 'denied'" @click="notifications.enable()">Включить уведомления</button>

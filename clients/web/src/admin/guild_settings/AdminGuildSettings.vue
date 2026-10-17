@@ -4,12 +4,12 @@ import type { TopologyCategory } from '../../channel/topology_client'
 import { createGuildSettingsState } from './state'
 const props = defineProps<{ categories: TopologyCategory[] }>()
 const state = createGuildSettingsState()
-const { name, welcome, revision, busy, error, saved } = state
+const { name, welcome, revision, busy, error, saved, dirty } = state
 const channels = computed(() => props.categories.flatMap(category => category.channels).filter(channel => channel.kind === 'TEXT' && !channel.admissionClosed))
 onMounted(() => { void state.load() }); onBeforeUnmount(state.dispose)
 </script>
 <template>
-  <form class="guild-settings" aria-label="Настройки гильдии" @submit.prevent="state.save(channels.map(channel => channel.id))">
+  <form class="guild-settings" aria-label="Настройки гильдии" :aria-busy="busy" @submit.prevent="state.save(channels.map(channel => channel.id))">
     <h2>Гильдия</h2>
     <label for="guild-name">Название гильдии</label><input id="guild-name" class="gc-field" v-model="name" :disabled="busy || !revision" autocomplete="off" aria-describedby="guild-name-help">
     <small id="guild-name-help">От 1 до 80 символов, без переводов строк.</small>
@@ -20,8 +20,10 @@ onMounted(() => { void state.load() }); onBeforeUnmount(state.dispose)
       <option v-for="channel in channels" :key="channel.id" :value="channel.id"># {{ channel.name }}</option>
     </select>
     <small v-if="!channels.length">Нет доступных текстовых каналов. Приветствия можно оставить выключенными.</small>
-    <p v-if="error" role="alert">{{ error }}</p><p v-if="saved" role="status">Настройки сохранены.</p>
-    <button class="gc-button" type="submit" :aria-busy="busy" :disabled="busy || !revision">{{ busy ? 'Сохраняем…' : 'Сохранить' }}</button>
+    <p v-if="error" role="alert">{{ error }}</p>
+    <div class="settings-actions"><span role="status" aria-live="polite">{{ busy ? revision ? 'Сохраняем…' : 'Загружаем…' : dirty ? 'Есть несохранённые изменения' : saved ? 'Настройки сохранены.' : 'Изменения не внесены' }}</span>
+    <button class="gc-button gc-button--secondary" type="button" :disabled="busy || !dirty" @click="state.cancel">Отменить</button>
+    <button class="gc-button" type="submit" :aria-busy="busy" :disabled="busy || !revision || !dirty">{{ busy ? 'Сохраняем…' : 'Сохранить' }}</button></div>
     <button v-if="!revision && !busy" class="gc-button gc-button--secondary" type="button" @click="state.load">Загрузить настройки</button>
     <details class="copy-help"><summary>О названии гильдии</summary><p>Название отображается участникам и на экране входа.</p></details>
   </form>
