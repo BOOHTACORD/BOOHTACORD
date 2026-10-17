@@ -21,6 +21,7 @@ jobs:
             clients/flutter
             tools
             contracts
+            backend
       - name: Compile the standalone recovery monitor before the Flutter toolchain
         shell: cmd
         run: |
@@ -89,4 +90,20 @@ jobs:
           path: .out/releases/windows/
           include-hidden-files: true
           if-no-files-found: error
+          retention-days: 30
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+      - name: Verify the Windows GUI acceptance result contract
+        run: python -m unittest tools.qa.screen_setup.test_windows
+      - name: Check Escape in the real Windows GUI with an active SFU connection
+        timeout-minutes: 15
+        run: python -m tools.qa.screen_setup.windows
+      - name: Retain synthetic Windows screen setup acceptance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screen-setup-windows-${{ github.sha }}
+          path: .out/screen-setup-windows/
+          if-no-files-found: ignore
           retention-days: 30
