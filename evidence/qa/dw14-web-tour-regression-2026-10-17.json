@@ -1060,7 +1060,7 @@
           "status": "PASS"
         }
       ],
-      "note": "All 27 automated stages passed. Nine current-run images were inspected at source resolution; 31 earlier reviews were reused on exact SHA-256 matches. 954 of 994 unique images remain unreviewed, so overall status remains REVIEW_REQUIRED.",
+      "note": "All 27 automated stages passed. Nine current-run images were inspected at source resolution; 104 earlier reviews were reused only on exact SHA-256 matches. 881 of 994 unique images remain unreviewed, so overall status remains REVIEW_REQUIRED.",
       "source": "ef842e6210020709423a64aa2be315d96c33208a diff-sha256=4da0093b3239ac60697d67b5056c14388ff39ed138639788344b39fe36161ff3",
       "raw_report_size_bytes": 336744,
       "previous_run_dir": ".out/local-features/20261017-180122",
@@ -1075,9 +1075,9 @@
       "available_selected_count": 1051,
       "unique_image_count": 994,
       "directly_reviewed_count": 9,
-      "exact_hash_reused_review_count": 31,
-      "effective_unique_reviewed_count": 40,
-      "unreviewed_unique_count": 954,
+      "exact_hash_reused_review_count": 104,
+      "effective_unique_reviewed_count": 113,
+      "unreviewed_unique_count": 881,
       "directly_reviewed_screenshots": [
         {
           "path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
@@ -1471,13 +1471,833 @@
           ],
           "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
           "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/flutter-captures/message-actions-all-open-actual.png",
+          "sha256": "3dee289412cd6628d383f6d19d5eb8511274efda5a42650590115351f651645a",
+          "dimensions_px": [
+            390,
+            93
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-actions-all-open-actual.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/flutter-captures/message-social-touch-targets.png",
+          "sha256": "b0757bd6c59de55fd80d4d67a8b968d8ac6fd0b44a5319efa764424a2fe89e68",
+          "dimensions_px": [
+            390,
+            162
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-social-touch-targets.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/flutter-captures/message-actions-closed-actual.png",
+          "sha256": "9705694a8c81eeda18c6e90560bf84308ffef689cb9424561723ca4277aae979",
+          "dimensions_px": [
+            390,
+            279
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-actions-closed-actual.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/flutter-captures/message-actions-open-actual.png",
+          "sha256": "a1203d7519edc4ae457d4bd66eb4148908fd356183d1413129effe80e0fd71e6",
+          "dimensions_px": [
+            390,
+            279
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-actions-open-actual.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-member_popover/member_popover.browser-mob-e3bef-kdrop-Escape-and-its-button/mobile-profile.png",
+          "sha256": "50acb86f91c67e3623d37df427a1f96994d846baa606cba69637f87df27f4978",
+          "dimensions_px": [
+            390,
+            844
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-member_popover/member_popover.browser-mob-e3bef-kdrop-Escape-and-its-button/mobile-profile.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-member_popover/member_popover.browser-clo-857bd-es-focus-to-the-participant/desktop-profile.png",
+          "sha256": "90ccd52875ff1589e8df7d537dbd0f2050355228898ea5737fc31d322c7a92c1",
+          "dimensions_px": [
+            3440,
+            1235
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-member_popover/member_popover.browser-clo-857bd-es-focus-to-the-participant/desktop-profile.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-top.png",
+          "sha256": "adfea04819e926d6f784829d2615de430d80d9dd7258595d75cc4707925e2c5b",
+          "dimensions_px": [
+            1920,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-top.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-bottom.png",
+          "sha256": "43f3ce5f4a00b53b8533bd128e4845b021a823588134e48083400f825ba8f50c",
+          "dimensions_px": [
+            1920,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-bottom.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/direct-messages.png",
+          "sha256": "9347fd91e780c9fb7d199a15d75768bf1885533782dfcbb67d7bc463fc487be4",
+          "dimensions_px": [
+            1920,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/direct-messages.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-bottom.png",
+          "sha256": "cae393bb8f0bf86b1cbb8eb6a0532eeacccd29510e4278000335252ec996747e",
+          "dimensions_px": [
+            320,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-bottom.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-bottom.png",
+          "sha256": "818ca0aa86ce6b7a327b3f473db2ebdbb32f30cb35df00b9f0f39ba3cd65e40d",
+          "dimensions_px": [
+            1440,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-bottom.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/direct-messages.png",
+          "sha256": "5818d48e96750c742d22c5d4f475e46948ea31414dbfc4a1c50af438b09c84d6",
+          "dimensions_px": [
+            1440,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/direct-messages.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/zoom.browser-actual-200-br-cf7fc-serves-navigation-at-1440px/navigation-zoom200.png",
+          "sha256": "33466dc2903ec8e96895c10b5c791ad9259491c9825ede4e493f63750cd149a5",
+          "dimensions_px": [
+            1440,
+            913
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/zoom.browser-actual-200-br-cf7fc-serves-navigation-at-1440px/navigation-zoom200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/zoom.browser-actual-200-br-01547-eserves-navigation-at-780px/navigation-zoom200.png",
+          "sha256": "eda29ec1fc62905628882f4a1814518fbba709d7cb14235c69b77b033d42b03d",
+          "dimensions_px": [
+            780,
+            913
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/zoom.browser-actual-200-br-01547-eserves-navigation-at-780px/navigation-zoom200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-top.png",
+          "sha256": "07dbeb0fcc3f7226b8f0b1052994be0c89cb70891f9eb8d330ec574cc9e7ad54",
+          "dimensions_px": [
+            390,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-top.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-bottom.png",
+          "sha256": "8346c0679bd415111b98998b767943ab712f117bbb4527eb3257e595df32230a",
+          "dimensions_px": [
+            390,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-bottom.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/direct-messages.png",
+          "sha256": "17e771926643f783f06b739b573d8a022f32a7277bac9acfc613a3a8466b7694",
+          "dimensions_px": [
+            390,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/direct-messages.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-top.png",
+          "sha256": "b722c646c2528ccd9063d77cb9d832f692ad4cdae88b6b5bfd9379b00c4f8a86",
+          "dimensions_px": [
+            768,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-top.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-bottom.png",
+          "sha256": "e1ae4441416ccb682ab7f33037b592db45afeb0272c4076640f509815496fa97",
+          "dimensions_px": [
+            768,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-bottom.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-top.png",
+          "sha256": "a8b587b0d408095c9a8b0a2925ae1f22122c724503d1af177a29e96ab26759b9",
+          "dimensions_px": [
+            1024,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-top.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-bottom.png",
+          "sha256": "a671249721bbceafa3020a475722c402814b702d10cc05c8889349c01921bd5c",
+          "dimensions_px": [
+            1024,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-bottom.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/direct-messages.png",
+          "sha256": "aef32c35df9a69f49a0f899ce662fb4087b95b50b6d7db6160434d3565eedbfe",
+          "dimensions_px": [
+            1024,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/direct-messages.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-semantic--ba804--and-disabled-actions-390px/variants-390.png",
+          "sha256": "6a548a787bd2bbe3acf70aab32916c88cd61e16ff36b048e8b44ad2e040efe96",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-semantic--ba804--and-disabled-actions-390px/variants-390.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-diagnostics-1920-200.png",
+          "sha256": "e9e909a906dbf6a4f9f0fbec87195326a5cce92cb74d0dd848c80a285a52bfd4",
+          "dimensions_px": [
+            830,
+            508
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-diagnostics-1920-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-1920-200.png",
+          "sha256": "106ac6c6ca18964344f4a3452ff8e20cab3a1fe645f526cb7cbadbe154423579",
+          "dimensions_px": [
+            1920,
+            3497
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-1920-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-audio.png",
+          "sha256": "853b17f816dc23c92179e5f463568fd9f77436758d694ebf44b62141ee97a3fe",
+          "dimensions_px": [
+            1440,
+            5402
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-audio.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-200-text/archive-3440-200.png",
+          "sha256": "7808ff842278406e7eb220dac93bc30b022a3604fc205885cd99c74e5ceef348",
+          "dimensions_px": [
+            3440,
+            1529
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-200-text/archive-3440-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-768-200.png",
+          "sha256": "e8b7b437d1f15da6cfa9ba77e44e3f8de8889f1e5077838f326accde48208e4d",
+          "dimensions_px": [
+            768,
+            3911
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-768-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-diagnostics-768-200.png",
+          "sha256": "5c811333a6a1fb35d28cd48ebe11bd724fadd87f975dbdb417d94a650d690806",
+          "dimensions_px": [
+            686,
+            596
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-diagnostics-768-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-guild-coherent-controls-1920px-100-text/guild-1920-100.png",
+          "sha256": "2c4b2a5b07e3bd9c5b94d2085f78ab1de0201ead217e81e90d42543388075106",
+          "dimensions_px": [
+            1920,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1920px-100-text/guild-1920-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-100-text/guild-320-100.png",
+          "sha256": "0472bf51d27400d93df939b16f092643c531e7bb5bd63c253b6099f28c48612b",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-100-text/guild-320-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-200-text/audio-1024-200.png",
+          "sha256": "18fb1ab9fd443e35e85a6ced0daba3bf7a6cfc3fddf02e3b63db7ca4afddbde3",
+          "dimensions_px": [
+            1024,
+            3489
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-200-text/audio-1024-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-200-text/archive-390-200.png",
+          "sha256": "4e6061fd2282b8cbd4d50ae25bfef14ff4bc8cc9c5a6a1864af270736eaef4c9",
+          "dimensions_px": [
+            390,
+            1817
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-200-text/archive-390-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+          "sha256": "9fd658c99e26ce273f4d5e5ee7af18909a839a6dad629dff81333133b7f27232",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-guild.png",
+          "sha256": "7c7c6c6ca7e1c53f965bca549457b8b93b82a89975c3a53364fe2c1513a1308b",
+          "dimensions_px": [
+            780,
+            1038
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-guild.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-100-text/archive-768-100.png",
+          "sha256": "3a88a907da12eed78245ca2b43d9c23e9d19d10a2e659d6f289c0b0835ccc3a9",
+          "dimensions_px": [
+            768,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-100-text/archive-768-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-100-text/guild-1024-100.png",
+          "sha256": "c02ea15cd2567868fc57fc4c2df4b4719c6151aca911e796363c289c9fca3cf5",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-100-text/guild-1024-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-200-text/audio-1440-200.png",
+          "sha256": "6e7f7ced3ca65951057ceb0a166060dfc23ac8a328bd8ea854b1388421b15be2",
+          "dimensions_px": [
+            1440,
+            3497
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-200-text/audio-1440-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-diagnostics-3440-100.png",
+          "sha256": "0797d144809cf69fb8f4c9004953426e1d6975c5fb486a7f7f1d03fbfe174cf1",
+          "dimensions_px": [
+            830,
+            208
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-diagnostics-3440-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-3440-100.png",
+          "sha256": "ea4748dc8c932ebf90575d70918c166cd8aadded38fc65d754a9546a0437773c",
+          "dimensions_px": [
+            3440,
+            2257
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-3440-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-1920px-100-text/archive-1920-100.png",
+          "sha256": "d6e8db34cfc624dd81e51553f8cd13b7352b18cec65f3c27c5d798b599003aa0",
+          "dimensions_px": [
+            1920,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-1920px-100-text/archive-1920-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-guild-coherent-controls-3440px-200-text/guild-3440-200.png",
+          "sha256": "30e87986fc54c354a49b3dd51aea2204c7cb08051cb9bff87f96ce91762ee701",
+          "dimensions_px": [
+            3440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-3440px-200-text/guild-3440-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-1440px-100-text/archive-1440-100.png",
+          "sha256": "27c7d1f4d8d83d4a2b677bb842aaacecf96e400d202c0356d06b5bf88b1e2662",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-1440px-100-text/archive-1440-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-guild-coherent-controls-390px-200-text/guild-390-200.png",
+          "sha256": "00312ef5354eea177da1f29526e356c1ff71a4886f9370487744ce7efc2e518a",
+          "dimensions_px": [
+            390,
+            1006
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-390px-200-text/guild-390-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-100-text/archive-1024-100.png",
+          "sha256": "7e38c039e4d318eea631bee0a2f64cf790f4e80c41e621c5d857f4db49b4da7a",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-100-text/archive-1024-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
+          "sha256": "5d385cf51ca1eafd3a44d1e1ec3858a2c2cee1c44d4480c184723d2fa03c7cbe",
+          "dimensions_px": [
+            290,
+            1044
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-guild-coherent-controls-768px-100-text/guild-768-100.png",
+          "sha256": "3f2c6b65d0a49ee15c33fd723fff11f9a309dbeeba9f508ca1f9cea49dd9860b",
+          "dimensions_px": [
+            768,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-768px-100-text/guild-768-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-200-text/guild-1440-200.png",
+          "sha256": "1747d7d8e75e995ccec12e7d8241fd33d8ffd7dfb327180b20c473bd019a88e3",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-200-text/guild-1440-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-100-text/archive-390-100.png",
+          "sha256": "4df9b9e863f8ff2ac67ce22367cc8f09d6406ade85ae1dd6d883e8690fbc05b6",
+          "dimensions_px": [
+            390,
+            905
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-100-text/archive-390-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-1024-100.png",
+          "sha256": "53ddc13241e39951611b91a4afbe0b9b2e764bb0cf8723b899738ac784c5a58b",
+          "dimensions_px": [
+            1024,
+            2249
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-1024-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-100-text/audio-1440-100.png",
+          "sha256": "e372a95076465a4167e45487e4e255a89b849e8320cf557c83cb8a78a4c4d28b",
+          "dimensions_px": [
+            1440,
+            2257
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-100-text/audio-1440-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-200-text/guild-1024-200.png",
+          "sha256": "33ff608e32a4ca4fd457548a2d01f359e14439a4ecfd159bc416ce132a9aff55",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-200-text/guild-1024-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-200-text/archive-768-200.png",
+          "sha256": "6469134468ca84a88d0287d2e20782a8109fbcbee8a86d4982b399d4dcebe759",
+          "dimensions_px": [
+            768,
+            1529
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-200-text/archive-768-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-100-text/audio-1920-100.png",
+          "sha256": "e01d19ba6ac8ec8bb145f542be62bb089ad6692cc616f1edf95619e7551de0dd",
+          "dimensions_px": [
+            1920,
+            2257
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-100-text/audio-1920-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+          "sha256": "c956a5fe2f71095f8c150519cae255a85adb088593c06138d1125b82413fa33d",
+          "dimensions_px": [
+            324,
+            1004
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+          "sha256": "9b80c4815a459e772f1484a5f4fdc5511d77477a49190f6454b252938b982ef8",
+          "dimensions_px": [
+            320,
+            1122
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-768-100.png",
+          "sha256": "a5ce7e5fb3ee7852c0794963efc365752da29ee0ee92fa39ad519b41ad600b96",
+          "dimensions_px": [
+            768,
+            2423
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-768-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-diagnostics-768-100.png",
+          "sha256": "6c1b09e79ec8957fe5a118704e52945da66dd32b7702c113a91695b4eab50ce9",
+          "dimensions_px": [
+            686,
+            252
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-diagnostics-768-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-100-text/archive-3440-100.png",
+          "sha256": "c8d8186392855a3239de619e179f1993ab45719925d0e071850a83dec62c6146",
+          "dimensions_px": [
+            3440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-100-text/archive-3440-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-390-100.png",
+          "sha256": "eedba7a3fd9057913294e38bf8f3c7c635c12f55dc1eadb5b5a09d73e7177dc8",
+          "dimensions_px": [
+            390,
+            2839
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-390-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-141612/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-390-200.png",
+          "sha256": "829660251999ecbb1e95d34c0171d0b1ac2d7361f3f7773bb278d703e7ec022f",
+          "dimensions_px": [
+            390,
+            5685
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-390-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-141612/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-320-100.png",
+          "sha256": "43803398bd1c2db0156e747925a114b9b621436b4a70bdf5b438c6222b1949c7",
+          "dimensions_px": [
+            320,
+            2955
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-320-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-141612/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-archive.png",
+          "sha256": "2a14352b9cfa52411ebbc88679ea74560e2136a123a38d7a39d11c70d8c7d8e0",
+          "dimensions_px": [
+            1440,
+            1769
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-archive.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-diagnostics-390-100.png",
+          "sha256": "bdd29447ae6cfeae0f0b8dfd3e0b12dbf0e4e51a9cf2742403d81af714c1034a",
+          "dimensions_px": [
+            324,
+            312
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-diagnostics-390-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-audio.png",
+          "sha256": "b1b1ccc33658aa96533817404df38694c39507b10a00911a883046839ff9fcee",
+          "dimensions_px": [
+            780,
+            6214
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-audio.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-archive.png",
+          "sha256": "032bb17ef97b0fa641630bb03747952fa2da096bb9939c7d101ca0c5072dfa25",
+          "dimensions_px": [
+            780,
+            1809
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-archive.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-diagnostics-320-100.png",
+          "sha256": "7b9283ae84b000548ce7052315f547e05b85576f8453218bffbe86126dd43d45",
+          "dimensions_px": [
+            254,
+            372
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-diagnostics-320-100.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-200-text/archive-1024-200.png",
+          "sha256": "46ec53fcb8d51d1c422448bf82e9ecfe3994c3973dcd730f95edcbd59d4634e0",
+          "dimensions_px": [
+            1024,
+            1529
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-200-text/archive-1024-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-diagnostics-3440-200.png",
+          "sha256": "152c11308ffb04e746519b493206d761509f22b313fddbfd78601d565c0ef76f",
+          "dimensions_px": [
+            830,
+            508
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-diagnostics-3440-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-3440-200.png",
+          "sha256": "d08bdb7e4b39e4504edc5b0b75b21e77ef464bb4d6b4bdd94773e2d76d244b8f",
+          "dimensions_px": [
+            3440,
+            3497
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-3440-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+          "sha256": "6d662966025dd32c645fd5c907985f577d6d865cd7698bd8fe4b87874f3a5770",
+          "dimensions_px": [
+            320,
+            2153
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-accessibility/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+          "sha256": "880e96683f5cbe632c3638ffb57be6971dc5e7225a9d73ff0f22d1b2fd839183",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-accessibility/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json"
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-microcopy/zoom.browser-actual-page-z-6288d-cused-hints-usable-at-780px/prejoin-zoom200-780.png",
+          "sha256": "f1c7361dc4120a14460ea725418e4dc70a5087f9c655eeb5c046e842a13fcdfc",
+          "dimensions_px": [
+            780,
+            913
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-microcopy/zoom.browser-actual-page-z-6288d-cused-hints-usable-at-780px/prejoin-zoom200-780.png",
+          "exact_hash_match": true,
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json"
         }
       ],
-      "scope": "Nine current-run images were directly inspected at original pixel resolution. Thirty-one additional review records count only where current-run images have exact SHA-256 matches with previously inspected captures.",
+      "scope": "Nine current-run images were directly inspected at original pixel resolution. One hundred four earlier review records count only where current-run images have exact SHA-256 matches with previously inspected captures, including four retained manual-review-progress passes.",
       "details_file": "evidence/qa/dw14-composer-wrap-regression-2026-10-17.json",
       "previous_run_dir": ".out/local-features/20261017-180122",
       "baseline_approved": false,
-      "manual_review_limitation": "954 unique screenshots from the current run remain unreviewed."
+      "manual_review_limitation": "881 unique screenshots from the current run remain unreviewed.",
+      "reused_review_source_runs": [
+        {
+          "run_dir": ".out/local-features/20261017-140223",
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json",
+          "new_exact_hash_matches": 59
+        },
+        {
+          "run_dir": ".out/local-features/20261017-141612",
+          "review_record": ".out/local-features/20261017-141612/manual-review-progress.json",
+          "new_exact_hash_matches": 3
+        },
+        {
+          "run_dir": ".out/local-features/20261017-145030",
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json",
+          "new_exact_hash_matches": 11
+        }
+      ]
     },
     "rollout_rollback_issue305_details": {
       "status": "NO-GO / NOT_RUN",
@@ -1726,7 +2546,7 @@
       "issue": 353,
       "pr": 368,
       "commit": "96fffa3c",
-      "status": "Draft PR #368 targets current master; all 27 automated local-feature stages pass, visual review remains partial (954 unique images unreviewed). Search placeholder clipping at 320px/200% was fixed and tested in commit 96fffa3c.",
+      "status": "Draft PR #368 targets current master; all 27 automated local-feature stages pass, visual review remains partial (881 unique images unreviewed). Search placeholder clipping at 320px/200% was fixed and tested in commit 96fffa3c.",
       "evidence": "https://github.com/Egkurilov/BOOHTACORD/pull/368; evidence/qa/dw14-web-tour-regression-2026-10-17.md; .out/local-features/20261017-183225"
     },
     {
