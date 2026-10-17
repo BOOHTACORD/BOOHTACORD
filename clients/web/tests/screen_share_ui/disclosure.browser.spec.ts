@@ -13,6 +13,46 @@ async function clean(page: Page) {
     return r.left < -1 || r.right > innerWidth + 1 || e.scrollWidth > e.clientWidth + 1 ? [e.textContent?.trim()] : []
   }))).toEqual([])
 }
+test('200% text keeps action labels and diagnostic words intact at desktop width', async ({ page }, info) => {
+  await open(page, '', 1024, 200)
+  const cancel = page.getByRole('button', { name: 'Отмена', exact: true })
+  const cancelLineCount = await cancel.evaluate(element => {
+    const range = document.createRange()
+    range.selectNodeContents(element)
+    return range.getClientRects().length
+  })
+  expect(cancelLineCount).toBe(1)
+  await page.screenshot({ path: info.outputPath('launch-text-200-1024.png') })
+
+  await open(page, 'receiver', 1024, 200)
+  await page.locator('summary[aria-label="Статистика"]').click()
+  const panel = page.getByRole('dialog', { name: 'Статистика трансляции' })
+  await expect(panel).toBeVisible()
+  await page.screenshot({ path: info.outputPath('receiver-text-200-1024.png') })
+  const rows = page.locator('.stream-diagnostics-panel > dl dt, .stream-diagnostics-panel > dl dd')
+  const splitWords = await rows.evaluateAll(elements => {
+    const broken: string[] = []
+    for (const element of elements) {
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT)
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        const text = node.textContent ?? ''
+        for (const match of text.matchAll(/\S+/g)) {
+          const range = document.createRange()
+          range.setStart(node, match.index!)
+          range.setEnd(node, match.index! + match[0].length)
+          const lines = new Set(Array.from(range.getClientRects(), rect => Math.round(rect.top)))
+          if (lines.size > 1) broken.push(match[0])
+        }
+      }
+    }
+    return broken
+  })
+  expect(splitWords).toEqual([])
+  const overflowingRows = await rows.evaluateAll(elements => elements
+    .filter(element => element.scrollWidth > element.clientWidth + 1)
+    .map(element => element.textContent?.trim()))
+  expect(overflowingRows).toEqual([])
+})
 test('launch keeps selection visible and technical details optional; one gesture emits without capture', async ({ page }) => {
   let capture = 0
   await page.addInitScript(() => { navigator.mediaDevices.getDisplayMedia = () => { throw new Error('unexpected capture') } })

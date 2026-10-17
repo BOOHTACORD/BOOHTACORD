@@ -88,6 +88,7 @@
 }
 .screen-share-setup-dialog .screen-share-setup__title h2 { overflow-wrap: anywhere; }
 .screen-share-setup-dialog .screen-share-setup__footer button { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+.screen-share-setup-dialog .screen-share-setup__cancel { flex-shrink: 0; white-space: nowrap; }
 @media (max-width: 360px) {
   .screen-share-setup-dialog .screen-share-setup__footer { flex-direction: column; align-items: stretch; }
   .screen-share-setup-dialog .screen-share-setup__footer button { flex: auto; width: 100%; }
