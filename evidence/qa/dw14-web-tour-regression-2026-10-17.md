@@ -1,6 +1,6 @@
 # DW-14 — web-tour regression bridge
 
-State: **PASS_SCOPED; full acceptance BLOCKED**. Current source is master `25be6ecac1a404469833da284f6d1ce70a350a47` (17 October 2026). The 15 October production tour displayed Web 1.0.32 / r-stable-r46; its deployed SHA is unverified, so it is a historical observation rather than a source-equivalent baseline.
+State: **PASS_SCOPED; consolidated real-stack acceptance FAIL**. Current source is master `25be6ecac1a404469833da284f6d1ce70a350a47` (17 October 2026). The 15 October production tour displayed Web 1.0.32 / r-stable-r46; its deployed SHA is unverified, so it is a historical observation rather than a source-equivalent baseline.
 
 The local tour contains 55 available frames. The source images include account and conversation data and remain private; this report publishes no images, user names, DM text, or screenshot hashes. Missing IDs are 47, 54 and 55. Each frame below is mapped by sanitized state, viewport, UI owner and treatment.
 
@@ -60,7 +60,7 @@ The local tour contains 55 available frames. The source images include account a
 | 51 | 3440×1315 | Receiver screen live | screen-share receiver | Decoded static frame is not video QoE; current supported-Chrome picker smoke is NOT_RUN. | PASS_SCOPED |
 | 52 | 3440×1315 | Receiver diagnostics | screen-share statistics | Displayed dimensions/FPS are an observation only; no 1080p60 or capacity claim. | PASS_SCOPED |
 | 53 | 3440×1315 | TEXT with receiver mini-player | pinned mini-player dock | #349 receiver lifecycle; maintain subscription across TEXT/DM navigation, with quality gates separate. | PASS_SCOPED |
-| 56 | 3440×1315 | Conversation menu | conversation actions | #352 header actions are covered by its 11/11 browser fixture; real-stack acceptance is BLOCKED in this host. | BLOCKED |
+| 56 | 3440×1315 | Conversation menu | conversation actions | #352 header actions are covered by its 11/11 browser fixture; this run does not add a dedicated real-stack assertion for the header menu. | BLOCKED |
 | 57 | 3440×1315 | Conversation files | conversation files | #342/#346: shared controls, bounded file rows and contextual message jump. | PASS_SCOPED |
 | 58 | 3440×1315 | Mention picker | mention autocomplete | #346: exact-target mention navigation and keyboard/touch rows remain covered. | PASS_SCOPED |
 
@@ -78,7 +78,7 @@ Three residual layout defects found by the expanded matrix were corrected before
 
 ## Source-resolution visual review
 
-Inspected the final local-feature screenshots at their original pixel dimensions. At 320 px/200% text, audio diagnostics and search filters remain within the panel; date text and the focused calendar field are readable. The DM dialog stays bounded and wraps the intentionally long fixture name without clipping. At 3440 px, the conversation-files rail stays on the right with its contextual actions visible. These fixture screenshots do not contain the private production-tour frames. The selected screenshots and review notes are recorded in the JSON companion; generated images remain under ignored `.out/`.
+Inspected the final local-feature screenshots at their original pixel dimensions. At 320 px/200% text, audio diagnostics and search filters remain within the panel; date text and the focused calendar field are readable. The DM dialog stays bounded and wraps the intentionally long fixture name without clipping. At 3440 px, the conversation-files rail stays on the right with its contextual actions visible. The latest real-stack captures were also reviewed at their native raster sizes: desktop captures are 2880×1800 and mobile captures are 1179×2556. On desktop, message reply actions and the two-listener voice controls remain visible in their panels. On mobile, the DM picker is bounded within the viewport, and 200% text wraps conversation cards vertically while keeping message actions and the composer inside the viewport. The generated images contain only synthetic QA data and remain under ignored `.out/`; private production-tour frames are not present.
 
 The source-bound component before/after records are in [PR #355 evidence](pr355-search-dm-acceptance-2026-10-16.md) and [DW-03 evidence](dw03-controls-2026-10-16.md). The machine-readable companion lists exact test paths, issue crosswalk and sanitized frame metadata.
 
@@ -90,7 +90,7 @@ The historical tour did use ordinary Chrome for a static share receiver, but it 
 
 ## Verification and remaining gate
 
-`npm test`: **PASS**, 474 files / 1564 tests. Production typecheck/build: **PASS** (existing LiveKit dynamic-import and chunk-size warnings). Spec traceability: **PASS_INDEX_ONLY**, 39 requirements; the approved Windows brief is unavailable on this host. Contracts did not change. The final registered Web check is `.out/local-features/20261017-115939/`: unit, build and all 19 browser suites **PASS**; the report is **FAIL** because `web-real-stack-1440` and `web-real-stack-393` could not inspect the configured `colima-boohtacord-qa` Docker context (`meta.json` is missing). Both stages stop before services start, so authenticated journeys remain **BLOCKED**. The focused post-fix search-presentation rerun also passed 106/106. Rollout/rollback review for #305 remains **NOT_RUN**.
+`npm test`: **PASS**, 474 files / 1564 tests. Production typecheck/build: **PASS** (existing LiveKit dynamic-import and chunk-size warnings). Spec traceability: **PASS_INDEX_ONLY**, 39 requirements; the approved Windows brief is unavailable on this host. Contracts did not change. The registered Web check `.out/local-features/20261017-122318/` passed unit, build and all 19 browser suites; desktop real-stack 1440 px passed, while mobile 393 px failed waiting up to 20 seconds for a `voice.lease_revoked` hint after voice-kick (diagnostics showed zero observed hints and one pending KICK notification). Isolated reruns of both 1440 px and 393 px completed the authenticated real-stack journey successfully, and the prior consolidated run `.out/local-features/20261017-120656/` had the inverse result (1440 px failed at that notification wait, 393 px passed). Keep the consolidated gate **FAIL** until one registered full run passes both viewports; do not infer a product defect from this intermittent worker-timing failure. The focused post-fix search-presentation rerun also passed 106/106. Current-master native Chrome picker and physical audio remain **NOT_RUN**. Rollout/rollback review for #305 remains **NOT_RUN**.
 
 The acceptance matrix is registered as `issue353` in `tools/qa/local_features/features.json`, and DW-014 is in `backlog/tasks.yaml`. The separate settings/header branches remain unmerged: #351 is draft PR #365 and #352 is a local commit. #354 is deferred because it is an optional P2 preference with no user-valued usability evidence; no compact mode was added.
 

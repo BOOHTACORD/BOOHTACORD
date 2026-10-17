@@ -3,7 +3,7 @@
   "issue": 353,
   "epic": 339,
   "generated_on": "2026-10-17",
-  "state": "PASS_SCOPED_WITH_BLOCKED_GATE",
+  "state": "PASS_SCOPED_WITH_FAILING_GATE",
   "baseline": {
     "current_master_sha": "25be6ecac1a404469833da284f6d1ce70a350a47",
     "tour_date": "2026-10-15",
@@ -125,16 +125,28 @@
     },
     {
       "name": "Authenticated local-feature real-stack gate",
-      "status": "BLOCKED",
-      "run_dir": ".out/local-features/20261017-115939",
+      "status": "FAIL",
+      "run_dir": ".out/local-features/20261017-122318",
       "command": "./tools/qa/local_features/check.sh --feature chat --feature shell --platform web --base 25be6ecac1a404469833da284f6d1ce70a350a47 --real-stack",
       "raw_status": "FAIL",
-      "reason": "Both real-stack stages failed before stack startup because Docker context colima-boohtacord-qa is missing its local context metadata; authenticated journeys did not run."
+      "reason": "The registered run passed desktop 1440px but failed mobile 393px while waiting 20s for a voice.lease_revoked hint after voice-kick. Isolated authenticated reruns passed at both widths; retain FAIL until one consolidated run passes both.",
+      "isolated_rechecks": [
+        {
+          "viewport_px": 1440,
+          "status": "PASS",
+          "run_dir": ".out/local-features/issue353-recheck-1440"
+        },
+        {
+          "viewport_px": 393,
+          "status": "PASS",
+          "run_dir": ".out/local-features/issue353-recheck-393"
+        }
+      ]
     },
     {
       "name": "Current-master physical Chrome screen-share picker and physical audio",
       "status": "NOT_RUN",
-      "reason": "No current-master supported-Chrome native picker/audio acceptance was produced by the blocked isolated-stack run; the old production tour is not source-equivalent."
+      "reason": "The real-stack run uses synthetic media and does not exercise the native picker or physical audio; current-master supported-Chrome/device acceptance remains NOT_RUN."
     }
   ],
   "quality_gates": {
@@ -157,29 +169,46 @@
       "reason": "No API/schema contract changed."
     },
     "authenticated_real_stack": {
-      "status": "BLOCKED",
+      "status": "FAIL",
       "raw_stage_status": "FAIL",
-      "failed_stages": ["web-real-stack-1440", "web-real-stack-393"],
-      "run_dir": ".out/local-features/20261017-115939",
-      "reason": "DOCKER_CONTEXT=colima-boohtacord-qa could not be inspected: the configured meta.json does not exist. stack.start aborted before PostgreSQL/API/LiveKit startup, so authenticated journeys were not exercised."
+      "failed_stages": [
+        "web-real-stack-393"
+      ],
+      "passed_stage": "web-real-stack-1440",
+      "run_dir": ".out/local-features/20261017-122318",
+      "isolated_rechecks": [
+        {
+          "viewport_px": 1440,
+          "status": "PASS",
+          "run_dir": ".out/local-features/issue353-recheck-1440"
+        },
+        {
+          "viewport_px": 393,
+          "status": "PASS",
+          "run_dir": ".out/local-features/issue353-recheck-393"
+        }
+      ],
+      "reason": "The consolidated run failed its mobile voice-kick notification assertion after 20 seconds (zero observed hints; one pending KICK outbox item). Desktop and mobile authenticated journeys each passed when rerun alone, but the consolidated gate remains FAIL until a single registered run passes both."
     },
     "registered_web_check": {
       "status": "FAIL",
-      "run_dir": ".out/local-features/20261017-115939",
+      "run_dir": ".out/local-features/20261017-122318",
       "web_unit": "PASS (474 files / 1564 tests)",
       "web_build": "PASS",
       "browser_suites": "PASS (19 suites)",
-      "real_stack": "FAIL before stack startup at desktop 1440px and mobile 393px"
+      "real_stack": "FAIL (desktop 1440px PASS; mobile 393px FAIL at voice-kick notification wait; both isolated viewport retries PASS)"
     },
     "visual_review": {
       "status": "PASS_SCOPED",
       "source_resolution_screenshots": [
-        ".out/local-features/20261017-115939/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
-        ".out/local-features/20261017-115939/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png",
-        ".out/local-features/20261017-115939/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
-        ".out/local-features/20261017-115939/web-search_presentation/layout.browser-files-result-layout-at-3440px-100-text/files.png"
+        ".out/local-features/20261017-122318/images/web-real-stack/1440/channel-text-actions.png (2880x1800)",
+        ".out/local-features/20261017-122318/images/web-real-stack/1440/voice-connected-compact.png (2880x1800)",
+        ".out/local-features/20261017-122318/images/web-real-stack/393/dm-starter-dialog.png (1179x2556)",
+        ".out/local-features/20261017-122318/images/web-real-stack/393/channel-text-200.png (1179x2556)",
+        ".out/local-features/20261017-122318/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
+        ".out/local-features/20261017-122318/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png"
       ],
-      "observations": "At source size, the 320px/200% audio diagnostics and search filters stay within their panels; date fields remain readable and focused. The bounded DM dialog wraps the deliberately long fixture name without clipping. The 3440px files rail remains in its right-side column with visible actions."
+      "observations": "At source size, desktop message reply actions and two-listener voice controls remain visible. On mobile, the DM picker stays inside the viewport; at 200% text, message cards wrap vertically while their actions and the composer remain within the viewport. Existing 320px/200% audio and search captures remain bounded and readable. Screenshots use synthetic QA data only; generated media stays in ignored .out/."
     },
     "rollout_rollback_issue305": "NOT_RUN"
   },
@@ -1039,6 +1068,7 @@
     "Current-master native Chrome picker/physical audio, dynamic video, 1080p60, media QoE/capacity and physical device acceptance are NOT_RUN.",
     "The old production version is not proven to correspond to current master.",
     "Issue #351 is a draft PR and #352 remains a local commit; do not count either as merged.",
-    "Issue #354 is deferred pending user-valued usability research; no compact mode was introduced."
+    "Issue #354 is deferred pending user-valued usability research; no compact mode was introduced.",
+    "Registered full real-stack check: FAIL pending one consolidated run that passes both desktop 1440px and mobile 393px; each viewport passed in an isolated retry."
   ]
 }
