@@ -21,6 +21,7 @@ import WorkspaceHeaderActions from '../shared/workspace_header/WorkspaceHeaderAc
 import ConversationOverflowMenu from './ConversationOverflowMenu.vue'
 const props = withDefaults(defineProps<{
   accountId: string; activeVoiceChannel: TopologyChannel | null
+  miniPlayerTarget?: HTMLElement | null
   visible: boolean
   channel: TopologyChannel | null
   directMessage: DirectMessageListItem | null
@@ -64,6 +65,13 @@ const emit = defineEmits<{ clearScreenStream: []; join: [channelId: string, tran
 const selectedScreenProfile = computed(() => props.selectedScreenProfile)
 const { screenExpanded, screenPinned,
   voiceChannel, miniVisible, keepVoiceRoom, selectedScreenName, screenViewerRef, watchScreen, dismissLocalPreview } = useConversationScreenState(props)
+function toggleScreenPin(): void {
+  if (screenPinned.value && (!props.visible || props.directMessage || props.channel?.kind !== 'VOICE')) {
+    if (props.activeVoiceChannel) emit('returnVoice', props.activeVoiceChannel.id)
+    screenExpanded.value = false
+  }
+  screenPinned.value = !screenPinned.value
+}
 function clearScreenPreview(): void {
   dismissLocalPreview()
   emit('clearScreenStream')
@@ -85,7 +93,7 @@ function clearScreenPreview(): void {
       <TextConversation :key="channel.id" :account-id="accountId" :active="visible" :channel-id="channel.id" :channel-name="channel.name" :channel-description="channel.description" :nav-open="navOpen" :members-open="membersOpen" :show-members="showMembers" @toggle-nav="emit('toggleNav')" @toggle-members="emit('toggleMembers')" />
     </template>
     <template v-if="voiceChannel && keepVoiceRoom">
-      <Teleport to="body" :disabled="!screenExpanded && !miniVisible">
+      <Teleport :to="miniVisible && miniPlayerTarget ? miniPlayerTarget : 'body'" :disabled="!screenExpanded && !(miniVisible && miniPlayerTarget)">
         <section class="voice-room" :class="{ 'voice-room--screen-expanded': screenExpanded, 'voice-room--mini': miniVisible }">
           <header class="main-header conversation-header">
             <span class="conversation-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9H3ZM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" /></svg></span>
@@ -100,11 +108,11 @@ function clearScreenPreview(): void {
             <template v-else>Вход в этот канал закрыт администратором. Отзыв media-доступа ещё подтверждается. <span v-if="voiceError">{{ voiceError }}</span></template>
             <button v-if="voiceIsActive" type="button" @click="emit('leave')">Выйти из голосового канала</button>
           </div>
-          <template v-if="voiceIsActive && voiceState !== 'LEAVING' && (screenViewerCards.length || selectedScreenStreamId || screenViewerEnded)">
+          <template v-if="(voiceIsActive || (screenPinned && activeVoiceChannel?.id === voiceChannel.id)) && voiceState !== 'LEAVING' && (screenViewerCards.length || selectedScreenStreamId || screenViewerEnded)">
             <ScreenViewer
               ref="screenViewerRef" v-show="selectedScreenStreamId !== null" :audio-muted="screenAudioMuted" :cards="screenViewerCards" :deafened="selfDeafened" :ended="screenViewerEnded" :error="screenViewerError" :expanded="screenExpanded" :mini="miniVisible" :own-screen-sharing="screenState === 'SHARING'" :pinned="screenPinned" :participant-count="voiceVolumeParticipants.length + 1" :selected-audio-volume="selectedScreenAudioVolume" :selected-id="selectedScreenStreamId"
               @clear="clearScreenPreview" @retry="emit('retryScreenStream', $event)" @select="(id, video, audio) => emit('selectScreenStream', id, video, audio)" @set-audio-volume="emit('setScreenVolume', $event)" @toggle-audio="emit('toggleScreenAudio')"
-              @pin="screenPinned = !screenPinned" @return-voice="emit('returnVoice', voiceChannel.id)" @change-quality="emit('startScreen', screenProfile ?? selectedScreenProfile)"
+              @pin="toggleScreenPin" @return-voice="emit('returnVoice', voiceChannel.id)" @change-quality="emit('startScreen', screenProfile ?? selectedScreenProfile)"
               :source-diagnostics="screenDiagnostics" @update:expanded="screenExpanded = $event"
             />
           </template>

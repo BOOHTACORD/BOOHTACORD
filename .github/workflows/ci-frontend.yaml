@@ -105,6 +105,14 @@ jobs:
           path: .out/issue345/browser/**
           if-no-files-found: ignore
           retention-days: 30
+      - name: Retain Web mini-player acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-mini-player-${{ github.sha }}
+          path: .out/issue349/browser/**
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain sanitized real-SFU screen-share smoke evidence
         if: always()
         uses: actions/upload-artifact@v4

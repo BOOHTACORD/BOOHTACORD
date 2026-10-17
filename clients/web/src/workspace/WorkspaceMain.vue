@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { shallowRef } from 'vue'
 import type { TopologyChannel } from '../channel/topology_client'
 import ConversationPane from '../conversation/ConversationPane.vue'
 import type { DirectMessageListItem } from '../direct_message/direct_message_client'
@@ -31,10 +32,13 @@ defineProps<{
   voiceRoster?: VoiceRoomRoster | null
   voiceRosterError?: string | null
 }>()
+const miniPlayerTarget = shallowRef<HTMLElement | null>(null)
 const emit = defineEmits<{ openSearch: []; returnVoice: [channelId: string]; toggleNav: []; toggleMembers: []; closePanel: [panel: 'admin' | 'audio' | 'profile'] }>()
 </script>
 
 <template>
+  <div class="workspace-main-layout">
+  <div ref="miniPlayerTarget" class="screen-mini-dock"></div>
   <div v-if="panel === 'admin'" class="workspace-main-panel workspace-main-panel--admin" data-testid="admin-workspace-panel">
     <SettingsWorkspaceHeader panel="admin" :nav-expanded="navOpen" @toggle-navigation="emit('toggleNav')" @close="emit('closePanel', 'admin')" />
     <slot name="admin" />
@@ -49,6 +53,7 @@ const emit = defineEmits<{ openSearch: []; returnVoice: [channelId: string]; tog
   </div>
   <ConversationPane
     v-show="panel === 'none'"
+    :mini-player-target="miniPlayerTarget"
     :account-id="accountId"
     :active-voice-channel="activeVoiceChannel"
     :visible="panel === 'none'"
@@ -103,4 +108,5 @@ const emit = defineEmits<{ openSearch: []; returnVoice: [channelId: string]; tog
     @toggle-members="emit('toggleMembers')"
     @open-search="emit('openSearch')"
   />
+  </div>
 </template>
