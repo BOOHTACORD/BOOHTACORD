@@ -41,9 +41,10 @@ export async function teardown(a, b, channelId, input, report, observed) {
     const kick = await api(b, `/admin/accounts/${account}/voice-kick`, 'POST')
     status(kick, 200)
     assert.equal(kick.body.revoked_leases, 1)
-    // Native notification worker polls every 15 seconds; client teardown is checked separately.
+    // Native notification worker polls every 15 seconds; allow two cycles plus
+    // local-stack scheduling jitter while still requiring the actual hint.
     try {
-      await expect.poll(() => observed.revocations, { timeout: 20000 }).toBeGreaterThan(previousRevocations)
+      await expect.poll(() => observed.revocations, { timeout: 40000 }).toBeGreaterThan(previousRevocations)
     } catch (error) {
       // Aggregate counters from the owned disposable DB only; no lease/account IDs or tokens.
       let outbox = 'UNAVAILABLE'

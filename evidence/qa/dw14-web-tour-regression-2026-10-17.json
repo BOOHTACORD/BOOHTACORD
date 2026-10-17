@@ -3,7 +3,7 @@
   "issue": 353,
   "epic": 339,
   "generated_on": "2026-10-17",
-  "state": "PASS_SCOPED_WITH_FAILING_GATE",
+  "state": "PASS_SCOPED_WITH_REVIEW_REQUIRED",
   "baseline": {
     "current_master_sha": "25be6ecac1a404469833da284f6d1ce70a350a47",
     "tour_date": "2026-10-15",
@@ -125,11 +125,11 @@
     },
     {
       "name": "Authenticated local-feature real-stack gate",
-      "status": "FAIL",
-      "run_dir": ".out/local-features/20261017-122318",
+      "status": "PASS",
+      "run_dir": ".out/local-features/20261017-123657",
       "command": "./tools/qa/local_features/check.sh --feature chat --feature shell --platform web --base 25be6ecac1a404469833da284f6d1ce70a350a47 --real-stack",
-      "raw_status": "FAIL",
-      "reason": "The registered run passed desktop 1440px but failed mobile 393px while waiting 20s for a voice.lease_revoked hint after voice-kick. Isolated authenticated reruns passed at both widths; retain FAIL until one consolidated run passes both.",
+      "raw_status": "PASS",
+      "reason": "The final registered run passed both desktop 1440px and mobile 393px real-stack journeys. Two earlier consolidated attempts intermittently missed the voice.lease_revoked hint with a 20s wait; the acceptance wait now permits two 15s worker cycles plus local-stack scheduling jitter (40s), while still requiring the actual WebSocket hint.",
       "isolated_rechecks": [
         {
           "viewport_px": 1440,
@@ -140,6 +140,18 @@
           "viewport_px": 393,
           "status": "PASS",
           "run_dir": ".out/local-features/issue353-recheck-393"
+        }
+      ],
+      "earlier_consolidated_attempts": [
+        {
+          "run_dir": ".out/local-features/20261017-120656",
+          "status": "FAIL",
+          "detail": "Desktop 1440px missed the voice.lease_revoked hint within 20s; mobile 393px passed."
+        },
+        {
+          "run_dir": ".out/local-features/20261017-122318",
+          "status": "FAIL",
+          "detail": "Mobile 393px missed the voice.lease_revoked hint within 20s; desktop 1440px passed."
         }
       ]
     },
@@ -169,13 +181,26 @@
       "reason": "No API/schema contract changed."
     },
     "authenticated_real_stack": {
-      "status": "FAIL",
-      "raw_stage_status": "FAIL",
-      "failed_stages": [
+      "status": "PASS",
+      "raw_stage_status": "PASS",
+      "failed_stages": [],
+      "passed_stages": [
+        "web-real-stack-1440",
         "web-real-stack-393"
       ],
-      "passed_stage": "web-real-stack-1440",
-      "run_dir": ".out/local-features/20261017-122318",
+      "run_dir": ".out/local-features/20261017-123657",
+      "earlier_consolidated_attempts": [
+        {
+          "run_dir": ".out/local-features/20261017-120656",
+          "status": "FAIL",
+          "detail": "Desktop 1440px missed the voice.lease_revoked hint within 20s; mobile 393px passed."
+        },
+        {
+          "run_dir": ".out/local-features/20261017-122318",
+          "status": "FAIL",
+          "detail": "Mobile 393px missed the voice.lease_revoked hint within 20s; desktop 1440px passed."
+        }
+      ],
       "isolated_rechecks": [
         {
           "viewport_px": 1440,
@@ -188,27 +213,169 @@
           "run_dir": ".out/local-features/issue353-recheck-393"
         }
       ],
-      "reason": "The consolidated run failed its mobile voice-kick notification assertion after 20 seconds (zero observed hints; one pending KICK outbox item). Desktop and mobile authenticated journeys each passed when rerun alone, but the consolidated gate remains FAIL until a single registered run passes both."
+      "reason": "The 40s voice-kick notification wait accommodates the 15s worker polling interval plus scheduling jitter and still asserts receipt of the actual voice.lease_revoked hint."
     },
     "registered_web_check": {
-      "status": "FAIL",
-      "run_dir": ".out/local-features/20261017-122318",
+      "status": "REVIEW_REQUIRED",
+      "raw_status": "REVIEW_REQUIRED",
+      "run_dir": ".out/local-features/20261017-123657",
+      "raw_report_sha256": "c2ca2e7de7844725bb8c9aa6271eed05465758d76071f024ffd06190727f78d7",
+      "screenshot_count": 732,
       "web_unit": "PASS (474 files / 1564 tests)",
       "web_build": "PASS",
       "browser_suites": "PASS (19 suites)",
-      "real_stack": "FAIL (desktop 1440px PASS; mobile 393px FAIL at voice-kick notification wait; both isolated viewport retries PASS)"
+      "real_stack": "PASS (desktop 1440px and mobile 393px)",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-control_consistency",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-member_popover",
+          "status": "PASS"
+        },
+        {
+          "name": "web-member_roster",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-microcopy",
+          "status": "PASS"
+        },
+        {
+          "name": "web-navigation_density",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-readonly_archive",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ],
+      "note": "All automated stages pass. The runner retains REVIEW_REQUIRED because its 732 selected screenshots have not all received manual visual review."
     },
     "visual_review": {
-      "status": "PASS_SCOPED",
-      "source_resolution_screenshots": [
-        ".out/local-features/20261017-122318/images/web-real-stack/1440/channel-text-actions.png (2880x1800)",
-        ".out/local-features/20261017-122318/images/web-real-stack/1440/voice-connected-compact.png (2880x1800)",
-        ".out/local-features/20261017-122318/images/web-real-stack/393/dm-starter-dialog.png (1179x2556)",
-        ".out/local-features/20261017-122318/images/web-real-stack/393/channel-text-200.png (1179x2556)",
-        ".out/local-features/20261017-122318/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
-        ".out/local-features/20261017-122318/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png"
+      "status": "PARTIAL_REVIEW",
+      "reviewed_count": 11,
+      "available_selected_count": 732,
+      "reviewed_screenshots": [
+        {
+          "path": ".out/local-features/20261017-123657/images/web-real-stack/1440/channel-text-actions.png",
+          "width": 2880,
+          "height": 1800
+        },
+        {
+          "path": ".out/local-features/20261017-123657/images/web-real-stack/1440/voice-connected-compact.png",
+          "width": 2880,
+          "height": 1800
+        },
+        {
+          "path": ".out/local-features/20261017-123657/images/web-real-stack/1440/chat-failed-media-connected.png",
+          "width": 2880,
+          "height": 1800
+        },
+        {
+          "path": ".out/local-features/20261017-123657/images/web-real-stack/1440/sfu-unavailable.png",
+          "width": 2880,
+          "height": 1800
+        },
+        {
+          "path": ".out/local-features/20261017-123657/images/web-real-stack/393/dm-starter-dialog.png",
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/local-features/20261017-123657/images/web-real-stack/393/channel-text-200.png",
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/local-features/20261017-123657/images/web-real-stack/393/voice-after-leave.png",
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/local-features/20261017-123657/images/web-real-stack/393/dm-empty-conversation.png",
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/local-features/20261017-123657/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
+          "width": 288,
+          "height": 1044
+        },
+        {
+          "path": ".out/local-features/20261017-123657/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png",
+          "width": 320,
+          "height": 1000
+        },
+        {
+          "path": ".out/local-features/20261017-123657/web-search_presentation/layout.browser-files-result-layout-at-3440px-200-text/files.png",
+          "width": 3440,
+          "height": 1000
+        }
       ],
-      "observations": "At source size, desktop message reply actions and two-listener voice controls remain visible. On mobile, the DM picker stays inside the viewport; at 200% text, message cards wrap vertically while their actions and the composer remain within the viewport. Existing 320px/200% audio and search captures remain bounded and readable. Screenshots use synthetic QA data only; generated media stays in ignored .out/."
+      "scope": "Representative captures inspected at original pixel dimensions; not all selected screenshots reviewed. Full visual review remains required.",
+      "observations": "Desktop message reply actions and two-listener voice controls stay visible in their panels; the connected state remains visible when media fails, and the SFU-unavailable view preserves last roster state with safe controls. Mobile DM picker stays bounded, voice-after-leave and empty-DM states retain usable navigation/composer. At 320px/200% text, audio diagnostics and expanded search filters remain contained; the 3440px/200% file rail stays in the right column. Captures use synthetic QA data only."
     },
     "rollout_rollback_issue305": "NOT_RUN"
   },
@@ -1069,6 +1236,6 @@
     "The old production version is not proven to correspond to current master.",
     "Issue #351 is a draft PR and #352 remains a local commit; do not count either as merged.",
     "Issue #354 is deferred pending user-valued usability research; no compact mode was introduced.",
-    "Registered full real-stack check: FAIL pending one consolidated run that passes both desktop 1440px and mobile 393px; each viewport passed in an isolated retry."
+    "The final registered real-stack run passed at both 1440px and 393px. The raw runner remains REVIEW_REQUIRED because only 11 of 732 selected screenshots have been inspected manually."
   ]
 }
