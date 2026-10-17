@@ -90,7 +90,8 @@
       "test/features/screen_rollout/native_codec_contract_test.dart",
       "test/features/screen_rollout/native_codec_policy_test.dart",
       "test/features/screen/capture/confirmed_dimensions_test.dart",
-      "test/features/screen/capture/dimension_publish_test.dart"
+      "test/features/screen/capture/dimension_publish_test.dart",
+      "test/screen_setup/keyboard_test.dart"
     ],
     "acceptance": {
       "issue325_audio": {
@@ -148,6 +149,12 @@
         "browser": "clients/web/tests/mini_player/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/mini_player_ui.mjs",
         "scope": "Reserved dock, TEXT/DM simultaneous typing, settings, pause/mute/unpin/expand/close; media element/track/peer identity, subscription counters and per-stream volume through actual API/SFU. Synthetic canvas/audio only; no hardware/native/QoE claim."
+      },
+      "issue288": {
+        "native": "tools/qa/screen_setup/windows.py",
+        "target": "integration_test/screen_setup_windows_app.dart",
+        "focused": "test/screen_setup/keyboard_test.dart",
+        "scope": "Windows release GUI with real API/PostgreSQL/LiveKit listener; OS SendInput for both launchers, Escape before and after traversal, focus return, unchanged lease/room/mute and no publication. Separate unit regressions cover quality editing, null cancellation, inventory disposal and Enter/Space."
       }
     }
   },

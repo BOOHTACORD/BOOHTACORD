@@ -1,0 +1,108 @@
+"""Release Windows GUI Escape acceptance on an owned native API/SFU fixture."""
+import base64
+import hashlib
+import json
+import os
+from pathlib import Path
+import secrets
+import shutil
+import subprocess
+import sys
+import time
+
+from tools.ci.native.process import ROOT, run, output, require_version
+from tools.build.windows.plugins import configured_plugins
+from tools.qa.desktop_updates.windows_process import close_owned, running_at
+from tools.qa.desktop_updates.windows_stack import Stack
+
+
+def validate_result(value):
+    expected = {a + '-' + b for a in ('header', 'dock') for b in ('initial', 'traversed')}
+    rows = value.get('cases', [])
+    flags = ('escape', 'focus_returned', 'same_connected_room_and_lease',
+             'mute_deafen_preserved', 'no_publication')
+    if (value.get('status') != 'PASS' or
+            value.get('input') != 'Win32 SendInput with exact foreground PID guard' or
+            len(rows) != 4 or {row.get('case') for row in rows} != expected or
+            any(row.get(flag) is not True for row in rows for flag in flags)):
+        raise ValueError('Incomplete Windows GUI Escape acceptance')
+
+
+def main():
+    if sys.platform != 'win32':
+        raise RuntimeError('Actual Windows GUI host required')
+    if (os.environ.get('GITHUB_ACTIONS') != 'true' or
+            os.environ.get('RUNNER_ENVIRONMENT') != 'github-hosted'):
+        raise RuntimeError('Disposable hosted Windows CI runner required')
+    versions = json.loads(output('flutter', '--version', '--machine'))
+    require_version('flutter', versions['frameworkVersion'])
+    client = ROOT / 'clients/flutter'
+    # The normal Windows distribution build ran first and prepared pinned SDKs.
+    with configured_plugins(client):
+        run('flutter', 'build', 'windows', '--release', '--no-pub',
+            '--target=integration_test/screen_setup_windows_app.dart', cwd=client)
+    release = client / 'build/windows/x64/runner/Release'
+    executable = release / 'boohtacord_desktop.exe'
+    destination = ROOT / '.out/screen-setup-windows'
+    destination.mkdir(parents=True, exist_ok=False)
+    root = Path(os.environ['RUNNER_TEMP']) / ('qa337-' + secrets.token_hex(8))
+    stack = Stack(root)
+    config = Path(os.environ['APPDATA']) / 'ru.boohtacord/boohtacord_desktop/issue337-acceptance-private.json'
+    owned_config = False
+    process = None
+    try:
+        if config.exists() or running_at(executable):
+            raise RuntimeError('Refusing existing user configuration or client')
+        stack.start()
+        config.parent.mkdir(parents=True, exist_ok=True)
+        with config.open('x', encoding='utf-8') as handle:
+            json.dump(stack.private_configuration(), handle)
+        owned_config = True
+        with (root / 'private-client.log').open('xb') as log:
+            process = subprocess.Popen([str(executable)], cwd=release,
+                                       stdout=log, stderr=subprocess.STDOUT)
+            driver = root / 'driver'
+            deadline = time.monotonic() + 180
+            while time.monotonic() < deadline:
+                if (driver / 'failure.json').exists():
+                    raise RuntimeError('Actual Windows GUI failed: ' + (driver / 'failure.json').read_text())
+                if (driver / 'result.json').exists():
+                    value = json.loads((driver / 'result.json').read_text())
+                    validate_result(value)
+                    value.update(source=output('git', 'rev-parse', 'HEAD'),
+                                 flutter=versions['frameworkVersion'], dart=versions['dartSdkVersion'])
+                    images = []
+                    for name in [*(row['case'] + '.png' for row in value['cases']),
+                                 'header-open.png', 'dock-open.png']:
+                        image = driver / name
+                        if not image.is_file(): raise RuntimeError('GUI capture missing')
+                        raw = image.read_bytes()
+                        if len(raw) > 2_000_000: raise RuntimeError('GUI capture exceeds evidence bound')
+                        shutil.copyfile(image, destination / name)
+                        images.append({'file': name, 'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw)})
+                        # Synthetic disposable runner UI only; never a personal desktop.
+                        # Makes pixels reviewable even when artifact API is unavailable.
+                        encoded = base64.b64encode(raw).decode()
+                        chunks = [encoded[offset:offset + 8192] for offset in range(0, len(encoded), 8192)]
+                        for index, chunk in enumerate(chunks):
+                            print(f'QA288_CAPTURE_CHUNK:{name}:{index}:{len(chunks)}:{chunk}', flush=True)
+                    value['captures'] = images
+                    (destination / 'result.json').write_text(json.dumps(value, indent=2), encoding='utf-8')
+                    print('QA288_RESULT_BASE64:' + base64.b64encode(json.dumps(value).encode()).decode(), flush=True)
+                    print('PASS: Windows SendInput Escape, both launchers, traversal, focus and real SFU continuity', flush=True)
+                    return
+                if process.poll() is not None: raise RuntimeError('QA Windows client exited before acceptance')
+                time.sleep(.2)
+            raise RuntimeError('Windows GUI acceptance timed out')
+    finally:
+        try:
+            if process is not None and running_at(executable): close_owned(executable)
+        finally:
+            try:
+                if owned_config: config.unlink(missing_ok=True)
+            finally:
+                if root.exists(): stack.close()
+
+
+if __name__ == '__main__':
+    main()

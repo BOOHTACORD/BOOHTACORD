@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart' as rtc;
 
 import '../../../../services/screen_share_quality.dart';
@@ -41,11 +42,27 @@ class ScreenShareSetupDialog extends StatelessWidget {
     ),
   );
   @override
-  Widget build(BuildContext context) => SetupBody(
-    initialQuality: initialQuality,
-    allowSourceSelection: allowSourceSelection,
-    updating: updating,
-    capturer: capturer,
-    initialContentMode: initialContentMode,
+  Widget build(BuildContext context) => CallbackShortcuts(
+    bindings: {
+      const SingleActivator(
+        LogicalKeyboardKey.escape,
+        includeRepeats: false,
+      ): () {
+        Navigator.of(context).pop();
+      },
+    },
+    // The route can have focus before a control is visited with Tab. Keep
+    // Escape inside this shortcut scope in that initial state as well.
+    child: Focus(
+      autofocus: true,
+      skipTraversal: true,
+      child: SetupBody(
+        initialQuality: initialQuality,
+        allowSourceSelection: allowSourceSelection,
+        updating: updating,
+        capturer: capturer,
+        initialContentMode: initialContentMode,
+      ),
+    ),
   );
 }
