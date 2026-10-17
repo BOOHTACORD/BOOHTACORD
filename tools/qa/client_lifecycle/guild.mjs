@@ -1,3 +1,4 @@
+import { memberProfile } from './member_profile.mjs'
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { api, channel, expect, guildPanel, status } from './request.mjs'
@@ -115,6 +116,7 @@ export async function guild(a, b, guest, password, report, directory, expectedMe
   await expect(memberPanel).toContainText('qa_member')
   await b.screenshot({ path: directory+'/channel-participants.png' })
   await captureAtTwoX(b, directory, 'channel-participants-200.png', report)
+  await memberProfile(b, report, directory)
   const retry = await api(guest, '/auth/register', 'POST', { login: 'qa_member', password })
   status(retry, 409)
   await a.screenshot({ path: directory+'/welcome-a.png' })

@@ -1,3 +1,4 @@
+import { voiceMemberProfile } from '../client_lifecycle/member_profile.mjs'
 import assert from 'node:assert/strict'
 import { api, channel, expect, openNavigation, status } from '../client_lifecycle/request.mjs'
 import { controlOwnedSfu } from './sfu_control.mjs'
@@ -6,6 +7,8 @@ import { installRosterFailureObserver } from './roster_observer.mjs'
 import { rosterCounters } from './roster_diagnostics.mjs'
 import { observeRosterNetwork } from './roster_network.mjs'
 import { activeVoiceSettings } from '../client_lifecycle/settings_density.mjs'
+import { observeMiniSubscriptions } from './mini_player_ui.mjs'
+import { screenShareInterface } from './screen_share_ui.mjs'
 import { voiceInterface, leaveVoiceInterface } from './voice_interface.mjs'
 async function connected(page) {
   try {
@@ -46,6 +49,7 @@ export async function media(a, b, member, channelId, report, input) {
   })
   await a.addInitScript(installRosterFailureObserver)
   const rosterNetwork = observeRosterNetwork(a)
+  const miniSubscriptions = await observeMiniSubscriptions(member)
   await a.reload()
   await member.reload()
   const category = await api(a, '/admin/categories', 'POST', { name: 'VoiceLab' }); status(category, 201)
@@ -57,7 +61,9 @@ export async function media(a, b, member, channelId, report, input) {
   }
   await connected(a)
   await activeVoiceSettings(a, input, report)
+  await voiceMemberProfile(a, member, input, report)
   await voiceInterface(a, input, report)
+  await screenShareInterface(a, member, input, report, miniSubscriptions)
   blocked = true
   for (const { socket, server } of chat) { server.close(); socket.close() }
   const banner = a.getByTestId('connection-status')

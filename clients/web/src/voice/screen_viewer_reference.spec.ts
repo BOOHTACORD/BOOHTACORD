@@ -100,7 +100,7 @@ describe('screen viewer reference composition', () => {
     expect(viewer).toContain('markScreenSelected(video.value)')
     expect(viewer).toContain('resetVideoFrame()')
     expect(source('./viewer_diagnosis/Panel.vue')).toContain('selectedAt.value=Date.now();now.value=selectedAt.value;emit(\'retry\')')
-    expect(source('./ScreenViewer.vue')).toContain(':publisher-paused="Boolean(selectedStream.videoMuted)"')
+    expect(source('./ScreenViewer.vue')).toContain(':publisher-paused="videoPaused || Boolean(selectedStream.videoMuted)"')
   })
 
   it('offers a gesture retry when audio autoplay is blocked independently of video', () => {
@@ -110,7 +110,7 @@ describe('screen viewer reference composition', () => {
     expect(viewer).toContain('audio.value?.play()')
     expect(viewer).toContain(':autoplay-blocked="playbackBlocked"')
     expect(viewer).toContain('@retry="retry(false)"')
-    expect(viewer).toContain('@click="emit(\'toggleAudio\');audioPlaybackBlocked&&playFromGesture()"')
+    expect(viewer).toContain('@audio="emit(\'toggleAudio\');audioPlaybackBlocked && playFromGesture()"')
     expect(viewer).toContain('@toggle="emit(\'toggleAudio\');audioPlaybackBlocked&&playFromGesture()"')
   })
 })

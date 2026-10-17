@@ -3,18 +3,15 @@ import { computed } from 'vue'
 
 import type { ScreenDiagnostics } from './screen_diagnostics'
 import type { ScreenProfile } from './livekit_gateway'
+import { screenTargetLabel } from './screen_profile_metadata/presentation'
 import { observedScreenCaptureTracks } from './screen_capture_capabilities'
 
 const props = defineProps<{ diagnostics: ScreenDiagnostics; profile: ScreenProfile | null }>()
 const emit = defineEmits<{ refresh: [] }>()
 
-const target = computed(() => ({
-  P720_15: '720p · 15 FPS', P720_30: '720p · 30 FPS', P720_60: '720p · 60 FPS',
-  P1080_15: '1080p · 15 FPS', P1080_30: '1080p · 30 FPS', P1080_60: '1080p · 60 FPS',
-  P1440_15: '1440p · 15 FPS', P1440_30: '1440p · 30 FPS', P1440_60: '1440p · 60 FPS',
-}[props.profile ?? 'P1080_30']))
+const target = computed(() => screenTargetLabel(props.profile ?? undefined))
 const measured = computed(() => props.diagnostics.measured
-  ? `${props.diagnostics.measured.width} × ${props.diagnostics.measured.height}${props.diagnostics.measured.framesPerSecond ? ` · ${props.diagnostics.measured.framesPerSecond} FPS` : ''}`
+  ? `${props.diagnostics.measured.width} × ${props.diagnostics.measured.height}${props.diagnostics.measured.framesPerSecond !== undefined ? ` · ${props.diagnostics.measured.framesPerSecond} FPS` : ''}`
   : 'нет данных от браузера/SDK')
 const receivedTracks = computed(() => observedScreenCaptureTracks({
   videoTrack: props.diagnostics.source === 'UNKNOWN' ? null : props.diagnostics.source === 'ACTIVE',
@@ -43,20 +40,26 @@ const technical = computed(() => [
 </script>
 
 <template>
-  <p>Демонстрация идёт. Цель: {{ target }}. Измерено: {{ measured }}.</p>
-  <dl class="screen-diagnostics">
-    <div><dt>Фактически полученные дорожки</dt><dd>Видео: {{ videoTrack }} · Аудио: {{ audioTrack }}</dd></div>
-    <div><dt>Качество связи</dt><dd>{{ quality }}</dd></div>
-    <div><dt>Источник</dt><dd>{{ source }}</dd></div>
-  </dl>
-  <p>Голос остаётся доступен без аудиодорожки экрана.</p>
-  <details>
-    <summary>Технические данные</summary>
-    <p>{{ technical }}</p>
-  </details>
-  <details v-if="layers.length">
-    <summary>Слои видеопотока</summary>
-    <ul><li v-for="layer in layers" :key="layer.label">{{ layer.label }} · {{ layer.state }} · {{ layer.fps }} · {{ layer.bitrate }} · повторы {{ layer.retransmitted }} · потери {{ layer.loss }} · {{ layer.control }} · {{ layer.encode }}</li></ul>
-  </details>
-  <button class="voice-join" type="button" @click="emit('refresh')">Обновить измерения</button>
+  <section class="screen-sender-summary" aria-label="Состояние отправителя">
+    <p role="status">{{ diagnostics.source === 'ENDED' ? 'Демонстрация завершена.' : diagnostics.source === 'ACTIVE' ? 'Демонстрация идёт.' : 'Состояние источника неизвестно.' }}</p>
+    <dl class="screen-diagnostics">
+      <div><dt>Выбрано</dt><dd>{{ target }}</dd></div>
+      <div><dt>Измерено отправителем</dt><dd>{{ measured }}</dd></div>
+    </dl>
+    <details class="screen-sender-details">
+      <summary>Диагностика отправителя</summary>
+      <dl class="screen-diagnostics">
+        <div><dt>Фактически полученные дорожки</dt><dd>Видео: {{ videoTrack }} · Аудио: {{ audioTrack }}</dd></div>
+        <div><dt>Качество связи</dt><dd>{{ quality }}</dd></div>
+        <div><dt>Источник</dt><dd>{{ source }}</dd></div>
+      </dl>
+      <p>Голос остаётся доступен без аудиодорожки экрана.</p>
+      <p>{{ technical }}</p>
+      <details v-if="layers.length">
+        <summary>Слои видеопотока</summary>
+        <ul><li v-for="layer in layers" :key="layer.label">{{ layer.label }} · {{ layer.state }} · {{ layer.fps }} · {{ layer.bitrate }} · повторы {{ layer.retransmitted }} · потери {{ layer.loss }} · {{ layer.control }} · {{ layer.encode }}</li></ul>
+      </details>
+      <button class="voice-join" type="button" @click="emit('refresh')">Обновить измерения</button>
+    </details>
+  </section>
 </template>

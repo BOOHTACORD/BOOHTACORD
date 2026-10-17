@@ -21,13 +21,15 @@ export function useConversationScreenState(props: ConversationScreenProps) {
   const screenPinned = ref(false)
   const voiceVisible = computed(() => props.visible && !props.directMessage && props.channel?.kind === 'VOICE')
   const voiceChannel = computed(() => props.channel?.kind === 'VOICE' ? props.channel : props.activeVoiceChannel)
-  const miniVisible = computed(() => miniPlayerVisible(screenPinned.value, voiceVisible.value, props.selectedScreenStreamId, props.activeVoiceChannel?.id ?? null))
+  const miniVisible = computed(() => !screenExpanded.value && miniPlayerVisible(screenPinned.value, voiceVisible.value, props.selectedScreenStreamId, props.activeVoiceChannel?.id ?? null))
   const keepVoiceRoom = computed(() => screenViewerMounted(screenPinned.value, voiceVisible.value, props.selectedScreenStreamId, props.activeVoiceChannel?.id ?? null))
   const selectedScreenName = computed(() => props.screenViewerCards.find((screen) => screen.id === props.selectedScreenStreamId)?.participantName ?? null)
   const screenViewerRef = shallowRef<{ selectStream: (id: string) => void } | null>(null)
   let dismissedLocalPreviewId: string | null = null
   const localScreenId = computed(() => props.screenViewerCards.find((screen) => screen.isLocal)?.id ?? null)
-  watch(() => props.selectedScreenStreamId, (id) => { if (!id) screenPinned.value = false })
+  watch(voiceVisible, (visible) => { if (!visible) screenExpanded.value = false })
+  watch(() => props.activeVoiceChannel?.id, () => { screenPinned.value = false; screenExpanded.value = false })
+  watch(() => props.selectedScreenStreamId, (id) => { if (!id) { screenPinned.value = false; screenExpanded.value = false } })
   watch([localScreenId, () => props.selectedScreenStreamId, () => props.screenViewerEnded], async ([localId, selectedId, ended]) => {
     if (!localId || selectedId !== null || ended || localId === dismissedLocalPreviewId) return
     await nextTick()
@@ -35,7 +37,6 @@ export function useConversationScreenState(props: ConversationScreenProps) {
       screenViewerRef.value?.selectStream(localId)
     }
   }, { flush: 'post', immediate: true })
-  watch(miniVisible, (visible) => { if (visible) screenExpanded.value = false })
   function watchScreen(id: string): void {
     if (props.screenViewerCards.some((screen) => screen.id === id && screen.isLocal)) dismissedLocalPreviewId = null
     screenViewerRef.value?.selectStream(id)

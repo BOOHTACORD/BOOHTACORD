@@ -37,7 +37,11 @@
     "test:navigation": "playwright test -c tests/navigation_density/playwright.config.ts",
     "test:search-presentation": "playwright test -c tests/search_presentation/playwright.config.ts",
     "test:settings-density": "playwright test -c tests/settings_density/playwright.config.ts",
-    "test:voice-interface": "playwright test -c tests/voice_interface/playwright.config.ts"
+    "test:voice-interface": "playwright test -c tests/voice_interface/playwright.config.ts",
+    "test:screen-share-ui": "playwright test -c tests/screen_share_ui/playwright.config.ts",
+    "test:screen-track-name": "playwright test -c tests/track_name/playwright.config.ts",
+    "test:mini-player": "playwright test -c tests/mini_player/playwright.config.ts",
+    "test:member-roster": "playwright test -c tests/member_roster/playwright.config.ts"
   },
   "dependencies": {
     "@opentelemetry/api": "1.9.1",

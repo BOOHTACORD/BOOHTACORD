@@ -1,40 +1,26 @@
-/* R18: live member profile card floats outside the roster column. */
-.members-panel.has-popover { overflow: visible; }
-.members-panel .member-popover { box-sizing: border-box; width: 320px; min-height: 314px; border: 1px solid #303542; border-radius: 12px; padding: 24px; background: var(--gc-surface-raised); }
-.member-popover > header { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; opacity: 1; }
-.member-popover > header > span { display: none; }
-.member-popover > header button { width: 32px; height: 32px; }
-.member-popover .member-popover-identity { display: block; }
-.member-popover-avatar-wrap { position: relative; display: block; width: 64px; height: 64px; }
-.member-popover .member-popover-avatar { display: grid; width: 64px; height: 64px; place-items: center; font-size: 1.5rem; font-weight: 600; }
-.member-popover-avatar-presence { box-sizing: content-box; position: absolute; right: -1px; bottom: 0; width: 10px; height: 10px; border: 2px solid var(--gc-sidebar); border-radius: 50%; background: #778094; }
+/* Fixed, collision-aware card stays inside the existing members drawer. */
+.members-panel.has-popover { overflow: auto; }
+.members-panel .member-popover { position: fixed; box-sizing: border-box; inset: auto; z-index: 4; width: 304px; min-height: 0; max-width: none; overflow: auto; overscroll-behavior: contain; border: 1px solid var(--gc-border-control); border-radius: 12px; padding: 12px; background: var(--gc-surface-raised); }
+.member-popover header { position: static; display: flex; justify-content: space-between; align-items: center; min-height: 44px; margin-bottom: 8px; opacity: 1; }
+.member-popover header > span { font-size: var(--gc-text-small); color: var(--gc-text-secondary); }
+.member-popover header button { flex: none; width: 44px; height: 44px; font-size: 1.5rem; }
+.member-popover .member-popover-identity { display: flex; align-items: flex-start; gap: 12px; }
+.member-popover-avatar-wrap { position: relative; display: block; width: 44px; height: 44px; flex: 0 0 44px; }
+.member-popover .member-popover-avatar { display: grid; width: 44px; height: 44px; place-items: center; font-size: 1.125rem; font-weight: 600; }
+.member-popover-avatar-presence { box-sizing: content-box; position: absolute; right: -1px; bottom: 0; width: 8px; height: 8px; border: 2px solid var(--gc-sidebar); border-radius: 50%; background: #778094; }
 .member-popover-identity[data-presence='online'] .member-popover-avatar-presence { background: var(--gc-success); }
-.member-popover-identity[data-presence='online'] .member-popover-presence::before { color: #78e6a0; }
-.member-popover-identity[data-presence='offline'] .member-popover-presence::before,
-.member-popover-identity[data-presence='unknown'] .member-popover-presence::before { color: #778094; }
-.member-popover .member-popover-identity > div { margin-top: 16px; }
-.member-popover .member-popover-identity h2 { font-size: var(--gc-text-section); line-height: var(--gc-line-section); font-weight: var(--gc-weight-semibold); }
-.member-popover .member-popover-identity p { margin: 4px 0 0; font-size: 0.75rem; line-height: 1rem; }
-.member-popover .member-popover-identity small { display: block; margin-top: 16px; font-size: 0.75rem; line-height: 1rem; }
-.member-popover .member-popover-identity small:not(.member-popover-presence) { width: max-content; border-radius: 6px; padding: 2px 6px; background: var(--gc-surface-raised); color: var(--gc-text-primary); font-weight: 600; }
-.member-popover .member-popover-identity .member-popover-presence { display: flex; align-items: center; gap: 12px; margin-top: 20px; color: var(--gc-text-secondary); font-size: 0.875rem; line-height: 1.25rem; }
-.member-popover-presence::before { flex: 0 0 auto; color: #78e6a0; content: '●'; }
-.member-popover .member-popover-actions { margin-top: 24px; }
-.member-popover .member-popover-actions button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; padding: 0 14px; border: 1px solid var(--gc-accent); border-radius: 8px; color: #fff; background: var(--gc-accent); font-size: 0.875rem; font-weight: 500; }
+.member-popover .member-popover-identity > div { min-width: 0; margin-top: 0; }
+.member-popover .member-popover-identity h2 { font-size: var(--gc-text-title); line-height: var(--gc-line-title); font-weight: var(--gc-weight-semibold); }
+.member-popover .member-popover-identity h2 { display: block; overflow: visible; white-space: normal; overflow-wrap: anywhere; }
+.member-popover .member-popover-identity p { margin: 4px 0 0; font-size: .75rem; line-height: 1rem; }
+.member-popover .member-popover-identity small { display: block; margin-top: 6px; font-size: .75rem; line-height: 1rem; }
+.member-popover .member-popover-identity .member-popover-presence { margin-top: 6px; color: var(--gc-text-secondary); }
+.member-popover .member-popover-actions { margin-top: 12px; }
+.member-popover .member-popover-actions button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px; border: 1px solid var(--gc-accent); border-radius: 8px; color: #fff; background: var(--gc-accent); font-size: .875rem; font-weight: 500; }
+.member-popover .member-popover-actions button:not(:first-child) { color: var(--gc-text-primary); background: transparent; border-color: var(--gc-border-control); }
 .member-popover .member-popover-actions svg { width: 20px; height: 20px; flex: none; }
-@media (max-width: 1023px) {
-  .members-panel.has-popover { overflow: visible; }
-  .members-panel .member-sheet-scrim { position: fixed; inset: 0; z-index: 3; width: 100vw; height: 100dvh; border: 0; background: #0009; }
-  .members-panel .member-popover { position: fixed; inset: auto 0 0; z-index: 4; width: 100vw; max-width: none; max-height: 80dvh; min-height: 0; overflow-y: auto; overscroll-behavior: contain; border-radius: 16px 16px 0 0; padding: 12px 20px max(24px, env(safe-area-inset-bottom)); }
-  .member-popover > header { position: static; width: auto; height: 44px; margin-bottom: 12px; opacity: 1; }
-  .member-popover > header > span { display: block; color: var(--gc-text-primary); font-size: 1rem; font-weight: 600; }
-  .member-popover > header button { width: 44px; height: 44px; font-size: 1.75rem; }
-  .member-popover .member-popover-identity { display: flex; align-items: flex-start; gap: 16px; }
-  .member-popover .member-popover-identity > div { min-width: 0; margin-top: 0; }
-  .member-popover .member-popover-identity h2 { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .member-popover .member-popover-identity small { margin-top: 8px; }
-  .member-popover .member-popover-identity .member-popover-presence { margin-top: 12px; }
-  .member-popover .member-popover-actions { margin-top: 20px; }
-  .member-popover .member-popover-actions button { min-height: 44px; }
-  .member-popover .member-popover-actions button:not(:first-child) { color: var(--gc-danger); background: transparent; border: 1px solid var(--gc-border-control); }
-}
+.member-popover .member-volume { margin-top: 12px; }
+.member-popover .member-volume input { min-height: 44px; }
+.member-popover .member-popover-voice-state { margin-top: 8px; }
+.members-panel .member-sheet-scrim { position: fixed; inset: 0; z-index: 3; background: #0009; }
+.member-popover .state-error button { min-width: 44px; min-height: 44px; margin-top: 8px; padding: 8px 12px; border: 1px solid var(--gc-border-control); border-radius: 8px; color: var(--gc-text-primary); background: var(--gc-surface); }

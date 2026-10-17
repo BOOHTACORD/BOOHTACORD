@@ -178,6 +178,21 @@ tasks:
     requirements: [REQ-VOICE-01, REQ-VOICE-02, REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
     depends_on: [T-022, T-050, DW-003, DW-004]
     evidence: [clients/web/tests/voice_interface/playwright.config.ts, evidence/qa/dw08-voice-interface-2026-10-16.md]
+  - id: DW-009
+    title: Compact Web screen sharing setup and progressive sender/receiver diagnostics (GitHub #348)
+    requirements: [REQ-VOICE-02, REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [T-022, T-050, DW-003, DW-004, DW-008]
+    evidence: [clients/web/tests/screen_share_ui/playwright.config.ts, evidence/qa/dw09-screen-share-ui-2026-10-16.md]
+  - id: DW-010
+    title: Reserved Web mini-player dock with persistent subscription and explicit playback controls (GitHub #349)
+    requirements: [REQ-VOICE-02, REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [T-022, T-050, DW-006, DW-008, DW-009]
+    evidence: [clients/web/tests/mini_player/playwright.config.ts, evidence/qa/dw10-mini-player-2026-10-17.md]
+  - id: DW-011
+    title: Secondary Web member roster and compact collision-aware profile (GitHub #350)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-SECURITY-02, REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [T-050, T-014, T-020, T-022, DW-003, DW-005, DW-010]
+    evidence: [clients/web/tests/member_roster/playwright.config.ts, evidence/qa/dw11-member-panel-2026-10-17.md]
   - id: DW-012
     title: Clear Web settings hierarchy and compact advanced controls (GitHub #351)
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUDIO-01, REQ-SECURITY-01, REQ-QUALITY-01]

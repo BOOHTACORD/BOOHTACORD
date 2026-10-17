@@ -69,7 +69,9 @@
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
-      "tests/screen_profile/playwright.config.ts"
+      "tests/screen_profile/playwright.config.ts",
+      "tests/screen_share_ui/playwright.config.ts",
+      "tests/mini_player/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart",
@@ -134,6 +136,16 @@
         "focused": "clients/flutter/test/features/screen/capture/",
         "runtime": "tools/qa/macos_sender/stage_baseline.py",
         "scope": "Confirmed native capture dimensions enforce existing both-axis encoded geometry at guarded publish/update boundaries. Native long-edge capture policy preserved; actual display regression required."
+      },
+      "issue348": {
+        "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
+        "actual": "tools/qa/critical_client_acceptance/screen_share_ui.mjs",
+        "scope": "Compact launch, optional capabilities/sender/receiver diagnostics, selected versus confirmed configuration versus measured output; unsupported/cancel/focus/clipboard, 320/390/1024/1440 and 200% text. Existing owned real API/SFU source-publish-view-stop and failure/reconnect journeys. No physical Chrome picker, hardware audio, native or media QoE claim."
+      },
+      "issue349": {
+        "browser": "clients/web/tests/mini_player/playwright.config.ts",
+        "actual": "tools/qa/critical_client_acceptance/mini_player_ui.mjs",
+        "scope": "Reserved dock, TEXT/DM simultaneous typing, settings, pause/mute/unpin/expand/close; media element/track/peer identity, subscription counters and per-stream volume through actual API/SFU. Synthetic canvas/audio only; no hardware/native/QoE claim."
       }
     }
   },
@@ -348,7 +360,9 @@
       "tests/control_consistency/playwright.config.ts",
       "tests/readonly_archive/playwright.config.ts",
       "tests/microcopy/playwright.config.ts",
-      "tests/navigation_density/playwright.config.ts"
+      "tests/navigation_density/playwright.config.ts",
+      "tests/member_roster/playwright.config.ts",
+      "tests/member_popover/playwright.config.ts"
     ],
     "flutter": [
       "test/mobile_navigation_visual_capture_test.dart",
@@ -387,6 +401,11 @@
       "issue344": {
         "browser": "clients/web/tests/navigation_density/playwright.config.ts",
         "scope": "Actual production navigation components with 36 channels/three categories, keyboard/touch, single scroll surface, persisted favorites/collapse and 320–1920px/actual 200% browser zoom. Real-stack workspace journeys are separate; no native/media acceptance claim."
+      },
+      "issue350": {
+        "browser": "clients/web/tests/member_roster/playwright.config.ts",
+        "actual": "tools/qa/client_lifecycle/member_profile.mjs",
+        "scope": "Production roster/profile with 30 synthetic members; long names, three presence groups, voice status/volume/admin visibility, pagination, empty/loading/retry/denied, keyboard/touch and focus, 320/390/1024/1440, root text and actual browser zoom 200%. Real Go API member-to-DM opening and actual SFU voice volume with MEMBER kick denial. No physical screen reader, native or media quality claim."
       }
     }
   },

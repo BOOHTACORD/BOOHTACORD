@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
+import { containModalTab } from '../accessibility/modal_tab_focus'
 import { placeScreenDiagnostics } from './screen_diagnostics_placement'
 import type { ScreenReceiverMetrics } from './screen_receiver_diagnostics'
 import { screenCaptureLabel, screenEncodingLabel, screenModeLabel, screenTargetLabel, screenTargetSourceLabel, screenDescriptorStatusLabel, screenDescriptorProvenanceLabel, screenDescriptorReceivedAge, type ScreenProfileSource } from './screen_profile_metadata/presentation'
@@ -47,6 +48,23 @@ const encoding = computed(() => screenEncodingLabel(props.descriptor))
 const bitrate = computed(() => props.metrics?.bitrateKbps == null ? 'Нет данных' : `${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 }).format(props.metrics.bitrateKbps / 1000)} Мбит/с`)
 const diagnostics = ref<HTMLDetailsElement | null>(null)
 const isOpen = ref(false)
+const copyFeedback = ref('')
+async function copyStatistics(): Promise<void> {
+  // Explicit, content-free export: no participant name, source title, IDs or addresses.
+  const rows = [
+    ['Выбрано отправителем', profile.value], ['Подтверждение конфигурации', descriptorStatus.value],
+    ['Размер захвата отправителя', capture.value], ['Лимиты кодирования отправителя', encoding.value],
+    ['Измерено у отправителя', senderFps.value], ['Сейчас у зрителя', props.actualVideoQuality],
+    ['Декодирование', value(props.metrics?.decodedFps, 'FPS')], ['Показ кадров', value(props.presentedFps, 'FPS')],
+    ['Битрейт', bitrate.value], ['Потери пакетов за 10 с', percent(props.metrics?.packetLossPercent)],
+    ['Джиттер', value(props.metrics?.jitterMs, 'мс')], ['RTT', 'Нет данных от приёмника'],
+  ]
+  try {
+    await navigator.clipboard.writeText(rows.map(row => row.join(': ')).join('\n'))
+    copyFeedback.value = 'Статистика скопирована'
+  } catch { copyFeedback.value = 'Не удалось скопировать статистику. Разрешите доступ к буферу обмена и повторите.' }
+  void nextTick(updatePlacement)
+}
 const mobile = ref(false)
 const panel = ref<HTMLDivElement | null>(null)
 let placementFrame = 0
@@ -88,6 +106,7 @@ function handleToggle(): void {
   isOpen.value = Boolean(diagnostics.value?.open)
   clearInterval(ageTimer); ageTimer = undefined
   if (isOpen.value) {
+    copyFeedback.value = ''
     now.value = Date.now()
     ageTimer = setInterval(() => { now.value = Date.now() }, 1000)
   }
@@ -97,7 +116,10 @@ function handleToggle(): void {
 function handleKeydown(event: KeyboardEvent): void {
   if (!isOpen.value) return
   if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); close() }
-  else if (mobile.value && event.key === 'Tab') { event.preventDefault(); panel.value?.querySelector<HTMLButtonElement>('header button')?.focus() }
+  else if (mobile.value && event.key === 'Tab') {
+    containModalTab(event, panel.value)
+    ;(document.activeElement as HTMLElement | null)?.scrollIntoView({ block: 'nearest' })
+  }
 }
 function handleResize(): void { mobile.value = window.innerWidth <= 600; updatePlacement() }
 
@@ -123,16 +145,20 @@ onBeforeUnmount(() => {
     <button type="button" class="stream-diagnostics-backdrop" aria-label="Закрыть статистику" @click="close" />
     <div ref="panel" class="stream-diagnostics-panel" role="dialog" aria-label="Статистика трансляции" :aria-modal="mobile ? 'true' : undefined"><header><h2>Статистика</h2><button type="button" aria-label="Закрыть статистику" @click="close">×</button></header><p>{{ participantName ? `Экран ${participantName}` : 'Трансляция' }} · {{ status }}</p><dl>
       <div><dt>Выбрано отправителем</dt><dd>{{ profile }}</dd></div>
+      <div><dt>Подтверждение конфигурации</dt><dd>{{ descriptorStatus }}</dd></div>
+      <div><dt>Сейчас у зрителя</dt><dd>{{ actualVideoQuality }}</dd></div>
+    </dl>
+    <details class="stream-diagnostics-technical" @toggle="updatePlacement">
+      <summary>Технические данные</summary>
+      <dl>
       <div><dt>Источник цели</dt><dd>{{ profileSource }}</dd></div>
       <div><dt>Сценарий</dt><dd>{{ mode }}</dd></div>
-      <div><dt>Подтверждение конфигурации</dt><dd>{{ descriptorStatus }}</dd></div>
       <div><dt>Источник конфигурации</dt><dd>{{ descriptorProvenance }}</dd></div>
       <div><dt>Получение конфигурации</dt><dd>{{ descriptorAge }}</dd></div>
       <div><dt>Возраст захвата</dt><dd>Возраст захвата неизвестен</dd></div>
       <div><dt>Размер захвата отправителя</dt><dd>{{ capture }}</dd></div>
       <div><dt>Лимиты кодирования отправителя</dt><dd>{{ encoding }}</dd></div>
       <div><dt>Измерено у отправителя</dt><dd>{{ senderFps }}</dd></div>
-      <div><dt>Сейчас у зрителя</dt><dd>{{ actualVideoQuality }}</dd></div>
       <div><dt>Декодирование</dt><dd>{{ value(metrics?.decodedFps, 'FPS') }}</dd></div>
       <div><dt>Показ кадров</dt><dd>{{ value(presentedFps, 'FPS') }}</dd></div>
       <div><dt>Битрейт</dt><dd>{{ bitrate }}</dd></div>
@@ -140,7 +166,11 @@ onBeforeUnmount(() => {
       <div><dt>Джиттер</dt><dd>{{ value(metrics?.jitterMs, 'мс') }}</dd></div>
       <div><dt>RTT</dt><dd>Нет данных от приёмника</dd></div>
       <div><dt>Опубликованная аудиодорожка</dt><dd>{{ isLocal ? 'Предпросмотр без звука' : hasAudio ? 'Есть в LiveKit' : 'Нет в LiveKit' }}</dd></div>
-    </dl><small class="stream-diagnostics-footnote">Текущее качество у зрителя: {{ actualVideoQuality }}</small></div>
+      </dl>
+    </details>
+    <button class="stream-diagnostics-copy" type="button" @click="copyStatistics">Копировать статистику</button>
+    <p v-if="copyFeedback" role="status">{{ copyFeedback }}</p>
+    <small class="stream-diagnostics-footnote">Текущее качество у зрителя: {{ actualVideoQuality }}</small></div>
     </Teleport>
   </details>
 </template>
