@@ -5,7 +5,7 @@
   "generated_on": "2026-10-17",
   "state": "PASS_SCOPED_WITH_REVIEW_REQUIRED",
   "baseline": {
-    "current_master_sha": "25be6ecac1a404469833da284f6d1ce70a350a47",
+    "current_master_sha": "8f4b15a6ffb0d29389ecf45189be147b2f708227",
     "tour_date": "2026-10-15",
     "displayed_deployed_version": "Web 1.0.32 / r-stable-r46",
     "deployed_sha": "UNVERIFIED",
@@ -16,7 +16,7 @@
       55
     ],
     "private_source_images_copied": false,
-    "notes": "The production tour is used only for frame metadata and issue mapping; no image, account detail, DM content or raw screenshot hash is published."
+    "notes": "The production tour is used only for frame metadata and issue mapping; no image, account detail, DM content or raw screenshot hash is published. Current master is 8f4b15a6; the latest registered evidence was rerun from its issue-353 integration checkout and includes the audio-responsive, workspace-header and 320/390px voice-dock regressions."
   },
   "scenarios": [
     {
@@ -159,6 +159,37 @@
       "name": "Current-master physical Chrome screen-share picker and physical audio",
       "status": "NOT_RUN",
       "reason": "The real-stack run uses synthetic media and does not exercise the native picker or physical audio; current-master supported-Chrome/device acceptance remains NOT_RUN."
+    },
+    {
+      "name": "Audio processing diagnostics at large text (#342)",
+      "status": "PASS",
+      "tests": "clients/web/tests/control_consistency/controls.browser.spec.ts",
+      "cases": 2,
+      "matrix_css_px": [
+        320,
+        390
+      ],
+      "root_text_scale_percent": [
+        200
+      ],
+      "input": "browser-rendered production Vue settings; geometry assertion verifies each diagnostic value follows its label"
+    },
+    {
+      "name": "Workspace header and toolbar (#352)",
+      "status": "PASS",
+      "tests": "clients/web/tests/header_toolbar/playwright.config.ts",
+      "cases": 11,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "root_text_scale_percent": [
+        100,
+        200
+      ],
+      "input": "pointer, keyboard, focus/escape, close/back/overflow semantics"
     }
   ],
   "quality_gates": {
@@ -188,7 +219,7 @@
         "web-real-stack-1440",
         "web-real-stack-393"
       ],
-      "run_dir": ".out/local-features/20261017-134739",
+      "run_dir": ".out/local-features/20261017-145030",
       "earlier_consolidated_attempts": [
         {
           "run_dir": ".out/local-features/20261017-120656",
@@ -216,14 +247,15 @@
       "reason": "The 40s voice-kick notification wait accommodates the 15s worker polling interval plus scheduling jitter and still asserts receipt of the actual voice.lease_revoked hint.",
       "previous_passed_run_dir": ".out/local-features/20261017-123657",
       "registered_web_check_status": "REVIEW_REQUIRED",
-      "rerun_reason": "Stabilized compact search screenshot timing and reran the registered feature check."
+      "rerun_reason": "Repeated the current-master issue-352 integration and issue-353 registered matrix after extending the screen-sharing dock-clearance regression to both 320px and 390px."
     },
     "registered_web_check": {
       "status": "REVIEW_REQUIRED",
       "raw_status": "REVIEW_REQUIRED",
-      "run_dir": ".out/local-features/20261017-134739",
-      "raw_report_sha256": "50c96e22759aff6d522c4429bbeae97a6519c61dcb80e84ef0e2a93fb38b2a1d",
-      "screenshot_count": 732,
+      "run_dir": ".out/local-features/20261017-145030",
+      "raw_report_sha256": "541cfacc0f2c883d5cd383e7a403263b6c67f875b80a2766e865d9d46e4ad04f",
+      "screenshot_count": 882,
+      "unique_screenshot_count": 823,
       "web_unit": "PASS",
       "web_build": "PASS",
       "browser_suites": "PASS (19 suites)",
@@ -255,6 +287,10 @@
         },
         {
           "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-header_toolbar",
           "status": "PASS"
         },
         {
@@ -306,6 +342,10 @@
           "status": "PASS"
         },
         {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
           "name": "web-real-stack-1440",
           "status": "PASS"
         },
@@ -314,44 +354,89 @@
           "status": "PASS"
         }
       ],
-      "note": "All automated stages pass. 4 current-run screenshots were reviewed at original pixel dimensions; the runner retains REVIEW_REQUIRED because the complete set of 732 screenshots has not received manual visual review."
+      "note": "All 23 automated stages passed, including 19 browser suites and authenticated desktop/mobile real-stack journeys. Six current-run images were inspected directly at source resolution; 229 current PNGs exactly match previously reviewed images. 588 of 823 unique images remain unreviewed, so the runner remains REVIEW_REQUIRED."
     },
     "visual_review": {
       "status": "PARTIAL_REVIEW",
-      "reviewed_count": 4,
-      "available_selected_count": 732,
+      "reviewed_count": 6,
+      "available_selected_count": 882,
+      "unique_image_count": 823,
+      "reused_exact_image_count": 229,
+      "effective_unique_reviewed_count": 235,
+      "unreviewed_unique_count": 588,
       "reviewed_screenshots": [
         {
-          "path": ".out/local-features/20261017-134739/images/web-real-stack/1440/compact-search-filters.png",
-          "width": 2880,
-          "height": 1800
+          "path": ".out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/starting.png",
+          "sha256": "d32a73ae235047e079f804eb30d038f08d20ab2d8baa0b2bbe2a55af4e3bc2a5",
+          "width": 1024,
+          "height": 900
         },
         {
-          "path": ".out/local-features/20261017-134739/images/web-real-stack/393/compact-search-filters.png",
+          "path": ".out/local-features/20261017-145030/images/web-real-stack/393/voice-connected-compact.png",
+          "sha256": "dd9b5e4193318f2ae20f7b10db4030a8c6e6c84b40c89ef252153688ed90b38a",
           "width": 1179,
           "height": 2556
         },
         {
-          "path": ".out/local-features/20261017-134739/images/web-real-stack/1440/global-search-result-context.png",
+          "path": ".out/local-features/20261017-145030/images/web-real-stack/393/screen-share-compact-statistics.png",
+          "sha256": "5515f2a9e4e04bac83e38e65b015836c8f1c019b1624f0f2ec6141c3e0b08f27",
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/local-features/20261017-145030/images/web-real-stack/393/sfu-unavailable.png",
+          "sha256": "ea1bad07c8f711053ebea1e99e11bade0f15dd39ed519d9fea88b5d24ad6415a",
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/local-features/20261017-145030/images/web-real-stack/1440/voice-connected-compact.png",
+          "sha256": "8379436f565394461f862b8c81f58c8deb9edfe59ddff32d1517ab578d5ddde0",
           "width": 2880,
           "height": 1800
         },
         {
-          "path": ".out/local-features/20261017-134739/images/web-real-stack/393/global-search-result-context.png",
-          "width": 1179,
-          "height": 2556
+          "path": ".out/local-features/20261017-145030/images/web-real-stack/1440/screen-share-compact-statistics.png",
+          "sha256": "ac8f7fa0a5a70b088a54313e771a340d6252aec238979aba7a99d721b34f7623",
+          "width": 2880,
+          "height": 1800
         }
       ],
-      "scope": "Four screenshots from 20261017-134739 inspected at original pixel dimensions. The report contains 732 selected images; pixel hashes differ from the preceding run in 101 entries. Full visual review remains required.",
-      "observations": "On desktop, the search query and filters are visible with loaded results; on mobile, query, scope, filters and result summaries fit within the panel. In both viewports the selected search-context message is fully visible and focused. The desktop viewport also shows a preceding context row partially scrolled out, while the target remains complete. Captures use synthetic QA data only.",
+      "scope": "Six current-run images inspected directly at source pixel dimensions; 229 current images have exact PNG hashes matching previously reviewed images from three earlier review passes. Current report contains 882 entries / 823 unique images; 588 unique images remain unreviewed, so status remains REVIEW_REQUIRED.",
+      "observations": "The 1024px voice header contains its title and subtitle. In the authenticated 393px view, the connected dock wraps status above the actions; screen-share statistics fit the mobile sheet, and the SFU-unavailable state keeps recovery copy and roster refresh visible. At 1440px the dock remains in the navigation rail and screen-share statistics/viewer controls stay inside the receiver layout. The screen preview is synthetic and does not prove physical picker or media quality. At 320/390px and 200% text, the screen-share participant list can initially begin below the fixed dock; focused scroll-clearance tests pass at both widths. Long native select values still truncate with ellipses at 200% text, while the full options appear when opened. At effective 320/390px during actual Chromium 200% zoom, the microphone focus hint can briefly overlap the “Сведения” disclosure; Escape or focus change dismisses it, and the control remains reachable.",
       "previous_run_visual_review": {
-        "run_dir": ".out/local-features/20261017-133410",
-        "manually_reviewed_changed_screenshots": 120,
-        "baseline_run_dir": ".out/local-features/20261017-132437",
-        "note": "Those 120 changed screenshot entries were individually inspected at original pixel dimensions in the preceding review pass; this does not complete review of the current 732-image set."
-      }
+        "run_dir": ".out/local-features/20261017-140223",
+        "manually_reviewed_unique_screenshots": 148,
+        "current_exact_image_matches_reused": 132,
+        "note": "Only byte-identical image content was carried forward."
+      },
+      "reused_review_runs": [
+        {
+          "run": "20261017-140223",
+          "reviewed_hashes": 148,
+          "matches_current": 130
+        },
+        {
+          "run": "20261017-141612",
+          "reviewed_hashes": 180,
+          "matches_current": 148
+        },
+        {
+          "run": "20261017-143806",
+          "reviewed_hashes": 228,
+          "matches_current": 223
+        }
+      ]
     },
-    "rollout_rollback_issue305": "NOT_RUN"
+    "rollout_rollback_issue305": "NOT_RUN",
+    "supplemental_browser_tests": [
+      {
+        "command": "clients/web/tests/voice_interface/playwright.config.ts (included in the latest registered Web gate)",
+        "status": "PASS",
+        "cases": 28,
+        "note": "Latest run passed after extending the fixed-dock scroll-clearance regression to 320px and 390px at 200% text; the suite also covers 768/1024/1440 widths and actual browser zoom."
+      }
+    ]
   },
   "task_scenarios": [
     {
@@ -372,7 +457,7 @@
     {
       "name": "Connect/leave voice with two real listeners",
       "status": "PASS_SCOPED",
-      "evidence": "evidence/qa/dw08-voice-interface-2026-10-16.md"
+      "evidence": "evidence/qa/dw08-voice-interface-2026-10-16.md; .out/local-features/20261017-145030; clients/web/tests/voice_interface/controls.browser.spec.ts (28/28)"
     },
     {
       "name": "Screen share receiver/SFU UI",
@@ -386,8 +471,23 @@
     },
     {
       "name": "Settings surfaces and workspace header",
-      "status": "PASS_BROWSER; real-stack BLOCKED",
-      "evidence": "PR #365 draft; local issue352 worktree; .out/local-features/20261017-114851"
+      "status": "PASS_BROWSER; real-stack relevant settings path PASS",
+      "evidence": "PR #366 / issue #351 merged; .out/local-features/20261017-145030; local issue #352 integration branch"
+    },
+    {
+      "name": "Responsive audio settings diagnostics",
+      "status": "PASS_BROWSER",
+      "evidence": "clients/web/tests/control_consistency/controls.browser.spec.ts; .out/local-features/20261017-145030; source-resolution audio screenshots"
+    },
+    {
+      "name": "Mobile voice dock scroll clearance at large text",
+      "status": "PASS_BROWSER",
+      "evidence": "clients/web/tests/voice_interface/controls.browser.spec.ts; 320px and 390px/200% text: last participant scrolls fully above fixed dock"
+    },
+    {
+      "name": "Workspace header and toolbar semantics",
+      "status": "PASS_BROWSER",
+      "evidence": "clients/web/tests/header_toolbar/playwright.config.ts (11/11); .out/local-features/20261017-145030; 320/390/768/1440px and 200% text"
     }
   ],
   "residuals": [
@@ -433,6 +533,24 @@
       "issue": "Frame 44 RTCPeerConnection.setConfiguration in-app-browser error",
       "status": "NOT_A_CONFIRMED_PRODUCT_BUG",
       "evidence": "No reproduction in current supported Chrome supplied; do not attribute embedded-browser error to product."
+    },
+    {
+      "issue": "Audio processing diagnostic values overlap at narrow widths with 200% text",
+      "status": "FIXED_AND_TESTED; VISUAL_CHECK_PASS",
+      "reproducer": "The two-column definition list places a long diagnostic label and its value on the same row at 320px/200% and 390px/200% text.",
+      "after": "At max-width 600px, .audio-processing-values uses one column. A browser geometry assertion verifies each value begins below its label and the next label follows the value; 320px and 390px tests pass at 200% text.",
+      "visual_evidence": [
+        ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-390-100.png",
+        ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+        ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-390-200.png",
+        ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-320-100.png"
+      ]
+    },
+    {
+      "issue": "Long selected audio device/profile labels truncate in narrow native selects at 200% text",
+      "status": "DOCUMENTED_VISUAL_NOTE",
+      "evidence": "Source-resolution audio settings captures in .out/local-features/20261017-141612 at 320/390px and 200% text.",
+      "observation": "The selected label is shortened inside the native control; the control remains within the viewport and the full options are exposed when opened. This predates the diagnostic overlap fix and is not claimed as fixed."
     }
   ],
   "child_issue_crosswalk": [
@@ -515,24 +633,24 @@
     },
     {
       "issue": 351,
-      "pr": 365,
-      "commit": "0a0bf6e6",
-      "status": "draft PR; not on master",
-      "evidence": "PR #365 / evidence in codex/issue351-settings-density"
+      "pr": 366,
+      "commit": "8f4b15a6",
+      "status": "merged",
+      "evidence": "PR #366; #351 is on current master"
     },
     {
       "issue": 352,
       "pr": null,
-      "commit": "ffea3ba9",
-      "status": "local commit; publication awaiting separate authorization",
-      "evidence": "evidence/qa/dw13-header-toolbar-2026-10-17.md in local issue352 worktree"
+      "commit": "6fb42508",
+      "status": "local commit in issue-353 integration checkout; unpublished",
+      "evidence": "evidence/qa/dw13-header-toolbar-2026-10-17.md in codex/issue353-master-integration"
     },
     {
       "issue": 353,
       "pr": null,
       "commit": null,
-      "status": "current issue; this evidence artifact",
-      "evidence": "evidence/qa/dw14-web-tour-regression-2026-10-17.md"
+      "status": "current issue; automated gates PASS, manual visual review partial",
+      "evidence": "evidence/qa/dw14-web-tour-regression-2026-10-17.md; .out/local-features/20261017-141612"
     },
     {
       "issue": 354,
@@ -1176,8 +1294,8 @@
       "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
       "state": "Conversation menu",
       "primary_ui_owner": "conversation actions",
-      "expected_change_or_assessment": "#352 header actions are covered by its 11/11 browser fixture; real-stack acceptance is BLOCKED in this host.",
-      "status": "BLOCKED"
+      "expected_change_or_assessment": "#352 header actions are covered by its 11/11 browser fixture; no dedicated real-stack acceptance is claimed for the header menu.",
+      "status": "PASS_SCOPED"
     },
     {
       "frame_id": 57,
@@ -1208,8 +1326,8 @@
     "Original private frames are not in Git or the PR.",
     "Current-master native Chrome picker/physical audio, dynamic video, 1080p60, media QoE/capacity and physical device acceptance are NOT_RUN.",
     "The old production version is not proven to correspond to current master.",
-    "Issue #351 is a draft PR and #352 remains a local commit; do not count either as merged.",
+    "Issue #351 is merged via PR #366. The superseded draft PR #365 remains open and was not altered; #352 is a local integration commit and is unpublished.",
     "Issue #354 is deferred pending user-valued usability research; no compact mode was introduced.",
-    "The latest registered real-stack run (20261017-134739) passed at 1440px and 393px. Its raw status remains REVIEW_REQUIRED: 4 of 732 selected screenshots were directly reviewed in that run. The preceding run had 120 changed screenshot entries individually inspected; this is partial evidence only."
+    "The latest registered real-stack run (20261017-145030) passed at 1440px and 393px. All 23 automated stages passed; the voice-interface suite passed 28/28. Six images were inspected directly and 229 exact-hash matches were inherited from three earlier reviewed sets. Of 823 unique screenshots, 588 remain unreviewed, so visual status is REVIEW_REQUIRED."
   ]
 }

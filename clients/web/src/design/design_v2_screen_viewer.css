@@ -1,4 +1,6 @@
 .voice-room .screen-viewer.stream-wrap { grid-template-rows: minmax(0, 1fr) 48px 100px; gap: 16px; }
+.voice-room .conversation-header { height: auto; min-height: var(--gc-layout-header); flex: 0 0 auto; padding-block: var(--gc-space-2); }
+@media (max-width: 1023px) { .voice-room .conversation-header { min-height: 56px; } }
 .voice-room:has(.screen-viewer) { background: var(--gc-canvas); }
 .voice-room .screen-stage { position: relative; overflow: hidden; border-radius: 12px; }
 .voice-room .screen-player { width: 100%; height: 100%; max-height: 100%; object-fit: contain; background: #050608; }

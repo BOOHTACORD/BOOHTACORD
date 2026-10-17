@@ -48,6 +48,30 @@ for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) for (const scale of
       const diagnostics = page.getByText('Диагностика качества голоса', { exact: true })
       await diagnostics.click()
       await diagnostics.locator('..').screenshot({ path: info.outputPath(`audio-diagnostics-${width}-${scale}.png`) })
+      if (width <= 600 && scale === 200) {
+        const pairs = await page.locator('.audio-processing-values').evaluate(element => {
+          const labels = Array.from(element.querySelectorAll('dt'))
+          const values = Array.from(element.querySelectorAll('dd'))
+          return labels.map((label, index) => {
+            const labelBox = label.getBoundingClientRect()
+            const valueBox = values[index]!.getBoundingClientRect()
+            const nextLabelBox = labels[index + 1]?.getBoundingClientRect()
+            return {
+              label: label.textContent?.trim(),
+              labelBottom: labelBox.bottom,
+              valueTop: valueBox.top,
+              valueBottom: valueBox.bottom,
+              nextLabelTop: nextLabelBox?.top,
+            }
+          })
+        })
+        for (const pair of pairs) {
+          expect(pair.valueTop, `${pair.label}: diagnostic value starts below its label`).toBeGreaterThanOrEqual(pair.labelBottom)
+          if (pair.nextLabelTop !== undefined) {
+            expect(pair.nextLabelTop, `${pair.label}: following label starts below its value`).toBeGreaterThanOrEqual(pair.valueBottom)
+          }
+        }
+      }
     }
     const control = action(page, surface)
     const style = await control.evaluate(element => {
