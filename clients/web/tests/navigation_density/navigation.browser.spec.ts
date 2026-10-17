@@ -8,6 +8,9 @@ async function open(page: Page, member = false) {
   await expect(page.locator('.channel-row')).toHaveCount(36)
   await page.evaluate(() => document.fonts.ready)
 }
+async function markerColor(page: Page, selector: string): Promise<string> {
+  return page.locator(selector).evaluate(el => getComputedStyle(el).boxShadow.match(/rgba?\([^)]*\)/)?.[0] ?? 'none')
+}
 async function geometry(page: Page) {
   return page.evaluate(() => {
     const nav = document.querySelector<HTMLElement>('.nav-content')!
@@ -107,6 +110,34 @@ test('favorites, collapsed categories, selected states and DM survive navigation
   await page.getByRole('searchbox', { name: 'Поиск каналов' }).fill('Канал 3.12')
   await expect(page.locator('.channel-row')).toHaveCount(1)
   await page.locator('.channel-row .channel-button').click(); await expect(page.getByTestId('result')).toHaveText('channel-2-11')
+})
+test('selected navigation controls use the accent color instead of a white marker', async ({ page }, info) => {
+  await page.setViewportSize({ width: 1440, height: 768 }); await open(page)
+  const accent = await page.evaluate(() => {
+    const probe = document.createElement('span')
+    probe.style.color = getComputedStyle(document.documentElement).getPropertyValue('--gc-accent-text').trim()
+    document.body.append(probe)
+    const color = getComputedStyle(probe).color
+    probe.remove()
+    return color
+  })
+  const selectedTab = page.locator('.sidebar-tabs button[aria-pressed="true"]')
+  expect(await markerColor(page, '.sidebar-tabs button[aria-pressed="true"]')).toBe(accent)
+  expect(await markerColor(page, '.channel-navigation .channel-button.selected')).toBe(accent)
+  await page.screenshot({ path: info.outputPath('selected-channel-marker.png') })
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.screenshot({ path: info.outputPath('selected-channel-marker-mobile.png') })
+  await page.setViewportSize({ width: 1440, height: 768 })
+  await page.getByRole('button', { name: 'Личные', exact: true }).click()
+  expect(await markerColor(page, '.sidebar-tabs button[aria-pressed="true"]')).toBe(accent)
+  expect(await markerColor(page, '.direct-message-navigation > .channel-button.selected')).toBe(accent)
+  await page.locator('.nav-content').evaluate(el => { el.scrollTop = 0 })
+  await page.screenshot({ path: info.outputPath('selected-dm-marker.png') })
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.locator('.nav-content').evaluate(el => { el.scrollTop = 0 })
+  await page.screenshot({ path: info.outputPath('selected-dm-marker-mobile.png') })
+  await selectedTab.focus()
+  await expect(selectedTab).toBeFocused()
 })
 test('member ACL presentation and sidebar axe', async ({ page }) => {
   await open(page, true)

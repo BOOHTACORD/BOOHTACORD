@@ -1,7 +1,7 @@
 .direct-message-navigation { position: relative; padding: 0 12px; }
 .direct-message-navigation h2 { height: 48px; align-items: center; padding: 0; color: var(--gc-text-muted); font-size: 0.75rem; letter-spacing: .04em; }
 .direct-message-navigation > .channel-button { position: relative; min-height: 48px; height: auto; gap: 4px; padding: 4px 8px; }
-.direct-message-navigation > .channel-button.selected { background: var(--gc-surface-selected); box-shadow: inset 3px 0 currentColor; }
+.direct-message-navigation > .channel-button.selected { background: var(--gc-surface-selected); box-shadow: inset 3px 0 var(--gc-accent-text); }
 .direct-message-navigation > .channel-button:hover { background: var(--gc-surface-hover); }
 .direct-message-navigation .dm-avatar { width: 36px; height: 36px; flex-basis: 36px; color: #E2D9FB; background: #493C68; font-size: 0.75rem; }
 .direct-message-navigation .dm-avatar--daria { color: #9FDADB; background: #19484C; }

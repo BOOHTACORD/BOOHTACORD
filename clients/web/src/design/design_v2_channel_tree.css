@@ -20,7 +20,7 @@
 .channel-category-disclosure svg { stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .channel-navigation .channel-row { margin-bottom: 2px; }
 .channel-navigation .channel-button { min-height: 32px; height: auto; gap: 8px; padding: 4px 10px; }
-.channel-navigation .channel-button.selected { color: var(--gc-text-primary); font-weight: 600; box-shadow: inset 3px 0 currentColor; }
+.channel-navigation .channel-button.selected { color: var(--gc-text-primary); font-weight: 600; box-shadow: inset 3px 0 var(--gc-accent-text); }
 .channel-navigation .channel-button.voice-connected:not(.selected) { color: var(--gc-text-secondary); }
 .channel-navigation .channel-button.voice-connected::before { display: none; }
 .channel-navigation .channel-icon { width: 18px; height: 18px; flex-basis: 18px; }
