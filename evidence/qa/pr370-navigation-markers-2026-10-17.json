@@ -1,0 +1,238 @@
+{
+  "pr": 370,
+  "date": "2026-10-17",
+  "backlog_leaf": "DW-005",
+  "dependencies": [
+    "T-050",
+    "T-020",
+    "T-041",
+    "T-022",
+    "DW-003",
+    "DW-004"
+  ],
+  "base_master": "332ef84ae536da3e811a5cdd0e98b1ca53564f68",
+  "original_head": "02f99b81950df52b175a07a6834356a56da68f29",
+  "tested_head": "0b91d37c72d5c7c920a55db267447e26cca2f526",
+  "tested_tree": "7c39207c58c31054c83e425e753c92141b36683b",
+  "files_sha256": {
+    "clients/web/src/design/design_v2_channel_tree.css": "42a0fcd1461bcf7490769bff71a9f0008e0eb99f05a6aa559258470f9cacb8c0",
+    "clients/web/src/design/design_v2_direct_messages.css": "0cb803be881cb4572d50edff900e7a3d929f715e2c571127c93e03979fa81b0e",
+    "clients/web/src/design/design_v2_navigation_controls.css": "c1ef530049682647b854dcdfdfc1e4044a8066ac5e73297a746f33913109272b",
+    "clients/web/tests/navigation_density/navigation.browser.spec.ts": "13b0453a578cc0ae14bbc2ce50ccefd0f6775c0ceb64d93f2720e9c039611b66",
+    "tools/qa/local_features/features.json": "a5046b352d9bfc66fe1289e593e643dcceb53658870fb27ef32e6c9f76e4c9a4"
+  },
+  "baseline": {
+    "status": "EXPECTED_FAIL",
+    "source": "Only three CSS files restored to current master in clean owned worktree; original candidate restored in finally",
+    "passed": 2,
+    "failed": 1,
+    "actual_marker": "rgb(244, 245, 250)",
+    "expected_accent": "rgb(172, 174, 255)",
+    "log_sha256": "79feda5c3a54176e4c10837021404c03350e85780d3172cfbd01bf147248a0ab"
+  },
+  "unit": {
+    "status": "PASS",
+    "passed": 1571
+  },
+  "build": "PASS",
+  "browser_suites": {
+    "web-accessibility": 110,
+    "web-control_consistency": 87,
+    "web-conversation_action_disclosure": 18,
+    "web-header_actions": 13,
+    "web-member_popover": 7,
+    "web-member_roster": 21,
+    "web-mentions_inbox": 13,
+    "web-microcopy": 60,
+    "web-navigation_density": 27,
+    "web-readonly_archive": 2,
+    "web-responsive_shell": 11
+  },
+  "browser_suite_count": 11,
+  "browser_passed": 369,
+  "stages": [
+    {
+      "name": "web-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "web-build",
+      "status": "PASS"
+    },
+    {
+      "name": "web-accessibility",
+      "status": "PASS"
+    },
+    {
+      "name": "web-control_consistency",
+      "status": "PASS"
+    },
+    {
+      "name": "web-conversation_action_disclosure",
+      "status": "PASS"
+    },
+    {
+      "name": "web-header_actions",
+      "status": "PASS"
+    },
+    {
+      "name": "web-member_popover",
+      "status": "PASS"
+    },
+    {
+      "name": "web-member_roster",
+      "status": "PASS"
+    },
+    {
+      "name": "web-mentions_inbox",
+      "status": "PASS"
+    },
+    {
+      "name": "web-microcopy",
+      "status": "PASS"
+    },
+    {
+      "name": "web-navigation_density",
+      "status": "PASS"
+    },
+    {
+      "name": "web-readonly_archive",
+      "status": "PASS"
+    },
+    {
+      "name": "web-responsive_shell",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-1440",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-393",
+      "status": "PASS"
+    }
+  ],
+  "raw_visual_status": "REVIEW_REQUIRED",
+  "source": "0b91d37c72d5c7c920a55db267447e26cca2f526 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "visual_review": {
+    "status": "PASS_SCOPED",
+    "reviewed_images": [
+      {
+        "path": ".out/pr370/before/navigation.browser-inventory-production-navigation-390px/channels-top.png",
+        "phase": "BEFORE",
+        "sha256": "d0cb45851f0238bf830a63cccbde3005ed2d786412e3747bc89c2ee0186926bd",
+        "width": 390,
+        "height": 768,
+        "detail": "original",
+        "review": "PASS_SCOPED",
+        "observation": "White selected-tab underline visible. White selected channel left marker visible."
+      },
+      {
+        "path": ".out/pr370/before/navigation.browser-inventory-production-navigation-390px/direct-messages.png",
+        "phase": "BEFORE",
+        "sha256": "b9511c6c9ebf0a778f1e58646a940d2a028288d0b4ca2fb9901fb14a0c9acd6c",
+        "width": 390,
+        "height": 768,
+        "detail": "original",
+        "review": "PASS_SCOPED",
+        "observation": "White selected-tab underline visible. Retained bottom scroll: selected DM row is offscreen, so no before selected-row claim."
+      },
+      {
+        "path": ".out/pr370/before/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+        "phase": "BEFORE",
+        "sha256": "d320c94072f846bf754a0581fcac2dfa083646b16b35385fea03007271d7b669",
+        "width": 1440,
+        "height": 768,
+        "detail": "original",
+        "review": "PASS_SCOPED",
+        "observation": "White selected-tab underline visible. White selected channel left marker visible."
+      },
+      {
+        "path": ".out/pr370/before/navigation.browser-inventory-production-navigation-1440px/direct-messages.png",
+        "phase": "BEFORE",
+        "sha256": "348d8f0c4a37cfb4a674355b7554094753c64dff93ba3b44d92e71b4f79a8d93",
+        "width": 1440,
+        "height": 768,
+        "detail": "original",
+        "review": "PASS_SCOPED",
+        "observation": "White selected-tab underline visible. Retained bottom scroll: selected DM row is offscreen, so no before selected-row claim."
+      },
+      {
+        "path": ".out/local-features/20261017-231817/web-navigation_density/navigation.browser-selecte-5fc49-r-instead-of-a-white-marker/selected-channel-marker-mobile.png",
+        "phase": "AFTER",
+        "sha256": "7576234d58ee4737cd9ee67fe494816c2c74403f47414c61e7fdc09377b58fd5",
+        "width": 390,
+        "height": 844,
+        "detail": "original",
+        "review": "PASS_SCOPED",
+        "observation": "Selected tab underline and selected channel/DM left marker are lavender; labels/counters remain readable and dock/footer remain separate."
+      },
+      {
+        "path": ".out/local-features/20261017-231817/web-navigation_density/navigation.browser-selecte-5fc49-r-instead-of-a-white-marker/selected-channel-marker.png",
+        "phase": "AFTER",
+        "sha256": "ad5b6be7e375b0cda4b4ec80a7373757d9b05cefb14a23603009770f21324cd3",
+        "width": 1440,
+        "height": 768,
+        "detail": "original",
+        "review": "PASS_SCOPED",
+        "observation": "Selected tab underline and selected channel/DM left marker are lavender; labels/counters remain readable and dock/footer remain separate."
+      },
+      {
+        "path": ".out/local-features/20261017-231817/web-navigation_density/navigation.browser-selecte-5fc49-r-instead-of-a-white-marker/selected-dm-marker-mobile.png",
+        "phase": "AFTER",
+        "sha256": "445e7c003e4f3fb3969ab938767ca16d26707daa791ddaa83bb9ee665394c704",
+        "width": 390,
+        "height": 844,
+        "detail": "original",
+        "review": "PASS_SCOPED",
+        "observation": "Selected tab underline and selected channel/DM left marker are lavender; labels/counters remain readable and dock/footer remain separate."
+      },
+      {
+        "path": ".out/local-features/20261017-231817/web-navigation_density/navigation.browser-selecte-5fc49-r-instead-of-a-white-marker/selected-dm-marker.png",
+        "phase": "AFTER",
+        "sha256": "303c01134aa02b1bcadc2f49cd25152422b98afe070b2d6491d4c42bb659ea8d",
+        "width": 1440,
+        "height": 768,
+        "detail": "original",
+        "review": "PASS_SCOPED",
+        "observation": "Selected tab underline and selected channel/DM left marker are lavender; labels/counters remain readable and dock/footer remain separate."
+      },
+      {
+        "path": ".out/pr370/actual-1440.png",
+        "phase": "ACTUAL",
+        "sha256": "eb801635516673ee652405a058dad45bff3cd8b6b4f12fdd51e6147f2817e475",
+        "width": 2880,
+        "height": 1800,
+        "detail": "original",
+        "review": "PASS_SCOPED",
+        "observation": "Fresh authenticated disposable API client: lavender selected channel/tab; desktop sidebar/mobile drawer usable. Offscreen lower rows use the existing scroll viewport."
+      },
+      {
+        "path": ".out/pr370/actual-393.png",
+        "phase": "ACTUAL",
+        "sha256": "7a4e2def8e2ab39dfc4721436c64c22b53cf74b525b7217f5aeb9cd531b8ab01",
+        "width": 1179,
+        "height": 2556,
+        "detail": "original",
+        "review": "PASS_SCOPED",
+        "observation": "Fresh authenticated disposable API client: lavender selected channel/tab; desktop sidebar/mobile drawer usable. Offscreen lower rows use the existing scroll viewport."
+      }
+    ],
+    "baseline_approved": false,
+    "scope": "Selected navigation markers only; unrelated captures retain REVIEW_REQUIRED"
+  },
+  "real_stack": {
+    "desktop1440": "PASS",
+    "touch393": "PASS",
+    "scope": "Authenticated production lifecycle against owned Go/PostgreSQL/LiveKit/Tempo; no hardware/media capacity claim",
+    "previous_pr_blocker": "Ports4810/4812 free; no pre-existing SSH process or service stopped",
+    "resources_removed": true
+  },
+  "report_sha256": "0e73ec572e507fe35af477cd8a637458ad2da9a0f461321ffd57542fdae2e4ca",
+  "ci": "PENDING_PUBLICATION; exact final head checks recorded in PR metadata/final receipt",
+  "not_run": [
+    "Native Android/iOS: Web CSS-only change",
+    "Physical media quality/capacity",
+    "Local spec/contract verification: no requirement/backlog/wire-contract delta"
+  ]
+}
