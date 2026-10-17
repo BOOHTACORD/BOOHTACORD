@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vActionHint } from '../../shared/action_hint/directive'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import type { TopologyChannel } from '../../channel/topology_client'
 import { useDirectMessageStore } from '../../direct_message/direct_message_store'
@@ -98,7 +99,7 @@ onBeforeUnmount(() => { openSequence++; quickJump.dispose(); people.dispose() })
   <div class="workspace-search-modes" role="group" aria-label="Тип поиска">
     <button type="button" :aria-pressed="searchMode === 'messages'" @click="searchMode = 'messages'">Сообщения</button>
     <button type="button" :aria-pressed="searchMode === 'navigation'" @click="searchMode = 'navigation'">Каналы и люди</button>
-    <button v-if="searchMode === 'navigation'" type="button" aria-label="Закрыть поиск" @click="emit('close')">Закрыть</button>
+    <button v-action-hint v-if="searchMode === 'navigation'" class="header-action workspace-search-close" type="button" aria-label="Закрыть поиск" @click="emit('close')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button>
   </div>
   <SearchPanel v-show="searchMode === 'messages'" :current-conversation="currentConversation" :channel-labels="channelLabels" :direct-message-labels="directMessageLabels" @open="open" @open-mention="openMention" @close="emit('close')" />
   <QuickJumpPanel v-if="searchMode === 'navigation'" :channels="navigationChannels" :people="navigationPeople" :status="navigationStatus" :people-loading="people.loading.value" :people-error="people.error.value" :has-more="Boolean(people.after.value)" @next="people.next()" @retry="people.after.value ? people.next() : people.refresh()" @select="openQuickJump" />
@@ -107,7 +108,7 @@ onBeforeUnmount(() => { openSequence++; quickJump.dispose(); people.dispose() })
 
 <style scoped>
 .workspace-search-modes { display: flex; gap: 8px; margin: 12px 20px 0; }
-.workspace-search-modes button { background: transparent; border: 1px solid var(--gc-border, #363a46); border-radius: 999px; color: inherit; cursor: pointer; min-height: 36px; padding: 6px 12px; }
+.workspace-search-modes button:not(.workspace-search-close) { background: transparent; border: 1px solid var(--gc-border, #363a46); border-radius: 999px; color: inherit; cursor: pointer; min-height: 36px; padding: 6px 12px; }
 .workspace-search-modes button[aria-pressed="true"] { background: var(--gc-surface-raised, #20232d); border-color: var(--gc-accent, #6974f5); }
 @media (max-width: 600px) { .workspace-search-modes { margin-inline: 16px; } }
 </style>

@@ -14,6 +14,7 @@ type VoiceConnection = ReturnType<typeof useVoiceConnectionStore>
 type WorkspaceVoiceControls = ReturnType<typeof useWorkspaceVoiceControls>
 
 defineProps<{
+  searchExpanded?: boolean
   accountId: string
   activeVoiceChannel: TopologyChannel | null
   panel: 'none' | 'admin' | 'audio' | 'profile'
@@ -54,7 +55,7 @@ const emit = defineEmits<{ openSearch: []; returnVoice: [channelId: string]; tog
   <ConversationPane
     v-show="panel === 'none'"
     :mini-player-target="miniPlayerTarget"
-    :account-id="accountId"
+    :search-expanded="searchExpanded" :account-id="accountId"
     :active-voice-channel="activeVoiceChannel"
     :visible="panel === 'none'"
     :channel="channel"

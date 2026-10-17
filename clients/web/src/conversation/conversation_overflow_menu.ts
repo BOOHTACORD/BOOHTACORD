@@ -25,7 +25,17 @@ export function useConversationOverflowMenu(openSearchAction: () => void, toggle
   }
 
   function onKeys(event: KeyboardEvent): void {
-    if (!expanded.value) return
+    if (!expanded.value) {
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault()
+        expanded.value = true
+        void nextTick(() => {
+          const items = menu.value?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')
+          items?.[event.key === 'ArrowUp' ? items.length - 1 : 0]?.focus()
+        })
+      }
+      return
+    }
     if (event.key === 'Escape') {
       event.stopPropagation()
       event.preventDefault()
@@ -46,5 +56,5 @@ export function useConversationOverflowMenu(openSearchAction: () => void, toggle
   function openSearch(): void { close(); openSearchAction() }
   function toggleMembers(): void { close(true); toggleMembersAction() }
 
-  return { expanded, root, trigger, menu, toggle, onOutside, onFocusOut, onKeys, openSearch, toggleMembers }
+  return { close, expanded, root, trigger, menu, toggle, onOutside, onFocusOut, onKeys, openSearch, toggleMembers }
 }

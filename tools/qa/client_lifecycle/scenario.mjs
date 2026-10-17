@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { api, channel, chromium, expect, login, openNavigation, origin, status } from './request.mjs'
 import { guild } from './guild.mjs'
+import { conversationHeaders } from './header_actions.mjs'
 import { personalSettings } from './settings_hierarchy.mjs'
 import { sessions } from './sessions.mjs'
 import { searchTabs } from './search_tabs.mjs'
@@ -62,6 +63,7 @@ try {
   const channelHistory = guest.getByRole('log', { name: 'История сообщений' })
   await expect(channelHistory).toContainText('Synthetic UIUX channel sample: readable conversation text.')
   console.log('stage=qa-member-message-history-visible')
+  await conversationHeaders(guest, input, report, 'TEXT')
   await guest.screenshot({ path: input.directory+'/channel-text.png' })
   const firstChannelMessage = guest.locator('.message-row')
     .filter({ hasText: 'Synthetic UIUX channel sample: readable conversation text.' }).first()
@@ -132,7 +134,7 @@ try {
     await guest.getByRole('button', { name: 'Открыть навигацию', exact: true }).click()
     await expect(sidebar).toHaveClass(/is-open/)
     await guest.screenshot({ path: input.directory+'/navigation-overlay.png' })
-    await guest.getByRole('button', { name: 'Закрыть навигацию', exact: true }).click()
+    await guest.getByTestId('nav-sidebar').getByRole('button', { name: 'Закрыть навигацию', exact: true }).click()
     await expect(sidebar).not.toHaveClass(/is-open/)
     report.catalog_navigation_overlay = { opened_by_trigger: true, closed_by_button: true }
     console.log('stage=qa-member-navigation-overlay-complete')
@@ -168,7 +170,7 @@ try {
   const dmList = guest.getByRole('navigation', { name: 'Личные сообщения' })
   await expect(dmList.locator('.channel-button').filter({ hasText: 'qa_admin' })).toBeVisible()
   await guest.screenshot({ path: input.directory+'/dm-list.png' })
-  if (input.viewport.is_mobile) await guest.getByRole('button', { name: 'Закрыть навигацию', exact: true }).click()
+  if (input.viewport.is_mobile) await guest.getByTestId('nav-sidebar').getByRole('button', { name: 'Закрыть навигацию', exact: true }).click()
 
   const syntheticMessage = 'Синтетическое сообщение для QA'
   await guest.getByRole('textbox', { name: 'Сообщение' }).fill(syntheticMessage)
@@ -191,6 +193,8 @@ try {
   await context.getByRole('button', { name: 'Вернуться к исходной позиции', exact: true }).click()
   await expect(dmSearch.getByRole('searchbox', { name: 'Запрос' })).toHaveValue(syntheticMessage)
   await expect(dmSearch.getByText(syntheticMessage, { exact: true })).toBeVisible()
+  await dmSearch.getByRole('button', { name:'Закрыть поиск в диалоге', exact:true }).click()
+  await conversationHeaders(guest, input, report, 'DM')
   report.dm_full_app = { empty_conversation: true, list: true, sent_message: true, search: true, context_return_preserves_search: true }
   console.log('stage=qa-member-dm-search-complete')
 

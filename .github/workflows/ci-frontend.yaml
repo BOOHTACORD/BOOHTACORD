@@ -121,6 +121,14 @@ jobs:
           path: .out/issue349/browser/**
           if-no-files-found: ignore
           retention-days: 30
+      - name: Retain header controls and keyboard visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-header-actions-${{ github.sha }}
+          path: .out/issue352/browser/**
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain settings hierarchy interaction and visual evidence
         if: always()
         uses: actions/upload-artifact@v4

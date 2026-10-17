@@ -56,6 +56,6 @@ test('files Load more disables only the pending operation and retains Open/Close
   await expect(page.getByTestId('action')).toHaveText('open')
   expect(reads).toBe(1)
   release(); await expect(page.locator('.conversation-files .result-row')).toHaveCount(2)
-  await page.getByRole('button', { name: 'Закрыть', exact: true }).press('Enter')
+  await page.getByRole('button', { name: 'Закрыть файлы беседы', exact: true }).press('Enter')
   await expect(page.getByTestId('action')).toHaveText('close')
 })

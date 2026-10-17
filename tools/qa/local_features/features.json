@@ -362,7 +362,8 @@
       "tests/microcopy/playwright.config.ts",
       "tests/navigation_density/playwright.config.ts",
       "tests/member_roster/playwright.config.ts",
-      "tests/member_popover/playwright.config.ts"
+      "tests/member_popover/playwright.config.ts",
+      "tests/header_actions/playwright.config.ts"
     ],
     "flutter": [
       "test/mobile_navigation_visual_capture_test.dart",
@@ -406,6 +407,11 @@
         "browser": "clients/web/tests/member_roster/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/member_profile.mjs",
         "scope": "Production roster/profile with 30 synthetic members; long names, three presence groups, voice status/volume/admin visibility, pagination, empty/loading/retry/denied, keyboard/touch and focus, 320/390/1024/1440, root text and actual browser zoom 200%. Real Go API member-to-DM opening and actual SFU voice volume with MEMBER kick denial. No physical screen reader, native or media quality claim."
+      },
+      "issue352": {
+        "browser": "clients/web/tests/header_actions/playwright.config.ts",
+        "actual": "tools/qa/client_lifecycle/header_actions.mjs",
+        "scope": "Actual production TEXT/DM/VOICE/search/settings header controls; 320/390/768/1440, text/native browser zoom 200%, keyboard/hints/overflow/focus. Owned API/SFU confirms same selected object, drafts and voice transport through search/panel close; Web only, no hardware or physical screen-reader claim."
       }
     }
   },

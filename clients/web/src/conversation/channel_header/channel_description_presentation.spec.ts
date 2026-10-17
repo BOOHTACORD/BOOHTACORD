@@ -8,7 +8,7 @@ const presentation = readFileSync(new URL('../../design/design_v2_chat_presentat
 describe('server-authored text channel description', () => {
   it('passes only the selected channel description to the chat heading', () => {
     expect(pane).toContain(':channel-description="channel.description"')
-    expect(conversation).toContain('<small v-if="channelDescription">{{ channelDescription }}</small>')
+    expect(conversation).toContain('<small v-if="channelDescription" :title="channelDescription">{{ channelDescription }}</small>')
   })
 
   it('keeps the compact mobile chat heading to one line', () => {
