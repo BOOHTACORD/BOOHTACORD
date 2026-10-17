@@ -36,7 +36,7 @@ describe('screen viewer layout reference', () => {
     const styles = source('../design/voice_viewer_reference.css')
 
     expect(styles).toContain('@media (max-width: 1100px)')
-    expect(styles).toContain('.stream-quality-row .volume-control, .stream-audio-status')
+    expect(styles).toContain('.stream-quality-row .volume-control, .stream-audio-status:not(.gc-sr-only)')
     expect(styles).toContain('.stream-quality-row, .stream-quality, .stream-voice-return { flex-wrap: wrap; }')
     expect(styles).toContain('.stream-voice-return button:first-of-type { margin-left: 0; }')
   })

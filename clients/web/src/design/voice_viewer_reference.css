@@ -42,5 +42,5 @@
 .stream-voice-return-copy p { margin: 0; color: var(--gc-text-secondary); font-size: var(--gc-text-body); }
 .stream-voice-return-copy small { color: var(--gc-text-muted); font-size: var(--gc-text-caption); line-height: var(--gc-line-caption); }
 .stream-voice-return button:first-of-type { margin-left: auto; }
-@media (max-width: 1100px) { .stream-quality-row, .stream-quality, .stream-voice-return { flex-wrap: wrap; }.stream-quality { flex: 1 1 100%; }.stream-quality-row .volume-control, .stream-audio-status { flex: 1 1 160px; width: auto; }.stream-voice-return-copy { flex: 1 1 100%; }.stream-voice-return button:first-of-type { margin-left: 0; } }
+@media (max-width: 1100px) { .stream-quality-row, .stream-quality, .stream-voice-return { flex-wrap: wrap; }.stream-quality { flex: 1 1 100%; }.stream-quality-row .volume-control, .stream-audio-status:not(.gc-sr-only) { flex: 1 1 160px; width: auto; }.stream-voice-return-copy { flex: 1 1 100%; }.stream-voice-return button:first-of-type { margin-left: 0; } }
 @media (max-width: 600px) { .stream-quality-row { align-items: flex-start; }.stream-diagnostics { flex: 1 1 100%; }.stream-diagnostics > summary { width: fit-content; } }
