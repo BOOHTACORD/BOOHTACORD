@@ -278,7 +278,8 @@
       "clients/web/src/conversation/history_window/*",
       "clients/web/src/conversation/reactions/*",
       "clients/web/src/conversation/system_welcome/*",
-      "clients/web/src/conversation/message_body/*"
+      "clients/web/src/conversation/message_body/*",
+      "clients/flutter/lib/src/widgets/message_attachment_composer.dart"
     ],
     "web": [
       "tests/conversation_action_disclosure/playwright.config.ts",
@@ -295,7 +296,10 @@
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart",
       "test/message_action_menu_test.dart",
-      "test/features/workspace/dm_drafts/widget_test.dart"
+      "test/features/workspace/dm_drafts/widget_test.dart",
+      "test/clipboard_paste_edit_generation_test.dart",
+      "test/message_attachment_composer_test.dart",
+      "test/workspace_screen_test.dart"
     ],
     "acceptance": {
       "composer_text_scale": {
@@ -312,7 +316,13 @@
         "browser": "tools/qa/dm_composer/run.py",
         "native": "tools/qa/dm_composer/run_native.py",
         "target": "integration_test/dm_composer_qa_test.dart",
-        "scope": "Actual DM drafts/search/composer on owned stack; physical IME, clipboard and image picker remain separate gates"
+        "scope": "Actual DM drafts/search/composer on owned stack; physical IME, clipboard and image picker remain separate gates",
+        "clipboard_edit_context": {
+          "focused": "clients/flutter/test/clipboard_paste_edit_generation_test.dart",
+          "target": "integration_test/clipboard_context_qa_test.dart",
+          "driver": "test_driver/local_qa.dart",
+          "scope": "Pending native/fallback text paste preserves changed selection/composing/text in TEXT and DM; unchanged-context insert remains. Dedicated Android/iOS QA targets read synthetic data through the actual OS clipboard, then hold completion while editing context changes. Controlled editing values do not certify physical IME or gestures."
+        }
       },
       "issue301": {
         "browser": "tools/qa/accessibility_runtime/run.py",

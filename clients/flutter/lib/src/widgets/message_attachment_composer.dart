@@ -154,7 +154,9 @@ class MessageAttachmentComposerState extends State<MessageAttachmentComposer> {
       }
       return;
     }
-    if (widget.textController.text == originalValue.text) {
+    if (widget.textController.text == originalValue.text &&
+        widget.textController.selection == originalValue.selection &&
+        widget.textController.value.composing == originalValue.composing) {
       _insertText(content?.text ?? fallbackText ?? '', originalValue);
     }
     if (content?.imageError case final imageError?) {

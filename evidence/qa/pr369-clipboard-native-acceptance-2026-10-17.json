@@ -1,0 +1,282 @@
+{
+  "pr": 369,
+  "issue": 294,
+  "backlog_leaf": "FV2-008",
+  "date": "2026-10-17",
+  "base_master": "622d68fc7663ab9113d9475cf14a717dd5a27a72",
+  "tested_source": {
+    "head": "d325f4c06559f9e8ca1ac456644d826e71a0bf81",
+    "tree": "1ce96dc1bef9f47cb43ee6a222ec7a2321d269c0",
+    "files": {
+      "clients/flutter/lib/src/widgets/message_attachment_composer.dart": "f2ee9acb7f7b2c4a889da28e57211d03970bf1dbd9a5603855c64702dc177dbc",
+      "clients/flutter/integration_test/clipboard_context_qa_test.dart": "fda1b3c87656c28e197bbceb5549608079f12aac0eda23408ab5541c6d939305",
+      "clients/flutter/test/clipboard_paste_edit_generation_test.dart": "7d4859f6ea3df453047accaae28e4b57d64c1d88da61104dd0258c93b9bdb246",
+      "tools/qa/local_features/features.json": "1757b23df882bcbf467512231c0567fa5d06d7c5f5574338f188811f6913026c"
+    }
+  },
+  "scope": "clipboard context regression only; broader issue294 remains open",
+  "flutter": "3.47.7",
+  "dart": "3.13.5",
+  "focused": {
+    "status": "PASS",
+    "count": 29
+  },
+  "unit": {
+    "status": "PASS",
+    "passed": 1449,
+    "skipped": 1
+  },
+  "components": {
+    "status": "PASS",
+    "passed": 133
+  },
+  "clipboard_runtime": {
+    "android": {
+      "status": "PASS",
+      "cases": 16,
+      "device": "emulator-5554",
+      "avd": "BOOHTACORD_QA_API35",
+      "os": "Android15 API35 arm64"
+    },
+    "ios": {
+      "status": "PASS",
+      "cases": 16,
+      "device": "82C26E13-0F1F-43F9-AF27-866DC22C2456",
+      "name": "BOOHTACORD QA iPhone",
+      "os": "iOS27 Simulator"
+    },
+    "scope": "Actual OS clipboard with synthetic data; held completion, controlled text/selection/composing values, actual platform fallback; no HTTP in editor fixture"
+  },
+  "local_feature": {
+    "raw_status": "REVIEW_REQUIRED",
+    "stages": [
+      {
+        "name": "flutter-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "flutter-component-captures",
+        "status": "PASS"
+      },
+      {
+        "name": "android-runtime",
+        "status": "PASS"
+      },
+      {
+        "name": "ios-runtime",
+        "status": "PASS"
+      }
+    ],
+    "source": "d325f4c06559f9e8ca1ac456644d826e71a0bf81 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "report_sha256": "2da1295235f102bf86944630342a4620358ccdfb85e539bc2ea16d2087849ab3"
+  },
+  "native_api_runtime": {
+    "android": {
+      "status": "PASS",
+      "platform": "android",
+      "device": "emulator-5554",
+      "mocks": false,
+      "scope": "auth, authenticated workspace, profile/audio/admin panels, logout",
+      "media": "NOT_RUN",
+      "physical_device": false
+    },
+    "ios": {
+      "status": "PASS",
+      "platform": "ios",
+      "device": "82C26E13-0F1F-43F9-AF27-866DC22C2456",
+      "mocks": false,
+      "scope": "auth, authenticated workspace, profile/audio/admin panels, logout",
+      "media": "NOT_RUN",
+      "physical_device": false
+    }
+  },
+  "analyzer": {
+    "status": "PASS",
+    "issues": 0
+  },
+  "harness_unit": {
+    "status": "PASS",
+    "count": 9
+  },
+  "visual_review": {
+    "status": "PASS_SCOPED",
+    "reviewed": [
+      {
+        "path": ".out/pr369/android-clipboard/clipboard-dm-selection.png",
+        "sha256": "7a599b16710f71232c22973af895364549d0b814595a1355cf61a4925b4788d0",
+        "width": 1080,
+        "height": 2400,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Synthetic native clipboard fixture: expected unchanged/inserted value visible, no error feedback. Controlled read-only field excludes physical IME acceptance."
+      },
+      {
+        "path": ".out/pr369/android-clipboard/clipboard-dm-unchanged.png",
+        "sha256": "e31b20a0867853e51fd9d7f589a1f5c1438ca64bf36ba0c6a4c0c1b09bf6d8c7",
+        "width": 1080,
+        "height": 2400,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Synthetic native clipboard fixture: expected unchanged/inserted value visible, no error feedback. Controlled read-only field excludes physical IME acceptance."
+      },
+      {
+        "path": ".out/pr369/android-clipboard/clipboard-text-selection.png",
+        "sha256": "19874f7eadc6184ab843285c4762015db52b0b52b87fa3e2fe0b5c2c20ca498f",
+        "width": 1080,
+        "height": 2400,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Synthetic native clipboard fixture: expected unchanged/inserted value visible, no error feedback. Controlled read-only field excludes physical IME acceptance."
+      },
+      {
+        "path": ".out/pr369/android-clipboard/clipboard-text-unchanged.png",
+        "sha256": "b865e5f9337f6d96811b49acb2d5b967d31b2b4f0cc95aa0ab69e3578890b7b9",
+        "width": 1080,
+        "height": 2400,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Synthetic native clipboard fixture: expected unchanged/inserted value visible, no error feedback. Controlled read-only field excludes physical IME acceptance."
+      },
+      {
+        "path": ".out/pr369/ios-clipboard/clipboard-dm-selection.png",
+        "sha256": "231018918118300cff28dbdce9905c97b320b31cca36c7e778531441aacc5bd7",
+        "width": 1206,
+        "height": 2622,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Synthetic native clipboard fixture: expected unchanged/inserted value visible, no error feedback. Controlled read-only field excludes physical IME acceptance."
+      },
+      {
+        "path": ".out/pr369/ios-clipboard/clipboard-dm-unchanged.png",
+        "sha256": "84fd8cd7ab3d48a62a31343053b28dad9f74293c8110ee325a8a1ba414028baf",
+        "width": 1206,
+        "height": 2622,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Synthetic native clipboard fixture: expected unchanged/inserted value visible, no error feedback. Controlled read-only field excludes physical IME acceptance."
+      },
+      {
+        "path": ".out/pr369/ios-clipboard/clipboard-text-selection.png",
+        "sha256": "5286470dbfae80c20f3fde75cdd535c91ef19a73341a673effffb50a529341af",
+        "width": 1206,
+        "height": 2622,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Synthetic native clipboard fixture: expected unchanged/inserted value visible, no error feedback. Controlled read-only field excludes physical IME acceptance."
+      },
+      {
+        "path": ".out/pr369/ios-clipboard/clipboard-text-unchanged.png",
+        "sha256": "f8668901e860f8654603990dae9c0ed0f8209c8b69a05e5ba7cf5bdf2c2b2938",
+        "width": 1206,
+        "height": 2622,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Synthetic native clipboard fixture: expected unchanged/inserted value visible, no error feedback. Controlled read-only field excludes physical IME acceptance."
+      },
+      {
+        "path": ".out/local-features/20261017-224823/flutter-captures/flutter-text-channel-mobile-393x852.png",
+        "sha256": "9380b17966fcf09334d997737917a594b8884a436f71b33b0770cae3abe30e86",
+        "width": 1179,
+        "height": 2556,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Production workspace component: header and composer visible, actions stay inside the field, large text wraps without overlap; synthetic messages."
+      },
+      {
+        "path": ".out/local-features/20261017-224823/flutter-captures/flutter-text-channel-mobile-large-text-393x852.png",
+        "sha256": "8d0bcd79c452d8106312b76990b4ea2ca38b538e963c09cc173880b4a7a0dd42",
+        "width": 1179,
+        "height": 2556,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Production workspace component: header and composer visible, actions stay inside the field, large text wraps without overlap; synthetic messages."
+      },
+      {
+        "path": ".out/local-features/20261017-224823/flutter-captures/flutter-text-channel-desktop-1440x900.png",
+        "sha256": "c29b72ddf3e3a939d1211adca1813ac0bf499e5a1b753af4dac0be7b348b93eb",
+        "width": 2880,
+        "height": 1800,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Production workspace component: header and composer visible, actions stay inside the field, large text wraps without overlap; synthetic messages."
+      },
+      {
+        "path": ".out/local-features/20261017-224823/flutter-captures/flutter-dm-conversation-mobile-393x852.png",
+        "sha256": "fbdcd1a58ef9f264c38b5a6bd793509128bccbadd315e78525e1f37c59d1d512",
+        "width": 1179,
+        "height": 2556,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Production workspace component: header and composer visible, actions stay inside the field, large text wraps without overlap; synthetic messages."
+      },
+      {
+        "path": ".out/local-features/20261017-224823/flutter-captures/flutter-dm-conversation-mobile-large-text-393x852.png",
+        "sha256": "cec1729241c0da80617060ada44af9118a9bc345d0565f0e9fc529c34e5120ac",
+        "width": 1179,
+        "height": 2556,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Production workspace component: header and composer visible, actions stay inside the field, large text wraps without overlap; synthetic messages."
+      },
+      {
+        "path": ".out/local-features/20261017-224823/flutter-captures/flutter-dm-conversation-desktop-1440x900.png",
+        "sha256": "b6bb6f6ff344793b88d092c0874958134acff4425c286bf344d8a68b616823b1",
+        "width": 2880,
+        "height": 1800,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Production workspace component: header and composer visible, actions stay inside the field, large text wraps without overlap; synthetic messages."
+      },
+      {
+        "path": ".out/local-features/20261017-224823/android-runtime/native-workspace.png",
+        "sha256": "fe062a76a8a2784212e7c0809d263e7494ce78bdd0ade1f33655f285dfbcd201",
+        "width": 1080,
+        "height": 2400,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Actual authenticated native workspace: navigation closed, empty selection visible, no error overlay. Does not prove conversation or media behavior."
+      },
+      {
+        "path": ".out/local-features/20261017-224823/ios-runtime/native-workspace.png",
+        "sha256": "60879a6867970357cf78f9e0315b63c41395122c703d3812b2d406af683b5a9e",
+        "width": 1206,
+        "height": 2622,
+        "review": "PASS",
+        "detail": "original",
+        "observation": "Actual authenticated native workspace: navigation closed, empty selection visible, no error overlay. Does not prove conversation or media behavior."
+      }
+    ],
+    "baseline_changed": false,
+    "aggregate_raw_report": "REVIEW_REQUIRED; incidental admin/settings/capture images were not reviewed for this clipboard-only patch"
+  },
+  "attempts": [
+    {
+      "name": "android initial native fixture",
+      "status": "FAIL",
+      "flutter": "3.47.6 (unintended PATH fallback)",
+      "cause": "QA fixture allowed live Android IME to change controlled values; screenshot surface conversion reset between tests. No product-code fix required."
+    },
+    {
+      "name": "android corrected native fixture",
+      "status": "PASS",
+      "flutter": "3.47.7",
+      "change": "Read-only QA field isolates OS clipboard from independently rewriting IME; convert Android surface per test."
+    }
+  ],
+  "log_sha256": {
+    "focused.log": "fbb7103b7b87839d215402ae6b20e2392f79f699bd2710b123c8c976e723ae97",
+    "android-clipboard.log": "b28c938e158a2e826dc938c55182072b33da63578529ddc4b3caae714692549d",
+    "android-clipboard-v2.log": "3ba1567b851e3eb4c954e61f9cb6d710f8eaf248daaf747265b7ce75ea56a129",
+    "ios-clipboard.log": "4e5e82d8a3a736a1ad7f28d5c936abed56e1f014e141ce1b513d0ba86bb68ffc",
+    "local-feature.log": "696613ae8b532c8e7f5c170587580472e2fcdd4d09ecf62767565bc6d00e4170",
+    "analyzer.log": "b75cef94cb72c195332f1ee4df40055bd99010e12ec436862ec60b46fa667f4b"
+  },
+  "not_run": [
+    "physical Android/iOS clipboard gestures and IME",
+    "physical lifecycle/screen readers",
+    "media quality/capacity",
+    "new release/distribution builds",
+    "spec traceability and contracts verification: no requirements/backlog/wire-contract delta versus master"
+  ],
+  "ci": "PENDING_PUBLICATION: exact public head checks will be linked in PR metadata and final receipt"
+}
