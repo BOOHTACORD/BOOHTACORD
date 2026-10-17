@@ -105,12 +105,12 @@
       "screenshots": {
         "captures": 1053,
         "unique": 996,
-        "directly_reviewed_in_this_run": 25,
-        "unreviewed": 853,
+        "directly_reviewed_in_this_run": 31,
+        "unreviewed": 851,
         "visual_gate": "REVIEW_REQUIRED",
         "baseline_approved": false,
-        "exact_hash_reused_from_prior_review": 118,
-        "effective_unique_reviewed": 143,
+        "exact_hash_reused_from_prior_review": 114,
+        "effective_unique_reviewed": 145,
         "directly_reviewed_images": [
           {
             "path": ".out/local-features/20261017-191711/images/web-accessibility/admin_confirmation.browser-168ea-chable-at-844x390-landscape/screen-share-setup-actions.png",
@@ -340,6 +340,66 @@
               900
             ],
             "observation": "At 320 CSS px and 200% root text, expanded sender diagnostics wrap at word boundaries and remain legible in the captured view.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png",
+            "sha256": "3980015f5d7893556d96e3fed40046bcdbe5440409d8df1515920a417e614dd3",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "observation": "At 320px / 200% text, search modes stack vertically and expanded author, attachment and date filters stay within the content width; lower active-filter chips continue below the scroll viewport.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-archive-result-layout-at-390px-200-text/archive-layout.png",
+            "sha256": "0b719fc2be94e0c67f2aa9d792791583327013c0feaade42db0632f0fd3343eb",
+            "dimensions_px": [
+              390,
+              1000
+            ],
+            "observation": "At 390px / 200% text, archive controls remain within the panel width; the long native channel option is truncated, and lower search actions remain reachable in the scrollable result region.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-mentions-result-layout-at-390px-100-text/mentions-layout.png",
+            "sha256": "a5c079a0fe188b4e507b99900f824dbbf1fbb5a1aff8a6b23781610fca2dabb6",
+            "dimensions_px": [
+              390,
+              1000
+            ],
+            "observation": "At 390px, mention/archive/pin modes form a two-column grid; long message metadata truncates without horizontal overflow, and refresh and Show more remain visible.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-pins-result-layout-at-320px-200-text/pins-layout.png",
+            "sha256": "48c9c78b1b2377ba88a34354ea226a0c18f3ce73e26aa93fa53978254bc535e4",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "observation": "At 320px / 200% text, the refresh action wraps inside its button and pinned metadata/snippets wrap within the panel; the message link remains visible and the list continues below the viewport.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-quick-result-layout-at-390px-100-text/quick-layout.png",
+            "sha256": "a0ee00b218ba0f3c690eebff1b6aea1844056c4d3e77e860e5d12310602535de",
+            "dimensions_px": [
+              390,
+              1000
+            ],
+            "observation": "At 390px, quick-jump results truncate long channel and DM names with ellipses; the query field and bottom Show more action remain usable.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+            "sha256": "b0b788db28091483aef3a799d554382c2d78813517d5f5656a8fbf34c3da0597",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "observation": "At 320px, search modes form two rows and the query, scope and Find controls fit the panel; result metadata truncates and snippets remain clamped within the scrollable list.",
             "visually_reviewed_at_source_resolution": true
           },
           {
@@ -702,16 +762,6 @@
               768
             ],
             "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/direct-messages.png",
-            "exact_hash_match": true
-          },
-          {
-            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-top.png",
-            "sha256": "3193991984568f37d91e392f6b7a7f1f9791f6aea81032b33ac476735ddb3524",
-            "dimensions_px": [
-              320,
-              768
-            ],
-            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-top.png",
             "exact_hash_match": true
           },
           {
@@ -1335,26 +1385,6 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-191711/images/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png",
-            "sha256": "3980015f5d7893556d96e3fed40046bcdbe5440409d8df1515920a417e614dd3",
-            "dimensions_px": [
-              320,
-              1000
-            ],
-            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png",
-            "exact_hash_match": true
-          },
-          {
-            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
-            "sha256": "b0b788db28091483aef3a799d554382c2d78813517d5f5656a8fbf34c3da0597",
-            "dimensions_px": [
-              320,
-              1000
-            ],
-            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
-            "exact_hash_match": true
-          },
-          {
             "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-search-result-layout-at-390px-200-text/search-layout.png",
             "sha256": "36230f8dc20fff3a6f1ded0d813ccb33ba8ed9dc148e7b50d812788895157d08",
             "dimensions_px": [
@@ -1482,16 +1512,6 @@
               640
             ],
             "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
-            "exact_hash_match": true
-          },
-          {
-            "path": ".out/local-features/20261017-191711/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
-            "sha256": "c05d7541d7a22c2367a8caccf1573aa66cde8286e0e27205f5e2e4cb0a138921",
-            "dimensions_px": [
-              320,
-              900
-            ],
-            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
             "exact_hash_match": true
           },
           {
