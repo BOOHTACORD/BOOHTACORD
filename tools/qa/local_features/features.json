@@ -318,11 +318,11 @@
       },
       "issue340": {
         "browser_test": "clients/web/tests/search_sessions/tabs.browser.spec.ts",
-        "scope": "Actual Vue search rail: all four modes, bounded labels/focus, retained query/filter/result scroll, fresh ACL on reopening; CSS widths 320\u20131440, root text 200% and independently measured actual browser zoom 200%. Real stack separately required."
+        "scope": "Actual Vue search rail: all four modes, bounded labels/focus, retained query/filter/result scroll, fresh ACL on reopening; CSS widths 320–1440, root text 200% and independently measured actual browser zoom 200%. Real stack separately required."
       },
       "issue341": {
         "browser_test": "clients/web/tests/dm_starter/overlay.browser.spec.ts",
-        "scope": "Native top-layer DM picker: long labels, focus cycle/return, Escape/outside and pending cancellation, pagination/retry/single open. CSS widths 320\u20131920, root text scale plus independently measured actual 200% browser zoom. Actual API/touch separately required."
+        "scope": "Native top-layer DM picker: long labels, focus cycle/return, Escape/outside and pending cancellation, pagination/retry/single open. CSS widths 320–1920, root text scale plus independently measured actual 200% browser zoom. Actual API/touch separately required."
       },
       "issue346": {
         "browser": "clients/web/tests/search_presentation/playwright.config.ts",
@@ -354,7 +354,9 @@
       "tests/control_consistency/playwright.config.ts",
       "tests/readonly_archive/playwright.config.ts",
       "tests/microcopy/playwright.config.ts",
-      "tests/navigation_density/playwright.config.ts"
+      "tests/navigation_density/playwright.config.ts",
+      "tests/member_roster/playwright.config.ts",
+      "tests/member_popover/playwright.config.ts"
     ],
     "flutter": [
       "test/mobile_navigation_visual_capture_test.dart",
@@ -392,7 +394,12 @@
       },
       "issue344": {
         "browser": "clients/web/tests/navigation_density/playwright.config.ts",
-        "scope": "Actual production navigation components with 36 channels/three categories, keyboard/touch, single scroll surface, persisted favorites/collapse and 320\u20131920px/actual 200% browser zoom. Real-stack workspace journeys are separate; no native/media acceptance claim."
+        "scope": "Actual production navigation components with 36 channels/three categories, keyboard/touch, single scroll surface, persisted favorites/collapse and 320–1920px/actual 200% browser zoom. Real-stack workspace journeys are separate; no native/media acceptance claim."
+      },
+      "issue350": {
+        "browser": "clients/web/tests/member_roster/playwright.config.ts",
+        "actual": "tools/qa/client_lifecycle/member_profile.mjs",
+        "scope": "Production roster/profile with 30 synthetic members; long names, three presence groups, voice status/volume/admin visibility, pagination, empty/loading/retry/denied, keyboard/touch and focus, 320/390/1024/1440, root text and actual browser zoom 200%. Real Go API member-to-DM opening and actual SFU voice volume with MEMBER kick denial. No physical screen reader, native or media quality claim."
       }
     }
   },

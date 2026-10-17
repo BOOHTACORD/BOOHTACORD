@@ -17,13 +17,13 @@ function statusLabel(presence: MemberPresence): string {
     <h3 class="members-group">{{ title }} — {{ members.length }}</h3>
     <ul class="member-list">
       <li v-for="member in members" :key="member.user_id">
-        <button class="member-card member" :class="`member--${member.presence}`" type="button" :aria-label="`Профиль: ${member.display_name} · ${statusLabel(member.presence)}`" @click="emit('open', member.user_id, $event)">
+        <button class="member-card member" :class="`member--${member.presence}`" type="button" :title="`${member.display_name} · ${statusLabel(member.presence)}`" :aria-label="`Профиль: ${member.display_name} · ${statusLabel(member.presence)}`" @click="emit('open', member.user_id, $event)">
           <span class="member-avatar-wrap">
             <img v-if="member.avatar_url" class="member-avatar" :src="member.avatar_url" alt="">
             <span v-else class="member-avatar" :style="{ backgroundColor: avatarBackground(member.user_id), color: avatarForeground(member.user_id) }" aria-hidden="true">{{ avatarInitials(member.display_name) }}</span>
             <span class="member-presence-dot" :class="`member-presence-dot--${member.presence}`" aria-hidden="true"></span>
           </span>
-          <span class="member-copy"><span class="member-name">{{ member.display_name }}</span><small class="member-state">{{ statusLabel(member.presence) }}</small></span>
+          <span class="member-copy"><span class="member-name">{{ member.display_name }}</span></span>
         </button>
       </li>
     </ul>

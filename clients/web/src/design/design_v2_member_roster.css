@@ -1,11 +1,14 @@
-/* Guild roster from R01; voice participants keep their separate controls. */
-.members-guild-roster .members-presence-groups { gap: 28px; }
-.members-guild-roster .members-group { margin: 0 0 16px; font-weight: 600; line-height: 1rem; letter-spacing: .6px; text-transform: uppercase; }
-.members-guild-roster .member-list { gap: 4px; margin: 0; }
-.members-guild-roster .member-card { min-height: 52px; gap: 10px; border-radius: 8px; padding: 8px; }
-.members-guild-roster .member-card:hover { background: var(--gc-surface-raised); }
-.members-guild-roster .member-avatar { border-radius: 50%; font-size: 0.8125rem; font-weight: 600; }
-.members-guild-roster .member-name { font-weight: 500; }
-.members-guild-roster .member-state { display: block; line-height: 1rem; }
+/* Presence stays in grouping and accessible row labels, without repeated prose. */
+.members-guild-roster .members-presence-groups { gap: 16px; }
+.members-guild-roster .members-group { margin: 0 0 8px; font-weight: 600; line-height: 1rem; letter-spacing: .4px; text-transform: uppercase; }
+.members-panel .member-list { gap: 2px; margin: 0; }
+.members-panel .member-card { min-height: 44px; gap: 10px; border-radius: 6px; padding: 4px 6px; }
+.members-panel .member-card:hover { background: var(--gc-surface-raised); }
+.members-panel .member-copy { flex: 1; min-width: 0; }
+.members-panel .member-avatar { width: 32px; height: 32px; flex-basis: 32px; border-radius: 50%; font-size: .8125rem; font-weight: 600; }
+.members-panel .member-avatar-wrap { width: 32px; height: 32px; flex-basis: 32px; }
+.members-panel .member-name { font-weight: 500; }
 .members-guild-roster .member-presence-dot--online { box-sizing: content-box; bottom: 0; }
-.members-guild-roster .member-presence-dot--offline { display: none; }
+.members-guild-roster .member-presence-dot--offline { display: block; border-radius: 50%; background: var(--gc-aside); box-shadow: inset 0 0 0 2px #9ca3b2; }
+.members-guild-roster .member-presence-dot--unknown { border-radius: 2px; }
+.members-panel .members-heading { margin-bottom: 16px; }

@@ -34,6 +34,6 @@ describe('Design V2 component color tokens', () => {
     expect(admin).toContain('.admin-panel--members .admin-panel-heading h1 { font-size: var(--gc-text-page); line-height: var(--gc-line-page); font-weight: var(--gc-weight-semibold); }')
     expect(admin).toContain('.admin-panel--members .admin-section-heading h2 { font-size: var(--gc-text-section); line-height: var(--gc-line-section); font-weight: var(--gc-weight-semibold); }')
     expect(authentication).toContain('.authentication-card h1 { margin: 32px 0 0; text-align: center; font-size: var(--gc-text-page); line-height: var(--gc-line-page); font-weight: var(--gc-weight-semibold); }')
-    expect(memberPopover).toContain('.member-popover .member-popover-identity h2 { font-size: var(--gc-text-section); line-height: var(--gc-line-section); font-weight: var(--gc-weight-semibold); }')
+    expect(memberPopover).toContain('.member-popover .member-popover-identity h2 { font-size: var(--gc-text-title); line-height: var(--gc-line-title); font-weight: var(--gc-weight-semibold); }')
   })
 })

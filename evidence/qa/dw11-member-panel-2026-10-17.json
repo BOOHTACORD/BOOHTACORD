@@ -1,0 +1,657 @@
+{
+  "issue": 350,
+  "leaf": "DW-011",
+  "date": "2026-10-17",
+  "timezone": "Europe/Istanbul",
+  "base": "9dc3159220349fb3872ba08fbca8b9e6a76adc73",
+  "accepted_source": "ccc5ce515033ee4675903385d9afe31a7acdf70c",
+  "source_files_sha256": {
+    ".github/workflows/ci-frontend.yaml": "ac50129c3f7b8daa1a4849fb2d8de1bfbaddde6a742f7179e67de70a3b3eedda",
+    "backlog/tasks.yaml": "1baa91c88e2e139a49cbbb7c69b81df51c0bd24f48e1ba15ebfb90e687510e0e",
+    "clients/web/package.json": "f9b9f2a18c57e096716a3ce97aa11464d3c889d91894668931037c2ef5f23120",
+    "clients/web/src/design/design_token_usage.spec.ts": "be4dadb2bb91b2db74b0c892ed9fa712b3aeaa57776b613e6ae7018f0a8654e7",
+    "clients/web/src/design/design_v2_member_popover.css": "828dbf519392829600f72e03c316e2bf5ddae908174d68e9dcdc0c38f481a79d",
+    "clients/web/src/design/design_v2_member_roster.css": "01af6370852590c205721cf12ae19edbe581e9a6db3b6f89d6288f174574e6f7",
+    "clients/web/src/design/responsive_shell.css": "a335aced882d5e5a5ebc3003ae9268dd4a81ab51948a8c5eae876ac89e5a68ed",
+    "clients/web/src/workspace/GuildPresenceGroup.vue": "05d4fbcec2f67c44dd8d2d2d6bf2c426d0b2be5f28b34fa50670bb460bd65b3f",
+    "clients/web/src/workspace/MemberPopover.vue": "d997135924ee1402b084446e10fb75e3b78299e9979299ad7f1d796e99561ef0",
+    "clients/web/src/workspace/WorkspaceMembersPanel.vue": "fd05c4e473adcb4baa0126d180ccdf922128c9aed6d0850374ab2517a7bff565",
+    "clients/web/src/workspace/member_popover_position.spec.ts": "76de5a5662ab95f076c703de5149414b2fde096435e7f5c8b6756fc7f43a75f2",
+    "clients/web/src/workspace/member_popover_position.ts": "967aec12fa43341240ef49b537ca777c101a3b35d457602c6130c844ca7bec24",
+    "clients/web/src/workspace/use_member_popover_position.ts": "9f3abb2155640eef99b10de83ca4e25e7858a20891a2bc9f4e87f1a5bc4dd9e4",
+    "clients/web/tests/member_popover/member_popover.browser.spec.ts": "db65c77c42c4ff477d89261fcb601b7f6015b3d273848bf54accf71042c9c273",
+    "clients/web/tests/member_roster/fixture.html": "862268c2f9ea169c54e9d237eb47a4f3b33ee889bf211c86687c092793e4c303",
+    "clients/web/tests/member_roster/fixture.ts": "4bf540caf00215e11a8afd6b5df17b00036816e534136ba403236e3616910886",
+    "clients/web/tests/member_roster/helpers.ts": "6dfe6c106c1ddc2b2af11dc62f352a3c3cb46730c5ac2950f568e964ff60c500",
+    "clients/web/tests/member_roster/playwright.config.ts": "e3e251ba9eec5f5e993bfe786e9d495a97e513c1f0e8cbd2be536feefa094001",
+    "clients/web/tests/member_roster/roster.browser.spec.ts": "8886ab161c9a757a1a1f052e420669e3158192bcdfade1e96a3933af73915b3c",
+    "tools/ci/native/web.py": "39876313b1d3efe10bd70bde8e19dc777643cf41ffde7f38457fad842fa6035f",
+    "tools/qa/client_lifecycle/guild.mjs": "4b41854f118c3681a6769c46e129d270405d842c9c9e65e528259f910d3644b6",
+    "tools/qa/client_lifecycle/member_profile.mjs": "e12673529333a0b594f96a16c31b97aa6859608ac77ebcbfeed8716bbe946070",
+    "tools/qa/critical_client_acceptance/media.mjs": "cea8b54916fe4d92cd8dd8102fa8a07171d3a9e716017db2e9fb3c3fd8e088cf",
+    "tools/qa/local_features/features.json": "008b5e4a6dc04b26c31e37b0c5aafeaac2d0c6fcd54130e1c4ec80282eeb72b0"
+  },
+  "gate": {
+    "run": ".out/local-features/20261017-100159",
+    "raw_report_sha256": "3e8c4c5161e17fea6ca34f183472d23cc6a2dc44b5a0e3c5a8711284a3108747",
+    "source": "ccc5ce515033ee4675903385d9afe31a7acdf70c diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_status": "REVIEW_REQUIRED",
+    "raw_visual_review": "NOT_RUN",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "PASS"
+      },
+      {
+        "name": "web-control_consistency",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-member_popover",
+        "status": "PASS"
+      },
+      {
+        "name": "web-member_roster",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-microcopy",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mini_player",
+        "status": "PASS"
+      },
+      {
+        "name": "web-navigation_density",
+        "status": "PASS"
+      },
+      {
+        "name": "web-readonly_archive",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_profile",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_share_ui",
+        "status": "PASS"
+      },
+      {
+        "name": "web-voice_interface",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "verification_status": "PASS",
+    "manual_selected_review": "PASS",
+    "unchanged_reviewed_final_frames": 13,
+    "selected_features": [
+      "shell",
+      "voice",
+      "screen"
+    ],
+    "native_platforms": "NOT_RUN; Web-only source change"
+  },
+  "focused": {
+    "unit_tests": 1564,
+    "unit_files": 474,
+    "new_browser_cases": 21,
+    "legacy_profile_browser_cases": 7,
+    "traceability": "PASS 39 requirements; committed index only; approved Windows brief unavailable"
+  },
+  "visual_review": {
+    "source": "1c442b5dfca04fa6ca99a26f2a5207b26a6e608f",
+    "status": "PASS_SELECTED_FRAMES",
+    "baseline_approved": false,
+    "frames": [
+      {
+        "kind": "before",
+        "path": ".out/issue350/before-browser/roster.browser-roster-and-profile-320-text-100/profile.png",
+        "sha256": "aa8f16399f96afe02a42435b69a406af87d3ddc520813f9091b2418634117ea8",
+        "slot": "29/41 controlled current-master reconstruction, no original pixel claim"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-roster-and-profile-320-text-100/profile.png",
+        "sha256": "eb97383f8cf8762fedb88cf57ca19f722b2aa5a3a34a84f88d5dbc26d332342f",
+        "slot": "29/41 controlled current-master reconstruction, no original pixel claim",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-roster-and-profile-320-text-100/profile.png"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue350/before-browser/roster.browser-roster-and-profile-390-text-100/profile.png",
+        "sha256": "1e5ac10636bd183fd198e24467b8b2a23ae3c66684ded74a0bfd175520c666c0",
+        "slot": "29/41 controlled current-master reconstruction, no original pixel claim"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-roster-and-profile-390-text-100/profile.png",
+        "sha256": "5de6ba7f9a3e25cc655f9a89758ee52cbc7fed5f0430b038a7a288e4a4b2e433",
+        "slot": "29/41 controlled current-master reconstruction, no original pixel claim",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-roster-and-profile-390-text-100/profile.png"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue350/before-browser/roster.browser-roster-and-profile-1024-text-100/profile.png",
+        "sha256": "3b12a9540d594d42ce0a1fc65001389373f5abe3f1f9ddac0715deb746b06549",
+        "slot": "29/41 controlled current-master reconstruction, no original pixel claim"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-roster-and-profile-1024-text-100/profile.png",
+        "sha256": "efb527333cb29f4f040b81ba5f3ced0ab27ea722ab6fa3cf23e066949edac007",
+        "slot": "29/41 controlled current-master reconstruction, no original pixel claim",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-roster-and-profile-1024-text-100/profile.png"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue350/before-browser/roster.browser-roster-and-profile-1440-text-100/profile.png",
+        "sha256": "071ae6a7dca4f7026eaf06b34db7167f7bad774441e5c666f13b993fa99acbed",
+        "slot": "29/41 controlled current-master reconstruction, no original pixel claim"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-roster-and-profile-1440-text-100/profile.png",
+        "sha256": "34455e363ff7dbfd72b35c916698057777df6e3b5931d178125860ecdc397d8f",
+        "slot": "29/41 controlled current-master reconstruction, no original pixel claim",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-roster-and-profile-1440-text-100/profile.png"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue350/before-browser/roster.browser-roster-and-profile-390-text-100/roster.png",
+        "sha256": "7828b1233294d9766ff3247ca31b1203585f06b78af1dd5017d654b7b608af3a",
+        "slot": "01/41 controlled roster with reserved mini-player"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-roster-and-profile-390-text-100/roster.png",
+        "sha256": "f3e5002672ea9a27d971ece3e5248ffaffb9d1d7677efe313f76224f51e0b9fd",
+        "slot": "01/41 controlled roster with reserved mini-player",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png"
+      },
+      {
+        "kind": "before",
+        "path": ".out/issue350/before-browser/roster.browser-roster-and-profile-1440-text-100/roster.png",
+        "sha256": "4d39d837bc1c650b68bb0b844c2c2659a5259ff3770f1b8316ebd53f984da1a4",
+        "slot": "01/41 controlled roster with reserved mini-player"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-roster-and-profile-1440-text-100/roster.png",
+        "sha256": "08464dc7dcbac646951b4fd519c4b295c5adadab45f1446b1985bcd3d73e7666",
+        "slot": "01/41 controlled roster with reserved mini-player",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-roster-and-profile-1440-text-100/roster.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-roster-and-profile-320-text-200/profile.png",
+        "sha256": "20867b317f0854f74db2d4938f7e5e35e638073fc1a5a34543a9f3869d4fa04e",
+        "slot": "selected stress/state review",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-roster-and-profile-320-text-200/profile.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-roster-and-profile-320-text-200/profile-actions.png",
+        "sha256": "e162305f56023731fb8861289365d999321befe367e6b4e131263e0271e97b37",
+        "slot": "selected stress/state review",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-roster-and-profile-320-text-200/profile-actions.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-roster-and-profile-1024-text-200/profile-actions.png",
+        "sha256": "19db4908c6fe358c51157713bec15637bfeb5a39d1cc53a0ebd9607828867f50",
+        "slot": "selected stress/state review",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-roster-and-profile-1024-text-200/profile-actions.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-roster-load-470da-ep-explicit-distinct-states/empty.png",
+        "sha256": "741d5ec87e9cbf42942100ca6c39cf827b4d1ad7e01920dd93f987be4115207d",
+        "slot": "selected stress/state review",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-roster-load-470da-ep-explicit-distinct-states/empty.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-roster-load-470da-ep-explicit-distinct-states/loading.png",
+        "sha256": "614bf1afd04b1c93831397766dfc4049eff26499eee96550c85ea5f1eceb2009",
+        "slot": "selected stress/state review",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-roster-load-470da-ep-explicit-distinct-states/loading.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-denied-memb-8cafa-s-without-a-late-focus-jump/denied.png",
+        "sha256": "81062f31449cf682d063695e4b39b9bb9ec601c85e3f90cd46251ddb21d0bf08",
+        "slot": "selected stress/state review",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-denied-memb-8cafa-s-without-a-late-focus-jump/denied.png"
+      },
+      {
+        "kind": "after",
+        "path": ".out/issue350/browser/roster.browser-actual-browser-zoom-200-at-2880/zoom-profile.png",
+        "sha256": "6548c76584715485242a1ae81306d22ca208265d7f676ee9791769df5bfac447",
+        "slot": "selected stress/state review",
+        "gate_path": ".out/local-features/20261017-100159/web-member_roster/roster.browser-actual-browser-zoom-200-at-2880/zoom-profile.png"
+      }
+    ],
+    "crops": [
+      {
+        "path": ".out/issue350/before-desktop.png",
+        "sha256": "db4d273205ebaad9efd8261bc6e71d2a7701ac4d71b7c0c78cbeb45c382307db",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/before-desktop-roster.png",
+        "sha256": "f135dff7f4e612760a2adff002dc0e39f4f4a60c123c59e6309a0a282a4cd11f",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/final-desktop-profile.png",
+        "sha256": "3871c8bb1d6baa6e23d13e18ecdb9d56a5f8d6036a2b5e2aad5340106a5853ff",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/final-desktop-roster.png",
+        "sha256": "50a8f14f510ef12370ba5c0f7b47528c0bf90b410d1d4e23498c729847dcb262",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/final-zoom-profile.png",
+        "sha256": "76b98c132b14116019c97287eb1729d27a1af28356f0659015b903ad659605a8",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/final-loading.png",
+        "sha256": "6e0e5337505f82dfce19c332612ad25dde5e40faba23e3fffbdf657f00286b36",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/final-empty.png",
+        "sha256": "69da13f7e92e3173f02191936d8776e23803f036be1a94c17b7676cc71b2c115",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/final-denied-styled.png",
+        "sha256": "40a22aeb2573cb964a5a7500f46c1aa8f89234943f4d813f9f5c06cdacdcafb8",
+        "resampling": false
+      }
+    ],
+    "observations": [
+      "Before: repeated row status; profile truncates long names, mobile sheet occupies bottom controls, 1024px profile scroll/focus moves it below the viewport.",
+      "After: one-line ellipsis row with complete accessible name/title, attached presence mark and named groups; compact 16px title with complete wrapping identity in the card.",
+      "Card bounds avoid header/composer/voice dock/mini-player. At 200% text or short page zoom, internal scroll is intentional; focus brings the DM action wholly inside the card. Header/close can scroll out at that position and are reached again by keyboard/scroll; Escape remains available. No claim that all profile content fits simultaneously.",
+      "Empty and loading are distinct. Denied member hides identity/actions, with a themed 44px Retry target; retry restores the profile.",
+      "Same existing member drawer; modal scrim darkens/inerts background as intended. The fixed desktop voice-drawer backdrop is asserted separately against full viewport bounds."
+    ],
+    "limits": [
+      "Private tour originals 01/29/41 unavailable; selected source-sized Before is exact base master production UI with controlled fixtures.",
+      "One fixture member ID changes to the own account for the self-action regression, so its deterministic avatar color changes; no pixel-delta threshold or golden is claimed.",
+      "Existing Vite ResizeObserver warnings also appear in the earlier accepted master chat/mini-player fixture logs; not suppressed and not counted as a media quality finding.",
+      "Component captures are synthetic UI evidence; real Go API/SFU and ACL journeys are separate. Native/hardware/screen-reader human acceptance NOT_RUN."
+    ]
+  },
+  "actual_api_sfu": [
+    {
+      "viewport": 1440,
+      "is_mobile": false,
+      "device_scale_factor": 2,
+      "has_touch": false,
+      "mocks": false,
+      "source_revision": "ccc5ce515033ee4675903385d9afe31a7acdf70c",
+      "report_path": ".out/issue350/accepted-actual/1440/report.json",
+      "report_sha256": "094cbad57b7a2d309e13b30e2feb65a0004e71f5da9308347544a7522ebc87b9",
+      "status": "PASS",
+      "member_profile": {
+        "actual_member_api": true,
+        "keyboard_close_focus_return": true,
+        "contextual_dm_open": true,
+        "non_voice_admin_kick_hidden": true,
+        "actual_sfu_participant_volume": true,
+        "admin_action_scoped_to_voice": true,
+        "member_kick_api_denied": true,
+        "same_transport_retained": true
+      },
+      "owned_resources_removed": true,
+      "persisted_after_restart": true,
+      "frames": [
+        {
+          "path": ".out/issue350/accepted-actual/1440/member-profile-text.png",
+          "sha256": "86fcc575da47401349fbd58007e7f5bd1e5e233cfa7a6ffbe718a2404053e765"
+        },
+        {
+          "path": ".out/issue350/accepted-actual/1440/member-profile-voice-admin.png",
+          "sha256": "9f71fc8b5f320a273d338ed5fc96b7c3794b15a4acaf877ff1523903467a85d5"
+        },
+        {
+          "path": ".out/issue350/accepted-actual/1440/member-profile-voice-member.png",
+          "sha256": "8bafeb6fc293811224ee4213800c179925cd4fc326a21ecd5163323a7cd5f6a1"
+        }
+      ]
+    },
+    {
+      "viewport": 393,
+      "is_mobile": true,
+      "device_scale_factor": 3,
+      "has_touch": true,
+      "mocks": false,
+      "source_revision": "ccc5ce515033ee4675903385d9afe31a7acdf70c",
+      "report_path": ".out/issue350/accepted-actual/393/report.json",
+      "report_sha256": "79f0ea82105752237dda144a9a5a79f3175d6d0c2adae0d81989ace25b0d17fa",
+      "status": "PASS",
+      "member_profile": {
+        "actual_member_api": true,
+        "keyboard_close_focus_return": true,
+        "contextual_dm_open": true,
+        "non_voice_admin_kick_hidden": true,
+        "actual_sfu_participant_volume": true,
+        "admin_action_scoped_to_voice": true,
+        "member_kick_api_denied": true,
+        "same_transport_retained": true
+      },
+      "owned_resources_removed": true,
+      "persisted_after_restart": true,
+      "frames": [
+        {
+          "path": ".out/issue350/accepted-actual/393/member-profile-text.png",
+          "sha256": "be327401a2e8360ebdea40d47a2dc473d1812e611ce1439e51c6aa6af716fc3b"
+        },
+        {
+          "path": ".out/issue350/accepted-actual/393/member-profile-voice-admin.png",
+          "sha256": "17e2bc51e97bc2e66609b3138ca117eb5d7763106086aaf99cd7348d2ab87b82"
+        },
+        {
+          "path": ".out/issue350/accepted-actual/393/member-profile-voice-member.png",
+          "sha256": "8b5333b46f7e36c048a987c45234eb208c13cd8c9fd5484b03e7b50073fe97c3"
+        }
+      ]
+    }
+  ],
+  "actual_visual_review": {
+    "status": "PASS_SELECTED_ACTUAL_FRAMES",
+    "source": "ccc5ce515033ee4675903385d9afe31a7acdf70c",
+    "frames": [
+      {
+        "path": ".out/client-lifecycle/1440/member-profile-text.png",
+        "sha256": "86fcc575da47401349fbd58007e7f5bd1e5e233cfa7a6ffbe718a2404053e765"
+      },
+      {
+        "path": ".out/client-lifecycle/1440/member-profile-voice-admin.png",
+        "sha256": "9f71fc8b5f320a273d338ed5fc96b7c3794b15a4acaf877ff1523903467a85d5"
+      },
+      {
+        "path": ".out/client-lifecycle/1440/member-profile-voice-member.png",
+        "sha256": "8bafeb6fc293811224ee4213800c179925cd4fc326a21ecd5163323a7cd5f6a1"
+      },
+      {
+        "path": ".out/client-lifecycle/393/member-profile-text.png",
+        "sha256": "be327401a2e8360ebdea40d47a2dc473d1812e611ce1439e51c6aa6af716fc3b"
+      },
+      {
+        "path": ".out/client-lifecycle/393/member-profile-voice-admin.png",
+        "sha256": "17e2bc51e97bc2e66609b3138ca117eb5d7763106086aaf99cd7348d2ab87b82"
+      },
+      {
+        "path": ".out/client-lifecycle/393/member-profile-voice-member.png",
+        "sha256": "8b5333b46f7e36c048a987c45234eb208c13cd8c9fd5484b03e7b50073fe97c3"
+      }
+    ],
+    "crops": [
+      {
+        "path": ".out/issue350/live-crops/admin-1440.png",
+        "sha256": "cb5196ee162a9c7d4f620ba4d5677667a0f87f80d3ee4e5d1cad23a006970661",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/live-crops/admin-393.png",
+        "sha256": "16bcc149c36c43b6d741729f4b2a72472dbdea78ef3a0150fbe133abbe5e00d3",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/live-crops/dock-393.png",
+        "sha256": "852c93484351ead8e1a579e65ec30288b7c2b5e0f8da9118135e2b7b74116095",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/live-crops/member-1440.png",
+        "sha256": "5e663ff6b984d93029955e44d1ff37b8f2d4e865cfed630ab65817edfca62a4b",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/live-crops/member-393.png",
+        "sha256": "0b6fe6310a4ad86a691de86fd300fc79080cc5bcf0bba0b5e6f684b93d35a4d6",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/live-crops/text-1440.png",
+        "sha256": "99c7786cb449b4e1f3de38f31e650a9f9e2541fccceb335e36c84681f38d363a",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/live-crops/text-393-bottom.png",
+        "sha256": "81d0d67fd9528cdb99ec51afb6101674de58b0a35703c61d4540b95cecf4165d",
+        "resampling": false
+      },
+      {
+        "path": ".out/issue350/live-crops/text-393.png",
+        "sha256": "d22100c63ae1969254795aae514102af381ef90e3a6f5a8538cb5a7850d14375",
+        "resampling": false
+      }
+    ],
+    "observations": [
+      "TEXT profile shows full synthetic identity/role/offline status and DM while clearing the composer.",
+      "Voice profile retains microphone state, individual volume at 101%, and ADMIN-only disconnect. MEMBER view omits disconnect and the real endpoint denied it with 403.",
+      "Touch card uses the existing modal drawer; focusing the range scrolls the card internally, so identity/header/close can be above its visible scroll position. Input/action content remains reachable; Escape and return focus passed. No assertion that all content fits simultaneously.",
+      "Bottom voice dock is geometrically clear of the card; dark scrim/inert background is expected modal behavior."
+    ],
+    "limits": [
+      "Synthetic fixed QA accounts and controlled SFU media. Native/hardware/physical screen reader NOT_RUN.",
+      "Selected real stack screenshots alone do not prove media quality or an approved visual golden."
+    ]
+  },
+  "earlier_attempts": {
+    "complete_first": {
+      "run": ".out/local-features/20261017-094330",
+      "source": "7ca5819d3f235a922b136756b9af6786bf0cf4fb diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_report_sha256": "0ac07946abc5e81702aeef33bb540d8cbe2a4b7c9641fd12f24f8c6a07711733",
+      "status": "FAIL",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-control_consistency",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-member_popover",
+          "status": "FAIL"
+        },
+        {
+          "name": "web-member_roster",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-microcopy",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mini_player",
+          "status": "PASS"
+        },
+        {
+          "name": "web-navigation_density",
+          "status": "PASS"
+        },
+        {
+          "name": "web-password_generation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-readonly_archive",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_share_ui",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-track_name",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "FAIL"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ],
+      "finding": "Exact legacy error text omitted Retry; 1440px voice drawer backdrop did not cover viewport. Both corrected with focused regressions. Touch393 actual passed."
+    },
+    "interrupted": [
+      {
+        "status": "SUPERSEDED_PARTIAL_VISUAL_FIX",
+        "source": "6272114a82a4ec0e16a2084f3ff410400a9f0085",
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "run": ".out/local-features/20261017-095424",
+        "reason": "Manual source-sized error-state review found an unstyled Retry target below 44px; interrupted before any owned API/SFU resource start. Partial raw logs retained.",
+        "runner_pid": 29947,
+        "runner_pgid": 29947
+      },
+      {
+        "status": "SUPERSEDED_PARTIAL_KEYBOARD_REVIEW",
+        "source": "1c442b5dfca04fa6ca99a26f2a5207b26a6e608f",
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "run": ".out/local-features/20261017-095817",
+        "reason": "Retry removes its focused button while loading; check and preserve focus after its replacement. Interrupted before owned API/SFU setup; raw partial logs retained."
+      }
+    ],
+    "focused_logs": [
+      {
+        "path": ".out/issue350/test-first.log",
+        "sha256": "e09ed9c273c148450f1db88ceafa5b676be7b1881de549b1ecce29892b988046"
+      },
+      {
+        "path": ".out/issue350/browser-before.log",
+        "sha256": "cc3df71e8a9c40e73c6a982a20ef51f0e1cc27a550b8914fc31e1c45f28a6814"
+      },
+      {
+        "path": ".out/issue350/backdrop-avatar-test-first.log",
+        "sha256": "6369572801505ce5b9b1507e800ff4c20923004a8c903caddada16aefeaef119"
+      },
+      {
+        "path": ".out/issue350/backdrop-geometry-test-first.log",
+        "sha256": "907f191efa428cd9d7208ee7cc912ff8e978d8d56f5d2d541f115be59679c2e9"
+      },
+      {
+        "path": ".out/issue350/type-scale-test-first.log",
+        "sha256": "bb60d9040a3fe9df440792b874a4b1b6495320c87191ad34ccfe9958ce15455d"
+      },
+      {
+        "path": ".out/issue350/retry-target-test-first.log",
+        "sha256": "d362059f9be73255b0251b065cd42aff1e3dab2a35055efb4a30691351706029"
+      },
+      {
+        "path": ".out/issue350/retry-focus-test-first.log",
+        "sha256": "d6da5b6c6404c0706ae313278e40bd255be602fe9549af8749c94bbfcd3f4095"
+      },
+      {
+        "path": ".out/issue350/traceability-final.log",
+        "sha256": "17ff753f6b2fc1a23f300b33e40e73728dc2c3e11d55f4c50e1aecb568fca75a"
+      }
+    ]
+  },
+  "publication_gate": "Fresh final PR checks and exact-tree master merge required; final run/artifact/closure receipts recorded in PR body. No partial local run is acceptance.",
+  "limits": [
+    "Private tour originals 01/29/41 unavailable; selected source-sized Before is exact base master production UI with controlled fixtures.",
+    "One fixture member ID changes to the own account for the self-action regression, so its deterministic avatar color changes; no pixel-delta threshold or golden is claimed.",
+    "Existing Vite ResizeObserver warnings also appear in the earlier accepted master chat/mini-player fixture logs; not suppressed and not counted as a media quality finding.",
+    "Component captures are synthetic UI evidence; real Go API/SFU and ACL journeys are separate. Native/hardware/screen-reader human acceptance NOT_RUN."
+  ],
+  "baseline_approved": false
+}
