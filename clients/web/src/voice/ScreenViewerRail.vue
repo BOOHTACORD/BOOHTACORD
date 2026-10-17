@@ -6,8 +6,8 @@ import { observeHorizontalOverflow } from './screen_rail_overflow'
 import { screenPreviewLeaseForParticipant } from './screen_preview/participant_leases'
 import { screenPreviewCardVisibility } from './screen_preview/visibility'
 
-const props = withDefaults(defineProps<{ cards: ScreenViewerCard[]; selectedId: string | null; participantCount: number; showReturnToVoice?: boolean }>(), { showReturnToVoice: true })
-const emit = defineEmits<{ select: [id: string]; returnVoice: [] }>()
+const props = defineProps<{ cards: ScreenViewerCard[]; selectedId: string | null }>()
+const emit = defineEmits<{ select: [id: string] }>()
 const rail = ref<HTMLDivElement | null>(null)
 const hasOverflow = ref(false)
 let stopObserving: (() => void) | null = null
@@ -42,7 +42,6 @@ const initials = (name: string) => name.trim().slice(0, 2).toLocaleUpperCase('ru
         <span class="stream-card-preview"><img v-if="stream.thumbnailUrl" class="stream-thumbnail" :src="stream.thumbnailUrl" alt=""><span v-else class="stream-avatar" :style="{ backgroundColor: avatarBackground(stream.accountId ?? stream.participantId), color: avatarForeground(stream.accountId ?? stream.participantId) }" aria-hidden="true">{{ initials(stream.participantName) }}</span></span>
         <span class="stream-option-copy"><span>{{ stream.isLocal ? 'Ваш экран' : `Экран ${stream.participantName || 'участника'}` }}</span><b v-if="stream.id === selectedId">ЭФИР</b></span>
       </button>
-      <button v-if="props.showReturnToVoice" class="screen-card stream-option stream-rail-participants" type="button" @click="emit('returnVoice')"><span class="stream-card-preview"><span class="stream-avatar" aria-hidden="true">ДА</span></span><span class="stream-option-copy">Участники · {{ participantCount }}</span></button>
     </div>
   </section>
 </template>
