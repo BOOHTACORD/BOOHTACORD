@@ -4,9 +4,11 @@
 import 'dart:convert';
 import 'dart:ffi' hide Size;
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -22,6 +24,34 @@ import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_dock_button/co
 
 import 'desktop_updates/native_app.dart' as native;
 import 'desktop_updates/windows_app.dart' show Journey, until, require;
+
+// Capture the complete rendered view, including the modal overlay. The first
+// route's RepaintBoundary would omit a dialog displayed above that route.
+class ScreenSetupJourney extends Journey {
+  ScreenSetupJourney(super.output);
+
+  @override
+  Future<void> capture(String name) async {
+    await driver.pump(const Duration(milliseconds: 100));
+    final view = WidgetsBinding.instance.renderViews.single;
+    // QA-only read of the painted root; the public route-boundary capture
+    // omits modal overlay entries in release mode.
+    // ignore: invalid_use_of_protected_member
+    final layer = view.layer;
+    require(layer is OffsetLayer, 'view_layer_missing');
+    final image = await (layer as OffsetLayer).toImage(
+      Offset.zero & view.flutterView.physicalSize,
+    );
+    try {
+      final data = await image.toByteData(format: ui.ImageByteFormat.png);
+      require(data != null, 'capture_failed');
+      await File(path.join(output.path, '$name.png'))
+          .writeAsBytes(data!.buffer.asUint8List());
+    } finally {
+      image.dispose();
+    }
+  }
+}
 
 // Use the Windows input queue, not WidgetTester.sendKeyEvent. Refuse to send
 // keys unless this exact test process owns the foreground window.
@@ -78,7 +108,7 @@ Future<void> main() async {
   Journey? journey;
   try {
     await native.main();
-    final qa = Journey(output);
+    final qa = ScreenSetupJourney(output);
     journey = qa;
     await until(
       () =>

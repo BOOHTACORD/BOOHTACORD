@@ -74,7 +74,8 @@
   },
   "windows": {
     "status": "NOT_RUN",
-    "reason": "This local host is macOS. Exact-head Windows CI must pass before merge/closure. The retained result.json and final PR acceptance record carry the actual Windows SHA/OS, four OS-input cases and image hashes."
+    "reason": "This local host is macOS. Exact-head Windows CI must pass before merge/closure. The retained result.json and final PR acceptance record carry the actual Windows SHA/OS, four OS-input cases and image hashes.",
+    "capture_scope": "Complete RenderView layer, including modal overlays, at physical source pixels. No personal/self-hosted desktops."
   },
   "retry_history": [
     "Initial test harness used an unresolved spinner with pumpAndSettle and an undersized viewport; discarded as behavioral evidence. Corrected base run records four actual remaining-dialog assertion failures.",
@@ -89,11 +90,11 @@
   "source_sha256": {
     "clients/flutter/lib/src/features/screen/setup/open_dialog/dialog.dart": "b64f481dd7a984d892ff14d119dd8eb28e95fd33d2ddd7a9e54f864f3ddb7381",
     "clients/flutter/test/screen_setup/keyboard_test.dart": "dced1fd3e16aa27bee71c1413fbf5d5ebbde3f08c584b2a94781b069010b4c78",
-    "clients/flutter/integration_test/screen_setup_windows_app.dart": "f2ad271ffa3f9e0cdc60902c5ba3e6919fa4f3bd8b75c3dc880f8271e068ea1a",
+    "clients/flutter/integration_test/screen_setup_windows_app.dart": "ba328970c8d1464653df294920d84f4b2a5156536bb91104c48bd65745b95a67",
     "tools/qa/screen_setup/windows.py": "bb37b85cfdbb7cc04ca1d0d214aab3af8a7ce8fbca38f5d600698f3667798f80",
     "tools/qa/screen_setup/test_windows.py": "6a3c4ee4a79696fd91bccfa89b0f232621a6dad1a2327496ceda26a4f69ba669",
     ".github/workflows/flutter-windows.yaml": "6c887627becdac8a90d155ab891d039f6750a62267dc2649303f1073acd3b2d3",
-    "tools/qa/local_features/features.json": "6761e11bfcd4f5be55543d1db2ab04c2b6cbc6c72373adc25f45998e3c9fded9",
+    "tools/qa/local_features/features.json": "76d1c936ccc871a8de9f069ca8cf2eef3a017cb1eb7645efa1bcd6e9cb50f902",
     "backlog/tasks.yaml": "50237054bfb884d01aad6850de4eefa5fe60cb1ea125c57f71049939f277c147"
   }
 }
