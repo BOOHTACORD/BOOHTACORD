@@ -65,7 +65,8 @@
       "clients/flutter/packages/livekit_client/lib/src/track/options.dart",
       "clients/flutter/lib/src/screens/screen_receiver_diagnostics.dart",
       "clients/flutter/lib/src/services/api_client.dart",
-      "clients/flutter/lib/src/telemetry/traced_app_state.dart"
+      "clients/flutter/lib/src/telemetry/traced_app_state.dart",
+      "clients/web/src/voice/viewer_diagnosis/*"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -140,7 +141,7 @@
       "issue348": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/screen_share_ui.mjs",
-        "scope": "Compact launch, optional capabilities/sender/receiver diagnostics, selected versus confirmed configuration versus measured output; unsupported/cancel/focus/clipboard, 320/390/1024/1440 and 200% text. Existing owned real API/SFU source-publish-view-stop and failure/reconnect journeys. No physical Chrome picker, hardware audio, native or media QoE claim."
+        "scope": "Compact launch, optional capabilities/sender/receiver diagnostics, selected versus confirmed configuration versus measured output; unsupported/cancel/focus/clipboard, 320/390/1024/1440 and 200% text. Existing owned real API/SFU source-publish-view-stop and failure/reconnect journeys. No physical Chrome picker, hardware audio, native or media QoE claim. Viewer diagnosis keeps a publisher-missing-audio message stable while video receiver statistics are absent, fresh or stale."
       },
       "issue349": {
         "browser": "clients/web/tests/mini_player/playwright.config.ts",

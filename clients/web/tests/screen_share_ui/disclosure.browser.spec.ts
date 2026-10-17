@@ -86,6 +86,20 @@ for (const width of [320, 390, 1024, 1440]) for (const scale of [100, 200]) {
     }
   })
 }
+test('missing source audio stays the diagnosis while video receiver samples fluctuate', async ({ page }, info) => {
+  await open(page, 'diagnosis')
+  const diagnosis = page.locator('.screen-diagnosis > [role="status"]')
+  await expect(diagnosis).toHaveText('Источник не публикует аудиодорожку.')
+  await page.evaluate(() => (window as any).__screenUI.patch({ sampledAt: Date.now() }))
+  await expect(diagnosis).toHaveText('Источник не публикует аудиодорожку.')
+  await page.screenshot({ path: info.outputPath('diagnosis-no-audio-desktop-fresh.png') })
+  await page.evaluate(() => (window as any).__screenUI.patch({ sampledAt: Date.now() - 7000 }))
+  await expect(diagnosis).toHaveText('Источник не публикует аудиодорожку.')
+  await open(page, 'diagnosis', 390, 200)
+  await expect(page.locator('.screen-diagnosis > [role="status"]')).toHaveText('Источник не публикует аудиодорожку.')
+  await page.screenshot({ path: info.outputPath('diagnosis-no-audio-mobile-stale.png') })
+})
+
 test('receiver has selected/applied/measured levels and optional copyable technical data', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write'])
   await open(page, 'receiver')

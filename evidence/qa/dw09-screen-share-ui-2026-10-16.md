@@ -34,3 +34,11 @@ Both final actual runs passed cancel→denied→retry/publish→decode→stop, t
 ## Explicit limits
 
 Physical Chrome system picker/permissions, macOS native capture, Android/iOS/Windows, native screen readers, system/game audio, 1080p60 QoE, capacity and paired physical-device acceptance: NOT_RUN. The owned-stack source is a synthetic canvas at the OS-picker boundary; API admission, SFU publication, subscription, decoding and stop are real. Neither a preset nor a static/low-FPS synthetic frame is a quality/capacity PASS. Related media/native gates remain independent.
+
+## Follow-up: stable missing-audio diagnosis (2026-10-17)
+
+A viewer with no published audio track could alternate between “Данные о приёме отсутствуют или устарели. Причина качества не определена.” and “Источник не публикует аудиодорожку.” when video receiver-stat samples became stale or temporarily unavailable. The diagnosis checked sample freshness first, allowing a transient video measurement to override the stable publisher audio state. The viewer now keeps the missing-audio explanation visible through absent, fresh and stale video samples; a zero presented-video rate still reports frozen video, and stale-stat guidance remains available when audio is published.
+
+The test-first model regression failed before the change (`stale_metrics` instead of `no_audio`) and passes after it (6/6 model tests). The registered screen-share suite passes 21/21 browser cases; all 475 Web unit files / 1572 tests pass. Local feature check `.out/local-features/20261017-151403/` ran `--feature voice --feature screen --platform web --base 52e62a67 --real-stack`: all 9 automated stages passed, including accessibility, screen-share UI, voice UI and authenticated API/SFU checks at 1440px and 393px. Its raw status remains `REVIEW_REQUIRED` because the runner’s screenshot inventory is not fully reviewed. The two focused captures were inspected at source resolution and show the stable status and action fitting at 1440×900 and 390×900 with 200% text. Evidence details and hashes are in `follow_up_diagnosis_stability` in the companion JSON.
+
+The browser regression uses controlled synthetic receiver samples. The real-stack check does not prove physical system-audio capture or OS-picker behavior; those gates remain **NOT_RUN**.

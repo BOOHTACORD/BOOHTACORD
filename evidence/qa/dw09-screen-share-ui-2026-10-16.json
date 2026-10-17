@@ -610,5 +610,95 @@
     "No configuration acknowledgement received in owned SFU run; UI keeps it unknown. Fixture separately tests sharing/updating/idle/missing metadata.",
     "Synthetic canvas at OS picker boundary; real API/SFU/publish/subscribe/decode/stop."
   ],
-  "baseline_approved": false
+  "baseline_approved": false,
+  "follow_up_diagnosis_stability": {
+    "date": "2026-10-17",
+    "trigger": "While viewing a screen share with no published audio track, the message alternated between the missing-audio diagnosis and stale receiver metrics when video-stat samples fluctuated.",
+    "root_cause": "The diagnosis evaluated stale receiver metrics before the stable publisher audio-track state, so a temporary null or stale video sample masked the no-audio state.",
+    "change": "Keep frozen-video detection actionable, then prioritize a missing publisher audio track before receiver-stat freshness. Stale receiver metrics remain visible when the source has audio.",
+    "test_first": {
+      "before_fix": "Focused model regression failed: expected no_audio, received stale_metrics for a missing track with absent/stale receiver samples.",
+      "after_fix": "6/6 viewer-diagnosis model tests PASS; screen-share browser suite 21/21 PASS, including repeated absent/fresh/stale sample transitions."
+    },
+    "registered_check": {
+      "run": ".out/local-features/20261017-151403",
+      "report": ".out/local-features/20261017-151403/index.html",
+      "source": "52e62a674ffaefec0d4149b16c34a7db7a4114f2 diff-sha256=69b75d2cfebb59dcd2af77aa099580d67e390e7ccfb43b83242bd03dba505db9",
+      "report_sha256": "b0becbf805d88299c6b15497514d78c7cfa753857a45f82894df5234e600592e",
+      "features": [
+        "screen",
+        "voice"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mini_player",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_share_ui",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ],
+      "all_automated_stages": "PASS",
+      "web_unit": "475 files / 1572 tests PASS",
+      "raw_status": "REVIEW_REQUIRED",
+      "visual_review_at_report_generation": "NOT_RUN",
+      "status_note": "Raw run remains REVIEW_REQUIRED because the runner does not mark its complete screenshot inventory reviewed. The two focused regression captures below were manually inspected at source resolution after the run."
+    },
+    "visual_review": {
+      "status": "PASS_SELECTED_FRAMES",
+      "frames": [
+        {
+          "path": ".out/issue348/browser/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+          "sha256": "9a3913595ab705c02c7b27c7365733e35b7bee03df5ca7c7a41e1b638aa4c37c",
+          "width": 1440,
+          "height": 900,
+          "review": "At 1440×900 the diagnosis stays on one line; the “Как добавить звук” action and diagnostic disclosure remain visible below it."
+        },
+        {
+          "path": ".out/issue348/browser/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+          "sha256": "b1c3f60aaeddbd51079c2dd3773cc8745a05c9bde3ebb036d715c8a98fedfe6f",
+          "width": 390,
+          "height": 900,
+          "review": "At 390×900 with 200% text the message wraps into two readable lines; the action and disclosure remain visible without horizontal overflow."
+        }
+      ]
+    },
+    "limits": [
+      "Regression uses synthetic component inputs for missing/fresh/stale video-stat samples.",
+      "Real-stack checks passed at 1440px and 393px but do not establish physical system-audio or OS-picker behavior.",
+      "Physical audio and native runtime acceptance remain NOT_RUN."
+    ]
+  }
 }
