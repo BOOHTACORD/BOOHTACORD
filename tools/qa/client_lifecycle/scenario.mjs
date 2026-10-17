@@ -161,6 +161,8 @@ try {
   report.dm_starter_modal = { top_layer: true, fits_viewport: true, escape_and_focus: true, touch: input.viewport.has_touch }
   await expect(guest.getByRole('heading', { name: 'qa_admin', exact: true })).toBeVisible()
   await expect(guest.getByText('Сообщений пока нет.', { exact: true })).toBeVisible()
+  await expect(guest.locator('.conversation-header')).toBeInViewport({ ratio: 1 })
+  await expect(guest.getByRole('textbox', { name: 'Сообщение', exact: true })).toBeInViewport({ ratio: 1 })
   console.log('stage=qa-member-dm-empty-complete')
   await guest.screenshot({ path: input.directory+'/dm-empty-conversation.png' })
 

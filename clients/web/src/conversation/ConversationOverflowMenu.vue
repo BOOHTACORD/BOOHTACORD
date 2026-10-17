@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { vActionHint } from '../shared/action_hint/directive'
+import { dismissActionHint, vActionHint } from '../shared/action_hint/directive'
 import { onBeforeUnmount, onMounted, useId } from 'vue'
 
 import { useConversationOverflowMenu } from './conversation_overflow_menu'
@@ -15,6 +15,10 @@ const menuId = useId()
 const { expanded, root, trigger, menu, toggle, onOutside, onFocusOut, onKeys, close, openSearch, toggleMembers } =
   useConversationOverflowMenu(() => emit('search'), () => emit('toggleMembers'))
 
+function openSearchFromMenu(): void { dismissActionHint(trigger.value); openSearch() }
+function toggleMembersFromMenu(): void { dismissActionHint(trigger.value); toggleMembers() }
+function openFilesFromMenu(): void { dismissActionHint(trigger.value); close(); emit('files') }
+
 onMounted(() => document.addEventListener('pointerdown', onOutside))
 onBeforeUnmount(() => document.removeEventListener('pointerdown', onOutside))
 </script>
@@ -25,9 +29,9 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onOutside))
       aria-label="Другие действия" aria-haspopup="menu" :aria-expanded="expanded"
       :aria-controls="menuId" @click="toggle">⋯</button>
     <div v-show="expanded" :id="menuId" ref="menu" class="conversation-overflow__menu" role="menu" :aria-label="props.menuLabel">
-      <button type="button" role="menuitem" :aria-expanded="Boolean(searchExpanded)" :aria-controls="searchControls" @click="openSearch">Найти сообщение</button>
-      <button v-if="props.showFiles" type="button" role="menuitem" @click="close(); emit('files')">Файлы беседы</button>
-      <button v-if="props.showMembers" type="button" role="menuitem" :aria-expanded="membersOpen" aria-controls="members-panel" @click="toggleMembers">{{ props.membersOpen ? 'Скрыть участников' : 'Показать участников' }}</button>
+      <button type="button" role="menuitem" :aria-expanded="Boolean(searchExpanded)" :aria-controls="searchControls" @click="openSearchFromMenu">Найти сообщение</button>
+      <button v-if="props.showFiles" type="button" role="menuitem" @click="openFilesFromMenu">Файлы беседы</button>
+      <button v-if="props.showMembers" type="button" role="menuitem" :aria-expanded="membersOpen" aria-controls="members-panel" @click="toggleMembersFromMenu">{{ props.membersOpen ? 'Скрыть участников' : 'Показать участников' }}</button>
     </div>
   </div>
 </template>

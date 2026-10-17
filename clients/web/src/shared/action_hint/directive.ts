@@ -1,7 +1,7 @@
 import type { ObjectDirective } from 'vue'
 
 let nextId = 0
-interface Hint { update: (text?: string) => void; dispose: () => void }
+interface Hint { update: (text?: string) => void; dismiss: () => void; dispose: () => void }
 const hints = new WeakMap<HTMLElement, Hint>()
 let activeHint: (() => void) | null = null
 
@@ -81,6 +81,7 @@ function install(button: HTMLElement, text?: string): Hint {
   function leave() { hovered = false; if (!focus) dismissed = false; scheduleHide() }
   function onFocus() { focus = button.matches(':focus-visible'); if (focus) show() }
   function onBlur() { focus = false; dismissed = false; if (!hovered) hide() }
+  function dismiss() { if (hovered) dismissed = true; hovered = false; hide() }
   button.addEventListener('pointerenter', enter); button.addEventListener('pointerleave', leave)
   button.addEventListener('focus', onFocus); button.addEventListener('blur', onBlur)
   // The managed hint replaces the native mouse-only title balloon. Its text
@@ -90,7 +91,11 @@ function install(button: HTMLElement, text?: string): Hint {
   return { update, dispose() {
     hide(); button.removeEventListener('pointerenter', enter); button.removeEventListener('pointerleave', leave)
     button.removeEventListener('focus', onFocus); button.removeEventListener('blur', onBlur)
-  } }
+  }, dismiss }
+}
+
+export function dismissActionHint(button: HTMLElement | null | undefined): void {
+  if (button) hints.get(button)?.dismiss()
 }
 
 export const vActionHint: ObjectDirective<HTMLElement, string | undefined> = {

@@ -188,7 +188,7 @@
         "web-real-stack-1440",
         "web-real-stack-393"
       ],
-      "run_dir": ".out/local-features/20261017-123657",
+      "run_dir": ".out/local-features/20261017-134739",
       "earlier_consolidated_attempts": [
         {
           "run_dir": ".out/local-features/20261017-120656",
@@ -213,15 +213,18 @@
           "run_dir": ".out/local-features/issue353-recheck-393"
         }
       ],
-      "reason": "The 40s voice-kick notification wait accommodates the 15s worker polling interval plus scheduling jitter and still asserts receipt of the actual voice.lease_revoked hint."
+      "reason": "The 40s voice-kick notification wait accommodates the 15s worker polling interval plus scheduling jitter and still asserts receipt of the actual voice.lease_revoked hint.",
+      "previous_passed_run_dir": ".out/local-features/20261017-123657",
+      "registered_web_check_status": "REVIEW_REQUIRED",
+      "rerun_reason": "Stabilized compact search screenshot timing and reran the registered feature check."
     },
     "registered_web_check": {
       "status": "REVIEW_REQUIRED",
       "raw_status": "REVIEW_REQUIRED",
-      "run_dir": ".out/local-features/20261017-123657",
-      "raw_report_sha256": "c2ca2e7de7844725bb8c9aa6271eed05465758d76071f024ffd06190727f78d7",
+      "run_dir": ".out/local-features/20261017-134739",
+      "raw_report_sha256": "50c96e22759aff6d522c4429bbeae97a6519c61dcb80e84ef0e2a93fb38b2a1d",
       "screenshot_count": 732,
-      "web_unit": "PASS (474 files / 1564 tests)",
+      "web_unit": "PASS",
       "web_build": "PASS",
       "browser_suites": "PASS (19 suites)",
       "real_stack": "PASS (desktop 1440px and mobile 393px)",
@@ -311,71 +314,42 @@
           "status": "PASS"
         }
       ],
-      "note": "All automated stages pass. The runner retains REVIEW_REQUIRED because its 732 selected screenshots have not all received manual visual review."
+      "note": "All automated stages pass. 4 current-run screenshots were reviewed at original pixel dimensions; the runner retains REVIEW_REQUIRED because the complete set of 732 screenshots has not received manual visual review."
     },
     "visual_review": {
       "status": "PARTIAL_REVIEW",
-      "reviewed_count": 11,
+      "reviewed_count": 4,
       "available_selected_count": 732,
       "reviewed_screenshots": [
         {
-          "path": ".out/local-features/20261017-123657/images/web-real-stack/1440/channel-text-actions.png",
+          "path": ".out/local-features/20261017-134739/images/web-real-stack/1440/compact-search-filters.png",
           "width": 2880,
           "height": 1800
         },
         {
-          "path": ".out/local-features/20261017-123657/images/web-real-stack/1440/voice-connected-compact.png",
+          "path": ".out/local-features/20261017-134739/images/web-real-stack/393/compact-search-filters.png",
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/local-features/20261017-134739/images/web-real-stack/1440/global-search-result-context.png",
           "width": 2880,
           "height": 1800
         },
         {
-          "path": ".out/local-features/20261017-123657/images/web-real-stack/1440/chat-failed-media-connected.png",
-          "width": 2880,
-          "height": 1800
-        },
-        {
-          "path": ".out/local-features/20261017-123657/images/web-real-stack/1440/sfu-unavailable.png",
-          "width": 2880,
-          "height": 1800
-        },
-        {
-          "path": ".out/local-features/20261017-123657/images/web-real-stack/393/dm-starter-dialog.png",
+          "path": ".out/local-features/20261017-134739/images/web-real-stack/393/global-search-result-context.png",
           "width": 1179,
           "height": 2556
-        },
-        {
-          "path": ".out/local-features/20261017-123657/images/web-real-stack/393/channel-text-200.png",
-          "width": 1179,
-          "height": 2556
-        },
-        {
-          "path": ".out/local-features/20261017-123657/images/web-real-stack/393/voice-after-leave.png",
-          "width": 1179,
-          "height": 2556
-        },
-        {
-          "path": ".out/local-features/20261017-123657/images/web-real-stack/393/dm-empty-conversation.png",
-          "width": 1179,
-          "height": 2556
-        },
-        {
-          "path": ".out/local-features/20261017-123657/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
-          "width": 288,
-          "height": 1044
-        },
-        {
-          "path": ".out/local-features/20261017-123657/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png",
-          "width": 320,
-          "height": 1000
-        },
-        {
-          "path": ".out/local-features/20261017-123657/web-search_presentation/layout.browser-files-result-layout-at-3440px-200-text/files.png",
-          "width": 3440,
-          "height": 1000
         }
       ],
-      "scope": "Representative captures inspected at original pixel dimensions; not all selected screenshots reviewed. Full visual review remains required.",
-      "observations": "Desktop message reply actions and two-listener voice controls stay visible in their panels; the connected state remains visible when media fails, and the SFU-unavailable view preserves last roster state with safe controls. Mobile DM picker stays bounded, voice-after-leave and empty-DM states retain usable navigation/composer. At 320px/200% text, audio diagnostics and expanded search filters remain contained; the 3440px/200% file rail stays in the right column. Captures use synthetic QA data only."
+      "scope": "Four screenshots from 20261017-134739 inspected at original pixel dimensions. The report contains 732 selected images; pixel hashes differ from the preceding run in 101 entries. Full visual review remains required.",
+      "observations": "On desktop, the search query and filters are visible with loaded results; on mobile, query, scope, filters and result summaries fit within the panel. In both viewports the selected search-context message is fully visible and focused. The desktop viewport also shows a preceding context row partially scrolled out, while the target remains complete. Captures use synthetic QA data only.",
+      "previous_run_visual_review": {
+        "run_dir": ".out/local-features/20261017-133410",
+        "manually_reviewed_changed_screenshots": 120,
+        "baseline_run_dir": ".out/local-features/20261017-132437",
+        "note": "Those 120 changed screenshot entries were individually inspected at original pixel dimensions in the preceding review pass; this does not complete review of the current 732-image set."
+      }
     },
     "rollout_rollback_issue305": "NOT_RUN"
   },
@@ -1236,6 +1210,6 @@
     "The old production version is not proven to correspond to current master.",
     "Issue #351 is a draft PR and #352 remains a local commit; do not count either as merged.",
     "Issue #354 is deferred pending user-valued usability research; no compact mode was introduced.",
-    "The final registered real-stack run passed at both 1440px and 393px. The raw runner remains REVIEW_REQUIRED because only 11 of 732 selected screenshots have been inspected manually."
+    "The latest registered real-stack run (20261017-134739) passed at 1440px and 393px. Its raw status remains REVIEW_REQUIRED: 4 of 732 selected screenshots were directly reviewed in that run. The preceding run had 120 changed screenshot entries individually inspected; this is partial evidence only."
   ]
 }

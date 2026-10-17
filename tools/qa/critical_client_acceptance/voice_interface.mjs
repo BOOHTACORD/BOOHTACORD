@@ -60,6 +60,11 @@ export async function leaveVoiceInterface(page, input, report) {
   await expect(page.locator('.participant-volume, .participant-watch, .members-voice-roster, .screen-viewer')).toHaveCount(0, { timeout: 2000 })
   const elapsed = Math.round(performance.now() - started)
   await expect(page.getByRole('button', { name: 'Без микрофона', exact: true })).toBeVisible()
+  const closeNavigation = page.getByRole('button', { name: 'Закрыть навигацию', exact: true })
+  if (await closeNavigation.count()) await closeNavigation.click()
+  await expect(closeNavigation).toHaveCount(0)
+  await page.mouse.move(-2, -2)
+  await expect(page.getByRole('tooltip')).toHaveCount(0)
   await page.screenshot({ path: input.directory + '/voice-after-leave.png' })
   Object.assign(report.voice_interface, { post_leave_interactive_roster_or_streams: 0, cleanup_observed_within_ms: elapsed,
     observation: 'Bounded live transition; no persistent old-roster defect inferred from the original tour frame.' })
