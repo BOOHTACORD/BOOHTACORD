@@ -104,12 +104,12 @@
       "screenshots": {
         "captures": 1051,
         "unique": 994,
-        "directly_reviewed_in_this_run": 9,
-        "unreviewed": 881,
+        "directly_reviewed_in_this_run": 17,
+        "unreviewed": 873,
         "visual_gate": "REVIEW_REQUIRED",
         "baseline_approved": false,
         "exact_hash_reused_from_prior_review": 104,
-        "effective_unique_reviewed": 113,
+        "effective_unique_reviewed": 121,
         "directly_reviewed_images": [
           {
             "path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
@@ -191,6 +191,86 @@
               768
             ],
             "observation": "The 320px DM list scrolls within navigation while the voice dock and profile controls remain reachable."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-dm_starter/overlay.browser-modal-esca-5b1dd-d-sidebar-at-390px-200-text/dm-starter.png",
+            "sha256": "68aa2a468d54caa318e7ac0e6ecc1a513c2892639cdc48ea47a46c50687f93e1",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At 390 CSS px and 200% text, the long candidate name wraps inside the DM starter row; the dialog remains within the viewport and the candidate list continues below its visible scroll area."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-search_presentation/layout.browser-search-result-layout-at-390px-200-text/search-layout.png",
+            "sha256": "36230f8dc20fff3a6f1ded0d813ccb33ba8ed9dc148e7b50d812788895157d08",
+            "dimensions_px": [
+              390,
+              1000
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At 390 CSS px and 200% text, all four search modes, query, scope, filters and Find action fit the panel; result titles and snippets remain readable and the result list continues below the viewport."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-voice_interface/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/muted.png",
+            "sha256": "5a6b7ae746f1cd2382a3df1b540470276b90daf951409f48e6425d8865696100",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At 1440 CSS px and 200% text, participant cards and the muted voice controls remain within the workspace; the channel label truncates within its rail and the dock actions remain visible."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-390px-text-200-/technical-receiver-390-200.png",
+            "sha256": "d8a0247eb9274a4186be62a31012a46f910ad6edcadb0a6071e96cdee74000f9",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At 390 CSS px and 200% text, the screen-share diagnostics sheet wraps sender selection, missing confirmation and receiver measurements distinctly; its close control remains visible while technical details continue below the scroll area."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-mini_player/mini.browser-390px-at-200--37465-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+            "sha256": "8eb4ab5d562498ea9f8e5a5f945dfe6a36fef775492fbd1bbe7a0f60bf7762ca",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At 390 CSS px and 200% text, the pinned player wraps controls into two rows without covering the DM header, history, two-line draft, send action or voice dock."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-member_roster/roster.browser-roster-and-profile-390-text-200/roster.png",
+            "sha256": "04a170f7f3cc3548471e552e4188ecc5af9ce1906cc4fd1521f655ac3afd0249",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At 390 CSS px and 200% text, the member drawer stays bounded; the long first name truncates within its row, presence dots remain attached to avatars, and the full member identity remains available through the row label/title."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-header_actions/headers.browser-compact-he-66f00-and-all-primary-actions-390/text.png",
+            "sha256": "e6f546862d694b00689a3cb372034a6fd6fa29b2f0649542480572cc50b418f9",
+            "dimensions_px": [
+              390,
+              56
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "The 390px compact header keeps the navigation toggle, truncated channel title, search, member-list and overflow actions on one row."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/direct-messages.png",
+            "sha256": "07f987a820cf98c54108c83028b90e217a989952fffe9f963ebf217cb9ac01ad",
+            "dimensions_px": [
+              768,
+              768
+            ],
+            "visually_reviewed_at_source_resolution": true,
+            "observation": "At 768 CSS px, the DM navigation list occupies its rail and scrolls independently; the voice dock and profile/settings controls remain visible at the bottom."
           }
         ],
         "exact_hash_reused_reviews": [
