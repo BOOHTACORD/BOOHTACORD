@@ -3,7 +3,7 @@
   "issue": 353,
   "epic": 339,
   "generated_on": "2026-10-17",
-  "state": "PASS_SCOPED_WITH_REVIEW_REQUIRED",
+  "state": "BLOCKED_WITH_REVIEW_REQUIRED",
   "baseline": {
     "current_master_sha": "8f4b15a6ffb0d29389ecf45189be147b2f708227",
     "tour_date": "2026-10-15",
@@ -16,7 +16,7 @@
       55
     ],
     "private_source_images_copied": false,
-    "notes": "The production tour is used only for frame metadata and issue mapping; no image, account detail, DM content or raw screenshot hash is published. Current master is 8f4b15a6; the latest registered evidence was rerun from its issue-353 integration checkout and includes the audio-responsive, workspace-header and 320/390px voice-dock regressions."
+    "notes": "Current master is 8f4b15a6. The latest acceptance ran on codex/issue353-master-integration, stacked on the open PR #367 head d79f6b2; the final source snapshot is 21848638. The 15 October production tour remains historical and is not source-equivalent."
   },
   "scenarios": [
     {
@@ -195,7 +195,7 @@
   "quality_gates": {
     "web_unit": {
       "status": "PASS",
-      "tests": 1564,
+      "tests": 1571,
       "files": 474
     },
     "production_typecheck_build": {
@@ -212,14 +212,14 @@
       "reason": "No API/schema contract changed."
     },
     "authenticated_real_stack": {
-      "status": "PASS",
-      "raw_stage_status": "PASS",
-      "failed_stages": [],
-      "passed_stages": [
+      "status": "BLOCKED",
+      "raw_stage_status": "FAIL",
+      "failed_stages": [
         "web-real-stack-1440",
         "web-real-stack-393"
       ],
-      "run_dir": ".out/local-features/20261017-145030",
+      "passed_stages": [],
+      "run_dir": ".out/local-features/20261017-153155",
       "earlier_consolidated_attempts": [
         {
           "run_dir": ".out/local-features/20261017-120656",
@@ -246,20 +246,26 @@
       ],
       "reason": "The 40s voice-kick notification wait accommodates the 15s worker polling interval plus scheduling jitter and still asserts receipt of the actual voice.lease_revoked hint.",
       "previous_passed_run_dir": ".out/local-features/20261017-123657",
-      "registered_web_check_status": "REVIEW_REQUIRED",
-      "rerun_reason": "Repeated the current-master issue-352 integration and issue-353 registered matrix after extending the screen-sharing dock-clearance regression to both 320px and 390px."
+      "registered_web_check_status": "BLOCKED",
+      "rerun_reason": "Repeated the current-master issue-352 integration and issue-353 registered matrix after extending the screen-sharing dock-clearance regression to both 320px and 390px.",
+      "latest_attempt": {
+        "status": "BLOCKED",
+        "raw_status": "FAIL",
+        "run_dir": ".out/local-features/20261017-153155",
+        "reason": "Both stages stopped in ports_available before application/service startup: PermissionError [Errno 1] Operation not permitted binding 127.0.0.1:4880. No real-stack assertion ran. A prior pre-rebase issue-353 run (20261017-151403) passed desktop 1440px and mobile 393px; this latest rebased source still needs a host with local socket permission."
+      }
     },
     "registered_web_check": {
-      "status": "REVIEW_REQUIRED",
-      "raw_status": "REVIEW_REQUIRED",
-      "run_dir": ".out/local-features/20261017-145030",
-      "raw_report_sha256": "541cfacc0f2c883d5cd383e7a403263b6c67f875b80a2766e865d9d46e4ad04f",
-      "screenshot_count": 882,
-      "unique_screenshot_count": 823,
-      "web_unit": "PASS",
+      "status": "BLOCKED",
+      "raw_status": "FAIL",
+      "run_dir": ".out/local-features/20261017-153155",
+      "raw_report_sha256": "a50e0b6ea025f461f5547167a1c1587f9c14c7e444d1e04efbe0f150c2e0064a",
+      "screenshot_count": 972,
+      "unique_screenshot_count": 923,
+      "web_unit": "PASS (474 files / 1571 tests)",
       "web_build": "PASS",
-      "browser_suites": "PASS (19 suites)",
-      "real_stack": "PASS (desktop 1440px and mobile 393px)",
+      "browser_suites": "PASS (22/22 registered browser suites)",
+      "real_stack": "BLOCKED before stack startup at 1440px and 393px: PermissionError binding 127.0.0.1:4880 (EPERM)",
       "stages": [
         {
           "name": "web-unit",
@@ -290,7 +296,7 @@
           "status": "PASS"
         },
         {
-          "name": "web-header_toolbar",
+          "name": "web-header_actions",
           "status": "PASS"
         },
         {
@@ -314,6 +320,10 @@
           "status": "PASS"
         },
         {
+          "name": "web-mini_player",
+          "status": "PASS"
+        },
+        {
           "name": "web-navigation_density",
           "status": "PASS"
         },
@@ -327,6 +337,14 @@
         },
         {
           "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_share_ui",
           "status": "PASS"
         },
         {
@@ -347,369 +365,53 @@
         },
         {
           "name": "web-real-stack-1440",
-          "status": "PASS"
+          "status": "FAIL"
         },
         {
           "name": "web-real-stack-393",
-          "status": "PASS"
+          "status": "FAIL"
         }
       ],
-      "note": "All 23 automated stages passed, including 19 browser suites and authenticated desktop/mobile real-stack journeys. 37 current-run images were inspected directly at source resolution; 229 current PNGs exactly match previously reviewed images. 557 of 823 unique images remain unreviewed, so the runner remains REVIEW_REQUIRED."
+      "note": "All 23 automated stages passed, including 19 browser suites and authenticated desktop/mobile real-stack journeys. 37 current-run images were inspected directly at source resolution; 229 current PNGs exactly match previously reviewed images. 557 of 823 unique images remain unreviewed, so the runner remains REVIEW_REQUIRED.",
+      "source": "218486389a36cab377b9be3457d1bc17bedde638 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "blocked_reason": "The local-feature harness failed its loopback port preflight in Python ports_available; no product assertion ran."
     },
     "visual_review": {
       "status": "PARTIAL_REVIEW",
-      "reviewed_count": 57,
-      "available_selected_count": 882,
-      "unique_image_count": 823,
-      "reused_exact_image_count": 229,
-      "effective_unique_reviewed_count": 286,
-      "unreviewed_unique_count": 537,
+      "reviewed_count": 4,
+      "available_selected_count": 972,
+      "unique_image_count": 923,
+      "reused_exact_image_count": 79,
+      "effective_unique_reviewed_count": 83,
+      "unreviewed_unique_count": 840,
       "reviewed_screenshots": [
         {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/zoom.browser-voice-at-actual-200-browser-zoom-in-2880px/muted-zoom.png",
-          "sha256": "f133dcd7bfb10e633a1473f5ce8d7b91f04fb5981c91994cfa6e218487e36fca",
-          "width": 2880,
-          "height": 913
+          "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+          "sha256": "9a3913595ab705c02c7b27c7365733e35b7bee03df5ca7c7a41e1b638aa4c37c",
+          "width": 1440,
+          "height": 900
         },
         {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-v-b41eb-tes-fit-at-1024px-text-100-/starting.png",
-          "sha256": "d32a73ae235047e079f804eb30d038f08d20ab2d8baa0b2bbe2a55af4e3bc2a5",
+          "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+          "sha256": "b1c3f60aaeddbd51079c2dd3773cc8745a05c9bde3ebb036d715c8a98fedfe6f",
+          "width": 390,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/updating-1024-200.png",
+          "sha256": "f0e21cb78ed9d692798f95b8df0951f1085215a616e041c0f71e1df63eda2b68",
           "width": 1024,
           "height": 900
         },
         {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-a-pending-985f3-d-blocks-microphone-actions/pending-active-join.png",
-          "sha256": "707948cee4f64fc16d836cbf948077cf6571a9e9fc9f1f1f6a51b3f392fdd543",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-mobile-do-5f18e-ith-drawer-closed-text-100-/closed-deafened.png",
-          "sha256": "3735cf4959608de968892f44b6b09dec6da1a42e281e8b6e1ffb8f43ca677b02",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-100-/muted.png",
-          "sha256": "4992df938e56b1032286433c8ece7423331d085ca1430371f156942ecbbb45c1",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-100-/reconnecting.png",
-          "sha256": "b98d853f1e25b4375167c616b2302fba23fa57fd2cdb0b4f28a8b61e36c57ff3",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-100-/starting.png",
-          "sha256": "8359b0c5946ae864e5025c674c094cabe7646d1020e3003e7dc3ee9ce5aa1c93",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-100-/connected.png",
-          "sha256": "de04680bcdecde30a6194a394245467c65dd98013b1a6cb232e7cfc64b7b92f2",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-100-/leaving.png",
-          "sha256": "684f926154c8b6c5185c787d3b567c31624b2c0b13e618cdf6cad7a5130c92c0",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-100-/prejoin.png",
-          "sha256": "4184e1dc9377d8f394bd960d871158842bd6e24275721d4e7dd787577ca4ad66",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-100-/joining.png",
-          "sha256": "29847f148e438e0418c8c0be341725fb112d0b3fe5878ff40d096cf46915b2b1",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-100-/sharing.png",
-          "sha256": "9bbc8f6598214365a275e6c31f458c8145fc3d4a5b32fa48175af6fe563e572a",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-100-/deafened.png",
-          "sha256": "1ba723b14fd7e3e9c1df1ae7f13b66579b5f64c34ff934978ef40dac3ed08b02",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-100-/stopping.png",
-          "sha256": "30136284941945ee5a5f1860e2ff9185f2ce7ee406dcc13045a3a568b05f4450",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-100-/denied.png",
-          "sha256": "72afd01e150f926dc870401442138e838087366291d0108ba63db6d51e94706c",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/muted.png",
-          "sha256": "e468d6d23c0575c74dc23d757fe54a2760b67109e0b9fe7cc00b5cba07b2d9de",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/reconnecting.png",
-          "sha256": "9e361bf893f26297b4a0b57ed26e58ca9da2467af97ebe0d432a8dae5d286d88",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/starting.png",
-          "sha256": "1fb467f9cc2580c6cf88dac1f26b8d2434e522ddacb5b80899ea0a03d83096c1",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
-          "sha256": "4a9906d0a32af348f787be77f83326e878ef12dcbf9f7182d698a306006ae512",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/leaving.png",
-          "sha256": "df9890d43720a70492068932f2440e70a55a68d7a7dd175052c3e1381ecab2ac",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/prejoin.png",
-          "sha256": "f08e236472d93d06f0ec0b2c09e1c8df404fa8c302dc58b0cf5810ada3e4d158",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/joining.png",
-          "sha256": "995a46c8de69e56846b2652a5a0990986f6b708f543a6f45d155b42510e1e8fd",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/sharing.png",
-          "sha256": "844ed96fdc90a99b707d8ebbfa18c256c60ce9ffe74873baa819802a64e2b33c",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/deafened.png",
-          "sha256": "f5304863c008a2d0752ebf778de7136530169d2a8d7fceebce25f86cbe81c22a",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/stopping.png",
-          "sha256": "5587478cbda285e818a8a470cd3cebced7029e8fb2f7b19e70412fca18ee53a1",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/denied.png",
-          "sha256": "d5c48426dafc26d6d6ed6e385ffe21461632c1783159244dc9415b038625b10e",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-voice_interface/controls.browser-mobile-do-3f210-ith-drawer-closed-text-200-/closed-deafened.png",
-          "sha256": "690b1ddd0fb6ad75e30d91266970e8edddec3483d842db1e5aed4207ac32da86",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-diagnostics-390-100.png",
-          "sha256": "bdd29447ae6cfeae0f0b8dfd3e0b12dbf0e4e51a9cf2742403d81af714c1034a",
-          "width": 324,
-          "height": 312
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-audio.png",
-          "sha256": "b1b1ccc33658aa96533817404df38694c39507b10a00911a883046839ff9fcee",
-          "width": 780,
-          "height": 6214
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-diagnostics-320-100.png",
-          "sha256": "7b9283ae84b000548ce7052315f547e05b85576f8453218bffbe86126dd43d45",
-          "width": 254,
-          "height": 372
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-diagnostics-3440-200.png",
-          "sha256": "152c11308ffb04e746519b493206d761509f22b313fddbfd78601d565c0ef76f",
-          "width": 830,
-          "height": 508
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-3440-200.png",
-          "sha256": "d08bdb7e4b39e4504edc5b0b75b21e77ef464bb4d6b4bdd94773e2d76d244b8f",
-          "width": 3440,
-          "height": 3497
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-real-stack/393/voice-connected-compact.png",
-          "sha256": "dd9b5e4193318f2ae20f7b10db4030a8c6e6c84b40c89ef252153688ed90b38a",
-          "width": 1179,
-          "height": 2556
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-real-stack/393/screen-share-compact-statistics.png",
-          "sha256": "5515f2a9e4e04bac83e38e65b015836c8f1c019b1624f0f2ec6141c3e0b08f27",
-          "width": 1179,
-          "height": 2556
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-real-stack/393/sfu-unavailable.png",
-          "sha256": "ea1bad07c8f711053ebea1e99e11bade0f15dd39ed519d9fea88b5d24ad6415a",
-          "width": 1179,
-          "height": 2556
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-real-stack/1440/voice-connected-compact.png",
-          "sha256": "8379436f565394461f862b8c81f58c8deb9edfe59ddff32d1517ab578d5ddde0",
-          "width": 2880,
-          "height": 1800
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-real-stack/1440/screen-share-compact-statistics.png",
-          "sha256": "ac8f7fa0a5a70b088a54313e771a340d6252aec238979aba7a99d721b34f7623",
-          "width": 2880,
-          "height": 1800
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-semantic--ba804--and-disabled-actions-390px/variants-390.png",
-          "sha256": "149f0f133b0adcae35acf18c2debe7738514ee8c5f51490f20c3e3bdc0b81018",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-100-text/archive-390-100.png",
-          "sha256": "c24627c52368ee52e576c873eb8bb01fe588fe1993a782efa509a2fe8b2b699b",
-          "width": 390,
-          "height": 905
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-quick-coherent-controls-320px-200-text/quick-320-200.png",
-          "sha256": "cb3002c42bfd5f8c52185341ad764f52630987326f5a2c245bbe103dbc2063cc",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-semantic--399eb--and-disabled-actions-320px/variants-320.png",
-          "sha256": "afe1764e2ac08342ea08489e0040fdb8094da8f88d63f123f3ea1ff6085d1fba",
-          "width": 320,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
-          "sha256": "6d662966025dd32c645fd5c907985f577d6d865cd7698bd8fe4b87874f3a5770",
-          "width": 320,
-          "height": 2153
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-files-coherent-controls-390px-200-text/files-390-200.png",
-          "sha256": "47b4ce949ed7f5c0f15f9b80e265436064a06973778f244b5c5df404c25b6ef3",
-          "width": 390,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-archive.png",
-          "sha256": "2a14352b9cfa52411ebbc88679ea74560e2136a123a38d7a39d11c70d8c7d8e0",
-          "width": 1440,
-          "height": 1769
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-semantic--8a2d2--and-disabled-actions-768px/variants-768.png",
-          "sha256": "1b8cda6419119dad1fe767d80f300c93fef0d6aad8ec319000c1c37652f8d031",
-          "width": 768,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-guild.png",
-          "sha256": "d764dd62e099e8ad000593062ba7b55a8003c1415b05da290d2f6a0fbbebabef",
-          "width": 780,
-          "height": 1038
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-archive.png",
-          "sha256": "032bb17ef97b0fa641630bb03747952fa2da096bb9939c7d101ca0c5072dfa25",
-          "width": 780,
-          "height": 1809
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-semantic--32ed6-and-disabled-actions-1440px/variants-1440.png",
-          "sha256": "b6a43a0b8469ca203c7efa50e58dbc8d79485b0bb92254154fb0728061b11727",
-          "width": 1440,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/.out/local-features/20261017-145030/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-200-text/archive-1024-200.png",
-          "sha256": "46ec53fcb8d51d1c422448bf82e9ecfe3994c3973dcd730f95edcbd59d4634e0",
+          "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/technical-receiver-1024-200.png",
+          "sha256": "3cfe1ab2a0fea7becbb1bbed4d64b1e51d00702b1137bc72b45e15cb738ae1d3",
           "width": 1024,
-          "height": 1529
-        },
-        {
-          "path": ".out/local-features/20261017-145030/images/web-search_presentation/zoom.browser-six-result-su-92d1e-l-200-browser-zoom-in-640px/archive-zoom.png",
-          "sha256": "d7c54e26ad0dfda4ff24a73cfb9581e232762a355858b037fdde719b685ec324",
-          "width": 640,
-          "height": 913
-        },
-        {
-          "path": ".out/local-features/20261017-145030/images/web-header_toolbar/header_toolbar.browser-dm--2be12-ns-within-responsive-bounds/dm-768.png",
-          "sha256": "a93ddec5d443bc378309e79d16d375185155fdeec33bec4a16aac2537c0d2184",
-          "width": 768,
           "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/images/web-microcopy/zoom.browser-actual-page-z-6288d-cused-hints-usable-at-780px/prejoin-zoom200-780.png",
-          "sha256": "f1c7361dc4120a14460ea725418e4dc70a5087f9c655eeb5c046e842a13fcdfc",
-          "width": 780,
-          "height": 913
-        },
-        {
-          "path": ".out/local-features/20261017-145030/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
-          "sha256": "ffc7185dfa74ef8a3ebb924080900bf93e8acf524a32f227a99243355debb80a",
-          "width": 1440,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/images/web-real-stack/393/search-tabs-mentions.png",
-          "sha256": "3814a5dd722f0499aaab59ce090858c5c19d8b5d39952b1d6ded2909acca6dbb",
-          "width": 1179,
-          "height": 2556
-        },
-        {
-          "path": ".out/local-features/20261017-145030/images/web-real-stack/1440/search-tabs-mentions.png",
-          "sha256": "775ce059f30dcb929cbcde1a91527e61bd31e706c09b6e85a4ba7ad9545b7c35",
-          "width": 2880,
-          "height": 1800
-        },
-        {
-          "path": ".out/local-features/20261017-145030/images/web-accessibility/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
-          "sha256": "880e96683f5cbe632c3638ffb57be6971dc5e7225a9d73ff0f22d1b2fd839183",
-          "width": 1440,
-          "height": 900
-        },
-        {
-          "path": ".out/local-features/20261017-145030/images/web-search_sessions/tabs.browser-four-search-modes-fit-1024px-at-100-text/search-pinned.png",
-          "sha256": "69631d77a43337ca9ce4301d3bcfc39bcd5e118b899adcf41a920127e3aaf43f",
-          "width": 380,
-          "height": 1000
         }
       ],
-      "scope": "57 current-run images inspected directly at source pixel dimensions; 229 current images have exact PNG hashes matching reviewed images from three earlier review passes. Current report contains 882 entries / 823 unique images; 286 unique images have review evidence and 537 remain unreviewed, so status remains REVIEW_REQUIRED.",
-      "observations": "The voice lifecycle at 320/390px keeps participant cards, join/leave, mute/deafen/share and pending/recovery actions reachable; denied-microphone copy wraps above the fixed dock actions. At actual browser zoom the enlarged cards and dock remain visible; a transient focus hint can overlap a card edge but not the microphone control. Sharing cards can begin below the dock until the room is scrolled; focused tests verify full scroll clearance at 320/390px. Audio diagnostic controls and values stay in their panels at 320/390px and actual browser zoom; at enlarged text the form remains in vertical flow. Long selected native device labels can still truncate with ellipses, while full options appear when the select opens. The 1024px header contains its title/subtitle; authenticated 393px and 1440px screen-share/voice states retain their actions and recovery controls. Preview video is synthetic and does not prove physical picker or media quality. Control-consistency captures at 320/390px and at 200% text/browser zoom keep buttons, archive forms and file actions within the viewport; controls wrap and archive content scrolls vertically. Some native select values truncate with ellipses; full choices remain available in the native menu. Eight additional source-resolution captures were reviewed: narrow archive and mention surfaces remain within their viewport; long channel titles yield before header actions; the 780px/200% voice prejoin keeps both actions visible; the 393px and 1440px real-stack mention views preserve workspace, filters and composer; the 1024px search panel fits its four modes; and the keyboard-state dock has no action overlap. The selected native archive channel label is visibly truncated, consistent with the recorded note that the open native menu exposes its full value.",
+      "scope": "Four current-run source-resolution captures were inspected directly. 79 other current images have exact PNG hashes matching images in the previous 286-image reviewed set. The current run has 972 selected PNG captures / 923 unique images; 83 have review evidence and 840 remain unreviewed, so status remains REVIEW_REQUIRED.",
+      "observations": "The screen-share diagnosis remains “Источник не публикует аудиодорожку.” in desktop and 390px/200% text captures while receiver samples move from absent to fresh to stale; the focused browser regression also asserts the exact text at all three sample states. The 1024px/200% share-quality modal stays within the viewport. In the technical receiver panel, long diagnostic labels and values wrap into several lines and continue below the captured viewport; scrolling that panel was not established by this static capture. These are synthetic UI fixtures and do not prove physical picker or media quality.",
       "previous_run_visual_review": {
         "run_dir": ".out/local-features/20261017-140223",
         "manually_reviewed_unique_screenshots": 148,
@@ -732,7 +434,11 @@
           "reviewed_hashes": 228,
           "matches_current": 223
         }
-      ]
+      ],
+      "current_run": ".out/local-features/20261017-153155",
+      "previous_review_run": ".out/local-features/20261017-145030",
+      "previous_reviewed_unique_count": 286,
+      "previous_exact_hash_matches": 79
     },
     "rollout_rollback_issue305": "NOT_RUN",
     "supplemental_browser_tests": [
@@ -946,17 +652,17 @@
     },
     {
       "issue": 352,
-      "pr": null,
-      "commit": "6fb42508",
-      "status": "local commit in issue-353 integration checkout; unpublished",
-      "evidence": "evidence/qa/dw13-header-toolbar-2026-10-17.md in codex/issue353-master-integration"
+      "pr": 367,
+      "commit": "d79f6b2cc1d9e584842a05922934f5926b739d92",
+      "status": "Open PR #367; issue-353 integration branch is stacked on this head.",
+      "evidence": "https://github.com/Egkurilov/BOOHTACORD/pull/367; evidence/qa/dw13-header-toolbar-2026-10-17.md"
     },
     {
       "issue": 353,
       "pr": null,
-      "commit": null,
-      "status": "current issue; automated gates PASS, manual visual review partial",
-      "evidence": "evidence/qa/dw14-web-tour-regression-2026-10-17.md; .out/local-features/20261017-141612"
+      "commit": "218486389a36cab377b9be3457d1bc17bedde638",
+      "status": "Current integration branch; browser suites PASS, latest real-stack attempt BLOCKED by loopback permission, visual review partial.",
+      "evidence": "evidence/qa/dw14-web-tour-regression-2026-10-17.md; .out/local-features/20261017-153155"
     },
     {
       "issue": 354,
