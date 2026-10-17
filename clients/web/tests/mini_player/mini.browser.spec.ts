@@ -1,6 +1,26 @@
 import { test, expect } from '@playwright/test'
 import { mount, geometry, navigate } from './helpers'
 import { expectAxeClear } from '../accessibility/axe'
+test('a wrapped draft follows conversation width changes without typing or a window resize',async({page},info)=>{
+ await mount(page);await navigate(page,'dm')
+ const textarea=page.locator('.composer textarea')
+ const draft='Черновик остаётся видимым при изменении ширины области переписки'
+ await textarea.fill(draft)
+ const initial=await textarea.evaluate(el=>({width:el.clientWidth,height:el.clientHeight}))
+ // Opening adjacent workspace panels can resize the conversation without a
+ // window resize or any change to the draft itself.
+ await page.locator('.main').evaluate(el=>{el.style.width='420px';el.style.maxWidth='420px'})
+ await expect.poll(()=>textarea.evaluate(el=>el.clientWidth)).toBeLessThan(initial.width)
+ await expect.poll(()=>textarea.evaluate(el=>el.scrollHeight<=el.clientHeight)).toBe(true)
+ const narrowHeight=await textarea.evaluate(el=>el.clientHeight)
+ expect(narrowHeight).toBeGreaterThan(initial.height)
+ await expect(textarea).toHaveValue(draft)
+ await page.screenshot({path:info.outputPath('dm-draft-narrow-parent.png')})
+ await page.locator('.main').evaluate(el=>{el.style.width='';el.style.maxWidth=''})
+ await expect.poll(()=>textarea.evaluate(el=>el.clientWidth)).toBe(initial.width)
+ await expect.poll(()=>textarea.evaluate(el=>el.clientHeight)).toBe(initial.height)
+ await expect(textarea).toHaveValue(draft)
+})
 test('390px at 200% text keeps wrapped DM draft visible beside the pinned mini player',async({page},info)=>{
  await mount(page,390,900,200);await navigate(page,'dm');await geometry(page)
  const textarea=page.locator('.composer textarea'),shortDraft='Черновик'

@@ -39,6 +39,31 @@ function action(page: Page, surface: string): Locator {
         : surface === 'quick' ? page.getByRole('button', { name: 'Показать ещё участников', exact: true })
           : page.getByRole('button', { name: /^Перейти к сообщению с файлом/ })
 }
+for (const width of [320, 390]) test(`audio advanced text remains inside its card at ${width}px / 200% text`, async ({ page }, info) => {
+  await page.setViewportSize({ width, height: 900 })
+  await open(page, 'audio', 200)
+  await page.screenshot({ path: info.outputPath('audio-advanced-text.png'), fullPage: true })
+  const clipped = await page.locator('.audio-settings').evaluate(root => {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+    const result: { text: string; left: number; right: number }[] = []
+    while (walker.nextNode()) {
+      const node = walker.currentNode
+      if (!node.textContent?.trim() || node.parentElement?.closest('select, input, textarea')) continue
+      const range = document.createRange()
+      range.selectNodeContents(node)
+      const card = node.parentElement?.closest('.audio-device-section, .audio-activation-section, .audio-advanced') ?? root
+      const bounds = card.getBoundingClientRect()
+      for (const rect of range.getClientRects()) {
+        if (rect.width > 0 && (rect.left < bounds.left - 1 || rect.right > bounds.right + 1)) {
+          result.push({ text: node.textContent.trim(), left: rect.left, right: rect.right })
+        }
+      }
+    }
+    return result
+  })
+  expect(clipped).toEqual([])
+  await expectControlsFit(page)
+})
 for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) for (const scale of [100, 200]) for (const surface of surfaces) {
   test(`${surface} coherent controls ${width}px / ${scale}% text`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 900 })

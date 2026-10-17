@@ -35,9 +35,27 @@ export function useComposerTextareaAutosize(draft: Ref<string>, textarea: Ref<HT
   watch(draft, (value) => {
     if (textarea.value) syncComposerTextarea(textarea.value, value)
   }, { flush: 'post' })
-  watch(textarea, (element) => {
+  watch(textarea, (element, _previous, onCleanup) => {
     if (!element) return
     syncComposerTextarea(element, draft.value)
+    if (typeof ResizeObserver === 'undefined') return
+    let width: number | undefined
+    let frame: number | undefined
+    const observer = new ResizeObserver(([entry]) => {
+      if (!entry || entry.contentRect.width <= 0 || entry.contentRect.width === width) return
+      width = entry.contentRect.width
+      // Height updates must not feed another resize-observer delivery cycle.
+      if (frame !== undefined) cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        frame = undefined
+        if (textarea.value === element) syncComposerTextarea(element, draft.value)
+      })
+    })
+    observer.observe(element)
+    onCleanup(() => {
+      observer.disconnect()
+      if (frame !== undefined) cancelAnimationFrame(frame)
+    })
   }, { flush: 'post', immediate: true })
   if (typeof window !== 'undefined') {
     window.addEventListener('resize', resize)

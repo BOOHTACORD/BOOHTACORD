@@ -1,3 +1,5 @@
+> Historical progress record for earlier runs. The current scoped result, source-loss exception and selected replacement baseline are in [the final DW-14 receipt](dw14-final-acceptance-2026-10-17.md). Counts and pending gates below describe those earlier attempts.
+
 # DW-14 follow-up — wrapped DM draft at 200% text
 
 Status: **FIXED; automated acceptance PASS; visual review remains REVIEW_REQUIRED**.

@@ -1,0 +1,1309 @@
+{
+  "schema": "boohtacord.dw14.final.v1",
+  "issue": 353,
+  "epic": 339,
+  "date": "2026-10-17",
+  "verdict": "PASS_SELECTED_WEB_REGRESSION_WITH_EXCEPTIONS",
+  "scope": "Current-master Web code and explicitly selected replacement baseline; not physical media acceptance or a UX release GO.",
+  "source": {
+    "frozen_source": "cc50ae810425d73f1f846f1bf96712ca47c39bc8",
+    "base": "43d0c491575f83f03d72bb7355392ce82f56d998",
+    "web_src_tree": "da46b7483e6392ece05c07f9d3a989c80e59f53e",
+    "tests_tree": "d1d139dfe694b5618815ad65635e425cb6559900",
+    "files": {
+      "clients/web/src/conversation/composer_input/auto_size.ts": "e45dbebdbac7c46355fac085b97fd06710d987a43d641aa35f79b362db2dfe15",
+      "clients/web/src/design/design_v2_audio_presentation.css": "16e192e837b732f63dee3651c9b3307e118fcb004e704d5c7711b4a3397699bf",
+      "clients/web/src/design/design_v2_screen_quality.css": "23e13d26c15c98012afcdf2082d82be2d112ebe3b494f21a515da377a1add8d6",
+      "clients/web/src/design/design_v2_stream_diagnostics.css": "5b1b2327cbd6316c32bf4ade6ed433383f0c06af0f4d5ed259bbc43d47240154",
+      "clients/web/tests/mini_player/mini.browser.spec.ts": "ec7c3cbdb3c8f348d19106191265d7af8f185f6589bd1345d312edf94cd1a540",
+      "clients/web/tests/control_consistency/controls.browser.spec.ts": "152fcaab258921488d6af790d89b65308b55ec6a1eb5e6d6bd2f567e33a1a4a2",
+      "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts": "aac5eb3a33aaf2190cf0acc8621e170ddae29a5864be328f69b798d252b7209a",
+      "tools/qa/local_features/features.json": "86b389fda2c7098d8e6089c54b42d7ffda18cfa85057b97ef65d6d29e5b8159f"
+    },
+    "untracked_primary_not_touched": true
+  },
+  "original_archive": {
+    "status": "EXCEPTION_SOURCE_LOST",
+    "confirmation": "User explicitly confirmed on 2026-10-17: archive does not exist.",
+    "original_images_reviewed_this_pass": 0,
+    "original_images_published": 0,
+    "legacy_metadata_rows": 55,
+    "legacy_receipt_sha256": "e7302b272dd39ba8bbafe541085391de2d14ca1458b1a56dea3fb5270051ac44",
+    "legacy_inventory_note": "Historical numbering/state metadata is retained for traceability, not revalidated from original images. No pixel/deployed-SHA equivalence is asserted.",
+    "replacement": "40 reviewed current-source captures with paths, dimensions, hashes, source trees and executable scenarios."
+  },
+  "automation": {
+    "status": "PASS",
+    "run": ".out/local-features/20261017-193925",
+    "report_sha256": "970a74d11b17ab8e11b4043910f41a7ec760e9d1ed60ce17d2849f34fe63c5a0",
+    "report_bytes": 338594,
+    "runner_source": "cc50ae810425d73f1f846f1bf96712ca47c39bc8 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "PASS"
+      },
+      {
+        "name": "web-chat_rhythm",
+        "status": "PASS"
+      },
+      {
+        "name": "web-control_consistency",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-dm_starter",
+        "status": "PASS"
+      },
+      {
+        "name": "web-header_actions",
+        "status": "PASS"
+      },
+      {
+        "name": "web-member_popover",
+        "status": "PASS"
+      },
+      {
+        "name": "web-member_roster",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-message_social",
+        "status": "PASS"
+      },
+      {
+        "name": "web-microcopy",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mini_player",
+        "status": "PASS"
+      },
+      {
+        "name": "web-navigation_density",
+        "status": "PASS"
+      },
+      {
+        "name": "web-quick_jump_people",
+        "status": "PASS"
+      },
+      {
+        "name": "web-readonly_archive",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_profile",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_share_ui",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_dates",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_presentation",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_sessions",
+        "status": "PASS"
+      },
+      {
+        "name": "web-track_name",
+        "status": "PASS"
+      },
+      {
+        "name": "web-voice_disconnect_notice",
+        "status": "PASS"
+      },
+      {
+        "name": "web-voice_interface",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "web_unit": {
+      "files": 474,
+      "tests": 1571
+    },
+    "browser_suites": 24,
+    "suite_case_counts": {
+      "web-unit": 1571,
+      "web-accessibility": 110,
+      "web-chat_rhythm": 53,
+      "web-control_consistency": 85,
+      "web-conversation_action_disclosure": 18,
+      "web-dm_starter": 24,
+      "web-header_actions": 13,
+      "web-member_popover": 7,
+      "web-member_roster": 21,
+      "web-mentions_inbox": 13,
+      "web-message_social": 4,
+      "web-microcopy": 60,
+      "web-mini_player": 20,
+      "web-navigation_density": 25,
+      "web-quick_jump_people": 8,
+      "web-readonly_archive": 2,
+      "web-responsive_shell": 11,
+      "web-screen_profile": 18,
+      "web-screen_share_ui": 23,
+      "web-search_dates": 8,
+      "web-search_presentation": 106,
+      "web-search_sessions": 26,
+      "web-track_name": 2,
+      "web-voice_disconnect_notice": 2,
+      "web-voice_interface": 28
+    },
+    "actual_stack": "Authenticated disposable API/PostgreSQL/LiveKit/Tempo journeys at desktop 1440 CSS px and touch 393 CSS px; resources removed. Synthetic audio/canvas source only.",
+    "source_tree_guard": "Published PR source and test trees must match this receipt; final CI and merge identity are recorded on PR #368."
+  },
+  "baseline": {
+    "version": "web-regression-v1",
+    "path": ".out/issue353/baselines/web-regression-v1",
+    "report_sha256": "2f25c2e93d3b2a2323b0476afb74c7963ae85451a1ad294322a5699c6ad7f851",
+    "review_status": "REVIEWED_SELECTED",
+    "selected_frames": 40,
+    "unique_selected_images": 38,
+    "frames": [
+      {
+        "id": "search-320-200",
+        "path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+        "sha256": "2478a95b2735e5967e273716629ca0488d9bf7810cc27617b5720830edc3f37d",
+        "dimensions": [
+          320,
+          1000
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+        "source_sha256": "2478a95b2735e5967e273716629ca0488d9bf7810cc27617b5720830edc3f37d",
+        "source_dimensions": [
+          320,
+          1000
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-320-200",
+        "path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+        "sha256": "57ee13218b1841f66c927a07145c381f1eed0fbeb5b68498826e7d099b3b210e",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+        "source_sha256": "57ee13218b1841f66c927a07145c381f1eed0fbeb5b68498826e7d099b3b210e",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-390-200",
+        "path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-390px-at-200-text/search-messages.png",
+        "sha256": "44861c448cf0a70c94a0393909095678fd32074729537f72f5dfae0c6db80fcc",
+        "dimensions": [
+          390,
+          1000
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-390px-at-200-text/search-messages.png",
+        "source_sha256": "44861c448cf0a70c94a0393909095678fd32074729537f72f5dfae0c6db80fcc",
+        "source_dimensions": [
+          390,
+          1000
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-390px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-390-200",
+        "path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-5b1dd-d-sidebar-at-390px-200-text/dm-starter.png",
+        "sha256": "1b7a3214a5e42909b11952fe0315944385a11ed3a215d8e783c375d20a1f1954",
+        "dimensions": [
+          390,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-5b1dd-d-sidebar-at-390px-200-text/dm-starter.png",
+        "source_sha256": "1b7a3214a5e42909b11952fe0315944385a11ed3a215d8e783c375d20a1f1954",
+        "source_dimensions": [
+          390,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-dm_starter/overlay.browser-modal-esca-5b1dd-d-sidebar-at-390px-200-text/dm-starter.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-768-200",
+        "path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-768px-at-200-text/search-messages.png",
+        "sha256": "4d57fa1a1c4462bb1ef4ebd700a30015a7d623453200eb594e240b836c009589",
+        "dimensions": [
+          380,
+          1000
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-768px-at-200-text/search-messages.png",
+        "source_sha256": "4d57fa1a1c4462bb1ef4ebd700a30015a7d623453200eb594e240b836c009589",
+        "source_dimensions": [
+          380,
+          1000
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-768px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-768-200",
+        "path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-038f3-d-sidebar-at-768px-200-text/dm-starter.png",
+        "sha256": "b7f68938852426d6f1183509f9da9ffba48ea1ceb15fc331bf01433f6aba7ca9",
+        "dimensions": [
+          768,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-038f3-d-sidebar-at-768px-200-text/dm-starter.png",
+        "source_sha256": "b7f68938852426d6f1183509f9da9ffba48ea1ceb15fc331bf01433f6aba7ca9",
+        "source_dimensions": [
+          768,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-dm_starter/overlay.browser-modal-esca-038f3-d-sidebar-at-768px-200-text/dm-starter.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-1024-200",
+        "path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-1024px-at-200-text/search-messages.png",
+        "sha256": "59255c8a8c19f4f76172e64d2393472b7c8a8346b703e0e1e0225b768e07e704",
+        "dimensions": [
+          380,
+          1000
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-1024px-at-200-text/search-messages.png",
+        "source_sha256": "59255c8a8c19f4f76172e64d2393472b7c8a8346b703e0e1e0225b768e07e704",
+        "source_dimensions": [
+          380,
+          1000
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-1024px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-1024-200",
+        "path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-355a6--sidebar-at-1024px-200-text/dm-starter.png",
+        "sha256": "492df963fdda02ebb35ee2d609e7fc5e32aab2bbdd778eb1e3511a5f1c244043",
+        "dimensions": [
+          1024,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-355a6--sidebar-at-1024px-200-text/dm-starter.png",
+        "source_sha256": "492df963fdda02ebb35ee2d609e7fc5e32aab2bbdd778eb1e3511a5f1c244043",
+        "source_dimensions": [
+          1024,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-dm_starter/overlay.browser-modal-esca-355a6--sidebar-at-1024px-200-text/dm-starter.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-1440-200",
+        "path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-1440px-at-200-text/search-messages.png",
+        "sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "dimensions": [
+          380,
+          936
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-1440px-at-200-text/search-messages.png",
+        "source_sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "source_dimensions": [
+          380,
+          936
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-3440px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-1440-200",
+        "path": ".out/issue353/replacement-selected/dm-1440-200.png",
+        "sha256": "9f53edbf8b33b9109f8d8b5a8221411f933c72808e2eae79c4eb03626264b399",
+        "dimensions": [
+          1040,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-d5e50--sidebar-at-1440px-200-text/dm-starter.png",
+        "source_sha256": "22306de0ac915c3dc0e29310d8cb5e3a6fba6a4040cbe900893a20d7fe860a3a",
+        "source_dimensions": [
+          1440,
+          900
+        ],
+        "crop": {
+          "x": 200,
+          "y": 0,
+          "width": 1040,
+          "height": 900
+        },
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/issue353/review-final/dm-1440-200.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-1920-200",
+        "path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-1920px-at-200-text/search-messages.png",
+        "sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "dimensions": [
+          380,
+          936
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-1920px-at-200-text/search-messages.png",
+        "source_sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "source_dimensions": [
+          380,
+          936
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-3440px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-1920-200",
+        "path": ".out/issue353/replacement-selected/dm-1920-200.png",
+        "sha256": "b7dc132bb9f1d6abdbf42605d13795b62a824f3757847a34057ad4c6d760117b",
+        "dimensions": [
+          1040,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-f970b--sidebar-at-1920px-200-text/dm-starter.png",
+        "source_sha256": "b25a155fc7d3ce145333827eb6ca7bf1eb76a169c31d37c392ae0124795ab01a",
+        "source_dimensions": [
+          1920,
+          900
+        ],
+        "crop": {
+          "x": 440,
+          "y": 0,
+          "width": 1040,
+          "height": 900
+        },
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/issue353/review-final/dm-1920-200.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-3440-200",
+        "path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-3440px-at-200-text/search-messages.png",
+        "sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "dimensions": [
+          380,
+          936
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-3440px-at-200-text/search-messages.png",
+        "source_sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "source_dimensions": [
+          380,
+          936
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-3440px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-3440-200",
+        "path": ".out/issue353/replacement-selected/dm-3440-200.png",
+        "sha256": "c9e731c0ddd2fada6b2eb7096d37429756e088a571b28445da0ae96c7c3b246b",
+        "dimensions": [
+          1040,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-2d92b--sidebar-at-3440px-200-text/dm-starter.png",
+        "source_sha256": "9be6a0ba212a43d1d49ec52d9b7211f7d7e7e30df598166b01eafdf0ff340d00",
+        "source_dimensions": [
+          3440,
+          900
+        ],
+        "crop": {
+          "x": 1200,
+          "y": 0,
+          "width": 1040,
+          "height": 900
+        },
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/issue353/review-final/dm-3440-200.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-320-100",
+        "path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+        "sha256": "5b32c5905dd43679c941239144a989a8317a571d715c1a13b299480cb92a8831",
+        "dimensions": [
+          320,
+          1000
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+        "source_sha256": "5b32c5905dd43679c941239144a989a8317a571d715c1a13b299480cb92a8831",
+        "source_dimensions": [
+          320,
+          1000
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-320-100",
+        "path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+        "sha256": "6a8dfd7fb33ae8d66204baff15eefa56d5920a26b455084822d9657b51e5a49a",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+        "source_sha256": "6a8dfd7fb33ae8d66204baff15eefa56d5920a26b455084822d9657b51e5a49a",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "controls-guild-320-200",
+        "path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+        "sha256": "b382afe7927097ae5c4613da45555ab3bd2e12bb5fa84667f1ecec5c8e308a65",
+        "dimensions": [
+          320,
+          1122
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+        "source_sha256": "b382afe7927097ae5c4613da45555ab3bd2e12bb5fa84667f1ecec5c8e308a65",
+        "source_dimensions": [
+          320,
+          1122
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "controls-audio-320-200",
+        "path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+        "sha256": "a22e75a1a88519db79ff2c354c6a76dcbc2ed7373991c2e1be8612d505df080b",
+        "dimensions": [
+          320,
+          6647
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+        "source_sha256": "a22e75a1a88519db79ff2c354c6a76dcbc2ed7373991c2e1be8612d505df080b",
+        "source_dimensions": [
+          320,
+          6647
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+          "observation": "Fixed audio card inspected in overlapping original-pixel slices covering the entire image; exact full PNG SHA-256 matches the independently inspected focused run."
+        }
+      },
+      {
+        "id": "controls-archive-320-200",
+        "path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+        "sha256": "b28601acc6ea8194d0f32b4918c4417bb12cad82b4f9dc934048ea4d1dd9ed0c",
+        "dimensions": [
+          320,
+          2153
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+        "source_sha256": "b28601acc6ea8194d0f32b4918c4417bb12cad82b4f9dc934048ea4d1dd9ed0c",
+        "source_dimensions": [
+          320,
+          2153
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "controls-quick-320-200",
+        "path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-quick-coherent-controls-320px-200-text/quick-320-200.png",
+        "sha256": "b22dea4091cc90478701510a5b0f4789685060298d8c7d533d4a948222917500",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-quick-coherent-controls-320px-200-text/quick-320-200.png",
+        "source_sha256": "b22dea4091cc90478701510a5b0f4789685060298d8c7d533d4a948222917500",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-quick-coherent-controls-320px-200-text/quick-320-200.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "controls-files-320-200",
+        "path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-files-coherent-controls-320px-200-text/files-320-200.png",
+        "sha256": "13a2b64fd260ab300ba2a59dab86c3f3e17e25e841071881888e34ff6bd2799c",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-files-coherent-controls-320px-200-text/files-320-200.png",
+        "source_sha256": "13a2b64fd260ab300ba2a59dab86c3f3e17e25e841071881888e34ff6bd2799c",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-files-coherent-controls-320px-200-text/files-320-200.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "controls-guild-1440-100",
+        "path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+        "sha256": "b2549e5b334fe9b4d79df5c55f912881bd4a2ab027d7776787fedfecd63da145",
+        "dimensions": [
+          1440,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+        "source_sha256": "b2549e5b334fe9b4d79df5c55f912881bd4a2ab027d7776787fedfecd63da145",
+        "source_dimensions": [
+          1440,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "controls-files-3440-100",
+        "path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-files-coherent-controls-3440px-100-text/files-3440-100.png",
+        "sha256": "829a3c87a215a83fef1fbe4a740a3496f9807ba70ac2ceca0ff9a9fba4d6267c",
+        "dimensions": [
+          3440,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-files-coherent-controls-3440px-100-text/files-3440-100.png",
+        "source_sha256": "829a3c87a215a83fef1fbe4a740a3496f9807ba70ac2ceca0ff9a9fba4d6267c",
+        "source_dimensions": [
+          3440,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-files-coherent-controls-3440px-100-text/files-3440-100.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "audio-diagnostics-390-200",
+        "path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+        "sha256": "50acf02752eda6f062c68447b594ac4d8f4be046ab06433c6981801d5b29d58d",
+        "dimensions": [
+          324,
+          1004
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+        "source_sha256": "50acf02752eda6f062c68447b594ac4d8f4be046ab06433c6981801d5b29d58d",
+        "source_dimensions": [
+          324,
+          1004
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "variants-320",
+        "path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-semantic--399eb--and-disabled-actions-320px/variants-320.png",
+        "sha256": "485c9bdada291a7cff4a02e4d231458eea31bcd06f13304cf54b18fce2237447",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-control_consistency/controls.browser-semantic--399eb--and-disabled-actions-320px/variants-320.png",
+        "source_sha256": "485c9bdada291a7cff4a02e4d231458eea31bcd06f13304cf54b18fce2237447",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-control_consistency/controls.browser-semantic--399eb--and-disabled-actions-320px/variants-320.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "mini-wrap",
+        "path": ".out/local-features/20261017-193925/web-mini_player/mini.browser-390px-at-200--37465-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+        "sha256": "4b517b6bd8e7b8b75ac44b7746d4518cb3f45702908b9c38bcbedb0af9a6689d",
+        "dimensions": [
+          390,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-mini_player/mini.browser-390px-at-200--37465-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+        "source_sha256": "4b517b6bd8e7b8b75ac44b7746d4518cb3f45702908b9c38bcbedb0af9a6689d",
+        "source_dimensions": [
+          390,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-mini_player/mini.browser-390px-at-200--37465-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+          "observation": "Mini controls and composer remain clear of each other and the voice dock. Wrapped input is readable; the narrow-parent fixture intentionally leaves unused workspace width. Actual 200% browser zoom is independently measured."
+        }
+      },
+      {
+        "id": "mini-notice",
+        "path": ".out/local-features/20261017-193925/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+        "sha256": "5d972845794b55e466af3b13063dfe0dc4558649948e968fec3dccfeb43a86ba",
+        "dimensions": [
+          393,
+          844
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+        "source_sha256": "5d972845794b55e466af3b13063dfe0dc4558649948e968fec3dccfeb43a86ba",
+        "source_dimensions": [
+          393,
+          844
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+          "observation": "Mini controls and composer remain clear of each other and the voice dock. Wrapped input is readable; the narrow-parent fixture intentionally leaves unused workspace width. Actual 200% browser zoom is independently measured."
+        }
+      },
+      {
+        "id": "mini-narrow",
+        "path": ".out/local-features/20261017-193925/web-mini_player/mini.browser-a-wrapped-dra-07db6-t-typing-or-a-window-resize/dm-draft-narrow-parent.png",
+        "sha256": "d870e43928d06e1de9053da64b49a8fbcfdbfbf286b6ca98d25d3b9f65717f5d",
+        "dimensions": [
+          1440,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-mini_player/mini.browser-a-wrapped-dra-07db6-t-typing-or-a-window-resize/dm-draft-narrow-parent.png",
+        "source_sha256": "d870e43928d06e1de9053da64b49a8fbcfdbfbf286b6ca98d25d3b9f65717f5d",
+        "source_dimensions": [
+          1440,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/issue353/mini-final/mini.browser-a-wrapped-dra-07db6-t-typing-or-a-window-resize/dm-draft-narrow-parent.png",
+          "observation": "Stable post-assertion capture: four wrapped draft lines visible, send button remains clear; narrow/wide behaviour assertions unchanged, entire mini-player suite 20/20 PASS."
+        }
+      },
+      {
+        "id": "mini-zoom-640",
+        "path": ".out/local-features/20261017-193925/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-640/mini-zoom.png",
+        "sha256": "4c95655a35e58c5e52f996b8d3a0059098870b297ca8e5ba16799e15ee5bc13d",
+        "dimensions": [
+          640,
+          913
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-640/mini-zoom.png",
+        "source_sha256": "4c95655a35e58c5e52f996b8d3a0059098870b297ca8e5ba16799e15ee5bc13d",
+        "source_dimensions": [
+          640,
+          913
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-640/mini-zoom.png",
+          "observation": "Mini controls and composer remain clear of each other and the voice dock. Wrapped input is readable; the narrow-parent fixture intentionally leaves unused workspace width. Actual 200% browser zoom is independently measured."
+        }
+      },
+      {
+        "id": "mini-zoom-780",
+        "path": ".out/local-features/20261017-193925/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+        "sha256": "f78885ffcded1aa61bda820ed1f14214af76231556afc194b7a7beb417f03bf7",
+        "dimensions": [
+          780,
+          913
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+        "source_sha256": "f78885ffcded1aa61bda820ed1f14214af76231556afc194b7a7beb417f03bf7",
+        "source_dimensions": [
+          780,
+          913
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+          "observation": "Mini controls and composer remain clear of each other and the voice dock. Wrapped input is readable; the narrow-parent fixture intentionally leaves unused workspace width. Actual 200% browser zoom is independently measured."
+        }
+      },
+      {
+        "id": "no-audio-mobile",
+        "path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+        "sha256": "97eba6437549ea76ced8054e48c0216615d89f407b21f79dd503b222975b4dfd",
+        "dimensions": [
+          390,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+        "source_sha256": "97eba6437549ea76ced8054e48c0216615d89f407b21f79dd503b222975b4dfd",
+        "source_dimensions": [
+          390,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+          "observation": "Missing-audio status is legible; this isolated diagnosis component does not prove media QoE or whole-workspace styling."
+        }
+      },
+      {
+        "id": "no-audio-desktop",
+        "path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+        "sha256": "caa0459beddf2c7cdfc2c20ef3167fde7cf19d25698037a71fd99c0d51443762",
+        "dimensions": [
+          1440,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+        "source_sha256": "caa0459beddf2c7cdfc2c20ef3167fde7cf19d25698037a71fd99c0d51443762",
+        "source_dimensions": [
+          1440,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+          "observation": "Missing-audio status is legible; this isolated diagnosis component does not prove media QoE or whole-workspace styling."
+        }
+      },
+      {
+        "id": "screen-launch-1024-200",
+        "path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/launch-text-200-1024.png",
+        "sha256": "648f0f753f09a44092315f559938b77608671bb10e1e5df9c83f1f170a0a824d",
+        "dimensions": [
+          1024,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/launch-text-200-1024.png",
+        "source_sha256": "648f0f753f09a44092315f559938b77608671bb10e1e5df9c83f1f170a0a824d",
+        "source_dimensions": [
+          1024,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/launch-text-200-1024.png",
+          "observation": "At 1024 CSS px and 200% text, Cancel stays on one line and footer actions remain visible. Initial close-button focus hint is the intentional keyboard-focus state. Selected 1080p/60 is UI state, not output quality."
+        }
+      },
+      {
+        "id": "screen-statistics-1024-200",
+        "path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/receiver-text-200-1024.png",
+        "sha256": "c36490e2ae28b5ee1e7aaba5fb109783bad53508e7886adef760e5763f4659d4",
+        "dimensions": [
+          1024,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/receiver-text-200-1024.png",
+        "source_sha256": "c36490e2ae28b5ee1e7aaba5fb109783bad53508e7886adef760e5763f4659d4",
+        "source_dimensions": [
+          1024,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/receiver-text-200-1024.png",
+          "observation": "At 1024 CSS px and 200% text, statistics labels and values use a readable wider panel without broken words. Selected, unconfirmed and stale viewer measurements remain distinct; no QoE claim."
+        }
+      },
+      {
+        "id": "actual-1440-mini-player-dm",
+        "path": ".out/local-features/20261017-193925/images/web-real-stack/1440/mini-player-dm.png",
+        "sha256": "e68a092ed52b22521f96d90d3f65d03a5284bd2eb83c3c56660bbdc98db77c9b",
+        "dimensions": [
+          2880,
+          1800
+        ],
+        "source_path": ".out/local-features/20261017-193925/images/web-real-stack/1440/mini-player-dm.png",
+        "source_sha256": "e68a092ed52b22521f96d90d3f65d03a5284bd2eb83c3c56660bbdc98db77c9b",
+        "source_dimensions": [
+          2880,
+          1800
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/local-features/20261017-193925/images/web-real-stack/1440/mini-player-dm.png",
+          "observation": "Source-resolution current-source actual-stack review: mini-player controls, share-start notice, DM header/history, composer/send and voice dock are in distinct usable zones; synthetic decoded video is not a quality measurement."
+        }
+      },
+      {
+        "id": "actual-1440-voice-after-leave",
+        "path": ".out/local-features/20261017-193925/images/web-real-stack/1440/voice-after-leave.png",
+        "sha256": "072d82e200057860839e43158a2d79ec84fcd58ce00dc69267cf485005d9e01c",
+        "dimensions": [
+          2880,
+          1800
+        ],
+        "source_path": ".out/local-features/20261017-193925/images/web-real-stack/1440/voice-after-leave.png",
+        "source_sha256": "072d82e200057860839e43158a2d79ec84fcd58ce00dc69267cf485005d9e01c",
+        "source_dimensions": [
+          2880,
+          1800
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/local-features/20261017-193925/images/web-real-stack/1440/voice-after-leave.png",
+          "observation": "Source-resolution current-source actual-stack review: voluntary leave message is neutral, prejoin and join actions remain accessible; transport cleanup is verified by the actual-stack assertions."
+        }
+      },
+      {
+        "id": "actual-1440-settings-audio-advanced",
+        "path": ".out/local-features/20261017-193925/images/web-real-stack/1440/settings-audio-advanced.png",
+        "sha256": "3e2634821206aa8016d60d84a60c64e875af5e41232f41350a0b10ca48988207",
+        "dimensions": [
+          2880,
+          1800
+        ],
+        "source_path": ".out/local-features/20261017-193925/images/web-real-stack/1440/settings-audio-advanced.png",
+        "source_sha256": "3e2634821206aa8016d60d84a60c64e875af5e41232f41350a0b10ca48988207",
+        "source_dimensions": [
+          2880,
+          1800
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/local-features/20261017-193925/images/web-real-stack/1440/settings-audio-advanced.png",
+          "observation": "Source-resolution current-source actual-stack review: audio processing labels, toggles and reset action remain within the scrollable panel, clear of fixed header and mobile voice dock. The partly hidden top is the intentional current scroll position."
+        }
+      },
+      {
+        "id": "actual-393-mini-player-dm",
+        "path": ".out/local-features/20261017-193925/images/web-real-stack/393/mini-player-dm.png",
+        "sha256": "92e4d08450927079470454d195f7d79db0f6c62b00832223b43c50d9afbcd2ba",
+        "dimensions": [
+          1179,
+          2556
+        ],
+        "source_path": ".out/local-features/20261017-193925/images/web-real-stack/393/mini-player-dm.png",
+        "source_sha256": "92e4d08450927079470454d195f7d79db0f6c62b00832223b43c50d9afbcd2ba",
+        "source_dimensions": [
+          1179,
+          2556
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/local-features/20261017-193925/images/web-real-stack/393/mini-player-dm.png",
+          "observation": "Source-resolution current-source actual-stack review: mini-player controls, share-start notice, DM header/history, composer/send and voice dock are in distinct usable zones; synthetic decoded video is not a quality measurement."
+        }
+      },
+      {
+        "id": "actual-393-voice-after-leave",
+        "path": ".out/local-features/20261017-193925/images/web-real-stack/393/voice-after-leave.png",
+        "sha256": "f561355fdd1f46dbcc2c7f9eec193dc42fff59be0b8757e2d187ed2d9bc08755",
+        "dimensions": [
+          1179,
+          2556
+        ],
+        "source_path": ".out/local-features/20261017-193925/images/web-real-stack/393/voice-after-leave.png",
+        "source_sha256": "f561355fdd1f46dbcc2c7f9eec193dc42fff59be0b8757e2d187ed2d9bc08755",
+        "source_dimensions": [
+          1179,
+          2556
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/local-features/20261017-193925/images/web-real-stack/393/voice-after-leave.png",
+          "observation": "Source-resolution current-source actual-stack review: voluntary leave message is neutral, prejoin and join actions remain accessible; transport cleanup is verified by the actual-stack assertions."
+        }
+      },
+      {
+        "id": "actual-393-settings-audio-advanced",
+        "path": ".out/local-features/20261017-193925/images/web-real-stack/393/settings-audio-advanced.png",
+        "sha256": "0ee8a87638584a5a79cdc20f3be69b424c13d94badc38bfc2ad4271f0d080b62",
+        "dimensions": [
+          1179,
+          2556
+        ],
+        "source_path": ".out/local-features/20261017-193925/images/web-real-stack/393/settings-audio-advanced.png",
+        "source_sha256": "0ee8a87638584a5a79cdc20f3be69b424c13d94badc38bfc2ad4271f0d080b62",
+        "source_dimensions": [
+          1179,
+          2556
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/local-features/20261017-193925/images/web-real-stack/393/settings-audio-advanced.png",
+          "observation": "Source-resolution current-source actual-stack review: audio processing labels, toggles and reset action remain within the scrollable panel, clear of fixed header and mobile voice dock. The partly hidden top is the intentional current scroll position."
+        }
+      }
+    ],
+    "raw_capture_count": 1056,
+    "raw_unique_capture_count": 996,
+    "raw_report_status": "REVIEW_REQUIRED",
+    "raw_visual_status": "NOT_RUN",
+    "raw_unique_not_full_image_approved": 961,
+    "note": "Only these selected screenshots/declared lossless modal crops are the approved replacement baseline. All others remain visually unapproved; the entire raw report was not approved. Tall audio was reviewed in two overlapping source-pixel slices."
+  },
+  "current_master_before_after": {
+    "base": "43d0c491575f83f03d72bb7355392ce82f56d998",
+    "production_src_tree": "9870cf0e69ff170aa33139dedc0221e1bb5726d2",
+    "snapshot": ".out/issue353/current-master-source",
+    "before_runs": [
+      {
+        "suite": "control_consistency",
+        "exit_code": 1
+      },
+      {
+        "suite": "dm_starter",
+        "exit_code": 1
+      },
+      {
+        "suite": "search_sessions",
+        "exit_code": 0
+      }
+    ],
+    "before_results": {
+      "control_consistency": "81 PASS / 2 FAIL: diagnostic dt/dd overlap at 320/390 px and 200% text",
+      "dm_starter": "22 PASS / 2 FAIL: coarse-pointer start action is 36 px instead of >=44 px",
+      "search_sessions": "26 PASS; existing four-mode behaviour remains intact"
+    },
+    "after_results": "All corresponding suites PASS in the accepted 28-stage run.",
+    "method": "Production Vue/CSS/TS and contract data exported from the exact current master; identical final fixture scenarios overlaid. Node 26/Playwright Chromium on this Mac, same synthetic data and viewports. Before captures containing failures are comparisons, not approved reference images.",
+    "setup_failure": "First snapshot missed a referenced contract catalog; stopped before acceptance and restored all tracked master contracts. Failed setup log retained under .out/issue353/current-master-before."
+  },
+  "focused_regressions": [
+    {
+      "scenario": "Conversation width changes without typing/window resize",
+      "before": "FAIL on 350df4e0: wrapped draft remains clipped",
+      "after": "PASS: grow, no lost draft, shrink back; existing max-height and Shift+Enter policy preserved",
+      "test": "clients/web/tests/mini_player/mini.browser.spec.ts",
+      "code": "clients/web/src/conversation/composer_input/auto_size.ts"
+    },
+    {
+      "scenario": "Advanced audio card at 320px / 200% text",
+      "before": "FAIL on 5f506c30: eight rendered text fragments extend beyond their card",
+      "after": "PASS at 320/390: bounded grid tracks and wrapping without losing switch/field behaviour",
+      "test": "clients/web/tests/control_consistency/controls.browser.spec.ts",
+      "code": "clients/web/src/design/design_v2_audio_presentation.css"
+    },
+    {
+      "scenario": "Stable screenshot of resized draft",
+      "before": "One raw screenshot preceded the resize-observer frame despite later passing behaviour assertions; rejected from baseline",
+      "after": "Screenshot is taken after unchanged height/content assertions; 20/20 mini-player cases PASS",
+      "test": "clients/web/tests/mini_player/mini.browser.spec.ts"
+    },
+    {
+      "scenario": "Missing-audio diagnosis / share notice / voluntary leave",
+      "after": "PASS: 1.2s debounce with immediate stream switch, notice in workspace flow, voluntary leave neutral; actual server revocation remains an error",
+      "scope": "UI and synthetic API/SFU lifecycle only"
+    },
+    {
+      "scenario": "200% desktop screen controls and statistics",
+      "after": "PASS: Cancel stays on one line; bounded wider statistics panel preserves words and selected/confirmed/measured distinction",
+      "test": "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
+    }
+  ],
+  "previous_attempts": [
+    {
+      "run": ".out/local-features/20261017-190615",
+      "report_sha256": "aee5657dd951a562da37d8068cc23bf6ee79fe6a8b4edb06c3e8ef616f32f4da",
+      "automatic_stages": "27/27 PASS",
+      "visual": "FAIL: audio-card text overflow; no baseline approved"
+    },
+    {
+      "run": ".out/local-features/20261017-192437",
+      "report_sha256": "195543ab9cba8714562eeaf58c04144ac2f96c1e325f75d44828e12dd2eaa4ac",
+      "automatic_stages": "27/27 PASS",
+      "visual": "One transient narrow-draft capture rejected. Superseded after integration of newer screen styles and selected-scenario coverage."
+    },
+    {
+      "run": ".out/issue353/acceptance-integrated.log",
+      "status": "NOT_STARTED_POLICY_REJECTION",
+      "reason": "Added diagnostics stylesheet also belongs to screen_track_name. Selected that feature and reran, adding the 24th browser suite."
+    },
+    {
+      "remote_head": "4db4b0bb26ddc1a11847e6d95e3cbd88d7957f0e",
+      "frontend_job": 117441921355,
+      "status": "FAIL",
+      "detail": "Older Linux CI observed a 26px DM-prepend anchor drift (limit 2px). Current candidate passed 20 focused repetitions locally and the complete chat suite. Final exact-head CI must pass without weakening the anchor assertion."
+    }
+  ],
+  "child_issue_crosswalk": [
+    {
+      "issue": 340,
+      "pr": 355,
+      "commit": "2ee7e9ec",
+      "status": "merged",
+      "evidence": "evidence/qa/pr355-search-dm-acceptance-2026-10-16.md",
+      "current_scenario": "search_sessions"
+    },
+    {
+      "issue": 341,
+      "pr": 355,
+      "commit": "2ee7e9ec",
+      "status": "merged",
+      "evidence": "evidence/qa/pr355-search-dm-acceptance-2026-10-16.md",
+      "current_scenario": "dm_starter"
+    },
+    {
+      "issue": 342,
+      "pr": 356,
+      "commit": "c6e789bb",
+      "status": "merged",
+      "evidence": "evidence/qa/dw03-controls-2026-10-16.md",
+      "current_scenario": "control_consistency"
+    },
+    {
+      "issue": 343,
+      "pr": 357,
+      "commit": "aa264a74",
+      "status": "merged",
+      "evidence": "evidence/qa/dw04-microcopy-2026-10-16.md",
+      "current_scenario": "microcopy"
+    },
+    {
+      "issue": 344,
+      "pr": 358,
+      "commit": "efdb4b04",
+      "status": "merged",
+      "evidence": "evidence/qa/dw05-navigation-2026-10-16.md",
+      "current_scenario": "navigation_density"
+    },
+    {
+      "issue": 345,
+      "pr": 359,
+      "commit": "86ce6458",
+      "status": "merged",
+      "evidence": "evidence/qa/dw06-chat-rhythm-2026-10-16.md",
+      "current_scenario": "chat_rhythm"
+    },
+    {
+      "issue": 346,
+      "pr": 360,
+      "commit": "4cda8f5c",
+      "status": "merged",
+      "evidence": "evidence/qa/dw07-search-presentation-2026-10-16.md",
+      "current_scenario": "search_presentation"
+    },
+    {
+      "issue": 347,
+      "pr": 361,
+      "commit": "1784d2cd",
+      "status": "merged",
+      "evidence": "evidence/qa/dw08-voice-interface-2026-10-16.md",
+      "current_scenario": "voice_interface"
+    },
+    {
+      "issue": 348,
+      "pr": 362,
+      "commit": "979d0bd0",
+      "status": "merged",
+      "evidence": "evidence/qa/dw09-screen-share-ui-2026-10-16.md",
+      "current_scenario": "screen_share_ui"
+    },
+    {
+      "issue": 349,
+      "pr": 363,
+      "commit": "9dc31592",
+      "status": "merged",
+      "evidence": "evidence/qa/dw10-mini-player-2026-10-17.md",
+      "current_scenario": "mini_player"
+    },
+    {
+      "issue": 350,
+      "pr": 364,
+      "commit": "25be6eca",
+      "status": "merged",
+      "evidence": "evidence/qa/dw11-member-panel-2026-10-17.md",
+      "current_scenario": "member_roster + member_popover"
+    },
+    {
+      "issue": 351,
+      "pr": 366,
+      "commit": "8f4b15a6",
+      "status": "merged",
+      "evidence": "evidence/qa/dw12-settings-hierarchy-2026-10-17.md",
+      "current_scenario": "control_consistency + actual settings; DW-012 receipt"
+    },
+    {
+      "issue": 352,
+      "pr": 367,
+      "commit": "43d0c491575f83f03d72bb7355392ce82f56d998",
+      "status": "merged via PR #367 on 2026-10-17",
+      "evidence": "evidence/qa/dw13-header-actions-2026-10-17.md",
+      "current_scenario": "header_actions"
+    },
+    {
+      "issue": 353,
+      "pr": 368,
+      "commit": "Published PR head must have the recorded source/test trees",
+      "status": "PASS_SELECTED_WEB_REGRESSION_WITH_EXCEPTIONS",
+      "evidence": "evidence/qa/dw14-final-acceptance-2026-10-17.md",
+      "current_scenario": "all 24 browser suites + actual desktop/mobile"
+    },
+    {
+      "issue": 354,
+      "pr": null,
+      "commit": null,
+      "status": "deferred: optional P2 requires user-valued usability evidence first",
+      "evidence": "issue #354; no compact mode added",
+      "current_scenario": "EXCEPTION_DEFERRED: optional compact mode requires separate usability evidence"
+    }
+  ],
+  "ux_tasks": {
+    "channel_dm_draft": "PASS_SCOPED_BROWSER_AND_ACTUAL_STACK",
+    "pins_archive_files_mentions": "PASS_SCOPED_BROWSER_AND_ACTUAL_STACK",
+    "voice_join_leave_mini_player": "PASS_SCOPED_SYNTHETIC_SFU",
+    "settings_and_forms": "PASS_SCOPED_BROWSER_AND_ACTUAL_STACK",
+    "real_user_task_times_errors_backtracks": "NOT_RUN; tracked separately in #305"
+  },
+  "release_review_305": {
+    "review": "COMPLETED_WITH_NO_GO_FINDINGS",
+    "release_decision": "NO-GO / NOT_RUN",
+    "document": "docs/design/UIUX_2026_RELEASE_GATE.md",
+    "reason": "No comparable real-tester samples, approved sample size or named Web rollback owner in available evidence. Automated tasks are not human measurements.",
+    "rollback": "Keep previous immutable Web artifact or revert the UI change and rebuild; per-platform ownership/cohorts still belong to #305.",
+    "effect": "No #305/#303 release or physical-media gate is closed by this code/regression acceptance."
+  },
+  "exceptions": [
+    {
+      "item": "Original private tour",
+      "status": "EXCEPTION_SOURCE_LOST",
+      "reason": "User confirmed archive absent; historical metadata retained as unverified and a reproducible current-master baseline replaces unavailable pixels."
+    },
+    {
+      "item": "Supported-Chrome system picker, physical mic/system audio, dynamic media QoE/capacity/1080p60",
+      "status": "NOT_RUN",
+      "reason": "Issue #353 explicitly permits named NOT_RUN for supported-Chrome smoke; headless/synthetic captures do not establish hardware capability."
+    },
+    {
+      "item": "Optional compact mode #354",
+      "status": "DEFERRED",
+      "reason": "Requires separate demonstrated user need; current redesign keeps one default density."
+    }
+  ],
+  "spec_traceability": {
+    "status": "PASS_INDEX_ONLY",
+    "requirements": 39,
+    "approved_windows_brief_available": false
+  },
+  "contracts": "UNCHANGED",
+  "supersedes": [
+    "evidence/qa/dw14-web-tour-regression-2026-10-17.md",
+    "evidence/qa/dw14-composer-wrap-regression-2026-10-17.md"
+  ]
+}
