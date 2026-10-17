@@ -105,13 +105,83 @@
       "screenshots": {
         "captures": 1053,
         "unique": 996,
-        "directly_reviewed_in_this_run": 16,
-        "unreviewed": 862,
+        "directly_reviewed_in_this_run": 25,
+        "unreviewed": 853,
         "visual_gate": "REVIEW_REQUIRED",
         "baseline_approved": false,
         "exact_hash_reused_from_prior_review": 118,
-        "effective_unique_reviewed": 134,
+        "effective_unique_reviewed": 143,
         "directly_reviewed_images": [
+          {
+            "path": ".out/local-features/20261017-191711/images/web-accessibility/admin_confirmation.browser-168ea-chable-at-844x390-landscape/screen-share-setup-actions.png",
+            "sha256": "e10785efaad7ea138d413eba51f1ff361a9305f8a754d97ee7cf86d41d1b17c5",
+            "dimensions_px": [
+              1688,
+              780
+            ],
+            "observation": "In the 844×390 landscape screen-share setup, the selected profile and both footer actions remain visible; the body content continues above the fixed footer.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+            "sha256": "c05d7541d7a22c2367a8caccf1573aa66cde8286e0e27205f5e2e4cb0a138921",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "observation": "At 320 CSS px / 200% text, the DM starter remains inside the managed modal and its close control is reachable; deliberately unbroken long fixture names wrap within words to avoid horizontal overflow.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-mentions_inbox/mentions_inbox.browser-ren-b3ebb-nd-emits-exact-message-jump/mentions-inbox-desktop.png",
+            "sha256": "4b7a5c8f7a176f88edd100c85a2b01bf4d1a6526a9d0fb41d45548af0f468f55",
+            "dimensions_px": [
+              1440,
+              1000
+            ],
+            "observation": "The desktop mentions view presents message, mention and archive scopes in a single row, with refresh and pagination actions separated from the message entry.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-mini_player/mini.browser-short-viewpor-3408f-ose-preserve-media-identity/short-paused.png",
+            "sha256": "a74dcb98239ce72e64cbd078a485e9e092bab0c88ed34746aee09a873a212773",
+            "dimensions_px": [
+              390,
+              500
+            ],
+            "observation": "In the short mobile viewport, mini-player controls stay above the conversation; long URL content wraps, while the composer and connected voice controls remain available.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-top.png",
+            "sha256": "3193991984568f37d91e392f6b7a7f1f9791f6aea81032b33ac476735ddb3524",
+            "dimensions_px": [
+              320,
+              768
+            ],
+            "observation": "At 320px, navigation channel names truncate within their rows, per-channel actions remain visible, and the connected voice controls and profile footer fit below the scrollable list.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-real-stack/393/search-tabs-messages.png",
+            "sha256": "153761f3a3f047e708250b4d6755d954cab51c9f747f28b560848b897c46d524",
+            "dimensions_px": [
+              1179,
+              2556
+            ],
+            "observation": "The authenticated 393px search view keeps its two top-level scopes, four search modes, query field, filters and Find action within the viewport; the focused query field has a visible focus outline.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-375x812.png",
+            "sha256": "9e657c1a012e36583060bb31fae22375355463ceab66a5ea45b1d648ca8e9563",
+            "dimensions_px": [
+              375,
+              812
+            ],
+            "observation": "At 375×812, the responsive shell retains the workspace header, composer and connected voice dock while the conversation area absorbs the reduced height.",
+            "visually_reviewed_at_source_resolution": true
+          },
           {
             "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/receiver-text-200-1024.png",
             "sha256": "0cc6c21d14dda0c65afd498bd95d4b58e29ede031bc4b8cfdef7b6d67e0b507a",
@@ -270,6 +340,26 @@
               900
             ],
             "observation": "At 320 CSS px and 200% root text, expanded sender diagnostics wrap at word boundaries and remain legible in the captured view.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/leaving.png",
+            "sha256": "24d6547d67dd8e1d2b3c33a33f74cc12768d743cc23f90ba860ba96a91d44210",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "observation": "At 390 CSS px / 200% text, the leaving state uses neutral status wording and keeps the voice controls contained in the dock.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/reconnecting.png",
+            "sha256": "1a5b60190552e1227ceee8e0a34bc0b3e8be83cd28e725a912dbd156df627246",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "observation": "At 390 CSS px / 200% text, reconnecting status is visible in both the content and dock; participant cards and dock controls remain within the viewport.",
             "visually_reviewed_at_source_resolution": true
           }
         ],

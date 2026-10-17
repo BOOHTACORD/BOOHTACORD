@@ -681,5 +681,5 @@ tasks:
   - id: DW-014
     title: Regression baseline and current-master acceptance for Web UI tour (GitHub #353, epic #339)
     requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
-    depends_on: [T-041, T-050, DW-01, DW-02, DW-003, DW-004, DW-005, DW-006, DW-007, DW-008, DW-009, DW-010, DW-011]
-    evidence: [evidence/qa/dw14-web-tour-regression-2026-10-17.md, clients/web/tests/search_sessions/playwright.config.ts, clients/web/tests/dm_starter/playwright.config.ts, clients/web/tests/control_consistency/playwright.config.ts, clients/web/tests/chat_rhythm/playwright.config.ts, clients/web/tests/search_presentation/playwright.config.ts]
+    depends_on: [T-041, T-050, DW-01, DW-02, DW-003, DW-004, DW-005, DW-006, DW-007, DW-008, DW-009, DW-010, DW-011, DW-012, DW-013]
+    evidence: [evidence/qa/dw14-web-tour-regression-2026-10-17.md, evidence/qa/dw12-settings-hierarchy-2026-10-17.md, evidence/qa/dw13-header-actions-2026-10-17.md, clients/web/tests/search_sessions/playwright.config.ts, clients/web/tests/dm_starter/playwright.config.ts, clients/web/tests/control_consistency/playwright.config.ts, clients/web/tests/chat_rhythm/playwright.config.ts, clients/web/tests/search_presentation/playwright.config.ts]
