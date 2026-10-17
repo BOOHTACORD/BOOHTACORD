@@ -1,15 +1,25 @@
 import { test, expect } from '@playwright/test'
 import { mount, geometry, navigate } from './helpers'
 import { expectAxeClear } from '../accessibility/axe'
-test('390px at 200% text keeps the DM draft line visible beside the pinned mini player',async({page},info)=>{
+test('390px at 200% text keeps wrapped DM draft visible beside the pinned mini player',async({page},info)=>{
  await mount(page,390,900,200);await navigate(page,'dm');await geometry(page)
- const textarea=page.locator('.composer textarea'),draft='Черновик'
- await textarea.fill(draft);await expect(textarea).toHaveValue(draft)
+ const textarea=page.locator('.composer textarea'),shortDraft='Черновик'
+ await textarea.fill(shortDraft);await expect(textarea).toHaveValue(shortDraft)
  const metrics=await textarea.evaluate(el=>{const style=getComputedStyle(el),padding=parseFloat(style.paddingTop)+parseFloat(style.paddingBottom),lineHeight=parseFloat(style.lineHeight);return {visibleLineHeight:el.clientHeight-padding,lineHeight,scrollHeight:el.scrollHeight,clientHeight:el.clientHeight}})
  expect(metrics.visibleLineHeight).toBeGreaterThanOrEqual(metrics.lineHeight)
  expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.clientHeight)
+ const draft='Контрольный черновик'
+ await textarea.fill(draft);await expect(textarea).toHaveValue(draft)
+ const wrapped=await textarea.evaluate(el=>({scrollHeight:el.scrollHeight,clientHeight:el.clientHeight,scrollTop:el.scrollTop}))
+ expect(wrapped.scrollHeight).toBeLessThanOrEqual(wrapped.clientHeight)
+ expect(wrapped.scrollTop).toBe(0)
  await navigate(page,'text');await navigate(page,'dm');await expect(textarea).toHaveValue(draft)
  await page.screenshot({path:info.outputPath('dm-draft-390-text-200.png')})
+ await textarea.fill('Длинный черновик '.repeat(60))
+ const bounded=await textarea.evaluate(el=>{const style=getComputedStyle(el);return {scrollHeight:el.scrollHeight,clientHeight:el.clientHeight,maxHeight:parseFloat(style.maxHeight),overflow:style.overflowY}})
+ expect(bounded.clientHeight).toBeLessThanOrEqual(bounded.maxHeight+1)
+ expect(bounded.scrollHeight).toBeGreaterThan(bounded.clientHeight)
+ expect(bounded.overflow).toBe('auto')
 })
 test('mobile screen share notice stays clear of the DM composer send button', async ({ page }, info) => {
  await mount(page,393,844);await navigate(page,'dm')

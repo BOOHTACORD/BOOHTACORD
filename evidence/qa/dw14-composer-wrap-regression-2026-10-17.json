@@ -1,0 +1,101 @@
+{
+  "schema": "boohtacord.web-ux-visual-follow-up.v1",
+  "epic": 339,
+  "issue": 353,
+  "recorded_on": "2026-10-17",
+  "status": "FIXED_AUTOMATED_PASS_REVIEW_REQUIRED",
+  "finding": {
+    "viewport_css_px": [390, 900],
+    "root_text_scale_percent": 200,
+    "before": {
+      "path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+      "sha256": "5699550ec9a4878ff7d896c989b0e4f2067b6556a83b28d996bbf485da5f5422",
+      "dimensions_px": [390, 900],
+      "observation": "Top line of the two-line DM draft is clipped above the textarea.",
+      "browser_metrics": {
+        "scroll_height_px": 116,
+        "client_height_px": 68
+      }
+    },
+    "after": {
+      "path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+      "sha256": "3a4a17cf19751f6e1dcb48ac5f4f8fff875cb6790ffffcc259c856ba4b8acf19",
+      "dimensions_px": [390, 900],
+      "visually_reviewed_at_source_resolution": true,
+      "observation": "Both draft lines are visible; the composer send button, pinned player and voice dock remain usable."
+    }
+  },
+  "implementation": {
+    "behavior": "Auto-size Web channel and DM textareas for soft-wrapped drafts, cap at CSS max-height and scroll longer input internally; preserve existing explicit-newline scrolling.",
+    "data_behavior": "Draft persistence and TEXT/DM navigation are unchanged."
+  },
+  "source": {
+    "base_ref": "github/master",
+    "base_sha": "43d0c491575f83f03d72bb7355392ce82f56d998",
+    "head_before_commit": "ad71c5c9205fbd6c58c786475bc19afd7e6a5501",
+    "working_tree_diff_sha256": "67e4d851cce0f3921542c6256d7144c4b6e4c5a8d9569fe838f2d08ae49b3dad"
+  },
+  "tests": {
+    "pre_fix_regression": {
+      "status": "REPRODUCED",
+      "expected_geometry": "scrollHeight <= clientHeight",
+      "observed_geometry_px": {
+        "scroll_height": 116,
+        "client_height": 68
+      }
+    },
+    "mini_player_browser_suite": {
+      "status": "PASS",
+      "passed": 19,
+      "total": 19
+    },
+    "composer_text_scale": {
+      "status": "PASS",
+      "passed": 20,
+      "total": 20,
+      "text_scale_percent": [100, 200],
+      "viewport_widths_css_px": [320, 393, 1024, 1280, 1440],
+      "explicit_shift_enter_scroll_preserved": true
+    },
+    "local_feature_acceptance": {
+      "command": "./tools/qa/local_features/check.sh --platform web --feature chat --feature shell --feature voice --feature screen --base github/master --real-stack",
+      "run_dir": ".out/local-features/20261017-180122",
+      "raw_report_sha256": "bb06b9a15c69fb628461549bf345ea0637e8dc20a4d01ef236d3102203fe16b8",
+      "raw_report_bytes": 336744,
+      "raw_status": "REVIEW_REQUIRED",
+      "automated_stages": {
+        "passed": 27,
+        "failed": 0
+      },
+      "web_unit": {
+        "status": "PASS",
+        "test_files": 474,
+        "tests": 1571
+      },
+      "production_build": "PASS",
+      "registered_browser_suites": {
+        "passed": 23,
+        "total": 23
+      },
+      "authenticated_real_stack": {
+        "desktop_1440px": "PASS",
+        "mobile_393px": "PASS"
+      },
+      "screenshots": {
+        "captures": 1051,
+        "unique": 995,
+        "directly_reviewed_in_this_run": 1,
+        "unreviewed": 994,
+        "visual_gate": "REVIEW_REQUIRED",
+        "baseline_approved": false
+      }
+    }
+  },
+  "remaining_gates": {
+    "physical_chrome_capture_picker": "NOT_RUN",
+    "hardware_audio_and_media_qoe_capacity": "NOT_RUN",
+    "issue_305_release_review": "NO_GO_NOT_RUN",
+    "issue_305_reason": "The required task measurements and named Web rollback owner are not present in auditable evidence."
+  },
+  "privacy": "Screenshots stay in local .out artifacts; no fixture conversation content is included in this record."
+}
