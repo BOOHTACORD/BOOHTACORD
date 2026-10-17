@@ -1,6 +1,16 @@
 import { test, expect } from '@playwright/test'
 import { mount, geometry, navigate } from './helpers'
 import { expectAxeClear } from '../accessibility/axe'
+test('390px at 200% text keeps the DM draft line visible beside the pinned mini player',async({page},info)=>{
+ await mount(page,390,900,200);await navigate(page,'dm');await geometry(page)
+ const textarea=page.locator('.composer textarea'),draft='Черновик'
+ await textarea.fill(draft);await expect(textarea).toHaveValue(draft)
+ const metrics=await textarea.evaluate(el=>{const style=getComputedStyle(el),padding=parseFloat(style.paddingTop)+parseFloat(style.paddingBottom),lineHeight=parseFloat(style.lineHeight);return {visibleLineHeight:el.clientHeight-padding,lineHeight,scrollHeight:el.scrollHeight,clientHeight:el.clientHeight}})
+ expect(metrics.visibleLineHeight).toBeGreaterThanOrEqual(metrics.lineHeight)
+ expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.clientHeight)
+ await navigate(page,'text');await navigate(page,'dm');await expect(textarea).toHaveValue(draft)
+ await page.screenshot({path:info.outputPath('dm-draft-390-text-200.png')})
+})
 for(const width of [320,390,1024,1440])for(const scale of [100,200])test(`chat zoning ${width} text ${scale}`,async({page},info)=>{
  await mount(page,width,900,scale)
  for(const view of ['text','dm']){

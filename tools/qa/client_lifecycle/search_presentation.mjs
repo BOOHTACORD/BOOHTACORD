@@ -40,7 +40,7 @@ export async function searchPresentation(page, admin, fixture, input, report) {
   await activate(page.getByRole('menuitem', { name: 'Файлы беседы', exact: true }))
   const files = page.locator('.conversation-files')
   await expect(files.getByRole('listitem')).toHaveCount(1)
-  await expect(files.getByRole('button', { name: 'Закрыть', exact: true })).toBeInViewport()
+  await expect(files.getByRole('button', { name: 'Закрыть файлы беседы', exact: true })).toBeInViewport()
   await expect(page.getByRole('tooltip')).toHaveCount(0)
   await activate(files.locator('.file-name-detail summary'))
   await expect(files.locator('.file-name-detail p')).toHaveText(file)
