@@ -6,7 +6,7 @@
 .workspace-main-panel--admin .admin-panel--members .admin-directory { gap: 20px; }
 .admin-panel--members .admin-section-heading h2 { font-size: var(--gc-text-section); line-height: var(--gc-line-section); font-weight: var(--gc-weight-semibold); }
 .admin-panel--members .admin-section-heading h2 span { color: var(--gc-text-muted); }
-.admin-panel--members .admin-section-heading > button { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.admin-panel--members .admin-section-heading > button { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
 .admin-member-filters { display: flex; height: 44px; gap: 12px; }
 .admin-panel--members .admin-member-filters { margin-top: 8px; }
 .admin-panel--members .admin-filter-results { display: flex; min-width: 0; min-height: 36px; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; color: var(--gc-text-muted); font-size: var(--gc-text-caption); }

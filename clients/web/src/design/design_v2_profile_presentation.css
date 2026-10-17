@@ -7,7 +7,7 @@
 .workspace-main-panel--profile .profile-tabs { height: 45px; gap: 8px; margin: 24px 0; }
 .workspace-main-panel--profile .profile-tabs button { min-height: 44px; padding: 0 12px; color: var(--gc-text-muted); }
 .workspace-main-panel--profile .profile-tabs button[aria-selected=true] { color: #fff; }
-.workspace-main-panel--profile .profile-panel { position: relative; display: block; min-height: 459px; padding: 24px; }
+.workspace-main-panel--profile .profile-panel { position: relative; display: block; min-height: 0; padding: 24px; }
 .workspace-main-panel--profile .profile-avatar-row { display: flex; min-height: 92px; align-items: center; gap: 16px; }
 .workspace-main-panel--profile .profile-avatar { width: 72px; height: 72px; flex: 0 0 72px; }
 .workspace-main-panel--profile .profile-avatar--empty { color: #E9CBFF; background: #423657; font-size: 1.625rem; font-weight: 600; }
@@ -21,7 +21,7 @@
 .workspace-main-panel--profile .profile-form label { gap: 8px; color: var(--gc-text-primary); font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
 .workspace-main-panel--profile .profile-form input { height: 44px; min-height: 44px; border-radius: 8px; background: var(--gc-sidebar); font-size: 0.875rem; font-weight: 400; }
 .workspace-main-panel--profile .profile-form small { margin-top: -2px; font-size: 0.75rem; line-height: 1.125rem; font-weight: 400; }
-.workspace-main-panel--profile .profile-savebar { position: absolute; right: 24px; bottom: 24px; left: 24px; width: auto; height: 57px; min-height: 57px; margin: 0; border-top: 1px solid var(--gc-border-subtle); padding: 20px 0 0; transform: none; }
+.workspace-main-panel--profile .profile-savebar { position: static; width: auto; height: auto; min-height: 0; flex-wrap: wrap; gap: 12px; margin: 0; border-top: 1px solid var(--gc-border-subtle); padding: 16px 0 0; transform: none; }
 .workspace-main-panel--profile .profile-savebar button { min-height: 36px; border: 1px solid var(--gc-accent); border-radius: 8px; padding: 0 14px; font-weight: 500; }
 .workspace-main-panel--profile .profile-savebar button:disabled { opacity: .45; }
 .workspace-main-panel--profile .profile-savebar span { line-height: 1.125rem; }
@@ -40,3 +40,5 @@
   .workspace-main-panel--profile .profile-savebar span { flex-basis: 100%; }
   .workspace-main-panel--profile .profile-savebar button { min-height: 44px; flex: 1; }
 }
+
+.workspace-main-panel--profile .profile-savebar button.profile-secondary-button { color: var(--gc-text-primary); border-color: var(--gc-border-control); background: var(--gc-surface-raised); }

@@ -20,15 +20,15 @@ async function expectControlsFit(page: Page) {
 async function open(page: Page, surface: string, scale = 100) {
   await fixtureRoutes(page)
   await page.goto(`/tests/control_consistency/fixture.html?surface=${surface}&scale=${scale}`)
-  if (surface === 'guild') await expect(page.getByLabel('Название гильдии', { exact: true })).toBeEnabled()
-  if (surface === 'audio') await page.getByText('Режим и диагностика обработки', { exact: true }).click()
+  if (surface === 'guild') { await expect(page.getByLabel('Название гильдии', { exact: true })).toBeEnabled(); await page.getByLabel('Название гильдии', { exact: true }).fill('Новая гильдия') }
+  if (surface === 'audio') { await page.getByText('Дополнительно', { exact: true }).click(); await page.getByText('Режим и диагностика обработки', { exact: true }).click() }
   if (surface === 'archive') { await expect(page.getByLabel('Канал', { exact: true })).toBeVisible(); await page.getByLabel('Канал', { exact: true }).selectOption(id) }
   if (surface === 'files') await expect(page.locator('.conversation-files .result-row')).toHaveCount(1)
   await page.evaluate(() => document.fonts.ready)
 }
 function action(page: Page, surface: string): Locator {
   return surface === 'guild' ? page.getByRole('button', { name: 'Сохранить', exact: true })
-    : surface === 'audio' ? page.getByRole('button', { name: 'Сбросить настройки аудио', exact: true })
+    : surface === 'audio' ? page.getByRole('button', { name: 'Сбросить громкость участников и трансляций', exact: true })
       : surface === 'archive' ? page.getByRole('button', { name: 'Вся история', exact: true })
         : surface === 'quick' ? page.getByRole('button', { name: 'Показать ещё участников', exact: true })
           : page.getByRole('button', { name: /^Перейти к сообщению с файлом/ })

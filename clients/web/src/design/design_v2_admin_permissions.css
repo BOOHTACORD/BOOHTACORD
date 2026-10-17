@@ -9,7 +9,7 @@
 .workspace-main-panel--admin .role-permissions .admin-section-heading { position: relative; }
 .workspace-main-panel--admin .role-permissions .admin-section-heading h2 { font-size: 1.25rem; line-height: 1.75rem; }
 .workspace-main-panel--admin .role-permissions .admin-section-heading p { margin-top: 8px; font-size: 0.875rem; line-height: 1.25rem; }
-.workspace-main-panel--admin .role-permissions .admin-section-heading > button { position: absolute; right: 0; top: 0; opacity: 0; }
+.workspace-main-panel--admin .role-permissions .admin-section-heading > button { position: static; opacity: 1; }
 .workspace-main-panel--admin .role-permissions .admin-section-heading:hover > button,
 .workspace-main-panel--admin .role-permissions .admin-section-heading > button:focus-visible { opacity: 1; }
 .workspace-main-panel--admin .role-selector { width: 340px; height: 46px; gap: 4px; padding: 4px; }
@@ -31,9 +31,9 @@
 .workspace-main-panel--admin .role-permission-label small { font-size: 0.75rem; line-height: 1rem; }
 .workspace-main-panel--admin .role-permission-notice { display: flex; min-height: 66px; margin: 16px 0 0; border-color: #67582F; padding: 12px 16px; font-size: 0.8125rem; line-height: 1.25rem; }
 .workspace-main-panel--admin .role-permission-notice svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; }
-.workspace-main-panel--admin .role-policy-actions { position: absolute; right: 0; bottom: 0; left: 0; z-index: 2; display: flex; height: 64px; align-items: center; gap: 12px; margin: 0; border-top: 1px solid var(--gc-border-subtle); padding: 0 max(32px, calc((100% - 880px) / 2)); background: var(--gc-sidebar); transform: none; }
+.workspace-main-panel--admin .role-policy-actions { position: sticky; bottom: 0; z-index: 2; display: flex; flex-wrap: wrap; min-height: 64px; height: auto; align-items: center; gap: 12px; margin: 0; border-top: 1px solid var(--gc-border-subtle); padding: 12px 0; background: var(--gc-content); transform: none; }
 .workspace-main-panel--admin .role-policy-actions button { min-width: 92px; min-height: 36px; border: 0; border-radius: 8px; color: var(--gc-text-secondary); background: transparent; }
-.workspace-main-panel--admin .role-policy-actions button:first-of-type { position: absolute; right: 0; bottom: 100%; opacity: 0; }
+.workspace-main-panel--admin .role-policy-actions button:first-of-type { position: static; opacity: 1; }
 .workspace-main-panel--admin .role-policy-actions:hover button:first-of-type,
 .workspace-main-panel--admin .role-policy-actions button:first-of-type:focus-visible { opacity: 1; }
 .workspace-main-panel--admin .role-policy-actions button:last-child { min-width: 105px; color: white; background: var(--gc-accent); }
@@ -62,8 +62,8 @@
   .workspace-main-panel--admin .role-permission-label small,
   .workspace-main-panel--admin .role-permission-icon { display: none; }
   .workspace-main-panel--admin .role-permission-notice { display: flex; min-height: 80px; padding: 12px; font-size: 0.75rem; line-height: 1.125rem; }
-  .workspace-main-panel--admin .role-policy-actions { height: 70px; gap: 8px; padding: 0 16px; }
-  .workspace-main-panel--admin .role-policy-status { display: none; }
+  .workspace-main-panel--admin .role-policy-actions { height: auto; gap: 8px; padding: 12px 0; }
+  .workspace-main-panel--admin .role-policy-status { display: block; flex-basis: 100%; }
   .workspace-main-panel--admin .role-policy-actions button { min-width: 0; min-height: 44px; flex: 1; }
   .workspace-main-panel--admin .role-policy-actions button:last-child { flex: 1; }
 }

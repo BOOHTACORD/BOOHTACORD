@@ -205,7 +205,8 @@
       "clients/flutter/lib/src/screens/profile*"
     ],
     "web": [
-      "tests/accessibility/playwright.config.ts"
+      "tests/accessibility/playwright.config.ts",
+      "tests/settings_hierarchy/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/personal_settings_visual_capture_test.dart",
@@ -221,6 +222,11 @@
         "native": "tools/qa/accessibility_runtime/native.py",
         "target": "integration_test/accessibility_qa_test.dart",
         "scope": "Actual rendered-state axe/keyboard, enlarged-text geometry and native Semantics; missing physical screen readers/platforms keep gate PARTIAL"
+      },
+      "issue351": {
+        "browser": "clients/web/tests/settings_hierarchy/playwright.config.ts",
+        "actual": "tools/qa/client_lifecycle/settings_hierarchy.mjs",
+        "scope": "13 actual component settings/admin surfaces at 390/1024/1440; explicit save/cancel/pending/error/403/409, visible unsaved/security warnings, retained mounted advanced audio controls at text/native browser zoom. Owned Go API profile writes and actual SFU transport continuity during audio settings navigation; no native or hardware/audio quality claim."
       }
     }
   },

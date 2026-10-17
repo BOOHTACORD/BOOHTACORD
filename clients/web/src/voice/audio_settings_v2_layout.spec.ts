@@ -48,11 +48,10 @@ describe('Design V2 audio settings', () => {
     expect(component).toContain('>{{ device.label }}</option>')
   })
 
-  it('allows cards to grow for PTT assignment and device feedback', () => {
-    expect(presentation).toContain('height: max-content; min-height: 282px;')
-    expect(presentation).toContain('height: max-content; min-height: 164px;')
-    expect(presentation).toContain('min-height: 346px;')
-    expect(presentation).toContain('min-height: 152px;')
+  it('uses content-sized cards and a mounted native disclosure for advanced controls', () => {
+    expect(presentation).toContain('height: max-content; min-height: 0;')
+    expect(component).toContain('<details class="audio-advanced">')
+    expect(component).not.toContain('v-if="advanced')
   })
 
   it('removes native checkbox margins and uses the reference inactive switch color', () => {

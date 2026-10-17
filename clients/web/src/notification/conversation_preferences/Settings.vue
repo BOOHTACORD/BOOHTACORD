@@ -35,7 +35,7 @@ function pause(event:Event):void {
 <template>
   <section aria-labelledby="conversation-notifications-title" class="conversation-notification-settings">
     <h3 id="conversation-notifications-title">Настройки бесед</h3>
-    <p>Счётчики непрочитанных сохраняются. В режиме упоминаний проверяется точное сообщение; личный текст в уведомление не попадает.</p>
+    <details class="copy-help"><summary>Режимы уведомлений</summary><p>Счётчики непрочитанных сохраняются. В режиме упоминаний проверяется точное сообщение; личный текст в уведомление не попадает.</p></details>
     <p v-if="!choices.length">Сначала откройте доступную беседу.</p>
     <template v-else>
       <label>Беседа<select v-model="selected" :disabled="busy"><option v-for="item in choices" :key="item.key" :value="item.key">{{ item.name }}</option></select></label>

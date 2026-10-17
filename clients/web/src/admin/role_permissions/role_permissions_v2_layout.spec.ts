@@ -34,6 +34,7 @@ describe('Design V2 role permission table', () => {
     expect(workspace).toContain('<SettingsWorkspaceHeader panel="admin"')
     expect(workspace).toContain("emit('closePanel', 'admin')")
     expect(presentation).toContain('.role-permission-notice { display: flex;')
-    expect(presentation).toContain('.role-policy-actions button:first-of-type { position: absolute;')
+    expect(presentation).toContain('.role-policy-status { display: block;')
+    expect(presentation).not.toContain('.role-policy-actions button:first-of-type { position: absolute;')
   })
 })

@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { api, channel, chromium, expect, login, openNavigation, origin, status } from './request.mjs'
 import { guild } from './guild.mjs'
+import { personalSettings } from './settings_hierarchy.mjs'
 import { sessions } from './sessions.mjs'
 import { searchTabs } from './search_tabs.mjs'
 import { searchPresentation } from './search_presentation.mjs'
@@ -53,6 +54,7 @@ try {
   const expectedMemberCount = 20 + Number(Boolean(flowAccount))
   const value = await guild(a, b, guest, input.password, report, input.directory, expectedMemberCount)
   console.log('stage=reference-guild-journey-complete')
+  await personalSettings(a, input, report)
   await login(guest, 'qa_member', input.password, input.directory)
   console.log(`stage=qa-member-login:${input.viewport.width}`)
   await channel(guest, 'Text')

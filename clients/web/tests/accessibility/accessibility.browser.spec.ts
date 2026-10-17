@@ -1162,6 +1162,9 @@ test('readiness service and capacity values use a responsive dashboard layout', 
   const section = page.locator('[aria-labelledby="readiness-title"]')
   const tab = page.getByRole('button', { name: 'Готовность', exact: true })
   await expect(tab).toHaveAttribute('aria-current', 'page')
+  await expect(page.locator('.readiness-capacity')).not.toBeVisible()
+  await page.getByText(/Запас и технические показатели ·/).click()
+  await expect(page.locator('.readiness-capacity')).toBeVisible()
   for (const width of [320, 390, 600, 840, 1440]) {
     await page.setViewportSize({ width, height: 844 })
     await expect(page.getByRole('status').filter({ hasText: 'Сервисы готовы' })).toBeVisible()
