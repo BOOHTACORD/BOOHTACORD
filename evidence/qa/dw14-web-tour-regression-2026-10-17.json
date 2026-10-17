@@ -378,12 +378,12 @@
     },
     "visual_review": {
       "status": "PARTIAL_REVIEW",
-      "reviewed_count": 4,
+      "reviewed_count": 16,
       "available_selected_count": 972,
       "unique_image_count": 923,
       "reused_exact_image_count": 79,
-      "effective_unique_reviewed_count": 83,
-      "unreviewed_unique_count": 840,
+      "effective_unique_reviewed_count": 95,
+      "unreviewed_unique_count": 828,
       "reviewed_screenshots": [
         {
           "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
@@ -408,10 +408,82 @@
           "sha256": "3cfe1ab2a0fea7becbb1bbed4d64b1e51d00702b1137bc72b45e15cb738ae1d3",
           "width": 1024,
           "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-390px-text-100-/receiver-390-100.png",
+          "sha256": "493397de2f6feccc5c1e037d5738df829297aeac67f32f34d919f408f3234a27",
+          "width": 390,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-390px-text-100-/technical-receiver-390-100.png",
+          "sha256": "ae11e35afca2061cee52ccf73ddf6613dcba91fe347a60a9b6433a8cfe1bff60",
+          "width": 390,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-390px-text-100-/unsupported-390-100.png",
+          "sha256": "135e39f7752a5d1d31cc8bb3460c8535d7d9665e21ffc7580a9fe1c6953e8b66",
+          "width": 390,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/prejoin.png",
+          "sha256": "13b90007cce396341e4aa5aa829ca659cce8d1163d76aad3bf95cb0a0af0ca36",
+          "width": 320,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/denied.png",
+          "sha256": "dc839f5c82bedc5d4253f9d737fe05514f773ff1a1fbe15eedeb5b3d66491762",
+          "width": 390,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-header_actions/headers.browser-200-text-k-c357b--long-accessible-object-320/dm-text200.png",
+          "sha256": "895d4e51db8ddba786a266b2aac07676c30119d91203c232f930d58c678232e9",
+          "width": 320,
+          "height": 57
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+          "sha256": "c05d7541d7a22c2367a8caccf1573aa66cde8286e0e27205f5e2e4cb0a138921",
+          "width": 320,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+          "sha256": "f2548c13dfa7d31aa6ac25a7184f740a6e534d13b01d940c2c0b112810ad81ad",
+          "width": 390,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-accessibility/accessibility.browser-voic-65451-s-a-retry-at-mobile-2x-text/voice-dock-mic-denied-2x.png",
+          "sha256": "13f7a3ee24cca3a09d1b4d77d55a8ad32ce5ed657972805b889a1ecb5cd7b3ce",
+          "width": 320,
+          "height": 640
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/details-launch-1024-200.png",
+          "sha256": "4972bc008fd6c76923864c07bed4a5c257e82b12aab1d163cec011f90dac9340",
+          "width": 1024,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/details-updating-1024-200.png",
+          "sha256": "6d770d133abdd05598947c8927209484114155028aadcb685221c988578a39bb",
+          "width": 1024,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-153155/images/web-screen_profile/quality_dialog.browser-sce-15aaa-o-and-supported-FPS-ceiling/screen-share-quality-637x584.png",
+          "sha256": "8236346aedb1adfa5ede9214f7b78e9b3d778029c0a44827dd11d6658fa7d0a6",
+          "width": 637,
+          "height": 584
         }
       ],
-      "scope": "Four current-run source-resolution captures were inspected directly. 79 other current images have exact PNG hashes matching images in the previous 286-image reviewed set. The current run has 972 selected PNG captures / 923 unique images; 83 have review evidence and 840 remain unreviewed, so status remains REVIEW_REQUIRED.",
-      "observations": "The screen-share diagnosis remains “Источник не публикует аудиодорожку.” in desktop and 390px/200% text captures while receiver samples move from absent to fresh to stale; the focused browser regression also asserts the exact text at all three sample states. The 1024px/200% share-quality modal stays within the viewport. In the technical receiver panel, long diagnostic labels and values wrap into several lines and continue below the captured viewport; scrolling that panel was not established by this static capture. These are synthetic UI fixtures and do not prove physical picker or media quality.",
+      "scope": "Sixteen distinct current-run source-resolution captures were inspected directly. One additional inspected current image (320px search tabs at 200% text) is an exact-hash match in the 79-image carry-forward set and is not double-counted. The current run has 972 selected PNG captures / 923 unique images; 95 have review evidence and 828 remain unreviewed, so status remains REVIEW_REQUIRED.",
+      "observations": "The screen-share diagnosis remains “Источник не публикует аудиодорожку.” in desktop and 390px/200% text captures while receiver samples move from absent to fresh to stale; its focused browser regression asserts the exact text at all three states. The 1024px/200% launch and quality dialogs, plus the 637x584 quality selection capture, keep their frames and primary actions visible; the larger dialogs scroll their detail text within the frame. At 390px the receiver drawer keeps the summary and copy action readable, the expanded technical details continue below the capture, and the unsupported-browser warning and profile controls fit; a close-action hint appears beside the close icon. The 320px/200% voice prejoin card fits its two actions while the room title truncates in the header. At 390px/200% the microphone-denied status wraps above the fixed voice controls, which remain visible. A 320px/200% DM header truncates its title but keeps actions visible; search tabs stack vertically with no horizontal overflow, while the query placeholder is clipped by the narrow field. The 320px/200% DM picker stays within the viewport, though a deliberately pathological synthetic name wraps across many lines. At 390px/200% the mini-player and composer remain visible; a long draft wraps and scrolls to its active line, and the focused regression checks one-line draft visibility and retention across navigation. These are synthetic UI fixtures and do not prove physical picker or media quality.",
       "previous_run_visual_review": {
         "run_dir": ".out/local-features/20261017-140223",
         "manually_reviewed_unique_screenshots": 148,
@@ -447,6 +519,19 @@
         "status": "PASS",
         "cases": 28,
         "note": "Latest run passed after extending the fixed-dock scroll-clearance regression to 320px and 390px at 200% text; the suite also covers 768/1024/1440 widths and actual browser zoom."
+      },
+      {
+        "command": "clients/web/tests/mini_player/playwright.config.ts (standalone current-commit run)",
+        "status": "PASS",
+        "cases": 18,
+        "source_revision": "03fdb7d1fa7c1223e5e08b70e5683cf561952a23",
+        "note": "All 18 mini-player browser cases passed, including the new 390px / 200% text DM draft line visibility and route-retention regression. Its 390x900 source-resolution capture was inspected; the pinned viewer and composer stay visible, and a single-line draft is readable.",
+        "screenshot": {
+          "path": ".out/issue349/browser/mini.browser-390px-at-200--4071f-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+          "sha256": "bb9c3e71fc41c638880ccea095d1cd2d475373746c3cd835559a2b8f6ba5d502",
+          "width": 390,
+          "height": 900
+        }
       }
     ]
   },
