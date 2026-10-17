@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vActionHint } from '../shared/action_hint/directive'
 import { computed, onActivated, onMounted, ref, watch } from 'vue'
 import { validCodePointLength } from '../validation/unicode_limits/unicode_limits'
 
@@ -69,7 +70,7 @@ function loadMore(): void { if (nextCursor.value) void runSearch(activeQuery.val
 
 <template>
   <section class="direct-message-search" aria-labelledby="direct-search-title" @keydown.esc.stop.prevent="emit('close')">
-    <h3 id="direct-search-title">Поиск в диалоге</h3>
+    <header class="conversation-search-heading"><h3 id="direct-search-title">Поиск в диалоге</h3><button v-action-hint class="header-action" type="button" aria-label="Закрыть поиск в диалоге" @click="emit('close')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button></header>
     <form class="direct-search-form" role="search" :aria-busy="loading" @submit.prevent="submit">
       <label>
         Запрос

@@ -35,6 +35,18 @@ describe('conversation overflow menu', () => {
     expect(state.expanded.value).toBe(false)
   })
 
+  it.each(['ArrowDown','ArrowUp'])('opens the closed menu from the keyboard: %s', async key => {
+    const state = useConversationOverflowMenu(vi.fn(), vi.fn())
+    const first = {focus:vi.fn()}, last = {focus:vi.fn()}
+    state.menu.value = {querySelectorAll:()=>[first,last]} as unknown as HTMLElement
+    const preventDefault=vi.fn()
+    state.onKeys({key,preventDefault} as unknown as KeyboardEvent)
+    await nextTick()
+    expect(state.expanded.value).toBe(true)
+    expect(preventDefault).toHaveBeenCalledOnce()
+    expect((key==='ArrowDown'?first:last).focus).toHaveBeenCalledOnce()
+  })
+
   it('routes search and member actions without adding another command', async () => {
     const search = vi.fn()
     const members = vi.fn()

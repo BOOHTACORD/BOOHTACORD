@@ -198,6 +198,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-ADMIN-01, REQ-VOICE-01, REQ-QUALITY-01]
     depends_on: [T-050, T-014, T-020, T-022, DW-003, DW-004]
     evidence: [clients/web/tests/settings_hierarchy/playwright.config.ts, evidence/qa/dw12-settings-hierarchy-2026-10-17.md]
+  - id: DW-013
+    title: Consistent accessible Web context headers and primary actions (GitHub #352)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-VOICE-01, REQ-SECURITY-02, REQ-QUALITY-01]
+    depends_on: [T-050, T-041, T-022, DW-003, DW-004, DW-007, DW-011, DW-012]
+    evidence: [clients/web/tests/header_actions/playwright.config.ts, evidence/qa/dw13-header-actions-2026-10-17.md]
   - id: T-051
     title: Android native client and APK
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUTH-01, REQ-SECURITY-01, REQ-VOICE-01]

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { vActionHint } from '../shared/action_hint/directive'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, useId, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { loadCurrentSession, type CurrentSession } from '../identity/current_session'
 import { useAuthorDirectory } from '../identity/author_directory'
 import MentionPicker from '../conversation/MentionPicker.vue'
@@ -40,6 +40,8 @@ const authors = useAuthorDirectory()
 const session = ref<CurrentSession | null>(null)
 const composer = useSavedComposer<DirectMessageHistoryItem, TextMessageAttachment>(props.accountId, 'DIRECT_MESSAGE', () => props.directMessageId)
 const { draft, replyTarget, mentionUserIds, attachments, attachmentPending, attachmentClearToken } = composer
+const searchPanelId = useId()
+const overflow = ref<{ focus: () => void } | null>(null)
 const searchOpen = ref(false)
 const searchMounted = ref(false)
 const searchTrigger = ref<HTMLButtonElement | null>(null)
@@ -84,14 +86,14 @@ onBeforeUnmount(() => searchTarget.clearFor('DIRECT_MESSAGE', props.directMessag
 <template>
   <section ref="readRoot" class="direct-message-conversation" aria-labelledby="direct-message-title">
     <header class="main-header conversation-header">
-      <span class="conversation-symbol conversation-symbol--person" aria-hidden="true">@</span>
+      <span class="conversation-symbol conversation-symbol--person" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M5 20v-2a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v2"/></svg></span>
       <div class="main-title">
-        <h2 id="direct-message-title">{{ props.otherParticipantDisplayName }}</h2>
+        <h2 id="direct-message-title" :title="props.otherParticipantDisplayName">{{ props.otherParticipantDisplayName }}</h2>
         <small>Личный диалог</small>
       </div>
-      <WorkspaceHeaderActions :members-expanded="false" :nav-expanded="props.navOpen" :show-members="false" @toggle-navigation="emit('toggleNav')"><button v-action-hint ref="searchTrigger" class="header-action" type="button" aria-label="Найти сообщение" :aria-expanded="searchOpen" @click="toggleSearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m16 16 4 4" /></svg></button><template #overflow><ConversationOverflowMenu show-files @search="openSearch" @files="filesOpen = true" /></template></WorkspaceHeaderActions>
+      <WorkspaceHeaderActions :members-expanded="false" :nav-expanded="props.navOpen" :show-members="false" @toggle-navigation="emit('toggleNav')"><button v-action-hint ref="searchTrigger" class="header-action" type="button" aria-label="Найти сообщение" :aria-expanded="searchOpen && !contextOpen()" :aria-controls="searchPanelId" @click="toggleSearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m16 16 4 4" /></svg></button><template #overflow><ConversationOverflowMenu ref="overflow" :search-expanded="searchOpen && !contextOpen()" :search-controls="searchPanelId" show-files @search="openSearch" @files="filesOpen = true" /></template></WorkspaceHeaderActions>
     </header>
-    <div v-if="searchMounted" v-show="searchOpen && !contextOpen()" class="conversation-tools"><KeepAlive><DirectMessageSearch v-if="searchOpen" :key="props.directMessageId" :direct-message-id="props.directMessageId" @open="searchTarget.open({ kind: 'DIRECT_MESSAGE', conversationId: props.directMessageId, messageId: $event })" @close="closeSearch" /></KeepAlive></div>
+    <div v-if="searchMounted" v-show="searchOpen && !contextOpen()" class="conversation-tools" :id="searchPanelId"><KeepAlive><DirectMessageSearch v-if="searchOpen" :key="props.directMessageId" :direct-message-id="props.directMessageId" @open="searchTarget.open({ kind: 'DIRECT_MESSAGE', conversationId: props.directMessageId, messageId: $event })" @close="closeSearch" /></KeepAlive></div>
     <p v-if="store.loadingHistory" class="state" aria-live="polite">Загружаем историю…</p>
     <p v-if="store.error" id="direct-conversation-error" class="state state-error" role="alert">{{ store.error }} <span v-if="store.historyLoaded">Показанная история может быть устаревшей.</span> <button v-if="store.retryableError" type="button" @click="store.refreshHistory()">Повторить загрузку</button></p>
     <div v-if="!filesOpen && unreadBoundary && !readUnlocked" class="unread-boundary-actions" role="status">
@@ -99,7 +101,7 @@ onBeforeUnmount(() => searchTarget.clearFor('DIRECT_MESSAGE', props.directMessag
       <button type="button" @click="showUnread">К первому непрочитанному</button>
       <button type="button" @click="continueAtLatest">Остаться у последних</button>
     </div>
-    <ConversationFilesPanel v-if="filesOpen" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :deleted-message-ids="store.deletedMessageIds" @open-message="filesOpen = false; searchTarget.open({ kind: 'DIRECT_MESSAGE', conversationId: props.directMessageId, messageId: $event })" @close="filesOpen = false; void nextTick(() => searchTrigger?.focus())" />
+    <ConversationFilesPanel v-if="filesOpen" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :deleted-message-ids="store.deletedMessageIds" @open-message="filesOpen = false; searchTarget.open({ kind: 'DIRECT_MESSAGE', conversationId: props.directMessageId, messageId: $event })" @close="filesOpen = false; void nextTick(() => overflow?.focus())" />
     <SearchMessageContext v-else-if="contextTarget" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :message-id="contextTarget.messageId" @close="searchTarget.clear()" />
     <SearchMessageContext v-else-if="replyContextTarget" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :message-id="replyContextTarget" heading="Контекст ответа" @close="replyContextTarget = null" />
     <SearchMessageContext v-else-if="unreadContextOpen" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :message-id="unreadBoundary" heading="Первое непрочитанное сообщение" unread :active="props.active" @read="store.refreshNavigation()" @viewport-change="savePosition" @close="continueAtLatest" />

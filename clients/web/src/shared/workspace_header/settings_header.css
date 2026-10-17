@@ -7,9 +7,6 @@
 .settings-workspace-header svg { display: block; width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .settings-workspace-close { display: flex; width: 36px; height: 36px; flex: none; align-items: center; justify-content: center; margin-left: auto; border: 0; border-radius: 8px; color: var(--gc-text-secondary); background: transparent; }
 .settings-workspace-close:hover { color: var(--gc-text-primary); background: var(--gc-surface-hover); }
-@media (min-width: 1024px) {
-  .settings-workspace-header .workspace-header-actions { display: none; }
-}
 @media (min-width: 1024px) and (max-width: 1279px) {
   .settings-workspace-header { padding: 0 20px; }
 }

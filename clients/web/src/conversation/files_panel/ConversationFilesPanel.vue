@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vActionHint } from '../../shared/action_hint/directive'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { formatFileSize, loadConversationFilePage, mapConversationFiles, type ConversationFileItem, type ConversationFileMessage } from './files_panel'
 import { MessageRequestError } from '../message_client'
@@ -55,8 +56,8 @@ onMounted(() => title.value?.focus())
 </script>
 
 <template>
-  <section class="conversation-files" aria-labelledby="conversation-files-title">
-    <header><h3 id="conversation-files-title" ref="title" tabindex="-1">Файлы беседы</h3><button class="gc-button gc-button--ghost" type="button" @click="emit('close')">Закрыть</button></header>
+  <section class="conversation-files" aria-labelledby="conversation-files-title" @keydown.esc.stop.prevent="emit('close')">
+    <header><h3 id="conversation-files-title" ref="title" tabindex="-1">Файлы беседы</h3><button v-action-hint class="header-action" type="button" aria-label="Закрыть файлы беседы" @click="emit('close')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button></header>
     <p v-if="pending && !loaded" role="status">Загружаем файлы…</p>
     <p v-if="error" role="alert">{{ error }} <button class="gc-button gc-button--secondary" type="button" :disabled="pending" @click="loadPage">Повторить</button></p>
     <p v-if="loaded && !files.length && !cursor" role="status">В этой беседе пока нет файлов.</p>

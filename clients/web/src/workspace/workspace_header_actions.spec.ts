@@ -26,4 +26,8 @@ describe('conversation header actions', () => {
     expect(dm).not.toContain('members-panel')
   })
 
+  it('names expanded navigation as close rather than open', async () => {
+    const html = await renderToString(createSSRApp(WorkspaceHeaderActions, { navExpanded:true, membersExpanded:false, showMembers:false }))
+    expect(html).toContain('aria-label="Закрыть навигацию"')
+  })
 })

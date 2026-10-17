@@ -20,7 +20,7 @@ export async function searchPresentation(page, admin, fixture, input, report) {
     await expect(page.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   }
   await channel(page, 'Text')
-  if (await page.getByRole('button', { name: 'Закрыть навигацию', exact: true }).isVisible()) await page.getByRole('button', { name: 'Закрыть навигацию', exact: true }).click()
+  if (await page.getByTestId('nav-sidebar').getByRole('button', { name: 'Закрыть навигацию', exact: true }).isVisible()) await page.getByTestId('nav-sidebar').getByRole('button', { name: 'Закрыть навигацию', exact: true }).click()
   const draft = page.getByRole('textbox', { name: 'Сообщение', exact: true })
   await expect(draft).toBeVisible()
   await draft.fill('Synthetic compact unsent draft')

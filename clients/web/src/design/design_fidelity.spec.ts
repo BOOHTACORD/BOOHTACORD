@@ -60,7 +60,7 @@ describe('GuildChat reference fidelity', () => {
     const actions = source('../shared/workspace_header/WorkspaceHeaderActions.vue')
     const app = source('../workspace/WorkspaceApp.vue')
     expect(shell).toContain('.mobile-voice-dock')
-    expect(actions).toContain('aria-label="Открыть навигацию"')
+    expect(actions).toContain("navExpanded ? 'Закрыть навигацию' : 'Открыть навигацию'")
     expect(actions).toContain("membersExpanded ? 'Скрыть участников' : 'Открыть участников'")
     expect(app).toContain('drawer-scrim')
     expect(app).toContain('toggleMembers')

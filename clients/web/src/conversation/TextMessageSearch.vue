@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vActionHint } from '../shared/action_hint/directive'
 import { computed, onMounted, ref, watch } from 'vue'
 import { validCodePointLength } from '../validation/unicode_limits/unicode_limits'
 
@@ -73,7 +74,7 @@ function loadMore(): void {
 
 <template>
   <section class="text-message-search" aria-labelledby="text-search-title" @keydown.esc.stop.prevent="emit('close')">
-    <h3 id="text-search-title">Поиск в канале</h3>
+    <header class="conversation-search-heading"><h3 id="text-search-title">Поиск в канале</h3><button v-action-hint class="header-action" type="button" aria-label="Закрыть поиск в канале" @click="emit('close')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button></header>
     <form class="text-search-form" role="search" :aria-busy="loading" @submit.prevent="submit">
       <label>
         Запрос

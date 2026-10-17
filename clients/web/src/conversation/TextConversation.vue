@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { vActionHint } from '../shared/action_hint/directive'
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, useId, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useTopologyStore } from '../channel/topology_store'
 import { loadCurrentSession, type CurrentSession } from '../identity/current_session'
 import { useAuthorDirectory } from '../identity/author_directory'
@@ -43,6 +43,8 @@ const authors = useAuthorDirectory()
 const session = ref<CurrentSession | null>(null)
 const composer = useSavedComposer<TextMessage, TextAttachmentUpload>(props.accountId, 'CHANNEL', () => props.channelId)
 const { draft, replyTarget, attachments, mentionUserIds, attachmentPending, attachmentClearToken } = composer
+const searchPanelId = useId()
+const overflow = ref<{ focus: () => void } | null>(null)
 const searchOpen = ref(false)
 const searchTrigger = ref<HTMLButtonElement | null>(null)
 const composerTextarea = ref<HTMLTextAreaElement | null>(null)
@@ -83,13 +85,13 @@ function closeSearch(): void { searchOpen.value = false; void nextTick(() => sea
 <template>
   <section ref="readRoot" class="text-conversation" aria-labelledby="conversation-title">
     <header class="main-header conversation-header">
-      <span class="conversation-symbol" aria-hidden="true">#</span>
+      <span class="conversation-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 3 8 21M16 3l-2 18M4 9h16M3 15h16" /></svg></span>
       <div class="main-title">
-        <h2 id="conversation-title">{{ channelName }}</h2><small v-if="channelDescription">{{ channelDescription }}</small>
+        <h2 id="conversation-title" :title="channelName">{{ channelName }}</h2><small v-if="channelDescription" :title="channelDescription">{{ channelDescription }}</small>
       </div>
-      <WorkspaceHeaderActions :members-expanded="props.membersOpen" :nav-expanded="props.navOpen" :show-members="props.showMembers" @toggle-members="emit('toggleMembers')" @toggle-navigation="emit('toggleNav')"><button v-action-hint ref="searchTrigger" class="header-action" type="button" aria-label="Найти сообщение" :aria-expanded="searchOpen" @click="searchOpen ? closeSearch() : searchOpen = true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m16 16 4 4" /></svg></button><template #overflow><ConversationOverflowMenu :show-members="props.showMembers" :members-open="props.membersOpen" show-files @search="searchOpen = true" @toggle-members="emit('toggleMembers')" @files="filesOpen = true" /></template></WorkspaceHeaderActions>
+      <WorkspaceHeaderActions :members-expanded="props.membersOpen" :nav-expanded="props.navOpen" :show-members="props.showMembers" @toggle-members="emit('toggleMembers')" @toggle-navigation="emit('toggleNav')"><button v-action-hint ref="searchTrigger" class="header-action" type="button" aria-label="Найти сообщение" :aria-expanded="searchOpen && !contextOpen()" :aria-controls="searchPanelId" @click="searchOpen ? closeSearch() : searchOpen = true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m16 16 4 4" /></svg></button><template #overflow><ConversationOverflowMenu ref="overflow" :search-expanded="searchOpen && !contextOpen()" :search-controls="searchPanelId" :show-members="props.showMembers" :members-open="props.membersOpen" show-files @search="searchOpen = true" @toggle-members="emit('toggleMembers')" @files="filesOpen = true" /></template></WorkspaceHeaderActions>
     </header>
-    <div v-if="searchOpen" v-show="!contextOpen()" class="conversation-tools"><TextMessageSearch :channel-id="props.channelId" @open="searchTarget.open({ kind: 'CHANNEL', conversationId: props.channelId, messageId: $event })" @close="closeSearch" /></div>
+    <div v-if="searchOpen" v-show="!contextOpen()" class="conversation-tools" :id="searchPanelId"><TextMessageSearch :channel-id="props.channelId" @open="searchTarget.open({ kind: 'CHANNEL', conversationId: props.channelId, messageId: $event })" @close="closeSearch" /></div>
     <p v-if="store.loading" class="state" aria-live="polite">Загружаем историю…</p>
     <p v-if="store.error" id="text-conversation-error" class="state state-error" role="alert">{{ store.error }} <span v-if="store.historyLoaded">Показанная история может быть устаревшей.</span> <button v-if="store.retryableError" type="button" @click="store.refresh()">Повторить загрузку</button></p>
     <div v-if="!filesOpen && unreadBoundary && !readUnlocked" class="unread-boundary-actions" role="status">
@@ -97,7 +99,7 @@ function closeSearch(): void { searchOpen.value = false; void nextTick(() => sea
       <button type="button" @click="showUnread">К первому непрочитанному</button>
       <button type="button" @click="continueAtLatest">Остаться у последних</button>
     </div>
-    <ConversationFilesPanel v-if="filesOpen" kind="CHANNEL" :conversation-id="props.channelId" :deleted-message-ids="store.deletedMessageIds" @open-message="filesOpen = false; searchTarget.open({ kind: 'CHANNEL', conversationId: props.channelId, messageId: $event })" @close="filesOpen = false; void nextTick(() => searchTrigger?.focus())" />
+    <ConversationFilesPanel v-if="filesOpen" kind="CHANNEL" :conversation-id="props.channelId" :deleted-message-ids="store.deletedMessageIds" @open-message="filesOpen = false; searchTarget.open({ kind: 'CHANNEL', conversationId: props.channelId, messageId: $event })" @close="filesOpen = false; void nextTick(() => overflow?.focus())" />
     <SearchMessageContext v-else-if="contextTarget" kind="CHANNEL" :conversation-id="props.channelId" :message-id="contextTarget.messageId" @close="searchTarget.clear()" />
     <SearchMessageContext v-else-if="replyContextTarget" kind="CHANNEL" :conversation-id="props.channelId" :message-id="replyContextTarget" heading="Контекст ответа" @close="replyContextTarget = null" />
     <SearchMessageContext v-else-if="unreadContextOpen" kind="CHANNEL" :conversation-id="props.channelId" :message-id="unreadBoundary" heading="Первое непрочитанное сообщение" unread :active="props.active" @read="topology.refresh()" @viewport-change="savePosition" @close="continueAtLatest" />

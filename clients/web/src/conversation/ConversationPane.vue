@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vActionHint } from '../shared/action_hint/directive'
 import type { VoiceDisconnectNotice } from '../voice/disconnect_notice/model'
 import DisconnectNotice from '../voice/disconnect_notice/Notice.vue'
 import { computed } from 'vue'
@@ -20,6 +21,7 @@ import TextConversation from './TextConversation.vue'
 import WorkspaceHeaderActions from '../shared/workspace_header/WorkspaceHeaderActions.vue'
 import ConversationOverflowMenu from './ConversationOverflowMenu.vue'
 const props = withDefaults(defineProps<{
+  searchExpanded?: boolean
   accountId: string; activeVoiceChannel: TopologyChannel | null
   miniPlayerTarget?: HTMLElement | null
   visible: boolean
@@ -84,7 +86,7 @@ function clearScreenPreview(): void {
     </template>
     <template v-else-if="!channel">
       <header class="main-header conversation-header">
-        <div class="main-title"><small>Рабочая область</small><h2>Выберите канал</h2></div>
+        <div class="main-title"><h2>Выберите канал</h2><small>Рабочая область</small></div>
         <WorkspaceHeaderActions :members-expanded="false" :nav-expanded="navOpen" :show-members="false" @toggle-navigation="emit('toggleNav')" />
       </header>
       <p>Навигация показывает только данные, полученные от текущей серверной сессии.</p>
@@ -97,10 +99,10 @@ function clearScreenPreview(): void {
         <section class="voice-room" :class="{ 'voice-room--screen-expanded': screenExpanded, 'voice-room--mini': miniVisible }">
           <header class="main-header conversation-header">
             <span class="conversation-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9H3ZM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" /></svg></span>
-            <div class="main-title"><h2>{{ voiceChannel.name }}</h2><small>{{ voiceIsActive && voiceState === 'LEAVING' ? 'Выходим…' : selectedScreenName && voiceIsActive ? `${voiceVolumeParticipants.length + 1} участника · ${screenViewerCards.length} трансляции` : voiceIsActive ? `${voiceVolumeParticipants.length + 1} участника в голосовом канале` : voiceRosterError ? 'Голосовой канал · состав недоступен' : voiceRoster ? voiceRoster.participants.length ? `Голосовой канал · сейчас: ${voiceRoster.participants.length}` : 'Голосовой канал · пока пусто' : 'Голосовой канал · проверяем состав' }}</small></div>
+            <div class="main-title"><h2 :title="voiceChannel.name">{{ voiceChannel.name }}</h2><small>{{ voiceIsActive && voiceState === 'LEAVING' ? 'Выходим…' : selectedScreenName && voiceIsActive ? `${voiceVolumeParticipants.length + 1} участника · ${screenViewerCards.length} трансляции` : voiceIsActive ? `${voiceVolumeParticipants.length + 1} участника в голосовом канале` : voiceRosterError ? 'Голосовой канал · состав недоступен' : voiceRoster ? voiceRoster.participants.length ? `Голосовой канал · сейчас: ${voiceRoster.participants.length}` : 'Голосовой канал · пока пусто' : 'Голосовой канал · проверяем состав' }}</small></div>
             <WorkspaceHeaderActions :members-expanded="membersOpen" :nav-expanded="navOpen" :show-members="showMembers" @toggle-members="emit('toggleMembers')" @toggle-navigation="emit('toggleNav')">
-              <button class="header-action" type="button" aria-label="Найти сообщение" @click="emit('openSearch')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg></button>
-              <template #overflow><ConversationOverflowMenu menu-label="Действия голосового канала" :show-members="showMembers" :members-open="membersOpen" @search="emit('openSearch')" @toggle-members="emit('toggleMembers')" /></template>
+              <button v-action-hint class="header-action" type="button" aria-label="Найти сообщение" :aria-expanded="Boolean(searchExpanded)" aria-controls="search-aside-panel" @click="emit('openSearch')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg></button>
+              <template #overflow><ConversationOverflowMenu :search-expanded="searchExpanded" search-controls="search-aside-panel" menu-label="Действия голосового канала" :show-members="showMembers" :members-open="membersOpen" @search="emit('openSearch')" @toggle-members="emit('toggleMembers')" /></template>
             </WorkspaceHeaderActions>
           </header>
           <div v-if="voiceChannel.admissionClosed" class="state state-error" :role="voiceDisconnectNotice ? undefined : 'status'">
