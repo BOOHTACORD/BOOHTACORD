@@ -16,7 +16,7 @@
       55
     ],
     "private_source_images_copied": false,
-    "notes": "Current master is 43d0c491575f83f03d72bb7355392ce82f56d998. PR #367 for #352 was merged into master at this commit. The current issue-353 source is f7881097, validated by the latest registered run; its raw runner provenance is recorded as ed4cb5e5871c64720b1dd9f43ca5f7406f5ee0ff diff-sha256=5550c0b2726e450d88bfae5d77c3480d734593a5e1b6047153ee8011a75c4696. The 15 October production tour remains historical and is not source-equivalent."
+    "notes": "Current master is 43d0c491575f83f03d72bb7355392ce82f56d998. PR #367 for #352 was merged there. Current issue-353 implementation commit is 5f5b1388e02546f566d5433ead67f9baef615454 on PR #368; the latest registered run records source ad71c5c9205fbd6c58c786475bc19afd7e6a5501 diff-sha256=67e4d851cce0f3921542c6256d7144c4b6e4c5a8d9569fe838f2d08ae49b3dad. The 15 October production tour remains historical and is not source-equivalent."
   },
   "scenarios": [
     {
@@ -220,12 +220,12 @@
     {
       "name": "Authenticated API/SFU real-stack acceptance (#353)",
       "status": "PASS",
-      "run_dir": ".out/local-features/20261017-170617",
+      "run_dir": ".out/local-features/20261017-183225",
       "viewports_css_px": [
         1440,
         393
       ],
-      "evidence": "Both desktop and mobile journeys passed against the local API, PostgreSQL and LiveKit stack."
+      "evidence": "Both desktop and mobile journeys passed against local API, PostgreSQL and LiveKit; run artifacts are summarized in the current registered report hash."
     }
   ],
   "quality_gates": {
@@ -255,7 +255,7 @@
         "web-real-stack-1440",
         "web-real-stack-393"
       ],
-      "run_dir": ".out/local-features/20261017-170617",
+      "run_dir": ".out/local-features/20261017-183225",
       "earlier_consolidated_attempts": [
         {
           "run_dir": ".out/local-features/20261017-120656",
@@ -280,35 +280,80 @@
           "run_dir": ".out/local-features/issue353-recheck-393"
         }
       ],
-      "reason": "The latest registered run passed authenticated API/PostgreSQL/LiveKit journeys at both desktop 1440px and mobile 393px.",
-      "previous_passed_run_dir": ".out/local-features/20261017-123657",
+      "reason": "The latest registered 27-stage run passed authenticated API/PostgreSQL/LiveKit journeys at desktop 1440px and mobile 393px.",
+      "previous_passed_run_dir": ".out/local-features/20261017-180122",
       "registered_web_check_status": "REVIEW_REQUIRED",
-      "rerun_reason": "Repeated the current-master issue-352 integration and issue-353 registered matrix after extending the screen-sharing dock-clearance regression to both 320px and 390px.",
+      "rerun_reason": "Repeated the registered current-master Web suite after the source-resolution review found and fixed a wrapped-DM-draft clipping defect; this run verifies the fix with real-stack desktop and mobile journeys.",
       "latest_attempt": {
         "status": "PASS",
         "raw_status": "PASS",
-        "run_dir": ".out/local-features/20261017-170617",
+        "run_dir": ".out/local-features/20261017-183225",
         "failed_stages": [],
         "passed_stages": [
           "web-real-stack-1440",
           "web-real-stack-393"
         ],
-        "reason": "Both real-stack journeys completed and passed."
+        "reason": "Both real-stack journeys completed and passed in the latest 27-stage registered run."
       },
       "historical_blocked_attempt": {
         "run_dir": ".out/local-features/20261017-153155",
         "status": "BLOCKED",
         "raw_stage_status": "FAIL",
         "reason": "Both stages stopped in ports_available before application/service startup: PermissionError [Errno 1] Operation not permitted binding 127.0.0.1:4880. No real-stack assertion ran. A prior pre-rebase issue-353 run (20261017-151403) passed desktop 1440px and mobile 393px; this latest rebased source still needs a host with local socket permission."
-      }
+      },
+      "previous_passed_run_dir_before_latest": ".out/local-features/20261017-170617",
+      "validated_code_commit": "96fffa3c"
     },
-    "registered_web_check": {
+    "rollout_rollback_issue305": "NOT_RUN",
+    "supplemental_browser_tests": [
+      {
+        "command": "clients/web/tests/voice_interface/playwright.config.ts (included in the latest registered Web gate)",
+        "status": "PASS",
+        "cases": 28,
+        "note": "Latest run passed after extending the fixed-dock scroll-clearance regression to 320px and 390px at 200% text; the suite also covers 768/1024/1440 widths and actual browser zoom."
+      },
+      {
+        "command": "clients/web/tests/mini_player/playwright.config.ts (standalone current-commit run)",
+        "status": "PASS",
+        "cases": 18,
+        "source_revision": "03fdb7d1fa7c1223e5e08b70e5683cf561952a23",
+        "note": "All 18 mini-player browser cases passed, including the new 390px / 200% text DM draft line visibility and route-retention regression. Its 390x900 source-resolution capture was inspected; the pinned viewer and composer stay visible, and a single-line draft is readable.",
+        "screenshot": {
+          "path": ".out/issue349/browser/mini.browser-390px-at-200--4071f-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+          "sha256": "bb9c3e71fc41c638880ccea095d1cd2d475373746c3cd835559a2b8f6ba5d502",
+          "width": 390,
+          "height": 900
+        }
+      },
+      {
+        "command": "clients/web/tests/mini_player/playwright.config.ts",
+        "status": "PASS",
+        "cases": 19,
+        "source_revision": "5f5b1388",
+        "note": "Focused current-code suite passed, including wrapped DM composer visibility at 200% text."
+      },
+      {
+        "command": "clients/web/tests/mini_player/playwright.config.ts accessibility text-scale cases",
+        "status": "PASS",
+        "cases": 20,
+        "source_revision": "5f5b1388",
+        "note": "Pass at 100%/200% text and widths 320, 393, 1024, 1280, and 1440px; explicit Shift+Enter scrolling remains intact."
+      },
+      {
+        "command": "clients/web/tests/search_sessions/tabs.browser.spec.ts (focused browser run)",
+        "status": "PASS",
+        "cases": 16,
+        "source_revision": "96fffa3c",
+        "note": "All search-mode/keyboard/touch cases passed. At 320px and 200% text, the test verifies the shortened “Поиск” placeholder width fits the actual input content box."
+      }
+    ],
+    "previous_registered_web_check": {
       "status": "REVIEW_REQUIRED",
       "raw_status": "PASS",
-      "run_dir": ".out/local-features/20261017-170617",
-      "raw_report_sha256": "bae911c95ae31148ca85d49c704393bbe9f987f970a63b4d2b698da45a6d514b",
+      "run_dir": ".out/local-features/20261017-180122",
+      "raw_report_sha256": "bb06b9a15c69fb628461549bf345ea0637e8dc20a4d01ef236d3102203fe16b8",
       "screenshot_count": 1051,
-      "unique_screenshot_count": 998,
+      "unique_screenshot_count": 995,
       "web_unit": "PASS (474 files / 1571 tests)",
       "web_build": "PASS",
       "browser_suites": "PASS (23/23 registered browser suites)",
@@ -423,11 +468,137 @@
           "status": "PASS"
         }
       ],
-      "note": "All 27 automated stages passed: unit, production build, accessibility, 23 browser suites, and authenticated real-stack journeys at 1440px and 393px. Twenty-eight current-run images were inspected directly; 970 of 998 unique images remain unreviewed, so final status is REVIEW_REQUIRED.",
-      "source": "validated commit f7881097; runner source record: ed4cb5e5871c64720b1dd9f43ca5f7406f5ee0ff diff-sha256=5550c0b2726e450d88bfae5d77c3480d734593a5e1b6047153ee8011a75c4696",
-      "raw_report_size_bytes": 336744
+      "note": "All 27 automated stages passed. Ten current-run images were inspected at source resolution; 20 reviews were reused on exact SHA-256 matches. 965 of 995 unique images remain unreviewed, so overall status remains REVIEW_REQUIRED.",
+      "source": "validated implementation commit 5f5b1388e02546f566d5433ead67f9baef615454; runner source record: ad71c5c9205fbd6c58c786475bc19afd7e6a5501 diff-sha256=67e4d851cce0f3921542c6256d7144c4b6e4c5a8d9569fe838f2d08ae49b3dad",
+      "raw_report_size_bytes": 336744,
+      "previous_run_dir": ".out/local-features/20261017-170617",
+      "previous_registered_web_check": {
+        "status": "REVIEW_REQUIRED",
+        "raw_status": "PASS",
+        "run_dir": ".out/local-features/20261017-170617",
+        "raw_report_sha256": "bae911c95ae31148ca85d49c704393bbe9f987f970a63b4d2b698da45a6d514b",
+        "screenshot_count": 1051,
+        "unique_screenshot_count": 998,
+        "web_unit": "PASS (474 files / 1571 tests)",
+        "web_build": "PASS",
+        "browser_suites": "PASS (23/23 registered browser suites)",
+        "real_stack": "PASS at 1440px and 393px (authenticated local API/PostgreSQL/LiveKit)",
+        "stages": [
+          {
+            "name": "web-unit",
+            "status": "PASS"
+          },
+          {
+            "name": "web-build",
+            "status": "PASS"
+          },
+          {
+            "name": "web-accessibility",
+            "status": "PASS"
+          },
+          {
+            "name": "web-chat_rhythm",
+            "status": "PASS"
+          },
+          {
+            "name": "web-control_consistency",
+            "status": "PASS"
+          },
+          {
+            "name": "web-conversation_action_disclosure",
+            "status": "PASS"
+          },
+          {
+            "name": "web-dm_starter",
+            "status": "PASS"
+          },
+          {
+            "name": "web-header_actions",
+            "status": "PASS"
+          },
+          {
+            "name": "web-member_popover",
+            "status": "PASS"
+          },
+          {
+            "name": "web-member_roster",
+            "status": "PASS"
+          },
+          {
+            "name": "web-mentions_inbox",
+            "status": "PASS"
+          },
+          {
+            "name": "web-message_social",
+            "status": "PASS"
+          },
+          {
+            "name": "web-microcopy",
+            "status": "PASS"
+          },
+          {
+            "name": "web-mini_player",
+            "status": "PASS"
+          },
+          {
+            "name": "web-navigation_density",
+            "status": "PASS"
+          },
+          {
+            "name": "web-quick_jump_people",
+            "status": "PASS"
+          },
+          {
+            "name": "web-readonly_archive",
+            "status": "PASS"
+          },
+          {
+            "name": "web-responsive_shell",
+            "status": "PASS"
+          },
+          {
+            "name": "web-screen_profile",
+            "status": "PASS"
+          },
+          {
+            "name": "web-screen_share_ui",
+            "status": "PASS"
+          },
+          {
+            "name": "web-search_dates",
+            "status": "PASS"
+          },
+          {
+            "name": "web-search_presentation",
+            "status": "PASS"
+          },
+          {
+            "name": "web-search_sessions",
+            "status": "PASS"
+          },
+          {
+            "name": "web-voice_disconnect_notice",
+            "status": "PASS"
+          },
+          {
+            "name": "web-voice_interface",
+            "status": "PASS"
+          },
+          {
+            "name": "web-real-stack-1440",
+            "status": "PASS"
+          },
+          {
+            "name": "web-real-stack-393",
+            "status": "PASS"
+          }
+        ],
+        "note": "All 27 automated stages passed: unit, production build, accessibility, 23 browser suites, and authenticated real-stack journeys at 1440px and 393px. Twenty-eight current-run images were inspected directly; 970 of 998 unique images remain unreviewed, so final status is REVIEW_REQUIRED.",
+        "source": "validated commit f7881097; runner source record: ed4cb5e5871c64720b1dd9f43ca5f7406f5ee0ff diff-sha256=5550c0b2726e450d88bfae5d77c3480d734593a5e1b6047153ee8011a75c4696",
+        "raw_report_size_bytes": 336744
+      }
     },
-    "visual_review": {
+    "previous_visual_review": {
       "status": "PARTIAL_REVIEW",
       "reviewed_count": 28,
       "available_selected_count": 1051,
@@ -605,7 +776,7 @@
           "height": 900
         }
       ],
-      "scope": "Twenty-eight distinct images from the latest registered run were inspected at their original pixel resolution. The run produced 1,051 selected captures and 998 unique images; 28 have current-run direct review evidence and 970 remain unreviewed, so visual status is REVIEW_REQUIRED. Prior-run review records are retained separately and are not counted without current exact-hash matching.",
+      "scope": "Twenty-eight distinct images from the previous registered run were inspected at their original pixel resolution. The run produced 1,051 selected captures and 998 unique images; 28 have current-run direct review evidence and 970 remain unreviewed, so visual status is REVIEW_REQUIRED. Prior-run review records are retained separately and are not counted without current exact-hash matching.",
       "observations": "The viewer diagnosis remains “Источник не публикует аудиодорожку.” in desktop and mobile captures. During mobile DM navigation, the screen-share notice sits between the mini-player and conversation header, leaving the composer send button clear. Voluntary voice leave uses a neutral status treatment on desktop and mobile. The real-stack mini-player stays present across TEXT/DM state at 1440px and 393px. The 393px share statistics distinguish the selected sender profile from measured receiver dimensions and mark unavailable measurements as stale/absent; these captures do not establish media quality or capacity.  Twenty more unique component-fixture captures were inspected at source resolution across two passes. Responsive shell at 320px and 1440px retained its composer and voice status; the 320px DM list, 1440px channel list and 320px archive controls stayed within their panels; desktop audio diagnostics remained in-frame; channel administration forms fit at 390px and 1440px; the 2× mobile screen-share settings retained the fixed action footer, while the desktop 2× dialog retained its options and actions; and the mini-player DM at 320px kept the composer and voice dock visible. At 1440px with 200% text, the mini-player and message composer remained visible while long sidebar labels were clipped within their rails. The synthetic captures show layout only and do not prove media quality or user acceptance.",
       "previous_run_visual_review": {
         "run_dir": ".out/local-features/20261017-140223",
@@ -743,7 +914,7 @@
         "scope": "Sixteen distinct current-run source-resolution captures were inspected directly. One additional inspected current image (320px search tabs at 200% text) is an exact-hash match in the 79-image carry-forward set and is not double-counted. The current run has 972 selected PNG captures / 923 unique images; 95 have review evidence and 828 remain unreviewed, so status remains REVIEW_REQUIRED.",
         "observations": "The screen-share diagnosis remains “Источник не публикует аудиодорожку.” in desktop and 390px/200% text captures while receiver samples move from absent to fresh to stale; its focused browser regression asserts the exact text at all three states. The 1024px/200% launch and quality dialogs, plus the 637x584 quality selection capture, keep their frames and primary actions visible; the larger dialogs scroll their detail text within the frame. At 390px the receiver drawer keeps the summary and copy action readable, the expanded technical details continue below the capture, and the unsupported-browser warning and profile controls fit; a close-action hint appears beside the close icon. The 320px/200% voice prejoin card fits its two actions while the room title truncates in the header. At 390px/200% the microphone-denied status wraps above the fixed voice controls, which remain visible. A 320px/200% DM header truncates its title but keeps actions visible; search tabs stack vertically with no horizontal overflow, while the query placeholder is clipped by the narrow field. The 320px/200% DM picker stays within the viewport, though a deliberately pathological synthetic name wraps across many lines. At 390px/200% the mini-player and composer remain visible; a long draft wraps and scrolls to its active line, and the focused regression checks one-line draft visibility and retention across navigation. These are synthetic UI fixtures and do not prove physical picker or media quality."
       },
-      "manual_review_limitation": "970 unique screenshots from the current run remain unreviewed.",
+      "manual_review_limitation": "970 unique screenshots from the previous run remain unreviewed.",
       "before_after_comparisons": [
         {
           "scenario": "Mobile mini-player with active DM composer and screen-share start notice",
@@ -768,28 +939,552 @@
         }
       ]
     },
-    "rollout_rollback_issue305": "NOT_RUN",
-    "supplemental_browser_tests": [
-      {
-        "command": "clients/web/tests/voice_interface/playwright.config.ts (included in the latest registered Web gate)",
-        "status": "PASS",
-        "cases": 28,
-        "note": "Latest run passed after extending the fixed-dock scroll-clearance regression to 320px and 390px at 200% text; the suite also covers 768/1024/1440 widths and actual browser zoom."
-      },
-      {
-        "command": "clients/web/tests/mini_player/playwright.config.ts (standalone current-commit run)",
-        "status": "PASS",
-        "cases": 18,
-        "source_revision": "03fdb7d1fa7c1223e5e08b70e5683cf561952a23",
-        "note": "All 18 mini-player browser cases passed, including the new 390px / 200% text DM draft line visibility and route-retention regression. Its 390x900 source-resolution capture was inspected; the pinned viewer and composer stay visible, and a single-line draft is readable.",
-        "screenshot": {
-          "path": ".out/issue349/browser/mini.browser-390px-at-200--4071f-side-the-pinned-mini-player/dm-draft-390-text-200.png",
-          "sha256": "bb9c3e71fc41c638880ccea095d1cd2d475373746c3cd835559a2b8f6ba5d502",
-          "width": 390,
-          "height": 900
+    "registered_web_check": {
+      "status": "REVIEW_REQUIRED",
+      "raw_status": "PASS",
+      "run_dir": ".out/local-features/20261017-183225",
+      "raw_report_sha256": "979c15b0ae54fd72c832bc9f92b51aaa8563d27030d8a2fae26641816c6f5d66",
+      "screenshot_count": 1051,
+      "unique_screenshot_count": 994,
+      "web_unit": "PASS (474 files / 1571 tests)",
+      "web_build": "PASS",
+      "browser_suites": "PASS (23/23 registered browser suites)",
+      "real_stack": "PASS at 1440px and 393px (authenticated local API/PostgreSQL/LiveKit)",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-control_consistency",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-header_actions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-member_popover",
+          "status": "PASS"
+        },
+        {
+          "name": "web-member_roster",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-microcopy",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mini_player",
+          "status": "PASS"
+        },
+        {
+          "name": "web-navigation_density",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-readonly_archive",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_share_ui",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_disconnect_notice",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
         }
-      }
-    ]
+      ],
+      "note": "All 27 automated stages passed. Nine current-run images were inspected at source resolution; 31 earlier reviews were reused on exact SHA-256 matches. 954 of 994 unique images remain unreviewed, so overall status remains REVIEW_REQUIRED.",
+      "source": "ef842e6210020709423a64aa2be315d96c33208a diff-sha256=4da0093b3239ac60697d67b5056c14388ff39ed138639788344b39fe36161ff3",
+      "raw_report_size_bytes": 336744,
+      "previous_run_dir": ".out/local-features/20261017-180122",
+      "checked_code_commits": [
+        "5f5b1388",
+        "96fffa3c"
+      ]
+    },
+    "visual_review": {
+      "status": "PARTIAL_REVIEW",
+      "current_run": ".out/local-features/20261017-183225",
+      "available_selected_count": 1051,
+      "unique_image_count": 994,
+      "directly_reviewed_count": 9,
+      "exact_hash_reused_review_count": 31,
+      "effective_unique_reviewed_count": 40,
+      "unreviewed_unique_count": 954,
+      "directly_reviewed_screenshots": [
+        {
+          "path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+          "sha256": "3799ce7799e52e571ffb2cbf3dde52e8916da9933b3a7e0d05cf1e96773733e9",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "observation": "At 320 CSS px and 200% root text, the shortened “Поиск” placeholder is fully visible; all four modes, query field and actions remain within the panel."
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+          "sha256": "09b999751cfd92e96ef2099667915ab9fc906573c1cfc832d80c6b586687ecd2",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "observation": "At 320 CSS px and 100% text, all four search modes fit in two rows and the query placeholder is visible inside the field."
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-real-stack/1440/mini-player-dm.png",
+          "sha256": "3ac4031fd02ed055cd36d92678f26a72e7be5c2960b014fa29d2a5b5381b6169",
+          "dimensions_px": [
+            2880,
+            1800
+          ],
+          "observation": "Desktop real-stack DM keeps the mini-player, screen-share notice in its own row, voice controls, history and composer visible."
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-real-stack/393/mini-player-dm.png",
+          "sha256": "35d45e56376aa38d97ecc1dae670a729f7d682ca1bd6ddfe23893d1d6973f428",
+          "dimensions_px": [
+            1179,
+            2556
+          ],
+          "observation": "Mobile real-stack DM keeps mini-player controls, separate screen-share notice, message history, composer and voice dock in view."
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-real-stack/1440/voice-after-leave.png",
+          "sha256": "5a7d665a56412226d77db8728021d008c0ab8e2f569d552869772753eefccd88",
+          "dimensions_px": [
+            2880,
+            1800
+          ],
+          "observation": "After voluntary leave the status is neutral (“Голосовое подключение завершено.”) and offers join/listen actions without error styling."
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-real-stack/1440/screen-share-compact-statistics.png",
+          "sha256": "e30e0f5a1e91cc7f92e795d803eeb09a9b59c41bbc479ca8ec3cab0e96ac9ca4",
+          "dimensions_px": [
+            2880,
+            1800
+          ],
+          "observation": "Desktop statistics distinguish sender-selected 720p/30 FPS, missing sender confirmation and viewer 640×360 with FPS undefined; no quality claim is implied."
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-real-stack/393/screen-share-compact-statistics.png",
+          "sha256": "3a7b6fe358711b15f9c5ce964aab43004d974827479adde6d505c051560c8d87",
+          "dimensions_px": [
+            1179,
+            2556
+          ],
+          "observation": "Mobile statistics wrap inside the sheet; close and copy controls remain visible, with selected, confirmation and viewer readings separated."
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-chat_rhythm/rhythm.browser-inventory-DIRECT-MESSAGE-320px/rich-text.png",
+          "sha256": "4c99ba717c5464ee8abba06682cb031d685ee1b9cef588d172b9c388d78b7c87",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "observation": "Narrow DM history content wraps within the message area and the composer send action remains visible."
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/direct-messages.png",
+          "sha256": "e7d155f94b290578eb2da22d604879595ad120861848d537ad329f8137dc0788",
+          "dimensions_px": [
+            320,
+            768
+          ],
+          "observation": "The 320px DM list scrolls within navigation while the voice dock and profile controls remain reachable."
+        }
+      ],
+      "exact_hash_reused_screenshots": [
+        {
+          "path": ".out/local-features/20261017-183225/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+          "sha256": "3a4a17cf19751f6e1dcb48ac5f4f8fff875cb6790ffffcc259c856ba4b8acf19",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-real-stack/393/voice-after-leave.png",
+          "sha256": "de4238dbf09f00cdaf95efec327e674e129c4cdca7740416f7fd3ed2b31f3eed",
+          "dimensions_px": [
+            1179,
+            2556
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-real-stack/393/voice-after-leave.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-100-text/archive-320-100.png",
+          "sha256": "44be22f2cbec4f32bef37ddcf10505ba7ea82d2d3c48592028d65b8c3dc383ee",
+          "dimensions_px": [
+            320,
+            939
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-100-text/archive-320-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+          "sha256": "9a3913595ab705c02c7b27c7365733e35b7bee03df5ca7c7a41e1b638aa4c37c",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+          "sha256": "b1c3f60aaeddbd51079c2dd3773cc8745a05c9bde3ebb036d715c8a98fedfe6f",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+          "sha256": "77d23eec78d439f46bf96c484ba9d16ab280c5506dc23cd1208c36ffa4c09c44",
+          "dimensions_px": [
+            393,
+            844
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+          "sha256": "88f1e29c7c3d0862297b2800c0116cb1a8387aab67eef52b9fe744f41b2d4f63",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+          "sha256": "b0b788db28091483aef3a799d554382c2d78813517d5f5656a8fbf34c3da0597",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+          "sha256": "bba3c9869a3952172e71c2b6412886a0b4cce1336c3cf02de4156f5a10822106",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
+          "sha256": "de731fb7ca3c419a7c5fe68c7bf52e79bfa8d61e4f624d50a4fd5f1374265fda",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
+          "sha256": "5f1e6708dc3888e7ba8b1a40944f4f2d4000f79e54be73aee057c11b86ba1e97",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
+          "sha256": "4593af1591726370d412a8e4a9772569616581c9d13e6d643224663e5f89e578",
+          "dimensions_px": [
+            1160,
+            64
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
+          "sha256": "4852614a3a015be34bbe2c37d58fc17992a0b6a67aabab828f6e7316d0777892",
+          "dimensions_px": [
+            320,
+            640
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
+          "sha256": "651e362a4cd040703e0d760b520a762081e005d45b8d2073b6c886a0bea3941e",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+          "sha256": "4f37e3fadfdc36d7c87c2d2c7c21751bdb21c978bfe2dbf59d488c219cbe5633",
+          "dimensions_px": [
+            1440,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-diagnostics-1024-100.png",
+          "sha256": "79fd18d09df2bc3f915aa1b428de9d43aecee5f5e6a540b8b6e10406379b8886",
+          "dimensions_px": [
+            830,
+            208
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-100-text/audio-diagnostics-1440-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+          "sha256": "e4e14ba0eb2601df6791c4cdb97d1736d4c9c63190d3a01b886bb96bd2758954",
+          "dimensions_px": [
+            390,
+            1267
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+          "sha256": "9cb03e67fd76706fe800f3cb1ba9133066632b9b256dd5183e410e8c21e27c59",
+          "dimensions_px": [
+            1440,
+            905
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-screen_profile/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
+          "sha256": "ef5af0742ba9be154965d1c659ff5e7223063a903ce0becb923002df4242443c",
+          "dimensions_px": [
+            786,
+            1704
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_profile/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-screen_profile/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
+          "sha256": "cd6691cb350e3d2d4970e0afc696e5988abaec5b0a321124f71553dfad2cb6b9",
+          "dimensions_px": [
+            2880,
+            1800
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_profile/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-mini_player/mini.browser-chat-zoning-320-text-100/dm.png",
+          "sha256": "327a96af7f7e2806ea1f59b323eb3feca4022a1464f2e118a9aea9314ea4eb64",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-320-text-100/dm.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-mini_player/mini.browser-chat-zoning-1440-text-200/text.png",
+          "sha256": "145c45389f327c2e8f3571bb88d2e1ad1f2cb3fcb94d43ec7836fd23200274db",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-1440-text-200/text.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-archive.png",
+          "sha256": "ec7910a6d5b8ea9b4076c3e634f5878c94d634870db3343c8a2afa2d1b67886e",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-archive.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-pinned.png",
+          "sha256": "f34694c32fd9e230b95a25d9ce67094e32ce5558a5fef46f5602b630be6c79f5",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-pinned.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-header_actions/headers.browser-200-text-k-c357b--long-accessible-object-320/dm-text200.png",
+          "sha256": "895d4e51db8ddba786a266b2aac07676c30119d91203c232f930d58c678232e9",
+          "dimensions_px": [
+            320,
+            57
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-header_actions/headers.browser-200-text-k-c357b--long-accessible-object-320/dm-text200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/connected.png",
+          "sha256": "7f1e43421176aeec0d19bdfac065980428779dd503a1140ed8ad4a1fed02d3f5",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/connected.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-top.png",
+          "sha256": "3193991984568f37d91e392f6b7a7f1f9791f6aea81032b33ac476735ddb3524",
+          "dimensions_px": [
+            320,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-top.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+          "sha256": "3be64d9f52a6b54d4aa1e3cb16b073aa8dc60761f8db41d1af01903d2e01609d",
+          "dimensions_px": [
+            320,
+            6047
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-screen_profile/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+          "sha256": "111f7df5574c79f973655840072adb38bbaacce3169131efc473c3e583a2cfba",
+          "dimensions_px": [
+            390,
+            640
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-screen_profile/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-member_roster/roster.browser-roster-and-profile-320-text-200/roster.png",
+          "sha256": "5b8ba726f7b0774241b459e0697ba0d580e9f5351ff119b673e6c375884fe28a",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-member_roster/roster.browser-roster-and-profile-320-text-200/roster.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-183225/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+          "sha256": "c05d7541d7a22c2367a8caccf1573aa66cde8286e0e27205f5e2e4cb0a138921",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+          "exact_hash_match": true
+        }
+      ],
+      "scope": "Nine current-run images were directly inspected at original pixel resolution. Thirty-one additional review records count only where current-run images have exact SHA-256 matches with previously inspected captures.",
+      "details_file": "evidence/qa/dw14-composer-wrap-regression-2026-10-17.json",
+      "previous_run_dir": ".out/local-features/20261017-180122",
+      "baseline_approved": false,
+      "manual_review_limitation": "954 unique screenshots from the current run remain unreviewed."
+    },
+    "rollout_rollback_issue305_details": {
+      "status": "NO-GO / NOT_RUN",
+      "user_context": "The user stated measurements and an owner exist, then asked the agent to decide without providing their values or identity.",
+      "decision": "Keep the release gate NOT_RUN; do not invent baseline/post-change measurements or a named Web rollback owner.",
+      "required_evidence": "For each of eight real UX tasks: tester count, platform/viewport, baseline and post-change completion/time/errors/backtracking, plus evidence link/date and named Web rollback owner."
+    }
   },
   "task_scenarios": [
     {
@@ -909,21 +1604,21 @@
       "issue": "Screen-share viewer diagnosis changed during receiver sample refreshes",
       "status": "FIXED_AND_TESTED",
       "after": "The hasAudio receiver state is debounced for 1.2 seconds, while changing the selected stream applies immediately. Focused browser tests keep “Источник не публикует аудиодорожку.” stable across absent, fresh and stale video samples.",
-      "evidence": "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts; latest registered run .out/local-features/20261017-170617"
+      "evidence": "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts; latest registered run .out/local-features/20261017-180122"
     },
     {
       "issue": "Mobile screen-share start notice overlapped the DM composer send button",
       "status": "FIXED_AND_TESTED",
       "after": "The notice appears in the workspace flow between the mini-player and chat. The 393px browser test asserts no overlap with the send button.",
-      "evidence": "clients/web/tests/mini_player/mini.browser.spec.ts; .out/local-features/20261017-170617/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+      "evidence": "clients/web/tests/mini_player/mini.browser.spec.ts; .out/local-features/20261017-180122/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
       "before_after_evidence": [
         {
           "path": ".out/local-features/20261017-164959/images/web-real-stack/393/mini-player-dm.png",
           "sha256": "a23dafba0c5f292c1df8b570c128b4e4fff2989a546788977b362d29e739d3b7"
         },
         {
-          "path": ".out/local-features/20261017-170617/images/web-real-stack/393/mini-player-dm.png",
-          "sha256": "730d143508aa4dd79e7d3ad2448fba3a1faf335087b1ce028e52a2fe04c32e83"
+          "path": ".out/local-features/20261017-180122/images/web-real-stack/393/mini-player-dm.png",
+          "sha256": "fd9e5d9f741ed2d656f11f9c106ae053a622771fa78670d0e995c12bd30ff63d"
         }
       ],
       "visual_observation": "Before: the start notice overlays the composer border and send button. After: it sits in flow between the mini-player and conversation header; the composer and send button are clear. Both captures were inspected at original pixel resolution."
@@ -1030,9 +1725,9 @@
     {
       "issue": 353,
       "pr": 368,
-      "commit": "f7881097",
-      "status": "Draft PR #368 targets current master; all 27 automated local-feature stages pass, visual review remains partial (970 unique images unreviewed).",
-      "evidence": "https://github.com/Egkurilov/BOOHTACORD/pull/368; evidence/qa/dw14-web-tour-regression-2026-10-17.md; .out/local-features/20261017-170617"
+      "commit": "96fffa3c",
+      "status": "Draft PR #368 targets current master; all 27 automated local-feature stages pass, visual review remains partial (954 unique images unreviewed). Search placeholder clipping at 320px/200% was fixed and tested in commit 96fffa3c.",
+      "evidence": "https://github.com/Egkurilov/BOOHTACORD/pull/368; evidence/qa/dw14-web-tour-regression-2026-10-17.md; .out/local-features/20261017-183225"
     },
     {
       "issue": 354,
@@ -1708,7 +2403,7 @@
     "Original private tour frames are not in Git or the PR.",
     "Current-master supported-Chrome picker, physical microphone/system audio, dynamic video, media QoE/capacity, 1080p60 and device acceptance remain NOT_RUN.",
     "The old production version is not proven to correspond to current master.",
-    "The latest registered Web run passes all 27 automated stages, including authenticated desktop 1440px and mobile 393px real-stack journeys; visual status remains REVIEW_REQUIRED with 970 of 998 unique current-run images unreviewed.",
+    "The latest registered Web run passes all 27 automated stages, including authenticated desktop 1440px and mobile 393px real-stack journeys; visual status remains REVIEW_REQUIRED with 965 of 995 unique current-run images unreviewed.",
     "Issue #351 is merged via PR #366; the superseded draft PR #365 remains open and was not altered. Issue #352 is merged via PR #367 at 43d0c491575f83f03d72bb7355392ce82f56d998.",
     "Issue #354 is deferred pending user-valued usability research; no compact mode was introduced.",
     "Rollout/rollback review for #305 remains NOT_RUN."

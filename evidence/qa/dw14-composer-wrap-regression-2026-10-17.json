@@ -36,13 +36,15 @@
   },
   "implementation": {
     "behavior": "Auto-size Web channel and DM textareas for soft-wrapped drafts, cap at CSS max-height and scroll longer input internally; preserve existing explicit-newline scrolling.",
-    "data_behavior": "Draft persistence and TEXT/DM navigation are unchanged."
+    "data_behavior": "Draft persistence and TEXT/DM navigation are unchanged.",
+    "search_placeholder_follow_up": "Shortened the search placeholder to “Поиск” after source-resolution review found clipping at 320px / 200% text; the focused browser test measures its rendered width against the search input content box."
   },
   "source": {
     "base_ref": "github/master",
     "base_sha": "43d0c491575f83f03d72bb7355392ce82f56d998",
     "head_before_commit": "ad71c5c9205fbd6c58c786475bc19afd7e6a5501",
-    "working_tree_diff_sha256": "67e4d851cce0f3921542c6256d7144c4b6e4c5a8d9569fe838f2d08ae49b3dad"
+    "working_tree_diff_sha256": "67e4d851cce0f3921542c6256d7144c4b6e4c5a8d9569fe838f2d08ae49b3dad",
+    "verified_code_commit": "96fffa3c"
   },
   "tests": {
     "pre_fix_regression": {
@@ -77,8 +79,8 @@
     },
     "local_feature_acceptance": {
       "command": "./tools/qa/local_features/check.sh --platform web --feature chat --feature shell --feature voice --feature screen --base github/master --real-stack",
-      "run_dir": ".out/local-features/20261017-180122",
-      "raw_report_sha256": "bb06b9a15c69fb628461549bf345ea0637e8dc20a4d01ef236d3102203fe16b8",
+      "run_dir": ".out/local-features/20261017-183225",
+      "raw_report_sha256": "979c15b0ae54fd72c832bc9f92b51aaa8563d27030d8a2fae26641816c6f5d66",
       "raw_report_bytes": 336744,
       "raw_status": "REVIEW_REQUIRED",
       "automated_stages": {
@@ -101,108 +103,129 @@
       },
       "screenshots": {
         "captures": 1051,
-        "unique": 995,
-        "directly_reviewed_in_this_run": 10,
-        "unreviewed": 965,
+        "unique": 994,
+        "directly_reviewed_in_this_run": 9,
+        "unreviewed": 954,
         "visual_gate": "REVIEW_REQUIRED",
         "baseline_approved": false,
-        "exact_hash_reused_from_prior_review": 20,
-        "effective_unique_reviewed": 30,
+        "exact_hash_reused_from_prior_review": 31,
+        "effective_unique_reviewed": 40,
         "directly_reviewed_images": [
           {
-            "path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+            "path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+            "sha256": "3799ce7799e52e571ffb2cbf3dde52e8916da9933b3a7e0d05cf1e96773733e9",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "observation": "At 320 CSS px and 200% root text, the shortened “Поиск” placeholder is fully visible; all four modes, query field and actions remain within the panel."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+            "sha256": "09b999751cfd92e96ef2099667915ab9fc906573c1cfc832d80c6b586687ecd2",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "observation": "At 320 CSS px and 100% text, all four search modes fit in two rows and the query placeholder is visible inside the field."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-real-stack/1440/mini-player-dm.png",
+            "sha256": "3ac4031fd02ed055cd36d92678f26a72e7be5c2960b014fa29d2a5b5381b6169",
+            "dimensions_px": [
+              2880,
+              1800
+            ],
+            "observation": "Desktop real-stack DM keeps the mini-player, screen-share notice in its own row, voice controls, history and composer visible."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-real-stack/393/mini-player-dm.png",
+            "sha256": "35d45e56376aa38d97ecc1dae670a729f7d682ca1bd6ddfe23893d1d6973f428",
+            "dimensions_px": [
+              1179,
+              2556
+            ],
+            "observation": "Mobile real-stack DM keeps mini-player controls, separate screen-share notice, message history, composer and voice dock in view."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-real-stack/1440/voice-after-leave.png",
+            "sha256": "5a7d665a56412226d77db8728021d008c0ab8e2f569d552869772753eefccd88",
+            "dimensions_px": [
+              2880,
+              1800
+            ],
+            "observation": "After voluntary leave the status is neutral (“Голосовое подключение завершено.”) and offers join/listen actions without error styling."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-real-stack/1440/screen-share-compact-statistics.png",
+            "sha256": "e30e0f5a1e91cc7f92e795d803eeb09a9b59c41bbc479ca8ec3cab0e96ac9ca4",
+            "dimensions_px": [
+              2880,
+              1800
+            ],
+            "observation": "Desktop statistics distinguish sender-selected 720p/30 FPS, missing sender confirmation and viewer 640×360 with FPS undefined; no quality claim is implied."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-real-stack/393/screen-share-compact-statistics.png",
+            "sha256": "3a7b6fe358711b15f9c5ce964aab43004d974827479adde6d505c051560c8d87",
+            "dimensions_px": [
+              1179,
+              2556
+            ],
+            "observation": "Mobile statistics wrap inside the sheet; close and copy controls remain visible, with selected, confirmation and viewer readings separated."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-chat_rhythm/rhythm.browser-inventory-DIRECT-MESSAGE-320px/rich-text.png",
+            "sha256": "4c99ba717c5464ee8abba06682cb031d685ee1b9cef588d172b9c388d78b7c87",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "observation": "Narrow DM history content wraps within the message area and the composer send action remains visible."
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/direct-messages.png",
+            "sha256": "e7d155f94b290578eb2da22d604879595ad120861848d537ad329f8137dc0788",
+            "dimensions_px": [
+              320,
+              768
+            ],
+            "observation": "The 320px DM list scrolls within navigation while the voice dock and profile controls remain reachable."
+          }
+        ],
+        "exact_hash_reused_reviews": [
+          {
+            "path": ".out/local-features/20261017-183225/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
             "sha256": "3a4a17cf19751f6e1dcb48ac5f4f8fff875cb6790ffffcc259c856ba4b8acf19",
             "dimensions_px": [
               390,
               900
             ],
-            "observation": "Both lines of the 200% DM draft are visible; composer, player and voice dock remain usable."
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+            "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-real-stack/1440/mini-player-dm.png",
-            "sha256": "86a53e76c7645a2db8ba8641288c814d225ff01bdca9b7a51426820806e5bd0b",
-            "dimensions_px": [
-              2880,
-              1800
-            ],
-            "observation": "Desktop mini-player, DM history, composer and voice controls remain visible; the share notice occupies its own row."
-          },
-          {
-            "path": ".out/local-features/20261017-180122/images/web-real-stack/393/mini-player-dm.png",
-            "sha256": "fd9e5d9f741ed2d656f11f9c106ae053a622771fa78670d0e995c12bd30ff63d",
-            "dimensions_px": [
-              1179,
-              2556
-            ],
-            "observation": "Mobile mini-player controls, notice, DM history, composer and voice dock fit in the viewport."
-          },
-          {
-            "path": ".out/local-features/20261017-180122/images/web-real-stack/1440/voice-after-leave.png",
-            "sha256": "84b515e11c692f60be581cbdcd5112de8812127310ea514f1001e87074586c97",
-            "dimensions_px": [
-              2880,
-              1800
-            ],
-            "observation": "Voice leave is neutral and offers the join/listen path without error styling."
-          },
-          {
-            "path": ".out/local-features/20261017-180122/images/web-real-stack/393/voice-after-leave.png",
+            "path": ".out/local-features/20261017-183225/images/web-real-stack/393/voice-after-leave.png",
             "sha256": "de4238dbf09f00cdaf95efec327e674e129c4cdca7740416f7fd3ed2b31f3eed",
             "dimensions_px": [
               1179,
               2556
             ],
-            "observation": "Mobile voice leave is neutral; join/listen actions remain inside the viewport."
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-real-stack/393/voice-after-leave.png",
+            "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-real-stack/1440/screen-share-compact-statistics.png",
-            "sha256": "99663160aa6b85e69ea2bafdcfbefe7c37c66e6892030ae3a3c0310e4cdccff6",
-            "dimensions_px": [
-              2880,
-              1800
-            ],
-            "observation": "Desktop statistics distinguish sender selection, absent confirmation and viewer measurements without overlap."
-          },
-          {
-            "path": ".out/local-features/20261017-180122/images/web-real-stack/393/screen-share-compact-statistics.png",
-            "sha256": "9849c0a863e7d3da75c8d61a53006e26bf3b28afe9e916fc86b38b05614b7ae8",
-            "dimensions_px": [
-              1179,
-              2556
-            ],
-            "observation": "Mobile statistics wrap within the sheet; close and copy controls remain visible and viewer readings stay distinct."
-          },
-          {
-            "path": ".out/local-features/20261017-180122/images/web-chat_rhythm/rhythm.browser-inventory-DIRECT-MESSAGE-320px/rich-text.png",
-            "sha256": "e1f3279c612da49196340a24b3927252307505a3344dd3091f9aa85c23a620f2",
-            "dimensions_px": [
-              320,
-              900
-            ],
-            "observation": "Narrow DM message content wraps within the history; composer send action remains visible."
-          },
-          {
-            "path": ".out/local-features/20261017-180122/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/direct-messages.png",
-            "sha256": "a2881751ac17e00f3442ecb3e851ca39f0dfb8b9bec6df9d9621d56b1c093f99",
-            "dimensions_px": [
-              320,
-              768
-            ],
-            "observation": "DM list scrolls within the narrow navigation rail; voice dock and profile controls remain reachable."
-          },
-          {
-            "path": ".out/local-features/20261017-180122/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-100-text/archive-320-100.png",
+            "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-100-text/archive-320-100.png",
             "sha256": "44be22f2cbec4f32bef37ddcf10505ba7ea82d2d3c48592028d65b8c3dc383ee",
             "dimensions_px": [
               320,
               939
             ],
-            "observation": "Archive form and action controls wrap within the narrow panel without horizontal overflow."
-          }
-        ],
-        "exact_hash_reused_reviews": [
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-100-text/archive-320-100.png",
+            "exact_hash_match": true
+          },
           {
-            "path": ".out/local-features/20261017-180122/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+            "path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
             "sha256": "9a3913595ab705c02c7b27c7365733e35b7bee03df5ca7c7a41e1b638aa4c37c",
             "dimensions_px": [
               1440,
@@ -212,7 +235,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+            "path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
             "sha256": "b1c3f60aaeddbd51079c2dd3773cc8745a05c9bde3ebb036d715c8a98fedfe6f",
             "dimensions_px": [
               390,
@@ -222,7 +245,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+            "path": ".out/local-features/20261017-183225/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
             "sha256": "77d23eec78d439f46bf96c484ba9d16ab280c5506dc23cd1208c36ffa4c09c44",
             "dimensions_px": [
               393,
@@ -232,7 +255,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+            "path": ".out/local-features/20261017-183225/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
             "sha256": "88f1e29c7c3d0862297b2800c0116cb1a8387aab67eef52b9fe744f41b2d4f63",
             "dimensions_px": [
               320,
@@ -242,17 +265,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
-            "sha256": "8eecab9fb0ea6abfc124b19c56314a4b33565ddbd0b9aa23ad98c92864418852",
-            "dimensions_px": [
-              320,
-              1000
-            ],
-            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
-            "exact_hash_match": true
-          },
-          {
-            "path": ".out/local-features/20261017-180122/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+            "path": ".out/local-features/20261017-183225/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
             "sha256": "b0b788db28091483aef3a799d554382c2d78813517d5f5656a8fbf34c3da0597",
             "dimensions_px": [
               320,
@@ -262,7 +275,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+            "path": ".out/local-features/20261017-183225/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
             "sha256": "bba3c9869a3952172e71c2b6412886a0b4cce1336c3cf02de4156f5a10822106",
             "dimensions_px": [
               390,
@@ -272,7 +285,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
+            "path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
             "sha256": "de731fb7ca3c419a7c5fe68c7bf52e79bfa8d61e4f624d50a4fd5f1374265fda",
             "dimensions_px": [
               320,
@@ -282,7 +295,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
+            "path": ".out/local-features/20261017-183225/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
             "sha256": "5f1e6708dc3888e7ba8b1a40944f4f2d4000f79e54be73aee057c11b86ba1e97",
             "dimensions_px": [
               390,
@@ -292,7 +305,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
+            "path": ".out/local-features/20261017-183225/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
             "sha256": "4593af1591726370d412a8e4a9772569616581c9d13e6d643224663e5f89e578",
             "dimensions_px": [
               1160,
@@ -302,7 +315,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
+            "path": ".out/local-features/20261017-183225/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
             "sha256": "4852614a3a015be34bbe2c37d58fc17992a0b6a67aabab828f6e7316d0777892",
             "dimensions_px": [
               320,
@@ -312,7 +325,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
+            "path": ".out/local-features/20261017-183225/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
             "sha256": "651e362a4cd040703e0d760b520a762081e005d45b8d2073b6c886a0bea3941e",
             "dimensions_px": [
               1440,
@@ -322,7 +335,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+            "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
             "sha256": "4f37e3fadfdc36d7c87c2d2c7c21751bdb21c978bfe2dbf59d488c219cbe5633",
             "dimensions_px": [
               1440,
@@ -332,7 +345,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-diagnostics-1024-100.png",
+            "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-diagnostics-1024-100.png",
             "sha256": "79fd18d09df2bc3f915aa1b428de9d43aecee5f5e6a540b8b6e10406379b8886",
             "dimensions_px": [
               830,
@@ -342,7 +355,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+            "path": ".out/local-features/20261017-183225/images/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
             "sha256": "e4e14ba0eb2601df6791c4cdb97d1736d4c9c63190d3a01b886bb96bd2758954",
             "dimensions_px": [
               390,
@@ -352,7 +365,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+            "path": ".out/local-features/20261017-183225/images/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
             "sha256": "9cb03e67fd76706fe800f3cb1ba9133066632b9b256dd5183e410e8c21e27c59",
             "dimensions_px": [
               1440,
@@ -362,7 +375,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-screen_profile/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
+            "path": ".out/local-features/20261017-183225/images/web-screen_profile/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
             "sha256": "ef5af0742ba9be154965d1c659ff5e7223063a903ce0becb923002df4242443c",
             "dimensions_px": [
               786,
@@ -372,7 +385,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-screen_profile/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
+            "path": ".out/local-features/20261017-183225/images/web-screen_profile/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
             "sha256": "cd6691cb350e3d2d4970e0afc696e5988abaec5b0a321124f71553dfad2cb6b9",
             "dimensions_px": [
               2880,
@@ -382,7 +395,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-320-text-100/dm.png",
+            "path": ".out/local-features/20261017-183225/images/web-mini_player/mini.browser-chat-zoning-320-text-100/dm.png",
             "sha256": "327a96af7f7e2806ea1f59b323eb3feca4022a1464f2e118a9aea9314ea4eb64",
             "dimensions_px": [
               320,
@@ -392,7 +405,7 @@
             "exact_hash_match": true
           },
           {
-            "path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-1440-text-200/text.png",
+            "path": ".out/local-features/20261017-183225/images/web-mini_player/mini.browser-chat-zoning-1440-text-200/text.png",
             "sha256": "145c45389f327c2e8f3571bb88d2e1ad1f2cb3fcb94d43ec7836fd23200274db",
             "dimensions_px": [
               1440,
@@ -400,9 +413,106 @@
             ],
             "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-1440-text-200/text.png",
             "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-archive.png",
+            "sha256": "ec7910a6d5b8ea9b4076c3e634f5878c94d634870db3343c8a2afa2d1b67886e",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-archive.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-pinned.png",
+            "sha256": "f34694c32fd9e230b95a25d9ce67094e32ce5558a5fef46f5602b630be6c79f5",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-pinned.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-header_actions/headers.browser-200-text-k-c357b--long-accessible-object-320/dm-text200.png",
+            "sha256": "895d4e51db8ddba786a266b2aac07676c30119d91203c232f930d58c678232e9",
+            "dimensions_px": [
+              320,
+              57
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-header_actions/headers.browser-200-text-k-c357b--long-accessible-object-320/dm-text200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/connected.png",
+            "sha256": "7f1e43421176aeec0d19bdfac065980428779dd503a1140ed8ad4a1fed02d3f5",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/connected.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-top.png",
+            "sha256": "3193991984568f37d91e392f6b7a7f1f9791f6aea81032b33ac476735ddb3524",
+            "dimensions_px": [
+              320,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-top.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+            "sha256": "3be64d9f52a6b54d4aa1e3cb16b073aa8dc60761f8db41d1af01903d2e01609d",
+            "dimensions_px": [
+              320,
+              6047
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-screen_profile/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+            "sha256": "111f7df5574c79f973655840072adb38bbaacce3169131efc473c3e583a2cfba",
+            "dimensions_px": [
+              390,
+              640
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-screen_profile/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-member_roster/roster.browser-roster-and-profile-320-text-200/roster.png",
+            "sha256": "5b8ba726f7b0774241b459e0697ba0d580e9f5351ff119b673e6c375884fe28a",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-member_roster/roster.browser-roster-and-profile-320-text-200/roster.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-183225/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+            "sha256": "c05d7541d7a22c2367a8caccf1573aa66cde8286e0e27205f5e2e4cb0a138921",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+            "exact_hash_match": true
           }
         ]
       }
+    },
+    "search_placeholder_fit": {
+      "status": "PASS",
+      "command": "clients/web/tests/search_sessions/tabs.browser.spec.ts",
+      "cases": 16,
+      "assertion": "At 320 CSS px and 200% root text, measure rendered placeholder text against the actual search input content width.",
+      "result": "The “Поиск” placeholder fits without clipping."
     }
   },
   "remaining_gates": {
