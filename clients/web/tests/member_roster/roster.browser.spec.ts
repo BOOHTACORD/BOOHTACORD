@@ -38,6 +38,31 @@ test('voice volume and ACL actions survive, and DM opens through the existing ev
  await expect(page.getByTestId('member-popover')).toHaveCount(0)
  expect(await page.evaluate(()=>(window as any).__membersFixture.events.includes('dm'))).toBe(true)
 })
+test('long voice participant names stay within the members panel width',async({page},info)=>{
+ await mount(page,390)
+ await page.evaluate(async()=>{
+  const fixture=(window as any).__membersFixture
+  fixture.connection.voiceVolumeParticipants[0].name='ОченьДлинноеИмяУчастника'.repeat(20)
+  await fixture.navigate('voice')
+ })
+ if(!(await page.getByTestId('members-panel').isVisible()))await page.getByRole('button',{name:'Открыть участников',exact:true}).click()
+ await expect(page.getByTestId('members-panel')).toBeVisible()
+ const dimensions=await page.evaluate(()=>{
+  const panel=document.querySelector<HTMLElement>('[data-testid="members-panel"]')!
+  const row=document.querySelector<HTMLElement>('.members-voice-roster button.member')!
+  const name=row.querySelector<HTMLElement>('.member-name')!
+  const panelRect=panel.getBoundingClientRect(),rowRect=row.getBoundingClientRect(),nameStyle=getComputedStyle(name)
+  return {page:document.documentElement.scrollWidth,viewport:innerWidth,panel:panel.clientWidth,panelContent:panel.scrollWidth,row:row.clientWidth,rowInside:rowRect.left>=panelRect.left&&rowRect.right<=panelRect.right+1,name:name.clientWidth,nameOverflow:nameStyle.textOverflow,nameClip:nameStyle.overflow,nameWhiteSpace:nameStyle.whiteSpace,nameText:name.textContent}
+ })
+ expect(dimensions.page).toBe(dimensions.viewport)
+ expect(dimensions.panelContent).toBeLessThanOrEqual(dimensions.panel)
+ expect(dimensions.rowInside).toBe(true)
+ expect(dimensions.nameOverflow).toBe('ellipsis')
+ expect(dimensions.nameClip).toBe('hidden')
+ expect(dimensions.nameWhiteSpace).toBe('nowrap')
+ expect(dimensions.nameText).toBe('ОченьДлинноеИмяУчастника'.repeat(20))
+ await page.screenshot({path:info.outputPath('long-voice-name-width.png')})
+})
 test('touch modal wraps focus, handles outside, resizes and restores the single drawer',async({browser})=>{
  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true})
  const page=await context.newPage();await mount(page,390)
