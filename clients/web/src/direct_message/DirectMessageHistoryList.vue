@@ -70,6 +70,7 @@ async function loadOlder(): Promise<void> {
   const directMessageId = props.directMessageId
   if (!await store.loadOlder()) return
   await nextTick()
+  await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
   if (!viewport || directMessageId !== props.directMessageId) return
   if (anchorId && anchorTop !== undefined) {
     const current = [...viewport.querySelectorAll<HTMLElement>('[data-message-id]')].find((item) => item.dataset.messageId === anchorId)
