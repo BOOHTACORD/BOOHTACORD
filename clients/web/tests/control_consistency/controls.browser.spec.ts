@@ -39,9 +39,11 @@ function action(page: Page, surface: string): Locator {
         : surface === 'quick' ? page.getByRole('button', { name: 'Показать ещё участников', exact: true })
           : page.getByRole('button', { name: /^Перейти к сообщению с файлом/ })
 }
-for (const width of [320, 390]) test(`audio advanced text remains inside its card at ${width}px / 200% text`, async ({ page }, info) => {
+for (const width of [320, 390]) for (const captionSpacing of ['normal', '0.12em']) test(`audio advanced text remains inside its card at ${width}px / 200% text / ${captionSpacing} spacing`, async ({ page }, info) => {
   await page.setViewportSize({ width, height: 900 })
   await open(page, 'audio', 200)
+  // A wider caption must wrap too, including when platform font metrics differ.
+  await page.addStyleTag({ content: `.microphone-control { ${captionSpacing === 'normal' ? '' : 'font-family: monospace;'} letter-spacing: ${captionSpacing}; }` })
   await page.screenshot({ path: info.outputPath('audio-advanced-text.png'), fullPage: true })
   const clipped = await page.locator('.audio-settings').evaluate(root => {
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
@@ -62,6 +64,19 @@ for (const width of [320, 390]) test(`audio advanced text remains inside its car
     return result
   })
   expect(clipped).toEqual([])
+  const activation = await page.locator('.audio-activation-section').evaluate(card => {
+    const box = card.getBoundingClientRect(), style = getComputedStyle(card)
+    return { left: box.left + parseFloat(style.borderLeftWidth) + parseFloat(style.paddingLeft),
+      right: box.right - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight),
+      controls: Array.from(card.querySelectorAll('.audio-activation-selector, .microphone-control > *')).map(control => {
+        const rect = control.getBoundingClientRect()
+        return { tag: control.tagName, left: rect.left, right: rect.right }
+      }) }
+  })
+  for (const control of activation.controls) {
+    expect(control.left, control.tag).toBeGreaterThanOrEqual(activation.left - 1)
+    expect(control.right, control.tag).toBeLessThanOrEqual(activation.right + 1)
+  }
   await expectControlsFit(page)
 })
 for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) for (const scale of [100, 200]) for (const surface of surfaces) {

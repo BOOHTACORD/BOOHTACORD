@@ -1,5 +1,7 @@
 # DW-14 follow-up — navigation hint hit testing and Quick Jump placeholder
 
+Historical focused-run receipt. Current integrated source, the subsequent audio-layout corrections and the explicitly selected replacement baseline are recorded in [final acceptance](dw14-final-acceptance-2026-10-17.md). The raw captures discussed here remain unapproved; final acceptance approves only its named selected frames. Release #305 remains separate.
+
 Status: **code and focused browser suites PASS; full release visual review remains REVIEW_REQUIRED**.
 
 The local navigation lifecycle exposed two Web issues while reviewing #353. At 1440px, an action hint could cover the next channel row and receive the click intended for that row. A new behavior test reproduced the problem before the fix: clicking the center of the covered row did not set its `aria-current` state. Navigation hints now ignore pointer hit testing while keeping their visible text and `aria-describedby` relationship; the same test passes and the other surfaces retain hoverable hints.

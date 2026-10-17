@@ -85,6 +85,8 @@
 @media (max-width: 720px) { .audio-advanced { padding: 12px 16px; } .audio-shortcut-row, .audio-shortcut-actions { flex-wrap: wrap; } }
 @media (max-width: 600px) {
   .workspace-main-panel--audio .audio-settings { grid-template-columns: minmax(0, 1fr); }
+  .workspace-main-panel--audio .audio-activation-section { grid-template-columns: minmax(0, 1fr); }
+  .audio-activation-selector button { min-width: 0; overflow-wrap: anywhere; }
   .audio-advanced-content { grid-template-columns: minmax(0, 1fr); }
   .audio-advanced-content > *,
   .audio-processing-row > div,

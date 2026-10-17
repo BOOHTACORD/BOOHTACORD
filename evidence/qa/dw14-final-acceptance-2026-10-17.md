@@ -14,16 +14,24 @@ One transient draft screenshot was rejected: it preceded the resize-observer fra
 
 ## Validation and baseline
 
-- Clean runtime source: `cc50ae810425d73f1f846f1bf96712ca47c39bc8`; Web source tree `da46b7483e6392ece05c07f9d3a989c80e59f53e`, scenario tree `d1d139dfe694b5618815ad65635e425cb6559900`. Published and merged trees must match these source/scenario trees. Local runtime commit identifiers are provenance; immutable published-head/CI links are added to PR #368.
+- Clean runtime source: `7f8f1b6a41928085b999a1bd98601b6927e08607`; Web source tree `47f8ed52c7a553cc4c82ffcc3bd2673128e876cc`, scenario tree `0a04d7809a87d1b34dabe5b5c8cdd49cc831f335`. Published and merged trees must match these source/scenario trees. Local runtime commit identifiers are provenance; immutable published-head/CI links are added to PR #368.
 - Registered command: `./tools/qa/local_features/check.sh --platform web --feature chat --feature shell --feature voice --feature screen --feature screen_track_name --base 43d0c491575f83f03d72bb7355392ce82f56d998 --real-stack`.
 - **28/28 stages PASS:** 474 unit-test files / 1,571 tests, production typecheck/build, all 24 browser suites and authenticated API/PostgreSQL/LiveKit/Tempo journeys at desktop 1440px and touch 393px. Local runner resolves Node 26 via Homebrew; focused runs use Node 24. Final CI independently uses the locked Node version.
 - CSS widths 320/390/768/1024/1440/1920/3440, 100/200% root text, independently measured actual browser zoom 200%, keyboard and touch are asserted by the registered suites.
-- Raw report `.out/local-features/20261017-193925/report.json`: SHA-256 `970a74d11b17ab8e11b4043910f41a7ec760e9d1ed60ce17d2849f34fe63c5a0`, 1056 captures / 996 unique. Its global status stays `REVIEW_REQUIRED`; unselected images are not visually approved.
-- Replacement `web-regression-v1`: **40 selected captures reviewed**, 38 unique images. Only declared lossless modal regions are selected for wide DM overlays. Tall audio is inspected in overlapping original-pixel slices; reused reviews require exact image hashes. Baseline report SHA-256 `2f25c2e93d3b2a2323b0476afb74c7963ae85451a1ad294322a5699c6ad7f851` at `.out/issue353/baselines/web-regression-v1`. The JSON companion lists every source/crop, dimensions, hashes and observation.
+- Raw report `.out/local-features/20261017-205335/report.json`: SHA-256 `3bf2ead9b2e23e817ccf9f8734c4710c1fe72b863da2a6b23528fffa3b4a864e`, 1,058 captures / 1,001 unique. Its global status stays `REVIEW_REQUIRED`; unselected images are not visually approved.
+- Replacement `web-regression-v2`: **42 selected captures reviewed**, 40 unique images. Only declared lossless modal regions are selected for wide DM overlays. Tall audio is inspected in overlapping original-pixel slices; reused reviews require exact image hashes. Baseline report SHA-256 `162518bc780ce765cf16dd417187cfecc9ee6e73debb44671b65aae5621aaa30` at `.out/issue353/baselines/web-regression-v2`. The JSON companion lists every source/crop, dimensions, hashes and observation.
 
-Before/after uses production source and contract data exported from the same current master with identical fixture scenarios. Before: controls 81/83 (two audio label/value overlaps), DM picker 22/24 (two 36px coarse-pointer actions), search 26/26. After: all corresponding suites pass. Failed before captures remain comparisons, not approved references. The first incomplete snapshot lacked a contract catalog; it was stopped and restored before comparison, with its failed setup log retained.
+Before/after uses production source and contract data exported from the same current master with the fixture scenarios frozen in receipt v1 (before the two wider-font cases were added). Before: controls 81/83 (two audio label/value overlaps), DM picker 22/24 (two 36px coarse-pointer actions), search 26/26. After: all corresponding suites pass. Failed before captures remain comparisons, not approved references. The first incomplete snapshot lacked a contract catalog; it was stopped and restored before comparison, with its failed setup log retained.
 
 Earlier full 27-stage runs are retained: `20261017-190615` passed commands but revealed the audio-card defect visually; `20261017-192437` passed commands but included the transient draft capture. The expanded selection initially rejected a missing `screen_track_name` registration target before tests started; the accepted run includes it. An older Linux frontend job saw a 26px DM-prepend drift; this candidate passed 20 local repetitions without relaxing the 2px assertion. Final exact-head CI is required before merge.
+
+## Final CI defect and additional before/after
+
+The earlier published head `1a8d8708` failed Linux frontend job `117453712294`: the microphone caption extended beyond its activation card at 320px/200% text. This was fixed rather than waived. A wider-font reproduction (monospace plus 0.12em letter spacing) failed before the change. Source-pixel review then identified range/meter/selector boxes outside the padding, and four additional geometry assertions failed before that fix. The sensitivity grid and activation track now use constrained columns; native range margins are removed. **All four normal/wider-font cases pass** with unchanged text and padding bounds. Long words may wrap at 320px/200% text; they remain readable and selectable without horizontal clipping.
+
+Navigation follow-up `8dccb58f` is integrated: hints cannot intercept adjacent channel clicks, Quick Jump uses a fully fitting “Поиск” placeholder and retains its full accessible label. Its new behavior tests, all 24 browser suites (690 cases) and the owned real-stack desktop/touch journeys pass on the clean source above. The intervening `20261017-204256` run is retained as automation-pass/visual-fail, not an approved baseline; its tests were subsequently extended after the corresponding suite had finished.
+
+All **42 selected captures** have source-resolution observations or exact-hash reuse. The changed tall audio images were viewed in overlapping 3500px slices; the JSON records each source/crop/review. This selected replacement supersedes v1, whose immutable receipt remains at `1a8d8708`. Unselected raw images remain unapproved, and #305/#303 remain separate gates. Source-tour loss is an explicit exception confirmed by the user. Scope for #353 is the reproducible Web regression baseline and its named exceptions, not approval of every diagnostic screenshot emitted by the runner.
 
 ## Tasks and child issues
 
@@ -34,7 +42,7 @@ Earlier full 27-stage runs are retained: `20261017-190615` passed commands but r
 | #346 | Pins, archive, files, mentions, quick jump and return-to-message context on the owned stack. |
 | #347 / #348 / #349 | Voice join/leave/revocation and synthetic SFU sender/receiver/mini-player continuity. Hardware/media-quality exceptions remain NOT_RUN. |
 | #350 / #351 / #352 | Member profile/ACL, settings/forms and context headers; immutable DW-11/12/13 receipts plus the current unit/browser/actual-stack scenarios. |
-| #353 | This current-source receipt and the 40-image selected replacement baseline. |
+| #353 | This current-source receipt and the 42-image selected replacement baseline. |
 | #354 | Explicit exception: optional compact mode deferred pending demonstrated usability need. |
 
 The JSON contains the complete issue → PR → commit → evidence crosswalk. The original tour frame numbering is not promoted to verified current-source evidence.
