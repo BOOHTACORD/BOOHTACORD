@@ -60,7 +60,7 @@ export async function leaveVoiceInterface(page, input, report) {
   await expect(page.locator('.participant-volume, .participant-watch, .members-voice-roster, .screen-viewer')).toHaveCount(0, { timeout: 2000 })
   const elapsed = Math.round(performance.now() - started)
   await expect(page.getByRole('button', { name: 'Без микрофона', exact: true })).toBeVisible()
-  const closeNavigation = page.getByRole('button', { name: 'Закрыть навигацию', exact: true })
+  const closeNavigation = page.getByTestId('nav-sidebar').getByRole('button', { name: 'Закрыть навигацию', exact: true })
   if (await closeNavigation.count()) await closeNavigation.click()
   await expect(closeNavigation).toHaveCount(0)
   await page.mouse.move(-2, -2)
