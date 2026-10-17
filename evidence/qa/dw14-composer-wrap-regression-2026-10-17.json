@@ -1,0 +1,1654 @@
+{
+  "schema": "boohtacord.web-ux-visual-follow-up.v1",
+  "epic": 339,
+  "issue": 353,
+  "recorded_on": "2026-10-17",
+  "status": "FIXED_AUTOMATED_PASS_REVIEW_REQUIRED",
+  "finding": {
+    "viewport_css_px": [
+      390,
+      900
+    ],
+    "root_text_scale_percent": 200,
+    "before": {
+      "path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+      "sha256": "5699550ec9a4878ff7d896c989b0e4f2067b6556a83b28d996bbf485da5f5422",
+      "dimensions_px": [
+        390,
+        900
+      ],
+      "observation": "Top line of the two-line DM draft is clipped above the textarea.",
+      "browser_metrics": {
+        "scroll_height_px": 116,
+        "client_height_px": 68
+      }
+    },
+    "after": {
+      "path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+      "sha256": "3a4a17cf19751f6e1dcb48ac5f4f8fff875cb6790ffffcc259c856ba4b8acf19",
+      "dimensions_px": [
+        390,
+        900
+      ],
+      "visually_reviewed_at_source_resolution": true,
+      "observation": "Both draft lines are visible; the composer send button, pinned player and voice dock remain usable."
+    }
+  },
+  "implementation": {
+    "behavior": "Auto-size Web channel and DM textareas for soft-wrapped drafts, cap at CSS max-height and scroll longer input internally; preserve existing explicit-newline scrolling.",
+    "data_behavior": "Draft persistence and TEXT/DM navigation are unchanged.",
+    "search_placeholder_follow_up": "Shortened the search placeholder to “Поиск” after source-resolution review found clipping at 320px / 200% text; the focused browser test measures its rendered width against the search input content box.",
+    "screen_share_text_scale_follow_up": "Keep the Cancel label on one line at 200% root text; scale the receiver statistics panel with rem-based text sizing and allow long values to break only when needed."
+  },
+  "source": {
+    "base_ref": "github/master",
+    "base_sha": "43d0c491575f83f03d72bb7355392ce82f56d998",
+    "head_before_commit": "4db4b0bb26ddc1a11847e6d95e3cbd88d7957f0e",
+    "working_tree_diff_sha256": "c33962d96a7008291a4deefe9012bb3563027bedb7b9961681d8facf0e5e9c6a",
+    "verified_code_commit": "10b181af"
+  },
+  "tests": {
+    "pre_fix_regression": {
+      "status": "REPRODUCED",
+      "expected_geometry": "scrollHeight <= clientHeight",
+      "observed_geometry_px": {
+        "scroll_height": 116,
+        "client_height": 68
+      }
+    },
+    "mini_player_browser_suite": {
+      "status": "PASS",
+      "passed": 19,
+      "total": 19
+    },
+    "composer_text_scale": {
+      "status": "PASS",
+      "passed": 20,
+      "total": 20,
+      "text_scale_percent": [
+        100,
+        200
+      ],
+      "viewport_widths_css_px": [
+        320,
+        393,
+        1024,
+        1280,
+        1440
+      ],
+      "explicit_shift_enter_scroll_preserved": true
+    },
+    "local_feature_acceptance": {
+      "command": "./tools/qa/local_features/check.sh --platform web --feature chat --feature shell --feature voice --feature screen --feature screen_track_name --base github/master --real-stack",
+      "run_dir": ".out/local-features/20261017-191711",
+      "raw_report_sha256": "9dd54336481155b89eac463f02907b0b4e91d912f4f73cca2b13ab7fd03587af",
+      "raw_report_bytes": 337539,
+      "raw_status": "REVIEW_REQUIRED",
+      "automated_stages": {
+        "passed": 28,
+        "failed": 0
+      },
+      "web_unit": {
+        "status": "PASS",
+        "test_files": 474,
+        "tests": 1571
+      },
+      "production_build": "PASS",
+      "registered_browser_suites": {
+        "passed": 23,
+        "total": 23
+      },
+      "authenticated_real_stack": {
+        "desktop_1440px": "PASS",
+        "mobile_393px": "PASS"
+      },
+      "screenshots": {
+        "captures": 1053,
+        "unique": 996,
+        "directly_reviewed_in_this_run": 31,
+        "unreviewed": 851,
+        "visual_gate": "REVIEW_REQUIRED",
+        "baseline_approved": false,
+        "exact_hash_reused_from_prior_review": 114,
+        "effective_unique_reviewed": 145,
+        "directly_reviewed_images": [
+          {
+            "path": ".out/local-features/20261017-191711/images/web-accessibility/admin_confirmation.browser-168ea-chable-at-844x390-landscape/screen-share-setup-actions.png",
+            "sha256": "e10785efaad7ea138d413eba51f1ff361a9305f8a754d97ee7cf86d41d1b17c5",
+            "dimensions_px": [
+              1688,
+              780
+            ],
+            "observation": "In the 844×390 landscape screen-share setup, the selected profile and both footer actions remain visible; the body content continues above the fixed footer.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+            "sha256": "c05d7541d7a22c2367a8caccf1573aa66cde8286e0e27205f5e2e4cb0a138921",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "observation": "At 320 CSS px / 200% text, the DM starter remains inside the managed modal and its close control is reachable; deliberately unbroken long fixture names wrap within words to avoid horizontal overflow.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-mentions_inbox/mentions_inbox.browser-ren-b3ebb-nd-emits-exact-message-jump/mentions-inbox-desktop.png",
+            "sha256": "4b7a5c8f7a176f88edd100c85a2b01bf4d1a6526a9d0fb41d45548af0f468f55",
+            "dimensions_px": [
+              1440,
+              1000
+            ],
+            "observation": "The desktop mentions view presents message, mention and archive scopes in a single row, with refresh and pagination actions separated from the message entry.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-mini_player/mini.browser-short-viewpor-3408f-ose-preserve-media-identity/short-paused.png",
+            "sha256": "a74dcb98239ce72e64cbd078a485e9e092bab0c88ed34746aee09a873a212773",
+            "dimensions_px": [
+              390,
+              500
+            ],
+            "observation": "In the short mobile viewport, mini-player controls stay above the conversation; long URL content wraps, while the composer and connected voice controls remain available.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-top.png",
+            "sha256": "3193991984568f37d91e392f6b7a7f1f9791f6aea81032b33ac476735ddb3524",
+            "dimensions_px": [
+              320,
+              768
+            ],
+            "observation": "At 320px, navigation channel names truncate within their rows, per-channel actions remain visible, and the connected voice controls and profile footer fit below the scrollable list.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-real-stack/393/search-tabs-messages.png",
+            "sha256": "153761f3a3f047e708250b4d6755d954cab51c9f747f28b560848b897c46d524",
+            "dimensions_px": [
+              1179,
+              2556
+            ],
+            "observation": "The authenticated 393px search view keeps its two top-level scopes, four search modes, query field, filters and Find action within the viewport; the focused query field has a visible focus outline.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-375x812.png",
+            "sha256": "9e657c1a012e36583060bb31fae22375355463ceab66a5ea45b1d648ca8e9563",
+            "dimensions_px": [
+              375,
+              812
+            ],
+            "observation": "At 375×812, the responsive shell retains the workspace header, composer and connected voice dock while the conversation area absorbs the reduced height.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/receiver-text-200-1024.png",
+            "sha256": "0cc6c21d14dda0c65afd498bd95d4b58e29ede031bc4b8cfdef7b6d67e0b507a",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "observation": "The focused post-fix 1024 CSS px / 200% receiver capture shows the rem-scaled statistics panel with summary rows readable and no split words or row overflow.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/details-launch-1024-200.png",
+            "sha256": "96b1bbb35d7e83d09e0ddaf6e7b1e02123cb5a2a8746220dba1270ced02a2dec",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "observation": "At 1024 CSS px and 200% root text, the launch dialog scrolls expanded capabilities independently while keeping Cancel and Start actions visible.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/details-updating-1024-200.png",
+            "sha256": "6d770d133abdd05598947c8927209484114155028aadcb685221c988578a39bb",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "observation": "At 1024 CSS px and 200% root text, quality-update actions remain in the footer while capability details continue inside the scrollable body.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/launch-1024-200.png",
+            "sha256": "44579cbc4886bfa53b1b663bcf46f63ebc87494fa6becb57902c7f157270fd92",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "observation": "At 1024 CSS px and 200% root text, the launch selection remains usable; the primary label wraps cleanly and Cancel stays on one line.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/receiver-1024-200.png",
+            "sha256": "faafde063dfcbf81f8208659ad3c11be3f917397a9552a31838fc1eebe234760",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "observation": "At 1024 CSS px and 200% root text, the enlarged receiver statistics panel shows sender selection, missing confirmation and viewer measurements as separate readable rows.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/sender-1024-200.png",
+            "sha256": "4a886fab9bf2b96f9b343c4afae3e8d6a1c1032a79f688daba6371576ab229cd",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "observation": "At 1024 CSS px and 200% root text, the sender view distinguishes the selected 1080p / 60 FPS target from the measured 1920 × 654 / 1 FPS output.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/technical-receiver-1024-200.png",
+            "sha256": "b68640c6fb8ef224080ee7ae151a4746fa2d57b5499100d2a043f7025a5c4960",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "observation": "At 1024 CSS px and 200% root text, the receiver diagnostics panel scales with text, scrolls within the viewport, and keeps labels and values intact at word boundaries.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/technical-sender-1024-200.png",
+            "sha256": "70ef109acb7ba52953997ce10fe0e5e7700f2df094fb46b33f81a66be6fd3b2e",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "observation": "At 1024 CSS px and 200% root text, expanded sender diagnostics wrap at word boundaries; details remain readable and continue below the captured viewport.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/unsupported-1024-200.png",
+            "sha256": "fcd377af66b07657f2737533faf23a750dcadcffbddfd3b7c66eaaed452ac12e",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "observation": "At 1024 CSS px and 200% root text, the unsupported-browser explanation remains readable, Start stays disabled, and Cancel stays on one line.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/updating-1024-200.png",
+            "sha256": "f0e21cb78ed9d692798f95b8df0951f1085215a616e041c0f71e1df63eda2b68",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "observation": "At 1024 CSS px and 200% root text, the update sheet keeps the selected profile and Apply action visible; explanatory content remains in the scrollable body.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/details-launch-320-200.png",
+            "sha256": "8da49523e3aa459bbae3d3c764206e1dc9daf0300d2570120c5c088e5d4c1c29",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "observation": "The 320 CSS px / 200% launch details view keeps Cancel and Start in the fixed footer; long setup text continues in the independently scrollable body.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/launch-320-200.png",
+            "sha256": "a238c03fe79b368622b539b558df3bed457c908d63b75e92fc89e59b71a5642c",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "observation": "At 320 CSS px and 200% root text, the launch choices remain readable and Cancel fits on one line; the primary action wraps within its button.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/receiver-320-200.png",
+            "sha256": "1f7f239c6ff110f500a61dabeada4b45537358bee11c701d425262eb07949dfd",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "observation": "At 320 CSS px and 200% root text, receiver statistics fit the viewport width; labels and values wrap at word boundaries and remain readable.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/sender-320-200.png",
+            "sha256": "b7cb44bfcd24dc7aa388b1f358f187831fb05e4e462218e640d8ca82a23457df",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "observation": "At 320 CSS px and 200% root text, the sender summary distinguishes selected and measured values; the collapsed diagnostics control wraps at a word boundary.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/technical-receiver-320-200.png",
+            "sha256": "30b2203d53d092bec5a46fa31f9c3c92bd9efadc6fffc2ecf98ec08c627c9553",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "observation": "At 320 CSS px and 200% root text, expanded receiver technical details wrap at word boundaries inside the statistics panel and remain legible.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/technical-sender-320-200.png",
+            "sha256": "f719da5e2f4162ad0fe81a4b00cd7479fc19d8409a2a1592aca7da013d75db9b",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "observation": "At 320 CSS px and 200% root text, expanded sender diagnostics wrap at word boundaries and remain legible in the captured view.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png",
+            "sha256": "3980015f5d7893556d96e3fed40046bcdbe5440409d8df1515920a417e614dd3",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "observation": "At 320px / 200% text, search modes stack vertically and expanded author, attachment and date filters stay within the content width; lower active-filter chips continue below the scroll viewport.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-archive-result-layout-at-390px-200-text/archive-layout.png",
+            "sha256": "0b719fc2be94e0c67f2aa9d792791583327013c0feaade42db0632f0fd3343eb",
+            "dimensions_px": [
+              390,
+              1000
+            ],
+            "observation": "At 390px / 200% text, archive controls remain within the panel width; the long native channel option is truncated, and lower search actions remain reachable in the scrollable result region.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-mentions-result-layout-at-390px-100-text/mentions-layout.png",
+            "sha256": "a5c079a0fe188b4e507b99900f824dbbf1fbb5a1aff8a6b23781610fca2dabb6",
+            "dimensions_px": [
+              390,
+              1000
+            ],
+            "observation": "At 390px, mention/archive/pin modes form a two-column grid; long message metadata truncates without horizontal overflow, and refresh and Show more remain visible.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-pins-result-layout-at-320px-200-text/pins-layout.png",
+            "sha256": "48c9c78b1b2377ba88a34354ea226a0c18f3ce73e26aa93fa53978254bc535e4",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "observation": "At 320px / 200% text, the refresh action wraps inside its button and pinned metadata/snippets wrap within the panel; the message link remains visible and the list continues below the viewport.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-quick-result-layout-at-390px-100-text/quick-layout.png",
+            "sha256": "a0ee00b218ba0f3c690eebff1b6aea1844056c4d3e77e860e5d12310602535de",
+            "dimensions_px": [
+              390,
+              1000
+            ],
+            "observation": "At 390px, quick-jump results truncate long channel and DM names with ellipses; the query field and bottom Show more action remain usable.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+            "sha256": "b0b788db28091483aef3a799d554382c2d78813517d5f5656a8fbf34c3da0597",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "observation": "At 320px, search modes form two rows and the query, scope and Find controls fit the panel; result metadata truncates and snippets remain clamped within the scrollable list.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/leaving.png",
+            "sha256": "24d6547d67dd8e1d2b3c33a33f74cc12768d743cc23f90ba860ba96a91d44210",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "observation": "At 390 CSS px / 200% text, the leaving state uses neutral status wording and keeps the voice controls contained in the dock.",
+            "visually_reviewed_at_source_resolution": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/reconnecting.png",
+            "sha256": "1a5b60190552e1227ceee8e0a34bc0b3e8be83cd28e725a912dbd156df627246",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "observation": "At 390 CSS px / 200% text, reconnecting status is visible in both the content and dock; participant cards and dock controls remain within the viewport.",
+            "visually_reviewed_at_source_resolution": true
+          }
+        ],
+        "exact_hash_reused_reviews": [
+          {
+            "path": ".out/local-features/20261017-191711/images/flutter-captures/message-actions-all-open-actual.png",
+            "sha256": "3dee289412cd6628d383f6d19d5eb8511274efda5a42650590115351f651645a",
+            "dimensions_px": [
+              390,
+              93
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-actions-all-open-actual.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/flutter-captures/message-social-touch-targets.png",
+            "sha256": "b0757bd6c59de55fd80d4d67a8b968d8ac6fd0b44a5319efa764424a2fe89e68",
+            "dimensions_px": [
+              390,
+              162
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-social-touch-targets.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/flutter-captures/message-actions-closed-actual.png",
+            "sha256": "9705694a8c81eeda18c6e90560bf84308ffef689cb9424561723ca4277aae979",
+            "dimensions_px": [
+              390,
+              279
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-actions-closed-actual.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/flutter-captures/message-actions-open-actual.png",
+            "sha256": "a1203d7519edc4ae457d4bd66eb4148908fd356183d1413129effe80e0fd71e6",
+            "dimensions_px": [
+              390,
+              279
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-actions-open-actual.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-mini_player/mini.browser-390px-at-200--37465-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+            "sha256": "8eb4ab5d562498ea9f8e5a5f945dfe6a36fef775492fbd1bbe7a0f60bf7762ca",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-mini_player/mini.browser-390px-at-200--37465-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+            "sha256": "77d23eec78d439f46bf96c484ba9d16ab280c5506dc23cd1208c36ffa4c09c44",
+            "dimensions_px": [
+              393,
+              844
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+            "sha256": "30c9543b74bb5a82e524f3601c24bfa1615e5e7f6f1c6e9d2e5040eff9d4be48",
+            "dimensions_px": [
+              780,
+              913
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-mini_player/mini.browser-chat-zoning-320-text-100/dm.png",
+            "sha256": "327a96af7f7e2806ea1f59b323eb3feca4022a1464f2e118a9aea9314ea4eb64",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-320-text-100/dm.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+            "sha256": "3a4a17cf19751f6e1dcb48ac5f4f8fff875cb6790ffffcc259c856ba4b8acf19",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+            "sha256": "09b999751cfd92e96ef2099667915ab9fc906573c1cfc832d80c6b586687ecd2",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+            "sha256": "3799ce7799e52e571ffb2cbf3dde52e8916da9933b3a7e0d05cf1e96773733e9",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-archive.png",
+            "sha256": "ec7910a6d5b8ea9b4076c3e634f5878c94d634870db3343c8a2afa2d1b67886e",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-archive.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-pinned.png",
+            "sha256": "f34694c32fd9e230b95a25d9ce67094e32ce5558a5fef46f5602b630be6c79f5",
+            "dimensions_px": [
+              320,
+              1000
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-pinned.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
+            "sha256": "4593af1591726370d412a8e4a9772569616581c9d13e6d643224663e5f89e578",
+            "dimensions_px": [
+              1160,
+              64
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-header_actions/headers.browser-200-text-k-c357b--long-accessible-object-320/dm-text200.png",
+            "sha256": "895d4e51db8ddba786a266b2aac07676c30119d91203c232f930d58c678232e9",
+            "dimensions_px": [
+              320,
+              57
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-header_actions/headers.browser-200-text-k-c357b--long-accessible-object-320/dm-text200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-header_actions/headers.browser-compact-he-66f00-and-all-primary-actions-390/text.png",
+            "sha256": "e6f546862d694b00689a3cb372034a6fd6fa29b2f0649542480572cc50b418f9",
+            "dimensions_px": [
+              390,
+              56
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-header_actions/headers.browser-compact-he-66f00-and-all-primary-actions-390/text.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-header_actions/headers.browser-actual-browser-zoom-200-640/text-zoom.png",
+            "sha256": "ded2f4c92173ad8a8193805ffd6bc47d014450a8bf1547c7ae93f82eb45f2f90",
+            "dimensions_px": [
+              640,
+              913
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-header_actions/headers.browser-actual-browser-zoom-200-640/text-zoom.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/muted.png",
+            "sha256": "5a6b7ae746f1cd2382a3df1b540470276b90daf951409f48e6425d8865696100",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-voice_interface/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/muted.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/connected.png",
+            "sha256": "b243256f849b2a7b905a6b5aad9dffc82e44207e41e24fe66e93e663bb739c3c",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-voice_interface/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/connected.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/connected.png",
+            "sha256": "7f1e43421176aeec0d19bdfac065980428779dd503a1140ed8ad4a1fed02d3f5",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/connected.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+            "sha256": "bba3c9869a3952172e71c2b6412886a0b4cce1336c3cf02de4156f5a10822106",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1440px-text-200-/technical-sender-1440-200.png",
+            "sha256": "1cc19f2111d5e96edc43157974bb5da81a0beab4cd0a33c0a108a091eb11c069",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1440px-text-200-/technical-sender-1440-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
+            "sha256": "de731fb7ca3c419a7c5fe68c7bf52e79bfa8d61e4f624d50a4fd5f1374265fda",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/details-updating-1024-100.png",
+            "sha256": "18b39304133fff1b0678e65afe86f845ee94ea8dfd2e3067c0f23600f5b413d0",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/details-updating-1024-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/sender-1024-100.png",
+            "sha256": "95b0bdf908bd4e0b1d958005708d44b78e38cb49ee79c8b6abaae8b4a982440f",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/sender-1024-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/launch-1024-100.png",
+            "sha256": "51ab0b40e4287351cefebc376b5a9f86a74c829871758bc6df70c371de7a0ea1",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/launch-1024-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/details-launch-1024-100.png",
+            "sha256": "1a4c349ceab900b3f941d0b094ca5295da18c91db2c4f70420dd09275732be90",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/details-launch-1024-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/receiver-1024-100.png",
+            "sha256": "2fa0792c1e5291a57737d632aadaed021d1e307e00ebfa795f273c5773482b2f",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/receiver-1024-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-390px-text-200-/technical-receiver-390-200.png",
+            "sha256": "d8a0247eb9274a4186be62a31012a46f910ad6edcadb0a6071e96cdee74000f9",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-390px-text-200-/technical-receiver-390-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+            "sha256": "9a3913595ab705c02c7b27c7365733e35b7bee03df5ca7c7a41e1b638aa4c37c",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+            "sha256": "b1c3f60aaeddbd51079c2dd3773cc8745a05c9bde3ebb036d715c8a98fedfe6f",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-top.png",
+            "sha256": "adfea04819e926d6f784829d2615de430d80d9dd7258595d75cc4707925e2c5b",
+            "dimensions_px": [
+              1920,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-top.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-bottom.png",
+            "sha256": "43f3ce5f4a00b53b8533bd128e4845b021a823588134e48083400f825ba8f50c",
+            "dimensions_px": [
+              1920,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-bottom.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/direct-messages.png",
+            "sha256": "9347fd91e780c9fb7d199a15d75768bf1885533782dfcbb67d7bc463fc487be4",
+            "dimensions_px": [
+              1920,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/direct-messages.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-bottom.png",
+            "sha256": "cae393bb8f0bf86b1cbb8eb6a0532eeacccd29510e4278000335252ec996747e",
+            "dimensions_px": [
+              320,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-bottom.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+            "sha256": "4f37e3fadfdc36d7c87c2d2c7c21751bdb21c978bfe2dbf59d488c219cbe5633",
+            "dimensions_px": [
+              1440,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-bottom.png",
+            "sha256": "818ca0aa86ce6b7a327b3f473db2ebdbb32f30cb35df00b9f0f39ba3cd65e40d",
+            "dimensions_px": [
+              1440,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-bottom.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/direct-messages.png",
+            "sha256": "5818d48e96750c742d22c5d4f475e46948ea31414dbfc4a1c50af438b09c84d6",
+            "dimensions_px": [
+              1440,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/direct-messages.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/zoom.browser-actual-200-br-cf7fc-serves-navigation-at-1440px/navigation-zoom200.png",
+            "sha256": "33466dc2903ec8e96895c10b5c791ad9259491c9825ede4e493f63750cd149a5",
+            "dimensions_px": [
+              1440,
+              913
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/zoom.browser-actual-200-br-cf7fc-serves-navigation-at-1440px/navigation-zoom200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/zoom.browser-actual-200-br-01547-eserves-navigation-at-780px/navigation-zoom200.png",
+            "sha256": "eda29ec1fc62905628882f4a1814518fbba709d7cb14235c69b77b033d42b03d",
+            "dimensions_px": [
+              780,
+              913
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/zoom.browser-actual-200-br-01547-eserves-navigation-at-780px/navigation-zoom200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-top.png",
+            "sha256": "07dbeb0fcc3f7226b8f0b1052994be0c89cb70891f9eb8d330ec574cc9e7ad54",
+            "dimensions_px": [
+              390,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-top.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-bottom.png",
+            "sha256": "8346c0679bd415111b98998b767943ab712f117bbb4527eb3257e595df32230a",
+            "dimensions_px": [
+              390,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-bottom.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-top.png",
+            "sha256": "b722c646c2528ccd9063d77cb9d832f692ad4cdae88b6b5bfd9379b00c4f8a86",
+            "dimensions_px": [
+              768,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-top.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-bottom.png",
+            "sha256": "e1ae4441416ccb682ab7f33037b592db45afeb0272c4076640f509815496fa97",
+            "dimensions_px": [
+              768,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-bottom.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-top.png",
+            "sha256": "a8b587b0d408095c9a8b0a2925ae1f22122c724503d1af177a29e96ab26759b9",
+            "dimensions_px": [
+              1024,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-top.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-bottom.png",
+            "sha256": "a671249721bbceafa3020a475722c402814b702d10cc05c8889349c01921bd5c",
+            "dimensions_px": [
+              1024,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-bottom.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/direct-messages.png",
+            "sha256": "aef32c35df9a69f49a0f899ce662fb4087b95b50b6d7db6160434d3565eedbfe",
+            "dimensions_px": [
+              1024,
+              768
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/direct-messages.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-semantic--ba804--and-disabled-actions-390px/variants-390.png",
+            "sha256": "6a548a787bd2bbe3acf70aab32916c88cd61e16ff36b048e8b44ad2e040efe96",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-semantic--ba804--and-disabled-actions-390px/variants-390.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-diagnostics-1920-200.png",
+            "sha256": "e9e909a906dbf6a4f9f0fbec87195326a5cce92cb74d0dd848c80a285a52bfd4",
+            "dimensions_px": [
+              830,
+              508
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-diagnostics-1920-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-1920-200.png",
+            "sha256": "106ac6c6ca18964344f4a3452ff8e20cab3a1fe645f526cb7cbadbe154423579",
+            "dimensions_px": [
+              1920,
+              3497
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-1920-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-archive.png",
+            "sha256": "2a14352b9cfa52411ebbc88679ea74560e2136a123a38d7a39d11c70d8c7d8e0",
+            "dimensions_px": [
+              1440,
+              1769
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-archive.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-audio.png",
+            "sha256": "853b17f816dc23c92179e5f463568fd9f77436758d694ebf44b62141ee97a3fe",
+            "dimensions_px": [
+              1440,
+              5402
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-audio.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-390-100.png",
+            "sha256": "eedba7a3fd9057913294e38bf8f3c7c635c12f55dc1eadb5b5a09d73e7177dc8",
+            "dimensions_px": [
+              390,
+              2839
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-390-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-diagnostics-390-100.png",
+            "sha256": "bdd29447ae6cfeae0f0b8dfd3e0b12dbf0e4e51a9cf2742403d81af714c1034a",
+            "dimensions_px": [
+              324,
+              312
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-diagnostics-390-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-200-text/archive-3440-200.png",
+            "sha256": "7808ff842278406e7eb220dac93bc30b022a3604fc205885cd99c74e5ceef348",
+            "dimensions_px": [
+              3440,
+              1529
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-200-text/archive-3440-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-768-200.png",
+            "sha256": "e8b7b437d1f15da6cfa9ba77e44e3f8de8889f1e5077838f326accde48208e4d",
+            "dimensions_px": [
+              768,
+              3911
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-768-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-diagnostics-768-200.png",
+            "sha256": "5c811333a6a1fb35d28cd48ebe11bd724fadd87f975dbdb417d94a650d690806",
+            "dimensions_px": [
+              686,
+              596
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-diagnostics-768-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-1920px-100-text/guild-1920-100.png",
+            "sha256": "2c4b2a5b07e3bd9c5b94d2085f78ab1de0201ead217e81e90d42543388075106",
+            "dimensions_px": [
+              1920,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1920px-100-text/guild-1920-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-100-text/guild-320-100.png",
+            "sha256": "0472bf51d27400d93df939b16f092643c531e7bb5bd63c253b6099f28c48612b",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-100-text/guild-320-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-200-text/audio-1024-200.png",
+            "sha256": "18fb1ab9fd443e35e85a6ced0daba3bf7a6cfc3fddf02e3b63db7ca4afddbde3",
+            "dimensions_px": [
+              1024,
+              3489
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-200-text/audio-1024-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-200-text/archive-390-200.png",
+            "sha256": "4e6061fd2282b8cbd4d50ae25bfef14ff4bc8cc9c5a6a1864af270736eaef4c9",
+            "dimensions_px": [
+              390,
+              1817
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-200-text/archive-390-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+            "sha256": "9fd658c99e26ce273f4d5e5ee7af18909a839a6dad629dff81333133b7f27232",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-audio.png",
+            "sha256": "b1b1ccc33658aa96533817404df38694c39507b10a00911a883046839ff9fcee",
+            "dimensions_px": [
+              780,
+              6214
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-audio.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-guild.png",
+            "sha256": "7c7c6c6ca7e1c53f965bca549457b8b93b82a89975c3a53364fe2c1513a1308b",
+            "dimensions_px": [
+              780,
+              1038
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-guild.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-100-text/archive-768-100.png",
+            "sha256": "3a88a907da12eed78245ca2b43d9c23e9d19d10a2e659d6f289c0b0835ccc3a9",
+            "dimensions_px": [
+              768,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-100-text/archive-768-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-100-text/guild-1024-100.png",
+            "sha256": "c02ea15cd2567868fc57fc4c2df4b4719c6151aca911e796363c289c9fca3cf5",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-100-text/guild-1024-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-200-text/audio-1440-200.png",
+            "sha256": "6e7f7ced3ca65951057ceb0a166060dfc23ac8a328bd8ea854b1388421b15be2",
+            "dimensions_px": [
+              1440,
+              3497
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-200-text/audio-1440-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-diagnostics-3440-100.png",
+            "sha256": "0797d144809cf69fb8f4c9004953426e1d6975c5fb486a7f7f1d03fbfe174cf1",
+            "dimensions_px": [
+              830,
+              208
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-diagnostics-3440-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-3440-100.png",
+            "sha256": "ea4748dc8c932ebf90575d70918c166cd8aadded38fc65d754a9546a0437773c",
+            "dimensions_px": [
+              3440,
+              2257
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-3440-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-1920px-100-text/archive-1920-100.png",
+            "sha256": "d6e8db34cfc624dd81e51553f8cd13b7352b18cec65f3c27c5d798b599003aa0",
+            "dimensions_px": [
+              1920,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-1920px-100-text/archive-1920-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-1440px-100-text/archive-1440-100.png",
+            "sha256": "27c7d1f4d8d83d4a2b677bb842aaacecf96e400d202c0356d06b5bf88b1e2662",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-1440px-100-text/archive-1440-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-390px-200-text/guild-390-200.png",
+            "sha256": "00312ef5354eea177da1f29526e356c1ff71a4886f9370487744ce7efc2e518a",
+            "dimensions_px": [
+              390,
+              1006
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-390px-200-text/guild-390-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-100-text/archive-1024-100.png",
+            "sha256": "7e38c039e4d318eea631bee0a2f64cf790f4e80c41e621c5d857f4db49b4da7a",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-100-text/archive-1024-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
+            "sha256": "5d385cf51ca1eafd3a44d1e1ec3858a2c2cee1c44d4480c184723d2fa03c7cbe",
+            "dimensions_px": [
+              290,
+              1044
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+            "sha256": "3be64d9f52a6b54d4aa1e3cb16b073aa8dc60761f8db41d1af01903d2e01609d",
+            "dimensions_px": [
+              320,
+              6047
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-768px-100-text/guild-768-100.png",
+            "sha256": "3f2c6b65d0a49ee15c33fd723fff11f9a309dbeeba9f508ca1f9cea49dd9860b",
+            "dimensions_px": [
+              768,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-768px-100-text/guild-768-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-200-text/guild-1440-200.png",
+            "sha256": "1747d7d8e75e995ccec12e7d8241fd33d8ffd7dfb327180b20c473bd019a88e3",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-200-text/guild-1440-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-100-text/archive-390-100.png",
+            "sha256": "4df9b9e863f8ff2ac67ce22367cc8f09d6406ade85ae1dd6d883e8690fbc05b6",
+            "dimensions_px": [
+              390,
+              905
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-100-text/archive-390-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-diagnostics-1024-100.png",
+            "sha256": "79fd18d09df2bc3f915aa1b428de9d43aecee5f5e6a540b8b6e10406379b8886",
+            "dimensions_px": [
+              830,
+              208
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-100-text/audio-diagnostics-1440-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-1024-100.png",
+            "sha256": "53ddc13241e39951611b91a4afbe0b9b2e764bb0cf8723b899738ac784c5a58b",
+            "dimensions_px": [
+              1024,
+              2249
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-1024-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-100-text/audio-1440-100.png",
+            "sha256": "e372a95076465a4167e45487e4e255a89b849e8320cf557c83cb8a78a4c4d28b",
+            "dimensions_px": [
+              1440,
+              2257
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-100-text/audio-1440-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-200-text/guild-1024-200.png",
+            "sha256": "33ff608e32a4ca4fd457548a2d01f359e14439a4ecfd159bc416ce132a9aff55",
+            "dimensions_px": [
+              1024,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-200-text/guild-1024-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-200-text/archive-768-200.png",
+            "sha256": "6469134468ca84a88d0287d2e20782a8109fbcbee8a86d4982b399d4dcebe759",
+            "dimensions_px": [
+              768,
+              1529
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-200-text/archive-768-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-100-text/audio-1920-100.png",
+            "sha256": "e01d19ba6ac8ec8bb145f542be62bb089ad6692cc616f1edf95619e7551de0dd",
+            "dimensions_px": [
+              1920,
+              2257
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-100-text/audio-1920-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-390-200.png",
+            "sha256": "829660251999ecbb1e95d34c0171d0b1ac2d7361f3f7773bb278d703e7ec022f",
+            "dimensions_px": [
+              390,
+              5685
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-390-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+            "sha256": "c956a5fe2f71095f8c150519cae255a85adb088593c06138d1125b82413fa33d",
+            "dimensions_px": [
+              324,
+              1004
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+            "sha256": "9b80c4815a459e772f1484a5f4fdc5511d77477a49190f6454b252938b982ef8",
+            "dimensions_px": [
+              320,
+              1122
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-768-100.png",
+            "sha256": "a5ce7e5fb3ee7852c0794963efc365752da29ee0ee92fa39ad519b41ad600b96",
+            "dimensions_px": [
+              768,
+              2423
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-768-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-diagnostics-768-100.png",
+            "sha256": "6c1b09e79ec8957fe5a118704e52945da66dd32b7702c113a91695b4eab50ce9",
+            "dimensions_px": [
+              686,
+              252
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-diagnostics-768-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-100-text/archive-3440-100.png",
+            "sha256": "c8d8186392855a3239de619e179f1993ab45719925d0e071850a83dec62c6146",
+            "dimensions_px": [
+              3440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-100-text/archive-3440-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-diagnostics-320-100.png",
+            "sha256": "7b9283ae84b000548ce7052315f547e05b85576f8453218bffbe86126dd43d45",
+            "dimensions_px": [
+              254,
+              372
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-diagnostics-320-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-320-100.png",
+            "sha256": "43803398bd1c2db0156e747925a114b9b621436b4a70bdf5b438c6222b1949c7",
+            "dimensions_px": [
+              320,
+              2955
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-320-100.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-200-text/archive-1024-200.png",
+            "sha256": "46ec53fcb8d51d1c422448bf82e9ecfe3994c3973dcd730f95edcbd59d4634e0",
+            "dimensions_px": [
+              1024,
+              1529
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-200-text/archive-1024-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-diagnostics-3440-200.png",
+            "sha256": "152c11308ffb04e746519b493206d761509f22b313fddbfd78601d565c0ef76f",
+            "dimensions_px": [
+              830,
+              508
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-diagnostics-3440-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-3440-200.png",
+            "sha256": "d08bdb7e4b39e4504edc5b0b75b21e77ef464bb4d6b4bdd94773e2d76d244b8f",
+            "dimensions_px": [
+              3440,
+              3497
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-3440-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+            "sha256": "6d662966025dd32c645fd5c907985f577d6d865cd7698bd8fe4b87874f3a5770",
+            "dimensions_px": [
+              320,
+              2153
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-search-result-layout-at-390px-200-text/search-layout.png",
+            "sha256": "36230f8dc20fff3a6f1ded0d813ccb33ba8ed9dc148e7b50d812788895157d08",
+            "dimensions_px": [
+              390,
+              1000
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-search_presentation/layout.browser-search-result-layout-at-390px-200-text/search-layout.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_profile/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
+            "sha256": "ef5af0742ba9be154965d1c659ff5e7223063a903ce0becb923002df4242443c",
+            "dimensions_px": [
+              786,
+              1704
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_profile/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_profile/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+            "sha256": "111f7df5574c79f973655840072adb38bbaacce3169131efc473c3e583a2cfba",
+            "dimensions_px": [
+              390,
+              640
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-screen_profile/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-screen_profile/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
+            "sha256": "cd6691cb350e3d2d4970e0afc696e5988abaec5b0a321124f71553dfad2cb6b9",
+            "dimensions_px": [
+              2880,
+              1800
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_profile/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-accessibility/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+            "sha256": "880e96683f5cbe632c3638ffb57be6971dc5e7225a9d73ff0f22d1b2fd839183",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-accessibility/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-microcopy/zoom.browser-actual-page-z-6288d-cused-hints-usable-at-780px/prejoin-zoom200-780.png",
+            "sha256": "f1c7361dc4120a14460ea725418e4dc70a5087f9c655eeb5c046e842a13fcdfc",
+            "dimensions_px": [
+              780,
+              913
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-microcopy/zoom.browser-actual-page-z-6288d-cused-hints-usable-at-780px/prejoin-zoom200-780.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+            "sha256": "e4e14ba0eb2601df6791c4cdb97d1736d4c9c63190d3a01b886bb96bd2758954",
+            "dimensions_px": [
+              390,
+              1267
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+            "sha256": "9cb03e67fd76706fe800f3cb1ba9133066632b9b256dd5183e410e8c21e27c59",
+            "dimensions_px": [
+              1440,
+              905
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-member_roster/roster.browser-roster-and-profile-390-text-200/roster.png",
+            "sha256": "04a170f7f3cc3548471e552e4188ecc5af9ce1906cc4fd1521f655ac3afd0249",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-member_roster/roster.browser-roster-and-profile-390-text-200/roster.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-member_roster/roster.browser-roster-and-profile-320-text-200/roster.png",
+            "sha256": "5b8ba726f7b0774241b459e0697ba0d580e9f5351ff119b673e6c375884fe28a",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-member_roster/roster.browser-roster-and-profile-320-text-200/roster.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
+            "sha256": "5f1e6708dc3888e7ba8b1a40944f4f2d4000f79e54be73aee057c11b86ba1e97",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
+            "sha256": "651e362a4cd040703e0d760b520a762081e005d45b8d2073b6c886a0bea3941e",
+            "dimensions_px": [
+              1440,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
+            "sha256": "4852614a3a015be34bbe2c37d58fc17992a0b6a67aabab828f6e7316d0777892",
+            "dimensions_px": [
+              320,
+              640
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-780px-window/dm-modal-zoom.png",
+            "sha256": "b441c7409c48c74119c73057b688ff0140ed775bcb283ca70e7851d06cbfea5e",
+            "dimensions_px": [
+              780,
+              913
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-780px-window/dm-modal-zoom.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+            "sha256": "88f1e29c7c3d0862297b2800c0116cb1a8387aab67eef52b9fe744f41b2d4f63",
+            "dimensions_px": [
+              320,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-dm_starter/overlay.browser-modal-esca-5b1dd-d-sidebar-at-390px-200-text/dm-starter.png",
+            "sha256": "68aa2a468d54caa318e7ac0e6ecc1a513c2892639cdc48ea47a46c50687f93e1",
+            "dimensions_px": [
+              390,
+              900
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-dm_starter/overlay.browser-modal-esca-5b1dd-d-sidebar-at-390px-200-text/dm-starter.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-chat_rhythm/zoom.browser-actual-200-br-8607c-DIRECT-MESSAGE-780px-window/zoom-200-rich-text.png",
+            "sha256": "84a8fabd7cac31e00d4ee00203218a54f7290422ecd7b7ed81e32da3f678700e",
+            "dimensions_px": [
+              780,
+              913
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-chat_rhythm/zoom.browser-actual-200-br-8607c-DIRECT-MESSAGE-780px-window/zoom-200-rich-text.png",
+            "exact_hash_match": true
+          },
+          {
+            "path": ".out/local-features/20261017-191711/images/web-real-stack/393/voice-after-leave.png",
+            "sha256": "de4238dbf09f00cdaf95efec327e674e129c4cdca7740416f7fd3ed2b31f3eed",
+            "dimensions_px": [
+              1179,
+              2556
+            ],
+            "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-real-stack/393/voice-after-leave.png",
+            "exact_hash_match": true
+          }
+        ],
+        "historical_review_sources": [
+          {
+            "run_dir": ".out/local-features/20261017-140223",
+            "review_record": ".out/local-features/20261017-140223/manual-review-progress.json",
+            "new_exact_hash_matches": 59
+          },
+          {
+            "run_dir": ".out/local-features/20261017-141612",
+            "review_record": ".out/local-features/20261017-141612/manual-review-progress.json",
+            "new_exact_hash_matches": 3
+          },
+          {
+            "run_dir": ".out/local-features/20261017-145030",
+            "review_record": ".out/local-features/20261017-145030/manual-review-progress.json",
+            "new_exact_hash_matches": 11
+          },
+          {
+            "run_dir": ".out/local-features/20261017-183225",
+            "review_record": ".out/local-features/20261017-183225/manual-review-progress.json",
+            "new_exact_hash_matches": 5
+          }
+        ]
+      }
+    },
+    "search_placeholder_fit": {
+      "status": "PASS",
+      "command": "clients/web/tests/search_sessions/tabs.browser.spec.ts",
+      "cases": 16,
+      "assertion": "At 320 CSS px and 200% root text, measure rendered placeholder text against the actual search input content width.",
+      "result": "The “Поиск” placeholder fits without clipping."
+    },
+    "screen_share_ui_200_percent_text": {
+      "status": "PASS",
+      "focused_browser_test": "200% text keeps action labels and diagnostic words intact at desktop width",
+      "viewport_css_px": [
+        1024,
+        900
+      ],
+      "pre_fix_observation": "Cancel text occupied two line fragments; receiver labels and values split words at 200% root text.",
+      "post_fix_assertions": [
+        "Cancel label occupies one line.",
+        "Receiver summary words occupy one line each and rows do not overflow their content boxes."
+      ],
+      "focused_result": "PASS (1/1)",
+      "browser_suite": "PASS (23/23)",
+      "source_resolution_captures": [
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/receiver-text-200-1024.png",
+          "sha256": "0cc6c21d14dda0c65afd498bd95d4b58e29ede031bc4b8cfdef7b6d67e0b507a",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "The focused post-fix 1024 CSS px / 200% receiver capture shows the rem-scaled statistics panel with summary rows readable and no split words or row overflow.",
+          "visually_reviewed_at_source_resolution": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/details-launch-1024-200.png",
+          "sha256": "96b1bbb35d7e83d09e0ddaf6e7b1e02123cb5a2a8746220dba1270ced02a2dec",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "At 1024 CSS px and 200% root text, the launch dialog scrolls expanded capabilities independently while keeping Cancel and Start actions visible.",
+          "visually_reviewed_at_source_resolution": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/launch-1024-200.png",
+          "sha256": "44579cbc4886bfa53b1b663bcf46f63ebc87494fa6becb57902c7f157270fd92",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "At 1024 CSS px and 200% root text, the launch selection remains usable; the primary label wraps cleanly and Cancel stays on one line.",
+          "visually_reviewed_at_source_resolution": true
+        }
+      ]
+    }
+  },
+  "remaining_gates": {
+    "physical_chrome_capture_picker": "NOT_RUN",
+    "hardware_audio_and_media_qoe_capacity": "NOT_RUN",
+    "issue_305_release_review": "NO_GO_NOT_RUN",
+    "issue_305_reason": "The required task measurements and named Web rollback owner are not present in auditable evidence."
+  },
+  "privacy": "Screenshots stay in local .out artifacts; no fixture conversation content is included in this record."
+}

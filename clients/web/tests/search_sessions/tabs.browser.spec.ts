@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-for (const width of [320, 375, 390, 768, 1024, 1440]) {
+for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) {
   for (const scale of [1, 2]) {
     test(`four search modes fit ${width}px at ${scale * 100}% text`, async ({ page }, info) => {
       await page.setViewportSize({ width, height: 1000 })
@@ -18,6 +18,18 @@ for (const width of [320, 375, 390, 768, 1024, 1440]) {
       const tabs = page.getByRole('group', { name: 'Поиск и упоминания' }).getByRole('button')
       await expect(tabs).toHaveCount(4)
       await aside.screenshot({ path: info.outputPath('search-messages.png') })
+      const query = page.getByRole('searchbox', { name: 'Запрос', exact: true })
+      if (width === 320 && scale === 2) {
+        const placeholder = await query.evaluate(input => {
+          const style = getComputedStyle(input)
+          const context = document.createElement('canvas').getContext('2d')!
+          context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`
+          const text = input.getAttribute('placeholder') ?? ''
+          const padding = Number.parseFloat(style.paddingLeft) + Number.parseFloat(style.paddingRight)
+          return { textWidth: context.measureText(text).width, contentWidth: input.clientWidth - padding }
+        })
+        expect(placeholder.textWidth).toBeLessThanOrEqual(placeholder.contentWidth)
+      }
       async function checkBounds() {
         expect(await aside.evaluate(e => e.scrollWidth - e.clientWidth)).toBeLessThanOrEqual(1)
         expect(await aside.evaluate(e => e.scrollLeft)).toBe(0)
@@ -31,7 +43,6 @@ for (const width of [320, 375, 390, 768, 1024, 1440]) {
         }
       }
       await checkBounds()
-      const query = page.getByRole('searchbox', { name: 'Запрос', exact: true })
       await query.fill('Сохранённый запрос')
       await page.getByLabel('Область поиска').selectOption('current')
       await tabs.first().focus()
@@ -62,3 +73,30 @@ for (const width of [320, 375, 390, 768, 1024, 1440]) {
     })
   }
 }
+
+for (const width of [320, 390]) test(`touch can reach every search mode at ${width}px`, async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
+  try {
+    const page = await context.newPage()
+    await page.route('**/api/v1/**', route => {
+      const path = new URL(route.request().url()).pathname
+      const json = path.endsWith('/pins') ? { pins: [], can_manage: false }
+        : path.endsWith('/mentions') ? { mentions: [] }
+          : path.endsWith('/archives/text-channels') ? { channels: [], revision: 1, can_manage: false }
+            : { members: [] }
+      return route.fulfill({ json })
+    })
+    await page.goto('/tests/search_sessions/tabs.html')
+    const aside = page.locator('.search-aside')
+    const tabs = page.getByRole('group', { name: 'Поиск и упоминания' }).getByRole('button')
+    for (let index = 0; index < 4; index++) {
+      const tab = tabs.nth(index)
+      expect((await tab.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+      await tab.tap()
+      await expect(tab).toHaveAttribute('aria-pressed', 'true')
+      expect(await aside.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1)
+    }
+  } finally {
+    await context.close()
+  }
+})

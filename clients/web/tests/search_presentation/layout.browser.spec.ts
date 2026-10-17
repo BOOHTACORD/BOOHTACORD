@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { expectAxeClear } from '../accessibility/axe'
 import { api, channel, filename, id } from './fixture_api'
-for (const width of [320, 390, 1024, 1440]) for (const scale of [1, 2]) for (const surface of ['search', 'pins', 'archive', 'mentions', 'quick', 'files']) {
+for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) for (const scale of [1, 2]) for (const surface of ['search', 'pins', 'archive', 'mentions', 'quick', 'files']) {
   test(`${surface} result layout at ${width}px / ${scale * 100}% text`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 1000 }); await api(page)
     await page.goto(`/tests/search_presentation/fixture.html?surface=${surface}`)
@@ -19,6 +19,7 @@ for (const width of [320, 390, 1024, 1440]) for (const scale of [1, 2]) for (con
     if (surface === 'mentions') await expect(page.locator('.mention-inbox .search-result')).toHaveCount(2)
     if (surface === 'archive') await expect(page.locator('.archive-messages > li')).toHaveCount(2)
     if (surface === 'quick') {
+      await expect(page.getByRole('searchbox', { name: 'Найти канал или человека', exact: true })).toBeVisible()
       await expect(page.locator('.quick-jump-results > li')).toHaveCount(2)
       expect(await page.locator('.quick-jump-results').evaluate(el => getComputedStyle(el).listStyleType)).toBe('none')
       if (scale === 1) expect((await page.locator('.quick-jump-results > li').first().boundingBox())!.height).toBeLessThan(160)
@@ -26,6 +27,17 @@ for (const width of [320, 390, 1024, 1440]) for (const scale of [1, 2]) for (con
     if (surface === 'files') await expect(page.locator('.conversation-files tbody tr,.conversation-files .result-row')).toHaveCount(2)
     await page.evaluate(() => document.fonts.ready)
     await page.screenshot({ path: info.outputPath(`${surface}-layout.png`) })
+    if (surface === 'quick' && width === 320 && scale === 2) {
+      const placeholder = await page.locator('.quick-jump-panel input').evaluate(input => {
+        const style = getComputedStyle(input)
+        const context = document.createElement('canvas').getContext('2d')!
+        context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`
+        const text = input.getAttribute('placeholder') ?? ''
+        const padding = Number.parseFloat(style.paddingLeft) + Number.parseFloat(style.paddingRight)
+        return { textWidth: context.measureText(text).width, contentWidth: input.clientWidth - padding }
+      })
+      expect(placeholder.textWidth).toBeLessThanOrEqual(placeholder.contentWidth)
+    }
     if (surface === 'search') {
       const avatar = page.locator('.search-result-avatar').first()
       expect(await avatar.evaluate(el => el.scrollHeight - el.clientHeight)).toBeLessThanOrEqual(1)

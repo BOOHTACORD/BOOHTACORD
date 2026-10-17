@@ -29,6 +29,7 @@ for (const kind of ['TEXT', 'DM']) {
       await trigger.click()
       await page.getByRole('menuitem',{name:'Файлы беседы',exact:true}).click()
       await expect(page.locator('body')).toHaveAttribute('data-files-opened','true')
+      await expect(page.getByRole('tooltip')).toHaveCount(0)
     })
   }
 }

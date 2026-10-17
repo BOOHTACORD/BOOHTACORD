@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-17",
+  "scope": "DW-14 follow-up: navigation tooltip hit testing and Quick Jump placeholder sizing",
+  "status": "REGISTERED_AUTOMATED_PASS; RELEASE_VISUAL_REVIEW_REQUIRED",
+  "quick_jump": {
+    "viewport_css_px": [320, 1000],
+    "root_text_scale": "200%",
+    "before": {
+      "path": ".out/dw14-quick-jump-placeholder/before-320x1000.png",
+      "dimensions_px": [320, 1000],
+      "sha256": "06a7b78a385a3cbb11e65fd0e8413aad7f7052c5ce1880c1f25461d3c01de714",
+      "observation": "Placeholder visibly truncates; measured text width is 360.1875px while the input content box is 261px."
+    },
+    "after": {
+      "path": ".out/dw14-quick-jump-placeholder/after-320x1000.png",
+      "dimensions_px": [320, 1000],
+      "sha256": "37cedebe837c2992267805e1034101eb1d923f8a30bc0b0b702cd137709fcb70",
+      "observation": "Visible placeholder “Поиск” fits; visually hidden accessible label remains “Найти канал или человека”. The participant expansion action wraps without horizontal overflow."
+    }
+  },
+  "navigation_hint": {
+    "trigger": "At 1440px the hint overlapped the next channel row and intercepted a pointer click.",
+    "before_fix": "Focused browser regression failed: clicking the covered row left aria-current unset.",
+    "after_fix": "Focused browser regression passed; nav-only hints are pointer-transparent and remain described by aria-describedby."
+  },
+  "validation": {
+    "navigation_density_browser": "PASS 26/26",
+    "microcopy_browser": "PASS 60/60",
+    "search_presentation_browser": "PASS 106/106",
+    "search_sessions_browser": "PASS 26/26",
+    "production_typecheck_and_build": "PASS; VITE_PUBLIC_ORIGIN=https://v.bootybay.ru",
+    "git_diff_check": "PASS"
+  },
+  "registered_acceptance": {
+    "source": "8dccb58fa754f3b3fe0fb27bf3dd485ff06612e3 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run": ".out/local-features/20261017-202636",
+    "raw_report": {
+      "path": ".out/local-features/20261017-202636/report.json",
+      "bytes": 338594,
+      "sha256": "12b3567254391fcd91036cca1bfa9574c5651ea8c3fed00931c560aeb4a6c615"
+    },
+    "status": "REVIEW_REQUIRED",
+    "automated_stages": "PASS 28/28",
+    "web_unit": "PASS 474 files / 1571 tests",
+    "registered_browser_suites": "PASS 24 suites / 688 tests",
+    "authenticated_real_stack": "PASS at desktop 1440 CSS px and touch 393 CSS px; PostgreSQL, Go API, Tempo and LiveKit; owned resources removed",
+    "capture_review": {
+      "captures": 1056,
+      "unique_images": 997,
+      "current_run_captures_inspected_at_source_resolution": 9,
+      "prior_review_hashes_intersecting_current_run": 136,
+      "effective_unique_images_reviewed": 143,
+      "unique_images_unreviewed": 854,
+      "prior_review_record": "evidence/qa/dw14-web-tour-regression-2026-10-17.json#quality_gates.visual_review",
+      "reuse_rule": "Reuse only exact SHA-256 image matches; no new screenshot baseline was approved."
+    }
+  },
+  "source_resolution_review": [
+    {
+      "path": ".out/local-features/20261017-202636/web-search_presentation/layout.browser-quick-result-layout-at-320px-200-text/quick-layout.png",
+      "dimensions_px": [320, 1000],
+      "sha256": "37cedebe837c2992267805e1034101eb1d923f8a30bc0b0b702cd137709fcb70",
+      "observation": "At 320px and 200% root text, the full placeholder and focus ring fit; both result rows and the wrapped participant action remain within the panel."
+    },
+    {
+      "path": ".out/local-features/20261017-202636/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-top.png",
+      "dimensions_px": [320, 768],
+      "sha256": "3193991984568f37d91e392f6b7a7f1f9791f6aea81032b33ac476735ddb3524",
+      "observation": "Long channel names truncate within their rows; contextual actions, connected voice dock and profile footer stay visible."
+    },
+    {
+      "path": ".out/local-features/20261017-202636/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+      "dimensions_px": [1440, 768],
+      "sha256": "4f37e3fadfdc36d7c87c2d2c7c21751bdb21c978bfe2dbf59d488c219cbe5633",
+      "observation": "Channel rows remain inside the sidebar with one scrollable list. A transient “Навигация” hint is visible at the main-pane edge in the initial fixture capture."
+    },
+    {
+      "path": ".out/client-lifecycle/1440/compact-quick-jump.png",
+      "dimensions_px": [2880, 1800],
+      "sha256": "b9c2c428e94f585f429563a2a80b09ffde5fe5abb4602dae609bfbc409305a90",
+      "observation": "Desktop Quick Jump query, result and close control fit the right-side panel without horizontal overflow."
+    },
+    {
+      "path": ".out/client-lifecycle/393/compact-quick-jump.png",
+      "dimensions_px": [1179, 2556],
+      "sha256": "d59828e91bf49fe825dfc826612917cd1e5f950ee6d1966d27c899f844f5a492",
+      "observation": "Touch Quick Jump fills the narrow viewport; query, result description and close control remain visible."
+    },
+    {
+      "path": ".out/client-lifecycle/1440/voice-text-navigation.png",
+      "dimensions_px": [2880, 1800],
+      "sha256": "c83242be15ccfe3561857c28df23ebd50738e7e38754055967536bab86ae0d7a",
+      "observation": "The text conversation, member rail, composer and connected voice controls remain available together."
+    },
+    {
+      "path": ".out/client-lifecycle/393/navigation-overlay.png",
+      "dimensions_px": [1179, 2556],
+      "sha256": "c63606f61a2d27cb2f314e08acb99f83c3a5231bfd7d0523d1c141126c5bce73",
+      "observation": "The navigation drawer keeps channel search and rows reachable, with the profile footer visible at the bottom."
+    },
+    {
+      "path": ".out/client-lifecycle/1440/screen-share-compact-statistics.png",
+      "dimensions_px": [2880, 1800],
+      "sha256": "a3f74b9cb882f086c04b8076992388e6a283927decf64345879f8b784f595ee1",
+      "observation": "The desktop statistics panel stays inside the viewer; sender confirmation and receiver dimensions/FPS are separately labelled."
+    },
+    {
+      "path": ".out/client-lifecycle/393/screen-share-compact-statistics.png",
+      "dimensions_px": [1179, 2556],
+      "sha256": "3ca837316c7e7ed15198d029c4509508e53519b1ff4fcd852daf5452861cb14e",
+      "observation": "The mobile statistics sheet wraps its labels and values; close, technical details and copy action remain visible. Unknown receiver FPS remains explicit."
+    }
+  ],
+  "limits": [
+    "This record covers focused behavior, the Quick Jump before/after pair and nine selected current-run captures; 854 unique #353 images remain unreviewed.",
+    "The #305 release gate remains NO-GO / NOT_RUN until auditable measurements for all eight UX tasks and the named Web rollback owner are recorded.",
+    "Generated screenshots remain ignored local artifacts and are not committed."
+  ]
+}

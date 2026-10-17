@@ -10,12 +10,14 @@ import type { CurrentSession } from '../identity/current_session'
 import type { DirectMessageHistoryItem } from './direct_message_client'
 import { useDirectMessageStore } from './direct_message_store'
 import { navigateToReplyTarget } from '../conversation/reply_context_navigation'
+import { useDirectMessageScrollAnchor } from './history_scroll_anchor'
 
 const props = defineProps<{ directMessageId: string; session: CurrentSession | null; otherParticipantId: string; otherParticipantDisplayName: string }>()
 const emit = defineEmits<{ reply: [message: DirectMessageHistoryItem]; retry: [message: DirectMessageHistoryItem]; replyContext: [messageId: string]; viewportChange: [] }>()
 const store = useDirectMessageStore()
 const authors = useAuthorDirectory()
 const list = ref<HTMLOListElement | null>(null)
+const scrollAnchor = useDirectMessageScrollAnchor(list)
 const chronologicalMessages = computed(() => groupChronologicalMessages(chronologicalDatedMessages(store.messages)))
 const announceNew = createMessageLogAnnouncer()
 const announcement = ref('')
@@ -33,21 +35,21 @@ watch([() => props.directMessageId, () => store.directMessageId, () => store.his
   await nextTick()
   if (version === announcementVersion) announcement.value = text
 }, { immediate: true, flush: 'post' })
-onMounted(() => { if (list.value) list.value.scrollTop = list.value.scrollHeight; emit('viewportChange') })
-watch(() => props.directMessageId, async () => { jumpCount.value = 0; await nextTick(); if (list.value) list.value.scrollTop = list.value.scrollHeight; emit('viewportChange') })
+onMounted(() => { if (list.value) list.value.scrollTop = list.value.scrollHeight; scrollAnchor.capture(); emit('viewportChange') })
+watch(() => props.directMessageId, async () => { jumpCount.value = 0; await nextTick(); if (list.value) list.value.scrollTop = list.value.scrollHeight; scrollAnchor.capture(); emit('viewportChange') })
 watch([() => store.historyLoaded, latestServerId], async ([loaded, newest], [wasLoaded, previous]) => {
   const viewport = list.value
   if (!newest || !viewport || store.directMessageId !== props.directMessageId) return
   const nearBottom = isHistoryNearBottom(viewport)
   const added = newServerMessageCount(store.messages, previous, wasLoaded)
   await nextTick()
-  if (nearBottom) { viewport.scrollTop = viewport.scrollHeight; jumpCount.value = 0 }
+  if (nearBottom) { viewport.scrollTop = viewport.scrollHeight; scrollAnchor.capture(); jumpCount.value = 0 }
   else if (loaded) jumpCount.value += added
   emit('viewportChange')
 })
 
-function onScroll(): void { if (isHistoryNearBottom(list.value)) jumpCount.value = 0; emit('viewportChange') }
-function jumpToLatest(): void { if (!list.value) return; list.value.scrollTop = list.value.scrollHeight; jumpCount.value = 0; emit('viewportChange') }
+function onScroll(): void { scrollAnchor.onScroll(); if (isHistoryNearBottom(list.value)) jumpCount.value = 0; emit('viewportChange') }
+function jumpToLatest(): void { if (!list.value) return; list.value.scrollTop = list.value.scrollHeight; scrollAnchor.capture(); jumpCount.value = 0; emit('viewportChange') }
 function openReplyContext(messageId: string): void {
   navigateToReplyTarget(list.value, messageId, () => emit('replyContext', messageId))
 }
@@ -63,18 +65,12 @@ function replyPreview(message: DirectMessageHistoryItem): string | undefined {
 
 async function loadOlder(): Promise<void> {
   const viewport = list.value
-  const top = viewport?.getBoundingClientRect().top
-  const anchor = [...(viewport?.querySelectorAll<HTMLElement>('[data-message-id]') ?? [])].find((item) => item.getBoundingClientRect().bottom > (top ?? 0))
-  const anchorId = anchor?.dataset.messageId
-  const anchorTop = anchor?.getBoundingClientRect().top
+  const anchor = scrollAnchor.capture()
   const directMessageId = props.directMessageId
   if (!await store.loadOlder()) return
   await nextTick()
   if (!viewport || directMessageId !== props.directMessageId) return
-  if (anchorId && anchorTop !== undefined) {
-    const current = [...viewport.querySelectorAll<HTMLElement>('[data-message-id]')].find((item) => item.dataset.messageId === anchorId)
-    if (current) viewport.scrollTop += current.getBoundingClientRect().top - anchorTop
-  }
+  scrollAnchor.restore(anchor)
   emit('viewportChange')
 }
 </script>
@@ -84,7 +80,10 @@ async function loadOlder(): Promise<void> {
   <p class="gc-sr-only" role="status" aria-atomic="true">{{ announcement }}</p>
   <button v-if="jumpCount" class="message-jump-latest" type="button" @click="jumpToLatest">К новым сообщениям ({{ jumpCount }})</button>
   <ol ref="list" class="messages message-list" role="log" aria-live="off" aria-label="История личного диалога" @scroll.passive="onScroll">
-    <li role="presentation" v-if="store.nextCursor" class="message-actions"><button type="button" :disabled="store.olderLoading" @click="loadOlder">{{ store.olderLoading ? 'Загружаем старые сообщения…' : 'Показать предыдущие сообщения' }}</button></li>
+    <li role="presentation" v-if="store.nextCursor" class="message-actions"><button class="history-load-control" type="button" :disabled="store.olderLoading" :aria-busy="store.olderLoading" :aria-label="store.olderLoading ? 'Загружаем старые сообщения…' : 'Показать предыдущие сообщения'" @click="loadOlder">
+      <span aria-hidden="true" :class="{ 'history-load-caption-hidden': store.olderLoading }">Показать предыдущие сообщения</span>
+      <span aria-hidden="true" :class="{ 'history-load-caption-hidden': !store.olderLoading }">Загружаем старые сообщения…</span>
+    </button></li>
     <li v-if="store.olderError" class="state state-error" role="alert">{{ store.olderError }} <button type="button" :disabled="store.olderLoading" @click="loadOlder">Повторить</button></li>
     <template v-for="(entry, index) in chronologicalMessages" :key="entry.message.id">
     <li role="presentation" v-if="entry.dateLabel" class="history-date"><span v-if="store.historyLoaded && !store.nextCursor && index === 0" class="history-start" role="status" aria-label="Это начало истории.">Начало</span><time :datetime="entry.dateTime">{{ entry.dateLabel }}</time></li>

@@ -38,6 +38,25 @@ test('long names have keyboard-readable full hints and category bounds', async (
   await expect(channel).toHaveAccessibleName(/Упоминаний: 3/)
   await channel.press('Escape'); await expect(page.getByRole('tooltip')).toHaveCount(0)
 })
+test('navigation hints do not block adjacent channel rows', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 768 }); await open(page)
+  const trigger = page.locator('.channel-row .channel-button').first()
+  await trigger.hover()
+  const hint = page.getByRole('tooltip')
+  await expect(hint).toBeVisible()
+  const target = await page.locator('.channel-row .channel-button').evaluateAll((buttons) => {
+    const hint = document.querySelector<HTMLElement>('[role="tooltip"]')!
+    const box = hint.getBoundingClientRect()
+    return buttons.slice(1).map((button, index) => {
+      const rect = button.getBoundingClientRect()
+      return { index: index + 1, x: rect.x + rect.width / 2, y: rect.y + rect.height / 2,
+        covered: box.left <= rect.x + rect.width / 2 && box.right >= rect.x + rect.width / 2 && box.top <= rect.y + rect.height / 2 && box.bottom >= rect.y + rect.height / 2 }
+    }).find(candidate => candidate.covered)
+  })
+  expect(target, 'the fixture should place the hint over an adjacent row').toBeTruthy()
+  await page.mouse.click(target!.x, target!.y)
+  await expect(page.locator('.channel-row .channel-button').nth(target!.index)).toHaveAttribute('aria-current', 'page')
+})
 test('one scroll surface, compact desktop rhythm and reachable final row above dock', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 480 }); await open(page)
   const g = await geometry(page)

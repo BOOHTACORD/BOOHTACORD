@@ -4,7 +4,7 @@ import { kinds, row, mount, metrics, expectWithinViewport } from './helpers'
 import { uid } from './data'
 import { expectAxeClear } from '../accessibility/axe'
 
-for (const kind of kinds) for (const width of [320, 390, 1440]) {
+for (const kind of kinds) for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) {
   test(`inventory ${kind} ${width}px`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 900 })
     await mount(page, kind)

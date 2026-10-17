@@ -1,0 +1,1690 @@
+{
+  "schema": "boohtacord.dw14.final.v3",
+  "issue": 353,
+  "epic": 339,
+  "date": "2026-10-17",
+  "verdict": "PASS_SELECTED_WEB_REGRESSION_WITH_EXCEPTIONS",
+  "scope": "Current-master Web code and explicitly selected replacement baseline; not physical media acceptance or a UX release GO.",
+  "source": {
+    "frozen_source": "b659092fc18f223b125642026b37f45a14517bab",
+    "base": "43d0c491575f83f03d72bb7355392ce82f56d998",
+    "web_src_tree": "3b2b7b65f3cc6741bd1d6b55a75f53780d67a1c7",
+    "tests_tree": "4f1e8aebfe425e5b7d32852c3db012fccc789ce9",
+    "files": {
+      "clients/web/src/conversation/composer_input/auto_size.ts": "e45dbebdbac7c46355fac085b97fd06710d987a43d641aa35f79b362db2dfe15",
+      "clients/web/src/design/design_v2_audio_presentation.css": "69bc9930debcb7dd20ea02b592b39c840a383d63a36ce5805f563d1dbd086366",
+      "clients/web/src/design/design_v2_screen_quality.css": "23e13d26c15c98012afcdf2082d82be2d112ebe3b494f21a515da377a1add8d6",
+      "clients/web/src/design/design_v2_stream_diagnostics.css": "5b1b2327cbd6316c32bf4ade6ed433383f0c06af0f4d5ed259bbc43d47240154",
+      "clients/web/tests/mini_player/mini.browser.spec.ts": "ec7c3cbdb3c8f348d19106191265d7af8f185f6589bd1345d312edf94cd1a540",
+      "clients/web/tests/control_consistency/controls.browser.spec.ts": "662af0335f7d45186fae7b7991f30aebecdfcb07b48108b4db9b6778ec610949",
+      "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts": "aac5eb3a33aaf2190cf0acc8621e170ddae29a5864be328f69b798d252b7209a",
+      "tools/qa/local_features/features.json": "86b389fda2c7098d8e6089c54b42d7ffda18cfa85057b97ef65d6d29e5b8159f",
+      "clients/web/src/voice/microphone_processing/SensitivityControl.vue": "8ecb98b6ae867428b7998e2af3a072be41db74f75c6c51d490d130dc45adef8c",
+      "clients/web/src/direct_message/DirectMessageHistoryList.vue": "fa1ba6efdaf170cdd7efa124158ea077773c3903d15f8e4b15327b9d748ad2f5",
+      "clients/web/src/design/conversation.css": "ed5f401ca0f2ccecab9b70f3dedc88b4d7d256b948e1d1cd07879703ab5ae596",
+      "clients/web/tests/chat_rhythm/retention.browser.spec.ts": "71a25b490948d47c27b126f0ee1fe1ad5b2e7fa7c175e36ac7d071a6ae8b0c33",
+      "clients/web/src/direct_message/history_scroll_anchor.ts": "983aba5f18acc890a37bd02a9ec52c645af87da1b8da693fd231b14a2937f432"
+    },
+    "untracked_primary_not_touched": true,
+    "published_tests_tree": "23b4f16a74e5c4bf831bb6f841ec3df2e76b2b9f",
+    "diagnostic_overlay": {
+      "source": "0e3b79d4cb55401ac8728028d42f71c75f0500dc",
+      "production_source": "b659092fc18f223b125642026b37f45a14517bab",
+      "web_src_tree": "3b2b7b65f3cc6741bd1d6b55a75f53780d67a1c7",
+      "tests_tree": "23b4f16a74e5c4bf831bb6f841ec3df2e76b2b9f",
+      "changed_only_failure_reporting": true,
+      "changed_file": "clients/web/tests/chat_rhythm/retention.browser.spec.ts",
+      "changed_file_sha256": "0f45ba6a0b83789ce2f7f71b1d7c2342cbb1854f84aa2feb5e6edf43717ab542",
+      "native_results": {
+        "mac": {
+          "cases": 54,
+          "status": "PASS",
+          "log": ".out/issue353/chat-diagnostics-overlay-mac.log",
+          "sha256": "c493cdeedb4b84f1d4a5e10bf0e48279a5cc523b1fa23a1d19626836d061f8a8"
+        },
+        "linux": {
+          "cases": 54,
+          "status": "PASS",
+          "log": ".out/issue353/linux/chat-suite-diagnostics-overlay.log",
+          "sha256": "c5afe9d8652196eca27d721f1c60ca97dc017cf8f66e1d0267bc1b1e1e9519c4"
+        }
+      }
+    }
+  },
+  "original_archive": {
+    "status": "EXCEPTION_SOURCE_LOST",
+    "confirmation": "User explicitly confirmed on 2026-10-17: archive does not exist.",
+    "original_images_reviewed_this_pass": 0,
+    "original_images_published": 0,
+    "legacy_metadata_rows": 55,
+    "legacy_receipt_sha256": "e7302b272dd39ba8bbafe541085391de2d14ca1458b1a56dea3fb5270051ac44",
+    "legacy_inventory_note": "Historical numbering/state metadata is retained for traceability, not revalidated from original images. No pixel/deployed-SHA equivalence is asserted.",
+    "replacement": "46 reviewed current-source captures with source trees, hashes and scenarios, including cross-platform font stress and DM pagination before/during/after a pending response."
+  },
+  "automation": {
+    "status": "PASS",
+    "run": ".out/local-features/20261017-214952",
+    "report_sha256": "17ade13237713b57e86b26a94782435dda888599ac2770d029806d1506965869",
+    "report_bytes": 340690,
+    "runner_source": "b659092fc18f223b125642026b37f45a14517bab diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "PASS"
+      },
+      {
+        "name": "web-chat_rhythm",
+        "status": "PASS"
+      },
+      {
+        "name": "web-control_consistency",
+        "status": "PASS"
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS"
+      },
+      {
+        "name": "web-dm_starter",
+        "status": "PASS"
+      },
+      {
+        "name": "web-header_actions",
+        "status": "PASS"
+      },
+      {
+        "name": "web-member_popover",
+        "status": "PASS"
+      },
+      {
+        "name": "web-member_roster",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS"
+      },
+      {
+        "name": "web-message_social",
+        "status": "PASS"
+      },
+      {
+        "name": "web-microcopy",
+        "status": "PASS"
+      },
+      {
+        "name": "web-mini_player",
+        "status": "PASS"
+      },
+      {
+        "name": "web-navigation_density",
+        "status": "PASS"
+      },
+      {
+        "name": "web-quick_jump_people",
+        "status": "PASS"
+      },
+      {
+        "name": "web-readonly_archive",
+        "status": "PASS"
+      },
+      {
+        "name": "web-responsive_shell",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_profile",
+        "status": "PASS"
+      },
+      {
+        "name": "web-screen_share_ui",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_dates",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_presentation",
+        "status": "PASS"
+      },
+      {
+        "name": "web-search_sessions",
+        "status": "PASS"
+      },
+      {
+        "name": "web-track_name",
+        "status": "PASS"
+      },
+      {
+        "name": "web-voice_disconnect_notice",
+        "status": "PASS"
+      },
+      {
+        "name": "web-voice_interface",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "PASS"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "PASS"
+      }
+    ],
+    "web_unit": {
+      "files": 474,
+      "tests": 1571
+    },
+    "browser_suites": 24,
+    "suite_case_counts": {
+      "web-unit": 1571,
+      "web-accessibility": 110,
+      "web-chat_rhythm": 54,
+      "web-control_consistency": 87,
+      "web-conversation_action_disclosure": 18,
+      "web-dm_starter": 24,
+      "web-header_actions": 13,
+      "web-member_popover": 7,
+      "web-member_roster": 21,
+      "web-mentions_inbox": 13,
+      "web-message_social": 4,
+      "web-microcopy": 60,
+      "web-mini_player": 20,
+      "web-navigation_density": 26,
+      "web-quick_jump_people": 8,
+      "web-readonly_archive": 2,
+      "web-responsive_shell": 11,
+      "web-screen_profile": 18,
+      "web-screen_share_ui": 23,
+      "web-search_dates": 8,
+      "web-search_presentation": 106,
+      "web-search_sessions": 26,
+      "web-track_name": 2,
+      "web-voice_disconnect_notice": 2,
+      "web-voice_interface": 28
+    },
+    "actual_stack": "Authenticated disposable API/PostgreSQL/LiveKit/Tempo journeys at desktop 1440 CSS px and touch 393 CSS px; resources removed. Synthetic audio/canvas source only.",
+    "source_tree_guard": "Published production tree matches the 28-stage clean runtime. The later scenario-tree overlay only adds failure diagnostics; its unchanged pass path was checked byte-for-byte and all 54 chat cases passed on Mac and Linux. Final exact-head CI remains required.",
+    "browser_case_count": 691
+  },
+  "baseline": {
+    "version": "web-regression-v3",
+    "path": ".out/issue353/baselines/web-regression-v3",
+    "report_sha256": "112914ceeffe7432cf37c9f34088955085ec17c9da46f687bc5b8bf19e4eae9e",
+    "review_status": "REVIEWED_SELECTED",
+    "selected_frames": 46,
+    "unique_selected_images": 44,
+    "frames": [
+      {
+        "id": "search-320-200",
+        "path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+        "sha256": "2478a95b2735e5967e273716629ca0488d9bf7810cc27617b5720830edc3f37d",
+        "dimensions": [
+          320,
+          1000
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+        "source_sha256": "2478a95b2735e5967e273716629ca0488d9bf7810cc27617b5720830edc3f37d",
+        "source_dimensions": [
+          320,
+          1000
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-320-200",
+        "path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+        "sha256": "57ee13218b1841f66c927a07145c381f1eed0fbeb5b68498826e7d099b3b210e",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+        "source_sha256": "57ee13218b1841f66c927a07145c381f1eed0fbeb5b68498826e7d099b3b210e",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-390-200",
+        "path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-390px-at-200-text/search-messages.png",
+        "sha256": "44861c448cf0a70c94a0393909095678fd32074729537f72f5dfae0c6db80fcc",
+        "dimensions": [
+          390,
+          1000
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-390px-at-200-text/search-messages.png",
+        "source_sha256": "44861c448cf0a70c94a0393909095678fd32074729537f72f5dfae0c6db80fcc",
+        "source_dimensions": [
+          390,
+          1000
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-390px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-390-200",
+        "path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-5b1dd-d-sidebar-at-390px-200-text/dm-starter.png",
+        "sha256": "1b7a3214a5e42909b11952fe0315944385a11ed3a215d8e783c375d20a1f1954",
+        "dimensions": [
+          390,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-5b1dd-d-sidebar-at-390px-200-text/dm-starter.png",
+        "source_sha256": "1b7a3214a5e42909b11952fe0315944385a11ed3a215d8e783c375d20a1f1954",
+        "source_dimensions": [
+          390,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-dm_starter/overlay.browser-modal-esca-5b1dd-d-sidebar-at-390px-200-text/dm-starter.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-768-200",
+        "path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-768px-at-200-text/search-messages.png",
+        "sha256": "4d57fa1a1c4462bb1ef4ebd700a30015a7d623453200eb594e240b836c009589",
+        "dimensions": [
+          380,
+          1000
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-768px-at-200-text/search-messages.png",
+        "source_sha256": "4d57fa1a1c4462bb1ef4ebd700a30015a7d623453200eb594e240b836c009589",
+        "source_dimensions": [
+          380,
+          1000
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-768px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-768-200",
+        "path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-038f3-d-sidebar-at-768px-200-text/dm-starter.png",
+        "sha256": "b7f68938852426d6f1183509f9da9ffba48ea1ceb15fc331bf01433f6aba7ca9",
+        "dimensions": [
+          768,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-038f3-d-sidebar-at-768px-200-text/dm-starter.png",
+        "source_sha256": "b7f68938852426d6f1183509f9da9ffba48ea1ceb15fc331bf01433f6aba7ca9",
+        "source_dimensions": [
+          768,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-dm_starter/overlay.browser-modal-esca-038f3-d-sidebar-at-768px-200-text/dm-starter.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-1024-200",
+        "path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-1024px-at-200-text/search-messages.png",
+        "sha256": "59255c8a8c19f4f76172e64d2393472b7c8a8346b703e0e1e0225b768e07e704",
+        "dimensions": [
+          380,
+          1000
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-1024px-at-200-text/search-messages.png",
+        "source_sha256": "59255c8a8c19f4f76172e64d2393472b7c8a8346b703e0e1e0225b768e07e704",
+        "source_dimensions": [
+          380,
+          1000
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-1024px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-1024-200",
+        "path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-355a6--sidebar-at-1024px-200-text/dm-starter.png",
+        "sha256": "492df963fdda02ebb35ee2d609e7fc5e32aab2bbdd778eb1e3511a5f1c244043",
+        "dimensions": [
+          1024,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-355a6--sidebar-at-1024px-200-text/dm-starter.png",
+        "source_sha256": "492df963fdda02ebb35ee2d609e7fc5e32aab2bbdd778eb1e3511a5f1c244043",
+        "source_dimensions": [
+          1024,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-dm_starter/overlay.browser-modal-esca-355a6--sidebar-at-1024px-200-text/dm-starter.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-1440-200",
+        "path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-1440px-at-200-text/search-messages.png",
+        "sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "dimensions": [
+          380,
+          936
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-1440px-at-200-text/search-messages.png",
+        "source_sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "source_dimensions": [
+          380,
+          936
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-3440px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-1440-200",
+        "path": ".out/issue353/replacement-selected-v4/dm-1440-200.png",
+        "sha256": "9f53edbf8b33b9109f8d8b5a8221411f933c72808e2eae79c4eb03626264b399",
+        "dimensions": [
+          1040,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-d5e50--sidebar-at-1440px-200-text/dm-starter.png",
+        "source_sha256": "22306de0ac915c3dc0e29310d8cb5e3a6fba6a4040cbe900893a20d7fe860a3a",
+        "source_dimensions": [
+          1440,
+          900
+        ],
+        "crop": {
+          "x": 200,
+          "y": 0,
+          "width": 1040,
+          "height": 900
+        },
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/issue353/review-final/dm-1440-200.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-1920-200",
+        "path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-1920px-at-200-text/search-messages.png",
+        "sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "dimensions": [
+          380,
+          936
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-1920px-at-200-text/search-messages.png",
+        "source_sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "source_dimensions": [
+          380,
+          936
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-3440px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-1920-200",
+        "path": ".out/issue353/replacement-selected-v4/dm-1920-200.png",
+        "sha256": "b7dc132bb9f1d6abdbf42605d13795b62a824f3757847a34057ad4c6d760117b",
+        "dimensions": [
+          1040,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-f970b--sidebar-at-1920px-200-text/dm-starter.png",
+        "source_sha256": "b25a155fc7d3ce145333827eb6ca7bf1eb76a169c31d37c392ae0124795ab01a",
+        "source_dimensions": [
+          1920,
+          900
+        ],
+        "crop": {
+          "x": 440,
+          "y": 0,
+          "width": 1040,
+          "height": 900
+        },
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/issue353/review-final/dm-1920-200.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-3440-200",
+        "path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-3440px-at-200-text/search-messages.png",
+        "sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "dimensions": [
+          380,
+          936
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-3440px-at-200-text/search-messages.png",
+        "source_sha256": "d02d625d2793c3b91e0aa6a583062ea7e5652797dbd78d455e4d7da369a70156",
+        "source_dimensions": [
+          380,
+          936
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-3440px-at-200-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-3440-200",
+        "path": ".out/issue353/replacement-selected-v4/dm-3440-200.png",
+        "sha256": "c9e731c0ddd2fada6b2eb7096d37429756e088a571b28445da0ae96c7c3b246b",
+        "dimensions": [
+          1040,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-2d92b--sidebar-at-3440px-200-text/dm-starter.png",
+        "source_sha256": "9be6a0ba212a43d1d49ec52d9b7211f7d7e7e30df598166b01eafdf0ff340d00",
+        "source_dimensions": [
+          3440,
+          900
+        ],
+        "crop": {
+          "x": 1200,
+          "y": 0,
+          "width": 1040,
+          "height": 900
+        },
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/issue353/review-final/dm-3440-200.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "search-320-100",
+        "path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+        "sha256": "5b32c5905dd43679c941239144a989a8317a571d715c1a13b299480cb92a8831",
+        "dimensions": [
+          320,
+          1000
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+        "source_sha256": "5b32c5905dd43679c941239144a989a8317a571d715c1a13b299480cb92a8831",
+        "source_dimensions": [
+          320,
+          1000
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-plan.json",
+          "reviewed_path": ".out/local-features/20261017-190615/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+          "observation": "All four modes, close action, field and scope selector fit; placeholder readable; keyboard focus ring visible. Native selects retain accessible names and may ellipsize their selected option."
+        }
+      },
+      {
+        "id": "dm-320-100",
+        "path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+        "sha256": "6a8dfd7fb33ae8d66204baff15eefa56d5920a26b455084822d9657b51e5a49a",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+        "source_sha256": "6a8dfd7fb33ae8d66204baff15eefa56d5920a26b455084822d9657b51e5a49a",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+          "observation": "Top-layer modal and Close remain bounded. Long candidate names wrap; the candidate list scrolls rather than overflowing the dialog. Viewport/focus/trap/return is independently asserted."
+        }
+      },
+      {
+        "id": "controls-guild-320-200",
+        "path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+        "sha256": "b382afe7927097ae5c4613da45555ab3bd2e12bb5fa84667f1ecec5c8e308a65",
+        "dimensions": [
+          320,
+          1122
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+        "source_sha256": "b382afe7927097ae5c4613da45555ab3bd2e12bb5fa84667f1ecec5c8e308a65",
+        "source_dimensions": [
+          320,
+          1122
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "controls-audio-320-200",
+        "path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+        "sha256": "10b6c4ca9b4a426b3c8a3766f4c6ea9509bce74e3ac55a874a5004e67f08f41a",
+        "dimensions": [
+          320,
+          6727
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+        "source_sha256": "10b6c4ca9b4a426b3c8a3766f4c6ea9509bce74e3ac55a874a5004e67f08f41a",
+        "source_dimensions": [
+          320,
+          6727
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/font-final-review.json",
+          "reviewed_path": ".out/local-features/20261017-205335/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+          "observation": "Viewed the whole tall image in two lossless 3500px original-resolution slices with overlap under .out/issue353/font-review-v2. Activation selector, sensitivity range, meter, hints and reset action now remain inside the card padding. Enlarged long labels wrap onto additional lines, including within words at 320px, without horizontal clipping. Diagnostics dt/dd remain vertically separated; advanced controls and reset remain readable. Native select labels use normal platform elision; accessible names and option selection are covered by tests. Monospace/0.12em stress applies only in the two named fixtures."
+        }
+      },
+      {
+        "id": "controls-archive-320-200",
+        "path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+        "sha256": "b28601acc6ea8194d0f32b4918c4417bb12cad82b4f9dc934048ea4d1dd9ed0c",
+        "dimensions": [
+          320,
+          2153
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+        "source_sha256": "b28601acc6ea8194d0f32b4918c4417bb12cad82b4f9dc934048ea4d1dd9ed0c",
+        "source_dimensions": [
+          320,
+          2153
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "controls-quick-320-200",
+        "path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-quick-coherent-controls-320px-200-text/quick-320-200.png",
+        "sha256": "64dc3400b0f3a31afdcc9590f1108a09158d70c7dba09f1d975ed5127dcf11d5",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-quick-coherent-controls-320px-200-text/quick-320-200.png",
+        "source_sha256": "64dc3400b0f3a31afdcc9590f1108a09158d70c7dba09f1d975ed5127dcf11d5",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/font-final-review.json",
+          "reviewed_path": ".out/local-features/20261017-204256/web-control_consistency/controls.browser-quick-coherent-controls-320px-200-text/quick-320-200.png",
+          "observation": "Viewed original 320x900 source pixels. The short Поиск placeholder fits inside the focused input, full heading and channel row are readable, two-line pagination button stays inside the panel. Accessible full search label is asserted. This source is reused only by exact hash."
+        }
+      },
+      {
+        "id": "controls-files-320-200",
+        "path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-files-coherent-controls-320px-200-text/files-320-200.png",
+        "sha256": "13a2b64fd260ab300ba2a59dab86c3f3e17e25e841071881888e34ff6bd2799c",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-files-coherent-controls-320px-200-text/files-320-200.png",
+        "source_sha256": "13a2b64fd260ab300ba2a59dab86c3f3e17e25e841071881888e34ff6bd2799c",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-files-coherent-controls-320px-200-text/files-320-200.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "controls-guild-1440-100",
+        "path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+        "sha256": "b2549e5b334fe9b4d79df5c55f912881bd4a2ab027d7776787fedfecd63da145",
+        "dimensions": [
+          1440,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+        "source_sha256": "b2549e5b334fe9b4d79df5c55f912881bd4a2ab027d7776787fedfecd63da145",
+        "source_dimensions": [
+          1440,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "controls-files-3440-100",
+        "path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-files-coherent-controls-3440px-100-text/files-3440-100.png",
+        "sha256": "829a3c87a215a83fef1fbe4a740a3496f9807ba70ac2ceca0ff9a9fba4d6267c",
+        "dimensions": [
+          3440,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-files-coherent-controls-3440px-100-text/files-3440-100.png",
+        "source_sha256": "829a3c87a215a83fef1fbe4a740a3496f9807ba70ac2ceca0ff9a9fba4d6267c",
+        "source_dimensions": [
+          3440,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-files-coherent-controls-3440px-100-text/files-3440-100.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "audio-diagnostics-390-200",
+        "path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+        "sha256": "50acf02752eda6f062c68447b594ac4d8f4be046ab06433c6981801d5b29d58d",
+        "dimensions": [
+          324,
+          1004
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+        "source_sha256": "50acf02752eda6f062c68447b594ac4d8f4be046ab06433c6981801d5b29d58d",
+        "source_dimensions": [
+          324,
+          1004
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+          "observation": "Source-resolution review: text, fields and actions remain usable in the selected state."
+        }
+      },
+      {
+        "id": "variants-320",
+        "path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-semantic--399eb--and-disabled-actions-320px/variants-320.png",
+        "sha256": "5c8dd1d30d004da1c80673bd350237bbc2da7258708bf165f0bc36a9a7e3802c",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-semantic--399eb--and-disabled-actions-320px/variants-320.png",
+        "source_sha256": "5c8dd1d30d004da1c80673bd350237bbc2da7258708bf165f0bc36a9a7e3802c",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/pagination-final-review-v4.json",
+          "reviewed_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-semantic--399eb--and-disabled-actions-320px/variants-320.png",
+          "observation": "Viewed original 320x900 pixels. Semantic primary/secondary/ghost/danger/disabled/loading actions remain distinct and inside the viewport; the danger tooltip occupies empty space below the controls. Synthetic semantic-state inventory only."
+        }
+      },
+      {
+        "id": "mini-wrap",
+        "path": ".out/local-features/20261017-214952/web-mini_player/mini.browser-390px-at-200--37465-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+        "sha256": "4b517b6bd8e7b8b75ac44b7746d4518cb3f45702908b9c38bcbedb0af9a6689d",
+        "dimensions": [
+          390,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-mini_player/mini.browser-390px-at-200--37465-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+        "source_sha256": "4b517b6bd8e7b8b75ac44b7746d4518cb3f45702908b9c38bcbedb0af9a6689d",
+        "source_dimensions": [
+          390,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-mini_player/mini.browser-390px-at-200--37465-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+          "observation": "Mini controls and composer remain clear of each other and the voice dock. Wrapped input is readable; the narrow-parent fixture intentionally leaves unused workspace width. Actual 200% browser zoom is independently measured."
+        }
+      },
+      {
+        "id": "mini-notice",
+        "path": ".out/local-features/20261017-214952/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+        "sha256": "5d972845794b55e466af3b13063dfe0dc4558649948e968fec3dccfeb43a86ba",
+        "dimensions": [
+          393,
+          844
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+        "source_sha256": "5d972845794b55e466af3b13063dfe0dc4558649948e968fec3dccfeb43a86ba",
+        "source_dimensions": [
+          393,
+          844
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+          "observation": "Mini controls and composer remain clear of each other and the voice dock. Wrapped input is readable; the narrow-parent fixture intentionally leaves unused workspace width. Actual 200% browser zoom is independently measured."
+        }
+      },
+      {
+        "id": "mini-narrow",
+        "path": ".out/local-features/20261017-214952/web-mini_player/mini.browser-a-wrapped-dra-07db6-t-typing-or-a-window-resize/dm-draft-narrow-parent.png",
+        "sha256": "85921a9d492ac7083864b0be375946ca200b6d5c709c05bd0d0c3dd2b691bfc4",
+        "dimensions": [
+          1440,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-mini_player/mini.browser-a-wrapped-dra-07db6-t-typing-or-a-window-resize/dm-draft-narrow-parent.png",
+        "source_sha256": "85921a9d492ac7083864b0be375946ca200b6d5c709c05bd0d0c3dd2b691bfc4",
+        "source_dimensions": [
+          1440,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/pagination-final-review-v4.json",
+          "reviewed_path": ".out/local-features/20261017-214952/web-mini_player/mini.browser-a-wrapped-dra-07db6-t-typing-or-a-window-resize/dm-draft-narrow-parent.png",
+          "observation": "Viewed original 1440x900 pixels. The fixture deliberately narrows only the conversation to 420px, leaving a wide empty gutter. All four wrapped draft lines remain visible, and attachment/mention/emoji/send actions fit beside the input; dock, mini-player and header remain separate. RTL/long-link content wraps and code uses its own scroller; history top clipping is the chosen scroll position."
+        }
+      },
+      {
+        "id": "mini-zoom-640",
+        "path": ".out/local-features/20261017-214952/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-640/mini-zoom.png",
+        "sha256": "4c95655a35e58c5e52f996b8d3a0059098870b297ca8e5ba16799e15ee5bc13d",
+        "dimensions": [
+          640,
+          913
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-640/mini-zoom.png",
+        "source_sha256": "4c95655a35e58c5e52f996b8d3a0059098870b297ca8e5ba16799e15ee5bc13d",
+        "source_dimensions": [
+          640,
+          913
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-640/mini-zoom.png",
+          "observation": "Mini controls and composer remain clear of each other and the voice dock. Wrapped input is readable; the narrow-parent fixture intentionally leaves unused workspace width. Actual 200% browser zoom is independently measured."
+        }
+      },
+      {
+        "id": "mini-zoom-780",
+        "path": ".out/local-features/20261017-214952/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+        "sha256": "f78885ffcded1aa61bda820ed1f14214af76231556afc194b7a7beb417f03bf7",
+        "dimensions": [
+          780,
+          913
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+        "source_sha256": "f78885ffcded1aa61bda820ed1f14214af76231556afc194b7a7beb417f03bf7",
+        "source_dimensions": [
+          780,
+          913
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+          "observation": "Mini controls and composer remain clear of each other and the voice dock. Wrapped input is readable; the narrow-parent fixture intentionally leaves unused workspace width. Actual 200% browser zoom is independently measured."
+        }
+      },
+      {
+        "id": "no-audio-mobile",
+        "path": ".out/local-features/20261017-214952/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+        "sha256": "97eba6437549ea76ced8054e48c0216615d89f407b21f79dd503b222975b4dfd",
+        "dimensions": [
+          390,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+        "source_sha256": "97eba6437549ea76ced8054e48c0216615d89f407b21f79dd503b222975b4dfd",
+        "source_dimensions": [
+          390,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+          "observation": "Missing-audio status is legible; this isolated diagnosis component does not prove media QoE or whole-workspace styling."
+        }
+      },
+      {
+        "id": "no-audio-desktop",
+        "path": ".out/local-features/20261017-214952/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+        "sha256": "caa0459beddf2c7cdfc2c20ef3167fde7cf19d25698037a71fd99c0d51443762",
+        "dimensions": [
+          1440,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+        "source_sha256": "caa0459beddf2c7cdfc2c20ef3167fde7cf19d25698037a71fd99c0d51443762",
+        "source_dimensions": [
+          1440,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/review-final-plan.json",
+          "reviewed_path": ".out/local-features/20261017-192437/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+          "observation": "Missing-audio status is legible; this isolated diagnosis component does not prove media QoE or whole-workspace styling."
+        }
+      },
+      {
+        "id": "screen-launch-1024-200",
+        "path": ".out/local-features/20261017-214952/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/launch-text-200-1024.png",
+        "sha256": "648f0f753f09a44092315f559938b77608671bb10e1e5df9c83f1f170a0a824d",
+        "dimensions": [
+          1024,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/launch-text-200-1024.png",
+        "source_sha256": "648f0f753f09a44092315f559938b77608671bb10e1e5df9c83f1f170a0a824d",
+        "source_dimensions": [
+          1024,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/launch-text-200-1024.png",
+          "observation": "At 1024 CSS px and 200% text, Cancel stays on one line and footer actions remain visible. Initial close-button focus hint is the intentional keyboard-focus state. Selected 1080p/60 is UI state, not output quality."
+        }
+      },
+      {
+        "id": "screen-statistics-1024-200",
+        "path": ".out/local-features/20261017-214952/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/receiver-text-200-1024.png",
+        "sha256": "c36490e2ae28b5ee1e7aaba5fb109783bad53508e7886adef760e5763f4659d4",
+        "dimensions": [
+          1024,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/receiver-text-200-1024.png",
+        "source_sha256": "c36490e2ae28b5ee1e7aaba5fb109783bad53508e7886adef760e5763f4659d4",
+        "source_dimensions": [
+          1024,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/local-features/20261017-193925/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/receiver-text-200-1024.png",
+          "observation": "At 1024 CSS px and 200% text, statistics labels and values use a readable wider panel without broken words. Selected, unconfirmed and stale viewer measurements remain distinct; no QoE claim."
+        }
+      },
+      {
+        "id": "actual-1440-mini-player-dm",
+        "path": ".out/local-features/20261017-214952/images/web-real-stack/1440/mini-player-dm.png",
+        "sha256": "d34fac626733ad4509e415e076d0c26685fa464dcc71e43833d56b475c11a5fe",
+        "dimensions": [
+          2880,
+          1800
+        ],
+        "source_path": ".out/local-features/20261017-214952/images/web-real-stack/1440/mini-player-dm.png",
+        "source_sha256": "d34fac626733ad4509e415e076d0c26685fa464dcc71e43833d56b475c11a5fe",
+        "source_dimensions": [
+          2880,
+          1800
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/pagination-final-review-v4.json",
+          "reviewed_path": ".out/local-features/20261017-214952/images/web-real-stack/1440/mini-player-dm.png",
+          "observation": "Viewed original 2880x1800 pixels. Synthetic decoded mini-player frame/actions, flow notice, DM header/history and bottom composer occupy separate zones. Send and fixed voice dock are unobscured. Dynamic frame color/timestamps/avatar colors are controlled runtime differences; no QoE claim."
+        }
+      },
+      {
+        "id": "actual-1440-voice-after-leave",
+        "path": ".out/local-features/20261017-214952/images/web-real-stack/1440/voice-after-leave.png",
+        "sha256": "676f0c14d60eb66c9d3730f438c8211b7c0d757f973b8d2ef1ab26568c69c42f",
+        "dimensions": [
+          2880,
+          1800
+        ],
+        "source_path": ".out/local-features/20261017-214952/images/web-real-stack/1440/voice-after-leave.png",
+        "source_sha256": "676f0c14d60eb66c9d3730f438c8211b7c0d757f973b8d2ef1ab26568c69c42f",
+        "source_dimensions": [
+          2880,
+          1800
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/pagination-final-review-v4.json",
+          "reviewed_path": ".out/local-features/20261017-214952/images/web-real-stack/1440/voice-after-leave.png",
+          "observation": "Viewed original 2880x1800 pixels. Voice ended appears neutral both in prejoin card and dock; join and microphone-free actions are fully readable. Header/search/member controls fit; no red error banner or active connected dock persists. Actual transport cleanup is separately asserted."
+        }
+      },
+      {
+        "id": "actual-1440-settings-audio-advanced",
+        "path": ".out/local-features/20261017-214952/images/web-real-stack/1440/settings-audio-advanced.png",
+        "sha256": "f50faaffd66d469f1bde914953382a4379db31a24a0f197f8aac879275aca808",
+        "dimensions": [
+          2880,
+          1800
+        ],
+        "source_path": ".out/local-features/20261017-214952/images/web-real-stack/1440/settings-audio-advanced.png",
+        "source_sha256": "f50faaffd66d469f1bde914953382a4379db31a24a0f197f8aac879275aca808",
+        "source_dimensions": [
+          2880,
+          1800
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/pagination-final-review-v4.json",
+          "reviewed_path": ".out/local-features/20261017-214952/images/web-real-stack/1440/settings-audio-advanced.png",
+          "observation": "Viewed original 2880x1800 pixels. The audio pane is intentionally scrolled within its fixed header/dock bounds; the partial prior section at its top is scroll clipping. Shortcut actions, processing labels/switches, disabled gain/reset states and wide participant reset action stay within the pane, without overlap."
+        }
+      },
+      {
+        "id": "actual-393-mini-player-dm",
+        "path": ".out/local-features/20261017-214952/images/web-real-stack/393/mini-player-dm.png",
+        "sha256": "eac6817d572d6db66a2f79813608fd310a294777d6d49e9c936b83ece591331d",
+        "dimensions": [
+          1179,
+          2556
+        ],
+        "source_path": ".out/local-features/20261017-214952/images/web-real-stack/393/mini-player-dm.png",
+        "source_sha256": "eac6817d572d6db66a2f79813608fd310a294777d6d49e9c936b83ece591331d",
+        "source_dimensions": [
+          1179,
+          2556
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/pagination-final-review-v4.json",
+          "reviewed_path": ".out/local-features/20261017-214952/images/web-real-stack/393/mini-player-dm.png",
+          "observation": "Viewed original 1179x2556 pixels. Mini-player actions wrap in their top region, share notice stays above DM header, message actions and full-width composer/send remain clear of the fixed four-action voice dock. Synthetic preview is static capture evidence only."
+        }
+      },
+      {
+        "id": "actual-393-voice-after-leave",
+        "path": ".out/local-features/20261017-214952/images/web-real-stack/393/voice-after-leave.png",
+        "sha256": "761dcddca62ac6fb30b6132640c4863dc715374b9d83193b3eb6d0b004f2a22e",
+        "dimensions": [
+          1179,
+          2556
+        ],
+        "source_path": ".out/local-features/20261017-214952/images/web-real-stack/393/voice-after-leave.png",
+        "source_sha256": "761dcddca62ac6fb30b6132640c4863dc715374b9d83193b3eb6d0b004f2a22e",
+        "source_dimensions": [
+          1179,
+          2556
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/font-final-review.json",
+          "reviewed_path": ".out/local-features/20261017-205335/images/web-real-stack/393/voice-after-leave.png",
+          "observation": "Viewed original 1179x2556 pixels. Neutral voice-ended notice and join/microphone-free actions are fully readable inside the prejoin card, header actions remain reachable, no error-red exit banner or active voice dock remains. Actual cleanup/transport state is asserted by the authenticated owned-stack test."
+        }
+      },
+      {
+        "id": "actual-393-settings-audio-advanced",
+        "path": ".out/local-features/20261017-214952/images/web-real-stack/393/settings-audio-advanced.png",
+        "sha256": "0ee8a87638584a5a79cdc20f3be69b424c13d94badc38bfc2ad4271f0d080b62",
+        "dimensions": [
+          1179,
+          2556
+        ],
+        "source_path": ".out/local-features/20261017-214952/images/web-real-stack/393/settings-audio-advanced.png",
+        "source_sha256": "0ee8a87638584a5a79cdc20f3be69b424c13d94badc38bfc2ad4271f0d080b62",
+        "source_dimensions": [
+          1179,
+          2556
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/additional-review.json",
+          "reviewed_path": ".out/local-features/20261017-193925/images/web-real-stack/393/settings-audio-advanced.png",
+          "observation": "Source-resolution current-source actual-stack review: audio processing labels, toggles and reset action remain within the scrollable panel, clear of fixed header and mobile voice dock. The partly hidden top is the intentional current scroll position."
+        }
+      },
+      {
+        "id": "audio-font-spacing-320-200",
+        "path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-audio-adv-bfcc1-0px-200-text-0-12em-spacing/audio-advanced-text.png",
+        "sha256": "cabc37a4fad2cabf63d19855f819a6248cc768ae45d3da9b5cd4f9ea62c1a5a2",
+        "dimensions": [
+          320,
+          6767
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-audio-adv-bfcc1-0px-200-text-0-12em-spacing/audio-advanced-text.png",
+        "source_sha256": "cabc37a4fad2cabf63d19855f819a6248cc768ae45d3da9b5cd4f9ea62c1a5a2",
+        "source_dimensions": [
+          320,
+          6767
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/font-final-review.json",
+          "reviewed_path": ".out/local-features/20261017-205335/web-control_consistency/controls.browser-audio-adv-bfcc1-0px-200-text-0-12em-spacing/audio-advanced-text.png",
+          "observation": "Viewed the whole tall image in two lossless 3500px original-resolution slices with overlap under .out/issue353/font-review-v2. Activation selector, sensitivity range, meter, hints and reset action now remain inside the card padding. Enlarged long labels wrap onto additional lines, including within words at 320px, without horizontal clipping. Diagnostics dt/dd remain vertically separated; advanced controls and reset remain readable. Native select labels use normal platform elision; accessible names and option selection are covered by tests. Monospace/0.12em stress applies only in the two named fixtures."
+        }
+      },
+      {
+        "id": "audio-font-spacing-390-200",
+        "path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-audio-adv-b4f6b-0px-200-text-0-12em-spacing/audio-advanced-text.png",
+        "sha256": "02ed10d9bce727d8d5d5088b3aa0d167a94bbdf86fa5d1eff16eebac3c046551",
+        "dimensions": [
+          390,
+          5725
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-control_consistency/controls.browser-audio-adv-b4f6b-0px-200-text-0-12em-spacing/audio-advanced-text.png",
+        "source_sha256": "02ed10d9bce727d8d5d5088b3aa0d167a94bbdf86fa5d1eff16eebac3c046551",
+        "source_dimensions": [
+          390,
+          5725
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/font-final-review.json",
+          "reviewed_path": ".out/local-features/20261017-205335/web-control_consistency/controls.browser-audio-adv-b4f6b-0px-200-text-0-12em-spacing/audio-advanced-text.png",
+          "observation": "Viewed the whole tall image in two lossless 3500px original-resolution slices with overlap under .out/issue353/font-review-v2. Activation selector, sensitivity range, meter, hints and reset action now remain inside the card padding. Enlarged long labels wrap onto additional lines, including within words at 320px, without horizontal clipping. Diagnostics dt/dd remain vertically separated; advanced controls and reset remain readable. Native select labels use normal platform elision; accessible names and option selection are covered by tests. Monospace/0.12em stress applies only in the two named fixtures."
+        }
+      },
+      {
+        "id": "dm-pagination-before",
+        "path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-before.png",
+        "sha256": "e7283a4af00205d6b6dc1a945908c70df312b964f86f94b2538684c9d07f7395",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-before.png",
+        "source_sha256": "e7283a4af00205d6b6dc1a945908c70df312b964f86f94b2538684c9d07f7395",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/pagination-final-review-v4.json",
+          "reviewed_path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-before.png",
+          "observation": "Viewed original 320x900 pixels for all four ready/history-pending/reactions-pending/settled states. The first original message remains at the identical vertical position while the loading-caption line count changes and 25 reaction-status lines above it disappear. Header and fixed composer/send remain separated, and after-prepend hover highlighting stays on the older row above the reading anchor. Trigger width/font and forced loading-status wrapping are deliberate fixtures. This is synthetic UI behavior, not a media QoE or default-typography claim."
+        }
+      },
+      {
+        "id": "dm-pagination-loading",
+        "path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-loading.png",
+        "sha256": "e30ccd7a3712490129665ed6a6c04892f773536744a75cf57d64580a61e8a7bd",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-loading.png",
+        "source_sha256": "e30ccd7a3712490129665ed6a6c04892f773536744a75cf57d64580a61e8a7bd",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/pagination-final-review-v4.json",
+          "reviewed_path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-loading.png",
+          "observation": "Viewed original 320x900 pixels for all four ready/history-pending/reactions-pending/settled states. The first original message remains at the identical vertical position while the loading-caption line count changes and 25 reaction-status lines above it disappear. Header and fixed composer/send remain separated, and after-prepend hover highlighting stays on the older row above the reading anchor. Trigger width/font and forced loading-status wrapping are deliberate fixtures. This is synthetic UI behavior, not a media QoE or default-typography claim."
+        }
+      },
+      {
+        "id": "dm-pagination-reactions-pending",
+        "path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-reactions-pending.png",
+        "sha256": "18ca3ef8bae5d6b94215cc413f78ad5f0b4df0c29ded39b2e15ac575fa060901",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-reactions-pending.png",
+        "source_sha256": "18ca3ef8bae5d6b94215cc413f78ad5f0b4df0c29ded39b2e15ac575fa060901",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/pagination-final-review-v4.json",
+          "reviewed_path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-reactions-pending.png",
+          "observation": "Viewed original 320x900 pixels for all four ready/history-pending/reactions-pending/settled states. The first original message remains at the identical vertical position while the loading-caption line count changes and 25 reaction-status lines above it disappear. Header and fixed composer/send remain separated, and after-prepend hover highlighting stays on the older row above the reading anchor. Trigger width/font and forced loading-status wrapping are deliberate fixtures. This is synthetic UI behavior, not a media QoE or default-typography claim."
+        }
+      },
+      {
+        "id": "dm-pagination-after",
+        "path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-after.png",
+        "sha256": "65ff80920fa795d7771efb69983fda8c1ead9ad895efae05779652f313ea9920",
+        "dimensions": [
+          320,
+          900
+        ],
+        "source_path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-after.png",
+        "source_sha256": "65ff80920fa795d7771efb69983fda8c1ead9ad895efae05779652f313ea9920",
+        "source_dimensions": [
+          320,
+          900
+        ],
+        "crop": null,
+        "review": {
+          "review_record": ".out/issue353/pagination-final-review-v4.json",
+          "reviewed_path": ".out/local-features/20261017-214952/web-chat_rhythm/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-after.png",
+          "observation": "Viewed original 320x900 pixels for all four ready/history-pending/reactions-pending/settled states. The first original message remains at the identical vertical position while the loading-caption line count changes and 25 reaction-status lines above it disappear. Header and fixed composer/send remain separated, and after-prepend hover highlighting stays on the older row above the reading anchor. Trigger width/font and forced loading-status wrapping are deliberate fixtures. This is synthetic UI behavior, not a media QoE or default-typography claim."
+        }
+      }
+    ],
+    "raw_capture_count": 1062,
+    "raw_unique_capture_count": 999,
+    "raw_report_status": "REVIEW_REQUIRED",
+    "raw_visual_status": "NOT_RUN",
+    "raw_unique_not_full_image_approved": 958,
+    "note": "Only these selected screenshots/declared lossless modal crops are the approved replacement baseline. All others remain visually unapproved; the entire raw report was not approved. Tall audio was reviewed in two overlapping source-pixel slices."
+  },
+  "current_master_before_after": {
+    "base": "43d0c491575f83f03d72bb7355392ce82f56d998",
+    "production_src_tree": "9870cf0e69ff170aa33139dedc0221e1bb5726d2",
+    "snapshot": ".out/issue353/current-master-source",
+    "before_runs": [
+      {
+        "suite": "control_consistency",
+        "exit_code": 1
+      },
+      {
+        "suite": "dm_starter",
+        "exit_code": 1
+      },
+      {
+        "suite": "search_sessions",
+        "exit_code": 0
+      }
+    ],
+    "before_results": {
+      "control_consistency": "81 PASS / 2 FAIL: diagnostic dt/dd overlap at 320/390 px and 200% text",
+      "dm_starter": "22 PASS / 2 FAIL: coarse-pointer start action is 36 px instead of >=44 px",
+      "search_sessions": "26 PASS; existing four-mode behaviour remains intact"
+    },
+    "after_results": "All corresponding suites PASS in the accepted 28-stage run.",
+    "method": "The prior controlled comparison exported production Vue/CSS/TS and contracts from exact master 43d0c491 with the then-current acceptance fixtures, as recorded in receipt v1. Those failing captures remain retained. Subsequent font-metric and control-box tests have their own failing-before logs and exact source identities below; no claim that the old master run included these later tests.",
+    "setup_failure": "First snapshot missed a referenced contract catalog; stopped before acceptance and restored all tracked master contracts. Failed setup log retained under .out/issue353/current-master-before."
+  },
+  "focused_regressions": [
+    {
+      "scenario": "Conversation width changes without typing/window resize",
+      "before": "FAIL on 350df4e0: wrapped draft remains clipped",
+      "after": "PASS: grow, no lost draft, shrink back; existing max-height and Shift+Enter policy preserved",
+      "test": "clients/web/tests/mini_player/mini.browser.spec.ts",
+      "code": "clients/web/src/conversation/composer_input/auto_size.ts"
+    },
+    {
+      "scenario": "Advanced audio card at 320px / 200% text",
+      "before": "FAIL on 5f506c30: eight rendered text fragments extend beyond their card",
+      "after": "PASS at 320/390: bounded grid tracks and wrapping without losing switch/field behaviour",
+      "test": "clients/web/tests/control_consistency/controls.browser.spec.ts",
+      "code": "clients/web/src/design/design_v2_audio_presentation.css"
+    },
+    {
+      "scenario": "Stable screenshot of resized draft",
+      "before": "One raw screenshot preceded the resize-observer frame despite later passing behaviour assertions; rejected from baseline",
+      "after": "Screenshot is taken after unchanged height/content assertions; 20/20 mini-player cases PASS",
+      "test": "clients/web/tests/mini_player/mini.browser.spec.ts"
+    },
+    {
+      "scenario": "Missing-audio diagnosis / share notice / voluntary leave",
+      "after": "PASS: 1.2s debounce with immediate stream switch, notice in workspace flow, voluntary leave neutral; actual server revocation remains an error",
+      "scope": "UI and synthetic API/SFU lifecycle only"
+    },
+    {
+      "scenario": "200% desktop screen controls and statistics",
+      "after": "PASS: Cancel stays on one line; bounded wider statistics panel preserves words and selected/confirmed/measured distinction",
+      "test": "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
+    }
+  ],
+  "previous_attempts": [
+    {
+      "run": ".out/local-features/20261017-190615",
+      "report_sha256": "aee5657dd951a562da37d8068cc23bf6ee79fe6a8b4edb06c3e8ef616f32f4da",
+      "automatic_stages": "27/27 PASS",
+      "visual": "FAIL: audio-card text overflow; no baseline approved"
+    },
+    {
+      "run": ".out/local-features/20261017-192437",
+      "report_sha256": "195543ab9cba8714562eeaf58c04144ac2f96c1e325f75d44828e12dd2eaa4ac",
+      "automatic_stages": "27/27 PASS",
+      "visual": "One transient narrow-draft capture rejected. Superseded after integration of newer screen styles and selected-scenario coverage."
+    },
+    {
+      "run": ".out/issue353/acceptance-integrated.log",
+      "status": "NOT_STARTED_POLICY_REJECTION",
+      "reason": "Added diagnostics stylesheet also belongs to screen_track_name. Selected that feature and reran, adding the 24th browser suite."
+    },
+    {
+      "remote_head": "4db4b0bb26ddc1a11847e6d95e3cbd88d7957f0e",
+      "frontend_job": 117441921355,
+      "status": "FAIL",
+      "detail": "Older Linux CI observed a 26px DM-prepend anchor drift (limit 2px). Current candidate passed 20 focused repetitions locally and the complete chat suite. Final exact-head CI must pass without weakening the anchor assertion."
+    },
+    {
+      "published_head": "1a8d8708fd653bcc1592ffc4b91e435d433e93e4",
+      "frontend_job": 117453712294,
+      "status": "FAIL",
+      "detail": "Linux 320px/200% audio-caption range ended at x312 beyond its activation card. This was a real cross-platform layout defect, not rerun to hide it. Other native jobs cancelled when the branch advanced."
+    },
+    {
+      "source": "8dccb58fa754f3b3fe0fb27bf3dd485ff06612e3",
+      "log": ".out/issue353/audio-caption-wide-control-before.log",
+      "status": "FAIL",
+      "detail": "Portable wider monospace plus 0.12em spacing reproduced three out-of-card text ranges at 320px; test was written before the fix. Caption-only font/spacing experiments did not reproduce it and are not counted as red."
+    },
+    {
+      "source": "d4c4570b420d08174f52706c78eca740f934bfdc",
+      "run": ".out/local-features/20261017-204256",
+      "status": "AUTOMATION_PASS_VISUAL_FAIL",
+      "detail": "All 28 registered stages passed on the frozen production source, but source-pixel review found the selector/range/meter overflowing the card padding. Added geometry checks after their original suite completed; this run is retained as historical and no source-to-final-test identity is asserted. It is not an accepted baseline."
+    },
+    {
+      "source": "d4c4570b420d08174f52706c78eca740f934bfdc",
+      "log": ".out/issue353/audio-control-box-before.log",
+      "status": "FAIL",
+      "detail": "All four 320/390px cases failed the new card-padding bounds assertions. The 320px selector ended at x307.0625 against permitted x288; native range margins also extended the box."
+    },
+    {
+      "source": "7f8f1b6a41928085b999a1bd98601b6927e08607",
+      "log": ".out/issue353/audio-control-box-after.log",
+      "status": "PASS",
+      "detail": "All four normal and wider-font 320/390px/200% cases pass unchanged range/text/control assertions. Sensitivity grid, activation track and native range margins are constrained."
+    },
+    {
+      "published_head": "18e87bad0e87ab26b403c574dd466fd726b6fc45",
+      "frontend_job": 117469565565,
+      "status": "FAIL",
+      "detail": "Disabling native DM scroll anchoring alone did not resolve the problem: Linux drift became 650px after 25 reaction-loading statuses collapsed. The one-line fix was not accepted on its own."
+    },
+    {
+      "source": "c08ee6e7856c9e5f4cbc43c1da2dcd03916987a5",
+      "run": ".out/local-features/20261017-212804",
+      "status": "MAC_AUTOMATION_PASS_LINUX_FAIL",
+      "detail": "All 28 Mac stages passed, but the Linux container reproduced 650px drift in both focused cases. Original label-only disappearance could also let a test finish during loading; completion assertions now wait for both pagination labels and reaction loading to disappear."
+    },
+    {
+      "source": "c08ee6e7856c9e5f4cbc43c1da2dcd03916987a5",
+      "log": ".out/issue353/linux/pagination-native-auto.log",
+      "status": "FAIL",
+      "detail": "Restoring native anchoring while keeping stable captions still drifted 26px/52px; native anchoring was not used as a workaround."
+    },
+    {
+      "source": "c08ee6e7856c9e5f4cbc43c1da2dcd03916987a5",
+      "log": ".out/issue353/dm-late-reactions-before.log",
+      "status": "FAIL",
+      "detail": "Controlled delayed reaction responses reproduced 650px late drift on Mac too. Reaction loading statuses were forced onto their own line independently of fonts, then released after the history page had settled."
+    },
+    {
+      "log": ".out/issue353/dm-anchor-handoff-after.log",
+      "status": "FAIL",
+      "detail": "New user-scroll/late-attachment test found a 120px padding expansion missed by the first content-box observer. Observing border boxes corrected that; no anchor bound was relaxed."
+    },
+    {
+      "published_head": "18e87bad0e87ab26b403c574dd466fd726b6fc45",
+      "actual_job": 117469258634,
+      "status": "FAIL",
+      "detail": "Separate ancestor actual workflow timed out waiting for the newest reply row in protected CHANNEL navigation (20s). No failure cause is assumed and its visibility assertion is unchanged. Final exact-head actual workflow must pass; the local lifecycle journeys are distinct coverage."
+    },
+    {
+      "published_head": "d292ada9cbd0385fa8abb69309223f95c1a176c4",
+      "frontend_job": 117466229045,
+      "status": "FAIL",
+      "detail": "Linux microphone/card checks passed (87 controls cases), but original DM prepend case again drifted by 26px. Passing local repetitions alone had not resolved this platform-dependent failure; it was not waived."
+    },
+    {
+      "source": "d292ada9cbd0385fa8abb69309223f95c1a176c4",
+      "log": ".out/issue353/dm-loading-120-before.log",
+      "status": "FAIL",
+      "detail": "A held older-page response and narrow 120px/monospace caption reproduced a 26px pending-request movement: ready label height 78px versus loading label 52px. This is a separate observable loading-state shift, not proof that label wrapping alone caused the Linux after-response failure."
+    },
+    {
+      "source": "3325f001fa1a5dbd4f09d5e4e9895d8386c2e231",
+      "run": ".out/local-features/20261017-212546",
+      "status": "FAIL_CONTRACT_STOPPED",
+      "detail": "One existing design-system unit contract rejected component-scoped CSS in a conversation component (1570/1571 tests passed). Own runner stopped before real-stack stages; moved the rules to shared conversation.css. This rejected run is not an acceptance baseline."
+    },
+    {
+      "source": "b659092fc18f223b125642026b37f45a14517bab",
+      "log": ".out/issue353/dm-design-contract-after.log",
+      "status": "PASS",
+      "detail": "All 9 focused shared design-contract checks pass after moving the styles."
+    },
+    {
+      "source": "b659092fc18f223b125642026b37f45a14517bab",
+      "log": ".out/issue353/dm-integrated-after.log",
+      "status": "PASS",
+      "detail": "Original 320px DM prepend case and held-response caption-wrap regression pass with the unchanged 2px bounds; earlier caption fix also passed 10 focused repetitions before shared CSS relocation."
+    },
+    {
+      "related_remote_commit": "6d68c8a35a68244d46fa0e895b09d1beb2543e63",
+      "variant_source": "c08ee6e7856c9e5f4cbc43c1da2dcd03916987a5 plus the same two-frame wait, with stable captions",
+      "log": ".out/issue353/linux/frame-delay-only-before.log",
+      "status": "FAIL",
+      "detail": "Held reaction responses finish after the two-frame wait. Releasing them still moved the reading anchor by 650px. The remote commit is retained in ancestry; finite-frame restoration is superseded by the already verified row-resize observer. Final production and scenario trees remain exactly equal to their accepted hashes."
+    }
+  ],
+  "child_issue_crosswalk": [
+    {
+      "issue": 340,
+      "pr": 355,
+      "commit": "2ee7e9ec",
+      "status": "merged",
+      "evidence": "evidence/qa/pr355-search-dm-acceptance-2026-10-16.md",
+      "current_scenario": "search_sessions"
+    },
+    {
+      "issue": 341,
+      "pr": 355,
+      "commit": "2ee7e9ec",
+      "status": "merged",
+      "evidence": "evidence/qa/pr355-search-dm-acceptance-2026-10-16.md",
+      "current_scenario": "dm_starter"
+    },
+    {
+      "issue": 342,
+      "pr": 356,
+      "commit": "c6e789bb",
+      "status": "merged",
+      "evidence": "evidence/qa/dw03-controls-2026-10-16.md",
+      "current_scenario": "control_consistency"
+    },
+    {
+      "issue": 343,
+      "pr": 357,
+      "commit": "aa264a74",
+      "status": "merged",
+      "evidence": "evidence/qa/dw04-microcopy-2026-10-16.md",
+      "current_scenario": "microcopy"
+    },
+    {
+      "issue": 344,
+      "pr": 358,
+      "commit": "efdb4b04",
+      "status": "merged",
+      "evidence": "evidence/qa/dw05-navigation-2026-10-16.md",
+      "current_scenario": "navigation_density"
+    },
+    {
+      "issue": 345,
+      "pr": 359,
+      "commit": "86ce6458",
+      "status": "merged",
+      "evidence": "evidence/qa/dw06-chat-rhythm-2026-10-16.md",
+      "current_scenario": "chat_rhythm"
+    },
+    {
+      "issue": 346,
+      "pr": 360,
+      "commit": "4cda8f5c",
+      "status": "merged",
+      "evidence": "evidence/qa/dw07-search-presentation-2026-10-16.md",
+      "current_scenario": "search_presentation"
+    },
+    {
+      "issue": 347,
+      "pr": 361,
+      "commit": "1784d2cd",
+      "status": "merged",
+      "evidence": "evidence/qa/dw08-voice-interface-2026-10-16.md",
+      "current_scenario": "voice_interface"
+    },
+    {
+      "issue": 348,
+      "pr": 362,
+      "commit": "979d0bd0",
+      "status": "merged",
+      "evidence": "evidence/qa/dw09-screen-share-ui-2026-10-16.md",
+      "current_scenario": "screen_share_ui"
+    },
+    {
+      "issue": 349,
+      "pr": 363,
+      "commit": "9dc31592",
+      "status": "merged",
+      "evidence": "evidence/qa/dw10-mini-player-2026-10-17.md",
+      "current_scenario": "mini_player"
+    },
+    {
+      "issue": 350,
+      "pr": 364,
+      "commit": "25be6eca",
+      "status": "merged",
+      "evidence": "evidence/qa/dw11-member-panel-2026-10-17.md",
+      "current_scenario": "member_roster + member_popover"
+    },
+    {
+      "issue": 351,
+      "pr": 366,
+      "commit": "8f4b15a6",
+      "status": "merged",
+      "evidence": "evidence/qa/dw12-settings-hierarchy-2026-10-17.md",
+      "current_scenario": "control_consistency + actual settings; DW-012 receipt"
+    },
+    {
+      "issue": 352,
+      "pr": 367,
+      "commit": "43d0c491575f83f03d72bb7355392ce82f56d998",
+      "status": "merged via PR #367 on 2026-10-17",
+      "evidence": "evidence/qa/dw13-header-actions-2026-10-17.md",
+      "current_scenario": "header_actions"
+    },
+    {
+      "issue": 353,
+      "pr": 368,
+      "commit": "Published PR head must have the recorded source/test trees",
+      "status": "PASS_SELECTED_WEB_REGRESSION_WITH_EXCEPTIONS",
+      "evidence": "evidence/qa/dw14-final-acceptance-2026-10-17.md",
+      "current_scenario": "all 24 browser suites + actual desktop/mobile"
+    },
+    {
+      "issue": 354,
+      "pr": null,
+      "commit": null,
+      "status": "deferred: optional P2 requires user-valued usability evidence first",
+      "evidence": "issue #354; no compact mode added",
+      "current_scenario": "EXCEPTION_DEFERRED: optional compact mode requires separate usability evidence"
+    }
+  ],
+  "ux_tasks": {
+    "channel_dm_draft": "PASS_SCOPED_BROWSER_AND_ACTUAL_STACK",
+    "pins_archive_files_mentions": "PASS_SCOPED_BROWSER_AND_ACTUAL_STACK",
+    "voice_join_leave_mini_player": "PASS_SCOPED_SYNTHETIC_SFU",
+    "settings_and_forms": "PASS_SCOPED_BROWSER_AND_ACTUAL_STACK",
+    "real_user_task_times_errors_backtracks": "NOT_RUN; tracked separately in #305"
+  },
+  "release_review_305": {
+    "review": "COMPLETED_WITH_NO_GO_FINDINGS",
+    "release_decision": "NO-GO / NOT_RUN",
+    "document": "docs/design/UIUX_2026_RELEASE_GATE.md",
+    "reason": "No comparable real-tester samples, approved sample size or named Web rollback owner in available evidence. Automated tasks are not human measurements.",
+    "rollback": "Keep previous immutable Web artifact or revert the UI change and rebuild; per-platform ownership/cohorts still belong to #305.",
+    "effect": "No #305/#303 release or physical-media gate is closed by this code/regression acceptance."
+  },
+  "exceptions": [
+    {
+      "item": "Original private tour",
+      "status": "EXCEPTION_SOURCE_LOST",
+      "reason": "User confirmed archive absent; historical metadata retained as unverified and a reproducible current-master baseline replaces unavailable pixels."
+    },
+    {
+      "item": "Supported-Chrome system picker, physical mic/system audio, dynamic media QoE/capacity/1080p60",
+      "status": "NOT_RUN",
+      "reason": "Issue #353 explicitly permits named NOT_RUN for supported-Chrome smoke; headless/synthetic captures do not establish hardware capability."
+    },
+    {
+      "item": "Optional compact mode #354",
+      "status": "DEFERRED",
+      "reason": "Requires separate demonstrated user need; current redesign keeps one default density."
+    }
+  ],
+  "spec_traceability": {
+    "status": "PASS_INDEX_ONLY",
+    "requirements": 39,
+    "approved_windows_brief_available": false
+  },
+  "contracts": "UNCHANGED",
+  "supersedes": [
+    "evidence/qa/dw14-web-tour-regression-2026-10-17.md",
+    "evidence/qa/dw14-composer-wrap-regression-2026-10-17.md"
+  ],
+  "follow_up": {
+    "navigation_commit": "8dccb58fa754f3b3fe0fb27bf3dd485ff06612e3",
+    "navigation_evidence": "evidence/qa/dw14-navigation-hint-quick-jump-2026-10-17.md",
+    "audio_component": "clients/web/src/voice/microphone_processing/SensitivityControl.vue",
+    "visual_review": "The three tall changed audio captures were inspected in two overlapping 3500px original-resolution slices each. Wide-font stress intentionally permits long-word wrapping at 320px, while every glyph, range, meter and button stays in the card. Four other changed selected frames were viewed at original pixels. Reviews of all unchanged selected frames are reused only by identical SHA-256.",
+    "scope_reconciliation": "Only the selected 45-frame replacement is approved. Broader raw reports remain REVIEW_REQUIRED, while #305/#303 and physical-media gates remain open."
+  },
+  "previous_final_receipts": [
+    {
+      "published_commit": "1a8d8708fd653bcc1592ffc4b91e435d433e93e4",
+      "json_sha256": "82dfc9aadce73014ee2458d5c1a9b7222bfe989b2dd65a4b9847bcc4d38ca79c",
+      "runtime_source": "cc50ae810425d73f1f846f1bf96712ca47c39bc8",
+      "selected_baseline": "web-regression-v1",
+      "note": "Preserved in immutable Git history; current receipt incorporates the subsequent navigation and cross-platform audio-layout fixes."
+    },
+    {
+      "published_commit": "d292ada9cbd0385fa8abb69309223f95c1a176c4",
+      "json_sha256": "2a9b6e1835d0d70802419e1770ae6c4733e90d365bf4130e095ee7ba5a2001ee",
+      "runtime_source": "7f8f1b6a41928085b999a1bd98601b6927e08607",
+      "selected_baseline": "web-regression-v2",
+      "note": "Superseded by current pagination integration; retained in immutable Git history."
+    }
+  ],
+  "pagination_fix": {
+    "resize_observer": "Message rows and viewport are observed as border boxes. Late reaction/image/row resizing retains the original anchor; programmatic correction events cannot replace it. User scrolling captures a new anchor; bottom-follow is retained. The observer disconnects on unmount.",
+    "module": "clients/web/src/direct_message/history_scroll_anchor.ts",
+    "integrated_native_anchor_commit": "18e87bad0e87ab26b403c574dd466fd726b6fc45",
+    "native_anchor_ownership": "Direct-message history explicitly restores pagination position; automatic CSS scroll anchoring is disabled for that list to avoid competing compensation. Virtualized TEXT keeps its own existing behavior.",
+    "caption_layout": "Both ready/loading captions reserve the same wrapped grid track; visibility toggles without changing flow height. The button retains one explicit current accessible name and aria-busy/disabled state.",
+    "regression": "Held network response validates row position before, during and after loading, in addition to unchanged original seven-width prepend assertions.",
+    "captures": [
+      "dm-pagination-before",
+      "dm-pagination-loading",
+      "dm-pagination-reactions-pending",
+      "dm-pagination-after"
+    ],
+    "test": "clients/web/tests/chat_rhythm/retention.browser.spec.ts"
+  },
+  "linux_browser_validation": {
+    "source": "b659092fc18f223b125642026b37f45a14517bab",
+    "initial_snapshot_source": "c08ee6e7856c9e5f4cbc43c1da2dcd03916987a5",
+    "initial_archive_sha256": "9891242135aace21b06852eeb25128496aaecc2c7e73918b1423d8010c19720f",
+    "image": "mcr.microsoft.com/playwright:v1.63.0-noble",
+    "image_id": "sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+    "platform": "linux/arm64",
+    "node": "24.20.0",
+    "playwright": "1.63.0",
+    "overlay_hashes": {
+      "src/direct_message/DirectMessageHistoryList.vue": "fa1ba6efdaf170cdd7efa124158ea077773c3903d15f8e4b15327b9d748ad2f5",
+      "src/direct_message/history_scroll_anchor.ts": "983aba5f18acc890a37bd02a9ec52c645af87da1b8da693fd231b14a2937f432",
+      "src/design/conversation.css": "ed5f401ca0f2ccecab9b70f3dedc88b4d7d256b948e1d1cd07879703ab5ae596",
+      "tests/chat_rhythm/helpers.ts": "96e2b068cb87ccc97ddbc829413250914c5291ec08500eea7fe183b3e8cb7af2",
+      "tests/chat_rhythm/retention.browser.spec.ts": "71a25b490948d47c27b126f0ee1fe1ad5b2e7fa7c175e36ac7d071a6ae8b0c33"
+    },
+    "browser_tests": 54,
+    "status": "PASS",
+    "log_sha256": "1859cd9f31aac9e4671f3e74ed02fff8fa14567a738d5c882557f084bb86cd27",
+    "diagnostic_overlay": {
+      "source": "0e3b79d4cb55401ac8728028d42f71c75f0500dc",
+      "production_source": "b659092fc18f223b125642026b37f45a14517bab",
+      "web_src_tree": "3b2b7b65f3cc6741bd1d6b55a75f53780d67a1c7",
+      "tests_tree": "23b4f16a74e5c4bf831bb6f841ec3df2e76b2b9f",
+      "changed_only_failure_reporting": true,
+      "changed_file": "clients/web/tests/chat_rhythm/retention.browser.spec.ts",
+      "changed_file_sha256": "0f45ba6a0b83789ce2f7f71b1d7c2342cbb1854f84aa2feb5e6edf43717ab542",
+      "native_results": {
+        "mac": {
+          "cases": 54,
+          "status": "PASS",
+          "log": ".out/issue353/chat-diagnostics-overlay-mac.log",
+          "sha256": "c493cdeedb4b84f1d4a5e10bf0e48279a5cc523b1fa23a1d19626836d061f8a8"
+        },
+        "linux": {
+          "cases": 54,
+          "status": "PASS",
+          "log": ".out/issue353/linux/chat-suite-diagnostics-overlay.log",
+          "sha256": "c5afe9d8652196eca27d721f1c60ca97dc017cf8f66e1d0267bc1b1e1e9519c4"
+        }
+      }
+    },
+    "reviewed_frames": [
+      {
+        "path": ".out/issue353/linux/borderbox-browser/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-before.png",
+        "sha256": "e4b169951d73b7df54389a5114589cbbe80b60c7bfc0fe3719974c3f81dca6e5",
+        "dimensions": [
+          320,
+          900
+        ],
+        "reviewed": true,
+        "observation": "Viewed original Linux/arm64 Chromium 320x900 pixels. The original first message remains at the same position through ready, pending history, pending reaction and fully settled states. Reaction-status lines above the viewport disappear without moving it. Header, composer, send and message actions remain separated. Narrow trigger width/font and forced reaction wrapping are controlled fixtures, not a default typography or physical-media claim."
+      },
+      {
+        "path": ".out/issue353/linux/borderbox-browser/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-after.png",
+        "sha256": "cdfddff34cafda2040c8c29cb3e42daf9d9e6d85ccc89885b7b107858d1373eb",
+        "dimensions": [
+          320,
+          900
+        ],
+        "reviewed": true,
+        "observation": "Viewed original Linux/arm64 Chromium 320x900 pixels. The original first message remains at the same position through ready, pending history, pending reaction and fully settled states. Reaction-status lines above the viewport disappear without moving it. Header, composer, send and message actions remain separated. Narrow trigger width/font and forced reaction wrapping are controlled fixtures, not a default typography or physical-media claim."
+      },
+      {
+        "path": ".out/issue353/linux/borderbox-browser/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-loading.png",
+        "sha256": "acef1e1ef1f5eb473effb249aa2c06f6ca336902d71493bbbc980bca4189825e",
+        "dimensions": [
+          320,
+          900
+        ],
+        "reviewed": true,
+        "observation": "Viewed original Linux/arm64 Chromium 320x900 pixels. The original first message remains at the same position through ready, pending history, pending reaction and fully settled states. Reaction-status lines above the viewport disappear without moving it. Header, composer, send and message actions remain separated. Narrow trigger width/font and forced reaction wrapping are controlled fixtures, not a default typography or physical-media claim."
+      },
+      {
+        "path": ".out/issue353/linux/borderbox-browser/retention.browser-DIRECT-M-65de4-er-page-loading-label-wraps/dm-pagination-reactions-pending.png",
+        "sha256": "c35fc77caae6d9fa8185aaaf3e4866a8d512b6e93956e0b5038420ff49281402",
+        "dimensions": [
+          320,
+          900
+        ],
+        "reviewed": true,
+        "observation": "Viewed original Linux/arm64 Chromium 320x900 pixels. The original first message remains at the same position through ready, pending history, pending reaction and fully settled states. Reaction-status lines above the viewport disappear without moving it. Header, composer, send and message actions remain separated. Narrow trigger width/font and forced reaction wrapping are controlled fixtures, not a default typography or physical-media claim."
+      }
+    ]
+  }
+}

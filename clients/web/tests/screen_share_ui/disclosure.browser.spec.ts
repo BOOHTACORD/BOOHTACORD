@@ -13,6 +13,46 @@ async function clean(page: Page) {
     return r.left < -1 || r.right > innerWidth + 1 || e.scrollWidth > e.clientWidth + 1 ? [e.textContent?.trim()] : []
   }))).toEqual([])
 }
+test('200% text keeps action labels and diagnostic words intact at desktop width', async ({ page }, info) => {
+  await open(page, '', 1024, 200)
+  const cancel = page.getByRole('button', { name: 'Отмена', exact: true })
+  const cancelLineCount = await cancel.evaluate(element => {
+    const range = document.createRange()
+    range.selectNodeContents(element)
+    return range.getClientRects().length
+  })
+  expect(cancelLineCount).toBe(1)
+  await page.screenshot({ path: info.outputPath('launch-text-200-1024.png') })
+
+  await open(page, 'receiver', 1024, 200)
+  await page.locator('summary[aria-label="Статистика"]').click()
+  const panel = page.getByRole('dialog', { name: 'Статистика трансляции' })
+  await expect(panel).toBeVisible()
+  await page.screenshot({ path: info.outputPath('receiver-text-200-1024.png') })
+  const rows = page.locator('.stream-diagnostics-panel > dl dt, .stream-diagnostics-panel > dl dd')
+  const splitWords = await rows.evaluateAll(elements => {
+    const broken: string[] = []
+    for (const element of elements) {
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT)
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        const text = node.textContent ?? ''
+        for (const match of text.matchAll(/\S+/g)) {
+          const range = document.createRange()
+          range.setStart(node, match.index!)
+          range.setEnd(node, match.index! + match[0].length)
+          const lines = new Set(Array.from(range.getClientRects(), rect => Math.round(rect.top)))
+          if (lines.size > 1) broken.push(match[0])
+        }
+      }
+    }
+    return broken
+  })
+  expect(splitWords).toEqual([])
+  const overflowingRows = await rows.evaluateAll(elements => elements
+    .filter(element => element.scrollWidth > element.clientWidth + 1)
+    .map(element => element.textContent?.trim()))
+  expect(overflowingRows).toEqual([])
+})
 test('launch keeps selection visible and technical details optional; one gesture emits without capture', async ({ page }) => {
   let capture = 0
   await page.addInitScript(() => { navigator.mediaDevices.getDisplayMedia = () => { throw new Error('unexpected capture') } })
@@ -86,6 +126,35 @@ for (const width of [320, 390, 1024, 1440]) for (const scale of [100, 200]) {
     }
   })
 }
+test('missing source audio stays the diagnosis while video receiver samples fluctuate', async ({ page }, info) => {
+  await open(page, 'diagnosis')
+  const diagnosis = page.locator('.screen-diagnosis > [role="status"]')
+  await expect(diagnosis).toHaveText('Источник не публикует аудиодорожку.')
+  await page.evaluate(() => (window as any).__screenUI.patch({ sampledAt: Date.now() }))
+  await expect(diagnosis).toHaveText('Источник не публикует аудиодорожку.')
+  await page.screenshot({ path: info.outputPath('diagnosis-no-audio-desktop-fresh.png') })
+  await page.evaluate(() => (window as any).__screenUI.patch({ sampledAt: Date.now() - 7000 }))
+  await expect(diagnosis).toHaveText('Источник не публикует аудиодорожку.')
+  await open(page, 'diagnosis', 390, 200)
+  await expect(page.locator('.screen-diagnosis > [role="status"]')).toHaveText('Источник не публикует аудиодорожку.')
+  await page.screenshot({ path: info.outputPath('diagnosis-no-audio-mobile-stale.png') })
+})
+
+test('brief screen audio publication changes do not flicker the diagnosis', async ({ page }) => {
+  await open(page, 'diagnosis')
+  const diagnosis = page.locator('.screen-diagnosis > [role="status"]')
+  const noAudio = 'Источник не публикует аудиодорожку.'
+  await expect(diagnosis).toHaveText(noAudio)
+  await page.evaluate(() => (window as any).__screenUI.patch({ hasAudio: true }))
+  await page.waitForTimeout(250)
+  await expect(diagnosis).toHaveText(noAudio)
+  await page.evaluate(() => (window as any).__screenUI.patch({ hasAudio: false }))
+  await page.waitForTimeout(1250)
+  await expect(diagnosis).toHaveText(noAudio)
+  await page.evaluate(() => (window as any).__screenUI.patch({ hasAudio: true }))
+  await expect(diagnosis).toHaveText('Данные о приёме отсутствуют или устарели. Причина качества не определена.', { timeout: 2000 })
+})
+
 test('receiver has selected/applied/measured levels and optional copyable technical data', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write'])
   await open(page, 'receiver')

@@ -1,6 +1,55 @@
 import { test, expect } from '@playwright/test'
 import { mount, geometry, navigate } from './helpers'
 import { expectAxeClear } from '../accessibility/axe'
+test('a wrapped draft follows conversation width changes without typing or a window resize',async({page},info)=>{
+ await mount(page);await navigate(page,'dm')
+ const textarea=page.locator('.composer textarea')
+ const draft='Черновик остаётся видимым при изменении ширины области переписки'
+ await textarea.fill(draft)
+ const initial=await textarea.evaluate(el=>({width:el.clientWidth,height:el.clientHeight}))
+ // Opening adjacent workspace panels can resize the conversation without a
+ // window resize or any change to the draft itself.
+ await page.locator('.main').evaluate(el=>{el.style.width='420px';el.style.maxWidth='420px'})
+ await expect.poll(()=>textarea.evaluate(el=>el.clientWidth)).toBeLessThan(initial.width)
+ await expect.poll(()=>textarea.evaluate(el=>el.scrollHeight<=el.clientHeight)).toBe(true)
+ const narrowHeight=await textarea.evaluate(el=>el.clientHeight)
+ expect(narrowHeight).toBeGreaterThan(initial.height)
+ await expect(textarea).toHaveValue(draft)
+ await page.screenshot({path:info.outputPath('dm-draft-narrow-parent.png')})
+ await page.locator('.main').evaluate(el=>{el.style.width='';el.style.maxWidth=''})
+ await expect.poll(()=>textarea.evaluate(el=>el.clientWidth)).toBe(initial.width)
+ await expect.poll(()=>textarea.evaluate(el=>el.clientHeight)).toBe(initial.height)
+ await expect(textarea).toHaveValue(draft)
+})
+test('390px at 200% text keeps wrapped DM draft visible beside the pinned mini player',async({page},info)=>{
+ await mount(page,390,900,200);await navigate(page,'dm');await geometry(page)
+ const textarea=page.locator('.composer textarea'),shortDraft='Черновик'
+ await textarea.fill(shortDraft);await expect(textarea).toHaveValue(shortDraft)
+ const metrics=await textarea.evaluate(el=>{const style=getComputedStyle(el),padding=parseFloat(style.paddingTop)+parseFloat(style.paddingBottom),lineHeight=parseFloat(style.lineHeight);return {visibleLineHeight:el.clientHeight-padding,lineHeight,scrollHeight:el.scrollHeight,clientHeight:el.clientHeight}})
+ expect(metrics.visibleLineHeight).toBeGreaterThanOrEqual(metrics.lineHeight)
+ expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.clientHeight)
+ const draft='Контрольный черновик'
+ await textarea.fill(draft);await expect(textarea).toHaveValue(draft)
+ const wrapped=await textarea.evaluate(el=>({scrollHeight:el.scrollHeight,clientHeight:el.clientHeight,scrollTop:el.scrollTop}))
+ expect(wrapped.scrollHeight).toBeLessThanOrEqual(wrapped.clientHeight)
+ expect(wrapped.scrollTop).toBe(0)
+ await navigate(page,'text');await navigate(page,'dm');await expect(textarea).toHaveValue(draft)
+ await page.screenshot({path:info.outputPath('dm-draft-390-text-200.png')})
+ await textarea.fill('Длинный черновик '.repeat(60))
+ const bounded=await textarea.evaluate(el=>{const style=getComputedStyle(el);return {scrollHeight:el.scrollHeight,clientHeight:el.clientHeight,maxHeight:parseFloat(style.maxHeight),overflow:style.overflowY}})
+ expect(bounded.clientHeight).toBeLessThanOrEqual(bounded.maxHeight+1)
+ expect(bounded.scrollHeight).toBeGreaterThan(bounded.clientHeight)
+ expect(bounded.overflow).toBe('auto')
+})
+test('mobile screen share notice stays clear of the DM composer send button', async ({ page }, info) => {
+ await mount(page,393,844);await navigate(page,'dm')
+ await page.evaluate(()=> (window as any).__miniFixture.showStreamStartNotice())
+ const notice=page.locator('.workspace-stream-alert'),send=page.locator('.composer-send')
+ await expect(notice).toBeVisible();await expect(send).toBeVisible()
+ const overlaps=await notice.evaluate((el,selector)=>{const a=el.getBoundingClientRect(),b=document.querySelector(selector)!.getBoundingClientRect();return a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top},'.composer-send')
+ expect(overlaps).toBe(false)
+ await page.screenshot({path:info.outputPath('mobile-screen-share-notice-dm.png')})
+})
 for(const width of [320,390,1024,1440])for(const scale of [100,200])test(`chat zoning ${width} text ${scale}`,async({page},info)=>{
  await mount(page,width,900,scale)
  for(const view of ['text','dm']){

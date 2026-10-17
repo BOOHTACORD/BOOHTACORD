@@ -8,13 +8,19 @@ const surfaces = ['guild', 'audio', 'archive', 'quick', 'files'] as const
 async function expectControlsFit(page: Page) {
   const bounds = await page.locator('.gc-button:visible, .gc-field:visible').evaluateAll(elements => elements.map(element => {
     const rect = element.getBoundingClientRect()
+    const style = getComputedStyle(element)
+    const parent = element.parentElement?.getBoundingClientRect()
+    const parents = [element.parentElement, element.parentElement?.parentElement, element.parentElement?.parentElement?.parentElement]
+      .filter((node): node is HTMLElement => node instanceof HTMLElement)
+      .map(node => `${node.tagName.toLowerCase()}.${String(node.className)}=${node.getBoundingClientRect().width}/${getComputedStyle(node).minWidth}`)
     return { left: rect.left, right: rect.right, viewport: innerWidth,
+      target: `${element.tagName.toLowerCase()}.${String(element.className)} ${element.getAttribute('aria-label') ?? element.textContent?.trim().replace(/\s+/g, ' ').slice(0, 60)} (${Math.round(rect.left)}..${Math.round(rect.right)} / ${innerWidth}; css=${style.width},min=${style.minWidth},max=${style.maxWidth},box=${style.boxSizing},parent=${parent?.width}; ancestors=${parents.join(' <- ')})`,
       clippedText: element.matches('button') && element.scrollWidth > element.clientWidth + 2 }
   }))
   for (const bound of bounds) {
-    expect(bound.left).toBeGreaterThanOrEqual(-1)
-    expect(bound.right).toBeLessThanOrEqual(bound.viewport + 1)
-    expect(bound.clippedText).toBe(false)
+    expect(bound.left, bound.target).toBeGreaterThanOrEqual(-1)
+    expect(bound.right, bound.target).toBeLessThanOrEqual(bound.viewport + 1)
+    expect(bound.clippedText, bound.target).toBe(false)
   }
 }
 async function open(page: Page, surface: string, scale = 100) {
@@ -33,7 +39,47 @@ function action(page: Page, surface: string): Locator {
         : surface === 'quick' ? page.getByRole('button', { name: 'Показать ещё участников', exact: true })
           : page.getByRole('button', { name: /^Перейти к сообщению с файлом/ })
 }
-for (const width of [1440, 390]) for (const scale of [100, 200]) for (const surface of surfaces) {
+for (const width of [320, 390]) for (const captionSpacing of ['normal', '0.12em']) test(`audio advanced text remains inside its card at ${width}px / 200% text / ${captionSpacing} spacing`, async ({ page }, info) => {
+  await page.setViewportSize({ width, height: 900 })
+  await open(page, 'audio', 200)
+  // A wider caption must wrap too, including when platform font metrics differ.
+  await page.addStyleTag({ content: `.microphone-control { ${captionSpacing === 'normal' ? '' : 'font-family: monospace;'} letter-spacing: ${captionSpacing}; }` })
+  await page.screenshot({ path: info.outputPath('audio-advanced-text.png'), fullPage: true })
+  const clipped = await page.locator('.audio-settings').evaluate(root => {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+    const result: { text: string; left: number; right: number }[] = []
+    while (walker.nextNode()) {
+      const node = walker.currentNode
+      if (!node.textContent?.trim() || node.parentElement?.closest('select, input, textarea')) continue
+      const range = document.createRange()
+      range.selectNodeContents(node)
+      const card = node.parentElement?.closest('.audio-device-section, .audio-activation-section, .audio-advanced') ?? root
+      const bounds = card.getBoundingClientRect()
+      for (const rect of range.getClientRects()) {
+        if (rect.width > 0 && (rect.left < bounds.left - 1 || rect.right > bounds.right + 1)) {
+          result.push({ text: node.textContent.trim(), left: rect.left, right: rect.right })
+        }
+      }
+    }
+    return result
+  })
+  expect(clipped).toEqual([])
+  const activation = await page.locator('.audio-activation-section').evaluate(card => {
+    const box = card.getBoundingClientRect(), style = getComputedStyle(card)
+    return { left: box.left + parseFloat(style.borderLeftWidth) + parseFloat(style.paddingLeft),
+      right: box.right - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight),
+      controls: Array.from(card.querySelectorAll('.audio-activation-selector, .microphone-control > *')).map(control => {
+        const rect = control.getBoundingClientRect()
+        return { tag: control.tagName, left: rect.left, right: rect.right }
+      }) }
+  })
+  for (const control of activation.controls) {
+    expect(control.left, control.tag).toBeGreaterThanOrEqual(activation.left - 1)
+    expect(control.right, control.tag).toBeLessThanOrEqual(activation.right + 1)
+  }
+  await expectControlsFit(page)
+})
+for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) for (const scale of [100, 200]) for (const surface of surfaces) {
   test(`${surface} coherent controls ${width}px / ${scale}% text`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 900 })
     await open(page, surface, scale)
@@ -42,6 +88,30 @@ for (const width of [1440, 390]) for (const scale of [100, 200]) for (const surf
       const diagnostics = page.getByText('Диагностика качества голоса', { exact: true })
       await diagnostics.click()
       await diagnostics.locator('..').screenshot({ path: info.outputPath(`audio-diagnostics-${width}-${scale}.png`) })
+      if (width <= 600 && scale === 200) {
+        const pairs = await page.locator('.audio-processing-values').evaluate(element => {
+          const labels = Array.from(element.querySelectorAll('dt'))
+          const values = Array.from(element.querySelectorAll('dd'))
+          return labels.map((label, index) => {
+            const labelBox = label.getBoundingClientRect()
+            const valueBox = values[index]!.getBoundingClientRect()
+            const nextLabelBox = labels[index + 1]?.getBoundingClientRect()
+            return {
+              label: label.textContent?.trim(),
+              labelBottom: labelBox.bottom,
+              valueTop: valueBox.top,
+              valueBottom: valueBox.bottom,
+              nextLabelTop: nextLabelBox?.top,
+            }
+          })
+        })
+        for (const pair of pairs) {
+          expect(pair.valueTop, `${pair.label}: diagnostic value starts below its label`).toBeGreaterThanOrEqual(pair.labelBottom)
+          if (pair.nextLabelTop !== undefined) {
+            expect(pair.nextLabelTop, `${pair.label}: following label starts below its value`).toBeGreaterThanOrEqual(pair.valueBottom)
+          }
+        }
+      }
     }
     const control = action(page, surface)
     const style = await control.evaluate(element => {
@@ -51,7 +121,7 @@ for (const width of [1440, 390]) for (const scale of [100, 200]) for (const surf
     // The previous browser-default grey actions have no Design V2 radius/surface.
     expect(style.radius).toBe('8px')
     expect(style.background).toBe(surface === 'guild' ? 'rgb(88, 101, 242)' : 'rgb(34, 38, 49)')
-    expect(style.height).toBeGreaterThanOrEqual(width === 390 ? 44 : 36)
+    expect(style.height).toBeGreaterThanOrEqual(width <= 600 ? 44 : 36)
     for (const field of await page.locator('input:not([type=range]):not([type=checkbox]):not([type=radio]), select').all()) {
       await expect(field).toHaveCSS('background-color', 'rgb(26, 29, 38)')
       await expect(field).toHaveCSS('border-radius', '8px')
@@ -73,7 +143,7 @@ for (const width of [1440, 390]) for (const scale of [100, 200]) for (const surf
   })
 }
 
-for (const width of [1440, 390]) test(`semantic variants, hover, focus and disabled actions ${width}px`, async ({ page }, info) => {
+for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) test(`semantic variants, hover, focus and disabled actions ${width}px`, async ({ page }, info) => {
   await page.setViewportSize({ width, height: 900 })
   await open(page, 'variants')
   const primary = page.getByRole('button', { name: 'primary', exact: true })
@@ -97,6 +167,24 @@ for (const width of [1440, 390]) test(`semantic variants, hover, focus and disab
   const box = await icon.boundingBox(); expect(box!.width).toBe(box!.height)
   await expectAxeClear(page, 'main')
   await page.screenshot({ path: info.outputPath(`variants-${width}.png`), fullPage: true })
+})
+
+for (const width of [320, 390]) test(`coarse-pointer actions stay usable across all surfaces at ${width}px`, async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
+  try {
+    const page = await context.newPage()
+    for (const surface of surfaces) {
+      await open(page, surface)
+      const control = action(page, surface)
+      await expect(control).toBeVisible()
+      expect((await control.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+      await control.tap()
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+      await expectControlsFit(page)
+    }
+  } finally {
+    await context.close()
+  }
 })
 
 for (const physicalWidth of [1440, 780]) test(`actual browser zoom 200% at ${physicalWidth}px`, async ({ playwright }, info) => {

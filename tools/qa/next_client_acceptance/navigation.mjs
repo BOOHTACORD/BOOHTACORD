@@ -23,10 +23,13 @@ export async function navigation(page, fixture, input, report) {
   const reply=await api(page,`/channels/${fixture.a}/messages`,'POST',{
     client_message_id:randomUUID(),reply_to_id:ids[0],body:'QA navigation reply',
   });status(reply,201)
+  const historyRequest=page.waitForResponse(response=>new URL(response.url()).pathname===`/api/v1/channels/${fixture.a}/messages`&&response.request().method()==='GET')
   await select(page,'NextUnread')
+  const historyResponse=await historyRequest;assert.equal(historyResponse.status(),200)
+  const history=await historyResponse.json();assert.ok(history.messages.some(message=>message.id===reply.body.id),'Latest channel history omitted the newly created reply')
   const list=page.locator('.message-history-wrap .message-list')
-  await list.evaluate(view=>view.scrollTop=Math.max(0,view.scrollHeight-view.clientHeight-200))
-  const replyRow=page.locator('.message-item').filter({hasText:'QA navigation reply'})
+  await list.evaluate(view=>{view.scrollTop=Math.max(0,view.scrollHeight-view.clientHeight-200);view.dispatchEvent(new Event('scroll'))})
+  const replyRow=list.locator(`[data-message-id="${reply.body.id}"]`)
   await expect(replyRow).toBeVisible({timeout:20000})
   const replyPreview=replyRow.locator('.reply-preview')
   await expect(replyPreview).toBeVisible({timeout:20000})

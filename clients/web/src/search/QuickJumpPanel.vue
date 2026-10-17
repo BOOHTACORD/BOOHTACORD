@@ -13,7 +13,7 @@ onMounted(() => input.value?.focus())
 <template>
   <section class="search-panel quick-jump-panel" aria-labelledby="quick-jump-title" data-testid="quick-jump-panel">
     <header class="search-panel-heading"><h1 id="quick-jump-title">Каналы и люди</h1></header>
-    <label class="search-query-label"><span class="visually-hidden">Найти канал или человека</span><input ref="input" class="gc-field" v-model="query" type="search" autocomplete="off" placeholder="Канал или имя человека"></label>
+    <label class="search-query-label"><span class="visually-hidden">Найти канал или человека</span><input ref="input" class="gc-field" v-model="query" type="search" autocomplete="off" placeholder="Поиск"></label>
     <p v-if="status" class="search-status search-status--visible" role="status" aria-live="polite">{{ status }}</p>
     <ol v-if="entries.length" class="quick-jump-results result-list" aria-label="Каналы и участники гильдии">
       <li v-for="entry in entries" :key="`${entry.kind}:${entry.id}`" class="result-row">

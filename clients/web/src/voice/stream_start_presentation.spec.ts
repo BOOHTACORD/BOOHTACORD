@@ -39,7 +39,7 @@ describe('new screen presentation', () => {
       expect(silentDock).not.toContain('Звук начала трансляций выключен')
       expect(silentSetting).toContain('Звук начала трансляций выключен')
       expect(silentSetting).toContain('aria-checked="false"')
-      expect(silentDock).toContain('В канале началась демонстрация экрана')
+      expect(silentDock).not.toContain('В канале началась демонстрация экрана')
     } finally {
       streamStartNotice.value = false
       streamStartChime.setEnabled(true)

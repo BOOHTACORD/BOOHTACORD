@@ -1,0 +1,3468 @@
+{
+  "schema": "boohtacord.web-tour-regression.v1",
+  "issue": 353,
+  "epic": 339,
+  "generated_on": "2026-10-17",
+  "state": "REVIEW_REQUIRED",
+  "baseline": {
+    "current_master_sha": "43d0c491575f83f03d72bb7355392ce82f56d998",
+    "tour_date": "2026-10-15",
+    "displayed_deployed_version": "Web 1.0.32 / r-stable-r46",
+    "deployed_sha": "UNVERIFIED",
+    "available_frames": 55,
+    "unavailable_frame_ids": [
+      47,
+      54,
+      55
+    ],
+    "private_source_images_copied": false,
+    "notes": "Current master is 43d0c491575f83f03d72bb7355392ce82f56d998. PR #367 for #352 was merged there. Issue-353 code is on draft PR #368, including source-resolution fixes through 10b181af. The latest registered run records source 4db4b0bb26ddc1a11847e6d95e3cbd88d7957f0e diff-sha256=c33962d96a7008291a4deefe9012bb3563027bedb7b9961681d8facf0e5e9c6a. The 15 October production tour remains historical and is not source-equivalent."
+  },
+  "scenarios": [
+    {
+      "name": "Search modes and focus (#340)",
+      "status": "PASS",
+      "tests": "clients/web/tests/search_sessions/playwright.config.ts",
+      "cases": 26,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1920,
+        3440
+      ],
+      "root_text_scale_percent": [
+        100,
+        200
+      ],
+      "actual_browser_zoom_percent": 200,
+      "input": "pointer, keyboard, touch emulation"
+    },
+    {
+      "name": "DM picker overlay and keyboard (#341)",
+      "status": "PASS",
+      "tests": "clients/web/tests/dm_starter/playwright.config.ts",
+      "cases": 24,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1920,
+        3440
+      ],
+      "root_text_scale_percent": [
+        100,
+        200
+      ],
+      "actual_browser_zoom_percent": 200,
+      "input": "pointer, keyboard, touch emulation"
+    },
+    {
+      "name": "Primary control consistency (#342)",
+      "status": "PASS",
+      "tests": "clients/web/tests/control_consistency/playwright.config.ts",
+      "cases": 83,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1920,
+        3440
+      ],
+      "root_text_scale_percent": [
+        100,
+        200
+      ],
+      "actual_browser_zoom_percent": 200,
+      "input": "pointer, keyboard, touch emulation"
+    },
+    {
+      "name": "Composer, message actions and scroll (#345)",
+      "status": "PASS",
+      "tests": "clients/web/tests/chat_rhythm/playwright.config.ts",
+      "cases": 53,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1920,
+        3440
+      ],
+      "root_text_scale_percent": [
+        100
+      ],
+      "actual_browser_zoom_percent": 200,
+      "input": "pointer, keyboard, touch-mode message-action disclosure"
+    },
+    {
+      "name": "Search navigation and results (#346)",
+      "status": "PASS",
+      "tests": "clients/web/tests/search_presentation/playwright.config.ts",
+      "cases": 106,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1920,
+        3440
+      ],
+      "root_text_scale_percent": [
+        100,
+        200
+      ],
+      "actual_browser_zoom_percent": 200,
+      "input": "pointer, keyboard, touch emulation"
+    },
+    {
+      "name": "Authenticated local-feature real-stack gate",
+      "status": "PASS",
+      "run_dir": ".out/local-features/20261017-123657",
+      "command": "./tools/qa/local_features/check.sh --feature chat --feature shell --platform web --base 25be6ecac1a404469833da284f6d1ce70a350a47 --real-stack",
+      "raw_status": "PASS",
+      "reason": "The final registered run passed both desktop 1440px and mobile 393px real-stack journeys. Two earlier consolidated attempts intermittently missed the voice.lease_revoked hint with a 20s wait; the acceptance wait now permits two 15s worker cycles plus local-stack scheduling jitter (40s), while still requiring the actual WebSocket hint.",
+      "isolated_rechecks": [
+        {
+          "viewport_px": 1440,
+          "status": "PASS",
+          "run_dir": ".out/local-features/issue353-recheck-1440"
+        },
+        {
+          "viewport_px": 393,
+          "status": "PASS",
+          "run_dir": ".out/local-features/issue353-recheck-393"
+        }
+      ],
+      "earlier_consolidated_attempts": [
+        {
+          "run_dir": ".out/local-features/20261017-120656",
+          "status": "FAIL",
+          "detail": "Desktop 1440px missed the voice.lease_revoked hint within 20s; mobile 393px passed."
+        },
+        {
+          "run_dir": ".out/local-features/20261017-122318",
+          "status": "FAIL",
+          "detail": "Mobile 393px missed the voice.lease_revoked hint within 20s; desktop 1440px passed."
+        }
+      ]
+    },
+    {
+      "name": "Current-master physical Chrome screen-share picker and physical audio",
+      "status": "NOT_RUN",
+      "reason": "The real-stack run uses synthetic media and does not exercise the native picker or physical audio; current-master supported-Chrome/device acceptance remains NOT_RUN."
+    },
+    {
+      "name": "Audio processing diagnostics at large text (#342)",
+      "status": "PASS",
+      "tests": "clients/web/tests/control_consistency/controls.browser.spec.ts",
+      "cases": 2,
+      "matrix_css_px": [
+        320,
+        390
+      ],
+      "root_text_scale_percent": [
+        200
+      ],
+      "input": "browser-rendered production Vue settings; geometry assertion verifies each diagnostic value follows its label"
+    },
+    {
+      "name": "Workspace header and toolbar (#352)",
+      "status": "PASS",
+      "tests": "clients/web/tests/header_toolbar/playwright.config.ts",
+      "cases": 11,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "root_text_scale_percent": [
+        100,
+        200
+      ],
+      "input": "pointer, keyboard, focus/escape, close/back/overflow semantics"
+    },
+    {
+      "name": "Viewer diagnosis stability (#353)",
+      "status": "PASS",
+      "tests": "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts",
+      "cases": 2,
+      "evidence": "The displayed no-audio diagnosis stays stable while video receiver samples move between absent, fresh and stale."
+    },
+    {
+      "name": "Mobile screen-share notice and DM composer (#353)",
+      "status": "PASS",
+      "tests": "clients/web/tests/mini_player/mini.browser.spec.ts",
+      "cases": 1,
+      "evidence": "At 393px the start notice does not overlap the composer send button."
+    },
+    {
+      "name": "Voluntary voice leave notice (#353)",
+      "status": "PASS",
+      "tests": "clients/web/tests/voice_disconnect_notice/notice.browser.spec.ts",
+      "cases": 2,
+      "viewports_css_px": [
+        1440,
+        1024,
+        393
+      ],
+      "evidence": "A voluntary leave is a neutral status; revocation and other error reasons retain error styling."
+    },
+    {
+      "name": "Authenticated API/SFU real-stack acceptance (#353)",
+      "status": "PASS",
+      "run_dir": ".out/local-features/20261017-183225",
+      "viewports_css_px": [
+        1440,
+        393
+      ],
+      "evidence": "Both desktop and mobile journeys passed against local API, PostgreSQL and LiveKit; run artifacts are summarized in the current registered report hash."
+    }
+  ],
+  "quality_gates": {
+    "web_unit": {
+      "status": "PASS",
+      "tests": 1571,
+      "files": 474
+    },
+    "production_typecheck_build": {
+      "status": "PASS",
+      "warning": "Existing LiveKit ineffective dynamic import and >500kB chunk warning."
+    },
+    "spec_traceability": {
+      "status": "PASS_INDEX_ONLY",
+      "requirements": 39,
+      "approved_brief_available_on_host": false
+    },
+    "contracts": {
+      "status": "NOT_REQUIRED",
+      "reason": "No API/schema contract changed."
+    },
+    "authenticated_real_stack": {
+      "status": "PASS",
+      "raw_stage_status": "PASS",
+      "failed_stages": [],
+      "passed_stages": [
+        "web-real-stack-1440",
+        "web-real-stack-393"
+      ],
+      "run_dir": ".out/local-features/20261017-191711",
+      "earlier_consolidated_attempts": [
+        {
+          "run_dir": ".out/local-features/20261017-120656",
+          "status": "FAIL",
+          "detail": "Desktop 1440px missed the voice.lease_revoked hint within 20s; mobile 393px passed."
+        },
+        {
+          "run_dir": ".out/local-features/20261017-122318",
+          "status": "FAIL",
+          "detail": "Mobile 393px missed the voice.lease_revoked hint within 20s; desktop 1440px passed."
+        }
+      ],
+      "isolated_rechecks": [
+        {
+          "viewport_px": 1440,
+          "status": "PASS",
+          "run_dir": ".out/local-features/issue353-recheck-1440"
+        },
+        {
+          "viewport_px": 393,
+          "status": "PASS",
+          "run_dir": ".out/local-features/issue353-recheck-393"
+        }
+      ],
+      "reason": "Both authenticated real-stack journeys passed at desktop 1440px and mobile 393px in the latest 28-stage registered run.",
+      "previous_passed_run_dir": ".out/local-features/20261017-183225",
+      "registered_web_check_status": "REVIEW_REQUIRED",
+      "rerun_reason": "Repeated the registered current-master Web suite after source-resolution review found 200% text wrapping defects in screen-share controls and receiver diagnostics; this run verifies the fixes with desktop and mobile real-stack journeys.",
+      "latest_attempt": {
+        "status": "PASS",
+        "raw_status": "PASS",
+        "run_dir": ".out/local-features/20261017-191711",
+        "failed_stages": [],
+        "passed_stages": [
+          "web-real-stack-1440",
+          "web-real-stack-393"
+        ],
+        "reason": "Both real-stack journeys completed and passed in the latest 28-stage registered run."
+      },
+      "historical_blocked_attempt": {
+        "run_dir": ".out/local-features/20261017-153155",
+        "status": "BLOCKED",
+        "raw_stage_status": "FAIL",
+        "reason": "Both stages stopped in ports_available before application/service startup: PermissionError [Errno 1] Operation not permitted binding 127.0.0.1:4880. No real-stack assertion ran. A prior pre-rebase issue-353 run (20261017-151403) passed desktop 1440px and mobile 393px; this latest rebased source still needs a host with local socket permission."
+      },
+      "previous_passed_run_dir_before_latest": ".out/local-features/20261017-180122",
+      "validated_code_commit": "10b181af"
+    },
+    "rollout_rollback_issue305": "NOT_RUN",
+    "supplemental_browser_tests": [
+      {
+        "command": "clients/web/tests/voice_interface/playwright.config.ts (included in the latest registered Web gate)",
+        "status": "PASS",
+        "cases": 28,
+        "note": "Latest run passed after extending the fixed-dock scroll-clearance regression to 320px and 390px at 200% text; the suite also covers 768/1024/1440 widths and actual browser zoom."
+      },
+      {
+        "command": "clients/web/tests/mini_player/playwright.config.ts (standalone current-commit run)",
+        "status": "PASS",
+        "cases": 18,
+        "source_revision": "03fdb7d1fa7c1223e5e08b70e5683cf561952a23",
+        "note": "All 18 mini-player browser cases passed, including the new 390px / 200% text DM draft line visibility and route-retention regression. Its 390x900 source-resolution capture was inspected; the pinned viewer and composer stay visible, and a single-line draft is readable.",
+        "screenshot": {
+          "path": ".out/issue349/browser/mini.browser-390px-at-200--4071f-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+          "sha256": "bb9c3e71fc41c638880ccea095d1cd2d475373746c3cd835559a2b8f6ba5d502",
+          "width": 390,
+          "height": 900
+        }
+      },
+      {
+        "command": "clients/web/tests/mini_player/playwright.config.ts",
+        "status": "PASS",
+        "cases": 19,
+        "source_revision": "5f5b1388",
+        "note": "Focused current-code suite passed, including wrapped DM composer visibility at 200% text."
+      },
+      {
+        "command": "clients/web/tests/mini_player/playwright.config.ts accessibility text-scale cases",
+        "status": "PASS",
+        "cases": 20,
+        "source_revision": "5f5b1388",
+        "note": "Pass at 100%/200% text and widths 320, 393, 1024, 1280, and 1440px; explicit Shift+Enter scrolling remains intact."
+      },
+      {
+        "command": "clients/web/tests/search_sessions/tabs.browser.spec.ts (focused browser run)",
+        "status": "PASS",
+        "cases": 16,
+        "source_revision": "96fffa3c",
+        "note": "All search-mode/keyboard/touch cases passed. At 320px and 200% text, the test verifies the shortened “Поиск” placeholder width fits the actual input content box."
+      }
+    ],
+    "previous_registered_web_check": {
+      "status": "REVIEW_REQUIRED",
+      "raw_status": "PASS",
+      "run_dir": ".out/local-features/20261017-180122",
+      "raw_report_sha256": "bb06b9a15c69fb628461549bf345ea0637e8dc20a4d01ef236d3102203fe16b8",
+      "screenshot_count": 1051,
+      "unique_screenshot_count": 995,
+      "web_unit": "PASS (474 files / 1571 tests)",
+      "web_build": "PASS",
+      "browser_suites": "PASS (23/23 registered browser suites)",
+      "real_stack": "PASS at 1440px and 393px (authenticated local API/PostgreSQL/LiveKit)",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-control_consistency",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-header_actions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-member_popover",
+          "status": "PASS"
+        },
+        {
+          "name": "web-member_roster",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-microcopy",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mini_player",
+          "status": "PASS"
+        },
+        {
+          "name": "web-navigation_density",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-readonly_archive",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_share_ui",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_disconnect_notice",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ],
+      "note": "All 27 automated stages passed. Ten current-run images were inspected at source resolution; 20 reviews were reused on exact SHA-256 matches. 965 of 995 unique images remain unreviewed, so overall status remains REVIEW_REQUIRED.",
+      "source": "validated implementation commit 5f5b1388e02546f566d5433ead67f9baef615454; runner source record: ad71c5c9205fbd6c58c786475bc19afd7e6a5501 diff-sha256=67e4d851cce0f3921542c6256d7144c4b6e4c5a8d9569fe838f2d08ae49b3dad",
+      "raw_report_size_bytes": 336744,
+      "previous_run_dir": ".out/local-features/20261017-170617",
+      "previous_registered_web_check": {
+        "status": "REVIEW_REQUIRED",
+        "raw_status": "PASS",
+        "run_dir": ".out/local-features/20261017-170617",
+        "raw_report_sha256": "bae911c95ae31148ca85d49c704393bbe9f987f970a63b4d2b698da45a6d514b",
+        "screenshot_count": 1051,
+        "unique_screenshot_count": 998,
+        "web_unit": "PASS (474 files / 1571 tests)",
+        "web_build": "PASS",
+        "browser_suites": "PASS (23/23 registered browser suites)",
+        "real_stack": "PASS at 1440px and 393px (authenticated local API/PostgreSQL/LiveKit)",
+        "stages": [
+          {
+            "name": "web-unit",
+            "status": "PASS"
+          },
+          {
+            "name": "web-build",
+            "status": "PASS"
+          },
+          {
+            "name": "web-accessibility",
+            "status": "PASS"
+          },
+          {
+            "name": "web-chat_rhythm",
+            "status": "PASS"
+          },
+          {
+            "name": "web-control_consistency",
+            "status": "PASS"
+          },
+          {
+            "name": "web-conversation_action_disclosure",
+            "status": "PASS"
+          },
+          {
+            "name": "web-dm_starter",
+            "status": "PASS"
+          },
+          {
+            "name": "web-header_actions",
+            "status": "PASS"
+          },
+          {
+            "name": "web-member_popover",
+            "status": "PASS"
+          },
+          {
+            "name": "web-member_roster",
+            "status": "PASS"
+          },
+          {
+            "name": "web-mentions_inbox",
+            "status": "PASS"
+          },
+          {
+            "name": "web-message_social",
+            "status": "PASS"
+          },
+          {
+            "name": "web-microcopy",
+            "status": "PASS"
+          },
+          {
+            "name": "web-mini_player",
+            "status": "PASS"
+          },
+          {
+            "name": "web-navigation_density",
+            "status": "PASS"
+          },
+          {
+            "name": "web-quick_jump_people",
+            "status": "PASS"
+          },
+          {
+            "name": "web-readonly_archive",
+            "status": "PASS"
+          },
+          {
+            "name": "web-responsive_shell",
+            "status": "PASS"
+          },
+          {
+            "name": "web-screen_profile",
+            "status": "PASS"
+          },
+          {
+            "name": "web-screen_share_ui",
+            "status": "PASS"
+          },
+          {
+            "name": "web-search_dates",
+            "status": "PASS"
+          },
+          {
+            "name": "web-search_presentation",
+            "status": "PASS"
+          },
+          {
+            "name": "web-search_sessions",
+            "status": "PASS"
+          },
+          {
+            "name": "web-voice_disconnect_notice",
+            "status": "PASS"
+          },
+          {
+            "name": "web-voice_interface",
+            "status": "PASS"
+          },
+          {
+            "name": "web-real-stack-1440",
+            "status": "PASS"
+          },
+          {
+            "name": "web-real-stack-393",
+            "status": "PASS"
+          }
+        ],
+        "note": "All 27 automated stages passed: unit, production build, accessibility, 23 browser suites, and authenticated real-stack journeys at 1440px and 393px. Twenty-eight current-run images were inspected directly; 970 of 998 unique images remain unreviewed, so final status is REVIEW_REQUIRED.",
+        "source": "validated commit f7881097; runner source record: ed4cb5e5871c64720b1dd9f43ca5f7406f5ee0ff diff-sha256=5550c0b2726e450d88bfae5d77c3480d734593a5e1b6047153ee8011a75c4696",
+        "raw_report_size_bytes": 336744
+      }
+    },
+    "previous_visual_review": {
+      "status": "PARTIAL_REVIEW",
+      "reviewed_count": 28,
+      "available_selected_count": 1051,
+      "unique_image_count": 998,
+      "reused_exact_image_count": 0,
+      "effective_unique_reviewed_count": 28,
+      "unreviewed_unique_count": 970,
+      "reviewed_screenshots": [
+        {
+          "path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+          "sha256": "9a3913595ab705c02c7b27c7365733e35b7bee03df5ca7c7a41e1b638aa4c37c",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+          "sha256": "b1c3f60aaeddbd51079c2dd3773cc8745a05c9bde3ebb036d715c8a98fedfe6f",
+          "width": 390,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+          "sha256": "77d23eec78d439f46bf96c484ba9d16ab280c5506dc23cd1208c36ffa4c09c44",
+          "width": 393,
+          "height": 844
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-real-stack/1440/voice-after-leave.png",
+          "sha256": "a81a405d81649cd6c1f3b6de01a43fad2c092259985c834bcab5e8e65cdfb7c7",
+          "width": 2880,
+          "height": 1800
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-real-stack/393/voice-after-leave.png",
+          "sha256": "86148f9e0e5827990dd8317c6d5a0242df78c6c0ee6d20b027855b4675b4eb69",
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-real-stack/1440/mini-player-dm.png",
+          "sha256": "8ce1a18a831a578bdb1de9517eb47e306e93da376b179d183213f53be749e710",
+          "width": 2880,
+          "height": 1800
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-real-stack/393/mini-player-dm.png",
+          "sha256": "730d143508aa4dd79e7d3ad2448fba3a1faf335087b1ce028e52a2fe04c32e83",
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-real-stack/393/screen-share-compact-statistics.png",
+          "sha256": "3ca837316c7e7ed15198d029c4509508e53519b1ff4fcd852daf5452861cb14e",
+          "width": 1179,
+          "height": 2556
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+          "sha256": "88f1e29c7c3d0862297b2800c0116cb1a8387aab67eef52b9fe744f41b2d4f63",
+          "width": 320,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+          "sha256": "8eecab9fb0ea6abfc124b19c56314a4b33565ddbd0b9aa23ad98c92864418852",
+          "width": 320,
+          "height": 1000
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+          "sha256": "b0b788db28091483aef3a799d554382c2d78813517d5f5656a8fbf34c3da0597",
+          "width": 320,
+          "height": 1000
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-chat_rhythm/rhythm.browser-inventory-DIRECT-MESSAGE-320px/rich-text.png",
+          "sha256": "4c99ba717c5464ee8abba06682cb031d685ee1b9cef588d172b9c388d78b7c87",
+          "width": 320,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+          "sha256": "bba3c9869a3952172e71c2b6412886a0b4cce1336c3cf02de4156f5a10822106",
+          "width": 390,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
+          "sha256": "de731fb7ca3c419a7c5fe68c7bf52e79bfa8d61e4f624d50a4fd5f1374265fda",
+          "width": 320,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
+          "sha256": "5f1e6708dc3888e7ba8b1a40944f4f2d4000f79e54be73aee057c11b86ba1e97",
+          "width": 390,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
+          "sha256": "4593af1591726370d412a8e4a9772569616581c9d13e6d643224663e5f89e578",
+          "width": 1160,
+          "height": 64
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
+          "sha256": "4852614a3a015be34bbe2c37d58fc17992a0b6a67aabab828f6e7316d0777892",
+          "width": 320,
+          "height": 640
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
+          "sha256": "651e362a4cd040703e0d760b520a762081e005d45b8d2073b6c886a0bea3941e",
+          "width": 1440,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/direct-messages.png",
+          "sha256": "e7d155f94b290578eb2da22d604879595ad120861848d537ad329f8137dc0788",
+          "width": 320,
+          "height": 768
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+          "sha256": "4f37e3fadfdc36d7c87c2d2c7c21751bdb21c978bfe2dbf59d488c219cbe5633",
+          "width": 1440,
+          "height": 768
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-100-text/archive-320-100.png",
+          "sha256": "9fa55e26427c7ff5d54f1070718f800dc6392486a5c2e7ad176d218bdfe04fc2",
+          "width": 320,
+          "height": 939
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-100-text/audio-diagnostics-1440-100.png",
+          "sha256": "79fd18d09df2bc3f915aa1b428de9d43aecee5f5e6a540b8b6e10406379b8886",
+          "width": 830,
+          "height": 208
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+          "sha256": "e4e14ba0eb2601df6791c4cdb97d1736d4c9c63190d3a01b886bb96bd2758954",
+          "width": 390,
+          "height": 1267
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+          "sha256": "9cb03e67fd76706fe800f3cb1ba9133066632b9b256dd5183e410e8c21e27c59",
+          "width": 1440,
+          "height": 905
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-screen_profile/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
+          "sha256": "ef5af0742ba9be154965d1c659ff5e7223063a903ce0becb923002df4242443c",
+          "width": 786,
+          "height": 1704
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-screen_profile/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
+          "sha256": "cd6691cb350e3d2d4970e0afc696e5988abaec5b0a321124f71553dfad2cb6b9",
+          "width": 2880,
+          "height": 1800
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-320-text-100/dm.png",
+          "sha256": "327a96af7f7e2806ea1f59b323eb3feca4022a1464f2e118a9aea9314ea4eb64",
+          "width": 320,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-1440-text-200/text.png",
+          "sha256": "145c45389f327c2e8f3571bb88d2e1ad1f2cb3fcb94d43ec7836fd23200274db",
+          "width": 1440,
+          "height": 900
+        }
+      ],
+      "scope": "Twenty-eight distinct images from the previous registered run were inspected at their original pixel resolution. The run produced 1,051 selected captures and 998 unique images; 28 have current-run direct review evidence and 970 remain unreviewed, so visual status is REVIEW_REQUIRED. Prior-run review records are retained separately and are not counted without current exact-hash matching.",
+      "observations": "The viewer diagnosis remains “Источник не публикует аудиодорожку.” in desktop and mobile captures. During mobile DM navigation, the screen-share notice sits between the mini-player and conversation header, leaving the composer send button clear. Voluntary voice leave uses a neutral status treatment on desktop and mobile. The real-stack mini-player stays present across TEXT/DM state at 1440px and 393px. The 393px share statistics distinguish the selected sender profile from measured receiver dimensions and mark unavailable measurements as stale/absent; these captures do not establish media quality or capacity.  Twenty more unique component-fixture captures were inspected at source resolution across two passes. Responsive shell at 320px and 1440px retained its composer and voice status; the 320px DM list, 1440px channel list and 320px archive controls stayed within their panels; desktop audio diagnostics remained in-frame; channel administration forms fit at 390px and 1440px; the 2× mobile screen-share settings retained the fixed action footer, while the desktop 2× dialog retained its options and actions; and the mini-player DM at 320px kept the composer and voice dock visible. At 1440px with 200% text, the mini-player and message composer remained visible while long sidebar labels were clipped within their rails. The synthetic captures show layout only and do not prove media quality or user acceptance.",
+      "previous_run_visual_review": {
+        "run_dir": ".out/local-features/20261017-140223",
+        "manually_reviewed_unique_screenshots": 148,
+        "current_exact_image_matches_reused": 132,
+        "note": "Only byte-identical image content was carried forward."
+      },
+      "reused_review_runs": [
+        {
+          "run": "20261017-140223",
+          "reviewed_hashes": 148,
+          "matches_current": 130
+        },
+        {
+          "run": "20261017-141612",
+          "reviewed_hashes": 180,
+          "matches_current": 148
+        },
+        {
+          "run": "20261017-143806",
+          "reviewed_hashes": 228,
+          "matches_current": 223
+        }
+      ],
+      "current_run": ".out/local-features/20261017-170617",
+      "previous_review_run": ".out/local-features/20261017-153155",
+      "previous_reviewed_unique_count": 286,
+      "previous_exact_hash_matches": 79,
+      "previous_run_review_snapshot": {
+        "current_run": ".out/local-features/20261017-153155",
+        "reviewed_count": 16,
+        "available_selected_count": 972,
+        "unique_image_count": 923,
+        "reused_exact_image_count": 79,
+        "effective_unique_reviewed_count": 95,
+        "unreviewed_unique_count": 828,
+        "reviewed_screenshots": [
+          {
+            "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+            "sha256": "9a3913595ab705c02c7b27c7365733e35b7bee03df5ca7c7a41e1b638aa4c37c",
+            "width": 1440,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+            "sha256": "b1c3f60aaeddbd51079c2dd3773cc8745a05c9bde3ebb036d715c8a98fedfe6f",
+            "width": 390,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/updating-1024-200.png",
+            "sha256": "f0e21cb78ed9d692798f95b8df0951f1085215a616e041c0f71e1df63eda2b68",
+            "width": 1024,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/technical-receiver-1024-200.png",
+            "sha256": "3cfe1ab2a0fea7becbb1bbed4d64b1e51d00702b1137bc72b45e15cb738ae1d3",
+            "width": 1024,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-390px-text-100-/receiver-390-100.png",
+            "sha256": "493397de2f6feccc5c1e037d5738df829297aeac67f32f34d919f408f3234a27",
+            "width": 390,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-390px-text-100-/technical-receiver-390-100.png",
+            "sha256": "ae11e35afca2061cee52ccf73ddf6613dcba91fe347a60a9b6433a8cfe1bff60",
+            "width": 390,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-390px-text-100-/unsupported-390-100.png",
+            "sha256": "135e39f7752a5d1d31cc8bb3460c8535d7d9665e21ffc7580a9fe1c6953e8b66",
+            "width": 390,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-320px-text-200-/prejoin.png",
+            "sha256": "13b90007cce396341e4aa5aa829ca659cce8d1163d76aad3bf95cb0a0af0ca36",
+            "width": 320,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/denied.png",
+            "sha256": "dc839f5c82bedc5d4253f9d737fe05514f773ff1a1fbe15eedeb5b3d66491762",
+            "width": 390,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-header_actions/headers.browser-200-text-k-c357b--long-accessible-object-320/dm-text200.png",
+            "sha256": "895d4e51db8ddba786a266b2aac07676c30119d91203c232f930d58c678232e9",
+            "width": 320,
+            "height": 57
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+            "sha256": "c05d7541d7a22c2367a8caccf1573aa66cde8286e0e27205f5e2e4cb0a138921",
+            "width": 320,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+            "sha256": "f2548c13dfa7d31aa6ac25a7184f740a6e534d13b01d940c2c0b112810ad81ad",
+            "width": 390,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-accessibility/accessibility.browser-voic-65451-s-a-retry-at-mobile-2x-text/voice-dock-mic-denied-2x.png",
+            "sha256": "13f7a3ee24cca3a09d1b4d77d55a8ad32ce5ed657972805b889a1ecb5cd7b3ce",
+            "width": 320,
+            "height": 640
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/details-launch-1024-200.png",
+            "sha256": "4972bc008fd6c76923864c07bed4a5c257e82b12aab1d163cec011f90dac9340",
+            "width": 1024,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/details-updating-1024-200.png",
+            "sha256": "6d770d133abdd05598947c8927209484114155028aadcb685221c988578a39bb",
+            "width": 1024,
+            "height": 900
+          },
+          {
+            "path": ".out/local-features/20261017-153155/images/web-screen_profile/quality_dialog.browser-sce-15aaa-o-and-supported-FPS-ceiling/screen-share-quality-637x584.png",
+            "sha256": "8236346aedb1adfa5ede9214f7b78e9b3d778029c0a44827dd11d6658fa7d0a6",
+            "width": 637,
+            "height": 584
+          }
+        ],
+        "scope": "Sixteen distinct current-run source-resolution captures were inspected directly. One additional inspected current image (320px search tabs at 200% text) is an exact-hash match in the 79-image carry-forward set and is not double-counted. The current run has 972 selected PNG captures / 923 unique images; 95 have review evidence and 828 remain unreviewed, so status remains REVIEW_REQUIRED.",
+        "observations": "The screen-share diagnosis remains “Источник не публикует аудиодорожку.” in desktop and 390px/200% text captures while receiver samples move from absent to fresh to stale; its focused browser regression asserts the exact text at all three states. The 1024px/200% launch and quality dialogs, plus the 637x584 quality selection capture, keep their frames and primary actions visible; the larger dialogs scroll their detail text within the frame. At 390px the receiver drawer keeps the summary and copy action readable, the expanded technical details continue below the capture, and the unsupported-browser warning and profile controls fit; a close-action hint appears beside the close icon. The 320px/200% voice prejoin card fits its two actions while the room title truncates in the header. At 390px/200% the microphone-denied status wraps above the fixed voice controls, which remain visible. A 320px/200% DM header truncates its title but keeps actions visible; search tabs stack vertically with no horizontal overflow, while the query placeholder is clipped by the narrow field. The 320px/200% DM picker stays within the viewport, though a deliberately pathological synthetic name wraps across many lines. At 390px/200% the mini-player and composer remain visible; a long draft wraps and scrolls to its active line, and the focused regression checks one-line draft visibility and retention across navigation. These are synthetic UI fixtures and do not prove physical picker or media quality."
+      },
+      "manual_review_limitation": "970 unique screenshots from the previous run remain unreviewed.",
+      "before_after_comparisons": [
+        {
+          "scenario": "Mobile mini-player with active DM composer and screen-share start notice",
+          "viewport_css_px": [
+            393,
+            852
+          ],
+          "image_px": [
+            1179,
+            2556
+          ],
+          "before": {
+            "path": ".out/local-features/20261017-164959/images/web-real-stack/393/mini-player-dm.png",
+            "sha256": "a23dafba0c5f292c1df8b570c128b4e4fff2989a546788977b362d29e739d3b7"
+          },
+          "after": {
+            "path": ".out/local-features/20261017-170617/images/web-real-stack/393/mini-player-dm.png",
+            "sha256": "730d143508aa4dd79e7d3ad2448fba3a1faf335087b1ce028e52a2fe04c32e83"
+          },
+          "observation": "Before: the start notice overlays the composer border and send button. After: it sits in flow between the mini-player and conversation header; the composer and send button are clear. Both captures were inspected at original pixel resolution.",
+          "source": "Before capture is the immediately preceding registered real-stack run; after capture is the latest passing registered real-stack run."
+        }
+      ]
+    },
+    "registered_web_check": {
+      "status": "REVIEW_REQUIRED",
+      "raw_status": "PASS",
+      "run_dir": ".out/local-features/20261017-191711",
+      "raw_report_sha256": "9dd54336481155b89eac463f02907b0b4e91d912f4f73cca2b13ab7fd03587af",
+      "screenshot_count": 1053,
+      "unique_screenshot_count": 996,
+      "web_unit": "PASS (474 files / 1571 tests)",
+      "web_build": "PASS",
+      "browser_suites": "PASS (23/23 registered browser suites)",
+      "real_stack": "PASS at 1440px and 393px (authenticated local API/PostgreSQL/LiveKit)",
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-control_consistency",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-header_actions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-member_popover",
+          "status": "PASS"
+        },
+        {
+          "name": "web-member_roster",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-microcopy",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mini_player",
+          "status": "PASS"
+        },
+        {
+          "name": "web-navigation_density",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-readonly_archive",
+          "status": "PASS"
+        },
+        {
+          "name": "web-responsive_shell",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_share_ui",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-track_name",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_disconnect_notice",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "PASS"
+        }
+      ],
+      "note": "All 28 automated stages passed. 10 current-run images were inspected at source resolution; 118 earlier reviews were reused only on exact SHA-256 matches. 868 of 996 unique images remain unreviewed, so overall status stays REVIEW_REQUIRED.",
+      "source": "4db4b0bb26ddc1a11847e6d95e3cbd88d7957f0e diff-sha256=c33962d96a7008291a4deefe9012bb3563027bedb7b9961681d8facf0e5e9c6a",
+      "raw_report_size_bytes": 337539,
+      "previous_run_dir": ".out/local-features/20261017-183225",
+      "checked_code_commits": [
+        "5f5b1388",
+        "96fffa3c",
+        "10b181af"
+      ]
+    },
+    "visual_review": {
+      "status": "PARTIAL_REVIEW",
+      "current_run": ".out/local-features/20261017-191711",
+      "available_selected_count": 1053,
+      "unique_image_count": 996,
+      "directly_reviewed_count": 31,
+      "exact_hash_reused_review_count": 114,
+      "effective_unique_reviewed_count": 145,
+      "unreviewed_unique_count": 851,
+      "directly_reviewed_screenshots": [
+        {
+          "path": ".out/local-features/20261017-191711/images/web-accessibility/admin_confirmation.browser-168ea-chable-at-844x390-landscape/screen-share-setup-actions.png",
+          "sha256": "e10785efaad7ea138d413eba51f1ff361a9305f8a754d97ee7cf86d41d1b17c5",
+          "dimensions_px": [
+            1688,
+            780
+          ],
+          "observation": "In the 844×390 landscape screen-share setup, the selected profile and both footer actions remain visible; the body content continues above the fixed footer."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+          "sha256": "c05d7541d7a22c2367a8caccf1573aa66cde8286e0e27205f5e2e4cb0a138921",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "observation": "At 320 CSS px / 200% text, the DM starter remains inside the managed modal and its close control is reachable; deliberately unbroken long fixture names wrap within words to avoid horizontal overflow."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-mentions_inbox/mentions_inbox.browser-ren-b3ebb-nd-emits-exact-message-jump/mentions-inbox-desktop.png",
+          "sha256": "4b7a5c8f7a176f88edd100c85a2b01bf4d1a6526a9d0fb41d45548af0f468f55",
+          "dimensions_px": [
+            1440,
+            1000
+          ],
+          "observation": "The desktop mentions view presents message, mention and archive scopes in a single row, with refresh and pagination actions separated from the message entry."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-mini_player/mini.browser-short-viewpor-3408f-ose-preserve-media-identity/short-paused.png",
+          "sha256": "a74dcb98239ce72e64cbd078a485e9e092bab0c88ed34746aee09a873a212773",
+          "dimensions_px": [
+            390,
+            500
+          ],
+          "observation": "In the short mobile viewport, mini-player controls stay above the conversation; long URL content wraps, while the composer and connected voice controls remain available."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-top.png",
+          "sha256": "3193991984568f37d91e392f6b7a7f1f9791f6aea81032b33ac476735ddb3524",
+          "dimensions_px": [
+            320,
+            768
+          ],
+          "observation": "At 320px, navigation channel names truncate within their rows, per-channel actions remain visible, and the connected voice controls and profile footer fit below the scrollable list."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-real-stack/393/search-tabs-messages.png",
+          "sha256": "153761f3a3f047e708250b4d6755d954cab51c9f747f28b560848b897c46d524",
+          "dimensions_px": [
+            1179,
+            2556
+          ],
+          "observation": "The authenticated 393px search view keeps its two top-level scopes, four search modes, query field, filters and Find action within the viewport; the focused query field has a visible focus outline."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-375x812.png",
+          "sha256": "9e657c1a012e36583060bb31fae22375355463ceab66a5ea45b1d648ca8e9563",
+          "dimensions_px": [
+            375,
+            812
+          ],
+          "observation": "At 375×812, the responsive shell retains the workspace header, composer and connected voice dock while the conversation area absorbs the reduced height."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-200-tex-7b1d5-rds-intact-at-desktop-width/receiver-text-200-1024.png",
+          "sha256": "0cc6c21d14dda0c65afd498bd95d4b58e29ede031bc4b8cfdef7b6d67e0b507a",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "The focused post-fix 1024 CSS px / 200% receiver capture shows the rem-scaled statistics panel with summary rows readable and no split words or row overflow."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/details-launch-1024-200.png",
+          "sha256": "96b1bbb35d7e83d09e0ddaf6e7b1e02123cb5a2a8746220dba1270ced02a2dec",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "At 1024 CSS px and 200% root text, the launch dialog scrolls expanded capabilities independently while keeping Cancel and Start actions visible."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/details-updating-1024-200.png",
+          "sha256": "6d770d133abdd05598947c8927209484114155028aadcb685221c988578a39bb",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "At 1024 CSS px and 200% root text, quality-update actions remain in the footer while capability details continue inside the scrollable body."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/launch-1024-200.png",
+          "sha256": "44579cbc4886bfa53b1b663bcf46f63ebc87494fa6becb57902c7f157270fd92",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "At 1024 CSS px and 200% root text, the launch selection remains usable; the primary label wraps cleanly and Cancel stays on one line."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/receiver-1024-200.png",
+          "sha256": "faafde063dfcbf81f8208659ad3c11be3f917397a9552a31838fc1eebe234760",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "At 1024 CSS px and 200% root text, the enlarged receiver statistics panel shows sender selection, missing confirmation and viewer measurements as separate readable rows."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/sender-1024-200.png",
+          "sha256": "4a886fab9bf2b96f9b343c4afae3e8d6a1c1032a79f688daba6371576ab229cd",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "At 1024 CSS px and 200% root text, the sender view distinguishes the selected 1080p / 60 FPS target from the measured 1920 × 654 / 1 FPS output."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/technical-receiver-1024-200.png",
+          "sha256": "b68640c6fb8ef224080ee7ae151a4746fa2d57b5499100d2a043f7025a5c4960",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "At 1024 CSS px and 200% root text, the receiver diagnostics panel scales with text, scrolls within the viewport, and keeps labels and values intact at word boundaries."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/technical-sender-1024-200.png",
+          "sha256": "70ef109acb7ba52953997ce10fe0e5e7700f2df094fb46b33f81a66be6fd3b2e",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "At 1024 CSS px and 200% root text, expanded sender diagnostics wrap at word boundaries; details remain readable and continue below the captured viewport."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/unsupported-1024-200.png",
+          "sha256": "fcd377af66b07657f2737533faf23a750dcadcffbddfd3b7c66eaaed452ac12e",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "At 1024 CSS px and 200% root text, the unsupported-browser explanation remains readable, Start stays disabled, and Cancel stays on one line."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-200-/updating-1024-200.png",
+          "sha256": "f0e21cb78ed9d692798f95b8df0951f1085215a616e041c0f71e1df63eda2b68",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "observation": "At 1024 CSS px and 200% root text, the update sheet keeps the selected profile and Apply action visible; explanatory content remains in the scrollable body."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/details-launch-320-200.png",
+          "sha256": "8da49523e3aa459bbae3d3c764206e1dc9daf0300d2570120c5c088e5d4c1c29",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "observation": "The 320 CSS px / 200% launch details view keeps Cancel and Start in the fixed footer; long setup text continues in the independently scrollable body."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/launch-320-200.png",
+          "sha256": "a238c03fe79b368622b539b558df3bed457c908d63b75e92fc89e59b71a5642c",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "observation": "At 320 CSS px and 200% root text, the launch choices remain readable and Cancel fits on one line; the primary action wraps within its button."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/receiver-320-200.png",
+          "sha256": "1f7f239c6ff110f500a61dabeada4b45537358bee11c701d425262eb07949dfd",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "observation": "At 320 CSS px and 200% root text, receiver statistics fit the viewport width; labels and values wrap at word boundaries and remain readable."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/sender-320-200.png",
+          "sha256": "b7cb44bfcd24dc7aa388b1f358f187831fb05e4e462218e640d8ca82a23457df",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "observation": "At 320 CSS px and 200% root text, the sender summary distinguishes selected and measured values; the collapsed diagnostics control wraps at a word boundary."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/technical-receiver-320-200.png",
+          "sha256": "30b2203d53d092bec5a46fa31f9c3c92bd9efadc6fffc2ecf98ec08c627c9553",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "observation": "At 320 CSS px and 200% root text, expanded receiver technical details wrap at word boundaries inside the statistics panel and remain legible."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-200-/technical-sender-320-200.png",
+          "sha256": "f719da5e2f4162ad0fe81a4b00cd7479fc19d8409a2a1592aca7da013d75db9b",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "observation": "At 320 CSS px and 200% root text, expanded sender diagnostics wrap at word boundaries and remain legible in the captured view."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png",
+          "sha256": "3980015f5d7893556d96e3fed40046bcdbe5440409d8df1515920a417e614dd3",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "observation": "At 320px / 200% text, search modes stack vertically and expanded author, attachment and date filters stay within the content width; lower active-filter chips continue below the scroll viewport."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-archive-result-layout-at-390px-200-text/archive-layout.png",
+          "sha256": "0b719fc2be94e0c67f2aa9d792791583327013c0feaade42db0632f0fd3343eb",
+          "dimensions_px": [
+            390,
+            1000
+          ],
+          "observation": "At 390px / 200% text, archive controls remain within the panel width; the long native channel option is truncated, and lower search actions remain reachable in the scrollable result region."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-mentions-result-layout-at-390px-100-text/mentions-layout.png",
+          "sha256": "a5c079a0fe188b4e507b99900f824dbbf1fbb5a1aff8a6b23781610fca2dabb6",
+          "dimensions_px": [
+            390,
+            1000
+          ],
+          "observation": "At 390px, mention/archive/pin modes form a two-column grid; long message metadata truncates without horizontal overflow, and refresh and Show more remain visible."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-pins-result-layout-at-320px-200-text/pins-layout.png",
+          "sha256": "48c9c78b1b2377ba88a34354ea226a0c18f3ce73e26aa93fa53978254bc535e4",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "observation": "At 320px / 200% text, the refresh action wraps inside its button and pinned metadata/snippets wrap within the panel; the message link remains visible and the list continues below the viewport."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-quick-result-layout-at-390px-100-text/quick-layout.png",
+          "sha256": "a0ee00b218ba0f3c690eebff1b6aea1844056c4d3e77e860e5d12310602535de",
+          "dimensions_px": [
+            390,
+            1000
+          ],
+          "observation": "At 390px, quick-jump results truncate long channel and DM names with ellipses; the query field and bottom Show more action remain usable."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+          "sha256": "b0b788db28091483aef3a799d554382c2d78813517d5f5656a8fbf34c3da0597",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "observation": "At 320px, search modes form two rows and the query, scope and Find controls fit the panel; result metadata truncates and snippets remain clamped within the scrollable list."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/leaving.png",
+          "sha256": "24d6547d67dd8e1d2b3c33a33f74cc12768d743cc23f90ba860ba96a91d44210",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "observation": "At 390 CSS px / 200% text, the leaving state uses neutral status wording and keeps the voice controls contained in the dock."
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/reconnecting.png",
+          "sha256": "1a5b60190552e1227ceee8e0a34bc0b3e8be83cd28e725a912dbd156df627246",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "observation": "At 390 CSS px / 200% text, reconnecting status is visible in both the content and dock; participant cards and dock controls remain within the viewport."
+        }
+      ],
+      "exact_hash_reused_screenshots": [
+        {
+          "path": ".out/local-features/20261017-191711/images/flutter-captures/message-actions-all-open-actual.png",
+          "sha256": "3dee289412cd6628d383f6d19d5eb8511274efda5a42650590115351f651645a",
+          "dimensions_px": [
+            390,
+            93
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-actions-all-open-actual.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/flutter-captures/message-social-touch-targets.png",
+          "sha256": "b0757bd6c59de55fd80d4d67a8b968d8ac6fd0b44a5319efa764424a2fe89e68",
+          "dimensions_px": [
+            390,
+            162
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-social-touch-targets.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/flutter-captures/message-actions-closed-actual.png",
+          "sha256": "9705694a8c81eeda18c6e90560bf84308ffef689cb9424561723ca4277aae979",
+          "dimensions_px": [
+            390,
+            279
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-actions-closed-actual.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/flutter-captures/message-actions-open-actual.png",
+          "sha256": "a1203d7519edc4ae457d4bd66eb4148908fd356183d1413129effe80e0fd71e6",
+          "dimensions_px": [
+            390,
+            279
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/flutter-captures/message-actions-open-actual.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-mini_player/mini.browser-390px-at-200--37465-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+          "sha256": "8eb4ab5d562498ea9f8e5a5f945dfe6a36fef775492fbd1bbe7a0f60bf7762ca",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-mini_player/mini.browser-390px-at-200--37465-side-the-pinned-mini-player/dm-draft-390-text-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+          "sha256": "77d23eec78d439f46bf96c484ba9d16ab280c5506dc23cd1208c36ffa4c09c44",
+          "dimensions_px": [
+            393,
+            844
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+          "sha256": "30c9543b74bb5a82e524f3601c24bfa1615e5e7f6f1c6e9d2e5040eff9d4be48",
+          "dimensions_px": [
+            780,
+            913
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-mini_player/zoom.browser-mini-at-actual-200-browser-zoom-780/mini-zoom.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-mini_player/mini.browser-chat-zoning-320-text-100/dm.png",
+          "sha256": "327a96af7f7e2806ea1f59b323eb3feca4022a1464f2e118a9aea9314ea4eb64",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-mini_player/mini.browser-chat-zoning-320-text-100/dm.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+          "sha256": "3a4a17cf19751f6e1dcb48ac5f4f8fff875cb6790ffffcc259c856ba4b8acf19",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-mini_player/mini.browser-chat-zoning-390-text-200/dm.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+          "sha256": "09b999751cfd92e96ef2099667915ab9fc906573c1cfc832d80c6b586687ecd2",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+          "sha256": "3799ce7799e52e571ffb2cbf3dde52e8916da9933b3a7e0d05cf1e96773733e9",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-messages.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-archive.png",
+          "sha256": "ec7910a6d5b8ea9b4076c3e634f5878c94d634870db3343c8a2afa2d1b67886e",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-archive.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-pinned.png",
+          "sha256": "f34694c32fd9e230b95a25d9ce67094e32ce5558a5fef46f5602b630be6c79f5",
+          "dimensions_px": [
+            320,
+            1000
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-200-text/search-pinned.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
+          "sha256": "4593af1591726370d412a8e4a9772569616581c9d13e6d643224663e5f89e578",
+          "dimensions_px": [
+            1160,
+            64
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-header_actions/headers.browser-200-text-k-c357b--long-accessible-object-320/dm-text200.png",
+          "sha256": "895d4e51db8ddba786a266b2aac07676c30119d91203c232f930d58c678232e9",
+          "dimensions_px": [
+            320,
+            57
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-header_actions/headers.browser-200-text-k-c357b--long-accessible-object-320/dm-text200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-header_actions/headers.browser-compact-he-66f00-and-all-primary-actions-390/text.png",
+          "sha256": "e6f546862d694b00689a3cb372034a6fd6fa29b2f0649542480572cc50b418f9",
+          "dimensions_px": [
+            390,
+            56
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-header_actions/headers.browser-compact-he-66f00-and-all-primary-actions-390/text.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-header_actions/headers.browser-actual-browser-zoom-200-640/text-zoom.png",
+          "sha256": "ded2f4c92173ad8a8193805ffd6bc47d014450a8bf1547c7ae93f82eb45f2f90",
+          "dimensions_px": [
+            640,
+            913
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-header_actions/headers.browser-actual-browser-zoom-200-640/text-zoom.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/muted.png",
+          "sha256": "5a6b7ae746f1cd2382a3df1b540470276b90daf951409f48e6425d8865696100",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-voice_interface/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/muted.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/connected.png",
+          "sha256": "b243256f849b2a7b905a6b5aad9dffc82e44207e41e24fe66e93e663bb739c3c",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-voice_interface/controls.browser-compact-v-80c78-tes-fit-at-1440px-text-200-/connected.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/connected.png",
+          "sha256": "7f1e43421176aeec0d19bdfac065980428779dd503a1140ed8ad4a1fed02d3f5",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-200-/connected.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+          "sha256": "bba3c9869a3952172e71c2b6412886a0b4cce1336c3cf02de4156f5a10822106",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1440px-text-200-/technical-sender-1440-200.png",
+          "sha256": "1cc19f2111d5e96edc43157974bb5da81a0beab4cd0a33c0a108a091eb11c069",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1440px-text-200-/technical-sender-1440-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
+          "sha256": "de731fb7ca3c419a7c5fe68c7bf52e79bfa8d61e4f624d50a4fd5f1374265fda",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/details-updating-1024-100.png",
+          "sha256": "18b39304133fff1b0678e65afe86f845ee94ea8dfd2e3067c0f23600f5b413d0",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/details-updating-1024-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/sender-1024-100.png",
+          "sha256": "95b0bdf908bd4e0b1d958005708d44b78e38cb49ee79c8b6abaae8b4a982440f",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/sender-1024-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/launch-1024-100.png",
+          "sha256": "51ab0b40e4287351cefebc376b5a9f86a74c829871758bc6df70c371de7a0ea1",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/launch-1024-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/details-launch-1024-100.png",
+          "sha256": "1a4c349ceab900b3f941d0b094ca5295da18c91db2c4f70420dd09275732be90",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/details-launch-1024-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/receiver-1024-100.png",
+          "sha256": "2fa0792c1e5291a57737d632aadaed021d1e307e00ebfa795f273c5773482b2f",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-1024px-text-100-/receiver-1024-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-390px-text-200-/technical-receiver-390-200.png",
+          "sha256": "d8a0247eb9274a4186be62a31012a46f910ad6edcadb0a6071e96cdee74000f9",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-390px-text-200-/technical-receiver-390-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+          "sha256": "9a3913595ab705c02c7b27c7365733e35b7bee03df5ca7c7a41e1b638aa4c37c",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+          "sha256": "b1c3f60aaeddbd51079c2dd3773cc8745a05c9bde3ebb036d715c8a98fedfe6f",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-mobile-stale.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-top.png",
+          "sha256": "adfea04819e926d6f784829d2615de430d80d9dd7258595d75cc4707925e2c5b",
+          "dimensions_px": [
+            1920,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-top.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-bottom.png",
+          "sha256": "43f3ce5f4a00b53b8533bd128e4845b021a823588134e48083400f825ba8f50c",
+          "dimensions_px": [
+            1920,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/channels-bottom.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/direct-messages.png",
+          "sha256": "9347fd91e780c9fb7d199a15d75768bf1885533782dfcbb67d7bc463fc487be4",
+          "dimensions_px": [
+            1920,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1920px/direct-messages.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-bottom.png",
+          "sha256": "cae393bb8f0bf86b1cbb8eb6a0532eeacccd29510e4278000335252ec996747e",
+          "dimensions_px": [
+            320,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-320px/channels-bottom.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+          "sha256": "4f37e3fadfdc36d7c87c2d2c7c21751bdb21c978bfe2dbf59d488c219cbe5633",
+          "dimensions_px": [
+            1440,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-top.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-bottom.png",
+          "sha256": "818ca0aa86ce6b7a327b3f473db2ebdbb32f30cb35df00b9f0f39ba3cd65e40d",
+          "dimensions_px": [
+            1440,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/channels-bottom.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/direct-messages.png",
+          "sha256": "5818d48e96750c742d22c5d4f475e46948ea31414dbfc4a1c50af438b09c84d6",
+          "dimensions_px": [
+            1440,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1440px/direct-messages.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/zoom.browser-actual-200-br-cf7fc-serves-navigation-at-1440px/navigation-zoom200.png",
+          "sha256": "33466dc2903ec8e96895c10b5c791ad9259491c9825ede4e493f63750cd149a5",
+          "dimensions_px": [
+            1440,
+            913
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/zoom.browser-actual-200-br-cf7fc-serves-navigation-at-1440px/navigation-zoom200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/zoom.browser-actual-200-br-01547-eserves-navigation-at-780px/navigation-zoom200.png",
+          "sha256": "eda29ec1fc62905628882f4a1814518fbba709d7cb14235c69b77b033d42b03d",
+          "dimensions_px": [
+            780,
+            913
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/zoom.browser-actual-200-br-01547-eserves-navigation-at-780px/navigation-zoom200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-top.png",
+          "sha256": "07dbeb0fcc3f7226b8f0b1052994be0c89cb70891f9eb8d330ec574cc9e7ad54",
+          "dimensions_px": [
+            390,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-top.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-bottom.png",
+          "sha256": "8346c0679bd415111b98998b767943ab712f117bbb4527eb3257e595df32230a",
+          "dimensions_px": [
+            390,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-390px/channels-bottom.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-top.png",
+          "sha256": "b722c646c2528ccd9063d77cb9d832f692ad4cdae88b6b5bfd9379b00c4f8a86",
+          "dimensions_px": [
+            768,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-top.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-bottom.png",
+          "sha256": "e1ae4441416ccb682ab7f33037b592db45afeb0272c4076640f509815496fa97",
+          "dimensions_px": [
+            768,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-768px/channels-bottom.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-top.png",
+          "sha256": "a8b587b0d408095c9a8b0a2925ae1f22122c724503d1af177a29e96ab26759b9",
+          "dimensions_px": [
+            1024,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-top.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-bottom.png",
+          "sha256": "a671249721bbceafa3020a475722c402814b702d10cc05c8889349c01921bd5c",
+          "dimensions_px": [
+            1024,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/channels-bottom.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/direct-messages.png",
+          "sha256": "aef32c35df9a69f49a0f899ce662fb4087b95b50b6d7db6160434d3565eedbfe",
+          "dimensions_px": [
+            1024,
+            768
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-navigation_density/navigation.browser-inventory-production-navigation-1024px/direct-messages.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-semantic--ba804--and-disabled-actions-390px/variants-390.png",
+          "sha256": "6a548a787bd2bbe3acf70aab32916c88cd61e16ff36b048e8b44ad2e040efe96",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-semantic--ba804--and-disabled-actions-390px/variants-390.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-diagnostics-1920-200.png",
+          "sha256": "e9e909a906dbf6a4f9f0fbec87195326a5cce92cb74d0dd848c80a285a52bfd4",
+          "dimensions_px": [
+            830,
+            508
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-diagnostics-1920-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-1920-200.png",
+          "sha256": "106ac6c6ca18964344f4a3452ff8e20cab3a1fe645f526cb7cbadbe154423579",
+          "dimensions_px": [
+            1920,
+            3497
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-200-text/audio-1920-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-archive.png",
+          "sha256": "2a14352b9cfa52411ebbc88679ea74560e2136a123a38d7a39d11c70d8c7d8e0",
+          "dimensions_px": [
+            1440,
+            1769
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-archive.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-audio.png",
+          "sha256": "853b17f816dc23c92179e5f463568fd9f77436758d694ebf44b62141ee97a3fe",
+          "dimensions_px": [
+            1440,
+            5402
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-1440px/zoom200-1440-audio.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-390-100.png",
+          "sha256": "eedba7a3fd9057913294e38bf8f3c7c635c12f55dc1eadb5b5a09d73e7177dc8",
+          "dimensions_px": [
+            390,
+            2839
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-390-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-diagnostics-390-100.png",
+          "sha256": "bdd29447ae6cfeae0f0b8dfd3e0b12dbf0e4e51a9cf2742403d81af714c1034a",
+          "dimensions_px": [
+            324,
+            312
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-diagnostics-390-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-200-text/archive-3440-200.png",
+          "sha256": "7808ff842278406e7eb220dac93bc30b022a3604fc205885cd99c74e5ceef348",
+          "dimensions_px": [
+            3440,
+            1529
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-200-text/archive-3440-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-768-200.png",
+          "sha256": "e8b7b437d1f15da6cfa9ba77e44e3f8de8889f1e5077838f326accde48208e4d",
+          "dimensions_px": [
+            768,
+            3911
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-768-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-diagnostics-768-200.png",
+          "sha256": "5c811333a6a1fb35d28cd48ebe11bd724fadd87f975dbdb417d94a650d690806",
+          "dimensions_px": [
+            686,
+            596
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-200-text/audio-diagnostics-768-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-1920px-100-text/guild-1920-100.png",
+          "sha256": "2c4b2a5b07e3bd9c5b94d2085f78ab1de0201ead217e81e90d42543388075106",
+          "dimensions_px": [
+            1920,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1920px-100-text/guild-1920-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-100-text/guild-320-100.png",
+          "sha256": "0472bf51d27400d93df939b16f092643c531e7bb5bd63c253b6099f28c48612b",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-100-text/guild-320-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-200-text/audio-1024-200.png",
+          "sha256": "18fb1ab9fd443e35e85a6ced0daba3bf7a6cfc3fddf02e3b63db7ca4afddbde3",
+          "dimensions_px": [
+            1024,
+            3489
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-200-text/audio-1024-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-200-text/archive-390-200.png",
+          "sha256": "4e6061fd2282b8cbd4d50ae25bfef14ff4bc8cc9c5a6a1864af270736eaef4c9",
+          "dimensions_px": [
+            390,
+            1817
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-200-text/archive-390-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+          "sha256": "9fd658c99e26ce273f4d5e5ee7af18909a839a6dad629dff81333133b7f27232",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-100-text/guild-1440-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-audio.png",
+          "sha256": "b1b1ccc33658aa96533817404df38694c39507b10a00911a883046839ff9fcee",
+          "dimensions_px": [
+            780,
+            6214
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-audio.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-guild.png",
+          "sha256": "7c7c6c6ca7e1c53f965bca549457b8b93b82a89975c3a53364fe2c1513a1308b",
+          "dimensions_px": [
+            780,
+            1038
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-actual-browser-zoom-200-at-780px/zoom200-780-guild.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-100-text/archive-768-100.png",
+          "sha256": "3a88a907da12eed78245ca2b43d9c23e9d19d10a2e659d6f289c0b0835ccc3a9",
+          "dimensions_px": [
+            768,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-100-text/archive-768-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-100-text/guild-1024-100.png",
+          "sha256": "c02ea15cd2567868fc57fc4c2df4b4719c6151aca911e796363c289c9fca3cf5",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-100-text/guild-1024-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-200-text/audio-1440-200.png",
+          "sha256": "6e7f7ced3ca65951057ceb0a166060dfc23ac8a328bd8ea854b1388421b15be2",
+          "dimensions_px": [
+            1440,
+            3497
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-200-text/audio-1440-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-diagnostics-3440-100.png",
+          "sha256": "0797d144809cf69fb8f4c9004953426e1d6975c5fb486a7f7f1d03fbfe174cf1",
+          "dimensions_px": [
+            830,
+            208
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-diagnostics-3440-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-3440-100.png",
+          "sha256": "ea4748dc8c932ebf90575d70918c166cd8aadded38fc65d754a9546a0437773c",
+          "dimensions_px": [
+            3440,
+            2257
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-100-text/audio-3440-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-1920px-100-text/archive-1920-100.png",
+          "sha256": "d6e8db34cfc624dd81e51553f8cd13b7352b18cec65f3c27c5d798b599003aa0",
+          "dimensions_px": [
+            1920,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-1920px-100-text/archive-1920-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-1440px-100-text/archive-1440-100.png",
+          "sha256": "27c7d1f4d8d83d4a2b677bb842aaacecf96e400d202c0356d06b5bf88b1e2662",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-1440px-100-text/archive-1440-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-390px-200-text/guild-390-200.png",
+          "sha256": "00312ef5354eea177da1f29526e356c1ff71a4886f9370487744ce7efc2e518a",
+          "dimensions_px": [
+            390,
+            1006
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-390px-200-text/guild-390-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-100-text/archive-1024-100.png",
+          "sha256": "7e38c039e4d318eea631bee0a2f64cf790f4e80c41e621c5d857f4db49b4da7a",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-100-text/archive-1024-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
+          "sha256": "5d385cf51ca1eafd3a44d1e1ec3858a2c2cee1c44d4480c184723d2fa03c7cbe",
+          "dimensions_px": [
+            290,
+            1044
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+          "sha256": "3be64d9f52a6b54d4aa1e3cb16b073aa8dc60761f8db41d1af01903d2e01609d",
+          "dimensions_px": [
+            320,
+            6047
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-768px-100-text/guild-768-100.png",
+          "sha256": "3f2c6b65d0a49ee15c33fd723fff11f9a309dbeeba9f508ca1f9cea49dd9860b",
+          "dimensions_px": [
+            768,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-768px-100-text/guild-768-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-200-text/guild-1440-200.png",
+          "sha256": "1747d7d8e75e995ccec12e7d8241fd33d8ffd7dfb327180b20c473bd019a88e3",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1440px-200-text/guild-1440-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-100-text/archive-390-100.png",
+          "sha256": "4df9b9e863f8ff2ac67ce22367cc8f09d6406ade85ae1dd6d883e8690fbc05b6",
+          "dimensions_px": [
+            390,
+            905
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-390px-100-text/archive-390-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-diagnostics-1024-100.png",
+          "sha256": "79fd18d09df2bc3f915aa1b428de9d43aecee5f5e6a540b8b6e10406379b8886",
+          "dimensions_px": [
+            830,
+            208
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-100-text/audio-diagnostics-1440-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-1024-100.png",
+          "sha256": "53ddc13241e39951611b91a4afbe0b9b2e764bb0cf8723b899738ac784c5a58b",
+          "dimensions_px": [
+            1024,
+            2249
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1024px-100-text/audio-1024-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-100-text/audio-1440-100.png",
+          "sha256": "e372a95076465a4167e45487e4e255a89b849e8320cf557c83cb8a78a4c4d28b",
+          "dimensions_px": [
+            1440,
+            2257
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1440px-100-text/audio-1440-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-200-text/guild-1024-200.png",
+          "sha256": "33ff608e32a4ca4fd457548a2d01f359e14439a4ecfd159bc416ce132a9aff55",
+          "dimensions_px": [
+            1024,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-1024px-200-text/guild-1024-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-200-text/archive-768-200.png",
+          "sha256": "6469134468ca84a88d0287d2e20782a8109fbcbee8a86d4982b399d4dcebe759",
+          "dimensions_px": [
+            768,
+            1529
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-768px-200-text/archive-768-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-100-text/audio-1920-100.png",
+          "sha256": "e01d19ba6ac8ec8bb145f542be62bb089ad6692cc616f1edf95619e7551de0dd",
+          "dimensions_px": [
+            1920,
+            2257
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-1920px-100-text/audio-1920-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-390-200.png",
+          "sha256": "829660251999ecbb1e95d34c0171d0b1ac2d7361f3f7773bb278d703e7ec022f",
+          "dimensions_px": [
+            390,
+            5685
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-390-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+          "sha256": "c956a5fe2f71095f8c150519cae255a85adb088593c06138d1125b82413fa33d",
+          "dimensions_px": [
+            324,
+            1004
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-diagnostics-390-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+          "sha256": "9b80c4815a459e772f1484a5f4fdc5511d77477a49190f6454b252938b982ef8",
+          "dimensions_px": [
+            320,
+            1122
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-guild-coherent-controls-320px-200-text/guild-320-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-768-100.png",
+          "sha256": "a5ce7e5fb3ee7852c0794963efc365752da29ee0ee92fa39ad519b41ad600b96",
+          "dimensions_px": [
+            768,
+            2423
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-768-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-diagnostics-768-100.png",
+          "sha256": "6c1b09e79ec8957fe5a118704e52945da66dd32b7702c113a91695b4eab50ce9",
+          "dimensions_px": [
+            686,
+            252
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-audio-coherent-controls-768px-100-text/audio-diagnostics-768-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-100-text/archive-3440-100.png",
+          "sha256": "c8d8186392855a3239de619e179f1993ab45719925d0e071850a83dec62c6146",
+          "dimensions_px": [
+            3440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-140223/images/web-control_consistency/controls.browser-archive-coherent-controls-3440px-100-text/archive-3440-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-diagnostics-320-100.png",
+          "sha256": "7b9283ae84b000548ce7052315f547e05b85576f8453218bffbe86126dd43d45",
+          "dimensions_px": [
+            254,
+            372
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-diagnostics-320-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-320-100.png",
+          "sha256": "43803398bd1c2db0156e747925a114b9b621436b4a70bdf5b438c6222b1949c7",
+          "dimensions_px": [
+            320,
+            2955
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-320-100.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-200-text/archive-1024-200.png",
+          "sha256": "46ec53fcb8d51d1c422448bf82e9ecfe3994c3973dcd730f95edcbd59d4634e0",
+          "dimensions_px": [
+            1024,
+            1529
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-archive-coherent-controls-1024px-200-text/archive-1024-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-diagnostics-3440-200.png",
+          "sha256": "152c11308ffb04e746519b493206d761509f22b313fddbfd78601d565c0ef76f",
+          "dimensions_px": [
+            830,
+            508
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-diagnostics-3440-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-3440-200.png",
+          "sha256": "d08bdb7e4b39e4504edc5b0b75b21e77ef464bb4d6b4bdd94773e2d76d244b8f",
+          "dimensions_px": [
+            3440,
+            3497
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-audio-coherent-controls-3440px-200-text/audio-3440-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+          "sha256": "6d662966025dd32c645fd5c907985f577d6d865cd7698bd8fe4b87874f3a5770",
+          "dimensions_px": [
+            320,
+            2153
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-control_consistency/controls.browser-archive-coherent-controls-320px-200-text/archive-320-200.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-search_presentation/layout.browser-search-result-layout-at-390px-200-text/search-layout.png",
+          "sha256": "36230f8dc20fff3a6f1ded0d813ccb33ba8ed9dc148e7b50d812788895157d08",
+          "dimensions_px": [
+            390,
+            1000
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-search_presentation/layout.browser-search-result-layout-at-390px-200-text/search-layout.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_profile/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
+          "sha256": "ef5af0742ba9be154965d1c659ff5e7223063a903ce0becb923002df4242443c",
+          "dimensions_px": [
+            786,
+            1704
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_profile/quality_dialog.browser-sou-5a3fe-irect-1440p-selection-at-2x/mobile-stream-launch-settings-1440p-current.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_profile/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+          "sha256": "111f7df5574c79f973655840072adb38bbaacce3169131efc473c3e583a2cfba",
+          "dimensions_px": [
+            390,
+            640
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-screen_profile/quality_dialog.browser-sho-44414-e-user-click-1440p-directly/screen-share-scenarios-390x640.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-screen_profile/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
+          "sha256": "cd6691cb350e3d2d4970e0afc696e5988abaec5b0a321124f71553dfad2cb6b9",
+          "dimensions_px": [
+            2880,
+            1800
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-screen_profile/quality_dialog.browser-sou-547f3-irect-1440p-selection-at-2x/desktop-stream-launch-actions-current.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-accessibility/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+          "sha256": "880e96683f5cbe632c3638ffb57be6971dc5e7225a9d73ff0f22d1b2fd839183",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-accessibility/accessibility.browser-voic-9db3e--names-focus-and-activation/voice-settings-dock-keyboard.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-microcopy/zoom.browser-actual-page-z-6288d-cused-hints-usable-at-780px/prejoin-zoom200-780.png",
+          "sha256": "f1c7361dc4120a14460ea725418e4dc70a5087f9c655eeb5c046e842a13fcdfc",
+          "dimensions_px": [
+            780,
+            913
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-145030/images/web-microcopy/zoom.browser-actual-page-z-6288d-cused-hints-usable-at-780px/prejoin-zoom200-780.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+          "sha256": "e4e14ba0eb2601df6791c4cdb97d1736d4c9c63190d3a01b886bb96bd2758954",
+          "dimensions_px": [
+            390,
+            1267
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-microcopy/audit.browser-copy-inventory-admin-section-channels-at-390px/screen.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+          "sha256": "9cb03e67fd76706fe800f3cb1ba9133066632b9b256dd5183e410e8c21e27c59",
+          "dimensions_px": [
+            1440,
+            905
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-microcopy/audit.browser-copy-invento-22199--section-channels-at-1440px/screen.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-member_roster/roster.browser-roster-and-profile-390-text-200/roster.png",
+          "sha256": "04a170f7f3cc3548471e552e4188ecc5af9ce1906cc4fd1521f655ac3afd0249",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-member_roster/roster.browser-roster-and-profile-390-text-200/roster.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-member_roster/roster.browser-roster-and-profile-320-text-200/roster.png",
+          "sha256": "5b8ba726f7b0774241b459e0697ba0d580e9f5351ff119b673e6c375884fe28a",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-member_roster/roster.browser-roster-and-profile-320-text-200/roster.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
+          "sha256": "5f1e6708dc3888e7ba8b1a40944f4f2d4000f79e54be73aee057c11b86ba1e97",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
+          "sha256": "651e362a4cd040703e0d760b520a762081e005d45b8d2073b6c886a0bea3941e",
+          "dimensions_px": [
+            1440,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-1440x900.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
+          "sha256": "4852614a3a015be34bbe2c37d58fc17992a0b6a67aabab828f6e7316d0777892",
+          "dimensions_px": [
+            320,
+            640
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-responsive_shell/responsive_shell.browser-p-cc83e-ts-workspace-while-resizing/shell-320x640.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-780px-window/dm-modal-zoom.png",
+          "sha256": "b441c7409c48c74119c73057b688ff0140ed775bcb283ca70e7851d06cbfea5e",
+          "dimensions_px": [
+            780,
+            913
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-dm_starter/zoom.browser-DM-modal-at-actual-200-zoom-in-780px-window/dm-modal-zoom.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+          "sha256": "88f1e29c7c3d0862297b2800c0116cb1a8387aab67eef52b9fe744f41b2d4f63",
+          "dimensions_px": [
+            320,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-170617/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-dm_starter/overlay.browser-modal-esca-5b1dd-d-sidebar-at-390px-200-text/dm-starter.png",
+          "sha256": "68aa2a468d54caa318e7ac0e6ecc1a513c2892639cdc48ea47a46c50687f93e1",
+          "dimensions_px": [
+            390,
+            900
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-dm_starter/overlay.browser-modal-esca-5b1dd-d-sidebar-at-390px-200-text/dm-starter.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-chat_rhythm/zoom.browser-actual-200-br-8607c-DIRECT-MESSAGE-780px-window/zoom-200-rich-text.png",
+          "sha256": "84a8fabd7cac31e00d4ee00203218a54f7290422ecd7b7ed81e32da3f678700e",
+          "dimensions_px": [
+            780,
+            913
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-183225/images/web-chat_rhythm/zoom.browser-actual-200-br-8607c-DIRECT-MESSAGE-780px-window/zoom-200-rich-text.png",
+          "exact_hash_match": true
+        },
+        {
+          "path": ".out/local-features/20261017-191711/images/web-real-stack/393/voice-after-leave.png",
+          "sha256": "de4238dbf09f00cdaf95efec327e674e129c4cdca7740416f7fd3ed2b31f3eed",
+          "dimensions_px": [
+            1179,
+            2556
+          ],
+          "reused_from_reviewed_path": ".out/local-features/20261017-180122/images/web-real-stack/393/voice-after-leave.png",
+          "exact_hash_match": true
+        }
+      ],
+      "scope": "10 current-run images were inspected at original pixel resolution. 118 prior source-resolution reviews count only for exact SHA-256 matches; 868 unique images remain unreviewed.",
+      "details_file": "evidence/qa/dw14-composer-wrap-regression-2026-10-17.json",
+      "previous_run_dir": ".out/local-features/20261017-183225",
+      "baseline_approved": false,
+      "manual_review_limitation": "868 unique screenshots from the current run remain unreviewed.",
+      "reused_review_source_runs": [
+        {
+          "run_dir": ".out/local-features/20261017-140223",
+          "review_record": ".out/local-features/20261017-140223/manual-review-progress.json",
+          "new_exact_hash_matches": 59
+        },
+        {
+          "run_dir": ".out/local-features/20261017-141612",
+          "review_record": ".out/local-features/20261017-141612/manual-review-progress.json",
+          "new_exact_hash_matches": 3
+        },
+        {
+          "run_dir": ".out/local-features/20261017-145030",
+          "review_record": ".out/local-features/20261017-145030/manual-review-progress.json",
+          "new_exact_hash_matches": 11
+        }
+      ],
+      "historical_review_sources": [
+        {
+          "run_dir": ".out/local-features/20261017-183225",
+          "review_record": ".out/local-features/20261017-183225/manual-review-progress.json",
+          "new_exact_hash_matches": 5
+        }
+      ]
+    },
+    "rollout_rollback_issue305_details": {
+      "status": "NO-GO / NOT_RUN",
+      "user_context": "The user stated measurements and an owner exist, then asked the agent to decide without providing their values or identity.",
+      "decision": "Keep the release gate NOT_RUN; do not invent baseline/post-change measurements or a named Web rollback owner.",
+      "required_evidence": "For each of eight real UX tasks: tester count, platform/viewport, baseline and post-change completion/time/errors/backtracking, plus evidence link/date and named Web rollback owner."
+    }
+  },
+  "task_scenarios": [
+    {
+      "name": "Find/open channel",
+      "status": "PASS_SCOPED",
+      "evidence": "evidence/qa/dw05-navigation-2026-10-16.md"
+    },
+    {
+      "name": "Open DM, cancel picker, preserve draft",
+      "status": "PASS",
+      "evidence": "evidence/qa/pr355-search-dm-acceptance-2026-10-16.md; evidence/qa/dw06-chat-rhythm-2026-10-16.md"
+    },
+    {
+      "name": "Pins, archive, files, mention search/navigation",
+      "status": "PASS_SCOPED",
+      "evidence": "evidence/qa/dw07-search-presentation-2026-10-16.md"
+    },
+    {
+      "name": "Connect/leave voice with two real listeners",
+      "status": "PASS_SCOPED",
+      "evidence": "evidence/qa/dw08-voice-interface-2026-10-16.md; .out/local-features/20261017-145030; clients/web/tests/voice_interface/controls.browser.spec.ts (28/28)"
+    },
+    {
+      "name": "Screen share receiver/SFU UI",
+      "status": "PASS_SCOPED",
+      "evidence": "evidence/qa/dw09-screen-share-ui-2026-10-16.md"
+    },
+    {
+      "name": "Mini-player across TEXT/DM",
+      "status": "PASS_SCOPED",
+      "evidence": "evidence/qa/dw10-mini-player-2026-10-17.md"
+    },
+    {
+      "name": "Settings surfaces and workspace header",
+      "status": "PASS_BROWSER; real-stack relevant settings path PASS",
+      "evidence": "PR #366 / issue #351 merged; .out/local-features/20261017-145030; local issue #352 integration branch"
+    },
+    {
+      "name": "Responsive audio settings diagnostics",
+      "status": "PASS_BROWSER",
+      "evidence": "clients/web/tests/control_consistency/controls.browser.spec.ts; .out/local-features/20261017-145030; source-resolution audio screenshots"
+    },
+    {
+      "name": "Mobile voice dock scroll clearance at large text",
+      "status": "PASS_BROWSER",
+      "evidence": "clients/web/tests/voice_interface/controls.browser.spec.ts; 320px and 390px/200% text: last participant scrolls fully above fixed dock"
+    },
+    {
+      "name": "Workspace header and toolbar semantics",
+      "status": "PASS_BROWSER",
+      "evidence": "clients/web/tests/header_toolbar/playwright.config.ts (11/11); .out/local-features/20261017-145030; 320/390/768/1440px and 200% text"
+    }
+  ],
+  "residuals": [
+    {
+      "issue": "#340 search tab overflow/focus clipping",
+      "status": "PASS",
+      "evidence": "PR #355 before/after plus current-master 26/26 search-session browser tests."
+    },
+    {
+      "issue": "#341 DM candidate picker overlay/name clipping/focus",
+      "status": "PASS",
+      "evidence": "PR #355 before/after plus current-master 24/24 DM browser tests, including coarse pointer."
+    },
+    {
+      "issue": "#342 inconsistent controls",
+      "status": "PASS",
+      "evidence": "PR #356 source-sized component before/after; current-master 83/83 controls tests."
+    },
+    {
+      "issue": "DM picker trigger touch size",
+      "status": "FIXED_AND_TESTED",
+      "reproducer": "Before CSS correction: trigger computed 36px on coarse pointer at 320/390 CSS px.",
+      "after": "44px target on both widths; 24/24 DM suite passes."
+    },
+    {
+      "issue": "Audio refresh control and native profile select overflow at 320px/200% text",
+      "status": "FIXED_AND_TESTED",
+      "reproducer": "Before CSS correction: refresh control began at x=-16px; its long diagnostics select extended to x=323.64 in a 320px viewport.",
+      "after": "Refresh action moves into flow; audio grid track is minmax(0,1fr); 83/83 controls suite passes."
+    },
+    {
+      "issue": "Search form overflow with long scope/author options and native date fields",
+      "status": "FIXED_AND_TESTED",
+      "reproducer": "At 320px/200% text, focusing a date field shifted the search form to x=-101 and expanded its scrollWidth to 421px (319px client width); the 320px/100% filter controls also overflowed by 14px.",
+      "after": "Scope and filter selects are width-constrained; mobile date controls get a full row. Added form/fieldset geometry checks; search-presentation passes 106/106 including all four 320/390px and 100/200% cases."
+    },
+    {
+      "issue": "Frame 43 stale voice roster",
+      "status": "TRANSITION_ONLY",
+      "evidence": "Original tour state clears after transition; #347 current-source leave cleanup test passes."
+    },
+    {
+      "issue": "Frame 44 RTCPeerConnection.setConfiguration in-app-browser error",
+      "status": "NOT_A_CONFIRMED_PRODUCT_BUG",
+      "evidence": "No reproduction in current supported Chrome supplied; do not attribute embedded-browser error to product."
+    },
+    {
+      "issue": "Audio processing diagnostic values overlap at narrow widths with 200% text",
+      "status": "FIXED_AND_TESTED; VISUAL_CHECK_PASS",
+      "reproducer": "The two-column definition list places a long diagnostic label and its value on the same row at 320px/200% and 390px/200% text.",
+      "after": "At max-width 600px, .audio-processing-values uses one column. A browser geometry assertion verifies each value begins below its label and the next label follows the value; 320px and 390px tests pass at 200% text.",
+      "visual_evidence": [
+        ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-100-text/audio-390-100.png",
+        ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-320-200.png",
+        ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-390px-200-text/audio-390-200.png",
+        ".out/local-features/20261017-141612/images/web-control_consistency/controls.browser-audio-coherent-controls-320px-100-text/audio-320-100.png"
+      ]
+    },
+    {
+      "issue": "Long selected audio device/profile labels truncate in narrow native selects at 200% text",
+      "status": "DOCUMENTED_VISUAL_NOTE",
+      "evidence": "Source-resolution audio settings captures in .out/local-features/20261017-141612 at 320/390px and 200% text.",
+      "observation": "The selected label is shortened inside the native control; the control remains within the viewport and the full options are exposed when opened. This predates the diagnostic overlap fix and is not claimed as fixed."
+    },
+    {
+      "issue": "Screen-share viewer diagnosis changed during receiver sample refreshes",
+      "status": "FIXED_AND_TESTED",
+      "after": "The hasAudio receiver state is debounced for 1.2 seconds, while changing the selected stream applies immediately. Focused browser tests keep “Источник не публикует аудиодорожку.” stable across absent, fresh and stale video samples.",
+      "evidence": "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts; latest registered run .out/local-features/20261017-180122"
+    },
+    {
+      "issue": "Mobile screen-share start notice overlapped the DM composer send button",
+      "status": "FIXED_AND_TESTED",
+      "after": "The notice appears in the workspace flow between the mini-player and chat. The 393px browser test asserts no overlap with the send button.",
+      "evidence": "clients/web/tests/mini_player/mini.browser.spec.ts; .out/local-features/20261017-180122/images/web-mini_player/mini.browser-mobile-screen-73f7c-the-DM-composer-send-button/mobile-screen-share-notice-dm.png",
+      "before_after_evidence": [
+        {
+          "path": ".out/local-features/20261017-164959/images/web-real-stack/393/mini-player-dm.png",
+          "sha256": "a23dafba0c5f292c1df8b570c128b4e4fff2989a546788977b362d29e739d3b7"
+        },
+        {
+          "path": ".out/local-features/20261017-180122/images/web-real-stack/393/mini-player-dm.png",
+          "sha256": "fd9e5d9f741ed2d656f11f9c106ae053a622771fa78670d0e995c12bd30ff63d"
+        }
+      ],
+      "visual_observation": "Before: the start notice overlays the composer border and send button. After: it sits in flow between the mini-player and conversation header; the composer and send button are clear. Both captures were inspected at original pixel resolution."
+    },
+    {
+      "issue": "Voluntary voice leave appeared as an error",
+      "status": "FIXED_AND_TESTED",
+      "after": "A user-initiated leave is shown as a neutral status; revocation and other failure reasons keep the error treatment.",
+      "evidence": "clients/web/tests/voice_disconnect_notice/notice.browser.spec.ts"
+    }
+  ],
+  "child_issue_crosswalk": [
+    {
+      "issue": 340,
+      "pr": 355,
+      "commit": "2ee7e9ec",
+      "status": "merged",
+      "evidence": "evidence/qa/pr355-search-dm-acceptance-2026-10-16.md"
+    },
+    {
+      "issue": 341,
+      "pr": 355,
+      "commit": "2ee7e9ec",
+      "status": "merged",
+      "evidence": "evidence/qa/pr355-search-dm-acceptance-2026-10-16.md"
+    },
+    {
+      "issue": 342,
+      "pr": 356,
+      "commit": "c6e789bb",
+      "status": "merged",
+      "evidence": "evidence/qa/dw03-controls-2026-10-16.md"
+    },
+    {
+      "issue": 343,
+      "pr": 357,
+      "commit": "aa264a74",
+      "status": "merged",
+      "evidence": "evidence/qa/dw04-microcopy-2026-10-16.md"
+    },
+    {
+      "issue": 344,
+      "pr": 358,
+      "commit": "efdb4b04",
+      "status": "merged",
+      "evidence": "evidence/qa/dw05-navigation-2026-10-16.md"
+    },
+    {
+      "issue": 345,
+      "pr": 359,
+      "commit": "86ce6458",
+      "status": "merged",
+      "evidence": "evidence/qa/dw06-chat-rhythm-2026-10-16.md"
+    },
+    {
+      "issue": 346,
+      "pr": 360,
+      "commit": "4cda8f5c",
+      "status": "merged",
+      "evidence": "evidence/qa/dw07-search-presentation-2026-10-16.md"
+    },
+    {
+      "issue": 347,
+      "pr": 361,
+      "commit": "1784d2cd",
+      "status": "merged",
+      "evidence": "evidence/qa/dw08-voice-interface-2026-10-16.md"
+    },
+    {
+      "issue": 348,
+      "pr": 362,
+      "commit": "979d0bd0",
+      "status": "merged",
+      "evidence": "evidence/qa/dw09-screen-share-ui-2026-10-16.md"
+    },
+    {
+      "issue": 349,
+      "pr": 363,
+      "commit": "9dc31592",
+      "status": "merged",
+      "evidence": "evidence/qa/dw10-mini-player-2026-10-17.md"
+    },
+    {
+      "issue": 350,
+      "pr": 364,
+      "commit": "25be6eca",
+      "status": "merged",
+      "evidence": "evidence/qa/dw11-member-panel-2026-10-17.md"
+    },
+    {
+      "issue": 351,
+      "pr": 366,
+      "commit": "8f4b15a6",
+      "status": "merged",
+      "evidence": "PR #366; #351 is on current master"
+    },
+    {
+      "issue": 352,
+      "pr": 367,
+      "commit": "43d0c491575f83f03d72bb7355392ce82f56d998",
+      "status": "merged via PR #367 on 2026-10-17",
+      "evidence": "https://github.com/Egkurilov/BOOHTACORD/pull/367; evidence/qa/dw13-header-toolbar-2026-10-17.md"
+    },
+    {
+      "issue": 353,
+      "pr": 368,
+      "commit": "10b181af",
+      "status": "Draft PR #368 targets current master; all 28 automated stages pass, visual review remains partial (868 unique images unreviewed). The 200% text screen-share label and diagnostics overflow are fixed and tested in 10b181af.",
+      "evidence": "https://github.com/Egkurilov/BOOHTACORD/pull/368; evidence/qa/dw14-web-tour-regression-2026-10-17.md; .out/local-features/20261017-191711"
+    },
+    {
+      "issue": 354,
+      "pr": null,
+      "commit": null,
+      "status": "deferred: optional P2 requires user-valued usability evidence first",
+      "evidence": "issue #354; no compact mode added"
+    }
+  ],
+  "frame_inventory": [
+    {
+      "frame_id": 1,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "TEXT channel conversation",
+      "primary_ui_owner": "conversation / message history",
+      "expected_change_or_assessment": "#345 and #352: preserve message rhythm, draft, scroll anchor and header actions; no residual layout defect.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 2,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Workspace menu",
+      "primary_ui_owner": "workspace navigation",
+      "expected_change_or_assessment": "#344: compact navigable rows and one scroll owner; preserve open/close behavior.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 3,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Guild settings",
+      "primary_ui_owner": "admin guild settings",
+      "expected_change_or_assessment": "#342: consistent primary action and native field; current control matrix covers the same production surface.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 4,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Role administration",
+      "primary_ui_owner": "admin role editor",
+      "expected_change_or_assessment": "No tour-specific regression recorded; permission controls stay under existing ACL/admin tests.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 5,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Channel administration",
+      "primary_ui_owner": "admin topology",
+      "expected_change_or_assessment": "No tour-specific residual; topology remains covered by channel lifecycle and control tests.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 6,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Text-channel administration",
+      "primary_ui_owner": "admin channel settings",
+      "expected_change_or_assessment": "No tour-specific residual; preserve channel configuration actions.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 7,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Audit administration",
+      "primary_ui_owner": "admin audit",
+      "expected_change_or_assessment": "Observation only; no implementation hypothesis or residual identified.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 8,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Media administration",
+      "primary_ui_owner": "admin media",
+      "expected_change_or_assessment": "Observation only; the panel is not evidence of media quality or capacity.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 9,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Readiness administration",
+      "primary_ui_owner": "admin readiness",
+      "expected_change_or_assessment": "Observation only; readiness display is not a release-gate PASS.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 10,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Profile settings",
+      "primary_ui_owner": "identity settings",
+      "expected_change_or_assessment": "#351: settings hierarchy is recorded in its draft branch; profile fields and save state remain covered there.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 11,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Security sessions",
+      "primary_ui_owner": "identity/session settings",
+      "expected_change_or_assessment": "#351 covers the settings layout; no session mutation was made in the source tour.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 12,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Notification settings",
+      "primary_ui_owner": "conversation preferences",
+      "expected_change_or_assessment": "#351: settings hierarchy and density; preserve current preference state.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 13,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "About settings",
+      "primary_ui_owner": "settings/about",
+      "expected_change_or_assessment": "No product defect hypothesized; informational panel is retained as a tour baseline.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 14,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Audio device settings",
+      "primary_ui_owner": "voice/audio settings",
+      "expected_change_or_assessment": "#351 settings hierarchy; browser fixtures cover layout, but physical audio quality is a separate NOT_RUN gate.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 15,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Audio processing settings",
+      "primary_ui_owner": "voice/audio settings",
+      "expected_change_or_assessment": "#342 control consistency and #351 hierarchy; 320px/200% overflow is now fixed and regression-tested.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 16,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Search modes",
+      "primary_ui_owner": "search aside",
+      "expected_change_or_assessment": "#340: all modes, labels and keyboard focus fit; current-master matrix checks 320–3440px and 100/200% text.",
+      "status": "PASS"
+    },
+    {
+      "frame_id": 17,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Search results",
+      "primary_ui_owner": "search presentation",
+      "expected_change_or_assessment": "#340/#346: retain query, filter, result context and scroll; no horizontal overflow.",
+      "status": "PASS"
+    },
+    {
+      "frame_id": 18,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Mentions",
+      "primary_ui_owner": "mentions inbox",
+      "expected_change_or_assessment": "#346: compact rows, privacy and exact-target navigation remain covered.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 19,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Archive",
+      "primary_ui_owner": "readonly archive",
+      "expected_change_or_assessment": "#342/#346: consistent controls, bounded result rows and reader/navigation behavior.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 20,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Pinned messages",
+      "primary_ui_owner": "pins panel",
+      "expected_change_or_assessment": "#340/#346: bounded mode tab, compact pin results and navigation.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 21,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Quick jump",
+      "primary_ui_owner": "quick-jump panel",
+      "expected_change_or_assessment": "#342/#346: consistent controls and compact, keyboard-reachable people/channel results.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 22,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "DM list",
+      "primary_ui_owner": "direct-message navigation",
+      "expected_change_or_assessment": "#341: start action and current conversation remain reachable; touch target is 44px.",
+      "status": "PASS"
+    },
+    {
+      "frame_id": 23,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "DM conversation",
+      "primary_ui_owner": "direct-message conversation",
+      "expected_change_or_assessment": "#345/#352: preserve draft, reply, message actions, scroll anchor and header controls.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 24,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "New DM picker",
+      "primary_ui_owner": "direct-message starter",
+      "expected_change_or_assessment": "#341: top-layer bounded modal, focus/cancel/pagination and one selection; current matrix includes touch.",
+      "status": "PASS"
+    },
+    {
+      "frame_id": 25,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Emoji picker",
+      "primary_ui_owner": "message composer",
+      "expected_change_or_assessment": "No tour-specific regression recorded; keyboard search and selection remain covered by composer tests.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 26,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Attachment viewer",
+      "primary_ui_owner": "attachment viewer",
+      "expected_change_or_assessment": "#345/#346: bounded image viewer and private file navigation; no attachment contents are published.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 27,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Create-channel dialog",
+      "primary_ui_owner": "workspace channel creation",
+      "expected_change_or_assessment": "#344: channel navigation and creation actions stay contextual.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 28,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Create-channel form",
+      "primary_ui_owner": "admin channel form",
+      "expected_change_or_assessment": "#342: shared native fields/actions; preserve validation and submit state.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 29,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Member profile",
+      "primary_ui_owner": "member popover / roster",
+      "expected_change_or_assessment": "#350: collision-aware popover and member-to-DM/voice action scope.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 30,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Voice before join",
+      "primary_ui_owner": "voice prejoin",
+      "expected_change_or_assessment": "#347: explicit states, admission/cancel behavior and real two-listener voice session evidence.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 31,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Connected voice",
+      "primary_ui_owner": "voice controls",
+      "expected_change_or_assessment": "#347: connect/deafen/leave presentation and two-listener SFU checks; this is not physical audio QoE.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 32,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Muted voice",
+      "primary_ui_owner": "voice controls",
+      "expected_change_or_assessment": "#347: mute/deafen state; physical microphone audibility is NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 33,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Screen-share options",
+      "primary_ui_owner": "screen-share setup",
+      "expected_change_or_assessment": "#348: compact setup UI and cancellation; native picker on current master is NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 34,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Screen-share details",
+      "primary_ui_owner": "screen-share setup",
+      "expected_change_or_assessment": "#348: progressive setup/diagnostics; selected profile does not prove output quality.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 35,
+      "viewport_px": [
+        608,
+        609
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Browser capture picker",
+      "primary_ui_owner": "supported Chrome system picker",
+      "expected_change_or_assessment": "Historical production-tour capture only. Current-master supported-Chrome picker smoke: NOT_RUN; in-app-browser error is not treated as a product defect.",
+      "status": "NOT_RUN"
+    },
+    {
+      "frame_id": 36,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Share source running",
+      "primary_ui_owner": "screen-share publisher",
+      "expected_change_or_assessment": "Historical source capture only; #348 covers real API/SFU publication with synthetic source. Physical source acceptance remains NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 37,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Screen share live",
+      "primary_ui_owner": "screen-share receiver",
+      "expected_change_or_assessment": "Static decoded receiver frame is visual evidence only, not QoE, dynamic video or capacity evidence.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 38,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Screen audio help",
+      "primary_ui_owner": "screen audio guidance",
+      "expected_change_or_assessment": "#348 covers guidance states; audible system/game audio is NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 39,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Share diagnostics",
+      "primary_ui_owner": "screen-share statistics",
+      "expected_change_or_assessment": "#348 diagnostic presentation only; no 1080p60 or capacity claim.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 40,
+      "viewport_px": [
+        3440,
+        1440
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Share fullscreen",
+      "primary_ui_owner": "screen-share viewer",
+      "expected_change_or_assessment": "#348 responsive viewer controls; system-level fullscreen behavior is browser-scoped.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 41,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "TEXT with mini-player",
+      "primary_ui_owner": "pinned mini-player dock",
+      "expected_change_or_assessment": "#349: preserve the same media elements on TEXT/DM navigation; no QoE claim.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 42,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Share stopped",
+      "primary_ui_owner": "screen-share lifecycle",
+      "expected_change_or_assessment": "#348 stop/reset state; no retained publisher claim beyond its acceptance evidence.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 43,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Voice leave transition",
+      "primary_ui_owner": "voice disconnect state",
+      "expected_change_or_assessment": "Tour frame is transient. #347 later verifies post-leave roster/stream cleanup; no persistent bug reproduced.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 44,
+      "viewport_px": [
+        1351,
+        1054
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "In-app browser receiver error",
+      "primary_ui_owner": "unsupported embedded-browser configuration",
+      "expected_change_or_assessment": "RTCPeerConnection.setConfiguration is not a BOOHTACORD defect without reproduction in supported Chrome; current-Chrome check is NOT_RUN.",
+      "status": "NOT_RUN"
+    },
+    {
+      "frame_id": 45,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Deafened voice",
+      "primary_ui_owner": "voice controls",
+      "expected_change_or_assessment": "#347 deafen state and leave lifecycle; acoustic verification is NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 46,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Login form",
+      "primary_ui_owner": "authentication",
+      "expected_change_or_assessment": "Login state only. Registration and recovery-link flow were not captured in the source tour; NOT_RUN.",
+      "status": "NOT_RUN"
+    },
+    {
+      "frame_id": 48,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Second Chrome voice client",
+      "primary_ui_owner": "voice session",
+      "expected_change_or_assessment": "Historical source capture; #347 includes current-source real two-listener session evidence.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 49,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Two voice participants",
+      "primary_ui_owner": "voice roster",
+      "expected_change_or_assessment": "Historical source capture; #347 verifies actual two listeners and cleanup.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 50,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Receiver share available",
+      "primary_ui_owner": "screen-share receiver",
+      "expected_change_or_assessment": "Historical state; #348 covers actual API/SFU subscription, while native picker remains NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 51,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Receiver screen live",
+      "primary_ui_owner": "screen-share receiver",
+      "expected_change_or_assessment": "Decoded static frame is not video QoE; current supported-Chrome picker smoke is NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 52,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Receiver diagnostics",
+      "primary_ui_owner": "screen-share statistics",
+      "expected_change_or_assessment": "Displayed dimensions/FPS are an observation only; no 1080p60 or capacity claim.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 53,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "TEXT with receiver mini-player",
+      "primary_ui_owner": "pinned mini-player dock",
+      "expected_change_or_assessment": "#349 receiver lifecycle; maintain subscription across TEXT/DM navigation, with quality gates separate.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 56,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Conversation menu",
+      "primary_ui_owner": "conversation actions",
+      "expected_change_or_assessment": "#352 header actions are covered by its 11/11 browser fixture; no dedicated real-stack acceptance is claimed for the header menu.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 57,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Conversation files",
+      "primary_ui_owner": "conversation files",
+      "expected_change_or_assessment": "#342/#346: shared controls, bounded file rows and contextual message jump.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 58,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Mention picker",
+      "primary_ui_owner": "mention autocomplete",
+      "expected_change_or_assessment": "#346: exact-target mention navigation and keyboard/touch rows remain covered.",
+      "status": "PASS_SCOPED"
+    }
+  ],
+  "limits": [
+    "Original private tour frames are not in Git or the PR.",
+    "Current-master supported-Chrome picker, physical microphone/system audio, dynamic video, media QoE/capacity, 1080p60 and device acceptance remain NOT_RUN.",
+    "The old production version is not proven to correspond to current master.",
+    "The latest registered Web run passes all 27 automated stages, including authenticated desktop 1440px and mobile 393px real-stack journeys; visual status remains REVIEW_REQUIRED with 965 of 995 unique current-run images unreviewed.",
+    "Issue #351 is merged via PR #366; the superseded draft PR #365 remains open and was not altered. Issue #352 is merged via PR #367 at 43d0c491575f83f03d72bb7355392ce82f56d998.",
+    "Issue #354 is deferred pending user-valued usability research; no compact mode was introduced.",
+    "Rollout/rollback review for #305 remains NOT_RUN."
+  ]
+}
