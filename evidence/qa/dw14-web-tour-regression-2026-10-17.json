@@ -423,18 +423,18 @@
           "status": "PASS"
         }
       ],
-      "note": "All 27 automated stages passed: unit, production build, accessibility, 23 browser suites, and authenticated real-stack journeys at 1440px and 393px. Eight current-run images were inspected directly; 990 of 998 unique images remain unreviewed, so final status is REVIEW_REQUIRED.",
+      "note": "All 27 automated stages passed: unit, production build, accessibility, 23 browser suites, and authenticated real-stack journeys at 1440px and 393px. Sixteen current-run images were inspected directly; 982 of 998 unique images remain unreviewed, so final status is REVIEW_REQUIRED.",
       "source": "validated commit f7881097; runner source record: ed4cb5e5871c64720b1dd9f43ca5f7406f5ee0ff diff-sha256=5550c0b2726e450d88bfae5d77c3480d734593a5e1b6047153ee8011a75c4696",
       "raw_report_size_bytes": 336744
     },
     "visual_review": {
       "status": "PARTIAL_REVIEW",
-      "reviewed_count": 8,
+      "reviewed_count": 16,
       "available_selected_count": 1051,
       "unique_image_count": 998,
       "reused_exact_image_count": 0,
-      "effective_unique_reviewed_count": 8,
-      "unreviewed_unique_count": 990,
+      "effective_unique_reviewed_count": 16,
+      "unreviewed_unique_count": 982,
       "reviewed_screenshots": [
         {
           "path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-missing-1780d--receiver-samples-fluctuate/diagnosis-no-audio-desktop-fresh.png",
@@ -483,10 +483,58 @@
           "sha256": "3ca837316c7e7ed15198d029c4509508e53519b1ff4fcd852daf5452861cb14e",
           "width": 1179,
           "height": 2556
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-dm_starter/overlay.browser-modal-esca-6ff95-d-sidebar-at-320px-100-text/dm-starter.png",
+          "sha256": "88f1e29c7c3d0862297b2800c0116cb1a8387aab67eef52b9fe744f41b2d4f63",
+          "width": 320,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-search_sessions/tabs.browser-four-search-modes-fit-320px-at-100-text/search-messages.png",
+          "sha256": "8eecab9fb0ea6abfc124b19c56314a4b33565ddbd0b9aa23ad98c92864418852",
+          "width": 320,
+          "height": 1000
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-search_presentation/layout.browser-search-result-layout-at-320px-100-text/search-layout.png",
+          "sha256": "b0b788db28091483aef3a799d554382c2d78813517d5f5656a8fbf34c3da0597",
+          "width": 320,
+          "height": 1000
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-chat_rhythm/rhythm.browser-inventory-DIRECT-MESSAGE-320px/rich-text.png",
+          "sha256": "4c99ba717c5464ee8abba06682cb031d685ee1b9cef588d172b9c388d78b7c87",
+          "width": 320,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-voice_interface/controls.browser-compact-voice-states-fit-at-390px-text-100-/connected.png",
+          "sha256": "bba3c9869a3952172e71c2b6412886a0b4cce1336c3cf02de4156f5a10822106",
+          "width": 390,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-screen_share_ui/disclosure.browser-layout-and-disclosure-320px-text-100-/sender-320-100.png",
+          "sha256": "de731fb7ca3c419a7c5fe68c7bf52e79bfa8d61e4f624d50a4fd5f1374265fda",
+          "width": 320,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-member_roster/roster.browser-roster-and-profile-390-text-100/roster.png",
+          "sha256": "5f1e6708dc3888e7ba8b1a40944f4f2d4000f79e54be73aee057c11b86ba1e97",
+          "width": 390,
+          "height": 900
+        },
+        {
+          "path": ".out/local-features/20261017-170617/images/web-header_actions/headers.browser-200-text-k-18e8b-long-accessible-object-1440/dm-text200.png",
+          "sha256": "4593af1591726370d412a8e4a9772569616581c9d13e6d643224663e5f89e578",
+          "width": 1160,
+          "height": 64
         }
       ],
-      "scope": "Eight distinct images from the latest registered run were inspected at their original pixel resolution. The run produced 1,051 selected captures and 998 unique images; 8 have current-run direct review evidence and 990 remain unreviewed, so visual status is REVIEW_REQUIRED. Prior-run review records are retained separately and are not counted without current exact-hash matching.",
-      "observations": "The viewer diagnosis remains “Источник не публикует аудиодорожку.” in desktop and mobile captures. During mobile DM navigation, the screen-share notice sits between the mini-player and conversation header, leaving the composer send button clear. Voluntary voice leave uses a neutral status treatment on desktop and mobile. The real-stack mini-player stays present across TEXT/DM state at 1440px and 393px. The 393px share statistics distinguish the selected sender profile from measured receiver dimensions and mark unavailable measurements as stale/absent; these captures do not establish media quality or capacity.",
+      "scope": "Sixteen distinct images from the latest registered run were inspected at their original pixel resolution. The run produced 1,051 selected captures and 998 unique images; 16 have current-run direct review evidence and 982 remain unreviewed, so visual status is REVIEW_REQUIRED. Prior-run review records are retained separately and are not counted without current exact-hash matching.",
+      "observations": "The viewer diagnosis remains “Источник не публикует аудиодорожку.” in desktop and mobile captures. During mobile DM navigation, the screen-share notice sits between the mini-player and conversation header, leaving the composer send button clear. Voluntary voice leave uses a neutral status treatment on desktop and mobile. The real-stack mini-player stays present across TEXT/DM state at 1440px and 393px. The 393px share statistics distinguish the selected sender profile from measured receiver dimensions and mark unavailable measurements as stale/absent; these captures do not establish media quality or capacity. An additional eight component-fixture captures were inspected at source resolution: the 320px DM starter wraps a pathological no-space name within the modal; four search tabs fit in a 2×2 layout and the 320px result list remains within the viewport; the 320px DM composer keeps its send button visible beside the code sample; connected voice controls and the persistent dock remain on-screen at 390px; the 320px screen-share sender labels fit while their synthetic measurements remain non-acceptance evidence; the 390px roster clips the long name with an ellipsis inside the row; and the DM header actions remain visible at 200% text on a 1440px fixture. No horizontal page spill or composer overlap was visible in these captures. These fixture images do not establish real-user acceptance or media quality.",
       "previous_run_visual_review": {
         "run_dir": ".out/local-features/20261017-140223",
         "manually_reviewed_unique_screenshots": 148,
@@ -623,7 +671,7 @@
         "scope": "Sixteen distinct current-run source-resolution captures were inspected directly. One additional inspected current image (320px search tabs at 200% text) is an exact-hash match in the 79-image carry-forward set and is not double-counted. The current run has 972 selected PNG captures / 923 unique images; 95 have review evidence and 828 remain unreviewed, so status remains REVIEW_REQUIRED.",
         "observations": "The screen-share diagnosis remains “Источник не публикует аудиодорожку.” in desktop and 390px/200% text captures while receiver samples move from absent to fresh to stale; its focused browser regression asserts the exact text at all three states. The 1024px/200% launch and quality dialogs, plus the 637x584 quality selection capture, keep their frames and primary actions visible; the larger dialogs scroll their detail text within the frame. At 390px the receiver drawer keeps the summary and copy action readable, the expanded technical details continue below the capture, and the unsupported-browser warning and profile controls fit; a close-action hint appears beside the close icon. The 320px/200% voice prejoin card fits its two actions while the room title truncates in the header. At 390px/200% the microphone-denied status wraps above the fixed voice controls, which remain visible. A 320px/200% DM header truncates its title but keeps actions visible; search tabs stack vertically with no horizontal overflow, while the query placeholder is clipped by the narrow field. The 320px/200% DM picker stays within the viewport, though a deliberately pathological synthetic name wraps across many lines. At 390px/200% the mini-player and composer remain visible; a long draft wraps and scrolls to its active line, and the focused regression checks one-line draft visibility and retention across navigation. These are synthetic UI fixtures and do not prove physical picker or media quality."
       },
-      "manual_review_limitation": "990 unique screenshots from the current run remain unreviewed.",
+      "manual_review_limitation": "982 unique screenshots from the current run remain unreviewed.",
       "before_after_comparisons": [
         {
           "scenario": "Mobile mini-player with active DM composer and screen-share start notice",
@@ -911,7 +959,7 @@
       "issue": 353,
       "pr": 368,
       "commit": "f7881097",
-      "status": "Draft PR #368 targets current master; all 27 automated local-feature stages pass, visual review remains partial (990 unique images unreviewed).",
+      "status": "Draft PR #368 targets current master; all 27 automated local-feature stages pass, visual review remains partial (982 unique images unreviewed).",
       "evidence": "https://github.com/Egkurilov/BOOHTACORD/pull/368; evidence/qa/dw14-web-tour-regression-2026-10-17.md; .out/local-features/20261017-170617"
     },
     {
@@ -1588,7 +1636,7 @@
     "Original private tour frames are not in Git or the PR.",
     "Current-master supported-Chrome picker, physical microphone/system audio, dynamic video, media QoE/capacity, 1080p60 and device acceptance remain NOT_RUN.",
     "The old production version is not proven to correspond to current master.",
-    "The latest registered Web run passes all 27 automated stages, including authenticated desktop 1440px and mobile 393px real-stack journeys; visual status remains REVIEW_REQUIRED with 990 of 998 unique current-run images unreviewed.",
+    "The latest registered Web run passes all 27 automated stages, including authenticated desktop 1440px and mobile 393px real-stack journeys; visual status remains REVIEW_REQUIRED with 982 of 998 unique current-run images unreviewed.",
     "Issue #351 is merged via PR #366; the superseded draft PR #365 remains open and was not altered. Issue #352 is merged via PR #367 at 43d0c491575f83f03d72bb7355392ce82f56d998.",
     "Issue #354 is deferred pending user-valued usability research; no compact mode was introduced.",
     "Rollout/rollback review for #305 remains NOT_RUN."
