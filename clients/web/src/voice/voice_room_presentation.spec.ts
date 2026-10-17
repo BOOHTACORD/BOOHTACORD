@@ -48,7 +48,8 @@ describe('voice-room visual status and screen presentation', () => {
     expect(pane).toContain(`!voiceIsActive || voiceState === 'LEAVING' || !selectedScreenStreamId`)
     expect(pane).not.toContain('<VoiceParticipantStrip')
     expect(pane).toContain('voiceVolumeParticipants.length + 1')
-    expect(connected).toContain(':participant-count="voiceVolumeParticipants.length + 1"')
+    expect(viewer).toContain('<ScreenViewerParticipantStrip')
+    expect(viewer).toContain(':participants="participants"')
     expect(connected).toContain('<VoiceRoomFooter')
     expect(pane).toContain('Голосовой канал · сейчас: ${voiceRoster.participants.length}')
     expect(pane).toContain('Голосовой канал · состав недоступен')
@@ -67,7 +68,7 @@ describe('voice-room visual status and screen presentation', () => {
 
     expect(connected).toContain('<ScreenViewerRail')
     expect(connected).toContain(':cards="screenViewerCards"')
-    expect(connected).toContain(':show-return-to-voice="false"')
+    expect(connected).not.toContain('show-return-to-voice')
     expect(connected).not.toContain('room-watch-primary')
     expect(rail).toContain('<h3>Демонстрации в канале</h3>')
     expect(rail).toContain('stream.thumbnailUrl')

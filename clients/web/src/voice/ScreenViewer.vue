@@ -5,17 +5,19 @@ import { participantAudioMessage, screenAudioMessage } from './screen_audio_copy
 import ScreenMiniToolbar from './ScreenMiniToolbar.vue'
 import ScreenViewerAudioControl from './ScreenViewerAudioControl.vue'
 import ScreenViewerRail from './ScreenViewerRail.vue'
+import ScreenViewerParticipantStrip from './ScreenViewerParticipantStrip.vue'
 import ScreenReceiverDiagnosticsPanel from './ScreenReceiverDiagnosticsPanel.vue'
 import DiagnosisPanel from './viewer_diagnosis/Panel.vue'
 import type { ScreenDiagnostics } from './screen_diagnostics'
 import { markScreenSelected } from '../telemetry/journey_intervals/runtime'
 import type { ScreenViewerCard } from './screen_viewer_controller'
+import type { VoiceVolumeParticipant } from './voice_volume_controls'
 import { createScreenFullscreenControls } from './screen_fullscreen_controls'
 import { useScreenPlaybackQuality } from './screen_playback_quality'
 import { useScreenReceiverDiagnostics } from './use_screen_receiver_diagnostics'
 import { buildScreenClientReport, startScreenClientReporting, webPlatform } from './screen_client_reporter'
-const props = defineProps<{ audioMuted: boolean; cards: ScreenViewerCard[]; deafened: boolean; ended: boolean; error: string | null; expanded: boolean; mini?: boolean; ownScreenSharing?: boolean; pinned?: boolean; participantCount: number; selectedAudioVolume: number; selectedId: string | null; sourceDiagnostics?:ScreenDiagnostics }>()
-const emit = defineEmits<{ changeQuality: []; clear: []; pin: []; retry: [automatic?: boolean]; returnVoice: []; select: [id: string, video: HTMLVideoElement | null, audio: HTMLAudioElement | null]; setAudioVolume: [percent: number]; toggleAudio: []; 'update:expanded': [expanded: boolean] }>()
+const props = defineProps<{ audioMuted: boolean; cards: ScreenViewerCard[]; deafened: boolean; ended: boolean; error: string | null; expanded: boolean; mini?: boolean; ownScreenSharing?: boolean; pinned?: boolean; participants: VoiceVolumeParticipant[]; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfName: string | null; selfSpeaking: boolean; selectedAudioVolume: number; selectedId: string | null; sourceDiagnostics?:ScreenDiagnostics }>()
+const emit = defineEmits<{ changeQuality: []; clear: []; pin: []; retry: [automatic?: boolean]; select: [id: string, video: HTMLVideoElement | null, audio: HTMLAudioElement | null]; setAudioVolume: [percent: number]; toggleAudio: []; 'update:expanded': [expanded: boolean] }>()
 const video = ref<HTMLVideoElement | null>(null)
 const audio = ref<HTMLAudioElement | null>(null)
 const stage = ref<HTMLDivElement | null>(null)
@@ -130,6 +132,7 @@ async function toggleFullscreen(): Promise<void> {
         <details ref="moreActions" class="stream-more-actions"><summary class="stream-tool-button" aria-label="Дополнительные действия"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></summary><div class="stream-voice-return"><p class="gc-sr-only">{{ participantAudioMessage(deafened) }}</p><button v-if="ownScreenSharing" type="button" @click="changeQuality">Качество трансляции</button><button type="button" @click="emit('update:expanded', !expanded)">{{ expanded ? 'Вернуть в окно канала' : 'Развернуть на всю область' }}</button><button type="button" @click="emit('clear')">К участникам</button></div></details>
       </div>
     </div>
-    <ScreenViewerRail v-if="cards.length" :cards="cards" :selected-id="selectedId" :participant-count="participantCount" @select="select" @return-voice="emit('returnVoice')" />
+    <ScreenViewerRail v-if="cards.length" :cards="cards" :selected-id="selectedId" :show-return-to-voice="false" @select="select" />
+    <ScreenViewerParticipantStrip v-if="!mini" :participants="participants" :screens="cards" :self-deafened="deafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-name="selfName" :self-speaking="selfSpeaking" :own-screen-sharing="Boolean(ownScreenSharing)" />
   </section>
 </template>

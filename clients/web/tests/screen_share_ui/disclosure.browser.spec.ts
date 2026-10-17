@@ -73,6 +73,60 @@ test('launch keeps selection visible and technical details optional; one gesture
   expect(await page.evaluate(() => (window as any).__screenUI.events)).toEqual([{ profile: 'P1440_30', mode: 'text', activation: true }])
   expect(capture).toBe(0)
 })
+
+test('screen viewer shows the Flutter participant strip and scrolls names by width', async ({ page }, info) => {
+  await open(page, 'viewer-strip', 320)
+  const strip = page.getByTestId('viewer-participants')
+  await expect(strip.getByText('Участники', { exact: true })).toBeVisible()
+  await expect(strip.getByText('3 в комнате', { exact: true })).toBeVisible()
+  await expect(strip.getByText('Участник говорит', { exact: true })).toBeVisible()
+  await expect(strip.getByText('Участник показывает экран', { exact: true })).toBeVisible()
+  await expect(page.locator('.screen-stage-label')).toContainText('Ваш экран')
+  await expect(page.locator('.screen-stage-label')).toContainText('ЭФИР')
+  await expect(page.getByTestId('stream-select')).toHaveCount(2)
+  await expect(page.getByRole('heading', { name: 'Демонстрации в канале' })).toBeVisible()
+  await expect(page.locator('.stream-option.selected .stream-option-copy > span')).toHaveCSS('white-space', 'nowrap')
+  await expect(page.getByTestId('stream-rail')).not.toContainText('Участники ·')
+  await expect(strip.getByRole('img', { name: 'Показывает экран' })).toHaveCount(2)
+  await expect(strip.getByRole('img', { name: 'Микрофон выключен' })).toHaveCount(2)
+  await expect(strip.getByRole('img', { name: 'Говорит' })).toHaveCount(1)
+  await clean(page)
+  const layout = await page.evaluate(() => {
+    const list = document.querySelector<HTMLElement>('.voice-viewer-participant-strip ul')!
+    const summary = document.querySelector<HTMLElement>('.voice-viewer-participant-summary')!
+    const name = document.querySelector<HTMLElement>('.voice-viewer-participant-name')!
+    const rail = document.querySelector<HTMLElement>('.screen-rail-section')!
+    const participants = document.querySelector<HTMLElement>('.voice-viewer-participant-strip')!
+    return { documentWidth: document.documentElement.scrollWidth, viewportWidth: innerWidth, listWidth: list.clientWidth, listContentWidth: list.scrollWidth, listLeft: list.getBoundingClientRect().left, summaryRight: summary.getBoundingClientRect().right, nameWidth: name.clientWidth, nameContentWidth: name.scrollWidth, railBottom: rail.getBoundingClientRect().bottom, participantsTop: participants.getBoundingClientRect().top }
+  })
+  expect(layout.documentWidth).toBeLessThanOrEqual(layout.viewportWidth)
+  expect(layout.listContentWidth).toBeGreaterThan(layout.listWidth)
+  expect(layout.listLeft).toBeGreaterThanOrEqual(layout.summaryRight)
+  expect(layout.nameContentWidth).toBeGreaterThan(layout.nameWidth)
+  expect(layout.railBottom).toBeLessThanOrEqual(layout.participantsTop)
+  await page.screenshot({ path: info.outputPath('viewer-participants-320.png') })
+
+  await open(page, 'viewer-strip', 390, 200)
+  await clean(page)
+  await expect(page.getByTestId('viewer-participants').getByText('3 в комнате', { exact: true })).toBeVisible()
+  const zoomedRows = await page.evaluate(() => {
+    const rail = document.querySelector<HTMLElement>('.screen-rail-section')!
+    const participants = document.querySelector<HTMLElement>('.voice-viewer-participant-strip')!
+    const card = document.querySelector<HTMLElement>('.stream-option.selected')!
+    const footer = card.querySelector<HTMLElement>('.stream-option-copy')!
+    const badge = footer.querySelector<HTMLElement>('b')!
+    return { railBottom: rail.getBoundingClientRect().bottom, participantsTop: participants.getBoundingClientRect().top, footerTop: footer.getBoundingClientRect().top, footerBottom: footer.getBoundingClientRect().bottom, badgeTop: badge.getBoundingClientRect().top, badgeBottom: badge.getBoundingClientRect().bottom }
+  })
+  expect(zoomedRows.railBottom).toBeLessThanOrEqual(zoomedRows.participantsTop)
+  expect(zoomedRows.badgeTop).toBeGreaterThanOrEqual(zoomedRows.footerTop)
+  expect(zoomedRows.badgeBottom).toBeLessThanOrEqual(zoomedRows.footerBottom)
+  await page.screenshot({ path: info.outputPath('viewer-participants-390-200.png') })
+
+  await open(page, 'viewer-strip', 1440)
+  await clean(page)
+  await page.screenshot({ path: info.outputPath('viewer-participants-1440.png') })
+})
+
 test('unsupported prevents starting but leaves cancel and keyboard close available', async ({ page }) => {
   await open(page, 'unsupported')
   await expect(page.getByRole('alert')).toContainText('не поддерживает')
