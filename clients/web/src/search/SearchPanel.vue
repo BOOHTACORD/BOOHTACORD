@@ -173,7 +173,7 @@ onMounted(() => {
     </div>
     <div v-else id="search-messages-view" role="region" aria-label="Поиск сообщений">
     <form class="search-form" role="search" @submit.prevent="runSearch()">
-      <label class="search-query-label"><span class="visually-hidden">Запрос</span><input ref="queryInput" v-model="query" type="search" autocomplete="off" placeholder="Поиск сообщений" :disabled="loading" :aria-describedby="error ? 'search-error search-query-help' : 'search-query-help'"></label>
+      <label class="search-query-label"><span class="visually-hidden">Запрос</span><input ref="queryInput" v-model="query" type="search" autocomplete="off" placeholder="Поиск" :disabled="loading" :aria-describedby="error ? 'search-error search-query-help' : 'search-query-help'"></label>
       <p id="search-query-help" class="gc-sr-only">Введите запрос и нажмите Enter или «Найти».</p>
       <div class="search-form-meta"><label class="search-scope-label"><span class="visually-hidden">Область поиска</span><select v-model="scope" :disabled="loading"><option value="all">Везде</option><option v-if="currentConversation" value="current">{{ currentConversation.label }}</option></select></label></div>
       <SearchFilters v-model:author-id="filters.authorId" v-model:attachment="filters.attachment" v-model:date-from="filters.dateFrom" v-model:date-to="filters.dateTo" :disabled="loading" />

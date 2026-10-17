@@ -18,6 +18,18 @@ for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) {
       const tabs = page.getByRole('group', { name: 'Поиск и упоминания' }).getByRole('button')
       await expect(tabs).toHaveCount(4)
       await aside.screenshot({ path: info.outputPath('search-messages.png') })
+      const query = page.getByRole('searchbox', { name: 'Запрос', exact: true })
+      if (width === 320 && scale === 2) {
+        const placeholder = await query.evaluate(input => {
+          const style = getComputedStyle(input)
+          const context = document.createElement('canvas').getContext('2d')!
+          context.font = style.font
+          const text = input.getAttribute('placeholder') ?? ''
+          const padding = Number.parseFloat(style.paddingLeft) + Number.parseFloat(style.paddingRight)
+          return { textWidth: context.measureText(text).width, contentWidth: input.clientWidth - padding }
+        })
+        expect(placeholder.textWidth).toBeLessThanOrEqual(placeholder.contentWidth)
+      }
       async function checkBounds() {
         expect(await aside.evaluate(e => e.scrollWidth - e.clientWidth)).toBeLessThanOrEqual(1)
         expect(await aside.evaluate(e => e.scrollLeft)).toBe(0)
@@ -31,7 +43,6 @@ for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) {
         }
       }
       await checkBounds()
-      const query = page.getByRole('searchbox', { name: 'Запрос', exact: true })
       await query.fill('Сохранённый запрос')
       await page.getByLabel('Область поиска').selectOption('current')
       await tabs.first().focus()
