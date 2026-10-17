@@ -1,7 +1,8 @@
 /* Presence stays in grouping and accessible row labels, without repeated prose. */
 .members-guild-roster .members-presence-groups { gap: 16px; }
 .members-guild-roster .members-group { margin: 0 0 8px; font-weight: 600; line-height: 1rem; letter-spacing: .4px; text-transform: uppercase; }
-.members-panel .member-list { gap: 2px; margin: 0; }
+.members-panel .member-list { min-width: 0; grid-template-columns: minmax(0, 1fr); gap: 2px; margin: 0; }
+.members-panel .member-list > li { min-width: 0; }
 .members-panel .member-card { min-height: 44px; gap: 10px; border-radius: 6px; padding: 4px 6px; }
 .members-panel .member-card:hover { background: var(--gc-surface-raised); }
 .members-panel .member-copy { flex: 1; min-width: 0; }

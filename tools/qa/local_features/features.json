@@ -432,7 +432,7 @@
       "issue350": {
         "browser": "clients/web/tests/member_roster/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/member_profile.mjs",
-        "scope": "Production roster/profile with 30 synthetic members; long names, three presence groups, voice status/volume/admin visibility, pagination, empty/loading/retry/denied, keyboard/touch and focus, 320/390/1024/1440, root text and actual browser zoom 200%. Real Go API member-to-DM opening and actual SFU voice volume with MEMBER kick denial. No physical screen reader, native or media quality claim."
+        "scope": "Production roster/profile with 30 synthetic members; long guild and voice participant names stay inside the panel width without horizontal overflow, three presence groups, voice status/volume/admin visibility, pagination, empty/loading/retry/denied, keyboard/touch and focus, 320/390/1024/1440, root text and actual browser zoom 200%. Real Go API member-to-DM opening and actual SFU voice volume with MEMBER kick denial. No physical screen reader, native or media quality claim."
       },
       "issue352": {
         "browser": "clients/web/tests/header_actions/playwright.config.ts",
