@@ -334,6 +334,17 @@
         "browser": "clients/web/tests/search_presentation/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/search_presentation.mjs",
         "scope": "Six production Vue result surfaces, collapsed active filters/reset, compact file rows and full-name disclosure; 320/390/1024/1440, root text and actual browser zoom 200%, keyboard/touch/axe. Denied stale rows cleared, transient paging retry retained. Actual API filter-message-return with nonzero scroll, uploads/files, pins, mentions, archive reader and quick jump at desktop1440/touch393 separately required."
+      },
+      "issue353": {
+        "browser_tests": [
+          "clients/web/tests/search_sessions/playwright.config.ts",
+          "clients/web/tests/dm_starter/playwright.config.ts",
+          "clients/web/tests/control_consistency/playwright.config.ts",
+          "clients/web/tests/chat_rhythm/playwright.config.ts",
+          "clients/web/tests/search_presentation/playwright.config.ts"
+        ],
+        "actual": "tools/qa/client_lifecycle/run.py",
+        "scope": "Sanitized regression bridge from the 15 October production tour to current-master Vue components: 320/390/768/1024/1440/1920/3440 CSS widths, 100/200% root text, independently measured actual browser zoom, keyboard and coarse-pointer actions. The authenticated actual-stack task journeys and voice/share smoke are separate evidence gates; private tour images are never copied into this registry or repository."
       }
     }
   },

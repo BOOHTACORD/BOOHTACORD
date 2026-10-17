@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-for (const width of [320, 375, 390, 768, 1024, 1440]) {
+for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) {
   for (const scale of [1, 2]) {
     test(`four search modes fit ${width}px at ${scale * 100}% text`, async ({ page }, info) => {
       await page.setViewportSize({ width, height: 1000 })
@@ -62,3 +62,30 @@ for (const width of [320, 375, 390, 768, 1024, 1440]) {
     })
   }
 }
+
+for (const width of [320, 390]) test(`touch can reach every search mode at ${width}px`, async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
+  try {
+    const page = await context.newPage()
+    await page.route('**/api/v1/**', route => {
+      const path = new URL(route.request().url()).pathname
+      const json = path.endsWith('/pins') ? { pins: [], can_manage: false }
+        : path.endsWith('/mentions') ? { mentions: [] }
+          : path.endsWith('/archives/text-channels') ? { channels: [], revision: 1, can_manage: false }
+            : { members: [] }
+      return route.fulfill({ json })
+    })
+    await page.goto('/tests/search_sessions/tabs.html')
+    const aside = page.locator('.search-aside')
+    const tabs = page.getByRole('group', { name: 'Поиск и упоминания' }).getByRole('button')
+    for (let index = 0; index < 4; index++) {
+      const tab = tabs.nth(index)
+      expect((await tab.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+      await tab.tap()
+      await expect(tab).toHaveAttribute('aria-pressed', 'true')
+      expect(await aside.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1)
+    }
+  } finally {
+    await context.close()
+  }
+})

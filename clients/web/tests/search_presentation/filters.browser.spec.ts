@@ -47,5 +47,16 @@ for (const width of [320, 390]) for (const scale of [1, 2]) test(`expanded calen
     })
     expect(size.width).toBeGreaterThanOrEqual(size.minimum)
   }
+  const geometry = await page.locator('.search-aside, .search-panel, .search-form, .search-filters, .search-filter-controls').evaluateAll(elements => elements.map(el => {
+    const box = el.getBoundingClientRect()
+    return { selector: el.className, left: box.left, right: box.right, width: box.width, clientWidth: el.clientWidth, scrollWidth: el.scrollWidth }
+  }))
+  for (const item of geometry) {
+    expect(item.left, JSON.stringify(item)).toBeGreaterThanOrEqual(-1)
+    expect(item.right, JSON.stringify(item)).toBeLessThanOrEqual(width + 1)
+    if (/search-form|search-filters|search-filter-controls/.test(item.selector)) {
+      expect(item.scrollWidth - item.clientWidth, JSON.stringify(item)).toBeLessThanOrEqual(1)
+    }
+  }
   await page.screenshot({ path: info.outputPath('expanded-filters.png') })
 })

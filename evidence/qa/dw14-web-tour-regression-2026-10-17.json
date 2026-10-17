@@ -1,0 +1,1044 @@
+{
+  "schema": "boohtacord.web-tour-regression.v1",
+  "issue": 353,
+  "epic": 339,
+  "generated_on": "2026-10-17",
+  "state": "PASS_SCOPED_WITH_BLOCKED_GATE",
+  "baseline": {
+    "current_master_sha": "25be6ecac1a404469833da284f6d1ce70a350a47",
+    "tour_date": "2026-10-15",
+    "displayed_deployed_version": "Web 1.0.32 / r-stable-r46",
+    "deployed_sha": "UNVERIFIED",
+    "available_frames": 55,
+    "unavailable_frame_ids": [
+      47,
+      54,
+      55
+    ],
+    "private_source_images_copied": false,
+    "notes": "The production tour is used only for frame metadata and issue mapping; no image, account detail, DM content or raw screenshot hash is published."
+  },
+  "scenarios": [
+    {
+      "name": "Search modes and focus (#340)",
+      "status": "PASS",
+      "tests": "clients/web/tests/search_sessions/playwright.config.ts",
+      "cases": 26,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1920,
+        3440
+      ],
+      "root_text_scale_percent": [
+        100,
+        200
+      ],
+      "actual_browser_zoom_percent": 200,
+      "input": "pointer, keyboard, touch emulation"
+    },
+    {
+      "name": "DM picker overlay and keyboard (#341)",
+      "status": "PASS",
+      "tests": "clients/web/tests/dm_starter/playwright.config.ts",
+      "cases": 24,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1920,
+        3440
+      ],
+      "root_text_scale_percent": [
+        100,
+        200
+      ],
+      "actual_browser_zoom_percent": 200,
+      "input": "pointer, keyboard, touch emulation"
+    },
+    {
+      "name": "Primary control consistency (#342)",
+      "status": "PASS",
+      "tests": "clients/web/tests/control_consistency/playwright.config.ts",
+      "cases": 83,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1920,
+        3440
+      ],
+      "root_text_scale_percent": [
+        100,
+        200
+      ],
+      "actual_browser_zoom_percent": 200,
+      "input": "pointer, keyboard, touch emulation"
+    },
+    {
+      "name": "Composer, message actions and scroll (#345)",
+      "status": "PASS",
+      "tests": "clients/web/tests/chat_rhythm/playwright.config.ts",
+      "cases": 53,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1920,
+        3440
+      ],
+      "root_text_scale_percent": [
+        100
+      ],
+      "actual_browser_zoom_percent": 200,
+      "input": "pointer, keyboard, touch-mode message-action disclosure"
+    },
+    {
+      "name": "Search navigation and results (#346)",
+      "status": "PASS",
+      "tests": "clients/web/tests/search_presentation/playwright.config.ts",
+      "cases": 106,
+      "matrix_css_px": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1920,
+        3440
+      ],
+      "root_text_scale_percent": [
+        100,
+        200
+      ],
+      "actual_browser_zoom_percent": 200,
+      "input": "pointer, keyboard, touch emulation"
+    },
+    {
+      "name": "Authenticated local-feature real-stack gate",
+      "status": "BLOCKED",
+      "run_dir": ".out/local-features/20261017-115939",
+      "command": "./tools/qa/local_features/check.sh --feature chat --feature shell --platform web --base 25be6ecac1a404469833da284f6d1ce70a350a47 --real-stack",
+      "raw_status": "FAIL",
+      "reason": "Both real-stack stages failed before stack startup because Docker context colima-boohtacord-qa is missing its local context metadata; authenticated journeys did not run."
+    },
+    {
+      "name": "Current-master physical Chrome screen-share picker and physical audio",
+      "status": "NOT_RUN",
+      "reason": "No current-master supported-Chrome native picker/audio acceptance was produced by the blocked isolated-stack run; the old production tour is not source-equivalent."
+    }
+  ],
+  "quality_gates": {
+    "web_unit": {
+      "status": "PASS",
+      "tests": 1564,
+      "files": 474
+    },
+    "production_typecheck_build": {
+      "status": "PASS",
+      "warning": "Existing LiveKit ineffective dynamic import and >500kB chunk warning."
+    },
+    "spec_traceability": {
+      "status": "PASS_INDEX_ONLY",
+      "requirements": 39,
+      "approved_brief_available_on_host": false
+    },
+    "contracts": {
+      "status": "NOT_REQUIRED",
+      "reason": "No API/schema contract changed."
+    },
+    "authenticated_real_stack": {
+      "status": "BLOCKED",
+      "raw_stage_status": "FAIL",
+      "failed_stages": ["web-real-stack-1440", "web-real-stack-393"],
+      "run_dir": ".out/local-features/20261017-115939",
+      "reason": "DOCKER_CONTEXT=colima-boohtacord-qa could not be inspected: the configured meta.json does not exist. stack.start aborted before PostgreSQL/API/LiveKit startup, so authenticated journeys were not exercised."
+    },
+    "registered_web_check": {
+      "status": "FAIL",
+      "run_dir": ".out/local-features/20261017-115939",
+      "web_unit": "PASS (474 files / 1564 tests)",
+      "web_build": "PASS",
+      "browser_suites": "PASS (19 suites)",
+      "real_stack": "FAIL before stack startup at desktop 1440px and mobile 393px"
+    },
+    "visual_review": {
+      "status": "PASS_SCOPED",
+      "source_resolution_screenshots": [
+        ".out/local-features/20261017-115939/web-control_consistency/controls.browser-audio-coherent-controls-320px-200-text/audio-diagnostics-320-200.png",
+        ".out/local-features/20261017-115939/web-search_presentation/filters.browser-expanded-c-ff417-r-native-text-at-320px-200-/expanded-filters.png",
+        ".out/local-features/20261017-115939/web-dm_starter/overlay.browser-modal-esca-6f6f3-d-sidebar-at-320px-200-text/dm-starter.png",
+        ".out/local-features/20261017-115939/web-search_presentation/layout.browser-files-result-layout-at-3440px-100-text/files.png"
+      ],
+      "observations": "At source size, the 320px/200% audio diagnostics and search filters stay within their panels; date fields remain readable and focused. The bounded DM dialog wraps the deliberately long fixture name without clipping. The 3440px files rail remains in its right-side column with visible actions."
+    },
+    "rollout_rollback_issue305": "NOT_RUN"
+  },
+  "task_scenarios": [
+    {
+      "name": "Find/open channel",
+      "status": "PASS_SCOPED",
+      "evidence": "evidence/qa/dw05-navigation-2026-10-16.md"
+    },
+    {
+      "name": "Open DM, cancel picker, preserve draft",
+      "status": "PASS",
+      "evidence": "evidence/qa/pr355-search-dm-acceptance-2026-10-16.md; evidence/qa/dw06-chat-rhythm-2026-10-16.md"
+    },
+    {
+      "name": "Pins, archive, files, mention search/navigation",
+      "status": "PASS_SCOPED",
+      "evidence": "evidence/qa/dw07-search-presentation-2026-10-16.md"
+    },
+    {
+      "name": "Connect/leave voice with two real listeners",
+      "status": "PASS_SCOPED",
+      "evidence": "evidence/qa/dw08-voice-interface-2026-10-16.md"
+    },
+    {
+      "name": "Screen share receiver/SFU UI",
+      "status": "PASS_SCOPED",
+      "evidence": "evidence/qa/dw09-screen-share-ui-2026-10-16.md"
+    },
+    {
+      "name": "Mini-player across TEXT/DM",
+      "status": "PASS_SCOPED",
+      "evidence": "evidence/qa/dw10-mini-player-2026-10-17.md"
+    },
+    {
+      "name": "Settings surfaces and workspace header",
+      "status": "PASS_BROWSER; real-stack BLOCKED",
+      "evidence": "PR #365 draft; local issue352 worktree; .out/local-features/20261017-114851"
+    }
+  ],
+  "residuals": [
+    {
+      "issue": "#340 search tab overflow/focus clipping",
+      "status": "PASS",
+      "evidence": "PR #355 before/after plus current-master 26/26 search-session browser tests."
+    },
+    {
+      "issue": "#341 DM candidate picker overlay/name clipping/focus",
+      "status": "PASS",
+      "evidence": "PR #355 before/after plus current-master 24/24 DM browser tests, including coarse pointer."
+    },
+    {
+      "issue": "#342 inconsistent controls",
+      "status": "PASS",
+      "evidence": "PR #356 source-sized component before/after; current-master 83/83 controls tests."
+    },
+    {
+      "issue": "DM picker trigger touch size",
+      "status": "FIXED_AND_TESTED",
+      "reproducer": "Before CSS correction: trigger computed 36px on coarse pointer at 320/390 CSS px.",
+      "after": "44px target on both widths; 24/24 DM suite passes."
+    },
+    {
+      "issue": "Audio refresh control and native profile select overflow at 320px/200% text",
+      "status": "FIXED_AND_TESTED",
+      "reproducer": "Before CSS correction: refresh control began at x=-16px; its long diagnostics select extended to x=323.64 in a 320px viewport.",
+      "after": "Refresh action moves into flow; audio grid track is minmax(0,1fr); 83/83 controls suite passes."
+    },
+    {
+      "issue": "Search form overflow with long scope/author options and native date fields",
+      "status": "FIXED_AND_TESTED",
+      "reproducer": "At 320px/200% text, focusing a date field shifted the search form to x=-101 and expanded its scrollWidth to 421px (319px client width); the 320px/100% filter controls also overflowed by 14px.",
+      "after": "Scope and filter selects are width-constrained; mobile date controls get a full row. Added form/fieldset geometry checks; search-presentation passes 106/106 including all four 320/390px and 100/200% cases."
+    },
+    {
+      "issue": "Frame 43 stale voice roster",
+      "status": "TRANSITION_ONLY",
+      "evidence": "Original tour state clears after transition; #347 current-source leave cleanup test passes."
+    },
+    {
+      "issue": "Frame 44 RTCPeerConnection.setConfiguration in-app-browser error",
+      "status": "NOT_A_CONFIRMED_PRODUCT_BUG",
+      "evidence": "No reproduction in current supported Chrome supplied; do not attribute embedded-browser error to product."
+    }
+  ],
+  "child_issue_crosswalk": [
+    {
+      "issue": 340,
+      "pr": 355,
+      "commit": "2ee7e9ec",
+      "status": "merged",
+      "evidence": "evidence/qa/pr355-search-dm-acceptance-2026-10-16.md"
+    },
+    {
+      "issue": 341,
+      "pr": 355,
+      "commit": "2ee7e9ec",
+      "status": "merged",
+      "evidence": "evidence/qa/pr355-search-dm-acceptance-2026-10-16.md"
+    },
+    {
+      "issue": 342,
+      "pr": 356,
+      "commit": "c6e789bb",
+      "status": "merged",
+      "evidence": "evidence/qa/dw03-controls-2026-10-16.md"
+    },
+    {
+      "issue": 343,
+      "pr": 357,
+      "commit": "aa264a74",
+      "status": "merged",
+      "evidence": "evidence/qa/dw04-microcopy-2026-10-16.md"
+    },
+    {
+      "issue": 344,
+      "pr": 358,
+      "commit": "efdb4b04",
+      "status": "merged",
+      "evidence": "evidence/qa/dw05-navigation-2026-10-16.md"
+    },
+    {
+      "issue": 345,
+      "pr": 359,
+      "commit": "86ce6458",
+      "status": "merged",
+      "evidence": "evidence/qa/dw06-chat-rhythm-2026-10-16.md"
+    },
+    {
+      "issue": 346,
+      "pr": 360,
+      "commit": "4cda8f5c",
+      "status": "merged",
+      "evidence": "evidence/qa/dw07-search-presentation-2026-10-16.md"
+    },
+    {
+      "issue": 347,
+      "pr": 361,
+      "commit": "1784d2cd",
+      "status": "merged",
+      "evidence": "evidence/qa/dw08-voice-interface-2026-10-16.md"
+    },
+    {
+      "issue": 348,
+      "pr": 362,
+      "commit": "979d0bd0",
+      "status": "merged",
+      "evidence": "evidence/qa/dw09-screen-share-ui-2026-10-16.md"
+    },
+    {
+      "issue": 349,
+      "pr": 363,
+      "commit": "9dc31592",
+      "status": "merged",
+      "evidence": "evidence/qa/dw10-mini-player-2026-10-17.md"
+    },
+    {
+      "issue": 350,
+      "pr": 364,
+      "commit": "25be6eca",
+      "status": "merged",
+      "evidence": "evidence/qa/dw11-member-panel-2026-10-17.md"
+    },
+    {
+      "issue": 351,
+      "pr": 365,
+      "commit": "0a0bf6e6",
+      "status": "draft PR; not on master",
+      "evidence": "PR #365 / evidence in codex/issue351-settings-density"
+    },
+    {
+      "issue": 352,
+      "pr": null,
+      "commit": "ffea3ba9",
+      "status": "local commit; publication awaiting separate authorization",
+      "evidence": "evidence/qa/dw13-header-toolbar-2026-10-17.md in local issue352 worktree"
+    },
+    {
+      "issue": 353,
+      "pr": null,
+      "commit": null,
+      "status": "current issue; this evidence artifact",
+      "evidence": "evidence/qa/dw14-web-tour-regression-2026-10-17.md"
+    },
+    {
+      "issue": 354,
+      "pr": null,
+      "commit": null,
+      "status": "deferred: optional P2 requires user-valued usability evidence first",
+      "evidence": "issue #354; no compact mode added"
+    }
+  ],
+  "frame_inventory": [
+    {
+      "frame_id": 1,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "TEXT channel conversation",
+      "primary_ui_owner": "conversation / message history",
+      "expected_change_or_assessment": "#345 and #352: preserve message rhythm, draft, scroll anchor and header actions; no residual layout defect.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 2,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Workspace menu",
+      "primary_ui_owner": "workspace navigation",
+      "expected_change_or_assessment": "#344: compact navigable rows and one scroll owner; preserve open/close behavior.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 3,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Guild settings",
+      "primary_ui_owner": "admin guild settings",
+      "expected_change_or_assessment": "#342: consistent primary action and native field; current control matrix covers the same production surface.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 4,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Role administration",
+      "primary_ui_owner": "admin role editor",
+      "expected_change_or_assessment": "No tour-specific regression recorded; permission controls stay under existing ACL/admin tests.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 5,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Channel administration",
+      "primary_ui_owner": "admin topology",
+      "expected_change_or_assessment": "No tour-specific residual; topology remains covered by channel lifecycle and control tests.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 6,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Text-channel administration",
+      "primary_ui_owner": "admin channel settings",
+      "expected_change_or_assessment": "No tour-specific residual; preserve channel configuration actions.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 7,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Audit administration",
+      "primary_ui_owner": "admin audit",
+      "expected_change_or_assessment": "Observation only; no implementation hypothesis or residual identified.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 8,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Media administration",
+      "primary_ui_owner": "admin media",
+      "expected_change_or_assessment": "Observation only; the panel is not evidence of media quality or capacity.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 9,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Readiness administration",
+      "primary_ui_owner": "admin readiness",
+      "expected_change_or_assessment": "Observation only; readiness display is not a release-gate PASS.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 10,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Profile settings",
+      "primary_ui_owner": "identity settings",
+      "expected_change_or_assessment": "#351: settings hierarchy is recorded in its draft branch; profile fields and save state remain covered there.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 11,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Security sessions",
+      "primary_ui_owner": "identity/session settings",
+      "expected_change_or_assessment": "#351 covers the settings layout; no session mutation was made in the source tour.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 12,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Notification settings",
+      "primary_ui_owner": "conversation preferences",
+      "expected_change_or_assessment": "#351: settings hierarchy and density; preserve current preference state.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 13,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "About settings",
+      "primary_ui_owner": "settings/about",
+      "expected_change_or_assessment": "No product defect hypothesized; informational panel is retained as a tour baseline.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 14,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Audio device settings",
+      "primary_ui_owner": "voice/audio settings",
+      "expected_change_or_assessment": "#351 settings hierarchy; browser fixtures cover layout, but physical audio quality is a separate NOT_RUN gate.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 15,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Audio processing settings",
+      "primary_ui_owner": "voice/audio settings",
+      "expected_change_or_assessment": "#342 control consistency and #351 hierarchy; 320px/200% overflow is now fixed and regression-tested.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 16,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Search modes",
+      "primary_ui_owner": "search aside",
+      "expected_change_or_assessment": "#340: all modes, labels and keyboard focus fit; current-master matrix checks 320–3440px and 100/200% text.",
+      "status": "PASS"
+    },
+    {
+      "frame_id": 17,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Search results",
+      "primary_ui_owner": "search presentation",
+      "expected_change_or_assessment": "#340/#346: retain query, filter, result context and scroll; no horizontal overflow.",
+      "status": "PASS"
+    },
+    {
+      "frame_id": 18,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Mentions",
+      "primary_ui_owner": "mentions inbox",
+      "expected_change_or_assessment": "#346: compact rows, privacy and exact-target navigation remain covered.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 19,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Archive",
+      "primary_ui_owner": "readonly archive",
+      "expected_change_or_assessment": "#342/#346: consistent controls, bounded result rows and reader/navigation behavior.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 20,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Pinned messages",
+      "primary_ui_owner": "pins panel",
+      "expected_change_or_assessment": "#340/#346: bounded mode tab, compact pin results and navigation.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 21,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Quick jump",
+      "primary_ui_owner": "quick-jump panel",
+      "expected_change_or_assessment": "#342/#346: consistent controls and compact, keyboard-reachable people/channel results.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 22,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "DM list",
+      "primary_ui_owner": "direct-message navigation",
+      "expected_change_or_assessment": "#341: start action and current conversation remain reachable; touch target is 44px.",
+      "status": "PASS"
+    },
+    {
+      "frame_id": 23,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "DM conversation",
+      "primary_ui_owner": "direct-message conversation",
+      "expected_change_or_assessment": "#345/#352: preserve draft, reply, message actions, scroll anchor and header controls.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 24,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "New DM picker",
+      "primary_ui_owner": "direct-message starter",
+      "expected_change_or_assessment": "#341: top-layer bounded modal, focus/cancel/pagination and one selection; current matrix includes touch.",
+      "status": "PASS"
+    },
+    {
+      "frame_id": 25,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Emoji picker",
+      "primary_ui_owner": "message composer",
+      "expected_change_or_assessment": "No tour-specific regression recorded; keyboard search and selection remain covered by composer tests.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 26,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Attachment viewer",
+      "primary_ui_owner": "attachment viewer",
+      "expected_change_or_assessment": "#345/#346: bounded image viewer and private file navigation; no attachment contents are published.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 27,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Create-channel dialog",
+      "primary_ui_owner": "workspace channel creation",
+      "expected_change_or_assessment": "#344: channel navigation and creation actions stay contextual.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 28,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Create-channel form",
+      "primary_ui_owner": "admin channel form",
+      "expected_change_or_assessment": "#342: shared native fields/actions; preserve validation and submit state.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 29,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Member profile",
+      "primary_ui_owner": "member popover / roster",
+      "expected_change_or_assessment": "#350: collision-aware popover and member-to-DM/voice action scope.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 30,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Voice before join",
+      "primary_ui_owner": "voice prejoin",
+      "expected_change_or_assessment": "#347: explicit states, admission/cancel behavior and real two-listener voice session evidence.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 31,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Connected voice",
+      "primary_ui_owner": "voice controls",
+      "expected_change_or_assessment": "#347: connect/deafen/leave presentation and two-listener SFU checks; this is not physical audio QoE.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 32,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Muted voice",
+      "primary_ui_owner": "voice controls",
+      "expected_change_or_assessment": "#347: mute/deafen state; physical microphone audibility is NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 33,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Screen-share options",
+      "primary_ui_owner": "screen-share setup",
+      "expected_change_or_assessment": "#348: compact setup UI and cancellation; native picker on current master is NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 34,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Screen-share details",
+      "primary_ui_owner": "screen-share setup",
+      "expected_change_or_assessment": "#348: progressive setup/diagnostics; selected profile does not prove output quality.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 35,
+      "viewport_px": [
+        608,
+        609
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Browser capture picker",
+      "primary_ui_owner": "supported Chrome system picker",
+      "expected_change_or_assessment": "Historical production-tour capture only. Current-master supported-Chrome picker smoke: NOT_RUN; in-app-browser error is not treated as a product defect.",
+      "status": "NOT_RUN"
+    },
+    {
+      "frame_id": 36,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Share source running",
+      "primary_ui_owner": "screen-share publisher",
+      "expected_change_or_assessment": "Historical source capture only; #348 covers real API/SFU publication with synthetic source. Physical source acceptance remains NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 37,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Screen share live",
+      "primary_ui_owner": "screen-share receiver",
+      "expected_change_or_assessment": "Static decoded receiver frame is visual evidence only, not QoE, dynamic video or capacity evidence.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 38,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Screen audio help",
+      "primary_ui_owner": "screen audio guidance",
+      "expected_change_or_assessment": "#348 covers guidance states; audible system/game audio is NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 39,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Share diagnostics",
+      "primary_ui_owner": "screen-share statistics",
+      "expected_change_or_assessment": "#348 diagnostic presentation only; no 1080p60 or capacity claim.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 40,
+      "viewport_px": [
+        3440,
+        1440
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Share fullscreen",
+      "primary_ui_owner": "screen-share viewer",
+      "expected_change_or_assessment": "#348 responsive viewer controls; system-level fullscreen behavior is browser-scoped.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 41,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "TEXT with mini-player",
+      "primary_ui_owner": "pinned mini-player dock",
+      "expected_change_or_assessment": "#349: preserve the same media elements on TEXT/DM navigation; no QoE claim.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 42,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Share stopped",
+      "primary_ui_owner": "screen-share lifecycle",
+      "expected_change_or_assessment": "#348 stop/reset state; no retained publisher claim beyond its acceptance evidence.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 43,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Voice leave transition",
+      "primary_ui_owner": "voice disconnect state",
+      "expected_change_or_assessment": "Tour frame is transient. #347 later verifies post-leave roster/stream cleanup; no persistent bug reproduced.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 44,
+      "viewport_px": [
+        1351,
+        1054
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "In-app browser receiver error",
+      "primary_ui_owner": "unsupported embedded-browser configuration",
+      "expected_change_or_assessment": "RTCPeerConnection.setConfiguration is not a BOOHTACORD defect without reproduction in supported Chrome; current-Chrome check is NOT_RUN.",
+      "status": "NOT_RUN"
+    },
+    {
+      "frame_id": 45,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Deafened voice",
+      "primary_ui_owner": "voice controls",
+      "expected_change_or_assessment": "#347 deafen state and leave lifecycle; acoustic verification is NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 46,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Login form",
+      "primary_ui_owner": "authentication",
+      "expected_change_or_assessment": "Login state only. Registration and recovery-link flow were not captured in the source tour; NOT_RUN.",
+      "status": "NOT_RUN"
+    },
+    {
+      "frame_id": 48,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Second Chrome voice client",
+      "primary_ui_owner": "voice session",
+      "expected_change_or_assessment": "Historical source capture; #347 includes current-source real two-listener session evidence.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 49,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Two voice participants",
+      "primary_ui_owner": "voice roster",
+      "expected_change_or_assessment": "Historical source capture; #347 verifies actual two listeners and cleanup.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 50,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Receiver share available",
+      "primary_ui_owner": "screen-share receiver",
+      "expected_change_or_assessment": "Historical state; #348 covers actual API/SFU subscription, while native picker remains NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 51,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Receiver screen live",
+      "primary_ui_owner": "screen-share receiver",
+      "expected_change_or_assessment": "Decoded static frame is not video QoE; current supported-Chrome picker smoke is NOT_RUN.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 52,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Receiver diagnostics",
+      "primary_ui_owner": "screen-share statistics",
+      "expected_change_or_assessment": "Displayed dimensions/FPS are an observation only; no 1080p60 or capacity claim.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 53,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "TEXT with receiver mini-player",
+      "primary_ui_owner": "pinned mini-player dock",
+      "expected_change_or_assessment": "#349 receiver lifecycle; maintain subscription across TEXT/DM navigation, with quality gates separate.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 56,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Conversation menu",
+      "primary_ui_owner": "conversation actions",
+      "expected_change_or_assessment": "#352 header actions are covered by its 11/11 browser fixture; real-stack acceptance is BLOCKED in this host.",
+      "status": "BLOCKED"
+    },
+    {
+      "frame_id": 57,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Conversation files",
+      "primary_ui_owner": "conversation files",
+      "expected_change_or_assessment": "#342/#346: shared controls, bounded file rows and contextual message jump.",
+      "status": "PASS_SCOPED"
+    },
+    {
+      "frame_id": 58,
+      "viewport_px": [
+        3440,
+        1315
+      ],
+      "deployed_version": "Web 1.0.32 / r-stable-r46 (displayed; deployed SHA unverified)",
+      "state": "Mention picker",
+      "primary_ui_owner": "mention autocomplete",
+      "expected_change_or_assessment": "#346: exact-target mention navigation and keyboard/touch rows remain covered.",
+      "status": "PASS_SCOPED"
+    }
+  ],
+  "limits": [
+    "Original private frames are not in Git or the PR.",
+    "Current-master native Chrome picker/physical audio, dynamic video, 1080p60, media QoE/capacity and physical device acceptance are NOT_RUN.",
+    "The old production version is not proven to correspond to current master.",
+    "Issue #351 is a draft PR and #352 remains a local commit; do not count either as merged.",
+    "Issue #354 is deferred pending user-valued usability research; no compact mode was introduced."
+  ]
+}

@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { expectAxeClear } from '../accessibility/axe'
 import { api, channel, filename, id } from './fixture_api'
-for (const width of [320, 390, 1024, 1440]) for (const scale of [1, 2]) for (const surface of ['search', 'pins', 'archive', 'mentions', 'quick', 'files']) {
+for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) for (const scale of [1, 2]) for (const surface of ['search', 'pins', 'archive', 'mentions', 'quick', 'files']) {
   test(`${surface} result layout at ${width}px / ${scale * 100}% text`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 1000 }); await api(page)
     await page.goto(`/tests/search_presentation/fixture.html?surface=${surface}`)

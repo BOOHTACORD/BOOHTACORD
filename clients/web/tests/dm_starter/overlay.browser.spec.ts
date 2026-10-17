@@ -9,7 +9,7 @@ test.beforeEach(async ({ page }) => {
   await page.route('**/api/v1/direct-message-candidates*', r => r.fulfill({ json: { candidates } }))
 })
 
-for (const width of [320, 375, 390, 768, 1440, 1920]) {
+for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) {
   for (const scale of [1, 2]) {
     test(`modal escapes clipped sidebar at ${width}px / ${scale * 100}% text`, async ({ page }, info) => {
       await page.setViewportSize({ width, height: 900 })
@@ -134,4 +134,32 @@ test('cancelling a pending selection ignores its late completion', async ({ page
     await expect(page.getByLabel('Active DM')).toHaveText('existing-dm')
     await expect(page.getByLabel('Draft')).toHaveValue('Unsaved draft')
   } finally { release() }
+})
+
+for (const width of [320, 390]) test(`touch opens a bounded DM picker and selects one candidate at ${width}px`, async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
+  try {
+    const page = await context.newPage()
+    await page.route('**/api/v1/members?**', r => r.fulfill({ json: { members: [] } }))
+    await page.route('**/api/v1/direct-message-candidates*', r => r.fulfill({ json: { candidates } }))
+    await page.route('**/api/v1/direct-messages', r => r.fulfill({ json: { id: 'touch-dm', participant_one_id: 'self', participant_two_id: 'peer-1', created_at: '2026-10-15T12:00:00Z' } }))
+    await page.goto('/tests/dm_starter/fixture.html')
+    const trigger = page.getByRole('button', { name: 'Начать диалог', exact: true })
+    expect((await trigger.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+    await trigger.tap()
+    const dialog = page.getByRole('dialog', { name: 'Новый личный диалог', exact: true })
+    const candidate = dialog.getByRole('button', { name: 'Участник 1', exact: true })
+    await expect(candidate).toBeVisible()
+    const bounds = (await dialog.boundingBox())!
+    expect(bounds.x).toBeGreaterThanOrEqual(0)
+    expect(bounds.x + bounds.width).toBeLessThanOrEqual(width)
+    expect(await dialog.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1)
+    expect((await candidate.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+    await candidate.tap()
+    await expect(page.getByLabel('Active DM')).toHaveText('touch-dm')
+    await expect(dialog).not.toBeVisible()
+    await expect(page.getByLabel('Draft')).toHaveValue('Unsaved draft')
+  } finally {
+    await context.close()
+  }
 })

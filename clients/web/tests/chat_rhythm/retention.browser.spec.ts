@@ -1,13 +1,25 @@
 import { test, expect } from '@playwright/test'
 import { kinds, mount, row } from './helpers'
-for (const kind of kinds) {
-  test(`${kind} preserves actions ownership, draft, Shift+Enter and IME guard`, async ({ page }) => {
+for (const kind of kinds) for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) {
+  test(`${kind} preserves actions ownership, draft, Shift+Enter and IME guard at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
     const commands = await mount(page, kind)
-    await row(page, 4).hover()
+    async function revealActions(message: number) {
+      if (width <= 600) {
+        const toggle = row(page, message).getByRole('button', { name: 'Действия с сообщением', exact: true })
+        expect((await toggle.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+        await toggle.focus()
+        await toggle.press('Enter')
+        await expect(toggle).toHaveAttribute('aria-expanded', 'true')
+      } else {
+        await row(page, message).hover()
+      }
+    }
+    await revealActions(4)
     await expect(row(page, 4).getByRole('button', { name: 'Ответить', exact: true })).toBeVisible()
     await expect(row(page, 4).getByRole('button', { name: 'Изменить', exact: true })).toHaveCount(0)
     await expect(row(page, 4).getByRole('button', { name: 'Удалить', exact: true })).toHaveCount(0)
-    await row(page, 1).hover()
+    await revealActions(1)
     await row(page, 1).getByRole('button', { name: 'Изменить', exact: true }).click()
     await expect(row(page, 1).getByRole('textbox', { name: 'Изменённый текст сообщения' })).toHaveValue('Начало разговора.')
     await row(page, 1).getByRole('button', { name: 'Отмена', exact: true }).click()
@@ -24,7 +36,8 @@ for (const kind of kinds) {
     await expect(input).toHaveValue('')
     expect(commands.filter(c => c.method === 'POST' && c.path.endsWith('/messages'))).toHaveLength(1)
   })
-  test(`${kind} prepending older messages retains visible anchor`, async ({ page }) => {
+  test(`${kind} prepending older messages retains visible anchor at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
     await mount(page, kind, true)
     const before = (await row(page, 1).boundingBox())!.y
     await page.getByRole('button', { name: 'Показать предыдущие сообщения', exact: true }).click()
