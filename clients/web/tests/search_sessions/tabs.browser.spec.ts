@@ -23,7 +23,7 @@ for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) {
         const placeholder = await query.evaluate(input => {
           const style = getComputedStyle(input)
           const context = document.createElement('canvas').getContext('2d')!
-          context.font = style.font
+          context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`
           const text = input.getAttribute('placeholder') ?? ''
           const padding = Number.parseFloat(style.paddingLeft) + Number.parseFloat(style.paddingRight)
           return { textWidth: context.measureText(text).width, contentWidth: input.clientWidth - padding }

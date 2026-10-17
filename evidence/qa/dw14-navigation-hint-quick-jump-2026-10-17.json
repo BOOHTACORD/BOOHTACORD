@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-17",
+  "scope": "DW-14 follow-up: navigation tooltip hit testing and Quick Jump placeholder sizing",
+  "status": "FOCUSED_BROWSER_PASS; RELEASE_VISUAL_REVIEW_REQUIRED",
+  "quick_jump": {
+    "viewport_css_px": [320, 1000],
+    "root_text_scale": "200%",
+    "before": {
+      "path": ".out/dw14-quick-jump-placeholder/before-320x1000.png",
+      "dimensions_px": [320, 1000],
+      "sha256": "06a7b78a385a3cbb11e65fd0e8413aad7f7052c5ce1880c1f25461d3c01de714",
+      "observation": "Placeholder visibly truncates; measured text width is 360.1875px while the input content box is 261px."
+    },
+    "after": {
+      "path": ".out/dw14-quick-jump-placeholder/after-320x1000.png",
+      "dimensions_px": [320, 1000],
+      "sha256": "37cedebe837c2992267805e1034101eb1d923f8a30bc0b0b702cd137709fcb70",
+      "observation": "Visible placeholder “Поиск” fits; visually hidden accessible label remains “Найти канал или человека”. The participant expansion action wraps without horizontal overflow."
+    }
+  },
+  "navigation_hint": {
+    "trigger": "At 1440px the hint overlapped the next channel row and intercepted a pointer click.",
+    "before_fix": "Focused browser regression failed: clicking the covered row left aria-current unset.",
+    "after_fix": "Focused browser regression passed; nav-only hints are pointer-transparent and remain described by aria-describedby."
+  },
+  "validation": {
+    "navigation_density_browser": "PASS 26/26",
+    "microcopy_browser": "PASS 60/60",
+    "search_presentation_browser": "PASS 106/106",
+    "search_sessions_browser": "PASS 26/26",
+    "production_typecheck_and_build": "PASS; VITE_PUBLIC_ORIGIN=https://v.bootybay.ru",
+    "git_diff_check": "PASS"
+  },
+  "limits": [
+    "This record covers focused behavior and the two Quick Jump before/after captures; unreviewed #353 tour captures keep the visual review open.",
+    "The #305 release gate remains NO-GO / NOT_RUN until auditable measurements for all eight UX tasks and the named Web rollback owner are recorded.",
+    "Generated screenshots remain ignored local artifacts and are not committed."
+  ]
+}

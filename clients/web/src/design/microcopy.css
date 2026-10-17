@@ -7,4 +7,5 @@
 .composer-shortcut-help { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 .composer-wrap:focus-within .composer-shortcut-help { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; }
 .gc-action-hint { position: fixed; z-index: var(--gc-z-tooltip); max-width: min(30ch, calc(100vw - 16px)); padding: var(--gc-space-2) var(--gc-space-3); border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-sm); color: var(--gc-text-primary); background: var(--gc-surface-raised); font-size: var(--gc-text-body); line-height: var(--gc-line-body); overflow-wrap: anywhere; box-shadow: var(--gc-shadow-popup); }
+.gc-action-hint--nonblocking { pointer-events: none; }
 @media (max-width: 720px), (pointer: coarse) { .copy-help summary { min-height: var(--gc-size-touch); } }

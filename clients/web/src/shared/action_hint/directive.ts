@@ -52,7 +52,7 @@ function install(button: HTMLElement, text?: string): Hint {
     if (activeHint !== hide) activeHint?.()
     activeHint = hide
     tooltip ??= document.createElement('div')
-    tooltip.id = id; tooltip.className = 'gc-action-hint'; tooltip.setAttribute('role', 'tooltip'); tooltip.textContent = label()
+    tooltip.id = id; tooltip.className = `gc-action-hint${button.closest('.channel-navigation, .direct-message-navigation') ? ' gc-action-hint--nonblocking' : ''}`; tooltip.setAttribute('role', 'tooltip'); tooltip.textContent = label()
     tooltip.onpointerenter = () => { hovered = true; clearTimer() }
     tooltip.onpointerleave = () => { hovered = false; scheduleHide() }
     // Native modal dialogs live in the top layer; a body sibling is inert and
