@@ -23,6 +23,7 @@ import 'package:boohtacord_desktop/src/features/screen/setup/open_dialog/dialog.
 import 'package:boohtacord_desktop/src/features/screen/setup/open_dialog/footer.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_dock_button/component.dart';
 
+import 'screen_setup_controls.dart';
 import 'desktop_updates/native_app.dart' as native;
 import 'desktop_updates/windows_app.dart' show Journey, until, require;
 
@@ -43,12 +44,13 @@ class ScreenSetupJourney extends Journey {
           .first,
     );
     final bounds = viewport.deflate(20).intersect(surface);
-    for (final control in [
-      find.widgetWithText(TextButton, 'Отмена'),
-      find.byKey(const ValueKey('start-screen-share')),
-      find.byTooltip('Закрыть'),
-    ]) {
-      require(control.evaluate().length == 1, 'action_missing');
+    for (final entry in {
+      'cancel': find.widgetWithText(TextButton, 'Отмена'),
+      'start': find.byKey(const ValueKey('start-screen-share')),
+      'close': find.byTooltip('Закрыть'),
+    }.entries) {
+      final control = screenSetupControl(entry.value);
+      require(control.evaluate().length == 1, '${entry.key}_action_missing');
       final rect = driver.getRect(control);
       require(
         bounds.contains(rect.topLeft) &&
@@ -207,15 +209,15 @@ Future<void> main() async {
         if (!traverse) await qa.capture('${dock ? 'dock' : 'header'}-open');
         if (traverse) {
           // Exercise the scrollable quality section, including its expansion.
-          final advanced = find.byKey(
-            const ValueKey('screen-share-advanced-quality'),
+          final advanced = screenSetupControl(
+            find.byKey(const ValueKey('screen-share-advanced-quality')),
           );
           await qa.driver.ensureVisible(advanced);
           await qa.driver.tap(advanced);
           await qa.driver.pump();
           await qa.driver.pump(const Duration(milliseconds: 500));
           for (final label in ['720p', '30 FPS', 'Текст']) {
-            final option = find.text(label);
+            final option = screenSetupControl(find.text(label));
             await qa.driver.ensureVisible(option);
             await qa.driver.pump(const Duration(milliseconds: 200));
             require(
@@ -229,7 +231,7 @@ Future<void> main() async {
           await qa.capture('${dock ? 'dock' : 'header'}-footer');
           // Prove the footer participates in actual Windows keyboard traversal.
           final cancelText = find.descendant(
-            of: find.widgetWithText(TextButton, 'Отмена'),
+            of: screenSetupControl(find.widgetWithText(TextButton, 'Отмена')),
             matching: find.byType(Text),
           );
           final cancelFocus = Focus.of(qa.driver.element(cancelText));
