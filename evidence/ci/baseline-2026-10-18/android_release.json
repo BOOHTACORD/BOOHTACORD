@@ -1,0 +1,294 @@
+[
+  {
+    "id": 38483584503,
+    "head_sha": "936fa2282e61272e6b4abc517b939b387462083e",
+    "path": ".github/workflows/android-release.yaml",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "failure",
+    "run_attempt": 1,
+    "created_at": "2026-10-13T23:19:54Z",
+    "run_started_at": "2026-10-13T23:19:54Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38483584503",
+    "ref_kind": "tag_or_other",
+    "components": {
+      "status": "observed",
+      "basis": "push head vs first parent (not event.before)",
+      "gates": [
+        "backend",
+        "contracts",
+        "flutter",
+        "server",
+        "web",
+        "windows"
+      ]
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 2382.0,
+      "job_minutes": 24.95,
+      "completion_drivers": [
+        "android-release"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 2379.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 115591765915,
+            "name": "quality / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-13T23:19:54Z",
+            "started_at": "2026-10-13T23:19:57Z",
+            "completed_at": "2026-10-13T23:36:11Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 483.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 358.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 52.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 40.0
+              },
+              {
+                "name": "Post Run subosito/flutter-action@v2",
+                "number": 18,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 30.0
+              }
+            ],
+            "upload_seconds": 5.0,
+            "execution_seconds": 974.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 115597181892,
+            "name": "android-release",
+            "status": "completed",
+            "conclusion": "failure",
+            "created_at": "2026-10-13T23:36:12Z",
+            "started_at": "2026-10-13T23:50:53Z",
+            "completed_at": "2026-10-13T23:59:36Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Build and verify the signed Android distribution",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "failure",
+                "seconds": 483.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Checkout release source",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 523.0,
+            "created_to_start_seconds": 881.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 38465719672,
+    "head_sha": "2b3ea4537aad957bf64651e4a4181501aa40f081",
+    "path": ".github/workflows/android-release.yaml",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "failure",
+    "run_attempt": 1,
+    "created_at": "2026-10-13T20:48:20Z",
+    "run_started_at": "2026-10-13T20:48:20Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38465719672",
+    "ref_kind": "tag_or_other",
+    "components": {
+      "status": "observed",
+      "basis": "push head vs first parent (not event.before)",
+      "gates": [
+        "backend",
+        "contracts",
+        "flutter",
+        "server",
+        "web",
+        "windows"
+      ]
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 1424.0,
+      "job_minutes": 23.6333,
+      "completion_drivers": [
+        "android-release"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 1421.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 115531901072,
+            "name": "quality / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-13T20:48:21Z",
+            "started_at": "2026-10-13T20:48:23Z",
+            "completed_at": "2026-10-13T21:04:10Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 471.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 345.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 38.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 27.0
+              },
+              {
+                "name": "Upload Android debug APK",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 5.0
+              }
+            ],
+            "upload_seconds": 7.0,
+            "execution_seconds": 947.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 115538868180,
+            "name": "android-release",
+            "status": "completed",
+            "conclusion": "failure",
+            "created_at": "2026-10-13T21:04:10Z",
+            "started_at": "2026-10-13T21:04:13Z",
+            "completed_at": "2026-10-13T21:12:04Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Build and verify the signed Android distribution",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "failure",
+                "seconds": 439.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 19.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Checkout release source",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 471.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  }
+]

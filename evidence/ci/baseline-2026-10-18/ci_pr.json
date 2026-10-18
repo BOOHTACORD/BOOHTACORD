@@ -1,0 +1,5099 @@
+[
+  {
+    "id": 39156852476,
+    "head_sha": "e690901161c56097dcd4b895cb5702a42ab41a06",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T19:01:41Z",
+    "run_started_at": "2026-10-18T19:01:41Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39156852476",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 977.0,
+      "job_minutes": 17.5833,
+      "completion_drivers": [
+        "frontend / frontend"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 974.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117761738983,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T19:01:41Z",
+            "started_at": "2026-10-18T19:01:44Z",
+            "completed_at": "2026-10-18T19:01:49Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 5.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117761739364,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T19:01:42Z",
+            "started_at": "2026-10-18T19:01:44Z",
+            "completed_at": "2026-10-18T19:03:07Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 35.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 15.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 7.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 5.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 83.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117761766334,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T19:01:49Z",
+            "started_at": "2026-10-18T19:01:51Z",
+            "completed_at": "2026-10-18T19:17:58Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 918.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 19.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Retain synthetic Web control and browser zoom captures",
+                "number": 8,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 18.0,
+            "execution_seconds": 967.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117761767004,
+            "name": "flutter",
+            "status": "completed",
+            "conclusion": "skipped",
+            "created_at": "2026-10-18T19:01:49Z",
+            "started_at": "2026-10-18T19:01:49Z",
+            "completed_at": "2026-10-18T19:01:49Z",
+            "platform": "unknown",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 0,
+            "costliest_steps": [],
+            "upload_seconds": 0,
+            "execution_seconds": 0.0,
+            "created_to_start_seconds": 0.0
+          },
+          {
+            "id": 117761767114,
+            "name": "windows",
+            "status": "completed",
+            "conclusion": "skipped",
+            "created_at": "2026-10-18T19:01:49Z",
+            "started_at": "2026-10-18T19:01:49Z",
+            "completed_at": "2026-10-18T19:01:49Z",
+            "platform": "unknown",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 0,
+            "costliest_steps": [],
+            "upload_seconds": 0,
+            "execution_seconds": 0.0,
+            "created_to_start_seconds": 0.0
+          },
+          {
+            "id": 117761767176,
+            "name": "backend",
+            "status": "completed",
+            "conclusion": "skipped",
+            "created_at": "2026-10-18T19:01:49Z",
+            "started_at": "2026-10-18T19:01:49Z",
+            "completed_at": "2026-10-18T19:01:49Z",
+            "platform": "unknown",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 0,
+            "costliest_steps": [],
+            "upload_seconds": 0,
+            "execution_seconds": 0.0,
+            "created_to_start_seconds": 0.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39155087856,
+    "head_sha": "0b4a31c522cbd299eebd5396be12d484adee3daf",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T18:38:34Z",
+    "run_started_at": "2026-10-18T18:38:34Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39155087856",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 1550.0,
+      "job_minutes": 67.7667,
+      "completion_drivers": [
+        "windows / windows"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 1547.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117756546839,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:38:35Z",
+            "started_at": "2026-10-18T18:38:37Z",
+            "completed_at": "2026-10-18T18:38:44Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 7.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117756546997,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:38:35Z",
+            "started_at": "2026-10-18T18:38:38Z",
+            "completed_at": "2026-10-18T18:39:58Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 33.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 16.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 5.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 5.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 80.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117756583807,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:38:44Z",
+            "started_at": "2026-10-18T18:38:47Z",
+            "completed_at": "2026-10-18T18:55:15Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 931.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 22.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Retain synthetic Web control and browser zoom captures",
+                "number": 8,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 22.0,
+            "execution_seconds": 988.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117756583851,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:38:44Z",
+            "started_at": "2026-10-18T18:38:47Z",
+            "completed_at": "2026-10-18T18:55:05Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 501.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 386.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 42.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 27.0
+              },
+              {
+                "name": "Upload Android debug APK",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 8.0
+              }
+            ],
+            "upload_seconds": 11.0,
+            "execution_seconds": 978.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117756583895,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:38:44Z",
+            "started_at": "2026-10-18T18:38:47Z",
+            "completed_at": "2026-10-18T19:04:24Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 29,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 504.0
+              },
+              {
+                "name": "Check Escape in the real Windows GUI with an active SFU connection",
+                "number": 21,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 397.0
+              },
+              {
+                "name": "Build and inspect Windows distribution",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 285.0
+              },
+              {
+                "name": "Exercise recovery and real Flutter relaunch after an absent replacement",
+                "number": 15,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 124.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 114.0
+              }
+            ],
+            "upload_seconds": 8.0,
+            "execution_seconds": 1537.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117756583951,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:38:44Z",
+            "started_at": "2026-10-18T18:38:48Z",
+            "completed_at": "2026-10-18T18:46:44Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 260.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 170.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 21.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 15.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              }
+            ],
+            "upload_seconds": 2.0,
+            "execution_seconds": 476.0,
+            "created_to_start_seconds": 4.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39151408620,
+    "head_sha": "5c5d3577562f282414a8fb56dd91b960cce92bed",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T17:50:21Z",
+    "run_started_at": "2026-10-18T17:50:21Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39151408620",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 1559.0,
+      "job_minutes": 70.2333,
+      "completion_drivers": [
+        "windows / windows"
+      ],
+      "first_job_delay_seconds": 4.0,
+      "attempt_execution_span_seconds": 1555.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117745644752,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:50:22Z",
+            "started_at": "2026-10-18T17:50:25Z",
+            "completed_at": "2026-10-18T17:51:46Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 29.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 17.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 9.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 81.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117745644929,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:50:22Z",
+            "started_at": "2026-10-18T17:50:25Z",
+            "completed_at": "2026-10-18T17:50:32Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 7.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117745682288,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:50:32Z",
+            "started_at": "2026-10-18T17:50:35Z",
+            "completed_at": "2026-10-18T17:57:42Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 251.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 138.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 19.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 11.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 427.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117745682362,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:50:32Z",
+            "started_at": "2026-10-18T17:50:35Z",
+            "completed_at": "2026-10-18T18:16:20Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 29,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 524.0
+              },
+              {
+                "name": "Check Escape in the real Windows GUI with an active SFU connection",
+                "number": 21,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 392.0
+              },
+              {
+                "name": "Build and inspect Windows distribution",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 288.0
+              },
+              {
+                "name": "Exercise recovery and real Flutter relaunch after an absent replacement",
+                "number": 15,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 124.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 110.0
+              }
+            ],
+            "upload_seconds": 8.0,
+            "execution_seconds": 1545.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117745682369,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:50:32Z",
+            "started_at": "2026-10-18T17:50:35Z",
+            "completed_at": "2026-10-18T18:11:47Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1220.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 26.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              }
+            ],
+            "upload_seconds": 14.0,
+            "execution_seconds": 1272.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117745682453,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:50:32Z",
+            "started_at": "2026-10-18T17:50:35Z",
+            "completed_at": "2026-10-18T18:05:17Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 456.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 353.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 33.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 26.0
+              },
+              {
+                "name": "Upload Android debug APK",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 4.0
+              }
+            ],
+            "upload_seconds": 6.0,
+            "execution_seconds": 882.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39149543801,
+    "head_sha": "8b73bc820df890b2c66e66c9d1d9d70c480597c2",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T17:25:49Z",
+    "run_started_at": "2026-10-18T17:25:49Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39149543801",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 1460.0,
+      "job_minutes": 69.45,
+      "completion_drivers": [
+        "windows / windows"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 1457.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117740176030,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:25:49Z",
+            "started_at": "2026-10-18T17:25:52Z",
+            "completed_at": "2026-10-18T17:25:59Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 7.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117740176165,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:25:50Z",
+            "started_at": "2026-10-18T17:25:53Z",
+            "completed_at": "2026-10-18T17:27:15Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 38.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 13.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 9.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 82.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117740211352,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:25:59Z",
+            "started_at": "2026-10-18T17:26:02Z",
+            "completed_at": "2026-10-18T17:44:13Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 570.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 432.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 46.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 28.0
+              },
+              {
+                "name": "Upload Android debug APK",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 5.0
+              }
+            ],
+            "upload_seconds": 7.0,
+            "execution_seconds": 1091.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117740211362,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:25:59Z",
+            "started_at": "2026-10-18T17:26:02Z",
+            "completed_at": "2026-10-18T17:50:09Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 29,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 489.0
+              },
+              {
+                "name": "Check Escape in the real Windows GUI with an active SFU connection",
+                "number": 21,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 378.0
+              },
+              {
+                "name": "Build and inspect Windows distribution",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 248.0
+              },
+              {
+                "name": "Exercise recovery and real Flutter relaunch after an absent replacement",
+                "number": 15,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 124.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 100.0
+              }
+            ],
+            "upload_seconds": 8.0,
+            "execution_seconds": 1447.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117740211395,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:25:59Z",
+            "started_at": "2026-10-18T17:26:02Z",
+            "completed_at": "2026-10-18T17:32:57Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 244.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 123.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 27.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 11.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 415.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117740211421,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T17:25:59Z",
+            "started_at": "2026-10-18T17:26:02Z",
+            "completed_at": "2026-10-18T17:44:47Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1060.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 27.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 7.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Retain UX responsive-shell review captures",
+                "number": 7,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 23.0,
+            "execution_seconds": 1125.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39144768611,
+    "head_sha": "201c3b8d2957ca53a17d6e62ec1291e0da900bd1",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T16:23:19Z",
+    "run_started_at": "2026-10-18T16:23:19Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39144768611",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 1548.0,
+      "job_minutes": 70.0167,
+      "completion_drivers": [
+        "windows / windows"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 1545.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117726259255,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T16:23:20Z",
+            "started_at": "2026-10-18T16:23:22Z",
+            "completed_at": "2026-10-18T16:23:27Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 5.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117726259365,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T16:23:20Z",
+            "started_at": "2026-10-18T16:23:23Z",
+            "completed_at": "2026-10-18T16:24:38Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 33.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 11.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 7.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 75.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117726285837,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T16:23:27Z",
+            "started_at": "2026-10-18T16:23:30Z",
+            "completed_at": "2026-10-18T16:39:13Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 882.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 23.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 22.0,
+            "execution_seconds": 943.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117726285891,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T16:23:27Z",
+            "started_at": "2026-10-18T16:23:30Z",
+            "completed_at": "2026-10-18T16:42:49Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 647.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 417.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 50.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 24.0
+              },
+              {
+                "name": "Upload Android debug APK",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 5.0
+              }
+            ],
+            "upload_seconds": 10.0,
+            "execution_seconds": 1159.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117726285896,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T16:23:27Z",
+            "started_at": "2026-10-18T16:23:31Z",
+            "completed_at": "2026-10-18T16:49:07Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 29,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 509.0
+              },
+              {
+                "name": "Check Escape in the real Windows GUI with an active SFU connection",
+                "number": 21,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 399.0
+              },
+              {
+                "name": "Build and inspect Windows distribution",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 276.0
+              },
+              {
+                "name": "Exercise recovery and real Flutter relaunch after an absent replacement",
+                "number": 15,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 124.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 106.0
+              }
+            ],
+            "upload_seconds": 10.0,
+            "execution_seconds": 1536.0,
+            "created_to_start_seconds": 4.0
+          },
+          {
+            "id": 117726285954,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T16:23:27Z",
+            "started_at": "2026-10-18T16:23:30Z",
+            "completed_at": "2026-10-18T16:31:33Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 264.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 177.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 19.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 14.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 483.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39142652540,
+    "head_sha": "789e2a3f8e34003b84e2f4ce5bf7efa307553eb2",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T15:55:20Z",
+    "run_started_at": "2026-10-18T15:55:20Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39142652540",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 1574.0,
+      "job_minutes": 69.7167,
+      "completion_drivers": [
+        "windows / windows"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 1571.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117720052685,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T15:55:21Z",
+            "started_at": "2026-10-18T15:55:23Z",
+            "completed_at": "2026-10-18T15:55:28Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 5.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117720052881,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T15:55:21Z",
+            "started_at": "2026-10-18T15:55:23Z",
+            "completed_at": "2026-10-18T15:56:39Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 36.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 13.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 5.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 76.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117720082578,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T15:55:29Z",
+            "started_at": "2026-10-18T15:55:31Z",
+            "completed_at": "2026-10-18T16:21:34Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 29,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 534.0
+              },
+              {
+                "name": "Check Escape in the real Windows GUI with an active SFU connection",
+                "number": 21,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 400.0
+              },
+              {
+                "name": "Build and inspect Windows distribution",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 287.0
+              },
+              {
+                "name": "Exercise recovery and real Flutter relaunch after an absent replacement",
+                "number": 15,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 125.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 108.0
+              }
+            ],
+            "upload_seconds": 11.0,
+            "execution_seconds": 1563.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117720082590,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T15:55:29Z",
+            "started_at": "2026-10-18T15:55:31Z",
+            "completed_at": "2026-10-18T16:03:27Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 260.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 177.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 19.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 12.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 476.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117720082625,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T15:55:29Z",
+            "started_at": "2026-10-18T15:55:31Z",
+            "completed_at": "2026-10-18T16:16:15Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1195.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 24.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 5.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              }
+            ],
+            "upload_seconds": 14.0,
+            "execution_seconds": 1244.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117720082636,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T15:55:29Z",
+            "started_at": "2026-10-18T15:55:32Z",
+            "completed_at": "2026-10-18T16:09:11Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 419.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 327.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 34.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Upload Android debug APK",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 4.0
+              }
+            ],
+            "upload_seconds": 6.0,
+            "execution_seconds": 819.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39138097085,
+    "head_sha": "c7fef9ee6ef1bf6034a42c33bcdfe32196d410fd",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T14:54:40Z",
+    "run_started_at": "2026-10-18T14:54:40Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39138097085",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 1430.0,
+      "job_minutes": 65.8,
+      "completion_drivers": [
+        "windows / windows"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 1427.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117706662657,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T14:54:40Z",
+            "started_at": "2026-10-18T14:54:43Z",
+            "completed_at": "2026-10-18T14:56:01Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 32.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 16.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 5.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 78.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117706662843,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T14:54:40Z",
+            "started_at": "2026-10-18T14:54:43Z",
+            "completed_at": "2026-10-18T14:54:49Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 6.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117706695686,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T14:54:49Z",
+            "started_at": "2026-10-18T14:54:52Z",
+            "completed_at": "2026-10-18T15:12:47Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 579.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 412.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 47.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 20.0
+              },
+              {
+                "name": "Upload Android debug APK",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 5.0
+              }
+            ],
+            "upload_seconds": 7.0,
+            "execution_seconds": 1075.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117706695691,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T14:54:49Z",
+            "started_at": "2026-10-18T14:54:52Z",
+            "completed_at": "2026-10-18T15:11:05Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 921.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 22.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 7.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Retain synthetic navigation density and browser zoom evidence",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 17.0,
+            "execution_seconds": 973.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117706695719,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T14:54:49Z",
+            "started_at": "2026-10-18T14:54:52Z",
+            "completed_at": "2026-10-18T15:01:30Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 238.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 123.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 20.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 10.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 398.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117706695738,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T14:54:49Z",
+            "started_at": "2026-10-18T14:54:52Z",
+            "completed_at": "2026-10-18T15:18:30Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 29,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 484.0
+              },
+              {
+                "name": "Check Escape in the real Windows GUI with an active SFU connection",
+                "number": 21,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 365.0
+              },
+              {
+                "name": "Build and inspect Windows distribution",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 224.0
+              },
+              {
+                "name": "Exercise recovery and real Flutter relaunch after an absent replacement",
+                "number": 15,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 124.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 115.0
+              }
+            ],
+            "upload_seconds": 8.0,
+            "execution_seconds": 1418.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39131556932,
+    "head_sha": "874938a25c3a8a3e09c1b9bdf35325811eebe710",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T13:26:32Z",
+    "run_started_at": "2026-10-18T13:26:32Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39131556932",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 1313.0,
+      "job_minutes": 64.5167,
+      "completion_drivers": [
+        "frontend / frontend"
+      ],
+      "first_job_delay_seconds": 64.0,
+      "attempt_execution_span_seconds": 1249.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117687816366,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T13:27:34Z",
+            "started_at": "2026-10-18T13:27:36Z",
+            "completed_at": "2026-10-18T13:27:41Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 5.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117687816528,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T13:27:34Z",
+            "started_at": "2026-10-18T13:27:36Z",
+            "completed_at": "2026-10-18T13:28:48Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 33.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 13.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 7.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 72.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117687845227,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T13:27:42Z",
+            "started_at": "2026-10-18T13:27:44Z",
+            "completed_at": "2026-10-18T13:48:25Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1188.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 23.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Retain synthetic Web control and browser zoom captures",
+                "number": 8,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 18.0,
+            "execution_seconds": 1241.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117687845324,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T13:27:42Z",
+            "started_at": "2026-10-18T13:27:45Z",
+            "completed_at": "2026-10-18T13:35:41Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 261.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 170.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 21.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 14.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 2.0,
+            "execution_seconds": 476.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117687845360,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T13:27:42Z",
+            "started_at": "2026-10-18T13:27:44Z",
+            "completed_at": "2026-10-18T13:47:25Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 29,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 363.0
+              },
+              {
+                "name": "Check Escape in the real Windows GUI with an active SFU connection",
+                "number": 21,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 333.0
+              },
+              {
+                "name": "Build and inspect Windows distribution",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 163.0
+              },
+              {
+                "name": "Exercise recovery and real Flutter relaunch after an absent replacement",
+                "number": 15,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 124.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 106.0
+              }
+            ],
+            "upload_seconds": 7.0,
+            "execution_seconds": 1181.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117687845391,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T13:27:42Z",
+            "started_at": "2026-10-18T13:27:44Z",
+            "completed_at": "2026-10-18T13:42:40Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 442.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 373.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 37.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 26.0
+              },
+              {
+                "name": "Upload Android debug APK",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 4.0
+              }
+            ],
+            "upload_seconds": 7.0,
+            "execution_seconds": 896.0,
+            "created_to_start_seconds": 2.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39130446540,
+    "head_sha": "640073fd8826dd3bed013037093e13adb5385d66",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T13:11:22Z",
+    "run_started_at": "2026-10-18T13:11:22Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39130446540",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 971.0,
+      "job_minutes": 53.6333,
+      "completion_drivers": [
+        "frontend / frontend"
+      ],
+      "first_job_delay_seconds": 29.0,
+      "attempt_execution_span_seconds": 942.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117684436230,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T13:11:48Z",
+            "started_at": "2026-10-18T13:11:51Z",
+            "completed_at": "2026-10-18T13:11:59Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 8.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117684436416,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T13:11:48Z",
+            "started_at": "2026-10-18T13:11:51Z",
+            "completed_at": "2026-10-18T13:13:09Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 38.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 13.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 9.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 78.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117684472933,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T13:11:59Z",
+            "started_at": "2026-10-18T13:12:01Z",
+            "completed_at": "2026-10-18T13:26:37Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 28,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 478.0
+              },
+              {
+                "name": "Build and inspect Windows distribution",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 209.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 112.0
+              },
+              {
+                "name": "Run actions/setup-dotnet@v4",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 27.0
+              },
+              {
+                "name": "Compile the standalone recovery monitor before the Flutter toolchain",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 13.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 876.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117684472979,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T13:11:59Z",
+            "started_at": "2026-10-18T13:12:02Z",
+            "completed_at": "2026-10-18T13:27:22Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 474.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 410.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 24.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 2.0,
+            "execution_seconds": 920.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117684473004,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T13:11:59Z",
+            "started_at": "2026-10-18T13:12:02Z",
+            "completed_at": "2026-10-18T13:18:47Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 241.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 125.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 19.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 11.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 405.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117684473011,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T13:11:59Z",
+            "started_at": "2026-10-18T13:12:02Z",
+            "completed_at": "2026-10-18T13:27:33Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 881.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 24.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Retain synthetic Web control and browser zoom captures",
+                "number": 8,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 15.0,
+            "execution_seconds": 931.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39129049482,
+    "head_sha": "9738cde25f35daca8577c59a96c8c9aa54cd5b11",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T12:51:35Z",
+    "run_started_at": "2026-10-18T12:51:35Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39129049482",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 1213.0,
+      "job_minutes": 63.4333,
+      "completion_drivers": [
+        "windows / windows"
+      ],
+      "first_job_delay_seconds": 60.0,
+      "attempt_execution_span_seconds": 1153.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117680434105,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:52:33Z",
+            "started_at": "2026-10-18T12:52:35Z",
+            "completed_at": "2026-10-18T12:52:40Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 5.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117680434280,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:52:33Z",
+            "started_at": "2026-10-18T12:52:35Z",
+            "completed_at": "2026-10-18T12:53:52Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 30.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 11.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 7.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 77.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117680460420,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:52:40Z",
+            "started_at": "2026-10-18T12:52:43Z",
+            "completed_at": "2026-10-18T13:11:48Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 28,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 560.0
+              },
+              {
+                "name": "Build and inspect Windows distribution",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 282.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 109.0
+              },
+              {
+                "name": "Exercise recovery and real Flutter relaunch after an absent replacement",
+                "number": 15,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 109.0
+              },
+              {
+                "name": "Run actions/setup-dotnet@v4",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              }
+            ],
+            "upload_seconds": 8.0,
+            "execution_seconds": 1145.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117680460429,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:52:40Z",
+            "started_at": "2026-10-18T12:52:43Z",
+            "completed_at": "2026-10-18T13:10:15Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 548.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 423.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 49.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 17.0
+              },
+              {
+                "name": "Upload Android debug APK",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 5.0
+              }
+            ],
+            "upload_seconds": 7.0,
+            "execution_seconds": 1052.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117680460467,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:52:40Z",
+            "started_at": "2026-10-18T12:52:43Z",
+            "completed_at": "2026-10-18T12:59:42Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 242.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 134.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 11.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 419.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117680460583,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:52:40Z",
+            "started_at": "2026-10-18T12:52:44Z",
+            "completed_at": "2026-10-18T13:11:12Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1045.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 7.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              },
+              {
+                "name": "Retain synthetic Web control and browser zoom captures",
+                "number": 8,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 22.0,
+            "execution_seconds": 1108.0,
+            "created_to_start_seconds": 4.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39128864778,
+    "head_sha": "7e72e87f52f03e1d009ac25345c973ccd2ef2902",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T12:48:59Z",
+    "run_started_at": "2026-10-18T12:48:59Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39128864778",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 1601.0,
+      "job_minutes": 74.2167,
+      "completion_drivers": [
+        "windows / windows"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 1598.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117679692249,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:48:59Z",
+            "started_at": "2026-10-18T12:49:02Z",
+            "completed_at": "2026-10-18T12:49:07Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 5.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117679692579,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:49:00Z",
+            "started_at": "2026-10-18T12:49:02Z",
+            "completed_at": "2026-10-18T12:50:25Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 24,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 30.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 14.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 11.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 13,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 7.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 83.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117679717646,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:49:07Z",
+            "started_at": "2026-10-18T12:49:09Z",
+            "completed_at": "2026-10-18T12:57:02Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 258.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 174.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 19.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 14.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 473.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117679717677,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:49:07Z",
+            "started_at": "2026-10-18T12:49:10Z",
+            "completed_at": "2026-10-18T13:10:11Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1201.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 23.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Retain synthetic Web control and browser zoom captures",
+                "number": 8,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 24.0,
+            "execution_seconds": 1261.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117679717691,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:49:07Z",
+            "started_at": "2026-10-18T12:49:10Z",
+            "completed_at": "2026-10-18T13:06:31Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 536.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 413.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 49.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Upload Android debug APK",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 5.0
+              }
+            ],
+            "upload_seconds": 8.0,
+            "execution_seconds": 1041.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117679717709,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:49:07Z",
+            "started_at": "2026-10-18T12:49:10Z",
+            "completed_at": "2026-10-18T13:15:40Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 29,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 536.0
+              },
+              {
+                "name": "Check Escape in the real Windows GUI with an active SFU connection",
+                "number": 21,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 402.0
+              },
+              {
+                "name": "Build and inspect Windows distribution",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 296.0
+              },
+              {
+                "name": "Exercise recovery and real Flutter relaunch after an absent replacement",
+                "number": 15,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 124.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 117.0
+              }
+            ],
+            "upload_seconds": 11.0,
+            "execution_seconds": 1590.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39127541342,
+    "head_sha": "4ed70313e0c58f4ef84beff82a2719665876231c",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T12:30:12Z",
+    "run_started_at": "2026-10-18T12:30:12Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39127541342",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 1340.0,
+      "job_minutes": 67.6833,
+      "completion_drivers": [
+        "frontend / frontend"
+      ],
+      "first_job_delay_seconds": 100.0,
+      "attempt_execution_span_seconds": 1240.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117676083325,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:31:50Z",
+            "started_at": "2026-10-18T12:31:52Z",
+            "completed_at": "2026-10-18T12:31:56Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 4.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117676083526,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:31:50Z",
+            "started_at": "2026-10-18T12:31:53Z",
+            "completed_at": "2026-10-18T12:33:24Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 24,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 40.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 15.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 12.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 5.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 13,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 5.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 91.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117676108018,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:31:57Z",
+            "started_at": "2026-10-18T12:32:00Z",
+            "completed_at": "2026-10-18T12:40:11Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 264.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 178.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 23.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 16.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 2.0,
+            "execution_seconds": 491.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117676108051,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:31:57Z",
+            "started_at": "2026-10-18T12:31:59Z",
+            "completed_at": "2026-10-18T12:49:12Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 547.0
+              },
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 395.0
+              },
+              {
+                "name": "Build Android debug APK",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 48.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 24.0
+              },
+              {
+                "name": "Upload Android debug APK",
+                "number": 10,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 5.0
+              }
+            ],
+            "upload_seconds": 8.0,
+            "execution_seconds": 1033.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117676108096,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:31:57Z",
+            "started_at": "2026-10-18T12:32:00Z",
+            "completed_at": "2026-10-18T12:52:09Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 28,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 568.0
+              },
+              {
+                "name": "Build and inspect Windows distribution",
+                "number": 14,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 295.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 127.0
+              },
+              {
+                "name": "Exercise recovery and real Flutter relaunch after an absent replacement",
+                "number": 15,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 124.0
+              },
+              {
+                "name": "Run actions/setup-dotnet@v4",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 28.0
+              }
+            ],
+            "upload_seconds": 9.0,
+            "execution_seconds": 1209.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117676108144,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:31:57Z",
+            "started_at": "2026-10-18T12:31:59Z",
+            "completed_at": "2026-10-18T12:52:32Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 1182.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 24.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 5.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Retain synthetic microcopy inventory and visual evidence",
+                "number": 9,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 17.0,
+            "execution_seconds": 1233.0,
+            "created_to_start_seconds": 2.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39126897792,
+    "head_sha": "5acef22ef26a422ced44716021fe32638de8878e",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T12:20:50Z",
+    "run_started_at": "2026-10-18T12:20:50Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39126897792",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 659.0,
+      "job_minutes": 35.4833,
+      "completion_drivers": [
+        "frontend / frontend"
+      ],
+      "first_job_delay_seconds": 93.0,
+      "attempt_execution_span_seconds": 566.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117674110377,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:22:20Z",
+            "started_at": "2026-10-18T12:22:23Z",
+            "completed_at": "2026-10-18T12:22:28Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 5.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117674110539,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:22:20Z",
+            "started_at": "2026-10-18T12:22:23Z",
+            "completed_at": "2026-10-18T12:23:41Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 24,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 37.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 15.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 13,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 78.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117674137287,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:22:29Z",
+            "started_at": "2026-10-18T12:22:31Z",
+            "completed_at": "2026-10-18T12:29:25Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 244.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 124.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 26.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 11.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 414.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117674137303,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:22:29Z",
+            "started_at": "2026-10-18T12:22:31Z",
+            "completed_at": "2026-10-18T12:31:34Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 357.0
+              },
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 147.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 27.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 2.0,
+            "execution_seconds": 543.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117674137336,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:22:29Z",
+            "started_at": "2026-10-18T12:22:32Z",
+            "completed_at": "2026-10-18T12:31:49Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 503.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 7.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Retain synthetic Web control and browser zoom captures",
+                "number": 8,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 3.0
+              }
+            ],
+            "upload_seconds": 13.0,
+            "execution_seconds": 557.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117674137374,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:22:29Z",
+            "started_at": "2026-10-18T12:22:31Z",
+            "completed_at": "2026-10-18T12:31:23Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 28,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 344.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 108.0
+              },
+              {
+                "name": "Run actions/setup-dotnet@v4",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 24.0
+              },
+              {
+                "name": "Compile the standalone recovery monitor before the Flutter toolchain",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 16.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 9.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 532.0,
+            "created_to_start_seconds": 2.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39126367799,
+    "head_sha": "9e4942b18c8dd79e8d67f65abe3e7681ad934ac0",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T12:13:02Z",
+    "run_started_at": "2026-10-18T12:13:02Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39126367799",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 558.0,
+      "job_minutes": 32.9,
+      "completion_drivers": [
+        "frontend / frontend"
+      ],
+      "first_job_delay_seconds": 71.0,
+      "attempt_execution_span_seconds": 487.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117672466372,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:14:10Z",
+            "started_at": "2026-10-18T12:14:13Z",
+            "completed_at": "2026-10-18T12:14:19Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 6.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117672466686,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:14:10Z",
+            "started_at": "2026-10-18T12:14:13Z",
+            "completed_at": "2026-10-18T12:15:53Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 24,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 39.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 14.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 13.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 13,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 11.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 10.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 100.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117672497294,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:14:19Z",
+            "started_at": "2026-10-18T12:14:22Z",
+            "completed_at": "2026-10-18T12:22:20Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 429.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 23.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Retain synthetic Web control and browser zoom captures",
+                "number": 8,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 10.0,
+            "execution_seconds": 478.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117672497306,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:14:19Z",
+            "started_at": "2026-10-18T12:14:21Z",
+            "completed_at": "2026-10-18T12:22:07Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 395.0
+              },
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 38.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 24.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 2.0,
+            "execution_seconds": 466.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117672497358,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:14:19Z",
+            "started_at": "2026-10-18T12:14:22Z",
+            "completed_at": "2026-10-18T12:22:10Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 252.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 173.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 20.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 14.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 468.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117672497376,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:14:19Z",
+            "started_at": "2026-10-18T12:14:22Z",
+            "completed_at": "2026-10-18T12:21:58Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 28,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 255.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 126.0
+              },
+              {
+                "name": "Run actions/setup-dotnet@v4",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 26.0
+              },
+              {
+                "name": "Compile the standalone recovery monitor before the Flutter toolchain",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 13.0
+              },
+              {
+                "name": "Verify the pinned Velopack tool before the full test run",
+                "number": 11,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 10.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 456.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39125804459,
+    "head_sha": "3e6a42b33a8bfa49cbb97e9786ec34bdc8d4c9c4",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T12:04:45Z",
+    "run_started_at": "2026-10-18T12:04:45Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39125804459",
+    "ref_kind": "pull_request",
+    "components": {
+      "status": "N/A",
+      "reason": "source/base unavailable in local Git",
+      "gates": null
+    },
+    "artifacts": null,
+    "metrics": {
+      "wall_seconds": 564.0,
+      "job_minutes": 32.5833,
+      "completion_drivers": [
+        "frontend / frontend"
+      ],
+      "first_job_delay_seconds": 79.0,
+      "attempt_execution_span_seconds": 485.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117670817854,
+            "name": "changes",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:06:02Z",
+            "started_at": "2026-10-18T12:06:04Z",
+            "completed_at": "2026-10-18T12:06:09Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 5,
+            "costliest_steps": [
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Run python3 -m tools.ci.select_changes.run",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              },
+              {
+                "name": "Complete job",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 0.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 5.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117670818170,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T12:06:02Z",
+            "started_at": "2026-10-18T12:06:04Z",
+            "completed_at": "2026-10-18T12:07:26Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 24,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 38.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 13.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 12.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              },
+              {
+                "name": "Verify media QoE dashboard and rule semantics",
+                "number": 13,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 4.0
+              }
+            ],
+            "upload_seconds": 0,
+            "execution_seconds": 82.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117670846114,
+            "name": "frontend / frontend",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:06:10Z",
+            "started_at": "2026-10-18T12:06:12Z",
+            "completed_at": "2026-10-18T12:14:09Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 428.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Retain synthetic Web control and browser zoom captures",
+                "number": 8,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 10.0,
+            "execution_seconds": 477.0,
+            "created_to_start_seconds": 2.0
+          },
+          {
+            "id": 117670846132,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:06:10Z",
+            "started_at": "2026-10-18T12:06:13Z",
+            "completed_at": "2026-10-18T12:14:01Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 250.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 176.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 19.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 15.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 468.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117670846151,
+            "name": "windows / windows",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:06:10Z",
+            "started_at": "2026-10-18T12:06:13Z",
+            "completed_at": "2026-10-18T12:13:50Z",
+            "platform": "windows",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 28,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 12,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 246.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 130.0
+              },
+              {
+                "name": "Run actions/setup-dotnet@v4",
+                "number": 9,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Compile the standalone recovery monitor before the Flutter toolchain",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 14.0
+              },
+              {
+                "name": "Verify the pinned Velopack tool before the full test run",
+                "number": 11,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 10.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 457.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117670846155,
+            "name": "flutter / flutter",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "created_at": "2026-10-18T12:06:10Z",
+            "started_at": "2026-10-18T12:06:13Z",
+            "completed_at": "2026-10-18T12:13:59Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 14,
+            "costliest_steps": [
+              {
+                "name": "Test and analyze app and vendor packages",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 330.0
+              },
+              {
+                "name": "Verify Android Kotlin build modes",
+                "number": 8,
+                "kind": "other",
+                "conclusion": "cancelled",
+                "seconds": 99.0
+              },
+              {
+                "name": "Run subosito/flutter-action@v2",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 27.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 2.0,
+            "execution_seconds": 466.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  }
+]

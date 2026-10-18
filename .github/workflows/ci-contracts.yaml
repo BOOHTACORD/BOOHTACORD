@@ -25,12 +25,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+      - name: Test bounded restricted-network evidence readiness
+        run: node --test tools/network/restricted/measurement.test.mjs
       - name: Verify generated tracing contract bindings
         run: node tools/observability/flow_contract/generate.mjs --check
       - name: Install pinned CI verification dependencies
         run: python -m pip install -r tools/requirements-ci.txt -r tools/verify/openapi_parity/requirements.txt
       - name: Verify publisher signatures and desktop promotion guards
         run: python3 -m unittest tools.release.desktop_updates.test_signing
+      - name: Test read-only CI baseline collection and statistics
+        run: python3 -m unittest tools.ci.baseline.test_metrics tools.ci.baseline.test_normalize tools.ci.baseline.test_collect tools.ci.baseline.test_report
       - name: Verify trusted server builder source and TCP readiness
         run: python3 -m unittest tools.build.server.test_smoke_readiness tools.build.server.test_runtime_inputs tools.build.server.test_social_preview tools.build.server.test_image_audio_flag
       - name: Verify API and requirement traceability

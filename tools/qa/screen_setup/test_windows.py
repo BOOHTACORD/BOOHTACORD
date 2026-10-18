@@ -1,7 +1,10 @@
 import unittest
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from unittest.mock import patch
 from .windows import main
-from .windows import validate_result
+from .windows import validate_result, retain_failure
 
 
 def fixture():
@@ -38,3 +41,22 @@ class ResultTests(unittest.TestCase):
                 with self.assertRaises(RuntimeError): main()
             with patch.dict('os.environ', {'GITHUB_ACTIONS': 'true', 'RUNNER_ENVIRONMENT': 'self-hosted'}, clear=True):
                 with self.assertRaises(RuntimeError): main()
+
+
+class FailureEvidenceTests(unittest.TestCase):
+    def test_keeps_only_bounded_synthetic_failure_evidence(self):
+        with TemporaryDirectory() as root:
+            driver, destination = Path(root) / 'driver', Path(root) / 'retained'
+            driver.mkdir(); destination.mkdir()
+            (driver / 'failure.json').write_text(json.dumps({'status': 'FAIL',
+                'step': 'header_initial_launcher', 'reason': 'launcher_not_visible',
+                'private_configuration': 'must never be copied'}))
+            (driver / 'private-client.log').write_text('must never be copied')
+            retain_failure(driver, destination)
+            self.assertEqual({p.name for p in destination.iterdir()}, {'failure.json'})
+            self.assertEqual(json.loads((destination / 'failure.json').read_text()),
+                {'status': 'FAIL', 'step': 'header_initial_launcher', 'reason': 'launcher_not_visible'})
+            (driver / 'failure.png').write_bytes(b'not a png')
+            with self.assertRaises(ValueError): retain_failure(driver, destination)
+            (driver / 'failure.png').write_bytes(b'\x89PNG\r\n\x1a\n' + b'0' * 2_000_000)
+            with self.assertRaises(ValueError): retain_failure(driver, destination)

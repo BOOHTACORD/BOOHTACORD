@@ -1,0 +1,1235 @@
+[
+  {
+    "id": 39155159380,
+    "head_sha": "bfea46b61c3bc641098caf7c35be8c4be798af59",
+    "path": ".github/workflows/build-server.yaml",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T18:39:33Z",
+    "run_started_at": "2026-10-18T18:39:33Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39155159380",
+    "ref_kind": "master",
+    "components": {
+      "status": "observed",
+      "basis": "push head vs first parent (not event.before)",
+      "gates": [
+        "backend",
+        "contracts",
+        "flutter",
+        "server",
+        "web",
+        "windows"
+      ]
+    },
+    "artifacts": [
+      {
+        "id": 12147316015,
+        "created_at": "2026-10-18T18:55:00Z",
+        "size_in_bytes": 3273784,
+        "expired": false,
+        "digest": "sha256:31b75c2266bcc0e15e9e84e52cbe833343b77bc620c926b9d1f92830761b5fa4",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147301051,
+        "created_at": "2026-10-18T18:55:08Z",
+        "size_in_bytes": 222,
+        "expired": false,
+        "digest": "sha256:be345a9e5a204769d4ad5c501e374fbee65d55eb81eb02379d8f6c6b1f8727c1",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147241639,
+        "created_at": "2026-10-18T18:54:55Z",
+        "size_in_bytes": 8982610,
+        "expired": false,
+        "digest": "sha256:32bade123ae80aac09f6ae515a128d03696f05c16d0f828dbf677d6907c27292",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147226720,
+        "created_at": "2026-10-18T18:54:51Z",
+        "size_in_bytes": 1977554,
+        "expired": false,
+        "digest": "sha256:f1ee2d8c57b08e515a32380391ad3e7e5759760decdd8e31b6b38c4c647e8042",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147210254,
+        "created_at": "2026-10-18T18:41:16Z",
+        "size_in_bytes": 237,
+        "expired": false,
+        "digest": "sha256:f373c68b2313d633523560f9beabb89daa68d0210535931ca48e7c9b888df616",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147171692,
+        "created_at": "2026-10-18T18:57:14Z",
+        "size_in_bytes": 73503598,
+        "expired": false,
+        "digest": "sha256:2962833fde9dc008b9bb9aac8c3476bf4f5b35d576422210b5ea2c9ddf596af7",
+        "server_source_sha": "bfea46b61c3bc641098caf7c35be8c4be798af59"
+      },
+      {
+        "id": 12147162453,
+        "created_at": "2026-10-18T18:55:05Z",
+        "size_in_bytes": 3697322,
+        "expired": false,
+        "digest": "sha256:c3ebfc34a2e9ecd82aedb0e197227009abb5a10cd7f46198ec4260e486b9b76c",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147152606,
+        "created_at": "2026-10-18T18:55:04Z",
+        "size_in_bytes": 597804,
+        "expired": false,
+        "digest": "sha256:ef9a7c4496b3866384be536b8fc1dbaa16eb2774d5f0e4e9e466c356b69f5038",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147122833,
+        "created_at": "2026-10-18T18:55:02Z",
+        "size_in_bytes": 1855215,
+        "expired": false,
+        "digest": "sha256:00bb823192ca6cc6b4fb86794f4d4af947683692eeedfc0d913f29255445b9b7",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147101988,
+        "created_at": "2026-10-18T18:47:38Z",
+        "size_in_bytes": 232,
+        "expired": false,
+        "digest": "sha256:0de7186256e14a25314c5746355c331ac9d9fab6277df2371a310bf0910e2a86",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147097803,
+        "created_at": "2026-10-18T18:54:58Z",
+        "size_in_bytes": 4646470,
+        "expired": false,
+        "digest": "sha256:e6e92e03a9dd19552aa253821bbb29ab648477e50b05cc7f064f9f3090e693ad",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147092894,
+        "created_at": "2026-10-18T18:54:53Z",
+        "size_in_bytes": 1960215,
+        "expired": false,
+        "digest": "sha256:e0e2d0e9e4061cf68978676c43496ee2345444ad988f426afe831cf72c73b8e4",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147073014,
+        "created_at": "2026-10-18T18:54:49Z",
+        "size_in_bytes": 7693721,
+        "expired": false,
+        "digest": "sha256:b25f341ff058ad1a058e10f4c32be18187abb834025c806461db7e2f88b305a3",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147008402,
+        "created_at": "2026-10-18T18:54:57Z",
+        "size_in_bytes": 4365849,
+        "expired": false,
+        "digest": "sha256:84e1048739ed19286dec038a04f508683f82cc44bd75670ca298c490775795af",
+        "server_source_sha": null
+      },
+      {
+        "id": 12147003370,
+        "created_at": "2026-10-18T18:55:01Z",
+        "size_in_bytes": 3031030,
+        "expired": false,
+        "digest": "sha256:2acc955a56523adeb42ab5f775e1f354d89db68ff779f70238f8fb88e1cc81b8",
+        "server_source_sha": null
+      },
+      {
+        "id": 12146997422,
+        "created_at": "2026-10-18T18:47:37Z",
+        "size_in_bytes": 25679,
+        "expired": false,
+        "digest": "sha256:3027bf6e882abf2fd11d0fa46a03772b8f7fd406a7da1292364405ef9221d790",
+        "server_source_sha": null
+      },
+      {
+        "id": 12146933747,
+        "created_at": "2026-10-18T18:55:06Z",
+        "size_in_bytes": 935,
+        "expired": false,
+        "digest": "sha256:3bb3846957a32d413328af48676bf221bbca4a87064cdac757fe1182cb6a027f",
+        "server_source_sha": null
+      },
+      {
+        "id": 12146923661,
+        "created_at": "2026-10-18T18:55:07Z",
+        "size_in_bytes": 3264,
+        "expired": false,
+        "digest": "sha256:a3d5ca450c04a66e9abae389d9b39df1b31c3ec7f01cd1f140ea97ec44e25b92",
+        "server_source_sha": null
+      },
+      {
+        "id": 12146908807,
+        "created_at": "2026-10-18T18:54:52Z",
+        "size_in_bytes": 1155245,
+        "expired": false,
+        "digest": "sha256:d5599365009550d3d891f7cf2221541d38c7125126ff36886ba8076779045df4",
+        "server_source_sha": null
+      },
+      {
+        "id": 12146843908,
+        "created_at": "2026-10-18T18:54:48Z",
+        "size_in_bytes": 213253,
+        "expired": false,
+        "digest": "sha256:227c81a4ed2f34b87acb211536227fa9e5526020f037c1f6f820beb5ad8df692",
+        "server_source_sha": null
+      }
+    ],
+    "metrics": {
+      "wall_seconds": 1064.0,
+      "job_minutes": 27.4667,
+      "completion_drivers": [
+        "bundle"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 1061.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117756764295,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:39:33Z",
+            "started_at": "2026-10-18T18:39:36Z",
+            "completed_at": "2026-10-18T18:47:42Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 262.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 175.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 21.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 15.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 3.0,
+            "execution_seconds": 486.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117756764526,
+            "name": "web / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:39:33Z",
+            "started_at": "2026-10-18T18:39:36Z",
+            "completed_at": "2026-10-18T18:55:11Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 881.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 19.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Retain UX responsive-shell review captures",
+                "number": 7,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 22.0,
+            "execution_seconds": 935.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117756764536,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:39:33Z",
+            "started_at": "2026-10-18T18:39:36Z",
+            "completed_at": "2026-10-18T18:41:20Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 33.0
+              },
+              {
+                "name": "Verify all deployment guard failures before producing a release receipt",
+                "number": 19,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 16.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 15.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 10.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 7.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 104.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117760296297,
+            "name": "bundle",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:55:11Z",
+            "started_at": "2026-10-18T18:55:14Z",
+            "completed_at": "2026-10-18T18:57:17Z",
+            "platform": "unknown",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 7,
+            "costliest_steps": [
+              {
+                "name": "Build, attest, smoke-test and sign the immutable bundle",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 103.0
+              },
+              {
+                "name": "Retain the exact verified release",
+                "number": 5,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Run actions/download-artifact@v4",
+                "number": 3,
+                "kind": "artifact_download",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 8.0,
+            "execution_seconds": 123.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39152131685,
+    "head_sha": "23d07e4af56b0ed0706e55efac2c626644a1e394",
+    "path": ".github/workflows/build-server.yaml",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T18:00:12Z",
+    "run_started_at": "2026-10-18T18:00:12Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39152131685",
+    "ref_kind": "master",
+    "components": {
+      "status": "observed",
+      "basis": "push head vs first parent (not event.before)",
+      "gates": [
+        "backend",
+        "contracts",
+        "flutter",
+        "server",
+        "web",
+        "windows"
+      ]
+    },
+    "artifacts": [
+      {
+        "id": 12146445059,
+        "created_at": "2026-10-18T18:17:45Z",
+        "size_in_bytes": 8984265,
+        "expired": false,
+        "digest": "sha256:f84e831c70b5534fb947806a44001171180c3ebc9f9983c218214414efdfab7d",
+        "server_source_sha": null
+      },
+      {
+        "id": 12146335473,
+        "created_at": "2026-10-18T18:17:55Z",
+        "size_in_bytes": 597804,
+        "expired": false,
+        "digest": "sha256:4db710bf3408b7d952930e723e444cb0eab94a1fbf9f24d0914ef96fda7c72d0",
+        "server_source_sha": null
+      },
+      {
+        "id": 12146310498,
+        "created_at": "2026-10-18T18:17:43Z",
+        "size_in_bytes": 1960307,
+        "expired": false,
+        "digest": "sha256:f7f6e39644ad60ac814ed030b5121cd1bff341952c86718c36613ea22dda394e",
+        "server_source_sha": null
+      },
+      {
+        "id": 12146206037,
+        "created_at": "2026-10-18T18:17:50Z",
+        "size_in_bytes": 3273541,
+        "expired": false,
+        "digest": "sha256:c4aac7f1c3555ab58bf53db79bd3062e34800d7316f94c52bbe37611c166c138",
+        "server_source_sha": null
+      },
+      {
+        "id": 12146157440,
+        "created_at": "2026-10-18T18:21:32Z",
+        "size_in_bytes": 73502566,
+        "expired": false,
+        "digest": "sha256:62f5545768c53233f29b18c7b68255dbcbea2e0105d11921f866a32b96eb4364",
+        "server_source_sha": "23d07e4af56b0ed0706e55efac2c626644a1e394"
+      },
+      {
+        "id": 12145961786,
+        "created_at": "2026-10-18T18:17:57Z",
+        "size_in_bytes": 935,
+        "expired": false,
+        "digest": "sha256:8de526067c2b4ad3c5554b20b20656fce6ec4159980d36e517675a76188c8024",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145931714,
+        "created_at": "2026-10-18T18:08:46Z",
+        "size_in_bytes": 25633,
+        "expired": false,
+        "digest": "sha256:4d983e5dd0afe46fd316e7f3c33500a717b57c6dafc7fbe00aeae0e912b04f6a",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145857265,
+        "created_at": "2026-10-18T18:17:58Z",
+        "size_in_bytes": 3296,
+        "expired": false,
+        "digest": "sha256:8a285e95509e002a6f2d271451924dbfde7fa6c283083ee5524194929596a2ef",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145453578,
+        "created_at": "2026-10-18T18:17:39Z",
+        "size_in_bytes": 7693885,
+        "expired": false,
+        "digest": "sha256:239cf9c2ba296030bce8d90b569fb731d7ce69995f3f8018cdd8b8f43073fe0b",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145438569,
+        "created_at": "2026-10-18T18:17:47Z",
+        "size_in_bytes": 4364865,
+        "expired": false,
+        "digest": "sha256:8c29390318c14395bfee304541f7733f99626df0fdba73747b17e6232bcc73c4",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145399539,
+        "created_at": "2026-10-18T18:08:46Z",
+        "size_in_bytes": 233,
+        "expired": false,
+        "digest": "sha256:9af5178234d7817ffb6780ec8f9f963ab92822e80411a3120290c741dd0e323f",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145329026,
+        "created_at": "2026-10-18T18:17:56Z",
+        "size_in_bytes": 3698006,
+        "expired": false,
+        "digest": "sha256:e397f5e0e9e1bd190e083f0d59a800230ffc1cd7f6b8fb553296fbbeaaf74cc9",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145204204,
+        "created_at": "2026-10-18T18:17:42Z",
+        "size_in_bytes": 1154005,
+        "expired": false,
+        "digest": "sha256:193f99140cd24965ade544c2e66c39f0b6b7099dc65542835f38765bae3f0667",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145189448,
+        "created_at": "2026-10-18T18:17:59Z",
+        "size_in_bytes": 222,
+        "expired": false,
+        "digest": "sha256:78f2f03c78bdbba1c3ee8fa1187028ce3c19914e2bce7d7323b4aa4b53fda279",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145189424,
+        "created_at": "2026-10-18T18:17:40Z",
+        "size_in_bytes": 1976580,
+        "expired": false,
+        "digest": "sha256:59f512aec2811e3c312cb1c32a7ae0928493449fdbe874236bf6b64a6b541105",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145159562,
+        "created_at": "2026-10-18T18:17:37Z",
+        "size_in_bytes": 213253,
+        "expired": false,
+        "digest": "sha256:4b8064812db4e0aad33f9d0ca657a0892e6c7b1e0de7732e9804fb6cfc7595b6",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145144529,
+        "created_at": "2026-10-18T18:17:49Z",
+        "size_in_bytes": 4635694,
+        "expired": false,
+        "digest": "sha256:154b04e502e19558244a50f4d46a5f6c87849bc38ee0e370b7d677a1bf67c9a4",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145134527,
+        "created_at": "2026-10-18T18:17:52Z",
+        "size_in_bytes": 3031343,
+        "expired": false,
+        "digest": "sha256:93ec42a5e5021571ab80c501316fe4b8790cb6ce00d6b6eb723165976b69ea98",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145109602,
+        "created_at": "2026-10-18T18:17:53Z",
+        "size_in_bytes": 1862869,
+        "expired": false,
+        "digest": "sha256:b9a225492dacc2b2e5728f49a72d592e71df93c400a7f7fb729f09e666d6f703",
+        "server_source_sha": null
+      },
+      {
+        "id": 12145048423,
+        "created_at": "2026-10-18T18:02:11Z",
+        "size_in_bytes": 237,
+        "expired": false,
+        "digest": "sha256:8d32a45627e65eb1e9da9bddd75b3312786e80556b181236ec99041787cfbd01",
+        "server_source_sha": null
+      }
+    ],
+    "metrics": {
+      "wall_seconds": 1284.0,
+      "job_minutes": 31.8667,
+      "completion_drivers": [
+        "bundle"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 1281.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117747771136,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:00:12Z",
+            "started_at": "2026-10-18T18:00:15Z",
+            "completed_at": "2026-10-18T18:02:16Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 40.0
+              },
+              {
+                "name": "Verify all deployment guard failures before producing a release receipt",
+                "number": 19,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 16.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 13.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 121.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117747771303,
+            "name": "web / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:00:12Z",
+            "started_at": "2026-10-18T18:00:15Z",
+            "completed_at": "2026-10-18T18:18:02Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1002.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 24.0,
+            "execution_seconds": 1067.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117747771305,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:00:12Z",
+            "started_at": "2026-10-18T18:00:15Z",
+            "completed_at": "2026-10-18T18:08:49Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 275.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 201.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 17.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 13.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 2.0,
+            "execution_seconds": 514.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117751884734,
+            "name": "bundle",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T18:18:03Z",
+            "started_at": "2026-10-18T18:18:06Z",
+            "completed_at": "2026-10-18T18:21:36Z",
+            "platform": "unknown",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 7,
+            "costliest_steps": [
+              {
+                "name": "Build, attest, smoke-test and sign the immutable bundle",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 191.0
+              },
+              {
+                "name": "Retain the exact verified release",
+                "number": 5,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 7.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Run actions/download-artifact@v4",
+                "number": 3,
+                "kind": "artifact_download",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 7.0,
+            "execution_seconds": 210.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 39145112482,
+    "head_sha": "68f07dd360a0e4989a40313ef72bc0d65ab448a4",
+    "path": ".github/workflows/build-server.yaml",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-18T16:27:56Z",
+    "run_started_at": "2026-10-18T16:27:56Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39145112482",
+    "ref_kind": "master",
+    "components": {
+      "status": "observed",
+      "basis": "push head vs first parent (not event.before)",
+      "gates": [
+        "backend",
+        "contracts",
+        "flutter",
+        "server",
+        "web",
+        "windows"
+      ]
+    },
+    "artifacts": [
+      {
+        "id": 12144045558,
+        "created_at": "2026-10-18T16:45:37Z",
+        "size_in_bytes": 213253,
+        "expired": false,
+        "digest": "sha256:3002777bc019fec9d3f85e92edef6bfc102311cbf8e9a17d2f49b1133a425189",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143956149,
+        "created_at": "2026-10-18T16:45:52Z",
+        "size_in_bytes": 934,
+        "expired": false,
+        "digest": "sha256:990d925098f97fba3b6358dd8a9287e16563350f72c665589db34e1f4ab3b3fb",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143841694,
+        "created_at": "2026-10-18T16:45:52Z",
+        "size_in_bytes": 3275,
+        "expired": false,
+        "digest": "sha256:aedd5d51a162b474f40754afff64a573f21c5e0bb60875d09b76da50f9642831",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143687111,
+        "created_at": "2026-10-18T16:45:39Z",
+        "size_in_bytes": 7693948,
+        "expired": false,
+        "digest": "sha256:2cebbdf334b7ffa86a4f15d5c499ecd6491d043c27eff716dd3b4525014ce0b7",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143632180,
+        "created_at": "2026-10-18T16:45:50Z",
+        "size_in_bytes": 597804,
+        "expired": false,
+        "digest": "sha256:f6b30f5b29eb42695c2775924e162a0de6a073365e48a374d8142652110f0846",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143507571,
+        "created_at": "2026-10-18T16:45:49Z",
+        "size_in_bytes": 1862892,
+        "expired": false,
+        "digest": "sha256:df3cc82f0b63f019fb558c58c3e7216b1b669e36fb0627c4ddb89435fd2431be",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143497843,
+        "created_at": "2026-10-18T16:45:42Z",
+        "size_in_bytes": 1960361,
+        "expired": false,
+        "digest": "sha256:061001548f55e11c0b2b72c90d9fa157fb3e0cf2b44b570c86552e08f5a22d7d",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143486863,
+        "created_at": "2026-10-18T16:48:01Z",
+        "size_in_bytes": 73479647,
+        "expired": false,
+        "digest": "sha256:70d766cbe4e7aededd0b7741361546f65f4aa6c3b8f4810a4687868cf66531a3",
+        "server_source_sha": "68f07dd360a0e4989a40313ef72bc0d65ab448a4"
+      },
+      {
+        "id": 12143456782,
+        "created_at": "2026-10-18T16:35:38Z",
+        "size_in_bytes": 233,
+        "expired": false,
+        "digest": "sha256:448b9a2280f9dbd13ebfbe30d56050ddb67d5e0aaddc293c18d25f8375045cb4",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143438257,
+        "created_at": "2026-10-18T16:45:43Z",
+        "size_in_bytes": 8984043,
+        "expired": false,
+        "digest": "sha256:6e4a2ae055463a32cef64b72842b918e1e62b043e79f4b69a39b51cc5d88aedf",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143401173,
+        "created_at": "2026-10-18T16:29:40Z",
+        "size_in_bytes": 240,
+        "expired": false,
+        "digest": "sha256:0a207d2b87ddfea0701b026704f3d5d6a023124587f4293401c76c2bbe02b5d4",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143393201,
+        "created_at": "2026-10-18T16:45:53Z",
+        "size_in_bytes": 222,
+        "expired": false,
+        "digest": "sha256:0b87b0fae1f8f06532ce51fcd70521b9a7c9e0030451d8ff02e7a1c46cbd96df",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143383137,
+        "created_at": "2026-10-18T16:45:41Z",
+        "size_in_bytes": 1151155,
+        "expired": false,
+        "digest": "sha256:abd13a69cda59ab31f27dbc9087290b3b21df585fd3caf0628aef2968de464c6",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143368258,
+        "created_at": "2026-10-18T16:45:44Z",
+        "size_in_bytes": 4364257,
+        "expired": false,
+        "digest": "sha256:658b1900b6a7b4c7fdf4d1a7d999bf562b34055e2db7b5162ecc4af0757f8ae5",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143213966,
+        "created_at": "2026-10-18T16:45:48Z",
+        "size_in_bytes": 3031030,
+        "expired": false,
+        "digest": "sha256:bd3314ff5ed2e8eb72db0aab873f3f056320659f1b25870f9241ff7cbe62bfe3",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143204164,
+        "created_at": "2026-10-18T16:45:47Z",
+        "size_in_bytes": 3273623,
+        "expired": false,
+        "digest": "sha256:d02e1e4e8ee0d3286746764a2efc6819017f7d7899933dfb50fad853f5f328aa",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143119195,
+        "created_at": "2026-10-18T16:45:46Z",
+        "size_in_bytes": 4635651,
+        "expired": false,
+        "digest": "sha256:7ea36b7c5e6566d8b61b588a73c0977c5ce2ef021508212d9923f90c36210030",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143119184,
+        "created_at": "2026-10-18T16:45:40Z",
+        "size_in_bytes": 1978177,
+        "expired": false,
+        "digest": "sha256:0dd3e75b61bb78c8909b9e2317c3801751fc97b1fdd94f583736cd05e794a667",
+        "server_source_sha": null
+      },
+      {
+        "id": 12143009508,
+        "created_at": "2026-10-18T16:45:51Z",
+        "size_in_bytes": 3698693,
+        "expired": false,
+        "digest": "sha256:6bb8eb43638fee08beb44f5e39081ae0480656bd2e95db72ad6ea77988f57a02",
+        "server_source_sha": null
+      },
+      {
+        "id": 12142889308,
+        "created_at": "2026-10-18T16:35:37Z",
+        "size_in_bytes": 25851,
+        "expired": false,
+        "digest": "sha256:15b1508d749a4ad280c8f89660d7daed1efa7845099c93a3614b1ef65f8c8e70",
+        "server_source_sha": null
+      }
+    ],
+    "metrics": {
+      "wall_seconds": 1209.0,
+      "job_minutes": 29.5167,
+      "completion_drivers": [
+        "bundle"
+      ],
+      "first_job_delay_seconds": 3.0,
+      "attempt_execution_span_seconds": 1206.0
+    },
+    "attempts": [
+      {
+        "number": 1,
+        "jobs": [
+          {
+            "id": 117727263323,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T16:27:56Z",
+            "started_at": "2026-10-18T16:27:59Z",
+            "completed_at": "2026-10-18T16:35:42Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 13,
+            "costliest_steps": [
+              {
+                "name": "Exercise owned real API load smoke",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 261.0
+              },
+              {
+                "name": "Test, vet and build Go API",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 159.0
+              },
+              {
+                "name": "Initialize containers",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 21.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 12.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 3,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 2.0,
+            "execution_seconds": 463.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117727263440,
+            "name": "contracts / contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T16:27:56Z",
+            "started_at": "2026-10-18T16:27:59Z",
+            "completed_at": "2026-10-18T16:29:44Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Verify API and requirement traceability",
+                "number": 10,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 34.0
+              },
+              {
+                "name": "Verify all deployment guard failures before producing a release receipt",
+                "number": 19,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Run actions/setup-go@v5",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 15.0
+              },
+              {
+                "name": "Install pinned CI verification dependencies",
+                "number": 7,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 8.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 6.0
+              }
+            ],
+            "upload_seconds": 1.0,
+            "execution_seconds": 105.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117727263492,
+            "name": "web / frontend",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T16:27:56Z",
+            "started_at": "2026-10-18T16:27:59Z",
+            "completed_at": "2026-10-18T16:45:56Z",
+            "platform": "ubuntu",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 25,
+            "costliest_steps": [
+              {
+                "name": "Test and build Vue client",
+                "number": 6,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1023.0
+              },
+              {
+                "name": "Install locked browser runtime",
+                "number": 5,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 25.0
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 5.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Retain synthetic Web control and browser zoom captures",
+                "number": 8,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 2.0
+              }
+            ],
+            "upload_seconds": 17.0,
+            "execution_seconds": 1077.0,
+            "created_to_start_seconds": 3.0
+          },
+          {
+            "id": 117731280768,
+            "name": "bundle",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-18T16:45:56Z",
+            "started_at": "2026-10-18T16:45:59Z",
+            "completed_at": "2026-10-18T16:48:05Z",
+            "platform": "unknown",
+            "cache_state": "N/A: not exposed by metadata API",
+            "step_count": 7,
+            "costliest_steps": [
+              {
+                "name": "Build, attest, smoke-test and sign the immutable bundle",
+                "number": 4,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 107.0
+              },
+              {
+                "name": "Retain the exact verified release",
+                "number": 5,
+                "kind": "artifact_upload",
+                "conclusion": "success",
+                "seconds": 7.0
+              },
+              {
+                "name": "Set up job",
+                "number": 1,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 3.0
+              },
+              {
+                "name": "Run actions/download-artifact@v4",
+                "number": 3,
+                "kind": "artifact_download",
+                "conclusion": "success",
+                "seconds": 2.0
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "kind": "other",
+                "conclusion": "success",
+                "seconds": 1.0
+              }
+            ],
+            "upload_seconds": 7.0,
+            "execution_seconds": 126.0,
+            "created_to_start_seconds": 3.0
+          }
+        ]
+      }
+    ]
+  }
+]
