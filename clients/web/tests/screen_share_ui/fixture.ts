@@ -38,7 +38,7 @@ const IntermittentDiagnosis = defineComponent({
       id: 'intermittent-screen', hasAudio: true, participantId: 'a', participantName: 'A',
       readReceiverStats: async () => {
         readCount += 1
-        if (readCount % 2 === 0) return undefined
+        if (readCount % 8 !== 1) return undefined
         return { timestamp: Date.now(), framesDecoded: readCount * 30, framesDropped: 0, bytesReceived: readCount * 1024 }
       },
     })
