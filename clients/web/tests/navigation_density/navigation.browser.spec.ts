@@ -53,6 +53,17 @@ test('hovering a channel does not show a redundant tooltip', async ({ page }) =>
   await next.click()
   await expect(next).toHaveAttribute('aria-current', 'page')
 })
+test('channel destructive action is available through the ellipsis, not right-click', async ({ page }, info) => {
+  await page.setViewportSize({ width: 1440, height: 768 }); await open(page)
+  const row = page.locator('.channel-row').first()
+  await row.click({ button: 'right' })
+  await expect(page.getByTestId('result')).toHaveText('')
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await expect(page.getByRole('menu')).toHaveCount(0)
+  await page.screenshot({ path: info.outputPath('channel-right-click-no-dialog.png') })
+  await row.getByRole('button', { name: 'Действия с каналом Обсуждение очень длинного названия канала для совместной работы 0' }).click()
+  await expect(page.getByTestId('result')).toHaveText('action:channel-0-0')
+})
 test('one scroll surface, compact desktop rhythm and reachable final row above dock', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 480 }); await open(page)
   const g = await geometry(page)
