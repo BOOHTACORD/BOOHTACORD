@@ -13,6 +13,7 @@ from pathlib import Path
 from tools.qa.guild_identity.run import current_identity
 from tools.qa.local_features.native import verify_device
 from .bridge import PublisherBridge
+from .environment import native_environment
 
 
 def digest(path):
@@ -71,10 +72,7 @@ def main():
     parser.add_argument('--device',required=True)
     args=parser.parse_args()
     root=Path(__file__).resolve().parents[3]
-    sdk='/opt/homebrew/share/android-commandlinetools'
-    os.environ.update(ANDROID_HOME=sdk,ANDROID_SDK_ROOT=sdk,JAVA_HOME='/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home')
-    os.environ['PATH']=sdk+'/platform-tools:/opt/homebrew/bin:'+os.environ.get('PATH','')
-    os.environ['DOCKER_CONTEXT']='colima-boohtacord-qa'
+    os.environ.update(native_environment(os.environ))
     output=root/'.out/qa247-20261012'/args.platform;output.mkdir(parents=True,exist_ok=True);archive_previous(output)
     report={'issue':247,'status':'RUNNING','phase':'preflight','platform':args.platform,'started_at':datetime.now(timezone.utc).isoformat(),'runtime_completed':False,'owned_reverse_removed':False}
     receipt=output/'runtime.json'
@@ -83,7 +81,7 @@ def main():
     private=Path('/private/tmp/boohtacord-qa247-flutter');reversed_ports=[];ports=(4830,4884,4834);build_started=False
     try:
         report.update(current_identity(root))
-        report['qa_handler_sha256']={name:digest(root/'tools/qa/mini_player'/name) for name in ('native.py','bridge.py','scenario.mjs')}
+        report['qa_handler_sha256']={name:digest(root/'tools/qa/mini_player'/name) for name in ('native.py','bridge.py','scenario.mjs','environment.py')}
         report['qa_driver_sha256']=digest(root/'clients/flutter/test_driver/mini_player_qa.dart')
         holder=json.loads((root/'.out/qa247-20261012/web/results.json').read_text())
         if holder.get('status') != 'PASS':
