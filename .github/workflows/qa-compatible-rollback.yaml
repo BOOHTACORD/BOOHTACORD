@@ -1,0 +1,60 @@
+name: Compatible rollback acceptance
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - tools/qa/compatible_rollback/**
+      - .github/workflows/qa-compatible-rollback.yaml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: qa60-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rehearse:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Fetch the exact retained source objects
+        run: |
+          git fetch --no-tags origin f8851896dba5b0b4002a3a9c53d327348aa133cc 732bc4ae3b38e0865aa440df2378d803d2816e5e
+      - name: Verify actual source-bound CI results
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python -m tools.qa.compatible_rollback.ci_proof tools/qa/compatible_rollback/ci-inputs.json .out/issue60/ci-proof.json
+      - name: Install locked browser dependencies
+        working-directory: clients/web
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Test rollback evidence and isolation guards
+        run: python -m unittest tools.qa.compatible_rollback.test_evidence tools.qa.compatible_rollback.test_isolation tools.qa.compatible_rollback.test_ci_proof tools.qa.compatible_rollback.test_diagnostics tools.qa.compatible_rollback.test_builder_identity tools.release.rollback.test_rollout tools.build.server.test_smoke_readiness tools.build.server.test_runtime_inputs tools.build.server.test_social_preview tools.build.server.test_image_audio_flag
+      - name: Rehearse actual signed rollback with two browser observers
+        run: python -m tools.qa.compatible_rollback.run --ci-proof .out/issue60/ci-proof.json
+      - name: Retain only sanitized runtime evidence and synthetic captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa60-${{ github.sha }}
+          path: |
+            .out/issue60/runtime/run.json
+            .out/issue60/runtime/acceptance.json
+            .out/issue60/runtime/browser.json
+            .out/issue60/runtime/*.png
+          if-no-files-found: error
+          retention-days: 30

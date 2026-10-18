@@ -15,6 +15,11 @@ Production environment разрешает только `master`. Его секр
 `/etc/voice-platform/release-signing.pub.pem`. Полученный bundle не может
 назначить собственный ключ доверия. Staging имеет отдельную пару ключей.
 
+Для проверки retained source trusted builder принимает `--source /path/to/repo`:
+это должен быть корень чистого Git checkout, а PASS receipts должны относиться
+к его точному `HEAD`. Без параметра собирается репозиторий самого builder.
+Smoke ожидает готовности PostgreSQL по TCP перед двумя проходами миграций.
+
 Server builder назначается только runner с меткой `boohtacord-builder`.
 Его service account должен иметь доступ к Docker socket (на Hetzner это
 `SupplementaryGroups=docker` в systemd override сервиса Web runner).
@@ -61,3 +66,13 @@ inventory или нехватке диска установка останавл
 пишется `installed.json` в `/opt/voice-platform-releases/FULL_SHA`.
 Записывайте SHA, artifact digest, run ID, окружение и ограничения в evidence.
 Physical media acceptance остаётся отдельной проверкой.
+
+## Локальная репетиция с двумя браузерами
+
+[Раннер QA-12](../../tools/qa/compatible_rollback/README.md) собирает две
+совместимые подписанные QA-поставки и выполняет эту же команду rollback на
+отдельном Docker-демоне. Два браузера наблюдают maintenance и отказы новым
+входам/voice admissions; после отката и возврата проверяются сессии, данные,
+вложения, schema и идентичность persistent resources. Его отдельный временный
+ключ предназначен для тестового контура. Прогон не меняет production trust anchor
+и не выполняет production maintenance.

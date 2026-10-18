@@ -477,7 +477,7 @@ tasks:
     title: Continuous delivery and deployment inputs
     requirements: [REQ-DEPLOY-01, REQ-NOBACKUP-01]
     depends_on: [T-003, T-052]
-    evidence: [ci-run, deployment-smoke]
+    evidence: [ci-run, deployment-smoke, evidence/release/qa12-live-compatible-rollback-2026-10-18.json, QA-12]
   - id: T-060
     title: Release quality gates
     requirements: [REQ-QUALITY-01, REQ-QUALITY-02, REQ-CAPACITY-01, REQ-DEPLOY-01]

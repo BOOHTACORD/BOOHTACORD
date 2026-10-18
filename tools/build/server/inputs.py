@@ -3,6 +3,7 @@ import hashlib
 import subprocess
 from pathlib import Path
 from tools.release.bundle.files import sha256
+from tools.release.bundle.manifest import require
 
 SOURCE_PATHS = ("backend", "clients/web", "contracts", "deploy", "tools", ".node-version", "Taskfile.yml",
                 "clients/flutter/packages/flutter_webrtc/common/rnnoise/upstream")
@@ -22,6 +23,13 @@ RUNTIME_PATHS = (*TOPOLOGY_PATHS,
 
 def git(root, *args):
     return subprocess.check_output(["git", "-C", str(root), *args])
+
+
+def source_root(requested):
+    root = Path(requested).resolve() if requested is not None else Path(__file__).resolve().parents[3]
+    require(Path(git(root, 'rev-parse', '--show-toplevel').decode().strip()).resolve() == root,
+            'Builder source must be an exact Git repository root')
+    return root
 
 
 def archive(root, destination, paths):
