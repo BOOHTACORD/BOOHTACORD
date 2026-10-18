@@ -38,6 +38,15 @@
         ],
         "scope": "POC-03: seven authoritative revocations, actual two-browser video/audio transport, production RTC forward-auth, API-issued and SDK-refreshed credential replay; no physical audio-quality claim"
       },
+      "issue60": {
+        "browser": "tools/qa/compatible_rollback/run.py",
+        "focused": [
+          "tools/qa/compatible_rollback/test_evidence.py",
+          "tools/qa/compatible_rollback/test_isolation.py",
+          "tools/qa/compatible_rollback/test_ci_proof.py"
+        ],
+        "scope": "QA-12: canonical signed-bundle rollback and restore on a dedicated local Docker daemon, two actual Web observers, maintenance SSE and denied admissions, real digest refs, logical schema/data and persistent resource preservation. Local QA signing anchor; no production maintenance or physical media claim."
+      },
       "issue272": {
         "browser": "tools/qa/roster_runtime/run.py",
         "native": "tools/qa/roster_runtime/native.py",
