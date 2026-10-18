@@ -4,6 +4,19 @@ import re
 LABEL = 'boohtacord.qa.rollback'
 
 
+def ownership_arguments(uid, gid, names):
+    if any(type(value) is not int or value < 0 for value in (uid, gid)):
+        raise ValueError('Numeric caller ownership is required')
+    if any(not re.fullmatch('[A-Za-z0-9][A-Za-z0-9._-]*', name) or name in ('.', '..') for name in names):
+        raise ValueError('Only direct owned work entries may change ownership')
+    paths = ['/qa/' + name for name in names if name not in ('current', 'previous')]
+    if not paths:
+        return []
+    # Preserve the two caller-owned source checkouts; do not dereference links
+    # in generated artifacts into shared Git objects or any other host path.
+    return ['chown', '--recursive', '--no-dereference', '--preserve-root', '-P', str(uid) + ':' + str(gid), *paths]
+
+
 def require_amd64_daemon(info):
     if info.get('Architecture') not in ('amd64', 'x86_64'):
         raise ValueError('Use an isolated Linux amd64 Docker VM; Rosetta server builds are not accepted')

@@ -7,6 +7,8 @@ TCP port is published, and the final controller starts with only a Unix listener
 The outer daemon must be local (Unix endpoint). Cleanup checks ownership labels
 before removing the outer container, image and data volume. Foreign services are
 never selected by the shipping project's fixed names on the outer daemon.
+Generated work entries return to the caller UID/GID before browser access and
+cleanup. Ownership changes exclude the source checkouts and never follow links.
 
 Use a Linux amd64 Docker daemon. On an ARM64 Mac, a separate QEMU x86_64 VM
 avoids the observed Go compiler crash under Rosetta and the emulated daemon's

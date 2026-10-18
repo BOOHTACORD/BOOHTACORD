@@ -53,6 +53,7 @@ def main():
                     (destination / 'owner.json').write_text(json.dumps({'owner': stack.owner, 'work': str(work), 'resources': stack.resources}))
                     print('QA60_PHASE build genuine attested QA bundles', flush=True)
                     stack.execute('python3', '/qa-tools/controller.py', 'prepare', stdout=log, stderr=subprocess.STDOUT, timeout=3600)
+                stack.reclaim()
                 report['environment'] = json.loads((work / 'environment.json').read_text())
                 print('QA60_PHASE two actual browser observers', flush=True)
                 with (destination / 'browser-runtime.log').open('wb') as log:

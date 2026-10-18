@@ -1,8 +1,20 @@
 import unittest
-from .isolation import require_owned_daemon, require_owner, daemon_arguments, require_amd64_daemon
+from .isolation import require_owned_daemon, require_owner, daemon_arguments, require_amd64_daemon, ownership_arguments
 
 
 class IsolationTests(unittest.TestCase):
+    def test_generated_files_return_to_caller_without_following_source_symlinks(self):
+        arguments = ownership_arguments(1001, 123, ['current', 'previous', 'private', 'releases', 'ready.json'])
+        self.assertIn('--no-dereference', arguments)
+        self.assertIn('-P', arguments)
+        self.assertEqual(arguments[-4:], ['1001:123', '/qa/private', '/qa/releases', '/qa/ready.json'])
+        self.assertNotIn('/qa/current', arguments)
+        self.assertNotIn('/qa/previous', arguments)
+        for name in ('../foreign', '/foreign', '--reference=foreign', '.', '..'):
+            with self.subTest(name=name), self.assertRaises(ValueError): ownership_arguments(1001, 123, [name])
+        with self.assertRaises(ValueError): ownership_arguments(True, 123, ['private'])
+        with self.assertRaises(ValueError): ownership_arguments(-1, 123, ['private'])
+
     def test_rejects_arm_daemon_before_attempting_rosetta_server_builds(self):
         for architecture in ('x86_64', 'amd64'):
             require_amd64_daemon({'Architecture': architecture})

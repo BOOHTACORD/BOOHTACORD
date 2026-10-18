@@ -1,11 +1,12 @@
 """One owned nested daemon; never expose its socket or touch foreign projects."""
 import json
+import os
 from pathlib import Path
 import secrets
 import subprocess
 import time
 from tools.qa.client_lifecycle.services import local_docker, ports_available
-from .isolation import LABEL, require_owner, require_owned_daemon, daemon_arguments, require_amd64_daemon
+from .isolation import LABEL, require_owner, require_owned_daemon, daemon_arguments, require_amd64_daemon, ownership_arguments
 
 
 class Daemon:
@@ -61,10 +62,18 @@ class Daemon:
     def execute(self, *args, **kwargs):
         return self.docker('exec', '-w', '/qa', self.owner, *args, **kwargs)
 
+    def reclaim(self):
+        require_owner(json.loads(self.output('inspect', '--format', '{{json .Config.Labels}}', self.owner)), self.owner)
+        arguments = ownership_arguments(os.getuid(), os.getgid(), [p.name for p in self.work.iterdir()])
+        if arguments:
+            self.execute(*arguments, stdout=subprocess.DEVNULL, timeout=120)
+
     def close(self):
         for kind, name in reversed(self.resources):
             command = ['image', 'inspect'] if kind == 'image' else [kind, 'inspect'] if kind == 'volume' else ['inspect']
             result = self.output(*command, '--format', '{{json .Config.Labels}}' if kind in ('container', 'image') else '{{json .Labels}}', name)
             require_owner(json.loads(result) or {}, self.owner)
+            if kind == 'container' and self.output('inspect', '--format', '{{.State.Running}}', name) == 'true':
+                self.reclaim()
             self.docker(*( ['rm', '-f', '-v'] if kind == 'container' else [kind, 'rm']), name, stdout=subprocess.DEVNULL)
         self.resources.clear()
