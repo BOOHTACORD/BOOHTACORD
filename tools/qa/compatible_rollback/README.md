@@ -25,6 +25,17 @@ The existing `PRIVATE_PROXY_IP` and `TRUSTED_PROXY_CIDRS` inputs select
 default static `.2` collides with the first dynamic endpoint in an empty bridge.
 The retained Compose file and forwarding trust checks remain unchanged.
 
+One explicit fixture dependency is added before LiveKit starts: an owned egress
+bridge for its retained `use_external_ip: true` STUN discovery. Actual controls
+observed failure without outbound access and successful authenticated RoomService
+with this bridge. LiveKit's configuration is unchanged; its management/metrics
+ports remain unpublished. API, PostgreSQL and proxy keep their retained networks.
+Both the two canonical network identities and this additional fixture identity
+must survive the complete rehearsal. This checks rollback on this prepared
+instance; fresh production-network provisioning is outside this acceptance.
+See the [LiveKit configuration reference](https://github.com/livekit/livekit/blob/master/config-sample.yaml)
+for external-IP discovery precedence.
+
 ## Inputs and invocation
 
 Provide an observed CI proof JSON with `current` and `previous` entries:
@@ -82,7 +93,8 @@ runtime and canonical rollback command are unchanged.
 
 ## Observations
 
-1. Start both real images and the exact retained Compose topology; seed two
+1. Start both real images and the retained Compose services with the explicit
+   SFU-only fixture egress above; seed two
    ordinary users plus an admin, TEXT/DM messages and actual uploaded attachments.
 2. Read current image refs/IDs, live logical schema, persistent resource identity
    and committed data/file fingerprints. Call the canonical read-only preflight
@@ -98,7 +110,7 @@ runtime and canonical rollback command are unchanged.
    digest-qualified refs and revision labels. Reload both clients, confirm their
    original accounts, TEXT and DM contents, exact downloaded attachment hashes,
    source receipt and successful new admission. Retain all ten browser captures.
-6. Compare the four volume and two network identities, logical product data,
+6. Compare the four volume and three observed network identities, logical product data,
    attachment files, persisted TLS material, proxy config and actual logical DDL.
    These are read-only fingerprints, not copied data or restore points. Volatile
    session/read-cursor/lease/worker timestamps and PostgreSQL WAL bytes naturally

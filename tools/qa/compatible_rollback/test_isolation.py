@@ -1,8 +1,14 @@
 import unittest
-from .isolation import require_owned_daemon, require_owner, daemon_arguments, require_amd64_daemon, ownership_arguments
+from .isolation import require_owned_daemon, require_owner, daemon_arguments, require_amd64_daemon, ownership_arguments, egress_name
 
 
 class IsolationTests(unittest.TestCase):
+    def test_sfu_egress_is_scoped_to_exact_owned_daemon(self):
+        owner = 'qa60-' + 'a' * 16
+        self.assertEqual(egress_name(owner), owner + '-sfu-egress')
+        for value in ('production', '../foreign', 'qa60-'):
+            with self.assertRaises(ValueError): egress_name(value)
+
     def test_generated_files_return_to_caller_without_following_source_symlinks(self):
         arguments = ownership_arguments(1001, 123, ['current', 'previous', 'private', 'releases', 'ready.json'])
         self.assertIn('--no-dereference', arguments)

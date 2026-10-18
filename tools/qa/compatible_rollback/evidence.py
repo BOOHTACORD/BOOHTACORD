@@ -45,7 +45,7 @@ def _validate(value):
     for row in storage:
         require(set(row) == {'phase', 'volumes', 'networks', 'content'})
         for key, expected in [('volumes', {'postgres-data', 'attachments-data', 'caddy-data', 'caddy-config'}),
-                              ('networks', {'edge', 'private'}),
+                              ('networks', {'edge', 'private', 'sfu-egress'}),
                               ('content', {'database', 'attachments', 'tls', 'proxy_config', 'schema'})]:
             require(set(row[key]) == expected and all(digest(v) for v in row[key].values()))
             require(row[key] == storage[0][key])

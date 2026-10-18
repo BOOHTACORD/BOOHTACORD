@@ -67,6 +67,12 @@ def content():
 def observe(phase):
     from tools.release.rollback.identity import identities
     observed = identities()
+    from pathlib import Path
+    from isolation import LABEL, egress_name, require_owner
+    owner = Path('/qa/owner').read_text()
+    network = json.loads(output('network', 'inspect', egress_name(owner)))[0]
+    require_owner(network['Labels'], owner)
+    observed['network:sfu-egress'] = network['Name'] + '|' + network['Id']
     return {'phase': phase, 'volumes': {n.removeprefix('volume:'): hash_bytes(v.encode()) for n, v in observed.items() if n.startswith('volume:')},
             'networks': {n.removeprefix('network:'): hash_bytes(v.encode()) for n, v in observed.items() if n.startswith('network:')},
             'content': content()}

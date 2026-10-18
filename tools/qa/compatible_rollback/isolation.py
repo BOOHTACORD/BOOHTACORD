@@ -4,6 +4,11 @@ import re
 LABEL = 'boohtacord.qa.rollback'
 
 
+def egress_name(owner):
+    require_owner({LABEL: owner}, owner)
+    return owner + '-sfu-egress'
+
+
 def ownership_arguments(uid, gid, names):
     if any(type(value) is not int or value < 0 for value in (uid, gid)):
         raise ValueError('Numeric caller ownership is required')

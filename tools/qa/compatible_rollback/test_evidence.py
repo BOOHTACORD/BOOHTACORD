@@ -21,7 +21,7 @@ def receipt():
         'storage': [
             {'phase': phase,
              'volumes': {n: 'c' * 64 for n in ('postgres-data', 'attachments-data', 'caddy-data', 'caddy-config')},
-             'networks': {n: 'd' * 64 for n in ('edge', 'private')},
+             'networks': {n: 'd' * 64 for n in ('edge', 'private', 'sfu-egress')},
              'content': {n: 'e' * 64 for n in ('database', 'attachments', 'tls', 'proxy_config', 'schema')}}
             for phase in ('baseline', 'previous', 'restored')],
         'running': [
@@ -67,6 +67,9 @@ class AcceptanceTests(unittest.TestCase):
             if mode == 'duplicate': value['storage'][1] = copy.deepcopy(value['storage'][0])
             if mode == 'malformed': value['storage'][0]['content']['database'] = 'not-a-digest'
             with self.subTest(mode=mode), self.assertRaises(ValueError): validate(value)
+        value = receipt()
+        del value['storage'][1]['networks']['sfu-egress']
+        with self.assertRaises(ValueError): validate(value)
 
     def test_rejects_tag_fallback_and_wrong_running_image(self):
         for mode in ('tag', 'wrong_image', 'wrong_revision', 'missing', 'duplicate'):
