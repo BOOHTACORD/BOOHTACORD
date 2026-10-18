@@ -78,7 +78,7 @@ test('room and dock share icons, named states and keyboard actions without openi
     await expect(scope.locator('[data-state=stopping]')).toBeDisabled()
     await patch(page, { screen: 'IDLE' })
   }
-  await expect(page.locator('.voice-advanced')).not.toHaveAttribute('open')
+  await expect(page.locator('.voice-advanced')).toHaveCount(0)
   await expect(page.getByText('Микрофон и звук трансляции управляются отдельно.', { exact: true })).not.toBeVisible()
 })
 
