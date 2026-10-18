@@ -1,0 +1,42 @@
+name: Restricted protocol evidence acquisition proof
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  network-protocol:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: clients/web/package-lock.json
+      - name: Install the locked browser runtime
+        working-directory: clients/web
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Verify readiness and namespace boundaries
+        run: |
+          node --test tools/network/restricted/measurement.test.mjs
+          python3 -m unittest tools.network.restricted.test_sfu tools.network.restricted.test_restrict
+      - name: Require three independent complete real SFU matrix passes
+        run: |
+          set -euo pipefail
+          for round in 1 2 3; do
+            python3 -m tools.network.restricted.run
+            mkdir -p ".out/network-proof/round-$round"
+            cp .out/restricted-networks/*.json ".out/network-proof/round-$round/"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: restricted-protocol-proof-${{ github.sha }}
+          path: |
+            .out/network-proof/**/*.json
+            .out/restricted-networks/*.json
+          if-no-files-found: error
+          retention-days: 7
