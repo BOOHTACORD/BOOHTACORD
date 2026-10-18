@@ -15,8 +15,30 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  install:
+  route:
     if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'master' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      has_bundle: ${{ steps.route.outputs.has_bundle }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: route
+        name: Read the trusted producer route without production credentials
+        env:
+          BUILD_RUN_ID: ${{ github.event.workflow_run.id }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 -m tools.release.delivery.routing
+
+  install:
+    needs: route
+    if: >-
+      needs.route.outputs.has_bundle == 'true' &&
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == 'master' &&
       github.event.workflow_run.head_repository.full_name == github.repository

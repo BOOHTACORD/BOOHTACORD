@@ -22,6 +22,8 @@ jobs:
       flutter: ${{ steps.select.outputs.flutter }}
       windows: ${{ steps.select.outputs.windows }}
       server: ${{ steps.select.outputs.server }}
+      server_release_impact: ${{ steps.select.outputs.server_release_impact }}
+      native_release_impact: ${{ steps.select.outputs.native_release_impact }}
     steps:
       - uses: actions/checkout@v4
         with:

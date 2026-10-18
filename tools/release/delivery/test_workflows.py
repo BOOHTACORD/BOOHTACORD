@@ -28,3 +28,21 @@ class DeliveryWorkflowTests(unittest.TestCase):
         broken = copy.deepcopy(self.workflows)
         broken['deploy-production.yaml']['jobs']['install']['if'] = 'true'
         with self.assertRaises(ValueError): check(broken)
+
+    def test_server_routing_never_uses_a_separate_path_filter(self):
+        broken = copy.deepcopy(self.workflows)
+        broken['build-server.yaml']['on']['push']['paths'] = ['backend/**']
+        with self.assertRaises(ValueError): check(broken)
+
+    def test_expected_no_release_route_does_not_gain_production_credentials(self):
+        for update in [{'environment': 'production'}, {'permissions': {'contents': 'write'}},
+                       {'env': {'DEPLOY_SSH_PRIVATE_KEY': '${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}'}}]:
+            broken = copy.deepcopy(self.workflows)
+            broken['deploy-production.yaml']['jobs']['route'].update(update)
+            with self.subTest(update=update), self.assertRaises(ValueError):
+                check(broken)
+
+    def test_installer_cannot_ignore_producer_route(self):
+        broken = copy.deepcopy(self.workflows)
+        broken['deploy-production.yaml']['jobs']['install']['needs'] = []
+        with self.assertRaises(ValueError): check(broken)

@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "paths": [
+        "contracts/**",
+        ".github/**",
+        "tools/ci/**",
+        "tools/verify/**",
+        "tools/toolchains.json",
+        "tools/requirements-ci.txt",
+        "Taskfile.yml",
+        "AGENTS.md",
+        "SKILL.md",
+        "structure.config.yaml",
+        ".node-version"
+      ],
+      "gates": [
+        "contracts",
+        "backend",
+        "web",
+        "flutter",
+        "windows"
+      ],
+      "server": true,
+      "native": true
+    },
+    {
+      "paths": [
+        "clients/flutter/packages/flutter_webrtc/common/rnnoise/upstream/**"
+      ],
+      "gates": [
+        "contracts",
+        "web",
+        "flutter",
+        "windows"
+      ],
+      "server": true,
+      "native": true
+    },
+    {
+      "paths": [
+        "tools/audio/**",
+        "tools/release/bundle/**",
+        "tools/release/archive/**",
+        "tools/release/native_artifact/**",
+        "tools/release/client_updates/**",
+        "tools/build/client_identity.py"
+      ],
+      "gates": [
+        "contracts",
+        "backend",
+        "web",
+        "flutter",
+        "windows"
+      ],
+      "server": true,
+      "native": true
+    },
+    {
+      "paths": [
+        "evidence/media/livekit-network-config-*.json"
+      ],
+      "gates": [
+        "contracts",
+        "backend",
+        "web"
+      ],
+      "server": true,
+      "native": false
+    },
+    {
+      "paths": [
+        "docs/**",
+        "evidence/**",
+        "backlog/**",
+        "README.md",
+        "LICENSE",
+        ".gitignore"
+      ],
+      "gates": [
+        "contracts"
+      ],
+      "server": false,
+      "native": false
+    },
+    {
+      "paths": [
+        "backend/**"
+      ],
+      "gates": [
+        "contracts",
+        "backend"
+      ],
+      "server": true,
+      "native": false
+    },
+    {
+      "paths": [
+        "clients/web/**",
+        "tools/build/web/**"
+      ],
+      "gates": [
+        "contracts",
+        "web"
+      ],
+      "server": true,
+      "native": false
+    },
+    {
+      "paths": [
+        "clients/flutter/**",
+        "tools/build/native/**",
+        "tools/build/android/**",
+        "tools/build/windows/**",
+        "tools/build/macos/**",
+        "tools/build/desktop_updater/**",
+        "tools/build/webrtc_macos/**",
+        "tools/build/webrtc_sdk/**",
+        "tools/release/desktop_updates/**",
+        "tools/release/android/**",
+        "tools/release/windows/**"
+      ],
+      "gates": [
+        "contracts",
+        "flutter",
+        "windows"
+      ],
+      "server": false,
+      "native": true
+    },
+    {
+      "paths": [
+        "deploy/**",
+        "docker/**",
+        "tools/release/**",
+        "tools/build/server/**",
+        "compose.yaml",
+        ".env.example"
+      ],
+      "gates": [
+        "contracts",
+        "backend",
+        "web"
+      ],
+      "server": true,
+      "native": false
+    }
+  ]
+}

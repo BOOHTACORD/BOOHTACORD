@@ -3,18 +3,6 @@ name: Build server
 on:
   push:
     branches: [master]
-    paths:
-      - 'backend/**'
-      - 'clients/web/**'
-      - 'clients/flutter/packages/flutter_webrtc/common/rnnoise/upstream/**'
-      - 'contracts/**'
-      - 'deploy/**'
-      - 'evidence/media/livekit-network-config-*.json'
-      - 'tools/**'
-      - '.github/workflows/**'
-      - '.node-version'
-      - 'Taskfile.yml'
-      - '.env.example'
   workflow_dispatch:
 
 permissions:
@@ -25,21 +13,38 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    outputs:
+      server_release_impact: ${{ steps.select.outputs.server_release_impact }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: select
+        run: python3 -m tools.ci.select_changes.run
+
   backend:
+    needs: changes
+    if: needs.changes.outputs.server_release_impact == 'true'
     uses: ./.github/workflows/ci-backend.yaml
     with:
       release_receipt: true
   web:
+    needs: changes
+    if: needs.changes.outputs.server_release_impact == 'true'
     uses: ./.github/workflows/ci-frontend.yaml
     with:
       release_receipt: true
   contracts:
+    needs: changes
+    if: needs.changes.outputs.server_release_impact == 'true'
     uses: ./.github/workflows/ci-contracts.yaml
     with:
       release_receipt: true
   bundle:
-    if: github.ref == 'refs/heads/master'
-    needs: [backend, web, contracts]
+    if: github.ref == 'refs/heads/master' && needs.changes.outputs.server_release_impact == 'true'
+    needs: [changes, backend, web, contracts]
     environment: production
     runs-on: [self-hosted, linux, x64, boohtacord-builder]
     timeout-minutes: 30
