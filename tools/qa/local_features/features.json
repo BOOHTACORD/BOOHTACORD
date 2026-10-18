@@ -463,6 +463,7 @@
       "clients/web/src/channel/*",
       "clients/web/src/workspace/*",
       "clients/web/src/design/*",
+      "clients/web/tests/navigation_density/navigation.browser.spec.ts",
       "clients/web/src/style.css",
       "clients/flutter/lib/src/screens/workspace_screen.dart",
       "clients/flutter/lib/src/theme*",
@@ -522,7 +523,7 @@
       },
       "issue344": {
         "browser": "clients/web/tests/navigation_density/playwright.config.ts",
-        "scope": "Actual production navigation components with 36 channels/three categories, accent-colored selected markers for Channels/Personal/channel/DM (no white strokes), keyboard focus, touch, single scroll surface, persisted favorites/collapse and 320–1920px/actual 200% browser zoom. Channel names remain accessible without redundant hover/focus tooltips in normal and favorite lists. Real-stack workspace journeys are separate; no native/media acceptance claim."
+        "scope": "Actual production navigation components with 36 channels/three categories, accent-colored selected markers for Channels/Personal/channel/DM (no white strokes), keyboard focus, touch, single scroll surface, persisted favorites/collapse and 320–1920px/actual 200% browser zoom. Channel names remain accessible without redundant hover/focus tooltips in normal and favorite lists. Destructive channel confirmation is initiated only from the explicit ellipsis action, never by right-click. Real-stack workspace journeys are separate; no native/media acceptance claim."
       },
       "issue350": {
         "browser": "clients/web/tests/member_roster/playwright.config.ts",
