@@ -26,7 +26,7 @@ const series=createDiagnosisSeries(()=>{
 })
 function recoveryInput(){return {...props,selected:Boolean(props.selectedId),selectedAt:selectedAt.value,now:now.value,visible:visible.value&&stageIsVisible(),automaticRecoveryAttempted:automaticRecoveryUsed.value||recoverySuppressed.value}}
 function attemptAutomaticRecovery():void {if(props.autoplayBlocked) recoverySuppressed.value=true;if(!shouldAutomaticallyRecover(recoveryInput()))return;automaticRecoveryUsed.value=true;selectedAt.value=Date.now();now.value=selectedAt.value;emit('autoRetry')}
-function action():void {const value=diagnosis.value.action;if(value==='publisher') help.value=true;else if(value==='retry'){selectedAt.value=Date.now();now.value=selectedAt.value;emit('retry')}else if(value==='refresh') emit('refresh');else if(value==='choose') emit('choose')}
+function action():void {const value=diagnosis.value.action;if(value==='publisher') help.value=!help.value;else if(value==='retry'){selectedAt.value=Date.now();now.value=selectedAt.value;emit('retry')}else if(value==='refresh') emit('refresh');else if(value==='choose') emit('choose')}
 function exportBundle():void {
   const value=buildBundle(series.samples.value,second.value ?? undefined)
   const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'})),link=document.createElement('a')
@@ -49,8 +49,8 @@ onBeforeUnmount(()=>{if(timer) clearInterval(timer);if(audioPresenceTimer)clearT
 <template>
   <section class="screen-diagnosis" aria-label="Диагностика просмотра">
     <p role="status" aria-live="polite">{{ diagnosis.message }}</p>
-    <button v-if="diagnosis.action !== 'none'" type="button" @click="action">{{ diagnosis.label }}</button>
-    <p v-if="help">Попросите ведущего заново выбрать источник и включить передачу звука. Звук должен поддерживаться выбранным источником и браузером.</p>
+    <button v-if="diagnosis.action !== 'none'" type="button" :aria-expanded="diagnosis.action === 'publisher' ? help : undefined" :aria-controls="diagnosis.action === 'publisher' ? 'screen-audio-help' : undefined" @click="action">{{ diagnosis.action === 'publisher' && help ? 'Скрыть инструкцию' : diagnosis.label }}</button>
+    <p v-show="help" id="screen-audio-help">Попросите ведущего заново выбрать источник и включить передачу звука. Звук должен поддерживаться выбранным источником и браузером.</p>
     <details><summary>Локальный диагностический прогон</summary>
       <p>До 60 секунд и 30 измерений. Capture/encoded доступны только у источника, decoded/presented — у приёмника. Неизвестные значения, включая RTT, остаются неизвестными.</p>
       <p>Captured/encoded/decoded/presented frames — наблюдаемые счётчики; capture FPS — текущий параметр захвата, не измеренная частота кадров.</p>
