@@ -40,7 +40,7 @@ jobs:
     steps:
       - name: Controlled fixture outcome
         env:
-          PROOF_FAILURE: 'true'
+          PROOF_FAILURE: 'false'
         run: test "$PROOF_FAILURE" = false
   frontend:
     needs: changes
