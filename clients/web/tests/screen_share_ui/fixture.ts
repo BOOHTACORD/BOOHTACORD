@@ -1,4 +1,5 @@
 import { createApp, defineComponent, h, reactive, ref } from 'vue'
+import { createPinia } from 'pinia'
 import ScreenShareSetupDialog from '../../src/voice/ScreenShareSetupDialog.vue'
 import ScreenDiagnosticsPanel from '../../src/voice/ScreenDiagnosticsPanel.vue'
 import ScreenReceiverDiagnosticsPanel from '../../src/voice/ScreenReceiverDiagnosticsPanel.vue'
@@ -8,6 +9,7 @@ import type { ScreenViewerCard } from '../../src/voice/screen_viewer_controller'
 import type { VoiceVolumeParticipant } from '../../src/voice/voice_volume_controls'
 import type { ScreenDiagnostics } from '../../src/voice/screen_diagnostics'
 import { useScreenReceiverDiagnostics } from '../../src/voice/use_screen_receiver_diagnostics'
+import { useAuthorDirectory } from '../../src/identity/author_directory'
 import '../../src/style.css'
 const params = new URLSearchParams(location.search)
 document.documentElement.style.fontSize = params.get('scale') === '200' ? '200%' : '100%'
@@ -24,6 +26,11 @@ const viewerScreens: ScreenViewerCard[] = [
   { accountId: 'local-user', hasAudio: false, id: 'local-screen', isLocal: true, participantId: 'local-user', participantName: 'Локальная трансляция' },
   { accountId: 'member-sharing', hasAudio: false, id: 'remote-screen', isLocal: false, participantId: 'member-sharing', participantName: 'Участник показывает экран' },
 ]
+const pinia = createPinia()
+const authors = useAuthorDirectory(pinia)
+authors.acceptOwnProfile({ account_id: 'local-user', login: 'local', display_name: 'Локальный участник', role: 'MEMBER', avatar_url: '/avatar', profile_revision: 2 })
+authors.acceptOwnProfile({ account_id: 'member-speaking', login: 'speaker', display_name: 'Участник говорит', role: 'MEMBER', avatar_url: '/avatar', profile_revision: 3 })
+authors.acceptOwnProfile({ account_id: 'member-sharing', login: 'sharing', display_name: 'Участник показывает экран', role: 'MEMBER' })
 const IntermittentDiagnosis = defineComponent({
   setup() {
     let readCount = 0
@@ -54,6 +61,7 @@ const viewerStrip = () => h('section', { class: 'voice-room', style: 'height:760
     ownScreenSharing: true,
     pinned: false,
     participants: viewerParticipants,
+    selfAccountId: 'local-user',
     selfMicrophoneMuted: true,
     selfMicrophoneUnavailable: false,
     selfName: 'Очень длинное имя владельца трансляции для проверки ширины',
@@ -74,4 +82,4 @@ createApp({ render: () => params.has('viewer-strip') ?
       h('button', { id: 'opener', onClick: () => { state.open = true } }, 'Показать экран'),
       state.open ? h(ScreenShareSetupDialog, { initialProfile: state.profile as any, updating: params.has('updating'), onCancel: () => { events.push('cancel'); state.open = false }, onStart: (profile: string, mode: string) => { events.push({ profile, mode, activation: navigator.userActivation.isActive }); state.open = false } }) : null,
     ],
-  ]) }).mount('#app')
+  ]) }).use(pinia).mount('#app')

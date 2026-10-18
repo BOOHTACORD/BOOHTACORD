@@ -75,6 +75,11 @@ test('launch keeps selection visible and technical details optional; one gesture
 })
 
 test('screen viewer shows the Flutter participant strip and scrolls names by width', async ({ page }, info) => {
+  await page.route(/\/api\/v1\/members\/[^/]+\/avatar(?:\?.*)?$/, route => route.fulfill({
+    status: 200,
+    contentType: 'image/svg+xml',
+    body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>',
+  }))
   await open(page, 'viewer-strip', 320)
   const strip = page.getByTestId('viewer-participants')
   await expect(strip.getByText('Участники', { exact: true })).toBeVisible()
@@ -90,6 +95,12 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
   await expect(strip.getByRole('img', { name: 'Показывает экран' })).toHaveCount(2)
   await expect(strip.getByRole('img', { name: 'Микрофон выключен' })).toHaveCount(2)
   await expect(strip.getByRole('img', { name: 'Говорит' })).toHaveCount(1)
+  const avatars = strip.locator('.voice-viewer-participant-avatar')
+  await expect(avatars.locator('img')).toHaveCount(2)
+  await expect(avatars.nth(0).locator('img')).toHaveAttribute('src', '/api/v1/members/local-user/avatar?revision=2')
+  await expect(avatars.nth(1).locator('img')).toHaveAttribute('src', '/api/v1/members/member-speaking/avatar?revision=3')
+  await expect.poll(() => avatars.nth(0).locator('img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
+  await expect(avatars.nth(2)).toContainText('УЧ')
   await clean(page)
   const layout = await page.evaluate(() => {
     const list = document.querySelector<HTMLElement>('.voice-viewer-participant-strip ul')!
