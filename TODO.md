@@ -18,3 +18,5 @@
 
 Исторический список на 30.09.2026 сохранён в
 [архиве](docs/history/status/TODO-2026-09-30.md).
+
+QA-10 / POC-03: [семь реальных revoke/replay сценариев PASS, 18.10.2026](evidence/poc-03/issue59-media-revocation-2026-10-18.md). Остальные gates сохраняют свои отдельные критерии.
