@@ -29,6 +29,30 @@ is read. Missing pages, exhausted quota, transport failure or incomplete offline
 cache fail the command. A cached run is written only after complete collection.
 Use a fresh cache directory for a new observation or after changing collector schema.
 
+## Replaying the frozen observation after routing changes
+
+`collection.collector_revision` records HEAD at collection start, not a clean tool
+source receipt. `analysis_tool_sha256` binds the actual analysis files. The eight
+committed reports were reproduced byte-for-byte at analysis revision
+`3bf381314f97f0d5570a95ddc08b875917c84431`. Later selector revisions deliberately
+have different hashes; use the frozen analysis source when comparing exact bytes.
+
+The committed cohort reports are compact outputs, not the complete offline input
+cache. Keep the sanitized input directory for reproducibility. This run's frozen
+inputs are available at `.out/issue383/metadata` in the QA workspace. Without those
+inputs, exact offline replay is NOT_RUN; a new collection is a new observation.
+For that existing workspace (with output outside the temporary worktree):
+
+```sh
+git worktree add --detach .out/baseline-analysis 3bf381314f97f0d5570a95ddc08b875917c84431
+cd .out/baseline-analysis
+python3 -m tools.ci.baseline.run --cache ../issue383/metadata \
+  --output ../baseline-replayed --ci-samples 15 --delivery-samples 3 \
+  --native-samples 2 --offline
+cd ../..
+git worktree remove .out/baseline-analysis
+```
+
 ## Measurements and interpretation
 
 `evidence/ci/baseline-2026-10-18/` contains the sanitized machine-readable observation.
@@ -62,6 +86,21 @@ including the selector used for best-effort changed-component classification.
   creation (which can precede completed upload). Install completion is an upper
   bound for health-readback. Missing/ambiguous links stay N/A. This is observation,
   not a replacement for trusted producer provenance or signed release receipts.
+
+## Delivery lineage limitation of the v1 observation
+
+The v1 `artifact_to_install_success_upper_seconds` values are **head-coincident
+metadata completion correlations only**. They do not establish the triggering
+producer run or installed source. In particular,
+[`workflow_run` executes from the default branch](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run);
+a consumer's workflow revision must not be substituted for its producer's source.
+A unique same-head build inside a bounded sample is not an explicit trigger link.
+Therefore the authoritative artifact-to-deployed-health timing remains **N/A**.
+Do not use the v1 field name as an actual delivery/health upper bound or provenance
+attestation. The frozen v1 outputs stay unchanged for audit/replay; this limitation
+overrides that interpretation. An explicit producer run ID/SHA and post-deploy
+receipt are required for delivery timing (#395/#402). Master-to-artifact timing
+uses the build's own upload step, independently of consumer-source attribution.
 
 ## Observed dependency structure
 
