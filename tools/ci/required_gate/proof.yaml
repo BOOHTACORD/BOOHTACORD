@@ -1,0 +1,73 @@
+# Isolated scheduler fixture, copied into a throwaway PR; never a native/product gate.
+name: Required gate scheduler proof
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    outputs:
+      contracts: ${{ steps.select.outputs.contracts }}
+      backend: ${{ steps.select.outputs.backend }}
+      web: ${{ steps.select.outputs.web }}
+      flutter: ${{ steps.select.outputs.flutter }}
+      windows: ${{ steps.select.outputs.windows }}
+      map_version: ${{ steps.select.outputs.map_version }}
+      map_sha256: ${{ steps.select.outputs.map_sha256 }}
+      uncertain: ${{ steps.select.outputs.uncertain }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: select
+        run: |
+          python3 - <<'PY'
+          import os
+          from tools.ci.select_changes.selection import classify
+          result = classify(['backend/ci-scheduler-fixture'])
+          gates = result.pop('gates')
+          result.update({name: name in gates for name in ['contracts', 'backend', 'web', 'flutter', 'windows']})
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(''.join(f'{k}={str(v).lower() if type(v) is bool else v}\n' for k, v in result.items()))
+          PY
+  contracts:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: 'true'
+  backend:
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Controlled fixture outcome
+        env:
+          PROOF_FAILURE: 'false'
+        run: test "$PROOF_FAILURE" = false
+  frontend:
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - run: 'true'
+  flutter:
+    needs: changes
+    if: needs.changes.outputs.flutter == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - run: 'true'
+  windows:
+    needs: changes
+    if: needs.changes.outputs.windows == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - run: 'true'
+  ci-required:
+    name: ci-required
+    if: always()
+    needs: [changes, contracts, backend, frontend, flutter, windows]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          CI_NEEDS: ${{ toJSON(needs) }}
+          CI_JOBS: '{"changes":"changes","contracts":"contracts","backend":"backend","web":"frontend","flutter":"flutter","windows":"windows"}'
+        run: python3 -m tools.ci.required_gate.run

@@ -1,6 +1,7 @@
 """Validate CI dependency edges independently of job and display-step names."""
 from pathlib import Path
 import yaml
+from . import required
 
 GATES = {'ci-backend.yaml': 'backend', 'ci-frontend.yaml': 'web',
          'ci-flutter.yaml': 'flutter', 'flutter-windows.yaml': 'windows'}
@@ -17,12 +18,13 @@ def check(document):
         step.get('run') == 'python3 -m tools.ci.select_changes.run' for step in job.get('steps', []))]
     require(len(selectors) == 1, 'Exactly one change selector is required')
     selector = selectors[0]
-    seen = set()
-    for job in jobs.values():
+    seen, roles = set(), {'changes': selector}
+    for job_name, job in jobs.items():
         workflow = job.get('uses', '').rsplit('/', 1)[-1]
         if workflow == 'ci-contracts.yaml':
             require(not job.get('if'), 'Contract/traceability policy must always run')
             seen.add('contracts')
+            roles['contracts'] = job_name
         if workflow in GATES:
             gate = GATES[workflow]
             needs = job.get('needs', [])
@@ -30,7 +32,9 @@ def check(document):
             require(selector in needs, f'{gate} must wait for change selection')
             require(job.get('if') == f"needs.{selector}.outputs.{gate} == 'true'", f'{gate} must follow its selection')
             seen.add(gate)
+            roles[gate] = job_name
     require(seen == {'contracts', *GATES.values()}, 'Missing a required native/contract gate')
+    required.check(document, roles, require)
     require(document['concurrency']['cancel-in-progress'] == 'true', 'Stale CI checks should be cancellable')
 
 

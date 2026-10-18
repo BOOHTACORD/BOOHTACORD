@@ -2,6 +2,8 @@ name: CI
 
 on:
   pull_request:
+  merge_group:
+    types: [checks_requested]
   push:
     branches: [master]
   workflow_dispatch:
@@ -17,6 +19,10 @@ jobs:
   changes:
     runs-on: ubuntu-24.04
     outputs:
+      contracts: ${{ steps.select.outputs.contracts }}
+      map_version: ${{ steps.select.outputs.map_version }}
+      map_sha256: ${{ steps.select.outputs.map_sha256 }}
+      uncertain: ${{ steps.select.outputs.uncertain }}
       backend: ${{ steps.select.outputs.backend }}
       web: ${{ steps.select.outputs.web }}
       flutter: ${{ steps.select.outputs.flutter }}
@@ -53,3 +59,17 @@ jobs:
     needs: changes
     if: needs.changes.outputs.windows == 'true'
     uses: ./.github/workflows/flutter-windows.yaml
+
+  ci-required:
+    name: ci-required
+    if: always()
+    needs: [changes, contracts, backend, frontend, flutter, windows]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require successful selector, contracts and applicable component gates
+        env:
+          CI_NEEDS: ${{ toJSON(needs) }}
+          CI_JOBS: '{"changes":"changes","contracts":"contracts","backend":"backend","web":"frontend","flutter":"flutter","windows":"windows"}'
+        run: python3 -m tools.ci.required_gate.run
