@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "local_date": "2026-10-19",
+  "timezone": "Europe/Istanbul",
+  "event_date_utc": "2026-10-18",
+  "scope": "Accepted code checkpoints and Windows GUI fixture regression; not a complete CI/CD epic or production/native release approval",
+  "epic": 382,
+  "checkpoints": [
+    {
+      "pull_request": 408,
+      "issue": 383,
+      "head": "3bf381314f97f0d5570a95ddc08b875917c84431",
+      "merge_sha": "51fe3007539883bc5b054a3371080c3c1a374b82",
+      "tested_checkout": "0b3a7a32a4f32a5bbbf75b0877fc76e264d79ab5",
+      "run_id": 39163608414,
+      "checks": [
+        {
+          "id": 117782222292,
+          "name": "backend / backend",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782222284,
+          "name": "frontend / frontend",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782222274,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782222255,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782191711,
+          "name": "contracts / contracts",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782191327,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "pull_request": 409,
+      "issue": 384,
+      "head": "c2d40c056a5423c1f438be0fe7cdf4077f6b0aca",
+      "merge_sha": "0f03405b0e33c8cf5232a6aa55b3a4fbaf2d8f37",
+      "tested_checkout": "f72c2db9ea2a2eb2ddcc30ba4edbb369ea06876c",
+      "run_id": 39163637266,
+      "checks": [
+        {
+          "id": 117782275452,
+          "name": "backend / backend",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782275425,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782275412,
+          "name": "frontend / frontend",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782275361,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782240093,
+          "name": "contracts / contracts",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782239816,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "pull_request": 411,
+      "issue": 385,
+      "head": "9e611e26013971e5e875adfdcd02148d425308f0",
+      "merge_sha": "ea1ca9027c4f4ecdb5bab16e1935e936cd01ac1d",
+      "tested_checkout": "d7b7597ab8954600917223975dc5ec8905c13c68",
+      "run_id": 39163657625,
+      "checks": [
+        {
+          "id": 117787944297,
+          "name": "ci-required",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782267762,
+          "name": "backend / backend",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782267745,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782267692,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782267669,
+          "name": "frontend / frontend",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782226749,
+          "name": "contracts / contracts",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117782226625,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "master_after_checkpoints": "ea1ca9027c4f4ecdb5bab16e1935e936cd01ac1d",
+  "master_tree": "613664f3066010ce36c9cb5564dcf90e153c45f5",
+  "baseline_replay": {
+    "analysis_revision": "3bf381314f97f0d5570a95ddc08b875917c84431",
+    "reports": 8,
+    "result": "BYTE_IDENTICAL",
+    "requires_frozen_local_sanitized_inputs": true,
+    "committed_reports_are_compact_outputs": true
+  },
+  "docs_only_proof": "docs-only-routing-2026-10-18.json",
+  "master_nonrelease_route": {
+    "scope": "Not attested by this checkpoint",
+    "followup_issue": 384,
+    "followup_pull_request": 416
+  },
+  "required_status": {
+    "code": "MERGED_AND_GREEN",
+    "settings": "OWNER_MANAGED_UNCONFIRMED_AT_CHECKPOINT",
+    "issue_stays_open": 385
+  },
+  "epic_stays_open": true,
+  "physical_media_capacity_and_full_platform_release": "NOT_RUN_BY_THIS_WORK",
+  "windows_gui": {
+    "status": "PASS_SCOPED_VISUAL",
+    "reviewed_at": "2026-10-18",
+    "run": 39163608414,
+    "job": 117782222274,
+    "head": "3bf381314f97f0d5570a95ddc08b875917c84431",
+    "tested_checkout": "0b3a7a32a4f32a5bbbf75b0877fc76e264d79ab5",
+    "artifact_id": 12150680834,
+    "artifact_sha256": "22502e8735cd924f0b2eb5a1c957d4b9afceca01737460d6ad9acaad306c78dc",
+    "os": "\"Windows Server 2022 Datacenter\" 10.0 (Build 20348)",
+    "flutter": "3.47.7",
+    "dart": "3.13.5",
+    "captures": [
+      {
+        "file": "header-initial.png",
+        "sha256": "134f17f4b86c341954f68351eb619fd2fadac61478de79fed396c50ae0a6ea00",
+        "bytes": 31616
+      },
+      {
+        "file": "header-traversed.png",
+        "sha256": "419734132bf0898a1a48246b624d8cc7ba1d34b6fcb646aa0b126be8e74bd197",
+        "bytes": 31533
+      },
+      {
+        "file": "dock-initial.png",
+        "sha256": "b45d48fb15d843208156ddf2ac66fac143d362cf2ceda366c951a9f4b79fc2af",
+        "bytes": 31130
+      },
+      {
+        "file": "dock-traversed.png",
+        "sha256": "f361f501ad369ee6e7eee2b96fbcfba91b2e025974f3f7bb916b48a56967f928",
+        "bytes": 31037
+      },
+      {
+        "file": "header-open.png",
+        "sha256": "bcb31e48167022542013e21733fa3203686506ba83d9aed3a7a7d176b3428f4f",
+        "bytes": 72790
+      },
+      {
+        "file": "dock-open.png",
+        "sha256": "9e0a2b624eaedb143030d891d1de45ef6357db120d780a9a6f6f740c60948f71",
+        "bytes": 72783
+      },
+      {
+        "file": "header-footer.png",
+        "sha256": "641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f",
+        "bytes": 68590
+      },
+      {
+        "file": "dock-footer.png",
+        "sha256": "641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f",
+        "bytes": 68590
+      }
+    ],
+    "original_resolution": [
+      1008,
+      720
+    ],
+    "reviewed_images": 8,
+    "cases": [
+      {
+        "case": "header-initial",
+        "escape": true,
+        "focus_returned": true,
+        "same_connected_room_and_lease": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "footer_visible": true
+      },
+      {
+        "case": "header-traversed",
+        "escape": true,
+        "focus_returned": true,
+        "same_connected_room_and_lease": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "footer_visible": true,
+        "quality_reachable": true,
+        "cancel_keyboard_reachable": true
+      },
+      {
+        "case": "dock-initial",
+        "escape": true,
+        "focus_returned": true,
+        "same_connected_room_and_lease": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "footer_visible": true
+      },
+      {
+        "case": "dock-traversed",
+        "escape": true,
+        "focus_returned": true,
+        "same_connected_room_and_lease": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "footer_visible": true,
+        "quality_reachable": true,
+        "cancel_keyboard_reachable": true
+      }
+    ],
+    "observations": [
+      "Both launcher dialogs keep Close, Cancel and disabled Start wholly inside the viewport. Start is disabled because no source is selected.",
+      "After body scrolling, the 720p/30 FPS/Text controls and fixed footer remain visible.",
+      "All four Escape captures show the dialog closed, launcher focus highlight, connected listener and muted microphone."
+    ],
+    "scope": "Shipping release Windows GUI on hosted VM, actual guarded Win32 input and real API/PostgreSQL/LiveKit. No N-to-N+1 updater journey, physical media quality, loopback audio or whole-application UI claim."
+  }
+}

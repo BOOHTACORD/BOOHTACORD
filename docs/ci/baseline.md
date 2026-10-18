@@ -29,6 +29,30 @@ is read. Missing pages, exhausted quota, transport failure or incomplete offline
 cache fail the command. A cached run is written only after complete collection.
 Use a fresh cache directory for a new observation or after changing collector schema.
 
+## Replaying the frozen observation after routing changes
+
+`collection.collector_revision` records HEAD at collection start, not a clean tool
+source receipt. `analysis_tool_sha256` binds the actual analysis files. The eight
+committed reports were reproduced byte-for-byte at analysis revision
+`3bf381314f97f0d5570a95ddc08b875917c84431`. Later selector revisions deliberately
+have different hashes; use the frozen analysis source when comparing exact bytes.
+
+The committed cohort reports are compact outputs, not the complete offline input
+cache. Keep the sanitized input directory for reproducibility. This run's frozen
+inputs are available at `.out/issue383/metadata` in the QA workspace. Without those
+inputs, exact offline replay is NOT_RUN; a new collection is a new observation.
+For that existing workspace (with output outside the temporary worktree):
+
+```sh
+git worktree add --detach .out/baseline-analysis 3bf381314f97f0d5570a95ddc08b875917c84431
+cd .out/baseline-analysis
+python3 -m tools.ci.baseline.run --cache ../issue383/metadata \
+  --output ../baseline-replayed --ci-samples 15 --delivery-samples 3 \
+  --native-samples 2 --offline
+cd ../..
+git worktree remove .out/baseline-analysis
+```
+
 ## Measurements and interpretation
 
 `evidence/ci/baseline-2026-10-18/` contains the sanitized machine-readable observation.
