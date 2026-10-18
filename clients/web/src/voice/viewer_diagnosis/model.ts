@@ -20,7 +20,9 @@ export function diagnose(input:Input):{state:DiagnosisState;message:string;actio
     : {state:'no_first_frame',message:'Первый кадр пока не получен.',action:'retry',label:'Повторить подключение к демонстрации'}
   if(input.presentedFps===0) return {state:'frozen',message:'Показанные кадры не обновляются. Это не определяет причину на источнике.',action:'retry',label:'Повторить подключение к демонстрации'}
   if(!input.local&&!input.hasAudio) return {state:'no_audio',message:'Источник не публикует аудиодорожку.',action:'publisher',label:'Как добавить звук'}
-  if(!input.local&&(input.sampledAt===null||input.now-input.sampledAt>6000||input.now<input.sampledAt)) return {state:'stale_metrics',message:'Данные о приёме отсутствуют или устарели. Причина качества не определена.',action:'refresh',label:'Обновить измерения'}
+  const framesAreAdvancing=input.presentedFps!==null&&Number.isFinite(input.presentedFps)&&input.presentedFps>0
+  // Viewer-presented frames are stronger playback evidence than a temporary stats gap.
+  if(!input.local&&!framesAreAdvancing&&(input.sampledAt===null||input.now-input.sampledAt>6000||input.now<input.sampledAt)) return {state:'stale_metrics',message:'Данные о приёме отсутствуют или устарели. Причина качества не определена.',action:'refresh',label:'Обновить измерения'}
   if(input.local&&!input.hasAudio) return {state:'playing',message:'Предпросмотр без звука.',action:'none',label:''}
   return {state:'playing',message:'Демонстрация воспроизводится.',action:'none',label:''}
 }
