@@ -235,7 +235,7 @@ test('the add-audio guidance can be collapsed after opening', async ({ page }) =
   await expect(diagnosis.getByRole('button', { name: 'Как добавить звук' })).toHaveAttribute('aria-expanded', 'false')
 })
 
-test('playback diagnosis stays stable through intermittent receiver stats gaps', async ({ page }, info) => {
+test('playback diagnosis stays stable when receiver stats go stale but frames keep arriving', async ({ page }, info) => {
   await open(page, 'diagnosis-flapping')
   const diagnosis = page.locator('.screen-diagnosis > [role="status"]')
   const playing = 'Демонстрация воспроизводится.'
@@ -244,11 +244,12 @@ test('playback diagnosis stays stable through intermittent receiver stats gaps',
     const observed = [element.textContent?.trim() ?? '']
     const observer = new MutationObserver(() => observed.push(element.textContent?.trim() ?? ''))
     observer.observe(element, { childList: true, characterData: true, subtree: true })
-    await new Promise(resolve => window.setTimeout(resolve, 2800))
+    await new Promise(resolve => window.setTimeout(resolve, 7500))
     observer.disconnect()
     return observed
   })
   expect(messages).toEqual([playing])
+  await expect(page.locator('.screen-diagnosis > button')).toHaveCount(0)
   await page.screenshot({ path: info.outputPath('diagnosis-stable-through-stats-gaps.png') })
 })
 
@@ -294,7 +295,7 @@ test('brief screen audio publication changes do not flicker the diagnosis', asyn
   await page.waitForTimeout(1250)
   await expect(diagnosis).toHaveText(noAudio)
   await page.evaluate(() => (window as any).__screenUI.patch({ hasAudio: true }))
-  await expect(diagnosis).toHaveText('Данные о приёме отсутствуют или устарели. Причина качества не определена.', { timeout: 2000 })
+  await expect(diagnosis).toHaveText('Демонстрация воспроизводится.', { timeout: 2000 })
 })
 
 test('receiver has selected/applied/measured levels and optional copyable technical data', async ({ page, context }) => {
