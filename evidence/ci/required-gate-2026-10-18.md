@@ -1,7 +1,8 @@
 # CICD-03 / #385: stable required aggregate
 
 Code and scheduler validation: PASS. Repository required-status setting: BLOCKED
-pending separate administrator confirmation/readback as explicitly required by #385.
+The owner chose to configure the required status personally; actual settings
+readback is still pending as explicitly required by #385.
 The issue and parent #382 must remain open until their outstanding criteria pass.
 
 Thirteen focused validator/command/workflow-policy tests passed, including complete

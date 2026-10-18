@@ -1,0 +1,334 @@
+{
+  "sourceRevision": "77bc4fdbbd44c1f59c61d24b5662451c40526114",
+  "measuredAt": "2026-10-18T19:48:19.733562+00:00",
+  "platform": "Linux",
+  "livekitImage": "livekit/livekit-server:v1.13.7@sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+  "rows": [
+    {
+      "profile": "baseline",
+      "browser": "153.0.8010.12",
+      "connectivity": "PASS",
+      "measurementGate": "PASS",
+      "sender": {
+        "outcome": "connected",
+        "signalMs": 41.89999999999418,
+        "iceObservedMs": 93.09999999999127,
+        "sdkJoinMs": 93.09999999999127,
+        "firstRtpObservedMs": 660.0999999999913,
+        "elapsedMs": 1164.699999999997,
+        "transports": [
+          {
+            "selected": true,
+            "protocol": "udp",
+            "localType": "prflx",
+            "remoteType": "host",
+            "rttMs": 0,
+            "audioBytesSent": 33312,
+            "audioBytesReceived": null
+          }
+        ]
+      },
+      "receiver": {
+        "outcome": "connected",
+        "signalMs": 143.6999999999971,
+        "iceObservedMs": 194.79999999998836,
+        "sdkJoinMs": 194.79999999998836,
+        "firstRtpObservedMs": 1370.5999999999913,
+        "elapsedMs": 1370.5999999999913,
+        "transports": [
+          {
+            "selected": true,
+            "protocol": "udp",
+            "localType": "prflx",
+            "remoteType": "host",
+            "rttMs": 0,
+            "audioBytesSent": null,
+            "audioBytesReceived": 31835
+          }
+        ]
+      },
+      "observations": [
+        {
+          "sender": {
+            "ready": false,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": false
+          },
+          "receiver": {
+            "ready": false,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": false
+          }
+        },
+        {
+          "sender": {
+            "ready": true,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": true
+          },
+          "receiver": {
+            "ready": false,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": false
+          }
+        },
+        {
+          "sender": {
+            "ready": true,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": true
+          },
+          "receiver": {
+            "ready": true,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": true
+          }
+        }
+      ],
+      "audibleQuality": "NOT_RUN"
+    },
+    {
+      "profile": "udp-blocked",
+      "browser": "153.0.8010.12",
+      "connectivity": "PASS",
+      "measurementGate": "PASS",
+      "sender": {
+        "outcome": "connected",
+        "signalMs": 35.29999999998836,
+        "iceObservedMs": 237.1999999999971,
+        "sdkJoinMs": 237.1999999999971,
+        "firstRtpObservedMs": 807.2999999999884,
+        "elapsedMs": 1312,
+        "transports": [
+          {
+            "selected": true,
+            "protocol": "tcp",
+            "localType": "prflx",
+            "remoteType": "host",
+            "rttMs": 0,
+            "audioBytesSent": 33312,
+            "audioBytesReceived": null
+          }
+        ]
+      },
+      "receiver": {
+        "outcome": "connected",
+        "signalMs": 144.6999999999971,
+        "iceObservedMs": 346.5,
+        "sdkJoinMs": 346.5,
+        "firstRtpObservedMs": 1672.3999999999942,
+        "elapsedMs": 1672.3999999999942,
+        "transports": [
+          {
+            "selected": true,
+            "protocol": "tcp",
+            "localType": "prflx",
+            "remoteType": "host",
+            "rttMs": 0,
+            "audioBytesSent": null,
+            "audioBytesReceived": 31835
+          }
+        ]
+      },
+      "observations": [
+        {
+          "sender": {
+            "ready": false,
+            "selectedProtocols": [
+              "tcp"
+            ],
+            "rtpObserved": false
+          },
+          "receiver": {
+            "ready": false,
+            "selectedProtocols": [
+              "tcp"
+            ],
+            "rtpObserved": false
+          }
+        },
+        {
+          "sender": {
+            "ready": true,
+            "selectedProtocols": [
+              "tcp"
+            ],
+            "rtpObserved": true
+          },
+          "receiver": {
+            "ready": false,
+            "selectedProtocols": [
+              "tcp"
+            ],
+            "rtpObserved": false
+          }
+        },
+        {
+          "sender": {
+            "ready": true,
+            "selectedProtocols": [
+              "tcp"
+            ],
+            "rtpObserved": true
+          },
+          "receiver": {
+            "ready": true,
+            "selectedProtocols": [
+              "tcp"
+            ],
+            "rtpObserved": true
+          }
+        }
+      ],
+      "audibleQuality": "NOT_RUN"
+    },
+    {
+      "profile": "signal-only",
+      "browser": "153.0.8010.12",
+      "connectivity": "FAIL",
+      "measurementGate": "PASS",
+      "sender": null,
+      "receiver": {
+        "outcome": "failed",
+        "signalMs": 150.60000000000582,
+        "iceObservedMs": null,
+        "sdkJoinMs": null,
+        "firstRtpObservedMs": null,
+        "elapsedMs": 12158,
+        "transports": []
+      },
+      "observations": [],
+      "audibleQuality": "NOT_RUN"
+    },
+    {
+      "profile": "signal-blocked",
+      "browser": "153.0.8010.12",
+      "connectivity": "FAIL",
+      "measurementGate": "PASS",
+      "sender": null,
+      "receiver": {
+        "outcome": "failed",
+        "signalMs": null,
+        "iceObservedMs": null,
+        "sdkJoinMs": null,
+        "firstRtpObservedMs": null,
+        "elapsedMs": 58.29999999998836,
+        "transports": []
+      },
+      "observations": [],
+      "audibleQuality": "NOT_RUN"
+    },
+    {
+      "profile": "recovery",
+      "browser": "153.0.8010.12",
+      "connectivity": "PASS",
+      "measurementGate": "PASS",
+      "sender": {
+        "outcome": "connected",
+        "signalMs": 36,
+        "iceObservedMs": 87.09999999999127,
+        "sdkJoinMs": 87.09999999999127,
+        "firstRtpObservedMs": 657.5,
+        "elapsedMs": 1162.8999999999942,
+        "transports": [
+          {
+            "selected": true,
+            "protocol": "udp",
+            "localType": "prflx",
+            "remoteType": "host",
+            "rttMs": 0,
+            "audioBytesSent": 33312,
+            "audioBytesReceived": null
+          }
+        ]
+      },
+      "receiver": {
+        "outcome": "connected",
+        "signalMs": 152.8000000000029,
+        "iceObservedMs": 203.89999999999418,
+        "sdkJoinMs": 203.89999999999418,
+        "firstRtpObservedMs": 1377.8999999999942,
+        "elapsedMs": 1377.8999999999942,
+        "transports": [
+          {
+            "selected": true,
+            "protocol": "udp",
+            "localType": "prflx",
+            "remoteType": "host",
+            "rttMs": 0,
+            "audioBytesSent": null,
+            "audioBytesReceived": 31835
+          }
+        ]
+      },
+      "observations": [
+        {
+          "sender": {
+            "ready": false,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": false
+          },
+          "receiver": {
+            "ready": false,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": false
+          }
+        },
+        {
+          "sender": {
+            "ready": true,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": true
+          },
+          "receiver": {
+            "ready": false,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": false
+          }
+        },
+        {
+          "sender": {
+            "ready": true,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": true
+          },
+          "receiver": {
+            "ready": true,
+            "selectedProtocols": [
+              "udp"
+            ],
+            "rtpObserved": true
+          }
+        }
+      ],
+      "audibleQuality": "NOT_RUN"
+    }
+  ],
+  "mechanism": "owned SFU namespace INPUT drops UDP / ICE TCP; published mappings also omitted; signal-blocked uses an unbound loopback socket",
+  "physicalHome": "NOT_RUN",
+  "physicalHotspot": "NOT_RUN",
+  "productionAdmissionRevocation": "NOT_RUN",
+  "capacity": "NOT_RUN"
+}

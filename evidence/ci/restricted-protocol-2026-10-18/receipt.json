@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "isolated Linux Chromium/LiveKit transport evidence acquisition; no physical/audio quality/capacity claims",
+  "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39160333284",
+  "job_id": 117772110509,
+  "pr_head": "d4730d8353c90a2a7e19e3e47f9e5d0e0c1575ff",
+  "tested_merge_sha": "77bc4fdbbd44c1f59c61d24b5662451c40526114",
+  "artifact_id": 12149085229,
+  "artifact_sha256": "59fe32813c3a1676e745cff8f9120a491d3f7b1929f4aa28892a3595757159ee",
+  "independent_complete_runs": 3,
+  "profiles_passed": 15,
+  "test_retries": 0,
+  "rounds": [
+    {
+      "file": "round-1.json",
+      "sha256": "047381505b7dd4a55ee22333792a775327203517aab38d31f3f2c2f148744964",
+      "profiles": 5,
+      "status": "PASS"
+    },
+    {
+      "file": "round-2.json",
+      "sha256": "f0a4527b0b01c5d6efef888b4258591c9311bcbdbdcdfbd7b8ac30d067dc02e3",
+      "profiles": 5,
+      "status": "PASS"
+    },
+    {
+      "file": "round-3.json",
+      "sha256": "3db6cbaa6ce1e4507563e8020ae977b05234d281c2bfb13263fd65f2a986e73c",
+      "profiles": 5,
+      "status": "PASS"
+    }
+  ],
+  "source_sha256": {
+    "clients/web/tests/restricted_networks/matrix.browser.spec.ts": "0e40cde6fbc601e7b13aac579afefde6e4dea4a927ecbc4e75c0d0f5d83d5a3a",
+    "clients/web/tests/restricted_networks/fixture.ts": "a1348f2c0537671793e51925f5bc58fbfb6dd736323cd446a547b734ef6927f0",
+    "tools/network/restricted/measurement.mjs": "fa34e90622d41c9376367e59e828828c257eddb8bc059a5eec5ad6ae8c74bed0",
+    "tools/network/restricted/measurement.test.mjs": "541b189a4d5389599b21ccf2c95a895e7210cf95b7baf80740ce8415f6c9938e",
+    "tools/network/restricted/run.py": "f0d66b318e9560c6acab5dd6f8377e1e2caece2e7d859a845454890cdd303527",
+    "tools/network/restricted/restrict.py": "e40647b561218ded68d9ed42017d755f74948e735b61e70e544b8e6fa2c82f1b",
+    "tools/network/restricted/sfu.py": "fa8032b70a8c5f6da9a16609262ab4fb6c07467518d775d060141bb547b4fe76",
+    "tools/network/restricted/browser.mjs": "48fc83a7efa4b09ec8b45f045a3df817b0902781cc817c590878c924664970d4",
+    "clients/web/src/voice/network_diagnostics/stats.ts": "111d18baef8478476a6fb119bafa15462464e83970b13c23a9c095abf30a7fe2",
+    "clients/web/src/voice/network_diagnostics/bind.ts": "b5e7214256a43e92a71a6ff2b32dbea17760342e9428cf36e372b904aefde723",
+    "clients/web/src/voice/network_diagnostics/attempt.ts": "93f3c70da64241e1595a984f9d809796f59e0e8fd0c41f5dd98c43181e3ffc0e",
+    "clients/web/src/voice/network_diagnostics/export.ts": "36c666ae0dde5afafb611edafe7aa7684a6953d84d7e73752bb33f655cd98c45",
+    "clients/web/src/voice/network_diagnostics/model.ts": "98158c5079d37d96c56fa72ce90a1bdb91161a58183f7f127ad24dd5ba08dc0c",
+    "tools/audio/livekit_fixture.py": "7ab0519d76a67e51761c3798d82f8f0368de4db90c7518f1eec5a6fe0531d7ff"
+  }
+}

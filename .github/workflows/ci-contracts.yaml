@@ -25,6 +25,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+      - name: Test bounded restricted-network evidence readiness
+        run: node --test tools/network/restricted/measurement.test.mjs
       - name: Verify generated tracing contract bindings
         run: node tools/observability/flow_contract/generate.mjs --check
       - name: Install pinned CI verification dependencies
