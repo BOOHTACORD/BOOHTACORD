@@ -24,6 +24,7 @@ class ProducerRoutingTests(unittest.TestCase):
     def test_explicit_nonimpact_route_is_only_valid_no_bundle_case(self):
         for job in self.jobs['jobs'][1:]:
             job['conclusion'] = 'skipped'
+            job['name'] = job['name'].split(' / ')[0]
         self.assertFalse(decision(self.run, self.jobs, 'owner/repo')['has_bundle'])
         self.jobs['jobs'][0]['conclusion'] = 'failure'
         with self.assertRaises(ValueError):
@@ -49,3 +50,24 @@ class ProducerRoutingTests(unittest.TestCase):
         self.jobs['jobs'][-1]['conclusion'] = 'skipped'
         with self.assertRaises(ValueError):
             decision(self.run, self.jobs, 'owner/repo')
+
+    def test_running_gates_cannot_be_replaced_by_bare_caller_success(self):
+        self.jobs['jobs'][1]['name'] = 'backend'
+        with self.assertRaises(ValueError): decision(self.run, self.jobs, 'owner/repo')
+
+    def test_internal_skips_are_not_proven_wrapper_skips(self):
+        for job in self.jobs['jobs'][1:]: job['conclusion'] = 'skipped'
+        with self.assertRaises(ValueError): decision(self.run, self.jobs, 'owner/repo')
+
+    def test_both_caller_and_qualified_gate_aliases_are_ambiguous(self):
+        for skipped in (False, True):
+            broken = copy.deepcopy(self.jobs)
+            if skipped:
+                for job in broken['jobs'][1:]:
+                    job['conclusion'] = 'skipped'
+                    job['name'] = job['name'].split(' / ')[0]
+            extra = copy.deepcopy(broken['jobs'][1])
+            extra.update(id=99, name='backend / backend' if skipped else 'backend')
+            broken['jobs'].append(extra);broken['total_count'] += 1
+            with self.subTest(skipped=skipped), self.assertRaises(ValueError):
+                decision(self.run, broken, 'owner/repo')

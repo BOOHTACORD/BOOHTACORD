@@ -25,8 +25,13 @@ def decision(run, document, repository):
 
     bundle = one('bundle')
     expected = 'success' if bundle == 'success' else 'skipped'
-    if any(one(name) != expected for name in GATES):
-        raise ValueError('Producer gates differ from bundle route')
+    for name in GATES:
+        caller = name.split(' / ')[0]
+        matches = [job for job in jobs if job.get('name') in (name, caller)]
+        required_name = name if bundle == 'success' else caller
+        if (len(matches) != 1 or matches[0]['name'] != required_name
+                or matches[0]['conclusion'] != expected):
+            raise ValueError('Producer gates differ from bundle route')
     if bundle == 'skipped' and one('changes') != 'success':
         raise ValueError('No successful explicit non-release route')
     selectors = [j for j in jobs if j.get('name') == 'changes']
