@@ -3,6 +3,7 @@ import base64
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import secrets
 import shutil
@@ -29,6 +30,26 @@ def validate_result(value):
                 if row.get('case', '').endswith('-traversed')
                 for flag in ('quality_reachable', 'cancel_keyboard_reachable'))):
         raise ValueError('Incomplete Windows GUI layout and Escape acceptance')
+
+
+def retain_failure(driver, destination):
+    value = json.loads((driver / 'failure.json').read_text(encoding='utf-8'))
+    # Keep only controlled fixture codes, never app/configuration/log contents.
+    result = {'status': 'FAIL'}
+    for name in ('step', 'reason'):
+        code = value.get(name)
+        if not isinstance(code, str) or not re.fullmatch(r'[a-z_]{1,64}', code):
+            raise ValueError('Unsafe Windows GUI failure code')
+        result[name] = code
+    (destination / 'failure.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
+    image = driver / 'failure.png'
+    if image.exists():
+        if image.stat().st_size > 2_000_000:
+            raise ValueError('Synthetic failure capture exceeds evidence bound')
+        raw = image.read_bytes()
+        if not raw.startswith(b'\x89PNG\r\n\x1a\n'):
+            raise ValueError('Synthetic failure capture is not PNG')
+        (destination / 'failure.png').write_bytes(raw)
 
 
 def main():
@@ -68,6 +89,7 @@ def main():
             deadline = time.monotonic() + 180
             while time.monotonic() < deadline:
                 if (driver / 'failure.json').exists():
+                    retain_failure(driver, destination)
                     raise RuntimeError('Actual Windows GUI failed: ' + (driver / 'failure.json').read_text())
                 if (driver / 'result.json').exists():
                     value = json.loads((driver / 'result.json').read_text())
