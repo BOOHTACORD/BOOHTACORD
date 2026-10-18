@@ -698,3 +698,8 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-SCREEN-01]
     depends_on: [FV2-003, DW-010, T-061]
     evidence: [tools/qa/mini_player/test_environment.py, tools/qa/mini_player/test_native.py, clients/flutter/integration_test/mini_player_qa_test.dart, evidence/qa/issue247-mini-player-acceptance-2026-10-18.md]
+  - id: CICD-01
+    title: CI/CD baseline critical path and runner usage (GitHub #383)
+    requirements: [REQ-QUALITY-02]
+    depends_on: []
+    evidence: [tools/ci/baseline/run.py, tools/ci/baseline/test_metrics.py, docs/ci/baseline-2026-10-18.md, evidence/ci/baseline-2026-10-18.json]
