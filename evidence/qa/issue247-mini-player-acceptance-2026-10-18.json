@@ -1,0 +1,771 @@
+{
+  "issue": 247,
+  "date": "2026-10-18",
+  "status": "PASS",
+  "leaf": "FV2-055",
+  "source_base": "1557cfce4330bcbf80dff316241119f553b49ef3",
+  "application_source_unchanged": true,
+  "app_version": "1.0.43+78",
+  "scope": [
+    "Web Chromium",
+    "Android API35 emulator",
+    "iOS27 Simulator"
+  ],
+  "checks_passed": 29,
+  "media": {
+    "actual_api": true,
+    "actual_sfu": true,
+    "mock_media_transport": false,
+    "publisher": "production Web UI; synthetic 640x360 canvas and quiet 440Hz tone",
+    "listener": "production application with integration_test binding for native",
+    "audio_enabled": true,
+    "subjective_audio_quality": "NOT_RUN",
+    "physical_device_acceptance": "NOT_RUN"
+  },
+  "runtime": {
+    "web": {
+      "candidate": "1557cfce4330bcbf80dff316241119f553b49ef3",
+      "status": "PASS",
+      "runtime_completed": true,
+      "started_at": "2026-10-18T06:36:46.894762+00:00",
+      "checks": {
+        "pin_TEXT_DM_settings_one_output_no_resubscription": "PASS",
+        "full_mini_full_return_preserves_stream": "PASS",
+        "viewport_320_adaptive_keyboard_labels": "PASS",
+        "stop_two_publications_exactly_once_and_mute": "PASS",
+        "no_pin_default_route_stop": "PASS",
+        "source_removal_cleanup": "PASS",
+        "disconnect_cleanup": "PASS",
+        "logout_account_switch_cleanup": "PASS",
+        "revoke_cleanup": "PASS"
+      },
+      "observations": [
+        {
+          "name": "selected",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 1,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 8
+          }
+        },
+        {
+          "name": "pinned TEXT",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 4,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 9
+          }
+        },
+        {
+          "name": "pinned DM",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 8,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 9
+          }
+        },
+        {
+          "name": "pinned settings",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 11,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "return full",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 14,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "expanded",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 16,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "expanded return",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 18,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "full to mini",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 19,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "mini return full",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 21,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "viewport 1024",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 22,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "viewport 768",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 23,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "viewport 393",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 24,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "viewport 320",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 25,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "muted actual output",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 27,
+          "width": 640,
+          "height": 360,
+          "audio_muted": true,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "unmuted actual output",
+          "viewer_elements": 1,
+          "video_outputs": 1,
+          "audio_outputs": 1,
+          "decoded_frames": 28,
+          "width": 640,
+          "height": 360,
+          "audio_muted": false,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 0,
+            "frames": 10
+          }
+        },
+        {
+          "name": "explicit stop",
+          "viewer_elements": 0,
+          "video_outputs": 0,
+          "audio_outputs": 0,
+          "decoded_frames": 0,
+          "width": 0,
+          "height": 0,
+          "audio_muted": null,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 2,
+            "unsubscribe": 2,
+            "frames": 13
+          }
+        },
+        {
+          "name": "unpinned route stop",
+          "viewer_elements": 0,
+          "video_outputs": 0,
+          "audio_outputs": 0,
+          "decoded_frames": 0,
+          "width": 0,
+          "height": 0,
+          "audio_muted": null,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 4,
+            "unsubscribe": 4,
+            "frames": 23
+          }
+        },
+        {
+          "name": "publisher removal",
+          "viewer_elements": 0,
+          "video_outputs": 0,
+          "audio_outputs": 0,
+          "decoded_frames": 0,
+          "width": 0,
+          "height": 0,
+          "audio_muted": null,
+          "connected_peers": 1,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 6,
+            "unsubscribe": 6,
+            "frames": 34
+          }
+        },
+        {
+          "name": "voice disconnect",
+          "viewer_elements": 0,
+          "video_outputs": 0,
+          "audio_outputs": 0,
+          "decoded_frames": 0,
+          "width": 0,
+          "height": 0,
+          "audio_muted": null,
+          "connected_peers": 0,
+          "retained_video_receiver_objects": 3,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 8,
+            "unsubscribe": 8,
+            "frames": 44
+          }
+        },
+        {
+          "name": "logout",
+          "viewer_elements": 0,
+          "video_outputs": 0,
+          "audio_outputs": 0,
+          "decoded_frames": 0,
+          "width": 0,
+          "height": 0,
+          "audio_muted": null,
+          "connected_peers": 0,
+          "retained_video_receiver_objects": 0,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 10,
+            "unsubscribe": 10,
+            "frames": 57
+          }
+        },
+        {
+          "name": "other account login",
+          "viewer_elements": 0,
+          "video_outputs": 0,
+          "audio_outputs": 0,
+          "decoded_frames": 0,
+          "width": 0,
+          "height": 0,
+          "audio_muted": null,
+          "connected_peers": 0,
+          "retained_video_receiver_objects": 0,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 10,
+            "unsubscribe": 10,
+            "frames": 57
+          }
+        },
+        {
+          "name": "account revoke",
+          "viewer_elements": 0,
+          "video_outputs": 0,
+          "audio_outputs": 0,
+          "decoded_frames": 0,
+          "width": 0,
+          "height": 0,
+          "audio_muted": null,
+          "connected_peers": 0,
+          "retained_video_receiver_objects": 0,
+          "document_overflow": false,
+          "subscription_requests": {
+            "subscribe": 12,
+            "unsubscribe": 11,
+            "frames": 69
+          }
+        }
+      ],
+      "browser": "153.0.8010.12",
+      "host": "macOS-27.0.1-arm64-arm-64bit",
+      "qa_handler_sha256": {
+        "run.py": "33e7dd3db8bafef3da3881f734d23827209aeabc4e068c88df35eadfd02e4d5f",
+        "bridge.py": "8a1680feadb5171408d819a2d0dc4c828aedfedf03f4593d3b80e1b45c3a5533",
+        "scenario.mjs": "81216a2a03866da195f99fdb0dd4114da5b145053ae2ab231b64709a2219a03c"
+      },
+      "web_source_manifest": "cffeaf130e14fe53a7c9923d7e0a547149623f4d3690a3d21f557b7048f988ea",
+      "web_build_manifest": "a267464bbb6b4f45668da7fd6c673018883d54df38a8d1f3baf1e1fea8973750",
+      "actual_api": true,
+      "actual_sfu": true,
+      "owned_resources_removed": true,
+      "screenshots": {
+        "pinned-text.png": "3555721b2a8fcd364a6af3a0ca147110f999511f0a966e7fee70bf522b218ae6",
+        "mini-width-1024.png": "01949a7a28860a3f30b14e9a0a706ac828efb1e3a423e6b662227e1922c8a0ab",
+        "pinned-settings.png": "e8b9564fb31bfae34d8d81dc93e82b7aa92a0ac63a03b94f43bfe24e806bd32d",
+        "mini-width-393.png": "9e1f8dba6a0044a0e8d27b57ad4a200b96342d44933d2aca943dd841d7629e1d",
+        "full-viewer.png": "8ef08befdd45209495034739062add808a6908ebe13a5d30f5b7b51e036c7893",
+        "expanded-viewer.png": "b0d5ea1659eec929c13fe7b708572845f0df0885be6bc510fa582675e69c1ed5",
+        "mini-width-768.png": "635e8a23ddfb20c8c9ecdab26641bc6dfd85c1360ea36726aec561419f7814cf",
+        "mini-width-320.png": "cf86096f65fa51bcdaa0df4f601228aa53d96f3a9cff2c8a834f3bc9048ce52a",
+        "pinned-dm.png": "efd201034b0a1b15bee985c1ad8f5d423da082e3e19e5c0a2ab939c4c38550b8"
+      },
+      "raw_runtime_sha256": "212aab4d07e28b38034ae4c3ea535c1659306e9bc6bc1a2ade459d9c9e63680f"
+    },
+    "android": {
+      "candidate": "1557cfce4330bcbf80dff316241119f553b49ef3",
+      "status": "PASS",
+      "runtime_completed": true,
+      "started_at": "2026-10-18T06:53:33.654358+00:00",
+      "completed_at": "2026-10-18T06:54:52.175193+00:00",
+      "checks": {
+        "pin_TEXT_DM_settings_one_receiver_no_resubscription": "PASS",
+        "full_mini_full_return_preserves_subscription": "PASS",
+        "stop_exactly_once_and_mute": "PASS",
+        "no_pin_default_route_stop": "PASS",
+        "unpinned_source_restart_outside_voice_does_not_resubscribe": "PASS",
+        "viewport_320_adaptive_focus": "PASS",
+        "source_removal_cleanup": "PASS",
+        "disconnect_cleanup": "PASS",
+        "logout_account_switch_cleanup": "PASS",
+        "revoke_cleanup": "PASS"
+      },
+      "observations": [
+        {
+          "name": "full",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 7,
+          "audio_packets_received": 17,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "pinned TEXT",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 28,
+          "audio_packets_received": 52,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "pinned DM",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 46,
+          "audio_packets_received": 81,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "pinned settings",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 64,
+          "audio_packets_received": 113,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "return full",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 91,
+          "audio_packets_received": 160,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "fullscreen",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 104,
+          "audio_packets_received": 192,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "fullscreen return",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 133,
+          "audio_packets_received": 252,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        }
+      ],
+      "flutter": "3.47.7",
+      "dart": "3.13.5",
+      "flutter_framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8",
+      "platform_version": "sdk_phone64_arm64-userdebug 15 AE3A.240806.019 12368160 test-keys",
+      "build_mode": "debug",
+      "device_kind": "emulator",
+      "flutter_lib_sha256": "295406fa698f7cc4b16f13f40fb6cab904782b4935ee47cafddd5d8544d8fe2d",
+      "flutter_lib_file_count": 1136,
+      "qa_target_sha256": "9925f5f2a43af4712899f45d6b28d8bf849c88076efbc9b06995abbc126f7dcb",
+      "qa_driver_sha256": "589d15cb53d3a9a8438c16f80b7dc740e66cda19b0286857cfb99e443a64f0ea",
+      "qa_handler_sha256": {
+        "native.py": "d5db12ecdaaf7d9da9c87526cf73da43549d148cc134de32bb7f2b9024deffdc",
+        "bridge.py": "8a1680feadb5171408d819a2d0dc4c828aedfedf03f4593d3b80e1b45c3a5533",
+        "scenario.mjs": "81216a2a03866da195f99fdb0dd4114da5b145053ae2ab231b64709a2219a03c",
+        "environment.py": "29bd019feab75e33747551d69c04daa8e3f404432bb676e2db524f9b497491a1"
+      },
+      "native_executable_sha256": "097fcbae8917f22a6e5210801e48b0862e1630014c5a3a40cecd5ecf95eb9aac",
+      "actual_api": true,
+      "actual_sfu": true,
+      "owned_reverse_removed": true,
+      "screenshots": {
+        "mini-native-dm.png": "347b7fbecb3efece82b4dfc5ee4126c9a8c0d011c377c5e191e0f69151dd2980",
+        "mini-native-width-393.png": "4feb2bb15f9d4da92c31b7debef66ebd0ae762ec8fea25eac7c098d7dc49d3a6",
+        "mini-native-source-removed.png": "c5bd1336fd90fa63ebd46cd7ad6d0ad49ec38033dd1fc27f322b9711990b966d",
+        "mini-native-revoked.png": "e09ebb15f993f05fe91d932ec26aa3f17a3b9117099ac9c2e4070f8d1d3f0e91",
+        "mini-native-full.png": "78cdd254a8beaf578123365e3e026d894330ea6d86fb22ee13827de9beb1fb23",
+        "mini-native-source-republished.png": "c5bd1336fd90fa63ebd46cd7ad6d0ad49ec38033dd1fc27f322b9711990b966d",
+        "mini-native-disconnected.png": "0e5313699cd495ca479ddc3331815b4509b5460cc5d76afc2265047edcfb173f",
+        "mini-native-text.png": "f95371981a5f7743696945dbf180aa6fdea062ac17f4b20b5796983f11a65f69",
+        "mini-native-width-320.png": "b8a506f60f64fdf80394141c45cc9845800a46518d929d23e2d5f9935d0089ae",
+        "mini-native-other-account.png": "b131899b7bf58044a4864235c3e49fc4170ea089320db870d2aec688469c724c",
+        "mini-native-fullscreen.png": "b873b7bf0f2580c9f78d9023d51e4fa118b401648e3b26c6904d3e3854f30922",
+        "mini-native-stopped.png": "7da2ad8d62f3f56474113716f98b7262cd2448cd9573d16246835a417c754b45",
+        "mini-native-settings.png": "336197e7cfed010efebe397931807f1530e846122738335cc929d2daf14600b4"
+      },
+      "raw_runtime_sha256": "d10aaf92f24b103af3d302d6dff4db321a7f7a7d1efa29d0187fc91eb2bf81d6"
+    },
+    "ios": {
+      "candidate": "1557cfce4330bcbf80dff316241119f553b49ef3",
+      "status": "PASS",
+      "runtime_completed": true,
+      "started_at": "2026-10-18T06:51:41.340632+00:00",
+      "completed_at": "2026-10-18T06:53:08.110780+00:00",
+      "checks": {
+        "pin_TEXT_DM_settings_one_receiver_no_resubscription": "PASS",
+        "full_mini_full_return_preserves_subscription": "PASS",
+        "stop_exactly_once_and_mute": "PASS",
+        "no_pin_default_route_stop": "PASS",
+        "unpinned_source_restart_outside_voice_does_not_resubscribe": "PASS",
+        "viewport_320_adaptive_focus": "PASS",
+        "source_removal_cleanup": "PASS",
+        "disconnect_cleanup": "PASS",
+        "logout_account_switch_cleanup": "PASS",
+        "revoke_cleanup": "PASS"
+      },
+      "observations": [
+        {
+          "name": "full",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 69,
+          "audio_packets_received": 163,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "pinned TEXT",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 106,
+          "audio_packets_received": 193,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "pinned DM",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 124,
+          "audio_packets_received": 220,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "pinned settings",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 143,
+          "audio_packets_received": 250,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "return full",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 167,
+          "audio_packets_received": 287,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "fullscreen",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 183,
+          "audio_packets_received": 312,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        },
+        {
+          "name": "fullscreen return",
+          "screen_video_subscriptions": 1,
+          "screen_audio_subscriptions": 1,
+          "video_renderers": 1,
+          "decoded_frames": 203,
+          "audio_packets_received": 344,
+          "subscribe_events_since_selection": 0,
+          "unsubscribe_events_since_selection": 0
+        }
+      ],
+      "flutter": "3.47.7",
+      "dart": "3.13.5",
+      "flutter_framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8",
+      "platform_version": "Version 27.0 (Build 24A434)",
+      "build_mode": "debug",
+      "device_kind": "simulator",
+      "flutter_lib_sha256": "295406fa698f7cc4b16f13f40fb6cab904782b4935ee47cafddd5d8544d8fe2d",
+      "flutter_lib_file_count": 1136,
+      "qa_target_sha256": "9925f5f2a43af4712899f45d6b28d8bf849c88076efbc9b06995abbc126f7dcb",
+      "qa_driver_sha256": "589d15cb53d3a9a8438c16f80b7dc740e66cda19b0286857cfb99e443a64f0ea",
+      "qa_handler_sha256": {
+        "native.py": "d5db12ecdaaf7d9da9c87526cf73da43549d148cc134de32bb7f2b9024deffdc",
+        "bridge.py": "8a1680feadb5171408d819a2d0dc4c828aedfedf03f4593d3b80e1b45c3a5533",
+        "scenario.mjs": "81216a2a03866da195f99fdb0dd4114da5b145053ae2ab231b64709a2219a03c",
+        "environment.py": "29bd019feab75e33747551d69c04daa8e3f404432bb676e2db524f9b497491a1"
+      },
+      "native_executable_sha256": "40a002756cea61856d1521658e03b9f26c6840d9140bb4be3b592b814841fdf0",
+      "actual_api": true,
+      "actual_sfu": true,
+      "owned_reverse_removed": true,
+      "screenshots": {
+        "mini-native-dm.png": "fc39768855a469eb40850addbf5836df33a956b079992b11db308b9e8a6be27e",
+        "mini-native-width-393.png": "b04fbda1f41496670a534723c20250b9e07ac94c0ba42f8f716487393ef1ae07",
+        "mini-native-source-removed.png": "7bc24f2ff6a9219dd068306baea3dfcae758fde35a608ffdd117492237f45c8e",
+        "mini-native-revoked.png": "38905221cd3a0fd035e222759cd8f73be0a78f1ff67b2f9d903d351ff0c90a5a",
+        "mini-native-full.png": "933f1e60427401fafc516b366a26b43a942215f43f5e4e339e9decc5413d1dc9",
+        "mini-native-source-republished.png": "7bc24f2ff6a9219dd068306baea3dfcae758fde35a608ffdd117492237f45c8e",
+        "mini-native-disconnected.png": "229ae38bd186898b73778a505fabaca4c4f5f754a2568dc002c9b9531d114a60",
+        "mini-native-text.png": "11f1b17fd8b7735ba8f800dc46ef294ec2b152f498d7ed43035417c0bf31ea8d",
+        "mini-native-width-320.png": "83fba28e081af260e75180e7f48c1d26b3d38f08e6209df3e6c85901f5ae6d14",
+        "mini-native-other-account.png": "e045aed8e188f99df5ad24a12307a91c471d19fd797d78a617675a9f00ebff03",
+        "mini-native-fullscreen.png": "c112104796bd760629f43edab174922a2613ffc41e93958fb8a4283ee99715e2",
+        "mini-native-stopped.png": "c0ae623aa4354b7cf5e8118e68415c84739cfdffe3e1fb6fab9c5ee90ede87d1",
+        "mini-native-settings.png": "0dd13e823dc4333bf929f311fd70884df7f297c1d2ada9ba79ead36da4c56021"
+      },
+      "raw_runtime_sha256": "78d7a79560b4c65072211253892faf6e64e9a98b208b6598845c604503f6b6aa"
+    }
+  },
+  "visual_review": {
+    "status": "PASS",
+    "web_screenshots": 9,
+    "android_screenshots": 13,
+    "ios_screenshots": 13,
+    "native_adaptive_widths": [
+      320,
+      393
+    ],
+    "native_adaptive_method": "Flutter view-size override/RepaintBoundary; ordinary screenshots use native capture; not physical display modes",
+    "web_widths": [
+      320,
+      393,
+      768,
+      1024
+    ],
+    "review": "All listed sanitized synthetic captures inspected; controls reachable, mini-player separate from composer and voice dock, source changes and cleanup match receipt; 320 captures also inspected at source resolution."
+  },
+  "ios_diagnostics": {
+    "attempts_before_success": 2,
+    "status": "FAIL before recovery, PASS after recovery",
+    "failure": "SIGABRT in AURemoteIO::Initialize / AudioUnitInitialize on WebRTC thread; Flutter driver disconnected",
+    "recovery": "Only owned simulator booted: shut it down, verify no booted simulators, send SIGTERM to exact pre-existing SimAudioProcessorService executable/PID, reboot owned simulator with Device Hub present; rerun unchanged audio-enabled source",
+    "root_cause": "Unproven; successful recovery does not establish underlying platform or app defect",
+    "no_audio_bypass": true,
+    "no_dependency_change": true
+  },
+  "excluded_attempt": {
+    "status": "EXCLUDED",
+    "reason": "First Web diagnostic overlapped build; start manifest differed from final assets. Full Web acceptance restarted after build with matching manifest."
+  },
+  "focused_tests": {
+    "status": "PASS",
+    "total": 13,
+    "new_tests_red_before_implementation": 3
+  },
+  "traceability": {
+    "status": "PASS_INDEX_ONLY",
+    "requirements": 39,
+    "approved_brief": "Windows source path unavailable on this Mac"
+  },
+  "ci": {
+    "status": "NOT_RUN_AT_RECORD_CREATION",
+    "note": "Final exact-head CI and merge are recorded in the PR and issue after this evidence commit."
+  },
+  "not_claimed": [
+    "physical Android/iOS behavior",
+    "subjective audio quality",
+    "macOS/Windows native parity",
+    "load/capacity or hardware capture evidence"
+  ]
+}

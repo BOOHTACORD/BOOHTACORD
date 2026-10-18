@@ -107,7 +107,11 @@
         "browser": "tools/qa/mini_player/run.py",
         "native": "tools/qa/mini_player/native.py",
         "target": "integration_test/mini_player_qa_test.dart",
-        "scope": "Actual selected synthetic SFU source; exact target availability recorded in evidence"
+        "scope": "Actual selected synthetic SFU source; exact target availability recorded in evidence",
+        "focused": [
+          "tools/qa/mini_player/test_environment.py",
+          "tools/qa/mini_player/test_native.py"
+        ]
       },
       "issue328": {
         "runtime": "tools/qa/macos_sender/run.py",

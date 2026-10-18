@@ -693,3 +693,8 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-SCREEN-01]
     depends_on: [FV2-003, FV2-053]
     evidence: [clients/flutter/test/screen_setup/footer_layout_test.dart, tools/qa/screen_setup/windows.py, evidence/qa/issue373-screen-setup-footer-2026-10-18.md]
+  - id: FV2-055
+    title: Current-master Web and native mini-player runtime acceptance (GitHub #247)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-SCREEN-01]
+    depends_on: [FV2-003, DW-010, T-061]
+    evidence: [tools/qa/mini_player/test_environment.py, tools/qa/mini_player/test_native.py, clients/flutter/integration_test/mini_player_qa_test.dart, evidence/qa/issue247-mini-player-acceptance-2026-10-18.md]
