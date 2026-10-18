@@ -69,6 +69,7 @@ const viewerStrip = () => h('section', { class: 'voice-room', style: 'height:760
     selectedAudioVolume: 100,
     selectedId: 'local-screen',
     sourceDiagnostics: diagnostics(),
+    onStopScreen: () => events.push('stop-screen'),
   }),
 ])
 createApp({ render: () => params.has('viewer-strip') ?

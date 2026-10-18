@@ -1,0 +1,9 @@
+# Web screen viewer: owner preview and stop action — 2026-10-18
+
+**Result: PASS for the owned Web/API/SFU scenario.** The screen viewer now exposes a direct, accessible “Остановить свою трансляцию” action while the owner is viewing a screen. The action reaches the existing screen-stop path. A regression check also requires the owner’s preview element to decode video frames.
+
+The local feature run was `.out/local-features/20261018-144617`. All Web unit, build, browser, and real-stack stages passed at 1440 px and 393 px. The real-stack check verified nonzero `videoWidth` and decoded frames in the owner preview, receiver playback, stopping from the owner viewer, the source track ending, receiver publication removal, and the voice session remaining connected. `screen_share_ui` passed 26 browser tests. The production build used `VITE_PUBLIC_ORIGIN=https://localhost:4810`; Vite reported its existing LiveKit mixed-import and large-chunk warnings.
+
+I inspected the owner-preview screenshots at source resolution: `.out/client-lifecycle/1440/screen-share-owner-preview.png` (2880×1800) and `.out/client-lifecycle/393/screen-share-owner-preview.png` (1179×2556). Both show the moving synthetic screen content in the large preview. The desktop toolbar shows the red “Остановить” action; the narrow layout keeps its stop icon visible as an accessible button. The preview stage stays within the viewport. The diagnostic disclosure says the viewer is hidden while the sender tab is backgrounded during the two-client test; video frames remain visible and decoded.
+
+The generated local-features report retains `REVIEW_REQUIRED` because the harness does not update its report after manual visual review. The relevant owner-preview captures were visually reviewed and this note records the observations. The OS screen picker, physical-device capture, hardware audio, and media quality remain `NOT_RUN`; the real-stack source is a synthetic canvas.

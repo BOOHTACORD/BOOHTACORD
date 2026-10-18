@@ -222,6 +222,12 @@ test('playback diagnosis stays stable through intermittent receiver stats gaps',
   await page.screenshot({ path: info.outputPath('diagnosis-stable-through-stats-gaps.png') })
 })
 
+test('the owner can stop their own broadcast while the screen preview is open', async ({ page }) => {
+  await open(page, 'viewer-strip', 1440)
+  await page.getByRole('button', { name: 'Остановить свою трансляцию' }).click()
+  expect(await page.evaluate(() => (window as any).__screenUI.events)).toEqual(['stop-screen'])
+})
+
 test('brief screen audio publication changes do not flicker the diagnosis', async ({ page }) => {
   await open(page, 'diagnosis')
   const diagnosis = page.locator('.screen-diagnosis > [role="status"]')

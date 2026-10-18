@@ -48,6 +48,9 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     await sender.evaluate(() => { window.__qaShareUI.mode = 'publish' })
     await launch()
     await expect(dock.getByRole('button', { name: 'Остановить демонстрацию экрана', exact: true })).toBeEnabled({ timeout: 30000 })
+    await expect.poll(() => sender.locator('video.screen-player').evaluate(video => video.videoWidth > 0 && video.getVideoPlaybackQuality().totalVideoFrames > 0), { timeout: 30000 }).toBe(true)
+    console.log('stage=sender-screen-preview:decoded-frames')
+    await sender.screenshot({ path: input.directory + '/screen-share-owner-preview.png' })
     await receiver.locator('[data-testid=stream-select]:visible').first().click({ timeout: 30000 })
     await expect.poll(() => receiver.locator('video.screen-player').evaluate(video => video.videoWidth > 0 && video.getVideoPlaybackQuality().totalVideoFrames > 0), { timeout: 30000 }).toBe(true)
     await receiver.locator('summary[aria-label="Статистика"]').click()
@@ -64,14 +67,14 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     await receiver.keyboard.press('Escape')
     await expect(stats).toHaveCount(0)
     await miniPlayerInterface(sender, receiver, input, report, subscriptions)
-    await dock.getByRole('button', { name: 'Остановить демонстрацию экрана', exact: true }).click()
+    await sender.getByRole('button', { name: 'Остановить свою трансляцию', exact: true }).click()
     await expect(dock.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true })).toBeEnabled()
     await expect(receiver.getByTestId('stream-select')).toHaveCount(0, { timeout: 15000 })
     await expect.poll(() => sender.evaluate(() => window.__qaShareUI.track.readyState)).toBe('ended')
     const observation = await sender.evaluate(() => ({ captures: window.__qaShareUI.captures, activated: window.__qaShareUI.activated }))
     assert.equal(observation.captures, 3); assert.deepEqual(observation.activated, [true, true, true])
     for (const page of [sender, receiver]) await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён')
-    report.screen_share_interface = { boundary: 'synthetic canvas and quiet oscillator; OS picker NOT_RUN', actual_api_sfu: true, cancel_without_publication: true, permission_denied_visible: true, retry_publish_view_decode_stop: true, ended_source_track: true, voice_retained: true, selected_configuration_measured_separate: true, configuration_observed: confirmation, diagnostics_optional: true, ...observation, media_quality: 'NOT_RUN' }
+    report.screen_share_interface = { boundary: 'synthetic canvas and quiet oscillator; OS picker NOT_RUN', actual_api_sfu: true, cancel_without_publication: true, permission_denied_visible: true, owner_preview_decoded: true, owner_stopped_from_viewer: true, receiver_view_decoded: true, ended_source_track: true, voice_retained: true, selected_configuration_measured_separate: true, configuration_observed: confirmation, diagnostics_optional: true, ...observation, media_quality: 'NOT_RUN' }
   } finally {
     await sender.evaluate(() => {
       const state = window.__qaShareUI

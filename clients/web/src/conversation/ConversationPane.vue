@@ -114,7 +114,7 @@ function clearScreenPreview(): void {
             <ScreenViewer
               ref="screenViewerRef" v-show="selectedScreenStreamId !== null" :audio-muted="screenAudioMuted" :cards="screenViewerCards" :deafened="selfDeafened" :ended="screenViewerEnded" :error="screenViewerError" :expanded="screenExpanded" :mini="miniVisible" :own-screen-sharing="screenState === 'SHARING'" :pinned="screenPinned" :participants="voiceVolumeParticipants" :self-account-id="accountId" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-name="selfDisplayName" :self-speaking="selfSpeaking" :selected-audio-volume="selectedScreenAudioVolume" :selected-id="selectedScreenStreamId"
               @clear="clearScreenPreview" @retry="emit('retryScreenStream', $event)" @select="(id, video, audio) => emit('selectScreenStream', id, video, audio)" @set-audio-volume="emit('setScreenVolume', $event)" @toggle-audio="emit('toggleScreenAudio')"
-              @pin="toggleScreenPin" @change-quality="emit('startScreen', screenProfile ?? selectedScreenProfile)"
+              @pin="toggleScreenPin" @change-quality="emit('startScreen', screenProfile ?? selectedScreenProfile)" @stop-screen="emit('stopScreen')"
               :source-diagnostics="screenDiagnostics" @update:expanded="screenExpanded = $event"
             />
           </template>
