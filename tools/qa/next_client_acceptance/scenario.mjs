@@ -5,6 +5,7 @@ import { nativeBrowser } from './native_browser.mjs'
 import { uploads } from './uploads.mjs'
 import { unread } from './unread.mjs'
 import { navigation } from './navigation.mjs'
+import { captureFailure, failureSummary } from './failure.mjs'
 const input = JSON.parse(readFileSync(process.env.QA_INPUT,'utf8'))
 assert.equal(process.env.QA_ORIGIN,'https://localhost:4810')
 const owned = await nativeBrowser(), browser = owned.browser
@@ -32,7 +33,6 @@ try {
   }
   writeFileSync(process.env.QA_RESULT,JSON.stringify(report,null,2)+'\n',{mode:0o600})
 } catch (error) {
-  let message=String(error).split(input.password).join('[redacted]')
-  for (const context of browser.contexts()) for (const cookie of await context.cookies()) message=message.split(cookie.value).join('[redacted]')
-  console.error(message); process.exitCode=1
+  await captureFailure(owned.page, input.directory).catch(() => console.error('FAIL: bounded fixture diagnostics unavailable'))
+  console.error(failureSummary(error)); process.exitCode=1
 } finally { await owned.close() }

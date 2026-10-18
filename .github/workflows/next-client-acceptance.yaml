@@ -40,7 +40,7 @@ jobs:
       - name: Install headed window manager
         run: sudo apt-get install --no-install-recommends --yes openbox
       - name: Test bounded owned native input files
-        run: node --test tools/qa/next_client_acceptance/input_files.test.mjs
+        run: node --test tools/qa/next_client_acceptance/input_files.test.mjs tools/qa/next_client_acceptance/failure.test.mjs
       - name: Verify real uploads and protected context
         env:
           VITE_PUBLIC_ORIGIN: https://localhost:4810

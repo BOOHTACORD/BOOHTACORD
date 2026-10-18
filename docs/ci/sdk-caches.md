@@ -67,7 +67,10 @@ python3 -m tools.verify.action_pins.run
 records two local cold/warm npm install pairs using exactly the same lockfile,
 Node 24.18.0 and two focused test files. `node_modules` was recreated by `npm ci`
 each time. Cold installs took 9.362/12.934 seconds and warm installs 1.488/1.624;
-all four test executions passed. These are small local install measurements,
+all four test executions passed. [The Go microbenchmark](../../evidence/ci/go-cache-local-2026-10-19.json)
+used the same seven package tests with `-count=1`: cold 40.879/45.927 seconds,
+warm 1.164/1.183 seconds, with real test names checked for equality and no skips.
+These are small local install/build measurements,
 not full-suite coverage, cross-platform evidence or a CI latency SLO.
 
 Playwright browser caching is intentionally absent: [upstream guidance](https://playwright.dev/docs/ci#caching-browsers)

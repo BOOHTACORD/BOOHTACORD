@@ -497,7 +497,7 @@ tasks:
     title: Reviewed Actions commits, least privilege and explicit trusted runner/signing boundaries
     requirements: [REQ-DEPLOY-01, REQ-SECURITY-01, REQ-QUALITY-02]
     depends_on: [CICD-01]
-    evidence: [tools/verify/action_pins/test_policy.py, tools/verify/action_pins/test_trust.py, docs/ci/trust-boundaries.md]
+    evidence: [tools/verify/action_pins/test_policy.py, tools/verify/action_pins/test_trust.py, tools/verify/action_pins/test_local.py, docs/ci/trust-boundaries.md, evidence/ci/sdk-hardening-integration-2026-10-19.md]
   - id: CICD-08
     title: Versioned public dependency-cache inputs and explicit toolchain drift validation
     requirements: [REQ-DEPLOY-01, REQ-SECURITY-01, REQ-QUALITY-02]
