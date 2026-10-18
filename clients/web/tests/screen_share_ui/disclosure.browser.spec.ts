@@ -194,6 +194,23 @@ test('missing source audio stays the diagnosis while video receiver samples fluc
   await page.screenshot({ path: info.outputPath('diagnosis-no-audio-mobile-stale.png') })
 })
 
+test('playback diagnosis stays stable through intermittent receiver stats gaps', async ({ page }, info) => {
+  await open(page, 'diagnosis-flapping')
+  const diagnosis = page.locator('.screen-diagnosis > [role="status"]')
+  const playing = 'Демонстрация воспроизводится.'
+  await expect(diagnosis).toHaveText(playing)
+  const messages = await diagnosis.evaluate(async element => {
+    const observed = [element.textContent?.trim() ?? '']
+    const observer = new MutationObserver(() => observed.push(element.textContent?.trim() ?? ''))
+    observer.observe(element, { childList: true, characterData: true, subtree: true })
+    await new Promise(resolve => window.setTimeout(resolve, 2800))
+    observer.disconnect()
+    return observed
+  })
+  expect(messages).toEqual([playing])
+  await page.screenshot({ path: info.outputPath('diagnosis-stable-through-stats-gaps.png') })
+})
+
 test('brief screen audio publication changes do not flicker the diagnosis', async ({ page }) => {
   await open(page, 'diagnosis')
   const diagnosis = page.locator('.screen-diagnosis > [role="status"]')

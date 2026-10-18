@@ -17,6 +17,8 @@ watch(()=>[props.selectedId,props.hasAudio] as const,([selectedId,hasAudio],[pre
   audioPresenceTimer=setTimeout(()=>{stableHasAudio.value=hasAudio;audioPresenceTimer=null},1200)
 })
 const diagnosis=computed(()=>diagnose({...props,hasAudio:stableHasAudio.value,selected:Boolean(props.selectedId),selectedAt:selectedAt.value,now:now.value,visible:visible.value}))
+// Receiver samples can arrive between the panel's one-second clock ticks.
+watch(()=>props.sampledAt,()=>{now.value=Math.max(now.value,Date.now())},{flush:'sync'})
 const series=createDiagnosisSeries(()=>{
   const fresh=props.sampledAt!==null&&now.value-props.sampledAt>=0&&now.value-props.sampledAt<=6000
   const source=props.local&&props.source?.sampledAt!==undefined&&now.value-props.source.sampledAt>=0&&now.value-props.source.sampledAt<=6000?props.source:null

@@ -19,7 +19,9 @@ export function useScreenReceiverDiagnostics(selected: Ref<ScreenViewerCard | nu
     try {
       const current = await card.readReceiverStats()
       if (version !== generation) return
-      if (!current) { metrics.value = null; sampledAt.value = null; previous = null; lossWindow.clear(); return }
+      // A transient missing row must not erase the last good sample. The diagnosis
+      // panel marks it stale only after its normal freshness window expires.
+      if (!current) return
       if (previous?.streamId !== current.streamId || previous?.ssrc !== current.ssrc) lossWindow.clear()
       if (previous?.timestamp === current.timestamp) return
       const packetLossPercent = lossWindow.add(current)
@@ -27,7 +29,7 @@ export function useScreenReceiverDiagnostics(selected: Ref<ScreenViewerCard | nu
       sampledAt.value = current.timestamp
       previous = current
     } catch {
-      if (version === generation) { metrics.value = null; sampledAt.value = null; previous = null; lossWindow.clear() }
+      // Keep the last successful observation through a brief getStats failure.
     } finally {
       if (version === generation) sampling = false
     }
