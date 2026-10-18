@@ -1,0 +1,776 @@
+{
+  "evidence_id": "QA-12-2026-10-18-001",
+  "status": "PASS",
+  "issue": 60,
+  "tasks": [
+    "T-054"
+  ],
+  "requirements": [
+    "REQ-DEPLOY-01",
+    "REQ-NOBACKUP-01"
+  ],
+  "scope": "Actual signed API/web rollback and restoration on an isolated prepared Linux amd64 instance, two actual Web observers; explicit owned SFU-only STUN egress. No production-maintenance, fresh-production-network, native-client or media-quality claim.",
+  "accepted_pr_head": "640073fd8826dd3bed013037093e13adb5385d66",
+  "accepted_checkout": "e89396a771da78b1342c34230d7a12ef7b4b4e04",
+  "accepted_tree": "92c65501a4f3b01ff6bc2d3ced3a3cd880c7d494",
+  "accepted_workflow": {
+    "run": 39130446602,
+    "job": 117684347504,
+    "conclusion": "success",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39130446602/job/117684347504",
+    "artifact_id": 12137129327,
+    "artifact_sha256": "sha256:7eadedf917b6d85ffa44eb4e9fedf6433646e1be15e3d92651e01892b53887ed",
+    "artifact_created_at": "2026-10-18T13:20:09Z",
+    "phase_marks_utc": {
+      "build": "2026-10-18T13:12:13.6598494Z",
+      "browsers": "2026-10-18T13:16:46.6067378Z",
+      "canonical_rollback": "2026-10-18T13:16:49.4152466Z"
+    }
+  },
+  "runtime": {
+    "issue": 60,
+    "status": "PASS",
+    "source_base": "e89396a771da78b1342c34230d7a12ef7b4b4e04",
+    "ci_proof": {
+      "current": {
+        "head": "f8851896dba5b0b4002a3a9c53d327348aa133cc",
+        "run": 39118858399,
+        "status": "success",
+        "checks": {
+          "backend": {
+            "id": 117650178455,
+            "conclusion": "success"
+          },
+          "web": {
+            "id": 117650178486,
+            "conclusion": "success"
+          },
+          "contracts": {
+            "id": 117650141777,
+            "conclusion": "success"
+          }
+        },
+        "tree": "4bbd6da0073cda5024ed093970df2d9478532af2",
+        "equivalent_master": "7c0d15a597ee44fe9222f6b678540435459e2933"
+      },
+      "previous": {
+        "head": "732bc4ae3b38e0865aa440df2378d803d2816e5e",
+        "run": 39105987072,
+        "status": "success",
+        "checks": {
+          "backend": {
+            "id": 117611839941,
+            "conclusion": "success"
+          },
+          "web": {
+            "id": 117611839990,
+            "conclusion": "success"
+          },
+          "contracts": {
+            "id": 117611816415,
+            "conclusion": "success"
+          }
+        },
+        "tree": "405eca8a0a3bca8fde61b05bb7fea787194e6ff0",
+        "equivalent_master": "5eb564ff3f47962e09d9a05b17e2fe311bf2bb3b"
+      }
+    },
+    "harness_sha256": {
+      "test_evidence.py": "a2fa72153ddc14600cb372a2889ca9f9cbc7acdcbd1b00f761b04889c59b45d1",
+      "test_ci_proof.py": "cdd0c9046f95d5d9e2233d465c4bd72b89b4eb0be5c33b3a5aad1788b6138a48",
+      "test_builder_identity.py": "2445be95863ecaa9ee5759ec0e4c7fb014564770551011d1d31579d48c47ee80",
+      "daemon.py": "c0794821e40e0831cc84f5e7bcda165c6a11a5ea218b4dfb32f73b81641ca1a6",
+      "test_isolation.py": "c1209aed7ebdb21561fb55f293ae19933129d40c477d16cfa023600a01b6875f",
+      "builder_identity.py": "729a2538bd0694c59eb9b74b4a7ea1b6bcd22b86e9a62547187144b1aae01f6a",
+      "diagnostics.py": "1e5b60298e3da72ad63e0e7af97c90ac221d049823de3dc43cd5f5e6c7f88827",
+      "controller.py": "c098498eae9b658a35121333aea00fb1f93c311667dcc86649df02adbf409032",
+      "storage.py": "4054b0515ff79d5aef61e5bd6146dab470e7f42ec4a0724f7f41986740813b1c",
+      "run.py": "16f145107a31f6f7719ce299688fbffe3e0ecb2b548f9e08fe8d76582e7a2930",
+      "setup.py": "bc5bdba1a294064c1eb3ecad6583a42330a330be638ff67c8e0b58b6134932b4",
+      "build.py": "76ed91c3e44ab04970537050f1f9c3ab42682968dee209bddd9ce2a00ff52760",
+      "ci_proof.py": "87ac5655937cac4bd52d1d2c9fbe8ae3844ebfc6629a24763fcd0c7f0dae159e",
+      "Dockerfile": "87e139e258a5914e106e37378536c8e105f4a8b6f2960ebddda61f49e9dd2a8e",
+      "scenario.mjs": "b967a9695d4af1af8e910aa00c0383f79c31e5fc46950f011cd459bf68f6c84a",
+      "evidence.py": "264ae859a5de8c10dc72ef247be6ac694ba3e3be55142633ad80d3c2a65ac893",
+      "test_diagnostics.py": "4d6053b3691455c0ea7bdffac212f3136b3f78f74f9097b2b1655636f96c6b56",
+      "isolation.py": "e8b007bfa64e4ea77d735b8285c15afc0bb9cf7a7e93fda8daeb5654aff7858a",
+      "rehearse.py": "f1f850b2f1d13583adc67df8aeed04fd77a53fe93ed67eec60623e191558804a"
+    },
+    "builder_sha256": {
+      "tools/build/server/buildx.py": "23329c64b80765f4ade43c083657705dd1aaae276473e31313c730f56023af04",
+      "tools/build/server/images.py": "6778704e594f0b55e9250e5e38dc2ec2048b2c115a35970fac02a56bed19c60e",
+      "tools/build/server/inputs.py": "4464074433c23ee8892a7e57f93b844721fca4964a80f0d460272fd5eac6b8cb",
+      "tools/build/server/run.py": "0cb8fb14a838275c4725b21ab80b04ce0f0d102d4cbe6d4e08ba228f5f7acaef",
+      "tools/build/server/smoke.py": "08513ebb39f0da7a45b7e6760b12e9ec2a792e062b18a5ae657ffff4d4a24fff",
+      "tools/build/server/test_image_audio_flag.py": "9249c49cfd01a3303ea869a120b7ee84b518ce2e1c7f29534db39859a0530aa6",
+      "tools/build/server/test_runtime_inputs.py": "5dfecc11c909b7a90933e538da77770e3b6d879a09d9bbca3b6629a4019152db",
+      "tools/build/server/test_smoke_readiness.py": "f07d7ef389ba6834198e8ebb7d512b359c841f1f4f28c04d70f0d09f408effc3",
+      "tools/build/server/test_social_preview.py": "ac41773670b1868a15874fe47e4d408da4a2a1de1d114232c6cde76e84bbffb4",
+      "tools/build/web/assets.py": "0636cee0ff9e52c5cad84c7f6e7935ecd10ff2f9967e18715f3cea922e4bac30",
+      "tools/build/web/audio_assets.py": "a2577c9d1c5b7a9e8dd10be07b97c2fcfe215d5af7bb49f2fc7baad0c284758d",
+      "tools/build/web/test_assets.py": "f5c4c28e595d40af10388a2b6f5943d3c68962d7003363500e0d5af953e2b386",
+      "tools/build/web/test_audio_assets.py": "c91e2917872a4ce1b88cf94fc2e542c50153dd0dc0d55f0417b82f047c50768e",
+      "tools/audio/asset_build.py": "6cc487a2a7386f6e1d19584d3197c3b9ddb555a586c59bd74077af564cf2e749",
+      "tools/audio/build_rnnoise.py": "737d589d9f84d5012a55c67be713d0bf97c55af9a4d91282f90b4d536d22f839",
+      "tools/audio/livekit_fixture.py": "7ab0519d76a67e51761c3798d82f8f0368de4db90c7518f1eec5a6fe0531d7ff",
+      "tools/audio/native_tests/run.py": "bc52b17b2ec47a7d0f8d4a604b4078ea6d786e9a78cc33597f465c0eea6775ac",
+      "tools/audio/native_tests/test_run.py": "db9465f0a70f3bfa1a1aca13d17ad22d5423976bcb5812e22d24e4c646a8ac13",
+      "tools/audio/test_asset_build.py": "f4928b7eff026dbcaa8b0179b1e2f75e04000cd093b6d9e6ebf3db17fdbb3b35",
+      "tools/audio/test_asset_delivery.py": "f1064cde6382302025910251466b010949f30cb260ded2fea7e237691183ddb9",
+      "tools/audio/voice_parity/blind_trials.py": "d800f0704070a7f563af46f5f6c1670cf07a0bddd49e6a75cc8dddf5f02d69da",
+      "tools/audio/voice_parity/generate_profiles.py": "34089e3ff367ef6ac43b9f7c8bca07302a7dfc6b13ee80697f5e621bb77cc8f4",
+      "tools/audio/voice_parity/test_blind_trials.py": "09cda39420733bd4b3f2281273a6319f5207c8cba88dc021cce61f3ec980552f",
+      "tools/verify/oci/test_verify_oci.py": "29d92b0ce5f5a682f05de386773a21ed2114cd2a98fad7111be85fc68ba59bef",
+      "tools/verify/oci/verify_oci.py": "0ca3b3315ce49b5e66fcfeba0800a498742aefe73ecdb9e2369e5b66b3ce09f7",
+      "tools/release/bundle/compatibility.py": "25efeba682c571a7c6a80aae2071eb16a48ed2c9c01c45ad92a15c166bded5a6",
+      "tools/release/bundle/files.py": "2933f83435862e65cdf8296122816e09f312afc9b1a33200ba82e4a80ec33561",
+      "tools/release/bundle/manifest.py": "9ca38a7f61ff2c5a2189e0de4b2defb79e3f78e05b05d4f7521b7306fe622bce",
+      "tools/release/bundle/package.py": "42f8d7ebdcbca80e7df61f7fbe6f120ddcea43dee51015afb3210ffa2cdaf8f1",
+      "tools/release/bundle/signature.py": "262f990410ed2d0b5bb9c2aa9de5102a31f7a9e46eea47c70e0d603d54214f37",
+      "tools/release/bundle/test_manifest.py": "0bc10628061b8df910aa21e62616db6704455a3c1c23df271d767b7609e98f95",
+      "tools/release/bundle/test_signature.py": "c940e12b1d83735ecafdef9b600e62ea2136df4ffcf281442c8295e9750250d1",
+      "tools/release/bundle/verify.py": "a9f548003c9b467569333b1aedc3eacff762130474f601663ba0d2830033bc89",
+      "tools/release/archive/extract.py": "9b8b944e076759196ce34f8531558b737577958e50156eed43b5bfa323d31197",
+      "tools/release/archive/test_extract.py": "2eb5bc2ba68a095bf79bdf7840c98ee3651cca356634f88b06ae4ffff006adc0"
+    },
+    "environment": {
+      "kernel": "6.17.0-1022-azure",
+      "machine": "x86_64",
+      "python": "3.12.15",
+      "docker": "29.5.2",
+      "compose": "5.1.4",
+      "supporting_images": {
+        "postgres": {
+          "reference": "postgres:17.6-alpine",
+          "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94"
+        },
+        "livekit": {
+          "reference": "livekit/livekit-server:v1.13.7",
+          "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3"
+        },
+        "proxy": {
+          "reference": "caddy:2.10.0-alpine",
+          "image_id": "sha256:ae4458638da8e1a91aafffb231c5f8778e964bca650c8a8cb23a7e8ac557aa3c"
+        }
+      },
+      "qa_signing_public_key_sha256": "520001d5febc12f75ff819f14558f438ca60ccea1e71a859f834605ad5e0acfe",
+      "scope": "Isolated QA signing and runtime; source bundles independently verified before every transition",
+      "private_proxy_ip": "172.30.254.250",
+      "trusted_proxy_cidrs": "172.30.254.250/32",
+      "fixture_sfu_egress": "Owned additional bridge for actual retained-config STUN; no management port published"
+    },
+    "acceptance": {
+      "status": "PASS",
+      "current": "f8851896dba5b0b4002a3a9c53d327348aa133cc",
+      "previous": "732bc4ae3b38e0865aa440df2378d803d2816e5e",
+      "preflight": {
+        "read_only": true,
+        "signed_bundles": true,
+        "digest_only": true,
+        "compatible": true
+      },
+      "observations": [
+        {
+          "phase": "baseline",
+          "browser": 0,
+          "authenticated": true,
+          "banner": false,
+          "admission": 201,
+          "login_status": 204,
+          "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+        },
+        {
+          "phase": "baseline",
+          "browser": 1,
+          "authenticated": true,
+          "banner": false,
+          "admission": 201,
+          "login_status": 204,
+          "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+        },
+        {
+          "phase": "rollback_maintenance",
+          "browser": 0,
+          "authenticated": true,
+          "banner": true,
+          "admission": 503,
+          "login_status": 503,
+          "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+        },
+        {
+          "phase": "rollback_maintenance",
+          "browser": 1,
+          "authenticated": true,
+          "banner": true,
+          "admission": 503,
+          "login_status": 503,
+          "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+        },
+        {
+          "phase": "previous",
+          "browser": 0,
+          "authenticated": true,
+          "banner": false,
+          "admission": 201,
+          "login_status": null,
+          "revision": "732bc4ae3b38e0865aa440df2378d803d2816e5e"
+        },
+        {
+          "phase": "previous",
+          "browser": 1,
+          "authenticated": true,
+          "banner": false,
+          "admission": 201,
+          "login_status": null,
+          "revision": "732bc4ae3b38e0865aa440df2378d803d2816e5e"
+        },
+        {
+          "phase": "restore_maintenance",
+          "browser": 0,
+          "authenticated": true,
+          "banner": true,
+          "admission": 503,
+          "login_status": 503,
+          "revision": "732bc4ae3b38e0865aa440df2378d803d2816e5e"
+        },
+        {
+          "phase": "restore_maintenance",
+          "browser": 1,
+          "authenticated": true,
+          "banner": true,
+          "admission": 503,
+          "login_status": 503,
+          "revision": "732bc4ae3b38e0865aa440df2378d803d2816e5e"
+        },
+        {
+          "phase": "restored",
+          "browser": 0,
+          "authenticated": true,
+          "banner": false,
+          "admission": 201,
+          "login_status": 204,
+          "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+        },
+        {
+          "phase": "restored",
+          "browser": 1,
+          "authenticated": true,
+          "banner": false,
+          "admission": 201,
+          "login_status": 204,
+          "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+        }
+      ],
+      "storage": [
+        {
+          "phase": "baseline",
+          "volumes": {
+            "postgres-data": "b12cd1552a0724ebd81cd3df5c4dc611c771d81d98700fe3f6d49b960541233f",
+            "attachments-data": "af3fb1613e62177fa1d84c319c8694caa0bd62d234edd3417f486147f8b0e63c",
+            "caddy-data": "4ac46e4992f3d9baf419d46992533ece331b517faa255e9ac968843fb9565654",
+            "caddy-config": "f0ba3a9508838e2f731179a678eddeac51e87119628323e4b477b0680f67f4bc"
+          },
+          "networks": {
+            "edge": "be936d7f4c90e3793194dc1a43eb01306fc64d2ef888b893e7ffa3376c158bff",
+            "private": "0001b4a65790118bfa6f753ba264f1334e1b7e6f714e3fcb38293ebf7f75a9d7",
+            "sfu-egress": "3cd7e2f39d83cdc3c56ee71f0936d2017d2735dfbe54dc37f7d68ec5bea39bec"
+          },
+          "content": {
+            "database": "5833b22948cb1920bb3a4b8683ea3f9f3f5b1f532a170bc3c40fc1360ec0c99e",
+            "attachments": "5dc0887b63a8a7bff7c4a575ba2c97d111a81caaf11bd20b28da05e05aabd689",
+            "tls": "7bbba1893d425ac4bb31e579fa0ab774357a7cd1f364282993a29dccbd70ec3a",
+            "proxy_config": "2714092f272dc06cf181a5b04cfa5e584dcedd63ac48652e4a6c496f52ce2bcb",
+            "schema": "159a00aa4a8c20c98d32256f14887e568eaf8497b83b2c42342c40b99796dfcd"
+          }
+        },
+        {
+          "phase": "previous",
+          "volumes": {
+            "postgres-data": "b12cd1552a0724ebd81cd3df5c4dc611c771d81d98700fe3f6d49b960541233f",
+            "attachments-data": "af3fb1613e62177fa1d84c319c8694caa0bd62d234edd3417f486147f8b0e63c",
+            "caddy-data": "4ac46e4992f3d9baf419d46992533ece331b517faa255e9ac968843fb9565654",
+            "caddy-config": "f0ba3a9508838e2f731179a678eddeac51e87119628323e4b477b0680f67f4bc"
+          },
+          "networks": {
+            "edge": "be936d7f4c90e3793194dc1a43eb01306fc64d2ef888b893e7ffa3376c158bff",
+            "private": "0001b4a65790118bfa6f753ba264f1334e1b7e6f714e3fcb38293ebf7f75a9d7",
+            "sfu-egress": "3cd7e2f39d83cdc3c56ee71f0936d2017d2735dfbe54dc37f7d68ec5bea39bec"
+          },
+          "content": {
+            "database": "5833b22948cb1920bb3a4b8683ea3f9f3f5b1f532a170bc3c40fc1360ec0c99e",
+            "attachments": "5dc0887b63a8a7bff7c4a575ba2c97d111a81caaf11bd20b28da05e05aabd689",
+            "tls": "7bbba1893d425ac4bb31e579fa0ab774357a7cd1f364282993a29dccbd70ec3a",
+            "proxy_config": "2714092f272dc06cf181a5b04cfa5e584dcedd63ac48652e4a6c496f52ce2bcb",
+            "schema": "159a00aa4a8c20c98d32256f14887e568eaf8497b83b2c42342c40b99796dfcd"
+          }
+        },
+        {
+          "phase": "restored",
+          "volumes": {
+            "postgres-data": "b12cd1552a0724ebd81cd3df5c4dc611c771d81d98700fe3f6d49b960541233f",
+            "attachments-data": "af3fb1613e62177fa1d84c319c8694caa0bd62d234edd3417f486147f8b0e63c",
+            "caddy-data": "4ac46e4992f3d9baf419d46992533ece331b517faa255e9ac968843fb9565654",
+            "caddy-config": "f0ba3a9508838e2f731179a678eddeac51e87119628323e4b477b0680f67f4bc"
+          },
+          "networks": {
+            "edge": "be936d7f4c90e3793194dc1a43eb01306fc64d2ef888b893e7ffa3376c158bff",
+            "private": "0001b4a65790118bfa6f753ba264f1334e1b7e6f714e3fcb38293ebf7f75a9d7",
+            "sfu-egress": "3cd7e2f39d83cdc3c56ee71f0936d2017d2735dfbe54dc37f7d68ec5bea39bec"
+          },
+          "content": {
+            "database": "5833b22948cb1920bb3a4b8683ea3f9f3f5b1f532a170bc3c40fc1360ec0c99e",
+            "attachments": "5dc0887b63a8a7bff7c4a575ba2c97d111a81caaf11bd20b28da05e05aabd689",
+            "tls": "7bbba1893d425ac4bb31e579fa0ab774357a7cd1f364282993a29dccbd70ec3a",
+            "proxy_config": "2714092f272dc06cf181a5b04cfa5e584dcedd63ac48652e4a6c496f52ce2bcb",
+            "schema": "159a00aa4a8c20c98d32256f14887e568eaf8497b83b2c42342c40b99796dfcd"
+          }
+        }
+      ],
+      "running": [
+        {
+          "phase": "baseline",
+          "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc",
+          "images": {
+            "api": {
+              "configured": "voice-platform-api@sha256:b1625561c27708589b20260db3b4ef1764bb12c01072d3bd66aa04a30a632c0f",
+              "running": "sha256:b1625561c27708589b20260db3b4ef1764bb12c01072d3bd66aa04a30a632c0f"
+            },
+            "web": {
+              "configured": "voice-platform-web@sha256:5d8ef20f570ebfdfcc80534d4ac44d242c6660000d270db3c9f7a8282066a26d",
+              "running": "sha256:5d8ef20f570ebfdfcc80534d4ac44d242c6660000d270db3c9f7a8282066a26d"
+            }
+          }
+        },
+        {
+          "phase": "previous",
+          "revision": "732bc4ae3b38e0865aa440df2378d803d2816e5e",
+          "images": {
+            "api": {
+              "configured": "voice-platform-api@sha256:c48a3fabc795ca90a99dae78550e9f53c9fa3544a97be60f58b95d62ecea0092",
+              "running": "sha256:c48a3fabc795ca90a99dae78550e9f53c9fa3544a97be60f58b95d62ecea0092"
+            },
+            "web": {
+              "configured": "voice-platform-web@sha256:f43f5c5776f5a3c5ccde97d77cd55dc2579761cf1ed803f0ef32938d7ec33820",
+              "running": "sha256:f43f5c5776f5a3c5ccde97d77cd55dc2579761cf1ed803f0ef32938d7ec33820"
+            }
+          }
+        },
+        {
+          "phase": "restored",
+          "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc",
+          "images": {
+            "api": {
+              "configured": "voice-platform-api@sha256:b1625561c27708589b20260db3b4ef1764bb12c01072d3bd66aa04a30a632c0f",
+              "running": "sha256:b1625561c27708589b20260db3b4ef1764bb12c01072d3bd66aa04a30a632c0f"
+            },
+            "web": {
+              "configured": "voice-platform-web@sha256:5d8ef20f570ebfdfcc80534d4ac44d242c6660000d270db3c9f7a8282066a26d",
+              "running": "sha256:5d8ef20f570ebfdfcc80534d4ac44d242c6660000d270db3c9f7a8282066a26d"
+            }
+          }
+        }
+      ],
+      "observer_seconds": 90
+    },
+    "images": [
+      {
+        "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc",
+        "components": {
+          "api": {
+            "archive": "api.oci.tar",
+            "attestation_predicates": [
+              "https://slsa.dev/provenance/v0.2",
+              "https://spdx.dev/Document"
+            ],
+            "index_digest": "sha256:b1625561c27708589b20260db3b4ef1764bb12c01072d3bd66aa04a30a632c0f",
+            "manifest_digest": "sha256:9abf812b63f0ded07136d2000dd29950e7b5e223a2d03cfbc16c565564a216b4"
+          },
+          "web": {
+            "archive": "web.oci.tar",
+            "attestation_predicates": [
+              "https://slsa.dev/provenance/v0.2",
+              "https://spdx.dev/Document"
+            ],
+            "index_digest": "sha256:5d8ef20f570ebfdfcc80534d4ac44d242c6660000d270db3c9f7a8282066a26d",
+            "manifest_digest": "sha256:4753b80e1da21455cd6c44ea023188933dc36f18d22e5728be326ce6876542eb"
+          }
+        },
+        "compatibility": {
+          "backend_tree": "f9fec33cfefd590e87a343fb630306bd73619641",
+          "contracts_sha256": "67609eae793346926cc2f7f8a6e441b03e1736e647b62eb6bf6ba486060d89d1",
+          "migrations": {
+            "0001_create_users.sql": "ccbd1da4ba82e8b133fba5fc90a2c9d39b22934a88be2c20a1246df84b0e31b5",
+            "0002_create_sessions.sql": "dcb932aacb3e62214466bfcb07aaacde52c67d31f1c511383f81c61869ecc0ea",
+            "0003_create_sessions_active_user_index.sql": "3f8238d5b25c745f14f6c80d186f27040b750ac905b1f8a8d8d5a9ca132ee113",
+            "0004_create_password_resets.sql": "61dd93c8884dbe323957a1a86dd03e95c7b53c7003902e63f3e09ce1e208bfcb",
+            "0005_create_bootstrap_state.sql": "6e4567bce3234050aaa968ed636e6d0f5dab02bac5cea238264056eba998d3c8",
+            "0006_create_audit_events.sql": "b88c7c2be4b35af1a7f511e4e19f576e08fdf4894f5bb67c3fa59245c43bb75e",
+            "0007_create_channel_topology_state.sql": "4a6e6509d9697bedefed304d8a9218c3e967afb1d1fb7857da8c998ff3e607f9",
+            "0008_create_categories.sql": "493a36593da66b02a1d6f17322c6f91c8b2d01e6dc0976ebc66d38f88211e0c6",
+            "0009_create_channels.sql": "e2f11bbd4572413f9ca8d5946f12c75f3e2a69244885911bb850b6a3dbc6ee41",
+            "0010_create_voice_leases.sql": "202f5d1df8f5591f8ef42d0096133255f166aca77b84f0865ab82d9974649700",
+            "0011_create_voice_leases_active_user_index.sql": "51fc5b3fdf38e1ce60d9ab495f3e02e1503e35b2f863d3a1c4bb3f0fe29ba3f2",
+            "0012_create_voice_leases_active_channel_index.sql": "0deedbf2ed16fa3cc3fe2a131d3051aa11d7065db7f81bb90ef0eafd34b33c27",
+            "0013_add_voice_lease_session_digest.sql": "274a75f0836c6e6ad25e59a708e138ae33f5369b6a6c27ac1fb1529cdfea8818",
+            "0014_create_voice_leases_active_session_index.sql": "510a11d28a15be62993d76671e461f45e73eecd72ff09ecb8d20286137eae512",
+            "0015_extend_voice_lease_revocation_reasons.sql": "90ff2e62632e8d1130220ffb680c7027f7df6a69f5a9ad1b63e3f0a2fb19ec0b",
+            "0016_create_messages.sql": "21c7d9f957a2dd067a3701b4ce1264b000849e005b211b3bb7800e74a928e10c",
+            "0017_create_direct_messages.sql": "04178d1c27e7343e49fa2b6cc19b77cc7469789de724e1436e34d66928da4570",
+            "0018_create_direct_message_messages.sql": "cf64ca23b5f04f3888636fa01e1b74690f9035d1b64745ba9ac53fef1b2bb497",
+            "0019_create_direct_message_messages_history_index.sql": "b6865d9d929c5326169241b32f69306ff4554d1bbc6a7d51a88f90384d6de2d2",
+            "0020_add_direct_message_reply_to_id.sql": "c56cfcb2a62460b6e6cb96bddc16bf784dada533a2685f243097db52819913a5",
+            "0021_create_direct_message_read_cursors.sql": "e94eacf2ce786bb0e86557357b8a65869a835fbdf326ba8eb8fcb539ba73fbb2",
+            "0022_add_direct_message_search_index.sql": "77a5fe139cb3d293371d8a0e0baea497f98c3a6dd1ab51bcf7d8e674c422cce2",
+            "0023_create_attachments.sql": "d16207ac23bd62abbeaffb099b6c7d0ec86f636ee47cd14242c2ea3eda14dfa0",
+            "0024_create_message_attachments.sql": "d865e8b6ae313559ea3c52c3f8b351083078e97a88ba8b83fe0d796eafd38b55",
+            "0025_repair_incomplete_bootstrap_state.sql": "194548fa7bfc1b7c39a61fd262246dc1d7997343ce8600bd457f9b27a9a7c84b",
+            "0026_add_text_message_search_index.sql": "05136b2dc3671aec3e5155c8bcdf68d3397535918cf990364b3bc026bee5c743",
+            "0027_create_unattached_attachment_cleanup_index.sql": "8677e8cab826484222eaa893bcb0c2ebe004f776131d1fb413ab37ca5899e110",
+            "0028_create_voice_sfu_revocations.sql": "48bc0dcc7547ab5ac4d44b9931a30eb870990d872446c8b386c0cfb55f50dd00",
+            "0029_create_maintenance_admission.sql": "10989a75f1123dfd45e501c26424ade42b3c9e4268611b7de590aa578d157c07",
+            "0030_add_user_avatar_key.sql": "9f2e3b73fcc3da0fa48a1f26ff700ee259c16141c17340fb1c7ddb68640e242b",
+            "0031_add_attachment_deleting_state.sql": "3ba525ccbf58b777a5a6164ee2ed3245ef97e8199f0598aa97910128e77c5e34",
+            "0032_create_direct_message_attachments.sql": "bf723039957944fa053dec673243900e7c466b94c0ce8fc63764021f2684f175",
+            "0033_create_channel_read_cursors.sql": "120ba0b5efb8625fd6adf9a5be5c8de20cd21dc96fb21232d7d8ea4188b622aa",
+            "0034_add_voice_lease_revocation_notification.sql": "c89db94b891f2f62f6f1be39aed1eec2656b5a9b6367dee9cee992035530abbb",
+            "0035_add_message_mentions.sql": "8c5a46d74e0c3fccad3859b3b2c419916300682a9d78af9d656c97b27f52d6e2",
+            "0036_create_realtime_events.sql": "1add251f14e7f91986fb7179ed63d4f3502c62581af6cf13b024e89efc5cf799",
+            "0037_add_hidden_attachment_cleanup_claim.sql": "0975df9fa8dd4891f4e4a124d274c53f505321698c9b24a722e13450a3950bfc",
+            "0038_add_unattached_cleanup_retry_schedule.sql": "055bf3dd644f04414469fb417680d247acf6ecd2d582f50b86fbf55af4628bee",
+            "0039_allow_attachment_only_messages.sql": "601945737b6686db446eee0b0c972aa611d042052e04671d8f391edeb31ac15f",
+            "0040_create_role_permissions.sql": "933fd1f95217b74b16b8dfb2a1e28b8d69bb22f7efea62f665165eae5057929b",
+            "0041_create_topology_command_receipts.sql": "812537b98610da5e869c93da9ae37fd8db2b5f1b8309e409ba364fd23b3411d1",
+            "0042_add_channel_description.sql": "17ec71e97207bb341f72170d412e75cee6b88778cc88ef5129a9dc12148953af",
+            "0043_create_user_daily_activity.sql": "e968aec0b455ed5db4e6c51077b2ddb8bc8f27f3194e822f227d1fc07812981f",
+            "0044_create_guild_settings.sql": "95b1b7e13d4a477fe529a7c4b7db54a2b516f8b189c853fbb5b5d80769668b87",
+            "0045_system_welcome_messages.sql": "8a6ce08501fc16654817b9006d9fb8475a4157fa0f7ad9adcc2b7deb673bc776",
+            "0046_add_public_session_metadata.sql": "f40c1d9f97bec0c52494341c0cc68d2e155f7cb5e9dc1a7e5d419b980e69e762",
+            "0047_add_trace_causality.sql": "33c6714e52106a807822100b68220097195eccca309ee14833b5bc8aaa0e3de5",
+            "0048_add_screen_profile_operation_receipt.sql": "c962707919f1b775a775411b7c4594e8d7677f9ef9385ed01e975d2f827fdabe",
+            "0049_add_member_profile_revision.sql": "b08a0add651bb0f44ce5a7da45c773d32c54e6d650c88b218295ccb4c8a39068",
+            "0050_add_readonly_text_archive.sql": "01ec6ac6874af49936ed1166d20fea0c5db7a6f1738aa725f57f04dce52b1e67",
+            "0051_create_voice_timeouts.sql": "288390b36bda84b3d1318058ee03d42d9bd92ece83b3fd79df2947aed82934df",
+            "0052_add_message_reactions_and_text_pins.sql": "718c09b9c0c4363fd28b9925c836782235d32e9353bd61812e18a8224dbdb1ef"
+          },
+          "topology_sha256": "bea414c2c04c7c7c40fc1aac1e22644a3ba988a1b2ccc2fd3af8094e6cd9f0ed"
+        },
+        "manifest_sha256": "9e3e7678c1b0ae706cb4992b55db17b27f34b6b14cdc9d255139f0c4d2d9f33d"
+      },
+      {
+        "revision": "732bc4ae3b38e0865aa440df2378d803d2816e5e",
+        "components": {
+          "api": {
+            "archive": "api.oci.tar",
+            "attestation_predicates": [
+              "https://slsa.dev/provenance/v0.2",
+              "https://spdx.dev/Document"
+            ],
+            "index_digest": "sha256:c48a3fabc795ca90a99dae78550e9f53c9fa3544a97be60f58b95d62ecea0092",
+            "manifest_digest": "sha256:2de0db5e0dc129db1a90b46573acc139002b0d6a01c86f72366d6a7e4354be9f"
+          },
+          "web": {
+            "archive": "web.oci.tar",
+            "attestation_predicates": [
+              "https://slsa.dev/provenance/v0.2",
+              "https://spdx.dev/Document"
+            ],
+            "index_digest": "sha256:f43f5c5776f5a3c5ccde97d77cd55dc2579761cf1ed803f0ef32938d7ec33820",
+            "manifest_digest": "sha256:953744dd29d6b37e93f88aad4678f2cc609862cbbc31f4f55c6e11170a8a3e72"
+          }
+        },
+        "compatibility": {
+          "backend_tree": "f9fec33cfefd590e87a343fb630306bd73619641",
+          "contracts_sha256": "67609eae793346926cc2f7f8a6e441b03e1736e647b62eb6bf6ba486060d89d1",
+          "migrations": {
+            "0001_create_users.sql": "ccbd1da4ba82e8b133fba5fc90a2c9d39b22934a88be2c20a1246df84b0e31b5",
+            "0002_create_sessions.sql": "dcb932aacb3e62214466bfcb07aaacde52c67d31f1c511383f81c61869ecc0ea",
+            "0003_create_sessions_active_user_index.sql": "3f8238d5b25c745f14f6c80d186f27040b750ac905b1f8a8d8d5a9ca132ee113",
+            "0004_create_password_resets.sql": "61dd93c8884dbe323957a1a86dd03e95c7b53c7003902e63f3e09ce1e208bfcb",
+            "0005_create_bootstrap_state.sql": "6e4567bce3234050aaa968ed636e6d0f5dab02bac5cea238264056eba998d3c8",
+            "0006_create_audit_events.sql": "b88c7c2be4b35af1a7f511e4e19f576e08fdf4894f5bb67c3fa59245c43bb75e",
+            "0007_create_channel_topology_state.sql": "4a6e6509d9697bedefed304d8a9218c3e967afb1d1fb7857da8c998ff3e607f9",
+            "0008_create_categories.sql": "493a36593da66b02a1d6f17322c6f91c8b2d01e6dc0976ebc66d38f88211e0c6",
+            "0009_create_channels.sql": "e2f11bbd4572413f9ca8d5946f12c75f3e2a69244885911bb850b6a3dbc6ee41",
+            "0010_create_voice_leases.sql": "202f5d1df8f5591f8ef42d0096133255f166aca77b84f0865ab82d9974649700",
+            "0011_create_voice_leases_active_user_index.sql": "51fc5b3fdf38e1ce60d9ab495f3e02e1503e35b2f863d3a1c4bb3f0fe29ba3f2",
+            "0012_create_voice_leases_active_channel_index.sql": "0deedbf2ed16fa3cc3fe2a131d3051aa11d7065db7f81bb90ef0eafd34b33c27",
+            "0013_add_voice_lease_session_digest.sql": "274a75f0836c6e6ad25e59a708e138ae33f5369b6a6c27ac1fb1529cdfea8818",
+            "0014_create_voice_leases_active_session_index.sql": "510a11d28a15be62993d76671e461f45e73eecd72ff09ecb8d20286137eae512",
+            "0015_extend_voice_lease_revocation_reasons.sql": "90ff2e62632e8d1130220ffb680c7027f7df6a69f5a9ad1b63e3f0a2fb19ec0b",
+            "0016_create_messages.sql": "21c7d9f957a2dd067a3701b4ce1264b000849e005b211b3bb7800e74a928e10c",
+            "0017_create_direct_messages.sql": "04178d1c27e7343e49fa2b6cc19b77cc7469789de724e1436e34d66928da4570",
+            "0018_create_direct_message_messages.sql": "cf64ca23b5f04f3888636fa01e1b74690f9035d1b64745ba9ac53fef1b2bb497",
+            "0019_create_direct_message_messages_history_index.sql": "b6865d9d929c5326169241b32f69306ff4554d1bbc6a7d51a88f90384d6de2d2",
+            "0020_add_direct_message_reply_to_id.sql": "c56cfcb2a62460b6e6cb96bddc16bf784dada533a2685f243097db52819913a5",
+            "0021_create_direct_message_read_cursors.sql": "e94eacf2ce786bb0e86557357b8a65869a835fbdf326ba8eb8fcb539ba73fbb2",
+            "0022_add_direct_message_search_index.sql": "77a5fe139cb3d293371d8a0e0baea497f98c3a6dd1ab51bcf7d8e674c422cce2",
+            "0023_create_attachments.sql": "d16207ac23bd62abbeaffb099b6c7d0ec86f636ee47cd14242c2ea3eda14dfa0",
+            "0024_create_message_attachments.sql": "d865e8b6ae313559ea3c52c3f8b351083078e97a88ba8b83fe0d796eafd38b55",
+            "0025_repair_incomplete_bootstrap_state.sql": "194548fa7bfc1b7c39a61fd262246dc1d7997343ce8600bd457f9b27a9a7c84b",
+            "0026_add_text_message_search_index.sql": "05136b2dc3671aec3e5155c8bcdf68d3397535918cf990364b3bc026bee5c743",
+            "0027_create_unattached_attachment_cleanup_index.sql": "8677e8cab826484222eaa893bcb0c2ebe004f776131d1fb413ab37ca5899e110",
+            "0028_create_voice_sfu_revocations.sql": "48bc0dcc7547ab5ac4d44b9931a30eb870990d872446c8b386c0cfb55f50dd00",
+            "0029_create_maintenance_admission.sql": "10989a75f1123dfd45e501c26424ade42b3c9e4268611b7de590aa578d157c07",
+            "0030_add_user_avatar_key.sql": "9f2e3b73fcc3da0fa48a1f26ff700ee259c16141c17340fb1c7ddb68640e242b",
+            "0031_add_attachment_deleting_state.sql": "3ba525ccbf58b777a5a6164ee2ed3245ef97e8199f0598aa97910128e77c5e34",
+            "0032_create_direct_message_attachments.sql": "bf723039957944fa053dec673243900e7c466b94c0ce8fc63764021f2684f175",
+            "0033_create_channel_read_cursors.sql": "120ba0b5efb8625fd6adf9a5be5c8de20cd21dc96fb21232d7d8ea4188b622aa",
+            "0034_add_voice_lease_revocation_notification.sql": "c89db94b891f2f62f6f1be39aed1eec2656b5a9b6367dee9cee992035530abbb",
+            "0035_add_message_mentions.sql": "8c5a46d74e0c3fccad3859b3b2c419916300682a9d78af9d656c97b27f52d6e2",
+            "0036_create_realtime_events.sql": "1add251f14e7f91986fb7179ed63d4f3502c62581af6cf13b024e89efc5cf799",
+            "0037_add_hidden_attachment_cleanup_claim.sql": "0975df9fa8dd4891f4e4a124d274c53f505321698c9b24a722e13450a3950bfc",
+            "0038_add_unattached_cleanup_retry_schedule.sql": "055bf3dd644f04414469fb417680d247acf6ecd2d582f50b86fbf55af4628bee",
+            "0039_allow_attachment_only_messages.sql": "601945737b6686db446eee0b0c972aa611d042052e04671d8f391edeb31ac15f",
+            "0040_create_role_permissions.sql": "933fd1f95217b74b16b8dfb2a1e28b8d69bb22f7efea62f665165eae5057929b",
+            "0041_create_topology_command_receipts.sql": "812537b98610da5e869c93da9ae37fd8db2b5f1b8309e409ba364fd23b3411d1",
+            "0042_add_channel_description.sql": "17ec71e97207bb341f72170d412e75cee6b88778cc88ef5129a9dc12148953af",
+            "0043_create_user_daily_activity.sql": "e968aec0b455ed5db4e6c51077b2ddb8bc8f27f3194e822f227d1fc07812981f",
+            "0044_create_guild_settings.sql": "95b1b7e13d4a477fe529a7c4b7db54a2b516f8b189c853fbb5b5d80769668b87",
+            "0045_system_welcome_messages.sql": "8a6ce08501fc16654817b9006d9fb8475a4157fa0f7ad9adcc2b7deb673bc776",
+            "0046_add_public_session_metadata.sql": "f40c1d9f97bec0c52494341c0cc68d2e155f7cb5e9dc1a7e5d419b980e69e762",
+            "0047_add_trace_causality.sql": "33c6714e52106a807822100b68220097195eccca309ee14833b5bc8aaa0e3de5",
+            "0048_add_screen_profile_operation_receipt.sql": "c962707919f1b775a775411b7c4594e8d7677f9ef9385ed01e975d2f827fdabe",
+            "0049_add_member_profile_revision.sql": "b08a0add651bb0f44ce5a7da45c773d32c54e6d650c88b218295ccb4c8a39068",
+            "0050_add_readonly_text_archive.sql": "01ec6ac6874af49936ed1166d20fea0c5db7a6f1738aa725f57f04dce52b1e67",
+            "0051_create_voice_timeouts.sql": "288390b36bda84b3d1318058ee03d42d9bd92ece83b3fd79df2947aed82934df",
+            "0052_add_message_reactions_and_text_pins.sql": "718c09b9c0c4363fd28b9925c836782235d32e9353bd61812e18a8224dbdb1ef"
+          },
+          "topology_sha256": "bea414c2c04c7c7c40fc1aac1e22644a3ba988a1b2ccc2fd3af8094e6cd9f0ed"
+        },
+        "manifest_sha256": "b3dc425411bddbcb9eed4c172ca7e19a19a157d2119999a7b247d78bec7c1445"
+      }
+    ],
+    "captures": [
+      {
+        "file": "baseline-0.png",
+        "sha256": "3a6068d05a69bad52c75ce607d2306fdcecd598a28409262482a1c429ea854d3"
+      },
+      {
+        "file": "baseline-1.png",
+        "sha256": "3b4b69cb79ae54fa2bceba6a6c0bf41223a92450c53444a77f247f762ea6f86b"
+      },
+      {
+        "file": "previous-0.png",
+        "sha256": "3a6068d05a69bad52c75ce607d2306fdcecd598a28409262482a1c429ea854d3"
+      },
+      {
+        "file": "previous-1.png",
+        "sha256": "3b4b69cb79ae54fa2bceba6a6c0bf41223a92450c53444a77f247f762ea6f86b"
+      },
+      {
+        "file": "restore_maintenance-0.png",
+        "sha256": "a883f30ddc55e7e96efa67f75a53ebe8806885030aae01df5df09bba7ce225aa"
+      },
+      {
+        "file": "restore_maintenance-1.png",
+        "sha256": "2c45ebfcd8f30c5673bd4a7909420115d5fa2fa7797807cce0dcbbbc770071ef"
+      },
+      {
+        "file": "restored-0.png",
+        "sha256": "4a21daa268f45383c666448595055118794db46c73709452e8c7986542c338fb"
+      },
+      {
+        "file": "restored-1.png",
+        "sha256": "800524eebc446ae945ca82de21885425039edfc367e4c911a7e5c66c43ae795d"
+      },
+      {
+        "file": "rollback_maintenance-0.png",
+        "sha256": "a883f30ddc55e7e96efa67f75a53ebe8806885030aae01df5df09bba7ce225aa"
+      },
+      {
+        "file": "rollback_maintenance-1.png",
+        "sha256": "2c45ebfcd8f30c5673bd4a7909420115d5fa2fa7797807cce0dcbbbc770071ef"
+      }
+    ],
+    "owned_resources_removed": true
+  },
+  "browser": {
+    "status": "PASS",
+    "observations": [
+      {
+        "phase": "baseline",
+        "browser": 0,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": 204,
+        "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+      },
+      {
+        "phase": "baseline",
+        "browser": 1,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": 204,
+        "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+      },
+      {
+        "phase": "rollback_maintenance",
+        "browser": 0,
+        "authenticated": true,
+        "banner": true,
+        "admission": 503,
+        "login_status": 503,
+        "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+      },
+      {
+        "phase": "rollback_maintenance",
+        "browser": 1,
+        "authenticated": true,
+        "banner": true,
+        "admission": 503,
+        "login_status": 503,
+        "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+      },
+      {
+        "phase": "previous",
+        "browser": 0,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": null,
+        "revision": "732bc4ae3b38e0865aa440df2378d803d2816e5e"
+      },
+      {
+        "phase": "previous",
+        "browser": 1,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": null,
+        "revision": "732bc4ae3b38e0865aa440df2378d803d2816e5e"
+      },
+      {
+        "phase": "restore_maintenance",
+        "browser": 0,
+        "authenticated": true,
+        "banner": true,
+        "admission": 503,
+        "login_status": 503,
+        "revision": "732bc4ae3b38e0865aa440df2378d803d2816e5e"
+      },
+      {
+        "phase": "restore_maintenance",
+        "browser": 1,
+        "authenticated": true,
+        "banner": true,
+        "admission": 503,
+        "login_status": 503,
+        "revision": "732bc4ae3b38e0865aa440df2378d803d2816e5e"
+      },
+      {
+        "phase": "restored",
+        "browser": 0,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": 204,
+        "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+      },
+      {
+        "phase": "restored",
+        "browser": 1,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": 204,
+        "revision": "f8851896dba5b0b4002a3a9c53d327348aa133cc"
+      }
+    ],
+    "source": "actual signed Web images and Go API; no routed/mocked responses",
+    "browser": "153.0.8010.12"
+  },
+  "visual_review": {
+    "status": "PASS_FOR_QA12_BANNER_AND_PERSISTED_CONTENT",
+    "original_resolution": [
+      1200,
+      800
+    ],
+    "captures_reviewed": 10,
+    "observations": [
+      "Both ordinary accounts and the persisted TEXT message/attachment remain visible in baseline, previous and restored captures.",
+      "Both maintenance phases show the readable actual warning banner in both clients.",
+      "The banner disappears on previous/restored stable releases; no login or error overlay covers the observed conversation."
+    ],
+    "separate_ui_finding": {
+      "status": "OBSERVED_OUTSIDE_QA12",
+      "description": "At 1200x800 the maintenance banner shifts the full-height shell down: the lower account footer and file-limit line fall outside the viewport. Stable phases show these normally. This record does not approve overall responsive-layout acceptance.",
+      "captures": [
+        "rollback_maintenance-0.png",
+        "rollback_maintenance-1.png",
+        "restore_maintenance-0.png",
+        "restore_maintenance-1.png"
+      ]
+    }
+  },
+  "focused_tests": {
+    "status": "PASS",
+    "count": 34,
+    "native_go_maintenance_packages": 3
+  },
+  "native_controls": {
+    "initial_ipam_collision": {
+      "dynamic_first_uses_dot2": true,
+      "static_dot2_rejected": true,
+      "address_collision": true
+    },
+    "postgres_unix_before_tcp": {
+      "temporary_unix_probe_passed_before_tcp": true,
+      "final_tcp_probe_passed": true,
+      "network_none": true,
+      "data_tmpfs": true
+    },
+    "shipped_tcp_wait_fix": {
+      "status": "PASS",
+      "temporary_unix_ready_tcp_not_ready": true,
+      "shipping_helper_waited_for_tcp": true,
+      "tcp_select_1": true,
+      "wait_seconds": 8.658,
+      "network_none": true,
+      "data_tmpfs": true
+    },
+    "retained_stun_with_owned_egress": {
+      "status": "PASS",
+      "retained_rtc_config": true,
+      "owned_egress_bridge": true,
+      "actual_authenticated_roomservice": true
+    }
+  },
+  "diagnostic_history": {
+    "accepted_failures": false,
+    "same_head_retry": {
+      "head": "4ed70313e0c58f4ef84beff82a2719665876231c",
+      "run": 39127541163,
+      "attempts": 2,
+      "both_failed": true,
+      "later_code_fix": "Trusted builder now waits for actual PostgreSQL TCP readiness; full accepted build and migration smokes passed."
+    },
+    "fixture_corrections": [
+      "Caller ownership and disabled Python bytecode writes for bounded cleanup",
+      "Supported Compose create flags",
+      "Separate configured proxy .250 address and matching API trust pin",
+      "Owned SFU-only egress before process start, verified actual authenticated RoomService"
+    ],
+    "mac_emulation": "Rosetta Go compiler and emulated daemon failures are not accepted evidence; final run uses native Linux amd64."
+  },
+  "cleanup": {
+    "accepted_owned_controller_resources_removed": true,
+    "accepted_temporary_private_inputs_removed": true,
+    "local_diagnostic": {
+      "local_diagnostic_status": "INTERRUPTED_NOT_ACCEPTED",
+      "owned_controller_resources_removed": true,
+      "qa60_vm_stopped": true,
+      "owned_docker_forward_cancelled": true,
+      "primary_status_sha256": "d1e8e3e43d4468617e3d6c548666c5f96db83cca5aa1a81982d6fe8fcbe044ad",
+      "foreign_containers_preserved": 12
+    }
+  },
+  "privacy": "No credentials, private signing keys, cookies, raw logs, application account/DM/session/lease identifiers or message/attachment contents in public JSON. PNGs contain only owned synthetic UI and remain outside Git.",
+  "final_merge_checks": "Exact final-head CI and master merge are recorded in PR #379 and issue #60 after this evidence commit.",
+  "traceability": {
+    "status": "PASS_INDEX_ONLY",
+    "requirements": 39,
+    "source": "Committed approved-requirements index; approved Windows brief unavailable on this Mac"
+  }
+}
