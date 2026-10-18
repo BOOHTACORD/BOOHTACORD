@@ -41,7 +41,7 @@ class Daemon:
                     '-v', str(self.work) + ':/qa', '-v', str(common / 'objects') + ':' + str(common / 'objects') + ':ro',
                     '-v', str(cache) + ':/qa-cache',
                     '-v', str(self.root / 'tools/qa/compatible_rollback') + ':/qa-tools:ro',
-                    '--add-host', 'qa60.localhost:127.0.0.1', '-e', 'DOCKER_TLS_CERTDIR=',
+                    '--add-host', 'qa60.localhost:127.0.0.1', '-e', 'DOCKER_TLS_CERTDIR=', '-e', 'PYTHONDONTWRITEBYTECODE=1',
                     self.image, *daemon_arguments(self.owner),
                     stdout=subprocess.DEVNULL)
         self.resources.append(('container', self.owner))

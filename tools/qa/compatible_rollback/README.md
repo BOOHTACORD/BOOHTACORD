@@ -9,6 +9,9 @@ before removing the outer container, image and data volume. Foreign services are
 never selected by the shipping project's fixed names on the outer daemon.
 Generated work entries return to the caller UID/GID before browser access and
 cleanup. Ownership changes exclude the source checkouts and never follow links.
+Python bytecode writes are disabled in the container, keeping source checkouts
+free of root-owned caches. Failed receipts contain only allowlisted public guard
+messages, source frame locations, numeric exit codes and fixed failure flags.
 
 Use a Linux amd64 Docker daemon. On an ARM64 Mac, a separate QEMU x86_64 VM
 avoids the observed Go compiler crash under Rosetta and the emulated daemon's
@@ -31,6 +34,7 @@ recorded separately, never by relabeling an image or a gate receipt.
 ```sh
 python3 -m unittest tools.qa.compatible_rollback.test_evidence \
   tools.qa.compatible_rollback.test_isolation tools.qa.compatible_rollback.test_ci_proof \
+  tools.qa.compatible_rollback.test_diagnostics \
   tools.release.rollback.test_rollout
 python3 -m tools.qa.compatible_rollback.run --ci-proof /absolute/path/ci-proof.json
 ```

@@ -95,6 +95,11 @@ def main():
     except BaseException as error:
         report['status'] = 'FAIL'
         report['error_type'] = type(error).__name__
+        from .diagnostics import diagnose, public_guards
+        messages = public_guards(root)
+        report['diagnostics'] = {name: diagnose(path.read_text(errors='replace'), messages)
+                                 for name in ('prepare-private', 'controller-private')
+                                 if (path := destination / (name + '.log')).is_file()}
         raise
     finally:
         save()

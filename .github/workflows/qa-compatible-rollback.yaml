@@ -43,7 +43,7 @@ jobs:
           npm ci
           npx playwright install --with-deps chromium
       - name: Test rollback evidence and isolation guards
-        run: python -m unittest tools.qa.compatible_rollback.test_evidence tools.qa.compatible_rollback.test_isolation tools.qa.compatible_rollback.test_ci_proof tools.release.rollback.test_rollout
+        run: python -m unittest tools.qa.compatible_rollback.test_evidence tools.qa.compatible_rollback.test_isolation tools.qa.compatible_rollback.test_ci_proof tools.qa.compatible_rollback.test_diagnostics tools.release.rollback.test_rollout
       - name: Rehearse actual signed rollback with two browser observers
         run: python -m tools.qa.compatible_rollback.run --ci-proof .out/issue60/ci-proof.json
       - name: Retain only sanitized runtime evidence and synthetic captures
