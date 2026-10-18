@@ -5,8 +5,17 @@ it('distinguishes no first frame, frozen video, absent audio and stale observati
   expect(diagnose({...base,videoReady:false}).state).toBe('no_first_frame')
   expect(diagnose({...base,presentedFps:0}).state).toBe('frozen')
   expect(diagnose({...base,hasAudio:false}).state).toBe('no_audio')
-  expect(diagnose({...base,sampledAt:0}).state).toBe('stale_metrics')
-  expect(diagnose({...base,sampledAt:null}).state).toBe('stale_metrics')
+  expect(diagnose({...base,sampledAt:0,presentedFps:null}).state).toBe('stale_metrics')
+  expect(diagnose({...base,sampledAt:null,presentedFps:null}).state).toBe('stale_metrics')
+})
+it('keeps the playback diagnosis stable when receiver metrics are stale but frames are still presented',()=>{
+  for(const sampledAt of [null,0,3000]) {
+    expect(diagnose({...base,sampledAt,presentedFps:30}).state).toBe('playing')
+  }
+  expect(diagnose({...base,sampledAt:null,presentedFps:30})).toMatchObject({
+    state:'playing',message:'Демонстрация воспроизводится.',action:'none',label:'',
+  })
+  expect(diagnose({...base,sampledAt:null,presentedFps:null}).state).toBe('stale_metrics')
 })
 it('keeps a missing-audio diagnosis stable while receiver samples are absent or stale',()=>{
   for (const sampledAt of [null,0,10000]) {
