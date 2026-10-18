@@ -205,6 +205,27 @@ test('missing source audio stays the diagnosis while video receiver samples fluc
   await page.screenshot({ path: info.outputPath('diagnosis-no-audio-mobile-stale.png') })
 })
 
+test('a silent local preview is expected and does not offer an audio fix', async ({ page }, info) => {
+  await open(page, 'diagnosis-local')
+  const diagnosis = page.locator('.screen-diagnosis')
+  await expect(diagnosis.getByRole('status')).toHaveText('Предпросмотр без звука.')
+  await expect(diagnosis.getByRole('button', { name: 'Как добавить звук' })).toHaveCount(0)
+  await page.screenshot({ path: info.outputPath('diagnosis-local-silent-preview.png') })
+})
+
+test('the add-audio guidance can be collapsed after opening', async ({ page }) => {
+  await open(page, 'diagnosis')
+  const diagnosis = page.locator('.screen-diagnosis')
+  await diagnosis.getByRole('button', { name: 'Как добавить звук' }).click()
+  const instruction = diagnosis.getByText('Попросите ведущего заново выбрать источник и включить передачу звука. Звук должен поддерживаться выбранным источником и браузером.')
+  await expect(instruction).toBeVisible()
+  const toggle = diagnosis.getByRole('button', { name: 'Скрыть инструкцию' })
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true')
+  await toggle.click()
+  await expect(instruction).toBeHidden()
+  await expect(diagnosis.getByRole('button', { name: 'Как добавить звук' })).toHaveAttribute('aria-expanded', 'false')
+})
+
 test('playback diagnosis stays stable through intermittent receiver stats gaps', async ({ page }, info) => {
   await open(page, 'diagnosis-flapping')
   const diagnosis = page.locator('.screen-diagnosis > [role="status"]')

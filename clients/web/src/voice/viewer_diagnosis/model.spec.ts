@@ -14,6 +14,11 @@ it('keeps a missing-audio diagnosis stable while receiver samples are absent or 
   }
   expect(diagnose({...base,hasAudio:false,sampledAt:null,presentedFps:0}).state).toBe('frozen')
 })
+it('treats a silent local preview as expected and offers no audio fix action',()=>{
+  expect(diagnose({...base,local:true,hasAudio:false})).toMatchObject({
+    state:'playing',message:'Предпросмотр без звука.',action:'none',label:'',
+  })
+})
 it('does not claim playback failure in a hidden tab or before the initial grace interval',()=>{
   expect(diagnose({...base,visible:false,presentedFps:0}).state).toBe('background')
   expect(diagnose({...base,videoReady:false,selectedAt:10000}).state).toBe('connecting')
