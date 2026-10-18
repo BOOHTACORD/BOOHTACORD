@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "local_date": "2026-10-19",
+  "timezone": "Europe/Istanbul",
+  "result": "PASS_NONRELEASE_NO_INSTALL",
+  "scope": "Actual master documentation-only route; no production installation, signing or native/media acceptance",
+  "master": "dab6a9b7b3b50a5862b35e9b5156a9bd5a3e90a0",
+  "producer": {
+    "run": {
+      "id": 39169856996,
+      "head_sha": "dab6a9b7b3b50a5862b35e9b5156a9bd5a3e90a0",
+      "status": "completed",
+      "conclusion": "success",
+      "path": ".github/workflows/build-server.yaml",
+      "event": "push",
+      "head_branch": "master",
+      "repository": {
+        "full_name": "Egkurilov/BOOHTACORD"
+      },
+      "head_repository": {
+        "full_name": "Egkurilov/BOOHTACORD"
+      }
+    },
+    "jobs": {
+      "total_count": 5,
+      "jobs": [
+        {
+          "id": 117800462204,
+          "run_id": 39169856996,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117800499007,
+          "run_id": 39169856996,
+          "name": "web",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 117800499128,
+          "run_id": 39169856996,
+          "name": "backend",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 117800499297,
+          "run_id": 39169856996,
+          "name": "contracts",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 117800499341,
+          "run_id": 39169856996,
+          "name": "bundle",
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      ]
+    }
+  },
+  "consumer": {
+    "run": {
+      "id": 39169872289,
+      "head_sha": "dab6a9b7b3b50a5862b35e9b5156a9bd5a3e90a0",
+      "status": "completed",
+      "conclusion": "success",
+      "path": ".github/workflows/deploy-production.yaml",
+      "event": "workflow_run",
+      "head_branch": "master",
+      "repository": {
+        "full_name": "Egkurilov/BOOHTACORD"
+      },
+      "head_repository": {
+        "full_name": "Egkurilov/BOOHTACORD"
+      }
+    },
+    "jobs": {
+      "total_count": 2,
+      "jobs": [
+        {
+          "id": 117800625808,
+          "run_id": 39169872289,
+          "name": "route",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117800658690,
+          "run_id": 39169872289,
+          "name": "install",
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      ]
+    }
+  },
+  "ordinary_ci": {
+    "run": {
+      "id": 39169856979,
+      "head_sha": "dab6a9b7b3b50a5862b35e9b5156a9bd5a3e90a0",
+      "status": "completed",
+      "conclusion": "success",
+      "path": ".github/workflows/ci.yaml",
+      "event": "push",
+      "head_branch": "master",
+      "repository": {
+        "full_name": "Egkurilov/BOOHTACORD"
+      },
+      "head_repository": {
+        "full_name": "Egkurilov/BOOHTACORD"
+      }
+    },
+    "jobs": {
+      "total_count": 7,
+      "jobs": [
+        {
+          "id": 117800462054,
+          "run_id": 39169856979,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117800462233,
+          "run_id": 39169856979,
+          "name": "contracts / contracts",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117800494105,
+          "run_id": 39169856979,
+          "name": "backend",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 117800494331,
+          "run_id": 39169856979,
+          "name": "flutter",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 117800494373,
+          "run_id": 39169856979,
+          "name": "frontend",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 117800494824,
+          "run_id": 39169856979,
+          "name": "windows",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 117800769408,
+          "run_id": 39169856979,
+          "name": "ci-required",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  },
+  "explicit_trigger_binding": {
+    "route_job_id": 117800625808,
+    "observed_BUILD_RUN_ID": 39169856996,
+    "observed_checkout": "dab6a9b7b3b50a5862b35e9b5156a9bd5a3e90a0",
+    "allowlisted_log_lines": [
+      "2026-10-18T21:54:56.6528954Z dab6a9b7b3b50a5862b35e9b5156a9bd5a3e90a0",
+      "2026-10-18T21:54:56.6907473Z   BUILD_RUN_ID: 39169856996",
+      "2026-10-18T21:54:57.3973629Z Verified trusted producer route: no release impact"
+    ]
+  },
+  "local_decoder_replay": {
+    "revision": "dab6a9b7b3b50a5862b35e9b5156a9bd5a3e90a0",
+    "run_id": 39169856996,
+    "has_bundle": false
+  },
+  "producer_artifact_count": 0,
+  "source_sha256": {
+    "tools/release/delivery/routing.py": "62f7d3ef815f5c6ad93f78318fdb19edbd56e24ed39ea12a24a6bec0ee3c0f51",
+    "tools/release/delivery/provenance.py": "875817d3f8b9734a366426d2c8662ffa0846cba3acea2166d0f22501760de6f6",
+    ".github/workflows/build-server.yaml": "e8e41f2751bcca007deb86981c06ec3b9d04f76ba953052954a018c1a357f669",
+    ".github/workflows/deploy-production.yaml": "7f968dafb10125b0043c333b684118db1a1306fa3c56f387477eaa3e3e6b2644"
+  }
+}

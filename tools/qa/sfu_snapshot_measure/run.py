@@ -1,7 +1,6 @@
 """Measure virtual HTTP observers against real disposable Go/PostgreSQL/LiveKit."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
-import hashlib
 import json
 import math
 from pathlib import Path
@@ -12,6 +11,7 @@ from tools.qa.client_lifecycle.services import output
 from tools.qa.client_lifecycle.stack import ready
 from tools.qa.critical_client_acceptance.stack import Stack
 from .client import Client
+from .identity import api_binary_sha256
 
 
 def sample(client, workers):
@@ -69,7 +69,7 @@ def main():
                       'same_authorized_session': True, 'media_capacity_claim': False,
                       'sfu_expired_error_recovery_pass': args.expect_reduction,
                       'source_revision': output('git', '-C', str(root), 'rev-parse', 'HEAD'),
-                      'api_binary_sha256': hashlib.sha256(stack.binary.read_bytes()).hexdigest()}
+                      'api_binary_sha256': api_binary_sha256(stack)}
         finally:
             stack.close()
     report['owned_resources_removed'] = True

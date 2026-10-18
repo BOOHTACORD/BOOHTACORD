@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { expect, select, owned, sql, freshUploadWindow } from './fixture.mjs'
+import { fixtureFile } from './input_files.mjs'
 async function reserved() {
   const response = await fetch('http://127.0.0.1:4820/metrics')
   const value = (await response.text()).match(/^voice_platform_attachment_upload_reserved_bytes (\S+)$/m)
@@ -9,7 +10,6 @@ async function reserved() {
   const bytes = Number(value[1]); assert.ok(Number.isSafeInteger(bytes) && bytes >= 0, 'Invalid reservation metric')
   return bytes
 }
-function file(name, size) { return { name, mimeType: 'application/octet-stream', buffer: Buffer.alloc(size) } }
 async function selectFiles(page, selector, files, stage) {
   const input = page.locator(selector)
   await expect(input).toBeEnabled()
@@ -18,6 +18,7 @@ async function selectFiles(page, selector, files, stage) {
   console.log(`stage=upload-files-selected-${stage}`)
 }
 export async function uploads(page, input, report, fixture) {
+  const file = (name,size) => fixtureFile(input.files_directory,name,size)
   await select(page, 'NextA')
   const picker = page.locator('.attachment-picker'), queue = picker.locator('[data-upload-status]')
   let count = 0
@@ -63,7 +64,7 @@ export async function uploads(page, input, report, fixture) {
     await session.send('Network.emulateNetworkConditions', { offline: false, latency: 0, downloadThroughput: -1, uploadThroughput: -1 })
     await session.detach()
     await freshUploadWindow(page)
-    mkdirSync(input.files_directory)
+    mkdirSync(input.files_directory,{recursive:true})
     const paths = Array.from({length:10},(_,i)=>join(input.files_directory,`batch-${i}.bin`))
     for (const path of paths) writeFileSync(path,Buffer.alloc(1_000_000),{flag:'wx'})
     await selectFiles(page, '#message-attachments', paths, 'ten-file-batch')

@@ -6,7 +6,7 @@ locks declared publisher scopes/runner/ref/environment boundaries and preserves
 existing release-signing queues. The inert legacy policy view is emitted only
 under ignored .out after pin validation; runnable workflows retain full commits.
 
-Local results: 589 project-owned Python tests PASS (39.951 seconds); the 22 focused
+Local results: 592 project-owned Python tests PASS (39.345 seconds); the 22 focused
 pin/trust/linter/release-boundary tests PASS; workflow policy and exact-source
 Go 1.26.4 actionlint PASS. Requirement traceability: 39 IDs, PASS_INDEX_ONLY because
 the approved product brief is unavailable on this host. ShellCheck and pyflakes
@@ -51,3 +51,9 @@ access), while the ruleset collection was empty. An empty ruleset list does not
 prove classic branch protection, production approvals or runner/tag isolation.
 No settings, credentials or trust anchor were changed. Required-status setup is
 owner-managed. None of these missing gates can close #386 or parent #382.
+
+Hosted acceptance exposed two pre-existing fixture failures after the pinned
+workflows were activated. Their observed failures, focused corrections, native
+file-path transport control and remaining actual CI acceptance are recorded in
+[the fixture follow-up](hardening-acceptance-fixtures-2026-10-19.md). No failing
+acceptance was removed, relaxed or promoted to PASS.

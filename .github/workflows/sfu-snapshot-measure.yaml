@@ -24,6 +24,8 @@ jobs:
         with:
           go-version-file: backend/go.mod
           cache-dependency-path: backend/go.sum
+      - name: Test owned executable identity guards
+        run: python3 -m unittest tools.qa.sfu_snapshot_measure.test_identity
       - name: Measure real private RoomService fan-out
         run: python3 -m tools.qa.sfu_snapshot_measure.run --expect-reduction
       - name: Retain bounded source-bound measurement
