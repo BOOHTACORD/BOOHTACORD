@@ -1,6 +1,9 @@
 """Policy checks for the producer/consumer graph, independent of display-step names."""
 from pathlib import Path
 import yaml
+from tools.verify.action_pins.policy import normalized
+from tools.verify.action_pins.trust import GUARDS
+from tools.release.delivery.routing import GATES as PRODUCER_GATE_NAMES
 from .selection import require
 from . import release_routing
 
@@ -18,11 +21,24 @@ def check(workflows):
              and job.get('with', {}).get('release_receipt') == 'true'}
     builders = [job for job in build['jobs'].values() if 'tools/release/delivery/build.sh' in commands(job)]
     require(len(gates) == 3 and len(builders) == 1, 'One builder and all receipt-producing gates are required')
+    qualified = []
+    for caller in gates:
+        job = build['jobs'][caller]
+        callee = workflows[job['uses'].rsplit('/', 1)[-1]]
+        receipts = [(name, child) for name, child in callee['jobs'].items()
+                    if 'tools.ci.receipts.run' in commands(child)]
+        require(len(receipts) == 1, 'Each producer gate needs one receipt-emitting child')
+        child, definition = receipts[0]
+        qualified.append(job.get('name', caller) + ' / ' + definition.get('name', child))
+    require(len(set(qualified)) == 3 and set(qualified) == set(PRODUCER_GATE_NAMES),
+            'Producer job identities must match the runtime route decoder')
+    for name in ('changes', 'bundle'):
+        require(build['jobs'][name].get('name', name) == name, 'Producer root job identity drift')
     builder = builders[0]
     require(set(builder.get('runs-on', [])) == {'self-hosted', 'linux', 'x64', 'boohtacord-builder'},
             'Signed builds require the dedicated Docker-capable builder runner')
     require(set(builder.get('needs', [])) == gates | {'changes'}, 'Builder must depend on all source-bound receipts')
-    require(builder.get('if') == "github.ref == 'refs/heads/master' && needs.changes.outputs.server_release_impact == 'true'" and builder.get('environment') == 'production',
+    require(builder.get('if') == GUARDS[('build-server.yaml', 'bundle')] and builder.get('environment') == 'production',
             'Only protected master builds can use the production signer')
     require(build['concurrency']['cancel-in-progress'] == 'true', 'Obsolete builds must be cancellable')
     uploads = [step['with'] for step in builder['steps'] if step.get('uses') == 'actions/upload-artifact@v4']
@@ -52,7 +68,7 @@ def check(workflows):
 
 def main():
     root = Path(__file__).resolve().parents[3]
-    workflows = {path.name: yaml.load(path.read_text(encoding='utf-8'), Loader=yaml.BaseLoader)
+    workflows = {path.name: yaml.load(normalized(path.read_text(encoding='utf-8')), Loader=yaml.BaseLoader)
                  for path in (root / '.github/workflows').glob('*.yaml')}
     check(workflows)
     print('Signed builder, retained artifact and sole production-writer policy: OK')

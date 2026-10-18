@@ -20,14 +20,17 @@ permissions:
 
 jobs:
   macos-beta-package:
-    if: github.ref_name == 'codex/issue337-desktop-updates'
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
+    environment: production
     runs-on: macos-26
     timeout-minutes: 35
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
           channel: stable
           flutter-version: 3.47.7
@@ -45,7 +48,7 @@ jobs:
       - name: Build the beta-only app with the shipping updater
         run: python3 -m tools.qa.desktop_updates.build_macos
       - name: Publish a fresh immutable QA prerelease (never latest)
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             const fs = require('fs');

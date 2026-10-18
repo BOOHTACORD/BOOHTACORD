@@ -7,9 +7,9 @@ import re
 import subprocess
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
+from .source_gates import gate_names
 
 REPOSITORY = 'Egkurilov/BOOHTACORD'
-GATES = {'backend': 'backend / backend', 'web': 'frontend / frontend', 'contracts': 'contracts / contracts'}
 
 
 def require(value):
@@ -22,14 +22,18 @@ def validate_run(run, jobs, head, run_id):
             and run['repository']['full_name'] == REPOSITORY
             and run['status'] == 'completed' and run['conclusion'] == 'success')
     require(jobs['total_count'] == len(jobs['jobs']) and jobs['total_count'] <= 100)
+    require(all(type(j.get('id')) is int and j['id'] > 0 and j.get('run_id') == run_id
+                and j.get('status') == 'completed' for j in jobs['jobs']))
+    require(len({j['id'] for j in jobs['jobs']}) == len(jobs['jobs']))
     selected = {}
-    for gate, name in GATES.items():
+    for gate, name in gate_names(run, jobs['jobs'], REPOSITORY).items():
         matches = [job for job in jobs['jobs'] if job['name'] == name]
         require(len(matches) == 1)
         job = matches[0]
         require(job['run_id'] == run_id and job['status'] == 'completed' and job['conclusion'] == 'success')
         selected[gate] = {'id': job['id'], 'conclusion': 'success'}
-    return {'head': head, 'run': run_id, 'status': 'success', 'checks': selected}
+    return {'head': head, 'run': run_id, 'status': 'success',
+            'producer_workflow': run['path'], 'checks': selected}
 
 
 def read(path):
@@ -46,6 +50,19 @@ def read(path):
 
 def git(*args):
     return subprocess.check_output(['git', *args], text=True).strip()
+
+
+
+def same_runtime_inputs(retained, reviewed):
+    paths = ['backend', 'clients/web', 'contracts', 'deploy', 'tools/release',
+             'tools/audio', 'tools/toolchains.json', '.node-version', 'Taskfile.yml',
+             'clients/flutter/packages/flutter_webrtc/common/rnnoise/upstream']
+    # This named unit-test adaptor only parses workflow policy; it is never a
+    # API/Web image or installer entrypoint. Its policy tests still run in the
+    # reviewed CI; keep every other test and production source bound.
+    paths.append(':(exclude)tools/release/delivery/test_workflows.py')
+    return subprocess.run(['git', 'diff', '--quiet', retained, reviewed, '--', *paths],
+                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0
 
 
 def main():
@@ -68,10 +85,7 @@ def main():
         result[role] = proof
     # The images may be a retained CI head with the same master tree. They must
     # still contain the actual product/release code under review, without aliases.
-    paths = ['backend', 'clients/web', 'contracts', 'deploy', 'tools/release',
-             'tools/audio', 'tools/toolchains.json', '.node-version', 'Taskfile.yml',
-             'clients/flutter/packages/flutter_webrtc/common/rnnoise/upstream']
-    require(subprocess.run(['git', 'diff', '--quiet', result['current']['head'], 'HEAD', '--', *paths]).returncode == 0)
+    require(same_runtime_inputs(result['current']['head'], 'HEAD'))
     # Trusted build tooling is reviewed/tested at the current QA revision. The
     # explicit --source input still archives and labels each clean retained head.
     require(subprocess.run(['git', 'diff', '--quiet', result['current']['head'], result['previous']['head'],

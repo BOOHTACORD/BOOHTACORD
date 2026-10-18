@@ -21,18 +21,19 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
+          persist-credentials: false
           fetch-depth: 0
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.12'
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .node-version
       - name: Fetch the exact retained source objects
         run: |
-          git fetch --no-tags origin f8851896dba5b0b4002a3a9c53d327348aa133cc 732bc4ae3b38e0865aa440df2378d803d2816e5e
+          git fetch --no-tags origin f65f22835d2c32134a2f1eaa2f9855fafa112509 bfea46b61c3bc641098caf7c35be8c4be798af59
       - name: Verify actual source-bound CI results
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -43,12 +44,12 @@ jobs:
           npm ci
           npx playwright install --with-deps chromium
       - name: Test rollback evidence and isolation guards
-        run: python -m unittest tools.qa.compatible_rollback.test_evidence tools.qa.compatible_rollback.test_isolation tools.qa.compatible_rollback.test_ci_proof tools.qa.compatible_rollback.test_diagnostics tools.qa.compatible_rollback.test_builder_identity tools.release.rollback.test_rollout tools.build.server.test_smoke_readiness tools.build.server.test_runtime_inputs tools.build.server.test_social_preview tools.build.server.test_image_audio_flag
+        run: python -m unittest tools.qa.compatible_rollback.test_evidence tools.qa.compatible_rollback.test_isolation tools.qa.compatible_rollback.test_ci_proof tools.qa.compatible_rollback.test_source_inputs tools.qa.compatible_rollback.test_diagnostics tools.qa.compatible_rollback.test_builder_identity tools.release.rollback.test_rollout tools.build.server.test_smoke_readiness tools.build.server.test_runtime_inputs tools.build.server.test_social_preview tools.build.server.test_image_audio_flag
       - name: Rehearse actual signed rollback with two browser observers
         run: python -m tools.qa.compatible_rollback.run --ci-proof .out/issue60/ci-proof.json
       - name: Retain only sanitized runtime evidence and synthetic captures
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: qa60-${{ github.sha }}
           path: |

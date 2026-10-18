@@ -2,6 +2,9 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 $root = (Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
+$policyView = Join-Path $root '.out/action-policy'
+python -m tools.verify.action_pins.run --policy-view $policyView
+if ($LASTEXITCODE -ne 0) { throw 'Unreviewed or mutable Actions reference.' }
 $names = @(
     'android-release.yaml', 'audit-attachment-volume.yaml', 'deploy-production.yaml',
     'flutter-macos.yaml', 'flutter-windows.yaml', 'macos-release.yaml',
@@ -32,7 +35,7 @@ if ($generated.Count -gt 0) {
     throw "Generated build outputs are tracked by Git: $($generated -join ', ')"
 }
 
-$windows = Get-Content -LiteralPath (Join-Path $root '.github/workflows/flutter-windows.yaml') -Raw
+$windows = Get-Content -LiteralPath (Join-Path $policyView 'flutter-windows.yaml') -Raw
 if ($windows -notmatch 'uses:\s*actions/upload-artifact@v4' -or
     $windows -notmatch 'path:\s*clients/flutter/build/windows/x64/runner/Release/' -or
     $windows -notmatch 'if-no-files-found:\s*error' -or
@@ -46,15 +49,15 @@ foreach ($required in @('workflow_call:', 'runs-on: windows-2022',
         throw "Windows CI must run on a hosted runner before merge: $required"
     }
 }
-$macos = Get-Content -LiteralPath (Join-Path $root '.github/workflows/flutter-macos.yaml') -Raw
+$macos = Get-Content -LiteralPath (Join-Path $policyView 'flutter-macos.yaml') -Raw
 if ($macos -notmatch 'bash tools/build/macos/package.sh' -or
     $macos -notmatch 'uses:\s*actions/upload-artifact@v4' -or
     $macos -notmatch 'if-no-files-found:\s*error' -or
     $macos -notmatch 'retention-days:\s*30') {
     throw 'macOS CI must package and retain its ZIP and checksum as a workflow artifact.'
 }
-$ci = Get-Content -LiteralPath (Join-Path $root '.github/workflows/ci.yaml') -Raw
-$flutterCiPath = Join-Path $root '.github/workflows/ci-flutter.yaml'
+$ci = Get-Content -LiteralPath (Join-Path $policyView 'ci.yaml') -Raw
+$flutterCiPath = Join-Path $policyView 'ci-flutter.yaml'
 python -m tools.verify.workflows.selection
 if ($LASTEXITCODE -ne 0) { throw 'CI component dependency validation failed.' }
 $flutterCi = Get-Content -LiteralPath $flutterCiPath -Raw

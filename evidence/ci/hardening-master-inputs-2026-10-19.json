@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "local_date": "2026-10-19",
+  "timezone": "Europe/Istanbul",
+  "scope": "Observed completed master quality producer inputs; not a hosted rollback result, native publishing or production/environment acceptance",
+  "current": {
+    "head": "f65f22835d2c32134a2f1eaa2f9855fafa112509",
+    "run": 39168026909,
+    "status": "success",
+    "producer_workflow": ".github/workflows/build-server.yaml",
+    "checks": {
+      "backend": {
+        "id": 117795135987,
+        "conclusion": "success"
+      },
+      "web": {
+        "id": 117795135927,
+        "conclusion": "success"
+      },
+      "contracts": {
+        "id": 117795135911,
+        "conclusion": "success"
+      }
+    },
+    "tree": "2e0a7d2a3117182d073a05a430194811f51a72c9",
+    "equivalent_master": "f65f22835d2c32134a2f1eaa2f9855fafa112509",
+    "bundle_job": {
+      "id": 117799762747,
+      "conclusion": "success"
+    }
+  },
+  "previous": {
+    "head": "bfea46b61c3bc641098caf7c35be8c4be798af59",
+    "run": 39155159380,
+    "status": "success",
+    "producer_workflow": ".github/workflows/build-server.yaml",
+    "checks": {
+      "backend": {
+        "id": 117756764295,
+        "conclusion": "success"
+      },
+      "web": {
+        "id": 117756764526,
+        "conclusion": "success"
+      },
+      "contracts": {
+        "id": 117756764536,
+        "conclusion": "success"
+      }
+    },
+    "tree": "b6d24d467f426385d3e01dcb87b98bf7849073ae",
+    "equivalent_master": "bfea46b61c3bc641098caf7c35be8c4be798af59",
+    "bundle_job": {
+      "id": 117760296297,
+      "conclusion": "success"
+    }
+  },
+  "reviewed_runtime_matches_current": true,
+  "compatible_backend_contracts_deploy": true,
+  "hosted_rollback_acceptance": "NOT_RUN_AT_CHECKPOINT",
+  "native_publishing_and_external_settings": "NOT_ATTESTED",
+  "observer_source_sha256": {
+    "tools/qa/compatible_rollback/ci_proof.py": "c5274e816d9077937b9dbf75a7b1639a097ba7d7a5d5b7e7fa33ebeb49b9a7ff",
+    "tools/qa/compatible_rollback/source_gates.py": "0640ee386106ff12dcdc3c01b5d4d51f6a576f7744d6320bbadc1c84f4f82d61",
+    "tools/qa/compatible_rollback/test_source_inputs.py": "b7072b24ac9c10baa1cc8e2a89175d48e206b61917c521232a12a97e7bd1367b"
+  }
+}

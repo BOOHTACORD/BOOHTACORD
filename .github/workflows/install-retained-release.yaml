@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   install:
-    if: github.ref == 'refs/heads/master'
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
     environment: production
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -30,18 +30,21 @@ jobs:
       DEPLOY_SERVER_IP: 176.108.242.211
       SSH_USER: shaneque
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - id: producer
         env:
           BUILD_RUN_ID: ${{ inputs.build_run_id }}
           REQUESTED_REVISION: ${{ inputs.revision }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 -m tools.release.delivery.provenance
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
+          persist-credentials: false
           ref: ${{ steps.producer.outputs.revision }}
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: server-${{ steps.producer.outputs.revision }}
           path: .out/incoming

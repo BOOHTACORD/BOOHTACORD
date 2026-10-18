@@ -17,7 +17,7 @@ jobs:
       map_sha256: ${{ steps.select.outputs.map_sha256 }}
       uncertain: ${{ steps.select.outputs.uncertain }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - id: select
         run: |
           python3 - <<'PY'
@@ -66,7 +66,7 @@ jobs:
     needs: [changes, contracts, backend, frontend, flutter, windows]
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - env:
           CI_NEEDS: ${{ toJSON(needs) }}
           CI_JOBS: '{"changes":"changes","contracts":"contracts","backend":"backend","web":"frontend","flutter":"flutter","windows":"windows"}'

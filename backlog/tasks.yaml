@@ -493,6 +493,11 @@ tasks:
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
     depends_on: [CICD-02]
     evidence: [tools/ci/required_gate/test_validation.py, tools/ci/required_gate/test_run.py, docs/ci/required-gate.md]
+  - id: CICD-12
+    title: Reviewed Actions commits, least privilege and explicit trusted runner/signing boundaries
+    requirements: [REQ-DEPLOY-01, REQ-SECURITY-01, REQ-QUALITY-02]
+    depends_on: [CICD-01]
+    evidence: [tools/verify/action_pins/test_policy.py, tools/verify/action_pins/test_trust.py, docs/ci/trust-boundaries.md]
   - id: T-060
     title: Release quality gates
     requirements: [REQ-QUALITY-01, REQ-QUALITY-02, REQ-CAPACITY-01, REQ-DEPLOY-01]

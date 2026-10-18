@@ -50,6 +50,7 @@ def retain_failure(driver, destination):
         if not raw.startswith(b'\x89PNG\r\n\x1a\n'):
             raise ValueError('Synthetic failure capture is not PNG')
         (destination / 'failure.png').write_bytes(raw)
+    return result
 
 
 def main():
@@ -89,8 +90,8 @@ def main():
             deadline = time.monotonic() + 180
             while time.monotonic() < deadline:
                 if (driver / 'failure.json').exists():
-                    retain_failure(driver, destination)
-                    raise RuntimeError('Actual Windows GUI failed: ' + (driver / 'failure.json').read_text())
+                    failure = retain_failure(driver, destination)
+                    raise RuntimeError('Actual Windows GUI failed: ' + json.dumps(failure))
                 if (driver / 'result.json').exists():
                     value = json.loads((driver / 'result.json').read_text())
                     validate_result(value)
