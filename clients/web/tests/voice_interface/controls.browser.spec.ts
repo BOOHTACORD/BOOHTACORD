@@ -4,7 +4,9 @@ import axe from 'axe-core'
 const patch = (page: Page, value: Record<string, unknown>) => page.evaluate(value => (window as any).__voiceFixture.patch(value), value)
 async function open(page: Page, width = 1440, scale = 100) {
   await page.setViewportSize({ width, height: 900 })
-  await page.route('**/api/**', route => route.fulfill({ status: 200, contentType: 'application/json', body: '{}' }))
+  await page.route('**/api/**', route => route.request().url().includes('/avatar')
+    ? route.fulfill({ status: 200, contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>' })
+    : route.fulfill({ status: 200, contentType: 'application/json', body: '{}' }))
   await page.goto(`/tests/voice_interface/fixture.html?scale=${scale}`)
   await expect(page.locator('.voice-room-controls').first()).toBeVisible()
 }
@@ -43,6 +45,19 @@ test('empty voice roster centers its message and the dock hides voluntary-leave 
   await expect(page.getByTestId('voice-dock').getByText('Администратор отключил вас от голосового канала.', { exact: true })).toHaveCount(1)
 })
 
+test('connected voice room shows profile avatars on remote and self participant cards', async ({ page }, info) => {
+  await open(page)
+  const cards = page.getByTestId('voice-participants').getByTestId('participant-card')
+  await expect(cards).toHaveCount(2)
+  const avatars = cards.locator('.avatar img')
+  await expect(avatars).toHaveCount(2)
+  await expect(avatars.nth(0)).toHaveAttribute('src', '/api/v1/members/peer/avatar?revision=3')
+  await expect(avatars.nth(1)).toHaveAttribute('src', '/api/v1/members/self/avatar?revision=2')
+  await expect.poll(() => avatars.nth(0).evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
+  await expect.poll(() => avatars.nth(1).evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
+  await page.screenshot({ path: info.outputPath('connected-participant-avatars.png') })
+})
+
 test('room and dock share icons, named states and keyboard actions without opening details', async ({ page }) => {
   await open(page)
   for (const scope of [page.locator('.room-wrap'), page.getByTestId('voice-dock')]) {
@@ -63,7 +78,7 @@ test('room and dock share icons, named states and keyboard actions without openi
     await expect(scope.locator('[data-state=stopping]')).toBeDisabled()
     await patch(page, { screen: 'IDLE' })
   }
-  await expect(page.locator('.voice-advanced')).not.toHaveAttribute('open')
+  await expect(page.locator('.voice-advanced')).toHaveCount(0)
   await expect(page.getByText('Микрофон и звук трансляции управляются отдельно.', { exact: true })).not.toBeVisible()
 })
 

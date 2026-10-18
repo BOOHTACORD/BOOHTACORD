@@ -16,10 +16,16 @@
   "voice": {
     "paths": [
       "clients/web/src/voice/*",
+      "clients/web/src/conversation/ConversationPane.vue",
+      "clients/web/src/design/design_v2_voice_room.css",
       "clients/web/src/design/voice_roster.css",
+      "tools/qa/local_features/features.json",
       "clients/flutter/lib/src/features/voice/*",
       "clients/flutter/lib/src/widgets/voice*",
-      "clients/flutter/lib/src/services/voice*"
+      "clients/flutter/lib/src/services/voice*",
+      "clients/web/tests/voice_interface/fixture.ts",
+      "clients/web/tests/voice_interface/controls.browser.spec.ts",
+      "clients/web/tests/voice_interface/zoom.browser.spec.ts"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",

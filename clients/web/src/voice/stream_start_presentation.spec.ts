@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createSSRApp } from 'vue'
 import { renderToString } from 'vue/server-renderer'
+import { createPinia } from 'pinia'
 
 import VoiceDock from './VoiceDock.vue'
 import VoiceParticipantVolumes from './VoiceParticipantVolumes.vue'
@@ -15,7 +16,7 @@ describe('new screen presentation', () => {
       screenStreams: [{ id: 'alice:screen', participantId: 'alice', participantName: 'Алиса', hasAudio: true }],
       selectedScreenStreamId: null, selfName: 'Оля', selfDeafened: false, selfMicrophoneMuted: false,
       selfMicrophoneUnavailable: false, selfSpeaking: false,
-    }))
+    }).use(createPinia()))
     const dock = await renderToString(createSSRApp(VoiceDock, {
       channel: null, activeSession: true, error: null, activationMode: 'VAD', deafened: false,
       deafenChanging: false, microphoneMuted: false, microphonePermissionDenied: false, state: 'CONNECTED',

@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import ConversationPane from '../../src/conversation/ConversationPane.vue'
 import VoiceDock from '../../src/voice/VoiceDock.vue'
 import WorkspaceMembersPanel from '../../src/workspace/WorkspaceMembersPanel.vue'
+import { useAuthorDirectory } from '../../src/identity/author_directory'
 import type { VoiceDisconnectNotice } from '../../src/voice/disconnect_notice/model'
 import type { VoiceConnectionState, ScreenShareState } from '../../src/voice/connection_store'
 import type { VoiceActivationMode } from '../../src/voice/activation_store'
@@ -20,6 +21,10 @@ function leave() { events.push('leave'); state.state = 'LEAVING' }
 function startScreen() { events.push('startScreen'); state.screen = 'STARTING' }
 function stopScreen() { events.push('stopScreen'); state.screen = 'STOPPING' }
 const cards: ScreenViewerCard[] = [{ id: 'screen-peer', participantId: 'peer', participantName: 'Тестовый участник', isLocal: false, hasAudio: false }]
+const pinia = createPinia()
+const authors = useAuthorDirectory(pinia)
+authors.acceptOwnProfile({ account_id: 'self', login: 'self', display_name: 'Тестовый клиент', role: 'MEMBER', avatar_url: '/avatar', profile_revision: 2 })
+authors.acceptOwnProfile({ account_id: 'peer', login: 'peer', display_name: 'Тестовый участник', role: 'MEMBER', avatar_url: '/avatar', profile_revision: 3 })
 Object.assign(window, { __voiceFixture: { patch: (patch: Partial<typeof state>) => Object.assign(state, patch), events } })
 createApp({ render: () => h('div', { class: 'app-shell', style: 'display:grid;grid-template-columns:280px minmax(0,1fr);height:100dvh' }, [
   h('aside', { class: params.has('closed') ? 'sidebar' : 'sidebar is-open', style: 'position:relative;width:280px;transform:none;min-width:0;z-index:1' }, [
@@ -38,7 +43,7 @@ createApp({ render: () => h('div', { class: 'app-shell', style: 'display:grid;gr
     voiceRoster: { channelId: channel.id, revision: 1, participants: [] }, toggleMicrophone, toggleDeafen,
     onJoin: (_id: string, _transfer?: boolean, mode?: string) => { events.push(mode === 'listener' ? 'listener' : 'join'); state.state = 'JOINING' }, onLeave: leave, onStartScreen: startScreen, onStopScreen: stopScreen,
   })]),
-]) }).use(createPinia()).mount('#app')
+]) }).use(pinia).mount('#app')
 
 // A narrow viewport has no persistent desktop sidebar; the production dock remains below the room.
 if (innerWidth < 1024) {
