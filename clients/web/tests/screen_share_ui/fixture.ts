@@ -49,7 +49,7 @@ const IntermittentDiagnosis = defineComponent({
     })
   },
 })
-const viewerStrip = () => h('section', { class: 'voice-room', style: 'height:760px' }, [
+const viewerStrip = () => h('section', { class: 'voice-room', style: `height:${params.get('height') ?? '760'}px` }, [
   h(ScreenViewer, {
     audioMuted: false,
     cards: viewerScreens,

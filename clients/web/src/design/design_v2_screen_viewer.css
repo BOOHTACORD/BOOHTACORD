@@ -79,3 +79,17 @@
   .voice-room .voice-viewer-participant-strip { gap: 8px; padding: 8px 12px 10px; }
   .voice-viewer-participant-summary { width: 130px; flex-basis: 130px; }
 }
+@media (max-height: 640px) {
+  .voice-room:not(.voice-room--mini) .screen-viewer.stream-wrap { overflow-y: auto; grid-template-rows: minmax(160px, 1fr) auto auto auto 92px; }
+  .voice-room:not(.voice-room--mini) .screen-stage { min-height: 160px; }
+}
+@media (max-width: 1023px) and (max-height: 640px) {
+  .sidebar:not(.is-open) .mobile-voice-dock.mobile-visible { grid-template-columns: minmax(0, 1fr) auto; gap: 4px; padding: 4px 8px; }
+  .sidebar:not(.is-open) .mobile-voice-dock .voice-dock-header { grid-column: 1; grid-row: 1; min-width: 0; }
+  .sidebar:not(.is-open) .mobile-voice-dock .voice-actions { grid-column: 2; grid-row: 1; width: auto; gap: 4px; }
+  .sidebar:not(.is-open) .mobile-voice-dock .voice-actions .voice-icon-button { width: 40px; min-width: 40px; height: 40px; min-height: 40px; flex: 0 0 40px; }
+  .sidebar.is-open .mobile-voice-dock.mobile-visible { height: auto; min-height: 0; flex-direction: row; align-items: center; gap: 4px; padding: 4px 8px; }
+  .sidebar.is-open .mobile-voice-dock .voice-dock-header { min-width: 0; min-height: 0; flex: 1 1 auto; }
+  .sidebar.is-open .mobile-voice-dock .voice-actions { width: auto; flex: 0 0 auto; gap: 4px; margin: 0; }
+  .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button { width: 40px; min-width: 40px; height: 40px; min-height: 40px; flex: 0 0 40px; margin: 0; }
+}

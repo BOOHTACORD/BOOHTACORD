@@ -51,6 +51,23 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     await expect.poll(() => sender.locator('video.screen-player').evaluate(video => video.videoWidth > 0 && video.getVideoPlaybackQuality().totalVideoFrames > 0), { timeout: 30000 }).toBe(true)
     console.log('stage=sender-screen-preview:decoded-frames')
     await sender.screenshot({ path: input.directory + '/screen-share-owner-preview.png' })
+    const ownerViewport = sender.viewportSize()
+    assert.ok(ownerViewport)
+    const framesBeforeShortViewport = await sender.locator('video.screen-player').evaluate(video => video.getVideoPlaybackQuality().totalVideoFrames)
+    await sender.setViewportSize({ width: ownerViewport.width, height: 208 })
+    const shortStage = await sender.locator('.screen-stage').evaluate(stage => {
+      const rect = stage.getBoundingClientRect(), dock = document.querySelector('.mobile-voice-dock')
+      const dockStyle = dock ? getComputedStyle(dock) : null
+      const dockRect = dock && dockStyle?.display !== 'none' ? dock.getBoundingClientRect() : null
+      const dockCoversStage = Boolean(dockRect && rect.right > dockRect.left && rect.left < dockRect.right)
+      const visibleTop = Math.max(0, rect.top), visibleBottom = Math.min(innerHeight, rect.bottom, dockCoversStage ? dockRect.top : innerHeight)
+      return { height: rect.height, visibleHeight: Math.max(0, visibleBottom - visibleTop), dockHeight: dockRect?.height ?? 0, dockPosition: dockStyle?.position ?? 'missing', dockGridColumns: dockStyle?.gridTemplateColumns ?? 'missing', dockCoversStage }
+    })
+    console.log('stage=screen-share-short-height:' + JSON.stringify(shortStage))
+    assert.ok(shortStage.height >= 160 && shortStage.visibleHeight >= 80, JSON.stringify(shortStage))
+    await expect.poll(() => sender.locator('video.screen-player').evaluate(video => video.getVideoPlaybackQuality().totalVideoFrames), { timeout: 5000 }).toBeGreaterThan(framesBeforeShortViewport)
+    await sender.screenshot({ path: input.directory + '/screen-share-owner-preview-short-height.png' })
+    await sender.setViewportSize(ownerViewport)
     await receiver.locator('[data-testid=stream-select]:visible').first().click({ timeout: 30000 })
     await expect.poll(() => receiver.locator('video.screen-player').evaluate(video => video.videoWidth > 0 && video.getVideoPlaybackQuality().totalVideoFrames > 0), { timeout: 30000 }).toBe(true)
     await receiver.locator('summary[aria-label="Статистика"]').click()

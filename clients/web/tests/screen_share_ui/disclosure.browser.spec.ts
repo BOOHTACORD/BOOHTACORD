@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test'
 import axe from 'axe-core'
-async function open(page: Page, query = '', width = 1440, scale = 100) {
-  await page.setViewportSize({ width, height: 900 })
+async function open(page: Page, query = '', width = 1440, scale = 100, height = 900) {
+  await page.setViewportSize({ width, height })
   await page.goto(`/tests/screen_share_ui/fixture.html?scale=${scale}&${query}`)
 }
 async function clean(page: Page) {
@@ -226,6 +226,30 @@ test('the owner can stop their own broadcast while the screen preview is open', 
   await open(page, 'viewer-strip', 1440)
   await page.getByRole('button', { name: 'Остановить свою трансляцию' }).click()
   expect(await page.evaluate(() => (window as any).__screenUI.events)).toEqual(['stop-screen'])
+})
+
+test('short room height keeps the selected screen preview visible', async ({ page }) => {
+  await open(page, 'viewer-strip&height=208', 417, 100, 208)
+  const geometry = await page.locator('.screen-stage').evaluate(stage => {
+    const rect = stage.getBoundingClientRect()
+    const viewer = stage.closest('.screen-viewer')!
+    return { stageHeight: rect.height, stageTop: rect.top, stageBottom: rect.bottom, viewerHeight: viewer.clientHeight, viewerScrollHeight: viewer.scrollHeight }
+  })
+  expect(geometry.stageHeight).toBeGreaterThanOrEqual(120)
+  expect(geometry.stageTop).toBeGreaterThanOrEqual(0)
+  expect(geometry.stageBottom).toBeLessThanOrEqual(208)
+  expect(geometry.viewerScrollHeight).toBeGreaterThan(geometry.viewerHeight)
+  const stopButton = page.getByRole('button', { name: 'Остановить свою трансляцию' })
+  await stopButton.scrollIntoViewIfNeeded()
+  await expect(stopButton).toBeInViewport()
+  const separation = await page.locator('.screen-viewer').evaluate(viewer => {
+    viewer.scrollTop = viewer.scrollHeight
+    const rail = viewer.querySelector('.screen-rail-section')!.getBoundingClientRect()
+    const participants = viewer.querySelector('.voice-viewer-participant-strip')!.getBoundingClientRect()
+    return participants.top - rail.bottom
+  })
+  expect(separation).toBeGreaterThanOrEqual(0)
+  await page.screenshot({ path: test.info().outputPath('short-height-layout.png') })
 })
 
 test('brief screen audio publication changes do not flicker the diagnosis', async ({ page }) => {
