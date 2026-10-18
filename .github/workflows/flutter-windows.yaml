@@ -19,6 +19,7 @@ jobs:
           persist-credentials: false
           # Keep the release publisher in the CI checkout for its HTTP contract tests.
           sparse-checkout: |
+            .github/actions
             clients/flutter
             tools
             contracts
@@ -41,7 +42,7 @@ jobs:
           $directory = Join-Path $env:RUNNER_TEMP 'desktop-recovery-smoke'
           $process = Start-Process -FilePath (Join-Path $directory 'Recovery.exe') -ArgumentList @('--plan', (Join-Path $directory 'missing-plan.json')) -Wait -PassThru
           if ($process.ExitCode -ne 2) { throw 'Recovery monitor did not reject the invalid local plan.' }
-      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+      - uses: ./.github/actions/flutter-setup
         with:
           flutter-version: 3.47.7
           channel: stable
@@ -92,9 +93,12 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
+      - name: Prepare public Go SDK and dependency cache inputs
+        run: python -m tools.ci.toolchains.cache_inputs go
       - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
-          go-version-file: backend/go.mod
+          go-version: '1.26.4'
+          cache-dependency-path: .out/ci/cache-inputs/go.json
       - name: Verify the Windows GUI acceptance result contract
         run: python -m unittest tools.qa.screen_setup.test_windows
       - name: Check Escape in the real Windows GUI with an active SFU connection

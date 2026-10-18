@@ -21,11 +21,13 @@ jobs:
           persist-credentials: false
       - name: Test review-only UI/UX screenshot region deltas
         run: python3 -m unittest tools.verify.test_uiux_visual_diff tools.verify.test_uiux_visual_matrix
+      - name: Prepare public Node SDK and locked dependency cache inputs
+        run: python3 -m tools.ci.toolchains.cache_inputs npm
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .node-version
           cache: npm
-          cache-dependency-path: clients/web/package-lock.json
+          cache-dependency-path: .out/ci/cache-inputs/npm.json
       - name: Install locked browser runtime
         working-directory: clients/web
         run: |

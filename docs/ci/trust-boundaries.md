@@ -1,11 +1,15 @@
 # Actions trust boundaries (CICD-12, #386)
 
-All 26 active workflows and the inactive scheduler fixture reference external
+All 26 active workflows, local composite actions and the inactive scheduler fixture reference external
 Actions by reviewed full commit. `tools/verify/action_pins/pins.json` records the
 original ref, resolved commit, upstream source URL and resolution date. The refs
 were resolved read-only from the action owners' Git repositories, including peeled
 tags. This pins the implementation already selected by those refs; it is not a
 claim that all transitive action dependencies have been independently audited.
+The Flutter setup uses a repository-owned composite and executes only the reviewed
+installer Git blob; its SDK-only cache restore/save actions are independently pinned.
+See [SDK cache boundaries](sdk-caches.md). Local action references must resolve to
+reviewed, non-symlinked source and are included in pin/credential checks.
 Dependabot proposes grouped Actions updates; a reviewer must update the registry
 and review/test the matching commit in the same PR. Unregistered/mutable refs fail.
 
@@ -62,7 +66,7 @@ it does not prove account availability, installed Xcode or SDK compatibility. Th
 ## Local checks
 
 ```sh
-python3 -m unittest tools.verify.action_pins.test_policy tools.verify.action_pins.test_trust tools.verify.action_pins.test_lint
+python3 -m unittest tools.verify.action_pins.test_policy tools.verify.action_pins.test_local tools.verify.action_pins.test_trust tools.verify.action_pins.test_lint
 python3 -m tools.verify.action_pins.run
 python3 -m tools.verify.action_pins.lint
 ```

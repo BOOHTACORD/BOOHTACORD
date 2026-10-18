@@ -58,6 +58,15 @@ test('connected voice room shows profile avatars on remote and self participant 
   await page.screenshot({ path: info.outputPath('connected-participant-avatars.png') })
 })
 
+test('connected room header uses the singular participant form when only the local user is present', async ({ page }, info) => {
+  await open(page)
+  const subtitle = page.locator('.voice-room .conversation-header .main-title small')
+  await expect(subtitle).toHaveText('2 участника в голосовом канале')
+  await patch(page, { voiceVolumeParticipants: [] })
+  await expect(subtitle).toHaveText('1 участник в голосовом канале')
+  await page.screenshot({ path: info.outputPath('solo-channel-header.png') })
+})
+
 test('room and dock share icons, named states and keyboard actions without opening details', async ({ page }) => {
   await open(page)
   for (const scope of [page.locator('.room-wrap'), page.getByTestId('voice-dock')]) {

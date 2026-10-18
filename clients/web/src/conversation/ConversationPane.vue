@@ -16,6 +16,7 @@ import VoiceRoomConnected from '../voice/VoiceRoomConnected.vue'
 import type { ScreenViewerCard } from '../voice/screen_viewer_controller'
 import type { VoiceVolumeParticipant } from '../voice/voice_volume_controls'
 import type { VoiceRoomRoster } from '../voice/voice_roster_client'
+import { voiceRoomSummary } from '../voice/voice_room_copy'
 import { useConversationScreenState } from '../voice/use_conversation_screen_state'
 import TextConversation from './TextConversation.vue'
 import WorkspaceHeaderActions from '../shared/workspace_header/WorkspaceHeaderActions.vue'
@@ -101,7 +102,7 @@ function clearScreenPreview(): void {
         <section class="voice-room" :class="{ 'voice-room--screen-expanded': screenExpanded, 'voice-room--mini': miniVisible }">
           <header class="main-header conversation-header">
             <span class="conversation-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9H3ZM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" /></svg></span>
-            <div class="main-title"><h2 :title="voiceChannel.name">{{ voiceChannel.name }}</h2><small>{{ voiceIsActive && voiceState === 'LEAVING' ? 'Выходим…' : selectedScreenName && voiceIsActive ? `${voiceVolumeParticipants.length + 1} участника · ${screenViewerCards.length} трансляции` : voiceIsActive ? `${voiceVolumeParticipants.length + 1} участника в голосовом канале` : voiceRosterError ? 'Голосовой канал · состав недоступен' : voiceRoster ? voiceRoster.participants.length ? `Голосовой канал · сейчас: ${voiceRoster.participants.length}` : 'Голосовой канал · пока пусто' : 'Голосовой канал · проверяем состав' }}</small></div>
+            <div class="main-title"><h2 :title="voiceChannel.name">{{ voiceChannel.name }}</h2><small>{{ voiceIsActive && voiceState === 'LEAVING' ? 'Выходим…' : selectedScreenName && voiceIsActive ? `${voiceVolumeParticipants.length + 1} участника · ${screenViewerCards.length} трансляции` : voiceIsActive ? `${voiceRoomSummary(voiceVolumeParticipants.length + 1, 0)} в голосовом канале` : voiceRosterError ? 'Голосовой канал · состав недоступен' : voiceRoster ? voiceRoster.participants.length ? `Голосовой канал · сейчас: ${voiceRoster.participants.length}` : 'Голосовой канал · пока пусто' : 'Голосовой канал · проверяем состав' }}</small></div>
             <WorkspaceHeaderActions :members-expanded="membersOpen" :nav-expanded="navOpen" :show-members="showMembers" @toggle-members="emit('toggleMembers')" @toggle-navigation="emit('toggleNav')">
               <button v-action-hint class="header-action" type="button" aria-label="Найти сообщение" :aria-expanded="Boolean(searchExpanded)" aria-controls="search-aside-panel" @click="emit('openSearch')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg></button>
               <template #overflow><ConversationOverflowMenu :search-expanded="searchExpanded" search-controls="search-aside-panel" menu-label="Действия голосового канала" :show-members="showMembers" :members-open="membersOpen" @search="emit('openSearch')" @toggle-members="emit('toggleMembers')" /></template>

@@ -43,7 +43,7 @@ if ($windows -notmatch 'uses:\s*actions/upload-artifact@v4' -or
     throw 'Windows CI must retain the full release directory as a fail-closed workflow artifact.'
 }
 foreach ($required in @('workflow_call:', 'runs-on: windows-2022',
-    'uses: subosito/flutter-action@v2', 'flutter-version: 3.47.7',
+    'uses: ./.github/actions/flutter-setup', 'flutter-version: 3.47.7',
     'python -m tools.build.windows.run', 'python -m tools.ci.native.flutter')) {
     if (-not $windows.Contains($required)) {
         throw "Windows CI must run on a hosted runner before merge: $required"

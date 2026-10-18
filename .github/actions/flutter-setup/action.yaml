@@ -1,0 +1,60 @@
+name: Reviewed Flutter SDK
+description: Install the approved immutable Flutter SDK with a public SDK-only cache
+inputs:
+  flutter-version:
+    description: Exact SDK version from tools/toolchains.json
+    required: true
+  channel:
+    description: Reviewed stable channel
+    default: stable
+  cache:
+    description: Restore and save only the public SDK; pub dependencies remain private to the job
+    default: 'true'
+outputs:
+  cache-hit:
+    description: Whether the exact public SDK key was restored
+    value: ${{ steps.sdk-cache.outputs.cache-hit }}
+  cache-key:
+    description: Versioned OS and architecture SDK cache identity
+    value: ${{ steps.metadata.outputs.cache_key }}
+  cache-path:
+    description: Managed SDK-only directory
+    value: ${{ steps.metadata.outputs.cache_path }}
+runs:
+  using: composite
+  steps:
+    - name: Prepare reviewed SDK metadata and a clean uncached pub directory
+      id: metadata
+      shell: bash
+      env:
+        BOOHTACORD_CI_PYTHON: ${{ runner.os == 'Windows' && 'python' || 'python3' }}
+        REQUESTED_FLUTTER: ${{ inputs.flutter-version }}
+        REQUESTED_CHANNEL: ${{ inputs.channel }}
+      run: '"$BOOHTACORD_CI_PYTHON" -m tools.ci.flutter_setup.run prepare'
+    - name: Checkout the immutable installer source without executing its composite action
+      uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      with:
+        repository: subosito/flutter-action
+        ref: 1a449444c387b1966244ae4d4f8c696479add0b2
+        path: .out/ci/flutter-installer
+        persist-credentials: false
+    - name: Restore public SDK only
+      id: sdk-cache
+      if: inputs.cache == 'true'
+      uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+      with:
+        path: ${{ steps.metadata.outputs.cache_path }}
+        key: ${{ steps.metadata.outputs.cache_key }}
+    - name: Install and verify exact Flutter, Dart and framework revision
+      shell: bash
+      env:
+        BOOHTACORD_CI_PYTHON: ${{ runner.os == 'Windows' && 'python' || 'python3' }}
+        REQUESTED_FLUTTER: ${{ inputs.flutter-version }}
+        REQUESTED_CHANNEL: ${{ inputs.channel }}
+      run: '"$BOOHTACORD_CI_PYTHON" -m tools.ci.flutter_setup.run install'
+    - name: Save the public SDK only from the trusted master push
+      if: github.repository == 'Egkurilov/BOOHTACORD' && github.event_name == 'push' && github.ref == 'refs/heads/master' && inputs.cache == 'true' && steps.sdk-cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25
+      with:
+        path: ${{ steps.metadata.outputs.cache_path }}
+        key: ${{ steps.metadata.outputs.cache_key }}

@@ -32,13 +32,19 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - name: Prepare public Node SDK and locked dependency cache inputs
+        run: python3 -m tools.ci.toolchains.cache_inputs npm
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: .out/ci/cache-inputs/npm.json
+      - name: Prepare public Go SDK and dependency cache inputs
+        run: python3 -m tools.ci.toolchains.cache_inputs go
       - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
-          go-version-file: backend/go.mod
-          cache-dependency-path: backend/go.sum
+          go-version: '1.26.4'
+          cache-dependency-path: .out/ci/cache-inputs/go.json
       - name: Install locked real browser
         working-directory: clients/web
         run: |
