@@ -15,7 +15,7 @@ messages, source frame locations, numeric exit codes and fixed failure flags.
 
 Use a Linux amd64 Docker daemon. On an ARM64 Mac, a separate QEMU x86_64 VM
 avoids the observed Go compiler crash under Rosetta and the emulated daemon's
-netfilter failure. The unchanged server builder emits the required `linux/amd64`
+netfilter failure. The shipping server builder emits the required `linux/amd64`
 release images. Allow 5 GiB VM memory and free space for the compiler,
 two OCI bundles and the deployment's real disk-headroom guards. Only loopback
 port 5443 is exposed. The browser maps `qa60.localhost` to loopback. Its local
@@ -39,14 +39,17 @@ recorded separately, never by relabeling an image or a gate receipt.
 python3 -m unittest tools.qa.compatible_rollback.test_evidence \
   tools.qa.compatible_rollback.test_isolation tools.qa.compatible_rollback.test_ci_proof \
   tools.qa.compatible_rollback.test_diagnostics \
-  tools.release.rollback.test_rollout
+  tools.qa.compatible_rollback.test_builder_identity \
+  tools.release.rollback.test_rollout tools.build.server.test_smoke_readiness \
+  tools.build.server.test_runtime_inputs tools.build.server.test_social_preview \
+  tools.build.server.test_image_audio_flag
 python3 -m tools.qa.compatible_rollback.run --ci-proof /absolute/path/ci-proof.json
 ```
 
 Node and locked Playwright/Chromium must already be available in
 `clients/web/node_modules`. Docker CLI and Compose come from the pinned controller;
 the canonical builder downloads its checksum-pinned Buildx plugin. The selected
-pair must contain those existing builder/install/rollback modules.
+pair must contain the existing source and install/rollback inputs.
 
 The `Compatible rollback acceptance` GitHub Actions workflow runs the same
 command on native Linux amd64. `ci-inputs.json` selects retained source objects;
@@ -56,7 +59,7 @@ compatibility before writing the proof. A missing or unsuccessful gate fails
 before building. The workflow retains only sanitized JSON and synthetic PNGs;
 private build logs, environment files, session data and signing keys stay private.
 
-The runner builds both releases with the existing server builder, actual RNNoise
+The runner builds both releases with the shipping trusted server builder, actual RNNoise
 asset compilation, SBOM/provenance, image smoke tests and signatures. A separate
 QA public anchor is provisioned before either artifact; the private signing key
 is deleted. These are local QA builds, never production releases or new production
@@ -64,8 +67,18 @@ trust anchors. Actual successful CI results are copied into source-bound gate
 receipts with their run/job provenance. Every bundle is verified before reuse.
 Only immutable artifact files and the public QA anchor are retained in ignored
 `.out/issue60/bundle-cache` to avoid recompiling for an observer retry. Application
-data and volumes are not cached. A different source pair requires a new empty
-cache directory; an incomplete cache is not accepted.
+data and volumes are not cached. A different source pair or trusted build-tool
+implementation requires a new empty cache directory; an incomplete cache is not
+accepted. Both harness and active builder/dependency hashes bind the receipt.
+
+The trusted builder's explicit `--source` selects each clean retained Git root;
+the default still builds its own repository. Source archive, labels, compatibility
+and gate receipts refer to that selected head. Builder code is independently
+recorded from the reviewed QA revision and mounted read-only. The builder now
+waits for PostgreSQL TCP readiness: an actual negative control observed the
+temporary init server accepting Unix sockets before TCP became available.
+Both migration passes and every artifact smoke check still run. The signed
+runtime and canonical rollback command are unchanged.
 
 ## Observations
 

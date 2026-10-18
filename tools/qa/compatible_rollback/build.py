@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import subprocess
 import shutil
+from builder_identity import cache_identity
 
 
 def build(work):
@@ -12,8 +13,9 @@ def build(work):
     cache = Path('/qa-cache')
     proof = json.loads((work / 'ci-proof.json').read_text())
     expected = {role: proof[role]['head'] for role in ('current', 'previous')}
+    identity = cache_identity(proof, Path('/qa-builder'))
     if (cache / 'complete.json').is_file():
-        if json.loads((cache / 'complete.json').read_text()) != expected:
+        if json.loads((cache / 'complete.json').read_text()) != identity:
             raise ValueError('Retained QA bundle pair differs; select a new empty cache directory')
         for revision in expected.values():
             verify_bundle(cache / revision, cache / 'trusted-signing.pub.pem', revision)
@@ -48,9 +50,9 @@ def build(work):
                     'scope': 'Authenticated GitHub CI result for this exact source head; QA bundle only',
                 }) + '\n')
             environment = dict(os.environ, VITE_PUBLIC_ORIGIN='https://qa60.localhost:5443')
-            subprocess.run(['python3', '-m', 'tools.build.server.run', '--checks', str(receipts),
+            subprocess.run(['python3', '-m', 'tools.build.server.run', '--source', str(source), '--checks', str(receipts),
                             '--signing-key', str(key), '--output', str(work / 'releases')],
-                           cwd=source, env=environment, check=True)
+                           cwd='/qa-builder', env=environment, check=True)
         # Retain only immutable built artifacts and the preprovisioned public QA
         # anchor. No application data, volumes or signing private key are cached.
         for revision in expected.values():
@@ -60,6 +62,6 @@ def build(work):
             for name in FILES | {'manifest.json', 'manifest.json.sig'}:
                 shutil.copyfile(source / name, target / name)
         shutil.copyfile(public, cache / 'trusted-signing.pub.pem')
-        (cache / 'complete.json').write_text(json.dumps(expected))
+        (cache / 'complete.json').write_text(json.dumps(identity))
     finally:
         key.unlink(missing_ok=True)

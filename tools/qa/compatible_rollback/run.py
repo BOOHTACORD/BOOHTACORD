@@ -35,6 +35,8 @@ def main():
     source_files = [p for p in Path(__file__).parent.iterdir() if p.suffix in ('.py', '.mjs') or p.name == 'Dockerfile']
     source_hashes = lambda: {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in source_files}
     report['harness_sha256'] = source_hashes()
+    from .builder_identity import builder_hashes
+    report['builder_sha256'] = builder_hashes(root)
     def save():
         (destination / 'run.json').write_text(json.dumps(report, indent=2) + '\n')
     save()
@@ -74,7 +76,7 @@ def main():
                         raise RuntimeError('Actual browser observers failed')
                 receipt = json.loads((work / 'runtime.json').read_text())
                 validate(receipt)
-                if source_hashes() != report['harness_sha256']:
+                if source_hashes() != report['harness_sha256'] or builder_hashes(root) != report['builder_sha256']:
                     raise RuntimeError('Harness source changed during the accepted run')
                 report['acceptance'] = receipt
                 shutil.copyfile(work / 'runtime.json', destination / 'acceptance.json')

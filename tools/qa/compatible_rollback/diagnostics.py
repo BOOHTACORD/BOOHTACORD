@@ -19,7 +19,7 @@ def diagnose(text, messages):
     frames = []
     for path, line, function in re.findall(r'File "([^"]+)", line (\d+), in ([\w<>]+)', text):
         relative = ''
-        for prefix in ('/qa/current/', '/qa/previous/', '/qa-tools/'):
+        for prefix in ('/qa/current/', '/qa/previous/', '/qa-tools/', '/qa-builder/'):
             if path.startswith(prefix):
                 relative = path.removeprefix(prefix)
                 break
@@ -31,4 +31,6 @@ def diagnose(text, messages):
             'memory_exhaustion': 'out of memory' in text.lower() or 'signal: killed' in text.lower(),
             'disk_exhaustion': 'no space left on device' in text.lower(),
             'address_collision': 'address already in use' in text.lower(),
+            'tcp_not_ready': any(marker in text.lower() for marker in ('connection refused', 'server closed the connection', 'connection reset by peer')),
+            'sql_states': sorted(set(re.findall(r'SQLSTATE ([0-9A-Z]{5})', text))),
             'registry_failure': 'failed to resolve source metadata' in text.lower()}

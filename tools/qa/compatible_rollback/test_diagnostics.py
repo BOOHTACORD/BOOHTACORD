@@ -15,6 +15,10 @@ password=private-password-and-message
         self.assertEqual(result['exit_codes'], [137])
         self.assertNotIn('private-password', str(result))
         self.assertTrue(diagnose('Error response from daemon: Address already in use', set())['address_collision'])
+        self.assertTrue(diagnose('dial failed: connection refused (SQLSTATE 57P03)', set())['tcp_not_ready'])
+        self.assertEqual(diagnose('SQLSTATE 57P03', set())['sql_states'], ['57P03'])
+        self.assertEqual(diagnose('File "/qa-builder/tools/build/server/smoke.py", line 50, in run_smoke', set())['frames'],
+                         [{'file': 'tools/build/server/smoke.py', 'line': 50, 'function': 'run_smoke'}])
 
     def test_unapproved_paths_and_text_never_become_diagnostics(self):
         result = diagnose('File "/private/account-id", line 1, in secret\nFile "/private/tools/account-id.py", line 1, in secret\nFile "/qa/current/tools/../account-id.py", line 1, in secret\nsecret-cookie\n', set())

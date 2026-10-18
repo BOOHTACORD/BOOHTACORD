@@ -12,7 +12,7 @@ from tools.release.bundle.package import package
 from tools.audio.asset_build import build_assets
 from .buildx import configure
 from .images import build
-from .inputs import RUNTIME_PATHS, SOURCE_PATHS, archive, compatibility, git
+from .inputs import RUNTIME_PATHS, SOURCE_PATHS, archive, compatibility, git, source_root
 from .smoke import run_smoke
 
 
@@ -31,9 +31,10 @@ def main():
     parser.add_argument("--checks", type=Path, required=True)
     parser.add_argument("--signing-key", type=Path, required=True)
     parser.add_argument("--output", type=Path, default=Path(".out/releases"))
+    parser.add_argument("--source", type=Path, help="Exact clean Git source root; defaults to this builder repository")
     args = parser.parse_args()
     require(sys.platform == "linux", "Server builder requires Linux with Docker OCI image storage")
-    root = Path(__file__).resolve().parents[3]
+    root = source_root(args.source)
     revision = git(root, "rev-parse", "HEAD").decode().strip()
     require(not git(root, "diff", "HEAD", "--"), "Builder requires a clean tracked checkout")
     checks = gate_receipts(args.checks.resolve(), revision)

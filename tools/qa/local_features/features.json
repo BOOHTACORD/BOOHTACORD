@@ -44,7 +44,9 @@
           "tools/qa/compatible_rollback/test_evidence.py",
           "tools/qa/compatible_rollback/test_isolation.py",
           "tools/qa/compatible_rollback/test_ci_proof.py",
-          "tools/qa/compatible_rollback/test_diagnostics.py"
+          "tools/qa/compatible_rollback/test_diagnostics.py",
+          "tools/qa/compatible_rollback/test_builder_identity.py",
+          "tools/build/server/test_smoke_readiness.py"
         ],
         "scope": "QA-12: canonical signed-bundle rollback and restore on a dedicated local Docker daemon, two actual Web observers, maintenance SSE and denied admissions, real digest refs, logical schema/data and persistent resource preservation. Local QA signing anchor; no production maintenance or physical media claim."
       },

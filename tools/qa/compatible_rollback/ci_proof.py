@@ -68,10 +68,12 @@ def main():
         result[role] = proof
     # The images may be a retained CI head with the same master tree. They must
     # still contain the actual product/release code under review, without aliases.
-    paths = ['backend', 'clients/web', 'contracts', 'deploy', 'tools/release', 'tools/build/server',
+    paths = ['backend', 'clients/web', 'contracts', 'deploy', 'tools/release',
              'tools/audio', 'tools/toolchains.json', '.node-version', 'Taskfile.yml',
              'clients/flutter/packages/flutter_webrtc/common/rnnoise/upstream']
     require(subprocess.run(['git', 'diff', '--quiet', result['current']['head'], 'HEAD', '--', *paths]).returncode == 0)
+    # Trusted build tooling is reviewed/tested at the current QA revision. The
+    # explicit --source input still archives and labels each clean retained head.
     require(subprocess.run(['git', 'diff', '--quiet', result['current']['head'], result['previous']['head'],
                             '--', 'backend', 'contracts', 'deploy']).returncode == 0)
     args.output.parent.mkdir(parents=True, exist_ok=True)

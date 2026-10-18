@@ -15,6 +15,11 @@ Production environment разрешает только `master`. Его секр
 `/etc/voice-platform/release-signing.pub.pem`. Полученный bundle не может
 назначить собственный ключ доверия. Staging имеет отдельную пару ключей.
 
+Для проверки retained source trusted builder принимает `--source /path/to/repo`:
+это должен быть корень чистого Git checkout, а PASS receipts должны относиться
+к его точному `HEAD`. Без параметра собирается репозиторий самого builder.
+Smoke ожидает готовности PostgreSQL по TCP перед двумя проходами миграций.
+
 Server builder назначается только runner с меткой `boohtacord-builder`.
 Его service account должен иметь доступ к Docker socket (на Hetzner это
 `SupplementaryGroups=docker` в systemd override сервиса Web runner).
