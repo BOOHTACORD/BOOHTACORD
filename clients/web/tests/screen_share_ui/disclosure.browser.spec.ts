@@ -147,6 +147,31 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
   await page.screenshot({ path: info.outputPath('viewer-participants-1440.png') })
 })
 
+test('muting a remote screen changes the speaker icon and restores it on unmute', async ({ page }, info) => {
+  await page.route(/\/api\/v1\/members\/[^/]+\/avatar(?:\?.*)?$/, route => route.fulfill({
+    status: 200,
+    contentType: 'image/svg+xml',
+    body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>',
+  }))
+  await open(page, 'viewer-strip&remote-audio')
+  const mute = page.getByRole('button', { name: 'Выключить звук трансляции' })
+  await expect(mute).toHaveAttribute('aria-pressed', 'true')
+  const unmutedIcon = await mute.locator('svg').innerHTML()
+  await page.screenshot({ path: info.outputPath('stream-audio-unmuted.png') })
+
+  await mute.click()
+  const unmute = page.getByRole('button', { name: 'Включить звук трансляции' })
+  await expect(unmute).toHaveAttribute('aria-pressed', 'false')
+  await expect(unmute.locator('svg')).not.toHaveJSProperty('innerHTML', unmutedIcon)
+  const mutedIcon = await unmute.locator('svg').innerHTML()
+  await page.screenshot({ path: info.outputPath('stream-audio-muted.png') })
+
+  await unmute.click()
+  await expect(page.getByRole('button', { name: 'Выключить звук трансляции' })).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.locator('.screen-audio-toggle svg')).toHaveJSProperty('innerHTML', unmutedIcon)
+  expect(mutedIcon).not.toBe(unmutedIcon)
+})
+
 test('unsupported prevents starting but leaves cancel and keyboard close available', async ({ page }) => {
   await open(page, 'unsupported')
   await expect(page.getByRole('alert')).toContainText('не поддерживает')

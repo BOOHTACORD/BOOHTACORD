@@ -15,7 +15,7 @@ const params = new URLSearchParams(location.search)
 document.documentElement.style.fontSize = params.get('scale') === '200' ? '200%' : '100%'
 if (params.has('unsupported')) Object.defineProperty(navigator, 'mediaDevices', { value: {}, configurable: true })
 const events: unknown[] = []
-const state = reactive({ open: true, profile: params.get('profile') ?? 'P1080_60', source: 'ACTIVE', fps: 1, sampledAt: null as number | null, hasAudio: false })
+const state = reactive({ open: true, profile: params.get('profile') ?? 'P1080_60', source: 'ACTIVE', fps: 1, sampledAt: null as number | null, hasAudio: false, audioMuted: false })
 Object.assign(window, { __screenUI: { events, patch: (value: object) => Object.assign(state, value) } })
 const diagnostics = (): ScreenDiagnostics => ({ source: state.source as ScreenDiagnostics['source'], audioTrack: 'ABSENT', connectionQuality: 'GOOD', measured: { width: 1920, height: 654, framesPerSecond: state.fps }, roundTripTimeMs: 42 })
 const viewerParticipants: VoiceVolumeParticipant[] = [
@@ -24,7 +24,7 @@ const viewerParticipants: VoiceVolumeParticipant[] = [
 ]
 const viewerScreens: ScreenViewerCard[] = [
   { accountId: 'local-user', hasAudio: false, id: 'local-screen', isLocal: true, participantId: 'local-user', participantName: 'Локальная трансляция' },
-  { accountId: 'member-sharing', hasAudio: false, id: 'remote-screen', isLocal: false, participantId: 'member-sharing', participantName: 'Участник показывает экран' },
+  { accountId: 'member-sharing', hasAudio: true, id: 'remote-screen', isLocal: false, participantId: 'member-sharing', participantName: 'Участник показывает экран' },
 ]
 const pinia = createPinia()
 const authors = useAuthorDirectory(pinia)
@@ -51,7 +51,7 @@ const IntermittentDiagnosis = defineComponent({
 })
 const viewerStrip = () => h('section', { class: 'voice-room', style: `height:${params.get('height') ?? '760'}px` }, [
   h(ScreenViewer, {
-    audioMuted: false,
+    audioMuted: state.audioMuted,
     cards: viewerScreens,
     deafened: false,
     ended: false,
@@ -68,8 +68,9 @@ const viewerStrip = () => h('section', { class: 'voice-room', style: `height:${p
     selfName: 'Очень длинное имя владельца трансляции для проверки ширины',
     selfSpeaking: false,
     selectedAudioVolume: 100,
-    selectedId: 'local-screen',
+    selectedId: params.has('remote-audio') ? 'remote-screen' : 'local-screen',
     sourceDiagnostics: diagnostics(),
+    onToggleAudio: () => { state.audioMuted = !state.audioMuted },
     onStopScreen: () => events.push('stop-screen'),
   }),
 ])
