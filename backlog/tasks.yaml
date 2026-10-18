@@ -688,3 +688,8 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-VOICE-01, REQ-SCREEN-01]
     depends_on: [FV2-003, T-061]
     evidence: [clients/flutter/test/screen_setup/keyboard_test.dart, tools/qa/screen_setup/windows.py, evidence/qa/issue288-screen-escape-2026-10-18.md]
+  - id: FV2-054
+    title: Keep screen setup actions visible in short desktop windows (GitHub #373)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-SCREEN-01]
+    depends_on: [FV2-003, FV2-053]
+    evidence: [clients/flutter/test/screen_setup/footer_layout_test.dart, tools/qa/screen_setup/windows.py, evidence/qa/issue373-screen-setup-footer-2026-10-18.md]

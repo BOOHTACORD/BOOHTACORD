@@ -20,8 +20,10 @@ import 'package:boohtacord_desktop/src/features/updates/restore/window_bounds.da
 import 'package:boohtacord_desktop/src/app.dart';
 import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/features/screen/setup/open_dialog/dialog.dart';
+import 'package:boohtacord_desktop/src/features/screen/setup/open_dialog/footer.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_dock_button/component.dart';
 
+import 'screen_setup_controls.dart';
 import 'desktop_updates/native_app.dart' as native;
 import 'desktop_updates/windows_app.dart' show Journey, until, require;
 
@@ -29,6 +31,35 @@ import 'desktop_updates/windows_app.dart' show Journey, until, require;
 // route's RepaintBoundary would omit a dialog displayed above that route.
 class ScreenSetupJourney extends Journey {
   ScreenSetupJourney(super.output);
+
+  void visibleActions() {
+    final view = WidgetsBinding.instance.renderViews.single.flutterView;
+    final viewport = Offset.zero & (view.physicalSize / view.devicePixelRatio);
+    final surface = driver.getRect(
+      find
+          .ancestor(
+            of: find.byType(SetupFooter),
+            matching: find.byType(Material),
+          )
+          .first,
+    );
+    final bounds = viewport.deflate(20).intersect(surface);
+    for (final entry in {
+      'cancel': find.widgetWithText(TextButton, 'Отмена'),
+      'start': find.byKey(const ValueKey('start-screen-share')),
+      'close': find.byTooltip('Закрыть'),
+    }.entries) {
+      final control = screenSetupControl(entry.value);
+      require(control.evaluate().length == 1, '${entry.key}_action_missing');
+      final rect = driver.getRect(control);
+      require(
+        bounds.contains(rect.topLeft) &&
+            bounds.contains(rect.bottomRight) &&
+            control.hitTestable().evaluate().length == 1,
+        'action_clipped',
+      );
+    }
+  }
 
   @override
   Future<void> capture(String name) async {
@@ -174,10 +205,48 @@ Future<void> main() async {
           () => find.byType(ScreenShareSetupDialog).evaluate().isNotEmpty,
           'dialog_not_open',
         );
+        qa.visibleActions();
         if (!traverse) await qa.capture('${dock ? 'dock' : 'header'}-open');
         if (traverse) {
-          await osKey(VK_TAB);
+          // Exercise the scrollable quality section, including its expansion.
+          final advanced = screenSetupControl(
+            find.byKey(const ValueKey('screen-share-advanced-quality')),
+          );
+          await qa.driver.ensureVisible(advanced);
+          await qa.driver.tap(advanced);
+          await qa.driver.pump();
+          await qa.driver.pump(const Duration(milliseconds: 500));
+          for (final label in ['720p', '30 FPS', 'Текст']) {
+            final option = screenSetupControl(find.text(label));
+            await qa.driver.ensureVisible(option);
+            await qa.driver.pump(const Duration(milliseconds: 200));
+            require(
+              option.hitTestable().evaluate().length == 1,
+              'quality_unreachable',
+            );
+            await qa.driver.tap(option);
+            await qa.driver.pump(const Duration(milliseconds: 200));
+          }
+          qa.visibleActions();
+          await qa.capture('${dock ? 'dock' : 'header'}-footer');
+          // Prove the footer participates in actual Windows keyboard traversal.
+          final cancelText = find.descendant(
+            of: screenSetupControl(find.widgetWithText(TextButton, 'Отмена')),
+            matching: find.byType(Text),
+          );
+          final cancelFocus = Focus.of(qa.driver.element(cancelText));
+          var reachedCancel = false;
+          for (var tab = 0; tab < 40; tab++) {
+            await osKey(VK_TAB);
+            if (cancelFocus.hasFocus) {
+              reachedCancel = true;
+              break;
+            }
+          }
+          require(reachedCancel, 'cancel_keyboard_unreachable');
           await osKey(VK_TAB, shift: true);
+          await osKey(VK_TAB);
+          require(cancelFocus.hasFocus, 'cancel_reverse_traversal_failed');
         }
         await osKey(VK_ESCAPE);
         await until(
@@ -211,6 +280,9 @@ Future<void> main() async {
           'same_connected_room_and_lease': true,
           'mute_deafen_preserved': true,
           'no_publication': true,
+          'footer_visible': true,
+          if (traverse) 'quality_reachable': true,
+          if (traverse) 'cancel_keyboard_reachable': true,
         });
       }
     }

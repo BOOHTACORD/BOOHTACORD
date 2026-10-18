@@ -69,10 +69,6 @@ class _SetupState extends State<SetupBody> {
   @override
   Widget build(BuildContext context) {
     final platform = defaultTargetPlatform;
-    final compact =
-        MediaQuery.sizeOf(context).width < 640 ||
-        MediaQuery.sizeOf(context).height < 500 ||
-        MediaQuery.textScalerOf(context).scale(16) > 18;
     final dimensions = ScreenShareQuality.sourceDimensionsFromJpeg(
       inventory.selected?.thumbnail,
     );
@@ -105,40 +101,30 @@ class _SetupState extends State<SetupBody> {
     return SetupSurface(
       children: [
         SetupHeader(updating: widget.updating, onClose: close),
-        if (widget.allowSourceSelection) ...[
-          if (compact)
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ScreenCapabilityNotice(capability: capability),
-                    if (capability.captureAudioConfigured && !widget.updating)
-                      _ScreenAudioToggle(
-                        selected: captureScreenAudio,
-                        onChanged: (value) =>
-                            setState(() => captureScreenAudio = value),
-                      ),
-                    SourceTabs(inventory: inventory),
-                    SourceGrid(inventory: inventory, shrinkWrap: true),
-                    picker,
-                  ],
-                ),
+        if (widget.allowSourceSelection)
+          // Source enumeration and expanded quality controls have variable
+          // height. Scroll them together within the space left by the header
+          // and footer, even on wide desktop windows.
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ScreenCapabilityNotice(capability: capability),
+                  if (capability.captureAudioConfigured && !widget.updating)
+                    _ScreenAudioToggle(
+                      selected: captureScreenAudio,
+                      onChanged: (value) =>
+                          setState(() => captureScreenAudio = value),
+                    ),
+                  SourceTabs(inventory: inventory),
+                  SourceGrid(inventory: inventory, shrinkWrap: true),
+                  picker,
+                ],
               ),
-            )
-          else ...[
-            ScreenCapabilityNotice(capability: capability),
-            if (capability.captureAudioConfigured && !widget.updating)
-              _ScreenAudioToggle(
-                selected: captureScreenAudio,
-                onChanged: (value) =>
-                    setState(() => captureScreenAudio = value),
-              ),
-            SourceTabs(inventory: inventory),
-            Expanded(child: SourceGrid(inventory: inventory)),
-            picker,
-          ],
-        ] else
+            ),
+          )
+        else
           Expanded(
             child: SetupQualityContent(
               capability: capability,
