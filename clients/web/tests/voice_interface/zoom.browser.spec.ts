@@ -22,7 +22,7 @@ for (const width of [640, 780, 2048, 2880]) test(`voice at actual 200% browser z
   })
 })
 
-test('touch primary controls need no disclosure and secondary details open deliberately', async ({ browser }, info) => {
+test('touch primary controls need no room disclosure; connection metrics remain available', async ({ browser }, info) => {
   const context = await browser.newContext({ viewport: { width: 390, height: 900 }, hasTouch: true, isMobile: true })
   try {
     const page = await context.newPage()
@@ -31,8 +31,7 @@ test('touch primary controls need no disclosure and secondary details open delib
     const room = page.locator('.room-wrap')
     await room.getByRole('button', { name: 'Выключить микрофон', exact: true }).tap()
     await expect(room.locator('[data-state=muted]')).toBeVisible()
-    await room.locator('.voice-advanced > summary').tap()
-    await expect(room.getByText('Микрофон и звук трансляции управляются отдельно.', { exact: true })).toBeVisible()
+    await expect(room.locator('.voice-advanced')).toHaveCount(0)
     await page.locator('.voice-connection-details > summary').tap()
     await expect(page.getByTestId('voice-dock').getByText('42 мс', { exact: true })).toBeVisible()
     await page.screenshot({ path: info.outputPath('touch-details.png'), fullPage: true })

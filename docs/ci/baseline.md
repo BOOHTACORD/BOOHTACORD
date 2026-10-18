@@ -87,6 +87,21 @@ including the selector used for best-effort changed-component classification.
   bound for health-readback. Missing/ambiguous links stay N/A. This is observation,
   not a replacement for trusted producer provenance or signed release receipts.
 
+## Delivery lineage limitation of the v1 observation
+
+The v1 `artifact_to_install_success_upper_seconds` values are **head-coincident
+metadata completion correlations only**. They do not establish the triggering
+producer run or installed source. In particular,
+[`workflow_run` executes from the default branch](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run);
+a consumer's workflow revision must not be substituted for its producer's source.
+A unique same-head build inside a bounded sample is not an explicit trigger link.
+Therefore the authoritative artifact-to-deployed-health timing remains **N/A**.
+Do not use the v1 field name as an actual delivery/health upper bound or provenance
+attestation. The frozen v1 outputs stay unchanged for audit/replay; this limitation
+overrides that interpretation. An explicit producer run ID/SHA and post-deploy
+receipt are required for delivery timing (#395/#402). Master-to-artifact timing
+uses the build's own upload step, independently of consumer-source attribution.
+
 ## Observed dependency structure
 
 The current workflow source has these dependencies. Historical timing is linked to

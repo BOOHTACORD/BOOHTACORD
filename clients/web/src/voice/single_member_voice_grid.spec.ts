@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createSSRApp } from 'vue'
 import { renderToString } from 'vue/server-renderer'
+import { createPinia } from 'pinia'
 
 import VoiceParticipantVolumes from './VoiceParticipantVolumes.vue'
 
@@ -16,7 +17,7 @@ describe('connected voice room with only the local participant', () => {
       selfMicrophoneMuted: false,
       selfMicrophoneUnavailable: false,
       selfSpeaking: false,
-    }))
+    }).use(createPinia()))
 
     expect(html).toContain('>Оля</span>')
     expect(html).not.toContain('Оля · вы')

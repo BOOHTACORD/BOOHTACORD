@@ -18,6 +18,9 @@ All eight frozen baseline reports reproduce byte-for-byte at the recorded analys
 revision. The full sanitized offline inputs stay in the existing QA workspace;
 the public cohort outputs are intentionally compact. The baseline runbook explains
 how to select the frozen analysis source after future routing changes.
+The v1 artifact-to-install figures are only head-coincident metadata correlations;
+actual artifact-to-deployed-health timing is N/A without explicit producer lineage.
+This clarification does not relabel the historical observation or its source.
 
 ## Native Windows fixture correction
 

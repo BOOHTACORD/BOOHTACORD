@@ -158,7 +158,13 @@
     "reports": 8,
     "result": "BYTE_IDENTICAL",
     "requires_frozen_local_sanitized_inputs": true,
-    "committed_reports_are_compact_outputs": true
+    "committed_reports_are_compact_outputs": true,
+    "legacy_delivery_proxy_limit": {
+      "authoritative_artifact_to_deployed_health": "N/A",
+      "v1_artifact_to_install_success_upper_seconds": "head-coincident metadata correlation only; not an actual source-bound health bound",
+      "requires": "explicit triggering producer run ID/source SHA and post-deploy receipt",
+      "reference": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run"
+    }
   },
   "docs_only_proof": "docs-only-routing-2026-10-18.json",
   "master_nonrelease_route": {

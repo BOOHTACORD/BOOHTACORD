@@ -16,10 +16,16 @@
   "voice": {
     "paths": [
       "clients/web/src/voice/*",
+      "clients/web/src/conversation/ConversationPane.vue",
+      "clients/web/src/design/design_v2_voice_room.css",
       "clients/web/src/design/voice_roster.css",
+      "tools/qa/local_features/features.json",
       "clients/flutter/lib/src/features/voice/*",
       "clients/flutter/lib/src/widgets/voice*",
-      "clients/flutter/lib/src/services/voice*"
+      "clients/flutter/lib/src/services/voice*",
+      "clients/web/tests/voice_interface/fixture.ts",
+      "clients/web/tests/voice_interface/controls.browser.spec.ts",
+      "clients/web/tests/voice_interface/zoom.browser.spec.ts"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -126,7 +132,9 @@
       "clients/flutter/lib/src/screens/screen_receiver_diagnostics.dart",
       "clients/flutter/lib/src/services/api_client.dart",
       "clients/flutter/lib/src/telemetry/traced_app_state.dart",
-      "clients/web/src/voice/viewer_diagnosis/*"
+      "clients/web/src/voice/viewer_diagnosis/*",
+      "clients/web/tests/screen_share_ui/fixture.ts",
+      "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",

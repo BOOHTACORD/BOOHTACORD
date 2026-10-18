@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import type { VoiceVolumeParticipant } from './voice_volume_controls'
 import { avatarBackground, avatarForeground } from '../design/avatar_color'
+import { useAuthorDirectory } from '../identity/author_directory'
 import { findParticipantScreen } from './find_participant_screen'
 import type { ScreenViewerCard } from './screen_viewer_controller'
 import VoiceParticipantStatus from './VoiceParticipantStatus.vue'
 
-const props = withDefaults(defineProps<{ error: string | null; participants: VoiceVolumeParticipant[]; screenStreams: ScreenViewerCard[]; screenWatcherIds?: string[]; ownScreenSharing?: boolean; selectedScreenStreamId: string | null; selfName: string | null; selfDeafened: boolean; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfSpeaking: boolean }>(), { screenWatcherIds: () => [], ownScreenSharing: false })
+const props = withDefaults(defineProps<{ error: string | null; participants: VoiceVolumeParticipant[]; screenStreams: ScreenViewerCard[]; screenWatcherIds?: string[]; ownScreenSharing?: boolean; selectedScreenStreamId: string | null; selfAccountId?: string; selfName: string | null; selfDeafened: boolean; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfSpeaking: boolean }>(), { screenWatcherIds: () => [], ownScreenSharing: false })
 const emit = defineEmits<{ setVolume: [id: string, percent: number]; watchScreen: [id: string] }>()
+const authors = useAuthorDirectory()
 function initial(name: string | null | undefined): string { return name?.trim().slice(0, 2).toLocaleUpperCase('ru-RU') || 'У' }
 function selfDisplayName(name: string | null): string { return name?.trim() || 'Вы' }
+function avatarUrl(accountId: string | null | undefined): string | undefined { return accountId ? authors.avatarUrl(accountId) : undefined }
 function screenForParticipant(participantId: string): ScreenViewerCard | null { return findParticipantScreen(props.screenStreams, participantId) }
 function watchesOwnScreen(participantId: string): boolean { return props.ownScreenSharing && props.screenWatcherIds.includes(participantId) }
 function watchParticipantScreen(participantId: string): void { const screen = screenForParticipant(participantId); if (screen) emit('watchScreen', screen.id) }
@@ -23,7 +26,7 @@ function watchParticipantScreen(participantId: string): void { const screen = sc
         <summary :aria-label="`Настройки громкости ${participant.name || 'участника'}`" title="Настройки участника">•••</summary>
         <label>Громкость · {{ participant.volume }}%<input :aria-label="`Громкость участника ${participant.name || 'участника'}`" :aria-valuetext="`${participant.volume} процентов`" type="range" min="0" max="200" step="1" :value="participant.volume" @input="emit('setVolume', participant.id, Number(($event.target as HTMLInputElement).value))"></label>
       </details>
-      <span class="avatar lg" :style="{ backgroundColor: avatarBackground(participant.accountId ?? participant.id), color: avatarForeground(participant.accountId ?? participant.id) }" aria-hidden="true">{{ initial(participant.name) }}</span>
+      <span class="avatar lg" :style="{ backgroundColor: avatarBackground(participant.accountId ?? participant.id), color: avatarForeground(participant.accountId ?? participant.id) }" aria-hidden="true"><img v-if="avatarUrl(participant.accountId)" :src="avatarUrl(participant.accountId)" alt=""><template v-else>{{ initial(participant.name) }}</template></span>
       <span class="participant-name">{{ participant.name || 'Участник' }}</span>
       <span v-if="watchesOwnScreen(participant.id)" class="participant-watcher-indicator" role="img" aria-label="Смотрит вашу трансляцию" title="Смотрит вашу трансляцию"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.2-6 9.5-6 9.5 6 9.5 6-3.2 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg><span>Смотрит</span></span>
       <VoiceParticipantStatus class="participant-status" :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
@@ -31,7 +34,7 @@ function watchParticipantScreen(participantId: string): void { const screen = sc
       <button v-if="screenForParticipant(participant.id)" class="participant-watch" type="button" :aria-pressed="screenForParticipant(participant.id)?.id === selectedScreenStreamId" @click="watchParticipantScreen(participant.id)">Смотреть экран</button>
     </article>
     <article class="participant participant-self voice-participant-self" :class="{ talking: selfSpeaking && !selfDeafened && !selfMicrophoneMuted && !selfMicrophoneUnavailable }" data-testid="participant-card">
-      <span class="avatar lg" :style="{ backgroundColor: avatarBackground(selfName ?? 'Вы'), color: avatarForeground(selfName ?? 'Вы') }" aria-hidden="true">{{ initial(selfName ?? 'Вы') }}</span>
+      <span class="avatar lg" :style="{ backgroundColor: avatarBackground(selfName ?? 'Вы'), color: avatarForeground(selfName ?? 'Вы') }" aria-hidden="true"><img v-if="avatarUrl(selfAccountId)" :src="avatarUrl(selfAccountId)" alt=""><template v-else>{{ initial(selfName ?? 'Вы') }}</template></span>
       <span class="participant-name">{{ selfDisplayName(selfName) }}</span>
       <VoiceParticipantStatus class="participant-status" :deafened="selfDeafened" :microphone-muted="selfMicrophoneMuted" :microphone-unavailable="selfMicrophoneUnavailable" :speaking="selfSpeaking" />
     </article>
