@@ -21,9 +21,9 @@ import 'package:boohtacord_desktop/src/app.dart';
 import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/features/screen/setup/open_dialog/dialog.dart';
 import 'package:boohtacord_desktop/src/features/screen/setup/open_dialog/footer.dart';
-import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_dock_button/component.dart';
 
 import 'screen_setup_controls.dart';
+import 'screen_setup_launchers.dart';
 import 'desktop_updates/native_app.dart' as native;
 import 'desktop_updates/windows_app.dart' show Journey, until, require;
 
@@ -173,24 +173,9 @@ Future<void> main() async {
     final rows = <Map<String, Object>>[];
     for (final dock in [false, true]) {
       for (final traverse in [false, true]) {
-        final launcher = find
-            .ancestor(
-              of: find.byTooltip('Начать демонстрацию экрана'),
-              matching: dock
-                  ? find.byType(WorkspaceVoiceDockButton)
-                  : find.byType(IconButton),
-            )
-            .hitTestable();
-        // The dock tooltip is inside its custom button; select by ancestry.
-        final trigger = dock
-            ? find
-                  .descendant(
-                    of: find.byType(WorkspaceVoiceDockButton),
-                    matching: find.byTooltip('Начать демонстрацию экрана'),
-                  )
-                  .hitTestable()
-            : launcher;
-        require(trigger.evaluate().length == 1, 'launcher_not_unique');
+        qa.step =
+            '${dock ? 'dock' : 'header'}_${traverse ? 'traversed' : 'initial'}_launcher';
+        final trigger = await waitForScreenSetupLauncher(qa.driver, dock: dock);
         final icon = find
             .descendant(
               of: trigger,
