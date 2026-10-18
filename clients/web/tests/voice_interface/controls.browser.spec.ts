@@ -29,6 +29,12 @@ test('empty voice roster centers its message and the dock hides voluntary-leave 
   const empty = page.locator('.voice-roster-empty')
   await expect(empty).toHaveText('Пока никого нет.')
   expect(await empty.evaluate(element => getComputedStyle(element).textAlign)).toBe('center')
+  const centering = await page.evaluate(() => {
+    const message = document.querySelector<HTMLElement>('.voice-roster-empty')!.getBoundingClientRect()
+    const card = document.querySelector<HTMLElement>('.voice-prejoin-card')!.getBoundingClientRect()
+    return { messageCenter: message.left + message.width / 2, cardCenter: card.left + card.width / 2 }
+  })
+  expect(Math.abs(centering.messageCenter - centering.cardCenter)).toBeLessThanOrEqual(1)
   await page.screenshot({ path: info.outputPath('empty-voice-roster.png') })
 
   await patch(page, { notice: { reason: 'VOLUNTARY_LEAVE', source: 'local', message: 'Голосовое подключение завершено.', explanation: '', reconnectAllowed: true } })

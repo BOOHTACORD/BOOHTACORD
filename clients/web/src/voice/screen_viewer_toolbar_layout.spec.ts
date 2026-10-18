@@ -39,7 +39,7 @@ describe('selected-stream toolbar layout', () => {
     expect(participants).toContain('<VoiceParticipantStatus')
     expect(participants).toContain('sharesScreen')
     expect(css).toContain('.voice-room .voice-viewer-participant-strip')
-    expect(css).toContain('width: 148px;')
+    expect(css).toContain('width: 176px;')
   })
 
   it('offers quality changes only to the active sender and exposes receiver statistics', () => {

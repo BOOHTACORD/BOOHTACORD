@@ -30,35 +30,28 @@ for (const width of [320,390,768,1024,1440,1920]) test(`inventory production nav
   await page.screenshot({ path: info.outputPath('direct-messages.png') })
   await writeFile(info.outputPath('geometry.json'), JSON.stringify(before, null, 2))
 })
-test('long names have keyboard-readable full hints and category bounds', async ({ page }) => {
+test('long names stay accessible without redundant channel tooltips', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 768 }); await open(page)
   const category = page.locator('.channel-category-disclosure').first()
   const heading = await category.boundingBox(), panel = await page.locator('.nav-content').boundingBox()
   expect(heading!.x + heading!.width).toBeLessThanOrEqual(panel!.x + panel!.width)
   const channel = page.locator('.channel-row .channel-button').first()
-  await channel.focus(); await expect(page.getByRole('tooltip')).toHaveText(`${longName} 0`)
+  await channel.focus(); await expect(page.getByRole('tooltip')).toHaveCount(0)
+  await expect(channel).toHaveAccessibleName(new RegExp(longName))
   await expect(channel).toHaveAccessibleName(/Непрочитанных сообщений: 120/)
   await expect(channel).toHaveAccessibleName(/Упоминаний: 3/)
-  await channel.press('Escape'); await expect(page.getByRole('tooltip')).toHaveCount(0)
+  const memberCount = page.locator('.channel-member-count').first()
+  await expect(memberCount).not.toHaveAttribute('title')
+  await expect(memberCount).toHaveAttribute('aria-label', /^Участников в голосовом канале:/)
 })
-test('navigation hints do not block adjacent channel rows', async ({ page }) => {
+test('hovering a channel does not show a redundant tooltip', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 768 }); await open(page)
   const trigger = page.locator('.channel-row .channel-button').first()
   await trigger.hover()
-  const hint = page.getByRole('tooltip')
-  await expect(hint).toBeVisible()
-  const target = await page.locator('.channel-row .channel-button').evaluateAll((buttons) => {
-    const hint = document.querySelector<HTMLElement>('[role="tooltip"]')!
-    const box = hint.getBoundingClientRect()
-    return buttons.slice(1).map((button, index) => {
-      const rect = button.getBoundingClientRect()
-      return { index: index + 1, x: rect.x + rect.width / 2, y: rect.y + rect.height / 2,
-        covered: box.left <= rect.x + rect.width / 2 && box.right >= rect.x + rect.width / 2 && box.top <= rect.y + rect.height / 2 && box.bottom >= rect.y + rect.height / 2 }
-    }).find(candidate => candidate.covered)
-  })
-  expect(target, 'the fixture should place the hint over an adjacent row').toBeTruthy()
-  await page.mouse.click(target!.x, target!.y)
-  await expect(page.locator('.channel-row .channel-button').nth(target!.index)).toHaveAttribute('aria-current', 'page')
+  await expect(page.getByRole('tooltip')).toHaveCount(0)
+  const next = page.locator('.channel-row .channel-button').nth(1)
+  await next.click()
+  await expect(next).toHaveAttribute('aria-current', 'page')
 })
 test('one scroll surface, compact desktop rhythm and reachable final row above dock', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 480 }); await open(page)
@@ -97,7 +90,10 @@ test('favorites, collapsed categories, selected states and DM survive navigation
   await page.setViewportSize({ width: 1440, height: 768 }); await open(page)
   await page.locator('.channel-favorite-toggle').first().click()
   await expect(page.locator('.channel-favorites .channel-button')).toHaveCount(1)
-  await expect(page.locator('.channel-favorites .channel-button')).toHaveAccessibleName(/Непрочитанных сообщений: 120/)
+  const favoriteChannel = page.locator('.channel-favorites .channel-button')
+  await expect(favoriteChannel).toHaveAccessibleName(/Непрочитанных сообщений: 120/)
+  await favoriteChannel.hover()
+  await expect(page.getByRole('tooltip')).toHaveCount(0)
   await expect(page.locator('.channel-connected-mark').first()).toHaveAccessibleName('Подключено к голосу')
   const disclosure = page.locator('.channel-category-disclosure').first()
   await disclosure.click(); await expect(disclosure).toHaveAttribute('aria-expanded','false')
@@ -190,9 +186,9 @@ test('resize preserves selected channel, favorite and category collapse with one
   }
 })
 
-test('hiding the navigation ancestor removes its tooltip and releases the next control', async ({ page }) => {
+test('hiding the navigation ancestor removes its active category tooltip and releases the next control', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 768 }); await open(page)
-  await page.locator('.channel-row .channel-button').first().hover()
+  await page.locator('.channel-category-disclosure').first().hover()
   await expect(page.getByRole('tooltip')).toHaveCount(1)
   await page.locator('.sidebar').evaluate(el => el.classList.remove('is-open'))
   await expect(page.getByRole('tooltip')).toHaveCount(0)
