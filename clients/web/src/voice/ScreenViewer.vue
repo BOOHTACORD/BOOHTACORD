@@ -16,7 +16,7 @@ import { createScreenFullscreenControls } from './screen_fullscreen_controls'
 import { useScreenPlaybackQuality } from './screen_playback_quality'
 import { useScreenReceiverDiagnostics } from './use_screen_receiver_diagnostics'
 import { buildScreenClientReport, startScreenClientReporting, webPlatform } from './screen_client_reporter'
-const props = defineProps<{ audioMuted: boolean; cards: ScreenViewerCard[]; deafened: boolean; ended: boolean; error: string | null; expanded: boolean; mini?: boolean; ownScreenSharing?: boolean; pinned?: boolean; participants: VoiceVolumeParticipant[]; selfAccountId?: string; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfName: string | null; selfSpeaking: boolean; selectedAudioVolume: number; selectedId: string | null; sourceDiagnostics?:ScreenDiagnostics }>()
+const props = withDefaults(defineProps<{ audioMuted: boolean; cards: ScreenViewerCard[]; deafened: boolean; ended: boolean; error: string | null; expanded: boolean; mini?: boolean; ownScreenSharing?: boolean; pinned?: boolean; participants: VoiceVolumeParticipant[]; screenWatcherIds?: string[]; selfAccountId?: string; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfName: string | null; selfSpeaking: boolean; selectedAudioVolume: number; selectedId: string | null; sourceDiagnostics?:ScreenDiagnostics }>(), { screenWatcherIds: () => [] })
 const emit = defineEmits<{ changeQuality: []; clear: []; pin: []; retry: [automatic?: boolean]; select: [id: string, video: HTMLVideoElement | null, audio: HTMLAudioElement | null]; setAudioVolume: [percent: number]; stopScreen: []; toggleAudio: []; 'update:expanded': [expanded: boolean] }>()
 const video = ref<HTMLVideoElement | null>(null)
 const audio = ref<HTMLAudioElement | null>(null)
@@ -134,6 +134,6 @@ async function toggleFullscreen(): Promise<void> {
       </div>
     </div>
     <ScreenViewerRail v-if="cards.length" :cards="cards" :selected-id="selectedId" :show-return-to-voice="false" @select="select" />
-    <ScreenViewerParticipantStrip v-if="!mini" :participants="participants" :screens="cards" :self-account-id="selfAccountId" :self-deafened="deafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-name="selfName" :self-speaking="selfSpeaking" :own-screen-sharing="Boolean(ownScreenSharing)" />
+    <ScreenViewerParticipantStrip v-if="!mini" :participants="participants" :screens="cards" :screen-watcher-ids="screenWatcherIds" :self-account-id="selfAccountId" :self-deafened="deafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-name="selfName" :self-speaking="selfSpeaking" :own-screen-sharing="Boolean(ownScreenSharing)" />
   </section>
 </template>

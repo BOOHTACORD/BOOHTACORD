@@ -1,0 +1,38 @@
+{
+  "id": "screen-viewer-presence-2026-10-18-001",
+  "task": "T-030 / Web screen viewer presence",
+  "status": "PASS_LOCAL",
+  "observed_at": "2026-10-18",
+  "source_base_commit": "68f07dd360a0e4989a40313ef72bc0d65ab448a4",
+  "change": "After LiveKit confirms a remote screen-video subscription, the Web client reports the viewer lease and exact track to an authenticated Go endpoint. The server verifies both active leases in the same open VOICE channel and the owner's current LiveKit screen publication, keeps bounded ephemeral presence with heartbeat expiry, and sends the owner an empty private invalidation. The owner loads a no-store snapshot and marks matching room participants with an eye icon; a compact audience count appears with the screen participant strip.",
+  "checks": [
+    {
+      "name": "backend_presence_and_event_hub_tests",
+      "result": "PASS_LOCAL",
+      "detail": "Go unit tests passed on the feature commit for viewer/owner authorization, current-publication checks, heartbeat expiry, capacity bounds, targeted capability-gated invalidations, and protected route behavior."
+    },
+    {
+      "name": "openapi_and_realtime_contracts",
+      "result": "PASS_LOCAL",
+      "detail": "19 OpenAPI parity tests passed on the feature commit; schema lint passed; native route/security/parameter parity passed for 112 public operations."
+    },
+    {
+      "name": "web_unit_and_build",
+      "result": "PASS_LOCAL",
+      "detail": "475 Web test files / 1,579 tests passed; production Vue/Vite build passed."
+    },
+    {
+      "name": "local_feature_acceptance",
+      "result": "PASS_LOCAL",
+      "detail": "Registered screen, voice, chat, shell and screen-track-name Web checks passed on the rebased feature commit. The actual API/PostgreSQL/LiveKit two-client screen-share journey passed at 1440 px and 393 px, including count 0 before subscription, count 1 and viewer marker after decoded subscription, and cleanup after unsubscribe. Report: .out/local-features/20261018-201354/index.html."
+    },
+    {
+      "name": "visual_review",
+      "result": "PASS_LOCAL",
+      "detail": "Reviewed the 320x900, 390x900 at 200% text, and 1440x900 participant-strip screenshots at source resolution. Desktop shows 'Зрители · 1' and an eye beside the watching participant. Narrow layouts show the eye and numeric count without clipping; the full accessible label remains 'Зрители трансляции: 1'. Participant names remain horizontally scrollable. Screenshots are in .out/local-features/20261018-201354/web-screen_share_ui/disclosure.browser-screen--36011--and-scrolls-names-by-width/."
+    }
+  ],
+  "qa_report_status": "REVIEW_REQUIRED",
+  "qa_report_note": "The local-feature harness preserves REVIEW_REQUIRED until a screenshot baseline is explicitly approved. Relevant changed-flow screenshots were reviewed and noted; no new baseline was approved just to change the automated report status.",
+  "limitation": "The two-client media run uses the repository's synthetic canvas and quiet audio source on a local stack; it does not prove OS picker behavior, human attention, physical-device media quality, or hardware capacity. This change reports Web-client subscriptions; Flutter clients do not yet send viewer-presence heartbeats. A disconnected viewer expires after the 20-second heartbeat TTL."
+}

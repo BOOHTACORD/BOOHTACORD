@@ -13,6 +13,7 @@ export function createScreenViewerControls(
   selectedId: Ref<string | null>,
   error: Ref<string | null>,
   ended: Ref<boolean>,
+  watcherIds?: Ref<string[]>,
 ) {
   let controller: ScreenViewerController | null = null
   const observation = createViewObservation()
@@ -24,6 +25,7 @@ export function createScreenViewerControls(
 
   function sync(): void {
     cards.value = controller?.cards() ?? []
+    if (watcherIds) watcherIds.value = controller?.watchers().map(watcher => watcher.id) ?? []
     selectedId.value = controller?.selectedId ?? null
     ended.value = controller?.ended ?? false
     audioMuted.value = controller?.audioMuted ?? false
@@ -115,5 +117,5 @@ export function createScreenViewerControls(
     controller.setAudioMuted(!controller.audioMuted)
   }
 
-  return { audioMuted, clear, retry, select, start, stop, toggleAudio }
+  return { audioMuted, clear, refreshWatchers: () => controller?.refreshWatchers() ?? Promise.resolve(), retry, select, start, stop, toggleAudio }
 }

@@ -12,6 +12,8 @@
   background: var(--gc-surface-raised);
 }
 .participant-share-badge svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.participant-watcher-indicator { display: inline-flex; align-items: center; gap: 5px; border-radius: var(--gc-radius-full); padding: 4px 8px; color: var(--gc-accent-text); background: var(--gc-surface-selected); font-size: var(--gc-text-caption); font-weight: var(--gc-weight-medium); }
+.participant-watcher-indicator svg { width: 14px; height: 14px; flex: 0 0 14px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
 .participant-watch {
   min-height: 30px;
   margin-top: auto;

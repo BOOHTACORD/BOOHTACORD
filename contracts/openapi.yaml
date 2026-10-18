@@ -3727,6 +3727,85 @@
         "security": [{"SessionCookie": []}]
       }
     },
+    "/api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}": {
+      "put": {
+        "operationId": "reportScreenViewerPresence",
+        "description": "The authenticated viewer reports only after LiveKit confirms a subscription to the owner's current screen-video track. Both viewer and owner must hold active, unrevoked voice leases in the same open VOICE channel, bound to their session and account ACLs. The server verifies the exact current ScreenShare track before accepting the first report. Presence is process-local, expires after 20 seconds without heartbeat, and contains account IDs only in the owner's private snapshot.",
+        "parameters": [
+          { "name": "viewerLeaseID", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "ownerLeaseID", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "Origin", "in": "header", "required": true, "schema": { "type": "string" }, "description": "Exact configured PUBLIC_ORIGIN; required as the mutation CSRF boundary." }
+        ],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["track_sid"], "properties": { "track_sid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9_-]+$" } } } } } },
+        "responses": {
+          "204": { "description": "Viewer presence refreshed", "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "400": { "description": "Invalid track SID or request body", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "401": { "description": "No valid active session", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "403": { "description": "Origin rejected before dispatch", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "404": { "description": "Viewer and owner do not have active leases in the same channel, or the current screen publication is unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "500": { "description": "Internal or middleware failure; an empty body may be returned", "x-empty-body-possible": true, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "503": { "description": "Private LiveKit RoomService or bounded presence store unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } }
+        },
+        "security": [{ "SessionCookie": [] }]
+      },
+      "delete": {
+        "operationId": "stopScreenViewerPresence",
+        "description": "The authenticated viewer removes its presence for the exact screen track. Both active same-channel voice leases and the current session-bound viewer lease are rechecked. The track SID prevents a delayed unsubscribe for a replaced publication from removing the current viewer state.",
+        "parameters": [
+          { "name": "viewerLeaseID", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "ownerLeaseID", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "track_sid", "in": "query", "required": false, "schema": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9_-]+$" }, "description": "Required by validation; exact track SID being unsubscribed." },
+          { "name": "Origin", "in": "header", "required": true, "schema": { "type": "string" }, "description": "Exact configured PUBLIC_ORIGIN; required as the mutation CSRF boundary." }
+        ],
+        "responses": {
+          "204": { "description": "Viewer presence removed", "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "400": { "description": "Invalid or missing track SID", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "401": { "description": "No valid active session", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "403": { "description": "Origin rejected before dispatch", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "404": { "description": "Viewer or owner active same-channel lease unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "500": { "description": "Internal or middleware failure; an empty body may be returned", "x-empty-body-possible": true, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "503": { "description": "Presence store unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } }
+        },
+        "security": [{ "SessionCookie": [] }]
+      }
+    },
+    "/api/v1/voice/leases/{ownerLeaseID}/screen-viewers": {
+      "get": {
+        "operationId": "listScreenViewerPresence",
+        "description": "Only the current owner of the session-bound active voice lease may read the current publication's private viewer snapshot. The owner lease and current LiveKit ScreenShare publication are verified server-side. Response is private/no-store; viewer account IDs are never included in realtime events.",
+        "parameters": [
+          { "name": "ownerLeaseID", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": {
+          "200": { "description": "Current subscribers of the owner's active screen track", "headers": { "Cache-Control": { "schema": { "const": "private, no-store, max-age=0" } }, "X-Request-ID": { "$ref": "#/components/headers/RequestID" } }, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["viewer_account_ids"], "properties": { "viewer_account_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string", "format": "uuid" } } } } } } },
+          "400": { "description": "Invalid owner lease ID", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "401": { "description": "No valid active session", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "404": { "description": "Caller does not own the active lease", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "500": { "description": "Internal or middleware failure; an empty body may be returned", "x-empty-body-possible": true, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "503": { "description": "Private LiveKit RoomService or presence store unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } }
+        },
+        "security": [{ "SessionCookie": [] }]
+      },
+      "delete": {
+        "operationId": "clearScreenViewerPresence",
+        "description": "The active owner clears viewer presence for its screen track, or all stale presence for its own lease when track_sid is omitted. Session-bound owner ACL is enforced. The optional track SID avoids clearing a replacement publication during asynchronous teardown.",
+        "parameters": [
+          { "name": "ownerLeaseID", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "track_sid", "in": "query", "required": false, "schema": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9_-]+$" }, "description": "Optional exact screen track SID. Omit to clear all viewer entries for this owner lease." },
+          { "name": "Origin", "in": "header", "required": true, "schema": { "type": "string" }, "description": "Exact configured PUBLIC_ORIGIN; required as the mutation CSRF boundary." }
+        ],
+        "responses": {
+          "204": { "description": "Owner viewer state cleared", "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "400": { "description": "Invalid track SID", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "401": { "description": "No valid active session", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "403": { "description": "Origin rejected before dispatch", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "404": { "description": "Caller does not own the active lease", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "500": { "description": "Internal or middleware failure; an empty body may be returned", "x-empty-body-possible": true, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "503": { "description": "Presence store unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } }
+        },
+        "security": [{ "SessionCookie": [] }]
+      }
+    },
     "/api/v1/voice/leases/{leaseID}/screen-previews/v1": {
       "post": {
         "operationId": "beginScreenPreviewGeneration",

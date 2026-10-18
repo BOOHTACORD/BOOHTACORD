@@ -19,13 +19,14 @@ export function createVoiceMediaState(session:VoiceSession,active:Ref<ActiveVoic
   const screenProfile = ref<ScreenProfile | null>(null)
   const screenState = ref<ScreenShareState>('IDLE')
   const rawScreenViewerCards = ref<ScreenViewerCard[]>([])
+  const rawScreenWatcherIds = ref<string[]>([])
   const screenViewerError = ref<string | null>(null)
   const screenViewerEnded = ref(false)
   const selectedScreenStreamId = ref<string | null>(null)
   const { dispose: disposeScreenControls, refreshScreenDiagnostics, startScreen, stopScreen } = createScreenControls(session.screen, active, screenError, screenProfile, screenState, screenDiagnostics)
   onScopeDispose(disposeScreenControls)
   installScreenSenderReporting(screenState, screenDiagnostics, refreshScreenDiagnostics, undefined, () => screenProfile.value)
-  const screenViewer = createScreenViewerControls(session, rawScreenViewerCards, selectedScreenStreamId, screenViewerError, screenViewerEnded)
+  const screenViewer = createScreenViewerControls(session, rawScreenViewerCards, selectedScreenStreamId, screenViewerError, screenViewerEnded, rawScreenWatcherIds)
   const { deafenChanging, toggleDeafen } = createDeafenControls(session, deafened, microphoneMuted, microphonePermissionDenied, error)
   const { setMicrophoneMuted, toggleMicrophone } = createMicrophoneControls(session, active, state, deafened, microphoneMuted, microphonePermissionDenied, error)
   const volume = createVoiceVolumeControls(session)
@@ -35,6 +36,7 @@ export function createVoiceMediaState(session:VoiceSession,active:Ref<ActiveVoic
   const screenViewerCards = computed(() => rawScreenViewerCards.value.map((stream) => ({
     ...stream, participantName: stream.isLocal ? stream.participantName : voiceParticipantName(authors, stream.accountId, stream.participantName) ?? stream.participantName,
   })))
+  const screenWatcherIds = computed(() => rawScreenWatcherIds.value)
   watch([rawScreenViewerCards, state], ([cards, phase]) => observeStreamStarts(cards, phase), { immediate: true, flush: 'sync' })
   let visibleAccountIds = new Set<string>()
   watch([volume.participants, rawScreenViewerCards], ([participants, streams]) => {
@@ -43,6 +45,6 @@ export function createVoiceMediaState(session:VoiceSession,active:Ref<ActiveVoic
     visibleAccountIds = next
   }, { immediate: true })
   return {screenError,screenDiagnostics,screenProfile,screenState,screenViewerError,screenViewerEnded,selectedScreenStreamId,
-    refreshScreenDiagnostics,startScreen,stopScreen,screenViewer,deafenChanging,toggleDeafen,setMicrophoneMuted,toggleMicrophone,
-    volume,voiceVolumeParticipants,screenViewerCards}
+    refreshScreenDiagnostics,startScreen,stopScreen,screenViewer,refreshScreenWatchers: screenViewer.refreshWatchers,deafenChanging,toggleDeafen,setMicrophoneMuted,toggleMicrophone,
+    volume,voiceVolumeParticipants,screenViewerCards,screenWatcherIds}
 }

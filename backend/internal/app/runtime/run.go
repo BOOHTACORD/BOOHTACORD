@@ -10,6 +10,7 @@ import (
 	"os"
 	"time"
 	"voice-platform/backend/internal/app/lifecycle"
+	screenviewerpresenceapp "voice-platform/backend/internal/app/media_routes/screen_viewer_presence"
 	"voice-platform/backend/internal/app/telemetry"
 	workerruntime "voice-platform/backend/internal/app/worker_runtime"
 	clientupdates "voice-platform/backend/internal/client_updates/catalog"
@@ -17,6 +18,7 @@ import (
 	"voice-platform/backend/internal/database/pool"
 	observeusage "voice-platform/backend/internal/identity/observe_usage"
 	previewmemory "voice-platform/backend/internal/media/screen_preview/memory"
+	presencememory "voice-platform/backend/internal/media/screen_viewer_presence/memory"
 	httpmetrics "voice-platform/backend/internal/observability/http_metrics"
 	dependencies "voice-platform/backend/internal/observability/observe_dependencies"
 	ratelimit "voice-platform/backend/internal/security/rate_limit"
@@ -75,9 +77,11 @@ func Run(ctx context.Context) (result error) {
 	resources.Add(func(context.Context) error { return stopUsage() })
 	events, stopRealtime := workerruntime.StartRealtime(ctx, database)
 	resources.Add(stopRealtime)
+	screenViewers := presencememory.New(screenviewerpresenceapp.NewHints(events).Changed)
+	resources.Add(func(context.Context) error { return screenViewers.Close() })
 	updates := clientupdates.NewStore(configuration.ClientUpdateCatalogPath, configuration.ClientUpdateAllowedHosts, metrics)
 	updates.Start(ctx)
-	handler, err := routes(database, configuration, events, metrics, updates, usage, previews)
+	handler, err := routes(database, configuration, events, metrics, updates, usage, previews, screenViewers)
 	if err != nil {
 		return err
 	}
