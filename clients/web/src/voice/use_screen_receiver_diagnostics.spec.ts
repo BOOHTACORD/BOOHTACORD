@@ -61,4 +61,34 @@ describe('receiver sampling lifecycle', () => {
     await vi.advanceTimersByTimeAsync(4000)
     expect(second).toHaveBeenCalledOnce()
   })
+
+  it('keeps the last successful sample through intermittent unavailable and failed reads', async () => {
+    vi.useFakeTimers()
+    const readReceiverStats = vi.fn()
+      .mockResolvedValueOnce({ timestamp: 1000, framesDecoded: 20, framesDropped: 0, bytesReceived: 1000 })
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error('temporary stats read failure'))
+      .mockResolvedValueOnce({ timestamp: 4000, framesDecoded: 200, framesDropped: 1, bytesReceived: 1_501_000 })
+    const selected = ref<ScreenViewerCard | null>({ id: 'screen', hasAudio: true, participantId: 'a', participantName: 'A', readReceiverStats })
+    let observed: ReturnType<typeof useScreenReceiverDiagnostics> | undefined
+    const app = renderer.createApp({ setup() { observed = useScreenReceiverDiagnostics(selected, () => false); return () => null } })
+    app.mount({})
+    await Promise.resolve()
+    const firstMetrics = observed?.metrics.value
+    expect(observed?.sampledAt.value).toBe(1000)
+
+    await vi.advanceTimersByTimeAsync(1000)
+    expect(observed?.sampledAt.value).toBe(1000)
+    expect(observed?.metrics.value).toBe(firstMetrics)
+
+    await vi.advanceTimersByTimeAsync(1000)
+    expect(observed?.sampledAt.value).toBe(1000)
+    expect(observed?.metrics.value).toBe(firstMetrics)
+
+    await vi.advanceTimersByTimeAsync(1000)
+    expect(observed?.sampledAt.value).toBe(4000)
+    expect(observed?.metrics.value?.decodedFps).toBe(60)
+    expect(observed?.metrics.value?.bitrateKbps).toBe(4000)
+    app.unmount()
+  })
 })
