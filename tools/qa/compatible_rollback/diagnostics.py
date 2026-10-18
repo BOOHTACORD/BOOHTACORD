@@ -30,4 +30,5 @@ def diagnose(text, messages):
             'exit_codes': sorted({int(n) for n in re.findall(r'(?:exit code: |non-zero exit status )(\d+)', text)}),
             'memory_exhaustion': 'out of memory' in text.lower() or 'signal: killed' in text.lower(),
             'disk_exhaustion': 'no space left on device' in text.lower(),
+            'address_collision': 'address already in use' in text.lower(),
             'registry_failure': 'failed to resolve source metadata' in text.lower()}

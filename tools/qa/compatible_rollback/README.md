@@ -20,6 +20,10 @@ release images. Allow 5 GiB VM memory and free space for the compiler,
 two OCI bundles and the deployment's real disk-headroom guards. Only loopback
 port 5443 is exposed. The browser maps `qa60.localhost` to loopback. Its local
 certificate exception is explicit; internal rollout curl trusts the owned CA.
+The existing `PRIVATE_PROXY_IP` and `TRUSTED_PROXY_CIDRS` inputs select
+`172.30.254.250/32` for the QA proxy. A negative control confirmed that the
+default static `.2` collides with the first dynamic endpoint in an empty bridge.
+The retained Compose file and forwarding trust checks remain unchanged.
 
 ## Inputs and invocation
 

@@ -37,6 +37,10 @@ def prepare(work):
         'POSTGRES_PASSWORD': secrets.token_urlsafe(24), 'LIVEKIT_API_KEY': 'qa60-only',
         'LIVEKIT_API_SECRET': secrets.token_urlsafe(32), 'LIVEKIT_NODE_IP': '127.0.0.1',
         'LIVEKIT_PUBLIC_WS_URL': 'wss://qa60.localhost:5443',
+        # The first dynamic endpoint in a fresh bridge takes .2. Keep the proxy
+        # outside the few dynamically allocated service addresses, using the
+        # existing Compose configuration inputs and the exact API trust pin.
+        'PRIVATE_PROXY_IP': '172.30.254.250', 'TRUSTED_PROXY_CIDRS': '172.30.254.250/32',
         'API_IMAGE': 'voice-platform-api@' + current['components']['api']['index_digest'],
         'WEB_IMAGE': 'voice-platform-web@' + current['components']['web']['index_digest'],
     }
@@ -80,6 +84,7 @@ def prepare(work):
         'supporting_images': supporting,
         'qa_signing_public_key_sha256': hashlib.sha256((work / 'trusted-signing.pub.pem').read_bytes()).hexdigest(),
         'scope': 'Isolated QA signing and runtime; source bundles independently verified before every transition',
+        'private_proxy_ip': values['PRIVATE_PROXY_IP'], 'trusted_proxy_cidrs': values['TRUSTED_PROXY_CIDRS'],
     }
     (work / 'environment.json').write_text(json.dumps(metadata, indent=2) + '\n')
     private = {'password': password, 'current': current['source_revision'], 'previous': previous['source_revision']}
