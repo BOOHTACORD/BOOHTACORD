@@ -1,31 +1,51 @@
-"""Read GitHub's base revision without shell-interpolating event fields."""
+"""Resolve event revisions as Git arguments, never shell-interpolated filenames."""
 import json
 import os
 import re
 import subprocess
 from pathlib import Path
-from .selection import ALL, select
+from .selection import ALL, classify
+
+
+def git(*args):
+    return subprocess.run(['git', *args], capture_output=True, check=True).stdout
 
 
 def changed_paths(event, event_name):
+    if not isinstance(event, dict):
+        return None
     if event_name == 'pull_request':
         base = event.get('pull_request', {}).get('base', {}).get('sha')
-    elif event_name == 'push':
+    elif event_name == 'push' and not str(event.get('ref', '')).startswith('refs/tags/'):
         base = event.get('before')
     else:
         return None
-    if not isinstance(base, str) or not re.fullmatch(r'[0-9a-f]{40}', base) or base == '0' * 40:
+    if not isinstance(base, str) or not re.fullmatch('[0-9a-f]{40}', base) or base == '0' * 40:
         return None
-    result = subprocess.run(['git', 'diff', '--name-only', '--no-renames', '-z', base, 'HEAD', '--'], capture_output=True)
-    if result.returncode:
+    try:
+        head = git('rev-parse', 'HEAD').decode().strip()
+        if os.environ.get('GITHUB_SHA', head) != head:
+            return None
+        if event_name == 'pull_request':
+            base = git('merge-base', base, head).decode().strip()
+        paths = git('diff', '--name-only', '--no-renames', '-z', base, head, '--').decode('utf-8').split('\0')
+        return [path for path in paths if path]
+    except (subprocess.CalledProcessError, OSError, UnicodeError):
         return None
-    return list(filter(None, result.stdout.decode('utf-8', errors='strict').split('\0')))
 
 
 def main():
-    event = json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text(encoding='utf-8'))
-    chosen = select(changed_paths(event, os.environ.get('GITHUB_EVENT_NAME')))
-    result = '\n'.join(f'{name}={str(name in chosen).lower()}' for name in sorted(ALL)) + '\n'
+    try:
+        event = json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text(encoding='utf-8'))
+        paths = changed_paths(event, os.environ.get('GITHUB_EVENT_NAME'))
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        paths = None
+    classification = classify(paths)
+    chosen = classification.pop('gates')
+    values = {name: name in chosen for name in sorted(ALL)}
+    values.update(classification)
+    result = ''.join(f'{name}={str(value).lower() if type(value) is bool else value}\n'
+                     for name, value in values.items())
     with Path(os.environ['GITHUB_OUTPUT']).open('a', encoding='utf-8') as output:
         output.write(result)
     print(result, end='')

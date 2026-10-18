@@ -2,6 +2,7 @@
 from pathlib import Path
 import yaml
 from .selection import require
+from . import release_routing
 
 GATES = {'ci-backend.yaml', 'ci-frontend.yaml', 'ci-contracts.yaml'}
 WRITERS = ('deploy-production.yaml', 'install-retained-release.yaml', 'rehearse-compatible-rollback.yaml')
@@ -20,8 +21,8 @@ def check(workflows):
     builder = builders[0]
     require(set(builder.get('runs-on', [])) == {'self-hosted', 'linux', 'x64', 'boohtacord-builder'},
             'Signed builds require the dedicated Docker-capable builder runner')
-    require(set(builder.get('needs', [])) == gates, 'Builder must depend on all source-bound receipts')
-    require(builder.get('if') == "github.ref == 'refs/heads/master'" and builder.get('environment') == 'production',
+    require(set(builder.get('needs', [])) == gates | {'changes'}, 'Builder must depend on all source-bound receipts')
+    require(builder.get('if') == "github.ref == 'refs/heads/master' && needs.changes.outputs.server_release_impact == 'true'" and builder.get('environment') == 'production',
             'Only protected master builds can use the production signer')
     require(build['concurrency']['cancel-in-progress'] == 'true', 'Obsolete builds must be cancellable')
     uploads = [step['with'] for step in builder['steps'] if step.get('uses') == 'actions/upload-artifact@v4']
@@ -31,11 +32,14 @@ def check(workflows):
         workflow = workflows[name]
         require(workflow['concurrency'] == {'group': 'v-bootybay-production', 'cancel-in-progress': 'false'},
                 'Install/recovery/rollback must share a non-cancellable production lock')
-        for job in workflow['jobs'].values():
+        for job_name, job in workflow['jobs'].items():
+            if name == 'deploy-production.yaml' and job_name == 'route':
+                continue
             require(job.get('environment') == 'production', 'Production environment protection is required')
             require(not any(word in commands(job) for word in ('build_images', 'legacy_transfer', 'docker build', 'npm ', 'go build')),
                     'Production writer must not build from source')
     deploy = workflows['deploy-production.yaml']
+    release_routing.check(build, deploy, gates)
     require(deploy['on']['workflow_run'] == {'workflows': ['Build server'], 'branches': ['master'], 'types': ['completed']},
             'Deployment must consume completed master builds')
     installer = next(job for job in deploy['jobs'].values() if 'tools/release/delivery/transfer.sh' in commands(job))

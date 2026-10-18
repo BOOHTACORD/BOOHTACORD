@@ -483,6 +483,11 @@ tasks:
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02]
     depends_on: [T-054]
     evidence: [tools/ci/baseline/test_metrics.py, tools/ci/baseline/test_collect.py, docs/ci/baseline.md, evidence/ci/baseline-2026-10-18]
+  - id: CICD-02
+    title: Unified fail-closed component and server/native release routing
+    requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
+    depends_on: [CICD-01]
+    evidence: [tools/ci/select_changes/test_routing.py, tools/ci/select_changes/test_diff.py, tools/release/delivery/test_routing.py, docs/ci/routing.md]
   - id: T-060
     title: Release quality gates
     requirements: [REQ-QUALITY-01, REQ-QUALITY-02, REQ-CAPACITY-01, REQ-DEPLOY-01]
