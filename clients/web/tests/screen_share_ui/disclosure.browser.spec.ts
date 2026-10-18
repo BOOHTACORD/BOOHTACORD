@@ -87,6 +87,11 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
   const participantCards = strip.locator('.voice-viewer-participant')
   await expect(participantCards).toHaveCount(3)
   await expect(participantCards.first()).toHaveCSS('width', '176px')
+  const watcherCount = strip.getByRole('status', { name: 'Зрители трансляции: 1' })
+  await expect(watcherCount).toBeVisible()
+  await expect(watcherCount).toHaveAttribute('title', 'Зрители трансляции: 1')
+  await expect(watcherCount).toHaveText('1', { useInnerText: true })
+  await expect(strip.getByRole('img', { name: 'Смотрит вашу трансляцию' })).toHaveCount(1)
   await expect(strip.getByText('Участник говорит', { exact: true })).toBeVisible()
   await expect(strip.getByText('Участник показывает экран', { exact: true })).toBeVisible()
   await expect(page.locator('.screen-stage-label')).toContainText('Ваш экран')
@@ -138,6 +143,7 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
 
   await open(page, 'viewer-strip', 1440)
   await clean(page)
+  await expect(page.getByTestId('viewer-participants').getByRole('status', { name: 'Зрители трансляции: 1' })).toHaveText('Зрители · 1')
   await page.screenshot({ path: info.outputPath('viewer-participants-1440.png') })
 })
 

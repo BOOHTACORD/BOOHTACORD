@@ -73,6 +73,7 @@ const emit = defineEmits<{ openSearch: []; returnVoice: [channelId: string]; tog
     :selected-screen-profile="selectedScreenProfile"
     :screen-state="voiceConnection.screenState"
     :screen-viewer-cards="voiceConnection.screenViewerCards"
+    :screen-watcher-ids="voiceConnection.screenWatcherIds"
     :screen-viewer-ended="voiceConnection.screenViewerEnded"
     :screen-viewer-error="voiceConnection.screenViewerError"
     :selected-screen-audio-volume="voiceConnection.selectedScreenAudioVolume"

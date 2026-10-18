@@ -22,6 +22,7 @@ import (
 	observeusage "voice-platform/backend/internal/identity/observe_usage"
 	authorizelivekitsignal "voice-platform/backend/internal/media/authorize_livekit_signal"
 	screenpreview "voice-platform/backend/internal/media/screen_preview"
+	presencememory "voice-platform/backend/internal/media/screen_viewer_presence/memory"
 	guildlifecycle "voice-platform/backend/internal/observability/guild_lifecycle"
 	httpmetrics "voice-platform/backend/internal/observability/http_metrics"
 	tracehttp "voice-platform/backend/internal/observability/trace_http"
@@ -30,7 +31,7 @@ import (
 	reserve "voice-platform/backend/internal/storage/reserve_upload_space"
 )
 
-func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store) (http.Handler, error) {
+func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store) (http.Handler, error) {
 	if events != nil {
 		events.SetTelemetryKey(configuration.TelemetryAuth)
 	}
@@ -71,6 +72,9 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	mediaroutes.ConfigureMediaCredentialRoutes(mux, database, sessionService, configuration.CredentialSigner)
 	if err := mediaroutes.ConfigureScreenPreviewRoutes(mux, database, sessionService, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret, previews, events); err != nil {
 		return nil, fmt.Errorf("configure private screen previews: %w", err)
+	}
+	if err := mediaroutes.ConfigureScreenViewerPresenceRoutes(mux, database, sessionService, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret, screenViewers, events); err != nil {
+		return nil, fmt.Errorf("configure screen viewer presence: %w", err)
 	}
 	if err := mediaroutes.ConfigureScreenDescriptorRoutes(mux, database, sessionService, configuration.PublicOrigin, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret); err != nil {
 		return nil, fmt.Errorf("configure screen profile descriptor updates: %w", err)

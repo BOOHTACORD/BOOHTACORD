@@ -87,6 +87,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
     if (event.kind === 'role.permissions.updated' || event.kind === 'auth.permissions.invalidated') return permissions.refresh()
     if (event.kind === 'screen_preview.updated') { const hint = parseScreenPreviewHint(event.payload); if (hint) previews.accept(hint); return }
     if (event.kind === 'screen_preview.invalidated') { previews.invalidate(event.payload.lease_id as string, event.payload.generation_id as string); return }
+    if (event.kind === 'screen_viewers.changed') return voice.refreshScreenWatchers()
     if (event.kind === 'voice.lease_revoked') return applyVoiceLeaseRevocation(voice, voiceNavigation, event.payload.lease_id as string, event.payload.reason as VoiceLeaseRevocationReason)
     if (event.kind === 'message.created' || event.kind === 'message.updated' || event.kind === 'message.deleted') {
       const previousUnread = notify ? notifications.capture(event) : null
@@ -110,7 +111,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
       notifications.start(accountID)
       realtime.connect(event => processRealtime([event],()=>onEvent(event)), undefined, undefined, {
         onHintBatch: events => processRealtime(events,()=>deliverProtectedHintBatch(events, onEvent).then(() => refreshEditedHints(original, events))),
-        onRecovery: () => processRealtime([],()=>Promise.all([refreshProtectedState(stores), permissions.refresh(), guildProfile.refresh()]).then(() => undefined)),
+        onRecovery: () => processRealtime([],()=>Promise.all([refreshProtectedState(stores), permissions.refresh(), guildProfile.refresh(), voice.refreshScreenWatchers()]).then(() => undefined)),
         checkSession: async () => (await loadCurrentSession())?.accountId === accountID,
         onSessionExpired,
       })

@@ -53,6 +53,8 @@ func requiredCapability(kind string) string {
 		return "role_permissions_v1"
 	case "screen_preview.updated", "screen_preview.invalidated":
 		return "screen_previews_v1"
+	case "screen_viewers.changed":
+		return "screen_viewers_v1"
 	default:
 		return ""
 	}

@@ -45,3 +45,35 @@ func TestPreviewHintsRequirePreviewCapability(t *testing.T) {
 		t.Fatal("preview-aware client missed hint")
 	}
 }
+
+func TestTransientScreenViewerHintsAreTargetedCapabilityGatedAndNotJournaled(t *testing.T) {
+	hub := New(4)
+	journal := &fakeJournal{}
+	hub.SetJournal(journal)
+	owner := hub.SubscribeAccountWithCapabilities("owner", Event{}, []string{"screen_viewers_v1"})
+	other := hub.SubscribeAccountWithCapabilities("other", Event{}, []string{"screen_viewers_v1"})
+	legacy := hub.Subscribe("legacy")
+	defer owner.Close()
+	defer other.Close()
+	defer legacy.Close()
+
+	hub.PublishToAccountsTransient([]string{"owner"}, Event{EventID: "viewer-change", Kind: "screen_viewers.changed", Payload: map[string]any{}})
+	select {
+	case event := <-owner.Events():
+		if event.Kind != "screen_viewers.changed" || len(event.Payload) != 0 {
+			t.Fatalf("event = %#v", event)
+		}
+	default:
+		t.Fatal("owner missed transient viewer hint")
+	}
+	for name, subscription := range map[string]*Subscription{"other": other, "legacy": legacy} {
+		select {
+		case event := <-subscription.Events():
+			t.Fatalf("%s received private hint: %#v", name, event)
+		default:
+		}
+	}
+	if journal.appended != 0 {
+		t.Fatalf("transient hint was persisted %d times", journal.appended)
+	}
+}

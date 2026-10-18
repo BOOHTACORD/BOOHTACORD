@@ -36,3 +36,9 @@ export type ScreenViewerCard = Pick<ScreenViewerStream, 'accountId' | 'descripto
   videoMuted?: boolean
   readReceiverStats?: () => Promise<import('./screen_receiver_diagnostics').ScreenReceiverSnapshot | undefined>
 }
+
+export interface ScreenViewerWatcher {
+  id: string
+  accountId?: string
+  name: string
+}

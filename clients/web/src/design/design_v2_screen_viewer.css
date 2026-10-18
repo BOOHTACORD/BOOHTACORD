@@ -44,6 +44,9 @@
 .voice-viewer-participant-summary { display: grid; width: 110px; flex: 0 0 110px; gap: 3px; }
 .voice-viewer-participant-summary strong { color: var(--gc-text-primary); font-size: 0.75rem; font-weight: 700; }
 .voice-viewer-participant-summary > span { color: var(--gc-text-muted); font-size: 0.6875rem; }
+.voice-viewer-participant-summary > .voice-viewer-watcher-count { display: flex; min-width: 0; align-items: center; gap: 5px; color: var(--gc-accent-text); font-weight: 600; white-space: nowrap; }
+.voice-viewer-watcher-count svg { width: 14px; height: 14px; flex: 0 0 14px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.voice-viewer-watcher-count > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .voice-viewer-participant-strip ul { display: flex; min-width: 0; height: 100%; flex: 1 1 auto; align-items: center; gap: 8px; overflow-x: auto; overflow-y: hidden; margin: 0; padding: 4px 0; list-style: none; scrollbar-width: thin; }
 .voice-viewer-participant { display: flex; box-sizing: border-box; width: 176px; min-width: 176px; height: 100%; align-items: center; gap: 8px; flex: 0 0 176px; overflow: hidden; border: 1px solid var(--gc-border-subtle); border-radius: 10px; padding: 0 10px; background: var(--gc-surface); }
 .voice-viewer-participant.is-speaking { border-color: var(--gc-success); }
@@ -54,7 +57,10 @@
 .voice-viewer-participant .voice-person-state-icon { width: 16px; height: 16px; }
 .voice-viewer-stream-indicator { display: grid; width: 16px; height: 16px; flex: 0 0 16px; place-items: center; color: var(--gc-text-muted); }
 .voice-viewer-stream-indicator svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.voice-viewer-watching-indicator { display: grid; width: 16px; height: 16px; flex: 0 0 16px; place-items: center; color: var(--gc-accent-text); }
+.voice-viewer-watching-indicator svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
 @media (max-width: 720px) {
+  .voice-viewer-watcher-count-label { display: none; }
   .voice-room .workspace-header-toggle--nav, .voice-room .workspace-header-toggle--members { width: 44px; height: 44px; }
   .voice-room .main-title small { display: none; }
   .voice-room .screen-viewer.stream-wrap { grid-template-rows: minmax(0, 1fr) auto 56px auto 92px; gap: 12px; padding: 12px; }
