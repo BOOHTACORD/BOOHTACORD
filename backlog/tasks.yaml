@@ -488,6 +488,11 @@ tasks:
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
     depends_on: [CICD-01]
     evidence: [tools/ci/select_changes/test_routing.py, tools/ci/select_changes/test_diff.py, tools/release/delivery/test_routing.py, docs/ci/routing.md]
+  - id: CICD-03
+    title: Stable fail-closed required PR aggregate and separately confirmed repository policy
+    requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
+    depends_on: [CICD-02]
+    evidence: [tools/ci/required_gate/test_validation.py, tools/ci/required_gate/test_run.py, docs/ci/required-gate.md]
   - id: T-060
     title: Release quality gates
     requirements: [REQ-QUALITY-01, REQ-QUALITY-02, REQ-CAPACITY-01, REQ-DEPLOY-01]
