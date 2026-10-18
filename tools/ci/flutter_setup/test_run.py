@@ -31,7 +31,7 @@ class FlutterInstallerTests(unittest.TestCase):
                 patch.object(run.subprocess, 'run', side_effect=invoked) as execute:
             run.installed(self.value)
         read.assert_any_call(['git', '-C', str(self.installer), 'show', 'a' * 40 + ':setup.sh'])
-        script = next(c for c in execute.call_args_list if c.args[0][0] == 'bash')
+        script = next(c for c in execute.call_args_list if '-s' in c.args[0])
         self.assertEqual(script.kwargs['input'], blob)
         self.assertEqual(script.kwargs['env']['PUB_CACHE'], self.value['pub_cache'])
         self.assertIn('https://github.com/flutter/flutter.git', script.args[0])
@@ -48,3 +48,18 @@ class FlutterInstallerTests(unittest.TestCase):
                 patch.object(run.platform, 'system', return_value='Linux'), \
                 patch.object(run.platform, 'machine', return_value='x86_64'), self.assertRaises(ValueError):
             run.context()
+
+    def test_windows_selects_git_bash_instead_of_the_system32_wsl_launcher(self):
+        from .run import installer_shell
+        git_root = self.directory / 'Git'
+        (git_root / 'cmd').mkdir(parents=True); (git_root / 'bin').mkdir()
+        git = git_root / 'cmd/git.exe'; git.write_text('fixture')
+        bash = git_root / 'bin/bash.exe'; bash.write_text('fixture')
+        with patch.object(run.platform, 'system', return_value='Windows'), \
+                patch.object(run.shutil, 'which', return_value=str(git)) as which:
+            self.assertEqual(installer_shell(), str(bash))
+        which.assert_called_once_with('git')
+        bash.unlink()
+        with patch.object(run.platform, 'system', return_value='Windows'), \
+                patch.object(run.shutil, 'which', return_value=str(git)), self.assertRaises(ValueError):
+            installer_shell()

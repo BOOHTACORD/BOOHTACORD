@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import shutil
 import subprocess
 from tools.ci.toolchains.spec import ROOT
 from .metadata import prepare, describe, check_machine
@@ -30,6 +31,25 @@ def write_environment(value):
         stream.write('PUB_CACHE=' + value['pub_cache'] + '\n')
 
 
+def installer_shell():
+    if platform.system() != 'Windows':
+        executable = shutil.which('bash')
+        if executable:
+            return executable
+    else:
+        # CreateProcess searches System32 before PATH for a bare executable;
+        # its bash.exe starts WSL. Resolve bash from the installed Git instead.
+        executable = shutil.which('git')
+        if executable:
+            git = Path(executable).resolve()
+            for directory in (git.parent, *git.parents[:3]):
+                for relative in ('bash.exe', 'bin/bash.exe', 'usr/bin/bash.exe'):
+                    bash = directory / relative
+                    if bash.is_file():
+                        return str(bash)
+    raise ValueError('The installed Git Bash interpreter is required')
+
+
 def installed(value):
     if INSTALLER.resolve() != INSTALLER:
         raise ValueError('Refusing an indirect Flutter installer directory')
@@ -41,7 +61,7 @@ def installed(value):
     script = subprocess.check_output(['git', '-C', str(INSTALLER), 'show',
                                       value['installer_revision'] + ':setup.sh'])
     # Execute canonical Git blob bytes: Windows checkout line endings are not input.
-    subprocess.run(['bash', '-s', '--', '-n', value['version'],
+    subprocess.run([installer_shell(), '-s', '--', '-n', value['version'],
                     '-a', value['architecture'], '-c', value['cache_path'],
                     '-d', value['pub_cache'], '-g', 'https://github.com/flutter/flutter.git', 'stable'],
                    check=True, input=script, env=dict(os.environ, PUB_CACHE=value['pub_cache']))
