@@ -13,7 +13,7 @@ import '../../src/style.css'
 const params = new URLSearchParams(location.search)
 document.documentElement.style.fontSize = params.get('scale') === '200' ? '200%' : '100%'
 const channel = { id: 'voice-fixture', name: 'Общая голосовая комната', kind: 'VOICE' as const, position: 0, admissionClosed: false }
-const state = reactive({ state: 'CONNECTED' as VoiceConnectionState, active: true, muted: false, deafened: false, denied: false, deafenChanging: false, mode: 'VAD' as VoiceActivationMode, screen: 'IDLE' as ScreenShareState, selected: null as string | null, error: null as string | null, notice: null as VoiceDisconnectNotice | null })
+const state = reactive({ state: 'CONNECTED' as VoiceConnectionState, active: true, muted: false, deafened: false, denied: false, deafenChanging: false, mode: 'VAD' as VoiceActivationMode, screen: 'IDLE' as ScreenShareState, selected: null as string | null, error: null as string | null, notice: null as VoiceDisconnectNotice | null, voiceVolumeParticipants: [{ id: 'peer', accountId: 'peer', name: 'Тестовый участник', microphoneMuted: false, speaking: false, volume: 100 }] })
 const events: string[] = []
 function toggleMicrophone() { events.push('microphone'); state.muted = !state.muted }
 function toggleDeafen() { events.push('deafen'); state.deafened = !state.deafened }
@@ -39,7 +39,7 @@ createApp({ render: () => h('div', { class: 'app-shell', style: 'display:grid;gr
     screenError: null, screenDiagnostics: { audioTrack: 'UNKNOWN', connectionQuality: 'UNKNOWN', source: 'UNKNOWN', measured: null }, screenProfile: null, selectedScreenProfile: 'P1080_30', screenState: state.screen,
     // Intentionally retain stale cards/selection after leave to test the presentation boundary.
     screenViewerCards: state.screen === 'IDLE' ? [] : cards, selectedScreenStreamId: state.selected, selectedScreenAudioVolume: 100, screenAudioMuted: false, screenViewerEnded: false, screenViewerError: null,
-    selfMicrophoneMuted: state.muted, selfMicrophoneUnavailable: state.denied, selfSpeaking: false, voiceVolumeError: null, voiceVolumeParticipants: [{ id: 'peer', accountId: 'peer', name: 'Тестовый участник', microphoneMuted: false, speaking: false, volume: 100 }],
+    selfMicrophoneMuted: state.muted, selfMicrophoneUnavailable: state.denied, selfSpeaking: false, voiceVolumeError: null, voiceVolumeParticipants: state.voiceVolumeParticipants,
     voiceRoster: { channelId: channel.id, revision: 1, participants: [] }, toggleMicrophone, toggleDeafen,
     onJoin: (_id: string, _transfer?: boolean, mode?: string) => { events.push(mode === 'listener' ? 'listener' : 'join'); state.state = 'JOINING' }, onLeave: leave, onStartScreen: startScreen, onStopScreen: stopScreen,
   })]),
