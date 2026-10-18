@@ -61,6 +61,7 @@ const viewerStrip = () => h('section', { class: 'voice-room', style: `height:${p
     ownScreenSharing: true,
     pinned: false,
     participants: viewerParticipants,
+    screenWatcherIds: ['member-speaking'],
     selfAccountId: 'local-user',
     selfMicrophoneMuted: true,
     selfMicrophoneUnavailable: false,

@@ -22,7 +22,7 @@ function fixture() {
     messages: { channelId: null as string | null, refresh: vi.fn(async () => {}), error: null },
     directMessages: { directMessageId: directID as string | null, refreshNavigation: vi.fn(async () => {}), refreshHistory: vi.fn(async () => {}), error: null },
   }
-  const voice = { active: { leaseId: leaseID }, state: 'CONNECTED', revokeLease: vi.fn(async () => true) }
+  const voice = { active: { leaseId: leaseID }, state: 'CONNECTED', refreshScreenWatchers: vi.fn(async () => {}), revokeLease: vi.fn(async () => true) }
   let deliver!: (event: RealtimeEvent) => void | Promise<void>
   const realtime = { connect: vi.fn((handler) => { deliver = handler }), disconnect: vi.fn() }
   const presence = { acceptRealtimeEvent: vi.fn(() => false) }
@@ -108,5 +108,11 @@ describe('workspace typed realtime dispatch', () => {
     await value.deliver(hint('voice.lease_revoked', { lease_id: leaseID, reason: 'CHANNEL_CLOSED' }))
     expect(value.voice.revokeLease).toHaveBeenCalledWith(leaseID, 'CHANNEL_CLOSED')
     expect(navigation.activeVoiceChannelId).toBeNull()
+  })
+
+  it('refreshes the private screen watcher snapshot without putting account IDs in realtime', async () => {
+    const value = fixture()
+    await value.deliver(hint('screen_viewers.changed', {}))
+    expect(value.voice.refreshScreenWatchers).toHaveBeenCalledOnce()
   })
 })

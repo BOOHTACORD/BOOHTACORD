@@ -12,6 +12,7 @@ import (
 	clientupdates "voice-platform/backend/internal/client_updates/catalog"
 	runtimeconfig "voice-platform/backend/internal/config/runtime"
 	previewmemory "voice-platform/backend/internal/media/screen_preview/memory"
+	presencememory "voice-platform/backend/internal/media/screen_viewer_presence/memory"
 	httpmetrics "voice-platform/backend/internal/observability/http_metrics"
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
 )
@@ -29,7 +30,9 @@ func TestComposedRoutesPreserveSessionAndOriginBoundaries(t *testing.T) {
 	}
 	previews := previewmemory.New()
 	defer previews.Close()
-	handler, err := routes(nil, configuration, eventhub.New(64), httpmetrics.New(), unavailableUpdates{}, nil, previews)
+	screenViewers := presencememory.New(nil)
+	defer screenViewers.Close()
+	handler, err := routes(nil, configuration, eventhub.New(64), httpmetrics.New(), unavailableUpdates{}, nil, previews, screenViewers)
 	if err != nil {
 		t.Fatal(err)
 	}

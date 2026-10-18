@@ -9,7 +9,7 @@
     "event_id": { "type": "string", "format": "uuid" },
     "kind": {
       "type": "string",
-      "enum": ["connection.ready", "connection.resync_required", "voice.lease_revoked", "channel.updated", "guild.profile.updated", "member.profile.updated", "presence.snapshot", "presence.changed", "message.created", "message.updated", "message.deleted", "direct_message.message_created", "direct_message.message_updated", "direct_message.message_deleted", "role.permissions.updated", "auth.permissions.invalidated", "session.state_changed", "screen_preview.updated", "screen_preview.invalidated", "message.reactions_updated", "message.pins_updated", "direct_message.reactions_updated"]
+      "enum": ["connection.ready", "connection.resync_required", "voice.lease_revoked", "channel.updated", "guild.profile.updated", "member.profile.updated", "presence.snapshot", "presence.changed", "message.created", "message.updated", "message.deleted", "direct_message.message_created", "direct_message.message_updated", "direct_message.message_deleted", "role.permissions.updated", "auth.permissions.invalidated", "session.state_changed", "screen_preview.updated", "screen_preview.invalidated", "screen_viewers.changed", "message.reactions_updated", "message.pins_updated", "direct_message.reactions_updated"]
     },
     "occurred_at": { "type": "string", "format": "date-time" },
     "payload": { "type": "object" },
@@ -216,6 +216,14 @@
               "generation_id": { "type": "string", "format": "uuid" }
             }
           }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "screen_viewers.changed" } }, "required": ["kind"] },
+      "then": {
+        "properties": {
+          "payload": { "type": "object", "additionalProperties": false, "maxProperties": 0 }
         }
       }
     },

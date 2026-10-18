@@ -3,6 +3,7 @@ import { bindLiveKitRemoteParticipants, type LiveKitRemoteParticipant } from './
 import { accountIdFromMetadata } from './participant_identity'
 import { RemoteVoicePlayback } from './remote_voice_playback'
 import { ScreenViewerController, type ScreenViewerPublication } from './screen_viewer_controller'
+import { bindLiveKitScreenViewerPresence } from './screen_viewer_presence'
 import { bindLiveKitRemoteVoiceEvents } from './livekit_remote_voice_events'
 import { replaceScreenPreviewParticipantLeases } from './screen_preview/participant_leases'
 
@@ -55,6 +56,15 @@ export function bindLiveKitScreenViewer(
 ): LiveKitScreenViewerBinding {
   const registry = new LiveKitScreenRegistry(typeof window === 'undefined' ? '' : window.location.origin, room.name ?? '')
   const viewer = new ScreenViewerController(() => registry.streams())
+  const presence = bindLiveKitScreenViewerPresence(room, {
+    localTrackPublished: events.localTrackPublished,
+    localTrackUnpublished: events.localTrackUnpublished,
+    participantDisconnected: events.participantDisconnected,
+    trackSubscribed: events.trackSubscribed,
+    trackUnsubscribed: events.trackUnsubscribed,
+  }, sources.screenVideo, (watchers) => viewer.setWatchers(watchers))
+  viewer.setWatcherRefresh(presence.refreshOwner)
+  void presence.refreshOwner()
   const accountId = (participant: LiveKitRemoteParticipant) => accountIdFromMetadata(participant.metadata)
   const participantId = (participant: LiveKitRemoteParticipant) => accountId(participant) ?? participant.identity
   const participantCards = bindLiveKitRemoteParticipants(() => room.remoteParticipants.values(), sources.microphone, participantId, accountId, voicePlayback)
@@ -92,11 +102,12 @@ export function bindLiveKitScreenViewer(
   room.on(events.localTrackUnpublished, refresh)
   if (events.attributesChanged) room.on(events.attributesChanged, refresh)
   const subscribeMicrophones = () => room.remoteParticipants.forEach((participant) => participant.getTrackPublication(sources.microphone)?.setSubscribed?.(true))
-  room.on(events.participantConnected, refresh)
+  room.on(events.participantConnected, () => { refresh(); void presence.refreshOwner() })
   room.on(events.participantDisconnected, (participant: LiveKitRemoteParticipant) => {
     voicePlayback.forget(participantId(participant))
     viewer.removeThumbnail(participantId(participant))
     refresh()
+    void presence.refreshOwner()
   })
   room.on(events.trackUnpublished, (publication: ScreenViewerPublication & { source?: unknown }, participant: LiveKitRemoteParticipant) => {
     if (publication.source === sources.screenVideo) {
@@ -112,7 +123,7 @@ export function bindLiveKitScreenViewer(
   })
   bindLiveKitRemoteVoiceEvents(room, events, sources, voicePlayback, participantId, accountId, refresh)
   return {
-    clear: () => { replaceScreenPreviewParticipantLeases([]); voicePlayback.clear(); viewer.clear() },
+    clear: () => { replaceScreenPreviewParticipantLeases([]); voicePlayback.clear(); presence.clear(); viewer.clear() },
     refresh,
     participants: participantCards,
     remoteVoices: voicePlayback,

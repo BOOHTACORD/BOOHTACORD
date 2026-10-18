@@ -46,6 +46,7 @@ $realtime = Get-Content -Raw -LiteralPath $realtimePath | ConvertFrom-Json
 . (Join-Path $PSScriptRoot 'text_channels.ps1')
 . (Join-Path $PSScriptRoot 'voice.ps1')
 . (Join-Path $PSScriptRoot 'screen_preview.ps1')
+. (Join-Path $PSScriptRoot 'screen_viewer_presence.ps1')
 . (Join-Path $PSScriptRoot 'security.ps1')
 . (Join-Path $PSScriptRoot 'role_permissions.ps1')
 . (Join-Path $PSScriptRoot 'telemetry.ps1')

@@ -2,14 +2,16 @@ import { AudioMixer } from './audio_gain'
 import { createScreenReceiverReader } from './screen_receiver_reader'
 import { validScreenThumbnail } from './screen_thumbnail'
 import { ScreenViewerLifecycle } from './screen_viewer_lifecycle'
-import type { ScreenViewerCard, ScreenViewerStream } from './screen_viewer_types'
-export type { ScreenViewerCard, ScreenViewerPublication, ScreenViewerStream, ScreenViewerTrack } from './screen_viewer_types'
+import type { ScreenViewerCard, ScreenViewerStream, ScreenViewerWatcher } from './screen_viewer_types'
+export type { ScreenViewerCard, ScreenViewerPublication, ScreenViewerStream, ScreenViewerTrack, ScreenViewerWatcher } from './screen_viewer_types'
 
 export class ScreenViewerController {
   private readonly listeners = new Set<() => void>()
   private readonly lifecycle: ScreenViewerLifecycle
   private readonly receiverReader = createScreenReceiverReader()
   private readonly thumbnailUrls = new Map<string, string>()
+  private viewerList: ScreenViewerWatcher[] = []
+  private watcherRefresh: () => Promise<void> = async () => undefined
 
   constructor(source: () => ScreenViewerStream[], mixer: Pick<AudioMixer, 'attach'> = new AudioMixer()) {
     this.source = source
@@ -24,6 +26,9 @@ export class ScreenViewerController {
   get audioMuted(): boolean { return this.lifecycle.audioMuted }
   get subscriptionFailed(): boolean { return this.lifecycle.subscriptionFailed }
   get operationGeneration(): number { return this.lifecycle.operationGeneration }
+  watchers(): ScreenViewerWatcher[] { return this.viewerList.map(watcher => ({ ...watcher })) }
+  setWatcherRefresh(refresh: () => Promise<void>): void { this.watcherRefresh = refresh }
+  refreshWatchers(): Promise<void> { return this.watcherRefresh() }
   hasAttachedVideo(element: HTMLVideoElement | null): boolean { return this.lifecycle.hasAttachedVideo(element) }
   cards(): ScreenViewerCard[] {
     return this.source().map(({ accountId, descriptor, hasAudio, id, isLocal, participantId, participantName, profileSource, targetProfile, video }) => ({
@@ -37,9 +42,17 @@ export class ScreenViewerController {
   onChange(listener: () => void): () => void { this.listeners.add(listener); return () => this.listeners.delete(listener) }
 
   setDeafened(deafened: boolean): void { this.lifecycle.setDeafened(deafened) }
+  setWatchers(watchers: ScreenViewerWatcher[]): void {
+    if (watchers.length === this.viewerList.length && watchers.every((watcher, index) => {
+      const previous = this.viewerList[index]
+      return previous?.id === watcher.id && previous.accountId === watcher.accountId && previous.name === watcher.name
+    })) return
+    this.viewerList = watchers
+    this.notify()
+  }
   setAudioMuted(muted: boolean): void { this.lifecycle.setAudioMuted(muted) }
   setAudioVolume(percent: number): void { this.lifecycle.setAudioVolume(percent) }
-  clear(): void { this.clearThumbnails(); this.lifecycle.clear() }
+  clear(): void { this.clearThumbnails(); this.setWatchers([]); this.lifecycle.clear() }
   stop(): void { this.clearThumbnails(); this.lifecycle.stop(); this.listeners.clear() }
   reconcile(): void { this.lifecycle.reconcile() }
   select(id: string | null, video: HTMLVideoElement | null, audio: HTMLAudioElement | null): void { this.lifecycle.select(id, video, audio) }
