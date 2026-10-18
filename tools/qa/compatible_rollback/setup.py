@@ -51,7 +51,7 @@ def prepare(work):
     subprocess.run([*compose, '--profile', 'operator', 'run', '--rm', '-T', '--no-deps', 'bootstrap-admin',
                     '--login', 'qa_admin', '--password-stdin'], input=password + '\n', text=True, check=True, stdout=subprocess.DEVNULL)
     # New named attachment volumes need the shipping nonroot API's ownership.
-    subprocess.run([*compose, 'create', '--no-deps', 'api'], check=True)
+    subprocess.run([*compose, 'create', 'api'], check=True)
     mount = subprocess.check_output(['docker', 'volume', 'inspect', '--format', '{{.Mountpoint}}',
                                     'voice-platform_attachments-data'], text=True).strip()
     os.chown(mount, 65532, 65532)
