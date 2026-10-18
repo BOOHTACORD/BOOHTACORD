@@ -1,4 +1,4 @@
-"""Release Windows GUI Escape acceptance on an owned native API/SFU fixture."""
+"""Release Windows GUI layout and Escape acceptance on an owned native API/SFU fixture."""
 import base64
 import hashlib
 import json
@@ -20,12 +20,15 @@ def validate_result(value):
     expected = {a + '-' + b for a in ('header', 'dock') for b in ('initial', 'traversed')}
     rows = value.get('cases', [])
     flags = ('escape', 'focus_returned', 'same_connected_room_and_lease',
-             'mute_deafen_preserved', 'no_publication')
+             'mute_deafen_preserved', 'no_publication', 'footer_visible')
     if (value.get('status') != 'PASS' or
             value.get('input') != 'Win32 SendInput with exact foreground PID guard' or
             len(rows) != 4 or {row.get('case') for row in rows} != expected or
-            any(row.get(flag) is not True for row in rows for flag in flags)):
-        raise ValueError('Incomplete Windows GUI Escape acceptance')
+            any(row.get(flag) is not True for row in rows for flag in flags) or
+            any(row.get(flag) is not True for row in rows
+                if row.get('case', '').endswith('-traversed')
+                for flag in ('quality_reachable', 'cancel_keyboard_reachable'))):
+        raise ValueError('Incomplete Windows GUI layout and Escape acceptance')
 
 
 def main():
@@ -73,7 +76,8 @@ def main():
                                  flutter=versions['frameworkVersion'], dart=versions['dartSdkVersion'])
                     images = []
                     for name in [*(row['case'] + '.png' for row in value['cases']),
-                                 'header-open.png', 'dock-open.png']:
+                                 'header-open.png', 'dock-open.png',
+                                 'header-footer.png', 'dock-footer.png']:
                         image = driver / name
                         if not image.is_file(): raise RuntimeError('GUI capture missing')
                         raw = image.read_bytes()
@@ -89,7 +93,7 @@ def main():
                     value['captures'] = images
                     (destination / 'result.json').write_text(json.dumps(value, indent=2), encoding='utf-8')
                     print('QA288_RESULT_BASE64:' + base64.b64encode(json.dumps(value).encode()).decode(), flush=True)
-                    print('PASS: Windows SendInput Escape, both launchers, traversal, focus and real SFU continuity', flush=True)
+                    print('PASS: Windows footer geometry, scrollable quality, OS traversal/Escape, focus and real SFU continuity', flush=True)
                     return
                 if process.poll() is not None: raise RuntimeError('QA Windows client exited before acceptance')
                 time.sleep(.2)

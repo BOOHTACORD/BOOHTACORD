@@ -93,7 +93,8 @@
       "test/features/screen_rollout/native_codec_policy_test.dart",
       "test/features/screen/capture/confirmed_dimensions_test.dart",
       "test/features/screen/capture/dimension_publish_test.dart",
-      "test/screen_setup/keyboard_test.dart"
+      "test/screen_setup/keyboard_test.dart",
+      "test/screen_setup/footer_layout_test.dart"
     ],
     "acceptance": {
       "issue325_audio": {
@@ -157,6 +158,12 @@
         "target": "integration_test/screen_setup_windows_app.dart",
         "focused": "test/screen_setup/keyboard_test.dart",
         "scope": "Windows release GUI with real API/PostgreSQL/LiveKit listener; OS SendInput for both launchers, Escape before and after traversal, focus return, unchanged lease/room/mute and no publication. Separate unit regressions cover quality editing, null cancellation, inventory disposal and Enter/Space."
+      },
+      "issue373": {
+        "native": "tools/qa/screen_setup/windows.py",
+        "target": "integration_test/screen_setup_windows_app.dart",
+        "focused": "test/screen_setup/footer_layout_test.dart",
+        "scope": "Pinned header/footer with scrollable source and quality content; Windows 1008x720 actual release GUI geometry, OS Tab/Shift+Tab and Escape; widget matrix 800x680, 1008x720, 1024x768, 1440x900 at 1x/2x text with pending/empty/12-source inventory and expanded quality. Android/iOS runtime regression; no media quality claim."
       }
     }
   },
