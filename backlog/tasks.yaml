@@ -37,7 +37,7 @@ tasks:
     title: POC-03 media revocation and replay checks
     requirements: [REQ-ADMIN-02, REQ-SECURITY-02]
     depends_on: [T-003]
-    evidence: [evidence/poc-03]
+    evidence: [evidence/poc-03, tools/qa/media_revocation/test_evidence.py, tools/qa/media_revocation/test_proxy.py, tools/qa/media_revocation/test_request.py, evidence/poc-03/issue59-media-revocation-2026-10-18.md]
   - id: T-007
     title: Capacity preflight and load profile
     requirements: [REQ-CAPACITY-01, REQ-CAPACITY-02, REQ-OPS-01]
