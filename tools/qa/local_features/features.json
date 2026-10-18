@@ -60,7 +60,7 @@
       "issue347": {
         "browser": "clients/web/tests/voice_interface/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/voice_interface.mjs",
-        "scope": "Shared one-click controls, PTT/denied/reconnect/leaving presentation, stale stream/roster cleanup, compact disclosure. Fixture viewport/text/actual zoom plus actual two-client SFU session continuity, TEXT/drawer/resize and leave. No native, hardware capture or media QoE claim."
+        "scope": "Shared one-click controls, PTT/denied/reconnect/leaving presentation, stale stream/roster cleanup, compact disclosure. Verify the prejoin empty roster is geometrically centered against its card despite compact roster indentation. Fixture viewport/text/actual zoom plus actual two-client SFU session continuity, TEXT/drawer/resize and leave. No native, hardware capture or media QoE claim."
       }
     }
   },
@@ -169,6 +169,10 @@
           "tools/qa/mini_player/test_environment.py",
           "tools/qa/mini_player/test_native.py"
         ]
+      },
+      "participant_names": {
+        "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
+        "scope": "Voice viewer participant cards are widened to 176px for longer names while horizontal scrolling and narrow/200% text layouts remain within the viewport."
       },
       "issue328": {
         "runtime": "tools/qa/macos_sender/run.py",
@@ -510,7 +514,7 @@
       },
       "issue344": {
         "browser": "clients/web/tests/navigation_density/playwright.config.ts",
-        "scope": "Actual production navigation components with 36 channels/three categories, accent-colored selected markers for Channels/Personal/channel/DM (no white strokes), keyboard focus, touch, single scroll surface, persisted favorites/collapse and 320–1920px/actual 200% browser zoom. Real-stack workspace journeys are separate; no native/media acceptance claim."
+        "scope": "Actual production navigation components with 36 channels/three categories, accent-colored selected markers for Channels/Personal/channel/DM (no white strokes), keyboard focus, touch, single scroll surface, persisted favorites/collapse and 320–1920px/actual 200% browser zoom. Channel names remain accessible without redundant hover/focus tooltips in normal and favorite lists. Real-stack workspace journeys are separate; no native/media acceptance claim."
       },
       "issue350": {
         "browser": "clients/web/tests/member_roster/playwright.config.ts",

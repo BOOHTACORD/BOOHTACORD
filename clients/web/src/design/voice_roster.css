@@ -6,6 +6,7 @@
 .voice-roster-live { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 4px; border: 1px solid var(--gc-accent); border-radius: var(--gc-radius-sm); padding: 2px 5px; color: var(--gc-accent-text); background: var(--gc-surface-selected); font-size: var(--gc-text-caption); font-weight: var(--gc-weight-medium); }
 .voice-roster-live svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; }
 .voice-roster-preview--compact { margin: var(--gc-space-1) var(--gc-space-2) var(--gc-space-2) 40px; width: auto; border: 0; padding: 0; background: transparent; }
+.voice-prejoin-card .voice-roster-preview--compact { margin-inline: 0; }
 .voice-roster-preview--compact .voice-roster-heading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .voice-roster-preview--compact .voice-roster-members { max-height: 160px; overflow: auto; }
 .voice-roster-preview--compact .voice-roster-live span { display: none; }
