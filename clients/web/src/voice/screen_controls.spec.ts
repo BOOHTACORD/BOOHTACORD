@@ -56,7 +56,7 @@ describe('screen controls', () => {
     expect(profile.value).toBe('P1080_30')
   })
 
-  it('reports a finished source after an explicit measurement refresh', async () => {
+  it('clears a finished source after an explicit measurement refresh', async () => {
     const screenDiagnostics = ref(unknownScreenDiagnostics())
     const screenError = ref<string | null>(null)
     const screenProfile = ref(null)
@@ -71,10 +71,39 @@ describe('screen controls', () => {
     await controls.startScreen('P720_30')
     await controls.refreshScreenDiagnostics()
 
-    expect(screenDiagnostics.value.source).toBe('ENDED')
-    expect(screenError.value).toContain('Источник демонстрации завершён')
+    expect(screenDiagnostics.value.source).toBe('UNKNOWN')
+    expect(screenError.value).toBeNull()
     expect(screenState.value).toBe('IDLE')
     expect(screenProfile.value).toBeNull()
     expect(session.stopScreen).toHaveBeenCalledOnce()
+  })
+
+  it('treats the browser ending capture as a normal stop, including while a read is pending', async () => {
+    const screenDiagnostics = ref(unknownScreenDiagnostics())
+    const screenError = ref<string | null>(null)
+    const screenProfile = ref<'P720_30' | null>(null)
+    const screenState = ref<ScreenShareState>('IDLE')
+    const listeners = new Set<() => void>()
+    let rejectRead: ((reason: unknown) => void) | undefined
+    const session = {
+      readScreenDiagnostics: vi.fn(() => new Promise<ReturnType<typeof unknownScreenDiagnostics>>((_resolve, reject) => {
+        rejectRead = reject
+      })),
+      startScreen: vi.fn().mockResolvedValue({ audioTrack: 'PRESENT', connectionQuality: 'GOOD', measured: null, source: 'ACTIVE' }),
+      stopScreen: vi.fn(),
+      onScreenEnded(listener: () => void) { listeners.add(listener); return () => listeners.delete(listener) },
+    }
+    const controls = createScreenControls(session, ref({}), screenError, screenProfile, screenState, screenDiagnostics)
+
+    await controls.startScreen('P720_30')
+    const refresh = controls.refreshScreenDiagnostics()
+    for (const listener of [...listeners]) listener()
+    rejectRead?.(new Error('capture already ended'))
+    await refresh
+
+    expect(screenState.value).toBe('IDLE')
+    expect(screenProfile.value).toBeNull()
+    expect(screenDiagnostics.value.source).toBe('UNKNOWN')
+    expect(screenError.value).toBeNull()
   })
 })

@@ -50,7 +50,7 @@ const status = computed(() => {
       <div class="voice-dock-copy"><p class="voice-status" role="status" aria-atomic="true">{{ status }}</p><p v-if="channel && connected" class="voice-dock-subtitle" :title="channel.name">{{ channel.name }}<template v-if="participantCount"> · {{ voiceRoomSummary(participantCount, 0) }}</template></p></div>
 
     </div>
-    <p v-if="notice" class="state" :class="{ 'state-error': notice.reason !== 'VOLUNTARY_LEAVE' }">{{ notice.message }}</p>
+    <p v-if="notice && notice.reason !== 'VOLUNTARY_LEAVE'" class="state state-error">{{ notice.message }}</p>
     <p v-else-if="error" class="state state-error" role="alert">{{ error }}</p>
     <p v-if="microphonePermissionDenied" class="voice-dock-mic-notice state" role="status">{{ microphonePermissionMessage }}</p>
     <VoiceRoomControls v-if="channel || activeSession" dock :channel-available="Boolean(channel)" :voice-state="state" :screen-state="screenShareState" :activation-mode="activationMode" :microphone-muted="microphoneMuted" :microphone-permission-denied="microphonePermissionDenied" :deafened="deafened" :deafen-changing="deafenChanging" :toggle-microphone="() => emit('toggleMicrophone')" :toggle-deafen="() => emit('toggleDeafen')" @start-screen="emit('startScreen')" @stop-screen="emit('stopScreen')" @leave="emit('leave')" />

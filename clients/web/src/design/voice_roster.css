@@ -2,7 +2,7 @@
 .voice-roster-heading { margin: 0 0 var(--gc-space-2); color: var(--gc-text-primary); font-size: var(--gc-text-small); font-weight: var(--gc-weight-medium); }
 .voice-roster-members { display: grid; gap: var(--gc-space-2); margin: 0; padding: 0; list-style: none; }
 .voice-roster-member { display: flex; min-width: 0; align-items: center; gap: var(--gc-space-2); }
-.voice-roster-empty { margin: 0; color: var(--gc-text-muted); font-size: var(--gc-text-small); }
+.voice-roster-empty { margin: 0; color: var(--gc-text-muted); font-size: var(--gc-text-small); text-align: center; }
 .voice-roster-live { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 4px; border: 1px solid var(--gc-accent); border-radius: var(--gc-radius-sm); padding: 2px 5px; color: var(--gc-accent-text); background: var(--gc-surface-selected); font-size: var(--gc-text-caption); font-weight: var(--gc-weight-medium); }
 .voice-roster-live svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; }
 .voice-roster-preview--compact { margin: var(--gc-space-1) var(--gc-space-2) var(--gc-space-2) 40px; width: auto; border: 0; padding: 0; background: transparent; }
