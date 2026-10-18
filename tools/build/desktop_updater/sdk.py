@@ -19,7 +19,7 @@ def prepare(platform):
  url,digest=SDK[platform]
  destination=ROOT/'clients/flutter'/platform/'Updaters'
  marker=destination/'sdk.sha256'
- required = ['Sparkle.framework/Sparkle'] if platform=='macos' else ['include/Velopack.h','lib/velopack_libc_win_x64_msvc.dll']
+ required = ['Sparkle.framework/Sparkle', 'Sparkle.framework/Headers/Sparkle.h'] if platform=='macos' else ['include/Velopack.h','lib/velopack_libc_win_x64_msvc.dll']
  if marker.is_file() and marker.read_text().strip()==digest and all((destination/name).is_file() for name in required):return destination
  destination.mkdir(parents=True,exist_ok=True)
  with tempfile.TemporaryDirectory(prefix='boohtacord-updater-sdk-') as directory:
