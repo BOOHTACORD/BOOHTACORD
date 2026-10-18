@@ -23,6 +23,20 @@ test('prejoin has two short explicit actions, retains listener mode and blocks d
   expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['join', 'listener'])
 })
 
+test('empty voice roster centers its message and the dock hides voluntary-leave copy', async ({ page }, info) => {
+  await open(page, 390)
+  await patch(page, { active: false, state: 'IDLE' })
+  const empty = page.locator('.voice-roster-empty')
+  await expect(empty).toHaveText('Пока никого нет.')
+  expect(await empty.evaluate(element => getComputedStyle(element).textAlign)).toBe('center')
+  await page.screenshot({ path: info.outputPath('empty-voice-roster.png') })
+
+  await patch(page, { notice: { reason: 'VOLUNTARY_LEAVE', source: 'local', message: 'Голосовое подключение завершено.', explanation: '', reconnectAllowed: true } })
+  await expect(page.getByTestId('voice-dock').getByText('Голосовое подключение завершено.', { exact: true })).toHaveCount(0)
+  await patch(page, { notice: { reason: 'KICK', source: 'server', message: 'Администратор отключил вас от голосового канала.', explanation: '', reconnectAllowed: true } })
+  await expect(page.getByTestId('voice-dock').getByText('Администратор отключил вас от голосового канала.', { exact: true })).toHaveCount(1)
+})
+
 test('room and dock share icons, named states and keyboard actions without opening details', async ({ page }) => {
   await open(page)
   for (const scope of [page.locator('.room-wrap'), page.getByTestId('voice-dock')]) {

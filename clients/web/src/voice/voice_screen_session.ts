@@ -12,6 +12,7 @@ export interface ScreenVoiceSession { room: VoiceRoom; screenProfile: ScreenProf
 export class VoiceScreenSession {
   private stopEnded?: () => void
   private watchedRoom?: VoiceRoom
+  private readonly screenEndedListeners = new Set<() => void>()
   private repairTimer?: ReturnType<typeof setTimeout>
   private repairGeneration = 0
   private contentMode: 'motion' | 'text' = 'motion'
@@ -70,6 +71,10 @@ export class VoiceScreenSession {
     if (!current || !current.screenProfile) throw new Error('Демонстрация экрана не запущена.')
     return this.adaptation.read(() => readScreenShareDiagnostics(current.room))
   }
+  onScreenEnded(listener: () => void): () => void {
+    this.screenEndedListeners.add(listener)
+    return () => this.screenEndedListeners.delete(listener)
+  }
   cancel(): void {
     this.adaptation.reset()
     this.cancelRepairWatchdog()
@@ -81,9 +86,12 @@ export class VoiceScreenSession {
     this.stopEnded?.(); this.watchedRoom = room
     this.stopEnded = room.screenPublisher?.onEnded?.(() => {
       const current = this.current()
-      if (current?.room !== room || !current.screenProfile) return
+      if (current?.room !== room) return
       this.cancelRepairWatchdog(); current.screenProfile = null
       void room.clearScreenProfileMetadata?.().catch(() => undefined)
+      for (const listener of this.screenEndedListeners) {
+        try { listener() } catch { /* an observer must not prevent ended-track cleanup */ }
+      }
       void this.publisher.submitForEndedEvent().catch(() => {})
     })
   }

@@ -70,4 +70,15 @@ describe('screen session uses the operation adapter', () => {
     await vi.waitFor(() => expect(f.port.stop).toHaveBeenCalledWith(f.track))
     expect(f.active.screenProfile).toBeNull()
   })
+  it('notifies screen controls when a browser-ended event arrives before a profile is recorded', async () => {
+    const f = setup(), ended = vi.fn()
+    f.session.onScreenEnded(ended)
+    await f.session.startScreen('P1080_30')
+    f.active.screenProfile = null
+
+    f.end()
+
+    expect(ended).toHaveBeenCalledOnce()
+    await vi.waitFor(() => expect(f.port.stop).toHaveBeenCalledWith(f.track))
+  })
 })
