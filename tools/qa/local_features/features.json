@@ -55,6 +55,8 @@
       "clients/web/src/voice/screen_profile_metadata/*",
       "clients/web/src/voice/ScreenViewer*.vue",
       "clients/web/src/voice/screen_viewer_toolbar_layout.spec.ts",
+      "clients/web/src/voice/use_screen_receiver_diagnostics.ts",
+      "clients/web/src/voice/use_screen_receiver_diagnostics.spec.ts",
       "clients/flutter/packages/flutter_webrtc/lib/src/native/capture_snapshot.dart",
       "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/*",
       "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Package.swift",
@@ -151,7 +153,7 @@
       "issue348": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/screen_share_ui.mjs",
-        "scope": "Compact launch, optional capabilities/sender/receiver diagnostics, selected versus confirmed configuration versus measured output; unsupported/cancel/focus/clipboard, 320/390/1024/1440 and 200% text. Existing owned real API/SFU source-publish-view-stop and failure/reconnect journeys. No physical Chrome picker, hardware audio, native or media QoE claim. Viewer diagnosis keeps a publisher-missing-audio message stable while video receiver statistics are absent, fresh or stale."
+        "scope": "Compact launch, optional capabilities/sender/receiver diagnostics, selected versus confirmed configuration versus measured output; unsupported/cancel/focus/clipboard, 320/390/1024/1440 and 200% text. Existing owned real API/SFU source-publish-view-stop and failure/reconnect journeys. No physical Chrome picker, hardware audio, native or media QoE claim. Viewer diagnosis keeps publisher-audio status stable while video receiver samples vary, and keeps the last successful receiver observation through transient missing/failed getStats reads until its freshness window expires."
       },
       "issue349": {
         "browser": "clients/web/tests/mini_player/playwright.config.ts",

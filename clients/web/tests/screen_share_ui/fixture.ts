@@ -1,4 +1,4 @@
-import { createApp, h, reactive } from 'vue'
+import { createApp, defineComponent, h, reactive, ref } from 'vue'
 import ScreenShareSetupDialog from '../../src/voice/ScreenShareSetupDialog.vue'
 import ScreenDiagnosticsPanel from '../../src/voice/ScreenDiagnosticsPanel.vue'
 import ScreenReceiverDiagnosticsPanel from '../../src/voice/ScreenReceiverDiagnosticsPanel.vue'
@@ -7,6 +7,7 @@ import ScreenViewer from '../../src/voice/ScreenViewer.vue'
 import type { ScreenViewerCard } from '../../src/voice/screen_viewer_controller'
 import type { VoiceVolumeParticipant } from '../../src/voice/voice_volume_controls'
 import type { ScreenDiagnostics } from '../../src/voice/screen_diagnostics'
+import { useScreenReceiverDiagnostics } from '../../src/voice/use_screen_receiver_diagnostics'
 import '../../src/style.css'
 const params = new URLSearchParams(location.search)
 document.documentElement.style.fontSize = params.get('scale') === '200' ? '200%' : '100%'
@@ -23,6 +24,24 @@ const viewerScreens: ScreenViewerCard[] = [
   { accountId: 'local-user', hasAudio: false, id: 'local-screen', isLocal: true, participantId: 'local-user', participantName: 'Локальная трансляция' },
   { accountId: 'member-sharing', hasAudio: false, id: 'remote-screen', isLocal: false, participantId: 'member-sharing', participantName: 'Участник показывает экран' },
 ]
+const IntermittentDiagnosis = defineComponent({
+  setup() {
+    let readCount = 0
+    const selected = ref<ScreenViewerCard | null>({
+      id: 'intermittent-screen', hasAudio: true, participantId: 'a', participantName: 'A',
+      readReceiverStats: async () => {
+        readCount += 1
+        if (readCount % 2 === 0) return undefined
+        return { timestamp: Date.now(), framesDecoded: readCount * 30, framesDropped: 0, bytesReceived: readCount * 1024 }
+      },
+    })
+    const { metrics, sampledAt } = useScreenReceiverDiagnostics(selected, () => false)
+    return () => h(DiagnosisPanel, {
+      selectedId: 'intermittent-screen', ended: false, hasAudio: true, local: false,
+      videoReady: true, presentedFps: 30, presentedFrames: 30, sampledAt: sampledAt.value, metrics: metrics.value,
+    })
+  },
+})
 const viewerStrip = () => h('section', { class: 'voice-room', style: 'height:760px' }, [
   h(ScreenViewer, {
     audioMuted: false,
@@ -48,6 +67,7 @@ createApp({ render: () => params.has('viewer-strip') ?
   h('main', { style: 'width:100%;padding:0' }, [viewerStrip()]) :
   h('main', { style: 'padding:16px;max-width:720px;margin:auto' }, [
     h('h1', { style: 'font-size:1rem' }, 'Проверка демонстрации'),
+    params.has('diagnosis-flapping') ? h(IntermittentDiagnosis) :
     params.has('diagnosis') ? h(DiagnosisPanel, { selectedId: 'synthetic:screen', ended: false, hasAudio: state.hasAudio, local: false, videoReady: true, presentedFps: 30, presentedFrames: 900, sampledAt: state.sampledAt, metrics: null }) :
     params.has('sender') ? h(ScreenDiagnosticsPanel, { diagnostics: diagnostics(), profile: state.profile === 'null' ? null : state.profile as any, onRefresh: () => events.push('refresh') }) :
     params.has('receiver') ? h(ScreenReceiverDiagnosticsPanel, { actualVideoQuality: '1920 × 654 · 1 FPS', hasAudio: false, isLocal: false, metrics: null, sampledAt: null, targetProfile: '1080p · 60 FPS', participantName: 'Synthetic QA' }) : [
