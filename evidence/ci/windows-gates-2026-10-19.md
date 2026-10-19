@@ -28,3 +28,25 @@ Final focused result: **35 PASS in 1.557 s**. Workflow policy: **PASS** (31
 workflows, 2 local actions), Actionlint 1.7.11: **PASS**, diff whitespace: **PASS**.
 Required traceability: **PASS_INDEX_ONLY**, 39 requirements; approved external
 brief unavailable on this host. No local VM or repeated whole-suite run used.
+# Combined actual acceptance — 2026-10-20
+
+The final scoped record is `windows-gates-final-2026-10-20.json`. Native run
+39319882366/source3d22e900 completed all nine jobs, including one Windows build,
+native unit tests, real recovery/GUI/SFU and required aggregates. Four small
+evidence ZIPs were independently downloaded and API ownership/size/digest verified;
+the full executable/installer is not claimed as a second local download. Transfer,
+GUI and acceptance share manifest224d7b093a6a43fa57e953bbe377b477742acfc4cf0ead009e98505bfe38edf4.
+Eight capture hashes passed; header-open and dock-footer originals were reviewed.
+The fixed Cancel/Start footer fits, and quality controls remain reachable by scrolling.
+
+Existing focused failure/manifest/runner-boundary checks: 9 test methods PASS in
+0.120 s. Actual GUI-child cancellations in eight old-policy runs produced red
+Windows aggregates, never advisory green. Complete bounded API collection retained
+all13 native workflows since implementation through20:51:56UTC, including the
+metadata-only run and all cancellations. Four successful relevant sources share
+the current Windows gate/build recipe. Their observed execution p50/p95 is
+877/1025 s versus frozen baseline13-success1520/1611 s; availability including
+waits1025/1329 s versus1533/1625 s, using the shared nearest-rank definition.
+Parallel occupancy increased; no cost saving, intrinsic flake rate or population
+SLO is inferred. Original two baseline failures and all eight after cancellations
+are retained. No new heavy run was dispatched for this evidence.

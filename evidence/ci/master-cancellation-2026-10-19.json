@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "scope": "master-source-cancellation",
+  "base_revision": "14a922326dd56e331956dbe09775ad7c05298f57",
+  "status": "FOCUSED_PASS_ACTUAL_PENDING",
+  "actual_old_policy": [
+    {
+      "run_id": 39317404355,
+      "jobs": [
+        {
+          "id": 118282356815,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:12:46Z",
+          "completed_at": "2026-10-19T20:12:56Z"
+        },
+        {
+          "id": 118282460775,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:15:01Z",
+          "completed_at": "2026-10-19T20:26:14Z"
+        },
+        {
+          "id": 118282460908,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:16:34Z",
+          "completed_at": "2026-10-19T20:24:02Z"
+        },
+        {
+          "id": 118282461012,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:15:06Z",
+          "completed_at": "2026-10-19T20:22:45Z"
+        },
+        {
+          "id": 118282461228,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:17:12Z",
+          "completed_at": "2026-10-19T20:29:09Z"
+        },
+        {
+          "id": 118287150607,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "started_at": "2026-10-19T20:23:43Z",
+          "completed_at": "2026-10-19T20:31:04Z"
+        },
+        {
+          "id": 118288825307,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:28:12Z",
+          "completed_at": "2026-10-19T20:28:19Z"
+        },
+        {
+          "id": 118291155761,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_at": "2026-10-19T20:31:16Z",
+          "completed_at": "2026-10-19T20:31:27Z"
+        },
+        {
+          "id": 118291340508,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_at": "2026-10-19T20:31:52Z",
+          "completed_at": "2026-10-19T20:32:01Z"
+        }
+      ]
+    },
+    {
+      "run_id": 39319882366,
+      "jobs": [
+        {
+          "id": 118291608564,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:32:41Z",
+          "completed_at": "2026-10-19T20:32:52Z"
+        },
+        {
+          "id": 118292004863,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:37:15Z",
+          "completed_at": "2026-10-19T20:44:50Z"
+        },
+        {
+          "id": 118292004949,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:36:54Z",
+          "completed_at": "2026-10-19T20:47:51Z"
+        },
+        {
+          "id": 118292005113,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:35:12Z",
+          "completed_at": "2026-10-19T20:46:56Z"
+        },
+        {
+          "id": 118292005180,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:33:33Z",
+          "completed_at": "2026-10-19T20:40:12Z"
+        },
+        {
+          "id": 118295506014,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:40:26Z",
+          "completed_at": "2026-10-19T20:47:43Z"
+        },
+        {
+          "id": 118299100822,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:47:47Z",
+          "completed_at": "2026-10-19T20:47:56Z"
+        },
+        {
+          "id": 118299163271,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:47:55Z",
+          "completed_at": "2026-10-19T20:48:04Z"
+        },
+        {
+          "id": 118299267033,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T20:48:08Z",
+          "completed_at": "2026-10-19T20:48:20Z"
+        }
+      ]
+    }
+  ],
+  "regression": {
+    "before": "11 tests executed, 12 failing assertions across 4 new test methods",
+    "after": "37 focused tests PASS in 3.788 seconds",
+    "policy": "PASS",
+    "actionlint": "1.7.11 PASS"
+  },
+  "changes": [
+    "Isolate master server/native root workflow concurrency by workflow/ref/SHA so a metadata-only next SHA cannot cancel required predecessor checks.",
+    "Serialize only release-qualified server bundle jobs in a separate non-cancellable repository-scoped signer group.",
+    "Retain same-source duplicate cancellation, PR stale-head cancellation, immutable source/run/attempt receipts and the production writer lock."
+  ],
+  "limitations": [
+    "New policy not yet exercised on hosted master; the historical cancellation is actual evidence of the old policy only.",
+    "Default pending replacement among qualified bundles and duplicate same-source root cancellation remain; no FIFO or throughput guarantee.",
+    "No new native build, SDK dispatch, production retry or rollback was started for this fix."
+  ]
+}
