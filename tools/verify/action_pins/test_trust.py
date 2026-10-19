@@ -83,6 +83,6 @@ class TrustBoundaryTests(unittest.TestCase):
             broken = copy.deepcopy(self.workflows)
             job = broken['ci-backend.yaml']['jobs']['backend']
             target = job if location == 'job' else next(
-                step for step in job['steps'] if step.get('run') == 'python3 -m tools.ci.receipts.run backend')
+                step for step in job['steps'] if step.get('run') == 'python3 -m tools.ci.receipts.run backend --parts .out/ci/backend-parts')
             target['continue-on-error'] = 'true'
             with self.subTest(location=location), self.assertRaises(ValueError): check(broken)
