@@ -10,6 +10,7 @@ const { password, confirmation, pending, completed, unusable, error, submit } = 
   (value) => props.complete(value),
   () => emit('invalidLink'),
 )
+const showPasswords = ref(false)
 const resultMessage = ref<HTMLElement | null>(null)
 usePasswordResetResultFocus(computed(() => completed.value || unusable.value || !props.validLink), resultMessage)
 </script>
@@ -22,12 +23,19 @@ usePasswordResetResultFocus(computed(() => completed.value || unusable.value || 
       <p v-if="completed" ref="resultMessage" class="authentication-intro" role="status" tabindex="-1">Пароль изменён. Войдите в аккаунт с новым паролем.</p>
       <p v-else-if="!validLink || unusable" ref="resultMessage" class="authentication-error" role="alert" tabindex="-1">{{ error ?? 'Ссылка недействительна или срок её действия истёк. Попросите администратора выдать новую ссылку.' }}</p>
       <form v-else class="authentication-form" @submit.prevent="submit">
-        <label class="authentication-field">Новый пароль
-          <input v-model="password" type="password" autocomplete="new-password" required :disabled="pending" :aria-invalid="Boolean(error)" :aria-describedby="error ? 'password-reset-length-hint password-reset-error' : 'password-reset-length-hint'">
-        </label>
-        <label class="authentication-field">Повторите пароль
-          <input v-model="confirmation" type="password" autocomplete="new-password" required :disabled="pending" :aria-invalid="Boolean(error)" :aria-describedby="error ? 'password-reset-error' : undefined">
-        </label>
+        <div class="authentication-field">
+          <label for="password-reset-password">Новый пароль</label>
+          <span class="authentication-password-control">
+            <input id="password-reset-password" v-model="password" :type="showPasswords ? 'text' : 'password'" autocomplete="new-password" required :disabled="pending" :aria-invalid="Boolean(error)" :aria-describedby="error ? 'password-reset-length-hint password-reset-error' : 'password-reset-length-hint'">
+            <button class="authentication-password-toggle" type="button" :disabled="pending" :aria-label="showPasswords ? 'Скрыть пароли' : 'Показать пароли'" :aria-pressed="showPasswords" @click="showPasswords = !showPasswords"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Zm10-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" /></svg></button>
+          </span>
+        </div>
+        <div class="authentication-field">
+          <label for="password-reset-confirmation">Повторите пароль</label>
+          <span class="authentication-password-control">
+            <input id="password-reset-confirmation" v-model="confirmation" :type="showPasswords ? 'text' : 'password'" autocomplete="new-password" required :disabled="pending" :aria-invalid="Boolean(error)" :aria-describedby="error ? 'password-reset-error' : undefined">
+          </span>
+        </div>
         <p id="password-reset-length-hint" class="authentication-hint">От 12 до 128 символов.</p>
         <p v-if="error" id="password-reset-error" class="authentication-error" role="alert">{{ error }}</p>
         <button class="authentication-submit" type="submit" :disabled="pending">{{ pending ? 'Меняем пароль…' : 'Изменить пароль' }}</button>

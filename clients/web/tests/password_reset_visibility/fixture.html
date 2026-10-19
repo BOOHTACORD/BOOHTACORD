@@ -1,0 +1,8 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Password reset visibility checks</title><div id="app"></div>
+<script type="module">
+import { createApp, h } from 'vue'
+import PasswordResetCompletion from '/src/identity/PasswordResetCompletion.vue'
+import '/src/style.css'
+createApp({ render: () => h(PasswordResetCompletion, { validLink: true, complete: async () => {} }) }).mount('#app')
+</script></html>

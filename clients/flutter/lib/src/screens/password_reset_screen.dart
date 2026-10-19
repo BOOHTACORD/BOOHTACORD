@@ -16,6 +16,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
   final _confirmation = TextEditingController();
   final _resultFocus = FocusNode();
   String? _validationError;
+  bool _showPasswords = false;
 
   @override
   void initState() {
@@ -120,20 +121,35 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                     TextField(
                       controller: _password,
                       enabled: !state.resetPending,
-                      obscureText: true,
+                      obscureText: !_showPasswords,
                       autofillHints: const [AutofillHints.newPassword],
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Новый пароль',
+                        suffixIcon: IconButton(
+                          tooltip: _showPasswords
+                              ? 'Скрыть пароли'
+                              : 'Показать пароли',
+                          onPressed: state.resetPending
+                              ? null
+                              : () => setState(
+                                  () => _showPasswords = !_showPasswords,
+                                ),
+                          icon: Icon(
+                            _showPasswords
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
                     TextField(
                       controller: _confirmation,
                       enabled: !state.resetPending,
-                      obscureText: true,
+                      obscureText: !_showPasswords,
                       autofillHints: const [AutofillHints.newPassword],
                       onSubmitted: (_) => _submit(),
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Повторите пароль',
                       ),
                     ),
