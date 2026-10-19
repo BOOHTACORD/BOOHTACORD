@@ -4,12 +4,14 @@
 TEXT/DM/settings, with stream pinning removed. This is local candidate evidence
 for the changes on `codex/web-stream-channel-switch`; the implementation is
 based on master `59c15c65c6751173fc5e668be383e88a62276a58`.
-Candidate source revision: `05e2b929ec821245334ce2f4402ab0aa518b9358`.
+Initial candidate revision: `05e2b929ec821245334ce2f4402ab0aa518b9358`.
+Post-master tested revision: `abc5d429` (includes master `b1c9f2c7`).
 
 ## Results
 
-- Focused mini-player browser suite: **PASS**, 20/20 Chromium scenarios.
-- Selected local-feature harness checks: **PASS** for Web unit tests, production
+- Focused mini-player browser suite: **PASS**, 20/20 Chromium scenarios, rerun after synchronizing with master.
+- Post-master focused Web tests: **PASS**, 26 Vitest tests; production `vue-tsc` and Vite build: **PASS**.
+- Local-feature harness at initial candidate revision `12b541f9`: **PASS** for Web unit tests, production
   Web build, accessibility checks, browser suites for screen/voice/chat/shell/auth,
   Flutter unit tests and Flutter component captures.
 - Visual review: **PASS** for the five generated browser captures listed below.
