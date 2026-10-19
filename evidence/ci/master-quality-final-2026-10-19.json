@@ -1,0 +1,972 @@
+{
+  "schema_version": 1,
+  "issue": 393,
+  "status": "PASS",
+  "implementation_pr": "https://github.com/Egkurilov/BOOHTACORD/pull/431",
+  "source_equivalence": {
+    "master": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+    "tree": "946c24c483a56a2530e3662d7f367f6677c7df69",
+    "parents": [
+      "74197bec5951e672bb2daae85ab7a234ffffe545",
+      "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f"
+    ],
+    "pr_checkout": "5ece75ffe4e1293ab976a76dbcfb7abe47d2d7c0",
+    "status": "EXACT_TREE_AND_MERGE_VERIFIED"
+  },
+  "pr_checks": {
+    "head": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+    "hasMore": false,
+    "statuses": [],
+    "checks": [
+      {
+        "id": 118037590539,
+        "name": "ci-required",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118037590539"
+      },
+      {
+        "id": 118032209682,
+        "name": "flutter / flutter",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118032209682"
+      },
+      {
+        "id": 118031039522,
+        "name": "frontend / frontend",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118031039522"
+      },
+      {
+        "id": 118027867177,
+        "name": "frontend / browser (browser-shell)",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118027867177"
+      },
+      {
+        "id": 118027867130,
+        "name": "frontend / sfu",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118027867130"
+      },
+      {
+        "id": 118027866955,
+        "name": "flutter / dart",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118027866955"
+      },
+      {
+        "id": 118027866901,
+        "name": "frontend / browser (browser-conversations)",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118027866901"
+      },
+      {
+        "id": 118027866881,
+        "name": "frontend / fast",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118027866881"
+      },
+      {
+        "id": 118027866864,
+        "name": "frontend / browser (browser-voice)",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118027866864"
+      },
+      {
+        "id": 118027866858,
+        "name": "backend / backend",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118027866858"
+      },
+      {
+        "id": 118027866832,
+        "name": "flutter / android",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118027866832"
+      },
+      {
+        "id": 118027866720,
+        "name": "windows / windows",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118027866720"
+      },
+      {
+        "id": 118027804726,
+        "name": "contracts / contracts",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118027804726"
+      },
+      {
+        "id": 118027804323,
+        "name": "changes",
+        "head_sha": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39242729846/job/118027804323"
+      }
+    ]
+  },
+  "local": {
+    "python_tests": 771,
+    "seconds": 44.651,
+    "actionlint": "PASS",
+    "workflow_policy": "PASS:30workflows/1action",
+    "traceability": "PASS_INDEX_ONLY:39"
+  },
+  "hosted_full_release_mode_proof": {
+    "status": "PASS",
+    "feature": "f98d6f566bde6841a8f9e812d1dbed3c8ec8c48f",
+    "qa_head": "69fe95afbcbbbbe291e23400159415ee0311c60b",
+    "checkout": "8edadc25077c4f505f9bf39098894b1a3bb53fd1",
+    "tree": "9426f9f1c0498e6d1b76a726db3f35124e58adfc",
+    "run": {
+      "id": 39242793004,
+      "run_attempt": 1,
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "69fe95afbcbbbbe291e23400159415ee0311c60b"
+    },
+    "jobs": [
+      {
+        "id": 118027392485,
+        "name": "provenance-boundaries",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 118027392822,
+        "name": "contracts / contracts",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 12182340961,
+        "name": "check-contracts-8edadc25077c4f505f9bf39098894b1a3bb53fd1-39242793004-1",
+        "size_in_bytes": 238,
+        "digest": "sha256:87eb5a444c9b031e38589211e93575a271e0733b7161fb58655f293ff873b5de",
+        "expired": false,
+        "workflow_run": {
+          "id": 39242793004,
+          "repository_id": 1398599178,
+          "head_repository_id": 1398599178,
+          "head_branch": "codex/issue393-release-mode-proof",
+          "head_sha": "69fe95afbcbbbbe291e23400159415ee0311c60b"
+        }
+      },
+      {
+        "id": 12182250921,
+        "name": "master-provenance-proof-8edadc25077c4f505f9bf39098894b1a3bb53fd1-39242793004-1",
+        "size_in_bytes": 461,
+        "digest": "sha256:05ae2e331c4fb4b2bd4c8e9d1b07f1d495bf41e2f22a4d0d8ac4d426ccf00437",
+        "expired": false,
+        "workflow_run": {
+          "id": 39242793004,
+          "repository_id": 1398599178,
+          "head_repository_id": 1398599178,
+          "head_branch": "codex/issue393-release-mode-proof",
+          "head_sha": "69fe95afbcbbbbe291e23400159415ee0311c60b"
+        }
+      }
+    ],
+    "python_tests": 771,
+    "original_negative_fixtures": 19,
+    "scope": "Actual current-feature full release-mode guards and real read-only producer preflight. Only QA workflow differs; not trusted master receipt or install proof.",
+    "receipt": {
+      "gate": "contracts",
+      "source_revision": "8edadc25077c4f505f9bf39098894b1a3bb53fd1",
+      "status": "PASS"
+    },
+    "boundaries": {
+      "cases": [
+        {
+          "case": "actual-legacy-producer",
+          "run_id": 39237355984,
+          "status": "PASS"
+        },
+        {
+          "case": "actual-pr-producer",
+          "run_id": 39240295548,
+          "status": "EXPECTED_REJECTION"
+        },
+        {
+          "case": "actual-cancelled-master",
+          "run_id": 39230709932,
+          "status": "EXPECTED_REJECTION"
+        },
+        {
+          "case": "actual-stale-source",
+          "run_id": 39237355984,
+          "status": "EXPECTED_REJECTION"
+        }
+      ],
+      "qa_source_revision": "8edadc25077c4f505f9bf39098894b1a3bb53fd1",
+      "scope": "Actual read-only API metadata and download-output preflight only; no bundle download, signing or installation",
+      "status": "PASS"
+    }
+  },
+  "ordinary_master": {
+    "build_run": 39245984933,
+    "build_attempt": 1,
+    "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+    "jobs": [
+      {
+        "id": 118037883406,
+        "name": "changes",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:36Z",
+        "completed_at": "2026-10-19T11:37:43Z"
+      },
+      {
+        "id": 118037948613,
+        "name": "contracts / contracts",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:45Z",
+        "completed_at": "2026-10-19T11:40:00Z"
+      },
+      {
+        "id": 118037948645,
+        "name": "backend / backend",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:45Z",
+        "completed_at": "2026-10-19T11:44:28Z"
+      },
+      {
+        "id": 118037948663,
+        "name": "web / fast",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:46Z",
+        "completed_at": "2026-10-19T11:39:46Z"
+      },
+      {
+        "id": 118037948727,
+        "name": "web / browser (browser-voice)",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:46Z",
+        "completed_at": "2026-10-19T11:44:35Z"
+      },
+      {
+        "id": 118037948759,
+        "name": "web / browser (browser-shell)",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:46Z",
+        "completed_at": "2026-10-19T11:45:44Z"
+      },
+      {
+        "id": 118037948765,
+        "name": "web / browser (browser-conversations)",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:45Z",
+        "completed_at": "2026-10-19T11:41:21Z"
+      },
+      {
+        "id": 118037949095,
+        "name": "web / sfu",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:46Z",
+        "completed_at": "2026-10-19T11:42:39Z"
+      },
+      {
+        "id": 118041157877,
+        "name": "web / frontend",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:45:47Z",
+        "completed_at": "2026-10-19T11:45:59Z"
+      },
+      {
+        "id": 118041253707,
+        "name": "server-quality",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:46:02Z",
+        "completed_at": "2026-10-19T11:46:12Z"
+      },
+      {
+        "id": 118041345156,
+        "name": "bundle",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:46:16Z",
+        "completed_at": "2026-10-19T11:48:18Z"
+      }
+    ],
+    "route": {
+      "revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+      "run_id": 39245984933,
+      "has_bundle": true,
+      "format_version": 2
+    },
+    "quality": {
+      "jobs": {
+        "backend": "success",
+        "changes": "success",
+        "contracts": "success",
+        "web": "success"
+      },
+      "map_sha256": "2c5019a82e2c92697a80d291ab614d730688bbf138d60deedd2bf0539e4df8d2",
+      "run_attempt": "1",
+      "run_id": "39245984933",
+      "schema_version": 1,
+      "scope": "server",
+      "server_release_impact": true,
+      "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+      "status": "PASS"
+    },
+    "receipts": {
+      "backend": {
+        "gate": "backend",
+        "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+        "status": "PASS"
+      },
+      "web": {
+        "gate": "web",
+        "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+        "status": "PASS"
+      },
+      "contracts": {
+        "gate": "contracts",
+        "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+        "status": "PASS"
+      }
+    },
+    "downloaded_zip_checks": [
+      {
+        "id": 12184031332,
+        "name": "quality-master-server-3dc9d5929d1afb5d6151d418bad7cf3f6a763358-39245984933-1",
+        "size_in_bytes": 393,
+        "digest": "sha256:a77d2e3bd743e34ca9e8a56d3a8d9f48f7e9cd5b57a09396026d9b9daa2f1905"
+      },
+      {
+        "id": 12183676801,
+        "name": "check-contracts-3dc9d5929d1afb5d6151d418bad7cf3f6a763358-39245984933-1",
+        "size_in_bytes": 238,
+        "digest": "sha256:9c4c16c9f2424a0a01f95b47f1c612af7351011f5b14fee8f208b76b636386c9"
+      },
+      {
+        "id": 12183399217,
+        "name": "check-backend-3dc9d5929d1afb5d6151d418bad7cf3f6a763358-39245984933-1",
+        "size_in_bytes": 233,
+        "digest": "sha256:c723455da6bd18f606183146a43e9f2a3a5df834b7cb3f8fa0f1fcd987b96ca0"
+      },
+      {
+        "id": 12182773810,
+        "name": "check-web-3dc9d5929d1afb5d6151d418bad7cf3f6a763358-39245984933-1",
+        "size_in_bytes": 222,
+        "digest": "sha256:b71f88b7a6f884bcdce3fdee46bd1fd682fc6296ce879facd79b8fe1cd37180c"
+      }
+    ],
+    "controlled_receipt_filesystem_faults": [
+      {
+        "case": "missing",
+        "result": "EXPECTED_REJECTION"
+      },
+      {
+        "case": "foreign-source",
+        "result": "EXPECTED_REJECTION"
+      },
+      {
+        "case": "failed",
+        "result": "EXPECTED_REJECTION"
+      },
+      {
+        "case": "duplicate-file",
+        "result": "EXPECTED_REJECTION"
+      },
+      {
+        "case": "duplicate-key",
+        "result": "EXPECTED_REJECTION"
+      }
+    ],
+    "selected_bundle_metadata": {
+      "id": 12183093648,
+      "name": "server-3dc9d5929d1afb5d6151d418bad7cf3f6a763358-39245984933-1",
+      "size_in_bytes": 73502175,
+      "digest": "sha256:fba50df17ff2a03c6885f9d391da61f25eaa7d19b12be59e831f79d7f8543d29",
+      "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+      "run_id": 39245984933,
+      "run_attempt": 1,
+      "format_version": 2
+    }
+  },
+  "native_master": {
+    "run": 39245985181,
+    "jobs": [
+      {
+        "id": 118037884598,
+        "name": "changes",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:36Z",
+        "completed_at": "2026-10-19T11:37:45Z"
+      },
+      {
+        "id": 118037963126,
+        "name": "flutter / dart",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:48Z",
+        "completed_at": "2026-10-19T11:46:24Z"
+      },
+      {
+        "id": 118037963193,
+        "name": "flutter / android",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:49Z",
+        "completed_at": "2026-10-19T11:48:56Z"
+      },
+      {
+        "id": 118037963198,
+        "name": "windows / windows",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:37:48Z",
+        "completed_at": "2026-10-19T12:02:56Z"
+      },
+      {
+        "id": 118042454593,
+        "name": "flutter / flutter",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:49:00Z",
+        "completed_at": "2026-10-19T11:49:13Z"
+      },
+      {
+        "id": 118048012982,
+        "name": "native-required",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:03:00Z",
+        "completed_at": "2026-10-19T12:03:10Z"
+      }
+    ],
+    "scope": "Independent native quality. No server gate depends on these jobs."
+  },
+  "actual_installation": {
+    "run": 39247297539,
+    "attempt": 2,
+    "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+    "jobs_all_attempts": [
+      {
+        "id": 118042229267,
+        "name": "route",
+        "run_attempt": 1,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:48:26Z",
+        "completed_at": "2026-10-19T11:48:35Z"
+      },
+      {
+        "id": 118042312633,
+        "name": "install",
+        "run_attempt": 1,
+        "conclusion": "cancelled",
+        "started_at": "2026-10-19T11:48:39Z",
+        "completed_at": "2026-10-19T12:08:57Z"
+      },
+      {
+        "id": 118052394587,
+        "name": "install",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:13:28Z",
+        "completed_at": "2026-10-19T12:16:25Z"
+      },
+      {
+        "id": 118052396005,
+        "name": "route",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T11:48:26Z",
+        "completed_at": "2026-10-19T11:48:35Z"
+      }
+    ],
+    "positive_public_log_markers": [
+      "2026-10-19T12:13:34.1796718Z Verified successful master build 39245984933 at 3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+      "2026-10-19T12:16:23.1853365Z Installed verified source revision 3dc9d5929d1afb5d6151d418bad7cf3f6a763358"
+    ],
+    "selected_bundle_name": "server-3dc9d5929d1afb5d6151d418bad7cf3f6a763358-39245984933-1",
+    "first_cancelled_attempt": {
+      "status": "DEPLOY_ATTEMPT1_CANCELLED_DURING_SCP",
+      "run_id": 39247297539,
+      "install_job_id": 118042312633,
+      "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+      "build_run_id": 39245984933,
+      "build_attempt": 1,
+      "bundle_artifact_id": 12183093648,
+      "observed": [
+        "exact successful master producer preflight at11:48:46",
+        "local release checksum OK at11:48:52",
+        "operation cancelled at12:08:55 near20-minute job limit",
+        "cleanup terminated active scp and ssh processes",
+        "no Installed verified source marker",
+        "public liveness200/statusok at12:08:28; not revision proof"
+      ],
+      "next": "Retry only cancelled install job through canonical protected workflow and same immutable bundle; do not rerun Buildproducer until actual install/metrics complete",
+      "limits": [
+        "First cancelled attempt remains in evidence/cost/end-to-end timing; never relabel as successful ordinary deploy",
+        "SCP activity is verified, transfer bytes/progress were not logged; cannot infer throughput or current installed revision from health response"
+      ]
+    },
+    "route_retry_note": "Attempt2 route is a clone with attempt1 timestamps, not a fresh route measurement."
+  },
+  "full_build_root_retry": {
+    "status": "FULL_ROOT_RETRY_PASS",
+    "run_id": 39245984933,
+    "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+    "run_attempt": 2,
+    "run_started_at": "2026-10-19T12:28:29Z",
+    "jobs": [
+      {
+        "id": 118058944075,
+        "name": "changes",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:28:34Z",
+        "completed_at": "2026-10-19T12:28:40Z"
+      },
+      {
+        "id": 118059009321,
+        "name": "backend / backend",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:28:44Z",
+        "completed_at": "2026-10-19T12:36:35Z"
+      },
+      {
+        "id": 118059009421,
+        "name": "contracts / contracts",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:28:43Z",
+        "completed_at": "2026-10-19T12:30:49Z"
+      },
+      {
+        "id": 118059009427,
+        "name": "web / fast",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:28:44Z",
+        "completed_at": "2026-10-19T12:30:41Z"
+      },
+      {
+        "id": 118059009466,
+        "name": "web / browser (browser-voice)",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:28:43Z",
+        "completed_at": "2026-10-19T12:34:16Z"
+      },
+      {
+        "id": 118059009553,
+        "name": "web / sfu",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:28:44Z",
+        "completed_at": "2026-10-19T12:33:17Z"
+      },
+      {
+        "id": 118059009563,
+        "name": "web / browser (browser-shell)",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:28:44Z",
+        "completed_at": "2026-10-19T12:36:29Z"
+      },
+      {
+        "id": 118059009649,
+        "name": "web / browser (browser-conversations)",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:28:44Z",
+        "completed_at": "2026-10-19T12:32:28Z"
+      },
+      {
+        "id": 118062459575,
+        "name": "web / frontend",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:36:32Z",
+        "completed_at": "2026-10-19T12:36:39Z"
+      },
+      {
+        "id": 118062538405,
+        "name": "server-quality",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:36:43Z",
+        "completed_at": "2026-10-19T12:36:52Z"
+      },
+      {
+        "id": 118062635016,
+        "name": "bundle",
+        "run_attempt": 2,
+        "conclusion": "success",
+        "started_at": "2026-10-19T12:36:57Z",
+        "completed_at": "2026-10-19T12:38:02Z"
+      }
+    ],
+    "retained_artifacts": 32,
+    "retained_original_artifacts": 16,
+    "downloaded_verified_receipts": [
+      {
+        "id": 12186845730,
+        "name": "check-backend-3dc9d5929d1afb5d6151d418bad7cf3f6a763358-39245984933-2",
+        "zip_sha256": "2d3c806f109e9dffa019566b1f6d371305d8525ebcd5bc84243c081abb4e27ed",
+        "zip_bytes": 233,
+        "files": {
+          "backend.json": {
+            "bytes": 101,
+            "sha256": "3719f5fd017877a977a980dc1108a6abde06b117d6fdf2cddc1b60fe6cf230b0"
+          }
+        },
+        "body": {
+          "gate": "backend",
+          "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+          "status": "PASS"
+        }
+      },
+      {
+        "id": 12185934276,
+        "name": "quality-master-server-3dc9d5929d1afb5d6151d418bad7cf3f6a763358-39245984933-2",
+        "zip_sha256": "7cd3c493d67d125da11aad481b07c482d3d1397711598e9239f687617b00098e",
+        "zip_bytes": 392,
+        "files": {
+          "master-server.json": {
+            "bytes": 376,
+            "sha256": "1d9089edd7ec237a43e7f730cfd4083bfb83ab52f81dd63892be53f3864c267d"
+          }
+        },
+        "body": {
+          "jobs": {
+            "backend": "success",
+            "changes": "success",
+            "contracts": "success",
+            "web": "success"
+          },
+          "map_sha256": "2c5019a82e2c92697a80d291ab614d730688bbf138d60deedd2bf0539e4df8d2",
+          "run_attempt": "2",
+          "run_id": "39245984933",
+          "schema_version": 1,
+          "scope": "server",
+          "server_release_impact": true,
+          "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+          "status": "PASS"
+        }
+      },
+      {
+        "id": 12185689823,
+        "name": "check-web-3dc9d5929d1afb5d6151d418bad7cf3f6a763358-39245984933-2",
+        "zip_sha256": "8a5610dc5334e56b40da99fb274b4e7249c7c17df302b4fa9dff2208a557ddbe",
+        "zip_bytes": 222,
+        "files": {
+          "web.json": {
+            "bytes": 97,
+            "sha256": "8545bc706873969727dfa938533e88406f608d81860983ed34131aef0abe4f40"
+          }
+        },
+        "body": {
+          "gate": "web",
+          "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+          "status": "PASS"
+        }
+      },
+      {
+        "id": 12185549029,
+        "name": "check-contracts-3dc9d5929d1afb5d6151d418bad7cf3f6a763358-39245984933-2",
+        "zip_sha256": "11b325fec40037f226b84433a134067a5bf2cbe7a4bb6a1333012c62e98ec4e8",
+        "zip_bytes": 238,
+        "files": {
+          "contracts.json": {
+            "bytes": 103,
+            "sha256": "54c5146ade54a9f6f95526ebca91889e19d1db5d4afc55456dfc44bb1fbcb00a"
+          }
+        },
+        "body": {
+          "gate": "contracts",
+          "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+          "status": "PASS"
+        }
+      }
+    ],
+    "selected_bundle": {
+      "id": 12186229217,
+      "name": "server-3dc9d5929d1afb5d6151d418bad7cf3f6a763358-39245984933-2",
+      "size_in_bytes": 73503752,
+      "digest": "sha256:702e7bae8188d08bdece5e1e39a130b15387d327d94a5c37a14e47c315730b2e",
+      "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+      "run_id": 39245984933,
+      "run_attempt": 2,
+      "format_version": 2
+    },
+    "controlled_metadata_mutants": [
+      {
+        "case": "missing-current-bundle",
+        "status": "EXPECTED_REJECTION"
+      },
+      {
+        "case": "foreign-owner",
+        "status": "EXPECTED_REJECTION"
+      },
+      {
+        "case": "future-attempt",
+        "status": "EXPECTED_REJECTION"
+      },
+      {
+        "case": "cancelled-producer",
+        "status": "EXPECTED_REJECTION"
+      }
+    ],
+    "limits": [
+      "Bundle digest is API metadata, not a local ZIP byte verification.",
+      "Four negative variants are controlled metadata fixtures from the actual API response.",
+      "New delivery outcome is recorded separately."
+    ]
+  },
+  "comparison": {
+    "n": 1,
+    "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+    "validation_jobs": 9,
+    "validation_runner_minutes": 34.6,
+    "producer_created_to_bundle_seconds": 646.0,
+    "producer_created_to_installed_seconds_including_cancel_and_recovery": 2333.0,
+    "cancelled_install_occupied_seconds": 1218.0,
+    "successful_install_occupied_seconds": 177.0,
+    "before": {
+      "status": "PASS",
+      "n": 1,
+      "source_revision": "74197bec5951e672bb2daae85ab7a234ffffe545",
+      "server_gate_jobs": 16,
+      "validation_runner_minutes": 67.566666,
+      "producer_created_to_bundle_seconds": 564.0,
+      "producer_created_to_install_seconds": 1646.0,
+      "scope": "Descriptive actual same-source pre-change runs. Validation occupancy sums backend/contracts and all six Web profile/fan-in jobs in CI and Build server, excludes selectors, native jobs, bundle/deploy and all QA overhead. Producer interval includes queues/setup/aggregation/build; creation-to-install is observed master-workflow creation proxy, not exact webhook time or SLO/billing."
+    },
+    "limits": [
+      "One successful source pipeline with two deployment attempts; cancelled first transfer is included, not discarded.",
+      "Deployment recovery-inclusive elapsed is not a clean first-attempt after sample.",
+      "New validation job occupancy is lower; observed bundle critical path is slower. No p50/SLO/billing or deployment speedup claim.",
+      "Install signature/source/OCI validation proof is canonical host execution ending with Installed verified source marker; local bundle ZIP bytes were not separately downloaded."
+    ]
+  },
+  "timing_decomposition": [
+    {
+      "job": "changes",
+      "before": {
+        "start_seconds": 4.0,
+        "occupied_seconds": 9.0,
+        "end_seconds": 13.0
+      },
+      "after": {
+        "start_seconds": 4.0,
+        "occupied_seconds": 7.0,
+        "end_seconds": 11.0
+      }
+    },
+    {
+      "job": "contracts / contracts",
+      "before": {
+        "start_seconds": 16.0,
+        "occupied_seconds": 118.0,
+        "end_seconds": 134.0
+      },
+      "after": {
+        "start_seconds": 13.0,
+        "occupied_seconds": 135.0,
+        "end_seconds": 148.0
+      }
+    },
+    {
+      "job": "backend / backend",
+      "before": {
+        "start_seconds": 16.0,
+        "occupied_seconds": 428.0,
+        "end_seconds": 444.0
+      },
+      "after": {
+        "start_seconds": 13.0,
+        "occupied_seconds": 403.0,
+        "end_seconds": 416.0
+      }
+    },
+    {
+      "job": "web / fast",
+      "before": {
+        "start_seconds": 16.0,
+        "occupied_seconds": 109.0,
+        "end_seconds": 125.0
+      },
+      "after": {
+        "start_seconds": 14.0,
+        "occupied_seconds": 120.0,
+        "end_seconds": 134.0
+      }
+    },
+    {
+      "job": "web / browser (browser-voice)",
+      "before": {
+        "start_seconds": 16.0,
+        "occupied_seconds": 360.0,
+        "end_seconds": 376.0
+      },
+      "after": {
+        "start_seconds": 14.0,
+        "occupied_seconds": 409.0,
+        "end_seconds": 423.0
+      }
+    },
+    {
+      "job": "web / browser (browser-shell)",
+      "before": {
+        "start_seconds": 16.0,
+        "occupied_seconds": 429.0,
+        "end_seconds": 445.0
+      },
+      "after": {
+        "start_seconds": 14.0,
+        "occupied_seconds": 478.0,
+        "end_seconds": 492.0
+      }
+    },
+    {
+      "job": "web / browser (browser-conversations)",
+      "before": {
+        "start_seconds": 16.0,
+        "occupied_seconds": 226.0,
+        "end_seconds": 242.0
+      },
+      "after": {
+        "start_seconds": 13.0,
+        "occupied_seconds": 216.0,
+        "end_seconds": 229.0
+      }
+    },
+    {
+      "job": "web / sfu",
+      "before": {
+        "start_seconds": 16.0,
+        "occupied_seconds": 292.0,
+        "end_seconds": 308.0
+      },
+      "after": {
+        "start_seconds": 14.0,
+        "occupied_seconds": 293.0,
+        "end_seconds": 307.0
+      }
+    },
+    {
+      "job": "web / frontend",
+      "before": {
+        "start_seconds": 448.0,
+        "occupied_seconds": 11.0,
+        "end_seconds": 459.0
+      },
+      "after": {
+        "start_seconds": 495.0,
+        "occupied_seconds": 12.0,
+        "end_seconds": 507.0
+      }
+    },
+    {
+      "job": "server-quality",
+      "after": {
+        "start_seconds": 510.0,
+        "occupied_seconds": 10.0,
+        "end_seconds": 520.0
+      }
+    },
+    {
+      "job": "bundle",
+      "before": {
+        "start_seconds": 463.0,
+        "occupied_seconds": 101.0,
+        "end_seconds": 564.0
+      },
+      "after": {
+        "start_seconds": 524.0,
+        "occupied_seconds": 122.0,
+        "end_seconds": 646.0
+      }
+    }
+  ],
+  "security_limits": [
+    "Bundle ZIP digest/size are API metadata, not separately downloaded local bundle bytes. Canonical successful installation verified checksum, trusted signed manifest, source/OCI compatibility and running state before its final marker.",
+    "Concurrent source changes and rerun-during-preflight races are controlled hosted regression tests; no deliberate concurrent production pushes were made.",
+    "Actual canceled producer was rejected by read-only API preflight. Controlled receipt/metadata mutations are not production mutations.",
+    "N=1 timing is descriptive. Lower gate occupancy does not prove billing, SLO, p50, deploy speedup or hardware/media capacity.",
+    "Approved external brief is unavailable: traceability uses committed index only.",
+    "Owner-managed #385 settings and external #386 native acceptance remain separate and unproven here.",
+    "Successful first-build installation and complete fresh Build attempt2 meet this producer task. Repeated installation of attempt2 is explicitly unaccepted under #395; this evidence does not close rollout/rollback or transport reliability gates."
+  ],
+  "accepted_scope": "CICD-09: one exact-master server quality producer, strict current-source/current-attempt receipts and provenance, successful signed/smoked production installation, full fresh build retry, descriptive before/after comparison.",
+  "repeat_installation_followup": {
+    "issue": 395,
+    "status": "RUNNING_NOT_ACCEPTED",
+    "run_id": 39253587913,
+    "producer_attempt": 2,
+    "cancelled_attempt": {
+      "status": "CANCELLED_DURING_TRANSFER_NOT_IMMUTABLE_REJECTION",
+      "run_id": 39253587913,
+      "job_id": 118063260744,
+      "source_revision": "3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+      "producer_run": 39245984933,
+      "producer_attempt": 2,
+      "bundle_artifact": 12186229217,
+      "started_at": "2026-10-19T12:38:22Z",
+      "completed_at": "2026-10-19T12:58:39Z",
+      "occupied_seconds": 1217,
+      "public_markers": [
+        "2026-10-19T12:38:27.8998515Z Verified successful master build 39245984933 at 3dc9d5929d1afb5d6151d418bad7cf3f6a763358",
+        "2026-10-19T12:38:32.2530871Z .out/incoming/3dc9d5929d1afb5d6151d418bad7cf3f6a763358.release.tar.gz: OK",
+        "2026-10-19T12:58:37.0645549Z ##[error]The operation was canceled."
+      ],
+      "orphan_scp": true,
+      "orphan_ssh": true,
+      "installed_marker_present": false,
+      "immutable_rejection_present": false,
+      "limits": [
+        "No transfer throughput/root-cause claim; actual copy progress was not logged.",
+        "This cancellation is not an expected immutable-manifest rejection or a successful install.",
+        "First producer attempt1 installation remains the independently verified successful source installation."
+      ]
+    },
+    "retry_job": 118072828756,
+    "scope": "Same-SHA repeated delivery reliability and immutable host installation are CICD-11/#395 acceptance. The cancellation is not an immutable-manifest rejection. No overwrite/guard weakening is permitted."
+  }
+}
