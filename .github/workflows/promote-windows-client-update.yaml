@@ -20,24 +20,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  prepare-catalog-pr:
+  push-candidate:
     permissions:
       contents: write
-      actions: write
-      pull-requests: write
+      pull-requests: read
     if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
     environment: production
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      changed: ${{ steps.candidate.outputs.changed }}
+      candidate_sha: ${{ steps.candidate.outputs.candidate_sha }}
+      branch: ${{ steps.candidate.outputs.branch }}
+      intent_id: ${{ steps.candidate.outputs.intent_id }}
     steps:
-      - name: Require dispatch from master
-        if: github.ref != 'refs/heads/master'
-        run: |
-          echo "::error::Run this promotion workflow from master."
-          exit 1
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: true
-          ref: master
+          fetch-depth: 0
+          ref: ${{ github.sha }}
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
@@ -59,67 +60,103 @@ jobs:
             --pattern "BOOHTACORD-${RELEASE_TAG}-x64.zip" \
             --pattern artifact-manifest.json --pattern SHA256SUMS \
             --dir "$RUNNER_TEMP/windows-release"
-      - name: Verify release and prepare guarded catalog candidate
+      - name: Verify release, preserve selectors and push or reuse only the exact candidate
         id: candidate
-        env:
-          RELEASE_TAG: ${{ inputs.release_tag }}
-          EXPECTED_REVISION: ${{ inputs.expected_catalog_revision }}
-        run: |
-          python -m tools.release.client_updates.promote_windows_release \
-            --catalog deploy/client-updates/catalog.json \
-            --expected-revision "$EXPECTED_REVISION" \
-            --release "$RUNNER_TEMP/windows-release/release.json" \
-            --archive "$RUNNER_TEMP/windows-release/BOOHTACORD-${RELEASE_TAG}-x64.zip" \
-            --manifest "$RUNNER_TEMP/windows-release/artifact-manifest.json" \
-            --checksums "$RUNNER_TEMP/windows-release/SHA256SUMS" \
-            --repository "$GITHUB_REPOSITORY"
-          python -m tools.release.client_updates.catalog validate \
-            --path deploy/client-updates/catalog.json
-          git diff --check
-          if git diff --quiet -- deploy/client-updates/catalog.json; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Install pinned catalog test runner
-        run: python -m pip install pytest==8.4.2
-      - name: Test candidate before creating a review branch
-        run: |
-          python -m pytest -q tools/release/client_updates/test_catalog.py \
-            tools/release/client_updates/test_windows_promotion.py \
-            tools/release/client_updates/test_windows_promotion_security.py \
-            tools/release/client_updates/test_candidate_ci.py
-          python -m tools.release.client_updates.catalog validate \
-            --path deploy/client-updates/catalog.json
-          git diff --check
-      - name: Run full CI on candidate before opening pull request
-        if: steps.candidate.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.release_tag }}
+          EXPECTED_REVISION: ${{ inputs.expected_catalog_revision }}
+        run: python -m tools.release.windows_promotion.prepare
+      - name: Retain public promotion evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: windows-promotion-input-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/windows-promotion/
+          if-no-files-found: error
+          retention-days: 30
+
+  candidate-ci:
+    needs: push-candidate
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && needs.push-candidate.outputs.changed == 'true'
+    environment: production
+    permissions:
+      contents: read
+      actions: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: windows-promotion-input-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/windows-promotion/
+      - name: Require a new full CI execution on the exact candidate SHA
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CANDIDATE_BRANCH: ${{ needs.push-candidate.outputs.branch }}
+          CANDIDATE_SHA: ${{ needs.push-candidate.outputs.candidate_sha }}
         run: |
-          branch="codex/windows-catalog-${RELEASE_TAG}-${GITHUB_RUN_ID}"
-          git switch -c "$branch"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- deploy/client-updates/catalog.json
-          git commit -m "chore(updates): prepare $RELEASE_TAG catalog promotion"
-          git push --set-upstream origin "$branch"
-          candidate_sha="$(git rev-parse HEAD)"
-          ci_run_url="$(python -m tools.release.client_updates.candidate_ci \
-            --branch "$branch" --sha "$candidate_sha" --repository "$GITHUB_REPOSITORY")"
-          body_file="$RUNNER_TEMP/promotion-pr.md"
-          cat > "$body_file" <<EOF
-          This candidate was created by an explicit workflow dispatch for `$RELEASE_TAG`.
+          python -m tools.release.client_updates.candidate_ci \
+            --branch "$CANDIDATE_BRANCH" --sha "$CANDIDATE_SHA" --repository "$GITHUB_REPOSITORY" \
+            --fresh --report .out/windows-promotion/ci.json
+      - name: Retain public promotion evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: windows-promotion-ci-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/windows-promotion/
+          if-no-files-found: error
+          retention-days: 30
 
-          The published release metadata, Windows x64 archive, embedded file inventory, and SHA-256 checksums were verified. The catalog update was applied with the requested expected-revision guard and only changes the Windows/direct/stable/x64 selector.
-
-          Full CI passed on the exact candidate commit before this PR was opened: $ci_run_url
-
-          Review this PR before merging. This workflow_dispatch run is candidate evidence and may not satisfy the repository's required PR checks. Confirm the PR checks are successful; GitHub may require a writer to approve pull_request workflows created by GITHUB_TOKEN. Merge triggers the normal signed server build/deploy pipeline. Production endpoint readback and installed-old-client acceptance remain separate gates.
-          EOF
-          if ! gh pr create --repo "$GITHUB_REPOSITORY" --base master --head "$branch" \
-            --title "Review Windows update promotion: $RELEASE_TAG" --body-file "$body_file"; then
-            echo "::error::Catalog branch was pushed but the PR was not created. If Actions PR creation is disabled, enable Settings > Actions > General > Workflow permissions > Allow GitHub Actions to create and approve pull requests; otherwise inspect the gh error and open the branch PR manually. Master was not changed."
-            exit 1
-          fi
+  prepare-catalog-pr:
+    needs: [push-candidate, candidate-ci]
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && needs.push-candidate.outputs.changed == 'true'
+    environment: production
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: windows-promotion-input-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/windows-promotion/
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: windows-promotion-ci-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/windows-promotion/
+      - name: Recheck source catalog, branch and exact successful CI before review PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CANDIDATE_SHA: ${{ needs.push-candidate.outputs.candidate_sha }}
+        run: python -m tools.release.windows_promotion.review
+      - name: Retain public promotion evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: windows-promotion-review-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/windows-promotion/
+          if-no-files-found: error
+          retention-days: 30
