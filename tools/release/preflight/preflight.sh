@@ -28,8 +28,12 @@ for service in api web; do
   container="$(sudo -n docker ps --filter label=com.docker.compose.project=voice-platform --filter "label=com.docker.compose.service=$service" --format '{{.ID}}')"
   [[ "$container" =~ ^[0-9a-f]{12,64}$ ]] || { echo "Running $service container is unavailable" >&2; exit 1; }
   image="$(sudo -n docker inspect --format '{{.Config.Image}}' "$container")"
-  [[ "$image" =~ ^voice-platform-${service}:([0-9a-f]{40})$ ]] || { echo "Running $service revision is invalid" >&2; exit 1; }
-  service_revision="${BASH_REMATCH[1]}"
+  if [[ "$image" =~ ^voice-platform-${service}:([0-9a-f]{40})$ ]]; then
+    service_revision="${BASH_REMATCH[1]}"
+  else
+    service_revision="$(sudo -n docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' "$container")"
+    [[ "$service_revision" =~ ^[0-9a-f]{40}$ ]] || { echo "Running $service revision is invalid" >&2; exit 1; }
+  fi
   if [[ -n "${release_revision:-}" && "$service_revision" != "$release_revision" ]]; then
     echo 'Running API and web revisions differ' >&2
     exit 1

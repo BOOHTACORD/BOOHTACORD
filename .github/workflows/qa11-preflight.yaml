@@ -1,44 +1,105 @@
-name: QA-11 release host preflight
-
-# GitHub manual host inspection from master.
+name: QA-11 release host diagnostics and explicit build probe
 
 on:
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Validate the plan and emit NOT_RUN without host access
+        type: boolean
+        default: true
+      expected_source:
+        description: Exact 40-character currently deployed source (not necessarily latest master)
+        type: string
+        required: true
+      confirm:
+        description: Explicitly authorize read-only observation
+        type: choice
+        options: [not-ready, read-only-observation]
+        default: not-ready
+      run_probe:
+        description: Also request a production-mutating temporary Buildx probe
+        type: boolean
+        default: false
+      confirm_probe:
+        description: Explicitly authorize temporary host files, images and containers
+        type: choice
+        options: [not-ready, temporary-build-probe]
+        default: not-ready
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   inspect:
     if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
-    environment: production
-    runs-on: ubuntu-latest
+    environment: production-diagnostics
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
+    concurrency:
+      group: v-bootybay-operator-diagnostics
+      cancel-in-progress: false
     env:
       DEPLOY_SERVER_IP: 176.108.242.211
-      DEPLOY_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
-      SSH_USER: shaneque
+      SSH_USER: boohtacord-diag
+      EXPECTED_SOURCE: ${{ inputs.expected_source }}
+      OPERATOR_DRY_RUN: ${{ inputs.dry_run && 'true' || 'false' }}
+      OPERATOR_CONFIRM: ${{ inputs.confirm }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
-      - name: Read release host image and Buildx capabilities
-        shell: bash
-        run: |
-          set -euo pipefail
-          bash tools/release/ssh/configure-deploy-ssh.sh
-          remote="${SSH_USER}@${DEPLOY_SERVER_IP}"
-          ssh_options=(-i "$HOME/.ssh/id_deploy" -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/known_hosts")
-          ssh "${ssh_options[@]}" "$remote" bash -s < tools/release/preflight/preflight.sh
-      - name: Probe pinned temporary Buildx plugin
-        shell: bash
-        run: |
-          set -euo pipefail
-          binary="${RUNNER_TEMP:?}/docker-buildx"
-          curl -fL --retry 2 --max-time 90 https://github.com/docker/buildx/releases/download/v0.37.1/buildx-v0.37.1.linux-amd64 -o "$binary"
-          printf '9447199cdb435f25880548343c128a4b6650e8891ee598905d8d29d39a8e359b  %s\n' "$binary" | sha256sum -c -
-          remote="${SSH_USER}@${DEPLOY_SERVER_IP}"
-          incoming="/tmp/voice-platform-qa11-buildx-$(git rev-parse HEAD)"
-          ssh_options=(-i "$HOME/.ssh/id_deploy" -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/known_hosts")
-          scp "${ssh_options[@]}" "$binary" "$remote:$incoming"
-          ssh "${ssh_options[@]}" "$remote" bash -s -- "$incoming" < tools/build/legacy_server/probe_buildx.sh
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Validate authenticated approval and execute the fixed operator capability
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          OPERATOR_SSH_PRIVATE_KEY: ${{ secrets.OPERATOR_DIAGNOSTIC_SSH_KEY }}
+        run: python -m tools.ops.operator.run preflight
+      - name: Retain sanitized operator audit receipt only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: operator-preflight-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/operator/preflight/receipt.json
+          if-no-files-found: error
+          retention-days: 30
+  probe:
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && inputs.run_probe
+    environment: production
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    concurrency:
+      group: v-bootybay-production
+      cancel-in-progress: false
+    env:
+      DEPLOY_SERVER_IP: 176.108.242.211
+      SSH_USER: shaneque
+      EXPECTED_SOURCE: ${{ inputs.expected_source }}
+      OPERATOR_DRY_RUN: ${{ inputs.dry_run && 'true' || 'false' }}
+      OPERATOR_CONFIRM: ${{ inputs.confirm_probe }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Validate authenticated approval and execute the fixed operator capability
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          OPERATOR_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+        run: python -m tools.ops.operator.run probe
+      - name: Retain sanitized operator audit receipt only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: operator-probe-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/operator/probe/receipt.json
+          if-no-files-found: error
+          retention-days: 30

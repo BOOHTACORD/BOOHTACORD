@@ -24,6 +24,8 @@ def check(workflows):
     validate_web(workflows['ci-frontend.yaml'])
     from tools.ci.web_suites.shadow_workflow import validate as validate_shadow
     validate_shadow(workflows['web-ci-shadow.yaml'])
+    from tools.ops.operator.workflow import validate as validate_operators
+    validate_operators(workflows)
     build = workflows['build-server.yaml']
     gates = {name for name, job in build['jobs'].items() if job.get('uses', '').rsplit('/', 1)[-1] in GATES
              and job.get('with', {}).get('release_receipt') == 'true'}
