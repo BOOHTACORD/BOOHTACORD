@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "criterion": "schema-compatible-rollback",
+  "status": "PASS",
+  "source_revision": "79d1c36a1f7bc3053a01c88a32b7e78cc8b5a821",
+  "scope": "actual",
+  "executed": true,
+  "evidence": [
+    {
+      "path": "evidence/ci/cutover-component-equivalence-79d1c36a-2026-10-20.json",
+      "sha256": "d0942943a8cabd0482ce14de85b72a5b5c46a84c58be001fe8f9d0b468499e85"
+    },
+    {
+      "path": "evidence/ci/compatible-rollback-final-2026-10-20.json",
+      "sha256": "e26a2dcf3469f13c8314c2f6feaf96a78f7ab619a35937fa9677539d75277723"
+    }
+  ],
+  "actual_runtime": true,
+  "mocks": false,
+  "compatible_schema_verified": true,
+  "current_restored": true
+}

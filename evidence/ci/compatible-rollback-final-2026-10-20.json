@@ -1,0 +1,631 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "actual-isolated-schema-compatible-rollback-and-restore",
+  "workflow": ".github/workflows/qa-compatible-rollback.yaml",
+  "source_revision": "8add045642585429b1e573cea458fe5bcc72722b",
+  "run_id": 39328262697,
+  "run_attempt": 1,
+  "source_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39328262697",
+  "created_at": "2026-10-19T21:32:15Z",
+  "completed_at": "2026-10-19T21:40:31Z",
+  "job_id": 118319598958,
+  "artifact": {
+    "id": 12223413543,
+    "name": "qa60-8add045642585429b1e573cea458fe5bcc72722b-39328262697-1",
+    "size_in_bytes": 532668,
+    "digest": "sha256:ab6b7a787736ddee88ae6aa230bd39e01a95bf761b2887a3a4fda6af21b59a78"
+  },
+  "payload_hashes": {
+    "acceptance.json": "8b82cfa24ba12809ec6f5990cbdb395a2a6ef044c3dc1965dc3f47128cfb9e9b",
+    "rollback_maintenance-1.png": "7b9a7c6432ec2735bef653e5194030d83ece979f1d562a0fb61f7195c0a2858f",
+    "restore_maintenance-0.png": "af77762c2e7ef13475750a2206a48858d05a97a6a173a9f84a90512a0ebc4993",
+    "restore_maintenance-1.png": "7b9a7c6432ec2735bef653e5194030d83ece979f1d562a0fb61f7195c0a2858f",
+    "rollback_maintenance-0.png": "af77762c2e7ef13475750a2206a48858d05a97a6a173a9f84a90512a0ebc4993",
+    "previous-1.png": "e6c1a19f41c63410dadb60a070bc40199b0d8fbf0b840968f256e0b0eb8569be",
+    "previous-0.png": "07668fe20eff5ee9156228fe9de799b4d5a63f61378870dc228dce68caee4463",
+    "run.json": "31ba165fb437bd5631e306b326cea73d35851aed5f2c10fb29f5fbe1232e5e9a",
+    "restored-0.png": "07668fe20eff5ee9156228fe9de799b4d5a63f61378870dc228dce68caee4463",
+    "baseline-0.png": "07668fe20eff5ee9156228fe9de799b4d5a63f61378870dc228dce68caee4463",
+    "browser.json": "4668d949e28c479c41d6df6e4d5e39322c982362956af43fda9f9b342402de42",
+    "baseline-1.png": "40be46fb00347bafee45c1c9a561a79eebc3525158b88b9081824c5572bdbac1",
+    "restored-1.png": "e6c1a19f41c63410dadb60a070bc40199b0d8fbf0b840968f256e0b0eb8569be"
+  },
+  "acceptance": {
+    "status": "PASS",
+    "current": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+    "previous": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+    "preflight": {
+      "read_only": true,
+      "signed_bundles": true,
+      "digest_only": true,
+      "compatible": true
+    },
+    "observations": [
+      {
+        "phase": "baseline",
+        "browser": 0,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": 204,
+        "revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      {
+        "phase": "baseline",
+        "browser": 1,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": 204,
+        "revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      {
+        "phase": "rollback_maintenance",
+        "browser": 0,
+        "authenticated": true,
+        "banner": true,
+        "admission": 503,
+        "login_status": 503,
+        "revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      {
+        "phase": "rollback_maintenance",
+        "browser": 1,
+        "authenticated": true,
+        "banner": true,
+        "admission": 503,
+        "login_status": 503,
+        "revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      {
+        "phase": "previous",
+        "browser": 0,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": null,
+        "revision": "356d32c5ff6b661a747009ad93026c197bdd1b72"
+      },
+      {
+        "phase": "previous",
+        "browser": 1,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": null,
+        "revision": "356d32c5ff6b661a747009ad93026c197bdd1b72"
+      },
+      {
+        "phase": "restore_maintenance",
+        "browser": 0,
+        "authenticated": true,
+        "banner": true,
+        "admission": 503,
+        "login_status": 503,
+        "revision": "356d32c5ff6b661a747009ad93026c197bdd1b72"
+      },
+      {
+        "phase": "restore_maintenance",
+        "browser": 1,
+        "authenticated": true,
+        "banner": true,
+        "admission": 503,
+        "login_status": 503,
+        "revision": "356d32c5ff6b661a747009ad93026c197bdd1b72"
+      },
+      {
+        "phase": "restored",
+        "browser": 0,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": 204,
+        "revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      {
+        "phase": "restored",
+        "browser": 1,
+        "authenticated": true,
+        "banner": false,
+        "admission": 201,
+        "login_status": 204,
+        "revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      }
+    ],
+    "storage": [
+      {
+        "phase": "baseline",
+        "volumes": {
+          "postgres-data": "f374612fde9a5827db208e347d65ac56bc3e7e45715882df40d765a3e3efdb87",
+          "attachments-data": "55a9e5a349856ebac2b190f92be5fd6d6fcd055940b217873d4bf7f2b898c439",
+          "caddy-data": "c7edabaf0ac27459ab7a8d386fd6170e657bfca2834d1ae6bc7c0b8171d572bc",
+          "caddy-config": "068837deb5c9288ce05f701f3e435fa33299a16b0844b19e52e014e13dd8a5ea"
+        },
+        "networks": {
+          "edge": "bb3840c8a617019dc1e39ff6bcb7c5309ca5c81c8c0c48302332f226a028c185",
+          "private": "820a9bc6113123f6addecb8786503a9cd9a34d9de750b42220e9cca4ff6e2408",
+          "sfu-egress": "0a43bdac86759318e605985476e376234fe25ded0d5b41cd1ec8c34c1cb1a729"
+        },
+        "content": {
+          "database": "09193abc6e1da8d6ed310848b622b7d58683ec080b32b6162ce07d07d39388c7",
+          "attachments": "fbc8409ed27de975bb650ac79701a7e962076e2011fd02cb6617a82c480a9db6",
+          "tls": "802848552244965a8a6e829177a44b80ce1f03384d88bf7d6b11e1d2ca6170a2",
+          "proxy_config": "2714092f272dc06cf181a5b04cfa5e584dcedd63ac48652e4a6c496f52ce2bcb",
+          "schema": "159a00aa4a8c20c98d32256f14887e568eaf8497b83b2c42342c40b99796dfcd"
+        }
+      },
+      {
+        "phase": "previous",
+        "volumes": {
+          "postgres-data": "f374612fde9a5827db208e347d65ac56bc3e7e45715882df40d765a3e3efdb87",
+          "attachments-data": "55a9e5a349856ebac2b190f92be5fd6d6fcd055940b217873d4bf7f2b898c439",
+          "caddy-data": "c7edabaf0ac27459ab7a8d386fd6170e657bfca2834d1ae6bc7c0b8171d572bc",
+          "caddy-config": "068837deb5c9288ce05f701f3e435fa33299a16b0844b19e52e014e13dd8a5ea"
+        },
+        "networks": {
+          "edge": "bb3840c8a617019dc1e39ff6bcb7c5309ca5c81c8c0c48302332f226a028c185",
+          "private": "820a9bc6113123f6addecb8786503a9cd9a34d9de750b42220e9cca4ff6e2408",
+          "sfu-egress": "0a43bdac86759318e605985476e376234fe25ded0d5b41cd1ec8c34c1cb1a729"
+        },
+        "content": {
+          "database": "09193abc6e1da8d6ed310848b622b7d58683ec080b32b6162ce07d07d39388c7",
+          "attachments": "fbc8409ed27de975bb650ac79701a7e962076e2011fd02cb6617a82c480a9db6",
+          "tls": "802848552244965a8a6e829177a44b80ce1f03384d88bf7d6b11e1d2ca6170a2",
+          "proxy_config": "2714092f272dc06cf181a5b04cfa5e584dcedd63ac48652e4a6c496f52ce2bcb",
+          "schema": "159a00aa4a8c20c98d32256f14887e568eaf8497b83b2c42342c40b99796dfcd"
+        }
+      },
+      {
+        "phase": "restored",
+        "volumes": {
+          "postgres-data": "f374612fde9a5827db208e347d65ac56bc3e7e45715882df40d765a3e3efdb87",
+          "attachments-data": "55a9e5a349856ebac2b190f92be5fd6d6fcd055940b217873d4bf7f2b898c439",
+          "caddy-data": "c7edabaf0ac27459ab7a8d386fd6170e657bfca2834d1ae6bc7c0b8171d572bc",
+          "caddy-config": "068837deb5c9288ce05f701f3e435fa33299a16b0844b19e52e014e13dd8a5ea"
+        },
+        "networks": {
+          "edge": "bb3840c8a617019dc1e39ff6bcb7c5309ca5c81c8c0c48302332f226a028c185",
+          "private": "820a9bc6113123f6addecb8786503a9cd9a34d9de750b42220e9cca4ff6e2408",
+          "sfu-egress": "0a43bdac86759318e605985476e376234fe25ded0d5b41cd1ec8c34c1cb1a729"
+        },
+        "content": {
+          "database": "09193abc6e1da8d6ed310848b622b7d58683ec080b32b6162ce07d07d39388c7",
+          "attachments": "fbc8409ed27de975bb650ac79701a7e962076e2011fd02cb6617a82c480a9db6",
+          "tls": "802848552244965a8a6e829177a44b80ce1f03384d88bf7d6b11e1d2ca6170a2",
+          "proxy_config": "2714092f272dc06cf181a5b04cfa5e584dcedd63ac48652e4a6c496f52ce2bcb",
+          "schema": "159a00aa4a8c20c98d32256f14887e568eaf8497b83b2c42342c40b99796dfcd"
+        }
+      }
+    ],
+    "running": [
+      {
+        "phase": "baseline",
+        "revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+        "images": {
+          "api": {
+            "configured": "voice-platform-api@sha256:f3a138719f626f3c102bb55c4bab3f3877b913ea7a8a7c1b7d49066e355576cc",
+            "running": "sha256:f3a138719f626f3c102bb55c4bab3f3877b913ea7a8a7c1b7d49066e355576cc"
+          },
+          "web": {
+            "configured": "voice-platform-web@sha256:e39b2c79148b31c0143dd5ffb598f265275ea5850a74c1983a34fafe90e7bb7d",
+            "running": "sha256:e39b2c79148b31c0143dd5ffb598f265275ea5850a74c1983a34fafe90e7bb7d"
+          }
+        }
+      },
+      {
+        "phase": "previous",
+        "revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+        "images": {
+          "api": {
+            "configured": "voice-platform-api@sha256:ab682ca2d6114476e481b2888f74b7fe4a564578cf59e6d9fa7f00732979432b",
+            "running": "sha256:ab682ca2d6114476e481b2888f74b7fe4a564578cf59e6d9fa7f00732979432b"
+          },
+          "web": {
+            "configured": "voice-platform-web@sha256:d11058c1163e29cf82490e2ea24d7935dab4b203bc30d20e8fd6fb7a3d0ae18b",
+            "running": "sha256:d11058c1163e29cf82490e2ea24d7935dab4b203bc30d20e8fd6fb7a3d0ae18b"
+          }
+        }
+      },
+      {
+        "phase": "restored",
+        "revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+        "images": {
+          "api": {
+            "configured": "voice-platform-api@sha256:f3a138719f626f3c102bb55c4bab3f3877b913ea7a8a7c1b7d49066e355576cc",
+            "running": "sha256:f3a138719f626f3c102bb55c4bab3f3877b913ea7a8a7c1b7d49066e355576cc"
+          },
+          "web": {
+            "configured": "voice-platform-web@sha256:e39b2c79148b31c0143dd5ffb598f265275ea5850a74c1983a34fafe90e7bb7d",
+            "running": "sha256:e39b2c79148b31c0143dd5ffb598f265275ea5850a74c1983a34fafe90e7bb7d"
+          }
+        }
+      }
+    ],
+    "observer_seconds": 90
+  },
+  "captures": [
+    {
+      "file": "baseline-0.png",
+      "sha256": "07668fe20eff5ee9156228fe9de799b4d5a63f61378870dc228dce68caee4463"
+    },
+    {
+      "file": "baseline-1.png",
+      "sha256": "40be46fb00347bafee45c1c9a561a79eebc3525158b88b9081824c5572bdbac1"
+    },
+    {
+      "file": "previous-0.png",
+      "sha256": "07668fe20eff5ee9156228fe9de799b4d5a63f61378870dc228dce68caee4463"
+    },
+    {
+      "file": "previous-1.png",
+      "sha256": "e6c1a19f41c63410dadb60a070bc40199b0d8fbf0b840968f256e0b0eb8569be"
+    },
+    {
+      "file": "restore_maintenance-0.png",
+      "sha256": "af77762c2e7ef13475750a2206a48858d05a97a6a173a9f84a90512a0ebc4993"
+    },
+    {
+      "file": "restore_maintenance-1.png",
+      "sha256": "7b9a7c6432ec2735bef653e5194030d83ece979f1d562a0fb61f7195c0a2858f"
+    },
+    {
+      "file": "restored-0.png",
+      "sha256": "07668fe20eff5ee9156228fe9de799b4d5a63f61378870dc228dce68caee4463"
+    },
+    {
+      "file": "restored-1.png",
+      "sha256": "e6c1a19f41c63410dadb60a070bc40199b0d8fbf0b840968f256e0b0eb8569be"
+    },
+    {
+      "file": "rollback_maintenance-0.png",
+      "sha256": "af77762c2e7ef13475750a2206a48858d05a97a6a173a9f84a90512a0ebc4993"
+    },
+    {
+      "file": "rollback_maintenance-1.png",
+      "sha256": "7b9a7c6432ec2735bef653e5194030d83ece979f1d562a0fb61f7195c0a2858f"
+    }
+  ],
+  "ci_proof": {
+    "current": {
+      "head": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "run": 39319881828,
+      "status": "success",
+      "producer_workflow": ".github/workflows/build-server.yaml",
+      "checks": {
+        "backend": {
+          "id": 118294836388,
+          "conclusion": "success"
+        },
+        "web": {
+          "id": 118298148672,
+          "conclusion": "success"
+        },
+        "contracts": {
+          "id": 118291513683,
+          "conclusion": "success"
+        }
+      },
+      "tree": "cd46710df385e786294b0a9171924571cc44fa48",
+      "equivalent_master": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+    },
+    "previous": {
+      "head": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "run": 39314566970,
+      "status": "success",
+      "producer_workflow": ".github/workflows/build-server.yaml",
+      "checks": {
+        "backend": {
+          "id": 118275129336,
+          "conclusion": "success"
+        },
+        "web": {
+          "id": 118276640643,
+          "conclusion": "success"
+        },
+        "contracts": {
+          "id": 118272672876,
+          "conclusion": "success"
+        }
+      },
+      "tree": "b93685d7a679ff5409df446ea7a869ef2227fb36",
+      "equivalent_master": "356d32c5ff6b661a747009ad93026c197bdd1b72"
+    }
+  },
+  "harness_sha256": {
+    "test_evidence.py": "a2fa72153ddc14600cb372a2889ca9f9cbc7acdcbd1b00f761b04889c59b45d1",
+    "test_ci_proof.py": "28869a43ec1621b3aed5ee3b25e86491619ce6b294f3c5b9630226d81714cbcf",
+    "test_builder_identity.py": "2445be95863ecaa9ee5759ec0e4c7fb014564770551011d1d31579d48c47ee80",
+    "test_receipt_projection.py": "5cba45f4969fb6d4df33056531895f0b4103593bf7f3ea6a7bf9dbe346484f62",
+    "daemon.py": "c0794821e40e0831cc84f5e7bcda165c6a11a5ea218b4dfb32f73b81641ca1a6",
+    "test_isolation.py": "c1209aed7ebdb21561fb55f293ae19933129d40c477d16cfa023600a01b6875f",
+    "builder_identity.py": "729a2538bd0694c59eb9b74b4a7ea1b6bcd22b86e9a62547187144b1aae01f6a",
+    "diagnostics.py": "55b40874a816a6a3fe19b8825e11a60eb18cec888201ccfbc8ded24dfd393c73",
+    "controller.py": "c098498eae9b658a35121333aea00fb1f93c311667dcc86649df02adbf409032",
+    "test_readiness.py": "86b9da5edc21fd1cbcaa51b509660e87a6d042926a567e4b9bb973e017ab086a",
+    "source_gates.py": "0640ee386106ff12dcdc3c01b5d4d51f6a576f7744d6320bbadc1c84f4f82d61",
+    "test_source_inputs.py": "b7072b24ac9c10baa1cc8e2a89175d48e206b61917c521232a12a97e7bd1367b",
+    "storage.py": "4054b0515ff79d5aef61e5bd6146dab470e7f42ec4a0724f7f41986740813b1c",
+    "run.py": "16f145107a31f6f7719ce299688fbffe3e0ecb2b548f9e08fe8d76582e7a2930",
+    "setup.py": "bb90267a092440867a7ee00fff7128460268e4da1edf63f39970578739179d45",
+    "build.py": "0b181bfc0c209b44d4159d04fb2015c23c66a133078cf5edd7fadf757f6c9ff3",
+    "receipt_projection.py": "60a7fbe28504e43dbaf7853107726dea0258ceb1e94906f0657e25cc6fc5c8c7",
+    "ci_proof.py": "c5274e816d9077937b9dbf75a7b1639a097ba7d7a5d5b7e7fa33ebeb49b9a7ff",
+    "Dockerfile": "87e139e258a5914e106e37378536c8e105f4a8b6f2960ebddda61f49e9dd2a8e",
+    "scenario.mjs": "b967a9695d4af1af8e910aa00c0383f79c31e5fc46950f011cd459bf68f6c84a",
+    "evidence.py": "264ae859a5de8c10dc72ef247be6ac694ba3e3be55142633ad80d3c2a65ac893",
+    "test_diagnostics.py": "3e38ae61dd40a0e305775ccdde16fc7c1cd58e97d210d7457512aab991af53cc",
+    "isolation.py": "e8b007bfa64e4ea77d735b8285c15afc0bb9cf7a7e93fda8daeb5654aff7858a",
+    "rehearse.py": "f1f850b2f1d13583adc67df8aeed04fd77a53fe93ed67eec60623e191558804a",
+    "readiness.py": "34d5442165758b19e2df3af2a28d3e9313fe7d4c4e70da09ecadacedfe82171a"
+  },
+  "builder_sha256": {
+    "tools/build/server/buildx.py": "23329c64b80765f4ade43c083657705dd1aaae276473e31313c730f56023af04",
+    "tools/build/server/cache_layout.py": "b02fd11cde8b4ddab5f28ae925ab8f8d78b96c835c2dcf5407435df33f45abbc",
+    "tools/build/server/gate_receipts.py": "2320a36d369285778abd1985361b084b0a37f0da0d0fb2d58b8e446df1e89ff7",
+    "tools/build/server/images.py": "de1d8870c46b519c51b528e0a11874bf91bab283d759a9c46c9c2aa342aee0b6",
+    "tools/build/server/inputs.py": "4464074433c23ee8892a7e57f93b844721fca4964a80f0d460272fd5eac6b8cb",
+    "tools/build/server/layer_cache.py": "c5e62a8acba8356fb1cad2765c44ce0f15c6e7ced6fe20a5f65e2379b1422697",
+    "tools/build/server/metrics.py": "96594c7426217acb81b4ad369c7eac3ccd3c7e76f862383d676cbe734f6b2a34",
+    "tools/build/server/run.py": "6ce0f93037a6c1e3734d184f5b5f7a025e69d001e61f89a6b2a36855f4b652c1",
+    "tools/build/server/smoke.py": "08513ebb39f0da7a45b7e6760b12e9ec2a792e062b18a5ae657ffff4d4a24fff",
+    "tools/build/server/test_cached_images.py": "3a89e1819a92d82a85e1bc0687db4ec4c8030da4fdedd53e9d8bd65077f2bb53",
+    "tools/build/server/test_gate_receipts.py": "b3771645428e2b60a0d04e2bedf1ea169df7bcfcc85dbca40435bdf9c4936181",
+    "tools/build/server/test_image_audio_flag.py": "9249c49cfd01a3303ea869a120b7ee84b518ce2e1c7f29534db39859a0530aa6",
+    "tools/build/server/test_layer_cache.py": "42a359a6936434bd21d1508655db62236970d57ecba6fe4f8094e0e5b5c7cc2a",
+    "tools/build/server/test_metrics.py": "fa7bf4a0af40e1fc0f664558861d6edf5eae202d75665fc4964327269b06806f",
+    "tools/build/server/test_package_metrics.py": "d188d07d76896a7b9c63481fbf08862a5ae64c2d94a1547200bfa81fb886ecad",
+    "tools/build/server/test_runtime_inputs.py": "5dfecc11c909b7a90933e538da77770e3b6d879a09d9bbca3b6629a4019152db",
+    "tools/build/server/test_smoke_readiness.py": "f07d7ef389ba6834198e8ebb7d512b359c841f1f4f28c04d70f0d09f408effc3",
+    "tools/build/server/test_social_preview.py": "ac41773670b1868a15874fe47e4d408da4a2a1de1d114232c6cde76e84bbffb4",
+    "tools/build/web/assets.py": "0636cee0ff9e52c5cad84c7f6e7935ecd10ff2f9967e18715f3cea922e4bac30",
+    "tools/build/web/audio_assets.py": "a2577c9d1c5b7a9e8dd10be07b97c2fcfe215d5af7bb49f2fc7baad0c284758d",
+    "tools/build/web/test_assets.py": "f5c4c28e595d40af10388a2b6f5943d3c68962d7003363500e0d5af953e2b386",
+    "tools/build/web/test_audio_assets.py": "c91e2917872a4ce1b88cf94fc2e542c50153dd0dc0d55f0417b82f047c50768e",
+    "tools/audio/asset_build.py": "6cc487a2a7386f6e1d19584d3197c3b9ddb555a586c59bd74077af564cf2e749",
+    "tools/audio/build_rnnoise.py": "737d589d9f84d5012a55c67be713d0bf97c55af9a4d91282f90b4d536d22f839",
+    "tools/audio/livekit_fixture.py": "7ab0519d76a67e51761c3798d82f8f0368de4db90c7518f1eec5a6fe0531d7ff",
+    "tools/audio/native_tests/run.py": "bc52b17b2ec47a7d0f8d4a604b4078ea6d786e9a78cc33597f465c0eea6775ac",
+    "tools/audio/native_tests/test_run.py": "db9465f0a70f3bfa1a1aca13d17ad22d5423976bcb5812e22d24e4c646a8ac13",
+    "tools/audio/test_asset_build.py": "f4928b7eff026dbcaa8b0179b1e2f75e04000cd093b6d9e6ebf3db17fdbb3b35",
+    "tools/audio/test_asset_delivery.py": "f1064cde6382302025910251466b010949f30cb260ded2fea7e237691183ddb9",
+    "tools/audio/voice_parity/blind_trials.py": "d800f0704070a7f563af46f5f6c1670cf07a0bddd49e6a75cc8dddf5f02d69da",
+    "tools/audio/voice_parity/generate_profiles.py": "34089e3ff367ef6ac43b9f7c8bca07302a7dfc6b13ee80697f5e621bb77cc8f4",
+    "tools/audio/voice_parity/test_blind_trials.py": "09cda39420733bd4b3f2281273a6319f5207c8cba88dc021cce61f3ec980552f",
+    "tools/verify/oci/test_verify_oci.py": "29d92b0ce5f5a682f05de386773a21ed2114cd2a98fad7111be85fc68ba59bef",
+    "tools/verify/oci/verify_oci.py": "0ca3b3315ce49b5e66fcfeba0800a498742aefe73ecdb9e2369e5b66b3ce09f7",
+    "tools/release/bundle/compatibility.py": "25efeba682c571a7c6a80aae2071eb16a48ed2c9c01c45ad92a15c166bded5a6",
+    "tools/release/bundle/files.py": "2933f83435862e65cdf8296122816e09f312afc9b1a33200ba82e4a80ec33561",
+    "tools/release/bundle/manifest.py": "9ca38a7f61ff2c5a2189e0de4b2defb79e3f78e05b05d4f7521b7306fe622bce",
+    "tools/release/bundle/package.py": "00c914649cbd25e44197cd3269d90eb3c06691a6b626cb3d25c861a86d15e6e0",
+    "tools/release/bundle/signature.py": "262f990410ed2d0b5bb9c2aa9de5102a31f7a9e46eea47c70e0d603d54214f37",
+    "tools/release/bundle/test_manifest.py": "0bc10628061b8df910aa21e62616db6704455a3c1c23df271d767b7609e98f95",
+    "tools/release/bundle/test_signature.py": "c940e12b1d83735ecafdef9b600e62ea2136df4ffcf281442c8295e9750250d1",
+    "tools/release/bundle/verify.py": "a9f548003c9b467569333b1aedc3eacff762130474f601663ba0d2830033bc89",
+    "tools/release/archive/extract.py": "9b8b944e076759196ce34f8531558b737577958e50156eed43b5bfa323d31197",
+    "tools/release/archive/test_extract.py": "2eb5bc2ba68a095bf79bdf7840c98ee3651cca356634f88b06ae4ffff006adc0"
+  },
+  "environment": {
+    "fixture_roomservice_readiness": {
+      "status": "PASS",
+      "attempts": 1,
+      "elapsed_seconds": 0.36,
+      "connection_refused_retries": 0
+    },
+    "kernel": "6.17.0-1022-azure",
+    "machine": "x86_64",
+    "python": "3.12.15",
+    "docker": "29.5.2",
+    "compose": "5.1.4",
+    "supporting_images": {
+      "postgres": {
+        "reference": "postgres:17.6-alpine",
+        "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94"
+      },
+      "livekit": {
+        "reference": "livekit/livekit-server:v1.13.7",
+        "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3"
+      },
+      "proxy": {
+        "reference": "caddy:2.10.0-alpine",
+        "image_id": "sha256:ae4458638da8e1a91aafffb231c5f8778e964bca650c8a8cb23a7e8ac557aa3c"
+      }
+    },
+    "qa_signing_public_key_sha256": "1560198ec6bfd25f8cfe16ad7c39464188d9155f6593e093aeaa1977976cf1c2",
+    "scope": "Isolated QA signing and runtime; source bundles independently verified before every transition",
+    "fixture_sfu_egress": "Owned additional bridge for actual retained-config STUN; no management port published"
+  },
+  "images": [
+    {
+      "revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "components": {
+        "api": {
+          "archive": "api.oci.tar",
+          "attestation_predicates": [
+            "https://slsa.dev/provenance/v0.2",
+            "https://spdx.dev/Document"
+          ],
+          "index_digest": "sha256:f3a138719f626f3c102bb55c4bab3f3877b913ea7a8a7c1b7d49066e355576cc",
+          "manifest_digest": "sha256:424ce8821711c1e9cebc8986874fdd38bf6e2edf43026db7538f3014ad9d0319"
+        },
+        "web": {
+          "archive": "web.oci.tar",
+          "attestation_predicates": [
+            "https://slsa.dev/provenance/v0.2",
+            "https://spdx.dev/Document"
+          ],
+          "index_digest": "sha256:e39b2c79148b31c0143dd5ffb598f265275ea5850a74c1983a34fafe90e7bb7d",
+          "manifest_digest": "sha256:b653953fb71b22e4f0ba0f9092d6b471134c5109ebf6118088d342bd6a8a813d"
+        }
+      },
+      "compatibility": {
+        "backend_tree": "94a19beaa4f9c96a67dae94a56a0e84758ff7fc3",
+        "contracts_sha256": "5c746d0da76c962f2f34fb7cdb1167af361562e9e233c5f220ed510fd3e2bef1",
+        "migrations": {
+          "0001_create_users.sql": "ccbd1da4ba82e8b133fba5fc90a2c9d39b22934a88be2c20a1246df84b0e31b5",
+          "0002_create_sessions.sql": "dcb932aacb3e62214466bfcb07aaacde52c67d31f1c511383f81c61869ecc0ea",
+          "0003_create_sessions_active_user_index.sql": "3f8238d5b25c745f14f6c80d186f27040b750ac905b1f8a8d8d5a9ca132ee113",
+          "0004_create_password_resets.sql": "61dd93c8884dbe323957a1a86dd03e95c7b53c7003902e63f3e09ce1e208bfcb",
+          "0005_create_bootstrap_state.sql": "6e4567bce3234050aaa968ed636e6d0f5dab02bac5cea238264056eba998d3c8",
+          "0006_create_audit_events.sql": "b88c7c2be4b35af1a7f511e4e19f576e08fdf4894f5bb67c3fa59245c43bb75e",
+          "0007_create_channel_topology_state.sql": "4a6e6509d9697bedefed304d8a9218c3e967afb1d1fb7857da8c998ff3e607f9",
+          "0008_create_categories.sql": "493a36593da66b02a1d6f17322c6f91c8b2d01e6dc0976ebc66d38f88211e0c6",
+          "0009_create_channels.sql": "e2f11bbd4572413f9ca8d5946f12c75f3e2a69244885911bb850b6a3dbc6ee41",
+          "0010_create_voice_leases.sql": "202f5d1df8f5591f8ef42d0096133255f166aca77b84f0865ab82d9974649700",
+          "0011_create_voice_leases_active_user_index.sql": "51fc5b3fdf38e1ce60d9ab495f3e02e1503e35b2f863d3a1c4bb3f0fe29ba3f2",
+          "0012_create_voice_leases_active_channel_index.sql": "0deedbf2ed16fa3cc3fe2a131d3051aa11d7065db7f81bb90ef0eafd34b33c27",
+          "0013_add_voice_lease_session_digest.sql": "274a75f0836c6e6ad25e59a708e138ae33f5369b6a6c27ac1fb1529cdfea8818",
+          "0014_create_voice_leases_active_session_index.sql": "510a11d28a15be62993d76671e461f45e73eecd72ff09ecb8d20286137eae512",
+          "0015_extend_voice_lease_revocation_reasons.sql": "90ff2e62632e8d1130220ffb680c7027f7df6a69f5a9ad1b63e3f0a2fb19ec0b",
+          "0016_create_messages.sql": "21c7d9f957a2dd067a3701b4ce1264b000849e005b211b3bb7800e74a928e10c",
+          "0017_create_direct_messages.sql": "04178d1c27e7343e49fa2b6cc19b77cc7469789de724e1436e34d66928da4570",
+          "0018_create_direct_message_messages.sql": "cf64ca23b5f04f3888636fa01e1b74690f9035d1b64745ba9ac53fef1b2bb497",
+          "0019_create_direct_message_messages_history_index.sql": "b6865d9d929c5326169241b32f69306ff4554d1bbc6a7d51a88f90384d6de2d2",
+          "0020_add_direct_message_reply_to_id.sql": "c56cfcb2a62460b6e6cb96bddc16bf784dada533a2685f243097db52819913a5",
+          "0021_create_direct_message_read_cursors.sql": "e94eacf2ce786bb0e86557357b8a65869a835fbdf326ba8eb8fcb539ba73fbb2",
+          "0022_add_direct_message_search_index.sql": "77a5fe139cb3d293371d8a0e0baea497f98c3a6dd1ab51bcf7d8e674c422cce2",
+          "0023_create_attachments.sql": "d16207ac23bd62abbeaffb099b6c7d0ec86f636ee47cd14242c2ea3eda14dfa0",
+          "0024_create_message_attachments.sql": "d865e8b6ae313559ea3c52c3f8b351083078e97a88ba8b83fe0d796eafd38b55",
+          "0025_repair_incomplete_bootstrap_state.sql": "194548fa7bfc1b7c39a61fd262246dc1d7997343ce8600bd457f9b27a9a7c84b",
+          "0026_add_text_message_search_index.sql": "05136b2dc3671aec3e5155c8bcdf68d3397535918cf990364b3bc026bee5c743",
+          "0027_create_unattached_attachment_cleanup_index.sql": "8677e8cab826484222eaa893bcb0c2ebe004f776131d1fb413ab37ca5899e110",
+          "0028_create_voice_sfu_revocations.sql": "48bc0dcc7547ab5ac4d44b9931a30eb870990d872446c8b386c0cfb55f50dd00",
+          "0029_create_maintenance_admission.sql": "10989a75f1123dfd45e501c26424ade42b3c9e4268611b7de590aa578d157c07",
+          "0030_add_user_avatar_key.sql": "9f2e3b73fcc3da0fa48a1f26ff700ee259c16141c17340fb1c7ddb68640e242b",
+          "0031_add_attachment_deleting_state.sql": "3ba525ccbf58b777a5a6164ee2ed3245ef97e8199f0598aa97910128e77c5e34",
+          "0032_create_direct_message_attachments.sql": "bf723039957944fa053dec673243900e7c466b94c0ce8fc63764021f2684f175",
+          "0033_create_channel_read_cursors.sql": "120ba0b5efb8625fd6adf9a5be5c8de20cd21dc96fb21232d7d8ea4188b622aa",
+          "0034_add_voice_lease_revocation_notification.sql": "c89db94b891f2f62f6f1be39aed1eec2656b5a9b6367dee9cee992035530abbb",
+          "0035_add_message_mentions.sql": "8c5a46d74e0c3fccad3859b3b2c419916300682a9d78af9d656c97b27f52d6e2",
+          "0036_create_realtime_events.sql": "1add251f14e7f91986fb7179ed63d4f3502c62581af6cf13b024e89efc5cf799",
+          "0037_add_hidden_attachment_cleanup_claim.sql": "0975df9fa8dd4891f4e4a124d274c53f505321698c9b24a722e13450a3950bfc",
+          "0038_add_unattached_cleanup_retry_schedule.sql": "055bf3dd644f04414469fb417680d247acf6ecd2d582f50b86fbf55af4628bee",
+          "0039_allow_attachment_only_messages.sql": "601945737b6686db446eee0b0c972aa611d042052e04671d8f391edeb31ac15f",
+          "0040_create_role_permissions.sql": "933fd1f95217b74b16b8dfb2a1e28b8d69bb22f7efea62f665165eae5057929b",
+          "0041_create_topology_command_receipts.sql": "812537b98610da5e869c93da9ae37fd8db2b5f1b8309e409ba364fd23b3411d1",
+          "0042_add_channel_description.sql": "17ec71e97207bb341f72170d412e75cee6b88778cc88ef5129a9dc12148953af",
+          "0043_create_user_daily_activity.sql": "e968aec0b455ed5db4e6c51077b2ddb8bc8f27f3194e822f227d1fc07812981f",
+          "0044_create_guild_settings.sql": "95b1b7e13d4a477fe529a7c4b7db54a2b516f8b189c853fbb5b5d80769668b87",
+          "0045_system_welcome_messages.sql": "8a6ce08501fc16654817b9006d9fb8475a4157fa0f7ad9adcc2b7deb673bc776",
+          "0046_add_public_session_metadata.sql": "f40c1d9f97bec0c52494341c0cc68d2e155f7cb5e9dc1a7e5d419b980e69e762",
+          "0047_add_trace_causality.sql": "33c6714e52106a807822100b68220097195eccca309ee14833b5bc8aaa0e3de5",
+          "0048_add_screen_profile_operation_receipt.sql": "c962707919f1b775a775411b7c4594e8d7677f9ef9385ed01e975d2f827fdabe",
+          "0049_add_member_profile_revision.sql": "b08a0add651bb0f44ce5a7da45c773d32c54e6d650c88b218295ccb4c8a39068",
+          "0050_add_readonly_text_archive.sql": "01ec6ac6874af49936ed1166d20fea0c5db7a6f1738aa725f57f04dce52b1e67",
+          "0051_create_voice_timeouts.sql": "288390b36bda84b3d1318058ee03d42d9bd92ece83b3fd79df2947aed82934df",
+          "0052_add_message_reactions_and_text_pins.sql": "718c09b9c0c4363fd28b9925c836782235d32e9353bd61812e18a8224dbdb1ef"
+        },
+        "topology_sha256": "bea414c2c04c7c7c40fc1aac1e22644a3ba988a1b2ccc2fd3af8094e6cd9f0ed"
+      },
+      "manifest_sha256": "a70dff8017a351b32e7b667d4d9e831daba31102de60345b296f689514a26edb"
+    },
+    {
+      "revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "components": {
+        "api": {
+          "archive": "api.oci.tar",
+          "attestation_predicates": [
+            "https://slsa.dev/provenance/v0.2",
+            "https://spdx.dev/Document"
+          ],
+          "index_digest": "sha256:ab682ca2d6114476e481b2888f74b7fe4a564578cf59e6d9fa7f00732979432b",
+          "manifest_digest": "sha256:d00d6ee0cd36b5b50d93f92701f2886981902738d506737b85e79c420b3b5fda"
+        },
+        "web": {
+          "archive": "web.oci.tar",
+          "attestation_predicates": [
+            "https://slsa.dev/provenance/v0.2",
+            "https://spdx.dev/Document"
+          ],
+          "index_digest": "sha256:d11058c1163e29cf82490e2ea24d7935dab4b203bc30d20e8fd6fb7a3d0ae18b",
+          "manifest_digest": "sha256:b7b9050d5880f11b97322cafab6ef1ab1d856a488e66ac4c92dcaa46d30f9759"
+        }
+      },
+      "compatibility": {
+        "backend_tree": "94a19beaa4f9c96a67dae94a56a0e84758ff7fc3",
+        "contracts_sha256": "5c746d0da76c962f2f34fb7cdb1167af361562e9e233c5f220ed510fd3e2bef1",
+        "migrations": {
+          "0001_create_users.sql": "ccbd1da4ba82e8b133fba5fc90a2c9d39b22934a88be2c20a1246df84b0e31b5",
+          "0002_create_sessions.sql": "dcb932aacb3e62214466bfcb07aaacde52c67d31f1c511383f81c61869ecc0ea",
+          "0003_create_sessions_active_user_index.sql": "3f8238d5b25c745f14f6c80d186f27040b750ac905b1f8a8d8d5a9ca132ee113",
+          "0004_create_password_resets.sql": "61dd93c8884dbe323957a1a86dd03e95c7b53c7003902e63f3e09ce1e208bfcb",
+          "0005_create_bootstrap_state.sql": "6e4567bce3234050aaa968ed636e6d0f5dab02bac5cea238264056eba998d3c8",
+          "0006_create_audit_events.sql": "b88c7c2be4b35af1a7f511e4e19f576e08fdf4894f5bb67c3fa59245c43bb75e",
+          "0007_create_channel_topology_state.sql": "4a6e6509d9697bedefed304d8a9218c3e967afb1d1fb7857da8c998ff3e607f9",
+          "0008_create_categories.sql": "493a36593da66b02a1d6f17322c6f91c8b2d01e6dc0976ebc66d38f88211e0c6",
+          "0009_create_channels.sql": "e2f11bbd4572413f9ca8d5946f12c75f3e2a69244885911bb850b6a3dbc6ee41",
+          "0010_create_voice_leases.sql": "202f5d1df8f5591f8ef42d0096133255f166aca77b84f0865ab82d9974649700",
+          "0011_create_voice_leases_active_user_index.sql": "51fc5b3fdf38e1ce60d9ab495f3e02e1503e35b2f863d3a1c4bb3f0fe29ba3f2",
+          "0012_create_voice_leases_active_channel_index.sql": "0deedbf2ed16fa3cc3fe2a131d3051aa11d7065db7f81bb90ef0eafd34b33c27",
+          "0013_add_voice_lease_session_digest.sql": "274a75f0836c6e6ad25e59a708e138ae33f5369b6a6c27ac1fb1529cdfea8818",
+          "0014_create_voice_leases_active_session_index.sql": "510a11d28a15be62993d76671e461f45e73eecd72ff09ecb8d20286137eae512",
+          "0015_extend_voice_lease_revocation_reasons.sql": "90ff2e62632e8d1130220ffb680c7027f7df6a69f5a9ad1b63e3f0a2fb19ec0b",
+          "0016_create_messages.sql": "21c7d9f957a2dd067a3701b4ce1264b000849e005b211b3bb7800e74a928e10c",
+          "0017_create_direct_messages.sql": "04178d1c27e7343e49fa2b6cc19b77cc7469789de724e1436e34d66928da4570",
+          "0018_create_direct_message_messages.sql": "cf64ca23b5f04f3888636fa01e1b74690f9035d1b64745ba9ac53fef1b2bb497",
+          "0019_create_direct_message_messages_history_index.sql": "b6865d9d929c5326169241b32f69306ff4554d1bbc6a7d51a88f90384d6de2d2",
+          "0020_add_direct_message_reply_to_id.sql": "c56cfcb2a62460b6e6cb96bddc16bf784dada533a2685f243097db52819913a5",
+          "0021_create_direct_message_read_cursors.sql": "e94eacf2ce786bb0e86557357b8a65869a835fbdf326ba8eb8fcb539ba73fbb2",
+          "0022_add_direct_message_search_index.sql": "77a5fe139cb3d293371d8a0e0baea497f98c3a6dd1ab51bcf7d8e674c422cce2",
+          "0023_create_attachments.sql": "d16207ac23bd62abbeaffb099b6c7d0ec86f636ee47cd14242c2ea3eda14dfa0",
+          "0024_create_message_attachments.sql": "d865e8b6ae313559ea3c52c3f8b351083078e97a88ba8b83fe0d796eafd38b55",
+          "0025_repair_incomplete_bootstrap_state.sql": "194548fa7bfc1b7c39a61fd262246dc1d7997343ce8600bd457f9b27a9a7c84b",
+          "0026_add_text_message_search_index.sql": "05136b2dc3671aec3e5155c8bcdf68d3397535918cf990364b3bc026bee5c743",
+          "0027_create_unattached_attachment_cleanup_index.sql": "8677e8cab826484222eaa893bcb0c2ebe004f776131d1fb413ab37ca5899e110",
+          "0028_create_voice_sfu_revocations.sql": "48bc0dcc7547ab5ac4d44b9931a30eb870990d872446c8b386c0cfb55f50dd00",
+          "0029_create_maintenance_admission.sql": "10989a75f1123dfd45e501c26424ade42b3c9e4268611b7de590aa578d157c07",
+          "0030_add_user_avatar_key.sql": "9f2e3b73fcc3da0fa48a1f26ff700ee259c16141c17340fb1c7ddb68640e242b",
+          "0031_add_attachment_deleting_state.sql": "3ba525ccbf58b777a5a6164ee2ed3245ef97e8199f0598aa97910128e77c5e34",
+          "0032_create_direct_message_attachments.sql": "bf723039957944fa053dec673243900e7c466b94c0ce8fc63764021f2684f175",
+          "0033_create_channel_read_cursors.sql": "120ba0b5efb8625fd6adf9a5be5c8de20cd21dc96fb21232d7d8ea4188b622aa",
+          "0034_add_voice_lease_revocation_notification.sql": "c89db94b891f2f62f6f1be39aed1eec2656b5a9b6367dee9cee992035530abbb",
+          "0035_add_message_mentions.sql": "8c5a46d74e0c3fccad3859b3b2c419916300682a9d78af9d656c97b27f52d6e2",
+          "0036_create_realtime_events.sql": "1add251f14e7f91986fb7179ed63d4f3502c62581af6cf13b024e89efc5cf799",
+          "0037_add_hidden_attachment_cleanup_claim.sql": "0975df9fa8dd4891f4e4a124d274c53f505321698c9b24a722e13450a3950bfc",
+          "0038_add_unattached_cleanup_retry_schedule.sql": "055bf3dd644f04414469fb417680d247acf6ecd2d582f50b86fbf55af4628bee",
+          "0039_allow_attachment_only_messages.sql": "601945737b6686db446eee0b0c972aa611d042052e04671d8f391edeb31ac15f",
+          "0040_create_role_permissions.sql": "933fd1f95217b74b16b8dfb2a1e28b8d69bb22f7efea62f665165eae5057929b",
+          "0041_create_topology_command_receipts.sql": "812537b98610da5e869c93da9ae37fd8db2b5f1b8309e409ba364fd23b3411d1",
+          "0042_add_channel_description.sql": "17ec71e97207bb341f72170d412e75cee6b88778cc88ef5129a9dc12148953af",
+          "0043_create_user_daily_activity.sql": "e968aec0b455ed5db4e6c51077b2ddb8bc8f27f3194e822f227d1fc07812981f",
+          "0044_create_guild_settings.sql": "95b1b7e13d4a477fe529a7c4b7db54a2b516f8b189c853fbb5b5d80769668b87",
+          "0045_system_welcome_messages.sql": "8a6ce08501fc16654817b9006d9fb8475a4157fa0f7ad9adcc2b7deb673bc776",
+          "0046_add_public_session_metadata.sql": "f40c1d9f97bec0c52494341c0cc68d2e155f7cb5e9dc1a7e5d419b980e69e762",
+          "0047_add_trace_causality.sql": "33c6714e52106a807822100b68220097195eccca309ee14833b5bc8aaa0e3de5",
+          "0048_add_screen_profile_operation_receipt.sql": "c962707919f1b775a775411b7c4594e8d7677f9ef9385ed01e975d2f827fdabe",
+          "0049_add_member_profile_revision.sql": "b08a0add651bb0f44ce5a7da45c773d32c54e6d650c88b218295ccb4c8a39068",
+          "0050_add_readonly_text_archive.sql": "01ec6ac6874af49936ed1166d20fea0c5db7a6f1738aa725f57f04dce52b1e67",
+          "0051_create_voice_timeouts.sql": "288390b36bda84b3d1318058ee03d42d9bd92ece83b3fd79df2947aed82934df",
+          "0052_add_message_reactions_and_text_pins.sql": "718c09b9c0c4363fd28b9925c836782235d32e9353bd61812e18a8224dbdb1ef"
+        },
+        "topology_sha256": "bea414c2c04c7c7c40fc1aac1e22644a3ba988a1b2ccc2fd3af8094e6cd9f0ed"
+      },
+      "manifest_sha256": "ac0eeea21e08042c96204f9c105a71794c8eaef6769f22907f5a2078ec785167"
+    }
+  ],
+  "owned_resources_removed": true,
+  "code_equivalence": {
+    "reviewed_revision": "79d1c36a1f7bc3053a01c88a32b7e78cc8b5a821",
+    "product_release_inputs_equal": true,
+    "harness_files_verified": 25,
+    "builder_files_verified": 44
+  },
+  "visual_review": {
+    "status": "PASS",
+    "originals": [
+      "rollback_maintenance-0.png",
+      "restored-1.png"
+    ],
+    "observations": [
+      "Maintenance banner visible during rollback; selected text channel and fixture attachment remain visible.",
+      "After restore maintenance banner absent; authenticated second participant, channel, fixture attachment and composer visible."
+    ]
+  },
+  "limits": [
+    "Runs in one owned nested Linux Docker daemon with two actual browser observers, genuine signed QA bundles and actual API/PostgreSQL/LiveKit; no routed or mocked API replies.",
+    "QA-only signing trust anchor; this is not a production deployment, production SSH acceptance or production approval.",
+    "Does not complete same-SHA retry, interrupted transport, remote host failure or health fault acceptance for issue395.",
+    "Product image revisions remain their original sources; harness revision is distinct. No physical media/capacity or native release acceptance is claimed.",
+    "Storage comparison contains fingerprints only; no backups, snapshots or database contents are published."
+  ]
+}

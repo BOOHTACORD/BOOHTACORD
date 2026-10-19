@@ -40,3 +40,13 @@ checks and deferred expensive runs. Neither local VM was started. A green local
 unit result does not establish a hosted, release or physical PASS. #398 remains
 open until the separate acceptance is recorded. Repository protection settings
 were not changed (#385 belongs to the owner).
+# Follow-up actual acceptance, 20 October
+
+The original implementation-only NOT_RUN boundary below is historical. Retained
+parallel PR lifecycle runs now passed independent full artifact/fan-in replay,
+206 seconds of actual controller overlap, separate owner/port/account-stack
+namespaces and cleanup. All three current profiles passed in PR457. The 78-run
+observation window retains failures/cancellations and unknown flake causes.
+See `combined-acceptance-2026-10-20.md`, `parallel-actual-final-2026-10-20.json`
+and `after-observation-2026-10-20.json`. Physical/device and protected native
+release checks remain separate and are not certified by this acceptance.
