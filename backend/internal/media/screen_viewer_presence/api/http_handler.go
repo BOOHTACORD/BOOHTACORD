@@ -16,6 +16,7 @@ type Operations interface {
 	Watch(context.Context, presence.Principal, string, string, string) error
 	StopWatching(context.Context, presence.Principal, string, string, string) error
 	Viewers(context.Context, presence.Principal, string) ([]string, error)
+	ViewersForViewer(context.Context, presence.Principal, string, string) ([]string, error)
 	ClearOwner(context.Context, presence.Principal, string, string) error
 }
 
@@ -26,6 +27,7 @@ func RegisterRoutes(mux *http.ServeMux, sessions sessionapi.Authenticator, opera
 	protect := func(next http.Handler) http.Handler { return privateHeaders(sessionapi.Require(sessions)(next)) }
 	mux.Handle("PUT /api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}", protect(http.HandlerFunc(handler.watch)))
 	mux.Handle("DELETE /api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}", protect(http.HandlerFunc(handler.stopWatching)))
+	mux.Handle("GET /api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}", protect(http.HandlerFunc(handler.viewersForViewer)))
 	mux.Handle("GET /api/v1/voice/leases/{ownerLeaseID}/screen-viewers", protect(http.HandlerFunc(handler.viewers)))
 	mux.Handle("DELETE /api/v1/voice/leases/{ownerLeaseID}/screen-viewers", protect(http.HandlerFunc(handler.clearOwner)))
 }
@@ -76,6 +78,21 @@ func (handler *Handler) viewers(writer http.ResponseWriter, request *http.Reques
 		return
 	}
 	accounts, err := handler.operations.Viewers(request.Context(), principal, request.PathValue("ownerLeaseID"))
+	if err != nil {
+		writeFailure(writer, request, err)
+		return
+	}
+	writer.Header().Set("Content-Type", "application/json; charset=utf-8")
+	_ = json.NewEncoder(writer).Encode(map[string][]string{"viewer_account_ids": accounts})
+}
+
+func (handler *Handler) viewersForViewer(writer http.ResponseWriter, request *http.Request) {
+	principal, ok := principal(request)
+	if !ok {
+		writeFailure(writer, request, presence.ErrUnavailable)
+		return
+	}
+	accounts, err := handler.operations.ViewersForViewer(request.Context(), principal, request.PathValue("viewerLeaseID"), request.PathValue("ownerLeaseID"))
 	if err != nil {
 		writeFailure(writer, request, err)
 		return

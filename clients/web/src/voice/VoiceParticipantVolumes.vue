@@ -6,14 +6,19 @@ import { findParticipantScreen } from './find_participant_screen'
 import type { ScreenViewerCard } from './screen_viewer_controller'
 import VoiceParticipantStatus from './VoiceParticipantStatus.vue'
 
-const props = withDefaults(defineProps<{ error: string | null; participants: VoiceVolumeParticipant[]; screenStreams: ScreenViewerCard[]; screenWatcherIds?: string[]; ownScreenSharing?: boolean; selectedScreenStreamId: string | null; selfAccountId?: string; selfName: string | null; selfDeafened: boolean; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfSpeaking: boolean }>(), { screenWatcherIds: () => [], ownScreenSharing: false })
+const props = withDefaults(defineProps<{ error: string | null; participants: VoiceVolumeParticipant[]; screenStreams: ScreenViewerCard[]; screenWatcherIds?: string[]; ownerScreenWatcherIds?: string[]; ownScreenSharing?: boolean; selectedScreenStreamId: string | null; selfAccountId?: string; selfName: string | null; selfDeafened: boolean; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfSpeaking: boolean }>(), { screenWatcherIds: () => [], ownerScreenWatcherIds: () => [], ownScreenSharing: false })
 const emit = defineEmits<{ setVolume: [id: string, percent: number]; watchScreen: [id: string] }>()
 const authors = useAuthorDirectory()
 function initial(name: string | null | undefined): string { return name?.trim().slice(0, 2).toLocaleUpperCase('ru-RU') || 'У' }
 function selfDisplayName(name: string | null): string { return name?.trim() || 'Вы' }
 function avatarUrl(accountId: string | null | undefined): string | undefined { return accountId ? authors.avatarUrl(accountId) : undefined }
 function screenForParticipant(participantId: string): ScreenViewerCard | null { return findParticipantScreen(props.screenStreams, participantId) }
-function watchesOwnScreen(participantId: string): boolean { return props.ownScreenSharing && props.screenWatcherIds.includes(participantId) }
+function viewingRemoteScreen(): boolean { return Boolean(props.screenStreams.find(screen => screen.id === props.selectedScreenStreamId && !screen.isLocal)) }
+function watcherLabel(): string { return viewingRemoteScreen() ? 'Смотрит эту трансляцию' : 'Смотрит вашу трансляцию' }
+function watchesSelectedScreen(participantId: string): boolean {
+  if (viewingRemoteScreen()) return props.screenWatcherIds.includes(participantId)
+  return props.ownScreenSharing && props.ownerScreenWatcherIds.includes(participantId)
+}
 function watchParticipantScreen(participantId: string): void { const screen = screenForParticipant(participantId); if (screen) emit('watchScreen', screen.id) }
 </script>
 
@@ -28,7 +33,7 @@ function watchParticipantScreen(participantId: string): void { const screen = sc
       </details>
       <span class="avatar lg" :style="{ backgroundColor: avatarBackground(participant.accountId ?? participant.id), color: avatarForeground(participant.accountId ?? participant.id) }" aria-hidden="true"><img v-if="avatarUrl(participant.accountId)" :src="avatarUrl(participant.accountId)" alt=""><template v-else>{{ initial(participant.name) }}</template></span>
       <span class="participant-name">{{ participant.name || 'Участник' }}</span>
-      <span v-if="watchesOwnScreen(participant.id)" class="participant-watcher-indicator" role="img" aria-label="Смотрит вашу трансляцию" title="Смотрит вашу трансляцию"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.2-6 9.5-6 9.5 6 9.5 6-3.2 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg><span>Смотрит</span></span>
+      <span v-if="watchesSelectedScreen(participant.id)" class="participant-watcher-indicator" role="img" :aria-label="watcherLabel()" :title="watcherLabel()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.2-6 9.5-6 9.5 6 9.5 6-3.2 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg><span>Смотрит</span></span>
       <VoiceParticipantStatus class="participant-status" :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
       <span v-if="screenForParticipant(participant.id)" class="participant-share-badge" role="img" aria-label="Участник показывает экран" title="Показывает экран"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H4zM9 20h6m-3-4v4" /></svg><b aria-hidden="true">ЭФИР</b></span>
       <button v-if="screenForParticipant(participant.id)" class="participant-watch" type="button" :aria-pressed="screenForParticipant(participant.id)?.id === selectedScreenStreamId" @click="watchParticipantScreen(participant.id)">Смотреть экран</button>
@@ -36,6 +41,7 @@ function watchParticipantScreen(participantId: string): void { const screen = sc
     <article class="participant participant-self voice-participant-self" :class="{ talking: selfSpeaking && !selfDeafened && !selfMicrophoneMuted && !selfMicrophoneUnavailable }" data-testid="participant-card">
       <span class="avatar lg" :style="{ backgroundColor: avatarBackground(selfName ?? 'Вы'), color: avatarForeground(selfName ?? 'Вы') }" aria-hidden="true"><img v-if="avatarUrl(selfAccountId)" :src="avatarUrl(selfAccountId)" alt=""><template v-else>{{ initial(selfName ?? 'Вы') }}</template></span>
       <span class="participant-name">{{ selfDisplayName(selfName) }}</span>
+      <span v-if="selfAccountId && viewingRemoteScreen() && screenWatcherIds.includes(selfAccountId)" class="participant-watcher-indicator" role="img" :aria-label="watcherLabel()" :title="watcherLabel()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.2-6 9.5-6 9.5 6 9.5 6-3.2 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg><span>Смотрит</span></span>
       <VoiceParticipantStatus class="participant-status" :deafened="selfDeafened" :microphone-muted="selfMicrophoneMuted" :microphone-unavailable="selfMicrophoneUnavailable" :speaking="selfSpeaking" />
     </article>
   </section>

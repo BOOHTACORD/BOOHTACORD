@@ -1,0 +1,42 @@
+{
+  "id": "screen-viewer-audience-2026-10-19",
+  "task": "T-030 / Web viewer sees the audience of the selected stream",
+  "status": "PARTIAL",
+  "observed_at": "2026-10-19",
+  "source_base_commit": "59c15c65c6751173fc5e668be383e88a62276a58",
+  "change": "A viewer with an active voice lease and confirmed LiveKit subscription can read the audience of the selected screen stream. The authenticated API verifies both current leases in the same open voice channel and the active viewer-to-track subscription. The selected stream's participant strip shows the watcher count and marks its viewers, including the local viewer; the stream owner's audience remains separate.",
+  "checks": [
+    {
+      "name": "backend_presence_tests",
+      "result": "PASS_LOCAL",
+      "detail": "Go tests passed for viewer authorization, same-channel active leases, current publication, active subscription, and protected route behavior."
+    },
+    {
+      "name": "contracts",
+      "result": "PASS_LOCAL",
+      "detail": "19 contract tests passed; OpenAPI 3.1 lint and route parity passed for 113 public operations and 3 private exclusions."
+    },
+    {
+      "name": "web_unit_build_types",
+      "result": "PASS_LOCAL",
+      "detail": "477 Web test files / 1,590 tests passed; production Vite build and vue-tsc passed."
+    },
+    {
+      "name": "focused_browser_audience",
+      "result": "PASS_LOCAL",
+      "detail": "The participant-strip and selected-stream audience browser scenarios passed on the rebased feature commit. The audience scenario verifies count 2, the local viewer marker, and a second active viewer marker."
+    },
+    {
+      "name": "registered_web_feature_acceptance",
+      "result": "PARTIAL",
+      "detail": "Web unit, build, accessibility, and all registered browser scenarios passed. The 1440 px and 393 px real-stack stages failed before starting PostgreSQL/API/LiveKit because the local Docker CLI has no Buildx component; docker build reports that the legacy builder does not support RUN --mount. Report: .out/local-features/20261019-222357/index.html."
+    },
+    {
+      "name": "visual_review",
+      "result": "PASS_LOCAL",
+      "detail": "Reviewed the 390x900 screenshot at source resolution: the selected remote stream is followed by the participant strip, the audience count reads 2, and the local plus another viewer carry eye markers. The synthetic fixture intentionally shows the first-frame placeholder. The audience row is horizontally scrollable on the narrow viewport and the document has no horizontal overflow. Screenshot: .out/local-features/20261019-222357/images/web-screen_share_ui/disclosure.browser-a-viewe-2833c-e-including-another-watcher/viewer-sees-selected-stream-audience.png."
+    }
+  ],
+  "qa_report_status": "FAIL",
+  "limitation": "The local real API/PostgreSQL/LiveKit journey could not start because Docker Buildx is absent. Component browser captures and backend tests do not prove live SFU subscription behavior in this run. No media quality or capacity claim is made."
+}
