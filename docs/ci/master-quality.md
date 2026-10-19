@@ -1,7 +1,10 @@
 # Master quality producer (#393 / CICD-09)
 
-Status: implemented locally. Hosted PR/master, full retry, deployment acceptance
-and comparative measurements remain pending; #393 stays open.
+Status: CICD-09 producer acceptance PASS on master
+`3dc9d5929d1afb5d6151d418bad7cf3f6a763358`, merged in PR431.
+The complete source/run/job/receipt and timing record is
+`evidence/ci/master-quality-final-2026-10-19.json`. Earlier evidence files are
+historical development checkpoints.
 
 `Build server` owns master server quality. General CI handles PR, merge-group and
 non-master manual checks. A manual general-CI dispatch on master explicitly fails
@@ -13,8 +16,7 @@ or holding the server bundle.
 This is option A from #393. Keeping server checks and their signer in the existing
 producer avoids an additional cross-workflow receipt transfer, token scope and
 trust boundary. A new cross-workflow producer would not remove the required
-post-merge exact-source checks. Actual before/after latency, job occupancy and
-master-to-install observations must still validate the selected design.
+post-merge exact-source checks. Observed before/after results are recorded below.
 
 Contracts run once on every successful master selection, always in full release
 guard mode. Backend/Web run once when server release impact is true. The always
@@ -51,8 +53,43 @@ missing/duplicate/foreign/stale/expired bundles and future attempts are rejected
 Legacy artifacts without a GitHub ZIP digest still require the existing bundle
 checksum and signed-manifest verification; new bundles require a valid ZIP digest.
 
-Hosted evidence must verify one relevant master producer, three current-source
-PASS receipts, signed/smoked bundle, full attempt retry, current producer binding
-at installation, concurrent/cancelled source rejection and before/after timing.
-Unit tests and static policy do not prove these live outcomes or external #386
-settings. No physical/native media or capacity claim follows from this change.
+PR431 had all14 current-head checks successful. Its tested checkout and actual
+master merge have the exact same verified Git tree. Build39245984933 completed
+all11 jobs successfully in attempts1 and2; every attempt2 job started afresh after
+the root retry. Native39245985181 completed all6 jobs independently. General CI
+did not repeat a master push. Four small receipt/quality ZIPs per build attempt
+were downloaded and checked against API size/SHA256/ownership/source. All16 old
+artifacts remain alongside16 new ones; the selector requires the current bundle.
+
+Deploy39247297539/install118052394587 successfully installed the exact source from
+build attempt1. Canonical host execution verified the signed bundle, compatibility
+and running state before its final source-bound installation marker. The first
+transfer attempt was cancelled at20minutes, and its recovery is included below.
+The outer bundle ZIP digest is API metadata; its complete ZIP bytes were not
+separately downloaded locally. Full hosted release-mode QA ran771 Python tests,
+all19 original negative fixture processes and four actual read-only API preflight
+cases. Concurrent/rerun races are controlled regressions; deliberately concurrent
+production mutations were not used as a test fixture.
+
+| Descriptive measurement (one observed source per side) | Before | After |
+| --- | ---: | ---: |
+| Server validation jobs, including new quality aggregate | 16 | 9 |
+| Validation runner-minutes | 67.566666 | 34.6 |
+| Producer-created to bundle, seconds | 564 | 646 |
+| Producer-created to installed, seconds | 1646 | 2333 |
+
+Occupancy excludes selectors, native jobs, bundle, deploy and development QA.
+The after installation interval includes cancellation and recovery; it is not a
+clean first-attempt latency sample. Bundle creation was82seconds slower in this
+sample. Lower validation occupancy does not establish billing, p50/SLO or deploy
+speedup. Per-job decomposition is retained in the final record.
+
+The full retry proves new current-attempt production artifacts and receipt
+selection. Repeated installation of its same-SHA bundle remains unaccepted under
+#395, which explicitly owns same-SHA delivery, SSH/health failure, sequential
+releases and compatible rollback evidence. Its first delivery also timed out
+during SCP; the cancellation is not an immutable-manifest rejection. The canonical
+retry was still running when this record was written. Host signature, immutable
+manifest/history and install-lock guards remain unchanged. These outstanding
+rollout/rollback/transport gates do not receive PASS from this producer record.
+External #385/#386 settings, physical/native media and capacity remain separate.

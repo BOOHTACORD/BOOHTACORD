@@ -507,7 +507,7 @@ tasks:
     title: One master server quality producer with independent native checks and exact execution ownership
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
     depends_on: [CICD-01, CICD-02, CICD-03, CICD-12]
-    evidence: [tools/ci/master_quality/test_validation.py, tools/ci/master_quality/test_context.py, docs/ci/master-quality.md, evidence/ci/master-quality-foundation-2026-10-19.md, tools/ci/master_quality/test_execution.py, tools/ci/master_quality/test_workflow.py, tools/release/delivery/test_api.py, tools/release/delivery/test_producer_artifacts.py, tools/release/delivery/test_producer_preflight.py, tools/release/delivery/test_routing.py, tools/build/server/test_gate_receipts.py, evidence/ci/master-quality-implementation-2026-10-19.md]
+    evidence: [tools/ci/master_quality/test_validation.py, tools/ci/master_quality/test_context.py, docs/ci/master-quality.md, evidence/ci/master-quality-foundation-2026-10-19.md, tools/ci/master_quality/test_execution.py, tools/ci/master_quality/test_workflow.py, tools/release/delivery/test_api.py, tools/release/delivery/test_producer_artifacts.py, tools/release/delivery/test_producer_preflight.py, tools/release/delivery/test_routing.py, tools/build/server/test_gate_receipts.py, evidence/ci/master-quality-implementation-2026-10-19.md, evidence/ci/master-quality-final-2026-10-19.json]
   - id: CICD-18
     title: Classified artifact retention, immutable naming and complete sanitized evidence without duplicate captures
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
