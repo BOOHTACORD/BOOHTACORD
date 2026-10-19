@@ -3,9 +3,27 @@ import hashlib
 import json
 import shutil
 from pathlib import Path
-from tools.ci.artifact_policy.capture_data import safe_json
+from tools.ci.artifact_policy.capture_data import safe_json, strict_json
 from .plan import require
 from .catalog import REPORTS,ROOTS
+
+
+def collect_failure(root, profile, destination):
+    if profile != 'next': return []
+    path = root/'.out/next-client-acceptance/controller-failure.json'
+    if not path.exists(): return []
+    require(path.is_file() and not path.is_symlink() and not any(p.is_symlink() for p in path.parents)
+            and 0 < path.stat().st_size <= 1024)
+    from tools.qa.next_client_acceptance.diagnostics import validate
+    value = validate(strict_json(path.read_bytes()))
+    # Serialize validated finite fields, never raw private bytes or log tails.
+    raw = (json.dumps(value, sort_keys=True)+'\n').encode()
+    folder = destination/'diagnostics'; folder.mkdir(parents=True, exist_ok=True)
+    require(not any(p.is_symlink() for p in folder.parents) and not folder.is_symlink())
+    target = folder/'next-controller.json'
+    require(not target.exists())
+    target.write_bytes(raw)
+    return [{'path': 'diagnostics/next-controller.json', 'sha256': hashlib.sha256(raw).hexdigest()}]
 
 
 def collect(root,profile,source,destination):

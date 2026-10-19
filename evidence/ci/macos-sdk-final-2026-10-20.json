@@ -1,0 +1,514 @@
+{
+  "schema_version": 1,
+  "scope": "actual-hosted-macos-sdk-native-matrix-candidate",
+  "status": "PASS",
+  "builder_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+  "run_id": "39319895246",
+  "run_attempt": "1",
+  "workflow": {
+    "id": 39319895246,
+    "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+    "path": ".github/workflows/webrtc-macos-sdk.yaml",
+    "event": "workflow_dispatch",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-19T20:30:34Z",
+    "updated_at": "2026-10-19T21:20:55Z"
+  },
+  "job_metadata": [
+    {
+      "id": 118290927245,
+      "name": "plan",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-19T20:31:59Z",
+      "completed_at": "2026-10-19T20:32:07Z"
+    },
+    {
+      "id": 118291652255,
+      "name": "build (arm64, macos-26)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-19T20:32:45Z",
+      "completed_at": "2026-10-19T20:54:55Z"
+    },
+    {
+      "id": 118291652473,
+      "name": "build (x64, macos-26-intel)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-19T20:33:38Z",
+      "completed_at": "2026-10-19T21:20:11Z"
+    },
+    {
+      "id": 118314164598,
+      "name": "assemble",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-19T21:20:22Z",
+      "completed_at": "2026-10-19T21:20:55Z"
+    },
+    {
+      "id": 118314491334,
+      "name": "publish",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-19T21:20:55Z",
+      "completed_at": "2026-10-19T21:20:55Z"
+    }
+  ],
+  "actual_runtime": true,
+  "mocks": false,
+  "published": false,
+  "publish_requested": false,
+  "current_recipe_and_build_code_equivalence": {
+    "status": "PASS",
+    "paths": [
+      ".github/workflows/webrtc-macos-sdk.yaml",
+      ".github/workflows/flutter-macos.yaml",
+      ".github/workflows/macos-release.yaml",
+      "tools/build/webrtc_macos",
+      "tools/ci/macos",
+      "tools/toolchains.json",
+      "clients/flutter/packages/flutter_webrtc/third_party/patches"
+    ],
+    "checkout": "20d491f57ae4666e57459c6cce20773ad672ed39"
+  },
+  "actual_asset_contract": {
+    "status": "PASS",
+    "schema_version": 1,
+    "repository": "Egkurilov/BOOHTACORD",
+    "builder_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+    "run_id": "39319895246",
+    "run_attempt": "1",
+    "version": "webrtc-m150-boohtacord-r2",
+    "recipe_sha256": "f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a",
+    "assets": {
+      "WebRTC-macos.xcframework.zip": {
+        "sha256": "48de84de8f9fa734aff68bace9a26b284ba99b79af596df43f9bfd444c3eea64",
+        "bytes": 16580852
+      },
+      "sdk-manifest.json": {
+        "sha256": "afd37a69c68b192751f265f444a82be27da23f3b0c2f30e82e1e80aecdfa681d",
+        "bytes": 6757
+      },
+      "SHA256SUMS": {
+        "sha256": "c917fe12c348042382bb7c84a3d25b288e446294a997c1eff21a390a0e8f6f79",
+        "bytes": 95
+      }
+    },
+    "physical_playback_smoke": "NOT_RUN"
+  },
+  "binary_inspection": [
+    {
+      "archive": "WebRTC-arm64.framework.zip",
+      "binary_sha256": "f891e255b9f06952465eaf78b24bfef5307d724e22726dae9f866b231ba4291c",
+      "architectures": [
+        "arm64"
+      ],
+      "routing_marker_verified": true
+    },
+    {
+      "archive": "WebRTC-x64.framework.zip",
+      "binary_sha256": "6af75fb2aac188c099b225b2f856dde7f3a260517c463ea9be2099d70e9b3ab8",
+      "architectures": [
+        "x86_64"
+      ],
+      "routing_marker_verified": true
+    },
+    {
+      "archive": "WebRTC-macos.xcframework.zip",
+      "binary_sha256": "8e197cf385fb6e26a00cf736ec0fc25dd74bb8d5cc61e70b4defdb821383e47c",
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ],
+      "routing_marker_verified": true
+    }
+  ],
+  "actual_matrix": [
+    {
+      "architecture": "arm64",
+      "archive_sha256": "b94a66399afae86fb5a7275db313e02e5c3e10812cd8fd452aadb8627497f4a3",
+      "binary_architectures": [
+        "arm64"
+      ],
+      "builder_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "depot_revision": "2fd34a8813b6f34336aad40976cc4223768177f8",
+      "framework_binary_sha256": "f891e255b9f06952465eaf78b24bfef5307d724e22726dae9f866b231ba4291c",
+      "gn_args": "target_os=\"mac\" mac_deployment_target=\"10.15\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true target_cpu=\"arm64\"",
+      "gn_base": "target_os=\"mac\" mac_deployment_target=\"10.15\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true",
+      "host_policy_sha256": "84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0",
+      "native_route_tests": "PASS",
+      "native_test_count": 2,
+      "native_test_report_sha256": "aaac90bba164cdc0e06c8cd0318e58065c9206740487fd958ba36fe346e01df4",
+      "owned_workspace_removed": true,
+      "patches": {
+        "webrtc-sdk-m150-custom-source-regression.patch": "c1c3bab5e3efc415f72debc617e34bf75fbb25ffcdf44bbaa798f0c2b8892d7d",
+        "webrtc-sdk-m150-custom-source-routing.patch": "3c92ea4782594c7e34a7c986d7e969f76a7b7653ef783ff929591f45462198fa"
+      },
+      "physical_playback_smoke": "NOT_RUN",
+      "platform": "macos",
+      "recipe_sha256": "f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a",
+      "routing_marker": "m150-038565-custom-source-r2",
+      "run_attempt": "1",
+      "run_id": "39319895246",
+      "schema_version": 2,
+      "seconds": 1249.928,
+      "source_revision": "0385653a83f21acf3c916466d4088b29fe2f160b",
+      "toolchain": {
+        "architecture": "arm64",
+        "macos_sdk": "26.5",
+        "os_version": "26.6.2",
+        "system": "Darwin",
+        "xcode_build": "17F113",
+        "xcode_version": "26.6"
+      },
+      "version": "webrtc-m150-boohtacord-r2"
+    },
+    {
+      "architecture": "x64",
+      "archive_sha256": "42d33824cb58e893bce139fec55e8eb37b255347c4ab8e1801d3bdca9ae5559d",
+      "binary_architectures": [
+        "x86_64"
+      ],
+      "builder_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "depot_revision": "2fd34a8813b6f34336aad40976cc4223768177f8",
+      "framework_binary_sha256": "6af75fb2aac188c099b225b2f856dde7f3a260517c463ea9be2099d70e9b3ab8",
+      "gn_args": "target_os=\"mac\" mac_deployment_target=\"10.15\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true target_cpu=\"x64\"",
+      "gn_base": "target_os=\"mac\" mac_deployment_target=\"10.15\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true",
+      "host_policy_sha256": "84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0",
+      "native_route_tests": "PASS",
+      "native_test_count": 2,
+      "native_test_report_sha256": "69c85332f2ae127f92a38784d12957fdbc637c4cca0bd5c928ec726cfe81d1f9",
+      "owned_workspace_removed": true,
+      "patches": {
+        "webrtc-sdk-m150-custom-source-regression.patch": "c1c3bab5e3efc415f72debc617e34bf75fbb25ffcdf44bbaa798f0c2b8892d7d",
+        "webrtc-sdk-m150-custom-source-routing.patch": "3c92ea4782594c7e34a7c986d7e969f76a7b7653ef783ff929591f45462198fa"
+      },
+      "physical_playback_smoke": "NOT_RUN",
+      "platform": "macos",
+      "recipe_sha256": "f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a",
+      "routing_marker": "m150-038565-custom-source-r2",
+      "run_attempt": "1",
+      "run_id": "39319895246",
+      "schema_version": 2,
+      "seconds": 2674.981,
+      "source_revision": "0385653a83f21acf3c916466d4088b29fe2f160b",
+      "toolchain": {
+        "architecture": "x86_64",
+        "macos_sdk": "26.5",
+        "os_version": "26.6.1",
+        "system": "Darwin",
+        "xcode_build": "17F113",
+        "xcode_version": "26.6"
+      },
+      "version": "webrtc-m150-boohtacord-r2"
+    }
+  ],
+  "manifest": {
+    "schema_version": 2,
+    "platform": "macos",
+    "version": "webrtc-m150-boohtacord-r2",
+    "source_revision": "0385653a83f21acf3c916466d4088b29fe2f160b",
+    "depot_revision": "2fd34a8813b6f34336aad40976cc4223768177f8",
+    "routing_marker": "m150-038565-custom-source-r2",
+    "gn_base": "target_os=\"mac\" mac_deployment_target=\"10.15\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true",
+    "recipe_sha256": "f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a",
+    "host_policy_sha256": "84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0",
+    "patches": {
+      "webrtc-sdk-m150-custom-source-routing.patch": "3c92ea4782594c7e34a7c986d7e969f76a7b7653ef783ff929591f45462198fa",
+      "webrtc-sdk-m150-custom-source-regression.patch": "c1c3bab5e3efc415f72debc617e34bf75fbb25ffcdf44bbaa798f0c2b8892d7d"
+    },
+    "builder_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+    "run_id": "39319895246",
+    "run_attempt": "1",
+    "architectures": [
+      {
+        "architecture": "arm64",
+        "archive_sha256": "b94a66399afae86fb5a7275db313e02e5c3e10812cd8fd452aadb8627497f4a3",
+        "binary_architectures": [
+          "arm64"
+        ],
+        "builder_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+        "depot_revision": "2fd34a8813b6f34336aad40976cc4223768177f8",
+        "framework_binary_sha256": "f891e255b9f06952465eaf78b24bfef5307d724e22726dae9f866b231ba4291c",
+        "gn_args": "target_os=\"mac\" mac_deployment_target=\"10.15\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true target_cpu=\"arm64\"",
+        "gn_base": "target_os=\"mac\" mac_deployment_target=\"10.15\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true",
+        "host_policy_sha256": "84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0",
+        "native_route_tests": "PASS",
+        "native_test_count": 2,
+        "native_test_report_sha256": "aaac90bba164cdc0e06c8cd0318e58065c9206740487fd958ba36fe346e01df4",
+        "owned_workspace_removed": true,
+        "patches": {
+          "webrtc-sdk-m150-custom-source-regression.patch": "c1c3bab5e3efc415f72debc617e34bf75fbb25ffcdf44bbaa798f0c2b8892d7d",
+          "webrtc-sdk-m150-custom-source-routing.patch": "3c92ea4782594c7e34a7c986d7e969f76a7b7653ef783ff929591f45462198fa"
+        },
+        "physical_playback_smoke": "NOT_RUN",
+        "platform": "macos",
+        "recipe_sha256": "f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a",
+        "routing_marker": "m150-038565-custom-source-r2",
+        "run_attempt": "1",
+        "run_id": "39319895246",
+        "schema_version": 2,
+        "seconds": 1249.928,
+        "source_revision": "0385653a83f21acf3c916466d4088b29fe2f160b",
+        "toolchain": {
+          "architecture": "arm64",
+          "macos_sdk": "26.5",
+          "os_version": "26.6.2",
+          "system": "Darwin",
+          "xcode_build": "17F113",
+          "xcode_version": "26.6"
+        },
+        "version": "webrtc-m150-boohtacord-r2"
+      },
+      {
+        "architecture": "x64",
+        "archive_sha256": "42d33824cb58e893bce139fec55e8eb37b255347c4ab8e1801d3bdca9ae5559d",
+        "binary_architectures": [
+          "x86_64"
+        ],
+        "builder_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+        "depot_revision": "2fd34a8813b6f34336aad40976cc4223768177f8",
+        "framework_binary_sha256": "6af75fb2aac188c099b225b2f856dde7f3a260517c463ea9be2099d70e9b3ab8",
+        "gn_args": "target_os=\"mac\" mac_deployment_target=\"10.15\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true target_cpu=\"x64\"",
+        "gn_base": "target_os=\"mac\" mac_deployment_target=\"10.15\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true",
+        "host_policy_sha256": "84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0",
+        "native_route_tests": "PASS",
+        "native_test_count": 2,
+        "native_test_report_sha256": "69c85332f2ae127f92a38784d12957fdbc637c4cca0bd5c928ec726cfe81d1f9",
+        "owned_workspace_removed": true,
+        "patches": {
+          "webrtc-sdk-m150-custom-source-regression.patch": "c1c3bab5e3efc415f72debc617e34bf75fbb25ffcdf44bbaa798f0c2b8892d7d",
+          "webrtc-sdk-m150-custom-source-routing.patch": "3c92ea4782594c7e34a7c986d7e969f76a7b7653ef783ff929591f45462198fa"
+        },
+        "physical_playback_smoke": "NOT_RUN",
+        "platform": "macos",
+        "recipe_sha256": "f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a",
+        "routing_marker": "m150-038565-custom-source-r2",
+        "run_attempt": "1",
+        "run_id": "39319895246",
+        "schema_version": 2,
+        "seconds": 2674.981,
+        "source_revision": "0385653a83f21acf3c916466d4088b29fe2f160b",
+        "toolchain": {
+          "architecture": "x86_64",
+          "macos_sdk": "26.5",
+          "os_version": "26.6.1",
+          "system": "Darwin",
+          "xcode_build": "17F113",
+          "xcode_version": "26.6"
+        },
+        "version": "webrtc-m150-boohtacord-r2"
+      }
+    ],
+    "xcframework_sha256": "48de84de8f9fa734aff68bace9a26b284ba99b79af596df43f9bfd444c3eea64",
+    "universal_binary_sha256": "8e197cf385fb6e26a00cf736ec0fc25dd74bb8d5cc61e70b4defdb821383e47c",
+    "signing": "adhoc-framework-not-notarized",
+    "physical_playback_smoke": "NOT_RUN",
+    "seconds": 10.949
+  },
+  "artifact_verification": [
+    {
+      "id": 12222541730,
+      "name": "sdk-universal-3d22e9007db090e6a2159841506e0e377ae8b0a4-39319895246-1",
+      "size_in_bytes": 16588112,
+      "digest": "sha256:b1e1bdaa7805d28f29190158e22bc1e18ab1acd0d5e7f2aaa3be54aec6164dc9",
+      "expired": false,
+      "workflow_run": {
+        "id": 39319895246,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      "zip_and_payload_verified": true,
+      "files": {
+        "WebRTC-macos.xcframework.zip": {
+          "bytes": 16580852,
+          "sha256": "48de84de8f9fa734aff68bace9a26b284ba99b79af596df43f9bfd444c3eea64"
+        },
+        "sdk-manifest.json": {
+          "bytes": 6757,
+          "sha256": "afd37a69c68b192751f265f444a82be27da23f3b0c2f30e82e1e80aecdfa681d"
+        },
+        "SHA256SUMS": {
+          "bytes": 95,
+          "sha256": "c917fe12c348042382bb7c84a3d25b288e446294a997c1eff21a390a0e8f6f79"
+        }
+      },
+      "payload_utf8": {
+        "sdk-manifest.json": "{\n  \"schema_version\": 2,\n  \"platform\": \"macos\",\n  \"version\": \"webrtc-m150-boohtacord-r2\",\n  \"source_revision\": \"0385653a83f21acf3c916466d4088b29fe2f160b\",\n  \"depot_revision\": \"2fd34a8813b6f34336aad40976cc4223768177f8\",\n  \"routing_marker\": \"m150-038565-custom-source-r2\",\n  \"gn_base\": \"target_os=\\\"mac\\\" mac_deployment_target=\\\"10.15\\\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true\",\n  \"recipe_sha256\": \"f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a\",\n  \"host_policy_sha256\": \"84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0\",\n  \"patches\": {\n    \"webrtc-sdk-m150-custom-source-routing.patch\": \"3c92ea4782594c7e34a7c986d7e969f76a7b7653ef783ff929591f45462198fa\",\n    \"webrtc-sdk-m150-custom-source-regression.patch\": \"c1c3bab5e3efc415f72debc617e34bf75fbb25ffcdf44bbaa798f0c2b8892d7d\"\n  },\n  \"builder_revision\": \"3d22e9007db090e6a2159841506e0e377ae8b0a4\",\n  \"run_id\": \"39319895246\",\n  \"run_attempt\": \"1\",\n  \"architectures\": [\n    {\n      \"architecture\": \"arm64\",\n      \"archive_sha256\": \"b94a66399afae86fb5a7275db313e02e5c3e10812cd8fd452aadb8627497f4a3\",\n      \"binary_architectures\": [\n        \"arm64\"\n      ],\n      \"builder_revision\": \"3d22e9007db090e6a2159841506e0e377ae8b0a4\",\n      \"depot_revision\": \"2fd34a8813b6f34336aad40976cc4223768177f8\",\n      \"framework_binary_sha256\": \"f891e255b9f06952465eaf78b24bfef5307d724e22726dae9f866b231ba4291c\",\n      \"gn_args\": \"target_os=\\\"mac\\\" mac_deployment_target=\\\"10.15\\\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true target_cpu=\\\"arm64\\\"\",\n      \"gn_base\": \"target_os=\\\"mac\\\" mac_deployment_target=\\\"10.15\\\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true\",\n      \"host_policy_sha256\": \"84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0\",\n      \"native_route_tests\": \"PASS\",\n      \"native_test_count\": 2,\n      \"native_test_report_sha256\": \"aaac90bba164cdc0e06c8cd0318e58065c9206740487fd958ba36fe346e01df4\",\n      \"owned_workspace_removed\": true,\n      \"patches\": {\n        \"webrtc-sdk-m150-custom-source-regression.patch\": \"c1c3bab5e3efc415f72debc617e34bf75fbb25ffcdf44bbaa798f0c2b8892d7d\",\n        \"webrtc-sdk-m150-custom-source-routing.patch\": \"3c92ea4782594c7e34a7c986d7e969f76a7b7653ef783ff929591f45462198fa\"\n      },\n      \"physical_playback_smoke\": \"NOT_RUN\",\n      \"platform\": \"macos\",\n      \"recipe_sha256\": \"f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a\",\n      \"routing_marker\": \"m150-038565-custom-source-r2\",\n      \"run_attempt\": \"1\",\n      \"run_id\": \"39319895246\",\n      \"schema_version\": 2,\n      \"seconds\": 1249.928,\n      \"source_revision\": \"0385653a83f21acf3c916466d4088b29fe2f160b\",\n      \"toolchain\": {\n        \"architecture\": \"arm64\",\n        \"macos_sdk\": \"26.5\",\n        \"os_version\": \"26.6.2\",\n        \"system\": \"Darwin\",\n        \"xcode_build\": \"17F113\",\n        \"xcode_version\": \"26.6\"\n      },\n      \"version\": \"webrtc-m150-boohtacord-r2\"\n    },\n    {\n      \"architecture\": \"x64\",\n      \"archive_sha256\": \"42d33824cb58e893bce139fec55e8eb37b255347c4ab8e1801d3bdca9ae5559d\",\n      \"binary_architectures\": [\n        \"x86_64\"\n      ],\n      \"builder_revision\": \"3d22e9007db090e6a2159841506e0e377ae8b0a4\",\n      \"depot_revision\": \"2fd34a8813b6f34336aad40976cc4223768177f8\",\n      \"framework_binary_sha256\": \"6af75fb2aac188c099b225b2f856dde7f3a260517c463ea9be2099d70e9b3ab8\",\n      \"gn_args\": \"target_os=\\\"mac\\\" mac_deployment_target=\\\"10.15\\\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true target_cpu=\\\"x64\\\"\",\n      \"gn_base\": \"target_os=\\\"mac\\\" mac_deployment_target=\\\"10.15\\\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true\",\n      \"host_policy_sha256\": \"84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0\",\n      \"native_route_tests\": \"PASS\",\n      \"native_test_count\": 2,\n      \"native_test_report_sha256\": \"69c85332f2ae127f92a38784d12957fdbc637c4cca0bd5c928ec726cfe81d1f9\",\n      \"owned_workspace_removed\": true,\n      \"patches\": {\n        \"webrtc-sdk-m150-custom-source-regression.patch\": \"c1c3bab5e3efc415f72debc617e34bf75fbb25ffcdf44bbaa798f0c2b8892d7d\",\n        \"webrtc-sdk-m150-custom-source-routing.patch\": \"3c92ea4782594c7e34a7c986d7e969f76a7b7653ef783ff929591f45462198fa\"\n      },\n      \"physical_playback_smoke\": \"NOT_RUN\",\n      \"platform\": \"macos\",\n      \"recipe_sha256\": \"f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a\",\n      \"routing_marker\": \"m150-038565-custom-source-r2\",\n      \"run_attempt\": \"1\",\n      \"run_id\": \"39319895246\",\n      \"schema_version\": 2,\n      \"seconds\": 2674.981,\n      \"source_revision\": \"0385653a83f21acf3c916466d4088b29fe2f160b\",\n      \"toolchain\": {\n        \"architecture\": \"x86_64\",\n        \"macos_sdk\": \"26.5\",\n        \"os_version\": \"26.6.1\",\n        \"system\": \"Darwin\",\n        \"xcode_build\": \"17F113\",\n        \"xcode_version\": \"26.6\"\n      },\n      \"version\": \"webrtc-m150-boohtacord-r2\"\n    }\n  ],\n  \"xcframework_sha256\": \"48de84de8f9fa734aff68bace9a26b284ba99b79af596df43f9bfd444c3eea64\",\n  \"universal_binary_sha256\": \"8e197cf385fb6e26a00cf736ec0fc25dd74bb8d5cc61e70b4defdb821383e47c\",\n  \"signing\": \"adhoc-framework-not-notarized\",\n  \"physical_playback_smoke\": \"NOT_RUN\",\n  \"seconds\": 10.949\n}\n"
+      }
+    },
+    {
+      "id": 12222267605,
+      "name": "sdk-host-x64-3d22e9007db090e6a2159841506e0e377ae8b0a4-39319895246-1",
+      "size_in_bytes": 286,
+      "digest": "sha256:8709913496d495f473b48adf24f64e648b6019e255184b6dee2d9b8a79c3bc6c",
+      "expired": false,
+      "workflow_run": {
+        "id": 39319895246,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      "zip_and_payload_verified": true,
+      "files": {
+        "macos-host.json": {
+          "bytes": 194,
+          "sha256": "190fe3947662e939f0041283e08efb057d0c021eaf7518fc0ea44c632fcdfdf6"
+        }
+      },
+      "payload_utf8": {
+        "macos-host.json": "{\"architecture\": \"x86_64\", \"macos_sdk\": \"26.5\", \"os_version\": \"26.6.1\", \"physical_acceptance\": \"NOT_RUN\", \"status\": \"PASS\", \"system\": \"Darwin\", \"xcode_build\": \"17F113\", \"xcode_version\": \"26.6\"}\n"
+      }
+    },
+    {
+      "id": 12221939519,
+      "name": "sdk-x64-3d22e9007db090e6a2159841506e0e377ae8b0a4-39319895246-1",
+      "size_in_bytes": 8893695,
+      "digest": "sha256:b24b8021453e7bbf916c3f8e50032835268983ec19b2010d7a42c8bee9627ef5",
+      "expired": false,
+      "workflow_run": {
+        "id": 39319895246,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      "zip_and_payload_verified": true,
+      "files": {
+        "LICENSE-WebRTC.txt": {
+          "bytes": 1511,
+          "sha256": "ab00a482b6a3902e40211b43c5d0441962ea99b6cc7c25c0f243fa270b78d482"
+        },
+        "WebRTC-x64.framework.zip": {
+          "bytes": 8888221,
+          "sha256": "42d33824cb58e893bce139fec55e8eb37b255347c4ab8e1801d3bdca9ae5559d"
+        },
+        "routing-tests.json": {
+          "bytes": 1103,
+          "sha256": "69c85332f2ae127f92a38784d12957fdbc637c4cca0bd5c928ec726cfe81d1f9"
+        },
+        "sdk-x64.json": {
+          "bytes": 2326,
+          "sha256": "be397ed6383b10dfef140c3961a95f25fbccb3f6724d6697ec48e1ec4c3f51c9"
+        }
+      },
+      "payload_utf8": {
+        "routing-tests.json": "{\n  \"tests\": 2,\n  \"failures\": 0,\n  \"disabled\": 0,\n  \"errors\": 0,\n  \"timestamp\": \"2026-10-19T21:18:42Z\",\n  \"time\": \"0.048s\",\n  \"name\": \"AllTests\",\n  \"testsuites\": [\n    {\n      \"name\": \"AudioSendStreamTest\",\n      \"tests\": 2,\n      \"failures\": 0,\n      \"disabled\": 0,\n      \"errors\": 0,\n      \"timestamp\": \"2026-10-19T21:18:42Z\",\n      \"time\": \"0.048s\",\n      \"testsuite\": [\n        {\n          \"name\": \"BoohtacordCustomExcludedAfterEncoderUpdate\",\n          \"file\": \"..\\/src\\/audio\\/audio_send_stream_unittest.cc\",\n          \"line\": 1021,\n          \"status\": \"RUN\",\n          \"result\": \"COMPLETED\",\n          \"timestamp\": \"2026-10-19T21:18:42Z\",\n          \"time\": \"0.047s\",\n          \"classname\": \"AudioSendStreamTest\"\n        },\n        {\n          \"name\": \"BoohtacordMicrophoneRouteSurvivesTypeChanges\",\n          \"file\": \"..\\/src\\/audio\\/audio_send_stream_unittest.cc\",\n          \"line\": 1038,\n          \"status\": \"RUN\",\n          \"result\": \"COMPLETED\",\n          \"timestamp\": \"2026-10-19T21:18:42Z\",\n          \"time\": \"0s\",\n          \"classname\": \"AudioSendStreamTest\"\n        }\n      ]\n    }\n  ]\n}\n",
+        "sdk-x64.json": "{\"architecture\": \"x64\", \"archive_sha256\": \"42d33824cb58e893bce139fec55e8eb37b255347c4ab8e1801d3bdca9ae5559d\", \"binary_architectures\": [\"x86_64\"], \"builder_revision\": \"3d22e9007db090e6a2159841506e0e377ae8b0a4\", \"depot_revision\": \"2fd34a8813b6f34336aad40976cc4223768177f8\", \"framework_binary_sha256\": \"6af75fb2aac188c099b225b2f856dde7f3a260517c463ea9be2099d70e9b3ab8\", \"gn_args\": \"target_os=\\\"mac\\\" mac_deployment_target=\\\"10.15\\\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true target_cpu=\\\"x64\\\"\", \"gn_base\": \"target_os=\\\"mac\\\" mac_deployment_target=\\\"10.15\\\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true\", \"host_policy_sha256\": \"84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0\", \"native_route_tests\": \"PASS\", \"native_test_count\": 2, \"native_test_report_sha256\": \"69c85332f2ae127f92a38784d12957fdbc637c4cca0bd5c928ec726cfe81d1f9\", \"owned_workspace_removed\": true, \"patches\": {\"webrtc-sdk-m150-custom-source-regression.patch\": \"c1c3bab5e3efc415f72debc617e34bf75fbb25ffcdf44bbaa798f0c2b8892d7d\", \"webrtc-sdk-m150-custom-source-routing.patch\": \"3c92ea4782594c7e34a7c986d7e969f76a7b7653ef783ff929591f45462198fa\"}, \"physical_playback_smoke\": \"NOT_RUN\", \"platform\": \"macos\", \"recipe_sha256\": \"f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a\", \"routing_marker\": \"m150-038565-custom-source-r2\", \"run_attempt\": \"1\", \"run_id\": \"39319895246\", \"schema_version\": 2, \"seconds\": 2674.981, \"source_revision\": \"0385653a83f21acf3c916466d4088b29fe2f160b\", \"toolchain\": {\"architecture\": \"x86_64\", \"macos_sdk\": \"26.5\", \"os_version\": \"26.6.1\", \"system\": \"Darwin\", \"xcode_build\": \"17F113\", \"xcode_version\": \"26.6\"}, \"version\": \"webrtc-m150-boohtacord-r2\"}\n"
+      }
+    },
+    {
+      "id": 12221930166,
+      "name": "sdk-arm64-3d22e9007db090e6a2159841506e0e377ae8b0a4-39319895246-1",
+      "size_in_bytes": 7705617,
+      "digest": "sha256:ca533b0cb8a6af19984eeb5c8391219ccc3b8fc57569efe650f9d5c72a1fa3ea",
+      "expired": false,
+      "workflow_run": {
+        "id": 39319895246,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      "zip_and_payload_verified": true,
+      "files": {
+        "LICENSE-WebRTC.txt": {
+          "bytes": 1511,
+          "sha256": "ab00a482b6a3902e40211b43c5d0441962ea99b6cc7c25c0f243fa270b78d482"
+        },
+        "WebRTC-arm64.framework.zip": {
+          "bytes": 7700133,
+          "sha256": "b94a66399afae86fb5a7275db313e02e5c3e10812cd8fd452aadb8627497f4a3"
+        },
+        "routing-tests.json": {
+          "bytes": 1103,
+          "sha256": "aaac90bba164cdc0e06c8cd0318e58065c9206740487fd958ba36fe346e01df4"
+        },
+        "sdk-arm64.json": {
+          "bytes": 2328,
+          "sha256": "d53a5eaa3aefeaa9558fe7660182b2b249bb22ba46ee9b5bc2327e5dc570a4fd"
+        }
+      },
+      "payload_utf8": {
+        "routing-tests.json": "{\n  \"tests\": 2,\n  \"failures\": 0,\n  \"disabled\": 0,\n  \"errors\": 0,\n  \"timestamp\": \"2026-10-19T20:53:38Z\",\n  \"time\": \"0.006s\",\n  \"name\": \"AllTests\",\n  \"testsuites\": [\n    {\n      \"name\": \"AudioSendStreamTest\",\n      \"tests\": 2,\n      \"failures\": 0,\n      \"disabled\": 0,\n      \"errors\": 0,\n      \"timestamp\": \"2026-10-19T20:53:38Z\",\n      \"time\": \"0.006s\",\n      \"testsuite\": [\n        {\n          \"name\": \"BoohtacordCustomExcludedAfterEncoderUpdate\",\n          \"file\": \"..\\/src\\/audio\\/audio_send_stream_unittest.cc\",\n          \"line\": 1021,\n          \"status\": \"RUN\",\n          \"result\": \"COMPLETED\",\n          \"timestamp\": \"2026-10-19T20:53:38Z\",\n          \"time\": \"0.005s\",\n          \"classname\": \"AudioSendStreamTest\"\n        },\n        {\n          \"name\": \"BoohtacordMicrophoneRouteSurvivesTypeChanges\",\n          \"file\": \"..\\/src\\/audio\\/audio_send_stream_unittest.cc\",\n          \"line\": 1038,\n          \"status\": \"RUN\",\n          \"result\": \"COMPLETED\",\n          \"timestamp\": \"2026-10-19T20:53:38Z\",\n          \"time\": \"0s\",\n          \"classname\": \"AudioSendStreamTest\"\n        }\n      ]\n    }\n  ]\n}\n",
+        "sdk-arm64.json": "{\"architecture\": \"arm64\", \"archive_sha256\": \"b94a66399afae86fb5a7275db313e02e5c3e10812cd8fd452aadb8627497f4a3\", \"binary_architectures\": [\"arm64\"], \"builder_revision\": \"3d22e9007db090e6a2159841506e0e377ae8b0a4\", \"depot_revision\": \"2fd34a8813b6f34336aad40976cc4223768177f8\", \"framework_binary_sha256\": \"f891e255b9f06952465eaf78b24bfef5307d724e22726dae9f866b231ba4291c\", \"gn_args\": \"target_os=\\\"mac\\\" mac_deployment_target=\\\"10.15\\\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true target_cpu=\\\"arm64\\\"\", \"gn_base\": \"target_os=\\\"mac\\\" mac_deployment_target=\\\"10.15\\\" is_debug=false is_component_build=false rtc_include_tests=true rtc_enable_protobuf=true rtc_build_examples=false rtc_enable_symbol_export=true use_rtti=true use_custom_libcxx=true libcxx_abi_unstable=true enable_dsyms=false enable_stripping=false use_lld=false rtc_libvpx_build_vp9=true rtc_use_h264=false enable_libaom=true rtc_include_dav1d_in_internal_decoder_factory=true\", \"host_policy_sha256\": \"84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0\", \"native_route_tests\": \"PASS\", \"native_test_count\": 2, \"native_test_report_sha256\": \"aaac90bba164cdc0e06c8cd0318e58065c9206740487fd958ba36fe346e01df4\", \"owned_workspace_removed\": true, \"patches\": {\"webrtc-sdk-m150-custom-source-regression.patch\": \"c1c3bab5e3efc415f72debc617e34bf75fbb25ffcdf44bbaa798f0c2b8892d7d\", \"webrtc-sdk-m150-custom-source-routing.patch\": \"3c92ea4782594c7e34a7c986d7e969f76a7b7653ef783ff929591f45462198fa\"}, \"physical_playback_smoke\": \"NOT_RUN\", \"platform\": \"macos\", \"recipe_sha256\": \"f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a\", \"routing_marker\": \"m150-038565-custom-source-r2\", \"run_attempt\": \"1\", \"run_id\": \"39319895246\", \"schema_version\": 2, \"seconds\": 1249.928, \"source_revision\": \"0385653a83f21acf3c916466d4088b29fe2f160b\", \"toolchain\": {\"architecture\": \"arm64\", \"macos_sdk\": \"26.5\", \"os_version\": \"26.6.2\", \"system\": \"Darwin\", \"xcode_build\": \"17F113\", \"xcode_version\": \"26.6\"}, \"version\": \"webrtc-m150-boohtacord-r2\"}\n"
+      }
+    },
+    {
+      "id": 12221805496,
+      "name": "sdk-host-arm64-3d22e9007db090e6a2159841506e0e377ae8b0a4-39319895246-1",
+      "size_in_bytes": 284,
+      "digest": "sha256:e8cc5614a083874428f5d634657dd89904d239d66fc1ca0ef3d38e34843f90af",
+      "expired": false,
+      "workflow_run": {
+        "id": 39319895246,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      "zip_and_payload_verified": true,
+      "files": {
+        "macos-host.json": {
+          "bytes": 193,
+          "sha256": "15511468b5ab258f32a75d6e931d6a6d2a706f57192a85adb33ed258be5de486"
+        }
+      },
+      "payload_utf8": {
+        "macos-host.json": "{\"architecture\": \"arm64\", \"macos_sdk\": \"26.5\", \"os_version\": \"26.6.2\", \"physical_acceptance\": \"NOT_RUN\", \"status\": \"PASS\", \"system\": \"Darwin\", \"xcode_build\": \"17F113\", \"xcode_version\": \"26.6\"}\n"
+      }
+    },
+    {
+      "id": 12220255086,
+      "name": "sdk-plan-3d22e9007db090e6a2159841506e0e377ae8b0a4-39319895246-1",
+      "size_in_bytes": 400,
+      "digest": "sha256:9e9fb7be6e66561379d220146d2fa32fcb9769ba9459ce84b62e6329897a161d",
+      "expired": false,
+      "workflow_run": {
+        "id": 39319895246,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      "zip_and_payload_verified": true,
+      "files": {
+        "sdk-plan.json": {
+          "bytes": 374,
+          "sha256": "2fd58f14873d08f283c7412777f9a9afb1036456cdd8369db7a0011a85b910a6"
+        }
+      },
+      "payload_utf8": {
+        "sdk-plan.json": "{\"builder_revision\": \"3d22e9007db090e6a2159841506e0e377ae8b0a4\", \"native_build\": \"NOT_RUN\", \"physical_acceptance\": \"NOT_RUN\", \"publish_requested\": false, \"recipe_sha256\": \"f41133203e0e9739f056beae60a349cd5ef8e740be54d9c64a74427e59a4bd5a\", \"run_attempt\": \"1\", \"run_id\": \"39319895246\", \"scope\": \"candidate-preflight\", \"status\": \"PASS\", \"version\": \"webrtc-m150-boohtacord-r2\"}\n"
+      }
+    }
+  ],
+  "rejected_actual_receipt_mutations": [
+    "wrong-arch",
+    "stale-source",
+    "partial",
+    "other-run",
+    "wrong-patch",
+    "uncleared"
+  ],
+  "timings": {
+    "arm64_native_seconds": 1249.928,
+    "x64_native_seconds": 2674.981,
+    "assembly_seconds": 10.949,
+    "workflow_creation_to_assembly_completion_seconds": 3021.0
+  },
+  "limits": [
+    "Candidate only: current immutable r2 SDK was not republished, no consumer pin changed, publish job intentionally skipped.",
+    "Both actual native routing regressions ran on each architecture; this does not certify physical playback, acoustic/media capacity or installed client behavior.",
+    "The universal framework was ad-hoc signed and verified by the actual hosted assembly job; no Developer ID or notarization is claimed.",
+    "Local read-only lipo/nm checks replay archive/binary/route-marker integrity without compiling, loading the SDK or accessing Keychain.",
+    "The separate native application release candidate remains run39326402639, waiting for Pistol121 production review; it is not certified by these SDK results."
+  ]
+}

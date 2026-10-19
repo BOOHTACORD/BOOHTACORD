@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "scope": "required-status-admin-readback",
+  "source_revision": "8add045642585429b1e573cea458fe5bcc72722b",
+  "status": "PASS",
+  "executed": true,
+  "settings_readback_verified": true,
+  "required_status": "ci-required",
+  "owner_authorization": "Direct human instruction: Добавь их за меня",
+  "rule": {
+    "id": 25434147,
+    "name": "master-ci-required",
+    "target": "branch",
+    "source_type": "Repository",
+    "source": "Egkurilov/BOOHTACORD",
+    "enforcement": "active",
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "refs/heads/master"
+        ]
+      }
+    },
+    "rules": [
+      {
+        "type": "deletion"
+      },
+      {
+        "type": "non_fast_forward"
+      },
+      {
+        "type": "required_status_checks",
+        "parameters": {
+          "strict_required_status_checks_policy": true,
+          "do_not_enforce_on_create": false,
+          "required_status_checks": [
+            {
+              "context": "ci-required",
+              "integration_id": 15368
+            }
+          ]
+        }
+      }
+    ],
+    "node_id": "RRS_lACqUmVwb3NpdG9yec5TXO4KzgGEGCM",
+    "created_at": "2026-10-19T23:47:56.097+03:00",
+    "updated_at": "2026-10-19T23:47:56.230+03:00",
+    "bypass_actors": [],
+    "current_user_can_bypass": "never",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Egkurilov/BOOHTACORD/rulesets/25434147"
+      },
+      "html": {
+        "href": "https://github.com/Egkurilov/BOOHTACORD/rules/25434147"
+      }
+    }
+  },
+  "branch": {
+    "name": "master",
+    "protected": true,
+    "source_revision": "8add045642585429b1e573cea458fe5bcc72722b"
+  },
+  "protected_merge": {
+    "pr": 455,
+    "head": "20d491f57ae4666e57459c6cce20773ad672ed39",
+    "merged_revision": "8add045642585429b1e573cea458fe5bcc72722b",
+    "checks_successful": 24,
+    "bypass": false
+  }
+}

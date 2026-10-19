@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: server-build-${{ github.ref }}
+  group: server-build-${{ github.ref }}-${{ github.sha }}
   cancel-in-progress: true
 
 jobs:
@@ -109,6 +109,9 @@ jobs:
     needs: [changes, backend, web, contracts, server-quality]
     runs-on: [self-hosted, linux, x64, boohtacord-builder]
     timeout-minutes: 30
+    concurrency:
+      group: trusted-server-bundle-${{ github.repository }}
+      cancel-in-progress: false
     env:
       VITE_PUBLIC_ORIGIN: https://v.bootybay.ru
       VITE_SCREEN_SHARE_DESCRIPTOR_V1: ${{ vars.VITE_SCREEN_SHARE_DESCRIPTOR_V1 || 'true' }}

@@ -54,10 +54,12 @@ def validate(workflows):
         require(set(ci['on']) == {'pull_request', 'merge_group', 'workflow_dispatch'})
         require(ci['jobs']['changes'].get('if') == ci['jobs']['contracts'].get('if') == PR_SCOPE)
         build, native = workflows['build-server.yaml'], workflows['native-master.yaml']
-        for document in (build, native):
+        for document, prefix in ((build, 'server-build'), (native, 'native-master')):
             require(document['on'] == {'push': {'branches': ['master']}, 'workflow_dispatch': ''})
             require(document['permissions'] == {'contents': 'read'}
-                    and document['concurrency']['cancel-in-progress'] == 'true')
+                    and document.get('concurrency') == {
+                        'group': prefix + '-${{ github.ref }}-${{ github.sha }}',
+                        'cancel-in-progress': 'true'})
             selector(document['jobs']['changes'])
         require(set(build['jobs']) == {'changes', 'contracts', 'backend', 'web', 'server-quality', 'bundle'})
         require(set(native['jobs']) == {'changes', 'flutter', 'windows', 'native-required'})
@@ -78,6 +80,10 @@ def validate(workflows):
                     and receipts[0]['with']['name'] == f'check-{gate}-' + EXECUTION
                     and receipts[0]['with']['if-no-files-found'] == 'error')
         bundle = build['jobs']['bundle']
+        require(bundle.get('concurrency') == {
+            'group': 'trusted-server-bundle-${{ github.repository }}', 'cancel-in-progress': 'false'})
+        require(bundle.get('if') == MASTER + " && needs.changes.outputs.server_release_impact == 'true'")
+        require(all(not build['jobs'][name].get('concurrency') for name in ('changes', 'server-quality')))
         downloads = [s for s in bundle['steps'] if s.get('uses') == 'actions/download-artifact@v4']
         uploads = [s for s in bundle['steps'] if s.get('uses') == 'actions/upload-artifact@v4']
         require([s.get('with') for s in downloads] == [

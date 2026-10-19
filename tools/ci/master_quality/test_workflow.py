@@ -16,6 +16,50 @@ class MasterWorkflowTests(unittest.TestCase):
     def test_actual_graph_has_one_server_producer_and_independent_native_quality(self):
         workflow.validate(self.workflows)
 
+    def test_metadata_push_cannot_cancel_another_source_master_quality(self):
+        # A runtime commit can still be building when the next push only changes
+        # evidence and skips all native/bundle work. It must keep its own slot.
+        groups = []
+        for name in ('build-server.yaml', 'native-master.yaml'):
+            concurrency = self.workflows[name]['concurrency']
+            group = concurrency['group']
+            runtime = group.replace('${{ github.ref }}', 'refs/heads/master').replace('${{ github.sha }}', 'a' * 40)
+            metadata = group.replace('${{ github.ref }}', 'refs/heads/master').replace('${{ github.sha }}', 'b' * 40)
+            with self.subTest(workflow=name):
+                self.assertNotEqual(runtime, metadata)
+                self.assertEqual(concurrency['cancel-in-progress'], 'true')
+            groups.append(runtime)
+        self.assertEqual(len(set(groups)), 2)
+
+    def test_ref_wide_or_cross_workflow_cancellation_is_rejected(self):
+        for name, prefix in (('build-server.yaml', 'server-build'), ('native-master.yaml', 'native-master')):
+            for group in (prefix + '-${{ github.ref }}', '${{ github.sha }}',
+                          'shared-${{ github.ref }}-${{ github.sha }}'):
+                value = copy.deepcopy(self.workflows)
+                value[name]['concurrency']['group'] = group
+                with self.subTest(workflow=name, group=group), self.assertRaises(ValueError):
+                    workflow.validate(value)
+
+    def test_only_qualified_bundle_enters_its_non_cancellable_signer_queue(self):
+        bundle = self.workflows['build-server.yaml']['jobs']['bundle']
+        self.assertEqual(bundle.get('concurrency'), {
+            'group': 'trusted-server-bundle-${{ github.repository }}', 'cancel-in-progress': 'false'})
+        self.assertEqual(bundle['if'], workflow.MASTER + " && needs.changes.outputs.server_release_impact == 'true'")
+        self.assertNotIn('concurrency', self.workflows['build-server.yaml']['jobs']['changes'])
+        self.assertNotIn('concurrency', self.workflows['build-server.yaml']['jobs']['server-quality'])
+
+    def test_missing_cancellable_or_source_split_signer_queue_is_rejected(self):
+        for lock in (None, {'group': 'trusted-server-bundle-${{ github.repository }}', 'cancel-in-progress': 'true'},
+                     {'group': 'trusted-server-bundle-${{ github.sha }}', 'cancel-in-progress': 'false'}):
+            value = copy.deepcopy(self.workflows)
+            bundle = value['build-server.yaml']['jobs']['bundle']
+            if lock is None:
+                bundle.pop('concurrency', None)
+            else:
+                bundle['concurrency'] = lock
+            with self.subTest(lock=lock), self.assertRaises(ValueError):
+                workflow.validate(value)
+
     def test_pr_ci_cannot_duplicate_master_gates_or_skip_pr_contracts(self):
         for mutation in ('push', 'manual-master', 'skip-pr'):
             value = copy.deepcopy(self.workflows)
