@@ -84,11 +84,12 @@ def run(work, report):
             source=report['baseline'] if name=='downgrade' else report['next']
             process=attempt(work,name,source,report['controller'],archive=archive if name=='immutable' else None)
             try:
-                if process.wait(timeout=900)==0: raise RuntimeError('Actual negative unexpectedly succeeded')
+                code=process.wait(timeout=900)
             finally: stop(process)
             value=checked(json.loads((work/('attempt-'+name+'.json')).read_text()))
             progress['attempts'].append({'name':name,'delivery':value})
             save()
+            if code==0:raise RuntimeError('Actual negative unexpectedly succeeded')
             require_failure(name,value)
             if value['source_revision']!=source or value['controller_revision']!=report['controller']:
                 raise RuntimeError('Actual negative receipt belongs to another source/controller')

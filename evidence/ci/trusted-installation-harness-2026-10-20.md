@@ -26,6 +26,10 @@ interfaces failed before their implementation. After implementation:
 - 115 nearest QA/isolation/provenance/artifact-policy/trust tests PASS, 1.870 s.
 - After the partial-negative retention change, all 22 trusted-delivery tests
   PASS, 0.094 s, including preservation of an unexpected original failure stage.
+- A further focused check reproduced loss of the original unexpected-success
+  receipt before rejection. The reader now retains that receipt before refusing
+  the negative. All 23 delivery tests PASS after this correction; the original
+  focused failure is not classified as an infrastructure flake.
 - Node syntax check, actionlint 1.7.11, reviewed Action pins (34 workflows,
   2 local actions), toolchain/auxiliary policy and `git diff --check` PASS.
 - Expected red diagnostic output from artifact-policy negative fixtures is not

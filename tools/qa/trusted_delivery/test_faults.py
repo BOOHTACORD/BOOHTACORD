@@ -21,6 +21,21 @@ def failed(phase,code):
 
 
 class ActualFailureReceiptTests(unittest.TestCase):
+    def test_unexpected_green_is_retained_before_refusing_the_negative(self):
+        from . import faults
+        from .test_evidence import delivery
+        with tempfile.TemporaryDirectory() as temporary:
+            work=Path(temporary);value=delivery('b'*40,'a'*40)
+            (work/'attempt-ssh-refused.json').write_text(json.dumps(value))
+            process=Mock();process.wait.return_value=0;process.poll.return_value=0
+            with patch.object(faults,'observe',return_value={}),patch.object(faults,'running',return_value={}),\
+                    patch.object(faults,'attempt',return_value=process),\
+                    patch('tools.release.bundle.verify.verify_bundle'),self.assertRaises(RuntimeError):
+                faults.run(work,dict(baseline='a'*40,next='b'*40,controller='c'*40))
+            retained=json.loads((work/'negative-runtime.json').read_text())
+            self.assertEqual('FAIL',retained['status'])
+            self.assertEqual(value,retained['attempts'][0]['delivery'])
+
     def test_unexpected_failure_stage_remains_failed_with_its_original_public_receipt(self):
         from . import faults
         with tempfile.TemporaryDirectory() as temporary:
