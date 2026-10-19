@@ -74,7 +74,7 @@ jobs:
         run: python -m unittest tools.qa.compatible_rollback.test_evidence tools.qa.compatible_rollback.test_isolation tools.qa.compatible_rollback.test_ci_proof tools.qa.compatible_rollback.test_source_inputs tools.qa.compatible_rollback.test_diagnostics tools.qa.compatible_rollback.test_builder_identity tools.release.rollback.test_rollout tools.build.server.test_smoke_readiness tools.build.server.test_runtime_inputs tools.build.server.test_social_preview tools.build.server.test_image_audio_flag
       - name: Test isolated trusted installation evidence and boundaries
         if: inputs.installation
-        run: python -m unittest tools.qa.trusted_delivery.test_attempt tools.qa.trusted_delivery.test_catalog tools.qa.trusted_delivery.test_faults tools.qa.trusted_delivery.test_receipts tools.qa.trusted_delivery.test_ssh_fixture tools.qa.trusted_delivery.test_variant tools.qa.trusted_delivery.test_evidence tools.qa.trusted_delivery.test_runtime_inputs tools.qa.trusted_delivery.test_runtime_workflow tools.qa.trusted_delivery.test_interruption
+        run: python -m unittest tools.qa.trusted_delivery.test_attempt tools.qa.trusted_delivery.test_catalog tools.qa.trusted_delivery.test_faults tools.qa.trusted_delivery.test_receipts tools.qa.trusted_delivery.test_ssh_fixture tools.qa.trusted_delivery.test_variant tools.qa.trusted_delivery.test_evidence tools.qa.trusted_delivery.test_runtime_inputs tools.qa.trusted_delivery.test_interruption
       - name: Rehearse actual signed rollback with two browser observers
         if: ${{ !inputs.installation }}
         run: python -m tools.qa.compatible_rollback.run --ci-proof .out/issue60/ci-proof.json

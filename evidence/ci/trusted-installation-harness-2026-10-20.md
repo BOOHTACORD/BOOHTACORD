@@ -49,3 +49,31 @@ is the new combined scenario. Only generated public reports, actual public build
 metrics and synthetic images are retained; private logs and credentials remain
 outside the artifact allowlist. The following live run must retain original
 outcomes without assertion retries or treating an unrelated failure as PASS.
+
+## First actual dispatch and dependency correction
+
+PR #460 merged as `36d12a890b4aba59d8d10d96579d41f3dd6a3543`, tree
+`85efc80f873043abe98f07713d60c995aa266fde`. All 24 core CI jobs and the
+independent read-only transport check passed (25 checks). The exact manual
+`installation=true` run [39344397026](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39344397026),
+job 118373400344, finished **FAIL before runtime**. Its first existing 42 rollback
+guards passed; the new guard step ran 17 tests with one import error:
+`ModuleNotFoundError: No module named 'yaml'` in `test_runtime_workflow`.
+The final artifact upload also failed because no runtime output had been created.
+No runtime bundle build/signing setup, sshd or application stack started. Unit
+fixtures used only their temporary test keys, as in the local focused suite.
+
+Cause: the static YAML workflow test had been added to a manual environment
+without PyYAML. It already runs in mandatory contracts CI, which installs the
+declared verification dependencies. The correction removes only that redundant
+static module from the live guard command. All functional/isolation tests remain;
+no assertion, required status, approval, source/signature guard or product code
+was disabled. A new regression executes that exact command with `python -S` and
+first reproduced the same missing-YAML failure locally. It now passes using only
+the standard library; the full 24 trusted-delivery tests pass, including this
+subprocess check, in 0.228 s. Actionlint and diff checks pass.
+
+The original hosted failure remains FAIL, not a flake or a successful runtime
+acceptance. A fresh actual run is required only after the corrected protected
+source is merged. Installation/interruption/rollback, visual review and #395
+closure remain NOT_RUN/OPEN at this checkpoint.
