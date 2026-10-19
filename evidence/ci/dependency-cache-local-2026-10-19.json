@@ -1,0 +1,41 @@
+{
+  "source_sha": "bfea46b61c3bc641098caf7c35be8c4be798af59",
+  "os": "macOS",
+  "architecture": "arm64",
+  "node": "v24.18.0",
+  "package_lock_sha256": "52413dbf0a3a79c11afc3f7ec3c28bd173d29635401310f2aa3c00beb2ad17ff",
+  "tasks": "npm ci then the same network diagnostics stats/attempt tests; node_modules recreated every time",
+  "cache": "npm integrity-addressed download content only; no node_modules, browser executable, credentials or test result cache",
+  "samples_per_temperature": 2,
+  "rows": [
+    {
+      "pair": 1,
+      "temperature": "cold",
+      "install_seconds": 9.362,
+      "same_focused_tests_seconds": 1.131,
+      "status": "PASS"
+    },
+    {
+      "pair": 1,
+      "temperature": "warm",
+      "install_seconds": 1.488,
+      "same_focused_tests_seconds": 0.886,
+      "status": "PASS"
+    },
+    {
+      "pair": 2,
+      "temperature": "cold",
+      "install_seconds": 12.934,
+      "same_focused_tests_seconds": 0.903,
+      "status": "PASS"
+    },
+    {
+      "pair": 2,
+      "temperature": "warm",
+      "install_seconds": 1.624,
+      "same_focused_tests_seconds": 0.905,
+      "status": "PASS"
+    }
+  ],
+  "scope": "local dependency install microbenchmark, not full CI latency/coverage or cross-OS cache evidence"
+}

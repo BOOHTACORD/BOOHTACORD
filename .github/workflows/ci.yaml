@@ -31,8 +31,9 @@ jobs:
       server_release_impact: ${{ steps.select.outputs.server_release_impact }}
       native_release_impact: ${{ steps.select.outputs.native_release_impact }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
+          persist-credentials: false
           fetch-depth: 0
       - id: select
         run: python3 -m tools.ci.select_changes.run
@@ -67,7 +68,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: Require successful selector, contracts and applicable component gates
         env:
           CI_NEEDS: ${{ toJSON(needs) }}

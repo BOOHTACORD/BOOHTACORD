@@ -28,9 +28,12 @@ export async function navigation(page, fixture, input, report) {
   const historyResponse=await historyRequest;assert.equal(historyResponse.status(),200)
   const history=await historyResponse.json();assert.ok(history.messages.some(message=>message.id===reply.body.id),'Latest channel history omitted the newly created reply')
   const list=page.locator('.message-history-wrap .message-list')
-  await list.evaluate(view=>{view.scrollTop=Math.max(0,view.scrollHeight-view.clientHeight-200);view.dispatchEvent(new Event('scroll'))})
+  // A completed HTTP response is not a committed virtualized history. Stay at
+  // latest until the new row renders, then choose the origin for the return check.
+  await list.evaluate(view=>{view.scrollTop=view.scrollHeight;view.dispatchEvent(new Event('scroll'))})
   const replyRow=list.locator(`[data-message-id="${reply.body.id}"]`)
   await expect(replyRow).toBeVisible({timeout:20000})
+  await list.evaluate(view=>{view.scrollTop=Math.max(0,view.scrollHeight-view.clientHeight-200);view.dispatchEvent(new Event('scroll'))})
   const replyPreview=replyRow.locator('.reply-preview')
   await expect(replyPreview).toBeVisible({timeout:20000})
   await replyPreview.scrollIntoViewIfNeeded()
@@ -54,7 +57,12 @@ export async function navigation(page, fixture, input, report) {
   const search=page.getByTestId('search-panel')
   await search.getByLabel('Запрос',{exact:true}).fill('QA history 1')
   await search.getByRole('button',{name:'Найти',exact:true}).click()
+  // A new SQL-only row has never been delivered or rendered in this browser.
+  // It witnesses a genuinely unseen tail, independently of earlier reply scrolling.
+  const unseen=sql(`INSERT INTO messages(id,channel_id,author_id,client_message_id,body,created_at) VALUES(gen_random_uuid(),'${fixture.a}','${fixture.member}',gen_random_uuid(),'QA unseen search tail',now()+INTERVAL '1 second') RETURNING id`).split('\n')[0]
   const priorCursor=sql(`SELECT message_id FROM channel_read_cursors WHERE account_id='${fixture.admin}' AND channel_id='${fixture.a}'`)
+  assert.ok(priorCursor);assert.notEqual(priorCursor,unseen)
+  await expect(page.locator(`[data-message-id="${unseen}"]`)).toHaveCount(0)
   await search.getByRole('button',{name:/Открыть сообщение от/}).first().click()
   await expect(context.locator('[data-search-anchor]')).toBeFocused()
   assert.equal(sql(`SELECT message_id FROM channel_read_cursors WHERE account_id='${fixture.admin}' AND channel_id='${fixture.a}'`),priorCursor,'Search context consumed unseen history')

@@ -14,25 +14,38 @@ jobs:
   contracts:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.12'
-      - uses: actions/setup-go@v5
+      - name: Prepare public Go SDK and dependency cache inputs
+        run: python3 -m tools.ci.toolchains.cache_inputs go
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
-          go-version-file: backend/go.mod
-          cache-dependency-path: backend/go.sum
-      - uses: actions/setup-node@v4
+          go-version: '1.26.4'
+          cache-dependency-path: .out/ci/cache-inputs/go.json
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .node-version
       - name: Test bounded restricted-network evidence readiness
         run: node --test tools/network/restricted/measurement.test.mjs
-      - name: Verify generated tracing contract bindings
-        run: node tools/observability/flow_contract/generate.mjs --check
       - name: Install pinned CI verification dependencies
         run: python -m pip install -r tools/requirements-ci.txt -r tools/verify/openapi_parity/requirements.txt
+      - name: Verify reviewed Actions pins, least privilege and source trust
+        run: |
+          python3 -m unittest tools.verify.action_pins.test_policy tools.verify.action_pins.test_local tools.verify.action_pins.test_trust tools.verify.action_pins.test_lint
+          python3 -m tools.verify.action_pins.run
+          python3 -m tools.verify.action_pins.lint
+      - name: Verify SDK cache invalidation and unconditional checks
+        run: |
+          python3 -m unittest tools.ci.toolchains.test_cache_inputs tools.ci.toolchains.test_workflows tools.ci.flutter_setup.test_metadata tools.ci.flutter_setup.test_run tools.ci.flutter_setup.test_workflow
+          python3 -m tools.ci.toolchains.workflows
+      - name: Verify generated tracing contract bindings
+        run: node tools/observability/flow_contract/generate.mjs --check
       - name: Verify publisher signatures and desktop promotion guards
-        run: python3 -m unittest tools.release.desktop_updates.test_signing
+        run: python3 -m unittest tools.release.desktop_updates.test_signing tools.verify.action_pins.test_release_boundary
       - name: Test stable required gate success and failure semantics
         run: python3 -m unittest tools.ci.required_gate.test_validation tools.ci.required_gate.test_run
       - name: Verify unified fail-closed CI and release routing
@@ -78,7 +91,7 @@ jobs:
         run: bash tools/ci/release_guards/verify-release-guards.sh
       - name: Retain source-bound gate receipt
         if: inputs.release_receipt
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: check-contracts-${{ github.sha }}
           path: .out/checks/contracts.json

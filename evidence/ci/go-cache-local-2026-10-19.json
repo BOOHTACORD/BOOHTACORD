@@ -1,0 +1,75 @@
+{
+  "source_sha": "00ec7935d5579ca28e92560563bb9d84e8e99a64",
+  "os": "macOS",
+  "architecture": "arm64",
+  "go": "1.26.4",
+  "package": "./internal/media/coalesce_presence_snapshot",
+  "command": "go test -count=1 -json ./internal/media/coalesce_presence_snapshot",
+  "inputs": {
+    "backend/go.mod": "d4629a672022782232e8d8e940e951e6ccdbe324024c6694c9f98d4a7aae3eef",
+    "backend/go.sum": "01e6e613f65b0809c531c25025b491331304ae9653fa8d869320e478058f0b4d"
+  },
+  "scope": "local pure Go package compile/download/build cache microbenchmark, no database/integration/full CI latency claim; -count=1 forces real tests on warm and cold",
+  "rows": [
+    {
+      "pair": 1,
+      "temperature": "cold",
+      "seconds": 40.879,
+      "passed_test_names": [
+        "TestCanonicalScopeDoesNotAliasDelimiterOrEmptyScopes",
+        "TestCanonicalScopeDoesNotReuseOtherRooms",
+        "TestDistinctScopeBudgetRejectsWithoutQueueAndCancelsAbandonedFetches",
+        "TestFailureCooldownNeverRetainsPartialOrStalePayload",
+        "TestSingleFlightSharesFetchWithoutCallerCancellation",
+        "TestSnapshotCopyExpiryAndFailureNeverReturnStale",
+        "TestWebhookInvalidationDiscardsCompletedAndInFlightCache"
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": 1,
+      "temperature": "warm",
+      "seconds": 1.164,
+      "passed_test_names": [
+        "TestCanonicalScopeDoesNotAliasDelimiterOrEmptyScopes",
+        "TestCanonicalScopeDoesNotReuseOtherRooms",
+        "TestDistinctScopeBudgetRejectsWithoutQueueAndCancelsAbandonedFetches",
+        "TestFailureCooldownNeverRetainsPartialOrStalePayload",
+        "TestSingleFlightSharesFetchWithoutCallerCancellation",
+        "TestSnapshotCopyExpiryAndFailureNeverReturnStale",
+        "TestWebhookInvalidationDiscardsCompletedAndInFlightCache"
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": 2,
+      "temperature": "cold",
+      "seconds": 45.927,
+      "passed_test_names": [
+        "TestCanonicalScopeDoesNotAliasDelimiterOrEmptyScopes",
+        "TestCanonicalScopeDoesNotReuseOtherRooms",
+        "TestDistinctScopeBudgetRejectsWithoutQueueAndCancelsAbandonedFetches",
+        "TestFailureCooldownNeverRetainsPartialOrStalePayload",
+        "TestSingleFlightSharesFetchWithoutCallerCancellation",
+        "TestSnapshotCopyExpiryAndFailureNeverReturnStale",
+        "TestWebhookInvalidationDiscardsCompletedAndInFlightCache"
+      ],
+      "status": "PASS"
+    },
+    {
+      "pair": 2,
+      "temperature": "warm",
+      "seconds": 1.183,
+      "passed_test_names": [
+        "TestCanonicalScopeDoesNotAliasDelimiterOrEmptyScopes",
+        "TestCanonicalScopeDoesNotReuseOtherRooms",
+        "TestDistinctScopeBudgetRejectsWithoutQueueAndCancelsAbandonedFetches",
+        "TestFailureCooldownNeverRetainsPartialOrStalePayload",
+        "TestSingleFlightSharesFetchWithoutCallerCancellation",
+        "TestSnapshotCopyExpiryAndFailureNeverReturnStale",
+        "TestWebhookInvalidationDiscardsCompletedAndInFlightCache"
+      ],
+      "status": "PASS"
+    }
+  ]
+}

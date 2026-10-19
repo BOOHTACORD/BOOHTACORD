@@ -1,6 +1,7 @@
 """Validate native signing queue and artifact retention by workflow dependency edges."""
 from pathlib import Path
 import yaml
+from tools.verify.action_pins.policy import normalized
 from .delivery import commands
 from .selection import require
 
@@ -29,7 +30,7 @@ def check(workflows):
 
 def main():
     root = Path(__file__).resolve().parents[3]
-    workflows = {p.name: yaml.load(p.read_text(encoding='utf-8'), Loader=yaml.BaseLoader)
+    workflows = {p.name: yaml.load(normalized(p.read_text(encoding='utf-8')), Loader=yaml.BaseLoader)
                  for p in (root / '.github/workflows').glob('*.yaml')}
     check(workflows)
     print('Native gate, signing queue and retained metadata policy: OK')

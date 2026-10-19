@@ -16,14 +16,18 @@ jobs:
     env:
       VITE_PUBLIC_ORIGIN: https://v.bootybay.ru
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: Test review-only UI/UX screenshot region deltas
         run: python3 -m unittest tools.verify.test_uiux_visual_diff tools.verify.test_uiux_visual_matrix
-      - uses: actions/setup-node@v4
+      - name: Prepare public Node SDK and locked dependency cache inputs
+        run: python3 -m tools.ci.toolchains.cache_inputs npm
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .node-version
           cache: npm
-          cache-dependency-path: clients/web/package-lock.json
+          cache-dependency-path: .out/ci/cache-inputs/npm.json
       - name: Install locked browser runtime
         working-directory: clients/web
         run: |
@@ -33,7 +37,7 @@ jobs:
         run: python3 -m tools.ci.receipts.run web
       - name: Retain UX responsive-shell review captures
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ux-responsive-shell-${{ github.sha }}
           path: .out/responsive-shell-browser-results/**
@@ -41,7 +45,7 @@ jobs:
           retention-days: 30
       - name: Retain synthetic Web control and browser zoom captures
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-controls-${{ github.sha }}
           path: .out/issue342/browser/**
@@ -49,7 +53,7 @@ jobs:
           retention-days: 30
       - name: Retain synthetic microcopy inventory and visual evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-microcopy-${{ github.sha }}
           path: .out/issue343/browser/**
@@ -57,7 +61,7 @@ jobs:
           retention-days: 30
       - name: Retain synthetic navigation density and browser zoom evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-navigation-${{ github.sha }}
           path: .out/issue344/browser/**
@@ -65,7 +69,7 @@ jobs:
           retention-days: 30
       - name: Retain search mode and DM picker actual browser zoom evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-search-dm-picker-${{ github.sha }}
           path: |
@@ -75,7 +79,7 @@ jobs:
           retention-days: 30
       - name: Retain compact search and related result surface evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-search-presentation-${{ github.sha }}
           path: .out/issue346/browser/**
@@ -83,7 +87,7 @@ jobs:
           retention-days: 30
       - name: Retain screen share setup and diagnostics disclosure evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-screen-share-ui-${{ github.sha }}
           path: .out/issue348/browser/**
@@ -91,7 +95,7 @@ jobs:
           retention-days: 30
       - name: Retain compact voice controls and browser zoom evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-voice-interface-${{ github.sha }}
           path: .out/issue347/browser/**
@@ -99,7 +103,7 @@ jobs:
           retention-days: 30
       - name: Retain synthetic TEXT and DM rhythm and browser zoom evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-chat-rhythm-${{ github.sha }}
           path: .out/issue345/browser/**
@@ -107,7 +111,7 @@ jobs:
           retention-days: 30
       - name: Retain Web member roster and profile evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-member-roster-${{ github.sha }}
           path: .out/issue350/browser/**
@@ -115,7 +119,7 @@ jobs:
           retention-days: 30
       - name: Retain Web mini-player acceptance evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-mini-player-${{ github.sha }}
           path: .out/issue349/browser/**
@@ -123,7 +127,7 @@ jobs:
           retention-days: 30
       - name: Retain header controls and keyboard visual evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-header-actions-${{ github.sha }}
           path: .out/issue352/browser/**
@@ -131,7 +135,7 @@ jobs:
           retention-days: 30
       - name: Retain settings hierarchy interaction and visual evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-settings-hierarchy-${{ github.sha }}
           path: .out/issue351/browser/**
@@ -139,7 +143,7 @@ jobs:
           retention-days: 30
       - name: Retain sanitized real-SFU screen-share smoke evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: screen-share-sfu-smoke-${{ github.sha }}
           path: .out/screen-profile-browser-results/**/screen-share-sfu-smoke.json
@@ -147,7 +151,7 @@ jobs:
           retention-days: 30
       - name: Retain anonymous restricted-network measurements
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: restricted-networks-${{ github.sha }}
           path: .out/restricted-networks/*.json
@@ -155,7 +159,7 @@ jobs:
           retention-days: 30
       - name: Retain source-bound gate receipt
         if: inputs.release_receipt
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: check-web-${{ github.sha }}
           path: .out/checks/web.json

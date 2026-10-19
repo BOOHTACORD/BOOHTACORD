@@ -18,8 +18,9 @@ jobs:
     outputs:
       server_release_impact: ${{ steps.select.outputs.server_release_impact }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
+          persist-credentials: false
           fetch-depth: 0
       - id: select
         run: python3 -m tools.ci.select_changes.run
@@ -43,9 +44,9 @@ jobs:
     with:
       release_receipt: true
   bundle:
-    if: github.ref == 'refs/heads/master' && needs.changes.outputs.server_release_impact == 'true'
-    needs: [changes, backend, web, contracts]
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && needs.changes.outputs.server_release_impact == 'true'
     environment: production
+    needs: [changes, backend, web, contracts]
     runs-on: [self-hosted, linux, x64, boohtacord-builder]
     timeout-minutes: 30
     env:
@@ -53,8 +54,10 @@ jobs:
       VITE_SCREEN_SHARE_DESCRIPTOR_V1: ${{ vars.VITE_SCREEN_SHARE_DESCRIPTOR_V1 || 'true' }}
       VITE_SCREEN_SHARE_BOUNDED_SIMULCAST: ${{ vars.VITE_SCREEN_SHARE_BOUNDED_SIMULCAST || 'false' }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           pattern: check-*-${{ github.sha }}
           path: .out/checks
@@ -64,7 +67,7 @@ jobs:
           RELEASE_SIGNING_PRIVATE_KEY: ${{ secrets.RELEASE_SIGNING_PRIVATE_KEY }}
         run: bash tools/release/delivery/build.sh
       - name: Retain the exact verified release
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: server-${{ github.sha }}
           path: |

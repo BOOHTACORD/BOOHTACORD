@@ -45,6 +45,11 @@ Provide an observed CI proof JSON with `current` and `previous` entries:
 do not turn pending, missing or failed results into PASS. Each checkout remains
 clean at that exact source revision. Master squash/merge tree equivalence is
 recorded separately, never by relabeling an image or a gate receipt.
+The reviewed checkout must match retained runtime/release inputs. The sole named
+exception is `tools/release/delivery/test_workflows.py`, an inert workflow-policy
+unit-test adaptor updated for action pins; other tests and all runtime, toolchain,
+archive/signing/install/rollback sources remain bound. The current reviewed harness
+and builder execute separately, with their own source hashes and tests.
 
 ```sh
 python3 -m unittest tools.qa.compatible_rollback.test_evidence \
@@ -66,7 +71,15 @@ The `Compatible rollback acceptance` GitHub Actions workflow runs the same
 command on native Linux amd64. `ci-inputs.json` selects retained source objects;
 `ci_proof` reads their actual completed CI runs and required jobs from GitHub,
 checks master tree equivalence, product/release-code currency and schema/topology
-compatibility before writing the proof. A missing or unsuccessful gate fails
+compatibility before writing the proof. The producer must be the repository
+master push/dispatch CI workflow, or its successful trusted master Build server workflow with a unique
+successful bundle job and all three successful qualified receipt gates. Fork
+heads, unrelated workflows, untrusted events, incomplete/duplicate/foreign jobs
+and docs-only skipped producers cannot attest server quality. The proof records
+the actual producer workflow; this does not claim native or physical acceptance.
+New input receipts never relabel PR/merge-queue/feature-dispatch results as master
+quality, even when product trees look equivalent. Historical isolated POC records
+remain tied to their original source/harness and are not rewritten. A missing or unsuccessful gate fails
 before building. The workflow retains only sanitized JSON and synthetic PNGs;
 private build logs, environment files, session data and signing keys stay private.
 

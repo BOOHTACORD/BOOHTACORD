@@ -11,11 +11,15 @@ permissions:
 
 jobs:
   macos:
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
+    environment: production
     runs-on: [self-hosted, macos]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: Set up Flutter 3.47.7
-        uses: subosito/flutter-action@v2
+        uses: ./.github/actions/flutter-setup
         with:
           channel: stable
           flutter-version: 3.47.7
@@ -50,7 +54,7 @@ jobs:
       - name: Inspect native identity and retain distribution manifest
         run: python3 -m tools.build.macos.metadata clients/flutter/build/macos/Build/Products/Release/BOOHTACORD.app "$RUNNER_TEMP/boohtacord-macos-artifacts"
       - name: Retain macOS build and checksum as workflow artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: BOOHTACORD-macos-universal-${{ github.sha }}
           path: ${{ runner.temp }}/boohtacord-macos-artifacts/

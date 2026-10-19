@@ -10,7 +10,8 @@ permissions:
 
 jobs:
   audit:
-    if: ${{ github.ref_name == 'master' }}
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
+    environment: production
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
@@ -18,7 +19,9 @@ jobs:
       DEPLOY_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
       SSH_USER: shaneque
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: Configure pinned read-only SSH transport
         shell: bash
         run: bash tools/release/ssh/configure-deploy-ssh.sh

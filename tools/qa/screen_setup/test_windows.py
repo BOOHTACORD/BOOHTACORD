@@ -52,7 +52,10 @@ class FailureEvidenceTests(unittest.TestCase):
                 'step': 'header_initial_launcher', 'reason': 'launcher_not_visible',
                 'private_configuration': 'must never be copied'}))
             (driver / 'private-client.log').write_text('must never be copied')
-            retain_failure(driver, destination)
+            result = retain_failure(driver, destination)
+            self.assertEqual(result, {'status': 'FAIL', 'step': 'header_initial_launcher',
+                                      'reason': 'launcher_not_visible'})
+            self.assertNotIn('must never be copied', json.dumps(result))
             self.assertEqual({p.name for p in destination.iterdir()}, {'failure.json'})
             self.assertEqual(json.loads((destination / 'failure.json').read_text()),
                 {'status': 'FAIL', 'step': 'header_initial_launcher', 'reason': 'launcher_not_visible'})

@@ -1,0 +1,95 @@
+"""Repository workflow trust policy; external environment/runner settings need readback."""
+import json
+import re
+
+UPSTREAM = "github.repository == 'Egkurilov/BOOHTACORD'"
+MASTER = UPSTREAM + " && github.ref == 'refs/heads/master'"
+
+
+def release_guard(prefix):
+    return UPSTREAM + " && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/" + prefix + "'))"
+
+
+GUARDS = {
+    ('deploy-production.yaml', 'install'): UPSTREAM + " && needs.route.outputs.has_bundle == 'true' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'master' && github.event.workflow_run.head_repository.full_name == github.repository",
+    ('build-server.yaml', 'bundle'): MASTER + " && needs.changes.outputs.server_release_impact == 'true'",
+    ('flutter-macos.yaml', 'macos'): MASTER,
+    ('android-release.yaml', 'android-release'): release_guard('android-v'),
+    ('windows-release.yaml', 'windows-release'): release_guard('windows-v'),
+    ('macos-release.yaml', 'macos-release'): UPSTREAM + " && startsWith(github.ref, 'refs/tags/macos-v')",
+    ('native-candidate-builds.yaml', 'android-candidate'): MASTER,
+    ('webrtc-macos-sdk.yaml', 'publish'): MASTER,
+    ('promote-windows-client-update.yaml', 'prepare-catalog-pr'): MASTER,
+    ('desktop-updater-acceptance.yaml', 'macos-beta-package'): MASTER,
+    ('windows-updater-acceptance.yaml', 'installed-update'): MASTER,
+    ('audit-attachment-volume.yaml', 'audit'): MASTER,
+    ('qa08-active-upload.yaml', 'sample'): MASTER,
+    ('qa11-preflight.yaml', 'inspect'): MASTER,
+    ('rehearse-compatible-rollback.yaml', 'rehearse'): MASTER,
+    ('install-retained-release.yaml', 'install'): MASTER,
+}
+WRITERS = {('android-release.yaml', 'android-release'), ('windows-release.yaml', 'windows-release'),
+           ('macos-release.yaml', 'macos-release'), ('webrtc-macos-sdk.yaml', 'publish'),
+           ('promote-windows-client-update.yaml', 'prepare-catalog-pr'),
+           ('desktop-updater-acceptance.yaml', 'macos-beta-package'),
+           ('windows-updater-acceptance.yaml', 'installed-update')}
+
+
+def require(value):
+    if not value:
+        raise ValueError('Actions trust/permission/credential policy violation')
+
+
+HOSTED = {'ubuntu-24.04', 'ubuntu-latest', 'windows-2022', 'macos-26', 'macos-26-intel'}
+PERSISTENT = {('build-server.yaml', 'bundle'): ['self-hosted', 'linux', 'x64', 'boohtacord-builder'],
+              ('flutter-macos.yaml', 'macos'): ['self-hosted', 'macos']}
+
+
+def sensitive(value):
+    expressions = re.findall(r'\$\{\{(.*?)\}\}', json.dumps(value), re.DOTALL)
+    return any(re.search(r'\bsecrets\b', expression) and
+               not re.fullmatch(r"\s*secrets\.GITHUB_TOKEN\s*", expression) for expression in expressions)
+
+
+def hosted_runner(identity, job):
+    runner = job.get('runs-on')
+    if runner is None:
+        return str(job.get('uses', '')).startswith('./.github/workflows/')
+    if identity == ('webrtc-macos-sdk.yaml', 'build'):
+        rows = job.get('strategy', {}).get('matrix', {}).get('include', [])
+        return runner == '${{ matrix.runner }}' and rows == [
+            {'arch': 'arm64', 'runner': 'macos-26'}, {'arch': 'x64', 'runner': 'macos-26-intel'}]
+    return isinstance(runner, str) and runner in HOSTED
+
+
+def check(workflows):
+    for name, workflow in workflows.items():
+        require('pull_request_target' not in workflow['on'])
+        require(not sensitive({k: v for k, v in workflow.items() if k != 'jobs'}))
+        require(isinstance(workflow.get('permissions'), dict))
+        require(all(v == 'read' for v in workflow['permissions'].values()))
+        untrusted = bool({'pull_request', 'merge_group'} & set(workflow['on']))
+        for job_id, job in workflow['jobs'].items():
+            identity = (name, job_id)
+            require(job.get('continue-on-error') in (None, False, 'false'))
+            permissions = job.get('permissions', workflow['permissions'])
+            require(isinstance(permissions, dict) and job.get('secrets') != 'inherit')
+            expected = {'contents': 'write'}
+            if identity == ('promote-windows-client-update.yaml', 'prepare-catalog-pr'):
+                expected.update({'actions': 'write', 'pull-requests': 'write'})
+            require(permissions == expected if identity in WRITERS else
+                    all(value == 'read' for value in permissions.values()))
+            persistent = identity in PERSISTENT
+            require(job.get('runs-on') == PERSISTENT[identity] if persistent else hosted_runner(identity, job))
+            secrets = sensitive(job)
+            if untrusted:
+                require(not persistent and not secrets and all(v == 'read' for v in permissions.values()))
+            if identity in GUARDS:
+                require(job.get('if') == GUARDS[identity] and job.get('environment') == 'production')
+            if persistent or secrets:
+                require(identity in GUARDS and job.get('environment') == 'production')
+            for step in job.get('steps', []):
+                require(step.get('continue-on-error') in (None, False, 'false'))
+                if step.get('uses', '').startswith('actions/checkout@'):
+                    expected = 'true' if identity == ('promote-windows-client-update.yaml', 'prepare-catalog-pr') else 'false'
+                    require(step.get('with', {}).get('persist-credentials') == expected)

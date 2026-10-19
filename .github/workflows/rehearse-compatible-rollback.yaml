@@ -29,7 +29,7 @@ concurrency:
 
 jobs:
   rehearse:
-    if: ${{ github.ref_name == 'master' }}
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
     environment: production
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -41,7 +41,9 @@ jobs:
       PREVIOUS_SHA: ${{ inputs.previous_sha }}
       OBSERVERS_CONFIRMED: ${{ inputs.observers_confirmed }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: Reject drift or unobserved rehearsal before SSH
         shell: bash
         run: |
