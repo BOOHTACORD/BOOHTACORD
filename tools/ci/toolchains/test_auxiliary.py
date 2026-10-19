@@ -44,7 +44,7 @@ class AuxiliaryTests(unittest.TestCase):
     def test_missing_interpreter_or_runtime_check_is_rejected(self):
         for remove in ('setup', 'runtime'):
             docs = self.documents()
-            steps = docs['ci-flutter.yaml']['jobs']['flutter']['steps']
+            steps = docs['ci-flutter.yaml']['jobs']['dart']['steps']
             target = next(s for s in steps if (s.get('uses', '').startswith('actions/setup-python@')
                           if remove == 'setup' else s.get('run') == 'python -m tools.ci.toolchains.runtime python'))
             steps.remove(target)

@@ -126,3 +126,20 @@ stay outside the PR, its tree difference must be verified, and the QA source mus
 stay distinct from any PR/master release receipt. Stable server receipt publishing
 is disabled for every shadow caller. Repeat a complete workflow to collect a new
 attempt; old-attempt samples cannot fill missing evidence.
+
+## Verified rollout
+
+The public record `evidence/ci/web-gates-final-2026-10-19.json` retains actual
+same-source old/new reports, raw allowlisted job timing/identity inputs and the
+strict recomputed comparison. At n=3, Web critical p50/p95 changed from
+1041/1214 to487/518 seconds; runner-minutes increased from17.35/20.23 to23.87/24.88.
+The additional runner occupancy is the measured cost of the shorter critical path.
+
+PR #427 passed all14 checks before merge. Master Build39231304814 at sourcee80c67e0
+completed all profiles, the source-bound Web aggregate and all three gate receipts,
+then the signed bundle. Deploy39232685149 route/install succeeded and explicitly
+verified that producer ID/source. Sourcee96's earlier cancellation demonstrated
+failed fan-in/required statuses for partial cancelled shards. These finite results
+do not claim whole-PR acceleration, a statistical flake rate or physical-media
+performance. The recorded general-master CI status remains separate from the
+completed Web/server-producer acceptance.

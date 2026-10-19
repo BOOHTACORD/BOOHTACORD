@@ -1,0 +1,43 @@
+{
+  "source_revision": "62e95c1b718d1a61fade5e8dbd231d83071d6d6d",
+  "pr": 429,
+  "pr_head": "01f2874325b3e2b6a65d7a2e0e6e2e90267603b8",
+  "run_id": 39226238029,
+  "run_attempt": 1,
+  "profiles": "PASS",
+  "apk_manifest_and_checksums": "PASS",
+  "apk_bytes": 159344909,
+  "apk_sha256": "bba53a330942e283548a122294ea73308a50ce8acb5cbfd1965bd2f5daecb11b",
+  "captures": 34,
+  "before_capture_source": "31a13437346508bd868b34b300eafbc8a09509eb",
+  "changed_capture_hashes": [
+    "flutter-admin-media-mobile-393x852.png",
+    "flutter-admin-media-desktop-1440x900.png"
+  ],
+  "driver_seconds": {
+    "dart": 339.598882903,
+    "android": 438.592961543
+  },
+  "device_acceptance": "NOT_RUN",
+  "performance_comparison": "NOT_RUN",
+  "initial_required_captures": 28,
+  "uploaded_captures": 34,
+  "identical_before_after_captures": 32,
+  "visual_observation": "Only the displayed last successful refresh time changed (08:32 to08:58); mobile and desktop geometry/controls/text wrapping unchanged. Four changed-source PNGs inspected; other32PNG byteequal.",
+  "strict_34_capture_candidate": "NOT_RUN after initial01; focused regression failed28thenpassed34",
+  "native_input_equality": "gitdiff31a13437..62e95c1b empty forclients/flutter,tools/toolchains.json,tools/ci/flutter_setup/source.json",
+  "zip_verification": {
+    "12174222477": "a5d5c9b777b36acc54fbfc80b16ae0f108dd21f6058e3fb3050b9eb19b4fcfc8",
+    "12174172964": "a628d1863500817ac9efefede39edbe585551544963dad1f57f0311438510ce4",
+    "12174670257": "6d8f1b26ca7133ea9423c28ff8b4a34dd850442fd8018bdc45eb9f29c1ff9b8c",
+    "12172707855": "ae9bf4bf32d7b5c45e5c2bc601e4837f1e205615c8a0fb424ff1f6a5268a246d",
+    "12173813692": "4f872ac03cfa0640eda58a52eb10f33af3f9541c029f745be260f2fbced7632f"
+  },
+  "status": "DIAGNOSTIC_INITIAL_01_PROFILES_AND_UPLOADED_ARTIFACTS_PASS; finalcurrentcandidateacceptancepending",
+  "limits": [
+    "Current34-capture mandatory inventory andmeasurement harness notyetexecutedonhostedCI",
+    "NotanendtoendphysicalAndroidmedia/devicereleaseacceptance",
+    "No p50/p95 orrunner-cost improvementclaimfromthissingleobservation",
+    "FinalrequiredPRchecks/masteracceptancepending"
+  ]
+}

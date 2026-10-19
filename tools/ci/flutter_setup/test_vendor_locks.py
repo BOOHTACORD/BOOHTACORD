@@ -35,8 +35,11 @@ class VendorLockTests(unittest.TestCase):
     def test_native_runner_always_enforces_vendor_locks_before_tests(self):
         from unittest.mock import patch, call
         from tools.ci.native import flutter
-        with patch.object(flutter,'output',return_value='{"frameworkVersion":"3.47.7","dartSdkVersion":"3.13.5"}'), \
-             patch.object(flutter,'run') as run, patch.object(vendor_locks,'prepare') as prepare:
+        from tools.ci.flutter_gates import profiles
+        machine = json.dumps({'frameworkVersion':'3.47.7', 'dartSdkVersion':'3.13.5',
+                              'frameworkRevision':'abaf9c523780a608bd46686fd5e53740a07077f8'})
+        with patch.object(profiles,'output',return_value=machine), \
+             patch.object(profiles,'run') as run, patch.object(profiles,'prepare') as prepare:
             flutter.main()
         self.assertEqual(prepare.call_count,2)
         for name in ('livekit_client','flutter_webrtc'):

@@ -63,7 +63,9 @@ if ($LASTEXITCODE -ne 0) { throw 'CI component dependency validation failed.' }
 $flutterCi = Get-Content -LiteralPath $flutterCiPath -Raw
 foreach ($required in @(
     'workflow_call:', 'runs-on: ubuntu-24.04', 'flutter-version: 3.47.7',
-    'python3 -m tools.ci.native.flutter', 'python3 -m tools.build.android.run --debug'
+    'python3 -m tools.ci.flutter_gates.run dart',
+    'python3 -m tools.ci.flutter_gates.run android',
+    'python3 -m tools.ci.flutter_gates.aggregate'
 )) {
     if (-not $flutterCi.Contains($required)) {
         throw "Flutter CI gate is missing: $required"

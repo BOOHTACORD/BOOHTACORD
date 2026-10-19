@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "source_revision": "f1b190383372e32581790a80fafae3aab33e13e7",
+  "files": {
+    "tools/ci/native/flutter.py": "61fdacd560753a2ae71629f2f8e177aadfd4f3a7a50546c6f6b142841b4a0291",
+    "tools/verify/android_kotlin/verify_android_kotlin_modes.sh": "51b10ce4b18eeac9cc4be98550ee0fc1d3df49b2e73c5544a2fe6d685c214c32",
+    "tools/build/android/run.py": "1aea6fc2c1cf4771cf282bd3d2697e688d46747407f61ced03a74d0ba517ecad",
+    ".github/workflows/ci-flutter.yaml": "6b616779bf32d7c200c6b43bba2deaeedcf4fbe0c1385ce740e05e47569dcd14"
+  },
+  "operations": [
+    "public-headers",
+    "app-dependencies",
+    "app-tests",
+    "livekit-dependencies",
+    "livekit-tests",
+    "webrtc-dependencies",
+    "webrtc-tests",
+    "app-analysis",
+    "kotlin-modes",
+    "debug-dependencies",
+    "debug-apk"
+  ]
+}
