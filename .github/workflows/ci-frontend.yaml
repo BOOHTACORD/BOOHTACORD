@@ -6,15 +6,21 @@ on:
       release_receipt:
         type: boolean
         default: false
+      evidence_namespace:
+        type: string
+        default: web
 
 permissions:
   contents: read
 
+env:
+  VITE_PUBLIC_ORIGIN: https://v.bootybay.ru
+  WEB_NAMESPACE: ${{ inputs.evidence_namespace }}
+
 jobs:
-  frontend:
+  fast:
     runs-on: ubuntu-24.04
-    env:
-      VITE_PUBLIC_ORIGIN: https://v.bootybay.ru
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -24,8 +30,6 @@ jobs:
           python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
       - name: Verify selected Python interpreter
         run: python -m tools.ci.toolchains.runtime python
-      - name: Test review-only UI/UX screenshot region deltas
-        run: python3 -m unittest tools.verify.test_uiux_visual_diff tools.verify.test_uiux_visual_matrix
       - name: Prepare public Node SDK and locked dependency cache inputs
         run: python3 -m tools.ci.toolchains.cache_inputs npm
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -33,133 +37,147 @@ jobs:
           node-version-file: .node-version
           cache: npm
           cache-dependency-path: .out/ci/cache-inputs/npm.json
-      - name: Install locked browser runtime
-        working-directory: clients/web
-        run: |
-          npm ci
-          npx playwright install --with-deps chromium
-      - name: Test and build Vue client
-        run: python3 -m tools.ci.receipts.run web
-      - name: Retain UX responsive-shell review captures
+      - name: Run complete reviewed fast profile
+        run: python3 -m tools.ci.web_suites.run --profile fast
+      - name: Retain mandatory source-bound profile result
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: ux-responsive-shell-${{ github.sha }}
-          path: .out/responsive-shell-browser-results/**
-          if-no-files-found: ignore
+          name: web-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-fast
+          path: .out/ci/web-parts/fast.json
+          if-no-files-found: error
           retention-days: 30
-      - name: Retain synthetic Web control and browser zoom captures
+
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [browser-shell, browser-conversations, browser-voice]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Prepare public Node SDK and locked dependency cache inputs
+        run: python3 -m tools.ci.toolchains.cache_inputs npm
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: .out/ci/cache-inputs/npm.json
+      - name: Run complete reviewed browser profile
+        env:
+          WEB_PROFILE: ${{ matrix.profile }}
+        run: python3 -m tools.ci.web_suites.run --profile "$WEB_PROFILE"
+      - name: Retain mandatory source-bound profile result
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: web-controls-${{ github.sha }}
-          path: .out/issue342/browser/**
-          if-no-files-found: ignore
+          name: web-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.profile }}
+          path: .out/ci/web-parts/${{ matrix.profile }}.json
+          if-no-files-found: error
           retention-days: 30
-      - name: Retain synthetic microcopy inventory and visual evidence
+      - name: Retain original sanitized browser and SFU evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: web-microcopy-${{ github.sha }}
-          path: .out/issue343/browser/**
-          if-no-files-found: ignore
-          retention-days: 30
-      - name: Retain synthetic navigation density and browser zoom evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: web-navigation-${{ github.sha }}
-          path: .out/issue344/browser/**
-          if-no-files-found: ignore
-          retention-days: 30
-      - name: Retain search mode and DM picker actual browser zoom evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: web-search-dm-picker-${{ github.sha }}
+          name: web-visual-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.profile }}
           path: |
+            .out/responsive-shell-browser-results/**
+            .out/issue342/browser/**
+            .out/issue343/browser/**
+            .out/issue344/browser/**
             .out/qa294-search-session-browser/**
             .out/dw02-dm-starter/**
+            .out/issue346/browser/**
+            .out/issue348/browser/**
+            .out/issue347/browser/**
+            .out/issue345/browser/**
+            .out/issue350/browser/**
+            .out/issue349/browser/**
+            .out/issue352/browser/**
+            .out/issue351/browser/**
+            .out/mentions-inbox-browser-results/**
+            .out/readonly-archive-browser-results/**
           if-no-files-found: ignore
           retention-days: 30
-      - name: Retain compact search and related result surface evidence
+
+  sfu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Prepare public Node SDK and locked dependency cache inputs
+        run: python3 -m tools.ci.toolchains.cache_inputs npm
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: .out/ci/cache-inputs/npm.json
+      - name: Run complete reviewed sfu profile
+        run: python3 -m tools.ci.web_suites.run --profile sfu-network
+      - name: Retain mandatory source-bound profile result
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: web-search-presentation-${{ github.sha }}
-          path: .out/issue346/browser/**
-          if-no-files-found: ignore
+          name: web-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-sfu-network
+          path: .out/ci/web-parts/sfu-network.json
+          if-no-files-found: error
           retention-days: 30
-      - name: Retain screen share setup and diagnostics disclosure evidence
+      - name: Retain original sanitized browser and SFU evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: web-screen-share-ui-${{ github.sha }}
-          path: .out/issue348/browser/**
+          name: web-sfu-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-sfu-network
+          path: |
+            .out/screen-profile-browser-results/**/screen-share-sfu-smoke.json
+            .out/restricted-networks/*.json
           if-no-files-found: ignore
           retention-days: 30
-      - name: Retain compact voice controls and browser zoom evidence
+
+  frontend:
+    if: always()
+    needs: [fast, browser, sfu]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Download only this execution's complete profile result set
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: web-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-*
+          path: .out/ci/web-parts
+          merge-multiple: true
+      - name: Require successful jobs and all exact-source profiles before the Web receipt
+        env:
+          WEB_NEEDS: ${{ toJSON(needs) }}
+        run: python3 -m tools.ci.receipts.run web --parts .out/ci/web-parts
+      - name: Retain source-bound Web fan-in summary
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: web-voice-interface-${{ github.sha }}
-          path: .out/issue347/browser/**
-          if-no-files-found: ignore
-          retention-days: 30
-      - name: Retain synthetic TEXT and DM rhythm and browser zoom evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: web-chat-rhythm-${{ github.sha }}
-          path: .out/issue345/browser/**
-          if-no-files-found: ignore
-          retention-days: 30
-      - name: Retain Web member roster and profile evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: web-member-roster-${{ github.sha }}
-          path: .out/issue350/browser/**
-          if-no-files-found: ignore
-          retention-days: 30
-      - name: Retain Web mini-player acceptance evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: web-mini-player-${{ github.sha }}
-          path: .out/issue349/browser/**
-          if-no-files-found: ignore
-          retention-days: 30
-      - name: Retain header controls and keyboard visual evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: web-header-actions-${{ github.sha }}
-          path: .out/issue352/browser/**
-          if-no-files-found: ignore
-          retention-days: 30
-      - name: Retain settings hierarchy interaction and visual evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: web-settings-hierarchy-${{ github.sha }}
-          path: .out/issue351/browser/**
-          if-no-files-found: ignore
-          retention-days: 30
-      - name: Retain sanitized real-SFU screen-share smoke evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: screen-share-sfu-smoke-${{ github.sha }}
-          path: .out/screen-profile-browser-results/**/screen-share-sfu-smoke.json
-          if-no-files-found: ignore
-          retention-days: 30
-      - name: Retain anonymous restricted-network measurements
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: restricted-networks-${{ github.sha }}
-          path: .out/restricted-networks/*.json
+          name: web-fan-in-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/web-fan-in.json
           if-no-files-found: ignore
           retention-days: 30
       - name: Retain source-bound gate receipt

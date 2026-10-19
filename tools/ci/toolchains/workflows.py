@@ -36,6 +36,8 @@ def validate(documents, root):
                 command = step.get('run', '')
                 if 'npm ci' in command and (step.get('if') is not None or name not in NPM):
                     raise ValueError('Cache state must not suppress locked dependency installation')
+                if 'tools.ci.web_suites.run' in command and step.get('if') is not None:
+                    raise ValueError('Cache state must not suppress a complete locked Web profile')
                 if 'playwright install' in command and '--with-deps chromium' not in command:
                     raise ValueError('Browser binaries cannot replace required OS dependencies')
 
