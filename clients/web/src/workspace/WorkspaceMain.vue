@@ -74,6 +74,7 @@ const emit = defineEmits<{ openSearch: []; returnVoice: [channelId: string]; tog
     :screen-state="voiceConnection.screenState"
     :screen-viewer-cards="voiceConnection.screenViewerCards"
     :screen-watcher-ids="voiceConnection.screenWatcherIds"
+    :owner-screen-watcher-ids="voiceConnection.ownerScreenWatcherIds"
     :screen-viewer-ended="voiceConnection.screenViewerEnded"
     :screen-viewer-error="voiceConnection.screenViewerError"
     :selected-screen-audio-volume="voiceConnection.selectedScreenAudioVolume"

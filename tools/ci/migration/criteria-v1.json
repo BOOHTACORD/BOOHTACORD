@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "criteria": {
+    "baseline": "metadata",
+    "control-matrix": "actual",
+    "security-provenance-negatives": "focused",
+    "same-sha-suite-shadows": "actual",
+    "server-release": "actual",
+    "trusted-install-readback": "actual",
+    "schema-compatible-rollback": "actual",
+    "android-smoke": "actual",
+    "windows-smoke": "actual",
+    "macos-smoke": "actual",
+    "windows-promotion-installed-client": "actual",
+    "operator-boundaries": "actual",
+    "macos-sdk-matrix": "actual",
+    "required-status-owner-readback": "admin",
+    "workflow-configuration-rollback": "candidate",
+    "after-observation": "metadata"
+  },
+  "rollback_checkpoints": ["c569477fc0d125f3313e73742c34a2ea6aa5e454"]
+}

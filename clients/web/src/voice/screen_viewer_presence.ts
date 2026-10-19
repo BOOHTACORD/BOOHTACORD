@@ -23,6 +23,7 @@ interface PresenceSubscription {
   trackSID: string
   timer: ReturnType<typeof setInterval>
   pending: boolean
+  reported?: boolean
   nextWatching?: boolean
 }
 
@@ -68,6 +69,16 @@ export async function clearScreenViewerAudience(ownerLeaseId: string, request: S
 export async function readScreenViewerAccounts(ownerLeaseId: string, request: ScreenViewerPresenceRequest = fetch): Promise<string[]> {
   if (!uuid.test(ownerLeaseId)) return []
   const response = await request(`${apiBaseUrl}/voice/leases/${encodeURIComponent(ownerLeaseId)}/screen-viewers`, init('GET'))
+  return parseScreenViewerAccounts(response)
+}
+
+export async function readScreenViewerAccountsForViewer(viewerLeaseId: string, ownerLeaseId: string, request: ScreenViewerPresenceRequest = fetch): Promise<string[]> {
+  if (!uuid.test(viewerLeaseId) || !uuid.test(ownerLeaseId)) return []
+  const path = `${apiBaseUrl}/voice/leases/${encodeURIComponent(viewerLeaseId)}/screen-viewers/${encodeURIComponent(ownerLeaseId)}`
+  return parseScreenViewerAccounts(await request(path, init('GET')))
+}
+
+async function parseScreenViewerAccounts(response: Response): Promise<string[]> {
   if (!response.ok) throw new Error('Не удалось обновить список зрителей трансляции.')
   const body = await response.json() as { viewer_account_ids?: unknown }
   if (!Array.isArray(body.viewer_account_ids) || !body.viewer_account_ids.every(value => typeof value === 'string' && uuid.test(value))) {
@@ -76,14 +87,17 @@ export async function readScreenViewerAccounts(ownerLeaseId: string, request: Sc
   return [...new Set(body.viewer_account_ids.map(value => (value as string).toLowerCase()))]
 }
 
-function watcher(accountId: string, participants: Iterable<PresenceParticipant>): ScreenViewerWatcher {
-  const participant = [...participants].find(value => accountIdFromMetadata(value.metadata) === accountId)
+function watcher(accountId: string, room: PresenceRoom): ScreenViewerWatcher {
+  const participants = [room.localParticipant, ...room.remoteParticipants.values()].filter((value): value is PresenceParticipant => Boolean(value))
+  const participant = participants.find(value => accountIdFromMetadata(value.metadata) === accountId)
   return { id: accountId, accountId, name: participant?.name?.trim() || 'Участник' }
 }
 
 export class ScreenViewerPresenceController {
   private readonly subscriptions = new Map<string, PresenceSubscription>()
-  private refreshGeneration = 0
+  private audienceRefreshGeneration = 0
+  private selectedAudienceOwnerLeaseId: string | null = null
+  private selectedAudienceTimer?: ReturnType<typeof setInterval>
 
   constructor(
     private readonly room: PresenceRoom,
@@ -92,6 +106,7 @@ export class ScreenViewerPresenceController {
     private readonly setWatchers: (watchers: ScreenViewerWatcher[]) => void,
     private readonly request: ScreenViewerPresenceRequest = fetch,
     private readonly heartbeatMs = screenViewerHeartbeatMs,
+    private readonly setOwnerWatchers: (watchers: ScreenViewerWatcher[]) => void = () => undefined,
   ) {
     room.on(events.trackSubscribed, this.onTrackSubscribed)
     room.on(events.trackUnsubscribed, this.onTrackUnsubscribed)
@@ -101,21 +116,50 @@ export class ScreenViewerPresenceController {
   }
 
   refreshOwner = async (): Promise<void> => {
+    if (this.selectedAudienceOwnerLeaseId) return this.refreshViewedAudience(this.selectedAudienceOwnerLeaseId)
     const owner = this.room.localParticipant
     const ownerLeaseId = leaseId(owner?.identity)
     const publication = owner?.getTrackPublication(this.screenVideoSource)
     const sid = publication && publication.source === this.screenVideoSource ? publication.trackSid : undefined
-    const generation = ++this.refreshGeneration
-    if (!ownerLeaseId || !sid) { this.setWatchers([]); return }
+    const generation = ++this.audienceRefreshGeneration
+    if (!ownerLeaseId || !sid) {
+      this.setOwnerWatchers([])
+      if (!this.selectedAudienceOwnerLeaseId) this.setWatchers([])
+      return
+    }
     try {
       const accountIds = await readScreenViewerAccounts(ownerLeaseId, this.request)
-      if (generation !== this.refreshGeneration || this.currentOwnerTrackSID() !== sid) return
-      this.setWatchers(accountIds.map(accountId => watcher(accountId, this.room.remoteParticipants.values())))
+      if (generation !== this.audienceRefreshGeneration || this.selectedAudienceOwnerLeaseId || this.currentOwnerTrackSID() !== sid) return
+      const watchers = accountIds.map(accountId => watcher(accountId, this.room))
+      this.setOwnerWatchers(watchers)
+      this.setWatchers(watchers)
     } catch { /* Keep the last known audience while the private presence service recovers. */ }
   }
 
+  selectAudience(ownerLeaseId: string | null): Promise<void> {
+    const nextOwnerLeaseId = ownerLeaseId && uuid.test(ownerLeaseId) ? ownerLeaseId.toLowerCase() : null
+    if (nextOwnerLeaseId === this.selectedAudienceOwnerLeaseId) return this.refreshSelectedAudience()
+    this.selectedAudienceOwnerLeaseId = nextOwnerLeaseId
+    this.audienceRefreshGeneration += 1
+    if (this.selectedAudienceTimer) clearInterval(this.selectedAudienceTimer)
+    this.selectedAudienceTimer = undefined
+    if (!nextOwnerLeaseId) return this.refreshOwner()
+    this.setWatchers([])
+    this.selectedAudienceTimer = setInterval(() => { void this.refreshViewedAudience(nextOwnerLeaseId) }, this.heartbeatMs)
+    return this.refreshViewedAudience(nextOwnerLeaseId)
+  }
+
+  refreshSelectedAudience = async (): Promise<void> => {
+    const ownerLeaseId = this.selectedAudienceOwnerLeaseId
+    if (ownerLeaseId) return this.refreshViewedAudience(ownerLeaseId)
+    return this.refreshOwner()
+  }
+
   clear(): void {
-    this.refreshGeneration += 1
+    this.audienceRefreshGeneration += 1
+    this.selectedAudienceOwnerLeaseId = null
+    if (this.selectedAudienceTimer) clearInterval(this.selectedAudienceTimer)
+    this.selectedAudienceTimer = undefined
     for (const [key, subscription] of this.subscriptions) {
       clearInterval(subscription.timer)
       this.send(subscription, false)
@@ -124,6 +168,7 @@ export class ScreenViewerPresenceController {
     const ownerLeaseId = leaseId(this.room.localParticipant?.identity)
     if (ownerLeaseId) void clearScreenViewerAudience(ownerLeaseId, this.request).catch(() => undefined)
     this.setWatchers([])
+    this.setOwnerWatchers([])
   }
 
   private readonly onTrackSubscribed = (_track: unknown, publication: PresencePublication, participant: PresenceParticipant): void => {
@@ -149,6 +194,7 @@ export class ScreenViewerPresenceController {
     clearInterval(subscription.timer)
     this.subscriptions.delete(key)
     this.send(subscription, false)
+    if (this.selectedAudienceOwnerLeaseId === subscription.ownerLeaseId) this.setWatchers([])
   }
 
   private readonly onParticipantDisconnected = (participant: PresenceParticipant): void => {
@@ -161,19 +207,31 @@ export class ScreenViewerPresenceController {
   }
 
   private readonly onLocalTrackPublished = (publication: PresencePublication): void => {
-    if (publication.source === this.screenVideoSource) void this.refreshOwner()
+    if (publication.source === this.screenVideoSource) void this.refreshSelectedAudience()
   }
 
   private readonly onLocalTrackUnpublished = (publication: PresencePublication): void => {
     if (publication.source !== this.screenVideoSource) return
     const ownerLeaseId = leaseId(this.room.localParticipant?.identity)
-    this.setWatchers([])
     if (ownerLeaseId) void clearScreenViewerAudience(ownerLeaseId, this.request, publication.trackSid).catch(() => undefined)
+    this.setOwnerWatchers([])
+    void this.refreshSelectedAudience()
   }
 
   private currentOwnerTrackSID(): string | undefined {
     const publication = this.room.localParticipant?.getTrackPublication(this.screenVideoSource)
     return publication && publication.source === this.screenVideoSource ? publication.trackSid : undefined
+  }
+
+  private async refreshViewedAudience(ownerLeaseId: string): Promise<void> {
+    const viewerLeaseId = leaseId(this.room.localParticipant?.identity)
+    const generation = ++this.audienceRefreshGeneration
+    if (!viewerLeaseId || this.selectedAudienceOwnerLeaseId !== ownerLeaseId) { this.setWatchers([]); return }
+    try {
+      const accountIds = await readScreenViewerAccountsForViewer(viewerLeaseId, ownerLeaseId, this.request)
+      if (generation !== this.audienceRefreshGeneration || this.selectedAudienceOwnerLeaseId !== ownerLeaseId || leaseId(this.room.localParticipant?.identity) !== viewerLeaseId) return
+      this.setWatchers(accountIds.map(accountId => watcher(accountId, this.room)))
+    } catch { /* Preserve the current stream's last known audience while the service recovers. */ }
   }
 
   private send(subscription: PresenceSubscription, watching: boolean): void {
@@ -184,7 +242,12 @@ export class ScreenViewerPresenceController {
     const viewerLeaseId = leaseId(this.room.localParticipant?.identity)
     if (!viewerLeaseId) return
     subscription.pending = true
+    const refreshAudienceAfterReport = watching && !subscription.reported
     void setScreenViewerPresence(viewerLeaseId, subscription.ownerLeaseId, subscription.trackSID, watching, this.request)
+      .then(() => {
+        if (watching) subscription.reported = true
+        if (refreshAudienceAfterReport && this.selectedAudienceOwnerLeaseId === subscription.ownerLeaseId) void this.refreshViewedAudience(subscription.ownerLeaseId)
+      })
       .catch(() => undefined)
       .finally(() => {
         subscription.pending = false
@@ -202,6 +265,7 @@ export function bindLiveKitScreenViewerPresence(
   setWatchers: (watchers: ScreenViewerWatcher[]) => void,
   request?: ScreenViewerPresenceRequest,
   heartbeatMs = screenViewerHeartbeatMs,
+  setOwnerWatchers?: (watchers: ScreenViewerWatcher[]) => void,
 ): ScreenViewerPresenceController {
-  return new ScreenViewerPresenceController(room, events, screenVideoSource, setWatchers, request, heartbeatMs)
+  return new ScreenViewerPresenceController(room, events, screenVideoSource, setWatchers, request, heartbeatMs, setOwnerWatchers)
 }

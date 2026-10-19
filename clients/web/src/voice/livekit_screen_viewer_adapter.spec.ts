@@ -8,6 +8,37 @@ function publication(source?: string) {
 }
 
 describe('LiveKit screen viewer adapter', () => {
+  it('reads the selected publisher audience using the viewer lease and the publisher lease', async () => {
+    const viewerLeaseId = '11111111-1111-4111-8111-111111111111'
+    const ownerLeaseId = '22222222-2222-4222-8222-222222222222'
+    const viewerAccountId = '33333333-3333-4333-8333-333333333333'
+    const ownerAccountId = '44444444-4444-4444-8444-444444444444'
+    const video = { ...publication('screen-video'), trackSid: 'TR_owner' }
+    const local = { identity: `voice-lease:${viewerLeaseId}`, metadata: `account:${viewerAccountId}`, name: 'Зритель', getTrackPublication: () => undefined }
+    const owner = { identity: `voice-lease:${ownerLeaseId}`, metadata: `account:${ownerAccountId}`, name: 'Ведущий', getTrackPublication: (source: string) => source === 'screen-video' ? video : undefined }
+    const request = vi.fn(async () => ({ ok: true, json: async () => ({ viewer_account_ids: [viewerAccountId] }) }) as Response)
+    vi.stubGlobal('fetch', request)
+    const room: LiveKitScreenViewerRoom = {
+      localParticipant: local,
+      on: vi.fn(),
+      remoteParticipants: new Map([[owner.identity, owner]]),
+    }
+    const binding = bindLiveKitScreenViewer(room, {
+      activeSpeakersChanged: 'active-speakers-changed', participantConnected: 'participant-connected', participantDisconnected: 'participant-disconnected', localTrackPublished: 'local-track-published', localTrackUnpublished: 'local-track-unpublished', trackMuted: 'track-muted', trackPublished: 'track-published', trackSubscribed: 'track-subscribed', trackUnmuted: 'track-unmuted', trackUnpublished: 'track-unpublished', trackUnsubscribed: 'track-unsubscribed',
+    }, { microphone: 'microphone', screenAudio: 'screen-audio', screenVideo: 'screen-video' })
+
+    binding.refresh()
+    binding.viewer.select(binding.viewer.cards()[0]!.id, {} as HTMLVideoElement, {} as HTMLAudioElement)
+    await vi.waitFor(() => expect(request).toHaveBeenCalledWith(
+      `/api/v1/voice/leases/${viewerLeaseId}/screen-viewers/${ownerLeaseId}`,
+      expect.objectContaining({ method: 'GET', credentials: 'same-origin', cache: 'no-store' }),
+    ))
+    await vi.waitFor(() => expect(binding.viewer.watchers()).toEqual([{ id: viewerAccountId, accountId: viewerAccountId, name: 'Зритель' }]))
+
+    binding.clear()
+    vi.unstubAllGlobals()
+  })
+
   it('subscribes to room voice while keeping every unselected screen track disabled', () => {
     const microphone = publication('microphone')
     const video = publication('screen-video')
