@@ -15,6 +15,7 @@ from .inputs import RUNTIME_PATHS, SOURCE_PATHS, archive, compatibility, git, so
 from .smoke import run_smoke
 from .gate_receipts import read as gate_receipts
 from .metrics import Metrics
+from .builder_storage import BuilderStorage
 
 
 def main():
@@ -26,6 +27,7 @@ def main():
     args = parser.parse_args()
     require(sys.platform == "linux", "Server builder requires Linux with Docker OCI image storage")
     root = source_root(args.source)
+    builder_root = Path(__file__).resolve().parents[3]
     revision = git(root, "rev-parse", "HEAD").decode().strip()
     require(not git(root, "diff", "HEAD", "--"), "Builder requires a clean tracked checkout")
     checks = gate_receipts(args.checks.resolve(), revision)
@@ -45,16 +47,20 @@ def main():
         with metrics.stage('source_extract'):
             extract(source_archive, source, max_bytes=200_000_000)
         with metrics.stage('assets'):build_assets(source)
-        with metrics.stage('buildx_setup'):environment = configure(root, temporary / "docker")
-        with metrics.stage('images'):
-            receipts = build(source, bundle, revision, source_hash, environment,metrics=metrics)
-        binaries = temporary / "operators"
-        binaries.mkdir()
-        with metrics.stage('smoke'):run_smoke(receipts, binaries)
-        checks["artifact_smoke"] = "PASS"
-        with metrics.stage('runtime_archive'):archive(root, bundle / "runtime.tar.gz", RUNTIME_PATHS)
-        destination = package(bundle, revision, source_hash, receipts, compatibility(root),
-                              {"source_revision": revision, "checks": checks}, args.signing_key.resolve(),measure=metrics.stage)
+        with metrics.stage('buildx_setup'):environment = configure(builder_root, temporary / "docker")
+        with metrics.stage('owned_builder'):
+            storage = BuilderStorage(builder_root, environment, revision, source_hash)
+            metrics.value['builder_storage'] = storage.report
+            with storage:
+                with metrics.stage('images'):
+                    receipts = build(source, bundle, revision, source_hash, storage.environment,metrics=metrics)
+                binaries = temporary / "operators"
+                binaries.mkdir()
+                with metrics.stage('smoke'):run_smoke(receipts, binaries,environment=storage.environment)
+                checks["artifact_smoke"] = "PASS"
+                with metrics.stage('runtime_archive'):archive(root, bundle / "runtime.tar.gz", RUNTIME_PATHS)
+                destination = package(bundle, revision, source_hash, receipts, compatibility(root),
+                                      {"source_revision": revision, "checks": checks}, args.signing_key.resolve(),measure=metrics.stage)
         metrics.complete({name:row['index_digest'] for name,row in receipts.items()})
         print("Verified release bundle: " + str(destination))
 
