@@ -2,7 +2,7 @@
   "status": "IN_PROGRESS",
   "scope": "CICD-12 runner isolation and scheduling; dependency CICD-01 metadata baseline",
   "source_commit": "768b81e3",
-  "observed_at_utc": "2026-10-19T22:16:11.986732+00:00",
+  "observed_at_utc": "2026-10-19T22:26:59.225890+00:00",
   "sample": "20 most recent workflow runs; all returned jobs, bounded first page up to 100 per run",
   "timing_limitations": "Execution seconds only for completed jobs; overlapping runs, not host CPU utilization or a complete historical capacity estimate",
   "job_labels": {
@@ -96,7 +96,7 @@
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
   "local_checks": "406 CI/policy/native-contract/promotion/next-diagnostics unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
-  "rollout_gate": "Final three-vCPU pool probes, trusted delivery and dependency-cache acceptance PASS on e6a4f379. Full required CI pending after correcting the environment-dependent lock-order fixture; canonical local Python regressions PASS.",
+  "rollout_gate": "Three-vCPU pool probes and earlier component/cache/delivery acceptance PASS. Full required Linux CI pending after deterministic ACK-integrity unit fixture; canonical local Python regressions PASS.",
   "resource_limits": {
     "heavy_slots": 2,
     "heavy_cpu_each": 3,
@@ -147,7 +147,7 @@
     "status": "PASS",
     "runner": "tools.verify.python_tests.run",
     "tests": 1075,
-    "seconds": 56.545,
+    "seconds": 51.779,
     "platform": "macOS arm64",
     "python": "3.14.8",
     "exit_code": 0,
@@ -156,5 +156,11 @@
   "contract_fixture_fix": {
     "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39331849269/job/118331726640",
     "reason": "Vendor lock unit fixture assumed the SDK-default test argv in every runtime. It now explicitly exercises local and disposable contexts and asserts lock preparation precedes locked pub resolution, which precedes every vendor test."
+  },
+  "publisher_ack_fixture_fix": {
+    "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39333752241/job/118337995628",
+    "reason": "A background test thread could read the old nonce only after the next command was published, causing an unexpected timeout and late access to a removed temporary directory. The stale/failed-ACK unit case now uses a controlled clock and injects the matching failed response after command publication. Real HTTP and nonce round-trip checks remain separate.",
+    "focused_tests": 10,
+    "focused_status": "PASS"
   }
 }
