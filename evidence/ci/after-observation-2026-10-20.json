@@ -1,0 +1,1604 @@
+{
+  "schema_version": 1,
+  "scope": "post-implementation-migration-observation-window",
+  "status": "PASS_METADATA_COLLECTION",
+  "sample_count": 78,
+  "attempt_count": 82,
+  "source_kind": "Actual API workflow heads; synthetic PR merge identity is not inferred",
+  "creation_window": {
+    "start": "2026-10-19T17:38:07Z",
+    "end": "2026-10-19T21:50:50Z"
+  },
+  "collection": {
+    "listed": 177,
+    "selected_terminal": 78,
+    "excluded": 99,
+    "pages": 2,
+    "metadata_attempt_requests": 82,
+    "job_steps": "Only non-success/non-skipped steps retained; no raw logs, actors or workflow input values read."
+  },
+  "cohorts": {
+    "native_master": {
+      "n": 15,
+      "conclusions": {
+        "cancelled": 8,
+        "success": 7
+      },
+      "successful_workflow_wall_seconds": {
+        "n": 7,
+        "p50": 1026.0,
+        "p90": 1341.0,
+        "p95": 1341.0,
+        "max": 1341.0
+      },
+      "first_start_delay_seconds": {
+        "n": 15,
+        "p50": 103.0,
+        "p90": 373.0,
+        "p95": 549.0,
+        "max": 549.0
+      },
+      "runner_execution_minutes": {
+        "n": 14,
+        "p50": 39.0167,
+        "p90": 46.25,
+        "p95": 48.4833,
+        "max": 48.4833
+      },
+      "incomplete_runner_minutes_records": 1,
+      "retried_run_rate": 0.0,
+      "retry_runs": [],
+      "confirmed_flake_rate": null,
+      "selected_component_strata": [
+        {
+          "components": [],
+          "n": 2,
+          "conclusions": {
+            "success": 2
+          },
+          "successful_wall_seconds": {
+            "n": 2,
+            "p50": 22.0,
+            "p90": 132.0,
+            "p95": 132.0,
+            "max": 132.0
+          }
+        },
+        {
+          "components": [
+            "flutter",
+            "windows"
+          ],
+          "n": 13,
+          "conclusions": {
+            "cancelled": 8,
+            "success": 5
+          },
+          "successful_wall_seconds": {
+            "n": 5,
+            "p50": 1039.0,
+            "p90": 1341.0,
+            "p95": 1341.0,
+            "max": 1341.0
+          }
+        }
+      ]
+    },
+    "server_build": {
+      "n": 14,
+      "conclusions": {
+        "cancelled": 5,
+        "failure": 2,
+        "success": 7
+      },
+      "successful_workflow_wall_seconds": {
+        "n": 7,
+        "p50": 878.0,
+        "p90": 1141.0,
+        "p95": 1141.0,
+        "max": 1141.0
+      },
+      "first_start_delay_seconds": {
+        "n": 14,
+        "p50": 67.0,
+        "p90": 538.0,
+        "p95": 958.0,
+        "max": 958.0
+      },
+      "runner_execution_minutes": {
+        "n": 12,
+        "p50": 32.8333,
+        "p90": 41.4167,
+        "p95": 42.6833,
+        "max": 42.6833
+      },
+      "incomplete_runner_minutes_records": 2,
+      "retried_run_rate": 0.07142857142857142,
+      "retry_runs": [
+        39300791738
+      ],
+      "confirmed_flake_rate": null,
+      "selected_component_strata": [
+        {
+          "components": [
+            "backend",
+            "contracts",
+            "web"
+          ],
+          "n": 12,
+          "conclusions": {
+            "cancelled": 5,
+            "failure": 2,
+            "success": 5
+          },
+          "successful_wall_seconds": {
+            "n": 5,
+            "p50": 1020.0,
+            "p90": 1141.0,
+            "p95": 1141.0,
+            "max": 1141.0
+          }
+        },
+        {
+          "components": [
+            "contracts"
+          ],
+          "n": 2,
+          "conclusions": {
+            "success": 2
+          },
+          "successful_wall_seconds": {
+            "n": 2,
+            "p50": 144.0,
+            "p90": 257.0,
+            "p95": 257.0,
+            "max": 257.0
+          }
+        }
+      ]
+    },
+    "ci_pr": {
+      "n": 33,
+      "conclusions": {
+        "cancelled": 13,
+        "success": 10,
+        "failure": 10
+      },
+      "successful_workflow_wall_seconds": {
+        "n": 10,
+        "p50": 997.0,
+        "p90": 1519.0,
+        "p95": 3460.0,
+        "max": 3460.0
+      },
+      "first_start_delay_seconds": {
+        "n": 32,
+        "p50": 23.0,
+        "p90": 304.0,
+        "p95": 339.0,
+        "max": 2262.0
+      },
+      "runner_execution_minutes": {
+        "n": 32,
+        "p50": 92.4,
+        "p90": 100.3667,
+        "p95": 171.5833,
+        "max": 236.9167
+      },
+      "incomplete_runner_minutes_records": 1,
+      "retried_run_rate": 0.06060606060606061,
+      "retry_runs": [
+        39297585231,
+        39319234945
+      ],
+      "confirmed_flake_rate": null,
+      "selected_component_strata": [
+        {
+          "components": [],
+          "n": 1,
+          "conclusions": {
+            "cancelled": 1
+          },
+          "successful_wall_seconds": {
+            "n": 0,
+            "p50": null,
+            "p90": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        {
+          "components": [
+            "actual",
+            "backend",
+            "contracts",
+            "flutter",
+            "frontend",
+            "windows"
+          ],
+          "n": 21,
+          "conclusions": {
+            "failure": 8,
+            "cancelled": 9,
+            "success": 4
+          },
+          "successful_wall_seconds": {
+            "n": 4,
+            "p50": 988.0,
+            "p90": 1519.0,
+            "p95": 1519.0,
+            "max": 1519.0
+          }
+        },
+        {
+          "components": [
+            "backend",
+            "contracts",
+            "flutter",
+            "frontend",
+            "windows"
+          ],
+          "n": 7,
+          "conclusions": {
+            "cancelled": 1,
+            "success": 4,
+            "failure": 2
+          },
+          "successful_wall_seconds": {
+            "n": 4,
+            "p50": 1184.0,
+            "p90": 3460.0,
+            "p95": 3460.0,
+            "max": 3460.0
+          }
+        },
+        {
+          "components": [
+            "contracts"
+          ],
+          "n": 4,
+          "conclusions": {
+            "cancelled": 2,
+            "success": 2
+          },
+          "successful_wall_seconds": {
+            "n": 2,
+            "p50": 158.0,
+            "p90": 244.0,
+            "p95": 244.0,
+            "max": 244.0
+          }
+        }
+      ]
+    },
+    "deploy": {
+      "n": 16,
+      "conclusions": {
+        "skipped": 9,
+        "failure": 1,
+        "success": 6
+      },
+      "successful_workflow_wall_seconds": {
+        "n": 6,
+        "p50": 117.0,
+        "p90": 431.0,
+        "p95": 431.0,
+        "max": 431.0
+      },
+      "first_start_delay_seconds": {
+        "n": 7,
+        "p50": 4.0,
+        "p90": 117.0,
+        "p95": 117.0,
+        "max": 117.0
+      },
+      "runner_execution_minutes": {
+        "n": 7,
+        "p50": 1.8167,
+        "p90": 5.6167,
+        "p95": 5.6167,
+        "max": 5.6167
+      },
+      "incomplete_runner_minutes_records": 9,
+      "retried_run_rate": 0.0,
+      "retry_runs": [],
+      "confirmed_flake_rate": null,
+      "selected_component_strata": [
+        {
+          "components": [],
+          "n": 16,
+          "conclusions": {
+            "skipped": 9,
+            "failure": 1,
+            "success": 6
+          },
+          "successful_wall_seconds": {
+            "n": 6,
+            "p50": 117.0,
+            "p90": 431.0,
+            "p95": 431.0,
+            "max": 431.0
+          }
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "ci_pr": {
+      "before": {
+        "n": 15,
+        "success_wall_seconds": {
+          "n": 9,
+          "p50": 1548.0,
+          "p90": 1601.0,
+          "p95": 1601.0,
+          "max": 1601.0
+        },
+        "first_start_delay_seconds": {
+          "n": 15,
+          "p50": 4.0,
+          "p90": 93.0,
+          "p95": 100.0,
+          "max": 100.0
+        },
+        "runner_execution_minutes": {
+          "n": 15,
+          "p50": 65.8,
+          "p90": 70.2333,
+          "p95": 74.2167,
+          "max": 74.2167
+        },
+        "failure_count": 0,
+        "cancelled_count": 6,
+        "rerun_rate": 0.0,
+        "confirmed_flake_rate": null,
+        "required_green_seconds": null,
+        "queue_seconds": null
+      },
+      "after": {
+        "n": 33,
+        "conclusions": {
+          "cancelled": 13,
+          "success": 10,
+          "failure": 10
+        },
+        "successful_workflow_wall_seconds": {
+          "n": 10,
+          "p50": 997.0,
+          "p90": 1519.0,
+          "p95": 3460.0,
+          "max": 3460.0
+        },
+        "first_start_delay_seconds": {
+          "n": 32,
+          "p50": 23.0,
+          "p90": 304.0,
+          "p95": 339.0,
+          "max": 2262.0
+        },
+        "runner_execution_minutes": {
+          "n": 32,
+          "p50": 92.4,
+          "p90": 100.3667,
+          "p95": 171.5833,
+          "max": 236.9167
+        },
+        "incomplete_runner_minutes_records": 1,
+        "retried_run_rate": 0.06060606060606061,
+        "retry_runs": [
+          39297585231,
+          39319234945
+        ],
+        "confirmed_flake_rate": null,
+        "selected_component_strata": [
+          {
+            "components": [],
+            "n": 1,
+            "conclusions": {
+              "cancelled": 1
+            },
+            "successful_wall_seconds": {
+              "n": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null,
+              "max": null
+            }
+          },
+          {
+            "components": [
+              "actual",
+              "backend",
+              "contracts",
+              "flutter",
+              "frontend",
+              "windows"
+            ],
+            "n": 21,
+            "conclusions": {
+              "failure": 8,
+              "cancelled": 9,
+              "success": 4
+            },
+            "successful_wall_seconds": {
+              "n": 4,
+              "p50": 988.0,
+              "p90": 1519.0,
+              "p95": 1519.0,
+              "max": 1519.0
+            }
+          },
+          {
+            "components": [
+              "backend",
+              "contracts",
+              "flutter",
+              "frontend",
+              "windows"
+            ],
+            "n": 7,
+            "conclusions": {
+              "cancelled": 1,
+              "success": 4,
+              "failure": 2
+            },
+            "successful_wall_seconds": {
+              "n": 4,
+              "p50": 1184.0,
+              "p90": 3460.0,
+              "p95": 3460.0,
+              "max": 3460.0
+            }
+          },
+          {
+            "components": [
+              "contracts"
+            ],
+            "n": 4,
+            "conclusions": {
+              "cancelled": 2,
+              "success": 2
+            },
+            "successful_wall_seconds": {
+              "n": 2,
+              "p50": 158.0,
+              "p90": 244.0,
+              "p95": 244.0,
+              "max": 244.0
+            }
+          }
+        ]
+      },
+      "comparability": "Different selected-component/revision mixtures and routing; descriptive only, not a controlled causal comparison."
+    },
+    "server_build": {
+      "before": {
+        "n": 3,
+        "success_wall_seconds": {
+          "n": 3,
+          "p50": 1209.0,
+          "p90": 1284.0,
+          "p95": 1284.0,
+          "max": 1284.0
+        },
+        "first_start_delay_seconds": {
+          "n": 3,
+          "p50": 3.0,
+          "p90": 3.0,
+          "p95": 3.0,
+          "max": 3.0
+        },
+        "runner_execution_minutes": {
+          "n": 3,
+          "p50": 29.5167,
+          "p90": 31.8667,
+          "p95": 31.8667,
+          "max": 31.8667
+        },
+        "failure_count": 0,
+        "cancelled_count": 0,
+        "rerun_rate": 0.0,
+        "confirmed_flake_rate": null,
+        "required_green_seconds": null,
+        "queue_seconds": null
+      },
+      "after": {
+        "n": 14,
+        "conclusions": {
+          "cancelled": 5,
+          "failure": 2,
+          "success": 7
+        },
+        "successful_workflow_wall_seconds": {
+          "n": 7,
+          "p50": 878.0,
+          "p90": 1141.0,
+          "p95": 1141.0,
+          "max": 1141.0
+        },
+        "first_start_delay_seconds": {
+          "n": 14,
+          "p50": 67.0,
+          "p90": 538.0,
+          "p95": 958.0,
+          "max": 958.0
+        },
+        "runner_execution_minutes": {
+          "n": 12,
+          "p50": 32.8333,
+          "p90": 41.4167,
+          "p95": 42.6833,
+          "max": 42.6833
+        },
+        "incomplete_runner_minutes_records": 2,
+        "retried_run_rate": 0.07142857142857142,
+        "retry_runs": [
+          39300791738
+        ],
+        "confirmed_flake_rate": null,
+        "selected_component_strata": [
+          {
+            "components": [
+              "backend",
+              "contracts",
+              "web"
+            ],
+            "n": 12,
+            "conclusions": {
+              "cancelled": 5,
+              "failure": 2,
+              "success": 5
+            },
+            "successful_wall_seconds": {
+              "n": 5,
+              "p50": 1020.0,
+              "p90": 1141.0,
+              "p95": 1141.0,
+              "max": 1141.0
+            }
+          },
+          {
+            "components": [
+              "contracts"
+            ],
+            "n": 2,
+            "conclusions": {
+              "success": 2
+            },
+            "successful_wall_seconds": {
+              "n": 2,
+              "p50": 144.0,
+              "p90": 257.0,
+              "p95": 257.0,
+              "max": 257.0
+            }
+          }
+        ]
+      },
+      "comparability": "Different selected-component/revision mixtures and routing; descriptive only, not a controlled causal comparison."
+    },
+    "deploy": {
+      "before": {
+        "n": 3,
+        "success_wall_seconds": {
+          "n": 3,
+          "p50": 98.0,
+          "p90": 695.0,
+          "p95": 695.0,
+          "max": 695.0
+        },
+        "first_start_delay_seconds": {
+          "n": 3,
+          "p50": 5.0,
+          "p90": 5.0,
+          "p95": 5.0,
+          "max": 5.0
+        },
+        "runner_execution_minutes": {
+          "n": 3,
+          "p50": 1.55,
+          "p90": 11.5,
+          "p95": 11.5,
+          "max": 11.5
+        },
+        "failure_count": 0,
+        "cancelled_count": 0,
+        "rerun_rate": 0.0,
+        "confirmed_flake_rate": null,
+        "required_green_seconds": null,
+        "queue_seconds": null
+      },
+      "after": {
+        "n": 16,
+        "conclusions": {
+          "skipped": 9,
+          "failure": 1,
+          "success": 6
+        },
+        "successful_workflow_wall_seconds": {
+          "n": 6,
+          "p50": 117.0,
+          "p90": 431.0,
+          "p95": 431.0,
+          "max": 431.0
+        },
+        "first_start_delay_seconds": {
+          "n": 7,
+          "p50": 4.0,
+          "p90": 117.0,
+          "p95": 117.0,
+          "max": 117.0
+        },
+        "runner_execution_minutes": {
+          "n": 7,
+          "p50": 1.8167,
+          "p90": 5.6167,
+          "p95": 5.6167,
+          "max": 5.6167
+        },
+        "incomplete_runner_minutes_records": 9,
+        "retried_run_rate": 0.0,
+        "retry_runs": [],
+        "confirmed_flake_rate": null,
+        "selected_component_strata": [
+          {
+            "components": [],
+            "n": 16,
+            "conclusions": {
+              "skipped": 9,
+              "failure": 1,
+              "success": 6
+            },
+            "successful_wall_seconds": {
+              "n": 6,
+              "p50": 117.0,
+              "p90": 431.0,
+              "p95": 431.0,
+              "max": 431.0
+            }
+          }
+        ]
+      },
+      "comparability": "Different selected-component/revision mixtures and routing; descriptive only, not a controlled causal comparison."
+    }
+  },
+  "excluded": [
+    {
+      "id": 39329606270,
+      "path": ".github/workflows/ci.yaml",
+      "event": "pull_request",
+      "status": "in_progress",
+      "conclusion": null,
+      "source": "b57952fa1e65d996f3ee0c250d6b8b31057d2ca7",
+      "reason": "nonterminal-at-cohort-freeze"
+    },
+    {
+      "id": 39328700968,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "failure",
+      "source": "873168e543af835928bb582b0975037559cfed48",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39328341781,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "873168e543af835928bb582b0975037559cfed48",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39328262697,
+      "path": ".github/workflows/qa-compatible-rollback.yaml",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "8add045642585429b1e573cea458fe5bcc72722b",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39327417002,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "8add045642585429b1e573cea458fe5bcc72722b",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39327418264,
+      "path": ".github/workflows/build-server.yaml",
+      "event": "push",
+      "status": "waiting",
+      "conclusion": null,
+      "source": "8add045642585429b1e573cea458fe5bcc72722b",
+      "reason": "nonterminal-at-cohort-freeze"
+    },
+    {
+      "id": 39326402639,
+      "path": ".github/workflows/macos-release.yaml",
+      "event": "workflow_dispatch",
+      "status": "waiting",
+      "conclusion": null,
+      "source": "14a922326dd56e331956dbe09775ad7c05298f57",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39325508851,
+      "path": ".github/workflows/ci.yaml",
+      "event": "pull_request",
+      "status": "queued",
+      "conclusion": null,
+      "source": "dcbb4c51d2bf6a01a30d93d741d66c2e6f934925",
+      "reason": "nonterminal-at-cohort-freeze"
+    },
+    {
+      "id": 39325509025,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "dcbb4c51d2bf6a01a30d93d741d66c2e6f934925",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39325508787,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "dcbb4c51d2bf6a01a30d93d741d66c2e6f934925",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39325501072,
+      "path": ".github/workflows/self-hosted-proof.yaml",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "dcbb4c51d2bf6a01a30d93d741d66c2e6f934925",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39324256409,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "c8503f724624cf2f921ace9fdc69010d8953a82d",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39324256203,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "source": "c8503f724624cf2f921ace9fdc69010d8953a82d",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39324247882,
+      "path": ".github/workflows/self-hosted-proof.yaml",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "c8503f724624cf2f921ace9fdc69010d8953a82d",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39323606536,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "source": "774b9a70f72c1a5d8df778ed39244cae12da66a8",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39323606528,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "source": "774b9a70f72c1a5d8df778ed39244cae12da66a8",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39323598802,
+      "path": ".github/workflows/self-hosted-proof.yaml",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "774b9a70f72c1a5d8df778ed39244cae12da66a8",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39323484751,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "failure",
+      "source": "14a922326dd56e331956dbe09775ad7c05298f57",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39322913280,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "d3cbb9c0ebc71aa54d35c7c3367a0fa167d38ef4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39322913248,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "source": "d3cbb9c0ebc71aa54d35c7c3367a0fa167d38ef4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39322905658,
+      "path": ".github/workflows/self-hosted-proof.yaml",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "source": "d3cbb9c0ebc71aa54d35c7c3367a0fa167d38ef4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39322854501,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "14a922326dd56e331956dbe09775ad7c05298f57",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39322745455,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39321153911,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "source": "3bcd91595d663544c998976baa44c67367d96c99",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39321153632,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "source": "3bcd91595d663544c998976baa44c67367d96c99",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39321067423,
+      "path": ".github/workflows/self-hosted-proof.yaml",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3bcd91595d663544c998976baa44c67367d96c99",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39320789312,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39320494350,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "0869b2cb3f246a638a727603d2a80f19865def41",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39320494305,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "0869b2cb3f246a638a727603d2a80f19865def41",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39320164934,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "source": "ac4b053a6de6ea301cc926d66f503f77f5a35a94",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39320165019,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "ac4b053a6de6ea301cc926d66f503f77f5a35a94",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39320156633,
+      "path": ".github/workflows/self-hosted-proof.yaml",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "source": "ac4b053a6de6ea301cc926d66f503f77f5a35a94",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39320067634,
+      "path": "dynamic/dependabot/dependabot-updates",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39319895246,
+      "path": ".github/workflows/webrtc-macos-sdk.yaml",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39319880508,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39319861007,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "89ffa497a84875b505b868e2ee6c3fb97be84492",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39319861370,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "source": "89ffa497a84875b505b868e2ee6c3fb97be84492",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39319681350,
+      "path": ".github/workflows/self-hosted-proof.yaml",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "source": "89ffa497a84875b505b868e2ee6c3fb97be84492",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39318063905,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "dcbdb58c5ca72172a3aa438bae114a9fd592bce2",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39318063919,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "dcbdb58c5ca72172a3aa438bae114a9fd592bce2",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39317595310,
+      "path": "dynamic/dependabot/dependabot-updates",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "b1c9f2c7500665018999b0af39ee6b07268a54f5",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39317403774,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "b1c9f2c7500665018999b0af39ee6b07268a54f5",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39317160874,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39314666036,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "skipped",
+      "source": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39314565505,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39313471731,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "74b9e99add3daca4f3b04cb3743d7887389ce95b",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39313471040,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "74b9e99add3daca4f3b04cb3743d7887389ce95b",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39312967741,
+      "path": "dynamic/dependabot/dependabot-updates",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "768b81e3ec557eef20796fb610b19b5b646c8a9b",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39312781257,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "768b81e3ec557eef20796fb610b19b5b646c8a9b",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39311945067,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39310307777,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "skipped",
+      "source": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39310273800,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "2117479dc5d4d791439326d651a3f3ae3457c6ab",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39310273902,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "2117479dc5d4d791439326d651a3f3ae3457c6ab",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39309780880,
+      "path": "dynamic/dependabot/dependabot-updates",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39309579665,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39309548710,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "da5ce475b54eeff53f27b3ca7e7be841800224c6",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39307601330,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "2f4a4a64963028cd7a70c89dd49e4e11708e1db1",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39307601212,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "2f4a4a64963028cd7a70c89dd49e4e11708e1db1",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39307097584,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "skipped",
+      "source": "59c15c65c6751173fc5e668be383e88a62276a58",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39306982576,
+      "path": "dynamic/dependabot/dependabot-updates",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "59c15c65c6751173fc5e668be383e88a62276a58",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39306795835,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "59c15c65c6751173fc5e668be383e88a62276a58",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39306765335,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "6608e8bb379a0f39233bd450804a675e34428b59",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39306018389,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "85ad2a358c0de478acecacd7fbadb2d00ee51063",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39306018434,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "85ad2a358c0de478acecacd7fbadb2d00ee51063",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39306006362,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "skipped",
+      "source": "7930ac782d6d08bb2caba701f8ff956ed65df497",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39305727661,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "7930ac782d6d08bb2caba701f8ff956ed65df497",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39305035357,
+      "path": "dynamic/dependabot/dependabot-updates",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "b48d85c920ee067121f453575005cdc6bf27d5c8",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39304841418,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "b48d85c920ee067121f453575005cdc6bf27d5c8",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39304810057,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "e2744fd805a8c3fefb4e230ef6c63acd0b779349",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39304279012,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "skipped",
+      "source": "911d7c7989c6043a093bca1f88d8229ce3beab42",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39302899962,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "skipped",
+      "source": "911d7c7989c6043a093bca1f88d8229ce3beab42",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39302387072,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "9d7e5656b1f3be17c184c700fea69579a236032d",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39302387036,
+      "path": ".github/workflows/qa-compatible-rollback.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure",
+      "source": "9d7e5656b1f3be17c184c700fea69579a236032d",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39302387101,
+      "path": ".github/workflows/sfu-snapshot-measure.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "9d7e5656b1f3be17c184c700fea69579a236032d",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39302387250,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "9d7e5656b1f3be17c184c700fea69579a236032d",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39302387054,
+      "path": ".github/workflows/client-lifecycle-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "9d7e5656b1f3be17c184c700fea69579a236032d",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39302387113,
+      "path": ".github/workflows/next-client-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "9d7e5656b1f3be17c184c700fea69579a236032d",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39302201451,
+      "path": ".github/workflows/windows-promotion-readback.yaml",
+      "event": "workflow_run",
+      "status": "completed",
+      "conclusion": "skipped",
+      "source": "911d7c7989c6043a093bca1f88d8229ce3beab42",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39301856267,
+      "path": "dynamic/dependabot/dependabot-updates",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "911d7c7989c6043a093bca1f88d8229ce3beab42",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39301663527,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "911d7c7989c6043a093bca1f88d8229ce3beab42",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39300785025,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3216603c6a50629e43dc13ac875bfde59ebf61bc",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39298715504,
+      "path": ".github/workflows/qa-compatible-rollback.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure",
+      "source": "3ce42543472ef8c976734289659c2b58d162e265",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39298715539,
+      "path": ".github/workflows/sfu-snapshot-measure.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3ce42543472ef8c976734289659c2b58d162e265",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39298715573,
+      "path": ".github/workflows/client-lifecycle-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3ce42543472ef8c976734289659c2b58d162e265",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39298715585,
+      "path": ".github/workflows/next-client-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3ce42543472ef8c976734289659c2b58d162e265",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39298715589,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3ce42543472ef8c976734289659c2b58d162e265",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39298715517,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "3ce42543472ef8c976734289659c2b58d162e265",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39298293103,
+      "path": "dynamic/dependabot/dependabot-updates",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "d4a0e6d4a47b51a3e72969ec5bb5b68bfc95a130",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39298105478,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "d4a0e6d4a47b51a3e72969ec5bb5b68bfc95a130",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39297585189,
+      "path": ".github/workflows/client-lifecycle-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "d929d981e327fb74855246f0349408c2d26077f1",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39296595033,
+      "path": ".github/workflows/client-lifecycle-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "c44604059ff2a38210e233a25228b7f47838834c",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39296486310,
+      "path": ".github/workflows/dependency-cache-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "858df8ed5c563785e52e26aad0cdf18ade6204c4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39296485971,
+      "path": ".github/workflows/sfu-snapshot-measure.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "858df8ed5c563785e52e26aad0cdf18ade6204c4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39296485940,
+      "path": ".github/workflows/client-lifecycle-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "858df8ed5c563785e52e26aad0cdf18ade6204c4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39296486019,
+      "path": ".github/workflows/qa-trusted-delivery.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "858df8ed5c563785e52e26aad0cdf18ade6204c4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39296485594,
+      "path": ".github/workflows/next-client-acceptance.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "858df8ed5c563785e52e26aad0cdf18ade6204c4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39296485591,
+      "path": ".github/workflows/qa-compatible-rollback.yaml",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure",
+      "source": "858df8ed5c563785e52e26aad0cdf18ade6204c4",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39295991542,
+      "path": "dynamic/dependabot/dependabot-updates",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "67c06d7388d14d3153f39c3d31904ea354b4ba8e",
+      "reason": "outside-selected-workflow-cohorts"
+    },
+    {
+      "id": 39295810028,
+      "path": "dynamic/pages/pages-build-deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "source": "67c06d7388d14d3153f39c3d31904ea354b4ba8e",
+      "reason": "outside-selected-workflow-cohorts"
+    }
+  ],
+  "known_verified_master_to_healthy": {
+    "n": 1,
+    "distribution_seconds": {
+      "n": 1,
+      "p50": 1107.942379,
+      "p90": 1107.942379,
+      "p95": 1107.942379,
+      "max": 1107.942379
+    },
+    "producer_run": 39314566970,
+    "deploy_run": 39316337517,
+    "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+    "start_kind": "Master Build server workflow creation",
+    "end_kind": "Fresh exact installed source/health/volumes readback",
+    "start": "2026-10-19T19:52:21Z",
+    "end": "2026-10-19T20:10:48.942379+00:00"
+  },
+  "confirmed_flake_rate": null,
+  "pure_queue_seconds": null,
+  "billing_minutes": null,
+  "references": [
+    {
+      "path": "evidence/ci/ci-triage-2026-10-19.json",
+      "sha256": "cf13c628a928c2a81fbd210e1c1034d3c5ba703d92d5725ed7d47d8710d40107"
+    },
+    {
+      "path": "evidence/ci/combined-integration-2026-10-19.json",
+      "sha256": "c1717f75e8a641c95c799de01699f906a9346a2f8232b173ff22a9c1e480dab9"
+    }
+  ],
+  "limits": [
+    "All conclusions retained, including failure/cancellation/skips; pending runs are excluded explicitly rather than relabelled successful.",
+    "Window spans implementation and corrective commits. This is not 30 observations of one frozen final DAG or evidence of a causal speed/cost win.",
+    "PR workflow wall time is not the time from human PR creation to mandatory green. Start delay includes dependency, dispatch and review waits, not pure runner queue.",
+    "Only one retained source-bound healthy readback is joined here to master build creation; other deploy successes and route-only successes are not asserted healthy.",
+    "Runner minutes are execution occupancy across all attempts, without billing rounding/cost multipliers; incomplete intervals stay unknown.",
+    "Failures and reruns do not establish flakes or authorize retries. Historical and current cancellations remain cancellations.",
+    "Skipped deploy notifications are NOT_RUN; they are separated from attempted installs. No production operation or new CI dispatch was started for this read-only collection.",
+    "Final cutover owner GO remains pending; this descriptive observation record alone cannot close issue401 or epic382."
+  ],
+  "inputs": {
+    "path": "evidence/ci/after-observation-inputs-2026-10-20.json",
+    "sha256": "272be488603e1b150b54ad0c832147d31aad75a4e8af40997c19dfb832476287",
+    "bytes": 445356,
+    "complete_attempts": 82
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "fresh-public-ruleset-and-ordinary-protected-merge-readback",
+  "reviewed_source": "79d1c36a1f7bc3053a01c88a32b7e78cc8b5a821",
+  "ruleset": {
+    "id": 25434147,
+    "name": "master-ci-required",
+    "target": "branch",
+    "source_type": "Repository",
+    "source": "Egkurilov/BOOHTACORD",
+    "enforcement": "active",
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "refs/heads/master"
+        ]
+      }
+    },
+    "rules": [
+      {
+        "type": "deletion"
+      },
+      {
+        "type": "non_fast_forward"
+      },
+      {
+        "type": "required_status_checks",
+        "parameters": {
+          "strict_required_status_checks_policy": true,
+          "do_not_enforce_on_create": false,
+          "required_status_checks": [
+            {
+              "context": "ci-required",
+              "integration_id": 15368
+            }
+          ]
+        }
+      }
+    ],
+    "node_id": "RRS_lACqUmVwb3NpdG9yec5TXO4KzgGEGCM",
+    "created_at": "2026-10-19T23:47:56.097+03:00",
+    "updated_at": "2026-10-19T23:47:56.230+03:00",
+    "bypass_actors": [],
+    "current_user_can_bypass": "never",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Egkurilov/BOOHTACORD/rulesets/25434147"
+      },
+      "html": {
+        "href": "https://github.com/Egkurilov/BOOHTACORD/rules/25434147"
+      }
+    }
+  },
+  "actual_ordinary_merge": {
+    "sha": "79d1c36a1f7bc3053a01c88a32b7e78cc8b5a821",
+    "merged": true,
+    "message": "Pull Request successfully merged"
+  },
+  "ci_required_check_id": 118330304973,
+  "settings_changed": false,
+  "approval_bypassed": false
+}

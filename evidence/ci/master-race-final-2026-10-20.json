@@ -1,0 +1,488 @@
+{
+  "schema_version": 1,
+  "status": "PASS_CANCELLATION_BOUNDARY",
+  "scope": "actual-master-metadata-successor-preserves-selected-predecessor",
+  "previous_source": "8add045642585429b1e573cea458fe5bcc72722b",
+  "successor_source": "873168e543af835928bb582b0975037559cfed48",
+  "metadata_only_diff": [
+    "evidence/ci/cutover-baseline-2026-10-20.json",
+    "evidence/ci/cutover-partial-2026-10-20.json",
+    "evidence/ci/cutover-required-status-owner-readback-2026-10-20.json",
+    "evidence/ci/cutover-workflow-configuration-rollback-2026-10-20.json",
+    "evidence/ci/macos-sdk-2026-10-19.md",
+    "evidence/ci/macos-sdk-final-2026-10-20.json",
+    "evidence/ci/observability-2026-10-19.md",
+    "evidence/ci/production-protection-2026-10-20.json",
+    "evidence/ci/required-status-readback-2026-10-20.json",
+    "evidence/ci/triage-final-2026-10-20.json",
+    "evidence/ci/workflow-rollback-candidate-2026-10-20.json"
+  ],
+  "before": [
+    {
+      "run_id": 39327418264,
+      "jobs": [
+        {
+          "id": 118316734054,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:25:53Z",
+          "completed_at": "2026-10-19T21:25:59Z"
+        },
+        {
+          "id": 118316805462,
+          "name": "web / sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:30:49Z"
+        },
+        {
+          "id": 118316805598,
+          "name": "backend / static",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:27:36Z"
+        },
+        {
+          "id": 118316805612,
+          "name": "web / browser (browser-shell)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:32:43Z"
+        },
+        {
+          "id": 118316805652,
+          "name": "backend / database",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:29:09Z"
+        },
+        {
+          "id": 118316805723,
+          "name": "web / fast",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:27:53Z"
+        },
+        {
+          "id": 118316805724,
+          "name": "contracts / contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:28:36Z"
+        },
+        {
+          "id": 118316805739,
+          "name": "web / browser (browser-conversations)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:29:43Z"
+        },
+        {
+          "id": 118316805782,
+          "name": "backend / load",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:31:13Z"
+        },
+        {
+          "id": 118316805855,
+          "name": "web / browser (browser-voice)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:03Z",
+          "completed_at": "2026-10-19T21:31:56Z"
+        },
+        {
+          "id": 118319129058,
+          "name": "backend / backend",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:31:16Z",
+          "completed_at": "2026-10-19T21:31:26Z"
+        },
+        {
+          "id": 118319795648,
+          "name": "web / frontend",
+          "status": "queued",
+          "conclusion": null,
+          "started_at": "2026-10-19T21:32:44Z",
+          "completed_at": null
+        }
+      ]
+    },
+    {
+      "run_id": 39327418244,
+      "jobs": [
+        {
+          "id": 118316732123,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:25:52Z",
+          "completed_at": "2026-10-19T21:26:00Z"
+        },
+        {
+          "id": 118316814574,
+          "name": "windows / windows-build",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-19T21:26:04Z",
+          "completed_at": null
+        },
+        {
+          "id": 118316814717,
+          "name": "flutter / android",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-19T21:26:03Z",
+          "completed_at": null
+        },
+        {
+          "id": 118316814786,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:03Z",
+          "completed_at": "2026-10-19T21:32:40Z"
+        },
+        {
+          "id": 118316814866,
+          "name": "windows / windows-native-unit",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-19T21:26:03Z",
+          "completed_at": null
+        }
+      ]
+    }
+  ],
+  "after": [
+    {
+      "run_id": 39327418244,
+      "source_revision": "8add045642585429b1e573cea458fe5bcc72722b",
+      "source_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39327418244",
+      "workflow": ".github/workflows/native-master.yaml",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-19T21:25:48Z",
+      "jobs": [
+        {
+          "id": 118316732123,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:25:52Z",
+          "completed_at": "2026-10-19T21:26:00Z"
+        },
+        {
+          "id": 118316814574,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:04Z",
+          "completed_at": "2026-10-19T21:33:24Z"
+        },
+        {
+          "id": 118316814717,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:03Z",
+          "completed_at": "2026-10-19T21:37:21Z"
+        },
+        {
+          "id": 118316814786,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:03Z",
+          "completed_at": "2026-10-19T21:32:40Z"
+        },
+        {
+          "id": 118316814866,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:03Z",
+          "completed_at": "2026-10-19T21:37:45Z"
+        },
+        {
+          "id": 118320107776,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:33:31Z",
+          "completed_at": "2026-10-19T21:40:32Z"
+        },
+        {
+          "id": 118321846273,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:37:24Z",
+          "completed_at": "2026-10-19T21:37:33Z"
+        },
+        {
+          "id": 118323256894,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:40:35Z",
+          "completed_at": "2026-10-19T21:40:45Z"
+        },
+        {
+          "id": 118323356698,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:40:48Z",
+          "completed_at": "2026-10-19T21:40:55Z"
+        }
+      ]
+    },
+    {
+      "run_id": 39327418264,
+      "source_revision": "8add045642585429b1e573cea458fe5bcc72722b",
+      "source_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39327418264",
+      "workflow": ".github/workflows/build-server.yaml",
+      "status": "waiting",
+      "conclusion": null,
+      "created_at": "2026-10-19T21:25:48Z",
+      "jobs": [
+        {
+          "id": 118316734054,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:25:53Z",
+          "completed_at": "2026-10-19T21:25:59Z"
+        },
+        {
+          "id": 118316805462,
+          "name": "web / sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:30:49Z"
+        },
+        {
+          "id": 118316805598,
+          "name": "backend / static",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:27:36Z"
+        },
+        {
+          "id": 118316805612,
+          "name": "web / browser (browser-shell)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:32:43Z"
+        },
+        {
+          "id": 118316805652,
+          "name": "backend / database",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:29:09Z"
+        },
+        {
+          "id": 118316805723,
+          "name": "web / fast",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:27:53Z"
+        },
+        {
+          "id": 118316805724,
+          "name": "contracts / contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:28:36Z"
+        },
+        {
+          "id": 118316805739,
+          "name": "web / browser (browser-conversations)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:29:43Z"
+        },
+        {
+          "id": 118316805782,
+          "name": "backend / load",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:02Z",
+          "completed_at": "2026-10-19T21:31:13Z"
+        },
+        {
+          "id": 118316805855,
+          "name": "web / browser (browser-voice)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:26:03Z",
+          "completed_at": "2026-10-19T21:31:56Z"
+        },
+        {
+          "id": 118319129058,
+          "name": "backend / backend",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:31:16Z",
+          "completed_at": "2026-10-19T21:31:26Z"
+        },
+        {
+          "id": 118319795648,
+          "name": "web / frontend",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:32:46Z",
+          "completed_at": "2026-10-19T21:32:56Z"
+        },
+        {
+          "id": 118319882091,
+          "name": "server-quality",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:32:58Z",
+          "completed_at": "2026-10-19T21:33:07Z"
+        },
+        {
+          "id": 118319963129,
+          "name": "bundle",
+          "status": "waiting",
+          "conclusion": null,
+          "started_at": "2026-10-19T21:33:07Z",
+          "completed_at": null
+        }
+      ]
+    },
+    {
+      "run_id": 39328342591,
+      "source_revision": "873168e543af835928bb582b0975037559cfed48",
+      "source_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39328342591",
+      "workflow": ".github/workflows/native-master.yaml",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-19T21:32:53Z",
+      "jobs": [
+        {
+          "id": 118319865948,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:32:56Z",
+          "completed_at": "2026-10-19T21:33:02Z"
+        },
+        {
+          "id": 118319930362,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:33:05Z",
+          "completed_at": "2026-10-19T21:33:15Z"
+        },
+        {
+          "id": 118319931443,
+          "name": "windows",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-10-19T21:33:03Z",
+          "completed_at": "2026-10-19T21:33:02Z"
+        },
+        {
+          "id": 118319932099,
+          "name": "flutter",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-10-19T21:33:03Z",
+          "completed_at": "2026-10-19T21:33:02Z"
+        }
+      ]
+    },
+    {
+      "run_id": 39328342423,
+      "source_revision": "873168e543af835928bb582b0975037559cfed48",
+      "source_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39328342423",
+      "workflow": ".github/workflows/build-server.yaml",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-19T21:32:53Z",
+      "jobs": [
+        {
+          "id": 118319866116,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:32:56Z",
+          "completed_at": "2026-10-19T21:33:02Z"
+        },
+        {
+          "id": 118319931224,
+          "name": "contracts / contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:33:06Z",
+          "completed_at": "2026-10-19T21:35:06Z"
+        },
+        {
+          "id": 118319932561,
+          "name": "web",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-10-19T21:33:03Z",
+          "completed_at": "2026-10-19T21:33:02Z"
+        },
+        {
+          "id": 118319933149,
+          "name": "backend",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-10-19T21:33:03Z",
+          "completed_at": "2026-10-19T21:33:02Z"
+        },
+        {
+          "id": 118320839113,
+          "name": "server-quality",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T21:35:09Z",
+          "completed_at": "2026-10-19T21:35:17Z"
+        },
+        {
+          "id": 118320927545,
+          "name": "bundle",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-10-19T21:35:18Z",
+          "completed_at": "2026-10-19T21:35:17Z"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    "Previous selected native run completed all nine jobs successfully despite the later metadata master push.",
+    "Both metadata successor workflows completed successfully with native and bundle work intentionally unselected.",
+    "Previous server quality passed; its qualified bundle remains waiting for independent production review, not cancelled or replaced by an unselected successor."
+  ],
+  "limits": [
+    "No successful signing, bundle publication, install or approval is inferred for the waiting predecessor.",
+    "This demonstrates different-SHA metadata cancellation isolation only; same-SHA duplicate cancellation and qualified pending bundle replacement are separate documented semantics.",
+    "No strict FIFO, every-SHA production delivery, or overall end-to-end availability SLO is claimed."
+  ]
+}
