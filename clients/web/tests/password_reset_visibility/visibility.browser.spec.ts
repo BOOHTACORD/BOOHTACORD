@@ -4,7 +4,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/tests/password_reset_visibility/fixture.html')
 })
 
-test('new password and confirmation can be revealed independently', async ({ page }) => {
+test('one control reveals and hides the new password and confirmation together', async ({ page }) => {
   const password = page.getByRole('textbox', { name: 'Новый пароль', exact: true })
   const confirmation = page.getByRole('textbox', { name: 'Повторите пароль', exact: true })
 
@@ -14,19 +14,17 @@ test('new password and confirmation can be revealed independently', async ({ pag
 
   await password.fill('SyntheticPassword123!')
   await confirmation.fill('SyntheticPassword123!')
-  const showButtons = page.getByRole('button', { name: 'Показать пароль' })
-  await expect(showButtons).toHaveCount(2)
+  const showButton = page.getByRole('button', { name: 'Показать пароли' })
+  await expect(showButton).toHaveCount(1)
 
-  await showButtons.nth(0).click()
+  await showButton.click()
   await expect(password).toHaveAttribute('type', 'text')
-  await expect(page.getByRole('button', { name: 'Скрыть пароль' }).nth(0)).toHaveAttribute('aria-pressed', 'true')
-  await expect(confirmation).toHaveAttribute('type', 'password')
-
-  await page.getByRole('button', { name: 'Показать пароль' }).click()
   await expect(confirmation).toHaveAttribute('type', 'text')
-  await expect(page.getByRole('button', { name: 'Скрыть пароль' })).toHaveCount(2)
+  const hideButton = page.getByRole('button', { name: 'Скрыть пароли' })
+  await expect(hideButton).toHaveCount(1)
+  await expect(hideButton).toHaveAttribute('aria-pressed', 'true')
 
-  await page.getByRole('button', { name: 'Скрыть пароль' }).nth(0).click()
+  await hideButton.click()
   await expect(password).toHaveAttribute('type', 'password')
-  await expect(confirmation).toHaveAttribute('type', 'text')
+  await expect(confirmation).toHaveAttribute('type', 'password')
 })

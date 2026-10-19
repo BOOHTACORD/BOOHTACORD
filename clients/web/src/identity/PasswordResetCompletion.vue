@@ -10,8 +10,7 @@ const { password, confirmation, pending, completed, unusable, error, submit } = 
   (value) => props.complete(value),
   () => emit('invalidLink'),
 )
-const showPassword = ref(false)
-const showConfirmation = ref(false)
+const showPasswords = ref(false)
 const resultMessage = ref<HTMLElement | null>(null)
 usePasswordResetResultFocus(computed(() => completed.value || unusable.value || !props.validLink), resultMessage)
 </script>
@@ -27,15 +26,14 @@ usePasswordResetResultFocus(computed(() => completed.value || unusable.value || 
         <div class="authentication-field">
           <label for="password-reset-password">Новый пароль</label>
           <span class="authentication-password-control">
-            <input id="password-reset-password" v-model="password" :type="showPassword ? 'text' : 'password'" autocomplete="new-password" required :disabled="pending" :aria-invalid="Boolean(error)" :aria-describedby="error ? 'password-reset-length-hint password-reset-error' : 'password-reset-length-hint'">
-            <button class="authentication-password-toggle" type="button" :disabled="pending" :aria-label="showPassword ? 'Скрыть пароль' : 'Показать пароль'" :aria-pressed="showPassword" @click="showPassword = !showPassword"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Zm10-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" /></svg></button>
+            <input id="password-reset-password" v-model="password" :type="showPasswords ? 'text' : 'password'" autocomplete="new-password" required :disabled="pending" :aria-invalid="Boolean(error)" :aria-describedby="error ? 'password-reset-length-hint password-reset-error' : 'password-reset-length-hint'">
+            <button class="authentication-password-toggle" type="button" :disabled="pending" :aria-label="showPasswords ? 'Скрыть пароли' : 'Показать пароли'" :aria-pressed="showPasswords" @click="showPasswords = !showPasswords"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Zm10-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" /></svg></button>
           </span>
         </div>
         <div class="authentication-field">
           <label for="password-reset-confirmation">Повторите пароль</label>
           <span class="authentication-password-control">
-            <input id="password-reset-confirmation" v-model="confirmation" :type="showConfirmation ? 'text' : 'password'" autocomplete="new-password" required :disabled="pending" :aria-invalid="Boolean(error)" :aria-describedby="error ? 'password-reset-error' : undefined">
-            <button class="authentication-password-toggle" type="button" :disabled="pending" :aria-label="showConfirmation ? 'Скрыть пароль' : 'Показать пароль'" :aria-pressed="showConfirmation" @click="showConfirmation = !showConfirmation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Zm10-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" /></svg></button>
+            <input id="password-reset-confirmation" v-model="confirmation" :type="showPasswords ? 'text' : 'password'" autocomplete="new-password" required :disabled="pending" :aria-invalid="Boolean(error)" :aria-describedby="error ? 'password-reset-error' : undefined">
           </span>
         </div>
         <p id="password-reset-length-hint" class="authentication-hint">От 12 до 128 символов.</p>

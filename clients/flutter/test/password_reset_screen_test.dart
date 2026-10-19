@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'uiux_2026/capture_support.dart';
 
 void main() {
-  testWidgets('password reset fields reveal and hide independently', (
+  testWidgets('one control reveals and hides both password reset fields', (
     tester,
   ) async {
     tester.view.devicePixelRatio = 1;
@@ -52,23 +52,21 @@ void main() {
       of: fields.at(1),
       matching: find.byType(IconButton),
     );
-    expect(tester.widget<IconButton>(firstToggle).tooltip, 'Показать пароль');
-    expect(tester.widget<IconButton>(secondToggle).tooltip, 'Показать пароль');
+    expect(firstToggle, findsOneWidget);
+    expect(secondToggle, findsNothing);
+    expect(find.byType(IconButton), findsOneWidget);
+    expect(tester.widget<IconButton>(firstToggle).tooltip, 'Показать пароли');
 
     await tester.tap(firstToggle);
     await tester.pumpAndSettle();
     expect(tester.widget<TextField>(fields.at(0)).obscureText, isFalse);
-    expect(tester.widget<TextField>(fields.at(1)).obscureText, isTrue);
-    expect(tester.widget<IconButton>(firstToggle).tooltip, 'Скрыть пароль');
-
-    await tester.tap(secondToggle);
-    await tester.pumpAndSettle();
     expect(tester.widget<TextField>(fields.at(1)).obscureText, isFalse);
+    expect(tester.widget<IconButton>(firstToggle).tooltip, 'Скрыть пароли');
 
     await tester.tap(firstToggle);
     await tester.pumpAndSettle();
     expect(tester.widget<TextField>(fields.at(0)).obscureText, isTrue);
-    expect(tester.widget<TextField>(fields.at(1)).obscureText, isFalse);
+    expect(tester.widget<TextField>(fields.at(1)).obscureText, isTrue);
     expect(tester.takeException(), isNull);
   });
 }

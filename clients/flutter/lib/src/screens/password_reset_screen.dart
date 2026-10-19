@@ -16,8 +16,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
   final _confirmation = TextEditingController();
   final _resultFocus = FocusNode();
   String? _validationError;
-  bool _showPassword = false;
-  bool _showConfirmation = false;
+  bool _showPasswords = false;
 
   @override
   void initState() {
@@ -122,21 +121,21 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                     TextField(
                       controller: _password,
                       enabled: !state.resetPending,
-                      obscureText: !_showPassword,
+                      obscureText: !_showPasswords,
                       autofillHints: const [AutofillHints.newPassword],
                       decoration: InputDecoration(
                         labelText: 'Новый пароль',
                         suffixIcon: IconButton(
-                          tooltip: _showPassword
-                              ? 'Скрыть пароль'
-                              : 'Показать пароль',
+                          tooltip: _showPasswords
+                              ? 'Скрыть пароли'
+                              : 'Показать пароли',
                           onPressed: state.resetPending
                               ? null
                               : () => setState(
-                                  () => _showPassword = !_showPassword,
+                                  () => _showPasswords = !_showPasswords,
                                 ),
                           icon: Icon(
-                            _showPassword
+                            _showPasswords
                                 ? Icons.visibility_off_outlined
                                 : Icons.visibility_outlined,
                           ),
@@ -147,26 +146,11 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                     TextField(
                       controller: _confirmation,
                       enabled: !state.resetPending,
-                      obscureText: !_showConfirmation,
+                      obscureText: !_showPasswords,
                       autofillHints: const [AutofillHints.newPassword],
                       onSubmitted: (_) => _submit(),
                       decoration: InputDecoration(
                         labelText: 'Повторите пароль',
-                        suffixIcon: IconButton(
-                          tooltip: _showConfirmation
-                              ? 'Скрыть пароль'
-                              : 'Показать пароль',
-                          onPressed: state.resetPending
-                              ? null
-                              : () => setState(
-                                  () => _showConfirmation = !_showConfirmation,
-                                ),
-                          icon: Icon(
-                            _showConfirmation
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
-                          ),
-                        ),
                       ),
                     ),
                     const SizedBox(height: 10),
