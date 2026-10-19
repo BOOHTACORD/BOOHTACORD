@@ -28,3 +28,11 @@ tasks:
     cmds: ['{{.PYTHON}} -m tools.release.install.run {{.CLI_ARGS}}']
   release:rollback:
     cmds: ['{{.PYTHON}} -m tools.release.rollback.run {{.CLI_ARGS}}']
+  ci:readiness:
+    desc: Report migration NO-GO until source-bound actual evidence and independent owner review exist
+    cmds:
+      - '{{.PYTHON}} -m tools.ci.migration.readiness'
+  ci:workflow-rollback:preview:
+    desc: Write a reviewable configuration-only rollback plan without changing files or production
+    cmds:
+      - '{{.PYTHON}} -m tools.ci.migration.rollback preview'

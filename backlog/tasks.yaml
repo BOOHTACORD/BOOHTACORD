@@ -531,23 +531,28 @@ tasks:
   - id: CICD-15
     title: Risk-based isolated actual acceptance with source-bound runtime evidence and explicit release physical boundaries
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
-    depends_on: [CICD-01, CICD-02, CICD-03, CICD-12, CICD-04]
+    depends_on: [CICD-01, CICD-02, CICD-03, CICD-18, CICD-12]
     evidence: [tools/ci/actual_acceptance/test_plan.py, tools/ci/actual_acceptance/test_session.py, tools/ci/actual_acceptance/test_validation.py, tools/ci/actual_acceptance/test_fan_in.py, tools/ci/actual_acceptance/test_manual_inputs.py, tools/qa/compatible_rollback/test_receipt_projection.py, docs/ci/actual-acceptance.md, evidence/ci/actual-acceptance-2026-10-19.md]
   - id: CICD-16
     title: Explicit manual operator diagnostic capabilities and approved serialized production mutations with private audit receipts
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
-    depends_on: [CICD-11, CICD-04]
+    depends_on: [CICD-11, CICD-12]
     evidence: [tools/ops/operator/test_policy.py, tools/ops/operator/test_approval.py, tools/ops/operator/test_run.py, tools/ops/operator/test_transport.py, tools/ops/operator/test_workflow.py, tools/ops/operator/test_remote.py, tools/ops/operator/test_operations.py, docs/ci/operator-workflows.md, evidence/ci/operator-workflows-2026-10-19.md]
   - id: CICD-17
     title: Disposable hosted macOS CI and separately published source recipe ABI bound native WebRTC SDK matrix
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
-    depends_on: [CICD-04, CICD-08, CICD-13, CICD-01]
+    depends_on: [CICD-12, CICD-08, CICD-13, CICD-01]
     evidence: [tools/ci/macos/test_host.py, tools/ci/macos/test_workflow.py, tools/build/webrtc_macos/test_contract.py, tools/build/webrtc_macos/test_extract.py, tools/build/webrtc_macos/test_execution.py, tools/build/webrtc_macos/test_assets.py, tools/build/webrtc_macos/test_plan.py, tools/build/webrtc_macos/publish.test.mjs, docs/ci/macos-sdk.md, evidence/ci/macos-sdk-2026-10-19.md]
   - id: CICD-20
     title: Source bound red gate triage and historical CI observability without assertion retries or ignored failures
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
-    depends_on: [CICD-01, CICD-03, CICD-18, CICD-05, CICD-07, CICD-15]
+    depends_on: [CICD-01, CICD-03, CICD-04, CICD-05, CICD-07, CICD-15]
     evidence: [tools/ci/observability/test_triage.py, tools/ci/observability/test_network.py, tools/ci/observability/test_summary.py, tools/ci/observability/test_report.py, tools/ci/observability/test_workflow.py, tools/ci/observability/test_alerts.py, docs/ci/observability.md, evidence/ci/ci-triage-2026-10-19.json, evidence/ci/observability-2026-10-19.md]
+  - id: CICD-19
+    title: Phased migration cutover with source bound readiness independent owner GO and configuration only rollback candidates
+    requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
+    depends_on: [CICD-01, CICD-02, CICD-03, CICD-04, CICD-05, CICD-06, CICD-07, CICD-08, CICD-09, CICD-10, CICD-11, CICD-12, CICD-13, CICD-14, CICD-15, CICD-16, CICD-17, CICD-18, CICD-20]
+    evidence: [tools/ci/migration/test_readiness.py, tools/ci/migration/test_rollback.py, tools/ci/migration/test_controls.py, tools/ci/migration/test_receipts.py, tools/ci/migration/test_workflow.py, docs/ci/migration.md, evidence/ci/migration-issues-2026-10-19.json, evidence/ci/migration-readiness-2026-10-19.md]
   - id: CICD-10
     title: Private dependency-scoped bounded Buildx cache with mandatory image validation and stage timings
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]

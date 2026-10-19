@@ -16,7 +16,7 @@ the host installer lock, uses a unique namespace and fails on cleanup/capability
 failure. Preflight handles both tagged and OCI-referenced deployed images.
 Existing retained/automatic install source and receipt guards remain unchanged.
 The always-running contracts gate now tests operator and actual-acceptance guards.
-Backlog dependency IDs follow the issue dependencies (#386 is CICD-04).
+Dependency mapping note at implementation time was incorrect; see the erratum below.
 
 ## Local validation — PASS
 
@@ -43,3 +43,11 @@ operator requests fail closed; dry-run emits NOT_RUN. No local fixture claims a
 production PASS, and #399 remains open. See docs/ci/operator-workflows.md for the
 configuration matrix, audit interpretation and safe interruption procedure.
 No backup, snapshot flow, database dump or global Docker prune is introduced.
+
+## Dependency mapping erratum — #401
+
+Authoritative GitHub leaf titles identify #386 as CICD-12 (security), #387 as
+CICD-18 (artifacts), and #388 as CICD-04 (Web). Backlog dependency IDs for
+#398/#399/#400/#402 were corrected against the recorded GitHub issue-state
+collection in `migration-issues-2026-10-19.json`. The focused test observations
+and external acceptance limitations above are unchanged.
