@@ -3,15 +3,29 @@
     "paths": [
       "clients/web/src/identity/*",
       "clients/flutter/lib/src/screens/auth*",
+      "clients/flutter/lib/src/screens/password_reset_screen.dart",
       "clients/flutter/lib/src/features/session/*",
-      "clients/flutter/lib/src/core/session/*"
+      "clients/flutter/lib/src/core/session/*",
+      "tools/qa/local_features/features.json"
     ],
     "web": [
-      "tests/password_generation/playwright.config.ts"
+      "tests/password_generation/playwright.config.ts",
+      "tests/password_reset_visibility/playwright.config.ts"
     ],
     "flutter": [
-      "test/password_generation/visual_test.dart"
-    ]
+      "test/password_generation/visual_test.dart",
+      "test/password_reset_screen_test.dart"
+    ],
+    "acceptance": {
+      "password_reset_visibility": {
+        "browser": "clients/web/tests/password_reset_visibility/playwright.config.ts",
+        "focused": [
+          "clients/web/tests/password_reset_visibility/visibility.browser.spec.ts",
+          "clients/flutter/test/password_reset_screen_test.dart"
+        ],
+        "scope": "On reset completion, independently show or hide the new password and confirmation; both are masked by default."
+      }
+    }
   },
   "voice": {
     "paths": [
