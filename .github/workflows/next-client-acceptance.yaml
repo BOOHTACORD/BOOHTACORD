@@ -19,6 +19,11 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
       - name: Prepare public Node SDK and locked dependency cache inputs
         run: python3 -m tools.ci.toolchains.cache_inputs npm
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -40,7 +45,7 @@ jobs:
       - name: Install headed window manager
         run: sudo apt-get install --no-install-recommends --yes openbox
       - name: Test bounded owned native input files
-        run: node --test tools/qa/next_client_acceptance/input_files.test.mjs tools/qa/next_client_acceptance/failure.test.mjs
+        run: node --test tools/qa/next_client_acceptance/input_files.test.mjs tools/qa/next_client_acceptance/failure.test.mjs tools/qa/next_client_acceptance/navigation_fixture.test.mjs
       - name: Verify real uploads and protected context
         env:
           VITE_PUBLIC_ORIGIN: https://localhost:4810

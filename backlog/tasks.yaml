@@ -502,7 +502,7 @@ tasks:
     title: Versioned public dependency-cache inputs and explicit toolchain drift validation
     requirements: [REQ-DEPLOY-01, REQ-SECURITY-01, REQ-QUALITY-02]
     depends_on: [CICD-01]
-    evidence: [tools/ci/toolchains/test_cache_inputs.py, tools/ci/toolchains/test_workflows.py, tools/ci/flutter_setup/test_metadata.py, tools/ci/flutter_setup/test_run.py, tools/ci/flutter_setup/test_workflow.py, docs/ci/sdk-caches.md, evidence/ci/dependency-cache-local-2026-10-19.json]
+    evidence: [tools/ci/toolchains/test_cache_inputs.py, tools/ci/toolchains/test_workflows.py, tools/ci/flutter_setup/test_metadata.py, tools/ci/flutter_setup/test_run.py, tools/ci/flutter_setup/test_workflow.py, tools/ci/toolchains/test_auxiliary.py, tools/ci/flutter_setup/test_vendor_locks.py, tools/ci/cache_measure/test_results.py, docs/ci/sdk-caches.md, evidence/ci/dependency-cache-local-2026-10-19.json, evidence/ci/auxiliary-sdk-availability-2026-10-19.json]
   - id: T-060
     title: Release quality gates
     requirements: [REQ-QUALITY-01, REQ-QUALITY-02, REQ-CAPACITY-01, REQ-DEPLOY-01]

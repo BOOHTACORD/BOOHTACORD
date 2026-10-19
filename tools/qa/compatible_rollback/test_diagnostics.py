@@ -25,3 +25,13 @@ password=private-password-and-message
         self.assertEqual(result['frames'], [])
         self.assertEqual(result['guard_messages'], [])
         self.assertNotIn('account-id', str(result))
+
+
+    def test_private_roomservice_probe_exports_only_known_codes_not_tokens_or_urls(self):
+        text='LiveKit private path preflight failed: LiveKit private RoomService preflight failed (roomservice TimeoutError).\n'
+        result=diagnose(text,set())
+        self.assertEqual(result['livekit_probe_failures'],[{'phase':'roomservice','code':'TimeoutError'}])
+        for injected in ('roomservice PRIVATE-CANARY HTTP 401','dns https://private.invalid/secret','roomservice TimeoutError HTTP 999'):
+            result=diagnose('LiveKit private RoomService preflight failed ('+injected+')',set())
+            self.assertEqual(result['livekit_probe_failures'],[])
+            self.assertNotIn('PRIVATE-CANARY',str(result));self.assertNotIn('private.invalid',str(result))

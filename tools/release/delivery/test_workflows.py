@@ -54,3 +54,13 @@ class DeliveryWorkflowTests(unittest.TestCase):
             broken = copy.deepcopy(self.workflows)
             broken[workflow]['jobs'][job]['name'] = 'renamed-identity'
             with self.subTest(workflow=workflow, job=job), self.assertRaises(ValueError): check(broken)
+
+    def test_route_sdk_bootstrap_is_an_exact_read_only_allowlist(self):
+        for mutation in ('extra', 'loose', 'skip', 'credential'):
+            broken=copy.deepcopy(self.workflows)
+            steps=broken['deploy-production.yaml']['jobs']['route']['steps']
+            if mutation=='extra': steps.insert(1,{'run':'echo unexpected'})
+            if mutation=='loose': steps[1]['with']['python-version']='3.12'
+            if mutation=='skip': steps[2]['if']='false'
+            if mutation=='credential': steps[1]['env']={'KEY':'${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}'}
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError): check(broken)

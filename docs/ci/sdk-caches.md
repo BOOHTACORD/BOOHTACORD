@@ -79,9 +79,9 @@ remains version-selected by package-lock and always uses `--with-deps chromium`.
 No Gradle, browser, native binary or signing-result cache is introduced without
 measurement. Existing native SDK downloads retain their pinned identity checks.
 
-#392 remains open for hosted cold/warm measurements and full Java, .NET, Python,
-Velopack and native SDK declaration audit. Java's current 17 family, .NET's 8.0.x
-family and Python's per-platform available patches are not newly claimed as exact
-pinned toolchains. #386 likewise needs independent native publication and external
-GitHub settings/runner evidence. Local checks and earlier exact-source receipts
-cannot attest this new composite on Windows/Linux or another merge SHA.
+The follow-up [auxiliary audit](auxiliary-toolchains.md) records exact platform
+Python, Java/.NET selections, standalone vendor locks and the reviewed native
+inputs. Hosted cold/warm measurement has its own read-only workflow and strict
+result validation; its actual run/source evidence is recorded separately. It is
+not a full CI SLO or native publication claim. #386's independent native publishing
+and external GitHub runner/environment settings acceptance remains separate.
