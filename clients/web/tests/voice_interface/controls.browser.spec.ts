@@ -2,12 +2,12 @@ import { expect, test, type Page } from '@playwright/test'
 import axe from 'axe-core'
 
 const patch = (page: Page, value: Record<string, unknown>) => page.evaluate(value => (window as any).__voiceFixture.patch(value), value)
-async function open(page: Page, width = 1440, scale = 100) {
+async function open(page: Page, width = 1440, scale = 100, scenario = '') {
   await page.setViewportSize({ width, height: 900 })
   await page.route('**/api/**', route => route.request().url().includes('/avatar')
     ? route.fulfill({ status: 200, contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>' })
     : route.fulfill({ status: 200, contentType: 'application/json', body: '{}' }))
-  await page.goto(`/tests/voice_interface/fixture.html?scale=${scale}`)
+  await page.goto(`/tests/voice_interface/fixture.html?scale=${scale}${scenario ? `&${scenario}` : ''}`)
   await expect(page.locator('.voice-room-controls').first()).toBeVisible()
 }
 
@@ -279,4 +279,61 @@ test('failed connection keeps the failure and explicit retry actions visible', a
   await page.screenshot({ path: info.outputPath('join-failed.png') })
   await retry.focus(); await page.keyboard.press('Enter')
   expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['join'])
+})
+
+test('touch PTT dock transmits only while pressed and releases on cancellation or unmount', async ({ page }) => {
+  await open(page, 390, 100, 'touchPtt=1&mode=PTT')
+  const ptt = page.getByTestId('voice-dock').locator('.voice-ptt-button')
+  await expect(ptt).toBeVisible()
+  await expect(ptt).toBeEnabled()
+  await expect(ptt).toHaveAttribute('aria-label', 'Удерживайте, чтобы говорить')
+  await ptt.dispatchEvent('pointerdown', { pointerId: 9, pointerType: 'touch', isPrimary: true, button: 0, buttons: 1 })
+  await expect(ptt).toHaveAttribute('aria-pressed', 'true')
+  expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['ptt:press'])
+  await ptt.dispatchEvent('pointerup', { pointerId: 9, pointerType: 'touch', isPrimary: true, button: 0, buttons: 0 })
+  await expect(ptt).toHaveAttribute('aria-pressed', 'false')
+  expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['ptt:press', 'ptt:release'])
+
+  await ptt.dispatchEvent('pointerdown', { pointerId: 10, pointerType: 'touch', isPrimary: true, button: 0, buttons: 1 })
+  await expect(ptt).toHaveAttribute('aria-pressed', 'true')
+  await ptt.dispatchEvent('pointercancel', { pointerId: 10, pointerType: 'touch', isPrimary: true, button: 0, buttons: 0 })
+  await expect(ptt).toHaveAttribute('aria-pressed', 'false')
+  expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['ptt:press', 'ptt:release', 'ptt:press', 'ptt:release'])
+
+  await ptt.dispatchEvent('pointerdown', { pointerId: 11, pointerType: 'touch', isPrimary: true, button: 0, buttons: 1 })
+  await patch(page, { mode: 'VAD' })
+  await expect(page.getByTestId('voice-dock').locator('.voice-ptt-button')).toHaveCount(0)
+  expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['ptt:press', 'ptt:release', 'ptt:press', 'ptt:release', 'ptt:press', 'ptt:release'])
+})
+
+test('Android touch browsers show on-screen PTT without a keyboard binding', async ({ browser }, info) => {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+    userAgent: 'Mozilla/5.0 (Linux; Android 15; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36',
+  })
+  const page = await context.newPage()
+  await open(page, 390, 100, 'mode=PTT')
+  await expect(page.getByTestId('voice-dock').getByTestId('touch-ptt-button')).toBeVisible()
+  const ptt = page.getByTestId('voice-dock').getByTestId('touch-ptt-button')
+  await expect(ptt).toBeEnabled()
+  await expect(ptt).toHaveAttribute('aria-pressed', 'false')
+  await page.screenshot({ path: info.outputPath('android-touch-ptt-ready-390x900.png') })
+  await ptt.dispatchEvent('pointerdown', { pointerId: 19, pointerType: 'touch', isPrimary: true, button: 0, buttons: 1 })
+  await expect(ptt).toHaveAttribute('aria-pressed', 'true')
+  const colors = await ptt.evaluate(element => {
+    const expected = document.createElement('span')
+    expected.style.color = 'var(--gc-danger-solid)'
+    document.body.append(expected)
+    const danger = getComputedStyle(expected).color
+    expected.remove()
+    return { actual: getComputedStyle(element).backgroundColor, danger }
+  })
+  const buttonStyle = await ptt.evaluate(element => ({ className: element.className, parentClass: element.parentElement?.className, color: getComputedStyle(element).color, background: getComputedStyle(element).backgroundColor }))
+  expect(colors.actual, JSON.stringify(buttonStyle)).toBe(colors.danger)
+  await page.screenshot({ path: info.outputPath('android-touch-ptt-held-390x900.png') })
+  await ptt.dispatchEvent('pointercancel', { pointerId: 19, pointerType: 'touch', isPrimary: true, button: 0, buttons: 0 })
+  await expect(ptt).toHaveAttribute('aria-pressed', 'false')
+  await context.close()
 })

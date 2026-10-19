@@ -2,6 +2,7 @@ import { createApp, h, ref } from 'vue'
 import { createPinia } from 'pinia'
 import AdminPanel from '../../src/admin/panel/AdminPanel.vue'
 import AudioSettings from '../../src/voice/AudioSettings.vue'
+import { browserSupportsTouchPtt } from '../../src/voice/touch_ptt'
 import ProfileSettings from '../../src/identity/ProfileSettings.vue'
 import { describeAudioProcessing } from '../../src/voice/audio_processing_diagnostics'
 import { bindMicrophoneAccount, microphoneMeter, microphoneSettingsError } from '../../src/voice/microphone_processing/runtime'
@@ -27,7 +28,7 @@ function audio() {
   return h(AudioSettings, {
     activationError: null, activationMode: activation.value, processingDiagnostics: diagnostics,
     devices: { inputs: [{ id: 'default', label: 'Системный микрофон' }], outputs: [{ id: 'default', label: 'Системный динамик' }] },
-    error: null, state: 'READY', connected: false, pttKey: ptt.value, processing: processing.value,
+    error: null, state: 'READY', connected: false, pttKey: ptt.value, touchPttEnabled: params.get('touchPtt') === '1' || browserSupportsTouchPtt(), processing: processing.value,
     microphoneShortcut: microphoneShortcut.value, deafenShortcut: deafenShortcut.value,
     onSetActivation: value => { activation.value=value }, onSetPttKey: value => { ptt.value=value },
     onSetProcessing: value => { processing.value=value },

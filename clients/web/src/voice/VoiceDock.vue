@@ -14,6 +14,8 @@ const props = withDefaults(defineProps<{
   error: string | null
   notice?: VoiceDisconnectNotice | null
   activationMode: VoiceActivationMode
+  touchPttEnabled?: boolean
+  setTouchPttPressed?: (pressed: boolean) => void
   deafened: boolean
   deafenChanging: boolean
   microphoneMuted: boolean
@@ -30,7 +32,7 @@ const connectionQualityLabel = computed(() => voiceConnectionQualityLabel(props.
 const connectionPingLabel = computed(() => props.pingMs === null ? '—' : `${props.pingMs} мс`)
 const connectionQualityDescription = computed(() => `Качество соединения: ${connectionQualityLabel.value} · ping ${connectionPingLabel.value}`)
 const microphonePermissionMessage = computed(() => props.activationMode === 'PTT'
-  ? 'Вы подключены как слушатель: браузер запретил доступ к микрофону. Разрешите микрофон в настройках сайта, затем удерживайте клавишу push-to-talk.'
+  ? `Вы подключены как слушатель: браузер запретил доступ к микрофону. Разрешите микрофон в настройках сайта, затем ${props.touchPttEnabled ? 'удерживайте кнопку микрофона' : 'удерживайте клавишу push-to-talk'}.`
   : 'Вы подключены как слушатель: браузер запретил доступ к микрофону. Разрешите его в настройках сайта, затем нажмите «Повторить доступ к микрофону».')
 const status = computed(() => {
   if (props.state === 'JOINING') return 'Подключаемся к голосовому каналу'
@@ -53,7 +55,7 @@ const status = computed(() => {
     <p v-if="notice && notice.reason !== 'VOLUNTARY_LEAVE'" class="state state-error">{{ notice.message }}</p>
     <p v-else-if="error" class="state state-error" role="alert">{{ error }}</p>
     <p v-if="microphonePermissionDenied" class="voice-dock-mic-notice state" role="status">{{ microphonePermissionMessage }}</p>
-    <VoiceRoomControls v-if="channel || activeSession" dock :channel-available="Boolean(channel)" :voice-state="state" :screen-state="screenShareState" :activation-mode="activationMode" :microphone-muted="microphoneMuted" :microphone-permission-denied="microphonePermissionDenied" :deafened="deafened" :deafen-changing="deafenChanging" :toggle-microphone="() => emit('toggleMicrophone')" :toggle-deafen="() => emit('toggleDeafen')" @start-screen="emit('startScreen')" @stop-screen="emit('stopScreen')" @leave="emit('leave')" />
+    <VoiceRoomControls v-if="channel || activeSession" dock :channel-available="Boolean(channel)" :voice-state="state" :screen-state="screenShareState" :activation-mode="activationMode" :touch-ptt-enabled="touchPttEnabled" :set-touch-ptt-pressed="setTouchPttPressed" :microphone-muted="microphoneMuted" :microphone-permission-denied="microphonePermissionDenied" :deafened="deafened" :deafen-changing="deafenChanging" :toggle-microphone="() => emit('toggleMicrophone')" :toggle-deafen="() => emit('toggleDeafen')" @start-screen="emit('startScreen')" @stop-screen="emit('stopScreen')" @leave="emit('leave')" />
     <details v-if="connected" class="voice-connection-details">
       <summary class="voice-quality" :class="[`voice-quality--${connectionQuality.toLowerCase()}`, { 'voice-quality--unmeasured': pingMs === null }]" :aria-label="`Сведения о соединении. ${connectionQualityDescription}`" :title="connectionQualityDescription">
         <svg class="voice-quality-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 13h3v5H2zM7 9h3v9H7zM12 5h3v13h-3zM17 1h2v17h-2z" /></svg>

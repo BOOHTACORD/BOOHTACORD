@@ -153,3 +153,12 @@ test('readiness details retain numbers and local actions, while freshness and fa
  await page.route('**/api/v1/admin/readiness',r=>r.fulfill({status:503,json:{error:{code:'UNAVAILABLE'}}}));await page.getByRole('button',{name:'Обновить проверку',exact:true}).click()
  await expect(panel.getByRole('alert')).toBeVisible();await expect(page.locator('.readiness-probe--stale')).toHaveCount(3)
 })
+
+test('touch PTT settings do not request a keyboard key and explain the hold control',async({page},info)=>{
+  await page.setViewportSize({width:390,height:844});await open(page,'audio&touchPtt=1')
+  await page.getByRole('button',{name:'По нажатию',exact:true}).click()
+  await expect(page.getByRole('button',{name:'Назначить PTT-клавишу'})).toHaveCount(0)
+  await expect(page.getByText('Удерживайте кнопку микрофона в панели голосового канала, чтобы говорить.',{exact:true})).toBeVisible()
+  await expect(page.getByRole('alert')).toHaveCount(0)
+  await page.screenshot({path:info.outputPath('touch-ptt-settings-390x844.png'),fullPage:true})
+})

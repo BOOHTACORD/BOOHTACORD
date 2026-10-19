@@ -6,6 +6,7 @@ import { createShortcutSettings } from './shortcuts/state'
 import { createPttActivation } from './activation/ptt'
 import { useVoiceConnectionStore } from './connection_store'
 import { type VoiceShortcutAction } from './voice_shortcut'
+import { browserSupportsTouchPtt } from './touch_ptt'
 
 export type VoiceActivationMode = 'VAD' | 'PTT'
 
@@ -13,7 +14,8 @@ export const useVoiceActivationStore = defineStore('voice-activation', () => {
   const error = ref<string | null>(null)
   const mode = ref<VoiceActivationMode>('VAD')
   const pttKey = ref<string | null>(null)
-  const { start: startPtt, stop } = createPttActivation(pttKey, error)
+  const touchPttEnabled = ref(browserSupportsTouchPtt())
+  const { start: startPtt, stop, setTouchPressed } = createPttActivation(pttKey, error, touchPttEnabled)
   const settings = createShortcutSettings(error, pttKey)
   const { microphoneShortcut, deafenShortcut, shortcutStatus, setShortcut, resetShortcuts, unbindAccount: clearShortcutAccount } = settings
   let boundAccount: string | null = null
@@ -55,5 +57,5 @@ export const useVoiceActivationStore = defineStore('voice-activation', () => {
       : voice.deafened ? 'Звук выключен.' : 'Звук включён.'
   }
 
-  return { error, mode, pttKey, microphoneShortcut, deafenShortcut, shortcutStatus, bindAccount, unbindAccount, resetShortcuts, setMode, setPttKey, setShortcut, announceShortcut, stop }
+  return { error, mode, pttKey, touchPttEnabled, microphoneShortcut, deafenShortcut, shortcutStatus, bindAccount, unbindAccount, resetShortcuts, setMode, setPttKey, setShortcut, setTouchPttPressed: setTouchPressed, announceShortcut, stop }
 })

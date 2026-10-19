@@ -1,5 +1,7 @@
 /* Connected dock presentation; state, controls and measured quality remain live. */
 .voice-dock .voice-icon { stroke-width: 2; }
+.voice-ptt-button { touch-action: none; user-select: none; -webkit-user-select: none; }
+.voice-ptt-button[aria-pressed=true] { color: var(--gc-on-danger); background: var(--gc-danger-solid); }
 .voice-dock .voice-icon--filled { fill: currentColor; stroke: none; }
 .voice-dock .voice-icon-button { border-radius: 8px; }
 .voice-dock .voice-icon-button.voice-icon-button--danger-active,
@@ -75,3 +77,4 @@
 }
 
 .voice-dock .voice-icon-button:disabled { opacity: .5; }
+.sidebar.is-open .mobile-voice-dock .voice-actions .voice-ptt-button[aria-pressed=true]::before { background: var(--gc-danger-solid); }
