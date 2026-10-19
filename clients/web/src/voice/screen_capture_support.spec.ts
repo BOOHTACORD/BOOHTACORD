@@ -14,9 +14,10 @@ afterEach(() => vi.unstubAllGlobals())
 describe('browser screen capture availability', () => {
   it('explains unsupported Android Chrome before opening a nonexistent chooser', async () => {
     const androidChrome = 'Mozilla/5.0 (Linux; Android 16) AppleWebKit/537.36 Chrome/152.0 Mobile Safari/537.36'
+    const androidUnavailableMessage = 'В браузере Android нельзя начать трансляцию экрана. Откройте приложение BOOHTACORD.'
     expect(screenCaptureSupported(androidChrome, { getDisplayMedia: vi.fn() })).toBe(false)
-    expect(screenCaptureUnavailableMessage(androidChrome)).toContain('Android-приложении')
-    expect(screenFailureMessage(Object.assign(new Error('getDisplayMedia not supported'), { name: 'DeviceUnsupportedError' }), androidChrome)).toContain('Android-приложении')
+    expect(screenCaptureUnavailableMessage(androidChrome)).toBe(androidUnavailableMessage)
+    expect(screenFailureMessage(Object.assign(new Error('getDisplayMedia not supported'), { name: 'DeviceUnsupportedError' }), androidChrome)).toBe(androidUnavailableMessage)
 
     vi.stubGlobal('navigator', { userAgent: androidChrome, mediaDevices: {} })
     const html = await renderToString(createSSRApp(VoiceDock, {
@@ -24,7 +25,7 @@ describe('browser screen capture availability', () => {
       error: null, activationMode: 'VAD', deafened: false, deafenChanging: false,
       microphoneMuted: true, microphonePermissionDenied: false, state: 'CONNECTED',
     }))
-    expect(html).toMatch(/aria-label="[^"]*Android-приложении[^"]*"[^>]* disabled/)
+    expect(html).toMatch(/aria-label="[^"]*Откройте приложение BOOHTACORD[^"]*"[^>]* disabled/)
   })
 
   it('allows browsers that expose display capture outside unsupported mobile Chrome', () => {

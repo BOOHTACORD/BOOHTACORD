@@ -6,6 +6,9 @@
 .voice-room .voice-room-footer-copy p, .voice-room .voice-room-footer-copy small { white-space: normal; overflow-wrap: anywhere; }
 .voice-room .voice-room-footer-copy p { color: var(--gc-text-primary); font-size: 1rem; font-weight: 600; }
 .voice-room .room-wrap > .state { position: static; width: 100%; max-width: 792px; margin: 0; overflow-wrap: anywhere; }
+.voice-room .voice-capture-unavailable { display: flex; box-sizing: border-box; width: 100%; max-width: 792px; align-items: flex-start; gap: 8px; margin: 0; border: 1px solid var(--gc-border-subtle); border-radius: var(--gc-radius-md); padding: 8px 12px; color: var(--gc-text-secondary); background: var(--gc-surface); font-size: var(--gc-text-caption); line-height: 1.4; overflow-wrap: anywhere; }
+.voice-room .voice-capture-unavailable__icon { width: 16px; height: 16px; flex: 0 0 16px; margin-top: 1px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.75; }
+.voice-room .voice-capture-unavailable span { min-width: 0; }
 .voice-room .voice-participant-volumes { display: grid; width: min(100%, calc(var(--voice-columns, 4) * 12rem)); height: auto; flex: none; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); gap: 16px; margin: 8px auto 0; }
 .voice-room .voice-participant-volumes .participant { box-sizing: border-box; width: 100%; height: auto; min-height: 188px; gap: 8px; border: 2px solid var(--gc-border-subtle); border-radius: 12px; padding: 24px 12px 16px; background: var(--gc-surface); }
 .voice-room .voice-participant-volumes .participant.talking { border-color: var(--gc-success); }

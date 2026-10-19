@@ -204,6 +204,27 @@ test('unsupported capture keeps a visible explanation while voice and leave stay
   await page.screenshot({ path: info.outputPath('capture-unavailable.png') })
 })
 
+test('Android browser explains unavailable screen capture while voice remains usable', async ({ page }, info) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'userAgent', {
+      configurable: true,
+      value: 'Mozilla/5.0 (Linux; Android 16) AppleWebKit/537.36 Chrome/152.0 Mobile Safari/537.36',
+    })
+  })
+  await open(page, 393)
+  const notice = page.locator('.room-wrap').getByRole('status').filter({ hasText: 'нельзя начать трансляцию' })
+  await expect(notice).toHaveClass(/voice-capture-unavailable/)
+  await expect(notice).toHaveText('В браузере Android нельзя начать трансляцию экрана. Откройте приложение BOOHTACORD.')
+  expect(await notice.evaluate(element => getComputedStyle(element).display)).toBe('flex')
+  expect((await notice.boundingBox())!.height).toBeLessThanOrEqual(60)
+  const controls = page.locator('.voice-room-controls')
+  const share = controls.getByRole('button', { name: /Откройте приложение BOOHTACORD/ })
+  await expect(share).toBeDisabled()
+  await expect(controls.getByRole('button', { name: 'Выключить микрофон' })).toBeEnabled()
+  await expect(controls.getByRole('button', { name: 'Выйти из голосового канала' })).toBeEnabled()
+  await page.screenshot({ path: info.outputPath('android-capture-unavailable.png') })
+})
+
 for (const width of [320, 390]) test(`screen-sharing participant cards can scroll above the fixed voice dock at ${width}px / 200% text`, async ({ page }) => {
   await open(page, width, 200)
   await patch(page, { state: 'CONNECTED', active: true, screen: 'SHARING' })
