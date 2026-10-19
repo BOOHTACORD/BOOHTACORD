@@ -40,7 +40,7 @@ class InstalledObservationTests(unittest.TestCase):
     def test_health_uses_local_tls_resolved_host_without_returning_host_or_body(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); (root/'.env').write_text('PASSWORD=private-canary\nPUBLIC_HOST=qa.example.test\n')
-            with patch.object(observation, 'execute', return_value=b'') as execute:
+            with patch.object(observation, 'execute', return_value=b'200') as execute:
                 self.assertEqual('PASS', observation.health(root))
                 argv = execute.call_args.args[0]
                 self.assertIn('qa.example.test:443:127.0.0.1', argv)
@@ -58,3 +58,10 @@ class InstalledObservationTests(unittest.TestCase):
             self.assertIn('PGOPTIONS=-c default_transaction_read_only=on', argv)
             self.assertNotIn('SELECT *', sql); self.assertNotIn('FROM messages', sql)
             self.assertNotIn('PGPASSWORD', ' '.join(argv))
+
+    def test_zero_exit_redirect_empty_or_non_200_health_cannot_be_pass(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'.env').write_text('PUBLIC_HOST=qa.example.test\n')
+            for code in (b'301',b'302',b'204',b'',b'200\n'):
+                with self.subTest(code=code),patch.object(observation,'execute',return_value=code),self.assertRaises(ValueError):
+                    observation.health(root)

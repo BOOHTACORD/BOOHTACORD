@@ -63,8 +63,10 @@ def health(directory):
     require(len(hosts) == 1 and len(hosts[0]) <= 253 and
             re.fullmatch(r'[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?', hosts[0]), 'Invalid health target')
     host = hosts[0]
-    execute(['curl', '--fail', '--silent', '--show-error', '--connect-timeout', '5', '--max-time', '15',
-             '--resolve', host + ':443:127.0.0.1', '--output', '/dev/null', 'https://' + host + '/api/v1/health'], 20)
+    status = execute(['curl', '--fail', '--silent', '--show-error', '--connect-timeout', '5', '--max-time', '15',
+             '--resolve', host + ':443:127.0.0.1', '--output', '/dev/null', '--write-out', '%{http_code}',
+             'https://' + host + '/api/v1/health'], 20, capture_limit=8)
+    require(status == b'200', 'Installed health must return exactly HTTP 200')
     return 'PASS'
 
 

@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "actual-retained-artifact-verification",
+  "status": "PASS",
+  "scope": "Actual authenticated connector metadata and downloaded retained ZIP; no local API downloader, host signature, image import, installation or production mutation",
+  "tested_source_revision": "8b11e744e313025b13bc0ac67c1e281784f19e86",
+  "producer": {
+    "id": 12195206890,
+    "name": "server-fe482078a2fa4e4964b6758770980d4b1a0b2fa6-39268498370-1",
+    "size_in_bytes": 73502109,
+    "digest": "sha256:a2c356fa784c7a480e3402062ffbe15913bae1abb0525b203eec534f010d88fe",
+    "source_revision": "fe482078a2fa4e4964b6758770980d4b1a0b2fa6",
+    "run_id": 39268498370,
+    "run_attempt": 1,
+    "format_version": 2
+  },
+  "verified_download": {
+    "outer_digest": "verified",
+    "archive_bytes": 73502109,
+    "bundle_sha256": "be319f41f75e5ccb94330c6a4aa40e7d55e0aabcd0c1d843d204785495c7fdfd",
+    "bundle_bytes": 73479854
+  },
+  "negative_rejections": [
+    "wrong-source",
+    "wrong-digest",
+    "wrong-size",
+    "foreign-run",
+    "foreign-source"
+  ],
+  "metadata_collections": {
+    "jobs": 11,
+    "artifacts": 16,
+    "producer_read_before_after_equal": true
+  },
+  "archive_sha256": "a2c356fa784c7a480e3402062ffbe15913bae1abb0525b203eec534f010d88fe",
+  "signature_verification": "NOT_RUN",
+  "new_api_downloader_transport": "NOT_RUN",
+  "runtime_acceptance": "NOT_RUN",
+  "checked_at": "2026-10-19T16:23:51.953261+00:00",
+  "verified_module_hashes": {
+    "tools/release/delivery/preflight.py": "e841b7a07609e311edd33cdf6827bc31f2bcf5361d68642a6ab37a2acce9f6eb",
+    "tools/release/delivery/provenance.py": "1d42f9b684a5c416d24d57fdbf1250c859b23732b25fb828972c473d29ea1837",
+    "tools/release/delivery/producer_artifacts.py": "6db472acd237c42ef6704e9f401d82c59aef44b2e60988454ac6a200a785e6a7",
+    "tools/release/delivery/routing.py": "ef64139816d16e3b23d27542286ed44f36922c9356f7ca9a515a572320026765",
+    "tools/release/delivery/artifact_zip.py": "5874e722f0a53f4bc2dd9164df30be3bfbf5961d23a42dc1abdae051cc160654",
+    "tools/release/delivery/payload.py": "7cfc856482eab87596d19f2450026ef0761f2ee69a41108b579edbffb84591a1"
+  },
+  "producer_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39268498370",
+  "local_file_transport": {
+    "initial_attempt": "TIMEOUT",
+    "initial_exit_code": 28,
+    "initial_limit_seconds": 120,
+    "initial_received_bytes": 60738841,
+    "second_attempt": "SAME_FILE_RANGE_RESUME_COMPLETE",
+    "final_archive_identity_verified": true,
+    "scope": "Connector-provided file reference transfer on this Mac, not production SCP or the new API downloader"
+  }
+}

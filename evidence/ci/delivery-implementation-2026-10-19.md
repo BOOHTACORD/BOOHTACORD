@@ -100,3 +100,35 @@ run on this Mac's Bash 3; the full release-fixture wrapper still requires Bash 4
 and hosted validation. The earlier 904-test checkpoint remains attached to its
 published source fb305757. Hosted CI39283110808 was still queued at the last
 read-only observation, so no GitHub PASS is asserted.
+
+## Actual retained ZIP verification and exact health status
+
+The real retained master producer39268498370/sourcefe482 attempt1 bundle
+artifact12195206890 was downloaded through the authenticated connector's file
+reference. Complete actual API collections (11 jobs,16 artifacts) and producer
+reads before/after the local file transfer remained unchanged; the common trusted
+preflight accepted that exact authority. The actual ZIP measured73502109 bytes,
+SHA-256 a2c356fa784c7a480e3402062ffbe15913bae1abb0525b203eec534f010d88fe;
+the inner exact transport pair and checksum passed. Five controlled negatives on
+this real archive/metadata rejected wrong source, digest, size, producer run and
+requested source, with no partially published output. Relevant verification
+modules were byte-identical to committed8b11e744, and their hashes are recorded.
+
+The first local connector-file transfer timed out at120s with60738841 bytes;
+Range-resuming the same file completed, followed by exact full ZIP verification.
+This is not a production SCP retry, downloader throughput/SLO claim or successful
+installation. No code/images from the bundle were executed. Host signature,
+new Python API downloader transport, SSH, installation and full-stack acceptance
+remain NOT_RUN. The bounded sanitized record is
+`delivery-artifact-actual-2026-10-19.json`; no signed URL/token or archive is staged.
+
+A focused health negative then reproduced five false-positive cases because curl
+`--fail` accepts redirects:301/302/204, empty and malformed status. Fresh health
+now captures only the bounded HTTP status and requires exactly200. Response body
+and environment remain discarded. The committed schema-query proof predates this
+unrelated health change; its recorded source/file hash remains exact, and the SQL
+query itself is unchanged. New whole-candidate validation is recorded separately.
+
+Latest candidate: **913 Python tests PASS**, 48.074 seconds after the exact-HTTP-200
+health fix; focused health/readback acknowledgement group **15 PASS**. Traceability
+again PASS_INDEX_ONLY39. This does not change the NOT_RUN boundaries above.
