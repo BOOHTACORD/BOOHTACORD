@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "metadata_get_max_attempts": 2,
+  "retry_http_statuses": [500, 502, 503, 504],
+  "test_retry": false,
+  "quarantined_tests": [],
+  "first_start_delay_warning_seconds": 300,
+  "workflow_wall_warning_seconds": 1200,
+  "stuck_required_warning_seconds": 900,
+  "self_hosted_wait_warning_seconds": 600,
+  "recurring_failure_warning_count": 2
+}

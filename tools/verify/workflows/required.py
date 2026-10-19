@@ -21,6 +21,8 @@ def check(document, roles, require):
     except (ValueError, TypeError):
         declared = None
     require(declared == roles, 'Aggregate role map must match the actual dependency graph')
+    from tools.ci.observability.workflow import check_job
+    check_job(job,'pr')
     for name in roles.values():
         require(not jobs[name].get('continue-on-error'), 'Mandatory selector/contracts/components cannot ignore failures')
     outputs = jobs[roles['changes']].get('outputs', {})

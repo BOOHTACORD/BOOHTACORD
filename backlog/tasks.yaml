@@ -543,6 +543,11 @@ tasks:
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
     depends_on: [CICD-04, CICD-08, CICD-13, CICD-01]
     evidence: [tools/ci/macos/test_host.py, tools/ci/macos/test_workflow.py, tools/build/webrtc_macos/test_contract.py, tools/build/webrtc_macos/test_extract.py, tools/build/webrtc_macos/test_execution.py, tools/build/webrtc_macos/test_assets.py, tools/build/webrtc_macos/test_plan.py, tools/build/webrtc_macos/publish.test.mjs, docs/ci/macos-sdk.md, evidence/ci/macos-sdk-2026-10-19.md]
+  - id: CICD-20
+    title: Source bound red gate triage and historical CI observability without assertion retries or ignored failures
+    requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
+    depends_on: [CICD-01, CICD-03, CICD-18, CICD-05, CICD-07, CICD-15]
+    evidence: [tools/ci/observability/test_triage.py, tools/ci/observability/test_network.py, tools/ci/observability/test_summary.py, tools/ci/observability/test_report.py, tools/ci/observability/test_workflow.py, tools/ci/observability/test_alerts.py, docs/ci/observability.md, evidence/ci/ci-triage-2026-10-19.json, evidence/ci/observability-2026-10-19.md]
   - id: CICD-10
     title: Private dependency-scoped bounded Buildx cache with mandatory image validation and stage timings
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
