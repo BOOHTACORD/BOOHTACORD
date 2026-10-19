@@ -14,6 +14,13 @@ API = 'repos/Egkurilov/BOOHTACORD/actions/runners'
 BASE = 'boohtacord-ci-base'
 RUNTIME = Path(os.environ.get('RUNTIME_DIRECTORY', '/run/boohtacord-ci'))
 LABELS = ['self-hosted', 'linux', 'x64', 'boohtacord-ci-ephemeral']
+START = ('jit=$(cat /home/runner/.jit); rm /home/runner/.jit; '
+         'mkdir -p /home/runner/.gradle; '
+         'printf "%s\\n" '
+         "'org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=768m -XX:ReservedCodeCacheSize=128m -XX:+ExitOnOutOfMemoryError' "
+         "'org.gradle.workers.max=2' 'org.gradle.parallel=false' 'kotlin.daemon.jvmargs=-Xmx512m' "
+         '> /home/runner/.gradle/gradle.properties; '
+         'exec ./run.sh --jitconfig "$jit"')
 
 
 def command(args, *, stdin=None, timeout=120, quiet=False, check=True):
@@ -75,7 +82,7 @@ def cycle(slot):
         command(['lxc', 'exec', guest, '--disable-stdin', '--mode', 'non-interactive',
                  '--env', 'HOME=/home/runner', '--env', 'RUNNER_TOOL_CACHE=/opt/hostedtoolcache',
                  '--cwd', '/home/runner/actions-runner', '--', 'runuser', '-u', 'runner', '--', 'bash', '-c',
-                 'jit=$(cat /home/runner/.jit); rm /home/runner/.jit; exec ./run.sh --jitconfig "$jit"'],
+                 START],
                 timeout=6 * 60 * 60, quiet=True)
     finally:
         if token_path is not None:

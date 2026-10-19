@@ -40,6 +40,9 @@ the existing PowerShell 7.6.6 SDK. Existing owner-accepted Android license
 markers were reused. Workflows still select and verify the exact public
 Python/Go/Node/Java/Flutter SDK versions from the repository toolchain policy.
 No dependency cache may suppress the original checks or locked installs.
+The guest's user Gradle profile caps its heap at 2 GiB, Kotlin at 512 MiB and
+parallel workers at two, instead of the app template's 8 GiB local heap.
+This profile is outside the checkout and leaves local developer settings intact.
 
 ## Isolation
 
