@@ -32,7 +32,9 @@ Object.assign(window, { __voiceFixture: { patch: (patch: Partial<typeof state>) 
 createApp({ render: () => h('div', { class: 'app-shell', style: 'display:grid;grid-template-columns:280px minmax(0,1fr);height:100dvh' }, [
   h('aside', { class: params.has('closed') ? 'sidebar' : 'sidebar is-open', style: 'position:relative;width:280px;transform:none;min-width:0;z-index:1' }, [
     h('h1', { style: 'padding:16px;font-size:1rem' }, 'BOOHTACORD'),
-    h('div', { style: 'flex:1' }),
+    params.has('participants')
+      ? h('div', { 'data-testid': 'dock-participants', style: 'flex:1;min-height:48px;padding:12px' }, 'Участники · Тестовый участник')
+      : h('div', { style: 'flex:1' }),
     params.has('members') ? h(WorkspaceMembersPanel, { activeVoiceChannel: state.active && state.state !== 'LEAVING' ? channel : null, selectedVoiceChannel: channel, participants: [{ id: 'peer', accountId: 'peer', name: 'Тестовый участник', speaking: false, microphoneMuted: false, volume: 100 }], presenceResolver: (_id: string, fallback: any) => fallback, role: 'MEMBER', selfMicrophoneMuted: false, selfMicrophoneUnavailable: false, selfName: 'Тестовый клиент', open: true, modal: false, style: 'position:relative;width:100%' }) : null,
     h(VoiceDock, { class: 'mobile-voice-dock', channel: state.active ? channel : null, activeSession: state.active, error: state.error, notice: state.notice, activationMode: state.mode, touchPttEnabled: params.get('touchPtt') === '1' || browserSupportsTouchPtt(), setTouchPttPressed, deafened: state.deafened, deafenChanging: state.deafenChanging, microphoneMuted: state.muted, microphonePermissionDenied: state.denied, screenShareState: state.screen, connectionQuality: 'GOOD', pingMs: 42, participantCount: 2, state: state.state, onLeave: leave, onStartScreen: startScreen, onStopScreen: stopScreen, onToggleMicrophone: toggleMicrophone, onToggleDeafen: toggleDeafen }),
   ]),

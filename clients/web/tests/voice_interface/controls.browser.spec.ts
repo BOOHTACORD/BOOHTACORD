@@ -286,7 +286,7 @@ test('touch PTT dock transmits only while pressed and releases on cancellation o
   const ptt = page.getByTestId('voice-dock').locator('.voice-ptt-button')
   await expect(ptt).toBeVisible()
   await expect(ptt).toBeEnabled()
-  await expect(ptt).toHaveAttribute('aria-label', 'Удерживайте, чтобы говорить')
+  await expect(ptt).toHaveAttribute('aria-label', 'Удерживайте микрофон, чтобы говорить')
   await ptt.dispatchEvent('pointerdown', { pointerId: 9, pointerType: 'touch', isPrimary: true, button: 0, buttons: 1 })
   await expect(ptt).toHaveAttribute('aria-pressed', 'true')
   expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['ptt:press'])
@@ -306,6 +306,39 @@ test('touch PTT dock transmits only while pressed and releases on cancellation o
   expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['ptt:press', 'ptt:release', 'ptt:press', 'ptt:release', 'ptt:press', 'ptt:release'])
 })
 
+test('PTT is visibly ready and can be held in the dock below participants', async ({ page }) => {
+  await open(page, 390, 100, 'touchPtt=1&mode=PTT&participants=1')
+  await expect(page.getByTestId('dock-participants')).toBeVisible()
+  await expect(page.getByText('Удерживайте кнопку микрофона, чтобы говорить.', { exact: true })).toBeVisible()
+
+  const ptt = page.getByTestId('voice-dock').getByTestId('touch-ptt-button')
+  await expect(ptt).toBeVisible()
+  await expect(ptt).toBeEnabled()
+  await expect(ptt).toHaveAttribute('aria-pressed', 'false')
+  const colors = await ptt.evaluate(element => {
+    const sample = document.createElement('span')
+    sample.style.color = 'var(--gc-danger-solid)'
+    document.body.append(sample)
+    const danger = getComputedStyle(sample).color
+    sample.remove()
+    return { idle: getComputedStyle(element, '::before').backgroundColor, danger }
+  })
+  expect(colors.idle).toBe(colors.danger)
+
+  const box = await ptt.boundingBox()
+  expect(box).not.toBeNull()
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
+  await page.mouse.down()
+  await expect(ptt).toHaveAttribute('aria-pressed', 'true')
+  const heldBackground = await ptt.evaluate(element => getComputedStyle(element, '::before').backgroundColor)
+  expect(heldBackground).not.toBe(colors.danger)
+  expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['ptt:press'])
+
+  await page.mouse.up()
+  await expect(ptt).toHaveAttribute('aria-pressed', 'false')
+  expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['ptt:press', 'ptt:release'])
+})
+
 test('Android touch browsers show on-screen PTT without a keyboard binding', async ({ browser }, info) => {
   const context = await browser.newContext({
     viewport: { width: 390, height: 844 },
@@ -314,26 +347,38 @@ test('Android touch browsers show on-screen PTT without a keyboard binding', asy
     userAgent: 'Mozilla/5.0 (Linux; Android 15; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36',
   })
   const page = await context.newPage()
-  await open(page, 390, 100, 'mode=PTT')
+  await open(page, 390, 100, 'mode=PTT&participants=1')
+  await expect(page.getByTestId('dock-participants')).toBeVisible()
   await expect(page.getByTestId('voice-dock').getByTestId('touch-ptt-button')).toBeVisible()
   const ptt = page.getByTestId('voice-dock').getByTestId('touch-ptt-button')
   await expect(ptt).toBeEnabled()
   await expect(ptt).toHaveAttribute('aria-pressed', 'false')
+  await expect(page.getByText('Удерживайте кнопку микрофона, чтобы говорить.', { exact: true })).toBeVisible()
   await page.screenshot({ path: info.outputPath('android-touch-ptt-ready-390x900.png') })
-  await ptt.dispatchEvent('pointerdown', { pointerId: 19, pointerType: 'touch', isPrimary: true, button: 0, buttons: 1 })
-  await expect(ptt).toHaveAttribute('aria-pressed', 'true')
-  const colors = await ptt.evaluate(element => {
+  const readyColor = await ptt.evaluate(element => getComputedStyle(element, '::before').backgroundColor)
+  const dangerColor = await ptt.evaluate(() => {
     const expected = document.createElement('span')
     expected.style.color = 'var(--gc-danger-solid)'
     document.body.append(expected)
-    const danger = getComputedStyle(expected).color
+    const color = getComputedStyle(expected).color
     expected.remove()
-    return { actual: getComputedStyle(element).backgroundColor, danger }
+    return color
   })
-  const buttonStyle = await ptt.evaluate(element => ({ className: element.className, parentClass: element.parentElement?.className, color: getComputedStyle(element).color, background: getComputedStyle(element).backgroundColor }))
-  expect(colors.actual, JSON.stringify(buttonStyle)).toBe(colors.danger)
+  expect(readyColor).toBe(dangerColor)
+  const box = await ptt.boundingBox()
+  expect(box).not.toBeNull()
+  const touchscreen = await context.newCDPSession(page)
+  await touchscreen.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [{ x: box!.x + box!.width / 2, y: box!.y + box!.height / 2, id: 19 }],
+  })
+  await expect(ptt).toHaveAttribute('aria-pressed', 'true')
+  const heldColor = await ptt.evaluate(element => getComputedStyle(element, '::before').backgroundColor)
+  expect(heldColor).not.toBe(dangerColor)
   await page.screenshot({ path: info.outputPath('android-touch-ptt-held-390x900.png') })
-  await ptt.dispatchEvent('pointercancel', { pointerId: 19, pointerType: 'touch', isPrimary: true, button: 0, buttons: 0 })
+  await touchscreen.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
   await expect(ptt).toHaveAttribute('aria-pressed', 'false')
+  expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['ptt:press', 'ptt:release'])
+  await touchscreen.detach()
   await context.close()
 })

@@ -1,7 +1,11 @@
 /* Connected dock presentation; state, controls and measured quality remain live. */
 .voice-dock .voice-icon { stroke-width: 2; }
 .voice-ptt-button { touch-action: none; user-select: none; -webkit-user-select: none; }
-.voice-ptt-button[aria-pressed=true] { color: var(--gc-on-danger); background: var(--gc-danger-solid); }
+.voice-dock .voice-ptt-button[aria-pressed=false]:not(:disabled),
+.mobile-voice-dock .voice-actions .voice-ptt-button[aria-pressed=false]:not(:disabled) { color: var(--gc-on-danger); background: var(--gc-danger-solid); }
+.voice-dock .voice-ptt-button[aria-pressed=true] { color: var(--gc-text-secondary); background: var(--gc-surface-raised); }
+.voice-dock-ptt-hint { margin: 4px 0 0; color: var(--gc-text-muted); font-size: .75rem; line-height: 1.35; }
+.voice-dock .voice-dock-ptt-hint + .voice-actions { margin-top: 4px; }
 .voice-dock .voice-icon--filled { fill: currentColor; stroke: none; }
 .voice-dock .voice-icon-button { border-radius: 8px; }
 .voice-dock .voice-icon-button.voice-icon-button--danger-active,
@@ -77,4 +81,9 @@
 }
 
 .voice-dock .voice-icon-button:disabled { opacity: .5; }
-.sidebar.is-open .mobile-voice-dock .voice-actions .voice-ptt-button[aria-pressed=true]::before { background: var(--gc-danger-solid); }
+.sidebar.is-open .mobile-voice-dock .voice-actions .voice-ptt-button[aria-pressed=false]:not(:disabled)::before { background: var(--gc-danger-solid); }
+.sidebar.is-open .mobile-voice-dock .voice-actions .voice-ptt-button[aria-pressed=true]::before { background: var(--gc-surface-raised); }
+@media (max-width: 1023px) {
+  .sidebar:not(.is-open) .mobile-voice-dock .voice-dock-ptt-hint { grid-column: 1; grid-row: 2; }
+  .sidebar:not(.is-open) .mobile-voice-dock .voice-actions { grid-row: 3; }
+}
