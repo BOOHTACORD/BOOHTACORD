@@ -48,8 +48,12 @@ def check(workflows):
             'Only protected master builds can use the production signer')
     require(build['concurrency']['cancel-in-progress'] == 'true', 'Obsolete builds must be cancellable')
     uploads = [step['with'] for step in builder['steps'] if step.get('uses') == 'actions/upload-artifact@v4']
-    require(len(uploads) == 1 and uploads[0]['name'] == 'server-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
-            and uploads[0]['if-no-files-found'] == 'error', 'Builder must retain the exact release artifact')
+    require(len(uploads) == 2 and uploads[0]['name'] == 'server-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
+            and uploads[0]['if-no-files-found'] == 'error'
+            and uploads[1] == {'name':'build-metrics-server-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}',
+                              'path':'.out/releases/${{ github.sha }}.build.json',
+                              'if-no-files-found':'error','retention-days':'30'},
+            'Builder must retain the exact release pair and a separate sanitized timing artifact')
     for name in WRITERS:
         workflow = workflows[name]
         expected_lock = {'group': 'v-bootybay-production', 'cancel-in-progress': 'false'}

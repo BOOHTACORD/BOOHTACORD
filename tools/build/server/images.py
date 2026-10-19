@@ -1,7 +1,10 @@
 """Build and validate OCI artifacts with the exact source labels and attestations."""
 import subprocess
+from contextlib import nullcontext
+from pathlib import Path
 from urllib.parse import urlsplit
 from tools.verify.oci.verify_oci import verify
+from .layer_cache import LayerCache, namespace
 
 
 def web_build_arguments(environment):
@@ -33,21 +36,33 @@ def web_build_arguments(environment):
             "--build-arg", "VITE_PUBLIC_ORIGIN=https://" + authority]
 
 
-def build(source, output, revision, source_hash, environment):
+def build(source, output, revision, source_hash, environment, *, metrics=None):
     receipts = {}
-    for service, context in (("api", "backend"), ("web", ".")):
-        tag = f"voice-platform-{service}:{revision}"
-        archive = output / (service + ".oci.tar")
-        subprocess.run(["docker", "buildx", "build", "--platform", "linux/amd64",
-                        "--label", f"org.opencontainers.image.revision={revision}",
-                        "--label", f"org.voice-platform.source-archive-sha256={source_hash}",
-                        "--sbom=true", "--provenance=mode=max,version=v0.2", "--load", "--tag", tag,
-                        "--output", f"type=oci,dest={archive}",
-                        *( ["--file", str(source / "clients/web/Dockerfile"), *web_build_arguments(environment),
-                            "--build-arg", "SOURCE_REVISION=" + revision] if service == "web" else []),
-                        str(source / context)], env=environment, check=True)
-        image_id = subprocess.check_output(
-            ["docker", "image", "inspect", "--format", "{{.Id}}", tag], text=True
-        ).strip()
-        receipts[service] = verify(archive, revision, source_hash, image_id)
+    measure=metrics.stage if metrics else lambda _:nullcontext()
+    cache_root=environment.get('BOOHTACORD_SERVER_CACHE_ROOT')
+    with (LayerCache(Path(cache_root)) if cache_root else nullcontext(None)) as cache:
+        for service, context in (("api", "backend"), ("web", ".")):
+            key=namespace(source,service)
+            with measure(service+'_cache_prepare'):
+                cache_args=cache.arguments(service,key) if cache else []
+                if metrics and cache:metrics.value['cache']=cache.report
+            tag = f"voice-platform-{service}:{revision}"
+            archive = output / (service + ".oci.tar")
+            with measure(service+'_build_export'):
+                subprocess.run(["docker", "buildx", "build", "--platform", "linux/amd64",
+                            "--label", f"org.opencontainers.image.revision={revision}",
+                            "--label", f"org.voice-platform.source-archive-sha256={source_hash}",
+                            "--sbom=true", "--provenance=mode=max,version=v0.2", "--load", "--tag", tag,
+                            "--output", f"type=oci,dest={archive}",
+                            '--build-arg', 'BOOHTACORD_CACHE_SCOPE='+key, *cache_args,
+                            *( ["--file", str(source / "clients/web/Dockerfile"), *web_build_arguments(environment),
+                                "--build-arg", "SOURCE_REVISION=" + revision] if service == "web" else []),
+                            str(source / context)], env=environment, check=True)
+            with measure(service+'_oci_verify'):
+                image_id = subprocess.check_output(
+                ["docker", "image", "inspect", "--format", "{{.Id}}", tag], text=True
+            ).strip()
+                receipts[service] = verify(archive, revision, source_hash, image_id)
+            with measure(service+'_cache_publish'):
+                if cache:cache.publish(service,key)
     return receipts

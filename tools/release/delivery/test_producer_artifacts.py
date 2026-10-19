@@ -20,6 +20,14 @@ def fixtures(modern=True, attempt=2):
 
 
 class ProducerArtifactTests(unittest.TestCase):
+    def test_builder_metrics_do_not_enter_the_reserved_server_bundle_namespace(self):
+        run,document=fixtures();extra=copy.deepcopy(document['artifacts'][0])
+        extra.update(id=45,name=f'build-metrics-server-{SHA}-123-2')
+        document['artifacts'].append(extra);document['total_count']=2
+        self.assertEqual(44,producer_artifacts.select(123,run,document,REPO,True)['id'])
+        extra['name']=f'server-build-metrics-{SHA}-123-2'
+        with self.assertRaises(ValueError):producer_artifacts.select(123,run,document,REPO,True)
+
     def test_exact_current_execution_name_and_ownership_are_required(self):
         run, document = fixtures()
         value = producer_artifacts.select(123, run, document, REPO, True)
