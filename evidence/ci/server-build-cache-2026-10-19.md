@@ -32,3 +32,19 @@ bundle namespace. Metrics use `build-metrics-server-...`; strict bundle ownershi
 checks were preserved. Full workflow policy31/2, pinned Actionlint, shell/Python
 syntax and diff checks PASS; traceability PASS_INDEX_ONLY39 (approved brief absent).
 No full application suite or full release was rerun for this checkpoint.
+
+## Combined observation — 2026-10-19
+
+Actual cold/warm stage records now exist in
+`server-build-cache-observations-2026-10-19.json`. Independently verified ZIP bytes,
+digests and public payload hashes bind successful builders39306796863/39309581312
+to sources59c15c65/c569477f. Relevant backend/Web/contracts/builder/toolchain Git
+inputs are unchanged; release source/archive labels intentionally differ.
+API build/export82.491527 ->19.089403s, Web79.627157 ->78.458267s; both real smoke,
+OCI verification and signing PASS. Retained exports stayed173712397bytes API and
+135475352 ->135475144bytes Web. N=1pair: no population/p50/p95/SLO claim.
+The cold-source production install timed out during bounded transfer and remains
+FAIL/UNKNOWN; the following warm-source install has fresh readback PASS. These
+outcomes and their verified archive hashes are retained separately. This updates
+the initial cold/warm NOT_RUN statement only. Complete Docker data-root/internal
+BuildKit GC and operational cleanup acceptance remain pending; #394 stays open.
