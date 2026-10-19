@@ -51,3 +51,20 @@ required-status readback are not established by local fixtures. #402 remains ope
 for that combined acceptance; the analysis never suppresses a red required gate
 or substitutes metadata for physical/media/server rollout evidence. No external
 notifications or automatic mutating remediation were sent.
+
+## Retained live summaries — 2026-10-20
+
+`triage-final-2026-10-20.json` verifies three actual PR/native diagnostic ZIPs,
+including a cancelled/red native aggregate, passing native aggregate and a PR
+tested merge bound to its actual feature-parent SHA. The public summary renderer
+was replayed against the exact bytes. The red Windows failure names its actual
+job/step and reproduction command; the aggregate's own unknown diagnosis remains
+explicit. All40 original frozen report records replay identically;16 nearest
+fault/summary/retention checks passed in0.424s. The complete Windows after window
+is separately source/hash-bound. No failure is reclassified as a proven flake.
+
+Owner-authorized branch protection and independent production reviewers are now
+configured, with separate readback evidence. The original actual-next FAIL is
+retained; final PR455/head20d491f5 passed24 checks after diagnostic changes.
+Unverified root causes and own-aggregate reproduction completeness remain open;
+this metadata-scope record does not declare all #402/#401 gates complete.

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "scope": "local-configuration-rollback-candidate",
+  "source_revision": "8add045642585429b1e573cea458fe5bcc72722b",
+  "tested_code_digest": "4081316c1c872a4b275ad724e3eb5c50d8a859d105a4cd0ac64f53e0d88dcd8b",
+  "checkpoint": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+  "production_mutation": false,
+  "checks": [
+    {
+      "name": "action-pins",
+      "status": "PASS"
+    },
+    {
+      "name": "selection",
+      "status": "PASS"
+    },
+    {
+      "name": "delivery",
+      "status": "PASS"
+    },
+    {
+      "name": "native",
+      "status": "PASS"
+    },
+    {
+      "name": "actionlint",
+      "status": "PASS"
+    },
+    {
+      "name": "eight-focused-controls",
+      "status": "PASS"
+    }
+  ],
+  "candidate_revision": "116f699525e0718cb0f531808703c0f596e0afaa",
+  "candidate_branch": "codex/workflow-rollback-8add0456",
+  "product_and_evidence_preserved": true,
+  "status": "PASS",
+  "source_restored": true
+}

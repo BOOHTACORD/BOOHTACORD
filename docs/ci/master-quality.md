@@ -25,7 +25,21 @@ and contracts, and exactly the required successful or skipped heavy gates. The
 builder waits for all three gates and server quality; it does not wait for native
 quality. Non-release changes skip backend/Web/bundle while still checking contracts.
 Unknown paths and unavailable diffs retain the shared selector's conservative
-behavior. PR required-status administration remains owner-managed (#385).
+behavior. The owner authorized the agent to configure #385 on 2026-10-19;
+the active `master-ci-required` ruleset now requires the GitHub Actions
+`ci-required` check and an up-to-date branch, without bypass actors.
+
+Master workflow concurrency is scoped to workflow/ref/source SHA. A later
+docs/evidence-only push must not cancel a runtime source whose heavy gates are
+still running: the new selector could skip those gates and leave no replacement
+release. Duplicate executions of the same source may supersede each other; PR
+CI retains its existing stale-head cancellation policy. Only a release-qualified
+`bundle` job enters the shared non-cancellable `trusted-server-bundle` signer
+queue. Read-only selection/quality and skipped metadata-only bundles cannot
+displace its pending job. This is separate from the existing production install
+lock. GitHub's default pending-slot replacement still applies between qualified
+bundles; neither queue promises FIFO. Exact run/attempt provenance and deployed
+source forward-history checks remain mandatory.
 
 The three-field receipt body (source/gate/status), dedicated production builder,
 signing key, manifest, smoke-test, pinned SSH, forward-history check and shared

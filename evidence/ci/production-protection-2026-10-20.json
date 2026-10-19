@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "scope": "production-environment-protection-admin-readback",
+  "status": "PASS_SETTINGS_ONLY",
+  "repository": "Egkurilov/BOOHTACORD",
+  "master_revision_at_configuration": "14a922326dd56e331956dbe09775ad7c05298f57",
+  "authorization": "Human reply to independent production reviewer selection: pistol121 например",
+  "environments": [
+    {
+      "id": 23142546512,
+      "name": "production",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/settings/environments/23142546512/edit",
+      "required_reviewers": [
+        "Pistol121"
+      ],
+      "prevent_self_review": true,
+      "admin_bypass": false,
+      "allowed_branches": [
+        "master"
+      ],
+      "allowed_tags": [],
+      "secrets_changed": false,
+      "screenshot": "production-reviewer-pistol121.png",
+      "screenshot_sha256": "7594ecf64c10500594f7b5149ba8cb9dd5a7bd73552336a1915b387ec44593ba"
+    },
+    {
+      "id": 24751738522,
+      "name": "production-diagnostics",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/settings/environments/24751738522/edit",
+      "required_reviewers": [
+        "Pistol121"
+      ],
+      "prevent_self_review": true,
+      "admin_bypass": false,
+      "allowed_branches": [
+        "master"
+      ],
+      "allowed_tags": [],
+      "environment_secrets_present": false,
+      "screenshot": "production-diagnostics-reviewer-pistol121.png",
+      "screenshot_sha256": "70d2e7c98e7cdd5d4d57e1336a651298b4bf592ab1b9cef887e78bf5fcb2cfe2"
+    }
+  ],
+  "verification": "GitHub UI save-success messages plus persisted required-reviewer/self-review/bypass/branch-rule controls",
+  "limits": [
+    "Settings readback is not an authenticated approval of any specific workflow run.",
+    "The new diagnostics environment has no secrets. Restricted diagnostic SSH credentials/account and actual audit remain unverified.",
+    "Protected jobs now require genuine Pistol121 review; the acting account cannot self-approve or bypass.",
+    "No tag allowlist was expanded, production secret was read/changed, workflow was approved, SSH command executed, or service modified."
+  ],
+  "checked_at": "2026-10-19T21:25:34.359796+00:00",
+  "actual_gate_witness": {
+    "run_id": 39326402639,
+    "job_id": 118313297399,
+    "source_revision": "14a922326dd56e331956dbe09775ad7c05298f57",
+    "workflow": "macos-release.yaml",
+    "dry_run": true,
+    "status": "WAITING_REVIEW",
+    "reviewer": "Pistol121",
+    "actor_id": 18214222,
+    "publication": "NOT_RUN",
+    "proof": "GitHub view-pending-deployments dialog names Pistol121; acting account has no approval control."
+  }
+}

@@ -13,6 +13,12 @@ REPRO={
     'unknown':('CI/Triage','Inspect the source-bound job link; exact local command is not verified'),
 }
 
+AGGREGATES={
+    ('.github/workflows/ci.yaml','ci-required'):'python -m tools.ci.required_gate.run',
+    ('.github/workflows/build-server.yaml','server-quality'):'python -m tools.ci.master_quality.run server',
+    ('.github/workflows/native-master.yaml','native-required'):'python -m tools.ci.master_quality.run native',
+}
+
 
 def require(value):
     if not value:raise ValueError('CI triage metadata is incomplete, stale or invalid')
@@ -45,10 +51,14 @@ def classify(run,jobs):
         steps=[s for s in job.get('steps',[]) if s.get('conclusion') in ('failure','timed_out')]
         if not steps and job.get('conclusion') not in ('failure','timed_out','action_required','startup_failure'):continue
         step=steps[0] if steps else {};role=component(job.get('name'));number=step.get('number')
+        command=AGGREGATES.get((str(run.get('path','')).split('@',1)[0],job.get('name')))
+        owner,reproduce=('CI/Triage',command) if command else REPRO[role]
+        if command:role='aggregate'
         if type(number) is not int or not 0<number<=500:number=None
         name=step.get('name','');kind=stage(name)
+        if command and kind=='component-check':kind='aggregate-validation'
         fingerprint=hashlib.sha256((str(run.get('path'))+'|'+role+'|'+name).encode()).hexdigest()
-        failures.append(dict(component=role,owner=REPRO[role][0],reproduce=REPRO[role][1],stage=kind,
+        failures.append(dict(component=role,owner=owner,reproduce=reproduce,stage=kind,
             job_id=job.get('id') if type(job.get('id')) is int else None,step_number=number,
             fingerprint=fingerprint,critical_step=kind+' / step '+str(number) if number else 'job startup / step unavailable',
             root_cause='UNVERIFIED',retry_test=False))

@@ -57,6 +57,22 @@ python3 -m unittest tools.ci.windows_gates.test_transfer tools.ci.windows_gates.
 Actual CI acceptance requires hosted Windows: build, seal, transfer and verify
 using the commands in `flutter-windows.yaml`, then
 `python -m tools.ci.windows_gates.acceptance`. There is no claimed local macOS
-substitute for the Windows native/GUI run. Repeated before/after p50/p95 and
-failure-rate acceptance remain NOT_RUN, deferred to combined epic validation per
-owner. The historical single ~25:20 run is not a percentile distribution.
+substitute for the Windows native/GUI run.
+
+Combined acceptance retained in `evidence/ci/windows-gates-final-2026-10-20.json`
+verifies four evidence ZIPs from native run 39319882366/source 3d22e900, the
+source/run/attempt/manifest handoff, real recovery/relaunch, four actual GUI/SFU
+cases and all eight capture hashes. Two original captures were visually reviewed.
+The four successful after-window sources use the same Windows gate/build recipe.
+
+The frozen baseline contains 15 Windows runs (13 successful); the complete after
+window contains 13 native workflows (12 select Windows: four successful and eight
+cancelled with red required aggregates; one metadata-only workflow skips Windows).
+Nearest-rank successful-completion execution p50/p95 changed from 1520/1611 s to
+877/1025 s. Workflow creation to Windows availability, including waits, changed
+from 1533/1625 s to 1025/1329 s. These are observed small-sample historical
+distributions, not matched-source causal results or a population SLO. Parallel
+runner occupancy increased from 1520/1611 s to 1549/1701 s; no runner-cost saving
+is claimed. All cancellations remain in the outcome record. Their old ref-wide
+root cancellation boundary is addressed separately in PR455. Stable publication,
+installed N-to-N+1 promotion and acoustic/physical capacity are outside this gate.
