@@ -12,7 +12,7 @@ from tools.ci.native.process import ROOT,output
 from tools.qa.local_features.process import stop_group
 from . import catalog,session
 from .plan import PROFILES,require,document
-from .evidence import collect
+from .evidence import collect,collect_failure
 
 
 def execute(profile,baseline):
@@ -50,6 +50,11 @@ def execute(profile,baseline):
         report.update(collect(ROOT,profile,source,public),status='PASS')
     except BaseException as error:
         report.update(status='BLOCKED' if owner is None else 'FAIL',failure_type=type(error).__name__)
+        if owner:
+            try:
+                report['diagnostics'] = collect_failure(ROOT,profile,public)
+            except Exception:
+                report['diagnostics_status'] = 'REJECTED'
         raise
     finally:
         try:
