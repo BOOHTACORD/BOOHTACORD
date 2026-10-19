@@ -31,6 +31,8 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .node-version
+      - name: Test shared immutable native release publication
+        run: node --test tools/release/native_contract/publish.test.mjs
       - name: Test bounded restricted-network evidence readiness
         run: node --test tools/network/restricted/measurement.test.mjs
       - name: Install pinned CI verification dependencies

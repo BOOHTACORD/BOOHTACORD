@@ -36,6 +36,7 @@ export async function sendJson({ fetchImpl, token, url, method = 'GET', body }) 
     },
     ...(body == null ? {} : { body: isBinary ? body : JSON.stringify(body) }),
     signal: AbortSignal.timeout(requestTimeoutMs),
+    redirect: 'error',
   })
 
   if (!response.ok) throw new GitHubApiError(response.status, method, url)
