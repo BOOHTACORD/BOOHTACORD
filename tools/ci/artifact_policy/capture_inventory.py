@@ -62,6 +62,9 @@ def collect(root, component):
                 visited += 1
                 data.require(visited <= MAX_ENTRIES)
                 data.require(not path.is_symlink() and path.resolve() == path)
+                if path.name.startswith('.'):
+                    ignored += 1
+                    continue
                 if path.is_dir():
                     pending.append(path)
                 else:

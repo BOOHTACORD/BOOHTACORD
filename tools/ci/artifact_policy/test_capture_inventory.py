@@ -40,6 +40,16 @@ class CaptureInventoryTests(unittest.TestCase):
             self.assertEqual({'issue342/browser/case/failure.png'}, set(files))
             self.assertEqual(4, ignored)
 
+    def test_hidden_files_and_directories_keep_the_original_upload_exclusion_boundary(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve(); directory = root / '.out/issue342/browser/case'; directory.mkdir(parents=True)
+            (directory / 'frame.png').write_bytes(PNG)
+            (directory / '.last-run.json').write_text('{"status":"passed"}')
+            hidden = directory / '.private'; hidden.mkdir(); (hidden / 'body.json').write_text('{"body":"private-canary"}')
+            files, ignored = capture_inventory.collect(root, 'web')
+            self.assertEqual({'issue342/browser/case/frame.png'}, set(files))
+            self.assertEqual(2, ignored)
+
     def test_linked_root_directory_or_file_is_rejected_without_following(self):
         for kind in ('root', 'directory', 'file'):
             with self.subTest(kind=kind), tempfile.TemporaryDirectory() as tmp:

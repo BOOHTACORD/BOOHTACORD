@@ -36,6 +36,13 @@ class ArtifactWorkflowAdoptionTests(unittest.TestCase):
         self.assertEqual({prefix + suffix for prefix in ('desktop-recovery-windows', 'BOOHTACORD-windows-x64',
                                                          'BOOHTACORD-windows-installer-x64', 'screen-setup-windows')}, names)
 
+    def test_mandatory_profile_part_is_retained_before_deciding_capture_retention(self):
+        for name, job in [('ci-flutter.yaml', 'dart'), ('ci-frontend.yaml', 'browser')]:
+            steps = workflow(name)['jobs'][job]['steps']
+            part = next(i for i, s in enumerate(steps) if s.get('with', {}).get('name', '').startswith(('flutter-part-', 'web-part-')))
+            package = next(i for i, s in enumerate(steps) if 'artifact_policy.run finish' in s.get('run', ''))
+            with self.subTest(workflow=name): self.assertLess(part, package)
+
     def test_receipts_and_native_packages_remain_mandatory_thirty_day_uploads(self):
         for name in ('ci-flutter.yaml', 'ci-frontend.yaml'):
             for job in workflow(name)['jobs'].values():

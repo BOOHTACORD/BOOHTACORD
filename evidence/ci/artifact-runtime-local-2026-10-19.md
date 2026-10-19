@@ -64,3 +64,29 @@ not after-policy savings or local byte-verification of every archive.
 Hosted after uploads, matched per-context measurements, independent API ownership
 binding, controlled-fixture privacy review and install/rollback acceptance remain
 required before closing #387. No release/acceptance retention has been shortened.
+
+## First hosted package and completion review
+
+Draft PR433 predecessor head `d962a424def2a632b141ac6ebc8d7e901f270be3` runs
+CI39255876586 at verified merge checkout `08e758e05911d606cb143b671231233e3afbcb68`.
+Its first browser-conversations job succeeded. Artifact12187638602 was actually
+downloaded: 10116076 ZIP bytes, SHA256
+`89691a79e030ff9501ff0ecc163836c2b01b7dbb85b3d76f945306cfcaa2364c`.
+Independent API ownership/run/head checks and the repository inspect CLI verified
+its exact checkout identity, full manifest and all318 logical files. All312 old
+required paths remain. API expiry confirms seven days for the successful capture
+package, while the mandatory profile part remains30 days. This is one component
+integrity observation, not full PR or final matched performance acceptance.
+
+Review of the actual package found five additional hidden `.last-run.json` files,
+which the original upload action excluded. A failing test reproduced that boundary
+expansion. The collector now excludes hidden files/directories before reading their
+contents. Another failing test found that Dart's capture retention was decided
+before its mandatory part uploaded. That durable part now uploads first; workflow
+policy enforces the order. Retention expressions observe status at publication;
+future runner post-job failures cannot be predicted by an earlier upload step.
+Mandatory profile parts remain durable regardless of later capture/post-job status.
+
+The complete updated local suite passes **829 tests in 42.249 seconds**, Actionlint
+and focused workflow checks. These two fixes still require a new published head
+and fresh CI. The predecessor318-file package is not relabeled as their proof.

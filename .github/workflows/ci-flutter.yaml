@@ -36,6 +36,14 @@ jobs:
         env:
           FLUTTER_EVIDENCE_NAMESPACE: ${{ inputs.evidence_namespace }}
         run: python3 -m tools.ci.flutter_gates.run dart
+      - name: Retain mandatory Dart profile evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: flutter-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-dart
+          path: .out/ci/flutter-parts/dart.json
+          if-no-files-found: error
+          retention-days: 30
       - name: Package verified synthetic Flutter captures
         if: always()
         env:
@@ -50,15 +58,6 @@ jobs:
           path: .out/ci/capture-packages/flutter-dart/
           if-no-files-found: error
           retention-days: ${{ github.event_name == 'pull_request' && startsWith(github.ref, 'refs/pull/') && job.status == 'success' && 7 || 30 }}
-      - name: Retain mandatory Dart profile evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: flutter-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-dart
-          path: .out/ci/flutter-parts/dart.json
-          if-no-files-found: error
-          retention-days: 30
-
   android:
     runs-on: ubuntu-24.04
     timeout-minutes: 30

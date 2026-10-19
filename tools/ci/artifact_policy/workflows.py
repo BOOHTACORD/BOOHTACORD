@@ -34,6 +34,8 @@ def capture_job(job, component, profile, test_command):
     package = [s for s in retained if s.get('with', {}).get('path') == path]
     require(len(package) == 1 and len(retained) == 2)
     item = package[0]
+    proof = next(s for s in retained if s is not item)
+    require(tests[0] < job['steps'].index(proof) < found[1])
     prefix = 'web-visual-' if component == 'web' else 'uiux-flutter-visual-review-'
     name = prefix + CONTEXT + ('-' + profile if component == 'web' else '')
     require(item.get('if') == 'always()' and not item.get('continue-on-error')
