@@ -55,7 +55,7 @@ class AuxiliaryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             manifest = json.loads((ROOT / 'tools/ci/toolchains/native-inputs.json').read_text())
-            files = ['tools/ci/toolchains/auxiliary.json', 'tools/ci/flutter_setup/vendor-locks.json',
+            files = ['clients/flutter/packages/livekit_client/example/pubspec.yaml', 'tools/ci/flutter_setup/locks/livekit_example.lock', 'tools/ci/toolchains/auxiliary.json', 'tools/ci/flutter_setup/vendor-locks.json',
                      'tools/ci/flutter_setup/locks/livekit_client.lock', 'tools/ci/flutter_setup/locks/flutter_webrtc.lock',
                      'clients/flutter/packages/livekit_client/pubspec.yaml', 'clients/flutter/packages/flutter_webrtc/pubspec.yaml',
                      'tools/toolchains.json', 'tools/ci/toolchains/native-inputs.json', *manifest['files']]

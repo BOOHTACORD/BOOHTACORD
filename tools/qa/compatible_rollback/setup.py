@@ -85,12 +85,8 @@ def prepare(work):
     verify_running(directory, current)
     write_receipt(directory, current)
     probe = directory / 'tools/release/rollout/livekit_private_path.py'
-    for attempt in range(3):
-        if subprocess.run(['python3', str(probe), str(directory)]).returncode == 0:
-            break
-        if attempt == 2:
-            raise RuntimeError('Owned LiveKit RoomService did not become ready')
-        time.sleep(1)
+    from readiness import wait_roomservice
+    roomservice_readiness = wait_roomservice(['python3', str(probe), str(directory)])
     from storage import container
     supporting = {}
     for service in ('postgres', 'livekit', 'proxy'):
@@ -101,6 +97,7 @@ def prepare(work):
                 raise RuntimeError('Owned SFU management interfaces must remain unpublished')
         supporting[service] = {'reference': observed['Config']['Image'], 'image_id': observed['Image']}
     metadata = {
+        'fixture_roomservice_readiness': roomservice_readiness,
         'kernel': platform.release(), 'machine': platform.machine(), 'python': platform.python_version(),
         'docker': subprocess.check_output(['docker', 'version', '--format', '{{.Server.Version}}'], text=True).strip(),
         'compose': subprocess.check_output(['docker', 'compose', 'version', '--short'], text=True).strip(),

@@ -99,3 +99,42 @@ reviewed. The isolated scope now recreates that original baseline through the
 actual authenticated read-cursor API and checks it in PostgreSQL, **before** the
 unseen-tail rows are added. New tests reject missing/incorrect/failed baseline
 setup. The later genuinely unseen-row/cursor invariant is unchanged, not removed.
+
+
+Head091cb270 Flutter analysis **FAIL** in job117912239111: Flutter creates an
+independent analyzer context for the SDK example despite the root exclusion.
+The --no-example shortcut did not preserve the original effective analysis graph
+and is removed. The recursively analyzed example now has its own reviewed public
+lock bound to its pubspec, alongside both vendor root locks. Original recursive
+Pub resolution and full analysis/test commands are retained; no analyzer excludes
+or disabled assertions are added. Clean full-source validation is required.
+
+The same head's isolated rollback run39207038831/job117912017235 **FAIL** at
+setup.py:92 after authenticated RoomService readiness did not pass. Artifact
+12165904106 SHA256`22160333025312b6485b5e90d6db282d48f70bc6ed449762b1cc4e8f5efa1e7d`
+confirms no memory/disk/address/registry exhaustion and owned cleanup completed.
+Raw private logs are not exported. Bounded diagnostics now retain only the
+existing probe's allowlisted phase/code/HTTP status; token/URL/private-text
+injection is rejected. No readiness retries/timeouts/assertions are relaxed.
+The failure reason remains unproven until a new isolated diagnostic run supplies
+that code; an eventual successful run is not relabeled as proof of its cause.
+
+
+The isolated diagnostic f8e290d2 / run39208432313/job117916242607 reproduced the
+failure and exported only `roomservice ConnectionRefusedError`; artifact12166394618
+SHA256`bd31e1d8784978c1892b58aaae44e2b18d31c74b3666d17cf8936cb6348322fb`.
+A bounded startup-only waiter now permits at most60 seconds for that exact refusal
+and still requires the canonical authenticated probe to succeed. Auth/ACL,
+endpoint, DNS, malformed/unknown output and command exceptions fail immediately.
+Four focused tests prove eventual actual success after the old3-attempt window,
+terminal deadline failure and no retry/logging of credentials/unknown errors.
+An independent hosted diagnostic verifies this startup change before integration;
+no runtime assertion, browser20s timeout or2px tolerance is altered.
+
+Local updated source: **634 Python tests PASS** (40.143s),7 focused Node tests PASS.
+Fresh Git-extracted source with empty Pub cache passes original recursive app/
+vendor Pub commands and **full Flutter analysis**; all three reviewed locks stay
+byte-identical. The third example lock preserves the analyzer coverage missed by
+the temporary --no-example approach. Final hosted candidate acceptance remains
+required; the readiness diagnostic is not a trusted master producer or native
+publication proof.

@@ -1,6 +1,7 @@
 """Allowlisted failure facts; never export raw private build/runtime logs."""
 import ast
 import re
+from tools.release.rollout.livekit_private_path import SAFE_PROBE_CODES
 
 
 def public_guards(root):
@@ -26,7 +27,13 @@ def diagnose(text, messages):
         if re.fullmatch(r'(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\.py', relative):
             frames.append({'file': relative, 'line': int(line), 'function': function})
     guards = re.findall(r'(?:ValueError|RuntimeError): ([^\n]*)', text)
-    return {'frames': frames[-16:], 'guard_messages': sorted({m.strip() for m in guards if m.strip() in messages}),
+    probes = []
+    for phase, code, status in re.findall(r'LiveKit private RoomService preflight failed \((dns|roomservice|probe|unknown) ([A-Za-z0-9_]+)(?: HTTP ([0-9]{3}))?\)', text):
+        if code in SAFE_PROBE_CODES and (not status or 100 <= int(status) <= 599):
+            row = {'phase':phase,'code':code}
+            if status: row['http_status'] = int(status)
+            if row not in probes: probes.append(row)
+    return {'livekit_probe_failures': probes, 'frames': frames[-16:], 'guard_messages': sorted({m.strip() for m in guards if m.strip() in messages}),
             'exit_codes': sorted({int(n) for n in re.findall(r'(?:exit code: |non-zero exit status )(\d+)', text)}),
             'memory_exhaustion': 'out of memory' in text.lower() or 'signal: killed' in text.lower(),
             'disk_exhaustion': 'no space left on device' in text.lower(),

@@ -20,7 +20,9 @@ class VendorLockTests(unittest.TestCase):
             manifest = json.loads((ROOT / 'tools/ci/flutter_setup/vendor-locks.json').read_text())
             for name in ['tools/ci/flutter_setup/vendor-locks.json',
                          'clients/flutter/packages/livekit_client/pubspec.yaml',
-                         'tools/ci/flutter_setup/locks/livekit_client.lock']:
+                         'tools/ci/flutter_setup/locks/livekit_client.lock',
+                         'clients/flutter/packages/livekit_client/example/pubspec.yaml',
+                         'tools/ci/flutter_setup/locks/livekit_example.lock']:
                 path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes((ROOT/name).read_bytes())
             vendor_locks.validate(root,'livekit_client')
             path=root/'clients/flutter/packages/livekit_client/pubspec.yaml';path.write_text(path.read_text()+'\n')
@@ -39,5 +41,19 @@ class VendorLockTests(unittest.TestCase):
         self.assertEqual(prepare.call_count,2)
         for name in ('livekit_client','flutter_webrtc'):
             path=ROOT/'clients/flutter/packages'/name
-            self.assertIn(call('flutter','pub','get','--enforce-lockfile','--no-example',cwd=path),run.call_args_list)
+            self.assertIn(call('flutter','pub','get','--enforce-lockfile',cwd=path),run.call_args_list)
             self.assertIn(call('flutter','test','--no-pub',cwd=path),run.call_args_list)
+
+    def test_recursive_example_analyzer_keeps_its_own_reviewed_lock(self):
+        with tempfile.TemporaryDirectory() as name:
+            root=Path(name).resolve()
+            projects={'livekit_client':'livekit_client','flutter_webrtc':'flutter_webrtc','livekit_example':'livekit_client/example'}
+            files=['tools/ci/flutter_setup/vendor-locks.json']
+            for package,folder in projects.items():
+                files += ['clients/flutter/packages/'+folder+'/pubspec.yaml','tools/ci/flutter_setup/locks/'+package+'.lock']
+            for file in files:
+                p=root/file;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes((ROOT/file).read_bytes())
+            vendor_locks.prepare(root,'livekit_client')
+            for package in ('livekit_client','livekit_example'):
+                target=root/'clients/flutter/packages'/projects[package]/'pubspec.lock'
+                self.assertEqual(target.read_bytes(),vendor_locks.validate(root,package))

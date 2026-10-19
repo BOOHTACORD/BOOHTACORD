@@ -16,7 +16,7 @@ def main():
     for package in ("livekit_client", "flutter_webrtc"):
         path = app / "packages" / package
         prepare(ROOT, package)
-        run("flutter", "pub", "get", "--enforce-lockfile", "--no-example", cwd=path)
+        run("flutter", "pub", "get", "--enforce-lockfile", cwd=path)
         run("flutter", "test", "--no-pub", cwd=path)
     run("flutter", "analyze", "--no-pub", "--no-fatal-infos", cwd=app)
 
