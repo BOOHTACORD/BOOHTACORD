@@ -2,21 +2,15 @@ name: Installed Windows updater acceptance
 
 on:
   workflow_dispatch:
-  push:
-    branches: [codex/issue337-desktop-updates]
-    paths:
-      - .github/workflows/windows-updater-acceptance.yaml
-      - clients/flutter/integration_test/desktop_updates/windows_app.dart
-      - clients/flutter/lib/src/app/desktop_updates/**
-      - clients/flutter/lib/src/features/updates/**
-      - clients/flutter/native/desktop_recovery/**
-      - clients/flutter/windows/runner/**
-      - tools/build/desktop_updater/**
-      - tools/build/windows/installer.py
-      - tools/qa/desktop_updates/windows_*.py
-      - tools/qa/desktop_updates/build_windows.py
-      - tools/qa/desktop_updates/loopback_proxy/**
-      - backend/internal/storage/reserve_upload_space/**
+    inputs:
+      publish_qa:
+        description: Explicitly publish an immutable QA-only prerelease (never latest)
+        type: boolean
+        default: false
+      envelope_revision:
+        description: Immutable 40-character commit containing the owner-signed QA fixture for this source
+        type: string
+        required: true
 
 concurrency:
   group: installed-windows-updater-${{ github.ref }}
@@ -52,7 +46,7 @@ jobs:
       - name: Verify native API, PostgreSQL and SFU before rebuilding clients
         run: python -m tools.qa.desktop_updates.windows_stack
   installed-update:
-    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_qa && github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
     environment: production
     needs: native-stack
     runs-on: windows-2022
@@ -125,14 +119,16 @@ jobs:
             }
             core.notice(`WAITING FOR OWNER SIGNATURE: ${release.html_url}`);
       - name: Run real installed update with native loopback API, PostgreSQL and SFU
+        env:
+          QA_ENVELOPE_REVISION: ${{ inputs.envelope_revision }}
         run: python -m tools.qa.desktop_updates.windows_journey --source $env:GITHUB_SHA --wait-seconds 1800
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
-          name: windows-installed-update-${{ github.sha }}
+          name: windows-installed-update-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             .out/issue337-windows-acceptance/
             .out/issue337-windows-packages/78/qa-identity.json
             .out/issue337-windows-packages/79/qa-identity.json
-          if-no-files-found: ignore
+          if-no-files-found: error
           retention-days: 30

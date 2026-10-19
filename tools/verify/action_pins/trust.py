@@ -4,6 +4,7 @@ import re
 
 UPSTREAM = "github.repository == 'Egkurilov/BOOHTACORD'"
 MASTER = UPSTREAM + " && github.ref == 'refs/heads/master'"
+QA_PUBLISH = "github.event_name == 'workflow_dispatch' && inputs.publish_qa && " + MASTER
 
 
 def release_guard(prefix):
@@ -21,8 +22,8 @@ GUARDS = {
     ('promote-windows-client-update.yaml', 'prepare-catalog-pr'): MASTER + " && needs.push-candidate.outputs.changed == 'true'",
     ('promote-windows-client-update.yaml', 'push-candidate'): MASTER,
     ('promote-windows-client-update.yaml', 'candidate-ci'): MASTER + " && needs.push-candidate.outputs.changed == 'true'",
-    ('desktop-updater-acceptance.yaml', 'macos-beta-package'): MASTER,
-    ('windows-updater-acceptance.yaml', 'installed-update'): MASTER,
+    ('desktop-updater-acceptance.yaml', 'macos-beta-package'): QA_PUBLISH,
+    ('windows-updater-acceptance.yaml', 'installed-update'): QA_PUBLISH,
     ('audit-attachment-volume.yaml', 'audit'): MASTER,
     ('qa08-active-upload.yaml', 'sample'): MASTER,
     ('qa11-preflight.yaml', 'inspect'): MASTER,

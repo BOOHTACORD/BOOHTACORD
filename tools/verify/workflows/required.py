@@ -24,5 +24,5 @@ def check(document, roles, require):
     for name in roles.values():
         require(not jobs[name].get('continue-on-error'), 'Mandatory selector/contracts/components cannot ignore failures')
     outputs = jobs[roles['changes']].get('outputs', {})
-    for key in ('contracts', 'backend', 'web', 'flutter', 'windows', 'map_version', 'map_sha256', 'uncertain'):
+    for key in ('contracts', 'backend', 'web', 'flutter', 'windows', 'map_version', 'map_sha256', 'uncertain', 'actual_profiles', 'actual_required', 'actual_map_sha256', 'actual_release_required', 'actual_physical_required'):
         require(outputs.get(key) == '${{ steps.select.outputs.' + key + ' }}', 'Selector evidence must reach the aggregate')

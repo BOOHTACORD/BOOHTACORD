@@ -20,8 +20,11 @@ from .windows_stack import Stack
 def wait_envelope(source, seconds):
     if not re.fullmatch('[a-f0-9]{40}', source):
         raise ValueError('Exact build source required')
-    url = ('https://raw.githubusercontent.com/Egkurilov/BOOHTACORD/'
-           'codex/issue337-desktop-updates/evidence/fixtures/desktop-updates/windows-' + source + '.json')
+    revision = os.environ.get('QA_ENVELOPE_REVISION', '')
+    if not re.fullmatch('[a-f0-9]{40}', revision):
+        raise ValueError('Exact immutable envelope fixture revision required')
+    url = ('https://raw.githubusercontent.com/Egkurilov/BOOHTACORD/' + revision +
+           '/evidence/fixtures/desktop-updates/windows-' + source + '.json')
     deadline = time.monotonic() + seconds
     print('WAITING_FOR_OWNER_SIGNED_ENVELOPE source=' + source, flush=True)
     while time.monotonic() < deadline:

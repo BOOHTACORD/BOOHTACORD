@@ -29,6 +29,11 @@ jobs:
       server: ${{ steps.select.outputs.server }}
       server_release_impact: ${{ steps.select.outputs.server_release_impact }}
       native_release_impact: ${{ steps.select.outputs.native_release_impact }}
+      actual_profiles: ${{ steps.select.outputs.actual_profiles }}
+      actual_required: ${{ steps.select.outputs.actual_required }}
+      actual_map_sha256: ${{ steps.select.outputs.actual_map_sha256 }}
+      actual_release_required: ${{ steps.select.outputs.actual_release_required }}
+      actual_physical_required: ${{ steps.select.outputs.actual_physical_required }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -66,10 +71,17 @@ jobs:
     if: needs.changes.outputs.windows == 'true'
     uses: ./.github/workflows/flutter-windows.yaml
 
+  actual:
+    needs: changes
+    if: needs.changes.outputs.actual_required == 'true'
+    uses: ./.github/workflows/ci-actual-acceptance.yaml
+    with:
+      profiles: ${{ needs.changes.outputs.actual_profiles }}
+
   ci-required:
     name: ci-required
     if: always()
-    needs: [changes, contracts, backend, frontend, flutter, windows]
+    needs: [changes, contracts, backend, frontend, flutter, windows, actual]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -84,5 +96,5 @@ jobs:
       - name: Require successful selector, contracts and applicable component gates
         env:
           CI_NEEDS: ${{ toJSON(needs) }}
-          CI_JOBS: '{"changes":"changes","contracts":"contracts","backend":"backend","web":"frontend","flutter":"flutter","windows":"windows"}'
+          CI_JOBS: '{"changes":"changes","contracts":"contracts","backend":"backend","web":"frontend","flutter":"flutter","windows":"windows","actual":"actual"}'
         run: python3 -m tools.ci.required_gate.run

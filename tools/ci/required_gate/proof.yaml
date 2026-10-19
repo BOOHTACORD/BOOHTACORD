@@ -16,16 +16,24 @@ jobs:
       map_version: ${{ steps.select.outputs.map_version }}
       map_sha256: ${{ steps.select.outputs.map_sha256 }}
       uncertain: ${{ steps.select.outputs.uncertain }}
+      actual_profiles: ${{ steps.select.outputs.actual_profiles }}
+      actual_required: ${{ steps.select.outputs.actual_required }}
+      actual_map_sha256: ${{ steps.select.outputs.actual_map_sha256 }}
+      actual_release_required: ${{ steps.select.outputs.actual_release_required }}
+      actual_physical_required: ${{ steps.select.outputs.actual_physical_required }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - id: select
         run: |
           python3 - <<'PY'
-          import os
+          import os, json
+          from tools.ci.actual_acceptance.plan import select
           from tools.ci.select_changes.selection import classify
           result = classify(['backend/ci-scheduler-fixture'])
           gates = result.pop('gates')
           result.update({name: name in gates for name in ['contracts', 'backend', 'web', 'flutter', 'windows']})
+          actual = select(['backend/ci-scheduler-fixture'])
+          result.update(actual_profiles=json.dumps(actual['profiles']),actual_required=True,actual_map_sha256=actual['map_sha256'],actual_release_required='[]',actual_physical_required='[]')
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
               out.write(''.join(f'{k}={str(v).lower() if type(v) is bool else v}\n' for k, v in result.items()))
           PY
@@ -60,14 +68,20 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - run: 'true'
+  actual:
+    needs: changes
+    if: needs.changes.outputs.actual_required == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - run: 'true'
   ci-required:
     name: ci-required
     if: always()
-    needs: [changes, contracts, backend, frontend, flutter, windows]
+    needs: [changes, contracts, backend, frontend, flutter, windows, actual]
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - env:
           CI_NEEDS: ${{ toJSON(needs) }}
-          CI_JOBS: '{"changes":"changes","contracts":"contracts","backend":"backend","web":"frontend","flutter":"flutter","windows":"windows"}'
+          CI_JOBS: '{"changes":"changes","contracts":"contracts","backend":"backend","web":"frontend","flutter":"flutter","windows":"windows","actual":"actual"}'
         run: python3 -m tools.ci.required_gate.run
