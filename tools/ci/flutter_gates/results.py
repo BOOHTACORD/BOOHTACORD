@@ -18,6 +18,18 @@ def expected_sdk():
             'framework_revision': source['framework_revision']}
 
 
+def validate_artifacts(profile, measured):
+    required = set(VISUALS) if profile == 'dart' else ANDROID_FILES
+    allowed = required if profile == 'dart' else required | {'LICENSE-RNNoise.txt', 'rnnoise-component.cdx.json'}
+    if not isinstance(measured, dict) or not required <= set(measured) <= allowed:
+        raise ValueError('Mandatory native artifact evidence is missing or unexpected')
+    for item in measured.values():
+        if (not isinstance(item, dict) or set(item) != {'bytes', 'sha256'}
+                or type(item['bytes']) is not int or not 0 < item['bytes'] <= 256 * 1024 * 1024
+                or not isinstance(item['sha256'], str) or not re.fullmatch('[0-9a-f]{64}', item['sha256'])):
+            raise ValueError('Public native artifact needs a measured finite size and digest')
+
+
 def validate(parts, needs, source, run_id, attempt, namespace='flutter'):
     if (not isinstance(needs, dict) or set(needs) != set(OPERATIONS)
             or any(not isinstance(v, dict) or v.get('result') != 'success' for v in needs.values())
@@ -35,15 +47,6 @@ def validate(parts, needs, source, run_id, attempt, namespace='flutter'):
                 or type(part['seconds']) not in (int, float)
                 or not math.isfinite(part['seconds']) or not 0 < part['seconds'] < 3600):
             raise ValueError('Native profile source, execution, SDK or coverage differs')
-        measured = part['artifacts']
-        required = set(VISUALS) if part['profile'] == 'dart' else ANDROID_FILES
-        allowed = required if part['profile'] == 'dart' else required | {'LICENSE-RNNoise.txt', 'rnnoise-component.cdx.json'}
-        if not isinstance(measured, dict) or not required <= set(measured) <= allowed:
-            raise ValueError('Mandatory native artifact evidence is missing or unexpected')
-        for item in measured.values():
-            if (not isinstance(item, dict) or set(item) != {'bytes', 'sha256'}
-                    or type(item['bytes']) is not int or not 0 < item['bytes'] <= 256 * 1024 * 1024
-                    or not isinstance(item['sha256'], str) or not re.fullmatch('[0-9a-f]{64}', item['sha256'])):
-                raise ValueError('Public native artifact needs a measured finite size and digest')
+        validate_artifacts(part['profile'], part['artifacts'])
         seen[part['profile']] = part
     return seen

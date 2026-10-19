@@ -13,7 +13,10 @@ VISUALS = (
     'flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png',
 ) + tuple(f'flutter-admin-{section}-{profile}-{size}.png'
           for section in ('guild', 'members', 'roles', 'channels', 'audit', 'media', 'readiness')
-          for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900')))
+          for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900'))) + tuple(
+    f'flutter-{channel}-{profile}-{size}.png'
+    for channel in ('text-channel', 'dm-conversation')
+    for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900')))
 
 
 def regular(path, maximum):

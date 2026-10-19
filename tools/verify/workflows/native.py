@@ -9,6 +9,8 @@ from .selection import require
 def check(workflows):
     from tools.ci.flutter_gates.workflow import validate
     validate(workflows['ci-flutter.yaml'])
+    from tools.ci.flutter_gates.shadow_workflow import validate as validate_shadow
+    validate_shadow(workflows['flutter-ci-shadow.yaml'])
     android = workflows['android-release.yaml']['jobs']
     gates = {name for name, job in android.items() if job.get('uses') == './.github/workflows/ci-flutter.yaml'}
     signing = [job for job in android.values() if 'tools.build.android.run' in commands(job)]

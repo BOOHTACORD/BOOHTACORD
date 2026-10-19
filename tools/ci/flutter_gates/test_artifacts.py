@@ -8,6 +8,12 @@ from . import artifacts
 
 
 class ArtifactTests(unittest.TestCase):
+    def test_mandatory_visual_inventory_keeps_every_conversation_capture(self):
+        self.assertEqual(34, len(artifacts.VISUALS))
+        for channel in ('text-channel', 'dm-conversation'):
+            for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900')):
+                self.assertIn(f'flutter-{channel}-{profile}-{size}.png', artifacts.VISUALS)
+
     def test_all_current_visual_captures_are_mandatory_valid_nonempty_pngs(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary).resolve()

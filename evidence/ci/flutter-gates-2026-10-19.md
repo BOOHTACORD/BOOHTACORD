@@ -1,6 +1,6 @@
 # CICD-06 / #390 local implementation checkpoint
 
-Status: **NOT_RUN for hosted native integration, comparative timing and master acceptance**.
+Status: **Initial source `01f28743` profiles/artifacts PASS; current measurement/34-capture candidate, comparative timing and master acceptance NOT_RUN**.
 Parent #382 and issue #390 remain open.
 
 Prepared independently from master `f1b19038` while #388's immutable Web candidate
@@ -23,7 +23,7 @@ missing/optional uploads, foreign artifact patterns and the unchanged shared
 change-selection matrix. Real `flutter test`, Gradle, APK inspection, capture
 review and p50/p95/runner-minute comparisons remain pending.
 
-The final full local Python suite passed **659 tests in 39.525 seconds**. The
+The initial full local Python suite passed **659 tests in 39.525 seconds**. The
 focused suite passes **26 tests** after source/SDK/routing guards. The existing
 vendor-lock regression now patches the shared execution boundary and still calls
 the original local entrypoint, preserving both vendor pub/test assertions.
@@ -37,3 +37,32 @@ The PowerShell workflow verifier initially rejected the old monolithic command
 expectation after execution moved into the profiles. Its checks now
 require both profiles and the aggregate; the Python native workflow policy
 rejects optional commands, children, artifacts and stale artifact selection.
+
+The measurement and capture-inventory update passes **679 local Python tests in
+39.359 seconds**, plus Actionlint and the complete PowerShell workflow policy
+(28 workflows and one local action). Measurement tests were red before adding
+the legacy driver, phase state, strict comparator, bounded input/API reader and
+manual workflow policy. They cover command/hash drift, failed control phases,
+stale PASS overwrite, actual-job/source/attempt/runner inconsistencies, missing
+APK/capture proof, invalid fan-in chronology and a complete `NO_GAIN` outcome.
+Unit/workflow-policy reference data is hash-bound and usable without Git history;
+the actual hosted legacy control independently retrieves and verifies the
+original Git blobs using the required full-history checkout.
+
+Initial hosted CI `39226238029`, PR #429 head `01f28743`, checkout `62e95c1b`,
+successfully completed Dart, Android and the stable aggregate. All relevant ZIP
+digests were verified. The actual APK is 159344909 bytes; its file digest,
+application/debug-signing/source manifest and complete checksums match the
+retained Android execution part. The UI archive contains **34 PNGs**. Original
+checkout `31a13437` and new `62e95c1b` have identical Flutter application,
+toolchain and framework inputs; 32 PNGs are byte-identical. Four changed Media
+source files were inspected: their displayed refresh time changed from 08:32 to
+08:58, with the same mobile/desktop geometry and text wrapping. Detailed public
+source, artifact digests and limitations are retained in
+`flutter-profile-diagnostic-2026-10-19.json`.
+
+That inspection found a validation gap: the initial required list covered 28 of
+the 34 uploaded frames. A focused failing test now requires all six existing
+text/DM conversation frames too. The original uploaded review set was preserved;
+the corrected inventory still requires fresh actual CI evidence. The first
+diagnostic is not relabeled as final 34-part coverage or a measured speedup.

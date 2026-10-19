@@ -28,7 +28,7 @@ existing versioned public SDK cache is reused; pub dependencies remain uncached
 and private to each job. No Flutter build output, APK or capture is cached or
 transferred as a dependency of the other child.
 
-The Dart driver requires all 28 existing capture filenames, bounded PNG headers,
+The Dart driver requires all 34 existing capture filenames, bounded PNG headers,
 nonempty measured files and SHA256 values. The original navigation capture and
 UI/UX review set remain mandatory uploads. Android requires the actual debug APK,
 the builder's source-bound application/signing manifest and exact measured
@@ -62,3 +62,41 @@ durations, whole critical path, p50/p95 and runner-minutes with the retained
 monolithic baseline; report sample counts, setup/upload overhead, source revisions
 and runner type. Local command mocks do not provide those measurements. Do not
 claim a latency or runner-cost reduction from splitting a YAML job alone.
+
+## Repeatable native shadow comparison
+
+`flutter-ci-shadow.yaml` is a read-only manual workflow. Three serial samples of
+the original job run alongside three serial samples of the split reusable gate.
+Both arms use the same exact app source, SDK selection and run attempt. The
+legacy control executes hash-verified `native/flutter.py` and Android builder
+source from `f1b19038`, plus the unchanged two-mode Kotlin script. Its workflow
+template is independently bound to that original workflow's SHA256. It preserves
+the original Dart/vendor/analyze commands, their order, all visual uploads, both
+Kotlin modes, debug pub/plugin regeneration, actual APK inspection and APK upload.
+Only the finite measurement wrappers, unique artifact names and public execution
+proof are added. Control phases execute real processes; unit-boundary mocks are
+not runtime samples.
+
+The comparison requires all 13 actual hosted job identities and nine bounded
+current-source/run/attempt/namespace artifacts. It rejects incomplete, failed,
+cancelled, foreign, duplicated or unmeasured samples and verifies that the two
+new profiles use different runner VMs. Critical time includes SDK setup, uploads,
+internal waiting and the final Flutter aggregate. Runner-minutes sum actual job
+occupancy, with Dart and Android distributions also reported separately. The
+external comparison job is measurement overhead, not part of the production gate.
+The legacy control includes finite hash/source-check instrumentation; these are
+descriptive same-run observations, not a general hardware or billing claim.
+With three samples, p50 is the median and nearest-rank p95 is the maximum.
+`NO_GAIN` is retained and fails the comparison if either new critical percentile
+is not lower. A failed real test is never discarded or retried into success.
+
+The first hosted diagnostic is recorded separately in
+`evidence/ci/flutter-profile-diagnostic-2026-10-19.json`. It proved the two profile
+jobs, aggregate and actual uploaded APK/manifest/checksums. Auditing its archive
+found 34 PNGs although the initial mandatory subset contained 28; a focused test
+then added the six text/DM conversation captures to the mandatory inventory.
+The corrected candidate requires a fresh run. All 34 old/new uploaded PNGs were
+compared: 32 are byte-identical, while the two Media views only changed their
+displayed refresh time. Those four old/new Media files were visually inspected;
+no new screenshot baseline was approved. This first diagnostic is not comparative
+performance or final-source acceptance.
