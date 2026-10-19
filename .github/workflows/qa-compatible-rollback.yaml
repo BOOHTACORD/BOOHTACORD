@@ -3,6 +3,10 @@ name: Compatible rollback acceptance
 on:
   workflow_dispatch:
     inputs:
+      installation:
+        description: Also exercise actual isolated SSH installs, same-SHA retry, interruption and failures
+        type: boolean
+        default: false
       current_source:
         description: Exact 40-character current source with successful master producer
         type: string
@@ -68,8 +72,15 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Test rollback evidence and isolation guards
         run: python -m unittest tools.qa.compatible_rollback.test_evidence tools.qa.compatible_rollback.test_isolation tools.qa.compatible_rollback.test_ci_proof tools.qa.compatible_rollback.test_source_inputs tools.qa.compatible_rollback.test_diagnostics tools.qa.compatible_rollback.test_builder_identity tools.release.rollback.test_rollout tools.build.server.test_smoke_readiness tools.build.server.test_runtime_inputs tools.build.server.test_social_preview tools.build.server.test_image_audio_flag
+      - name: Test isolated trusted installation evidence and boundaries
+        if: inputs.installation
+        run: python -m unittest tools.qa.trusted_delivery.test_attempt tools.qa.trusted_delivery.test_catalog tools.qa.trusted_delivery.test_faults tools.qa.trusted_delivery.test_receipts tools.qa.trusted_delivery.test_ssh_fixture tools.qa.trusted_delivery.test_variant tools.qa.trusted_delivery.test_evidence tools.qa.trusted_delivery.test_runtime_inputs tools.qa.trusted_delivery.test_runtime_workflow tools.qa.trusted_delivery.test_interruption
       - name: Rehearse actual signed rollback with two browser observers
+        if: ${{ !inputs.installation }}
         run: python -m tools.qa.compatible_rollback.run --ci-proof .out/issue60/ci-proof.json
+      - name: Rehearse shipping SSH install and recovery on the isolated real stack
+        if: inputs.installation
+        run: python -m tools.qa.trusted_delivery.run --ci-proof .out/issue60/ci-proof.json
       - name: Retain only sanitized runtime evidence and synthetic captures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -80,5 +91,11 @@ jobs:
             .out/issue60/runtime/acceptance.json
             .out/issue60/runtime/browser.json
             .out/issue60/runtime/*.png
+            .out/issue395/runtime/run.json
+            .out/issue395/runtime/delivery.json
+            .out/issue395/runtime/negatives.json
+            .out/issue395/runtime/browser.json
+            .out/issue395/runtime/build-*.json
+            .out/issue395/runtime/*.png
           if-no-files-found: error
           retention-days: 30

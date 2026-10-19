@@ -1,0 +1,17 @@
+[
+  {"name":"baseline","source":"baseline"},
+  {"name":"initial_maintenance","source":"baseline"},
+  {"name":"initial","source":"baseline"},
+  {"name":"upgrade_maintenance","source":"baseline"},
+  {"name":"upgraded","source":"next"},
+  {"name":"retry_maintenance","source":"next"},
+  {"name":"retried","source":"next"},
+  {"name":"interrupted_maintenance","source":"next"},
+  {"name":"recovered","source":"next"},
+  {"name":"recovery_retry_maintenance","source":"next"},
+  {"name":"recovery_retried","source":"next"},
+  {"name":"rollback_maintenance","source":"next"},
+  {"name":"rolled_back","source":"baseline"},
+  {"name":"restore_maintenance","source":"baseline"},
+  {"name":"restored","source":"next"}
+]
