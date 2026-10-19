@@ -1,5 +1,6 @@
 """Finite read-only native control derived from the immutable original workflow."""
 from tools.ci.runner_pool.routing import LINUX
+from tools.ci.toolchains.auxiliary import policy
 import copy
 import hashlib
 import json
@@ -32,6 +33,10 @@ def definition():
                 'bash tools/verify/android_kotlin/verify_android_kotlin_modes.sh': 'python3 -m tools.ci.flutter_gates.legacy kotlin',
                 'python3 -m tools.build.android.run --debug': 'python3 -m tools.ci.flutter_gates.legacy apk'}
     for step in legacy['steps']:
+        if step.get('uses', '').startswith('actions/setup-java@'):
+            # Both cohorts use the resolvable official pin for the same runtime;
+            # the original source bytes and phase inventory stay frozen.
+            step['with']['java-version'] = policy(ROOT)['java']
         if step.get('run') in commands:
             step['run'] = commands[step['run']]
         if step.get('uses') == UPLOAD:

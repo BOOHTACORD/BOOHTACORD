@@ -11,6 +11,12 @@ ROOT = Path(__file__).resolve().parents[3]
 
 
 class AuxiliaryTests(unittest.TestCase):
+    def test_java_hotfix_can_be_resolved_from_official_release_metadata_without_cache(self):
+        evidence = json.loads((ROOT / 'evidence/ci/temurin-hotfix-resolution-2026-10-20.json').read_text())
+        reviewed = auxiliary.policy(ROOT)
+        self.assertEqual(evidence['version_data']['semver'], reviewed['java'])
+        self.assertEqual(evidence['version_data']['openjdk_version'], reviewed['java_runtime'])
+
     def documents(self):
         return {p.name: yaml.load(p.read_text(), Loader=yaml.BaseLoader)
                 for p in (ROOT / '.github/workflows').glob('*.yaml')}

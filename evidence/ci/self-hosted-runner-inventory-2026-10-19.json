@@ -95,8 +95,8 @@
     "https://github.com/Egkurilov/BOOHTACORD/settings/actions/runners",
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
-  "local_checks": "389 CI/policy/native-contract/promotion unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
-  "rollout_gate": "Four final-source probes PASS on run 39323598802. Required PR checks pending after bounded status-observation retry refinement.",
+  "local_checks": "390 CI/policy/native-contract/promotion unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
+  "rollout_gate": "Pool probes and trusted-delivery acceptance PASS. Full required application CI pending after correcting the cold Java download identity.",
   "resource_limits": {
     "heavy_slots": 2,
     "heavy_cpu_each": 2,
@@ -110,15 +110,15 @@
   },
   "pool_acceptance": {
     "status": "PASS",
-    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39323598802",
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39324247882",
     "run_attempt": 1,
-    "source_commit": "774b9a70f72c1a5d8df778ed39244cae12da66a8",
+    "source_commit": "c8503f724624cf2f921ace9fdc69010d8953a82d",
     "checks": [
       "Two isolated PostgreSQL-service probes succeeded on heavy slots",
       "Two metadata probes succeeded with 512 MiB memory limit",
       "Completed job registrations disappeared and fresh guest runner IDs appeared"
     ],
-    "limit": "A subsequent bounded retry for transient read-only status observation is being validated; mandatory PR CI is still required."
+    "limit": "All four probes passed with bounded read-only observation retry. Required application CI revealed an existing unresolvable cold Java pin; correction keeps the same reviewed runtime."
   },
   "isolation_limit": "Unprivileged UID-isolated containers share the host kernel; no hardware VM isolation or media capacity claim.",
   "controller_sha256": {

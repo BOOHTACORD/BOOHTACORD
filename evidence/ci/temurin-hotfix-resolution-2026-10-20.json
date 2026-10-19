@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "scope": "Official download identity for the already-reviewed Java runtime; Android build acceptance is separate",
+  "source_url": "https://api.adoptium.net/v3/assets/feature_releases/17/ga?architecture=x64&image_type=jdk&os=linux&page_size=3",
+  "observed_at_utc": "2026-10-19T21:07:00Z",
+  "response_sha256": "85a9cb95dcde905b46fbf84ce6b0bc650cfbff1382c1e4b86c8e3450a792a527",
+  "version_data": {
+    "build": 1,
+    "major": 17,
+    "minor": 0,
+    "openjdk_version": "17.0.20.1+1",
+    "patch": 1,
+    "security": 20,
+    "semver": "17.0.20+101"
+  },
+  "release_name": "jdk-17.0.20.1+1",
+  "package": {
+    "checksum": "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e",
+    "checksum_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz.sha256.txt",
+    "download_count": 3773379,
+    "link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz",
+    "metadata_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz.json",
+    "name": "OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz",
+    "signature_link": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz.sig",
+    "size": 193252603
+  },
+  "cold_failure_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39324256479/job/118306874144",
+  "explanation": "The cached label 17.0.20+1 is not a resolvable Adoptium SemVer. 17.0.20+101 selects the same 17.0.20.1+1 runtime from official cold-download metadata."
+}
