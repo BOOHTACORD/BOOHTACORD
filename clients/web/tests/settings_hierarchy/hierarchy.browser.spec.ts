@@ -108,6 +108,25 @@ test('profile and password cancellation send no mutation; explicit name save exp
  await expect(page.getByText('Завершённый сеанс потеряет доступ к сообщениям и голосу.',{exact:true})).toBeVisible()
  expect(writes).toBe(2)
 })
+test('profile avatar removal stays inside the card at enlarged mobile text',async({page},info)=>{
+ await page.route('**/profile-avatar-fixture.svg',route=>route.fulfill({status:200,contentType:'image/svg+xml',body:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#423657"/></svg>'}))
+ for(const width of [390,432]){
+  await page.setViewportSize({width,height:900});await open(page,'profile&avatar=1',200)
+  const panel=page.locator('.profile-panel'),remove=page.getByRole('button',{name:'Удалить',exact:true})
+  await expect(remove).toBeVisible()
+  const geometry=await page.evaluate(()=>{
+   const panel=document.querySelector('.profile-panel')!.getBoundingClientRect(),avatar=document.querySelector('.profile-avatar-row > .profile-avatar')!.getBoundingClientRect(),copy=document.querySelector('.profile-avatar-copy')!.getBoundingClientRect(),button=document.querySelector('.profile-avatar-row > .profile-secondary-button')!.getBoundingClientRect()
+   return {panelLeft:panel.left,panelRight:panel.right,avatarRight:avatar.right,copyLeft:copy.left,copyBottom:copy.bottom,buttonLeft:button.left,buttonTop:button.top,buttonRight:button.right,viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth}
+  })
+  expect(geometry.buttonLeft,JSON.stringify(geometry)).toBeGreaterThanOrEqual(geometry.panelLeft)
+  expect(geometry.buttonRight,JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.panelRight+1)
+  expect(geometry.copyLeft,JSON.stringify(geometry)).toBeGreaterThanOrEqual(geometry.avatarRight)
+  expect(geometry.buttonLeft,JSON.stringify(geometry)).toBeGreaterThanOrEqual(geometry.copyLeft-1)
+  expect(geometry.buttonTop,JSON.stringify(geometry)).toBeGreaterThanOrEqual(geometry.copyBottom)
+  expect(geometry.scrollWidth,JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.viewport)
+  await page.screenshot({path:info.outputPath(`profile-avatar-removal-${width}.png`),fullPage:true})
+ }
+})
 test('advanced shortcuts, device help and diagnostic restrictions remain keyboard reachable',async({page})=>{
  await open(page,'audio');await page.getByText('О проверке устройств',{exact:true}).focus();await page.keyboard.press('Enter')
  await expect(page.locator('.audio-check-details')).toHaveAttribute('open','')

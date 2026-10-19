@@ -29,12 +29,15 @@
   .workspace-main-panel--profile .profile-settings { max-width: 928px; padding: 24px 24px 48px; }
 }
 @media (max-width: 1023px) {
-  .workspace-main-panel--profile .profile-settings { grid-auto-rows: max-content; padding: 24px 16px 80px; }
+  .workspace-main-panel--profile .profile-settings { grid-auto-rows: max-content; min-width: 0; padding: 24px 16px 80px; }
   .workspace-main-panel--profile .profile-settings > header h1 { font-size: var(--gc-text-page-compact); line-height: var(--gc-line-page-compact); }
   .workspace-main-panel--profile .profile-tabs { gap: 0; margin: 20px 0; }
-  .workspace-main-panel--profile .profile-panel { min-height: 0; padding: 16px; }
-  .workspace-main-panel--profile .profile-avatar-row { flex-wrap: nowrap; }
-  .workspace-main-panel--profile .profile-upload-button { min-height: 44px; }
+  .workspace-main-panel--profile .profile-panel { min-width: 0; min-height: 0; padding: 16px; }
+  .workspace-main-panel--profile .profile-avatar-row { display: grid; grid-template-columns: 72px minmax(0, 1fr); align-items: center; column-gap: 16px; row-gap: 12px; }
+  .workspace-main-panel--profile .profile-avatar-row > .profile-avatar { grid-column: 1; grid-row: 1; }
+  .workspace-main-panel--profile .profile-avatar-row > .profile-avatar-copy { grid-column: 2; grid-row: 1; min-width: 0; }
+  .workspace-main-panel--profile .profile-avatar-row > .profile-secondary-button { grid-column: 2; justify-self: start; }
+  .workspace-main-panel--profile .profile-upload-button { box-sizing: border-box; max-width: 100%; min-height: 44px; text-align: center; white-space: normal; }
   .workspace-main-panel--profile .profile-form input { font-size: 1rem; }
   .workspace-main-panel--profile .profile-savebar { position: static; height: auto; min-height: 0; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
   .workspace-main-panel--profile .profile-savebar span { flex-basis: 100%; }

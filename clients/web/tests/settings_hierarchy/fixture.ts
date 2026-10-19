@@ -19,7 +19,8 @@ const section = ref((params.get('section') ?? 'guild') as AdminSection)
 const activation = ref<'VAD'|'PTT'>('VAD'), ptt = ref<string|null>(null)
 const processing = ref<AudioProcessingOptions>({ autoGainControl: false, echoCancellation: true, noiseSuppressionMode: 'browser' })
 const microphoneShortcut = ref<VoiceShortcutBinding|null>(null), deafenShortcut = ref<VoiceShortcutBinding|null>(null)
-const profile = ref<OwnProfile>({ account_id: id, login: 'fixture', display_name: 'Тестовый участник', role: 'ADMINISTRATOR', avatar_url: null })
+const hasAvatar = params.get('avatar') === '1'
+const profile = ref<OwnProfile>({ account_id: id, login: hasAvatar ? 'pistol121' : 'fixture', display_name: hasAvatar ? 'Pistol121' : 'Тестовый участник', role: 'ADMINISTRATOR', avatar_url: hasAvatar ? '/profile-avatar-fixture.svg' : null })
 function audio() {
   const diagnostics = describeAudioProcessing(processing.value)
   if(params.get('phase') === 'processing-error') diagnostics.noiseSuppressionRuntime.status = 'error'

@@ -298,6 +298,9 @@
       "clients/flutter/lib/src/screens/workspace_ui/audio*",
       "clients/flutter/lib/src/screens/workspace_ui/personal*",
       "clients/web/src/identity/ProfileSettings.vue",
+      "clients/web/src/design/design_v2_profile_presentation.css",
+      "clients/web/tests/settings_hierarchy/fixture.ts",
+      "clients/web/tests/settings_hierarchy/hierarchy.browser.spec.ts",
       "clients/web/src/notification/*",
       "clients/web/src/voice/AudioSettings.vue",
       "clients/flutter/lib/src/screens/profile*"
@@ -324,7 +327,7 @@
       "issue351": {
         "browser": "clients/web/tests/settings_hierarchy/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/settings_hierarchy.mjs",
-        "scope": "13 actual component settings/admin surfaces at 390/1024/1440; explicit save/cancel/pending/error/403/409, visible unsaved/security warnings, retained mounted advanced audio controls at text/native browser zoom. Owned Go API profile writes and actual SFU transport continuity during audio settings navigation; no native or hardware/audio quality claim."
+        "scope": "13 actual component settings/admin surfaces at 390/1024/1440; explicit save/cancel/pending/error/403/409, visible unsaved/security warnings, retained mounted advanced audio controls at text/native browser zoom. At enlarged mobile text, profile avatar removal remains inside its card. Owned Go API profile writes and actual SFU transport continuity during audio settings navigation; no native or hardware/audio quality claim."
       }
     }
   },
