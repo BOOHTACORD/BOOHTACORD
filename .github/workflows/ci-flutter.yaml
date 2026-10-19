@@ -2,13 +2,63 @@ name: CI Flutter
 
 on:
   workflow_call:
+    inputs:
+      evidence_namespace:
+        type: string
+        default: flutter
 
 permissions:
   contents: read
 
 jobs:
-  flutter:
+  dart:
     runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - uses: ./.github/actions/flutter-setup
+        with:
+          channel: stable
+          flutter-version: 3.47.7
+          cache: true
+      - name: Test and analyze app and vendor packages
+        env:
+          FLUTTER_EVIDENCE_NAMESPACE: ${{ inputs.evidence_namespace }}
+        run: python3 -m tools.ci.flutter_gates.run dart
+      - name: Upload Flutter navigation actual
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: flutter-navigation-actual-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/visual/flutter/R14-navigation-top.png
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain Flutter UI/UX screenshot review set
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: uiux-flutter-visual-review-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/visual/flutter/**
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain mandatory Dart profile evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: flutter-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-dart
+          path: .out/ci/flutter-parts/dart.json
+          if-no-files-found: error
+          retention-days: 30
+
+  android:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -29,33 +79,47 @@ jobs:
           channel: stable
           flutter-version: 3.47.7
           cache: true
-      - name: Test and analyze app and vendor packages
+      - name: Verify both Kotlin modes and build the inspected debug APK
         env:
-          BOOHTACORD_VISUAL_CAPTURE_DIR: ${{ github.workspace }}/.out/visual/flutter
-        run: python3 -m tools.ci.native.flutter
-      - name: Upload Flutter navigation actual
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: flutter-navigation-actual-${{ github.sha }}
-          path: .out/visual/flutter/R14-navigation-top.png
-          if-no-files-found: error
-          retention-days: 30
-      - name: Retain Flutter UI/UX screenshot review set
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: uiux-flutter-visual-review-${{ github.sha }}
-          path: .out/visual/flutter/**
-          if-no-files-found: error
-          retention-days: 30
-      - name: Verify Android Kotlin build modes
-        run: bash tools/verify/android_kotlin/verify_android_kotlin_modes.sh
-      - name: Build Android debug APK
-        run: python3 -m tools.build.android.run --debug
+          FLUTTER_EVIDENCE_NAMESPACE: ${{ inputs.evidence_namespace }}
+        run: python3 -m tools.ci.flutter_gates.run android
       - name: Upload Android debug APK
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: boohtacord-android-debug-apk
+          name: boohtacord-android-debug-apk-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .out/native/android-debug/
           if-no-files-found: error
           retention-days: 30
+      - name: Retain mandatory Android profile evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: flutter-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-android
+          path: .out/ci/flutter-parts/android.json
+          if-no-files-found: error
+          retention-days: 30
+
+  flutter:
+    if: always()
+    needs: [dart, android]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: flutter-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-*
+          path: .out/ci/flutter-parts
+          merge-multiple: true
+      - name: Require complete current Dart and Android evidence
+        env:
+          FLUTTER_NEEDS: ${{ toJSON(needs) }}
+          FLUTTER_EVIDENCE_NAMESPACE: ${{ inputs.evidence_namespace }}
+        run: python3 -m tools.ci.flutter_gates.aggregate

@@ -14,14 +14,20 @@ from tools.build.client_identity import dart_defines, flutter_version_args
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--no-pub', action='store_true', help='Reuse locked dependencies prepared in this debug job only')
     args = parser.parse_args()
+    if args.no_pub and not args.debug:
+        parser.error('--no-pub is restricted to a prepared debug build; release plugin regeneration is required')
     require_version('flutter', json.loads(output('flutter', '--version', '--machine'))['frameworkVersion'])
     flutter = client('flutter')
     native_version = version('android')
     tag = 'android-v' + native_version.split('+')[0]
     if not args.debug and os.environ.get('GITHUB_REF_TYPE') == 'tag' and os.environ.get('GITHUB_REF_NAME') != tag: raise ValueError('Release tag differs from pubspec version')
-    run('flutter', 'pub', 'get', '--enforce-lockfile', cwd=flutter)
+    if not args.no_pub:
+        run('flutter', 'pub', 'get', '--enforce-lockfile', cwd=flutter)
     command = ('--debug',) if args.debug else ('--release', '--split-per-abi')
+    if args.no_pub:
+        command += ('--no-pub',)
     with provision():
         # Flutter regenerates the release-only plugin registrant only with pub
         # enabled; --no-pub leaves dev plugins from the preceding pub get.
