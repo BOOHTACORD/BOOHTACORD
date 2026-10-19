@@ -23,6 +23,7 @@ export interface ScreenViewerStream {
   hasAudio: boolean
   id: string
   isLocal?: boolean
+  ownerLeaseId?: string
   participantId: string
   participantName: string
   descriptor?: ScreenShareDescriptorV1
@@ -31,7 +32,7 @@ export interface ScreenViewerStream {
   video: ScreenViewerPublication
 }
 
-export type ScreenViewerCard = Pick<ScreenViewerStream, 'accountId' | 'descriptor' | 'hasAudio' | 'id' | 'isLocal' | 'participantId' | 'participantName' | 'profileSource' | 'targetProfile'> & {
+export type ScreenViewerCard = Pick<ScreenViewerStream, 'accountId' | 'descriptor' | 'hasAudio' | 'id' | 'isLocal' | 'ownerLeaseId' | 'participantId' | 'participantName' | 'profileSource' | 'targetProfile'> & {
   thumbnailUrl?: string
   videoMuted?: boolean
   readReceiverStats?: () => Promise<import('./screen_receiver_diagnostics').ScreenReceiverSnapshot | undefined>

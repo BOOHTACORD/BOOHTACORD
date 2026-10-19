@@ -5,6 +5,8 @@ import { bindLiveKitScreenViewerPresence, screenViewerHeartbeatMs } from './scre
 const ownerLeaseID = '22222222-2222-4222-8222-222222222222'
 const viewerLeaseID = '11111111-1111-4111-8111-111111111111'
 const viewerAccountID = '33333333-3333-4333-8333-333333333333'
+const ownerAccountID = '44444444-4444-4444-8444-444444444444'
+const anotherViewerAccountID = '55555555-5555-4555-8555-555555555555'
 const events = {
   localTrackPublished: 'local-track-published',
   localTrackUnpublished: 'local-track-unpublished',
@@ -20,21 +22,30 @@ function fixture(accounts: string[] = [], mode: 'owner' | 'viewer' = 'owner') {
   const localVideo = { source: 'screen-video', trackSid: 'owner-screen-track' }
   const localID = mode === 'owner' ? ownerLeaseID : viewerLeaseID
   const remoteID = mode === 'owner' ? viewerLeaseID : ownerLeaseID
-  const local = { identity: `voice-lease:${localID}`, getTrackPublication: () => localVideo }
+  const local = {
+    identity: `voice-lease:${localID}`,
+    metadata: `account:${mode === 'owner' ? ownerAccountID : viewerAccountID}`,
+    name: mode === 'owner' ? 'Ведущий' : 'Я',
+    getTrackPublication: () => localVideo,
+  }
   const aliceVideo = { source: 'screen-video', trackSid: 'remote-screen-track' }
   const alice = {
-    identity: `voice-lease:${remoteID}`, metadata: `account:${viewerAccountID}`, name: 'Алиса',
+    identity: `voice-lease:${remoteID}`, metadata: `account:${mode === 'owner' ? viewerAccountID : ownerAccountID}`, name: 'Алиса',
     getTrackPublication: (source: string) => source === 'screen-video' ? aliceVideo : undefined,
+  }
+  const bob = {
+    identity: 'voice-lease:66666666-6666-4666-8666-666666666666', metadata: `account:${anotherViewerAccountID}`, name: 'Боб',
+    getTrackPublication: () => undefined,
   }
   const room = {
     localParticipant: local,
-    remoteParticipants: new Map([[alice.identity, alice]]),
+    remoteParticipants: new Map([[alice.identity, alice], ...(mode === 'viewer' ? [[bob.identity, bob] as const] : [])]),
     on: vi.fn((event: string, listener: (...args: any[]) => void) => listeners.set(event, listener)),
   }
   const request = vi.fn(async (_input: string, _init: RequestInit) => response({ viewer_account_ids: accounts }))
   const watchers = vi.fn()
   const presence = bindLiveKitScreenViewerPresence(room, events, 'screen-video', watchers, request, screenViewerHeartbeatMs)
-  return { alice, aliceVideo, listeners, local, localVideo, presence, request, room, watchers }
+  return { alice, aliceVideo, bob, listeners, local, localVideo, presence, request, room, watchers }
 }
 
 describe('LiveKit screen viewer presence', () => {
@@ -64,6 +75,25 @@ describe('LiveKit screen viewer presence', () => {
     expect(request.mock.calls[0]![0]).toBe(`/api/v1/voice/leases/${ownerLeaseID}/screen-viewers`)
     expect(request.mock.calls[0]![1]).toMatchObject({ method: 'GET', credentials: 'same-origin', cache: 'no-store' })
     presence.clear()
+  })
+
+  it('lets a selected stream viewer read and refresh its same-channel audience', async () => {
+    vi.useFakeTimers()
+    const { presence, request, watchers } = fixture([viewerAccountID, anotherViewerAccountID], 'viewer')
+
+    presence.selectAudience(ownerLeaseID)
+    await vi.waitFor(() => expect(watchers).toHaveBeenCalledWith([
+      { id: viewerAccountID, accountId: viewerAccountID, name: 'Я' },
+      { id: anotherViewerAccountID, accountId: anotherViewerAccountID, name: 'Боб' },
+    ]))
+    expect(request.mock.calls[0]![0]).toBe(`/api/v1/voice/leases/${viewerLeaseID}/screen-viewers/${ownerLeaseID}`)
+    expect(request.mock.calls[0]![1]).toMatchObject({ method: 'GET', credentials: 'same-origin', cache: 'no-store' })
+
+    await vi.advanceTimersByTimeAsync(screenViewerHeartbeatMs)
+    expect(request.mock.calls.filter(([, init]) => init.method === 'GET')).toHaveLength(2)
+    presence.clear()
+    await vi.advanceTimersByTimeAsync(screenViewerHeartbeatMs)
+    expect(request.mock.calls.filter(([, init]) => init.method === 'GET')).toHaveLength(2)
   })
 
   it('heartbeats active viewers and removes their presence when they disconnect', async () => {

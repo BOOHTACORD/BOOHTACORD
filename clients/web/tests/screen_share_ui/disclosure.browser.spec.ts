@@ -147,6 +147,18 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
   await page.screenshot({ path: info.outputPath('viewer-participants-1440.png') })
 })
 
+test('a viewer sees the selected stream audience, including another watcher', async ({ page }, info) => {
+  await open(page, 'viewer-strip&watching-remote', 390)
+  const strip = page.getByTestId('viewer-participants')
+  const watcherCount = strip.getByRole('status', { name: 'Зрители трансляции: 2' })
+  await expect(watcherCount).toBeVisible()
+  await expect(watcherCount).toHaveText('Зрители · 2')
+  await expect(strip.getByRole('img', { name: 'Смотрит эту трансляцию' })).toHaveCount(2)
+  await expect(strip.getByText('Участник говорит', { exact: true }).locator('..').getByRole('img', { name: 'Смотрит эту трансляцию' })).toBeVisible()
+  await expect(strip.locator('.voice-viewer-participant').first().getByRole('img', { name: 'Смотрит эту трансляцию' })).toBeVisible()
+  await page.screenshot({ path: info.outputPath('viewer-sees-selected-stream-audience.png') })
+})
+
 test('muting a remote screen changes the speaker icon and restores it on unmute', async ({ page }, info) => {
   await page.route(/\/api\/v1\/members\/[^/]+\/avatar(?:\?.*)?$/, route => route.fulfill({
     status: 200,

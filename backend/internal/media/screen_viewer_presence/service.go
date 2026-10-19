@@ -78,17 +78,47 @@ func (service Service) Viewers(ctx context.Context, principal Principal, ownerLe
 	if err != nil {
 		return nil, authorizationError(err)
 	}
+	return service.readViewers(ctx, channelID, ownerAccountID, ownerLeaseID)
+}
+
+func (service Service) ViewersForViewer(ctx context.Context, principal Principal, viewerLeaseID, ownerLeaseID string) ([]string, error) {
+	if !validLeaseID(viewerLeaseID) || !validLeaseID(ownerLeaseID) {
+		return nil, ErrInvalidInput
+	}
+	channelID, ownerAccountID, _, err := service.authority.AuthorizeViewer(ctx, principal, viewerLeaseID, ownerLeaseID)
+	if err != nil {
+		return nil, authorizationError(err)
+	}
+	trackSID, active, err := service.currentTrack(ctx, channelID, ownerAccountID, ownerLeaseID)
+	if err != nil || !active {
+		return []string{}, err
+	}
+	if !service.store.Watching(ownerLeaseID, viewerLeaseID, trackSID) {
+		return nil, ErrDenied
+	}
+	return service.store.Viewers(ownerLeaseID, trackSID), nil
+}
+
+func (service Service) readViewers(ctx context.Context, channelID, ownerAccountID, ownerLeaseID string) ([]string, error) {
+	trackSID, active, err := service.currentTrack(ctx, channelID, ownerAccountID, ownerLeaseID)
+	if err != nil || !active {
+		return []string{}, err
+	}
+	return service.store.Viewers(ownerLeaseID, trackSID), nil
+}
+
+func (service Service) currentTrack(ctx context.Context, channelID, ownerAccountID, ownerLeaseID string) (string, bool, error) {
 	trackSID, err := service.publications.CurrentTrack(ctx, channelID, ownerLeaseID)
 	if errors.Is(err, ErrNoPublication) {
 		if service.store.Clear(ownerLeaseID, "") {
 			service.changed(ownerAccountID)
 		}
-		return []string{}, nil
+		return "", false, nil
 	}
 	if err != nil {
-		return nil, ErrUnavailable
+		return "", false, ErrUnavailable
 	}
-	return service.store.Viewers(ownerLeaseID, trackSID), nil
+	return trackSID, true, nil
 }
 
 func (service Service) ClearOwner(ctx context.Context, principal Principal, ownerLeaseID, trackSID string) error {

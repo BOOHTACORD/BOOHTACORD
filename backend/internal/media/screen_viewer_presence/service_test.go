@@ -111,6 +111,30 @@ func TestOwnerCanReadOnlyItsCurrentShareAndClearItsAudience(t *testing.T) {
 	}
 }
 
+func TestActiveSameChannelViewerCanReadCurrentScreenAudience(t *testing.T) {
+	store := &testStore{watching: map[string]bool{"22222222-2222-4222-8222-22222222222211111111-1111-4111-8111-111111111111TR_current": true}, viewers: []string{"viewer-account", "another-viewer"}}
+	publication := &testPublication{track: "TR_current"}
+	service, err := New(testAuthority{channel: "channel", ownerAccount: "owner-account", viewerAccount: "viewer-account"}, publication, store, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	viewers, err := service.ViewersForViewer(context.Background(), Principal{AccountID: "viewer-account"}, "11111111-1111-4111-8111-111111111111", "22222222-2222-4222-8222-222222222222")
+	if err != nil || len(viewers) != 2 || viewers[1] != "another-viewer" || publication.calls != 1 {
+		t.Fatalf("viewers=%v publication lookups=%d err=%v", viewers, publication.calls, err)
+	}
+}
+
+func TestViewerMustHaveAnActiveMediaSubscriptionToReadAudience(t *testing.T) {
+	store := &testStore{watching: map[string]bool{}, viewers: []string{"another-viewer"}}
+	service, err := New(testAuthority{channel: "channel", ownerAccount: "owner-account", viewerAccount: "viewer-account"}, &testPublication{track: "TR_current"}, store, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if viewers, err := service.ViewersForViewer(context.Background(), Principal{AccountID: "viewer-account"}, "11111111-1111-4111-8111-111111111111", "22222222-2222-4222-8222-222222222222"); !errors.Is(err, ErrDenied) || viewers != nil {
+		t.Fatalf("viewers=%v err=%v", viewers, err)
+	}
+}
+
 func TestCrossChannelViewerAndNonOwnerReadAreDenied(t *testing.T) {
 	store := &testStore{watching: map[string]bool{}}
 	service, err := New(testAuthority{err: ErrDenied}, &testPublication{track: "TR_screen"}, store, nil)
@@ -123,6 +147,9 @@ func TestCrossChannelViewerAndNonOwnerReadAreDenied(t *testing.T) {
 	}
 	if _, err := service.Viewers(context.Background(), principal, "22222222-2222-4222-8222-222222222222"); !errors.Is(err, ErrDenied) {
 		t.Fatalf("list error=%v", err)
+	}
+	if _, err := service.ViewersForViewer(context.Background(), principal, "11111111-1111-4111-8111-111111111111", "22222222-2222-4222-8222-222222222222"); !errors.Is(err, ErrDenied) {
+		t.Fatalf("viewer list error=%v", err)
 	}
 	if store.watchCalls != 0 {
 		t.Fatalf("stored unauthorized viewer %d times", store.watchCalls)
