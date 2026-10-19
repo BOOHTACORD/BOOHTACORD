@@ -39,5 +39,5 @@ class VendorLockTests(unittest.TestCase):
         self.assertEqual(prepare.call_count,2)
         for name in ('livekit_client','flutter_webrtc'):
             path=ROOT/'clients/flutter/packages'/name
-            self.assertIn(call('flutter','pub','get','--enforce-lockfile',cwd=path),run.call_args_list)
+            self.assertIn(call('flutter','pub','get','--enforce-lockfile','--no-example',cwd=path),run.call_args_list)
             self.assertIn(call('flutter','test','--no-pub',cwd=path),run.call_args_list)

@@ -14,7 +14,7 @@ are in `tools/ci/toolchains/auxiliary.json`. They do not change server image inp
 | Gradle | 9.3.1 all distribution; official `distributionSha256Sum` checked by the wrapper on download. |
 | Android app build plugins | AGP 9.1.0 and Kotlin 2.4.0, recorded in reviewed native input hashes. |
 | Flutter Android defaults | Framework `abaf9c523780a608bd46686fd5e53740a07077f8` selects compile/target SDK 36 and NDK 28.2.13676358. The app still derives these from that exact Flutter source. No Gradle/Android SDK directory cache added. |
-| Vendor Pub tests | Separate reviewed locks for livekit_client/flutter_webrtc; manifest binds each pubspec and lock. Both run `pub get --enforce-lockfile` before the original tests. App lock is unchanged. |
+| Vendor Pub tests | Separate reviewed locks for livekit_client/flutter_webrtc; manifest binds each pubspec and lock. Both run `pub get --enforce-lockfile --no-example` before the original tests; the excluded SDK example app is not an additional unit-test target. App lock is unchanged. |
 | Playwright | `@playwright/test` 1.63.0 and browser revision selected by npm lock. Always `install --with-deps chromium`; no browser cache. |
 | Windows packaging | vpk 1.2.161 installed/checked by the existing packager; Velopack C SDK has its existing SHA256. |
 | macOS SDKs | Existing Sparkle 2.10.0 archive SHA256; WebRTC m150/r2 Pod archive SHA256 plus exact source/depot/patch recipe. No new native binary cache. |

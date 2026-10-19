@@ -76,3 +76,26 @@ or duplicate history, and failed setup. All nine original navigation assertions,
 20s timeouts, 2px offset tolerance, unseen-tail/foreign-DM/voice-lease checks are
 unchanged. No product code or mandatory acceptance is removed. Fresh exact-source
 hosted acceptance is required; old PASS/FAIL observations retain their own SHA.
+
+
+The 2d25c8a1 Flutter job117907914045 also **FAIL** after app tests when Pub recursed
+into livekit_client/example with --enforce-lockfile but no committed example lock.
+The earlier local cold-Pub check had an existing ignored example lock and did not
+reproduce the clean-checkout condition. Standalone vendor resolution now uses
+--no-example: example is already excluded from app analysis and neither original
+vendor test command targets its tests/build. Both original root vendor suites and
+app analysis remain mandatory; no assertions are skipped. A focused command
+regression fails before/pass after. Fresh Git-extracted sources with no ignored
+example lock and a new Pub cache must resolve the two exact vendor locks without
+creating an example lock. Actual hosted platform acceptance remains required.
+
+
+The first isolated-navigation run at head74193e87, checkout7199d8be, **FAIL** at
+its later search precondition: the new scope had no initial read cursor, while
+the original preceding unread scenario had established one. Failure artifact
+12166106878 (SHA256`20d423b89b1a2d2d373551c9b39725c4e2fda08dfb70f3c2c74596b4259f2b90`)
+shows visible main history/reply and no saved context; the failure image was
+reviewed. The isolated scope now recreates that original baseline through the
+actual authenticated read-cursor API and checks it in PostgreSQL, **before** the
+unseen-tail rows are added. New tests reject missing/incorrect/failed baseline
+setup. The later genuinely unseen-row/cursor invariant is unchanged, not removed.

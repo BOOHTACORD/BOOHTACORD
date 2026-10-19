@@ -11,7 +11,15 @@ async function position(page) {
   })
 }
 export async function navigation(page, fixture, input, report) {
-  fixture=await navigationFixture(fixture,()=>channel(page,fixture.category,'NextNavigation'),seed)
+  fixture=await navigationFixture(fixture,()=>channel(page,fixture.category,'NextNavigation'),seed,async(fresh,messageId)=>{
+    // Recreate unread acceptance's verified baseline in this new scope before
+    // adding the genuinely unseen tail; do not inherit its persisted DOM context.
+    const cursor=await api(page,`/channels/${fresh.a}/read-cursor`,'PUT',{message_id:messageId})
+    status(cursor,200)
+    const persisted=sql(`SELECT message_id FROM channel_read_cursors WHERE account_id='${fresh.admin}' AND channel_id='${fresh.a}'`)
+    assert.equal(cursor.body.message_id,persisted)
+    return persisted
+  })
   const voice = await channel(page,fixture.category,'NextVoice','VOICE')
   await select(page,'NextVoice')
   await page.getByRole('button',{name:'Без микрофона',exact:true}).click()

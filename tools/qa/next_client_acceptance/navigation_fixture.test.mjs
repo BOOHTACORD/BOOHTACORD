@@ -8,7 +8,7 @@ test('navigation receives a fresh scope and preserves unread restoration fixture
   const create=async()=>`navigation-${++count}`
   const seeded=[]
   const seed=(fixture,kind)=>{seeded.push([fixture.a,kind,fixture.member]);return {ids:Array.from({length:121},(_,i)=>`row-${i}`)}}
-  const [first,second]=await Promise.all([navigationFixture(unread,create,seed),navigationFixture(unread,create,seed)])
+  const [first,second]=await Promise.all([navigationFixture(unread,create,seed,async(_,id)=>id),navigationFixture(unread,create,seed,async(_,id)=>id)])
   assert.equal(unread.a,'prior-unread')
   assert.notEqual(first.a,second.a)
   assert.notEqual(first.a,unread.a)
@@ -29,4 +29,15 @@ test('failed creation never seeds a different scope and failed seed never return
   await assert.rejects(()=>navigationFixture({a:'prior'},async()=>{throw Error('controlled')},()=>{seeded=true}))
   assert.equal(seeded,false)
   await assert.rejects(()=>navigationFixture({a:'prior'},async()=> 'fresh',()=>{throw Error('controlled')}))
+})
+
+test('the isolated scope recreates the prior read baseline before unseen-tail checks', async () => {
+  const ids=Array.from({length:121},(_,i)=>`row-${i}`)
+  const order=[]
+  await navigationFixture({a:'unread'},async()=> 'fresh',()=>{order.push('seed');return {ids}},async(fixture,id)=>{
+    order.push('cursor');assert.equal(fixture.a,'fresh');assert.equal(id,'row-120');return id
+  })
+  assert.deepEqual(order,['seed','cursor'])
+  await assert.rejects(()=>navigationFixture({a:'unread'},async()=> 'fresh',()=>({ids}),async()=> 'wrong'))
+  await assert.rejects(()=>navigationFixture({a:'unread'},async()=> 'fresh',()=>({ids}),async()=>{throw Error('controlled')}))
 })
