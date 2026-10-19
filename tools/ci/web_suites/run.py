@@ -36,6 +36,10 @@ def execute(profile=None):
         path = directory / (name + '.json')
         try:
             value = runner.run_profile(name, source, prepared=not bool(profile))
+            final_source, final_dirty = checked_source()
+            if final_source != source:
+                raise ValueError('Web source revision changed during execution')
+            dirty = dirty or final_dirty
             if dirty:
                 value['source_revision'] = None
                 value['local_worktree'] = {'base_revision':source, 'dirty':True}

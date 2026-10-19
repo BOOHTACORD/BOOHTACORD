@@ -4,6 +4,7 @@ import itertools
 import os
 import re
 import sys
+import subprocess
 import time
 from tools.audio.asset_build import build_assets
 from tools.audio.livekit_fixture import IMAGE, local_sfu
@@ -17,6 +18,12 @@ def checked(executor, command, **options):
         raise RuntimeError('Required Web command did not complete successfully')
 
 
+def check_ci_source(executor):
+    if os.environ.get('GITHUB_ACTIONS') == 'true':
+        checked(executor, ['git', 'diff', '--exit-code', 'HEAD', '--'],
+                cwd=ROOT, stdout=subprocess.DEVNULL)
+
+
 def prepare(browser, executor, assets_builder):
     checked(executor, ['npm', 'ci'], cwd=client('web'))
     if browser:
@@ -24,6 +31,7 @@ def prepare(browser, executor, assets_builder):
         checked(executor, ['node', 'node_modules/playwright/cli.js', 'install', '--with-deps', 'chromium'],
                 cwd=client('web'))
     assets_builder(ROOT)
+    check_ci_source(executor)
 
 
 def run_profile(profile, source, *, executor=run, assets_builder=build_assets,
@@ -48,6 +56,7 @@ def run_profile(profile, source, *, executor=run, assets_builder=build_assets,
                                       'SCREEN_SHARE_SFU_IMAGE': IMAGE}
                 checked(executor, command, **options)
                 completed.append(name)
+    check_ci_source(executor)
     return {'source_revision': source, 'profile': profile, 'plan_sha256': catalog.digest(plan),
             'status': 'PASS', 'operations': completed, 'seconds': round(clock() - started, 6),
             'execution': execution}

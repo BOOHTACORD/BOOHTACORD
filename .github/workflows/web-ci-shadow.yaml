@@ -1,0 +1,111 @@
+name: Web CI same-source shadow
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: web-shadow-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  VITE_PUBLIC_ORIGIN: https://v.bootybay.ru
+
+jobs:
+  legacy:
+    name: legacy-${{ matrix.sample }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        sample: [1, 2, 3]
+    env:
+      WEB_NAMESPACE: shadow-old-${{ matrix.sample }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Prepare public Node SDK and locked dependency cache inputs
+        run: python3 -m tools.ci.toolchains.cache_inputs npm
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: .out/ci/cache-inputs/npm.json
+      - name: Execute every original Web check on this same candidate source
+        run: python3 -m tools.ci.web_suites.legacy
+      - name: Retain the complete source-bound legacy control
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: web-legacy-${{ env.WEB_NAMESPACE }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/web-legacy.json
+          if-no-files-found: error
+          retention-days: 30
+
+  profiles:
+    name: profiles-${{ matrix.sample }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        sample: [1, 2, 3]
+    uses: ./.github/workflows/ci-frontend.yaml
+    with:
+      release_receipt: false
+      evidence_namespace: shadow-new-${{ matrix.sample }}
+
+  compare:
+    if: always()
+    needs: [legacy, profiles]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      WEB_NAMESPACE: shadow-compare
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Download only current legacy samples
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: web-legacy-shadow-old-*-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/shadow-inputs
+          merge-multiple: false
+      - name: Download only current qualified profile samples
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: web-fan-in-shadow-new-*-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/shadow-inputs
+          merge-multiple: false
+      - name: Compare complete same-source samples against actual job metadata
+        if: always()
+        env:
+          SHADOW_NEEDS: ${{ toJSON(needs) }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 -m tools.ci.web_suites.measure
+      - name: Retain the bounded public comparison including failure or no-gain outcomes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: web-ci-shadow-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/web-shadow.json
+          if-no-files-found: error
+          retention-days: 30

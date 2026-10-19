@@ -1,0 +1,89 @@
+{
+  "source": "2c578468a2f6ee8769ccd28fb72688465e71832c",
+  "parent": "11b344eefc6f8a32fac692078e51768af5aa583b",
+  "run": 39217589596,
+  "status": "PASS fiveactual profiles+strictfan-in",
+  "summary": {
+    "source_revision": "2c578468a2f6ee8769ccd28fb72688465e71832c",
+    "status": "PASS",
+    "profiles": [
+      "browser-conversations",
+      "browser-shell",
+      "browser-voice",
+      "fast",
+      "sfu-network"
+    ],
+    "plan_sha256": "54ae5dcab3d07562378950d00d382ec270964e508cfbae336528d5892690179b",
+    "observed_profile_seconds": {
+      "fast": 82.43565,
+      "browser-shell": 471.729736,
+      "browser-conversations": 202.79169,
+      "browser-voice": 345.418804,
+      "sfu-network": 275.656936
+    },
+    "checked_operations": 40,
+    "execution": {
+      "run_id": "39217589596",
+      "run_attempt": "1",
+      "namespace": "diagnostic"
+    }
+  },
+  "scope": "One actual diagnostic source; not finalPR/master acceptance or repeated before/after performance/flake proof",
+  "visual_scope": "Current grouped visual archives not downloaded/reviewed; no wholeUI/native/physical-media acceptance claim. ActualPlaywright test assertions passed; prior392 visual proofs stay separate.",
+  "artifact_metadata": [
+    {
+      "id": 12170960589,
+      "name": "web-part-diagnostic-2c578468a2f6ee8769ccd28fb72688465e71832c-39217589596-1-browser-voice",
+      "digest": "sha256:62efde08e47d03bbe1c954ba2c1b6726f9b6db734afc97b0a43d4d332a278a4b",
+      "bytes": 515,
+      "source": "2c578468a2f6ee8769ccd28fb72688465e71832c",
+      "run": 39217589596,
+      "expired": false
+    },
+    {
+      "id": 12170418471,
+      "name": "web-fan-in-diagnostic-2c578468a2f6ee8769ccd28fb72688465e71832c-39217589596-1",
+      "digest": "sha256:b9a17866d986650b037c2ec5cda768c7430159a24a7f2ec3c10a9a24490b658d",
+      "bytes": 472,
+      "source": "2c578468a2f6ee8769ccd28fb72688465e71832c",
+      "run": 39217589596,
+      "expired": false
+    },
+    {
+      "id": 12170178496,
+      "name": "web-part-diagnostic-2c578468a2f6ee8769ccd28fb72688465e71832c-39217589596-1-browser-shell",
+      "digest": "sha256:c6c31acc5d577542edce0d9a41ea1ebf2db8a9f32bb8af62ed1449fdb54cea4a",
+      "bytes": 460,
+      "source": "2c578468a2f6ee8769ccd28fb72688465e71832c",
+      "run": 39217589596,
+      "expired": false
+    },
+    {
+      "id": 12170107089,
+      "name": "web-part-diagnostic-2c578468a2f6ee8769ccd28fb72688465e71832c-39217589596-1-fast",
+      "digest": "sha256:0e3616b40727f3c930c06a0f8e3d1c13fb51a49cb80335374f6f06829288f8fd",
+      "bytes": 492,
+      "source": "2c578468a2f6ee8769ccd28fb72688465e71832c",
+      "run": 39217589596,
+      "expired": false
+    },
+    {
+      "id": 12170087323,
+      "name": "web-part-diagnostic-2c578468a2f6ee8769ccd28fb72688465e71832c-39217589596-1-browser-conversations",
+      "digest": "sha256:8c4b93de6280fe2adcca3a3cf9e4671b280f8134e815368d94249dfcc171d1d7",
+      "bytes": 494,
+      "source": "2c578468a2f6ee8769ccd28fb72688465e71832c",
+      "run": 39217589596,
+      "expired": false
+    },
+    {
+      "id": 12169684317,
+      "name": "web-part-diagnostic-2c578468a2f6ee8769ccd28fb72688465e71832c-39217589596-1-sfu-network",
+      "digest": "sha256:dc48a260df42843bec935d0b880fe4e36591150b8ac39178a3ec488561c500f9",
+      "bytes": 444,
+      "source": "2c578468a2f6ee8769ccd28fb72688465e71832c",
+      "run": 39217589596,
+      "expired": false
+    }
+  ]
+}

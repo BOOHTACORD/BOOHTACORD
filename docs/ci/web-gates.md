@@ -83,3 +83,42 @@ unit test does not establish browser/SFU execution, speed or flake rate. Current
 acceptance status is in the [evidence record](../../evidence/ci/web-gates-2026-10-19.md).
 Physical media/device acceptance and required repository settings remain their
 own gates; #385's setting is managed by the owner.
+
+## Same-source shadow comparison
+
+The read-only `Web CI same-source shadow` workflow uses three declared samples
+per arm. Each arm permits one sample at a time; the new arm still runs all five
+profiles in parallel. Sampling is finite, failures are retained, and no failed
+assertion is retried or discarded to obtain a green dataset.
+
+Every sample checks the same workflow source SHA. The legacy arm reads the exact
+Git object for the original driver at `0ed1cd91`, verifies its SHA256, and executes
+it against the current product/test source and pinned SDKs. Its observer only
+delegates the original commands and records their completion/order. The old
+workflow's initial `npm ci`/browser setup and the driver's second `npm ci` both
+remain in this control. The baseline is executable source, never a fabricated
+timing or simulated browser result. CI source is checked after preparation and
+checks. Generated DSP assets are ignored build outputs.
+
+The comparison consumes exactly six current-run/attempt/namespace summaries and
+reads the actual run/jobs API with `actions:read`. It checks the upstream repo,
+source SHA, attempt, complete successful jobs, hosted Ubuntu labels, distinct
+parallel runners, timestamps and report timings. The measured new critical path
+spans the first profile's start through the final fan-in's completion, including
+SDK setup/uploads/internal waits. Runner-minutes sum all six job durations. The
+legacy interval includes its whole job. Initial created-to-start wait is reported
+separately and may include intentional serial sampling; it is not called pure
+runner queue time.
+
+Nearest-rank p50/p95 use n=3 per arm, with no universal SLO/flake-rate claim.
+All samples must succeed; the measured new p50 and p95 must both be lower for a
+`PASS`. A complete slower/equal dataset is retained as `NO_GAIN` and the workflow
+fails. Runner cost is reported even when it increases; Web-only improvement does
+not imply a faster whole PR when Windows is the critical path.
+
+The workflow is manual. Before registration on the default branch, a controlled
+QA snapshot may add only a temporary push trigger to this file. That trigger must
+stay outside the PR, its tree difference must be verified, and the QA source must
+stay distinct from any PR/master release receipt. Stable server receipt publishing
+is disabled for every shadow caller. Repeat a complete workflow to collect a new
+attempt; old-attempt samples cannot fill missing evidence.

@@ -1,7 +1,9 @@
 """A failed real command cannot produce a completed profile or leak its SFU."""
 from contextlib import contextmanager
 from types import SimpleNamespace
+import os
 import unittest
+from unittest.mock import patch
 from . import runner
 
 SOURCE = 'a' * 40
@@ -53,3 +55,26 @@ class RunnerTests(unittest.TestCase):
                 runner.run_profile(profile, source, **options)
             self.assertEqual(calls, [])
             self.assertEqual(states, [])
+
+    def test_ci_bootstrap_cannot_change_the_tested_source(self):
+        calls, states, options = self.boundary(fail='--exit-code')
+        with patch.dict(os.environ, GITHUB_ACTIONS='true', GITHUB_RUN_ID='123',
+                        GITHUB_RUN_ATTEMPT='1', WEB_NAMESPACE='web'), self.assertRaises(RuntimeError):
+            runner.run_profile('fast', SOURCE, **options)
+        self.assertEqual(calls[0], ('npm','ci'))
+        self.assertNotIn(('npm','test'), calls)
+
+    def test_ci_post_test_source_drift_cannot_create_a_pass_row(self):
+        calls, states, options = self.boundary()
+        execute = options['executor']; count = [0]
+        def modified(*command, **kwargs):
+            result = execute(*command, **kwargs)
+            if command[0] == 'git':
+                count[0] += 1
+                if count[0] == 2: return SimpleNamespace(returncode=1)
+            return result
+        options['executor'] = modified
+        with patch.dict(os.environ, GITHUB_ACTIONS='true', GITHUB_RUN_ID='123',
+                        GITHUB_RUN_ATTEMPT='1', WEB_NAMESPACE='web'), self.assertRaises(RuntimeError):
+            runner.run_profile('fast', SOURCE, **options)
+        self.assertIn(('npm','run','build'), calls)
