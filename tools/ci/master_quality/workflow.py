@@ -1,4 +1,5 @@
 """Enforce one master server producer and independent read-only native quality."""
+from tools.ci.runner_pool.routing import META
 from tools.ci.toolchains.auxiliary import ROOT, python_input
 
 MASTER = "github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'"
@@ -12,7 +13,7 @@ def require(value):
 
 
 def selector(job):
-    require(job.get('if') == MASTER and job.get('runs-on') == 'ubuntu-24.04')
+    require(job.get('if') == MASTER and job.get('runs-on') == META)
     require(not job.get('environment') and not job.get('secrets') and not job.get('continue-on-error'))
     for key in ('contracts', 'map_version', 'map_sha256', 'uncertain', 'server_release_impact', 'flutter', 'windows'):
         require(job.get('outputs', {}).get(key) == '${{ steps.select.outputs.' + key + ' }}')
@@ -25,7 +26,7 @@ def selector(job):
 
 def quality(job, scope, roles):
     require(job.get('if') == 'always()' and set(job.get('needs', [])) == set(roles)
-            and job.get('runs-on') == 'ubuntu-24.04' and job.get('timeout-minutes') == '5'
+            and job.get('runs-on') == META and job.get('timeout-minutes') == '5'
             and not any(key in job for key in ('environment', 'secrets', 'continue-on-error', 'env')))
     steps = job.get('steps', [])
     require(len(steps) == 7 and all(not s.get('continue-on-error') for s in steps))

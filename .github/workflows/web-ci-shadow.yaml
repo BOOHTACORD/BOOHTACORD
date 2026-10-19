@@ -17,7 +17,7 @@ env:
 jobs:
   legacy:
     name: legacy-${{ matrix.sample }}
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     timeout-minutes: 35
     strategy:
       fail-fast: false
@@ -69,7 +69,7 @@ jobs:
   compare:
     if: always()
     needs: [legacy, profiles]
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     timeout-minutes: 5
     env:
       WEB_NAMESPACE: shadow-compare

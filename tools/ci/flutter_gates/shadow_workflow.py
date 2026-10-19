@@ -1,4 +1,5 @@
 """Finite read-only native control derived from the immutable original workflow."""
+from tools.ci.runner_pool.routing import LINUX
 import copy
 import hashlib
 import json
@@ -22,6 +23,7 @@ def definition():
         raise ValueError('Native control template differs from its original workflow')
     old = yaml.load(original, Loader=yaml.BaseLoader)['jobs']['flutter']
     legacy = copy.deepcopy(old)
+    legacy['runs-on'] = LINUX
     legacy.update({'name': 'legacy-${{ matrix.sample }}', 'timeout-minutes': 40,
                    'strategy': {'fail-fast': False, 'max-parallel': 1, 'matrix': {'sample': [1, 2, 3]}},
                    'env': {'FLUTTER_EVIDENCE_NAMESPACE': 'shadow-old-${{ matrix.sample }}'}})
@@ -41,7 +43,7 @@ def definition():
         {'name': 'Retain complete original source-bound execution', 'if': 'always()', 'uses': UPLOAD,
          'with': {'name': 'flutter-legacy-${{ env.FLUTTER_EVIDENCE_NAMESPACE }}-' + IDENTITY,
                   'path': '.out/ci/flutter-legacy.json', 'if-no-files-found': 'error', 'retention-days': 30}}])
-    compare = {'if': 'always()', 'needs': ['legacy', 'profiles'], 'runs-on': 'ubuntu-24.04', 'timeout-minutes': 5,
+    compare = {'if': 'always()', 'needs': ['legacy', 'profiles'], 'runs-on': LINUX, 'timeout-minutes': 5,
                'env': {'FLUTTER_EVIDENCE_NAMESPACE': 'shadow-compare'},
                'steps': [copy.deepcopy(old['steps'][0]), copy.deepcopy(old['steps'][1]), copy.deepcopy(old['steps'][2])]}
     for prefix, pattern in [('legacy', 'flutter-legacy-shadow-old-*-'), ('profile', 'flutter-part-shadow-new-*-')]:

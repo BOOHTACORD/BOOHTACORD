@@ -1,4 +1,5 @@
-"""A case owns one disposable hosted VM lease and one exact Docker label namespace."""
+"""A case owns one disposable isolated Linux guest lease and one exact Docker label namespace."""
+from tools.ci.runner_pool.routing import isolated_linux
 import hashlib
 import json
 import os
@@ -15,7 +16,7 @@ LABEL='boohtacord.qa.owner'
 
 def hosted():
     require(platform.system()=='Linux' and os.environ.get('GITHUB_ACTIONS')=='true'
-            and os.environ.get('RUNNER_ENVIRONMENT')=='github-hosted')
+            and isolated_linux(os.environ))
 
 
 def identity(source,profile,env):
@@ -24,7 +25,7 @@ def identity(source,profile,env):
     require(re.fullmatch('[1-9][0-9]*',run) and re.fullmatch('[1-9][0-9]*',attempt) and re.fullmatch('[A-Za-z0-9_-]{1,100}',job))
     namespace=hashlib.sha256((source+profile+run+attempt+job+secrets.token_hex(16)).encode()).hexdigest()[:16]
     return {'source_revision':source,'profile':profile,'run_id':run,'run_attempt':attempt,'job':job,'owner':'qa-client-'+namespace,
-            'port_namespace':'disposable-github-hosted-vm/'+run+'/'+attempt+'/'+job+'/'+namespace}
+            'port_namespace':('disposable-github-hosted-vm/' if env.get('RUNNER_ENVIRONMENT')=='github-hosted' else 'disposable-self-hosted-guest/')+run+'/'+attempt+'/'+job+'/'+namespace}
 
 
 def output(*args):return subprocess.check_output(args,text=True,stderr=subprocess.DEVNULL,timeout=15).strip()

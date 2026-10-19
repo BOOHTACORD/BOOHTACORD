@@ -1,6 +1,7 @@
 """Repository workflow trust policy; external environment/runner settings need readback."""
 import json
 import re
+from tools.ci.runner_pool.routing import LINUX, META
 
 UPSTREAM = "github.repository == 'Egkurilov/BOOHTACORD'"
 MASTER = UPSTREAM + " && github.ref == 'refs/heads/master'"
@@ -44,7 +45,7 @@ def require(value):
         raise ValueError('Actions trust/permission/credential policy violation')
 
 
-HOSTED = {'ubuntu-24.04', 'ubuntu-latest', 'windows-2022', 'macos-26', 'macos-26-intel'}
+HOSTED = {'windows-2022', 'macos-26', 'macos-26-intel'}
 PERSISTENT = {('build-server.yaml', 'bundle'): ['self-hosted', 'linux', 'x64', 'boohtacord-builder']}
 
 
@@ -62,7 +63,7 @@ def hosted_runner(identity, job):
         rows = job.get('strategy', {}).get('matrix', {}).get('include', [])
         return runner == '${{ matrix.runner }}' and rows == [
             {'arch': 'arm64', 'runner': 'macos-26'}, {'arch': 'x64', 'runner': 'macos-26-intel'}]
-    return isinstance(runner, str) and runner in HOSTED
+    return runner == LINUX or runner == META or isinstance(runner, str) and runner in HOSTED
 
 
 def check(workflows):

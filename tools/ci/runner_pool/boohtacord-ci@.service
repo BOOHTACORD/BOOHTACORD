@@ -1,0 +1,24 @@
+[Unit]
+Description=BOOHTACORD disposable Linux CI slot %i
+After=network-online.target snap.lxd.daemon.service
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=root
+UMask=0077
+Environment=GH_CONFIG_DIR=/root/.config/gh
+Environment=PATH=/snap/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+RuntimeDirectory=boohtacord-ci-%i
+RuntimeDirectoryMode=0700
+ExecStart=/usr/bin/python3 /opt/boohtacord-ci/controller/worker.py %i
+Restart=always
+RestartSec=30
+TimeoutStopSec=150
+KillMode=mixed
+StandardOutput=null
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

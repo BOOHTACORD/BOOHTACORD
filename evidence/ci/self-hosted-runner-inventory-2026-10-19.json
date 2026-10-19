@@ -1,0 +1,111 @@
+{
+  "status": "IN_PROGRESS",
+  "scope": "CICD-12 runner isolation and scheduling; dependency CICD-01 metadata baseline",
+  "source_commit": "768b81e3",
+  "observed_at_utc": "2026-10-19T19:53:43.232567+00:00",
+  "sample": "20 most recent workflow runs; all returned jobs, bounded first page up to 100 per run",
+  "timing_limitations": "Execution seconds only for completed jobs; overlapping runs, not host CPU utilization or a complete historical capacity estimate",
+  "job_labels": {
+    "ubuntu-24.04": {
+      "jobs": 116,
+      "completed_seconds": 17746.0,
+      "queued": 0
+    },
+    "ubuntu-latest": {
+      "jobs": 7,
+      "completed_seconds": 231.0,
+      "queued": 0
+    },
+    "macos-26": {
+      "jobs": 2,
+      "completed_seconds": 49.0,
+      "queued": 0
+    },
+    "windows-2022": {
+      "jobs": 14,
+      "completed_seconds": 5580.0,
+      "queued": 0
+    },
+    "self-hosted,linux,x64,boohtacord-builder": {
+      "jobs": 1,
+      "completed_seconds": 0,
+      "queued": 0
+    }
+  },
+  "self_hosted_ui_inventory": [
+    {
+      "id": 3,
+      "name": "BOOHTACORD-Hetzner-DB",
+      "os": "Linux x64",
+      "status": "Idle",
+      "labels": [
+        "self-hosted",
+        "X64",
+        "Linux",
+        "boohtacord-hetzner",
+        "boohtacord-hetzner-db"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "BOOHTACORD-Hetzner-Web",
+      "os": "Linux x64",
+      "status": "Idle",
+      "labels": [
+        "self-hosted",
+        "X64",
+        "Linux",
+        "boohtacord-hetzner",
+        "boohtacord-builder"
+      ]
+    }
+  ],
+  "host_capacity": {
+    "cpu": 8,
+    "memory_mib": 15604,
+    "initial_available_memory_mib": 11864,
+    "initial_root_disk_available_gb": 22,
+    "ssh_user": "root",
+    "host": "167.233.56.32",
+    "ssh_host_ed25519_first_seen": "SHA256:zZXholI21wJkZlna6zwSg0b1XCRGut109wqDry/lhAI",
+    "base_image_fingerprint": "12a0de07e1683f41b169af0612897eae462efdeb84322281e91724c97e32fe0d"
+  },
+  "actions_taken": [
+    "Fetched latest master",
+    "Created isolated managed worktree; original edits preserved",
+    "Read GitHub runner settings and bounded public Actions metadata"
+  ],
+  "external_mutations": [
+    "Installed official Ubuntu LXD and GitHub CLI packages",
+    "Owner completed GitHub CLI authorization on Hetzner; root-only account configuration outside guests",
+    "Created bounded Btrfs CI pool, unprivileged UID-isolated base, private nested Docker and egress ACL",
+    "Started JIT controllers; existing signing/DB runners preserved",
+    "Removed approximately 5.4 GB of old unused Docker build cache (regenerable cache only)"
+  ],
+  "rollout_constraints": [
+    "User authorized multiple Linux runner instances on existing Hetzner hosts; no new paid capacity ordered",
+    "Measure CPU, available memory, disk and existing services before selecting parallelism",
+    "Keep PR CI isolated from production, database and the signing builder; separate disposable workers needed before routing PR code",
+    "Backend PostgreSQL service currently binds host port 5432; duplicates require isolated per-job networks/VMs or dynamic ports",
+    "Windows and Apple native builds need their matching OS/architecture/toolchain",
+    "Preserve artifact/provenance gates, production environments, source guards and serialized deployment locks"
+  ],
+  "next_inputs": [],
+  "source_urls": [
+    "https://github.com/Egkurilov/BOOHTACORD/settings/actions/runners",
+    "https://github.com/Egkurilov/BOOHTACORD/actions"
+  ],
+  "local_checks": "370 CI/policy/native-contract/promotion unit tests PASS using Python 3.14; earlier Python 3.9 environment errors resolved; latest small metadata-slot additions rechecked in focused suite",
+  "rollout_gate": "PENDING: four real CI probes, guest destruction/replacement and required PR checks",
+  "resource_limits": {
+    "heavy_slots": 2,
+    "heavy_cpu_each": 2,
+    "heavy_memory_gib_each": 4,
+    "metadata_slots": 2,
+    "metadata_cpu_each": 1,
+    "metadata_memory_mib_each": 512,
+    "ci_btrfs_pool_gib": 20,
+    "guest_root_limit_gib": 16,
+    "minimum_host_disk_reserve_gib": 5
+  }
+}

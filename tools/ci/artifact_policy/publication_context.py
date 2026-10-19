@@ -1,11 +1,12 @@
-"""Synthetic publication is limited to clean, exact-source hosted Linux jobs."""
+"""Synthetic publication is limited to clean, exact-source isolated Linux jobs."""
+from tools.ci.runner_pool.routing import isolated_linux
 from tools.ci.native.process import output
 from . import capture_data as data
 
 
 def checked(env, component, profile, *, git=None):
     data.require(env.get('GITHUB_ACTIONS') == 'true'
-                 and env.get('RUNNER_ENVIRONMENT') == 'github-hosted'
+                 and isolated_linux(env)
                  and env.get('RUNNER_OS') == 'Linux'
                  and component in ('web', 'flutter'))
     namespace = 'WEB_NAMESPACE' if component == 'web' else 'FLUTTER_EVIDENCE_NAMESPACE'

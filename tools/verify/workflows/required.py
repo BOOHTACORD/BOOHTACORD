@@ -1,4 +1,5 @@
 """Check the stable aggregate and its edges without relying on component job IDs."""
+from tools.ci.runner_pool.routing import META
 import json
 
 
@@ -10,7 +11,7 @@ def check(document, roles, require):
     require(job.get('if') == 'always()' and set(job.get('needs', [])) == set(roles.values()),
             'Required aggregate must always observe every selector/contract/component job')
     require(not job.get('continue-on-error'), 'Required aggregate failure cannot be ignored')
-    require(job.get('runs-on') == 'ubuntu-24.04', 'Required aggregate must use an isolated hosted runner')
+    require(job.get('runs-on') == META, 'Required aggregate must use an isolated hosted runner')
     checks = [s for s in job.get('steps', []) if s.get('run') == 'python3 -m tools.ci.required_gate.run']
     require(len(checks) == 1 and not checks[0].get('if') and not checks[0].get('continue-on-error'),
             'Required validator must execute without ignoring failure')

@@ -13,7 +13,7 @@ def workflow(name):return yaml.load((ROOT/'.github/workflows'/name).read_text(),
 class WorkflowTests(unittest.TestCase):
     def test_original_controllers_are_reused_in_disposable_vms_with_strict_fan_in(self):
         doc=workflow('ci-actual-acceptance.yaml');runtime=doc['jobs']['runtime'];fan=doc['jobs']['actual-acceptance']
-        self.assertEqual('ubuntu-24.04',runtime['runs-on']);self.assertEqual('false',runtime['strategy']['fail-fast'])
+        self.assertEqual(['self-hosted','linux','x64','boohtacord-ci-ephemeral'],runtime['runs-on']);self.assertEqual('false',runtime['strategy']['fail-fast'])
         self.assertEqual('always()',fan['if']);self.assertEqual('runtime',fan['needs'])
         self.assertTrue(any('actual_acceptance.fan_in' in s.get('run','') for s in fan['steps']))
         for profile,commands in OPERATIONS.items():

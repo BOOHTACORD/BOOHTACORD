@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   legacy:
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       with:
@@ -105,7 +105,7 @@ jobs:
     needs:
     - legacy
     - profiles
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     timeout-minutes: 5
     env:
       FLUTTER_EVIDENCE_NAMESPACE: shadow-compare
