@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
-import { api, channel, expect, select, sql, status } from './fixture.mjs'
+import { api, channel, expect, seed, select, sql, status } from './fixture.mjs'
 import { cacheAcl } from './cache_acl.mjs'
+import { navigationFixture } from './navigation_fixture.mjs'
 async function position(page) {
   return page.locator('.message-history-wrap .message-list').evaluate(list => {
     const top=list.getBoundingClientRect().top
@@ -10,6 +11,7 @@ async function position(page) {
   })
 }
 export async function navigation(page, fixture, input, report) {
+  fixture=await navigationFixture(fixture,()=>channel(page,fixture.category,'NextNavigation'),seed)
   const voice = await channel(page,fixture.category,'NextVoice','VOICE')
   await select(page,'NextVoice')
   await page.getByRole('button',{name:'Без микрофона',exact:true}).click()
@@ -24,10 +26,11 @@ export async function navigation(page, fixture, input, report) {
     client_message_id:randomUUID(),reply_to_id:ids[0],body:'QA navigation reply',
   });status(reply,201)
   const historyRequest=page.waitForResponse(response=>new URL(response.url()).pathname===`/api/v1/channels/${fixture.a}/messages`&&response.request().method()==='GET')
-  await select(page,'NextUnread')
+  await select(page,'NextNavigation')
   const historyResponse=await historyRequest;assert.equal(historyResponse.status(),200)
   const history=await historyResponse.json();assert.ok(history.messages.some(message=>message.id===reply.body.id),'Latest channel history omitted the newly created reply')
   const list=page.locator('.message-history-wrap .message-list')
+  await expect(list).toBeVisible({timeout:20000})
   // A completed HTTP response is not a committed virtualized history. Stay at
   // latest until the new row renders, then choose the origin for the return check.
   await list.evaluate(view=>{view.scrollTop=view.scrollHeight;view.dispatchEvent(new Event('scroll'))})

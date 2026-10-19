@@ -60,3 +60,19 @@ Vitest report after one valid observation. Each pair/temperature now has a uniqu
 report path; a missing current file cannot reuse a previous PASS. The test fails
 before this change and passes after it. Fresh hosted measurement/CI are required
 for this correction too; earlier successful observations retain their own SHA.
+
+
+Head `2d25c8a1` actual Next acceptance **FAIL** in run 39205558124/job117907503773.
+Bounded failure artifact 12164674751 (ZIP SHA256
+`41ba41ad8d3ffe7eaf16ba602834cff4fd6d6355255655b60f74e1157a060532`)
+shows the prior unread scope's saved-position context visible and the main list
+hidden (zero viewport), with the navigation reply absent from the main DOM.
+The original failure image was reviewed. Product code deliberately restores this
+position; the sequential harness was assuming it had returned to latest.
+Navigation now owns a fresh channel with the same 121 actual database rows and
+adds a visible-main precondition. The earlier unread/restore assertions remain
+intact in their original scope. New negative tests reject scope reuse, incomplete
+or duplicate history, and failed setup. All nine original navigation assertions,
+20s timeouts, 2px offset tolerance, unseen-tail/foreign-DM/voice-lease checks are
+unchanged. No product code or mandatory acceptance is removed. Fresh exact-source
+hosted acceptance is required; old PASS/FAIL observations retain their own SHA.
