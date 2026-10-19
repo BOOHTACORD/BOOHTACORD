@@ -16,6 +16,7 @@ from .guards import disk_budget
 from .locking import installation_lock
 from .runtime import check_expanded, prepare_environment
 from .state import current_manifest, write_receipt
+from . import observation, readback
 
 
 def install(args):
@@ -36,6 +37,7 @@ def install(args):
             require(expected_current is None or current['source_revision'] == expected_current,
                     'Running source changed while delivery was waiting; rerun preflight')
             compatible_upgrade(current, manifest)
+            before = {'volumes': observation.volumes(), 'schema_sha256': observation.schema()}
             runtime = Path(staging) / "runtime"
             extract(incoming / "runtime.tar.gz", runtime, max_bytes=100_000_000)
             subprocess.run(["bash", str(runtime / "tools/ops/attachment_headroom/check-attachment-volume-headroom.sh")], check=True)
@@ -53,6 +55,7 @@ def install(args):
             load_images(destination, manifest)
             deploy(destination, manifest)
             verify_running(destination, manifest)
+            readback.record(destination, manifest, current, before)
             write_receipt(destination, manifest)
             print("Installed verified source revision " + args.revision)
 

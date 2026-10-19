@@ -56,8 +56,7 @@ class MasterWorkflowTests(unittest.TestCase):
                         step['with']['name'] = 'backend-load-smoke-${{ github.sha }}'
             if mutation in ('download', 'retained'):
                 name = 'deploy-production.yaml' if mutation == 'download' else 'install-retained-release.yaml'
-                for step in value[name]['jobs']['install']['steps']:
-                    if step.get('uses') == 'actions/download-artifact@v4': step['with']['name'] = 'server-${{ steps.producer.outputs.revision }}'
+                value[name]['jobs']['install']['steps'][-1]['with']['build-run-id'] = '${{ github.run_id }}'
             with self.subTest(mutation=mutation), self.assertRaises(ValueError): workflow.validate(value)
 
     def test_every_server_upload_is_attempt_bound_including_load_smoke(self):

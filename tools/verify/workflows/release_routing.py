@@ -19,6 +19,8 @@ def check(build, deploy, gates):
         require(job.get('needs') == 'changes' and job.get('if') == (None if name == 'contracts' else IMPACT),
                 'Contracts always run; heavy server gates must follow release impact')
     route = deploy['jobs']['route']
+    require(not deploy.get('concurrency') and not route.get('concurrency'),
+            'Read-only routing must stay outside concurrency queues before bundle qualification')
     require(not route.get('environment') and not route.get('env') and not route.get('secrets'),
             'Read-only route must not enter production or receive deployment credentials')
     require(route.get('permissions') == {'contents': 'read', 'actions': 'read'}, 'Route needs only metadata read permission')

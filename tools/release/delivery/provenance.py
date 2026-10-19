@@ -17,21 +17,12 @@ def validate(run, repository, revision=None):
 
 def main():
     from .api import Reader
-    from .routing import decision
-    from .producer_artifacts import select
+    from .preflight import verified
     repository = os.environ['GITHUB_REPOSITORY']
     run_id = os.environ['BUILD_RUN_ID']
     reader = Reader(repository, run_id, os.environ['GITHUB_TOKEN'])
-    run = reader.read()
-    revision = validate(run, repository, os.environ.get('REQUESTED_REVISION') or None)
-    route = decision(run, reader.collection('jobs'), repository)
-    if not route['has_bundle']:
-        raise ValueError('Producer has no successful release bundle')
-    artifact = select(int(run_id), run, reader.collection('artifacts'), repository, route['format_version'] == 2)
-    after = reader.read()
-    validate(after, repository, revision)
-    if any(after.get(key) != run.get(key) for key in ('id', 'run_attempt', 'repository', 'head_repository')):
-        raise ValueError('Producer execution changed during preflight')
+    artifact = verified(reader, repository, run_id, os.environ.get('REQUESTED_REVISION') or None)
+    revision = artifact['source_revision']
     with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as stream:
         stream.write(f'revision={revision}\nrun_id={run_id}\nrun_attempt={artifact["run_attempt"]}\n'
                      f'artifact_id={artifact["id"]}\nartifact_name={artifact["name"]}\n')

@@ -52,11 +52,16 @@ def check(workflows):
             and uploads[0]['if-no-files-found'] == 'error', 'Builder must retain the exact release artifact')
     for name in WRITERS:
         workflow = workflows[name]
-        require(workflow['concurrency'] == {'group': 'v-bootybay-production', 'cancel-in-progress': 'false'},
-                'Install/recovery/rollback must share a non-cancellable production lock')
+        expected_lock = {'group': 'v-bootybay-production', 'cancel-in-progress': 'false'}
+        if name != 'deploy-production.yaml':
+            require(workflow.get('concurrency') == expected_lock,
+                    'Retained install/recovery/rollback must share the non-cancellable production lock')
         for job_name, job in workflow['jobs'].items():
             if name == 'deploy-production.yaml' and job_name == 'route':
                 continue
+            if name == 'deploy-production.yaml':
+                require(job.get('concurrency') == expected_lock,
+                        'Every automatic production writer must hold the shared non-cancellable job lock')
             require(job.get('environment') == 'production', 'Production environment protection is required')
             require(not any(word in commands(job) for word in ('build_images', 'legacy_transfer', 'docker build', 'npm ', 'go build')),
                     'Production writer must not build from source')
@@ -64,12 +69,12 @@ def check(workflows):
     release_routing.check(build, deploy, gates)
     require(deploy['on']['workflow_run'] == {'workflows': ['Build server'], 'branches': ['master'], 'types': ['completed']},
             'Deployment must consume completed master builds')
-    installer = next(job for job in deploy['jobs'].values() if 'tools/release/delivery/transfer.sh' in commands(job))
+    installer = deploy['jobs']['install']
     for guard in ("conclusion == 'success'", "head_branch == 'master'", 'head_repository.full_name == github.repository'):
         require(guard in installer.get('if', ''), 'Untrusted producer completion must not deploy')
-    for name in WRITERS[:2]:
-        jobs = workflows[name]['jobs'].values()
-        require(any('tools.release.delivery.provenance' in commands(job) for job in jobs), 'Artifact producer provenance must be checked')
+    from .shared_install import check as shared_install
+    action = Path(__file__).resolve().parents[3]/'.github/actions/install-trusted-server/action.yaml'
+    shared_install(workflows, yaml.load(normalized(action.read_text(encoding='utf-8')), Loader=yaml.BaseLoader))
 
 
 def main():
