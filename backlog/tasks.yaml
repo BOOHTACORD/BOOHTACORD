@@ -513,6 +513,11 @@ tasks:
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
     depends_on: [CICD-01, CICD-03, CICD-08, CICD-09]
     evidence: [tools/ci/backend_gates/test_results.py, tools/ci/backend_gates/test_run.py, tools/ci/backend_gates/test_workflow.py, docs/ci/backend-gates.md, evidence/ci/backend-gates-2026-10-19.md]
+  - id: CICD-07
+    title: One exact Windows CI package with independent native tests and mandatory real recovery GUI SFU acceptance
+    requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
+    depends_on: [CICD-01, CICD-02, CICD-03, CICD-08, CICD-18]
+    evidence: [tools/ci/windows_gates/test_transfer.py, tools/ci/windows_gates/test_workflow.py, tools/ci/windows_gates/test_acceptance.py, docs/ci/windows-gates.md, evidence/ci/windows-gates-2026-10-19.md]
   - id: CICD-10
     title: Private dependency-scoped bounded Buildx cache with mandatory image validation and stage timings
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]

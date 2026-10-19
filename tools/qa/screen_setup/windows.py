@@ -11,8 +11,7 @@ import subprocess
 import sys
 import time
 
-from tools.ci.native.process import ROOT, run, output, require_version
-from tools.build.windows.plugins import configured_plugins
+from tools.ci.native.process import ROOT, output, require_version
 from tools.qa.desktop_updates.windows_process import close_owned, running_at
 from tools.qa.desktop_updates.windows_stack import Stack
 
@@ -59,14 +58,13 @@ def main():
     if (os.environ.get('GITHUB_ACTIONS') != 'true' or
             os.environ.get('RUNNER_ENVIRONMENT') != 'github-hosted'):
         raise RuntimeError('Disposable hosted Windows CI runner required')
-    versions = json.loads(output('flutter', '--version', '--machine'))
-    require_version('flutter', versions['frameworkVersion'])
-    client = ROOT / 'clients/flutter'
-    # The normal Windows distribution build ran first and prepared pinned SDKs.
-    with configured_plugins(client):
-        run('flutter', 'build', 'windows', '--release', '--no-pub',
-            '--target=integration_test/screen_setup_windows_app.dart', cwd=client)
-    release = client / 'build/windows/x64/runner/Release'
+    from tools.ci.windows_gates.transfer import verify_workspace, read, RELEASE
+    binding = verify_workspace()
+    release = ROOT / RELEASE
+    manifest = read(release / 'artifact-manifest.json')
+    versions = manifest['toolchains']
+    require_version('flutter', versions['flutter'])
+    require_version('dart', versions['dart'])
     executable = release / 'boohtacord_desktop.exe'
     destination = ROOT / '.out/screen-setup-windows'
     destination.mkdir(parents=True, exist_ok=False)
@@ -85,7 +83,8 @@ def main():
         owned_config = True
         with (root / 'private-client.log').open('xb') as log:
             process = subprocess.Popen([str(executable)], cwd=release,
-                                       stdout=log, stderr=subprocess.STDOUT)
+                                       stdout=log, stderr=subprocess.STDOUT,
+                                       env=dict(os.environ, BOOHTACORD_WINDOWS_GUI_ACCEPTANCE='1'))
             driver = root / 'driver'
             deadline = time.monotonic() + 180
             while time.monotonic() < deadline:
@@ -96,7 +95,9 @@ def main():
                     value = json.loads((driver / 'result.json').read_text())
                     validate_result(value)
                     value.update(source=output('git', 'rev-parse', 'HEAD'),
-                                 flutter=versions['frameworkVersion'], dart=versions['dartSdkVersion'])
+                                 flutter=versions['flutter'], dart=versions['dart'],
+                                 manifest_sha256=binding['release']['artifact-manifest.json']['sha256'],
+                                 build_scope='CI acceptance package; stable release NOT_RUN')
                     images = []
                     for name in [*(row['case'] + '.png' for row in value['cases']),
                                  'header-open.png', 'dock-open.png',

@@ -22,6 +22,8 @@ import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/features/screen/setup/open_dialog/dialog.dart';
 import 'package:boohtacord_desktop/src/features/screen/setup/open_dialog/footer.dart';
 
+import 'package:boohtacord_desktop/main.dart' as production;
+
 import 'screen_setup_controls.dart';
 import 'screen_setup_launchers.dart';
 import 'desktop_updates/native_app.dart' as native;
@@ -118,6 +120,14 @@ Future<void> osKey(VIRTUAL_KEY key, {bool shift = false}) async {
 }
 
 Future<void> main() async {
+  // Recovery launches the same CI package through its ordinary app entrypoint.
+  // The GUI driver is enabled only for its own child on a disposable CI host.
+  if (Platform.environment['BOOHTACORD_WINDOWS_GUI_ACCEPTANCE'] != '1' ||
+      Platform.environment['GITHUB_ACTIONS'] != 'true' ||
+      Platform.environment['RUNNER_ENVIRONMENT'] != 'github-hosted') {
+    await production.main();
+    return;
+  }
   require(Platform.isWindows, 'windows_required');
   WidgetsFlutterBinding.ensureInitialized();
   final support = await getApplicationSupportDirectory();

@@ -44,7 +44,9 @@ if ($windows -notmatch 'uses:\s*actions/upload-artifact@v4' -or
 }
 foreach ($required in @('workflow_call:', 'runs-on: windows-2022',
     'uses: ./.github/actions/flutter-setup', 'flutter-version: 3.47.7',
-    'python -m tools.build.windows.run', 'python -m tools.ci.native.flutter')) {
+    'python -m tools.build.windows.run --ci-acceptance', 'python -m tools.ci.native.flutter',
+    'python -m tools.ci.windows_gates.transfer seal', 'python -m tools.ci.windows_gates.transfer verify',
+    'python -m tools.ci.windows_gates.acceptance', 'python -m tools.ci.windows_gates.aggregate')) {
     if (-not $windows.Contains($required)) {
         throw "Windows CI must run on a hosted runner before merge: $required"
     }
