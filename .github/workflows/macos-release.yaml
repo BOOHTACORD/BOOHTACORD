@@ -43,6 +43,8 @@ jobs:
       - name: Require exact version tag, clean source and master ancestry before SDKs or signing
         id: native-source
         run: python -m tools.release.native_contract.run preflight macos
+      - name: Require reviewed Apple toolchain before native compilation
+        run: python -m tools.ci.macos.host --arch arm64
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .node-version

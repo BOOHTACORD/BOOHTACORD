@@ -14,11 +14,10 @@ def release_guard(prefix):
 GUARDS = {
     ('deploy-production.yaml', 'install'): UPSTREAM + " && needs.route.outputs.has_bundle == 'true' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'master' && github.event.workflow_run.head_repository.full_name == github.repository",
     ('build-server.yaml', 'bundle'): MASTER + " && needs.changes.outputs.server_release_impact == 'true'",
-    ('flutter-macos.yaml', 'macos'): MASTER,
     ('android-release.yaml', 'android-release'): release_guard('android-v'),
     ('windows-release.yaml', 'windows-release'): release_guard('windows-v'),
     ('macos-release.yaml', 'macos-release'): UPSTREAM + " && (startsWith(github.ref, 'refs/tags/macos-v') || (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch' && inputs.dry_run))",
-    ('webrtc-macos-sdk.yaml', 'publish'): MASTER,
+    ('webrtc-macos-sdk.yaml', 'publish'): MASTER + " && github.event_name == 'workflow_dispatch' && inputs.publish_sdk",
     ('promote-windows-client-update.yaml', 'prepare-catalog-pr'): MASTER + " && needs.push-candidate.outputs.changed == 'true'",
     ('promote-windows-client-update.yaml', 'push-candidate'): MASTER,
     ('promote-windows-client-update.yaml', 'candidate-ci'): MASTER + " && needs.push-candidate.outputs.changed == 'true'",
@@ -46,8 +45,7 @@ def require(value):
 
 
 HOSTED = {'ubuntu-24.04', 'ubuntu-latest', 'windows-2022', 'macos-26', 'macos-26-intel'}
-PERSISTENT = {('build-server.yaml', 'bundle'): ['self-hosted', 'linux', 'x64', 'boohtacord-builder'],
-              ('flutter-macos.yaml', 'macos'): ['self-hosted', 'macos']}
+PERSISTENT = {('build-server.yaml', 'bundle'): ['self-hosted', 'linux', 'x64', 'boohtacord-builder']}
 
 
 def sensitive(value):

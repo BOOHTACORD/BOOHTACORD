@@ -7,6 +7,8 @@ from .selection import require
 
 
 def check(workflows):
+    from tools.ci.macos.workflow import validate as validate_macos
+    validate_macos(workflows)
     from tools.release.windows_promotion.workflow import validate as validate_promotion
     validate_promotion(workflows)
     from tools.release.native_contract.workflow import validate as validate_releases
