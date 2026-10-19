@@ -6,6 +6,12 @@ source/run/attempt, selected components/gates, failing component and step number
 its source job link, owner/reproduction command, retry count and observed timing.
 The source command needs the matching checkout, pinned SDKs and retained input
 artifacts: a command in a summary does not reproduce a missing physical device.
+Failures inside the required aggregate itself use its exact validator command:
+`tools.ci.required_gate.run`, `tools.ci.master_quality.run server` or
+`tools.ci.master_quality.run native`. This mapping requires the known workflow
+path and job identity together; a matching display name in another workflow
+does not gain a claimed reproduction command. Evidence-upload stages retain
+their evidence classification, and unknown external causes stay unverified.
 No raw Actions logs, review payloads, actor names, usernames, sessions or artifact
 contents are collected. Unknown root causes remain UNVERIFIED.
 
@@ -15,9 +21,11 @@ triage retention is red. Summaries use `always()`, upload one exact JSON, requir
 its presence and retain it 30 days with source/run/attempt naming. No required job
 uses `continue-on-error`. The only added permission is read-only Actions metadata
 on those aggregate jobs; no production environment, signing/SSH key, write scope
-or inherited secret is introduced. Actual required repository settings remain an
-owner-controlled readback item (#385); this implementation names the three stable
-repository aggregates rather than claiming to know uninspected protection rules.
+or inherited secret is introduced. After explicit owner authorization, the active
+master ruleset25434147 requires GitHub Actions `ci-required` with strict branch
+currency and no bypass. `server-quality` and `native-required` remain internal
+workflow aggregates. The administrator readback is retained in
+`evidence/ci/required-status-readback-2026-10-20.json` (#385).
 
 ## Source identity
 

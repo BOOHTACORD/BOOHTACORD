@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "scope": "actual-api-red-metadata-replay",
+  "status": "PASS_METADATA_ONLY",
+  "cases": [
+    {
+      "run_id": 39317404355,
+      "api_head_sha": "b1c9f2c7500665018999b0af39ee6b07268a54f5",
+      "outcome": "CANCELLED",
+      "source_binding": "api_head_only",
+      "root_cause": "UNVERIFIED",
+      "known_aggregate": {
+        "job": "native-required",
+        "job_id": 118291340508,
+        "step_number": 5,
+        "command": "python -m tools.ci.master_quality.run native"
+      },
+      "all_failure_count": 2,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39317404355"
+    },
+    {
+      "run_id": 39323887499,
+      "api_head_sha": "dbd89457efb3dd44c5c75ac32bed3a1c433128cc",
+      "outcome": "CANCELLED",
+      "source_binding": "api_head_only",
+      "root_cause": "UNVERIFIED",
+      "known_aggregate": {
+        "job": "ci-required",
+        "job_id": 118309313371,
+        "step_number": 5,
+        "command": "python -m tools.ci.required_gate.run"
+      },
+      "all_failure_count": 8,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39323887499"
+    },
+    {
+      "run_id": 39304842850,
+      "api_head_sha": "b48d85c920ee067121f453575005cdc6bf27d5c8",
+      "outcome": "CANCELLED",
+      "source_binding": "api_head_only",
+      "root_cause": "UNVERIFIED",
+      "known_aggregate": {
+        "job": "server-quality",
+        "job_id": 118242982735,
+        "step_number": 5,
+        "command": "python -m tools.ci.master_quality.run server"
+      },
+      "all_failure_count": 6,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39304842850"
+    }
+  ],
+  "tests": {
+    "new_regression": "three scopes failed before implementation",
+    "focused_methods": 18,
+    "seconds": 0.414,
+    "historical_records_unchanged": 40
+  },
+  "limits": [
+    "Current classifier replay of actual authenticated GitHub run/job metadata; not a new native/runtime fault injection.",
+    "Historical cancellations and failures retain their original outcome; no cause is labelled flaky and no assertion is retried.",
+    "Manual summaries bind the API head only, without asserting the historical tested PR merge source."
+  ],
+  "base_revision": "873168e543af835928bb582b0975037559cfed48",
+  "tested_code_sha256": {
+    "tools/ci/observability/triage.py": "0813aaab47500d54695f471ee4162ca26205dee019702f853263a2bb1b253be1",
+    "tools/ci/observability/summary.py": "ff0ee820413193571f5fd004e3b56064a5b908d60514e75026ff30f39974165f",
+    "tools/ci/observability/test_triage.py": "134a6357fe29b702f1a62eee47700030be441b585c4c301d4e72ae7e7a26a487",
+    "tools/ci/observability/test_summary.py": "24cfb6d54d7206b9aed4ae0c453d43999e28e3a7d187a3c1f9d1b0d6abcb9a5b"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "source_revision": "79d1c36a1f7bc3053a01c88a32b7e78cc8b5a821",
+  "description": "Verified partial readiness: five narrow criteria only; no final cutover or authenticated owner GO.",
+  "records": [
+    "evidence/ci/cutover-baseline-79d1c36a-2026-10-20.json",
+    "evidence/ci/cutover-required-status-owner-readback-79d1c36a-2026-10-20.json",
+    "evidence/ci/cutover-workflow-configuration-rollback-79d1c36a-2026-10-20.json",
+    "evidence/ci/cutover-schema-compatible-rollback-79d1c36a-2026-10-20.json",
+    "evidence/ci/cutover-macos-sdk-matrix-79d1c36a-2026-10-20.json"
+  ],
+  "after_observation_note": "The 78-run mixed implementation/correction window is retained for observability, not claimed to be 30 observations of the frozen final DAG."
+}
