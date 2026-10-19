@@ -56,7 +56,7 @@ def main():
                 npm_env = {**env, 'NPM_CONFIG_CACHE': str(npm_cache),
                            'NPM_CONFIG_USERCONFIG': str(config), 'NPM_CONFIG_GLOBALCONFIG': str(global_config)}
                 _, install = execute(['npm', 'ci', '--no-audit', '--no-fund'], web, npm_env)
-                report = directory / 'vitest.json'
+                report = directory / ('vitest-' + str(pair) + '-' + temperature + '.json')
                 _, check = execute(['npm', 'exec', '--', 'vitest', 'run', '--config', 'fixture.config.mjs',
                                     '--reporter=json', '--outputFile=' + str(report)], web, npm_env)
                 tests = vitest_tests(json.loads(report.read_text()))

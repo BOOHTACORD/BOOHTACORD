@@ -45,3 +45,36 @@ class CacheMeasureTests(unittest.TestCase):
             with self.subTest(field=field), self.assertRaises(ValueError): results.vitest_tests(bad)
         bad=copy.deepcopy(good);bad['testResults'][0]['assertionResults'].pop()
         with self.assertRaises(ValueError): results.vitest_tests(bad)
+
+    def test_missing_current_report_cannot_reuse_the_previous_observation(self):
+        import json
+        import tempfile
+        from pathlib import Path
+        from unittest.mock import patch
+        from . import run
+        with tempfile.TemporaryDirectory() as name:
+            root=Path(name)
+            calls=0
+            report={'success':True,'numFailedTests':0,'numPendingTests':0,'numTodoTests':0,
+                    'numPassedTests':1,'numTotalTests':1,'testResults':[{'assertionResults':[
+                        {'fullName':'actual assertion','status':'passed'}]}]}
+            def execute(command, cwd, env, timeout=300):
+                nonlocal calls
+                if command==['node','--version']: return 'v24.18.0',0.1
+                if command[:2]==['go','env']: return 'go1.26.4',0.1
+                if 'vitest' in command:
+                    calls+=1
+                    if calls==1:
+                        path=Path(next(x.split('=',1)[1] for x in command if x.startswith('--outputFile=')))
+                        path.write_text(json.dumps(report))
+                    # Simulate a zero-exit wrapper that fails to produce a fresh report.
+                    return '',0.1
+                if command[:2]==['go','test']:
+                    return '{"Action":"pass","Test":"TestReal"}\n{"Action":"pass"}\n',0.1
+                return '',0.1
+            with patch.object(run,'ROOT',root), patch.object(run,'approved_versions',return_value={'node':'24.18.0','go':'1.26.4'}), \
+                 patch.object(run,'public_bytes',return_value=b'public'), patch.object(run,'payload',return_value={}), \
+                 patch.object(run,'execute',side_effect=execute), \
+                 patch.object(run.subprocess,'check_output',return_value='a'*40), patch.object(run.subprocess,'run'), \
+                 patch.dict(run.os.environ,{'GITHUB_SHA':'a'*40}):
+                with self.assertRaises(FileNotFoundError): run.main()

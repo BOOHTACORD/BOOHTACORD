@@ -54,3 +54,9 @@ value failed a focused test before correction and passes after. Prior failed CI
 is retained as FAIL; a fresh complete source-bound CI is required. The diagnostic
 branch's added probe omitted Python setup and its separate contracts run correctly
 rejected it; that temporary workflow is excluded from the product candidate.
+
+A final fault-injection check simulates a zero-exit wrapper producing no new
+Vitest report after one valid observation. Each pair/temperature now has a unique
+report path; a missing current file cannot reuse a previous PASS. The test fails
+before this change and passes after it. Fresh hosted measurement/CI are required
+for this correction too; earlier successful observations retain their own SHA.
