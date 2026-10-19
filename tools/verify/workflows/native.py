@@ -7,6 +7,8 @@ from .selection import require
 
 
 def check(workflows):
+    from tools.release.native_contract.workflow import validate as validate_releases
+    validate_releases(workflows)
     from tools.ci.artifact_policy.workflows import windows
     windows(workflows['flutter-windows.yaml']['jobs'])
     from tools.ci.windows_gates.workflow import validate as validate_windows

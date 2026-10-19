@@ -26,7 +26,7 @@ def validate(document):
         unit,build,gui=(jobs[n] for n in ('windows-native-unit','windows-build','windows-gui-sfu'))
         command(unit,'python -m tools.ci.native.flutter')
         command(unit,'node --test tools/release/android/publish.test.mjs tools/release/android/publish_retries.test.mjs tools/release/android/publish_conflicts.test.mjs')
-        native=[s for s in unit['steps'] if 'cl.exe /nologo /std:c++17' in s.get('run','')]
+        native=[s for s in unit['steps'] if 'cl.exe /nologo /std:c++17' in s.get('run','') and 'windows.cpp' in s.get('run','')]
         reject=[s for s in unit['steps'] if 'Recovery monitor did not reject' in s.get('run','')]
         require(len(native)==len(reject)==1 and not native[0].get('if') and not reject[0].get('if'))
         build_index=command(build,'python -m tools.build.windows.run --ci-acceptance')
