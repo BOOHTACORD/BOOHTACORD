@@ -40,3 +40,17 @@ gates. No full CI p50/p95, native publication, media capacity or repository-sett
 acceptance is inferred from a microbenchmark. Complete #392 only after the hosted
 results and merge source are verified; #386/#382 retain their separate remaining
 acceptance requirements.
+
+
+Initial hosted head `5209702d` / checkout `0d0de0b2` **FAIL** at the new Java runtime
+assertion (Flutter job 117903902061, CI 39204358616). The setup action's cached
+label is 17.0.20+1, while the actual Eclipse Adoptium runtime property is
+17.0.20.1+1. The isolated read-only public-property probe
+[39204506116 / 117904298991](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39204506116/job/117904298991)
+confirms this exact value without publishing the rest of Java properties or user
+environment. The policy now pins the selection label and complete runtime value
+separately; no prefix/major-only comparison or ignored mismatch. The observed
+value failed a focused test before correction and passes after. Prior failed CI
+is retained as FAIL; a fresh complete source-bound CI is required. The diagnostic
+branch's added probe omitted Python setup and its separate contracts run correctly
+rejected it; that temporary workflow is excluded from the product candidate.

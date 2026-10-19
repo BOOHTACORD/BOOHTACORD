@@ -9,7 +9,7 @@ are in `tools/ci/toolchains/auxiliary.json`. They do not change server image inp
 | Input | Reviewed selection and enforcement |
 | --- | --- |
 | Python | Linux 3.12.15; Windows/macOS 3.12.10. Exact setup-python expression, actual interpreter check, no pip cache. |
-| Java | Temurin 17.0.20+1; exact setup and `java.runtime.version` check before Android commands. |
+| Java | Temurin setup/cache label 17.0.20+1; observed `java.runtime.version` **17.0.20.1+1**. Both are explicit pins; the runtime must match the complete observed value before Android commands. |
 | .NET | SDK 8.0.426; exact setup and CLI check. Root `global.json` disables roll-forward, so a newer preinstalled SDK cannot take precedence. |
 | Gradle | 9.3.1 all distribution; official `distributionSha256Sum` checked by the wrapper on download. |
 | Android app build plugins | AGP 9.1.0 and Kotlin 2.4.0, recorded in reviewed native input hashes. |

@@ -12,6 +12,7 @@ def policy(root):
             or any(not re.fullmatch(r'3\.12\.\d+', v) for v in python.values())
             or python['Windows'] != python['macOS']
             or not re.fullmatch(r'17\.\d+\.\d+\+\d+', value.get('java', ''))
+            or not re.fullmatch(r'17\.\d+\.\d+(?:\.\d+)?\+\d+', value.get('java_runtime', ''))
             or not re.fullmatch(r'8\.0\.\d+', value.get('dotnet', ''))):
         raise ValueError('Exact reviewed per-platform Python, Java and .NET SDKs required')
     return value
@@ -81,7 +82,7 @@ def check_runtime(kind, actual, system, root):
     versions = policy(root)
     if system not in versions['python'] or kind not in ('python', 'java', 'dotnet'):
         raise ValueError('Unsupported auxiliary SDK/platform')
-    expected = versions[kind][system] if kind == 'python' else versions[kind]
+    expected = versions[kind][system] if kind == 'python' else versions['java_runtime' if kind == 'java' else kind]
     if actual != expected:
         raise ValueError('Installed auxiliary SDK differs from the reviewed platform policy')
 

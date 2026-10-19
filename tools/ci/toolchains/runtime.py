@@ -27,6 +27,9 @@ def main():
     args = parser.parse_args()
     system = os.environ.get('RUNNER_OS', {'Darwin': 'macOS'}.get(platform.system(), platform.system()))
     actual = measured(args.kind)
+    if not re.fullmatch(r'[0-9][0-9A-Za-z.+_-]{0,79}', actual):
+        raise ValueError('Invalid public SDK version format')
+    print('Selected ' + args.kind + ' runtime: ' + actual + ' (' + system + ')')
     check_runtime(args.kind, actual, system, ROOT)
     print('PASS installed ' + args.kind + ': ' + actual + ' (' + system + ')')
 

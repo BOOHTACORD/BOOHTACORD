@@ -78,7 +78,7 @@ class AuxiliaryTests(unittest.TestCase):
         auxiliary.check_runtime('python', '3.12.15', 'Linux', ROOT)
         auxiliary.check_runtime('python', '3.12.10', 'Windows', ROOT)
         auxiliary.check_runtime('dotnet', '8.0.426', 'Windows', ROOT)
-        auxiliary.check_runtime('java', '17.0.20+1', 'Linux', ROOT)
+        auxiliary.check_runtime('java', '17.0.20.1+1', 'Linux', ROOT)
         for kind, value, system in [('python', '3.12.10', 'Linux'), ('java', '17.0.20+2', 'Linux'),
                                     ('dotnet', '8.0.425', 'Windows'), ('python', '3.12.15', 'foreign')]:
             with self.subTest(kind=kind, value=value), self.assertRaises(ValueError):
