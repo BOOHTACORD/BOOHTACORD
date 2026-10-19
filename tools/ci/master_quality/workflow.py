@@ -1,0 +1,93 @@
+"""Enforce one master server producer and independent read-only native quality."""
+from tools.ci.toolchains.auxiliary import ROOT, python_input
+
+MASTER = "github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'"
+PR_SCOPE = "github.event_name != 'workflow_dispatch' || github.ref != 'refs/heads/master'"
+EXECUTION = '${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
+
+
+def require(value):
+    if not value:
+        raise ValueError('Master quality ownership, source, attempt or mandatory dependency differs')
+
+
+def selector(job):
+    require(job.get('if') == MASTER and job.get('runs-on') == 'ubuntu-24.04')
+    require(not job.get('environment') and not job.get('secrets') and not job.get('continue-on-error'))
+    for key in ('contracts', 'map_version', 'map_sha256', 'uncertain', 'server_release_impact', 'flutter', 'windows'):
+        require(job.get('outputs', {}).get(key) == '${{ steps.select.outputs.' + key + ' }}')
+    steps = job.get('steps', [])
+    commands = [s for s in steps if s.get('run') == 'python3 -m tools.ci.select_changes.run']
+    require(len(commands) == 1 and commands[0].get('id') == 'select' and not commands[0].get('if'))
+    require(any(s.get('uses') == 'actions/checkout@v4' and s.get('with') == {
+        'persist-credentials': 'false', 'fetch-depth': '0'} for s in steps))
+
+
+def quality(job, scope, roles):
+    require(job.get('if') == 'always()' and set(job.get('needs', [])) == set(roles)
+            and job.get('runs-on') == 'ubuntu-24.04' and job.get('timeout-minutes') == '5'
+            and not any(key in job for key in ('environment', 'secrets', 'continue-on-error', 'env')))
+    steps = job.get('steps', [])
+    require(len(steps) == 5 and all(not s.get('continue-on-error') for s in steps))
+    require(steps[0] == {'uses': 'actions/checkout@v4', 'with': {'persist-credentials': 'false'}})
+    require(steps[1] == {'uses': 'actions/setup-python@v5', 'with': {'python-version': python_input(ROOT)}})
+    require(steps[2].get('run') == 'python -m tools.ci.toolchains.runtime python' and not steps[2].get('if'))
+    require(steps[3].get('run') == f'python3 -m tools.ci.master_quality.run {scope}'
+            and steps[3].get('env') == {'MASTER_NEEDS': '${{ toJSON(needs) }}'} and not steps[3].get('if'))
+    require(steps[4].get('uses') == 'actions/upload-artifact@v4' and steps[4].get('if') == 'always()'
+            and steps[4].get('with') == {'name': f'quality-master-{scope}-' + EXECUTION,
+                                       'path': f'.out/ci/master-{scope}.json',
+                                       'if-no-files-found': 'error', 'retention-days': '30'})
+
+
+def validate(workflows):
+    try:
+        ci = workflows['ci.yaml']
+        require(set(ci['on']) == {'pull_request', 'merge_group', 'workflow_dispatch'})
+        require(ci['jobs']['changes'].get('if') == ci['jobs']['contracts'].get('if') == PR_SCOPE)
+        build, native = workflows['build-server.yaml'], workflows['native-master.yaml']
+        for document in (build, native):
+            require(document['on'] == {'push': {'branches': ['master']}, 'workflow_dispatch': ''})
+            require(document['permissions'] == {'contents': 'read'}
+                    and document['concurrency']['cancel-in-progress'] == 'true')
+            selector(document['jobs']['changes'])
+        require(set(build['jobs']) == {'changes', 'contracts', 'backend', 'web', 'server-quality', 'bundle'})
+        require(set(native['jobs']) == {'changes', 'flutter', 'windows', 'native-required'})
+        quality(build['jobs']['server-quality'], 'server', ('changes', 'contracts', 'backend', 'web'))
+        quality(native['jobs']['native-required'], 'native', ('changes', 'flutter', 'windows'))
+        require(not build['jobs']['contracts'].get('if') and build['jobs']['contracts'].get('needs') == 'changes')
+        require(set(build['jobs']['bundle']['needs']) == {'changes', 'contracts', 'backend', 'web', 'server-quality'})
+        for name, filename in (('flutter', 'ci-flutter.yaml'), ('windows', 'flutter-windows.yaml')):
+            require(native['jobs'][name] == {'needs': 'changes', 'if': f"needs.changes.outputs.{name} == 'true'",
+                                            'uses': './.github/workflows/' + filename})
+        for gate, filename in (('backend', 'ci-backend.yaml'), ('web', 'ci-frontend.yaml'), ('contracts', 'ci-contracts.yaml')):
+            job = build['jobs'][gate]
+            require(job.get('uses') == './.github/workflows/' + filename and job.get('with') == {'release_receipt': 'true'})
+            receipts = [s for child in workflows[filename]['jobs'].values() for s in child.get('steps', [])
+                        if s.get('uses') == 'actions/upload-artifact@v4'
+                        and s.get('with', {}).get('path') == f'.out/checks/{gate}.json']
+            require(len(receipts) == 1 and receipts[0].get('if') == 'inputs.release_receipt'
+                    and receipts[0]['with']['name'] == f'check-{gate}-' + EXECUTION
+                    and receipts[0]['with']['if-no-files-found'] == 'error')
+        bundle = build['jobs']['bundle']
+        downloads = [s for s in bundle['steps'] if s.get('uses') == 'actions/download-artifact@v4']
+        uploads = [s for s in bundle['steps'] if s.get('uses') == 'actions/upload-artifact@v4']
+        require([s.get('with') for s in downloads] == [
+            {'name': f'check-{gate}-' + EXECUTION, 'path': '.out/checks'}
+            for gate in ('backend', 'web', 'contracts')]
+            and all(not s.get('if') for s in downloads))
+        require(len(uploads) == 1 and uploads[0]['with']['name'] == 'server-' + EXECUTION)
+        for name in ('deploy-production.yaml', 'install-retained-release.yaml'):
+            downloads = [s for s in workflows[name]['jobs']['install']['steps']
+                         if s.get('uses') == 'actions/download-artifact@v4']
+            require(len(downloads) == 1 and downloads[0].get('with') == {
+                'name': '${{ steps.producer.outputs.artifact_name }}', 'path': '.out/incoming',
+                'run-id': '${{ steps.producer.outputs.run_id }}', 'github-token': '${{ secrets.GITHUB_TOKEN }}'})
+        for name in ('build-server.yaml', 'ci-backend.yaml', 'ci-frontend.yaml', 'ci-contracts.yaml'):
+            for job in workflows[name]['jobs'].values():
+                for step in job.get('steps', []):
+                    if step.get('uses') == 'actions/upload-artifact@v4':
+                        require(all('${{ github.' + field + ' }}' in step.get('with', {}).get('name', '')
+                                    for field in ('sha', 'run_id', 'run_attempt')))
+    except (KeyError, TypeError, AttributeError, IndexError):
+        raise ValueError('Incomplete master producer graph') from None

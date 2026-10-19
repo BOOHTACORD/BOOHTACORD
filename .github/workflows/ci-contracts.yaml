@@ -99,7 +99,7 @@ jobs:
         if: inputs.release_receipt
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: check-contracts-${{ github.sha }}
+          name: check-contracts-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .out/checks/contracts.json
           if-no-files-found: error
           retention-days: 30

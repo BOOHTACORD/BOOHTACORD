@@ -43,7 +43,7 @@ class ReleaseBoundaryTests(unittest.TestCase):
             response = {'head_sha': 'a' * 40, 'head_repository': {'full_name': 'foreign/repo'},
                         'private_payload': 'synthetic-message-canary'}
             stdout, stderr = StringIO(), StringIO()
-            with patch.dict(os.environ, env, clear=True), patch('tools.release.delivery.provenance.urlopen') as opened:
+            with patch.dict(os.environ, env, clear=True), patch('tools.release.delivery.api.urlopen') as opened:
                 opened.return_value.__enter__.return_value = StringIO(json.dumps(response))
                 with redirect_stdout(stdout), redirect_stderr(stderr):
                     with self.assertRaisesRegex(ValueError, '^Foreign build repository$'): main()

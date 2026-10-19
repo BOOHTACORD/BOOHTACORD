@@ -14,9 +14,20 @@ concurrency:
 
 jobs:
   changes:
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-24.04
     outputs:
+      contracts: ${{ steps.select.outputs.contracts }}
+      map_version: ${{ steps.select.outputs.map_version }}
+      map_sha256: ${{ steps.select.outputs.map_sha256 }}
+      uncertain: ${{ steps.select.outputs.uncertain }}
+      backend: ${{ steps.select.outputs.backend }}
+      web: ${{ steps.select.outputs.web }}
+      flutter: ${{ steps.select.outputs.flutter }}
+      windows: ${{ steps.select.outputs.windows }}
+      server: ${{ steps.select.outputs.server }}
       server_release_impact: ${{ steps.select.outputs.server_release_impact }}
+      native_release_impact: ${{ steps.select.outputs.native_release_impact }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -44,14 +55,40 @@ jobs:
       release_receipt: true
   contracts:
     needs: changes
-    if: needs.changes.outputs.server_release_impact == 'true'
     uses: ./.github/workflows/ci-contracts.yaml
     with:
       release_receipt: true
+  server-quality:
+    if: always()
+    needs: [changes, contracts, backend, web]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Require exact-master server quality
+        env:
+          MASTER_NEEDS: ${{ toJSON(needs) }}
+        run: python3 -m tools.ci.master_quality.run server
+      - name: Retain source-bound master quality result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: quality-master-server-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/master-server.json
+          if-no-files-found: error
+          retention-days: 30
+
   bundle:
     if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && needs.changes.outputs.server_release_impact == 'true'
     environment: production
-    needs: [changes, backend, web, contracts]
+    needs: [changes, backend, web, contracts, server-quality]
     runs-on: [self-hosted, linux, x64, boohtacord-builder]
     timeout-minutes: 30
     env:
@@ -64,9 +101,16 @@ jobs:
           persist-credentials: false
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          pattern: check-*-${{ github.sha }}
+          name: check-backend-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .out/checks
-          merge-multiple: true
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: check-web-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/checks
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: check-contracts-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/checks
       - name: Build, attest, smoke-test and sign the immutable bundle
         env:
           RELEASE_SIGNING_PRIVATE_KEY: ${{ secrets.RELEASE_SIGNING_PRIVATE_KEY }}
@@ -74,7 +118,7 @@ jobs:
       - name: Retain the exact verified release
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: server-${{ github.sha }}
+          name: server-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             .out/releases/${{ github.sha }}.release.tar.gz
             .out/releases/${{ github.sha }}.release.tar.gz.sha256

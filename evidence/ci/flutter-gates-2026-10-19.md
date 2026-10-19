@@ -1,7 +1,28 @@
 # CICD-06 / #390 local implementation checkpoint
 
-Status: **Initial source `01f28743` profiles/artifacts PASS; current measurement/34-capture candidate, comparative timing and master acceptance NOT_RUN**.
-Parent #382 and issue #390 remain open.
+Status: **PASS** for #390 after merged PR #429 and exact-master acceptance on
+`74197bec5951e672bb2daae85ab7a234ffffe545`. Parent #382 remains open.
+The paragraphs below preserve development checkpoints; the final acceptance
+record is `flutter-gates-final-2026-10-19.json`.
+
+The completed same-source comparison `39229503990` has three original and three
+split samples, all 13 jobs and all nine source/attempt-bound reports successful.
+Recomputing against actual job metadata exactly matches the retained comparison:
+critical p50 **1082 → 642 seconds**, p95 **1120 → 748 seconds**. Runner-minute
+p50 is **18.033333 → 18.016667**, effectively unchanged. With n=3, p95 is the
+maximum, not a general performance or billing claim.
+
+All **16 current-head PR checks** passed. Combined release-mode proof
+`39234203231` passed **722 Python tests and all 19 original negative fixtures**.
+On actual master, `39237356016` has successful Dart, Android and stable Flutter
+aggregate jobs. Both retained parts strictly validate the exact master SHA,
+run/attempt, SDK and complete operation lists. Four downloaded ZIP digests and
+sizes match GitHub metadata; actual **34 PNGs and all five Android artifact
+files** match the execution reports. The APK is 159344774 bytes, SHA256
+`7e52c6634151af76aba94e21fc0bc3661a1d167c3e945488f066429cbd81f236`.
+The whole master CI/Windows run was still in progress at this checkpoint and
+is not declared successful here. Physical device/media acceptance #62 remains
+separate. The frozen record retains these scope and source distinctions.
 
 Prepared independently from master `f1b19038` while #388's immutable Web candidate
 and repeated hosted comparison execute. Only CI orchestration, local entrypoint

@@ -71,3 +71,45 @@ class ProducerRoutingTests(unittest.TestCase):
             broken['jobs'].append(extra);broken['total_count'] += 1
             with self.subTest(skipped=skipped), self.assertRaises(ValueError):
                 decision(self.run, broken, 'owner/repo')
+
+    def modern(self):
+        self.run['run_attempt'] = 2
+        for row in self.jobs['jobs']: row['run_attempt'] = 2
+        self.jobs['jobs'].append({'id': 6, 'run_id': 123, 'name': 'server-quality',
+                                  'status': 'completed', 'conclusion': 'success', 'run_attempt': 2})
+        self.jobs['total_count'] += 1
+
+    def test_new_server_producer_requires_successful_quality_and_contracts_even_without_release(self):
+        self.modern()
+        self.assertEqual(2, decision(self.run, self.jobs, 'owner/repo')['format_version'])
+        for index in (1, 2, 4):
+            self.jobs['jobs'][index]['conclusion'] = 'skipped'
+            self.jobs['jobs'][index]['name'] = self.jobs['jobs'][index]['name'].split(' / ')[0]
+        result = decision(self.run, self.jobs, 'owner/repo')
+        self.assertFalse(result['has_bundle'])
+        self.assertEqual(2, result['format_version'])
+        self.jobs['jobs'].pop(); self.jobs['total_count'] -= 1
+        with self.assertRaises(ValueError): decision(self.run, self.jobs, 'owner/repo')
+
+    def test_modern_marker_cannot_be_skipped_duplicated_or_detached_from_selector(self):
+        for mutation in ('skipped', 'duplicate', 'selector-missing', 'contracts-skipped'):
+            self.setUp(); self.modern()
+            if mutation == 'skipped': self.jobs['jobs'][-1]['conclusion'] = 'skipped'
+            if mutation == 'duplicate':
+                self.jobs['jobs'].append({**self.jobs['jobs'][-1], 'id': 7})
+                self.jobs['total_count'] += 1
+            if mutation == 'selector-missing':
+                self.jobs['jobs'].pop(0); self.jobs['total_count'] -= 1
+            if mutation == 'contracts-skipped': self.jobs['jobs'][3]['conclusion'] = 'skipped'
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                decision(self.run, self.jobs, 'owner/repo')
+
+    def test_current_attempt_cannot_consume_foreign_attempt_jobs(self):
+        self.run['run_attempt'] = 2
+        for row in self.jobs['jobs']: row['run_attempt'] = 2
+        self.modern(); self.jobs['jobs'][-1]['run_attempt'] = 2
+        self.assertTrue(decision(self.run, self.jobs, 'owner/repo')['has_bundle'])
+        for value in (1, 3, True, None):
+            self.jobs['jobs'][1]['run_attempt'] = value
+            with self.subTest(attempt=value), self.assertRaises(ValueError):
+                decision(self.run, self.jobs, 'owner/repo')

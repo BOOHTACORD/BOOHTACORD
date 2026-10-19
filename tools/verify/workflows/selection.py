@@ -22,7 +22,8 @@ def check(document):
     for job_name, job in jobs.items():
         workflow = job.get('uses', '').rsplit('/', 1)[-1]
         if workflow == 'ci-contracts.yaml':
-            require(not job.get('if'), 'Contract/traceability policy must always run')
+            from tools.ci.master_quality.workflow import PR_SCOPE
+            require(job.get('if') in (None, PR_SCOPE), 'Contract/traceability policy must always run on PR and merge queue')
             seen.add('contracts')
             roles['contracts'] = job_name
         if workflow in GATES:

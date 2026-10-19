@@ -1,8 +1,6 @@
 """Read-only producer preflight: a proven non-release route must not request deployment."""
 import json
 import os
-import re
-from urllib.request import Request, urlopen
 from .provenance import validate
 
 GATES = ('backend / backend', 'web / frontend', 'contracts / contracts')
@@ -24,43 +22,39 @@ def decision(run, document, repository):
         return matches[0]['conclusion']
 
     bundle = one('bundle')
+    modern = any(j.get('name') == 'server-quality' for j in jobs)
+    if modern:
+        if (one('server-quality') != 'success' or one('changes') != 'success'
+                or type(run.get('run_attempt')) is not int or run['run_attempt'] <= 0
+                or any(type(j.get('run_attempt')) is not int
+                       or j['run_attempt'] != run['run_attempt'] for j in jobs)):
+            raise ValueError('Master quality is not bound to this successful attempt')
     expected = 'success' if bundle == 'success' else 'skipped'
     for name in GATES:
         caller = name.split(' / ')[0]
         matches = [job for job in jobs if job.get('name') in (name, caller)]
-        required_name = name if bundle == 'success' else caller
+        always_contracts = modern and name == 'contracts / contracts'
+        required_name = name if bundle == 'success' or always_contracts else caller
         if (len(matches) != 1 or matches[0]['name'] != required_name
-                or matches[0]['conclusion'] != expected):
+                or matches[0]['conclusion'] != ('success' if always_contracts else expected)):
             raise ValueError('Producer gates differ from bundle route')
     if bundle == 'skipped' and one('changes') != 'success':
         raise ValueError('No successful explicit non-release route')
     selectors = [j for j in jobs if j.get('name') == 'changes']
     if selectors and (len(selectors) != 1 or selectors[0]['conclusion'] != 'success'):
         raise ValueError('Change selection did not succeed')
-    return {'revision': revision, 'run_id': run['id'], 'has_bundle': bundle == 'success'}
+    return {'revision': revision, 'run_id': run['id'], 'has_bundle': bundle == 'success',
+            'format_version': 2 if modern else 1}
 
 
 def main():
+    from .api import Reader
     repository, run_id = os.environ['GITHUB_REPOSITORY'], os.environ['BUILD_RUN_ID']
-    if not re.fullmatch('[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository) or not re.fullmatch('[0-9]+', run_id):
-        raise ValueError('Invalid producer identity')
-    root = f'https://api.github.com/repos/{repository}/actions/runs/{run_id}'
-
-    def read(url):
-        request = Request(url, headers={'Authorization': 'Bearer ' + os.environ['GITHUB_TOKEN'],
-                                       'Accept': 'application/vnd.github+json'})
-        with urlopen(request, timeout=30) as response:
-            return json.load(response)
-
-    run, jobs = read(root), []
-    for page in range(1, 21):
-        document = read(root + f'/jobs?filter=latest&per_page=100&page={page}')
-        jobs.extend(document['jobs'])
-        if len(jobs) == document['total_count']:
-            break
-        if not document['jobs']:
-            raise ValueError('Truncated producer jobs')
-    result = decision(run, {'jobs': jobs, 'total_count': document['total_count']}, repository)
+    reader = Reader(repository, run_id, os.environ['GITHUB_TOKEN'])
+    run = reader.read()
+    if run.get('id') != int(run_id):
+        raise ValueError('Producer run differs from request')
+    result = decision(run, reader.collection('jobs'), repository)
     with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as stream:
         stream.write(''.join(f'{key}={str(value).lower() if type(value) is bool else value}\n'
                              for key, value in result.items()))

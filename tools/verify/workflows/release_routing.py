@@ -16,7 +16,8 @@ def check(build, deploy, gates):
             'Server release impact must come from the common dependency map')
     for name in gates:
         job = build['jobs'][name]
-        require(job.get('needs') == 'changes' and job.get('if') == IMPACT, 'All server gates must follow release impact')
+        require(job.get('needs') == 'changes' and job.get('if') == (None if name == 'contracts' else IMPACT),
+                'Contracts always run; heavy server gates must follow release impact')
     route = deploy['jobs']['route']
     require(not route.get('environment') and not route.get('env') and not route.get('secrets'),
             'Read-only route must not enter production or receive deployment credentials')

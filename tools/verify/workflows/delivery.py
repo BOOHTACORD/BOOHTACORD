@@ -16,6 +16,8 @@ def commands(job):
 
 
 def check(workflows):
+    from tools.ci.master_quality.workflow import validate as validate_master
+    validate_master(workflows)
     from tools.ci.web_suites.workflow import validate as validate_web
     validate_web(workflows['ci-frontend.yaml'])
     from tools.ci.web_suites.shadow_workflow import validate as validate_shadow
@@ -36,17 +38,17 @@ def check(workflows):
         qualified.append(job.get('name', caller) + ' / ' + definition.get('name', child))
     require(len(set(qualified)) == 3 and set(qualified) == set(PRODUCER_GATE_NAMES),
             'Producer job identities must match the runtime route decoder')
-    for name in ('changes', 'bundle'):
+    for name in ('changes', 'bundle', 'server-quality'):
         require(build['jobs'][name].get('name', name) == name, 'Producer root job identity drift')
     builder = builders[0]
     require(set(builder.get('runs-on', [])) == {'self-hosted', 'linux', 'x64', 'boohtacord-builder'},
             'Signed builds require the dedicated Docker-capable builder runner')
-    require(set(builder.get('needs', [])) == gates | {'changes'}, 'Builder must depend on all source-bound receipts')
+    require(set(builder.get('needs', [])) == gates | {'changes', 'server-quality'}, 'Builder must depend on all source-bound receipts and master quality')
     require(builder.get('if') == GUARDS[('build-server.yaml', 'bundle')] and builder.get('environment') == 'production',
             'Only protected master builds can use the production signer')
     require(build['concurrency']['cancel-in-progress'] == 'true', 'Obsolete builds must be cancellable')
     uploads = [step['with'] for step in builder['steps'] if step.get('uses') == 'actions/upload-artifact@v4']
-    require(len(uploads) == 1 and uploads[0]['name'] == 'server-${{ github.sha }}'
+    require(len(uploads) == 1 and uploads[0]['name'] == 'server-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
             and uploads[0]['if-no-files-found'] == 'error', 'Builder must retain the exact release artifact')
     for name in WRITERS:
         workflow = workflows[name]

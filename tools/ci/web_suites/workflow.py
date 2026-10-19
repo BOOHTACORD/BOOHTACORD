@@ -73,7 +73,7 @@ def validate(document):
         checks = [s for s in job['steps'] if 'tools.ci.receipts.run' in s.get('run', '')]
         require(len(checks) == 1 and checks[0].get('if') is None and checks[0]['run'] == RECEIPT
                 and checks[0].get('env') == {'WEB_NEEDS':'${{ toJSON(needs) }}'})
-        receipts = [s for s in uploads(job) if s['with']['name'] == 'check-web-${{ github.sha }}']
+        receipts = [s for s in uploads(job) if s['with']['name'] == 'check-web-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}']
         require(len(receipts) == 1 and receipts[0].get('if') == 'inputs.release_receipt'
                 and receipts[0]['with']['path'] == '.out/checks/web.json'
                 and receipts[0]['with']['if-no-files-found'] == 'error')
