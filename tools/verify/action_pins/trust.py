@@ -18,7 +18,9 @@ GUARDS = {
     ('windows-release.yaml', 'windows-release'): release_guard('windows-v'),
     ('macos-release.yaml', 'macos-release'): UPSTREAM + " && (startsWith(github.ref, 'refs/tags/macos-v') || (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch' && inputs.dry_run))",
     ('webrtc-macos-sdk.yaml', 'publish'): MASTER,
-    ('promote-windows-client-update.yaml', 'prepare-catalog-pr'): MASTER,
+    ('promote-windows-client-update.yaml', 'prepare-catalog-pr'): MASTER + " && needs.push-candidate.outputs.changed == 'true'",
+    ('promote-windows-client-update.yaml', 'push-candidate'): MASTER,
+    ('promote-windows-client-update.yaml', 'candidate-ci'): MASTER + " && needs.push-candidate.outputs.changed == 'true'",
     ('desktop-updater-acceptance.yaml', 'macos-beta-package'): MASTER,
     ('windows-updater-acceptance.yaml', 'installed-update'): MASTER,
     ('audit-attachment-volume.yaml', 'audit'): MASTER,
@@ -74,9 +76,13 @@ def check(workflows):
             permissions = job.get('permissions', workflow['permissions'])
             require(isinstance(permissions, dict) and job.get('secrets') != 'inherit')
             expected = {'contents': 'write'}
-            if identity == ('promote-windows-client-update.yaml', 'prepare-catalog-pr'):
-                expected.update({'actions': 'write', 'pull-requests': 'write'})
-            require(permissions == expected if identity in WRITERS else
+            promotion_permissions={
+                'push-candidate':{'contents':'write','pull-requests':'read'},
+                'candidate-ci':{'contents':'read','actions':'write'},
+                'prepare-catalog-pr':{'contents':'read','actions':'read','pull-requests':'write'}}
+            special=identity[0]=='promote-windows-client-update.yaml' and identity[1] in promotion_permissions
+            if special: expected=promotion_permissions[identity[1]]
+            require(permissions == expected if identity in WRITERS or special else
                     all(value == 'read' for value in permissions.values()))
             persistent = identity in PERSISTENT
             require(job.get('runs-on') == PERSISTENT[identity] if persistent else hosted_runner(identity, job))
@@ -90,5 +96,5 @@ def check(workflows):
             for step in job.get('steps', []):
                 require(step.get('continue-on-error') in (None, False, 'false'))
                 if step.get('uses', '').startswith('actions/checkout@'):
-                    expected = 'true' if identity == ('promote-windows-client-update.yaml', 'prepare-catalog-pr') else 'false'
+                    expected = 'true' if identity == ('promote-windows-client-update.yaml', 'push-candidate') else 'false'
                     require(step.get('with', {}).get('persist-credentials') == expected)
