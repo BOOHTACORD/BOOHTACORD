@@ -6,8 +6,8 @@ export async function mount(page:Page,width=1440,height=900,scale=100) {
  await page.goto(`/tests/mini_player/fixture.html?scale=${scale}`)
  await page.locator('[data-testid=stream-select]:visible').first().click()
  await expect.poll(()=>page.locator('video.screen-player').evaluate((v:HTMLVideoElement)=>v.videoWidth)).toBe(640)
- await page.getByRole('button',{name:'Закрепить просмотр',exact:true}).click()
  await page.locator('video.screen-player').evaluate(v=>{(window as any).__originalVideo=v;(window as any).__originalStream=(v as HTMLVideoElement).srcObject})
+ await expect(page.getByRole('button',{name:'Закрепить просмотр',exact:true})).toHaveCount(0)
 }
 export async function geometry(page:Page) {
  const data=await page.evaluate(()=>{

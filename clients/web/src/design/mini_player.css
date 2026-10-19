@@ -19,7 +19,7 @@
 .screen-mini-actions svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .screen-pause-label { position: absolute; z-index: 1; left: 8px; bottom: 8px; max-width: calc(100% - 16px); border-radius: 4px; padding: 4px 8px; color: white; background: #111c; font-size: .75rem; }
 @media (max-width: 720px) {
-  .screen-mini-actions { display: grid; grid-template-columns: repeat(3, 44px); }
+  .screen-mini-actions { display: grid; grid-template-columns: repeat(4, 44px); }
   .voice-room.voice-room--mini .screen-viewer.stream-wrap { grid-template-columns: 96px minmax(0, 1fr); gap: 8px; padding: 8px; }
 }
 @media (max-height: 600px) {

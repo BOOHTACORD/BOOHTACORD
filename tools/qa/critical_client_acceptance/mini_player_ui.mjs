@@ -52,7 +52,7 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
   // Set the existing per-stream mixer through its production volume control, including its CSS-hidden retained range at touch widths; this is a state-continuity check, not a claim that mobile exposes volume adjustment.
   const range = receiver.getByRole('slider', { name: 'Громкость звука выбранной демонстрации', exact: true, includeHidden: true })
   await range.evaluate(el => { el.value = '65'; el.dispatchEvent(new Event('input', { bubbles: true })) })
-  await receiver.getByRole('button', { name: 'Закрепить просмотр', exact: true }).click()
+  await expect(receiver.getByRole('button', { name: /закрепить просмотр|открепить просмотр/i })).toHaveCount(0)
   await channel(receiver, 'Text')
   await expect(mini).toBeVisible(); await safeChat()
   await receiver.locator('.composer textarea').fill('Synthetic mini-player TEXT check')
@@ -79,6 +79,8 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
   await expect.poll(() => receiver.locator('.screen-viewer audio').evaluate(audio => audio.muted)).toBe(true)
   await mini.getByRole('button', { name: 'Развернуть на всю область', exact: true }).click()
   await expect(receiver.locator('.voice-room--screen-expanded')).toBeVisible()
+  await expect(receiver.locator('.voice-prejoin')).toHaveCount(0)
+  await expect(receiver.locator('.voice-room-controls')).toBeVisible()
   await expect(receiver.getByRole('button', { name: 'Продолжить видео', exact: true })).toBeVisible()
   await expect(receiver.getByRole('button', { name: 'Включить звук трансляции', exact: true })).toBeVisible()
   assert.equal(await range.inputValue(), '65')
@@ -88,13 +90,8 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
   await mini.getByRole('button', { name: 'Продолжить видео', exact: true }).click()
   await mini.getByRole('button', { name: 'Включить звук трансляции', exact: true }).click()
   await expect.poll(() => receiver.locator('video.screen-player').evaluate(v => !v.paused && !document.querySelector('.screen-viewer audio').muted)).toBe(true)
-  await mini.getByRole('button', { name: 'Открепить просмотр и вернуться в голос', exact: true }).click()
-  await expect(mini).toHaveCount(0); await retained()
-  await expect(receiver.getByRole('button', { name: 'Закрепить просмотр', exact: true })).toBeVisible()
-  assert.equal(await range.inputValue(), '65')
   const frames = await receiver.locator('video.screen-player').evaluate(v => v.getVideoPlaybackQuality().totalVideoFrames)
   await expect.poll(() => receiver.locator('video.screen-player').evaluate(v => v.getVideoPlaybackQuality().totalVideoFrames), { timeout: 10000 }).toBeGreaterThan(frames)
-  await receiver.getByRole('button', { name: 'Закрепить просмотр', exact: true }).click(); await channel(receiver, 'Text')
   await mini.getByRole('button', { name: 'Остановить просмотр', exact: true }).click()
   await expect(mini).toHaveCount(0)
   await expect.poll(() => subscriptions().unsubscribe - initial.unsubscribe).toBe(2)
@@ -107,7 +104,8 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
   await channel(receiver, 'VoiceLab')
   await receiver.locator('[data-testid=stream-select]:visible').first().click()
   await expect.poll(() => receiver.locator('video.screen-player').evaluate(v => v.videoWidth > 0)).toBe(true)
-  await receiver.getByRole('button', { name: 'Закрепить просмотр', exact: true }).click(); await channel(receiver, 'Text')
+  await expect(receiver.getByRole('button', { name: /закрепить просмотр|открепить просмотр/i })).toHaveCount(0)
+  await channel(receiver, 'Text')
   await receiver.evaluate(() => {
     const video = document.querySelector('video.screen-player'), audio = document.querySelector('.screen-viewer audio')
     window.__qaLogoutMedia = { video, audio, peers: window.__qaPeers.filter(p => p.connectionState === 'connected') }
@@ -122,7 +120,7 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
     const state = window.__qaLogoutMedia
     return !state.video.srcObject && !state.audio.srcObject && state.peers.every(p => p.connectionState === 'closed')
   })).toBe(true)
-  console.log('stage=mini-player-pinned-logout-clean')
+  console.log('stage=mini-player-auto-retained-logout-clean')
   await login(receiver, 'qa_member', input.password)
   await channel(receiver, 'VoiceLab')
   await receiver.getByRole('button', { name: 'Без микрофона', exact: true }).click()
@@ -132,7 +130,7 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
   console.log('stage=mini-player-controls-and-cleanup-accepted')
   report.mini_player_interface = { actual_api_sfu: true, source: 'synthetic canvas and quiet oscillator', text_and_dm_send: true,
     same_video_audio_tracks_and_peer_connections: true, no_extra_subscription_during_navigation: true,
-    pause_video_only: true, mute_and_volume_retained: true, expand_escape_unpin_return: true, explicit_stop_two_unsubscriptions: true,
-    composer_and_dock_clear: true, settings_retains_viewer: true, pinned_logout_detaches_outputs_and_closes_peers: true, hardware_capture_and_qoe: 'NOT_RUN' }
+    pause_video_only: true, mute_and_volume_retained: true, expand_escape_returns_to_automatic_mini_player: true, explicit_stop_two_unsubscriptions: true,
+    composer_and_dock_clear: true, settings_retains_viewer: true, automatic_mini_player_logout_detaches_outputs_and_closes_peers: true, hardware_capture_and_qoe: 'NOT_RUN' }
   await receiver.evaluate(() => { delete window.__qaMiniIdentity; delete window.__qaLogoutMedia })
 }

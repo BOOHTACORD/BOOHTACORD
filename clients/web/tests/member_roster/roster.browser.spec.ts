@@ -92,7 +92,7 @@ test('independent roster scroll and switching members retain bounds without expo
 for(const width of [640,780,2048,2880])test(`actual browser zoom 200% at ${width}`,async({},info)=>{
  await withBrowserZoom(chromium,width,2,async(page)=>{
  await routes(page);await page.goto('http://127.0.0.1:4964/tests/member_roster/fixture.html')
- await page.locator('[data-testid=stream-select]:visible').first().click();await page.getByRole('button',{name:'Закрепить просмотр',exact:true}).click()
+ await page.locator('[data-testid=stream-select]:visible').first().click()
  await page.evaluate(()=>(window as any).__membersFixture.navigate('text'))
  if(!(await page.getByTestId('members-panel').isVisible()))await page.getByRole('button',{name:'Открыть участников',exact:true}).click()
  await openProfile(page);await geometry(page)

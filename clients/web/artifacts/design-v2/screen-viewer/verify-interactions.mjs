@@ -12,10 +12,8 @@ export async function verifyViewerInteractions(page, width) {
     })
     window.__viewerInitialMedia = document.querySelector('.screen-player').srcObject
   })
-  await page.getByRole('button', { name: 'Закрепить просмотр', exact: true }).click()
-  assert.equal(await page.getByRole('button', { name: 'Открепить просмотр', exact: true }).getAttribute('aria-pressed'), 'true')
-  await page.getByRole('button', { name: 'Открепить просмотр', exact: true }).click()
-  results.push('pin-and-unpin-real-viewer')
+  assert.equal(await page.getByRole('button', { name: /закрепить просмотр|открепить просмотр/i }).count(), 0)
+  results.push('no-manual-pin-control')
 
   await page.locator('.stream-diagnostics > summary').click()
   const stats = page.getByRole('dialog', { name: 'Статистика трансляции' })

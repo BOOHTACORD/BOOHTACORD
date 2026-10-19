@@ -12,7 +12,7 @@ export async function mount(page:Page,width=1440,scale=100,height=900) {
  await page.setViewportSize({width,height});await routes(page)
  await page.goto(`/tests/member_roster/fixture.html?scale=${scale}`)
  await page.locator('[data-testid=stream-select]:visible').first().click()
- await page.getByRole('button',{name:'Закрепить просмотр',exact:true}).click()
+ await expect(page.getByRole('button',{name:/закрепить просмотр|открепить просмотр/i})).toHaveCount(0)
  await page.evaluate(()=>(window as any).__membersFixture.navigate('text'))
  await expect(page.locator('.voice-room--mini')).toBeVisible()
  if(!(await page.getByTestId('members-panel').isVisible()))await page.getByRole('button',{name:'Открыть участников',exact:true}).click()
