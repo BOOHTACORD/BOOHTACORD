@@ -24,6 +24,9 @@ if (Test-Path -LiteralPath (Join-Path $root '.gitverse/workflows')) {
 python -m tools.verify.workflows.delivery
 if ($LASTEXITCODE -ne 0) { throw 'Signed delivery workflow validation failed.' }
 
+python -m unittest tools.ci.observability.test_triage tools.ci.observability.test_network tools.ci.observability.test_summary tools.ci.observability.test_workflow tools.ci.observability.test_alerts
+if ($LASTEXITCODE -ne 0) { throw 'Source-bound CI triage or retry/retention boundary failed.' }
+
 $tracked = @(git -C $root ls-files -- artifacts clients/flutter/build clients/web/dist clients/flutter/packages/flutter_webrtc/third_party)
 if ($LASTEXITCODE -ne 0) { throw 'Could not inspect tracked build outputs.' }
 $generated = @($tracked | Where-Object {

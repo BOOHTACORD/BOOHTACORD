@@ -1,0 +1,801 @@
+{
+  "schema_version": 1,
+  "scope": "historical-metadata-analysis",
+  "collection_status": "PASS",
+  "sample_count": 40,
+  "cohorts": {
+    "android_release": {
+      "n": 2,
+      "success_wall_seconds": {
+        "n": 0,
+        "p50": null,
+        "p90": null,
+        "p95": null,
+        "max": null
+      },
+      "first_start_delay_seconds": {
+        "n": 2,
+        "p50": 3.0,
+        "p90": 3.0,
+        "p95": 3.0,
+        "max": 3.0
+      },
+      "runner_execution_minutes": {
+        "n": 2,
+        "p50": 23.6333,
+        "p90": 24.95,
+        "p95": 24.95,
+        "max": 24.95
+      },
+      "failure_count": 2,
+      "cancelled_count": 0,
+      "rerun_rate": 0.0,
+      "confirmed_flake_rate": null,
+      "required_green_seconds": null,
+      "queue_seconds": null
+    },
+    "ci_master": {
+      "n": 15,
+      "success_wall_seconds": {
+        "n": 13,
+        "p50": 1533.0,
+        "p90": 1608.0,
+        "p95": 1625.0,
+        "max": 1625.0
+      },
+      "first_start_delay_seconds": {
+        "n": 15,
+        "p50": 3.0,
+        "p90": 4.0,
+        "p95": 5.0,
+        "max": 5.0
+      },
+      "runner_execution_minutes": {
+        "n": 15,
+        "p50": 71.1333,
+        "p90": 75.0167,
+        "p95": 76.5167,
+        "max": 76.5167
+      },
+      "failure_count": 2,
+      "cancelled_count": 0,
+      "rerun_rate": 0.0,
+      "confirmed_flake_rate": null,
+      "required_green_seconds": null,
+      "queue_seconds": null
+    },
+    "ci_pr": {
+      "n": 15,
+      "success_wall_seconds": {
+        "n": 9,
+        "p50": 1548.0,
+        "p90": 1601.0,
+        "p95": 1601.0,
+        "max": 1601.0
+      },
+      "first_start_delay_seconds": {
+        "n": 15,
+        "p50": 4.0,
+        "p90": 93.0,
+        "p95": 100.0,
+        "max": 100.0
+      },
+      "runner_execution_minutes": {
+        "n": 15,
+        "p50": 65.8,
+        "p90": 70.2333,
+        "p95": 74.2167,
+        "max": 74.2167
+      },
+      "failure_count": 0,
+      "cancelled_count": 6,
+      "rerun_rate": 0.0,
+      "confirmed_flake_rate": null,
+      "required_green_seconds": null,
+      "queue_seconds": null
+    },
+    "deploy": {
+      "n": 3,
+      "success_wall_seconds": {
+        "n": 3,
+        "p50": 98.0,
+        "p90": 695.0,
+        "p95": 695.0,
+        "max": 695.0
+      },
+      "first_start_delay_seconds": {
+        "n": 3,
+        "p50": 5.0,
+        "p90": 5.0,
+        "p95": 5.0,
+        "max": 5.0
+      },
+      "runner_execution_minutes": {
+        "n": 3,
+        "p50": 1.55,
+        "p90": 11.5,
+        "p95": 11.5,
+        "max": 11.5
+      },
+      "failure_count": 0,
+      "cancelled_count": 0,
+      "rerun_rate": 0.0,
+      "confirmed_flake_rate": null,
+      "required_green_seconds": null,
+      "queue_seconds": null
+    },
+    "macos_release": {
+      "n": 0,
+      "success_wall_seconds": {
+        "n": 0,
+        "p50": null,
+        "p90": null,
+        "p95": null,
+        "max": null
+      },
+      "first_start_delay_seconds": {
+        "n": 0,
+        "p50": null,
+        "p90": null,
+        "p95": null,
+        "max": null
+      },
+      "runner_execution_minutes": {
+        "n": 0,
+        "p50": null,
+        "p90": null,
+        "p95": null,
+        "max": null
+      },
+      "failure_count": 0,
+      "cancelled_count": 0,
+      "rerun_rate": null,
+      "confirmed_flake_rate": null,
+      "required_green_seconds": null,
+      "queue_seconds": null
+    },
+    "server_build": {
+      "n": 3,
+      "success_wall_seconds": {
+        "n": 3,
+        "p50": 1209.0,
+        "p90": 1284.0,
+        "p95": 1284.0,
+        "max": 1284.0
+      },
+      "first_start_delay_seconds": {
+        "n": 3,
+        "p50": 3.0,
+        "p90": 3.0,
+        "p95": 3.0,
+        "max": 3.0
+      },
+      "runner_execution_minutes": {
+        "n": 3,
+        "p50": 29.5167,
+        "p90": 31.8667,
+        "p95": 31.8667,
+        "max": 31.8667
+      },
+      "failure_count": 0,
+      "cancelled_count": 0,
+      "rerun_rate": 0.0,
+      "confirmed_flake_rate": null,
+      "required_green_seconds": null,
+      "queue_seconds": null
+    },
+    "windows_release": {
+      "n": 2,
+      "success_wall_seconds": {
+        "n": 1,
+        "p50": 962.0,
+        "p90": 962.0,
+        "p95": 962.0,
+        "max": 962.0
+      },
+      "first_start_delay_seconds": {
+        "n": 2,
+        "p50": 3.0,
+        "p90": 494.0,
+        "p95": 494.0,
+        "max": 494.0
+      },
+      "runner_execution_minutes": {
+        "n": 2,
+        "p50": 5.7833,
+        "p90": 15.9833,
+        "p95": 15.9833,
+        "max": 15.9833
+      },
+      "failure_count": 1,
+      "cancelled_count": 0,
+      "rerun_rate": 0.5,
+      "confirmed_flake_rate": null,
+      "required_green_seconds": null,
+      "queue_seconds": null
+    }
+  },
+  "platform_job_outcomes": {
+    "ubuntu": {
+      "success": 151,
+      "failure": 2,
+      "cancelled": 11
+    },
+    "windows": {
+      "success": 22,
+      "failure": 3,
+      "cancelled": 6
+    },
+    "unknown": {
+      "skipped": 3,
+      "success": 3
+    }
+  },
+  "recurring_failures": [
+    {
+      "fingerprint": "a36f4f85a0f1342c545598b1bbb0d1a9fda2844edbc9be3ac936251cfe5fdd68",
+      "n": 2,
+      "component": "windows",
+      "stage": "runtime-acceptance",
+      "owner": "Windows/Media",
+      "root_cause": "UNVERIFIED",
+      "retry_test": false,
+      "occurrences": [
+        {
+          "component": "windows",
+          "owner": "Windows/Media",
+          "reproduce": "python -m tools.ci.windows_gates.acceptance",
+          "stage": "runtime-acceptance",
+          "job_id": 117661834388,
+          "step_number": 21,
+          "fingerprint": "a36f4f85a0f1342c545598b1bbb0d1a9fda2844edbc9be3ac936251cfe5fdd68",
+          "critical_step": "runtime-acceptance / step 21",
+          "root_cause": "UNVERIFIED",
+          "retry_test": false,
+          "run_id": 39122851390,
+          "source_revision": "7c0d15a597ee44fe9222f6b678540435459e2933",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39122851390"
+        },
+        {
+          "component": "windows",
+          "owner": "Windows/Media",
+          "reproduce": "python -m tools.ci.windows_gates.acceptance",
+          "stage": "runtime-acceptance",
+          "job_id": 117627603317,
+          "step_number": 21,
+          "fingerprint": "a36f4f85a0f1342c545598b1bbb0d1a9fda2844edbc9be3ac936251cfe5fdd68",
+          "critical_step": "runtime-acceptance / step 21",
+          "root_cause": "UNVERIFIED",
+          "retry_test": false,
+          "run_id": 39111218810,
+          "source_revision": "63a44c264fa3fdeb0a660622dd5ab573ca70160d",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39111218810"
+        }
+      ]
+    },
+    {
+      "fingerprint": "d4c2c1536cfc80035129d5d9d00da969ef4058197d5a2949d09cb5cae7c2dce9",
+      "n": 2,
+      "component": "flutter",
+      "stage": "signing-or-publication",
+      "owner": "Native/CI",
+      "root_cause": "UNVERIFIED",
+      "retry_test": false,
+      "occurrences": [
+        {
+          "component": "flutter",
+          "owner": "Native/CI",
+          "reproduce": "python -m tools.ci.native.flutter",
+          "stage": "signing-or-publication",
+          "job_id": 115597181892,
+          "step_number": 7,
+          "fingerprint": "d4c2c1536cfc80035129d5d9d00da969ef4058197d5a2949d09cb5cae7c2dce9",
+          "critical_step": "signing-or-publication / step 7",
+          "root_cause": "UNVERIFIED",
+          "retry_test": false,
+          "run_id": 38483584503,
+          "source_revision": "936fa2282e61272e6b4abc517b939b387462083e",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38483584503"
+        },
+        {
+          "component": "flutter",
+          "owner": "Native/CI",
+          "reproduce": "python -m tools.ci.native.flutter",
+          "stage": "signing-or-publication",
+          "job_id": 115538868180,
+          "step_number": 7,
+          "fingerprint": "d4c2c1536cfc80035129d5d9d00da969ef4058197d5a2949d09cb5cae7c2dce9",
+          "critical_step": "signing-or-publication / step 7",
+          "root_cause": "UNVERIFIED",
+          "retry_test": false,
+          "run_id": 38465719672,
+          "source_revision": "2b3ea4537aad957bf64651e4a4181501aa40f081",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38465719672"
+        }
+      ]
+    },
+    {
+      "fingerprint": "39f9d6cedfcbccbe8a41dd7b9a2ad445b6b5a457b1e99ed230d1fd8c6606f022",
+      "n": 1,
+      "component": "windows",
+      "stage": "component-check",
+      "owner": "Windows/Media",
+      "root_cause": "UNVERIFIED",
+      "retry_test": false,
+      "occurrences": [
+        {
+          "component": "windows",
+          "owner": "Windows/Media",
+          "reproduce": "python -m tools.ci.windows_gates.acceptance",
+          "stage": "component-check",
+          "job_id": 115595032327,
+          "step_number": 7,
+          "fingerprint": "39f9d6cedfcbccbe8a41dd7b9a2ad445b6b5a457b1e99ed230d1fd8c6606f022",
+          "critical_step": "component-check / step 7",
+          "root_cause": "UNVERIFIED",
+          "retry_test": false,
+          "run_id": 38483751676,
+          "source_revision": "936fa2282e61272e6b4abc517b939b387462083e",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38483751676"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "run_id": 38483584503,
+      "source_revision": "936fa2282e61272e6b4abc517b939b387462083e",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "android_release",
+      "outcome": "FAIL",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38483584503",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 38465719672,
+      "source_revision": "2b3ea4537aad957bf64651e4a4181501aa40f081",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "android_release",
+      "outcome": "FAIL",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38465719672",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39155159388,
+      "source_revision": "bfea46b61c3bc641098caf7c35be8c4be798af59",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39155159388",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39152131709,
+      "source_revision": "23d07e4af56b0ed0706e55efac2c626644a1e394",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39152131709",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39145112485,
+      "source_revision": "68f07dd360a0e4989a40313ef72bc0d65ab448a4",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39145112485",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39140639128,
+      "source_revision": "41d44f1099e5e384a7da709f8c94bfed3755ca54",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39140639128",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39136769671,
+      "source_revision": "dc1ae43cab45de0dda7a4ccb9f7fa82a459424af",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39136769671",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39133279333,
+      "source_revision": "a6366b570a1009ed25f81040fd6f76f8ab5ae715",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39133279333",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39122851390,
+      "source_revision": "7c0d15a597ee44fe9222f6b678540435459e2933",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "FAIL",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39122851390",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39118751466,
+      "source_revision": "9e6a39eaeb748287a70a95fd828264162ab90ee8",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39118751466",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39114585002,
+      "source_revision": "becda60d009a0bc0fcbd56cb1c1a257568fea4b0",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39114585002",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39111218810,
+      "source_revision": "63a44c264fa3fdeb0a660622dd5ab573ca70160d",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "FAIL",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39111218810",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39107796043,
+      "source_revision": "5eb564ff3f47962e09d9a05b17e2fe311bf2bb3b",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39107796043",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39103770315,
+      "source_revision": "1557cfce4330bcbf80dff316241119f553b49ef3",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39103770315",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39074414160,
+      "source_revision": "c8d46934d1dfed49f8930a68ae720c227736154c",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39074414160",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39071010172,
+      "source_revision": "59e96ee051d6bf2a35da1b1f772f49a1571473b2",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39071010172",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39068696703,
+      "source_revision": "16e5971c7378860c5e1743ac69d5969aa6cba6f1",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_master",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39068696703",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39156852476,
+      "source_revision": "e690901161c56097dcd4b895cb5702a42ab41a06",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39156852476",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39155087856,
+      "source_revision": "0b4a31c522cbd299eebd5396be12d484adee3daf",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39155087856",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39151408620,
+      "source_revision": "5c5d3577562f282414a8fb56dd91b960cce92bed",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39151408620",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39149543801,
+      "source_revision": "8b73bc820df890b2c66e66c9d1d9d70c480597c2",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39149543801",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39144768611,
+      "source_revision": "201c3b8d2957ca53a17d6e62ec1291e0da900bd1",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39144768611",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39142652540,
+      "source_revision": "789e2a3f8e34003b84e2f4ce5bf7efa307553eb2",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39142652540",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39138097085,
+      "source_revision": "c7fef9ee6ef1bf6034a42c33bcdfe32196d410fd",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39138097085",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39131556932,
+      "source_revision": "874938a25c3a8a3e09c1b9bdf35325811eebe710",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39131556932",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39130446540,
+      "source_revision": "640073fd8826dd3bed013037093e13adb5385d66",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "CANCELLED",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39130446540",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39129049482,
+      "source_revision": "9738cde25f35daca8577c59a96c8c9aa54cd5b11",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "CANCELLED",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39129049482",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39128864778,
+      "source_revision": "7e72e87f52f03e1d009ac25345c973ccd2ef2902",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39128864778",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39127541342,
+      "source_revision": "4ed70313e0c58f4ef84beff82a2719665876231c",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "CANCELLED",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39127541342",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39126897792,
+      "source_revision": "5acef22ef26a422ced44716021fe32638de8878e",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "CANCELLED",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39126897792",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39126367799,
+      "source_revision": "9e4942b18c8dd79e8d67f65abe3e7681ad934ac0",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "CANCELLED",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39126367799",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39125804459,
+      "source_revision": "3e6a42b33a8bfa49cbb97e9786ec34bdc8d4c9c4",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "ci_pr",
+      "outcome": "CANCELLED",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39125804459",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39156524421,
+      "source_revision": "bfea46b61c3bc641098caf7c35be8c4be798af59",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "deploy",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39156524421",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39153796654,
+      "source_revision": "23d07e4af56b0ed0706e55efac2c626644a1e394",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "deploy",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39153796654",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39146659874,
+      "source_revision": "68f07dd360a0e4989a40313ef72bc0d65ab448a4",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "deploy",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39146659874",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39155159380,
+      "source_revision": "bfea46b61c3bc641098caf7c35be8c4be798af59",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "server_build",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39155159380",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39152131685,
+      "source_revision": "23d07e4af56b0ed0706e55efac2c626644a1e394",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "server_build",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39152131685",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 39145112482,
+      "source_revision": "68f07dd360a0e4989a40313ef72bc0d65ab448a4",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "server_build",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39145112482",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 38483751676,
+      "source_revision": "936fa2282e61272e6b4abc517b939b387462083e",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "windows_release",
+      "outcome": "FAIL",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38483751676",
+      "confirmed_flake": "UNKNOWN"
+    },
+    {
+      "run_id": 38456019824,
+      "source_revision": "4c1a2bbb44949a0bac0b6332daf1231a7cb793b7",
+      "source_kind": "API workflow head; tested PR merge not verified",
+      "cohort": "windows_release",
+      "outcome": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38456019824",
+      "confirmed_flake": "UNKNOWN"
+    }
+  ],
+  "alerts": [
+    {
+      "kind": "recurring-failed-gate",
+      "severity": "triage",
+      "component": "windows",
+      "count": 2,
+      "urls": [
+        "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39122851390",
+        "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39111218810"
+      ]
+    },
+    {
+      "kind": "recurring-failed-gate",
+      "severity": "triage",
+      "component": "flutter",
+      "count": 2,
+      "urls": [
+        "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38483584503",
+        "https://github.com/Egkurilov/BOOHTACORD/actions/runs/38465719672"
+      ]
+    },
+    {
+      "kind": "workflow-wall-p95-over-20min",
+      "cohort": "ci_master",
+      "severity": "triage"
+    },
+    {
+      "kind": "workflow-wall-p95-over-20min",
+      "cohort": "ci_pr",
+      "severity": "triage"
+    },
+    {
+      "kind": "workflow-wall-p95-over-20min",
+      "cohort": "server_build",
+      "severity": "triage"
+    },
+    {
+      "kind": "start-delay-spike",
+      "cohort": "windows_release",
+      "severity": "triage"
+    }
+  ],
+  "confirmed_flake_rate": null,
+  "billing_minutes": null,
+  "required_green_seconds": null,
+  "limitations": [
+    "Repeated failures/reruns do not prove flakiness or justify a retry/quarantine.",
+    "API head SHA is not necessarily the tested synthetic PR merge SHA.",
+    "Start delays include dispatch, dependencies and approvals; pure queue time is unknown.",
+    "Successful workflow wall time is a proxy; owner required checks and exact healthy readback are separate evidence.",
+    "Job-minutes sum all attempts without billing rounding or platform cost multipliers.",
+    "Root causes are unverified: metadata collection never reads logs, user data, credentials or artifact contents."
+  ],
+  "input_sha256": {
+    "38483584503": "fd4486795071f4116cd6eccf12a77937848e32c2d72c91b53907e11d099ab9cb",
+    "38465719672": "8ae09fe0bed42060de2421f28e23db935bf3076a02873dd004725c1556f8a441",
+    "39155159388": "d1ec5800b63b92e7958b96ae9d3627786dbe0f9bb82e3e7b4f691fd7abe7f4b7",
+    "39152131709": "8125ffcbf1e7ade24c7e9b5714104103230a0bbf308e5e4982f84427163f7faf",
+    "39145112485": "fffb03fc9306a9674b5ea229f71b2aa62297ad635ce62cbc55a80cf594f04186",
+    "39140639128": "eaceda2d79dfdf5caaf4b28d2d9faa8b0356ed8fbc151e0feb59c10cf1f72d64",
+    "39136769671": "f3fc4ce8a32da3fa47b7d2164d40c5c2903a0ff207b3cb37f8c0d3331fac5b47",
+    "39133279333": "358a059af22fb558e16dea537400b34cffe95b6ae7fe18ba0e33a70be1816d47",
+    "39122851390": "59c5e69c18630049594124ac286b38935fea52a8c5d5a233964fb703c21662c6",
+    "39118751466": "338230e5893f8d7fd4de043532f14661ec692e821023bd507311d80e55a11d62",
+    "39114585002": "ae5aa8b6764c6b9275537a06da470b373a0c81f21bfd76117eb8c8c2200b6ca1",
+    "39111218810": "02a793b6fb877e046b3b09cc79da14dd6e2c65983bc3a0ebd52245480d52b4a9",
+    "39107796043": "fad1148df0ba0b6381cdb50adf60e576fe275ac6ed91241948d8d2e1518d4d65",
+    "39103770315": "6704d3d54ecb39f84945cf6284a8de30f9ab14949c95a8da05b866b41b787c07",
+    "39074414160": "88b925c47a4e0390eb9a7cf55c0d187b20741fe3406ed1ed85be83dfb76a603e",
+    "39071010172": "0c5d3c60d35d130bce16cdd173c31aedfbc8d0ea32c4a48f6fe94b631b77dbab",
+    "39068696703": "7025f3b9898608797ee531e1619e0ab794e66ad0ce7713d9b6c34a3740a1ac92",
+    "39156852476": "c05eb61a27608714f64bc85ae4c8c058b4b24e1097aa961309d86776e45a548f",
+    "39155087856": "312e96fe87efd314ec890480e243a888d13f2d104e245f340c79df7151bb628c",
+    "39151408620": "2163feafafed24124ff465bbed0864cb9fb17798a1d204d4430c5613667ce47b",
+    "39149543801": "a3b901677554d587c1f2a029f73eee8c53700c467ceb9c4a7970b35872ca07db",
+    "39144768611": "4756afcf5c7a9f06dada10c8307c2b7883776eea29a75d24563b79ce6bd4f089",
+    "39142652540": "edaef12e08c77e2fa1c9b0daff46c9f00a06a4cbd322d1669f93a4d0ee8128b3",
+    "39138097085": "3af248cfb26cbbd51293b8f8fa343c75945a46ae710b854f9dc3ce946ee4876d",
+    "39131556932": "72f1b204a60bb5cf2b0ce27f9cf355bee90a24a5a0257a9c467d61bc8e207146",
+    "39130446540": "8706a237d1b1f52612524677702b3f9795586fd9555555d732827062bb589c54",
+    "39129049482": "4ec63f6aa01334f2153009c49bd3658dc14462283d244ca21cb7e5e9187cbc9b",
+    "39128864778": "27580b7fe8c8bdf318744480fa9b7e65979950fd4c54d7b52c3a78635107941c",
+    "39127541342": "91c576b264371de9313360995475b8c266c5bb3fb787a06bc0a26bd92c889c0b",
+    "39126897792": "98d60cad4372ce808ed1462d6e5827f1d5d820835db14d881785ee372c7a5c30",
+    "39126367799": "0a825870c20d2ac24adde28f45c7c0ba01d2fdb34e1202aebf4e26fec228a3ee",
+    "39125804459": "065f19fb70e4e96b5fd7f4da1acf3e5eb9a0e1a9fac851541d031e245c0be2fa",
+    "39156524421": "7d1c00f075643c66503f8bccdbb6e40e280db58a7ed7e4df525da258d2e28782",
+    "39153796654": "6465e0b06dde5cf85ff40480784acd1ca872eb931f1a78b0b96bf47f005c8dc1",
+    "39146659874": "288682e662c0aeb194194dcb293b146aed8f171ab9cc0cbee87fc9fe66c9297b",
+    "39155159380": "13a39700558eb805576017943d999233cea9dadb3927a6441fa97c2d18253c32",
+    "39152131685": "199be7431ed566b66170fe5c7a8f675bffaeda6a56bcff6aa495b707dc82f57a",
+    "39145112482": "851e0de55743d216901b0a1d9184ebec308f77721b4bed43366bc0ab39f6debc",
+    "38483751676": "b13043fabd675b26a235d43f087ba25553753d27371418cf82496760400478df",
+    "38456019824": "24b3856554bc3a618155c078ee76ab365d11a65bdba2d7986b522ba98d32cd72"
+  }
+}

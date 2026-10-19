@@ -82,6 +82,9 @@ jobs:
     name: ci-required
     if: always()
     needs: [changes, contracts, backend, frontend, flutter, windows, actual]
+    permissions:
+      contents: read
+      actions: read
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -98,3 +101,18 @@ jobs:
           CI_NEEDS: ${{ toJSON(needs) }}
           CI_JOBS: '{"changes":"changes","contracts":"contracts","backend":"backend","web":"frontend","flutter":"flutter","windows":"windows","actual":"actual"}'
         run: python3 -m tools.ci.required_gate.run
+      - name: Explain required-check outcome with source-bound sanitized metadata
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TRIAGE_NEEDS: ${{ toJSON(needs) }}
+          CI_GATE_OUTCOME: ${{ job.status }}
+        run: python -m tools.ci.observability.summary --scope pr
+      - name: Retain sanitized required-check triage
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: triage-pr-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/triage/pr.json
+          if-no-files-found: error
+          retention-days: 30
