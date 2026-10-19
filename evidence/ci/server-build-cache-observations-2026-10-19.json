@@ -1,0 +1,661 @@
+{
+  "schema_version": 1,
+  "scope": "server-builder-cold-warm-observations",
+  "status": "PARTIAL_ACCEPTANCE",
+  "sources": [
+    {
+      "artifact": {
+        "id": 12214888213,
+        "run_id": 39306796863,
+        "name": "build-metrics-server-59c15c65c6751173fc5e668be383e88a62276a58-39306796863-1",
+        "size_in_bytes": 978,
+        "digest": "sha256:006891cb28160dbda6589a1e68c979bdc514e28a5edff142596c86034b4eb4f1",
+        "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+        "jobs": [
+          {
+            "id": 118253329818,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:12:14Z",
+            "completed_at": "2026-10-19T19:15:47Z",
+            "steps": [
+              {
+                "number": 1,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 2,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 3,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 4,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 5,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 6,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 7,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 8,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 16,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 17,
+                "status": "completed",
+                "conclusion": "success"
+              }
+            ]
+          }
+        ]
+      },
+      "payload_utf8": "{\n  \"cache\": {\n    \"api\": {\n      \"export\": \"VERIFIED\",\n      \"import\": \"COLD\",\n      \"namespace\": \"a9319bc5430a8f74b01bc423a00e80cb1937ad06f7c9dbe01f57f36307f962d4\",\n      \"retained_bytes\": 173712397\n    },\n    \"web\": {\n      \"export\": \"VERIFIED\",\n      \"import\": \"COLD\",\n      \"namespace\": \"704890f041967d46067fecb09c7c2a39613f3628d3db17536ac0c04034fd1f5f\",\n      \"retained_bytes\": 135475352\n    }\n  },\n  \"images\": {\n    \"api\": \"sha256:b505a6deeef2d7e38e6d78726c64b7626e6b5b6997568800d42c7067b9302126\",\n    \"web\": \"sha256:56b2c26bebaf3b26e3bc6012253d3ad42aa1decf52a92190d82e9c109a48bdb6\"\n  },\n  \"schema_version\": 1,\n  \"source_archive_sha256\": \"6ec538fb25abc50712f0be3e8da41aeaf9c6e5dd100197f443db307bdd2b519e\",\n  \"source_revision\": \"59c15c65c6751173fc5e668be383e88a62276a58\",\n  \"stages\": [\n    {\n      \"phase\": \"source_archive\",\n      \"seconds\": 0.808183,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"source_extract\",\n      \"seconds\": 1.154215,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"assets\",\n      \"seconds\": 4.295802,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"buildx_setup\",\n      \"seconds\": 1.458011,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"images\",\n      \"seconds\": 163.8207,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"api_cache_prepare\",\n      \"seconds\": 0.000538,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"api_build_export\",\n      \"seconds\": 82.491527,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"api_oci_verify\",\n      \"seconds\": 0.371257,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"api_cache_publish\",\n      \"seconds\": 0.613685,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"web_cache_prepare\",\n      \"seconds\": 0.000406,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"web_build_export\",\n      \"seconds\": 79.627157,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"web_oci_verify\",\n      \"seconds\": 0.273257,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"web_cache_publish\",\n      \"seconds\": 0.432562,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"smoke\",\n      \"seconds\": 12.263457,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"runtime_archive\",\n      \"seconds\": 0.069945,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"manifest\",\n      \"seconds\": 0.613913,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"sign\",\n      \"seconds\": 0.022478,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"package\",\n      \"seconds\": 3.047349,\n      \"status\": \"PASS\"\n    }\n  ],\n  \"status\": \"PASS\",\n  \"upload_timing\": \"GitHub upload step timestamps; not measured inside builder\"\n}\n",
+      "payload_sha256": "fe7e9584dd6efcf4c514d664b32189b656df0d8485369d7ffb57a7e9453c7891",
+      "metrics": {
+        "cache": {
+          "api": {
+            "export": "VERIFIED",
+            "import": "COLD",
+            "namespace": "a9319bc5430a8f74b01bc423a00e80cb1937ad06f7c9dbe01f57f36307f962d4",
+            "retained_bytes": 173712397
+          },
+          "web": {
+            "export": "VERIFIED",
+            "import": "COLD",
+            "namespace": "704890f041967d46067fecb09c7c2a39613f3628d3db17536ac0c04034fd1f5f",
+            "retained_bytes": 135475352
+          }
+        },
+        "images": {
+          "api": "sha256:b505a6deeef2d7e38e6d78726c64b7626e6b5b6997568800d42c7067b9302126",
+          "web": "sha256:56b2c26bebaf3b26e3bc6012253d3ad42aa1decf52a92190d82e9c109a48bdb6"
+        },
+        "schema_version": 1,
+        "source_archive_sha256": "6ec538fb25abc50712f0be3e8da41aeaf9c6e5dd100197f443db307bdd2b519e",
+        "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+        "stages": [
+          {
+            "phase": "source_archive",
+            "seconds": 0.808183,
+            "status": "PASS"
+          },
+          {
+            "phase": "source_extract",
+            "seconds": 1.154215,
+            "status": "PASS"
+          },
+          {
+            "phase": "assets",
+            "seconds": 4.295802,
+            "status": "PASS"
+          },
+          {
+            "phase": "buildx_setup",
+            "seconds": 1.458011,
+            "status": "PASS"
+          },
+          {
+            "phase": "images",
+            "seconds": 163.8207,
+            "status": "PASS"
+          },
+          {
+            "phase": "api_cache_prepare",
+            "seconds": 0.000538,
+            "status": "PASS"
+          },
+          {
+            "phase": "api_build_export",
+            "seconds": 82.491527,
+            "status": "PASS"
+          },
+          {
+            "phase": "api_oci_verify",
+            "seconds": 0.371257,
+            "status": "PASS"
+          },
+          {
+            "phase": "api_cache_publish",
+            "seconds": 0.613685,
+            "status": "PASS"
+          },
+          {
+            "phase": "web_cache_prepare",
+            "seconds": 0.000406,
+            "status": "PASS"
+          },
+          {
+            "phase": "web_build_export",
+            "seconds": 79.627157,
+            "status": "PASS"
+          },
+          {
+            "phase": "web_oci_verify",
+            "seconds": 0.273257,
+            "status": "PASS"
+          },
+          {
+            "phase": "web_cache_publish",
+            "seconds": 0.432562,
+            "status": "PASS"
+          },
+          {
+            "phase": "smoke",
+            "seconds": 12.263457,
+            "status": "PASS"
+          },
+          {
+            "phase": "runtime_archive",
+            "seconds": 0.069945,
+            "status": "PASS"
+          },
+          {
+            "phase": "manifest",
+            "seconds": 0.613913,
+            "status": "PASS"
+          },
+          {
+            "phase": "sign",
+            "seconds": 0.022478,
+            "status": "PASS"
+          },
+          {
+            "phase": "package",
+            "seconds": 3.047349,
+            "status": "PASS"
+          }
+        ],
+        "status": "PASS",
+        "upload_timing": "GitHub upload step timestamps; not measured inside builder"
+      }
+    },
+    {
+      "artifact": {
+        "id": 12215761816,
+        "run_id": 39309581312,
+        "name": "build-metrics-server-c569477fc0d125f3313e73742c34a2ea6aa5e454-39309581312-1",
+        "size_in_bytes": 985,
+        "digest": "sha256:1573b29a28bd653a5d7faaa876574b18cfd6937d593559865cac866598de655d",
+        "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+        "jobs": [
+          {
+            "id": 118261148762,
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:28:28Z",
+            "completed_at": "2026-10-19T19:31:03Z",
+            "steps": [
+              {
+                "number": 1,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 2,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 3,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 4,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 5,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 6,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 7,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 8,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 16,
+                "status": "completed",
+                "conclusion": "success"
+              },
+              {
+                "number": 17,
+                "status": "completed",
+                "conclusion": "success"
+              }
+            ]
+          }
+        ]
+      },
+      "payload_utf8": "{\n  \"cache\": {\n    \"api\": {\n      \"export\": \"VERIFIED\",\n      \"import\": \"WARM_VERIFIED\",\n      \"namespace\": \"a9319bc5430a8f74b01bc423a00e80cb1937ad06f7c9dbe01f57f36307f962d4\",\n      \"retained_bytes\": 173712397\n    },\n    \"web\": {\n      \"export\": \"VERIFIED\",\n      \"import\": \"WARM_VERIFIED\",\n      \"namespace\": \"704890f041967d46067fecb09c7c2a39613f3628d3db17536ac0c04034fd1f5f\",\n      \"retained_bytes\": 135475144\n    }\n  },\n  \"images\": {\n    \"api\": \"sha256:5050570abf75f938782fad11fd12249d5feca92e11e9be387d9e11db4f041a6d\",\n    \"web\": \"sha256:6679f6367c09f26e269d038ea8dc378e73e3fa8ef150a8d990a04d1afcaf12fb\"\n  },\n  \"schema_version\": 1,\n  \"source_archive_sha256\": \"97c44033eeb3b135471477ac69c0ca67328fb01107e7ddecf6197b854e047532\",\n  \"source_revision\": \"c569477fc0d125f3313e73742c34a2ea6aa5e454\",\n  \"stages\": [\n    {\n      \"phase\": \"source_archive\",\n      \"seconds\": 1.017011,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"source_extract\",\n      \"seconds\": 1.369584,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"assets\",\n      \"seconds\": 5.140379,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"buildx_setup\",\n      \"seconds\": 0.876336,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"images\",\n      \"seconds\": 101.602898,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"api_cache_prepare\",\n      \"seconds\": 0.941286,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"api_build_export\",\n      \"seconds\": 19.089403,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"api_oci_verify\",\n      \"seconds\": 0.486621,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"api_cache_publish\",\n      \"seconds\": 0.852167,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"web_cache_prepare\",\n      \"seconds\": 0.805181,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"web_build_export\",\n      \"seconds\": 78.458267,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"web_oci_verify\",\n      \"seconds\": 0.316201,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"web_cache_publish\",\n      \"seconds\": 0.641358,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"smoke\",\n      \"seconds\": 15.335465,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"runtime_archive\",\n      \"seconds\": 0.077638,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"manifest\",\n      \"seconds\": 0.711294,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"sign\",\n      \"seconds\": 0.018435,\n      \"status\": \"PASS\"\n    },\n    {\n      \"phase\": \"package\",\n      \"seconds\": 3.36681,\n      \"status\": \"PASS\"\n    }\n  ],\n  \"status\": \"PASS\",\n  \"upload_timing\": \"GitHub upload step timestamps; not measured inside builder\"\n}\n",
+      "payload_sha256": "e5a358aaa796f51da82152d510f128235b15f635487269bfb57d81e82fb5c13a",
+      "metrics": {
+        "cache": {
+          "api": {
+            "export": "VERIFIED",
+            "import": "WARM_VERIFIED",
+            "namespace": "a9319bc5430a8f74b01bc423a00e80cb1937ad06f7c9dbe01f57f36307f962d4",
+            "retained_bytes": 173712397
+          },
+          "web": {
+            "export": "VERIFIED",
+            "import": "WARM_VERIFIED",
+            "namespace": "704890f041967d46067fecb09c7c2a39613f3628d3db17536ac0c04034fd1f5f",
+            "retained_bytes": 135475144
+          }
+        },
+        "images": {
+          "api": "sha256:5050570abf75f938782fad11fd12249d5feca92e11e9be387d9e11db4f041a6d",
+          "web": "sha256:6679f6367c09f26e269d038ea8dc378e73e3fa8ef150a8d990a04d1afcaf12fb"
+        },
+        "schema_version": 1,
+        "source_archive_sha256": "97c44033eeb3b135471477ac69c0ca67328fb01107e7ddecf6197b854e047532",
+        "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+        "stages": [
+          {
+            "phase": "source_archive",
+            "seconds": 1.017011,
+            "status": "PASS"
+          },
+          {
+            "phase": "source_extract",
+            "seconds": 1.369584,
+            "status": "PASS"
+          },
+          {
+            "phase": "assets",
+            "seconds": 5.140379,
+            "status": "PASS"
+          },
+          {
+            "phase": "buildx_setup",
+            "seconds": 0.876336,
+            "status": "PASS"
+          },
+          {
+            "phase": "images",
+            "seconds": 101.602898,
+            "status": "PASS"
+          },
+          {
+            "phase": "api_cache_prepare",
+            "seconds": 0.941286,
+            "status": "PASS"
+          },
+          {
+            "phase": "api_build_export",
+            "seconds": 19.089403,
+            "status": "PASS"
+          },
+          {
+            "phase": "api_oci_verify",
+            "seconds": 0.486621,
+            "status": "PASS"
+          },
+          {
+            "phase": "api_cache_publish",
+            "seconds": 0.852167,
+            "status": "PASS"
+          },
+          {
+            "phase": "web_cache_prepare",
+            "seconds": 0.805181,
+            "status": "PASS"
+          },
+          {
+            "phase": "web_build_export",
+            "seconds": 78.458267,
+            "status": "PASS"
+          },
+          {
+            "phase": "web_oci_verify",
+            "seconds": 0.316201,
+            "status": "PASS"
+          },
+          {
+            "phase": "web_cache_publish",
+            "seconds": 0.641358,
+            "status": "PASS"
+          },
+          {
+            "phase": "smoke",
+            "seconds": 15.335465,
+            "status": "PASS"
+          },
+          {
+            "phase": "runtime_archive",
+            "seconds": 0.077638,
+            "status": "PASS"
+          },
+          {
+            "phase": "manifest",
+            "seconds": 0.711294,
+            "status": "PASS"
+          },
+          {
+            "phase": "sign",
+            "seconds": 0.018435,
+            "status": "PASS"
+          },
+          {
+            "phase": "package",
+            "seconds": 3.36681,
+            "status": "PASS"
+          }
+        ],
+        "status": "PASS",
+        "upload_timing": "GitHub upload step timestamps; not measured inside builder"
+      }
+    }
+  ],
+  "same_tracked_build_inputs": {
+    "paths": [
+      "backend",
+      "clients/web",
+      "contracts",
+      "tools/build/server",
+      "tools/toolchains.json"
+    ],
+    "git_diff_exit_code": 0
+  },
+  "observations": {
+    "sample_pairs": 1,
+    "api_build_export_seconds": {
+      "cold": 82.491527,
+      "warm": 19.089403
+    },
+    "web_build_export_seconds": {
+      "cold": 79.627157,
+      "warm": 78.458267
+    },
+    "api_retained_export_bytes": {
+      "cold": 173712397,
+      "warm": 173712397
+    },
+    "web_retained_export_bytes": {
+      "cold": 135475352,
+      "warm": 135475144
+    }
+  },
+  "production_delivery": [
+    {
+      "artifact_id": 12215537238,
+      "zip_sha256": "5cedad348fc9f18ded9646c4ae73e962b7f39b5bb461d01387c61762d22e386a",
+      "zip_bytes": 699,
+      "receipt": {
+        "checked_at": "2026-10-19T19:21:24.644336+00:00",
+        "delivery": {
+          "controller_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+          "kind": "delivery-phases",
+          "phases": [
+            {
+              "elapsed_seconds": 3.937839,
+              "exit_code": null,
+              "failure_code": null,
+              "limit_seconds": 45,
+              "phase": "current_revision",
+              "status": "PASS"
+            },
+            {
+              "elapsed_seconds": 0.003567,
+              "exit_code": null,
+              "failure_code": null,
+              "limit_seconds": 10,
+              "phase": "history",
+              "status": "PASS"
+            },
+            {
+              "elapsed_seconds": 300.028506,
+              "exit_code": null,
+              "failure_code": "timeout",
+              "limit_seconds": 300,
+              "phase": "transfer_bundle",
+              "status": "FAIL"
+            }
+          ],
+          "schema_version": 1,
+          "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+          "status": "FAIL"
+        },
+        "human_approval": "NOT_ASSERTED",
+        "kind": "production-delivery",
+        "producer": {
+          "digest": "sha256:6bc50d779d24aff516b19c52d6eb096acfdc090b8706159e846222c427cb9888",
+          "format_version": 2,
+          "id": 12214314045,
+          "name": "server-59c15c65c6751173fc5e668be383e88a62276a58-39306796863-1",
+          "run_attempt": 1,
+          "run_id": 39306796863,
+          "size_in_bytes": 73510826,
+          "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58"
+        },
+        "remote_completion": "UNKNOWN",
+        "schema_version": 1,
+        "stages": {
+          "controller": "success",
+          "download": "success",
+          "install": "failure",
+          "producer": "success",
+          "recheck": "success",
+          "ssh": "success"
+        },
+        "status": "FAIL"
+      }
+    },
+    {
+      "artifact_id": 12216416160,
+      "zip_sha256": "c931b59d5a8e65e7411df93adf3e22e1613453dc5c57862b1d7174ddcee7f550",
+      "zip_bytes": 1496,
+      "receipt": {
+        "checked_at": "2026-10-19T19:33:06.727911+00:00",
+        "delivery": {
+          "controller_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+          "kind": "delivery-phases",
+          "phases": [
+            {
+              "elapsed_seconds": 3.879307,
+              "exit_code": null,
+              "failure_code": null,
+              "limit_seconds": 45,
+              "phase": "current_revision",
+              "status": "PASS"
+            },
+            {
+              "elapsed_seconds": 0.003583,
+              "exit_code": null,
+              "failure_code": null,
+              "limit_seconds": 10,
+              "phase": "history",
+              "status": "PASS"
+            },
+            {
+              "elapsed_seconds": 10.896732,
+              "exit_code": null,
+              "failure_code": null,
+              "limit_seconds": 300,
+              "phase": "transfer_bundle",
+              "status": "PASS"
+            },
+            {
+              "elapsed_seconds": 4.073562,
+              "exit_code": null,
+              "failure_code": null,
+              "limit_seconds": 60,
+              "phase": "transfer_driver",
+              "status": "PASS"
+            },
+            {
+              "elapsed_seconds": 61.614998,
+              "exit_code": null,
+              "failure_code": null,
+              "limit_seconds": 600,
+              "phase": "remote_install",
+              "status": "PASS"
+            },
+            {
+              "elapsed_seconds": 5.339646,
+              "exit_code": null,
+              "failure_code": null,
+              "limit_seconds": 45,
+              "phase": "readback",
+              "status": "PASS"
+            }
+          ],
+          "readback": {
+            "checked_at": "2026-10-19T19:33:06.529404+00:00",
+            "controller_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+            "health": "PASS",
+            "kind": "installed-source-readback",
+            "migration_inventory_sha256": "3d3d7c7c852a689d4ea0d2e08a500410409bfde0cce9afeb04a930bd781a86d7",
+            "persistent_volumes": "PASS",
+            "previous_source_revision": "8547b88e490efcefc7dc8d49f14dd88e7bf453ed",
+            "rollout": {
+              "durations": {
+                "admission_enable_seconds": 2,
+                "health_seconds": 1,
+                "maintenance_request_to_disable_seconds": 48,
+                "maintenance_seconds": 46,
+                "migration_seconds": 2,
+                "rollout_seconds": 50,
+                "services_to_health_seconds": 25
+              },
+              "events": [
+                {
+                  "phase": "rollout_started",
+                  "unix_seconds": 1792438328
+                },
+                {
+                  "phase": "maintenance_requested",
+                  "unix_seconds": 1792438330
+                },
+                {
+                  "phase": "maintenance_enabled",
+                  "unix_seconds": 1792438332
+                },
+                {
+                  "phase": "migration_started",
+                  "unix_seconds": 1792438349
+                },
+                {
+                  "phase": "migration_completed",
+                  "unix_seconds": 1792438351
+                },
+                {
+                  "phase": "services_started",
+                  "unix_seconds": 1792438351
+                },
+                {
+                  "phase": "health_started",
+                  "unix_seconds": 1792438375
+                },
+                {
+                  "phase": "health_passed",
+                  "unix_seconds": 1792438376
+                },
+                {
+                  "phase": "maintenance_disabled",
+                  "unix_seconds": 1792438378
+                },
+                {
+                  "phase": "rollout_completed",
+                  "unix_seconds": 1792438378
+                }
+              ],
+              "resolution_seconds": 1,
+              "status": "PASS"
+            },
+            "running_images": {
+              "api": "sha256:5050570abf75f938782fad11fd12249d5feca92e11e9be387d9e11db4f041a6d",
+              "web": "sha256:6679f6367c09f26e269d038ea8dc378e73e3fa8ef150a8d990a04d1afcaf12fb"
+            },
+            "schema_relation": "unchanged",
+            "schema_sha256": "159a00aa4a8c20c98d32256f14887e568eaf8497b83b2c42342c40b99796dfcd",
+            "schema_version": 1,
+            "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+            "sources": {
+              "api": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+              "web": "c569477fc0d125f3313e73742c34a2ea6aa5e454"
+            },
+            "status": "PASS",
+            "volumes": {
+              "attachments-data": "911317405d0c2cf37b7c23548c2f16a8ee4b77a73c2b2ffdcc39c90be028bf64",
+              "caddy-config": "7ecf607102e99e0177606c9c9b0a9c29e3dea3d3ab18175fdb12dbf84270761d",
+              "caddy-data": "01272a9bd5801e4dace822335ae94586b78b363aefd86f3464fdaef3b33b3ef2",
+              "postgres-data": "806af398ecef90b7e8c8186b7b747ef06d897c0de032f11bcec347a2f27c23f3"
+            }
+          },
+          "schema_version": 1,
+          "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+          "status": "PASS"
+        },
+        "human_approval": "NOT_ASSERTED",
+        "kind": "production-delivery",
+        "producer": {
+          "digest": "sha256:39e4907c7e4de86f0dcb0084c099e128a7852c7acacf64ac69fe513514974ba2",
+          "format_version": 2,
+          "id": 12216456705,
+          "name": "server-c569477fc0d125f3313e73742c34a2ea6aa5e454-39309581312-1",
+          "run_attempt": 1,
+          "run_id": 39309581312,
+          "size_in_bytes": 73515133,
+          "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454"
+        },
+        "remote_completion": "FRESH_READBACK_VERIFIED",
+        "schema_version": 1,
+        "stages": {
+          "controller": "success",
+          "download": "success",
+          "install": "success",
+          "producer": "success",
+          "recheck": "success",
+          "ssh": "success"
+        },
+        "status": "PASS"
+      }
+    }
+  ],
+  "limits": [
+    "One sequential pair, not a p50/p95 or population SLO proof.",
+    "Revision/archive labels differ by design. No foreign-source OCI or old signed artifact was reused.",
+    "WARM_VERIFIED proves validated import selection, not a per-layer cache-hit claim.",
+    "Export bytes stayed bounded; complete Docker data-root growth/internal BuildKit GC and operational cleanup acceptance still pending.",
+    "Cold-source install actually failed a bounded transport timeout; it remains FAIL, not successful release delivery.",
+    "No new build, production retry, VM or signing operation was launched to collect these existing results."
+  ]
+}
