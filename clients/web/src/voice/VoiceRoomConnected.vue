@@ -19,7 +19,10 @@ const emit = defineEmits<{ startScreen: [profile: ScreenProfile]; stopScreen: []
 
 <template>
   <div class="room-intro"><VoiceRoomFooter :channel-name="roomName" :state="voiceState" :activation-mode="activationMode" :participant-count="voiceVolumeParticipants.length + 1" :screen-count="screenViewerCards.length" /></div>
-  <p v-if="!captureAvailable && voiceState !== 'LEAVING'" class="state" role="status">{{ captureMessage }}</p>
+  <p v-if="!captureAvailable && voiceState !== 'LEAVING'" class="voice-capture-unavailable" role="status">
+    <svg class="voice-capture-unavailable__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+    <span>{{ captureMessage }}</span>
+  </p>
   <p v-if="screenError" class="state state-error" role="alert">{{ screenError }}</p>
   <ScreenViewerRail v-if="voiceState !== 'LEAVING' && screenViewerCards.length" :cards="screenViewerCards" :selected-id="null" @select="emit('watchScreen', $event)" />
   <VoiceParticipantVolumes v-if="voiceState !== 'LEAVING'" :style="{ '--voice-columns': Math.min(4, voiceVolumeParticipants.length + 1) }" :error="voiceVolumeError" :participants="voiceVolumeParticipants" :screen-streams="screenViewerCards" :screen-watcher-ids="screenWatcherIds" :own-screen-sharing="screenState === 'SHARING'" :selected-screen-stream-id="null" :self-account-id="selfAccountId" :self-name="selfName" :self-deafened="selfDeafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-speaking="selfSpeaking" @set-volume="(id, volume) => emit('setVolume', id, volume)" @watch-screen="emit('watchScreen', $event)" />
