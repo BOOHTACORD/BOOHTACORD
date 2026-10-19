@@ -17,9 +17,9 @@ class ToolchainWorkflowTests(unittest.TestCase):
     def test_wrong_sdk_key_or_conditional_install_is_rejected(self):
         for mutation in ('go', 'npm', 'skip'):
             documents = self.documents()
-            steps = documents['ci-backend.yaml' if mutation == 'go' else 'ci-frontend.yaml']['jobs']['backend' if mutation == 'go' else 'frontend']['steps']
+            steps = documents['ci-backend.yaml' if mutation == 'go' else 'ci-frontend.yaml']['jobs']['backend' if mutation == 'go' else 'fast']['steps']
             with self.subTest(mutation=mutation):
                 if mutation == 'go': next(s for s in steps if s.get('uses', '').startswith('actions/setup-go@'))['with']['go-version'] = '1.26.0'
                 if mutation == 'npm': next(s for s in steps if s.get('uses', '').startswith('actions/setup-node@'))['with']['cache-dependency-path'] = 'clients/web/package-lock.json'
-                if mutation == 'skip': next(s for s in steps if 'npm ci' in s.get('run', ''))['if'] = "steps.cache.outputs.cache-hit != 'true'"
+                if mutation == 'skip': next(s for s in steps if 'tools.ci.web_suites.run' in s.get('run', ''))['if'] = "steps.cache.outputs.cache-hit != 'true'"
                 with self.assertRaises(ValueError): validate(documents, ROOT)

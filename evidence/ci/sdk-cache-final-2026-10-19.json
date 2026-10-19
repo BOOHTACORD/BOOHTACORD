@@ -1,0 +1,236 @@
+{
+  "head": "bd2dc4a27d5aa7a327e67ae977723c4d167473f0",
+  "base": "bdbbeeb617b2ee74fc5fe3d021d81c4ce91fdb67",
+  "tree": "caaf0bd70a52c5f07d31b537c8c1622a930b7e5b",
+  "checkout": "9b2075b26135a0de6bfbf0d62e3bbcdd6b8b4ee2",
+  "cache": {
+    "run": 39211380739,
+    "artifact": 12167489126,
+    "zip_sha256": "66d488d87243bbd79c55d0c70c0952211f26751136c2df177d4f001a100dc7c1",
+    "input_hashes": 19,
+    "summary": {
+      "go": {
+        "cold": {
+          "n": 2,
+          "p50_seconds": 31.22407,
+          "p95_seconds": 32.332046
+        },
+        "percentiles": "nearest-rank; n=2 descriptive microbenchmark, not CI latency SLO",
+        "tests": [
+          "TestCanonicalScopeDoesNotAliasDelimiterOrEmptyScopes",
+          "TestCanonicalScopeDoesNotReuseOtherRooms",
+          "TestDistinctScopeBudgetRejectsWithoutQueueAndCancelsAbandonedFetches",
+          "TestFailureCooldownNeverRetainsPartialOrStalePayload",
+          "TestSingleFlightSharesFetchWithoutCallerCancellation",
+          "TestSnapshotCopyExpiryAndFailureNeverReturnStale",
+          "TestWebhookInvalidationDiscardsCompletedAndInFlightCache"
+        ],
+        "warm": {
+          "n": 2,
+          "p50_seconds": 0.712328,
+          "p95_seconds": 0.788394
+        }
+      },
+      "npm": {
+        "cold": {
+          "n": 2,
+          "p50_seconds": 2.734447,
+          "p95_seconds": 2.855691
+        },
+        "percentiles": "nearest-rank; n=2 descriptive microbenchmark, not CI latency SLO",
+        "tests": [
+          "does not infer ICE/media from signal and does not overwrite failure on disconnect",
+          "private selected transport projection keeps absent/ambiguous/invalid values unknown",
+          "private selected transport projection uses the transport-selected pair rather than any nominated pair",
+          "separates signal/ICE/join and requires counter growth for observed RTP"
+        ],
+        "warm": {
+          "n": 2,
+          "p50_seconds": 2.434356,
+          "p95_seconds": 2.947924
+        }
+      }
+    },
+    "scope": "n=2 per temperature; Go warm gain, npm mixed/p95 slower, no full CI latency SLO"
+  },
+  "sfu": {
+    "run": 39211380748,
+    "artifact": 12168240446,
+    "zip_sha256": "831e571427bdd74ab07e022ee11bb5f0381208ab065e092409bb6d9a3197f2f7",
+    "status": "PASS bounded actualAPI/PG/SFU, no media capacity"
+  },
+  "next": {
+    "run": 39211380759,
+    "status": "PASS scoped actual API/PG/SFU",
+    "source_hashes": 34,
+    "screenshots": {
+      "unread-channel.png": "1c173d7f5a81083242b2788cb1f8dba9c4d99746c6dedf33764cf02768eea7b3",
+      "search-context-voice-retained.png": "e0ca7c97da4300985d113b432cf4afcb2ff93a2fffdee314a03ef09cae67d90a",
+      "unread-direct_message.png": "67515e7997d5d19252fd144dae0dfe834549b54d6fd2f93941952d007fe57296",
+      "upload-retried-published.png": "8fb7c0c9a44fea710c4176d248ce249d85a63d759608ca0690f6fa7cba271692"
+    },
+    "visual_review": "All4 original1440x900 reviewed: 5/5/25MB attachment cards, channel and DM unread118-120 synthetic rows, selected search context with return and connected muted voice visible. Current DM content visible; prior-source blank frames are retained historical limitations, not used as current visual PASS. Existing gray default-styled context controls remain, no whole-UI/native-media acceptance.",
+    "artifact": 12167614214,
+    "zip_sha256": "86b5fd557feec239a1ee19a746718b70c7baeb7d41943b5a12ddeadc2cd777b3"
+  },
+  "rollback": {
+    "run": 39211380820,
+    "status": "PASS strict actual signed isolated",
+    "readiness": {
+      "status": "PASS",
+      "attempts": 5,
+      "elapsed_seconds": 5.201,
+      "connection_refused_retries": 4
+    },
+    "harness_hashes": 23,
+    "builder_hashes": 35,
+    "capture_files": 10,
+    "unique_capture_files": [
+      "baseline-0.png",
+      "baseline-1.png",
+      "previous-1.png",
+      "restore_maintenance-0.png",
+      "restore_maintenance-1.png",
+      "restored-0.png"
+    ],
+    "visual_review": "All6 unique original1200x800 reviewed; account/channel/attachment/unread context preserved, both maintenance banners visible. Existing44px maintenance footer clipping is present on both retained versions; scoped rollback functional proof, not wholeUI/native/media acceptance.",
+    "artifact": 12167853474,
+    "zip_sha256": "76730bc5d18793157a130c938b9facebe6bc4fe41b004df20f31ad24ca7b5ffe"
+  },
+  "lifecycle": {
+    "run": 39211380781,
+    "job": 117925330269,
+    "artifact": 12167752943,
+    "zip_sha256": "8b19efd1a82a11ab62a4515d2bb6ec949535c8699c0515a5a0c953ccb4fa3627",
+    "reports": {
+      "upload-reservations/report.json": {
+        "source_hashes": 15,
+        "status": "PASS actual reservation/cancellation/second-writer denial/handover"
+      },
+      "refresh-baseline/report.json": {
+        "status": "PASS actual previous native REST baseline",
+        "client_source": "bdbbeeb617b2ee74fc5fe3d021d81c4ce91fdb67",
+        "archive_sha256_verified": true
+      },
+      "client-lifecycle/1440/report.json": {
+        "source_hashes": 227,
+        "width": 1440,
+        "status": "PASS actual TLS/API/PG/SFU journeys, restart persistence, cleanup"
+      },
+      "client-lifecycle/1024/report.json": {
+        "source_hashes": 227,
+        "width": 1024,
+        "status": "PASS actual TLS/API/PG/SFU journeys, restart persistence, cleanup"
+      }
+    },
+    "scope": "4 public JSON reports source-hash validated; lifecycle visual archive not inspected/accepted as wholeUI; required test job PASS"
+  },
+  "preexisting_master_delivery": {
+    "source": "bdbbeeb617b2ee74fc5fe3d021d81c4ce91fdb67",
+    "build": 39183309515,
+    "deploy": 39185163575,
+    "install_job": 117845990595,
+    "status": "PASS successful master Build\u2192Deploy\u2192install with explicit BUILD_RUN_ID/source binding in install log; not PR425 candidate delivery",
+    "artifact_id": 12157488637,
+    "artifact_expected_zip_sha256": "f10738ce6f2a2196ce9f4d8ec5461f95d5233109758b230d5129bda410cae644",
+    "scope": "Observed metadata/log binding and successful install job; old bundle ZIP not re-downloaded in this audit."
+  },
+  "core_progress": {
+    "run": 39211380778,
+    "all13_checks": "SUCCESS",
+    "ci-required": "SUCCESS"
+  },
+  "windows": {
+    "run": 39211380778,
+    "job": 117925390416,
+    "status": "PASS four actual Win32 foreground PID guarded cases; recovery/build before GUI PASS",
+    "source": "9b2075b26135a0de6bfbf0d62e3bbcdd6b8b4ee2",
+    "captures": [
+      {
+        "file": "header-initial.png",
+        "sha256": "838e8385bc2b9dc8358445462e401386ee10bd5f99ef5f86c58d5040d2c52d47",
+        "bytes": 31649
+      },
+      {
+        "file": "header-traversed.png",
+        "sha256": "419734132bf0898a1a48246b624d8cc7ba1d34b6fcb646aa0b126be8e74bd197",
+        "bytes": 31533
+      },
+      {
+        "file": "dock-initial.png",
+        "sha256": "b45d48fb15d843208156ddf2ac66fac143d362cf2ceda366c951a9f4b79fc2af",
+        "bytes": 31130
+      },
+      {
+        "file": "dock-traversed.png",
+        "sha256": "b45d48fb15d843208156ddf2ac66fac143d362cf2ceda366c951a9f4b79fc2af",
+        "bytes": 31130
+      },
+      {
+        "file": "header-open.png",
+        "sha256": "6ff57249980e3d5e621e410a97590e4f1c6a057b90b2d6ac472b1406568d05f8",
+        "bytes": 72821
+      },
+      {
+        "file": "dock-open.png",
+        "sha256": "6b7b484b75f35ee825ac662478b3bb49981da7fa53b98e6124b9b6d68e4ed07c",
+        "bytes": 72791
+      },
+      {
+        "file": "header-footer.png",
+        "sha256": "641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f",
+        "bytes": 68590
+      },
+      {
+        "file": "dock-footer.png",
+        "sha256": "641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f",
+        "bytes": 68590
+      }
+    ],
+    "unique_capture_files": [
+      "header-initial.png",
+      "header-traversed.png",
+      "dock-initial.png",
+      "header-open.png",
+      "dock-open.png",
+      "header-footer.png"
+    ],
+    "visual_review": "All6 unique original1008x720 reviewed; open header/dock screen dialog, scrollable quality and fixed Cancel/start footer visible; closed cases keep voice room/mute and keyboard focus. No screen publication/physical audio/native updater publisher claim.",
+    "artifact": 12168920768,
+    "zip_sha256": "3e6d44f0b3902f54358891cf92e7208dc26db4af6a85d15d590f62a0af089473"
+  },
+  "merge": {
+    "sha": "0ed1cd91e3eeb2891afd06b1b51a6c19eca16d91",
+    "tree": "caaf0bd70a52c5f07d31b537c8c1622a930b7e5b",
+    "parents_verified": true,
+    "primary_dirty_state_preserved": true
+  },
+  "master_contracts": {
+    "run": 39213956587,
+    "job": 117933438861,
+    "artifact": 12168975899,
+    "zip_sha256": "facf1dace96eeb4028a8d8df80c80c7dfadfa46bf161f74c8ededa1858b062a3",
+    "receipt": {
+      "gate": "contracts",
+      "source_revision": "0ed1cd91e3eeb2891afd06b1b51a6c19eca16d91",
+      "status": "PASS"
+    },
+    "status": "PASS634 tests and full original19negativefixtures; exactmerge checkout verified"
+  },
+  "master_delivery": {
+    "source": "0ed1cd91e3eeb2891afd06b1b51a6c19eca16d91",
+    "build": 39213956587,
+    "bundle_job": 117940764385,
+    "deploy": 39216623437,
+    "route_job": 117941876083,
+    "install_job": 117941929811,
+    "status": "PASS observed completed successful producer/bundle/deploy and explicit BUILD_RUN_ID/source verification in install log",
+    "scope": "Actual predecessor delivery, not #388 candidate proof; no new native publisher/physical-media/settings acceptance"
+  },
+  "master_ci": {
+    "run": 39213956535,
+    "source": "0ed1cd91e3eeb2891afd06b1b51a6c19eca16d91",
+    "status": "success",
+    "scope": "Observed overall master CI result; visual hash review remains the separate exact-tree PR dataset."
+  }
+}

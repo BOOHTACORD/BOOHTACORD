@@ -503,6 +503,11 @@ tasks:
     requirements: [REQ-DEPLOY-01, REQ-SECURITY-01, REQ-QUALITY-02]
     depends_on: [CICD-01]
     evidence: [tools/ci/toolchains/test_cache_inputs.py, tools/ci/toolchains/test_workflows.py, tools/ci/flutter_setup/test_metadata.py, tools/ci/flutter_setup/test_run.py, tools/ci/flutter_setup/test_workflow.py, tools/ci/toolchains/test_auxiliary.py, tools/ci/flutter_setup/test_vendor_locks.py, tools/ci/cache_measure/test_results.py, docs/ci/sdk-caches.md, evidence/ci/dependency-cache-local-2026-10-19.json, evidence/ci/auxiliary-sdk-availability-2026-10-19.json]
+  - id: CICD-04
+    title: Complete isolated Web suite profiles with a fail-closed source-bound aggregate
+    requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
+    depends_on: [CICD-01, CICD-02, CICD-03, CICD-08]
+    evidence: [tools/ci/web_suites/test_catalog.py, tools/ci/web_suites/test_fan_in.py, tools/ci/web_suites/test_runner.py, tools/ci/web_suites/test_parts.py, tools/ci/web_suites/test_receipt.py, tools/ci/web_suites/test_execution.py, tools/ci/web_suites/test_source.py, tools/ci/web_suites/test_workflow.py, tools/ci/web_suites/test_legacy.py, tools/ci/web_suites/test_comparison.py, tools/ci/web_suites/test_measure.py, tools/ci/web_suites/test_measure_cli.py, tools/ci/web_suites/test_shadow_workflow.py, docs/ci/web-gates.md, evidence/ci/web-gates-2026-10-19.md]
   - id: T-060
     title: Release quality gates
     requirements: [REQ-QUALITY-01, REQ-QUALITY-02, REQ-CAPACITY-01, REQ-DEPLOY-01]
