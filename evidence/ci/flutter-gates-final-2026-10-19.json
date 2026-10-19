@@ -1,0 +1,2289 @@
+{
+  "schema_version": 1,
+  "issue": 390,
+  "status": "PASS",
+  "scope": "Independent complete Dart/vendor/analyze and Android Kotlin/debug-packaging CI gates; physical device acceptance is separate",
+  "implementation": {
+    "pr": 429,
+    "head": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+    "pr_checkout": "f5b5fbe79fb0f4b19b826827e8baba80db71e926",
+    "tree": "6262ac9a328c33e3b8feff49ee5e8735453507e4",
+    "master": "74197bec5951e672bb2daae85ab7a234ffffe545",
+    "master_parents": [
+      "e80c67e05432b508c8b5860d63795a8e2c111a64",
+      "2ce251f9c07b141c6e118cfe5be08c49f215e4d5"
+    ],
+    "tree_equality": "Actual tested PR merge checkout and actual master merge have identical tree; merge-tree independently verified"
+  },
+  "checks": {
+    "head": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+    "hasMore": false,
+    "checks": [
+      {
+        "id": 118006563543,
+        "name": "ci-required",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/118006563543"
+      },
+      {
+        "id": 118001816530,
+        "name": "flutter / flutter",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/118001816530"
+      },
+      {
+        "id": 118001568010,
+        "name": "frontend / frontend",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/118001568010"
+      },
+      {
+        "id": 117998109442,
+        "name": "frontend / browser (browser-voice)",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/117998109442"
+      },
+      {
+        "id": 117998109328,
+        "name": "frontend / browser (browser-conversations)",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/117998109328"
+      },
+      {
+        "id": 117998109270,
+        "name": "flutter / android",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/117998109270"
+      },
+      {
+        "id": 117998109249,
+        "name": "frontend / fast",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/117998109249"
+      },
+      {
+        "id": 117998109203,
+        "name": "windows / windows",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/117998109203"
+      },
+      {
+        "id": 117998109192,
+        "name": "frontend / browser (browser-shell)",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/117998109192"
+      },
+      {
+        "id": 117998109189,
+        "name": "frontend / sfu",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/117998109189"
+      },
+      {
+        "id": 117998109182,
+        "name": "flutter / dart",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/117998109182"
+      },
+      {
+        "id": 117998109148,
+        "name": "backend / backend",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/117998109148"
+      },
+      {
+        "id": 117998043571,
+        "name": "contracts / contracts",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/117998043571"
+      },
+      {
+        "id": 117998043326,
+        "name": "changes",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850519/job/117998043326"
+      },
+      {
+        "id": 117998042453,
+        "name": "cold-warm",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850362/job/117998042453"
+      },
+      {
+        "id": 117998042277,
+        "name": "macos-python",
+        "head_sha": "2ce251f9c07b141c6e118cfe5be08c49f215e4d5",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39233850362/job/117998042277"
+      }
+    ]
+  },
+  "combined_release_proof": {
+    "status": "PASS",
+    "source_revision": "ab9d7329796b57b0f7d75669721f69e0c351a35f",
+    "run_id": 39234203231,
+    "job_id": 117999228386,
+    "python_tests": 722,
+    "unconditional_original_negative_fixture_subprocesses": 19,
+    "scope": "Dedicated read-only QA workflow only differs from current feature implementation by that workflow; not a trusted master release receipt"
+  },
+  "comparison": {
+    "run": {
+      "id": 39229503990,
+      "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+      "run_attempt": 1,
+      "path": ".github/workflows/flutter-ci-shadow.yaml",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-19T09:21:56Z",
+      "run_started_at": "2026-10-19T09:21:56Z",
+      "repository": {
+        "full_name": "Egkurilov/BOOHTACORD"
+      },
+      "head_repository": {
+        "full_name": "Egkurilov/BOOHTACORD"
+      }
+    },
+    "jobs": {
+      "total_count": 13,
+      "jobs": [
+        {
+          "id": 117983769408,
+          "name": "legacy-2",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:21:56Z",
+          "started_at": "2026-10-19T09:39:57Z",
+          "completed_at": "2026-10-19T09:57:59Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000007971
+        },
+        {
+          "id": 117983769583,
+          "name": "legacy-1",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:21:56Z",
+          "started_at": "2026-10-19T09:21:59Z",
+          "completed_at": "2026-10-19T09:39:42Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000007893
+        },
+        {
+          "id": 117983769687,
+          "name": "legacy-3",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:21:56Z",
+          "started_at": "2026-10-19T09:58:02Z",
+          "completed_at": "2026-10-19T10:16:42Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000008004
+        },
+        {
+          "id": 117983769758,
+          "name": "profiles-1 / dart",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:21:56Z",
+          "started_at": "2026-10-19T09:21:59Z",
+          "completed_at": "2026-10-19T09:29:03Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000007894
+        },
+        {
+          "id": 117983769803,
+          "name": "profiles-1 / android",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:21:56Z",
+          "started_at": "2026-10-19T09:21:59Z",
+          "completed_at": "2026-10-19T09:32:46Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000007892
+        },
+        {
+          "id": 117988233671,
+          "name": "profiles-1 / flutter",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:32:46Z",
+          "started_at": "2026-10-19T09:34:17Z",
+          "completed_at": "2026-10-19T09:34:27Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000007933
+        },
+        {
+          "id": 117988917402,
+          "name": "profiles-2 / dart",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:34:27Z",
+          "started_at": "2026-10-19T09:34:32Z",
+          "completed_at": "2026-10-19T09:42:19Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000007936
+        },
+        {
+          "id": 117988917592,
+          "name": "profiles-2 / android",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:34:27Z",
+          "started_at": "2026-10-19T09:34:34Z",
+          "completed_at": "2026-10-19T09:45:01Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000007937
+        },
+        {
+          "id": 117993217675,
+          "name": "profiles-2 / flutter",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:45:01Z",
+          "started_at": "2026-10-19T09:45:04Z",
+          "completed_at": "2026-10-19T09:45:14Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000007980
+        },
+        {
+          "id": 117993314953,
+          "name": "profiles-3 / dart",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:45:15Z",
+          "started_at": "2026-10-19T09:45:17Z",
+          "completed_at": "2026-10-19T09:52:49Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000007981
+        },
+        {
+          "id": 117993315256,
+          "name": "profiles-3 / android",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:45:15Z",
+          "started_at": "2026-10-19T09:45:18Z",
+          "completed_at": "2026-10-19T09:53:51Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000007982
+        },
+        {
+          "id": 117996803572,
+          "name": "profiles-3 / flutter",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T09:53:51Z",
+          "started_at": "2026-10-19T09:53:54Z",
+          "completed_at": "2026-10-19T09:54:02Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000007989
+        },
+        {
+          "id": 118006065949,
+          "name": "compare",
+          "run_id": 39229503990,
+          "run_attempt": 1,
+          "head_sha": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T10:16:43Z",
+          "started_at": "2026-10-19T10:16:46Z",
+          "completed_at": "2026-10-19T10:16:57Z",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000008009
+        }
+      ]
+    },
+    "artifacts": [
+      {
+        "id": 12178917554,
+        "name": "flutter-legacy-shadow-old-3-e7ea6fc3240efb4675944152ba9d6aae8b60b843-39229503990-1",
+        "digest": "sha256:71764fee2ba8d9cc0fd24d62508077b584c7cbd70b2ae3dc484ad42b4d5fd1fa",
+        "size_in_bytes": 2969
+      },
+      {
+        "id": 12178201508,
+        "name": "flutter-part-shadow-new-2-e7ea6fc3240efb4675944152ba9d6aae8b60b843-39229503990-1-android",
+        "digest": "sha256:07289f698358f2992f471d2592c0332ca9442d5618ab5932c1c26fae23f96595",
+        "size_in_bytes": 761
+      },
+      {
+        "id": 12178135114,
+        "name": "flutter-part-shadow-new-1-e7ea6fc3240efb4675944152ba9d6aae8b60b843-39229503990-1-android",
+        "digest": "sha256:22f30c604ece7d3f61a888b52462a3d4811a2b8132352e92dde9db723ce69470",
+        "size_in_bytes": 761
+      },
+      {
+        "id": 12178127720,
+        "name": "flutter-part-shadow-new-3-e7ea6fc3240efb4675944152ba9d6aae8b60b843-39229503990-1-android",
+        "digest": "sha256:1a9ccb21e7dfc87008be0034e58180ef4faffdf87148c375773a10e10e9c5c21",
+        "size_in_bytes": 766
+      },
+      {
+        "id": 12178080294,
+        "name": "flutter-legacy-shadow-old-1-e7ea6fc3240efb4675944152ba9d6aae8b60b843-39229503990-1",
+        "digest": "sha256:23b3cd3e440982a44d44243d1bea5798644735a6c127daea9f309632236b92b4",
+        "size_in_bytes": 2967
+      },
+      {
+        "id": 12177758264,
+        "name": "flutter-part-shadow-new-3-e7ea6fc3240efb4675944152ba9d6aae8b60b843-39229503990-1-dart",
+        "digest": "sha256:9b0d1063d38b838027128034e77a10d22e3d5e580c76b4b853ee47bae1855070",
+        "size_in_bytes": 2277
+      },
+      {
+        "id": 12177586234,
+        "name": "flutter-part-shadow-new-2-e7ea6fc3240efb4675944152ba9d6aae8b60b843-39229503990-1-dart",
+        "digest": "sha256:b7d013b99ae80362eda5cb7fea96de57a19a224822faa2f1f07bbc9bb5976f0b",
+        "size_in_bytes": 2274
+      },
+      {
+        "id": 12176988443,
+        "name": "flutter-legacy-shadow-old-2-e7ea6fc3240efb4675944152ba9d6aae8b60b843-39229503990-1",
+        "digest": "sha256:b77d4cb92d70e0e10fbf4d63e328a5b1036468198f18873ed3d40cdbe470cb0b",
+        "size_in_bytes": 2965
+      },
+      {
+        "id": 12175683769,
+        "name": "flutter-part-shadow-new-1-e7ea6fc3240efb4675944152ba9d6aae8b60b843-39229503990-1-dart",
+        "digest": "sha256:8ddbd64408a915a5ba3e720052174903580d18dab21ad4fa8bcb23f84fa4a89d",
+        "size_in_bytes": 2276
+      }
+    ],
+    "verified": {
+      "status": "PASS",
+      "source_revision": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+      "run": 39229503990,
+      "attempt": 1,
+      "jobs": 13,
+      "proof_records": 9,
+      "computed_equals_retained": true,
+      "summary": {
+        "legacy": {
+          "n": 3,
+          "critical_seconds": {
+            "p50": 1082.0,
+            "p95": 1120.0
+          },
+          "runner_minutes": {
+            "p50": 18.033333,
+            "p95": 18.666667
+          }
+        },
+        "profiles": {
+          "n": 3,
+          "critical_seconds": {
+            "p50": 642.0,
+            "p95": 748.0
+          },
+          "runner_minutes": {
+            "p50": 18.016667,
+            "p95": 18.4
+          }
+        },
+        "dart": {
+          "n": 3,
+          "critical_seconds": {
+            "p50": 452.0,
+            "p95": 467.0
+          },
+          "runner_minutes": {
+            "p50": 7.533333,
+            "p95": 7.783333
+          }
+        },
+        "android": {
+          "n": 3,
+          "critical_seconds": {
+            "p50": 627.0,
+            "p95": 647.0
+          },
+          "runner_minutes": {
+            "p50": 10.45,
+            "p95": 10.783333
+          }
+        }
+      },
+      "legacy": [
+        {
+          "artifacts": {
+            "android": {
+              "LICENSE-RNNoise.txt": {
+                "bytes": 1581,
+                "sha256": "e2f59ff41d9d03adc3dcf3deff170f8c8cf4a6eb4a9b174762a7656d23200ffa"
+              },
+              "SHA256SUMS": {
+                "bytes": 348,
+                "sha256": "a1d35e50f97aff2cf06b09d372787b95b8cc4caccb7d109ba89aba3a5853e959"
+              },
+              "app-debug.apk": {
+                "bytes": 159344169,
+                "sha256": "c26dcd7153e85ac4fc1e8104f0fa883897a0e0a80f2454f26136bc37269b55ca"
+              },
+              "artifact-manifest.json": {
+                "bytes": 3763,
+                "sha256": "9c8ed6e81f89667ff319568800381db8b15c7303d47f438eb259e7d6a038a66d"
+              },
+              "rnnoise-component.cdx.json": {
+                "bytes": 823,
+                "sha256": "0426bb951827495adc912304b4c500ea553ee2ddce89e3cc807e0e2521539d06"
+              }
+            },
+            "dart": {
+              "R14-navigation-top.png": {
+                "bytes": 9995,
+                "sha256": "b544833b6f9d92e7dae505df8a538c8ad503b1bc9ab49547e1a548e1f9ab0478"
+              },
+              "flutter-admin-audit-desktop-1440x900.png": {
+                "bytes": 125267,
+                "sha256": "1e2665650562255d8ca6bf49a598e6dcb4283d0fd3bcc41d5a3e30f0dfdd3991"
+              },
+              "flutter-admin-audit-mobile-393x852.png": {
+                "bytes": 178077,
+                "sha256": "92ab8cad927cf88729cc69db630eaf0b7f54643eb48c755bd1a5b3bf3dd5af1f"
+              },
+              "flutter-admin-audit-mobile-large-text-393x852.png": {
+                "bytes": 227548,
+                "sha256": "c016784c475bfdacd2d866338ba3e3f517b735409d20743a80e67ac503d65666"
+              },
+              "flutter-admin-channels-desktop-1440x900.png": {
+                "bytes": 145210,
+                "sha256": "68f583566df31eb9032a2f55b710128f6ae5c326a5bcb1e8f1003c1d79f3ded5"
+              },
+              "flutter-admin-channels-mobile-393x852.png": {
+                "bytes": 189973,
+                "sha256": "614e53b2918d64178792cad002795c6262dd38f459b7b7f94c0d40c359fe72e5"
+              },
+              "flutter-admin-channels-mobile-large-text-393x852.png": {
+                "bytes": 198536,
+                "sha256": "409677fcb6197b3e9e5fb16ee3104ec12df22fb5cfb5e6f47313975df473a9b9"
+              },
+              "flutter-admin-guild-desktop-1440x900.png": {
+                "bytes": 102107,
+                "sha256": "4b69195f50a1efa111256923057e113e878d59814d5b0954a6ce5473acf2ddba"
+              },
+              "flutter-admin-guild-mobile-393x852.png": {
+                "bytes": 136777,
+                "sha256": "f138811a2b2bf880084c37cc2323c706f4f942326eb4945bff0d0e99accc8fa5"
+              },
+              "flutter-admin-guild-mobile-large-text-393x852.png": {
+                "bytes": 226230,
+                "sha256": "bbebeee58e6f9b19c9f28b619924e6cef303f053d231c05322b1c7ec16356096"
+              },
+              "flutter-admin-media-desktop-1440x900.png": {
+                "bytes": 140762,
+                "sha256": "d03d2cbb12628340b5f767c85798ab8f6343f4c851e6d665cc330cbed2533b89"
+              },
+              "flutter-admin-media-mobile-393x852.png": {
+                "bytes": 210455,
+                "sha256": "0e75a523391ebd93face5584572d7c4a58dfb6a0971631f45f005ef5e9409080"
+              },
+              "flutter-admin-media-mobile-large-text-393x852.png": {
+                "bytes": 249214,
+                "sha256": "8be7596b13b7dddec90c6a5c37e628eac77fc5dd0d2ac3048c3db65afae55c12"
+              },
+              "flutter-admin-members-desktop-1440x900.png": {
+                "bytes": 115529,
+                "sha256": "260e909b1b653f11a9b80a141a6568eb2798c43d98c9e47475613fbf9dabdb14"
+              },
+              "flutter-admin-members-mobile-393x852.png": {
+                "bytes": 184003,
+                "sha256": "439aba7124c656a90918e23defcf8a513c27d101c805f157a1ed4ae9d3b7880d"
+              },
+              "flutter-admin-members-mobile-large-text-393x852.png": {
+                "bytes": 202241,
+                "sha256": "13ed7dec3347a903445ac3c280bb94b30cd736a28d58a26646d1c860bfd49bc8"
+              },
+              "flutter-admin-readiness-desktop-1440x900.png": {
+                "bytes": 77738,
+                "sha256": "73d0d5e7421616f3c4485a99636061e75042d775617776edd53df63757bfb1e6"
+              },
+              "flutter-admin-readiness-mobile-393x852.png": {
+                "bytes": 97582,
+                "sha256": "8ff8c7bdd83a9dfc32f837cd3937bc42751300e585602faf07ad157d390d8282"
+              },
+              "flutter-admin-readiness-mobile-large-text-393x852.png": {
+                "bytes": 168662,
+                "sha256": "7dd6360b26cb9e9a133c0b0edc7b21520c95b8227905f9b92440b6b742ce5b96"
+              },
+              "flutter-admin-roles-desktop-1440x900.png": {
+                "bytes": 81354,
+                "sha256": "5eb0cb6e5ddf2620c656f94b91984becdc06b9e2163fb483fd22b146475f0ebe"
+              },
+              "flutter-admin-roles-mobile-393x852.png": {
+                "bytes": 103476,
+                "sha256": "952f869d0e66686db86a28528cd6d6bd377ccd9d08b287b3afe71733759efe3d"
+              },
+              "flutter-admin-roles-mobile-large-text-393x852.png": {
+                "bytes": 160259,
+                "sha256": "82a95c722e6b484a058c27e40d27b348d590a2c84f9c12d1143c443505a5489b"
+              },
+              "flutter-dm-conversation-desktop-1440x900.png": {
+                "bytes": 119115,
+                "sha256": "96c255987d098c91a01c32c250a118b8285a2344471f4ab4308a436750039d96"
+              },
+              "flutter-dm-conversation-mobile-393x852.png": {
+                "bytes": 56978,
+                "sha256": "137ca0efc51d19d781d6071d79c1177e8146e987923c7f9165e61884d1df9c16"
+              },
+              "flutter-dm-conversation-mobile-large-text-393x852.png": {
+                "bytes": 92356,
+                "sha256": "cf82b70b3e98a092aea5819451e131f99567209e395b85efedaf21aa775a5de3"
+              },
+              "flutter-profile-logout-confirmation-mobile-393x852@3x.png": {
+                "bytes": 176731,
+                "sha256": "18c8cb4e62b2cbb581db981a13afdcd23bcc2d8eb61c4543f24f75095018361b"
+              },
+              "flutter-screen-share-mobile-ime-2x-393x852.png": {
+                "bytes": 113392,
+                "sha256": "7d92346a836bf210d02f0de0a0e79faf7c6aa415bb5db55af8ed1adcec1a41eb"
+              },
+              "flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png": {
+                "bytes": 203273,
+                "sha256": "c69c06fa9be800dd4928d2172d8973d84bbf8fa4f630d126d0a1df31093cc62e"
+              },
+              "flutter-text-channel-desktop-1440x900.png": {
+                "bytes": 159994,
+                "sha256": "a86341625c4f1c5fec0b7e48f464b4363ef88e2a65d67012b3eec29abecc2b2d"
+              },
+              "flutter-text-channel-mobile-393x852.png": {
+                "bytes": 84891,
+                "sha256": "84c4fe9dcc6ec19c3fe2f08057f935cd3fdac0e052ad5d01f7df5e6f47b303b2"
+              },
+              "flutter-text-channel-mobile-large-text-393x852.png": {
+                "bytes": 145244,
+                "sha256": "eb85372ae756ba92c23d10113f0a437dc484cbb9e7c90310dfaf1496f49b9008"
+              },
+              "flutter-topology-create-desktop-1440x900@2x.png": {
+                "bytes": 48074,
+                "sha256": "1429b5255c62cf1f93d214857398603a6cbe094c8b7f95c2052759004ed7758a"
+              },
+              "flutter-topology-destructive-desktop-1440x900@2x.png": {
+                "bytes": 61728,
+                "sha256": "0d776c85b21f47adca36d73a0d653a9df39172233296b2019d1248750d7e0b45"
+              },
+              "maintenance-banner-safe-area-390x800.png": {
+                "bytes": 11232,
+                "sha256": "84e3bb568539b7d156fb5c278fb59676c1334b85101c71f338225cdcc452df8c"
+              }
+            }
+          },
+          "baseline": {
+            "files": {
+              ".github/workflows/ci-flutter.yaml": "6b616779bf32d7c200c6b43bba2deaeedcf4fbe0c1385ce740e05e47569dcd14",
+              "tools/build/android/run.py": "1aea6fc2c1cf4771cf282bd3d2697e688d46747407f61ced03a74d0ba517ecad",
+              "tools/ci/native/flutter.py": "61fdacd560753a2ae71629f2f8e177aadfd4f3a7a50546c6f6b142841b4a0291",
+              "tools/verify/android_kotlin/verify_android_kotlin_modes.sh": "51b10ce4b18eeac9cc4be98550ee0fc1d3df49b2e73c5544a2fe6d685c214c32"
+            },
+            "operations": [
+              "public-headers",
+              "app-dependencies",
+              "app-tests",
+              "livekit-dependencies",
+              "livekit-tests",
+              "webrtc-dependencies",
+              "webrtc-tests",
+              "app-analysis",
+              "kotlin-modes",
+              "debug-dependencies",
+              "debug-apk"
+            ],
+            "schema_version": 1,
+            "source_revision": "f1b190383372e32581790a80fafae3aab33e13e7"
+          },
+          "execution": {
+            "namespace": "shadow-old-1",
+            "run_attempt": "1",
+            "run_id": "39229503990"
+          },
+          "operations": [
+            "public-headers",
+            "app-dependencies",
+            "app-tests",
+            "livekit-dependencies",
+            "livekit-tests",
+            "webrtc-dependencies",
+            "webrtc-tests",
+            "app-analysis",
+            "kotlin-modes",
+            "debug-dependencies",
+            "debug-apk"
+          ],
+          "schema_version": 1,
+          "sdk": {
+            "dart": "3.13.5",
+            "flutter": "3.47.7",
+            "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+          },
+          "seconds": 1037.721811475,
+          "source_revision": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "PASS"
+        },
+        {
+          "artifacts": {
+            "android": {
+              "LICENSE-RNNoise.txt": {
+                "bytes": 1581,
+                "sha256": "e2f59ff41d9d03adc3dcf3deff170f8c8cf4a6eb4a9b174762a7656d23200ffa"
+              },
+              "SHA256SUMS": {
+                "bytes": 348,
+                "sha256": "3c382765bffc5179c136ca93d1ff950920e3a98924bbfbf9b54c92c633d418cf"
+              },
+              "app-debug.apk": {
+                "bytes": 159345114,
+                "sha256": "c0958406d95c9c69e241c372fb03a35d5c573093ccc956932f8d0859bfea5420"
+              },
+              "artifact-manifest.json": {
+                "bytes": 3763,
+                "sha256": "c74e65bf63faed15efd2b79694a070616a83ade76ac7e8aa58d8caa62b3980c2"
+              },
+              "rnnoise-component.cdx.json": {
+                "bytes": 823,
+                "sha256": "0426bb951827495adc912304b4c500ea553ee2ddce89e3cc807e0e2521539d06"
+              }
+            },
+            "dart": {
+              "R14-navigation-top.png": {
+                "bytes": 9995,
+                "sha256": "b544833b6f9d92e7dae505df8a538c8ad503b1bc9ab49547e1a548e1f9ab0478"
+              },
+              "flutter-admin-audit-desktop-1440x900.png": {
+                "bytes": 125267,
+                "sha256": "1e2665650562255d8ca6bf49a598e6dcb4283d0fd3bcc41d5a3e30f0dfdd3991"
+              },
+              "flutter-admin-audit-mobile-393x852.png": {
+                "bytes": 178077,
+                "sha256": "92ab8cad927cf88729cc69db630eaf0b7f54643eb48c755bd1a5b3bf3dd5af1f"
+              },
+              "flutter-admin-audit-mobile-large-text-393x852.png": {
+                "bytes": 227548,
+                "sha256": "c016784c475bfdacd2d866338ba3e3f517b735409d20743a80e67ac503d65666"
+              },
+              "flutter-admin-channels-desktop-1440x900.png": {
+                "bytes": 145210,
+                "sha256": "68f583566df31eb9032a2f55b710128f6ae5c326a5bcb1e8f1003c1d79f3ded5"
+              },
+              "flutter-admin-channels-mobile-393x852.png": {
+                "bytes": 189973,
+                "sha256": "614e53b2918d64178792cad002795c6262dd38f459b7b7f94c0d40c359fe72e5"
+              },
+              "flutter-admin-channels-mobile-large-text-393x852.png": {
+                "bytes": 198536,
+                "sha256": "409677fcb6197b3e9e5fb16ee3104ec12df22fb5cfb5e6f47313975df473a9b9"
+              },
+              "flutter-admin-guild-desktop-1440x900.png": {
+                "bytes": 102107,
+                "sha256": "4b69195f50a1efa111256923057e113e878d59814d5b0954a6ce5473acf2ddba"
+              },
+              "flutter-admin-guild-mobile-393x852.png": {
+                "bytes": 136777,
+                "sha256": "f138811a2b2bf880084c37cc2323c706f4f942326eb4945bff0d0e99accc8fa5"
+              },
+              "flutter-admin-guild-mobile-large-text-393x852.png": {
+                "bytes": 226230,
+                "sha256": "bbebeee58e6f9b19c9f28b619924e6cef303f053d231c05322b1c7ec16356096"
+              },
+              "flutter-admin-media-desktop-1440x900.png": {
+                "bytes": 140856,
+                "sha256": "20e39383da63345f65b9606bbf6fd9fba05b1e9ea65d7aa16d54061d0d1a6ded"
+              },
+              "flutter-admin-media-mobile-393x852.png": {
+                "bytes": 210373,
+                "sha256": "38650be14466dd4cf2e8542934559410440d29203326645a22759757be8aa435"
+              },
+              "flutter-admin-media-mobile-large-text-393x852.png": {
+                "bytes": 249214,
+                "sha256": "8be7596b13b7dddec90c6a5c37e628eac77fc5dd0d2ac3048c3db65afae55c12"
+              },
+              "flutter-admin-members-desktop-1440x900.png": {
+                "bytes": 115529,
+                "sha256": "260e909b1b653f11a9b80a141a6568eb2798c43d98c9e47475613fbf9dabdb14"
+              },
+              "flutter-admin-members-mobile-393x852.png": {
+                "bytes": 184003,
+                "sha256": "439aba7124c656a90918e23defcf8a513c27d101c805f157a1ed4ae9d3b7880d"
+              },
+              "flutter-admin-members-mobile-large-text-393x852.png": {
+                "bytes": 202241,
+                "sha256": "13ed7dec3347a903445ac3c280bb94b30cd736a28d58a26646d1c860bfd49bc8"
+              },
+              "flutter-admin-readiness-desktop-1440x900.png": {
+                "bytes": 77738,
+                "sha256": "73d0d5e7421616f3c4485a99636061e75042d775617776edd53df63757bfb1e6"
+              },
+              "flutter-admin-readiness-mobile-393x852.png": {
+                "bytes": 97582,
+                "sha256": "8ff8c7bdd83a9dfc32f837cd3937bc42751300e585602faf07ad157d390d8282"
+              },
+              "flutter-admin-readiness-mobile-large-text-393x852.png": {
+                "bytes": 168662,
+                "sha256": "7dd6360b26cb9e9a133c0b0edc7b21520c95b8227905f9b92440b6b742ce5b96"
+              },
+              "flutter-admin-roles-desktop-1440x900.png": {
+                "bytes": 81354,
+                "sha256": "5eb0cb6e5ddf2620c656f94b91984becdc06b9e2163fb483fd22b146475f0ebe"
+              },
+              "flutter-admin-roles-mobile-393x852.png": {
+                "bytes": 103476,
+                "sha256": "952f869d0e66686db86a28528cd6d6bd377ccd9d08b287b3afe71733759efe3d"
+              },
+              "flutter-admin-roles-mobile-large-text-393x852.png": {
+                "bytes": 160259,
+                "sha256": "82a95c722e6b484a058c27e40d27b348d590a2c84f9c12d1143c443505a5489b"
+              },
+              "flutter-dm-conversation-desktop-1440x900.png": {
+                "bytes": 119115,
+                "sha256": "96c255987d098c91a01c32c250a118b8285a2344471f4ab4308a436750039d96"
+              },
+              "flutter-dm-conversation-mobile-393x852.png": {
+                "bytes": 56978,
+                "sha256": "137ca0efc51d19d781d6071d79c1177e8146e987923c7f9165e61884d1df9c16"
+              },
+              "flutter-dm-conversation-mobile-large-text-393x852.png": {
+                "bytes": 92356,
+                "sha256": "cf82b70b3e98a092aea5819451e131f99567209e395b85efedaf21aa775a5de3"
+              },
+              "flutter-profile-logout-confirmation-mobile-393x852@3x.png": {
+                "bytes": 176731,
+                "sha256": "18c8cb4e62b2cbb581db981a13afdcd23bcc2d8eb61c4543f24f75095018361b"
+              },
+              "flutter-screen-share-mobile-ime-2x-393x852.png": {
+                "bytes": 113392,
+                "sha256": "7d92346a836bf210d02f0de0a0e79faf7c6aa415bb5db55af8ed1adcec1a41eb"
+              },
+              "flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png": {
+                "bytes": 203273,
+                "sha256": "c69c06fa9be800dd4928d2172d8973d84bbf8fa4f630d126d0a1df31093cc62e"
+              },
+              "flutter-text-channel-desktop-1440x900.png": {
+                "bytes": 159994,
+                "sha256": "a86341625c4f1c5fec0b7e48f464b4363ef88e2a65d67012b3eec29abecc2b2d"
+              },
+              "flutter-text-channel-mobile-393x852.png": {
+                "bytes": 84891,
+                "sha256": "84c4fe9dcc6ec19c3fe2f08057f935cd3fdac0e052ad5d01f7df5e6f47b303b2"
+              },
+              "flutter-text-channel-mobile-large-text-393x852.png": {
+                "bytes": 145244,
+                "sha256": "eb85372ae756ba92c23d10113f0a437dc484cbb9e7c90310dfaf1496f49b9008"
+              },
+              "flutter-topology-create-desktop-1440x900@2x.png": {
+                "bytes": 48074,
+                "sha256": "1429b5255c62cf1f93d214857398603a6cbe094c8b7f95c2052759004ed7758a"
+              },
+              "flutter-topology-destructive-desktop-1440x900@2x.png": {
+                "bytes": 61728,
+                "sha256": "0d776c85b21f47adca36d73a0d653a9df39172233296b2019d1248750d7e0b45"
+              },
+              "maintenance-banner-safe-area-390x800.png": {
+                "bytes": 11232,
+                "sha256": "84e3bb568539b7d156fb5c278fb59676c1334b85101c71f338225cdcc452df8c"
+              }
+            }
+          },
+          "baseline": {
+            "files": {
+              ".github/workflows/ci-flutter.yaml": "6b616779bf32d7c200c6b43bba2deaeedcf4fbe0c1385ce740e05e47569dcd14",
+              "tools/build/android/run.py": "1aea6fc2c1cf4771cf282bd3d2697e688d46747407f61ced03a74d0ba517ecad",
+              "tools/ci/native/flutter.py": "61fdacd560753a2ae71629f2f8e177aadfd4f3a7a50546c6f6b142841b4a0291",
+              "tools/verify/android_kotlin/verify_android_kotlin_modes.sh": "51b10ce4b18eeac9cc4be98550ee0fc1d3df49b2e73c5544a2fe6d685c214c32"
+            },
+            "operations": [
+              "public-headers",
+              "app-dependencies",
+              "app-tests",
+              "livekit-dependencies",
+              "livekit-tests",
+              "webrtc-dependencies",
+              "webrtc-tests",
+              "app-analysis",
+              "kotlin-modes",
+              "debug-dependencies",
+              "debug-apk"
+            ],
+            "schema_version": 1,
+            "source_revision": "f1b190383372e32581790a80fafae3aab33e13e7"
+          },
+          "execution": {
+            "namespace": "shadow-old-2",
+            "run_attempt": "1",
+            "run_id": "39229503990"
+          },
+          "operations": [
+            "public-headers",
+            "app-dependencies",
+            "app-tests",
+            "livekit-dependencies",
+            "livekit-tests",
+            "webrtc-dependencies",
+            "webrtc-tests",
+            "app-analysis",
+            "kotlin-modes",
+            "debug-dependencies",
+            "debug-apk"
+          ],
+          "schema_version": 1,
+          "sdk": {
+            "dart": "3.13.5",
+            "flutter": "3.47.7",
+            "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+          },
+          "seconds": 1056.093953815,
+          "source_revision": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "PASS"
+        },
+        {
+          "artifacts": {
+            "android": {
+              "LICENSE-RNNoise.txt": {
+                "bytes": 1581,
+                "sha256": "e2f59ff41d9d03adc3dcf3deff170f8c8cf4a6eb4a9b174762a7656d23200ffa"
+              },
+              "SHA256SUMS": {
+                "bytes": 348,
+                "sha256": "11616e7ad182e053c9cd5fc2c14c4324952d95ddc072219ab7fa80d8048ec6b1"
+              },
+              "app-debug.apk": {
+                "bytes": 159345122,
+                "sha256": "10cc10ae2625cbb9aa65f77e65ddebfcfafa033162ad43a8c65ab2278ee62a75"
+              },
+              "artifact-manifest.json": {
+                "bytes": 3763,
+                "sha256": "94beb2cea3c8c20a465f11aa1c3a086c837cbb72d82a6752c2f0c72d029af8f2"
+              },
+              "rnnoise-component.cdx.json": {
+                "bytes": 823,
+                "sha256": "0426bb951827495adc912304b4c500ea553ee2ddce89e3cc807e0e2521539d06"
+              }
+            },
+            "dart": {
+              "R14-navigation-top.png": {
+                "bytes": 9995,
+                "sha256": "b544833b6f9d92e7dae505df8a538c8ad503b1bc9ab49547e1a548e1f9ab0478"
+              },
+              "flutter-admin-audit-desktop-1440x900.png": {
+                "bytes": 125267,
+                "sha256": "1e2665650562255d8ca6bf49a598e6dcb4283d0fd3bcc41d5a3e30f0dfdd3991"
+              },
+              "flutter-admin-audit-mobile-393x852.png": {
+                "bytes": 178077,
+                "sha256": "92ab8cad927cf88729cc69db630eaf0b7f54643eb48c755bd1a5b3bf3dd5af1f"
+              },
+              "flutter-admin-audit-mobile-large-text-393x852.png": {
+                "bytes": 227548,
+                "sha256": "c016784c475bfdacd2d866338ba3e3f517b735409d20743a80e67ac503d65666"
+              },
+              "flutter-admin-channels-desktop-1440x900.png": {
+                "bytes": 145210,
+                "sha256": "68f583566df31eb9032a2f55b710128f6ae5c326a5bcb1e8f1003c1d79f3ded5"
+              },
+              "flutter-admin-channels-mobile-393x852.png": {
+                "bytes": 189973,
+                "sha256": "614e53b2918d64178792cad002795c6262dd38f459b7b7f94c0d40c359fe72e5"
+              },
+              "flutter-admin-channels-mobile-large-text-393x852.png": {
+                "bytes": 198536,
+                "sha256": "409677fcb6197b3e9e5fb16ee3104ec12df22fb5cfb5e6f47313975df473a9b9"
+              },
+              "flutter-admin-guild-desktop-1440x900.png": {
+                "bytes": 102107,
+                "sha256": "4b69195f50a1efa111256923057e113e878d59814d5b0954a6ce5473acf2ddba"
+              },
+              "flutter-admin-guild-mobile-393x852.png": {
+                "bytes": 136777,
+                "sha256": "f138811a2b2bf880084c37cc2323c706f4f942326eb4945bff0d0e99accc8fa5"
+              },
+              "flutter-admin-guild-mobile-large-text-393x852.png": {
+                "bytes": 226230,
+                "sha256": "bbebeee58e6f9b19c9f28b619924e6cef303f053d231c05322b1c7ec16356096"
+              },
+              "flutter-admin-media-desktop-1440x900.png": {
+                "bytes": 139959,
+                "sha256": "934f7c8705b2a9d6fca3dfe6bcff6b9b91400b7300ad6f7c5ca39f6f1b5dc06b"
+              },
+              "flutter-admin-media-mobile-393x852.png": {
+                "bytes": 209870,
+                "sha256": "7bc5f5faa26728bebe21127d8eea9fcf29ccc1edde40b9ab9df7c32e15fce3a7"
+              },
+              "flutter-admin-media-mobile-large-text-393x852.png": {
+                "bytes": 249214,
+                "sha256": "8be7596b13b7dddec90c6a5c37e628eac77fc5dd0d2ac3048c3db65afae55c12"
+              },
+              "flutter-admin-members-desktop-1440x900.png": {
+                "bytes": 115529,
+                "sha256": "260e909b1b653f11a9b80a141a6568eb2798c43d98c9e47475613fbf9dabdb14"
+              },
+              "flutter-admin-members-mobile-393x852.png": {
+                "bytes": 184003,
+                "sha256": "439aba7124c656a90918e23defcf8a513c27d101c805f157a1ed4ae9d3b7880d"
+              },
+              "flutter-admin-members-mobile-large-text-393x852.png": {
+                "bytes": 202241,
+                "sha256": "13ed7dec3347a903445ac3c280bb94b30cd736a28d58a26646d1c860bfd49bc8"
+              },
+              "flutter-admin-readiness-desktop-1440x900.png": {
+                "bytes": 77738,
+                "sha256": "73d0d5e7421616f3c4485a99636061e75042d775617776edd53df63757bfb1e6"
+              },
+              "flutter-admin-readiness-mobile-393x852.png": {
+                "bytes": 97582,
+                "sha256": "8ff8c7bdd83a9dfc32f837cd3937bc42751300e585602faf07ad157d390d8282"
+              },
+              "flutter-admin-readiness-mobile-large-text-393x852.png": {
+                "bytes": 168662,
+                "sha256": "7dd6360b26cb9e9a133c0b0edc7b21520c95b8227905f9b92440b6b742ce5b96"
+              },
+              "flutter-admin-roles-desktop-1440x900.png": {
+                "bytes": 81354,
+                "sha256": "5eb0cb6e5ddf2620c656f94b91984becdc06b9e2163fb483fd22b146475f0ebe"
+              },
+              "flutter-admin-roles-mobile-393x852.png": {
+                "bytes": 103476,
+                "sha256": "952f869d0e66686db86a28528cd6d6bd377ccd9d08b287b3afe71733759efe3d"
+              },
+              "flutter-admin-roles-mobile-large-text-393x852.png": {
+                "bytes": 160259,
+                "sha256": "82a95c722e6b484a058c27e40d27b348d590a2c84f9c12d1143c443505a5489b"
+              },
+              "flutter-dm-conversation-desktop-1440x900.png": {
+                "bytes": 119115,
+                "sha256": "96c255987d098c91a01c32c250a118b8285a2344471f4ab4308a436750039d96"
+              },
+              "flutter-dm-conversation-mobile-393x852.png": {
+                "bytes": 56978,
+                "sha256": "137ca0efc51d19d781d6071d79c1177e8146e987923c7f9165e61884d1df9c16"
+              },
+              "flutter-dm-conversation-mobile-large-text-393x852.png": {
+                "bytes": 92356,
+                "sha256": "cf82b70b3e98a092aea5819451e131f99567209e395b85efedaf21aa775a5de3"
+              },
+              "flutter-profile-logout-confirmation-mobile-393x852@3x.png": {
+                "bytes": 176731,
+                "sha256": "18c8cb4e62b2cbb581db981a13afdcd23bcc2d8eb61c4543f24f75095018361b"
+              },
+              "flutter-screen-share-mobile-ime-2x-393x852.png": {
+                "bytes": 113392,
+                "sha256": "7d92346a836bf210d02f0de0a0e79faf7c6aa415bb5db55af8ed1adcec1a41eb"
+              },
+              "flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png": {
+                "bytes": 203273,
+                "sha256": "c69c06fa9be800dd4928d2172d8973d84bbf8fa4f630d126d0a1df31093cc62e"
+              },
+              "flutter-text-channel-desktop-1440x900.png": {
+                "bytes": 159994,
+                "sha256": "a86341625c4f1c5fec0b7e48f464b4363ef88e2a65d67012b3eec29abecc2b2d"
+              },
+              "flutter-text-channel-mobile-393x852.png": {
+                "bytes": 84891,
+                "sha256": "84c4fe9dcc6ec19c3fe2f08057f935cd3fdac0e052ad5d01f7df5e6f47b303b2"
+              },
+              "flutter-text-channel-mobile-large-text-393x852.png": {
+                "bytes": 145244,
+                "sha256": "eb85372ae756ba92c23d10113f0a437dc484cbb9e7c90310dfaf1496f49b9008"
+              },
+              "flutter-topology-create-desktop-1440x900@2x.png": {
+                "bytes": 48074,
+                "sha256": "1429b5255c62cf1f93d214857398603a6cbe094c8b7f95c2052759004ed7758a"
+              },
+              "flutter-topology-destructive-desktop-1440x900@2x.png": {
+                "bytes": 61728,
+                "sha256": "0d776c85b21f47adca36d73a0d653a9df39172233296b2019d1248750d7e0b45"
+              },
+              "maintenance-banner-safe-area-390x800.png": {
+                "bytes": 11232,
+                "sha256": "84e3bb568539b7d156fb5c278fb59676c1334b85101c71f338225cdcc452df8c"
+              }
+            }
+          },
+          "baseline": {
+            "files": {
+              ".github/workflows/ci-flutter.yaml": "6b616779bf32d7c200c6b43bba2deaeedcf4fbe0c1385ce740e05e47569dcd14",
+              "tools/build/android/run.py": "1aea6fc2c1cf4771cf282bd3d2697e688d46747407f61ced03a74d0ba517ecad",
+              "tools/ci/native/flutter.py": "61fdacd560753a2ae71629f2f8e177aadfd4f3a7a50546c6f6b142841b4a0291",
+              "tools/verify/android_kotlin/verify_android_kotlin_modes.sh": "51b10ce4b18eeac9cc4be98550ee0fc1d3df49b2e73c5544a2fe6d685c214c32"
+            },
+            "operations": [
+              "public-headers",
+              "app-dependencies",
+              "app-tests",
+              "livekit-dependencies",
+              "livekit-tests",
+              "webrtc-dependencies",
+              "webrtc-tests",
+              "app-analysis",
+              "kotlin-modes",
+              "debug-dependencies",
+              "debug-apk"
+            ],
+            "schema_version": 1,
+            "source_revision": "f1b190383372e32581790a80fafae3aab33e13e7"
+          },
+          "execution": {
+            "namespace": "shadow-old-3",
+            "run_attempt": "1",
+            "run_id": "39229503990"
+          },
+          "operations": [
+            "public-headers",
+            "app-dependencies",
+            "app-tests",
+            "livekit-dependencies",
+            "livekit-tests",
+            "webrtc-dependencies",
+            "webrtc-tests",
+            "app-analysis",
+            "kotlin-modes",
+            "debug-dependencies",
+            "debug-apk"
+          ],
+          "schema_version": 1,
+          "sdk": {
+            "dart": "3.13.5",
+            "flutter": "3.47.7",
+            "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+          },
+          "seconds": 1083.800332193,
+          "source_revision": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+          "status": "PASS"
+        }
+      ],
+      "profiles": [
+        [
+          {
+            "artifacts": {
+              "R14-navigation-top.png": {
+                "bytes": 9995,
+                "sha256": "b544833b6f9d92e7dae505df8a538c8ad503b1bc9ab49547e1a548e1f9ab0478"
+              },
+              "flutter-admin-audit-desktop-1440x900.png": {
+                "bytes": 125267,
+                "sha256": "1e2665650562255d8ca6bf49a598e6dcb4283d0fd3bcc41d5a3e30f0dfdd3991"
+              },
+              "flutter-admin-audit-mobile-393x852.png": {
+                "bytes": 178077,
+                "sha256": "92ab8cad927cf88729cc69db630eaf0b7f54643eb48c755bd1a5b3bf3dd5af1f"
+              },
+              "flutter-admin-audit-mobile-large-text-393x852.png": {
+                "bytes": 227548,
+                "sha256": "c016784c475bfdacd2d866338ba3e3f517b735409d20743a80e67ac503d65666"
+              },
+              "flutter-admin-channels-desktop-1440x900.png": {
+                "bytes": 145210,
+                "sha256": "68f583566df31eb9032a2f55b710128f6ae5c326a5bcb1e8f1003c1d79f3ded5"
+              },
+              "flutter-admin-channels-mobile-393x852.png": {
+                "bytes": 189973,
+                "sha256": "614e53b2918d64178792cad002795c6262dd38f459b7b7f94c0d40c359fe72e5"
+              },
+              "flutter-admin-channels-mobile-large-text-393x852.png": {
+                "bytes": 198536,
+                "sha256": "409677fcb6197b3e9e5fb16ee3104ec12df22fb5cfb5e6f47313975df473a9b9"
+              },
+              "flutter-admin-guild-desktop-1440x900.png": {
+                "bytes": 102107,
+                "sha256": "4b69195f50a1efa111256923057e113e878d59814d5b0954a6ce5473acf2ddba"
+              },
+              "flutter-admin-guild-mobile-393x852.png": {
+                "bytes": 136777,
+                "sha256": "f138811a2b2bf880084c37cc2323c706f4f942326eb4945bff0d0e99accc8fa5"
+              },
+              "flutter-admin-guild-mobile-large-text-393x852.png": {
+                "bytes": 226230,
+                "sha256": "bbebeee58e6f9b19c9f28b619924e6cef303f053d231c05322b1c7ec16356096"
+              },
+              "flutter-admin-media-desktop-1440x900.png": {
+                "bytes": 140762,
+                "sha256": "d03d2cbb12628340b5f767c85798ab8f6343f4c851e6d665cc330cbed2533b89"
+              },
+              "flutter-admin-media-mobile-393x852.png": {
+                "bytes": 210455,
+                "sha256": "0e75a523391ebd93face5584572d7c4a58dfb6a0971631f45f005ef5e9409080"
+              },
+              "flutter-admin-media-mobile-large-text-393x852.png": {
+                "bytes": 249214,
+                "sha256": "8be7596b13b7dddec90c6a5c37e628eac77fc5dd0d2ac3048c3db65afae55c12"
+              },
+              "flutter-admin-members-desktop-1440x900.png": {
+                "bytes": 115529,
+                "sha256": "260e909b1b653f11a9b80a141a6568eb2798c43d98c9e47475613fbf9dabdb14"
+              },
+              "flutter-admin-members-mobile-393x852.png": {
+                "bytes": 184003,
+                "sha256": "439aba7124c656a90918e23defcf8a513c27d101c805f157a1ed4ae9d3b7880d"
+              },
+              "flutter-admin-members-mobile-large-text-393x852.png": {
+                "bytes": 202241,
+                "sha256": "13ed7dec3347a903445ac3c280bb94b30cd736a28d58a26646d1c860bfd49bc8"
+              },
+              "flutter-admin-readiness-desktop-1440x900.png": {
+                "bytes": 77738,
+                "sha256": "73d0d5e7421616f3c4485a99636061e75042d775617776edd53df63757bfb1e6"
+              },
+              "flutter-admin-readiness-mobile-393x852.png": {
+                "bytes": 97582,
+                "sha256": "8ff8c7bdd83a9dfc32f837cd3937bc42751300e585602faf07ad157d390d8282"
+              },
+              "flutter-admin-readiness-mobile-large-text-393x852.png": {
+                "bytes": 168662,
+                "sha256": "7dd6360b26cb9e9a133c0b0edc7b21520c95b8227905f9b92440b6b742ce5b96"
+              },
+              "flutter-admin-roles-desktop-1440x900.png": {
+                "bytes": 81354,
+                "sha256": "5eb0cb6e5ddf2620c656f94b91984becdc06b9e2163fb483fd22b146475f0ebe"
+              },
+              "flutter-admin-roles-mobile-393x852.png": {
+                "bytes": 103476,
+                "sha256": "952f869d0e66686db86a28528cd6d6bd377ccd9d08b287b3afe71733759efe3d"
+              },
+              "flutter-admin-roles-mobile-large-text-393x852.png": {
+                "bytes": 160259,
+                "sha256": "82a95c722e6b484a058c27e40d27b348d590a2c84f9c12d1143c443505a5489b"
+              },
+              "flutter-dm-conversation-desktop-1440x900.png": {
+                "bytes": 119115,
+                "sha256": "96c255987d098c91a01c32c250a118b8285a2344471f4ab4308a436750039d96"
+              },
+              "flutter-dm-conversation-mobile-393x852.png": {
+                "bytes": 56978,
+                "sha256": "137ca0efc51d19d781d6071d79c1177e8146e987923c7f9165e61884d1df9c16"
+              },
+              "flutter-dm-conversation-mobile-large-text-393x852.png": {
+                "bytes": 92356,
+                "sha256": "cf82b70b3e98a092aea5819451e131f99567209e395b85efedaf21aa775a5de3"
+              },
+              "flutter-profile-logout-confirmation-mobile-393x852@3x.png": {
+                "bytes": 176731,
+                "sha256": "18c8cb4e62b2cbb581db981a13afdcd23bcc2d8eb61c4543f24f75095018361b"
+              },
+              "flutter-screen-share-mobile-ime-2x-393x852.png": {
+                "bytes": 113392,
+                "sha256": "7d92346a836bf210d02f0de0a0e79faf7c6aa415bb5db55af8ed1adcec1a41eb"
+              },
+              "flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png": {
+                "bytes": 203273,
+                "sha256": "c69c06fa9be800dd4928d2172d8973d84bbf8fa4f630d126d0a1df31093cc62e"
+              },
+              "flutter-text-channel-desktop-1440x900.png": {
+                "bytes": 159994,
+                "sha256": "a86341625c4f1c5fec0b7e48f464b4363ef88e2a65d67012b3eec29abecc2b2d"
+              },
+              "flutter-text-channel-mobile-393x852.png": {
+                "bytes": 84891,
+                "sha256": "84c4fe9dcc6ec19c3fe2f08057f935cd3fdac0e052ad5d01f7df5e6f47b303b2"
+              },
+              "flutter-text-channel-mobile-large-text-393x852.png": {
+                "bytes": 145244,
+                "sha256": "eb85372ae756ba92c23d10113f0a437dc484cbb9e7c90310dfaf1496f49b9008"
+              },
+              "flutter-topology-create-desktop-1440x900@2x.png": {
+                "bytes": 48074,
+                "sha256": "1429b5255c62cf1f93d214857398603a6cbe094c8b7f95c2052759004ed7758a"
+              },
+              "flutter-topology-destructive-desktop-1440x900@2x.png": {
+                "bytes": 61728,
+                "sha256": "0d776c85b21f47adca36d73a0d653a9df39172233296b2019d1248750d7e0b45"
+              },
+              "maintenance-banner-safe-area-390x800.png": {
+                "bytes": 11232,
+                "sha256": "84e3bb568539b7d156fb5c278fb59676c1334b85101c71f338225cdcc452df8c"
+              }
+            },
+            "completed": [
+              "public-headers",
+              "app-dependencies",
+              "app-tests",
+              "livekit-locks",
+              "livekit-dependencies",
+              "livekit-tests",
+              "webrtc-locks",
+              "webrtc-dependencies",
+              "webrtc-tests",
+              "app-analysis"
+            ],
+            "namespace": "shadow-new-1",
+            "profile": "dart",
+            "run_attempt": "1",
+            "run_id": "39229503990",
+            "schema_version": 1,
+            "sdk": {
+              "dart": "3.13.5",
+              "flutter": "3.47.7",
+              "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+            },
+            "seconds": 391.583088764,
+            "source_revision": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+            "status": "PASS"
+          },
+          {
+            "artifacts": {
+              "LICENSE-RNNoise.txt": {
+                "bytes": 1581,
+                "sha256": "e2f59ff41d9d03adc3dcf3deff170f8c8cf4a6eb4a9b174762a7656d23200ffa"
+              },
+              "SHA256SUMS": {
+                "bytes": 348,
+                "sha256": "330124d5689f3539c7740d6be97c63525198c8806b8744782156ace537ecc425"
+              },
+              "app-debug.apk": {
+                "bytes": 159344270,
+                "sha256": "a4748692c21dbef0b50c1b5d68c9f87cca65158b2525bc0e790b7ff3b96d8dea"
+              },
+              "artifact-manifest.json": {
+                "bytes": 3763,
+                "sha256": "9f9e9ac3ccf41b7ff4fdeadb499ccdfa7efbf19d146244fbb8dbc4703b2e17a3"
+              },
+              "rnnoise-component.cdx.json": {
+                "bytes": 823,
+                "sha256": "0426bb951827495adc912304b4c500ea553ee2ddce89e3cc807e0e2521539d06"
+              }
+            },
+            "completed": [
+              "app-dependencies",
+              "kotlin-modes",
+              "debug-apk"
+            ],
+            "namespace": "shadow-new-1",
+            "profile": "android",
+            "run_attempt": "1",
+            "run_id": "39229503990",
+            "schema_version": 1,
+            "sdk": {
+              "dart": "3.13.5",
+              "flutter": "3.47.7",
+              "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+            },
+            "seconds": 617.904678518,
+            "source_revision": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+            "status": "PASS"
+          }
+        ],
+        [
+          {
+            "artifacts": {
+              "R14-navigation-top.png": {
+                "bytes": 9995,
+                "sha256": "b544833b6f9d92e7dae505df8a538c8ad503b1bc9ab49547e1a548e1f9ab0478"
+              },
+              "flutter-admin-audit-desktop-1440x900.png": {
+                "bytes": 125267,
+                "sha256": "1e2665650562255d8ca6bf49a598e6dcb4283d0fd3bcc41d5a3e30f0dfdd3991"
+              },
+              "flutter-admin-audit-mobile-393x852.png": {
+                "bytes": 178077,
+                "sha256": "92ab8cad927cf88729cc69db630eaf0b7f54643eb48c755bd1a5b3bf3dd5af1f"
+              },
+              "flutter-admin-audit-mobile-large-text-393x852.png": {
+                "bytes": 227548,
+                "sha256": "c016784c475bfdacd2d866338ba3e3f517b735409d20743a80e67ac503d65666"
+              },
+              "flutter-admin-channels-desktop-1440x900.png": {
+                "bytes": 145210,
+                "sha256": "68f583566df31eb9032a2f55b710128f6ae5c326a5bcb1e8f1003c1d79f3ded5"
+              },
+              "flutter-admin-channels-mobile-393x852.png": {
+                "bytes": 189973,
+                "sha256": "614e53b2918d64178792cad002795c6262dd38f459b7b7f94c0d40c359fe72e5"
+              },
+              "flutter-admin-channels-mobile-large-text-393x852.png": {
+                "bytes": 198536,
+                "sha256": "409677fcb6197b3e9e5fb16ee3104ec12df22fb5cfb5e6f47313975df473a9b9"
+              },
+              "flutter-admin-guild-desktop-1440x900.png": {
+                "bytes": 102107,
+                "sha256": "4b69195f50a1efa111256923057e113e878d59814d5b0954a6ce5473acf2ddba"
+              },
+              "flutter-admin-guild-mobile-393x852.png": {
+                "bytes": 136777,
+                "sha256": "f138811a2b2bf880084c37cc2323c706f4f942326eb4945bff0d0e99accc8fa5"
+              },
+              "flutter-admin-guild-mobile-large-text-393x852.png": {
+                "bytes": 226230,
+                "sha256": "bbebeee58e6f9b19c9f28b619924e6cef303f053d231c05322b1c7ec16356096"
+              },
+              "flutter-admin-media-desktop-1440x900.png": {
+                "bytes": 141167,
+                "sha256": "48df4ab94389520af83a830c48b3c4f1e25ff9af898086c62876e03786f514e0"
+              },
+              "flutter-admin-media-mobile-393x852.png": {
+                "bytes": 210965,
+                "sha256": "ba824aacc2631a5676844315feb831d6085fe4671269b56b88448a70bbdd85fc"
+              },
+              "flutter-admin-media-mobile-large-text-393x852.png": {
+                "bytes": 249214,
+                "sha256": "8be7596b13b7dddec90c6a5c37e628eac77fc5dd0d2ac3048c3db65afae55c12"
+              },
+              "flutter-admin-members-desktop-1440x900.png": {
+                "bytes": 115529,
+                "sha256": "260e909b1b653f11a9b80a141a6568eb2798c43d98c9e47475613fbf9dabdb14"
+              },
+              "flutter-admin-members-mobile-393x852.png": {
+                "bytes": 184003,
+                "sha256": "439aba7124c656a90918e23defcf8a513c27d101c805f157a1ed4ae9d3b7880d"
+              },
+              "flutter-admin-members-mobile-large-text-393x852.png": {
+                "bytes": 202241,
+                "sha256": "13ed7dec3347a903445ac3c280bb94b30cd736a28d58a26646d1c860bfd49bc8"
+              },
+              "flutter-admin-readiness-desktop-1440x900.png": {
+                "bytes": 77738,
+                "sha256": "73d0d5e7421616f3c4485a99636061e75042d775617776edd53df63757bfb1e6"
+              },
+              "flutter-admin-readiness-mobile-393x852.png": {
+                "bytes": 97582,
+                "sha256": "8ff8c7bdd83a9dfc32f837cd3937bc42751300e585602faf07ad157d390d8282"
+              },
+              "flutter-admin-readiness-mobile-large-text-393x852.png": {
+                "bytes": 168662,
+                "sha256": "7dd6360b26cb9e9a133c0b0edc7b21520c95b8227905f9b92440b6b742ce5b96"
+              },
+              "flutter-admin-roles-desktop-1440x900.png": {
+                "bytes": 81354,
+                "sha256": "5eb0cb6e5ddf2620c656f94b91984becdc06b9e2163fb483fd22b146475f0ebe"
+              },
+              "flutter-admin-roles-mobile-393x852.png": {
+                "bytes": 103476,
+                "sha256": "952f869d0e66686db86a28528cd6d6bd377ccd9d08b287b3afe71733759efe3d"
+              },
+              "flutter-admin-roles-mobile-large-text-393x852.png": {
+                "bytes": 160259,
+                "sha256": "82a95c722e6b484a058c27e40d27b348d590a2c84f9c12d1143c443505a5489b"
+              },
+              "flutter-dm-conversation-desktop-1440x900.png": {
+                "bytes": 119115,
+                "sha256": "96c255987d098c91a01c32c250a118b8285a2344471f4ab4308a436750039d96"
+              },
+              "flutter-dm-conversation-mobile-393x852.png": {
+                "bytes": 56978,
+                "sha256": "137ca0efc51d19d781d6071d79c1177e8146e987923c7f9165e61884d1df9c16"
+              },
+              "flutter-dm-conversation-mobile-large-text-393x852.png": {
+                "bytes": 92356,
+                "sha256": "cf82b70b3e98a092aea5819451e131f99567209e395b85efedaf21aa775a5de3"
+              },
+              "flutter-profile-logout-confirmation-mobile-393x852@3x.png": {
+                "bytes": 176731,
+                "sha256": "18c8cb4e62b2cbb581db981a13afdcd23bcc2d8eb61c4543f24f75095018361b"
+              },
+              "flutter-screen-share-mobile-ime-2x-393x852.png": {
+                "bytes": 113392,
+                "sha256": "7d92346a836bf210d02f0de0a0e79faf7c6aa415bb5db55af8ed1adcec1a41eb"
+              },
+              "flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png": {
+                "bytes": 203273,
+                "sha256": "c69c06fa9be800dd4928d2172d8973d84bbf8fa4f630d126d0a1df31093cc62e"
+              },
+              "flutter-text-channel-desktop-1440x900.png": {
+                "bytes": 159994,
+                "sha256": "a86341625c4f1c5fec0b7e48f464b4363ef88e2a65d67012b3eec29abecc2b2d"
+              },
+              "flutter-text-channel-mobile-393x852.png": {
+                "bytes": 84891,
+                "sha256": "84c4fe9dcc6ec19c3fe2f08057f935cd3fdac0e052ad5d01f7df5e6f47b303b2"
+              },
+              "flutter-text-channel-mobile-large-text-393x852.png": {
+                "bytes": 145244,
+                "sha256": "eb85372ae756ba92c23d10113f0a437dc484cbb9e7c90310dfaf1496f49b9008"
+              },
+              "flutter-topology-create-desktop-1440x900@2x.png": {
+                "bytes": 48074,
+                "sha256": "1429b5255c62cf1f93d214857398603a6cbe094c8b7f95c2052759004ed7758a"
+              },
+              "flutter-topology-destructive-desktop-1440x900@2x.png": {
+                "bytes": 61728,
+                "sha256": "0d776c85b21f47adca36d73a0d653a9df39172233296b2019d1248750d7e0b45"
+              },
+              "maintenance-banner-safe-area-390x800.png": {
+                "bytes": 11232,
+                "sha256": "84e3bb568539b7d156fb5c278fb59676c1334b85101c71f338225cdcc452df8c"
+              }
+            },
+            "completed": [
+              "public-headers",
+              "app-dependencies",
+              "app-tests",
+              "livekit-locks",
+              "livekit-dependencies",
+              "livekit-tests",
+              "webrtc-locks",
+              "webrtc-dependencies",
+              "webrtc-tests",
+              "app-analysis"
+            ],
+            "namespace": "shadow-new-2",
+            "profile": "dart",
+            "run_attempt": "1",
+            "run_id": "39229503990",
+            "schema_version": 1,
+            "sdk": {
+              "dart": "3.13.5",
+              "flutter": "3.47.7",
+              "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+            },
+            "seconds": 439.032807231,
+            "source_revision": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+            "status": "PASS"
+          },
+          {
+            "artifacts": {
+              "LICENSE-RNNoise.txt": {
+                "bytes": 1581,
+                "sha256": "e2f59ff41d9d03adc3dcf3deff170f8c8cf4a6eb4a9b174762a7656d23200ffa"
+              },
+              "SHA256SUMS": {
+                "bytes": 348,
+                "sha256": "e479e0aedaee37d2571aabca711a70137650a1003f30378668f5af30e1fb780d"
+              },
+              "app-debug.apk": {
+                "bytes": 159344885,
+                "sha256": "d9fa6f89e148cdda1b42ce7e0c79455786a59d1ab9a6dfd7eb966434ae901e3b"
+              },
+              "artifact-manifest.json": {
+                "bytes": 3763,
+                "sha256": "5852135ecdcc309cf40c81a223a5d61d78118a60fa331664a5ec093bc875e9fb"
+              },
+              "rnnoise-component.cdx.json": {
+                "bytes": 823,
+                "sha256": "0426bb951827495adc912304b4c500ea553ee2ddce89e3cc807e0e2521539d06"
+              }
+            },
+            "completed": [
+              "app-dependencies",
+              "kotlin-modes",
+              "debug-apk"
+            ],
+            "namespace": "shadow-new-2",
+            "profile": "android",
+            "run_attempt": "1",
+            "run_id": "39229503990",
+            "schema_version": 1,
+            "sdk": {
+              "dart": "3.13.5",
+              "flutter": "3.47.7",
+              "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+            },
+            "seconds": 599.310792905,
+            "source_revision": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+            "status": "PASS"
+          }
+        ],
+        [
+          {
+            "artifacts": {
+              "R14-navigation-top.png": {
+                "bytes": 9995,
+                "sha256": "b544833b6f9d92e7dae505df8a538c8ad503b1bc9ab49547e1a548e1f9ab0478"
+              },
+              "flutter-admin-audit-desktop-1440x900.png": {
+                "bytes": 125267,
+                "sha256": "1e2665650562255d8ca6bf49a598e6dcb4283d0fd3bcc41d5a3e30f0dfdd3991"
+              },
+              "flutter-admin-audit-mobile-393x852.png": {
+                "bytes": 178077,
+                "sha256": "92ab8cad927cf88729cc69db630eaf0b7f54643eb48c755bd1a5b3bf3dd5af1f"
+              },
+              "flutter-admin-audit-mobile-large-text-393x852.png": {
+                "bytes": 227548,
+                "sha256": "c016784c475bfdacd2d866338ba3e3f517b735409d20743a80e67ac503d65666"
+              },
+              "flutter-admin-channels-desktop-1440x900.png": {
+                "bytes": 145210,
+                "sha256": "68f583566df31eb9032a2f55b710128f6ae5c326a5bcb1e8f1003c1d79f3ded5"
+              },
+              "flutter-admin-channels-mobile-393x852.png": {
+                "bytes": 189973,
+                "sha256": "614e53b2918d64178792cad002795c6262dd38f459b7b7f94c0d40c359fe72e5"
+              },
+              "flutter-admin-channels-mobile-large-text-393x852.png": {
+                "bytes": 198536,
+                "sha256": "409677fcb6197b3e9e5fb16ee3104ec12df22fb5cfb5e6f47313975df473a9b9"
+              },
+              "flutter-admin-guild-desktop-1440x900.png": {
+                "bytes": 102107,
+                "sha256": "4b69195f50a1efa111256923057e113e878d59814d5b0954a6ce5473acf2ddba"
+              },
+              "flutter-admin-guild-mobile-393x852.png": {
+                "bytes": 136777,
+                "sha256": "f138811a2b2bf880084c37cc2323c706f4f942326eb4945bff0d0e99accc8fa5"
+              },
+              "flutter-admin-guild-mobile-large-text-393x852.png": {
+                "bytes": 226230,
+                "sha256": "bbebeee58e6f9b19c9f28b619924e6cef303f053d231c05322b1c7ec16356096"
+              },
+              "flutter-admin-media-desktop-1440x900.png": {
+                "bytes": 140310,
+                "sha256": "9101369a98cbfef6f07db9f4937e6fd79d227db5ca05d2ea1d81b0f9ad75fa4f"
+              },
+              "flutter-admin-media-mobile-393x852.png": {
+                "bytes": 210432,
+                "sha256": "b6c2b41869cc20f50ebff9d84e07ce51ee27b3bf88fe7f1e441ab308f4fd1df7"
+              },
+              "flutter-admin-media-mobile-large-text-393x852.png": {
+                "bytes": 249214,
+                "sha256": "8be7596b13b7dddec90c6a5c37e628eac77fc5dd0d2ac3048c3db65afae55c12"
+              },
+              "flutter-admin-members-desktop-1440x900.png": {
+                "bytes": 115529,
+                "sha256": "260e909b1b653f11a9b80a141a6568eb2798c43d98c9e47475613fbf9dabdb14"
+              },
+              "flutter-admin-members-mobile-393x852.png": {
+                "bytes": 184003,
+                "sha256": "439aba7124c656a90918e23defcf8a513c27d101c805f157a1ed4ae9d3b7880d"
+              },
+              "flutter-admin-members-mobile-large-text-393x852.png": {
+                "bytes": 202241,
+                "sha256": "13ed7dec3347a903445ac3c280bb94b30cd736a28d58a26646d1c860bfd49bc8"
+              },
+              "flutter-admin-readiness-desktop-1440x900.png": {
+                "bytes": 77738,
+                "sha256": "73d0d5e7421616f3c4485a99636061e75042d775617776edd53df63757bfb1e6"
+              },
+              "flutter-admin-readiness-mobile-393x852.png": {
+                "bytes": 97582,
+                "sha256": "8ff8c7bdd83a9dfc32f837cd3937bc42751300e585602faf07ad157d390d8282"
+              },
+              "flutter-admin-readiness-mobile-large-text-393x852.png": {
+                "bytes": 168662,
+                "sha256": "7dd6360b26cb9e9a133c0b0edc7b21520c95b8227905f9b92440b6b742ce5b96"
+              },
+              "flutter-admin-roles-desktop-1440x900.png": {
+                "bytes": 81354,
+                "sha256": "5eb0cb6e5ddf2620c656f94b91984becdc06b9e2163fb483fd22b146475f0ebe"
+              },
+              "flutter-admin-roles-mobile-393x852.png": {
+                "bytes": 103476,
+                "sha256": "952f869d0e66686db86a28528cd6d6bd377ccd9d08b287b3afe71733759efe3d"
+              },
+              "flutter-admin-roles-mobile-large-text-393x852.png": {
+                "bytes": 160259,
+                "sha256": "82a95c722e6b484a058c27e40d27b348d590a2c84f9c12d1143c443505a5489b"
+              },
+              "flutter-dm-conversation-desktop-1440x900.png": {
+                "bytes": 119115,
+                "sha256": "96c255987d098c91a01c32c250a118b8285a2344471f4ab4308a436750039d96"
+              },
+              "flutter-dm-conversation-mobile-393x852.png": {
+                "bytes": 56978,
+                "sha256": "137ca0efc51d19d781d6071d79c1177e8146e987923c7f9165e61884d1df9c16"
+              },
+              "flutter-dm-conversation-mobile-large-text-393x852.png": {
+                "bytes": 92356,
+                "sha256": "cf82b70b3e98a092aea5819451e131f99567209e395b85efedaf21aa775a5de3"
+              },
+              "flutter-profile-logout-confirmation-mobile-393x852@3x.png": {
+                "bytes": 176731,
+                "sha256": "18c8cb4e62b2cbb581db981a13afdcd23bcc2d8eb61c4543f24f75095018361b"
+              },
+              "flutter-screen-share-mobile-ime-2x-393x852.png": {
+                "bytes": 113392,
+                "sha256": "7d92346a836bf210d02f0de0a0e79faf7c6aa415bb5db55af8ed1adcec1a41eb"
+              },
+              "flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png": {
+                "bytes": 203273,
+                "sha256": "c69c06fa9be800dd4928d2172d8973d84bbf8fa4f630d126d0a1df31093cc62e"
+              },
+              "flutter-text-channel-desktop-1440x900.png": {
+                "bytes": 159994,
+                "sha256": "a86341625c4f1c5fec0b7e48f464b4363ef88e2a65d67012b3eec29abecc2b2d"
+              },
+              "flutter-text-channel-mobile-393x852.png": {
+                "bytes": 84891,
+                "sha256": "84c4fe9dcc6ec19c3fe2f08057f935cd3fdac0e052ad5d01f7df5e6f47b303b2"
+              },
+              "flutter-text-channel-mobile-large-text-393x852.png": {
+                "bytes": 145244,
+                "sha256": "eb85372ae756ba92c23d10113f0a437dc484cbb9e7c90310dfaf1496f49b9008"
+              },
+              "flutter-topology-create-desktop-1440x900@2x.png": {
+                "bytes": 48074,
+                "sha256": "1429b5255c62cf1f93d214857398603a6cbe094c8b7f95c2052759004ed7758a"
+              },
+              "flutter-topology-destructive-desktop-1440x900@2x.png": {
+                "bytes": 61728,
+                "sha256": "0d776c85b21f47adca36d73a0d653a9df39172233296b2019d1248750d7e0b45"
+              },
+              "maintenance-banner-safe-area-390x800.png": {
+                "bytes": 11232,
+                "sha256": "84e3bb568539b7d156fb5c278fb59676c1334b85101c71f338225cdcc452df8c"
+              }
+            },
+            "completed": [
+              "public-headers",
+              "app-dependencies",
+              "app-tests",
+              "livekit-locks",
+              "livekit-dependencies",
+              "livekit-tests",
+              "webrtc-locks",
+              "webrtc-dependencies",
+              "webrtc-tests",
+              "app-analysis"
+            ],
+            "namespace": "shadow-new-3",
+            "profile": "dart",
+            "run_attempt": "1",
+            "run_id": "39229503990",
+            "schema_version": 1,
+            "sdk": {
+              "dart": "3.13.5",
+              "flutter": "3.47.7",
+              "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+            },
+            "seconds": 428.361986377,
+            "source_revision": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+            "status": "PASS"
+          },
+          {
+            "artifacts": {
+              "LICENSE-RNNoise.txt": {
+                "bytes": 1581,
+                "sha256": "e2f59ff41d9d03adc3dcf3deff170f8c8cf4a6eb4a9b174762a7656d23200ffa"
+              },
+              "SHA256SUMS": {
+                "bytes": 348,
+                "sha256": "07d299990272b8a758fc62630019c5a70497d43edc4766ce9883ac1687b42476"
+              },
+              "app-debug.apk": {
+                "bytes": 159345144,
+                "sha256": "d5cc0d40f4fef99d47f7c801fb9d7bdab91385407eae75baf29d57df2ee4fe7f"
+              },
+              "artifact-manifest.json": {
+                "bytes": 3763,
+                "sha256": "82aac7e90d5788c2faa284f5a4a64640677926daa9267b3927e52a201050215e"
+              },
+              "rnnoise-component.cdx.json": {
+                "bytes": 823,
+                "sha256": "0426bb951827495adc912304b4c500ea553ee2ddce89e3cc807e0e2521539d06"
+              }
+            },
+            "completed": [
+              "app-dependencies",
+              "kotlin-modes",
+              "debug-apk"
+            ],
+            "namespace": "shadow-new-3",
+            "profile": "android",
+            "run_attempt": "1",
+            "run_id": "39229503990",
+            "schema_version": 1,
+            "sdk": {
+              "dart": "3.13.5",
+              "flutter": "3.47.7",
+              "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+            },
+            "seconds": 469.47802846799993,
+            "source_revision": "e7ea6fc3240efb4675944152ba9d6aae8b60b843",
+            "status": "PASS"
+          }
+        ]
+      ]
+    },
+    "summary_artifact": {
+      "id": 12179641631,
+      "zip_sha256": "bc3676ec412bd1d9c1366193cac811a222bc4805b8b43fcafa4e8e828828a4eb",
+      "zip_bytes": 1486
+    },
+    "source_equivalence": "E7 differs from predecessor 2c only by a 3-line owned QA push trigger. Final feature has the identical Native/app/SDK/profile/builder inputs; other master Web/UI changes are explicitly outside this performance sample."
+  },
+  "master_acceptance": {
+    "run": {
+      "id": 39237356016,
+      "run_attempt": 1,
+      "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+      "head_branch": "master",
+      "event": "push",
+      "path": ".github/workflows/ci.yaml",
+      "status": "in_progress",
+      "conclusion": null,
+      "created_at": "2026-10-19T10:25:27Z",
+      "updated_at": "2026-10-19T10:35:45Z"
+    },
+    "jobs": {
+      "total_count": 13,
+      "jobs": [
+        {
+          "id": 118009547513,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:25:31Z",
+          "completed_at": "2026-10-19T10:25:37Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        },
+        {
+          "id": 118009547816,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "contracts / contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:25:31Z",
+          "completed_at": "2026-10-19T10:27:18Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        },
+        {
+          "id": 118009606147,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "frontend / browser (browser-voice)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:25:40Z",
+          "completed_at": "2026-10-19T10:32:21Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        },
+        {
+          "id": 118009606175,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "frontend / browser (browser-shell)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:25:40Z",
+          "completed_at": "2026-10-19T10:33:44Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        },
+        {
+          "id": 118009606188,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "windows / windows",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-19T10:25:40Z",
+          "completed_at": null,
+          "labels": [
+            "windows-2022"
+          ]
+        },
+        {
+          "id": 118009606191,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "frontend / fast",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:25:40Z",
+          "completed_at": "2026-10-19T10:27:41Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        },
+        {
+          "id": 118009606197,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:25:40Z",
+          "completed_at": "2026-10-19T10:35:42Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        },
+        {
+          "id": 118009606207,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "frontend / browser (browser-conversations)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:25:40Z",
+          "completed_at": "2026-10-19T10:28:50Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        },
+        {
+          "id": 118009606212,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:25:41Z",
+          "completed_at": "2026-10-19T10:33:10Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        },
+        {
+          "id": 118009606213,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "backend / backend",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:25:40Z",
+          "completed_at": "2026-10-19T10:33:31Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        },
+        {
+          "id": 118009606254,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "frontend / sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:25:40Z",
+          "completed_at": "2026-10-19T10:30:37Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        },
+        {
+          "id": 118012773455,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "frontend / frontend",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:33:47Z",
+          "completed_at": "2026-10-19T10:33:57Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        },
+        {
+          "id": 118013540505,
+          "run_id": 39237356016,
+          "run_attempt": 1,
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T10:35:45Z",
+          "completed_at": "2026-10-19T10:35:53Z",
+          "labels": [
+            "ubuntu-24.04"
+          ]
+        }
+      ]
+    },
+    "artifacts": [
+      {
+        "id": 12179894410,
+        "name": "boohtacord-android-debug-apk-flutter-74197bec5951e672bb2daae85ab7a234ffffe545-39237356016-1",
+        "size_in_bytes": 124009161,
+        "digest": "sha256:23a7aecb6cdb95f48e75002587d2437311916bfb0b673bed3368e34d4054edc5",
+        "expired": false,
+        "workflow_run": {
+          "id": 39237356016,
+          "repository_id": 1398599178,
+          "head_repository_id": 1398599178,
+          "head_branch": "master",
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545"
+        }
+      },
+      {
+        "id": 12179754563,
+        "name": "flutter-part-flutter-74197bec5951e672bb2daae85ab7a234ffffe545-39237356016-1-android",
+        "size_in_bytes": 754,
+        "digest": "sha256:4d0b96742967d5daa1c5b122b92167ed01f9c1acd8223fd2fdcf4e3009d3925d",
+        "expired": false,
+        "workflow_run": {
+          "id": 39237356016,
+          "repository_id": 1398599178,
+          "head_repository_id": 1398599178,
+          "head_branch": "master",
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545"
+        }
+      },
+      {
+        "id": 12179324457,
+        "name": "flutter-part-flutter-74197bec5951e672bb2daae85ab7a234ffffe545-39237356016-1-dart",
+        "size_in_bytes": 2273,
+        "digest": "sha256:b276a6b35bb1330c034c26604de8e39edcc593e6a7708a5e0d8a4640f2aba8e2",
+        "expired": false,
+        "workflow_run": {
+          "id": 39237356016,
+          "repository_id": 1398599178,
+          "head_repository_id": 1398599178,
+          "head_branch": "master",
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545"
+        }
+      },
+      {
+        "id": 12179159587,
+        "name": "uiux-flutter-visual-review-flutter-74197bec5951e672bb2daae85ab7a234ffffe545-39237356016-1",
+        "size_in_bytes": 3990219,
+        "digest": "sha256:040d0bbd5ec818ef3604a10a793b1ae4ac84539d115a97fb6c99763f002265f4",
+        "expired": false,
+        "workflow_run": {
+          "id": 39237356016,
+          "repository_id": 1398599178,
+          "head_repository_id": 1398599178,
+          "head_branch": "master",
+          "head_sha": "74197bec5951e672bb2daae85ab7a234ffffe545"
+        }
+      }
+    ],
+    "verified": {
+      "status": "PASS",
+      "source_revision": "74197bec5951e672bb2daae85ab7a234ffffe545",
+      "run_id": 39237356016,
+      "attempt": 1,
+      "captures": 34,
+      "android_files": 5,
+      "apk": {
+        "bytes": 159344774,
+        "sha256": "7e52c6634151af76aba94e21fc0bc3661a1d167c3e945488f066429cbd81f236"
+      },
+      "profiles": [
+        {
+          "artifacts": {
+            "R14-navigation-top.png": {
+              "bytes": 9995,
+              "sha256": "b544833b6f9d92e7dae505df8a538c8ad503b1bc9ab49547e1a548e1f9ab0478"
+            },
+            "flutter-admin-audit-desktop-1440x900.png": {
+              "bytes": 125267,
+              "sha256": "1e2665650562255d8ca6bf49a598e6dcb4283d0fd3bcc41d5a3e30f0dfdd3991"
+            },
+            "flutter-admin-audit-mobile-393x852.png": {
+              "bytes": 178077,
+              "sha256": "92ab8cad927cf88729cc69db630eaf0b7f54643eb48c755bd1a5b3bf3dd5af1f"
+            },
+            "flutter-admin-audit-mobile-large-text-393x852.png": {
+              "bytes": 227548,
+              "sha256": "c016784c475bfdacd2d866338ba3e3f517b735409d20743a80e67ac503d65666"
+            },
+            "flutter-admin-channels-desktop-1440x900.png": {
+              "bytes": 145210,
+              "sha256": "68f583566df31eb9032a2f55b710128f6ae5c326a5bcb1e8f1003c1d79f3ded5"
+            },
+            "flutter-admin-channels-mobile-393x852.png": {
+              "bytes": 189973,
+              "sha256": "614e53b2918d64178792cad002795c6262dd38f459b7b7f94c0d40c359fe72e5"
+            },
+            "flutter-admin-channels-mobile-large-text-393x852.png": {
+              "bytes": 198536,
+              "sha256": "409677fcb6197b3e9e5fb16ee3104ec12df22fb5cfb5e6f47313975df473a9b9"
+            },
+            "flutter-admin-guild-desktop-1440x900.png": {
+              "bytes": 102107,
+              "sha256": "4b69195f50a1efa111256923057e113e878d59814d5b0954a6ce5473acf2ddba"
+            },
+            "flutter-admin-guild-mobile-393x852.png": {
+              "bytes": 136777,
+              "sha256": "f138811a2b2bf880084c37cc2323c706f4f942326eb4945bff0d0e99accc8fa5"
+            },
+            "flutter-admin-guild-mobile-large-text-393x852.png": {
+              "bytes": 226230,
+              "sha256": "bbebeee58e6f9b19c9f28b619924e6cef303f053d231c05322b1c7ec16356096"
+            },
+            "flutter-admin-media-desktop-1440x900.png": {
+              "bytes": 139472,
+              "sha256": "37cccf766e1a78e627265d09670cbd73e1ef34dde16d84320fe233a631576b14"
+            },
+            "flutter-admin-media-mobile-393x852.png": {
+              "bytes": 209987,
+              "sha256": "19e1490282672ffd51e71ffd8be5e0b71858c2be7e056dbe6f60ed68c6396518"
+            },
+            "flutter-admin-media-mobile-large-text-393x852.png": {
+              "bytes": 249214,
+              "sha256": "8be7596b13b7dddec90c6a5c37e628eac77fc5dd0d2ac3048c3db65afae55c12"
+            },
+            "flutter-admin-members-desktop-1440x900.png": {
+              "bytes": 115529,
+              "sha256": "260e909b1b653f11a9b80a141a6568eb2798c43d98c9e47475613fbf9dabdb14"
+            },
+            "flutter-admin-members-mobile-393x852.png": {
+              "bytes": 184003,
+              "sha256": "439aba7124c656a90918e23defcf8a513c27d101c805f157a1ed4ae9d3b7880d"
+            },
+            "flutter-admin-members-mobile-large-text-393x852.png": {
+              "bytes": 202241,
+              "sha256": "13ed7dec3347a903445ac3c280bb94b30cd736a28d58a26646d1c860bfd49bc8"
+            },
+            "flutter-admin-readiness-desktop-1440x900.png": {
+              "bytes": 77738,
+              "sha256": "73d0d5e7421616f3c4485a99636061e75042d775617776edd53df63757bfb1e6"
+            },
+            "flutter-admin-readiness-mobile-393x852.png": {
+              "bytes": 97582,
+              "sha256": "8ff8c7bdd83a9dfc32f837cd3937bc42751300e585602faf07ad157d390d8282"
+            },
+            "flutter-admin-readiness-mobile-large-text-393x852.png": {
+              "bytes": 168662,
+              "sha256": "7dd6360b26cb9e9a133c0b0edc7b21520c95b8227905f9b92440b6b742ce5b96"
+            },
+            "flutter-admin-roles-desktop-1440x900.png": {
+              "bytes": 81354,
+              "sha256": "5eb0cb6e5ddf2620c656f94b91984becdc06b9e2163fb483fd22b146475f0ebe"
+            },
+            "flutter-admin-roles-mobile-393x852.png": {
+              "bytes": 103476,
+              "sha256": "952f869d0e66686db86a28528cd6d6bd377ccd9d08b287b3afe71733759efe3d"
+            },
+            "flutter-admin-roles-mobile-large-text-393x852.png": {
+              "bytes": 160259,
+              "sha256": "82a95c722e6b484a058c27e40d27b348d590a2c84f9c12d1143c443505a5489b"
+            },
+            "flutter-dm-conversation-desktop-1440x900.png": {
+              "bytes": 119115,
+              "sha256": "96c255987d098c91a01c32c250a118b8285a2344471f4ab4308a436750039d96"
+            },
+            "flutter-dm-conversation-mobile-393x852.png": {
+              "bytes": 56978,
+              "sha256": "137ca0efc51d19d781d6071d79c1177e8146e987923c7f9165e61884d1df9c16"
+            },
+            "flutter-dm-conversation-mobile-large-text-393x852.png": {
+              "bytes": 92356,
+              "sha256": "cf82b70b3e98a092aea5819451e131f99567209e395b85efedaf21aa775a5de3"
+            },
+            "flutter-profile-logout-confirmation-mobile-393x852@3x.png": {
+              "bytes": 176731,
+              "sha256": "18c8cb4e62b2cbb581db981a13afdcd23bcc2d8eb61c4543f24f75095018361b"
+            },
+            "flutter-screen-share-mobile-ime-2x-393x852.png": {
+              "bytes": 113392,
+              "sha256": "7d92346a836bf210d02f0de0a0e79faf7c6aa415bb5db55af8ed1adcec1a41eb"
+            },
+            "flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png": {
+              "bytes": 203273,
+              "sha256": "c69c06fa9be800dd4928d2172d8973d84bbf8fa4f630d126d0a1df31093cc62e"
+            },
+            "flutter-text-channel-desktop-1440x900.png": {
+              "bytes": 159994,
+              "sha256": "a86341625c4f1c5fec0b7e48f464b4363ef88e2a65d67012b3eec29abecc2b2d"
+            },
+            "flutter-text-channel-mobile-393x852.png": {
+              "bytes": 84891,
+              "sha256": "84c4fe9dcc6ec19c3fe2f08057f935cd3fdac0e052ad5d01f7df5e6f47b303b2"
+            },
+            "flutter-text-channel-mobile-large-text-393x852.png": {
+              "bytes": 145244,
+              "sha256": "eb85372ae756ba92c23d10113f0a437dc484cbb9e7c90310dfaf1496f49b9008"
+            },
+            "flutter-topology-create-desktop-1440x900@2x.png": {
+              "bytes": 48074,
+              "sha256": "1429b5255c62cf1f93d214857398603a6cbe094c8b7f95c2052759004ed7758a"
+            },
+            "flutter-topology-destructive-desktop-1440x900@2x.png": {
+              "bytes": 61728,
+              "sha256": "0d776c85b21f47adca36d73a0d653a9df39172233296b2019d1248750d7e0b45"
+            },
+            "maintenance-banner-safe-area-390x800.png": {
+              "bytes": 11232,
+              "sha256": "84e3bb568539b7d156fb5c278fb59676c1334b85101c71f338225cdcc452df8c"
+            }
+          },
+          "completed": [
+            "public-headers",
+            "app-dependencies",
+            "app-tests",
+            "livekit-locks",
+            "livekit-dependencies",
+            "livekit-tests",
+            "webrtc-locks",
+            "webrtc-dependencies",
+            "webrtc-tests",
+            "app-analysis"
+          ],
+          "namespace": "flutter",
+          "profile": "dart",
+          "run_attempt": "1",
+          "run_id": "39237356016",
+          "schema_version": 1,
+          "sdk": {
+            "dart": "3.13.5",
+            "flutter": "3.47.7",
+            "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+          },
+          "seconds": 412.89464042099996,
+          "source_revision": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "status": "PASS"
+        },
+        {
+          "artifacts": {
+            "LICENSE-RNNoise.txt": {
+              "bytes": 1581,
+              "sha256": "e2f59ff41d9d03adc3dcf3deff170f8c8cf4a6eb4a9b174762a7656d23200ffa"
+            },
+            "SHA256SUMS": {
+              "bytes": 348,
+              "sha256": "a355260aea0add530ae8b99b4b441ea40147de907d0f7fd753de8807ca565c2d"
+            },
+            "app-debug.apk": {
+              "bytes": 159344774,
+              "sha256": "7e52c6634151af76aba94e21fc0bc3661a1d167c3e945488f066429cbd81f236"
+            },
+            "artifact-manifest.json": {
+              "bytes": 3763,
+              "sha256": "8b3ef159af65257d40e4cbb9c6ac2fa77ed92474cbd4f3c472250647e25947a5"
+            },
+            "rnnoise-component.cdx.json": {
+              "bytes": 823,
+              "sha256": "0426bb951827495adc912304b4c500ea553ee2ddce89e3cc807e0e2521539d06"
+            }
+          },
+          "completed": [
+            "app-dependencies",
+            "kotlin-modes",
+            "debug-apk"
+          ],
+          "namespace": "flutter",
+          "profile": "android",
+          "run_attempt": "1",
+          "run_id": "39237356016",
+          "schema_version": 1,
+          "sdk": {
+            "dart": "3.13.5",
+            "flutter": "3.47.7",
+            "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+          },
+          "seconds": 559.679534237,
+          "source_revision": "74197bec5951e672bb2daae85ab7a234ffffe545",
+          "status": "PASS"
+        }
+      ]
+    },
+    "archive_validation": "All four ZIP digests/sizes verified; all 34 actual PNG files match Dart report; actual APK/application/source/debug signing manifest/checksums and all five files match Android report.",
+    "scope": "Dart, Android and stable Flutter aggregate SUCCESS on exact actual master. Overall CI/Windows still in progress when frozen; no claim of all-master CI PASS."
+  },
+  "limits": [
+    "Three samples per arm: nearest-rank p95 is maximum; descriptive hosted observations, not general latency SLO or flake-rate claim.",
+    "Runner-minute median is effectively unchanged (18.033333 to 18.016667); no material cost-saving or billing claim.",
+    "Critical timing includes SDK setup, uploads, internal waiting and final aggregate; comparison job is measurement overhead.",
+    "No actual failing sample was discarded or retried into success.",
+    "Original diagnostic covered 28 mandatory frames despite uploading 34. Corrected implementation and final PR/master enforce all34; old evidence is not relabeled.",
+    "Physical Android/media acceptance #62, audible quality and capacity remain NOT_RUN by this CI orchestration task.",
+    "Branch required-status administration remains owner-managed (#385).",
+    "Traceability is PASS_INDEX_ONLY for39 indexed requirements because approved Windows source brief is unavailable on this Mac.",
+    "No screenshot baseline, product source, app identity, release signing or lockfile changed."
+  ]
+}

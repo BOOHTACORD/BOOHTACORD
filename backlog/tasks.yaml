@@ -503,6 +503,11 @@ tasks:
     requirements: [REQ-DEPLOY-01, REQ-SECURITY-01, REQ-QUALITY-02]
     depends_on: [CICD-01]
     evidence: [tools/ci/toolchains/test_cache_inputs.py, tools/ci/toolchains/test_workflows.py, tools/ci/flutter_setup/test_metadata.py, tools/ci/flutter_setup/test_run.py, tools/ci/flutter_setup/test_workflow.py, tools/ci/toolchains/test_auxiliary.py, tools/ci/flutter_setup/test_vendor_locks.py, tools/ci/cache_measure/test_results.py, docs/ci/sdk-caches.md, evidence/ci/dependency-cache-local-2026-10-19.json, evidence/ci/auxiliary-sdk-availability-2026-10-19.json]
+  - id: CICD-09
+    title: One master server quality producer with independent native checks and exact execution ownership
+    requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
+    depends_on: [CICD-01, CICD-02, CICD-03, CICD-12]
+    evidence: [tools/ci/master_quality/test_validation.py, tools/ci/master_quality/test_context.py, docs/ci/master-quality.md, evidence/ci/master-quality-foundation-2026-10-19.md, tools/ci/master_quality/test_execution.py, tools/ci/master_quality/test_workflow.py, tools/release/delivery/test_api.py, tools/release/delivery/test_producer_artifacts.py, tools/release/delivery/test_producer_preflight.py, tools/release/delivery/test_routing.py, evidence/ci/master-quality-implementation-2026-10-19.md]
   - id: CICD-04
     title: Complete isolated Web suite profiles with a fail-closed source-bound aggregate
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
@@ -517,7 +522,7 @@ tasks:
     title: Independent Dart and Android gates with mandatory visual and debug artifact evidence
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
     depends_on: [CICD-01, CICD-02, CICD-03, CICD-08]
-    evidence: [tools/ci/flutter_gates/test_profiles.py, tools/ci/flutter_gates/test_artifacts.py, tools/ci/flutter_gates/test_results.py, tools/ci/flutter_gates/test_source.py, tools/ci/flutter_gates/test_execution.py, tools/ci/flutter_gates/test_routing.py, tools/ci/flutter_gates/test_workflow.py, tools/ci/flutter_gates/test_legacy.py, tools/ci/flutter_gates/test_legacy_run.py, tools/ci/flutter_gates/test_comparison.py, tools/ci/flutter_gates/test_measure.py, tools/ci/flutter_gates/test_shadow_workflow.py, docs/ci/flutter-gates.md, evidence/ci/flutter-gates-2026-10-19.md, evidence/ci/flutter-profile-diagnostic-2026-10-19.json]
+    evidence: [tools/ci/flutter_gates/test_profiles.py, tools/ci/flutter_gates/test_artifacts.py, tools/ci/flutter_gates/test_results.py, tools/ci/flutter_gates/test_source.py, tools/ci/flutter_gates/test_execution.py, tools/ci/flutter_gates/test_routing.py, tools/ci/flutter_gates/test_workflow.py, tools/ci/flutter_gates/test_legacy.py, tools/ci/flutter_gates/test_legacy_run.py, tools/ci/flutter_gates/test_comparison.py, tools/ci/flutter_gates/test_measure.py, tools/ci/flutter_gates/test_shadow_workflow.py, docs/ci/flutter-gates.md, evidence/ci/flutter-gates-2026-10-19.md, evidence/ci/flutter-profile-diagnostic-2026-10-19.json, evidence/ci/flutter-gates-final-2026-10-19.json]
   - id: T-061
     title: Local native audio device checks
     requirements: [REQ-AUDIO-01]

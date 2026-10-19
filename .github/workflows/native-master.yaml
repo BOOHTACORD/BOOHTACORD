@@ -1,0 +1,80 @@
+name: Native master quality
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-master-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-24.04
+    outputs:
+      contracts: ${{ steps.select.outputs.contracts }}
+      map_version: ${{ steps.select.outputs.map_version }}
+      map_sha256: ${{ steps.select.outputs.map_sha256 }}
+      uncertain: ${{ steps.select.outputs.uncertain }}
+      backend: ${{ steps.select.outputs.backend }}
+      web: ${{ steps.select.outputs.web }}
+      flutter: ${{ steps.select.outputs.flutter }}
+      windows: ${{ steps.select.outputs.windows }}
+      server: ${{ steps.select.outputs.server }}
+      server_release_impact: ${{ steps.select.outputs.server_release_impact }}
+      native_release_impact: ${{ steps.select.outputs.native_release_impact }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - id: select
+        run: python3 -m tools.ci.select_changes.run
+
+  flutter:
+    needs: changes
+    if: needs.changes.outputs.flutter == 'true'
+    uses: ./.github/workflows/ci-flutter.yaml
+
+  windows:
+    needs: changes
+    if: needs.changes.outputs.windows == 'true'
+    uses: ./.github/workflows/flutter-windows.yaml
+
+  native-required:
+    if: always()
+    needs: [changes, flutter, windows]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Require exact-master native quality
+        env:
+          MASTER_NEEDS: ${{ toJSON(needs) }}
+        run: python3 -m tools.ci.master_quality.run native
+      - name: Retain source-bound master quality result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: quality-master-native-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/master-native.json
+          if-no-files-found: error
+          retention-days: 30
+

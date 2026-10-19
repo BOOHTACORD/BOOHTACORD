@@ -100,3 +100,18 @@ compared: 32 are byte-identical, while the two Media views only changed their
 displayed refresh time. Those four old/new Media files were visually inspected;
 no new screenshot baseline was approved. This first diagnostic is not comparative
 performance or final-source acceptance.
+
+## Accepted rollout
+
+PR #429 is merged at master `74197bec5951e672bb2daae85ab7a234ffffe545`.
+Its tested PR merge checkout has the identical Git tree. All 16 current-head
+PR checks passed; exact-master run `39237356016` passed both profiles and the
+stable aggregate, with downloaded/verified 34 PNGs and inspected debug APK.
+`evidence/ci/flutter-gates-final-2026-10-19.json` freezes source identities,
+actual jobs, artifact ZIP digests, profile reports and comparison inputs.
+
+Three same-source original/split samples reduced observed critical p50 from
+1082 to 642 seconds and p95 from 1120 to 748 seconds. Runner-minute p50 was
+18.033333 versus 18.016667, effectively unchanged. These finite hosted samples
+establish this rollout's gate timing, not a billing, device/media or capacity
+claim. The original diagnostic above remains a distinct historical record.
