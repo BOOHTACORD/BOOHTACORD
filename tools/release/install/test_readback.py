@@ -56,3 +56,17 @@ class FreshReadbackTests(unittest.TestCase):
                 readback.fresh(root.parent, SOURCE, Path('public.pem'))
             with patch.object(readback, 'current_manifest', return_value={**manifest(), 'source_revision': '0'*40}), self.assertRaises(ValueError):
                 readback.fresh(root.parent, SOURCE, Path('public.pem'))
+
+    def test_observed_rollout_intervals_survive_readback_but_malformed_metrics_fail(self):
+        from . import timings
+        measured=timings.parse(''.join(f'{name} {1000+i}'+'\n' for i,name in enumerate(timings.ORDER)))
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)/SOURCE;root.mkdir()
+            with patch.object(readback,'collect',return_value=observed()):
+                result=readback.record(root,manifest(),manifest(),observed(),rollout=measured)
+                self.assertEqual(measured,result['rollout'])
+            with patch.object(readback,'current_manifest',return_value=manifest()),patch.object(readback,'collect',return_value=observed()):
+                self.assertEqual(measured,readback.fresh(root.parent,SOURCE,Path('public.pem'))['rollout'])
+            malformed={**measured,'private':'canary'}
+            with patch.object(readback,'collect',return_value=observed()),self.assertRaises(ValueError):
+                readback.record(root,manifest(),manifest(),observed(),rollout=malformed)

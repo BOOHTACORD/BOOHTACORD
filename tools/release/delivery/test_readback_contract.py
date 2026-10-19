@@ -41,3 +41,12 @@ class TransferAcknowledgementTests(unittest.TestCase):
             with self.subTest(raw=raw[:20]), self.assertRaises(ValueError) as error:
                 readback_contract.validate(raw, SHA, CONTROLLER, PRIOR, NONCE)
             self.assertNotIn('canary', str(error.exception))
+
+    def test_observed_or_explicit_legacy_rollout_intervals_are_validated(self):
+        from tools.release.install import timings
+        measured=timings.parse(''.join(f'{name} {1000+i}\n' for i,name in enumerate(timings.ORDER)))
+        for rollout in (measured,{'status':'NOT_AVAILABLE_LEGACY','events':[]}):
+            value=fixture();value['rollout']=rollout
+            self.assertEqual(rollout,self.validate(value)['rollout'])
+        value=fixture();value['rollout']={**measured,'private':'private-canary'}
+        with self.assertRaises(ValueError):self.validate(value)

@@ -18,7 +18,7 @@ class InstallReadbackOrderTests(unittest.TestCase):
         args=SimpleNamespace(bundle=bundle, revision=SOURCE, sha256='d'*64, release_root=root,
                              public_key=root/'pub', environment=root/'env', expected_current_revision='e'*40)
         def extracted(_, destination, **kwargs): destination.mkdir()
-        def checked(*args):
+        def checked(*args, **kwargs):
             events.append('fresh-readback')
             if fail: raise ValueError('health or identity differs')
         replacements={'sha256': lambda _: 'd'*64, 'docker': lambda *args: str(root),

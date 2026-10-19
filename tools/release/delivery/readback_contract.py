@@ -2,6 +2,7 @@
 from datetime import datetime, timezone
 import json
 import re
+from tools.release.install.timings import validate as rollout_timings
 
 VOLUMES = ('postgres-data', 'attachments-data', 'caddy-data', 'caddy-config')
 KEYS = {'schema_version', 'kind', 'status', 'source_revision', 'controller_revision', 'nonce',
@@ -24,7 +25,7 @@ def validate(raw, source, controller, prior, nonce):
             if not isinstance(value, str) or not re.fullmatch('[a-f0-9]{40}', value): raise ValueError
         if not isinstance(nonce, str) or not re.fullmatch('[a-f0-9]{32}', nonce): raise ValueError
         result = json.loads(raw, object_pairs_hook=unique)
-        if not isinstance(result, dict) or set(result) != KEYS: raise ValueError
+        if not isinstance(result, dict) or set(result) not in (KEYS, KEYS | {'rollout'}): raise ValueError
         expected = {'kind': 'installed-source-readback', 'status': 'PASS', 'source_revision': source,
                     'controller_revision': controller, 'nonce': nonce, 'previous_source_revision': prior,
                     'persistent_volumes': 'PASS', 'health': 'PASS', 'sources': {'api': source, 'web': source}}
@@ -38,6 +39,7 @@ def validate(raw, source, controller, prior, nonce):
             values = result[key]
             if (not isinstance(values, dict) or set(values) != names
                     or any(not isinstance(v, str) or not re.fullmatch(pattern, v) for v in values.values())): raise ValueError
+        if 'rollout' in result: rollout_timings(result['rollout'])
         stamp = datetime.fromisoformat(result['checked_at'])
         if stamp.tzinfo is None or not -30 <= (datetime.now(timezone.utc) - stamp).total_seconds() <= 300:
             raise ValueError

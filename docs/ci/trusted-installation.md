@@ -52,8 +52,14 @@ The 30-day `delivery-RUN-ATTEMPT` artifact contains one bounded sanitized receip
 Missing, failed or skipped stages cannot produce PASS. Timeout/interruption means
 remote completion is UNKNOWN; killing the local SSH process does not prove that
 remote Docker work stopped. Do not blindly rerun or roll back after such a result.
-The current implementation records overall remote-install timing; separate actual
-maintenance/migration interval measurements still require acceptance work.
+New signed runtimes also emit ten ordered Unix-second markers for admission,
+migration, services, health and rollout completion. Their intervals are recomputed
+from those exact events; partial, reordered or inconsistent reports fail closed.
+The active-maintenance interval is bounded by observed enable/disable completion;
+a separate request-to-disable interval includes the enable command. Precision is
+one second. Old signed runtimes without markers are `NOT_AVAILABLE_LEGACY`, with
+no inferred maintenance duration. Actual before/after real-stack measurements
+remain acceptance work.
 
 Remaining #395 acceptance: controlled actual artifact download, mixed-scope queue
 serialization, two consecutive signed real-stack releases, same-SHA retry and

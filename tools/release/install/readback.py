@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 import re
 from tools.release.bundle.manifest import require
-from . import observation
+from . import observation, timings
 from .docker import verify_running
 from .locking import installation_lock
 from .state import current_manifest
@@ -29,8 +29,9 @@ def checked(value, source):
             'Invalid schema fingerprint')
 
 
-def record(directory, manifest, previous, before):
+def record(directory, manifest, previous, before, *, rollout=None):
     source = manifest['source_revision']
+    intervals = timings.validate(rollout if rollout is not None else {'status':'NOT_AVAILABLE_LEGACY','events':[]})
     after = collect(directory, manifest)
     checked(after, source)
     require(before['volumes'] == after['volumes'], 'Persistent volume identity changed during installation')
@@ -43,7 +44,7 @@ def record(directory, manifest, previous, before):
               'persistent_volumes': 'PASS', 'schema_relation': 'unchanged' if same_schema else 'changed-with-migration-inventory',
               'migration_inventory_sha256': hashlib.sha256(inventory).hexdigest(),
               'running_images': {name: item['index_digest'] for name, item in manifest['components'].items()},
-              'checked_at': datetime.now(timezone.utc).isoformat(), **after}
+              'checked_at': datetime.now(timezone.utc).isoformat(), 'rollout': intervals, **after}
     temporary = directory/'deployment-readback.json.tmp'
     temporary.write_text(json.dumps(result, sort_keys=True) + '\n', encoding='utf-8')
     temporary.replace(directory/'deployment-readback.json')
@@ -60,6 +61,7 @@ def fresh(root, revision, public_key):
             and 0 < path.stat().st_size <= 16384, 'Installed readback receipt is unavailable')
     receipt = json.loads(path.read_bytes())
     checked(receipt, revision)
+    intervals = timings.validate(receipt.get('rollout', {'status':'NOT_AVAILABLE_LEGACY','events':[]}))
     require(receipt.get('schema_version') == 1 and receipt.get('kind') == 'installed-source-readback'
             and receipt.get('status') == 'PASS' and receipt.get('source_revision') == revision
             and receipt.get('persistent_volumes') == 'PASS', 'Installed readback receipt differs')
@@ -69,7 +71,7 @@ def fresh(root, revision, public_key):
             'Installed state changed before fresh readback')
     images = {name: item['index_digest'] for name, item in manifest['components'].items()}
     require(images == receipt.get('running_images'), 'Receipt image digests differ from signed manifest')
-    return {**receipt, 'checked_at': datetime.now(timezone.utc).isoformat()}
+    return {**receipt, 'rollout': intervals, 'checked_at': datetime.now(timezone.utc).isoformat()}
 
 
 def main():

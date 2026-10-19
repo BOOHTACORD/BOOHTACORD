@@ -56,6 +56,47 @@ Frozen candidate validation:
 Actual GitHub download, transport, stack, queue-contention and rollback acceptance
 are NOT_RUN for this candidate. The older 20-minute SCP cancellations are failures,
 not proof of an installed revision or root network cause. No blind production
-retries, rollback, local daemon startup, signing/account changes or Keychain prompts
+retries, rollback, Colima/QA VM startup, signing/account changes or Keychain prompts
 were performed. Separate actual maintenance/migration measurements, consecutive
 releases, same-source retry and approved compatible rollback remain required.
+
+## Follow-up: native SQL and rollout instrumentation
+
+The unchanged committed schema query from fb305757 was executed against an owned
+empty native **PostgreSQL 17.11 (Homebrew), Darwin arm64** instance, with a private
+Unix socket and no TCP listener. All 52 project migrations applied, the actual
+catalog hash changed, and reapplying all 52 preserved that hash. Repeated read-only
+queries were stable; a read-only CREATE TABLE negative failed without changing the
+hash. The exact instance was stopped before its temporary directory was removed.
+Only hashes/counts/version metadata are retained in
+`delivery-schema-query-2026-10-19.json`; no database or product rows were exported.
+This proves the catalog query on that native version, not the shipping Linux
+PostgreSQL 17.6 container, Docker install, production, rollback or media gates.
+
+Procedure: `initdb` a new private temporary empty cluster as the fixed QA role;
+start it with `-h ''` and a private Unix socket; execute the committed catalog query
+with `PGOPTIONS=-c default_transaction_read_only=on`; apply each sorted project
+migration with `psql -X -qAt -v ON_ERROR_STOP=1 -f`; compare repeated hashes, reapply
+all migrations and verify a rejected read-only DDL statement; stop only that exact
+cluster with `pg_ctl -D <owned directory> -m fast -w stop`, then remove the owned
+temporary directory. No existing instance, application credentials or data enter
+this procedure.
+
+New signed rollout runtimes now emit ten fixed phase/time markers into the current
+installer's private temporary file. Complete ordered events produce explicit
+one-second-resolution rollout/maintenance/migration/health intervals; an empty
+legacy runtime reports NOT_AVAILABLE_LEGACY. Partial or inconsistent timing cannot
+be published as PASS. Actual marker propagation and the existing deploy/volume/
+rollback guards passed the three shipping shell fixtures with fake Docker; the
+Python owned-shell fixture confirms private-file cleanup. These are fixture checks,
+not a real rollout/rollback. New whole-candidate checks and hosted results remain
+separate from the earlier 904-test checkpoint.
+
+Follow-up whole candidate: **912 Python tests PASS**, 45.065 seconds; focused
+readback/timing/transport/receipt group **30 PASS**. All three shipping shell
+fixtures completed successfully: deploy phase/order/error handling, registry
+headroom ordering and controlled fake-Docker rollback. These individual fixtures
+run on this Mac's Bash 3; the full release-fixture wrapper still requires Bash 4+
+and hosted validation. The earlier 904-test checkpoint remains attached to its
+published source fb305757. Hosted CI39283110808 was still queued at the last
+read-only observation, so no GitHub PASS is asserted.

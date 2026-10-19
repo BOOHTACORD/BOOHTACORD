@@ -53,9 +53,9 @@ def install(args):
                 incoming.rename(destination)
             prepare_environment(destination, args.environment)
             load_images(destination, manifest)
-            deploy(destination, manifest)
+            intervals = deploy(destination, manifest)
             verify_running(destination, manifest)
-            readback.record(destination, manifest, current, before)
+            readback.record(destination, manifest, current, before, rollout=intervals)
             write_receipt(destination, manifest)
             print("Installed verified source revision " + args.revision)
 

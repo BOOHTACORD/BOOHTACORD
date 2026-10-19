@@ -69,6 +69,7 @@ chmod 0755 "$bin_dir/sleep"
 run_deploy() {
   local network_mode="$1"
   local output="$2"
+  : > "$temporary_root/phases-$network_mode.txt"
   FAKE_DOCKER_LOG="$temporary_root/commands-$network_mode.log" \
   FAKE_NETWORK_MODE="$network_mode" \
   FAKE_POSTGRES_MODE="${5:-allowed}" \
@@ -77,6 +78,7 @@ run_deploy() {
   FAKE_DISABLE_MODE="${4:-allowed}" \
   PATH="$bin_dir:$PATH" \
   VOICE_PLATFORM_DIR="$project_dir" \
+  VOICE_PLATFORM_DELIVERY_PHASES="$temporary_root/phases-$network_mode.txt" \
   API_IMAGE="ghcr.io/example/voice-platform-api@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" \
   WEB_IMAGE="ghcr.io/example/voice-platform-web@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" \
   bash "$script" > "$output" 2>&1 || { cat "$output" >&2; return 1; }
@@ -91,6 +93,16 @@ admission_enable_line="$(grep -n -F '[[ "$admission_enabled" -eq 1 ]] || enable_
 allowed_output="$temporary_root/allowed.out"
 run_deploy allowed "$allowed_output"
 allowed_log="$temporary_root/commands-allowed.log"
+python3 - "$temporary_root/phases-allowed.txt" <<'PY_TIMINGS'
+from pathlib import Path
+import sys
+from tools.release.install.timings import parse
+value = parse(Path(sys.argv[1]).read_text())
+assert value['status'] == 'PASS'
+assert len(value['events']) == 10
+assert value['durations']['maintenance_request_to_disable_seconds'] >= value['durations']['maintenance_seconds']
+PY_TIMINGS
+
 
 database_line="$(line_number 'up -d --wait postgres' "$allowed_log")"
 enable_line="$(line_number 'maintenance-admission --enable' "$allowed_log")"
@@ -124,6 +136,7 @@ disable_line="$(line_number 'maintenance-admission --disable' "$allowed_log")"
 extra_output="$temporary_root/extra.out"
 ! run_deploy extra "$extra_output" || { echo 'expected extra proxy network to fail deployment' >&2; exit 1; }
 grep -F 'Proxy has an unexpected Docker network attachment.' "$extra_output"
+! grep -q '^rollout_completed ' "$temporary_root/phases-extra.txt"
 extra_log="$temporary_root/commands-extra.log"
 if grep -Fq 'exec -T proxy caddy validate' "$extra_log"; then exit 1; fi
 if grep -Fq 'curl -fsS --retry 5 --retry-connrefused https://v.bootybay.ru/api/v1/health' "$extra_log"; then exit 1; fi
