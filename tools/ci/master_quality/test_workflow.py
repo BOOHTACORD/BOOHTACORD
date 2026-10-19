@@ -68,3 +68,11 @@ class MasterWorkflowTests(unittest.TestCase):
                         artifact = step['with']['name']
                         for field in ('sha', 'run_id', 'run_attempt'):
                             self.assertIn('${{ github.' + field + ' }}', artifact)
+
+    def test_builder_downloads_three_exact_receipt_names_without_wildcard_merge(self):
+        steps = self.workflows['build-server.yaml']['jobs']['bundle']['steps']
+        downloads = [s for s in steps if s.get('uses') == 'actions/download-artifact@v4']
+        execution = '${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
+        self.assertEqual([{'name': 'check-' + gate + '-' + execution, 'path': '.out/checks'}
+                          for gate in ('backend', 'web', 'contracts')], [s['with'] for s in downloads])
+        self.assertTrue(all(not s.get('if') for s in downloads))

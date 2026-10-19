@@ -29,7 +29,9 @@ The three-field receipt body (source/gate/status), dedicated production builder,
 signing key, manifest, smoke-test, pinned SSH, forward-history check and shared
 non-cancellable production install lock are unchanged. Receipts, server bundles
 and all other server-producer uploads include source SHA, run ID and attempt in
-their immutable names. Builder downloads only that execution's three receipts.
+their immutable names. Builder downloads three explicitly named artifacts from that execution, without
+a wildcard merge. The builder accepts exactly three bounded regular JSON files,
+the original three fields and no duplicate JSON keys or extra receipt files.
 Full reruns produce new attempt artifacts; old attempts remain retained. A partial
 failed-job rerun cannot substitute old successful receipts: use a full rerun.
 

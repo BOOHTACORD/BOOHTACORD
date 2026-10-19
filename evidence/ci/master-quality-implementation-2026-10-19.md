@@ -33,3 +33,26 @@ mandatory provenance, current attempt/source/ownership, missing/failed/cancelled
 foreign/duplicate/expired/future evidence, bounded stable pagination and a rerun
 starting during preflight. Real full rerun, cancellation/concurrent master-push
 acceptance and external owner settings are not inferred from these tests.
+
+## Receipt completion review
+
+Before merge, reviewing the existing builder exposed an additional #393 DoD gap:
+it ignored extra receipt files and ordinary JSON decoding accepted duplicate keys.
+Nine direct filesystem tests failed first (five failures/four errors). A focused
+decoder now requires exactly the three direct, bounded regular JSON files,
+exactly the unchanged three body fields, unique JSON keys and PASS for the full
+requested source. It rejects missing/foreign/failed/extra/linked/oversized or
+malformed evidence without echoing private canaries. The actual builder delegates
+to this decoder before archives, image building, smoke checks or signing.
+
+An additional workflow regression failed before replacing the wildcard receipt
+merge with three exact current-execution artifact downloads. Unknown artifact
+labels can no longer overwrite a known receipt during wildcard merging. The
+original publisher paths and the action's immutable per-name ownership remain
+required by policy. No manifest format, signature, smoke or install lock changes.
+
+The final local suite now passes **771 tests in 44.651 seconds**, plus Actionlint,
+full PowerShell workflow policy and indexed traceability. Earlier 761-test hosted
+proofs are scoped to predecessor1aea, not relabeled as current-candidate evidence.
+The updated exact source still requires fresh PR and full release-mode checks,
+master/retry/deploy acceptance and after measurements. #393 remains open.

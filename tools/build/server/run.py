@@ -1,6 +1,5 @@
 """Trusted-builder entrypoint. Production installation never calls this module."""
 import argparse
-import json
 import subprocess
 import sys
 import tempfile
@@ -14,16 +13,7 @@ from .buildx import configure
 from .images import build
 from .inputs import RUNTIME_PATHS, SOURCE_PATHS, archive, compatibility, git, source_root
 from .smoke import run_smoke
-
-
-def gate_receipts(directory, revision):
-    checks = {}
-    for gate in ("backend", "web", "contracts"):
-        receipt = json.loads((directory / (gate + ".json")).read_text(encoding="utf-8"))
-        require(receipt.get("source_revision") == revision, "Gate receipt belongs to another source revision")
-        require(receipt.get("gate") == gate and receipt.get("status") == "PASS", "Release gate did not pass: " + gate)
-        checks[gate] = "PASS"
-    return checks
+from .gate_receipts import read as gate_receipts
 
 
 def main():

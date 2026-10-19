@@ -72,8 +72,10 @@ def validate(workflows):
         bundle = build['jobs']['bundle']
         downloads = [s for s in bundle['steps'] if s.get('uses') == 'actions/download-artifact@v4']
         uploads = [s for s in bundle['steps'] if s.get('uses') == 'actions/upload-artifact@v4']
-        require(len(downloads) == 1 and downloads[0].get('with') == {
-            'pattern': 'check-*-' + EXECUTION, 'path': '.out/checks', 'merge-multiple': 'true'})
+        require([s.get('with') for s in downloads] == [
+            {'name': f'check-{gate}-' + EXECUTION, 'path': '.out/checks'}
+            for gate in ('backend', 'web', 'contracts')]
+            and all(not s.get('if') for s in downloads))
         require(len(uploads) == 1 and uploads[0]['with']['name'] == 'server-' + EXECUTION)
         for name in ('deploy-production.yaml', 'install-retained-release.yaml'):
             downloads = [s for s in workflows[name]['jobs']['install']['steps']
