@@ -1,4 +1,5 @@
 name: Master quality release-mode proof
+# Read-only full guard execution; never a master publisher.
 on:
   push:
     branches: [codex/issue393-release-mode-proof]
