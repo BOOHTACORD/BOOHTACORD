@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "scope": "local-configuration-rollback-candidate",
+  "source_revision": "21b5ad13c53c108080555a769c7a3151eec629e7",
+  "tested_code_digest": "2205739b51890cbf878a9dbbb4a32f713b1dfaaf3c1b4ff5451075bb427ec1d8",
+  "checkpoint": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+  "production_mutation": false,
+  "checks": [
+    {
+      "name": "action-pins",
+      "status": "PASS"
+    },
+    {
+      "name": "selection",
+      "status": "PASS"
+    },
+    {
+      "name": "delivery",
+      "status": "PASS"
+    },
+    {
+      "name": "native",
+      "status": "PASS"
+    },
+    {
+      "name": "actionlint",
+      "status": "PASS"
+    },
+    {
+      "name": "eight-focused-controls",
+      "status": "PASS"
+    }
+  ],
+  "candidate_revision": "003e976c0c986a335c143e74a13a05a92390fb89",
+  "candidate_branch": "codex/workflow-rollback-21b5ad13",
+  "product_and_evidence_preserved": true,
+  "status": "PASS",
+  "source_restored": true,
+  "hosted_control_matrix": "NOT_RUN",
+  "native_or_production_acceptance": "NOT_RUN",
+  "prior_checks": [
+    {
+      "schema_version": 1,
+      "scope": "local-configuration-rollback-candidate",
+      "source_revision": "c78a169c38d0c702aa143d0a409c971c553bdb8b",
+      "tested_code_digest": "aeeaa48b4027e10a5fc3f2ccb0e466f4296bc70f1234d4569ec8f014245a5eb5",
+      "checkpoint": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+      "production_mutation": false,
+      "checks": [
+        {
+          "name": "action-pins",
+          "status": "PASS"
+        },
+        {
+          "name": "selection",
+          "status": "PASS"
+        },
+        {
+          "name": "delivery",
+          "status": "PASS"
+        },
+        {
+          "name": "native",
+          "status": "PASS"
+        },
+        {
+          "name": "actionlint",
+          "status": "PASS"
+        },
+        {
+          "name": "eight-focused-controls",
+          "status": "PASS"
+        }
+      ],
+      "candidate_revision": "dfa7edeab53fb75bc6d9908188381bea01679ccf",
+      "candidate_branch": "codex/workflow-rollback-c78a169c",
+      "product_and_evidence_preserved": true,
+      "status": "PASS",
+      "source_restored": true,
+      "hosted_control_matrix": "NOT_RUN",
+      "native_or_production_acceptance": "NOT_RUN"
+    }
+  ]
+}

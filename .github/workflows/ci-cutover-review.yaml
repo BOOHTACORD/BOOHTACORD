@@ -1,0 +1,82 @@
+name: Migration readiness and owner GO review
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_revision:
+        description: Exact tested candidate SHA; empty means current checkout
+        type: string
+        default: ''
+      acceptance_manifest:
+        description: Tracked evidence JSON manifest
+        type: string
+        default: evidence/ci/cutover-acceptance-template.json
+      request_go_review:
+        description: Request independent protected review after all actual acceptance is recorded
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  prepare:
+    outputs:
+      ready: ${{ steps.prepare.outputs.ready_for_review }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Report incomplete acceptance without production access
+        id: prepare
+        env:
+          CANDIDATE_SOURCE: ${{ inputs.source_revision }}
+          ACCEPTANCE_MANIFEST: ${{ inputs.acceptance_manifest }}
+        run: python -m tools.ci.migration.readiness --source "$CANDIDATE_SOURCE" --manifest "$ACCEPTANCE_MANIFEST" --prepare-review
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: migration-report-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/migration/readiness.json
+          if-no-files-found: error
+          retention-days: 30
+
+  review:
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && inputs.request_go_review && needs.prepare.outputs.ready == 'true'
+    needs: prepare
+    environment: production
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Verify complete evidence and authenticate independent environment review
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CANDIDATE_SOURCE: ${{ inputs.source_revision }}
+          ACCEPTANCE_MANIFEST: ${{ inputs.acceptance_manifest }}
+          REQUEST_GO_REVIEW: 'true'
+        run: python -m tools.ci.migration.readiness --source "$CANDIDATE_SOURCE" --manifest "$ACCEPTANCE_MANIFEST" --review
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: migration-owner-review-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/migration/readiness.json
+          if-no-files-found: error
+          retention-days: 30
