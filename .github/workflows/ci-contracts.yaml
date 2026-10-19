@@ -86,6 +86,9 @@ jobs:
         run: ./tools/verify/compose_images/verify-compose-images.ps1
       - name: Test proxy network deployment guard
         run: bash tools/release/rollout/deploy-images.test.sh
+      - name: Test all negative release boundaries in ordinary CI
+        if: ${{ !inputs.release_receipt }}
+        run: bash tools/ci/release_guards/test-negative-boundaries.sh
       - name: Verify all deployment guard failures before producing a release receipt
         if: inputs.release_receipt
         run: bash tools/ci/release_guards/verify-release-guards.sh

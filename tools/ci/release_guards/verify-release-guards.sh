@@ -20,22 +20,4 @@ pwsh -NoProfile -File tools/verify/otel_egress/verify-otel-egress.ps1
 python3 -m unittest tools.verify.trace_dashboard.test_traces_dashboard
 printf 'Checking Compose image contract...\n'
 pwsh -NoProfile -File tools/verify/compose_images/verify-compose-images.ps1
-bash tools/ops/attachment_headroom/check-attachment-volume-headroom.test.sh
-bash tools/ops/attachment_audit/audit-attachment-volume.test.sh
-bash tools/qa/active_uploads/sample_active_uploads.test.sh
-bash tools/release/preflight/preflight.test.sh
-python3 tools/verify/oci/test_verify_oci.py
-bash tools/verify/running_images/verify_running.test.sh
-bash tools/release/rollout/deploy-images.test.sh
-bash tools/release/rollout/deploy-images-volume-guard.test.sh
-bash tools/release/rollout/deploy-images-rollback.test.sh
-bash tools/qa/legacy_rollback/image_ref.test.sh
-bash tools/qa/legacy_rollback/preflight.test.sh
-bash tools/qa/legacy_rollback/rehearse.test.sh
-bash tools/qa/legacy_rollback/workflow.test.sh
-bash tools/release/legacy_install/deploy-local-images.test.sh
-bash tools/release/delivery/transfer.test.sh
-bash tools/release/legacy_resume/resume.test.sh
-bash tools/ops/docker_storage/reclaim_old_images.test.sh
-bash tools/ops/docker_storage/prune_build_cache.test.sh
-bash tools/ops/docker_storage/reclaim_deploy_headroom.test.sh
+bash tools/ci/release_guards/test-negative-boundaries.sh

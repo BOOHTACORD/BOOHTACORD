@@ -46,7 +46,8 @@ fi
 workflow="$root/.github/workflows/qa08-active-upload.yaml"
 grep -Fq 'workflow_dispatch:' "$workflow"
 grep -Fq 'operator_ready:' "$workflow"
-grep -Fq "github.ref_name == 'master'" "$workflow"
+grep -Fxq "    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'" "$workflow"
+grep -Fxq '    environment: production' "$workflow"
 grep -Fq 'tools/qa/active_uploads/sample_active_uploads.sh' "$workflow"
 if grep -Eq '^  push:|^  pull_request:' "$workflow"; then
   printf 'sampler workflow must be manual only\n' >&2
