@@ -118,6 +118,33 @@ test('reconnect remains actionable; leaving immediately removes stale streams an
   await expect(page.locator('.screen-viewer, .stream-rail, .participant-watch')).toHaveCount(0)
 })
 
+test('mobile reconnect status wraps into balanced lines at a narrow width', async ({ page }, info) => {
+  await open(page, 320, 100)
+  await patch(page, { state: 'RECONNECTING' })
+  const status = page.getByTestId('voice-dock').getByRole('status')
+  await expect(status).toHaveText('Восстанавливаем голосовое соединение')
+  const lineWidths = await status.evaluate(element => {
+    const textNode = element.firstChild!
+    const text = textNode.textContent ?? ''
+    const lines = new Map<number, { left: number; right: number }>()
+    for (const match of text.matchAll(/\S+/g)) {
+      const range = document.createRange()
+      range.setStart(textNode, match.index!)
+      range.setEnd(textNode, match.index! + match[0].length)
+      const rect = range.getBoundingClientRect()
+      const top = Math.round(rect.top)
+      const line = lines.get(top) ?? { left: rect.left, right: rect.right }
+      line.left = Math.min(line.left, rect.left)
+      line.right = Math.max(line.right, rect.right)
+      lines.set(top, line)
+    }
+    return [...lines.values()].map(line => line.right - line.left)
+  })
+  expect(lineWidths).toHaveLength(2)
+  expect(Math.min(...lineWidths) / Math.max(...lineWidths)).toBeGreaterThan(0.7)
+  await page.screenshot({ path: info.outputPath('mobile-reconnecting-status-balanced.png'), fullPage: true })
+})
+
 test('leaving removes the members rail and an already open voice participant popover', async ({ page }) => {
   await open(page)
   await page.goto('/tests/voice_interface/fixture.html?members')
