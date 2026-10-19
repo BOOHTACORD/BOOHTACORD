@@ -21,6 +21,12 @@
       "clients/web/src/design/voice_roster.css",
       "tools/qa/local_features/features.json",
       "clients/web/src/design/design_v2_voice_dock.css",
+      "clients/web/src/voice/activation/ptt.ts",
+      "clients/web/src/voice/activation/ptt.spec.ts",
+      "clients/web/src/voice/touch_ptt.ts",
+      "clients/web/src/voice/touch_ptt.spec.ts",
+      "clients/web/src/voice/TouchPttButton.vue",
+      "clients/web/src/design/design_v2_audio_presentation.css",
       "clients/flutter/lib/src/features/voice/*",
       "clients/flutter/lib/src/widgets/voice*",
       "clients/flutter/lib/src/services/voice*",
@@ -67,7 +73,7 @@
       "issue347": {
         "browser": "clients/web/tests/voice_interface/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/voice_interface.mjs",
-        "scope": "Shared one-click controls, PTT/denied/reconnect/leaving presentation, stale stream/roster cleanup, compact disclosure. Verify the prejoin empty roster is geometrically centered against its card despite compact roster indentation. Muted dock controls retain their solid red state without a red border; keyboard focus remains visibly distinct. At narrow mobile width, reconnecting status wraps into balanced lines. Android Chrome user-agent connected state keeps the unsupported screen-capture explanation compact while voice and leave remain usable. Fixture viewport/text/actual zoom plus actual two-client SFU session continuity, TEXT/drawer/resize and leave. No native, hardware capture or media QoE claim."
+        "scope": "Shared one-click controls, keyboard and Android touch PTT/denied/reconnect/leaving presentation, stale stream/roster cleanup, compact disclosure. Touch PTT speaks only while the dock mic is held and always releases on pointer cancellation, focus loss or dock teardown; settings do not ask touch devices for a hardware key. Verify the prejoin empty roster is geometrically centered against its card despite compact roster indentation. Muted dock controls retain their solid red state without a red border; keyboard focus remains visibly distinct. At narrow mobile width, reconnecting status wraps into balanced lines. Android Chrome user-agent connected state keeps the unsupported screen-capture explanation compact while voice and leave remain usable. Fixture viewport/text/actual zoom plus actual two-client SFU session continuity, TEXT/drawer/resize and leave. No native, hardware capture or media QoE claim."
       }
     }
   },
@@ -303,6 +309,7 @@
       "clients/web/tests/settings_hierarchy/hierarchy.browser.spec.ts",
       "clients/web/src/notification/*",
       "clients/web/src/voice/AudioSettings.vue",
+      "clients/web/src/design/design_v2_audio_presentation.css",
       "clients/flutter/lib/src/screens/profile*"
     ],
     "web": [
@@ -327,7 +334,7 @@
       "issue351": {
         "browser": "clients/web/tests/settings_hierarchy/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/settings_hierarchy.mjs",
-        "scope": "13 actual component settings/admin surfaces at 390/1024/1440; explicit save/cancel/pending/error/403/409, visible unsaved/security warnings, retained mounted advanced audio controls at text/native browser zoom. At enlarged mobile text, profile avatar removal remains inside its card. Owned Go API profile writes and actual SFU transport continuity during audio settings navigation; no native or hardware/audio quality claim."
+        "scope": "13 actual component settings/admin surfaces at 390/1024/1440; explicit save/cancel/pending/error/403/409, visible unsaved/security warnings, retained mounted advanced audio controls at text/native browser zoom. Touch PTT settings offer on-screen hold guidance without requesting a hardware key. At enlarged mobile text, profile avatar removal remains inside its card. Owned Go API profile writes and actual SFU transport continuity during audio settings navigation; no native or hardware/audio quality claim."
       }
     }
   },

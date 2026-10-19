@@ -25,6 +25,7 @@ const props = defineProps<{
   devices: { inputs: AudioDevice[]; outputs: AudioDevice[] }
   error: string | null
   pttKey: string | null
+  touchPttEnabled?: boolean
   microphoneShortcut?: VoiceShortcutBinding | null
   deafenShortcut?: VoiceShortcutBinding | null
   processing: AudioProcessingOptions
@@ -108,7 +109,8 @@ function toggleNoise(): void { emit('setProcessing', { ...props.processing, nois
       <section class="audio-activation-section"><header><h2>Активация микрофона</h2></header>
         <div class="audio-activation-selector" role="group" aria-label="Активация микрофона"><button type="button" :aria-pressed="activationMode === 'VAD'" @click="emit('setActivation', 'VAD')">По голосу</button><button type="button" :aria-pressed="activationMode === 'PTT'" @click="emit('setActivation', 'PTT')">По нажатию</button></div>
         <SensitivityControl :vad="activationMode === 'VAD'" />
-        <button v-if="activationMode === 'PTT'" class="audio-ptt-button gc-button gc-button--secondary" type="button" @click="recordingPttKey = true" @keydown="capturePttKey">{{ recordingPttKey ? 'Нажмите клавишу…' : pttKey ? `PTT: ${pttKey}` : 'Назначить PTT-клавишу' }}</button>
+        <button v-if="activationMode === 'PTT' && !touchPttEnabled" class="audio-ptt-button gc-button gc-button--secondary" type="button" @click="recordingPttKey = true" @keydown="capturePttKey">{{ recordingPttKey ? 'Нажмите клавишу…' : pttKey ? `PTT: ${pttKey}` : 'Назначить PTT-клавишу' }}</button>
+        <p v-if="activationMode === 'PTT'" class="audio-ptt-guidance">{{ touchPttEnabled ? 'Удерживайте кнопку микрофона в панели голосового канала, чтобы говорить.' : pttKey ? 'Удерживайте назначенную клавишу, чтобы говорить.' : 'Назначьте клавишу, чтобы говорить.' }}</p>
         <p v-if="activationError" class="state state-error" role="alert">{{ activationError }}</p>
       </section>
       <p v-if="microphoneMeter.clipping" class="state-error" role="status">Перегрузка: уменьшите громкость микрофона.</p>

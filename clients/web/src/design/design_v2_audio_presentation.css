@@ -29,6 +29,7 @@
 .audio-activation-selector button { display: flex; min-height: 36px; flex: 1; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 6px; padding: 4px 12px; color: var(--gc-text-secondary); background: transparent; font-weight: 500; }
 .audio-activation-selector button[aria-pressed=true] { color: white; background: var(--gc-accent); }
 .audio-ptt-button { margin-top: -12px; }
+.audio-ptt-guidance { margin: -12px 0 0; color: var(--gc-text-secondary); font-size: .8125rem; line-height: 1.4; }
 .workspace-main-panel--audio .audio-shortcuts-section { display: grid; gap: 12px; height: max-content; padding: 24px; }
 .audio-shortcuts-section > header h2 { margin: 0; font-size: 1rem; line-height: 1.5rem; font-weight: 600; }
 .audio-shortcuts-section > header p { margin: 4px 0 0; color: var(--gc-text-secondary); font-size: 0.8125rem; line-height: 1.25rem; }
