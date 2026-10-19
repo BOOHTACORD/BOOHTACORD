@@ -1,0 +1,1733 @@
+{
+  "schema_version": 1,
+  "scope": "windows-gate-actual-and-observational-timing",
+  "status": "PASS_WITH_MEASUREMENT_LIMITS",
+  "reviewed_source": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+  "implementation_pr": 441,
+  "actual_run_id": 39319882366,
+  "artifacts": [
+    {
+      "id": 12221515282,
+      "name": "windows-acceptance-3d22e9007db090e6a2159841506e0e377ae8b0a4-39319882366-1",
+      "size_in_bytes": 359,
+      "digest": "sha256:adc8d3d6d00d4a8c330677155e41edcbb6517767244e36070b44366d620d518f",
+      "expired": false,
+      "workflow_run": {
+        "id": 39319882366,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      "zip_and_payload_verified": true,
+      "files": {
+        "windows-acceptance.json": {
+          "bytes": 265,
+          "sha256": "06eb55a748072762825f5a8011b3a9b56744c919e66dc0236181951483ebe81f"
+        }
+      },
+      "payload_utf8": {
+        "windows-acceptance.json": "{\"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39319882366\"}, \"gui_sfu\": true, \"manifest_sha256\": \"224d7b093a6a43fa57e953bbe377b477742acfc4cf0ead009e98505bfe38edf4\", \"recovery\": true, \"source_revision\": \"3d22e9007db090e6a2159841506e0e377ae8b0a4\", \"status\": \"PASS\"}\r\n"
+      }
+    },
+    {
+      "id": 12221500313,
+      "name": "desktop-recovery-windows-3d22e9007db090e6a2159841506e0e377ae8b0a4-39319882366-1",
+      "size_in_bytes": 402,
+      "digest": "sha256:b0970bd3175c7de6546074b9c2261ae353ab7319af56fa2dc41021a1fa024fc0",
+      "expired": false,
+      "workflow_run": {
+        "id": 39319882366,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      "zip_and_payload_verified": true,
+      "files": {
+        "windows-smoke.json": {
+          "bytes": 450,
+          "sha256": "c36598fbe74d20d8629c60538ae764e42cf859d459946e0d066045cb02e74498"
+        }
+      },
+      "payload_utf8": {
+        "windows-smoke.json": "{\r\n  \"schema_version\": 1,\r\n  \"status\": \"PASS\",\r\n  \"native_build\": \"78\",\r\n  \"elapsed_seconds\": 124,\r\n  \"real_monitor\": true,\r\n  \"real_flutter_relaunch\": true,\r\n  \"inherited_current_directory_released\": true,\r\n  \"whole_baseline_hashes_match\": true,\r\n  \"unicode_paths\": true,\r\n  \"synthetic_external_profile_retained\": true,\r\n  \"finished_transaction_replay_noop\": true,\r\n  \"one_shot_registration_removed\": true,\r\n  \"n_to_n1_ui_acceptance\": \"NOT_RUN\"\r\n}\r\n"
+      }
+    },
+    {
+      "id": 12220805151,
+      "name": "windows-transfer-3d22e9007db090e6a2159841506e0e377ae8b0a4-39319882366-1",
+      "size_in_bytes": 3769,
+      "digest": "sha256:17ba8c9e42bfccbe1eb6f53360ccc1b192299c9bae342ec21a3137d04f91c660",
+      "expired": false,
+      "workflow_run": {
+        "id": 39319882366,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      "zip_and_payload_verified": true,
+      "files": {
+        "windows-transfer.json": {
+          "bytes": 8184,
+          "sha256": "0248479f45928547f6c7115b9307bb433b9976ea64f6a907a3deba295803f403"
+        }
+      },
+      "payload_utf8": {
+        "windows-transfer.json": "{\"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39319882366\"}, \"installer\": {\"RELEASES-stable\": {\"bytes\": 96, \"sha256\": \"3f7c9600ab7658d0e1181e508a4b39193e0a4a578885f0f3d01be1e985510e00\"}, \"assets.stable.json\": {\"bytes\": 160, \"sha256\": \"eaa346448482cd44f291f7d3d6c69ca706ecda25658499f7307407660bd7eb93\"}, \"boohtacord_desktop-1.0.43-stable-full.nupkg\": {\"bytes\": 30794494, \"sha256\": \"6641135c3c3920dd79674e2031d4a8b01e6973702d3c28d2bf04fc559c7d8100\"}, \"boohtacord_desktop-stable-Setup.exe\": {\"bytes\": 38308606, \"sha256\": \"7a22b0d62a185f3cebad70d15914405fae1d28e675293c893f6592341da10393\"}, \"build-identity.json\": {\"bytes\": 221, \"sha256\": \"1885a891b146970456353f5d0df2c0e040a735f3a325bf6e6420428009b85862\"}, \"releases.stable.json\": {\"bytes\": 279, \"sha256\": \"6ae6bd62b2099118c30748917506586cc42d2e051481e31c63b415daa0823f67\"}}, \"purpose\": {\"entrypoint\": \"integration_test/screen_setup_windows_app.dart\", \"purpose\": \"windows-ci-acceptance\", \"schema_version\": 1, \"stable_release\": false}, \"release\": {\"BOOHTACORDRecovery.exe\": {\"bytes\": 350720, \"sha256\": \"e8714d0a575cc5017813f9259120ccd36d5b8208cdb9b64fbea3b7a642764ecd\"}, \"FLAC.dll\": {\"bytes\": 483328, \"sha256\": \"c0498038842c4f78b22770b72a1cf8bcee3cd2653fa58533a6b1f8a01d9b679a\"}, \"LICENSE-RNNoise.txt\": {\"bytes\": 1612, \"sha256\": \"0bb95d752b966f69fea022227297ad49fdb4464eb45f1c1fff494a435bfbeaa5\"}, \"LICENSE-Velopack.txt\": {\"bytes\": 1111, \"sha256\": \"03281b7debf1730d5b2a2cdfb6f98c542edcd965867453686bfe6d1177bc134e\"}, \"SHA256SUMS\": {\"bytes\": 5216, \"sha256\": \"8c18e2c53b3e8fa5e5714f49b3b9bce4082a92993921786fd9def06ce32594c6\"}, \"artifact-manifest.json\": {\"bytes\": 11196, \"sha256\": \"224d7b093a6a43fa57e953bbe377b477742acfc4cf0ead009e98505bfe38edf4\"}, \"boohtacord_desktop.exe\": {\"bytes\": 225280, \"sha256\": \"3eacd7f79d3e1c3aebcbba1c7950b693ffeb9fef704fc475daac696cba81c368\"}, \"ci-purpose.json\": {\"bytes\": 148, \"sha256\": \"1805cf6fdad2a97f71b204d4582cbc06ad6dc2ce9e13bee40d78b98f30e6c516\"}, \"clipboard_plugin.dll\": {\"bytes\": 129024, \"sha256\": \"f93dc8aa477b78bf059bc4149f5af649c5620272e01f04113efd126aa2ee32fc\"}, \"concrt140.dll\": {\"bytes\": 324208, \"sha256\": \"2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376\"}, \"connectivity_plus_plugin.dll\": {\"bytes\": 102912, \"sha256\": \"6562d4fe6e61348e46b21b2dbb7a83ff9c8a6a823d9af19f3d4cb091835efbbe\"}, \"dartjni.dll\": {\"bytes\": 59904, \"sha256\": \"11c8875d55f6049b4bf81d0c571fb24d598eaddefce862f55b197de771c8b9a0\"}, \"data/app.so\": {\"bytes\": 13910920, \"sha256\": \"c316e3874ab2be686ad9db20c089c2657ea8d0cc533abee37e16270193ea4555\"}, \"data/flutter_assets/AssetManifest.bin\": {\"bytes\": 565, \"sha256\": \"5f20c3dd836e379fc69518a09981509343a329bf06a804b5ac3314b1d1265d98\"}, \"data/flutter_assets/FontManifest.json\": {\"bytes\": 280, \"sha256\": \"996d8a068f0d41fd1c05b8047837cc710d54e52ac5c37b1bfe36600b9f0eac3b\"}, \"data/flutter_assets/NOTICES.Z\": {\"bytes\": 120677, \"sha256\": \"767f3b30b01e31154b6a753d542c021fda97f4752e00ee7d5690d5141c9c37b0\"}, \"data/flutter_assets/NativeAssetsManifest.json\": {\"bytes\": 45, \"sha256\": \"9548a31e4a048135c1d94f919328bfb62ae2c7bb3cab96557c7941daa97776cb\"}, \"data/flutter_assets/assets/branding/brand.png\": {\"bytes\": 5177, \"sha256\": \"f2e91a6ddab0f4556572d8111ca959065e2d009f62ef23e67f3bf2894c5a2864\"}, \"data/flutter_assets/assets/emoji/emoji_full_catalog.json\": {\"bytes\": 333696, \"sha256\": \"ea67a76971c44cd9334d5a11b8490c8087ff711343337f735d73646776e12946\"}, \"data/flutter_assets/assets/fonts/InterVariable.ttf\": {\"bytes\": 879708, \"sha256\": \"f87caf5cdc61c6acb34dcdf6ae38909f6bef73cc86ee5da3691601a54cd6a314\"}, \"data/flutter_assets/assets/licenses/rnnoise.txt\": {\"bytes\": 1849, \"sha256\": \"76ed76e5e90a01e28ed4ba8146ece9ecb5f6b193f426da34dc090be871b5fac4\"}, \"data/flutter_assets/assets/licenses/unicode-emoji.txt\": {\"bytes\": 277, \"sha256\": \"fcb69f163c4eaafa3d8164650440503dcafddd2950b86b8b6e4449bcaa373c95\"}, \"data/flutter_assets/assets/updates/publisher.pub\": {\"bytes\": 83, \"sha256\": \"fd08ce8ee3761c3276d3d7651994066542125fe79b31661c17502a42f093f916\"}, \"data/flutter_assets/fonts/MaterialIcons-Regular.otf\": {\"bytes\": 15092, \"sha256\": \"40fd819b1d20199aab0960fce26edade103a6fc03cdbd137b8a4da515e82a050\"}, \"data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf\": {\"bytes\": 257628, \"sha256\": \"67c44fe9183b002e79dde7f6977e2988661c9a3e4a3c5fce968787efdbed823c\"}, \"data/flutter_assets/shaders/ink_sparkle.frag\": {\"bytes\": 21856, \"sha256\": \"1fe8436a743884cb65078fe8c7b38e18f5365f2a2961270916f426fd13c604af\"}, \"data/flutter_assets/shaders/stretch_effect.frag\": {\"bytes\": 17616, \"sha256\": \"bc7599dbbbaab310efe41520574138d21fb18a88c8fe4495ed79315309336f6f\"}, \"data/icudtl.dat\": {\"bytes\": 864880, \"sha256\": \"325a86063d26334c2eabe1743cea073b612540fbf3d8fc2ef0b5708e3763a8c7\"}, \"file_selector_windows_plugin.dll\": {\"bytes\": 111616, \"sha256\": \"0fee65ed6ed8c683469257059cd8b4aec01c020e749669896c8e61d802c59034\"}, \"flutter_local_notifications_windows.dll\": {\"bytes\": 91136, \"sha256\": \"e124a4166ba1a2b9579dbf381c162e3b1b4279b2d6b169fbb7d899777ab4e300\"}, \"flutter_secure_storage_windows_plugin.dll\": {\"bytes\": 159744, \"sha256\": \"0edac27e55493c47d353e608ec67ba8b3bebc59713c1267cd257c2fa816c763f\"}, \"flutter_soloud_plugin.dll\": {\"bytes\": 1111040, \"sha256\": \"f785f534c0eb1ea40d5bfedbb72f111faf400450700a29356efdbf7c0925436f\"}, \"flutter_webrtc_plugin.dll\": {\"bytes\": 660992, \"sha256\": \"b4b881a956dda0207d90481939e2ea0556e9fd439bef24a4eb54c2ae1fd03cd2\"}, \"flutter_windows.dll\": {\"bytes\": 21274112, \"sha256\": \"7b03815958c49d72385be497fbd0eb1bb2ae27d24989d6c9aee83eafbd93e9d3\"}, \"libwebrtc.dll\": {\"bytes\": 20538880, \"sha256\": \"dfdbcc9670618ac4c3696d7e232aac2fe8034ef202f46d732a6828ccfcb017dd\"}, \"livekit_client_plugin.dll\": {\"bytes\": 176640, \"sha256\": \"5acae5cec0d9070d867aa0d9230074ec6582fa3ecc3940b54760f305e6620aae\"}, \"msvcp140.dll\": {\"bytes\": 557728, \"sha256\": \"0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9\"}, \"msvcp140_1.dll\": {\"bytes\": 35952, \"sha256\": \"bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d\"}, \"msvcp140_2.dll\": {\"bytes\": 280200, \"sha256\": \"3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9\"}, \"msvcp140_atomic_wait.dll\": {\"bytes\": 50304, \"sha256\": \"640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479\"}, \"msvcp140_codecvt_ids.dll\": {\"bytes\": 31872, \"sha256\": \"f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18\"}, \"ogg.dll\": {\"bytes\": 30208, \"sha256\": \"aad3763723ba548a885fcb9e750d7092970c16234fd4c5d021135b8b89753d3b\"}, \"opus.dll\": {\"bytes\": 460288, \"sha256\": \"1072b0b1f2f50835b48f6428a793b03b417009afe8311bdca595f73a12cb1581\"}, \"record_windows_plugin.dll\": {\"bytes\": 216064, \"sha256\": \"8e1413a836d3543364f9b4fcbfa3914c63cddefcba4d772e02330ff1544bb4fc\"}, \"rnnoise-component.cdx.json\": {\"bytes\": 1018, \"sha256\": \"744d313555579461c847508971950196f9b99775af9f3c180ad0a10696d1f615\"}, \"screen_retriever_windows_plugin.dll\": {\"bytes\": 119296, \"sha256\": \"ce83908c32390216b6b67202a61d56d5c23e8987234bd56009d1b144f0058db0\"}, \"url_launcher_windows_plugin.dll\": {\"bytes\": 98304, \"sha256\": \"5a2a49808845f4eeb91ba562c8af8e8b9e246cd64c5104fd39f46b58114cb307\"}, \"vccorlib140.dll\": {\"bytes\": 352384, \"sha256\": \"19839407c3fdbc824e5bce189bf68ddf8097f12ec28b757797ffa0415c144ddd\"}, \"vcruntime140.dll\": {\"bytes\": 124544, \"sha256\": \"d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066\"}, \"vcruntime140_1.dll\": {\"bytes\": 49792, \"sha256\": \"1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f\"}, \"vcruntime140_threads.dll\": {\"bytes\": 38528, \"sha256\": \"219915cf20822f34d5e7c1fdd4e21ae7f3396881096c51036225fb8f84b47afa\"}, \"velopack_libc.dll\": {\"bytes\": 2691072, \"sha256\": \"3387c5f362501374b2f2d942466c3ec565ac573ec24e3d6e7679c0b8e7828b12\"}, \"vorbis.dll\": {\"bytes\": 737792, \"sha256\": \"adbd21ba4d265995cff8172a5762ca41d6fce13b49a275edea1581aad34b98c1\"}, \"vorbisenc.dll\": {\"bytes\": 563200, \"sha256\": \"1b2134d5035c3be889bd7b14eaaa3ea530dd1c7765295605513bcd2e156a51ee\"}, \"vorbisfile.dll\": {\"bytes\": 36864, \"sha256\": \"3ea75ed11a88f12d46333b3848fc849e05ed730bf5cd3346502d499440435b2b\"}, \"window_manager_plugin.dll\": {\"bytes\": 130048, \"sha256\": \"13e83cf88431a984595b6fa2c316d31a6f959a5668c9c1efbc1a256342a7d555\"}}, \"schema_version\": 1, \"source_revision\": \"3d22e9007db090e6a2159841506e0e377ae8b0a4\"}\r\n"
+      }
+    },
+    {
+      "id": 12220701213,
+      "name": "screen-setup-windows-3d22e9007db090e6a2159841506e0e377ae8b0a4-39319882366-1",
+      "size_in_bytes": 380549,
+      "digest": "sha256:599187e1c36014f63bdd8030a5ff47b23a4e81a6eba0fbd3dd7652d84efab689",
+      "expired": false,
+      "workflow_run": {
+        "id": 39319882366,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      "zip_and_payload_verified": true,
+      "files": {
+        "header-footer.png": {
+          "bytes": 68590,
+          "sha256": "641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f"
+        },
+        "result.json": {
+          "bytes": 2967,
+          "sha256": "0489e01f96ef7b765d629cb1060501998fa77a0a4c28ddc88fc845c756578003"
+        },
+        "dock-open.png": {
+          "bytes": 72792,
+          "sha256": "c6eb52e0974a8adc06bcc353e2ebef3c36c3dd13406e2f092641479f72aea2e9"
+        },
+        "dock-initial.png": {
+          "bytes": 31130,
+          "sha256": "b45d48fb15d843208156ddf2ac66fac143d362cf2ceda366c951a9f4b79fc2af"
+        },
+        "header-initial.png": {
+          "bytes": 31633,
+          "sha256": "702c1b53dbab2a2d94204dbfc52f1b9f9f66910c5463be3c2b20569b2c7952ac"
+        },
+        "header-open.png": {
+          "bytes": 72804,
+          "sha256": "ab84e30a76e56a6be355f8af77143773617c250435e745bd4a23295d9bbaf896"
+        },
+        "header-traversed.png": {
+          "bytes": 31533,
+          "sha256": "419734132bf0898a1a48246b624d8cc7ba1d34b6fcb646aa0b126be8e74bd197"
+        },
+        "dock-traversed.png": {
+          "bytes": 31130,
+          "sha256": "b45d48fb15d843208156ddf2ac66fac143d362cf2ceda366c951a9f4b79fc2af"
+        },
+        "dock-footer.png": {
+          "bytes": 68590,
+          "sha256": "641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f"
+        }
+      },
+      "payload_utf8": {
+        "result.json": "{\r\n  \"status\": \"PASS\",\r\n  \"os\": \"\\\"Windows Server 2022 Datacenter\\\" 10.0 (Build 20348)\",\r\n  \"input\": \"Win32 SendInput with exact foreground PID guard\",\r\n  \"cases\": [\r\n    {\r\n      \"case\": \"header-initial\",\r\n      \"escape\": true,\r\n      \"focus_returned\": true,\r\n      \"same_connected_room_and_lease\": true,\r\n      \"mute_deafen_preserved\": true,\r\n      \"no_publication\": true,\r\n      \"footer_visible\": true\r\n    },\r\n    {\r\n      \"case\": \"header-traversed\",\r\n      \"escape\": true,\r\n      \"focus_returned\": true,\r\n      \"same_connected_room_and_lease\": true,\r\n      \"mute_deafen_preserved\": true,\r\n      \"no_publication\": true,\r\n      \"footer_visible\": true,\r\n      \"quality_reachable\": true,\r\n      \"cancel_keyboard_reachable\": true\r\n    },\r\n    {\r\n      \"case\": \"dock-initial\",\r\n      \"escape\": true,\r\n      \"focus_returned\": true,\r\n      \"same_connected_room_and_lease\": true,\r\n      \"mute_deafen_preserved\": true,\r\n      \"no_publication\": true,\r\n      \"footer_visible\": true\r\n    },\r\n    {\r\n      \"case\": \"dock-traversed\",\r\n      \"escape\": true,\r\n      \"focus_returned\": true,\r\n      \"same_connected_room_and_lease\": true,\r\n      \"mute_deafen_preserved\": true,\r\n      \"no_publication\": true,\r\n      \"footer_visible\": true,\r\n      \"quality_reachable\": true,\r\n      \"cancel_keyboard_reachable\": true\r\n    }\r\n  ],\r\n  \"scope\": \"Actual release Windows GUI, real API/PostgreSQL/LiveKit listener. No acoustic/media quality claim.\",\r\n  \"source\": \"3d22e9007db090e6a2159841506e0e377ae8b0a4\",\r\n  \"flutter\": \"3.47.7\",\r\n  \"dart\": \"3.13.5\",\r\n  \"manifest_sha256\": \"224d7b093a6a43fa57e953bbe377b477742acfc4cf0ead009e98505bfe38edf4\",\r\n  \"build_scope\": \"CI acceptance package; stable release NOT_RUN\",\r\n  \"captures\": [\r\n    {\r\n      \"file\": \"header-initial.png\",\r\n      \"sha256\": \"702c1b53dbab2a2d94204dbfc52f1b9f9f66910c5463be3c2b20569b2c7952ac\",\r\n      \"bytes\": 31633\r\n    },\r\n    {\r\n      \"file\": \"header-traversed.png\",\r\n      \"sha256\": \"419734132bf0898a1a48246b624d8cc7ba1d34b6fcb646aa0b126be8e74bd197\",\r\n      \"bytes\": 31533\r\n    },\r\n    {\r\n      \"file\": \"dock-initial.png\",\r\n      \"sha256\": \"b45d48fb15d843208156ddf2ac66fac143d362cf2ceda366c951a9f4b79fc2af\",\r\n      \"bytes\": 31130\r\n    },\r\n    {\r\n      \"file\": \"dock-traversed.png\",\r\n      \"sha256\": \"b45d48fb15d843208156ddf2ac66fac143d362cf2ceda366c951a9f4b79fc2af\",\r\n      \"bytes\": 31130\r\n    },\r\n    {\r\n      \"file\": \"header-open.png\",\r\n      \"sha256\": \"ab84e30a76e56a6be355f8af77143773617c250435e745bd4a23295d9bbaf896\",\r\n      \"bytes\": 72804\r\n    },\r\n    {\r\n      \"file\": \"dock-open.png\",\r\n      \"sha256\": \"c6eb52e0974a8adc06bcc353e2ebef3c36c3dd13406e2f092641479f72aea2e9\",\r\n      \"bytes\": 72792\r\n    },\r\n    {\r\n      \"file\": \"header-footer.png\",\r\n      \"sha256\": \"641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f\",\r\n      \"bytes\": 68590\r\n    },\r\n    {\r\n      \"file\": \"dock-footer.png\",\r\n      \"sha256\": \"641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f\",\r\n      \"bytes\": 68590\r\n    }\r\n  ]\r\n}"
+      }
+    }
+  ],
+  "aggregate_replay": "PASS",
+  "manifest_sha256": "224d7b093a6a43fa57e953bbe377b477742acfc4cf0ead009e98505bfe38edf4",
+  "actual_gui_cases": 4,
+  "capture_hashes_verified": 8,
+  "visual_review": {
+    "status": "PASS",
+    "viewed": [
+      "header-open.png",
+      "dock-footer.png"
+    ],
+    "observations": [
+      "Header and close control remain visible; fixed bottom Cancel/Start row fits the window.",
+      "After scrolling the quality controls remain reachable above the fixed footer; Cancel is visible."
+    ]
+  },
+  "baseline": {
+    "path": "evidence/ci/baseline-2026-10-18/ci_master.json",
+    "sha256": "efadb8b0cab3e91c522812e2bd04c2ff15001dadcd06b1251a43aa52b67c645c",
+    "all_runs": 15
+  },
+  "after_window": {
+    "start": "2026-10-19T17:38:07Z",
+    "end": "2026-10-19T20:51:56Z",
+    "query": "branch=master&event=push&per_page=100&created=2026-10-19T17:38:07Z..2026-10-19T20:51:56Z",
+    "all_push_runs_returned": 26,
+    "native_workflow_runs": 13,
+    "selected_windows_runs": 12,
+    "successful": 4,
+    "cancelled_with_red_required_aggregate": 8,
+    "not_selected": 1,
+    "non_cancelled_component_failures": 0,
+    "retries": 0
+  },
+  "percentile_method": "nearest rank ceil(n*p/100), shared tools.ci.baseline.metrics.distribution",
+  "outcomes": [
+    {
+      "period": "before",
+      "run_id": 39155159388,
+      "source_revision": "bfea46b61c3bc641098caf7c35be8c4be798af59",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39152131709,
+      "source_revision": "23d07e4af56b0ed0706e55efac2c626644a1e394",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39145112485,
+      "source_revision": "68f07dd360a0e4989a40313ef72bc0d65ab448a4",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39140639128,
+      "source_revision": "41d44f1099e5e384a7da709f8c94bfed3755ca54",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39136769671,
+      "source_revision": "dc1ae43cab45de0dda7a4ccb9f7fa82a459424af",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39133279333,
+      "source_revision": "a6366b570a1009ed25f81040fd6f76f8ab5ae715",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39122851390,
+      "source_revision": "7c0d15a597ee44fe9222f6b678540435459e2933",
+      "conclusion": "failure"
+    },
+    {
+      "period": "before",
+      "run_id": 39118751466,
+      "source_revision": "9e6a39eaeb748287a70a95fd828264162ab90ee8",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39114585002,
+      "source_revision": "becda60d009a0bc0fcbd56cb1c1a257568fea4b0",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39111218810,
+      "source_revision": "63a44c264fa3fdeb0a660622dd5ab573ca70160d",
+      "conclusion": "failure"
+    },
+    {
+      "period": "before",
+      "run_id": 39107796043,
+      "source_revision": "5eb564ff3f47962e09d9a05b17e2fe311bf2bb3b",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39103770315,
+      "source_revision": "1557cfce4330bcbf80dff316241119f553b49ef3",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39074414160,
+      "source_revision": "c8d46934d1dfed49f8930a68ae720c227736154c",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39071010172,
+      "source_revision": "59e96ee051d6bf2a35da1b1f772f49a1571473b2",
+      "conclusion": "success"
+    },
+    {
+      "period": "before",
+      "run_id": 39068696703,
+      "source_revision": "16e5971c7378860c5e1743ac69d5969aa6cba6f1",
+      "conclusion": "success"
+    },
+    {
+      "period": "after",
+      "run_id": 39322855452,
+      "source_revision": "14a922326dd56e331956dbe09775ad7c05298f57",
+      "conclusion": "not-selected"
+    },
+    {
+      "period": "after",
+      "run_id": 39319882366,
+      "source_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "conclusion": "success",
+      "cancelled_job_ids": []
+    },
+    {
+      "period": "after",
+      "run_id": 39317404355,
+      "source_revision": "b1c9f2c7500665018999b0af39ee6b07268a54f5",
+      "conclusion": "failure",
+      "cancelled_job_ids": [
+        118287150607
+      ]
+    },
+    {
+      "period": "after",
+      "run_id": 39314566979,
+      "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "conclusion": "success",
+      "cancelled_job_ids": []
+    },
+    {
+      "period": "after",
+      "run_id": 39312783329,
+      "source_revision": "768b81e3ec557eef20796fb610b19b5b646c8a9b",
+      "conclusion": "failure",
+      "cancelled_job_ids": [
+        118267343663,
+        118271041737
+      ]
+    },
+    {
+      "period": "after",
+      "run_id": 39309581529,
+      "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+      "conclusion": "success",
+      "cancelled_job_ids": []
+    },
+    {
+      "period": "after",
+      "run_id": 39306796766,
+      "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+      "conclusion": "failure",
+      "cancelled_job_ids": [
+        118253280071
+      ]
+    },
+    {
+      "period": "after",
+      "run_id": 39305729193,
+      "source_revision": "7930ac782d6d08bb2caba701f8ff956ed65df497",
+      "conclusion": "failure",
+      "cancelled_job_ids": [
+        118242972596,
+        118242972774,
+        118246106461
+      ]
+    },
+    {
+      "period": "after",
+      "run_id": 39304842784,
+      "source_revision": "b48d85c920ee067121f453575005cdc6bf27d5c8",
+      "conclusion": "failure",
+      "cancelled_job_ids": [
+        118239197525,
+        118239197673,
+        118242495606
+      ]
+    },
+    {
+      "period": "after",
+      "run_id": 39301937351,
+      "source_revision": "911d7c7989c6043a093bca1f88d8229ce3beab42",
+      "conclusion": "success",
+      "cancelled_job_ids": []
+    },
+    {
+      "period": "after",
+      "run_id": 39300791685,
+      "source_revision": "3216603c6a50629e43dc13ac875bfde59ebf61bc",
+      "conclusion": "failure",
+      "cancelled_job_ids": [
+        118226029738,
+        118226029830,
+        118229540278
+      ]
+    },
+    {
+      "period": "after",
+      "run_id": 39298106138,
+      "source_revision": "d4a0e6d4a47b51a3e72969ec5bb5b68bfc95a130",
+      "conclusion": "failure",
+      "cancelled_job_ids": [
+        118220308465,
+        118220308513,
+        118225690652
+      ]
+    },
+    {
+      "period": "after",
+      "run_id": 39295810392,
+      "source_revision": "67c06d7388d14d3153f39c3d31904ea354b4ba8e",
+      "conclusion": "failure",
+      "cancelled_job_ids": [
+        118213968535
+      ]
+    }
+  ],
+  "successful_timing_samples": [
+    {
+      "period": "before",
+      "run_id": 39155159388,
+      "source_revision": "bfea46b61c3bc641098caf7c35be8c4be798af59",
+      "execution_span_seconds": 1579.0,
+      "workflow_to_windows_available_seconds": 1592.0,
+      "windows_runner_occupancy_seconds": 1579.0
+    },
+    {
+      "period": "before",
+      "run_id": 39152131709,
+      "source_revision": "23d07e4af56b0ed0706e55efac2c626644a1e394",
+      "execution_span_seconds": 1494.0,
+      "workflow_to_windows_available_seconds": 1507.0,
+      "windows_runner_occupancy_seconds": 1494.0
+    },
+    {
+      "period": "before",
+      "run_id": 39145112485,
+      "source_revision": "68f07dd360a0e4989a40313ef72bc0d65ab448a4",
+      "execution_span_seconds": 1543.0,
+      "workflow_to_windows_available_seconds": 1556.0,
+      "windows_runner_occupancy_seconds": 1543.0
+    },
+    {
+      "period": "before",
+      "run_id": 39140639128,
+      "source_revision": "41d44f1099e5e384a7da709f8c94bfed3755ca54",
+      "execution_span_seconds": 1338.0,
+      "workflow_to_windows_available_seconds": 1348.0,
+      "windows_runner_occupancy_seconds": 1338.0
+    },
+    {
+      "period": "before",
+      "run_id": 39136769671,
+      "source_revision": "dc1ae43cab45de0dda7a4ccb9f7fa82a459424af",
+      "execution_span_seconds": 1520.0,
+      "workflow_to_windows_available_seconds": 1533.0,
+      "windows_runner_occupancy_seconds": 1520.0
+    },
+    {
+      "period": "before",
+      "run_id": 39133279333,
+      "source_revision": "a6366b570a1009ed25f81040fd6f76f8ab5ae715",
+      "execution_span_seconds": 1592.0,
+      "workflow_to_windows_available_seconds": 1606.0,
+      "windows_runner_occupancy_seconds": 1592.0
+    },
+    {
+      "period": "before",
+      "run_id": 39118751466,
+      "source_revision": "9e6a39eaeb748287a70a95fd828264162ab90ee8",
+      "execution_span_seconds": 1594.0,
+      "workflow_to_windows_available_seconds": 1608.0,
+      "windows_runner_occupancy_seconds": 1594.0
+    },
+    {
+      "period": "before",
+      "run_id": 39114585002,
+      "source_revision": "becda60d009a0bc0fcbd56cb1c1a257568fea4b0",
+      "execution_span_seconds": 1313.0,
+      "workflow_to_windows_available_seconds": 1327.0,
+      "windows_runner_occupancy_seconds": 1313.0
+    },
+    {
+      "period": "before",
+      "run_id": 39107796043,
+      "source_revision": "5eb564ff3f47962e09d9a05b17e2fe311bf2bb3b",
+      "execution_span_seconds": 1529.0,
+      "workflow_to_windows_available_seconds": 1540.0,
+      "windows_runner_occupancy_seconds": 1529.0
+    },
+    {
+      "period": "before",
+      "run_id": 39103770315,
+      "source_revision": "1557cfce4330bcbf80dff316241119f553b49ef3",
+      "execution_span_seconds": 1500.0,
+      "workflow_to_windows_available_seconds": 1514.0,
+      "windows_runner_occupancy_seconds": 1500.0
+    },
+    {
+      "period": "before",
+      "run_id": 39074414160,
+      "source_revision": "c8d46934d1dfed49f8930a68ae720c227736154c",
+      "execution_span_seconds": 1611.0,
+      "workflow_to_windows_available_seconds": 1625.0,
+      "windows_runner_occupancy_seconds": 1611.0
+    },
+    {
+      "period": "before",
+      "run_id": 39071010172,
+      "source_revision": "59e96ee051d6bf2a35da1b1f772f49a1571473b2",
+      "execution_span_seconds": 1108.0,
+      "workflow_to_windows_available_seconds": 1123.0,
+      "windows_runner_occupancy_seconds": 1108.0
+    },
+    {
+      "period": "before",
+      "run_id": 39068696703,
+      "source_revision": "16e5971c7378860c5e1743ac69d5969aa6cba6f1",
+      "execution_span_seconds": 1045.0,
+      "workflow_to_windows_available_seconds": 1058.0,
+      "windows_runner_occupancy_seconds": 1045.0
+    },
+    {
+      "period": "after",
+      "run_id": 39319882366,
+      "source_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "run_attempt": 1,
+      "execution_span_seconds": 863.0,
+      "workflow_to_windows_available_seconds": 1047.0,
+      "windows_runner_occupancy_seconds": 1549.0,
+      "windows_recipe_matches_reviewed_source": true
+    },
+    {
+      "period": "after",
+      "run_id": 39314566979,
+      "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "run_attempt": 1,
+      "execution_span_seconds": 909.0,
+      "workflow_to_windows_available_seconds": 1000.0,
+      "windows_runner_occupancy_seconds": 1533.0,
+      "windows_recipe_matches_reviewed_source": true
+    },
+    {
+      "period": "after",
+      "run_id": 39309581529,
+      "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+      "run_attempt": 1,
+      "execution_span_seconds": 1025.0,
+      "workflow_to_windows_available_seconds": 1329.0,
+      "windows_runner_occupancy_seconds": 1701.0,
+      "windows_recipe_matches_reviewed_source": true
+    },
+    {
+      "period": "after",
+      "run_id": 39301937351,
+      "source_revision": "911d7c7989c6043a093bca1f88d8229ce3beab42",
+      "run_attempt": 1,
+      "execution_span_seconds": 877.0,
+      "workflow_to_windows_available_seconds": 1025.0,
+      "windows_runner_occupancy_seconds": 1615.0,
+      "windows_recipe_matches_reviewed_source": true
+    }
+  ],
+  "distributions": {
+    "before": {
+      "execution_span_seconds": {
+        "n": 13,
+        "p50": 1520.0,
+        "p90": 1594.0,
+        "p95": 1611.0,
+        "max": 1611.0
+      },
+      "workflow_to_windows_available_seconds": {
+        "n": 13,
+        "p50": 1533.0,
+        "p90": 1608.0,
+        "p95": 1625.0,
+        "max": 1625.0
+      },
+      "windows_runner_occupancy_seconds": {
+        "n": 13,
+        "p50": 1520.0,
+        "p90": 1594.0,
+        "p95": 1611.0,
+        "max": 1611.0
+      }
+    },
+    "after": {
+      "execution_span_seconds": {
+        "n": 4,
+        "p50": 877.0,
+        "p90": 1025.0,
+        "p95": 1025.0,
+        "max": 1025.0
+      },
+      "workflow_to_windows_available_seconds": {
+        "n": 4,
+        "p50": 1025.0,
+        "p90": 1329.0,
+        "p95": 1329.0,
+        "max": 1329.0
+      },
+      "windows_runner_occupancy_seconds": {
+        "n": 4,
+        "p50": 1549.0,
+        "p90": 1701.0,
+        "p95": 1701.0,
+        "max": 1701.0
+      }
+    }
+  },
+  "after_job_metadata": [
+    {
+      "id": 39322855452,
+      "head_sha": "14a922326dd56e331956dbe09775ad7c05298f57",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T20:51:55Z",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 118301066717,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:51:56Z",
+          "started_at": "2026-10-19T20:51:59Z",
+          "completed_at": "2026-10-19T20:52:08Z"
+        },
+        {
+          "id": 118301166085,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:52:08Z",
+          "started_at": "2026-10-19T20:53:55Z",
+          "completed_at": "2026-10-19T20:54:07Z"
+        },
+        {
+          "id": 118301166906,
+          "name": "flutter",
+          "status": "completed",
+          "conclusion": "skipped",
+          "created_at": "2026-10-19T20:52:08Z",
+          "started_at": "2026-10-19T20:52:08Z",
+          "completed_at": "2026-10-19T20:52:08Z"
+        },
+        {
+          "id": 118301167798,
+          "name": "windows",
+          "status": "completed",
+          "conclusion": "skipped",
+          "created_at": "2026-10-19T20:52:08Z",
+          "started_at": "2026-10-19T20:52:08Z",
+          "completed_at": "2026-10-19T20:52:08Z"
+        }
+      ]
+    },
+    {
+      "id": 39319882366,
+      "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T20:30:29Z",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 118291608564,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:32:02Z",
+          "started_at": "2026-10-19T20:32:41Z",
+          "completed_at": "2026-10-19T20:32:52Z"
+        },
+        {
+          "id": 118292004863,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:32:52Z",
+          "started_at": "2026-10-19T20:37:15Z",
+          "completed_at": "2026-10-19T20:44:50Z"
+        },
+        {
+          "id": 118292004949,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:32:52Z",
+          "started_at": "2026-10-19T20:36:54Z",
+          "completed_at": "2026-10-19T20:47:51Z"
+        },
+        {
+          "id": 118292005113,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:32:52Z",
+          "started_at": "2026-10-19T20:35:12Z",
+          "completed_at": "2026-10-19T20:46:56Z"
+        },
+        {
+          "id": 118292005180,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:32:52Z",
+          "started_at": "2026-10-19T20:33:33Z",
+          "completed_at": "2026-10-19T20:40:12Z"
+        },
+        {
+          "id": 118295506014,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:40:13Z",
+          "started_at": "2026-10-19T20:40:26Z",
+          "completed_at": "2026-10-19T20:47:43Z"
+        },
+        {
+          "id": 118299100822,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:47:43Z",
+          "started_at": "2026-10-19T20:47:47Z",
+          "completed_at": "2026-10-19T20:47:56Z"
+        },
+        {
+          "id": 118299163271,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:47:52Z",
+          "started_at": "2026-10-19T20:47:55Z",
+          "completed_at": "2026-10-19T20:48:04Z"
+        },
+        {
+          "id": 118299267033,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:48:05Z",
+          "started_at": "2026-10-19T20:48:08Z",
+          "completed_at": "2026-10-19T20:48:20Z"
+        }
+      ]
+    },
+    {
+      "id": 39317404355,
+      "head_sha": "b1c9f2c7500665018999b0af39ee6b07268a54f5",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T20:12:42Z",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "id": 118282356815,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:12:43Z",
+          "started_at": "2026-10-19T20:12:46Z",
+          "completed_at": "2026-10-19T20:12:56Z"
+        },
+        {
+          "id": 118282460775,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:12:56Z",
+          "started_at": "2026-10-19T20:15:01Z",
+          "completed_at": "2026-10-19T20:26:14Z"
+        },
+        {
+          "id": 118282460908,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:12:56Z",
+          "started_at": "2026-10-19T20:16:34Z",
+          "completed_at": "2026-10-19T20:24:02Z"
+        },
+        {
+          "id": 118282461012,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:12:56Z",
+          "started_at": "2026-10-19T20:15:06Z",
+          "completed_at": "2026-10-19T20:22:45Z"
+        },
+        {
+          "id": 118282461228,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:12:56Z",
+          "started_at": "2026-10-19T20:17:12Z",
+          "completed_at": "2026-10-19T20:29:09Z"
+        },
+        {
+          "id": 118287150607,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T20:22:45Z",
+          "started_at": "2026-10-19T20:23:43Z",
+          "completed_at": "2026-10-19T20:31:04Z"
+        },
+        {
+          "id": 118288825307,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:26:14Z",
+          "started_at": "2026-10-19T20:28:12Z",
+          "completed_at": "2026-10-19T20:28:19Z"
+        },
+        {
+          "id": 118291155761,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T20:31:04Z",
+          "started_at": "2026-10-19T20:31:16Z",
+          "completed_at": "2026-10-19T20:31:27Z"
+        },
+        {
+          "id": 118291340508,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T20:31:27Z",
+          "started_at": "2026-10-19T20:31:52Z",
+          "completed_at": "2026-10-19T20:32:01Z"
+        }
+      ]
+    },
+    {
+      "id": 39314566979,
+      "head_sha": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T19:52:21Z",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 118273162344,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:53:37Z",
+          "started_at": "2026-10-19T19:53:40Z",
+          "completed_at": "2026-10-19T19:53:49Z"
+        },
+        {
+          "id": 118273262667,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:53:50Z",
+          "started_at": "2026-10-19T19:53:52Z",
+          "completed_at": "2026-10-19T20:04:35Z"
+        },
+        {
+          "id": 118273262741,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:53:50Z",
+          "started_at": "2026-10-19T19:53:53Z",
+          "completed_at": "2026-10-19T20:01:25Z"
+        },
+        {
+          "id": 118273263020,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:53:50Z",
+          "started_at": "2026-10-19T19:54:26Z",
+          "completed_at": "2026-10-19T20:01:50Z"
+        },
+        {
+          "id": 118273263067,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:53:50Z",
+          "started_at": "2026-10-19T19:54:17Z",
+          "completed_at": "2026-10-19T20:06:46Z"
+        },
+        {
+          "id": 118276856535,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:01:25Z",
+          "started_at": "2026-10-19T20:01:28Z",
+          "completed_at": "2026-10-19T20:08:36Z"
+        },
+        {
+          "id": 118279477999,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:06:46Z",
+          "started_at": "2026-10-19T20:06:49Z",
+          "completed_at": "2026-10-19T20:06:56Z"
+        },
+        {
+          "id": 118280432316,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:08:44Z",
+          "started_at": "2026-10-19T20:08:51Z",
+          "completed_at": "2026-10-19T20:09:01Z"
+        },
+        {
+          "id": 118280653641,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T20:09:11Z",
+          "started_at": "2026-10-19T20:09:16Z",
+          "completed_at": "2026-10-19T20:09:27Z"
+        }
+      ]
+    },
+    {
+      "id": 39312783329,
+      "head_sha": "768b81e3ec557eef20796fb610b19b5b646c8a9b",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T19:39:19Z",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "id": 118266422967,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:39:19Z",
+          "started_at": "2026-10-19T19:41:09Z",
+          "completed_at": "2026-10-19T19:41:16Z"
+        },
+        {
+          "id": 118267343553,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:41:17Z",
+          "started_at": "2026-10-19T19:41:53Z",
+          "completed_at": "2026-10-19T19:49:06Z"
+        },
+        {
+          "id": 118267343637,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T19:41:17Z",
+          "started_at": "2026-10-19T19:43:36Z",
+          "completed_at": "2026-10-19T19:52:40Z"
+        },
+        {
+          "id": 118267343663,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T19:41:17Z",
+          "started_at": "2026-10-19T19:41:21Z",
+          "completed_at": "2026-10-19T19:52:46Z"
+        },
+        {
+          "id": 118267343722,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:41:17Z",
+          "started_at": "2026-10-19T19:43:11Z",
+          "completed_at": "2026-10-19T19:49:51Z"
+        },
+        {
+          "id": 118271041737,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T19:49:06Z",
+          "started_at": "2026-10-19T19:49:54Z",
+          "completed_at": "2026-10-19T19:52:40Z"
+        },
+        {
+          "id": 118272717523,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T19:52:40Z",
+          "started_at": "2026-10-19T19:53:11Z",
+          "completed_at": "2026-10-19T19:53:19Z"
+        },
+        {
+          "id": 118272768741,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T19:52:47Z",
+          "started_at": "2026-10-19T19:53:14Z",
+          "completed_at": "2026-10-19T19:53:24Z"
+        },
+        {
+          "id": 118273065676,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T19:53:24Z",
+          "started_at": "2026-10-19T19:53:27Z",
+          "completed_at": "2026-10-19T19:53:36Z"
+        }
+      ]
+    },
+    {
+      "id": 39309581529,
+      "head_sha": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T19:16:26Z",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 118256450067,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:18:39Z",
+          "started_at": "2026-10-19T19:21:14Z",
+          "completed_at": "2026-10-19T19:21:21Z"
+        },
+        {
+          "id": 118257769047,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:21:21Z",
+          "started_at": "2026-10-19T19:21:30Z",
+          "completed_at": "2026-10-19T19:33:36Z"
+        },
+        {
+          "id": 118257769100,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:21:21Z",
+          "started_at": "2026-10-19T19:22:13Z",
+          "completed_at": "2026-10-19T19:30:55Z"
+        },
+        {
+          "id": 118257769204,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:21:21Z",
+          "started_at": "2026-10-19T19:22:11Z",
+          "completed_at": "2026-10-19T19:29:35Z"
+        },
+        {
+          "id": 118257769353,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:21:21Z",
+          "started_at": "2026-10-19T19:22:11Z",
+          "completed_at": "2026-10-19T19:34:30Z"
+        },
+        {
+          "id": 118262384250,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:30:56Z",
+          "started_at": "2026-10-19T19:30:59Z",
+          "completed_at": "2026-10-19T19:38:22Z"
+        },
+        {
+          "id": 118264128465,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:34:31Z",
+          "started_at": "2026-10-19T19:35:13Z",
+          "completed_at": "2026-10-19T19:35:23Z"
+        },
+        {
+          "id": 118265968782,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:38:22Z",
+          "started_at": "2026-10-19T19:38:25Z",
+          "completed_at": "2026-10-19T19:38:35Z"
+        },
+        {
+          "id": 118266071012,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:38:35Z",
+          "started_at": "2026-10-19T19:38:39Z",
+          "completed_at": "2026-10-19T19:38:47Z"
+        }
+      ]
+    },
+    {
+      "id": 39306796766,
+      "head_sha": "59c15c65c6751173fc5e668be383e88a62276a58",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T18:56:46Z",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "id": 118248645450,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:02:31Z",
+          "started_at": "2026-10-19T19:02:59Z",
+          "completed_at": "2026-10-19T19:03:08Z"
+        },
+        {
+          "id": 118248946948,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:03:09Z",
+          "started_at": "2026-10-19T19:04:00Z",
+          "completed_at": "2026-10-19T19:12:04Z"
+        },
+        {
+          "id": 118248947106,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:03:09Z",
+          "started_at": "2026-10-19T19:03:52Z",
+          "completed_at": "2026-10-19T19:15:26Z"
+        },
+        {
+          "id": 118248947156,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:03:09Z",
+          "started_at": "2026-10-19T19:04:01Z",
+          "completed_at": "2026-10-19T19:16:21Z"
+        },
+        {
+          "id": 118248947187,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:03:09Z",
+          "started_at": "2026-10-19T19:04:24Z",
+          "completed_at": "2026-10-19T19:11:21Z"
+        },
+        {
+          "id": 118253280071,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T19:12:05Z",
+          "started_at": "2026-10-19T19:12:08Z",
+          "completed_at": "2026-10-19T19:17:34Z"
+        },
+        {
+          "id": 118254913064,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T19:15:26Z",
+          "started_at": "2026-10-19T19:15:29Z",
+          "completed_at": "2026-10-19T19:15:37Z"
+        },
+        {
+          "id": 118255941798,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T19:17:36Z",
+          "started_at": "2026-10-19T19:17:50Z",
+          "completed_at": "2026-10-19T19:17:57Z"
+        },
+        {
+          "id": 118256107895,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T19:17:57Z",
+          "started_at": "2026-10-19T19:18:30Z",
+          "completed_at": "2026-10-19T19:18:38Z"
+        }
+      ]
+    },
+    {
+      "id": 39305729193,
+      "head_sha": "7930ac782d6d08bb2caba701f8ff956ed65df497",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T18:49:14Z",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "id": 118242877345,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:50:40Z",
+          "started_at": "2026-10-19T18:50:43Z",
+          "completed_at": "2026-10-19T18:50:51Z"
+        },
+        {
+          "id": 118242972596,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:50:52Z",
+          "started_at": "2026-10-19T18:50:54Z",
+          "completed_at": "2026-10-19T18:57:18Z"
+        },
+        {
+          "id": 118242972730,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:50:52Z",
+          "started_at": "2026-10-19T18:50:54Z",
+          "completed_at": "2026-10-19T18:57:31Z"
+        },
+        {
+          "id": 118242972774,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:50:52Z",
+          "started_at": "2026-10-19T18:50:55Z",
+          "completed_at": "2026-10-19T18:57:19Z"
+        },
+        {
+          "id": 118242972874,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:50:52Z",
+          "started_at": "2026-10-19T18:50:55Z",
+          "completed_at": "2026-10-19T18:57:17Z"
+        },
+        {
+          "id": 118246106461,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:57:19Z",
+          "started_at": "2026-10-19T18:57:19Z",
+          "completed_at": "2026-10-19T18:57:19Z"
+        },
+        {
+          "id": 118246107466,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:57:19Z",
+          "started_at": "2026-10-19T18:57:34Z",
+          "completed_at": "2026-10-19T18:57:44Z"
+        },
+        {
+          "id": 118246205266,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:57:31Z",
+          "started_at": "2026-10-19T18:58:35Z",
+          "completed_at": "2026-10-19T18:58:42Z"
+        },
+        {
+          "id": 118246780506,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:58:43Z",
+          "started_at": "2026-10-19T19:02:21Z",
+          "completed_at": "2026-10-19T19:02:30Z"
+        }
+      ]
+    },
+    {
+      "id": 39304842784,
+      "head_sha": "b48d85c920ee067121f453575005cdc6bf27d5c8",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T18:43:00Z",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "id": 118239113619,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:43:00Z",
+          "started_at": "2026-10-19T18:43:03Z",
+          "completed_at": "2026-10-19T18:43:10Z"
+        },
+        {
+          "id": 118239197525,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:43:11Z",
+          "started_at": "2026-10-19T18:43:25Z",
+          "completed_at": "2026-10-19T18:49:50Z"
+        },
+        {
+          "id": 118239197673,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:43:11Z",
+          "started_at": "2026-10-19T18:44:49Z",
+          "completed_at": "2026-10-19T18:49:57Z"
+        },
+        {
+          "id": 118239197929,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:43:11Z",
+          "started_at": "2026-10-19T18:45:00Z",
+          "completed_at": "2026-10-19T18:50:19Z"
+        },
+        {
+          "id": 118239197967,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:43:11Z",
+          "started_at": "2026-10-19T18:43:20Z",
+          "completed_at": "2026-10-19T18:49:55Z"
+        },
+        {
+          "id": 118242495606,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:49:54Z",
+          "started_at": "2026-10-19T18:49:54Z",
+          "completed_at": "2026-10-19T18:49:54Z"
+        },
+        {
+          "id": 118242547430,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:50:01Z",
+          "started_at": "2026-10-19T18:50:04Z",
+          "completed_at": "2026-10-19T18:50:15Z"
+        },
+        {
+          "id": 118242707821,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:50:20Z",
+          "started_at": "2026-10-19T18:50:22Z",
+          "completed_at": "2026-10-19T18:50:30Z"
+        },
+        {
+          "id": 118242797058,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:50:30Z",
+          "started_at": "2026-10-19T18:50:33Z",
+          "completed_at": "2026-10-19T18:50:39Z"
+        }
+      ]
+    },
+    {
+      "id": 39301937351,
+      "head_sha": "911d7c7989c6043a093bca1f88d8229ce3beab42",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T18:22:22Z",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 118230078716,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:24:26Z",
+          "started_at": "2026-10-19T18:24:30Z",
+          "completed_at": "2026-10-19T18:24:39Z"
+        },
+        {
+          "id": 118230187748,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:24:40Z",
+          "started_at": "2026-10-19T18:24:43Z",
+          "completed_at": "2026-10-19T18:32:36Z"
+        },
+        {
+          "id": 118230187842,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:24:40Z",
+          "started_at": "2026-10-19T18:24:50Z",
+          "completed_at": "2026-10-19T18:32:08Z"
+        },
+        {
+          "id": 118230187886,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:24:40Z",
+          "started_at": "2026-10-19T18:25:12Z",
+          "completed_at": "2026-10-19T18:38:05Z"
+        },
+        {
+          "id": 118230187894,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:24:40Z",
+          "started_at": "2026-10-19T18:25:24Z",
+          "completed_at": "2026-10-19T18:34:07Z"
+        },
+        {
+          "id": 118233797744,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:32:08Z",
+          "started_at": "2026-10-19T18:32:39Z",
+          "completed_at": "2026-10-19T18:39:14Z"
+        },
+        {
+          "id": 118234750183,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:34:07Z",
+          "started_at": "2026-10-19T18:34:25Z",
+          "completed_at": "2026-10-19T18:34:32Z"
+        },
+        {
+          "id": 118237243154,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:39:15Z",
+          "started_at": "2026-10-19T18:39:18Z",
+          "completed_at": "2026-10-19T18:39:27Z"
+        },
+        {
+          "id": 118237357384,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:39:28Z",
+          "started_at": "2026-10-19T18:39:31Z",
+          "completed_at": "2026-10-19T18:39:41Z"
+        }
+      ]
+    },
+    {
+      "id": 39300791685,
+      "head_sha": "3216603c6a50629e43dc13ac875bfde59ebf61bc",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T18:14:02Z",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "id": 118225938558,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T18:15:41Z",
+          "started_at": "2026-10-19T18:15:45Z",
+          "completed_at": "2026-10-19T18:15:53Z"
+        },
+        {
+          "id": 118226029738,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:15:53Z",
+          "started_at": "2026-10-19T18:15:56Z",
+          "completed_at": "2026-10-19T18:23:19Z"
+        },
+        {
+          "id": 118226029830,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:15:53Z",
+          "started_at": "2026-10-19T18:15:57Z",
+          "completed_at": "2026-10-19T18:23:38Z"
+        },
+        {
+          "id": 118226029847,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:15:53Z",
+          "started_at": "2026-10-19T18:15:57Z",
+          "completed_at": "2026-10-19T18:23:54Z"
+        },
+        {
+          "id": 118226029872,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:15:53Z",
+          "started_at": "2026-10-19T18:15:56Z",
+          "completed_at": "2026-10-19T18:22:23Z"
+        },
+        {
+          "id": 118229540278,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:23:19Z",
+          "started_at": "2026-10-19T18:23:19Z",
+          "completed_at": "2026-10-19T18:23:19Z"
+        },
+        {
+          "id": 118229692917,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:23:38Z",
+          "started_at": "2026-10-19T18:23:57Z",
+          "completed_at": "2026-10-19T18:24:07Z"
+        },
+        {
+          "id": 118229822727,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:23:55Z",
+          "started_at": "2026-10-19T18:24:09Z",
+          "completed_at": "2026-10-19T18:24:16Z"
+        },
+        {
+          "id": 118229995248,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:24:16Z",
+          "started_at": "2026-10-19T18:24:19Z",
+          "completed_at": "2026-10-19T18:24:26Z"
+        }
+      ]
+    },
+    {
+      "id": 39298106138,
+      "head_sha": "d4a0e6d4a47b51a3e72969ec5bb5b68bfc95a130",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T17:54:32Z",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "id": 118218091047,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T17:59:15Z",
+          "started_at": "2026-10-19T18:03:41Z",
+          "completed_at": "2026-10-19T18:03:47Z"
+        },
+        {
+          "id": 118220308465,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:03:47Z",
+          "started_at": "2026-10-19T18:07:46Z",
+          "completed_at": "2026-10-19T18:15:10Z"
+        },
+        {
+          "id": 118220308513,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:03:47Z",
+          "started_at": "2026-10-19T18:07:38Z",
+          "completed_at": "2026-10-19T18:15:17Z"
+        },
+        {
+          "id": 118220308718,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:03:48Z",
+          "started_at": "2026-10-19T18:09:18Z",
+          "completed_at": "2026-10-19T18:14:41Z"
+        },
+        {
+          "id": 118220308866,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:03:48Z",
+          "started_at": "2026-10-19T18:10:11Z",
+          "completed_at": "2026-10-19T18:14:22Z"
+        },
+        {
+          "id": 118225451772,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:14:41Z",
+          "started_at": "2026-10-19T18:14:45Z",
+          "completed_at": "2026-10-19T18:14:55Z"
+        },
+        {
+          "id": 118225690652,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T18:15:11Z",
+          "started_at": "2026-10-19T18:15:11Z",
+          "completed_at": "2026-10-19T18:15:10Z"
+        },
+        {
+          "id": 118225742103,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:15:17Z",
+          "started_at": "2026-10-19T18:15:21Z",
+          "completed_at": "2026-10-19T18:15:28Z"
+        },
+        {
+          "id": 118225835123,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T18:15:29Z",
+          "started_at": "2026-10-19T18:15:32Z",
+          "completed_at": "2026-10-19T18:15:41Z"
+        }
+      ]
+    },
+    {
+      "id": 39295810392,
+      "head_sha": "67c06d7388d14d3153f39c3d31904ea354b4ba8e",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T17:38:10Z",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "id": 118208510558,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T17:39:25Z",
+          "started_at": "2026-10-19T17:42:19Z",
+          "completed_at": "2026-10-19T17:42:25Z"
+        },
+        {
+          "id": 118209987473,
+          "name": "flutter / dart",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T17:42:26Z",
+          "started_at": "2026-10-19T17:43:55Z",
+          "completed_at": "2026-10-19T17:51:41Z"
+        },
+        {
+          "id": 118209987542,
+          "name": "flutter / android",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T17:42:26Z",
+          "started_at": "2026-10-19T17:46:48Z",
+          "completed_at": "2026-10-19T17:55:54Z"
+        },
+        {
+          "id": 118209987656,
+          "name": "windows / windows-build",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T17:42:26Z",
+          "started_at": "2026-10-19T17:42:54Z",
+          "completed_at": "2026-10-19T17:50:40Z"
+        },
+        {
+          "id": 118209987762,
+          "name": "windows / windows-native-unit",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-19T17:42:26Z",
+          "started_at": "2026-10-19T17:43:09Z",
+          "completed_at": "2026-10-19T17:52:57Z"
+        },
+        {
+          "id": 118213968535,
+          "name": "windows / windows-gui-sfu",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "created_at": "2026-10-19T17:50:40Z",
+          "started_at": "2026-10-19T17:51:15Z",
+          "completed_at": "2026-10-19T17:55:10Z"
+        },
+        {
+          "id": 118216104456,
+          "name": "windows / windows",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T17:55:10Z",
+          "started_at": "2026-10-19T17:56:50Z",
+          "completed_at": "2026-10-19T17:57:02Z"
+        },
+        {
+          "id": 118216468643,
+          "name": "flutter / flutter",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T17:55:55Z",
+          "started_at": "2026-10-19T17:56:44Z",
+          "completed_at": "2026-10-19T17:56:56Z"
+        },
+        {
+          "id": 118217020313,
+          "name": "native-required",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-19T17:57:03Z",
+          "started_at": "2026-10-19T17:59:04Z",
+          "completed_at": "2026-10-19T17:59:14Z"
+        }
+      ]
+    }
+  ],
+  "negative_checks": {
+    "status": "PASS",
+    "test_methods": 9,
+    "elapsed_seconds": 0.12,
+    "command": "python -m unittest tools.ci.windows_gates.test_transfer tools.ci.windows_gates.test_workflow tools.ci.windows_gates.test_acceptance tools.qa.screen_setup.test_windows",
+    "cases": [
+      "GUI/recovery/post-run payload failure leaves FAIL receipt",
+      "Wrong source, retry, manifest, missing/added/changed/link payload rejected",
+      "Skipped GUI, ignored failures, rebuild or incorrect artifact dependency rejected"
+    ]
+  },
+  "limits": [
+    "Historical unmatched before/after sources and hosted-runner queues; n=13 successful before and n=4 successful after are not a population SLO or causal speedup experiment.",
+    "All 15 before and 13 after runs are retained in outcomes, including two before failures and eight actual after cancellations/red aggregates; timing distributions include only successful relevant Windows completions.",
+    "Windows execution and availability p50/p95 improved in this observed window; runner occupancy increased with parallel workers. No runner-minute cost saving is claimed.",
+    "All eight cancelled Windows journeys produced red aggregates; the ref-wide cancellation race is fixed separately in PR455, whose hosted acceptance is pending.",
+    "The independently downloaded ZIPs are small evidence/transfer artifacts, not a second local download of the full Windows executable/installer. Full payload verification was performed in the actual Windows job before and after process journeys.",
+    "This CI-purpose binary is not a stable publication; installed N-to-N+1 promotion, acoustic/media quality and physical capacity remain separate requirements.",
+    "No new workflow, native build, VM, production retry or rollback was dispatched to collect this record."
+  ]
+}
