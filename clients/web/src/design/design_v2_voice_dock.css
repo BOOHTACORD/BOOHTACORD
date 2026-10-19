@@ -6,7 +6,7 @@
 .voice-dock .voice-icon-button.voice-icon-button--danger-active:hover:not(:disabled),
 .mobile-voice-dock .voice-actions .voice-icon-button.voice-icon-button--danger-active,
 .mobile-voice-dock .voice-actions .voice-icon-button.voice-icon-button--danger-active:hover:not(:disabled) {
-  border: 1px solid var(--gc-danger);
+  border: 0;
   color: var(--gc-on-danger);
   background: var(--gc-danger-solid);
 }
@@ -40,7 +40,7 @@
 
 .voice-dock { position: relative; min-width: 0; max-width: 100%; }
 .voice-dock .voice-dock-copy { min-width: 0; flex: 1; }
-.voice-dock .voice-status { white-space: normal; overflow-wrap: anywhere; }
+.voice-dock .voice-status { white-space: normal; overflow-wrap: anywhere; text-wrap: balance; }
 .voice-dock:has(.voice-connection-details) .voice-dock-header { padding-right: 36px; }
 .voice-dock .voice-connection-details { margin: 0; border: 0; padding: 0; }
 .voice-dock .voice-connection-details > summary { position: absolute; top: 8px; right: 8px; display: grid; width: 32px; height: 32px; place-items: center; border-radius: 6px; cursor: pointer; list-style: none; }

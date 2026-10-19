@@ -1,0 +1,458 @@
+{
+  "schema_version": 1,
+  "source_revision": "0ed1cd91e3eeb2891afd06b1b51a6c19eca16d91",
+  "source_path": "tools/ci/native/web.py",
+  "source_sha256": "5347eb64dae13cf622c86cfb7f7e9a501e81fc95dfc282f4de157108313e23c5",
+  "operations": {
+    "python:tools.audio.native_tests.run": {
+      "command": [
+        "{python}",
+        "-m",
+        "tools.audio.native_tests.run"
+      ],
+      "cwd": "root",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "node:tools/audio/browser_fixture/html.test.mjs": {
+      "command": [
+        "node",
+        "--test",
+        "tools/audio/browser_fixture/html.test.mjs"
+      ],
+      "cwd": "root",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "node:tools/verify/dependencies/web_imports.test.mjs": {
+      "command": [
+        "node",
+        "--test",
+        "tools/verify/dependencies/web_imports.test.mjs"
+      ],
+      "cwd": "root",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "python:tools.verify.dependencies.web": {
+      "command": [
+        "{python}",
+        "-m",
+        "tools.verify.dependencies.web"
+      ],
+      "cwd": "root",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "python:tools.verify.uiux_visual_matrix": {
+      "command": [
+        "{python}",
+        "-m",
+        "tools.verify.uiux_visual_matrix"
+      ],
+      "cwd": "root",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test": {
+      "command": [
+        "npm",
+        "test"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:accessibility": {
+      "command": [
+        "npm",
+        "run",
+        "test:accessibility"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:responsive-shell": {
+      "command": [
+        "npm",
+        "run",
+        "test:responsive-shell"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:controls": {
+      "command": [
+        "npm",
+        "run",
+        "test:controls"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:microcopy": {
+      "command": [
+        "npm",
+        "run",
+        "test:microcopy"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:search-sessions": {
+      "command": [
+        "npm",
+        "run",
+        "test:search-sessions"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:search-presentation": {
+      "command": [
+        "npm",
+        "run",
+        "test:search-presentation"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:search-dates": {
+      "command": [
+        "npm",
+        "run",
+        "test:search-dates"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:dm-starter": {
+      "command": [
+        "npm",
+        "run",
+        "test:dm-starter"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:chat-rhythm": {
+      "command": [
+        "npm",
+        "run",
+        "test:chat-rhythm"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:message-social": {
+      "command": [
+        "npm",
+        "run",
+        "test:message-social"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:navigation": {
+      "command": [
+        "npm",
+        "run",
+        "test:navigation"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:screen-profile": {
+      "command": [
+        "npm",
+        "run",
+        "test:screen-profile"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:screen-share-ui": {
+      "command": [
+        "npm",
+        "run",
+        "test:screen-share-ui"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:mini-player": {
+      "command": [
+        "npm",
+        "run",
+        "test:mini-player"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:screen-track-name": {
+      "command": [
+        "npm",
+        "run",
+        "test:screen-track-name"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:member-roster": {
+      "command": [
+        "npm",
+        "run",
+        "test:member-roster"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:settings-hierarchy": {
+      "command": [
+        "npm",
+        "run",
+        "test:settings-hierarchy"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:header-actions": {
+      "command": [
+        "npm",
+        "run",
+        "test:header-actions"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:member-popover": {
+      "command": [
+        "npm",
+        "run",
+        "test:member-popover"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:password-generation": {
+      "command": [
+        "npm",
+        "run",
+        "test:password-generation"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:own-sessions": {
+      "command": [
+        "npm",
+        "run",
+        "test:own-sessions"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:delivery": {
+      "command": [
+        "npm",
+        "run",
+        "test:delivery"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:guild-lifecycle": {
+      "command": [
+        "npm",
+        "run",
+        "test:guild-lifecycle"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:voice-interface": {
+      "command": [
+        "npm",
+        "run",
+        "test:voice-interface"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:voice-shortcuts": {
+      "command": [
+        "npm",
+        "run",
+        "test:voice-shortcuts"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:voice-disconnect-notice": {
+      "command": [
+        "npm",
+        "run",
+        "test:voice-disconnect-notice"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:audio:quality": {
+      "command": [
+        "npm",
+        "run",
+        "test:audio:quality"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:screen-profile-sfu": {
+      "command": [
+        "npm",
+        "run",
+        "test:screen-profile-sfu"
+      ],
+      "cwd": "web",
+      "sfu": true,
+      "smoke_env": true
+    },
+    "npm:test:audio:browser": {
+      "command": [
+        "npm",
+        "run",
+        "test:audio:browser"
+      ],
+      "cwd": "web",
+      "sfu": true,
+      "smoke_env": false
+    },
+    "python:tools.network.restricted.run": {
+      "command": [
+        "{python}",
+        "-m",
+        "tools.network.restricted.run"
+      ],
+      "cwd": "root",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:build": {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:verify:social-preview": {
+      "command": [
+        "npm",
+        "run",
+        "verify:social-preview"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    }
+  },
+  "additional_checks": {
+    "npm:test:mentions-inbox": {
+      "command": [
+        "npm",
+        "run",
+        "test:mentions-inbox"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    },
+    "npm:test:readonly-archive": {
+      "command": [
+        "npm",
+        "run",
+        "test:readonly-archive"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
+    }
+  },
+  "script_inventory": {
+    "build": "vue-tsc --noEmit && vite build",
+    "verify:social-preview": "node scripts/verify_social_preview.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:screen-profile": "playwright test -c tests/screen_profile/playwright.config.ts",
+    "test:screen-profile-sfu": "playwright test -c tests/screen_profile/screen_share_sfu.playwright.config.ts",
+    "test:member-popover": "playwright test -c tests/member_popover/playwright.config.ts",
+    "test:mentions-inbox": "playwright test -c tests/mentions_inbox/playwright.config.ts",
+    "test:password-generation": "playwright test -c tests/password_generation/playwright.config.ts",
+    "test:voice-shortcuts": "playwright test -c tests/voice_shortcuts/playwright.config.ts",
+    "test:voice-disconnect-notice": "playwright test -c tests/voice_disconnect_notice/playwright.config.ts",
+    "test:responsive-shell": "playwright test -c tests/responsive_shell/playwright.config.ts",
+    "test:controls": "playwright test -c tests/control_consistency/playwright.config.ts",
+    "test:microcopy": "playwright test -c tests/microcopy/playwright.config.ts",
+    "test:accessibility": "playwright test -c tests/accessibility/playwright.config.ts && playwright test -c tests/conversation_action_disclosure/playwright.config.ts --grep axe",
+    "test:audio": "playwright test -c tests/audio/playwright.config.ts",
+    "test:audio:quality": "node ../../tools/audio/quality_harness.mjs",
+    "test:audio:browser": "playwright test -c tests/audio/playwright.config.ts",
+    "test:restricted-networks": "playwright test -c tests/restricted_networks/playwright.config.ts",
+    "test:own-sessions": "playwright test -c tests/own_sessions/playwright.config.ts",
+    "test:readonly-archive": "playwright test -c tests/readonly_archive/playwright.config.ts",
+    "test:search-dates": "playwright test -c tests/search_dates/playwright.config.ts",
+    "test:delivery": "playwright test -c tests/delivery_uncertainty/playwright.config.ts",
+    "test:guild-lifecycle": "playwright test --config tests/guild_lifecycle/playwright.config.ts",
+    "test:search-sessions": "playwright test -c tests/search_sessions/playwright.config.ts",
+    "test:dm-starter": "playwright test -c tests/dm_starter/playwright.config.ts",
+    "test:chat-rhythm": "playwright test -c tests/chat_rhythm/playwright.config.ts",
+    "test:message-social": "playwright test -c tests/message_social/playwright.config.ts",
+    "test:navigation": "playwright test -c tests/navigation_density/playwright.config.ts",
+    "test:search-presentation": "playwright test -c tests/search_presentation/playwright.config.ts",
+    "test:voice-interface": "playwright test -c tests/voice_interface/playwright.config.ts",
+    "test:screen-share-ui": "playwright test -c tests/screen_share_ui/playwright.config.ts",
+    "test:screen-track-name": "playwright test -c tests/track_name/playwright.config.ts",
+    "test:mini-player": "playwright test -c tests/mini_player/playwright.config.ts",
+    "test:member-roster": "playwright test -c tests/member_roster/playwright.config.ts",
+    "test:settings-hierarchy": "playwright test -c tests/settings_hierarchy/playwright.config.ts",
+    "test:header-actions": "playwright test -c tests/header_actions/playwright.config.ts"
+  },
+  "aliases": {
+    "test:watch": "interactive Vitest watcher; the same assertions execute as npm:test",
+    "test:audio": "exact alias of test:audio:browser",
+    "test:restricted-networks": "executed by python:tools.network.restricted.run with actual network profiles"
+  },
+  "bootstrap": [
+    "exact reviewed Node identity",
+    "build_assets(ROOT)",
+    "npm ci once per isolated job"
+  ]
+}
