@@ -27,7 +27,7 @@ class LegacyTests(unittest.TestCase):
     def test_actual_original_dart_call_graph_preserves_every_app_and_vendor_command(self):
         calls = []
         machine = json.dumps({'frameworkVersion': '3.47.7', 'dartSdkVersion': '3.13.5'})
-        with patch.object(legacy, 'original', side_effect=legacy.frozen), patch.object(process, 'output', return_value=machine), \
+        with patch.dict('os.environ', {}, clear=True), patch.object(legacy, 'original', side_effect=legacy.frozen), patch.object(process, 'output', return_value=machine), \
              patch.object(process, 'run', side_effect=lambda *a, **k: calls.append(a)), \
              patch.object(vendor_locks, 'prepare') as prepare:
             completed = legacy.dart()
@@ -36,6 +36,18 @@ class LegacyTests(unittest.TestCase):
         self.assertEqual(3, calls.count(('flutter', 'pub', 'get', '--enforce-lockfile')))
         self.assertEqual(3, calls.count(('flutter', 'test', '--no-pub')))
         self.assertEqual(('flutter', 'analyze', '--no-pub', '--no-fatal-infos'), calls[-1])
+
+    def test_pool_control_uses_the_same_bounded_test_parallelism_after_original_coverage_check(self):
+        env = dict(RUNNER_ENVIRONMENT='self-hosted', RUNNER_OS='Linux',
+                   RUNNER_NAME='BOOHTACORD-Hetzner-CI-1-test', BOOHTACORD_EPHEMERAL_GUEST='true')
+        machine = json.dumps({'frameworkVersion': '3.47.7', 'dartSdkVersion': '3.13.5'})
+        with patch.dict('os.environ', env, clear=True), patch.object(legacy, 'original', side_effect=legacy.frozen), \
+                patch.object(process, 'output', return_value=machine), patch.object(process, 'run') as run, \
+                patch.object(vendor_locks, 'prepare'):
+            completed = legacy.dart()
+        self.assertEqual(legacy.reference()['operations'][:8], completed)
+        self.assertEqual(3, [call.args for call in run.call_args_list].count(
+            ('flutter', 'test', '--no-pub', '--concurrency=2')))
 
     def test_kotlin_control_invokes_the_unchanged_real_two_mode_script(self):
         with patch.object(legacy, 'original', side_effect=legacy.frozen), patch.object(legacy, 'run') as run:

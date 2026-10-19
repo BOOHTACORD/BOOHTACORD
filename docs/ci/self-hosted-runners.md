@@ -49,6 +49,10 @@ No dependency cache may suppress the original checks or locked installs.
 The guest's user Gradle profile caps its heap at 2 GiB, Kotlin at 512 MiB and
 parallel workers at two, instead of the app template's 8 GiB local heap.
 This profile is outside the checkout and leaves local developer settings intact.
+App and vendor Flutter tests use two concurrent test processes in the marked
+Linux pool, preserving the former four-CPU hosted default instead of letting
+`test_core` round a three-CPU guest down to one. Both shadow cohorts use this
+same pool policy; hosted and local commands retain their SDK defaults.
 
 ## Isolation
 

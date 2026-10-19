@@ -2,7 +2,7 @@
   "status": "IN_PROGRESS",
   "scope": "CICD-12 runner isolation and scheduling; dependency CICD-01 metadata baseline",
   "source_commit": "768b81e3",
-  "observed_at_utc": "2026-10-19T21:54:45.471613+00:00",
+  "observed_at_utc": "2026-10-19T21:59:52.475054+00:00",
   "sample": "20 most recent workflow runs; all returned jobs, bounded first page up to 100 per run",
   "timing_limitations": "Execution seconds only for completed jobs; overlapping runs, not host CPU utilization or a complete historical capacity estimate",
   "job_labels": {
@@ -95,8 +95,8 @@
     "https://github.com/Egkurilov/BOOHTACORD/settings/actions/runners",
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
-  "local_checks": "403 CI/policy/native-contract/promotion/next-diagnostics unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
-  "rollout_gate": "Previous 2-vCPU pool probes, contracts, Windows, PostgreSQL, web/SFU, actual/SFU, trusted delivery and cache acceptance PASS. Current 3-vCPU pool proof and full required CI pending after latest-master merge; old Dart job timed out at 20 minutes.",
+  "local_checks": "406 CI/policy/native-contract/promotion/next-diagnostics unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
+  "rollout_gate": "All four 3-vCPU/metadata probes PASS on f4cd7a9b with deployed controller. Final full required CI pending after explicit two-process Flutter execution; the prior two-vCPU Dart job timed out at 20 minutes.",
   "resource_limits": {
     "heavy_slots": 2,
     "heavy_cpu_each": 3,
@@ -137,6 +137,10 @@
     "timed_out_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39325508851/job/118311100763",
     "started_at_utc": "2026-10-19T21:28:19Z",
     "completed_at_utc": "2026-10-19T21:48:57Z",
-    "reason": "The full Dart/app/vendor profile exceeded the existing 20-minute wall budget on two vCPU. Keep the complete tests and budget; allocate three vCPU per heavy slot within the eight-vCPU host."
+    "reason": "The full Dart/app/vendor profile exceeded the existing 20-minute wall budget on two vCPU. Keep the complete tests and budget; allocate three vCPU per heavy slot within the eight-vCPU host.",
+    "pool_proof_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39331218419",
+    "pool_proof_status": "PASS",
+    "flutter_test_processes": 2,
+    "test_process_reason": "test_core defaults to floor(numberOfProcessors / 2). Both native profiles and the immutable-source shadow control explicitly use two test processes in marked Linux guests; hosted/local commands retain SDK defaults."
   }
 }

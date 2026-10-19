@@ -1,5 +1,7 @@
 """Independent Dart and Android checks; each runner owns its dependency state."""
 import json
+import os
+from tools.ci.runner_pool.routing import isolated_linux
 from tools.ci.native.process import ROOT, VERSIONS, client, output, require_version, run
 from tools.ci.flutter_setup.vendor_locks import prepare
 from tools.ci.flutter_setup.metadata import check_machine
@@ -10,6 +12,15 @@ OPERATIONS = {
              'webrtc-dependencies', 'webrtc-tests', 'app-analysis'),
     'android': ('app-dependencies', 'kotlin-modes', 'debug-apk'),
 }
+
+
+def test_command(env):
+    command = ('flutter', 'test', '--no-pub')
+    if env.get('RUNNER_ENVIRONMENT') == 'self-hosted' and isolated_linux(env):
+        # test_core defaults to floor(CPU / 2): retain the former four-CPU
+        # hosted runner's two test processes on a bounded three-CPU guest.
+        return (*command, '--concurrency=2')
+    return command
 
 
 def execute(profile):
@@ -36,13 +47,13 @@ def execute(profile):
         command('kotlin-modes', 'bash', 'tools/verify/android_kotlin/verify_android_kotlin_modes.sh')
         command('debug-apk', 'python3', '-m', 'tools.build.android.run', '--debug', '--no-pub')
     else:
-        command('app-tests', 'flutter', 'test', '--no-pub', cwd=app)
+        command('app-tests', *test_command(os.environ), cwd=app)
         for package, prefix in (('livekit_client', 'livekit'), ('flutter_webrtc', 'webrtc')):
             prepare(ROOT, package)
             completed.append(prefix + '-locks')
             path = app / 'packages' / package
             command(prefix + '-dependencies', 'flutter', 'pub', 'get', '--enforce-lockfile', cwd=path)
-            command(prefix + '-tests', 'flutter', 'test', '--no-pub', cwd=path)
+            command(prefix + '-tests', *test_command(os.environ), cwd=path)
         command('app-analysis', 'flutter', 'analyze', '--no-pub', '--no-fatal-infos', cwd=app)
     if completed != list(OPERATIONS[profile]):
         raise ValueError('Incomplete Flutter CI operation inventory')

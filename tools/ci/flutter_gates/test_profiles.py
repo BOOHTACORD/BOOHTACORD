@@ -7,7 +7,7 @@ from . import profiles
 
 
 class ProfileTests(unittest.TestCase):
-    def exercise(self, profile, failure=None):
+    def exercise(self, profile, failure=None, env=None):
         commands = []
 
         def execute(*args, **kwargs):
@@ -15,13 +15,27 @@ class ProfileTests(unittest.TestCase):
             if failure == args:
                 raise RuntimeError('intentional command failure')
 
-        with patch.object(profiles, 'output', return_value=json.dumps({
+        with patch.dict('os.environ', env or {}, clear=True), patch.object(profiles, 'output', return_value=json.dumps({
                 'frameworkVersion': '3.47.7', 'dartSdkVersion': '3.13.5 (stable)',
                 'frameworkRevision': 'abaf9c523780a608bd46686fd5e53740a07077f8'})), \
              patch.object(profiles, 'run', side_effect=execute), \
              patch.object(profiles, 'prepare') as prepare:
             completed = profiles.execute(profile)
         return commands, completed, prepare
+
+    def test_disposable_pool_keeps_two_processes_for_all_app_and_vendor_tests(self):
+        env = dict(RUNNER_ENVIRONMENT='self-hosted', RUNNER_OS='Linux',
+                   RUNNER_NAME='BOOHTACORD-Hetzner-CI-1-test', BOOHTACORD_EPHEMERAL_GUEST='true')
+        commands, completed, _ = self.exercise('dart', env=env)
+        tests = [args for args, _ in commands if args[:2] == ('flutter', 'test')]
+        self.assertEqual([('flutter', 'test', '--no-pub', '--concurrency=2')] * 3, tests)
+        self.assertEqual(list(profiles.OPERATIONS['dart']), completed)
+
+    def test_hosted_and_local_invocations_keep_the_sdk_default(self):
+        for env in ({}, dict(RUNNER_ENVIRONMENT='github-hosted', RUNNER_OS='Linux')):
+            commands, _, _ = self.exercise('dart', env=env)
+            self.assertEqual([('flutter', 'test', '--no-pub')] * 3,
+                             [a for a, _ in commands if a[:2] == ('flutter', 'test')])
 
     def test_dart_keeps_app_both_vendors_recursive_locks_and_analysis(self):
         commands, completed, prepare = self.exercise('dart')
