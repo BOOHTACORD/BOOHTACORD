@@ -17,13 +17,17 @@ RUNTIME = Path(os.environ.get('RUNTIME_DIRECTORY', '/run/boohtacord-ci'))
 LABELS = ['self-hosted', 'linux', 'x64', 'boohtacord-ci-ephemeral']
 
 
+class OperationError(RuntimeError):
+    """A bounded host operation failed, rather than controller shutdown."""
+
+
 def command(args, *, stdin=None, timeout=120, quiet=False, check=True):
     result = subprocess.run(args, input=stdin, text=True, timeout=timeout,
                             stdout=subprocess.DEVNULL if quiet else subprocess.PIPE,
                             stderr=subprocess.STDOUT if not quiet else subprocess.DEVNULL)
     if check and result.returncode:
         # Never include subprocess output: registration responses contain credentials.
-        raise RuntimeError('Runner operation failed: ' + ' '.join(args[:2]) + ' status ' + str(result.returncode))
+        raise OperationError('Runner operation failed: ' + ' '.join(args[:2]) + ' status ' + str(result.returncode))
     return result.stdout or ''
 
 
@@ -52,6 +56,19 @@ def wait_for_boot(guest):
             return
         time.sleep(2)
     raise RuntimeError('Guest boot is not ready for registration')
+
+
+def agent_state(execute):
+    # A failed observation must not immediately destroy a healthy running job.
+    # Retry read-only status queries only; never retry registration or execution.
+    for attempt in range(3):
+        try:
+            raw = command([*execute, 'show', 'boohtacord-agent', '-p', 'ActiveState', '-p', 'ExecMainStatus'], timeout=15)
+            return dict(line.split('=', 1) for line in raw.splitlines() if '=' in line)
+        except (OperationError, subprocess.TimeoutExpired):
+            if attempt == 2:
+                raise
+            time.sleep(2)
 
 
 def cycle(slot):
@@ -96,8 +113,7 @@ def cycle(slot):
         # The agent is owned by guest PID 1, independent of a long-lived LXD exec session.
         deadline = time.monotonic() + 6 * 60 * 60
         while time.monotonic() < deadline:
-            raw = command([*execute, 'show', 'boohtacord-agent', '-p', 'ActiveState', '-p', 'ExecMainStatus'])
-            state = dict(line.split('=', 1) for line in raw.splitlines() if '=' in line)
+            state = agent_state(execute)
             if state.get('ActiveState') in ('inactive', 'failed'):
                 if state.get('ExecMainStatus') != '0':
                     raise RuntimeError('Guest agent exited unsuccessfully')

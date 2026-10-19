@@ -95,8 +95,8 @@
     "https://github.com/Egkurilov/BOOHTACORD/settings/actions/runners",
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
-  "local_checks": "387 CI/policy/native-contract/promotion unit tests PASS; focused runner/receipt tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
-  "rollout_gate": "Four real probes PASS on attempt 2 of run 39321067423 using the guest-native systemd agent. Final boot-readiness refinement and required PR checks still pending.",
+  "local_checks": "389 CI/policy/native-contract/promotion unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
+  "rollout_gate": "Four final-source probes PASS on run 39323598802. Required PR checks pending after bounded status-observation retry refinement.",
   "resource_limits": {
     "heavy_slots": 2,
     "heavy_cpu_each": 2,
@@ -110,19 +110,19 @@
   },
   "pool_acceptance": {
     "status": "PASS",
-    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39321067423",
-    "run_attempt": 2,
-    "source_commit": "3bcd91595d663544c998976baa44c67367d96c99",
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39323598802",
+    "run_attempt": 1,
+    "source_commit": "774b9a70f72c1a5d8df778ed39244cae12da66a8",
     "checks": [
       "Two isolated PostgreSQL-service probes succeeded on heavy slots",
       "Two metadata probes succeeded with 512 MiB memory limit",
       "Completed job registrations disappeared and fresh guest runner IDs appeared"
     ],
-    "limit": "Controller used the then-uncommitted guest-native systemd implementation; repeat final source checks after committing boot readiness and CI test coverage."
+    "limit": "A subsequent bounded retry for transient read-only status observation is being validated; mandatory PR CI is still required."
   },
   "isolation_limit": "Unprivileged UID-isolated containers share the host kernel; no hardware VM isolation or media capacity claim.",
   "controller_sha256": {
-    "worker.py": "fc65f5e570d487e8a0d840570ebb0e82b97956a311f42ec48902bd96912f825a",
+    "worker.py": "d198f2cdf3c3aa3720b8e6b2d291d16f39b63fd6219672ed373ee03ff5a8074b",
     "guest-runner.service": "160a3ba76c3aeea41e8368e94c5c5dd8019b87d18413ea05809b42e90ac43d62",
     "start-runner.sh": "5635bd5b5a497c0bed7a28c1fca193cfa80729179cec69eef2c654da46d7f37f"
   }

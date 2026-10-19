@@ -8,6 +8,23 @@ from . import worker
 
 
 class WorkerTests(unittest.TestCase):
+    def test_transient_observation_failure_does_not_destroy_running_job(self):
+        with patch.object(worker, 'command', side_effect=[
+                worker.OperationError('Runner operation failed: lxc exec status -15'),
+                'ActiveState=active\nExecMainStatus=0\n']) as command, patch.object(worker.time, 'sleep'):
+            self.assertEqual('active', worker.agent_state(['lxc', 'exec', 'guest', '--', 'systemctl'])['ActiveState'])
+        self.assertEqual(2, command.call_count)
+        self.assertTrue(all('show' in call.args[0] for call in command.call_args_list))
+
+    def test_observation_does_not_swallow_shutdown_or_retry_indefinitely(self):
+        with patch.object(worker, 'command', side_effect=RuntimeError('Worker shutdown')) as command:
+            with self.assertRaisesRegex(RuntimeError, 'Worker shutdown'): worker.agent_state([])
+        self.assertEqual(1, command.call_count)
+        with patch.object(worker, 'command', side_effect=worker.OperationError('transport failed')) as command, \
+                patch.object(worker.time, 'sleep'):
+            with self.assertRaises(worker.OperationError): worker.agent_state([])
+        self.assertEqual(3, command.call_count)
+
     def test_boot_waits_for_system_bus_before_registration_is_allowed(self):
         with patch.object(worker, 'command', side_effect=[
                 'Failed to connect to bus: No such file or directory\n', 'starting\n', 'running\n']) as command, \
