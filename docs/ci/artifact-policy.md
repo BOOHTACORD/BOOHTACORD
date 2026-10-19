@@ -127,6 +127,7 @@ same-SHA delivery, SSH/health and approved rollout/rollback acceptance belongs t
 | --- | --- | --- | --- |
 | Ordinary PR | 20 → 19 | 265348817 → 262862889 | 75.083333 → 77.083333 |
 | Master server producer | 16 → 16 | 117372024 → 115038376 | 36.750000 → 35.783333 |
+| Master Native, equal native inputs | 10 → 9 | 221483302 → 221480032 | 45.383333 → 44.366667 |
 | Manual CI from QA tag refs | 20 → 19 | 265371939 → 262857356 | 78.100000 → 75.583333 |
 | Web QA, complete 3+3 controls | 34 → 34 | 131537316 → 124646420 | 125.633333 → 126.000000 |
 | Flutter QA, complete 3+3 controls | 28 → 25 | 768080896 → 768061226 | 107.233333 → 108.450000 |
@@ -149,14 +150,20 @@ was canceled after independent PR #435 advanced master to `4fa947da`: Dart and
 Android succeeded, Windows packaging was canceled, and native-required correctly
 failed. Its actual published FAIL result retains 30 days and was downloaded.
 That run is excluded from successful before/after measurements. Full native
-checks on the same implementation tree passed in current PR and tag CI; this
-does not relabel the canceled master Native run as PASS or invent a combined
-26-to-25 successful master measurement. No rerun or unrelated settings change
-was made to manufacture a green sample.
+checks on the same implementation tree passed in current PR and tag CI.
+Later, Native master 39270703331 on independent master `4fa947da` completed all
+six jobs successfully with nine artifacts. Its Flutter/API/SDK/Windows fixture
+inputs equal the native baseline; the independent Web change does not alter
+that native scenario. The actual native quality and GUI ZIPs were downloaded:
+exact source/run, PASS result and all eight PNG hashes match. This separate
+native comparison does not relabel the canceled run as PASS or combine server
+`fe482078` and Native `4fa947da` into a single-source 26-to-25 result. No rerun or
+unrelated settings change was made to manufacture a green sample.
 
-The frozen implementation/application inputs are bound to `fe482078`, not to the
-later independent Web feature. All five scenario pairs have identical relevant
-application, pinned SDK and original test inputs. Before Flutter QA used its
+The original frozen implementation/application inputs are bound to `fe482078`,
+not to the later independent Web feature. All five original scenario pairs have
+identical relevant application, pinned SDK and original test inputs; the later
+Native master pair has its own additional input-equivalence record. Before Flutter QA used its
 historical push trigger, after used manual dispatch; parsed jobs/steps/matrices
 are identical apart from that trigger. The old Web QA source `76f7d7f7` has a
 different client tree and is excluded from matched comparison.
