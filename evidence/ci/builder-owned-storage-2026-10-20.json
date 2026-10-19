@@ -1,0 +1,677 @@
+{
+  "schema_version": 1,
+  "scope": "owned-builder-storage-implementation-and-disposable-protocol",
+  "status": "PASS_SCOPED_PROTOCOL_NOT_SHIPPING_ACCEPTANCE",
+  "base_revision": "4fa9db71481eb6a27d25ce63bfe53723d8b61c9d",
+  "tested_code_sha256": {
+    "tools/build/server/builder_storage.py": "a5eaebe4872100267047231bf2edcd030d32867549f061ccadd9c52b46b3a8be",
+    "tools/build/server/storage_lease.py": "911a5977cef5486057aef15eeaf9ea606bd39bd80ff1b6a4b682b18298ce025d",
+    "tools/build/server/storage_docker.py": "7e5b9118939655d611d41ed36a1b4e79f1aafda61c661bd8d8d0f6803c018000",
+    "tools/build/server/oci_import.py": "86fa6b4afd2266b65fba0bc08873bac79264be53ac88558946408e61d8a52265",
+    "tools/build/server/images.py": "13b50a051d050f67c914fcfc016634ab5b521a8c64657e552d0d7c837f3ea229",
+    "tools/build/server/metrics.py": "e9d2756170e3ad21f61d12a6340ffd8279ac66a41fe431cf7737b7336a1403f8",
+    "tools/build/server/layer_cache.py": "8aa545ab8aad9eb5327675f06650f9748e92c27fe96d7eb8af7d1b65d62ee8dd",
+    "tools/build/server/cache_layout.py": "b02fd11cde8b4ddab5f28ae925ab8f8d78b96c835c2dcf5407435df33f45abbc",
+    "tools/build/server/buildx.py": "23329c64b80765f4ade43c083657705dd1aaae276473e31313c730f56023af04",
+    "tools/build/server/smoke.py": "88fc0c732a297e7adbb3b3792c66b05685cd312f85fb5639d8881554fee89b84",
+    "tools/build/server/buildkit-image.json": "e48b335a92c46e45be4a44fa8c65db1f753a148b76b009cc49b5f3adf8aef729"
+  },
+  "official_buildkit_pin": {
+    "schema_version": 1,
+    "version": "v0.33.1",
+    "repository": "moby/buildkit",
+    "registry": "https://registry-1.docker.io",
+    "index_digest": "sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea",
+    "linux_amd64_descriptor": {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:98cc6a3fc46220d00f8224ae483f3274fc874e9be8d7dd1e2e2c5481209228b5",
+      "size": 2261,
+      "platform": {
+        "architecture": "amd64",
+        "os": "linux"
+      }
+    },
+    "release": "https://github.com/moby/buildkit/releases/tag/v0.33.1"
+  },
+  "official_fixture_client": {
+    "version": "0.37.1",
+    "architecture": "linux-arm64",
+    "sha256": "e5cc9fe3bbff5cbc91230981f7860e06076110730a2db997082652199042a1f2",
+    "source": "https://github.com/docker/buildx/releases/tag/v0.37.1"
+  },
+  "focused_regressions": {
+    "status": "PASS",
+    "test_methods": 64,
+    "seconds": 0.154,
+    "coverage": [
+      "lease exclusion/recovery; corrupt/duplicate/linked/foreign journals",
+      "foreign image aliases/users, foreign network users, privileged/bind smoke resources",
+      "immutable OCI import before source/attestation admission; ambiguous archive rejection",
+      "cleanup must finish before successful metrics; same explicit daemon for smoke",
+      "actual builder pin/toolchains invalidate cache identity even for retained old product sources"
+    ]
+  },
+  "observations": [
+    {
+      "scope": "emulated-amd64-fixture",
+      "observed_outcome": "FAIL",
+      "process_exit_code": 1,
+      "failing_component": "second-pass Web Buildx invocation",
+      "command_exit_code": 255,
+      "root_cause": "UNVERIFIED",
+      "public_payload": {
+        "schema_version": 1,
+        "scope": "real-tiny-OCI-builder-storage-fixture",
+        "status": "RUNNING",
+        "application_acceptance": "NOT_RUN",
+        "production_release": "NOT_RUN",
+        "tested_code_sha256": {
+          "tools/build/server/builder_storage.py": "a5eaebe4872100267047231bf2edcd030d32867549f061ccadd9c52b46b3a8be",
+          "tools/build/server/storage_lease.py": "911a5977cef5486057aef15eeaf9ea606bd39bd80ff1b6a4b682b18298ce025d",
+          "tools/build/server/storage_docker.py": "7e5b9118939655d611d41ed36a1b4e79f1aafda61c661bd8d8d0f6803c018000",
+          "tools/build/server/oci_import.py": "86fa6b4afd2266b65fba0bc08873bac79264be53ac88558946408e61d8a52265",
+          "tools/build/server/images.py": "13b50a051d050f67c914fcfc016634ab5b521a8c64657e552d0d7c837f3ea229",
+          "tools/build/server/metrics.py": "e9d2756170e3ad21f61d12a6340ffd8279ac66a41fe431cf7737b7336a1403f8",
+          "tools/build/server/layer_cache.py": "8aa545ab8aad9eb5327675f06650f9748e92c27fe96d7eb8af7d1b65d62ee8dd",
+          "tools/build/server/cache_layout.py": "b02fd11cde8b4ddab5f28ae925ab8f8d78b96c835c2dcf5407435df33f45abbc",
+          "tools/build/server/buildx.py": "23329c64b80765f4ade43c083657705dd1aaae276473e31313c730f56023af04",
+          "tools/build/server/smoke.py": "88fc0c732a297e7adbb3b3792c66b05685cd312f85fb5639d8881554fee89b84",
+          "tools/build/server/buildkit-image.json": "e48b335a92c46e45be4a44fa8c65db1f753a148b76b009cc49b5f3adf8aef729"
+        },
+        "buildkit_image": "moby/buildkit@sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea",
+        "environment": {
+          "system": "Linux",
+          "machine": "aarch64",
+          "python": "3.12.3"
+        },
+        "harness_sha256": "06099471e4d289cef6c2ba9586f97faa11afef60d316e8ed95c75c162a9a1794",
+        "runs": [
+          {
+            "index": 0,
+            "seconds": 39.200468,
+            "metrics": {
+              "builder_storage": {
+                "buildkit_image": "moby/buildkit@sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea",
+                "buildkit_policy_sha256": "e48b335a92c46e45be4a44fa8c65db1f753a148b76b009cc49b5f3adf8aef729",
+                "cleanup_seconds": 2.139423,
+                "filesystem_after": {
+                  "daemon_sha256": "19fa60b3daf08d7dbfcfbea369f8bdeee7508c541b3632ed6bce43814f753c5b",
+                  "filesystem_available_bytes": 22606979072,
+                  "filesystem_used_bytes": 17183670272,
+                  "image_count": 126
+                },
+                "filesystem_before": {
+                  "daemon_sha256": "19fa60b3daf08d7dbfcfbea369f8bdeee7508c541b3632ed6bce43814f753c5b",
+                  "filesystem_available_bytes": 22606979072,
+                  "filesystem_used_bytes": 17183670272,
+                  "image_count": 126
+                },
+                "gc_target_is_write_quota": false,
+                "owned_resources_removed": true,
+                "recovered_previous_lease": false,
+                "removed_image_count": 2,
+                "removed_smoke_container_count": 0,
+                "removed_smoke_network_count": 0,
+                "schema_version": 1,
+                "setup_seconds": 5.208474,
+                "status": "PASS",
+                "transient_gc_target_bytes": 8589934592
+              },
+              "cache": {
+                "api": {
+                  "export": "VERIFIED",
+                  "import": "COLD",
+                  "namespace": "18ec52d2281694c5ce614ab76d894848af2d92201b784873096eec8bf35d571c",
+                  "retained_bytes": 2969
+                },
+                "web": {
+                  "export": "VERIFIED",
+                  "import": "COLD",
+                  "namespace": "926b7be1658c49e72d68191a308bcdf85812f4c05fd441412f660ef7a303c37e",
+                  "retained_bytes": 2969
+                }
+              },
+              "images": {
+                "api": "sha256:6bff7be0c1061dc9b61dc96f63a36a3eb0e32eb441e4264ebec757957994c76b",
+                "web": "sha256:d9ef55d903e27e23ff6356f941e135d9de4dbdef9770d795e502e1e5762698a3"
+              },
+              "schema_version": 1,
+              "source_revision": "546268993b4f8f3bf856443d322725721fbf661d",
+              "stages": [
+                {
+                  "phase": "owned_builder",
+                  "seconds": 39.198991,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_cache_prepare",
+                  "seconds": 7.7e-05,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_build_export",
+                  "seconds": 29.610216,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_oci_verify",
+                  "seconds": 0.001095,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_oci_import",
+                  "seconds": 0.038874,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_image_identity",
+                  "seconds": 0.011114,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_cache_publish",
+                  "seconds": 0.000489,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_cache_prepare",
+                  "seconds": 3.5e-05,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_build_export",
+                  "seconds": 2.140001,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_oci_verify",
+                  "seconds": 0.000713,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_oci_import",
+                  "seconds": 0.035605,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_image_identity",
+                  "seconds": 0.010359,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_cache_publish",
+                  "seconds": 0.000387,
+                  "status": "PASS"
+                }
+              ],
+              "status": "PASS",
+              "upload_timing": "GitHub upload step timestamps; not measured inside builder"
+            },
+            "receipts": {
+              "api": {
+                "index_digest": "sha256:6bff7be0c1061dc9b61dc96f63a36a3eb0e32eb441e4264ebec757957994c76b",
+                "manifest_digest": "sha256:1b02c2c63b9bdbd4487e988004249b6c71115cf84ab820e823a8295cb641bc37",
+                "revision": "546268993b4f8f3bf856443d322725721fbf661d",
+                "source_archive_sha256": "3d7715d256edbc05be0bd14d037c8223259872b07a087d27c67a67ce7d67f5fd",
+                "attestation_predicates": [
+                  "https://slsa.dev/provenance/v0.2",
+                  "https://spdx.dev/Document"
+                ]
+              },
+              "web": {
+                "index_digest": "sha256:d9ef55d903e27e23ff6356f941e135d9de4dbdef9770d795e502e1e5762698a3",
+                "manifest_digest": "sha256:1b02c2c63b9bdbd4487e988004249b6c71115cf84ab820e823a8295cb641bc37",
+                "revision": "546268993b4f8f3bf856443d322725721fbf661d",
+                "source_archive_sha256": "3d7715d256edbc05be0bd14d037c8223259872b07a087d27c67a67ce7d67f5fd",
+                "attestation_predicates": [
+                  "https://slsa.dev/provenance/v0.2",
+                  "https://spdx.dev/Document"
+                ]
+              }
+            }
+          }
+        ],
+        "fixture_revision": "546268993b4f8f3bf856443d322725721fbf661d",
+        "fixture_archive_sha256": "3d7715d256edbc05be0bd14d037c8223259872b07a087d27c67a67ce7d67f5fd",
+        "image_identity_note": "Synthetic fixture identity, not a product Git checkout or shipping archive",
+        "public_buildx_binary_sha256": "9447199cdb435f25880548343c128a4b6650e8891ee598905d8d29d39a8e359b"
+      },
+      "private_log_sha256": "8819bdf601c0b950d7f012926813636e12fe43667b80bd505375ac2865de3c22"
+    },
+    {
+      "scope": "native-arm64-cold-warm-and-original-fixture-failure",
+      "observed_outcome": "FAIL",
+      "completed_build_phases": "Two actual source/OCI/attestation/import/cache/cleanup PASS records",
+      "public_payload": {
+        "schema_version": 1,
+        "scope": "real-tiny-OCI-builder-storage-fixture",
+        "status": "FAIL",
+        "application_acceptance": "NOT_RUN",
+        "production_release": "NOT_RUN",
+        "tested_code_sha256": {
+          "tools/build/server/builder_storage.py": "a5eaebe4872100267047231bf2edcd030d32867549f061ccadd9c52b46b3a8be",
+          "tools/build/server/storage_lease.py": "911a5977cef5486057aef15eeaf9ea606bd39bd80ff1b6a4b682b18298ce025d",
+          "tools/build/server/storage_docker.py": "7e5b9118939655d611d41ed36a1b4e79f1aafda61c661bd8d8d0f6803c018000",
+          "tools/build/server/oci_import.py": "86fa6b4afd2266b65fba0bc08873bac79264be53ac88558946408e61d8a52265",
+          "tools/build/server/images.py": "13b50a051d050f67c914fcfc016634ab5b521a8c64657e552d0d7c837f3ea229",
+          "tools/build/server/metrics.py": "e9d2756170e3ad21f61d12a6340ffd8279ac66a41fe431cf7737b7336a1403f8",
+          "tools/build/server/layer_cache.py": "8aa545ab8aad9eb5327675f06650f9748e92c27fe96d7eb8af7d1b65d62ee8dd",
+          "tools/build/server/cache_layout.py": "b02fd11cde8b4ddab5f28ae925ab8f8d78b96c835c2dcf5407435df33f45abbc",
+          "tools/build/server/buildx.py": "23329c64b80765f4ade43c083657705dd1aaae276473e31313c730f56023af04",
+          "tools/build/server/smoke.py": "88fc0c732a297e7adbb3b3792c66b05685cd312f85fb5639d8881554fee89b84",
+          "tools/build/server/buildkit-image.json": "e48b335a92c46e45be4a44fa8c65db1f753a148b76b009cc49b5f3adf8aef729"
+        },
+        "buildkit_image": "moby/buildkit@sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea",
+        "environment": {
+          "system": "Linux",
+          "machine": "aarch64",
+          "python": "3.12.3"
+        },
+        "harness_sha256": "370fb09827ad0d7fb2121bf86dce044586f197df1e7e736d588ebe7e156a9a91",
+        "runs": [
+          {
+            "index": 0,
+            "seconds": 31.769269,
+            "metrics": {
+              "builder_storage": {
+                "buildkit_image": "moby/buildkit@sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea",
+                "buildkit_policy_sha256": "e48b335a92c46e45be4a44fa8c65db1f753a148b76b009cc49b5f3adf8aef729",
+                "cleanup_seconds": 1.668393,
+                "filesystem_after": {
+                  "daemon_sha256": "19fa60b3daf08d7dbfcfbea369f8bdeee7508c541b3632ed6bce43814f753c5b",
+                  "filesystem_available_bytes": 22606979072,
+                  "filesystem_used_bytes": 17183670272,
+                  "image_count": 126
+                },
+                "filesystem_before": {
+                  "daemon_sha256": "19fa60b3daf08d7dbfcfbea369f8bdeee7508c541b3632ed6bce43814f753c5b",
+                  "filesystem_available_bytes": 22606979072,
+                  "filesystem_used_bytes": 17183670272,
+                  "image_count": 126
+                },
+                "gc_target_is_write_quota": false,
+                "owned_resources_removed": true,
+                "recovered_previous_lease": false,
+                "removed_image_count": 2,
+                "removed_smoke_container_count": 0,
+                "removed_smoke_network_count": 0,
+                "schema_version": 1,
+                "setup_seconds": 3.827071,
+                "status": "PASS",
+                "transient_gc_target_bytes": 8589934592
+              },
+              "cache": {
+                "api": {
+                  "export": "VERIFIED",
+                  "import": "COLD",
+                  "namespace": "18ec52d2281694c5ce614ab76d894848af2d92201b784873096eec8bf35d571c",
+                  "retained_bytes": 2968
+                },
+                "web": {
+                  "export": "VERIFIED",
+                  "import": "COLD",
+                  "namespace": "926b7be1658c49e72d68191a308bcdf85812f4c05fd441412f660ef7a303c37e",
+                  "retained_bytes": 2968
+                }
+              },
+              "images": {
+                "api": "sha256:3bac879c6df2063762e5a5af4b8f145ce6d548b2a59f2c4f3f8e7d7ad9515b63",
+                "web": "sha256:f2301bfaddb78c16395743e66a6343b343e0d23e1d679495d38a6badda490d39"
+              },
+              "schema_version": 1,
+              "source_revision": "546268993b4f8f3bf856443d322725721fbf661d",
+              "stages": [
+                {
+                  "phase": "owned_builder",
+                  "seconds": 31.768659,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_cache_prepare",
+                  "seconds": 7.8e-05,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_build_export",
+                  "seconds": 25.632883,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_oci_verify",
+                  "seconds": 0.001072,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_oci_import",
+                  "seconds": 0.032547,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_image_identity",
+                  "seconds": 0.009811,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_cache_publish",
+                  "seconds": 0.000456,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_cache_prepare",
+                  "seconds": 3.8e-05,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_build_export",
+                  "seconds": 0.547697,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_oci_verify",
+                  "seconds": 0.000802,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_oci_import",
+                  "seconds": 0.03551,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_image_identity",
+                  "seconds": 0.009873,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_cache_publish",
+                  "seconds": 0.000348,
+                  "status": "PASS"
+                }
+              ],
+              "status": "PASS",
+              "upload_timing": "GitHub upload step timestamps; not measured inside builder"
+            },
+            "receipts": {
+              "api": {
+                "index_digest": "sha256:3bac879c6df2063762e5a5af4b8f145ce6d548b2a59f2c4f3f8e7d7ad9515b63",
+                "manifest_digest": "sha256:5f1b41b4e7eb17224c84565e70cb0314fd575c010822831b94f49cd2c3b19ae3",
+                "revision": "546268993b4f8f3bf856443d322725721fbf661d",
+                "source_archive_sha256": "3d7715d256edbc05be0bd14d037c8223259872b07a087d27c67a67ce7d67f5fd",
+                "attestation_predicates": [
+                  "https://slsa.dev/provenance/v0.2",
+                  "https://spdx.dev/Document"
+                ]
+              },
+              "web": {
+                "index_digest": "sha256:f2301bfaddb78c16395743e66a6343b343e0d23e1d679495d38a6badda490d39",
+                "manifest_digest": "sha256:5f1b41b4e7eb17224c84565e70cb0314fd575c010822831b94f49cd2c3b19ae3",
+                "revision": "546268993b4f8f3bf856443d322725721fbf661d",
+                "source_archive_sha256": "3d7715d256edbc05be0bd14d037c8223259872b07a087d27c67a67ce7d67f5fd",
+                "attestation_predicates": [
+                  "https://slsa.dev/provenance/v0.2",
+                  "https://spdx.dev/Document"
+                ]
+              }
+            }
+          },
+          {
+            "index": 1,
+            "seconds": 30.280046,
+            "metrics": {
+              "builder_storage": {
+                "buildkit_image": "moby/buildkit@sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea",
+                "buildkit_policy_sha256": "e48b335a92c46e45be4a44fa8c65db1f753a148b76b009cc49b5f3adf8aef729",
+                "cleanup_seconds": 1.682597,
+                "filesystem_after": {
+                  "daemon_sha256": "19fa60b3daf08d7dbfcfbea369f8bdeee7508c541b3632ed6bce43814f753c5b",
+                  "filesystem_available_bytes": 22606979072,
+                  "filesystem_used_bytes": 17183670272,
+                  "image_count": 126
+                },
+                "filesystem_before": {
+                  "daemon_sha256": "19fa60b3daf08d7dbfcfbea369f8bdeee7508c541b3632ed6bce43814f753c5b",
+                  "filesystem_available_bytes": 22606979072,
+                  "filesystem_used_bytes": 17183670272,
+                  "image_count": 126
+                },
+                "gc_target_is_write_quota": false,
+                "owned_resources_removed": true,
+                "recovered_previous_lease": false,
+                "removed_image_count": 2,
+                "removed_smoke_container_count": 0,
+                "removed_smoke_network_count": 0,
+                "schema_version": 1,
+                "setup_seconds": 4.123317,
+                "status": "PASS",
+                "transient_gc_target_bytes": 8589934592
+              },
+              "cache": {
+                "api": {
+                  "export": "VERIFIED",
+                  "import": "WARM_VERIFIED",
+                  "namespace": "18ec52d2281694c5ce614ab76d894848af2d92201b784873096eec8bf35d571c",
+                  "retained_bytes": 2969
+                },
+                "web": {
+                  "export": "VERIFIED",
+                  "import": "WARM_VERIFIED",
+                  "namespace": "926b7be1658c49e72d68191a308bcdf85812f4c05fd441412f660ef7a303c37e",
+                  "retained_bytes": 2969
+                }
+              },
+              "images": {
+                "api": "sha256:3ae1ae6f0974e198a28dd8286eddc30b9bb4144aa7b53fb7a6b7337bcb5e1232",
+                "web": "sha256:99a18ffab24260079c6f6bd42052b9c1ed9c55fe6b5114b2e49a6e02215ba16d"
+              },
+              "schema_version": 1,
+              "source_revision": "546268993b4f8f3bf856443d322725721fbf661d",
+              "stages": [
+                {
+                  "phase": "owned_builder",
+                  "seconds": 30.27869,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_cache_prepare",
+                  "seconds": 0.000303,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_build_export",
+                  "seconds": 23.765978,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_oci_verify",
+                  "seconds": 0.000616,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_oci_import",
+                  "seconds": 0.03545,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_image_identity",
+                  "seconds": 0.009692,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "api_cache_publish",
+                  "seconds": 0.000458,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_cache_prepare",
+                  "seconds": 0.000257,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_build_export",
+                  "seconds": 0.612463,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_oci_verify",
+                  "seconds": 0.000689,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_oci_import",
+                  "seconds": 0.034843,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_image_identity",
+                  "seconds": 0.009627,
+                  "status": "PASS"
+                },
+                {
+                  "phase": "web_cache_publish",
+                  "seconds": 0.000435,
+                  "status": "PASS"
+                }
+              ],
+              "status": "PASS",
+              "upload_timing": "GitHub upload step timestamps; not measured inside builder"
+            },
+            "receipts": {
+              "api": {
+                "index_digest": "sha256:3ae1ae6f0974e198a28dd8286eddc30b9bb4144aa7b53fb7a6b7337bcb5e1232",
+                "manifest_digest": "sha256:eaf4a955270ba9a37acc279652634e059f61eb2406214dba549705f315171b8b",
+                "revision": "546268993b4f8f3bf856443d322725721fbf661d",
+                "source_archive_sha256": "3d7715d256edbc05be0bd14d037c8223259872b07a087d27c67a67ce7d67f5fd",
+                "attestation_predicates": [
+                  "https://slsa.dev/provenance/v0.2",
+                  "https://spdx.dev/Document"
+                ]
+              },
+              "web": {
+                "index_digest": "sha256:99a18ffab24260079c6f6bd42052b9c1ed9c55fe6b5114b2e49a6e02215ba16d",
+                "manifest_digest": "sha256:eaf4a955270ba9a37acc279652634e059f61eb2406214dba549705f315171b8b",
+                "revision": "546268993b4f8f3bf856443d322725721fbf661d",
+                "source_archive_sha256": "3d7715d256edbc05be0bd14d037c8223259872b07a087d27c67a67ce7d67f5fd",
+                "attestation_predicates": [
+                  "https://slsa.dev/provenance/v0.2",
+                  "https://spdx.dev/Document"
+                ]
+              }
+            }
+          }
+        ],
+        "fixture_revision": "546268993b4f8f3bf856443d322725721fbf661d",
+        "fixture_archive_sha256": "3d7715d256edbc05be0bd14d037c8223259872b07a087d27c67a67ce7d67f5fd",
+        "image_identity_note": "Synthetic fixture identity, not a product Git checkout or shipping archive",
+        "public_buildx_binary_sha256": "e5cc9fe3bbff5cbc91230981f7860e06076110730a2db997082652199042a1f2",
+        "production_x64_acceptance": "NOT_RUN",
+        "failure_type": "AssertionError"
+      },
+      "child_syntax_diagnosis": {
+        "scope": "deterministic-fixture-child-syntax-diagnosis",
+        "status": "CONFIRMED",
+        "failure_type": "IndentationError",
+        "line": 2,
+        "harness_sha256": "370fb09827ad0d7fb2121bf86dce044586f197df1e7e736d588ebe7e156a9a91",
+        "child_sha256": "2d082b7f465cef570613ab45cbb7e6169ecd23e7abedc74bdf4db9b1cb6efc9f"
+      }
+    },
+    {
+      "scope": "corrected-fixture-targeted-hard-stop-PostgreSQL-network-recovery",
+      "observed_outcome": "PASS",
+      "public_payload": {
+        "schema_version": 1,
+        "scope": "real-tiny-OCI-builder-storage-fixture",
+        "status": "PASS",
+        "application_acceptance": "NOT_RUN",
+        "production_release": "NOT_RUN",
+        "tested_code_sha256": {
+          "tools/build/server/builder_storage.py": "a5eaebe4872100267047231bf2edcd030d32867549f061ccadd9c52b46b3a8be",
+          "tools/build/server/storage_lease.py": "911a5977cef5486057aef15eeaf9ea606bd39bd80ff1b6a4b682b18298ce025d",
+          "tools/build/server/storage_docker.py": "7e5b9118939655d611d41ed36a1b4e79f1aafda61c661bd8d8d0f6803c018000",
+          "tools/build/server/oci_import.py": "86fa6b4afd2266b65fba0bc08873bac79264be53ac88558946408e61d8a52265",
+          "tools/build/server/images.py": "13b50a051d050f67c914fcfc016634ab5b521a8c64657e552d0d7c837f3ea229",
+          "tools/build/server/metrics.py": "e9d2756170e3ad21f61d12a6340ffd8279ac66a41fe431cf7737b7336a1403f8",
+          "tools/build/server/layer_cache.py": "8aa545ab8aad9eb5327675f06650f9748e92c27fe96d7eb8af7d1b65d62ee8dd",
+          "tools/build/server/cache_layout.py": "b02fd11cde8b4ddab5f28ae925ab8f8d78b96c835c2dcf5407435df33f45abbc",
+          "tools/build/server/buildx.py": "23329c64b80765f4ade43c083657705dd1aaae276473e31313c730f56023af04",
+          "tools/build/server/smoke.py": "88fc0c732a297e7adbb3b3792c66b05685cd312f85fb5639d8881554fee89b84",
+          "tools/build/server/buildkit-image.json": "e48b335a92c46e45be4a44fa8c65db1f753a148b76b009cc49b5f3adf8aef729"
+        },
+        "buildkit_image": "moby/buildkit@sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea",
+        "environment": {
+          "system": "Linux",
+          "machine": "aarch64",
+          "python": "3.12.3"
+        },
+        "harness_sha256": "8c2e53c1e7bc5521dcec80077c447c96d94bae4d74b05b94010576c1b38e0dd8",
+        "runs": [],
+        "fixture_revision": "546268993b4f8f3bf856443d322725721fbf661d",
+        "fixture_archive_sha256": "3d7715d256edbc05be0bd14d037c8223259872b07a087d27c67a67ce7d67f5fd",
+        "image_identity_note": "Synthetic fixture identity, not a product Git checkout or shipping archive",
+        "public_buildx_binary_sha256": "e5cc9fe3bbff5cbc91230981f7860e06076110730a2db997082652199042a1f2",
+        "production_x64_acceptance": "NOT_RUN",
+        "hard_stop_child_returncode": -9,
+        "hard_stop_recovery": {
+          "status": "PASS",
+          "child_exit_code": -9,
+          "storage": {
+            "schema_version": 1,
+            "status": "PASS",
+            "owned_resources_removed": true,
+            "recovered_previous_lease": true,
+            "removed_image_count": 0,
+            "filesystem_before": {
+              "daemon_sha256": "19fa60b3daf08d7dbfcfbea369f8bdeee7508c541b3632ed6bce43814f753c5b",
+              "filesystem_available_bytes": 22606589952,
+              "filesystem_used_bytes": 17184059392,
+              "image_count": 126
+            },
+            "removed_smoke_container_count": 1,
+            "removed_smoke_network_count": 1,
+            "post_recovery_filesystem": {
+              "daemon_sha256": "19fa60b3daf08d7dbfcfbea369f8bdeee7508c541b3632ed6bce43814f753c5b",
+              "filesystem_available_bytes": 22606979072,
+              "filesystem_used_bytes": 17183670272,
+              "image_count": 126
+            },
+            "buildkit_image": "moby/buildkit@sha256:cec9f139f45e93c5c69c60f8b07cfad9f43f4ef6b6a6cd917527fea5ff2e3dea",
+            "buildkit_policy_sha256": "e48b335a92c46e45be4a44fa8c65db1f753a148b76b009cc49b5f3adf8aef729",
+            "transient_gc_target_bytes": 8589934592,
+            "gc_target_is_write_quota": false,
+            "setup_seconds": 5.743452,
+            "filesystem_after": {
+              "daemon_sha256": "19fa60b3daf08d7dbfcfbea369f8bdeee7508c541b3632ed6bce43814f753c5b",
+              "filesystem_available_bytes": 22606979072,
+              "filesystem_used_bytes": 17183670272,
+              "image_count": 126
+            },
+            "cleanup_seconds": 1.537975
+          }
+        },
+        "fixture_files_removed": true
+      },
+      "correction": "Compile/dedent the fixed child controller before launching. Production code unchanged; completed cold/warm builds were not rerun."
+    }
+  ],
+  "corrected_harness_utf8": "\"\"\"Disposable tiny OCI fixture: real BuildKit/cache/import/cleanup, not application acceptance.\"\"\"\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport signal\nimport subprocess\nimport sys\nimport tempfile\nimport time\nimport shutil\nimport platform\nimport textwrap\nfrom contextlib import contextmanager\n\nROOT = Path(sys.argv[1]).resolve()\nsys.path.insert(0, str(ROOT))\nfrom tools.build.server.buildx import configure\nfrom tools.build.server.builder_storage import BuilderStorage\nfrom tools.build.server.images import build\nfrom tools.build.server.metrics import Metrics\n\nresult = Path(sys.argv[2])\ncode_paths = ['tools/build/server/'+name for name in (\n    'builder_storage.py','storage_lease.py','storage_docker.py','oci_import.py','images.py','metrics.py','layer_cache.py','cache_layout.py','buildx.py','smoke.py','buildkit-image.json')]\nhashes = {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in code_paths}\nreport = dict(schema_version=1, scope='real-tiny-OCI-builder-storage-fixture', status='RUNNING',\n              application_acceptance='NOT_RUN', production_release='NOT_RUN', tested_code_sha256=hashes,\n              buildkit_image=json.loads((ROOT/'tools/build/server/buildkit-image.json').read_text())['image'],\n              environment=dict(system=platform.system(),machine=platform.machine(),python=platform.python_version()),\n              harness_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),runs=[])\ndef save():\n    result.write_text(json.dumps(report,indent=2)+'\\n')\nsave()\n@contextmanager\ndef owned_work():\n    work=Path(tempfile.mkdtemp(prefix=\"qa394-owned-\"))\n    try:\n        yield work\n    finally:\n        if not (work/\"lease/active.json\").exists():\n            shutil.rmtree(work)\n\ndef execute():\n    with owned_work() as work:\n        source = work/'source'\n        for name in ('backend','clients/web','tools'):\n            (source/name).mkdir(parents=True,exist_ok=True)\n        for name, data in {\n            'tools/toolchains.json':(ROOT/'tools/toolchains.json').read_text(),\n            'backend/Dockerfile':'FROM scratch\\nCOPY marker.txt /marker.txt\\n',\n            'clients/web/Dockerfile':'FROM scratch\\nCOPY marker.txt /marker.txt\\n',\n            'backend/go.mod':'module fixture.invalid/qa394\\n', 'backend/go.sum':'',\n            'clients/web/package.json':'{}\\n', 'clients/web/package-lock.json':'{}\\n',\n            'backend/marker.txt':'QA394 synthetic fixture\\n','marker.txt':'QA394 synthetic fixture\\n',\n        }.items():\n            (source/name).write_text(data)\n        revision = hashlib.sha1(b'qa394-owned-tiny-oci-fixture-v1').hexdigest()\n        source_hash = hashlib.sha256(b'qa394-synthetic-source-not-a-product-release').hexdigest()\n        report.update(fixture_revision=revision,fixture_archive_sha256=source_hash,\n                      image_identity_note='Synthetic fixture identity, not a product Git checkout or shipping archive')\n        shared = dict(BOOHTACORD_SERVER_CACHE_ROOT=str(work/'cache'), VITE_PUBLIC_ORIGIN='https://qa.invalid')\n        sdk=ROOT/'public-toolcache/docker-buildx'\n        policy=json.loads((ROOT/'tools/toolchains.json').read_text())\n        client_sha256=('e5cc9fe3bbff5cbc91230981f7860e06076110730a2db997082652199042a1f2' if platform.machine()=='aarch64' else policy['buildx_linux_amd64_sha256'])\n        assert hashlib.sha256(sdk.read_bytes()).hexdigest()==client_sha256\n        config=work/'docker';plugin=config/'cli-plugins/docker-buildx';plugin.parent.mkdir(parents=True)\n        shutil.copyfile(sdk,plugin);plugin.chmod(0o755)\n        base_environment = dict(os.environ,DOCKER_CONFIG=str(config)) | shared\n        report['public_buildx_binary_sha256']=client_sha256\n        report['production_x64_acceptance']='NOT_RUN'\n        for index in ([] if \"--recovery-only\" in sys.argv[3:] else range(2)):\n            output = work/('output-'+str(index));output.mkdir()\n            environment = base_environment\n            metrics = Metrics(work/('metrics-'+str(index)+'.json'),revision)\n            scope = BuilderStorage(ROOT,environment,revision,source_hash,lease_root=work/'lease')\n            metrics.value['builder_storage'] = scope.report\n            started=time.monotonic()\n            with metrics.stage('owned_builder'):\n                with scope:\n                    receipts=build(source,output,revision,source_hash,scope.environment,metrics=metrics)\n            metrics.complete({name:row['index_digest'] for name,row in receipts.items()})\n            row=json.loads(metrics.path.read_text())\n            assert scope.report['owned_resources_removed'] is True\n            assert scope.report['removed_image_count']==2\n            assert all(value['import']==('COLD' if index==0 else 'WARM_VERIFIED') for value in row['cache'].values())\n            report['runs'].append(dict(index=index,seconds=round(time.monotonic()-started,6),metrics=row,receipts=receipts))\n            save()\n        # A hard-stopped controller cannot run finally. The next exclusive lease must\n        # identify and remove that exact orphan before creating another backend.\n        environment=base_environment\n        child_code='''import os,signal,sys\n    from pathlib import Path\n    sys.path.insert(0,sys.argv[1])\n    from tools.build.server.builder_storage import BuilderStorage\n    from tools.build.server.smoke import docker,wait_database\n    with BuilderStorage(Path(sys.argv[1]),os.environ,sys.argv[2],sys.argv[3],lease_root=Path(sys.argv[4])) as scope:\n        network='release-smoke-'+scope.environment['BOOHTACORD_BUILD_OWNER'][:12]\n        docker('network','create',network,environment=scope.environment)\n        database=docker('run','-d','--rm','--network',network,'--tmpfs','/var/lib/postgresql/data',\n            '-e','POSTGRES_DB=voice_platform_test','-e','POSTGRES_USER=voice_platform_test',\n            '-e','POSTGRES_HOST_AUTH_METHOD=trust','postgres:17.6-alpine',environment=scope.environment)\n        wait_database(database,environment=scope.environment)\n        os.kill(os.getpid(),signal.SIGKILL)\n    '''\n        child_code=textwrap.dedent(\"    \"+child_code)\n        compile(child_code,\"<qa394-hard-stop-controller>\",\"exec\")\n        child=subprocess.run([sys.executable,'-c',child_code,str(ROOT),revision,source_hash,str(work/'lease')],\n                             env=environment,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=240)\n        report['hard_stop_child_returncode']=child.returncode\n        save()\n        assert child.returncode==-signal.SIGKILL\n        assert (work/'lease/active.json').is_file()\n        recovered=BuilderStorage(ROOT,base_environment,revision,source_hash,lease_root=work/'lease')\n        with recovered:\n            assert recovered.report['recovered_previous_lease'] is True\n        assert recovered.report['owned_resources_removed'] is True\n        assert recovered.report['removed_smoke_container_count']==1 and recovered.report['removed_smoke_network_count']==1\n        assert not (work/'lease/active.json').exists()\n        report['hard_stop_recovery']=dict(status='PASS',child_exit_code=child.returncode,storage=recovered.report)\n\ntry:\n    execute()\nexcept BaseException as error:\n    report.update(status=\"FAIL\",failure_type=type(error).__name__)\n    save()\n    raise\nassert hashes=={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in code_paths}\nreport.update(status='PASS',fixture_files_removed=True)\nsave()\nprint(json.dumps(dict(status=report['status'], runs=[dict(index=r['index'],seconds=r['seconds'],cache=r['metrics']['cache'],storage=r['metrics']['builder_storage']) for r in report['runs']],hard_stop_recovery=report['hard_stop_recovery'])))\n",
+  "final_independent_resource_inventory": {
+    "workers": 0,
+    "owned_images": 0,
+    "owned_volumes": 0,
+    "smoke_networks": 0,
+    "all_running_containers": 0
+  },
+  "fixture_scope": "Real disposable local Linux ARM64 VM, native ARM64 Buildx client, genuine linux/amd64 tiny OCI images, actual PostgreSQL fixture and Docker resources; no mocked Docker/API replies.",
+  "shipping_acceptance": {
+    "status": "NOT_RUN",
+    "required": "New protected native-x64 full signed bundle cold/warm, application smoke, verification and disk/cleanup measurements"
+  },
+  "limits": [
+    "Fixture identities are synthetic test IDs, not product Git commits or shipping archives. No product release, production SSH, production signing key, application/device/media or capacity acceptance is claimed.",
+    "The two original failures remain FAIL. Native-client testing does not prove the emulated exit255 was flaky or establish its root cause.",
+    "The original native fixture parent failed on a deterministically invalid child literal after both completed build phases. The corrected targeted child/PG/network recovery is a separate observation with identical production-module hashes.",
+    "GC targets are not write quotas; filesystem figures are for the mount containing Docker storage, not a measured byte total of the Docker data-root directory.",
+    "The fixed pinned worker tool image and supporting PostgreSQL image remain cached. Only owned worker state/images/smoke resources were removed; no global prune or backup/data-copy operation was used.",
+    "Small fixture timings are not application build speedups or evidence of self-hosted shipping disk/cost/SLO improvement. Issue394 stays open pending its protected full-bundle acceptance.",
+    "Raw private logs are not published; only their hashes, finite outcomes and synthetic public reports are retained. No account credentials or real user content were read."
+  ]
+}
