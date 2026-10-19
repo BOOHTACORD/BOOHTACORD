@@ -54,7 +54,12 @@ def check(workflows):
     require(set(builder.get('needs', [])) == gates | {'changes', 'server-quality'}, 'Builder must depend on all source-bound receipts and master quality')
     require(builder.get('if') == GUARDS[('build-server.yaml', 'bundle')] and builder.get('environment') == 'production',
             'Only protected master builds can use the production signer')
-    require(build['concurrency']['cancel-in-progress'] == 'true', 'Obsolete builds must be cancellable')
+    require(build['concurrency'] == {
+        'group': 'server-build-${{ github.ref }}-${{ github.sha }}', 'cancel-in-progress': 'true'},
+        'Only duplicate same-source master producers may supersede one another')
+    require(builder.get('concurrency') == {
+        'group': 'trusted-server-bundle-${{ github.repository }}', 'cancel-in-progress': 'false'},
+        'Only release-qualified bundles enter the shared non-cancellable signer queue')
     uploads = [step['with'] for step in builder['steps'] if step.get('uses') == 'actions/upload-artifact@v4']
     require(len(uploads) == 2 and uploads[0]['name'] == 'server-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
             and uploads[0]['if-no-files-found'] == 'error'
