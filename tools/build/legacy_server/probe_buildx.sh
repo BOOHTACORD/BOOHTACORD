@@ -2,7 +2,7 @@
 set -euo pipefail
 
 incoming="${1:-}"
-[[ "$incoming" =~ ^/tmp/voice-platform-qa11-buildx-[0-9a-f]{40}$ ]] || {
+[[ "$incoming" =~ ^/tmp/voice-platform-qa11-buildx-[0-9a-f]{40}-[0-9a-f]{16}$ ]] || {
   echo 'Invalid temporary Buildx path' >&2
   exit 1
 }
@@ -11,20 +11,38 @@ config=''
 probe_compose=''
 probe_image="voice-platform-qa11-probe:${incoming##*-}"
 cleanup() {
+  result=$?
+  failed=0
   if [[ -n "$probe_compose" ]]; then
-    sudo -n docker compose -p "$probe_project" -f "$probe_compose" down --remove-orphans >/dev/null 2>&1 || true
+    sudo -n docker compose -p "$probe_project" -f "$probe_compose" down --remove-orphans >/dev/null 2>&1 || failed=1
   fi
-  sudo -n docker image rm -- "$probe_image" >/dev/null 2>&1 || true
+  # An unsuccessful build may not have loaded an image. Never remove an
+  # unrelated object or perform a global cache/volume prune.
+  loaded="$(sudo -n docker image ls --filter "reference=$probe_image" --format '{{.Repository}}:{{.Tag}}')" || failed=1
+  if [[ "$loaded" == "$probe_image" ]]; then
+    sudo -n docker image rm -- "$probe_image" >/dev/null 2>&1 || failed=1
+  elif [[ -n "$loaded" ]]; then
+    failed=1
+  fi
   if [[ "$config" == /tmp/voice-platform-qa11-config.* ]]; then
-    sudo -n rm -rf -- "$config"
+    sudo -n rm -rf -- "$config" || failed=1
   fi
-  rm -f -- "$incoming"
+  rm -f -- "$incoming" || failed=1
+  if (( failed )); then echo 'Operator probe cleanup failed' >&2; exit 1; fi
+  if (( result == 0 )); then echo 'operator_probe_cleanup=PASS'; fi
+  exit "$result"
 }
 trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+# Share the installer/resume/rollback host lock as well as the Actions writer queue.
+[[ -d /opt/voice-platform-releases ]]
+exec 9>/opt/voice-platform-releases/.install.lock
+flock --exclusive --wait 30 9
 actual="$(sha256sum "$incoming" | awk '{print $1}')"
 [[ "$actual" == "$expected" ]] || { echo 'Buildx checksum differs' >&2; exit 1; }
 
-config="$(sudo -n mktemp -d /tmp/voice-platform-qa11-config.XXXXXXXX)"
+config="$(sudo -n mktemp -d "/tmp/voice-platform-qa11-config.${incoming##*-}.XXXXXXXX")"
 sudo -n install -d -m 0755 "$config/cli-plugins"
 sudo -n install -m 0755 "$incoming" "$config/cli-plugins/docker-buildx"
 sudo -n env DOCKER_CONFIG="$config" docker buildx version
@@ -100,7 +118,7 @@ PY
   else
     printf 'local_digest_ref=no\n'
   fi
-  probe_project="qa11${config##*.}"
+  probe_project="qa11${incoming##*-}"
   probe_project="${probe_project,,}"
   probe_compose="$config/probe-compose.yaml"
   printf 'services:\n  probe:\n    image: %s\n    pull_policy: never\n    network_mode: none\n' "$probe_ref" | sudo -n tee "$probe_compose" >/dev/null

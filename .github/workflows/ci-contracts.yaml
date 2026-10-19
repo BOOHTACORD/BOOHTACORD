@@ -54,6 +54,10 @@ jobs:
         run: python3 -m unittest tools.release.desktop_updates.test_signing tools.verify.action_pins.test_release_boundary
       - name: Test stable required gate success and failure semantics
         run: python3 -m unittest tools.ci.required_gate.test_validation tools.ci.required_gate.test_run
+      - name: Verify risk routing, real-runtime evidence and cleanup guards
+        run: python -m unittest tools.ci.actual_acceptance.test_plan tools.ci.actual_acceptance.test_session tools.ci.actual_acceptance.test_validation tools.ci.actual_acceptance.test_fan_in tools.ci.actual_acceptance.test_manual_inputs tools.ci.actual_acceptance.test_workflow tools.ci.actual_acceptance.test_run tools.qa.compatible_rollback.test_receipt_projection
+      - name: Verify manual operator capabilities, approvals and audit privacy
+        run: python -m unittest tools.ops.operator.test_policy tools.ops.operator.test_approval tools.ops.operator.test_run tools.ops.operator.test_transport tools.ops.operator.test_workflow tools.ops.operator.test_remote tools.ops.operator.test_operations
       - name: Verify unified fail-closed CI and release routing
         run: python3 -m unittest tools.ci.select_changes.test_selection tools.ci.select_changes.test_routing tools.ci.select_changes.test_diff tools.release.delivery.test_routing tools.release.delivery.test_workflows
       - name: Test read-only CI baseline collection and statistics

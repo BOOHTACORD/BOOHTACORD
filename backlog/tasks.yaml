@@ -531,8 +531,13 @@ tasks:
   - id: CICD-15
     title: Risk-based isolated actual acceptance with source-bound runtime evidence and explicit release physical boundaries
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
-    depends_on: [CICD-01, CICD-02, CICD-03, CICD-08, CICD-09]
+    depends_on: [CICD-01, CICD-02, CICD-03, CICD-12, CICD-04]
     evidence: [tools/ci/actual_acceptance/test_plan.py, tools/ci/actual_acceptance/test_session.py, tools/ci/actual_acceptance/test_validation.py, tools/ci/actual_acceptance/test_fan_in.py, tools/ci/actual_acceptance/test_manual_inputs.py, tools/qa/compatible_rollback/test_receipt_projection.py, docs/ci/actual-acceptance.md, evidence/ci/actual-acceptance-2026-10-19.md]
+  - id: CICD-16
+    title: Explicit manual operator diagnostic capabilities and approved serialized production mutations with private audit receipts
+    requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
+    depends_on: [CICD-11, CICD-04]
+    evidence: [tools/ops/operator/test_policy.py, tools/ops/operator/test_approval.py, tools/ops/operator/test_run.py, tools/ops/operator/test_transport.py, tools/ops/operator/test_workflow.py, tools/ops/operator/test_remote.py, tools/ops/operator/test_operations.py, docs/ci/operator-workflows.md, evidence/ci/operator-workflows-2026-10-19.md]
   - id: CICD-10
     title: Private dependency-scoped bounded Buildx cache with mandatory image validation and stage timings
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]

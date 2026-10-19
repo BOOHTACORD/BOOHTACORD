@@ -27,9 +27,12 @@ GUARDS = {
     ('audit-attachment-volume.yaml', 'audit'): MASTER,
     ('qa08-active-upload.yaml', 'sample'): MASTER,
     ('qa11-preflight.yaml', 'inspect'): MASTER,
+    ('qa11-preflight.yaml', 'probe'): MASTER + ' && inputs.run_probe',
     ('rehearse-compatible-rollback.yaml', 'rehearse'): MASTER,
     ('install-retained-release.yaml', 'install'): MASTER,
 }
+DIAGNOSTICS = {('audit-attachment-volume.yaml','audit'),('qa08-active-upload.yaml','sample'),('qa11-preflight.yaml','inspect')}
+
 WRITERS = {('android-release.yaml', 'android-release'), ('windows-release.yaml', 'windows-release'),
            ('macos-release.yaml', 'macos-release'), ('webrtc-macos-sdk.yaml', 'publish'),
            ('promote-windows-client-update.yaml', 'prepare-catalog-pr'),
@@ -91,9 +94,9 @@ def check(workflows):
             if untrusted:
                 require(not persistent and not secrets and all(v == 'read' for v in permissions.values()))
             if identity in GUARDS:
-                require(job.get('if') == GUARDS[identity] and job.get('environment') == 'production')
+                require(job.get('if') == GUARDS[identity] and job.get('environment') == ('production-diagnostics' if identity in DIAGNOSTICS else 'production'))
             if persistent or secrets:
-                require(identity in GUARDS and job.get('environment') == 'production')
+                require(identity in GUARDS and job.get('environment') == ('production-diagnostics' if identity in DIAGNOSTICS else 'production'))
             for step in job.get('steps', []):
                 require(step.get('continue-on-error') in (None, False, 'false'))
                 if step.get('uses', '').startswith('actions/checkout@'):

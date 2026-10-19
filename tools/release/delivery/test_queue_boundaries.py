@@ -28,7 +28,7 @@ class ProductionQueueBoundaryTests(unittest.TestCase):
 
     def test_all_existing_production_writers_keep_the_same_non_cancellable_lock(self):
         count = 0
-        for name in ('deploy-production.yaml', 'install-retained-release.yaml', 'rehearse-compatible-rollback.yaml'):
+        for name in ('deploy-production.yaml', 'install-retained-release.yaml', 'rehearse-compatible-rollback.yaml', 'qa11-preflight.yaml'):
             workflow = self.workflows[name]
             for job in workflow['jobs'].values():
                 if job.get('environment') == 'production':
@@ -36,7 +36,7 @@ class ProductionQueueBoundaryTests(unittest.TestCase):
                     self.assertTrue(writer_locks, name)
                     self.assertTrue(all(value.get('cancel-in-progress') == 'false' for value in writer_locks), name)
                     count += 1
-        self.assertEqual(3, count)
+        self.assertEqual(4, count)
 
     def test_workflow_policy_rejects_a_reader_joining_the_writer_queue(self):
         broken = copy.deepcopy(self.workflows)

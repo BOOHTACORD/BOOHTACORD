@@ -27,8 +27,11 @@ case "$1 $2" in
   'ps --filter')
     if [[ "$*" == *'service=api'* ]]; then echo aaaaaaaaaaaa; else echo bbbbbbbbbbbb; fi ;;
   'inspect --format')
-    if [[ "$3" == '{{.Config.Image}}' ]]; then
-      if [[ "$4" == aaaaaaaaaaaa ]]; then
+    if [[ "$3" == '{{index .Config.Labels "org.opencontainers.image.revision"}}' ]]; then
+      if [[ "$4" == aaaaaaaaaaaa ]]; then echo "$TEST_REVISION"; else echo "${TEST_WEB_REVISION:-$TEST_REVISION}"; fi
+    elif [[ "$3" == '{{.Config.Image}}' ]]; then
+      if [[ "${TEST_DIGEST:-no}" == yes ]]; then printf 'voice-platform-api@sha256:%064d\n' 1
+      elif [[ "$4" == aaaaaaaaaaaa ]]; then
         echo "voice-platform-api:$TEST_REVISION"
       else
         echo "voice-platform-web:${TEST_WEB_REVISION:-$TEST_REVISION}"
@@ -70,6 +73,9 @@ if TEST_WEB_REVISION=0000000000000000000000000000000000000000 run_preflight; the
   exit 1
 fi
 grep -Fq 'Running API and web revisions differ' "$fixture/output"
+
+TEST_DIGEST=yes run_preflight
+grep -Fq "deployed_revision=$revision" "$fixture/output"
 
 TEST_BUILDX=no run_preflight
 grep -Fq 'buildx_available=no' "$fixture/output"
