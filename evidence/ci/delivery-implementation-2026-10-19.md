@@ -151,3 +151,26 @@ the new workflow has not run: its real network result remains NOT_RUN. GitHub's
 19October Actions/status-update incident is external evidence, not a code PASS.
 The QA x86_64 VM was started without activating its Docker context; the existing
 default context and the12 original primary-checkout status entries are unchanged.
+
+Hosted network acceptance subsequently completed **SUCCESS**: run39287076404,
+job118176860836, actual download/recheck16:38:29–16:38:32UTC. The sole uploaded
+artifact12203102754 was downloaded and its ZIP digest checked; its only entry is
+the inspected sanitized receipt. The PR merge checkout814ce3c0 has the exact tree
+9f9522ed of reviewed headef2c809a; all seven executed shipping module hashes match.
+The actual 73502109-byte ZIP and73479854-byte inner bundle match the earlier
+independent connector proof. See `delivery-network-actual-2026-10-19.json`.
+This closes the new Python API/blob network proof only, not installation/rollback.
+
+The isolated live-stack preparation's first attempt stopped before building or
+installing any bundle: Git rejected caller-owned source checkouts inside the root
+controller. All owned nested resources were removed. The QA-only bootstrap now
+adds only its three exact source paths as safe directories, as the existing #60
+controller already does; no global wildcard or production Git policy changes.
+A fresh attempt is running. New fixture code uses a separate Dockerfile/cache and
+keeps the historical #60 harness, image and runtime-currency guard unchanged.
+
+The new owned fixture's two focused isolation regressions passed after RED for
+the missing module. Whole candidate including that fixture: **919 Python tests
+PASS**,48.767s; traceability again PASS_INDEX_ONLY39. This validates fixture
+configuration/failure handling; the running real-stack preparation has not yet
+produced an installation or rollback result.
