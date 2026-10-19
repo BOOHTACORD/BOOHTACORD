@@ -1,0 +1,1475 @@
+{
+  "schema_version": 1,
+  "scope": "backend-gate-integration-and-observational-timing",
+  "status": "PASS_WITH_MEASUREMENT_LIMITS",
+  "implementation_pr": 440,
+  "implementation_revision": "d9a21b8a31229eb4ba955622773390112b9e880d",
+  "reviewed_master": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+  "code_identity": [
+    {
+      "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+      "backend_gate_recipe_matches_3d22e900": true
+    },
+    {
+      "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+      "backend_gate_recipe_matches_3d22e900": true
+    },
+    {
+      "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "backend_gate_recipe_matches_3d22e900": true
+    }
+  ],
+  "runtime_checks": [
+    {
+      "run_id": 39306796863,
+      "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+      "parts": [
+        {
+          "execution": {
+            "run_attempt": "1",
+            "run_id": "39306796863"
+          },
+          "operations": [
+            "screen-share:matrix",
+            "api:normal:2:20",
+            "api:reconnect:2:20",
+            "api:uploads:2:20:1024",
+            "api:nat_auth:1:20",
+            "api:faults:2:40"
+          ],
+          "profile": "load",
+          "seconds": 271.77771457899996,
+          "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+          "status": "PASS"
+        },
+        {
+          "execution": {
+            "run_attempt": "1",
+            "run_id": "39306796863"
+          },
+          "operations": [
+            "go:vet:all",
+            "go:build:all"
+          ],
+          "profile": "static",
+          "seconds": 90.735400871,
+          "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+          "status": "PASS"
+        },
+        {
+          "execution": {
+            "run_attempt": "1",
+            "run_id": "39306796863"
+          },
+          "operations": [
+            "go:database-preflight",
+            "go:test:all:uncached",
+            "go:no-skip"
+          ],
+          "profile": "database",
+          "seconds": 155.626170578,
+          "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+          "status": "PASS"
+        }
+      ],
+      "replayed_fan_in": {
+        "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+        "status": "PASS",
+        "execution": {
+          "run_id": "39306796863",
+          "run_attempt": "1"
+        },
+        "observed_profile_seconds": {
+          "load": 271.77771457899996,
+          "static": 90.735400871,
+          "database": 155.626170578
+        },
+        "checked_operations": 11
+      },
+      "release_receipt": {
+        "gate": "backend",
+        "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+        "status": "PASS"
+      }
+    },
+    {
+      "run_id": 39309581312,
+      "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+      "parts": [
+        {
+          "execution": {
+            "run_attempt": "1",
+            "run_id": "39309581312"
+          },
+          "operations": [
+            "go:database-preflight",
+            "go:test:all:uncached",
+            "go:no-skip"
+          ],
+          "profile": "database",
+          "seconds": 120.78377424899998,
+          "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+          "status": "PASS"
+        },
+        {
+          "execution": {
+            "run_attempt": "1",
+            "run_id": "39309581312"
+          },
+          "operations": [
+            "go:vet:all",
+            "go:build:all"
+          ],
+          "profile": "static",
+          "seconds": 46.692760192,
+          "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+          "status": "PASS"
+        },
+        {
+          "execution": {
+            "run_attempt": "1",
+            "run_id": "39309581312"
+          },
+          "operations": [
+            "screen-share:matrix",
+            "api:normal:2:20",
+            "api:reconnect:2:20",
+            "api:uploads:2:20:1024",
+            "api:nat_auth:1:20",
+            "api:faults:2:40"
+          ],
+          "profile": "load",
+          "seconds": 257.254550813,
+          "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+          "status": "PASS"
+        }
+      ],
+      "replayed_fan_in": {
+        "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+        "status": "PASS",
+        "execution": {
+          "run_id": "39309581312",
+          "run_attempt": "1"
+        },
+        "observed_profile_seconds": {
+          "database": 120.78377424899998,
+          "static": 46.692760192,
+          "load": 257.254550813
+        },
+        "checked_operations": 11
+      },
+      "release_receipt": {
+        "gate": "backend",
+        "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+        "status": "PASS"
+      }
+    },
+    {
+      "run_id": 39314566970,
+      "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "parts": [
+        {
+          "execution": {
+            "run_attempt": "1",
+            "run_id": "39314566970"
+          },
+          "operations": [
+            "go:vet:all",
+            "go:build:all"
+          ],
+          "profile": "static",
+          "seconds": 49.665156341,
+          "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+          "status": "PASS"
+        },
+        {
+          "execution": {
+            "run_attempt": "1",
+            "run_id": "39314566970"
+          },
+          "operations": [
+            "go:database-preflight",
+            "go:test:all:uncached",
+            "go:no-skip"
+          ],
+          "profile": "database",
+          "seconds": 106.228560438,
+          "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+          "status": "PASS"
+        },
+        {
+          "execution": {
+            "run_attempt": "1",
+            "run_id": "39314566970"
+          },
+          "operations": [
+            "screen-share:matrix",
+            "api:normal:2:20",
+            "api:reconnect:2:20",
+            "api:uploads:2:20:1024",
+            "api:nat_auth:1:20",
+            "api:faults:2:40"
+          ],
+          "profile": "load",
+          "seconds": 287.828616548,
+          "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+          "status": "PASS"
+        }
+      ],
+      "replayed_fan_in": {
+        "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+        "status": "PASS",
+        "execution": {
+          "run_id": "39314566970",
+          "run_attempt": "1"
+        },
+        "observed_profile_seconds": {
+          "static": 49.665156341,
+          "database": 106.228560438,
+          "load": 287.828616548
+        },
+        "checked_operations": 11
+      },
+      "release_receipt": {
+        "gate": "backend",
+        "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+        "status": "PASS"
+      }
+    }
+  ],
+  "artifact_verification": [
+    {
+      "id": 12215465029,
+      "run_id": 39306796863,
+      "name": "check-backend-59c15c65c6751173fc5e668be383e88a62276a58-39306796863-1",
+      "size_in_bytes": 231,
+      "digest": "sha256:3109277e7c28c6b691dacb6bcabcc18ed886ca2272500ec164b1897145b19a7f",
+      "expired": false,
+      "workflow_run": {
+        "id": 39306796863,
+        "head_sha": "59c15c65c6751173fc5e668be383e88a62276a58"
+      },
+      "files": {
+        "backend.json": "2e4418b31b1c97d4be23eaf9191569bb4d704a4a2a9d752223035c969aec7f4c"
+      },
+      "payload_utf8": {
+        "backend.json": "{\"gate\": \"backend\", \"source_revision\": \"59c15c65c6751173fc5e668be383e88a62276a58\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12214906319,
+      "run_id": 39306796863,
+      "name": "backend-part-59c15c65c6751173fc5e668be383e88a62276a58-39306796863-1-load",
+      "size_in_bytes": 361,
+      "digest": "sha256:889d8169342546434ffa561e61c6958a4b8fcb58fc589e064656eb1e55927871",
+      "expired": false,
+      "workflow_run": {
+        "id": 39306796863,
+        "head_sha": "59c15c65c6751173fc5e668be383e88a62276a58"
+      },
+      "files": {
+        "load.json": "85753afe93fc927e7d762cc07f89278f1f571990131ead176df886e6a0f9dbed"
+      },
+      "payload_utf8": {
+        "load.json": "{\"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39306796863\"}, \"operations\": [\"screen-share:matrix\", \"api:normal:2:20\", \"api:reconnect:2:20\", \"api:uploads:2:20:1024\", \"api:nat_auth:1:20\", \"api:faults:2:40\"], \"profile\": \"load\", \"seconds\": 271.77771457899996, \"source_revision\": \"59c15c65c6751173fc5e668be383e88a62276a58\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12214189909,
+      "run_id": 39306796863,
+      "name": "backend-fan-in-59c15c65c6751173fc5e668be383e88a62276a58-39306796863-1",
+      "size_in_bytes": 359,
+      "digest": "sha256:dcc99403aedac93a3615b5896ad87cd1fb1d076c937703cf3743ba47535fe100",
+      "expired": false,
+      "workflow_run": {
+        "id": 39306796863,
+        "head_sha": "59c15c65c6751173fc5e668be383e88a62276a58"
+      },
+      "files": {
+        "backend-fan-in.json": "2dd8a8656bee68d45f5d4d1189ae23c6256f1f857d070c815ad219d14ead4c9f"
+      },
+      "payload_utf8": {
+        "backend-fan-in.json": "{\"checked_operations\": 11, \"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39306796863\"}, \"observed_profile_seconds\": {\"database\": 155.626170578, \"load\": 271.77771457899996, \"static\": 90.735400871}, \"source_revision\": \"59c15c65c6751173fc5e668be383e88a62276a58\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12214152803,
+      "run_id": 39306796863,
+      "name": "backend-part-59c15c65c6751173fc5e668be383e88a62276a58-39306796863-1-static",
+      "size_in_bytes": 314,
+      "digest": "sha256:792c9b9a2a2d4d6fa29f72511c5557de95e91b70b0d7c4b13a1e96b166ec7fbe",
+      "expired": false,
+      "workflow_run": {
+        "id": 39306796863,
+        "head_sha": "59c15c65c6751173fc5e668be383e88a62276a58"
+      },
+      "files": {
+        "static.json": "cadd45682cc50b5889cb2530981c14373b83e3df9aa73bfe25d9296b952fa21d"
+      },
+      "payload_utf8": {
+        "static.json": "{\"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39306796863\"}, \"operations\": [\"go:vet:all\", \"go:build:all\"], \"profile\": \"static\", \"seconds\": 90.735400871, \"source_revision\": \"59c15c65c6751173fc5e668be383e88a62276a58\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12213249821,
+      "run_id": 39306796863,
+      "name": "backend-part-59c15c65c6751173fc5e668be383e88a62276a58-39306796863-1-database",
+      "size_in_bytes": 342,
+      "digest": "sha256:bae4fb09f91ac29c76408d62b5462f0b7ed4c40efd04faa07b4049b57ea278b4",
+      "expired": false,
+      "workflow_run": {
+        "id": 39306796863,
+        "head_sha": "59c15c65c6751173fc5e668be383e88a62276a58"
+      },
+      "files": {
+        "database.json": "e97f5c6b1fdc8a8b72aa994c7b2e470b950f4411fc1a711bd44bd59065f9b5ed"
+      },
+      "payload_utf8": {
+        "database.json": "{\"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39306796863\"}, \"operations\": [\"go:database-preflight\", \"go:test:all:uncached\", \"go:no-skip\"], \"profile\": \"database\", \"seconds\": 155.626170578, \"source_revision\": \"59c15c65c6751173fc5e668be383e88a62276a58\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12215920617,
+      "run_id": 39309581312,
+      "name": "backend-part-c569477fc0d125f3313e73742c34a2ea6aa5e454-39309581312-1-database",
+      "size_in_bytes": 346,
+      "digest": "sha256:de1ffd977a24a76fcf9a49460a41645bb0714cfea31357d8ffe50d77231a3613",
+      "expired": false,
+      "workflow_run": {
+        "id": 39309581312,
+        "head_sha": "c569477fc0d125f3313e73742c34a2ea6aa5e454"
+      },
+      "files": {
+        "database.json": "0e49b2178b13c86a902dbfec147c488dec7515e18b479d99a2f1b95db53e0b2d"
+      },
+      "payload_utf8": {
+        "database.json": "{\"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39309581312\"}, \"operations\": [\"go:database-preflight\", \"go:test:all:uncached\", \"go:no-skip\"], \"profile\": \"database\", \"seconds\": 120.78377424899998, \"source_revision\": \"c569477fc0d125f3313e73742c34a2ea6aa5e454\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12215721289,
+      "run_id": 39309581312,
+      "name": "backend-fan-in-c569477fc0d125f3313e73742c34a2ea6aa5e454-39309581312-1",
+      "size_in_bytes": 359,
+      "digest": "sha256:b7e627949a492edbe8b54378b0604aece1f5a7ce6afd752ab8c161059ba80eda",
+      "expired": false,
+      "workflow_run": {
+        "id": 39309581312,
+        "head_sha": "c569477fc0d125f3313e73742c34a2ea6aa5e454"
+      },
+      "files": {
+        "backend-fan-in.json": "734d7c69fcb951f96a578ee0950d409c393dbc63aebbf537b65a1d41155fec04"
+      },
+      "payload_utf8": {
+        "backend-fan-in.json": "{\"checked_operations\": 11, \"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39309581312\"}, \"observed_profile_seconds\": {\"database\": 120.78377424899998, \"load\": 257.254550813, \"static\": 46.692760192}, \"source_revision\": \"c569477fc0d125f3313e73742c34a2ea6aa5e454\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12215641299,
+      "run_id": 39309581312,
+      "name": "check-backend-c569477fc0d125f3313e73742c34a2ea6aa5e454-39309581312-1",
+      "size_in_bytes": 232,
+      "digest": "sha256:8cf0c2e8c2c1a3ce45e9560fed080f4d9686cb3952c128b3c764a7e132f0394a",
+      "expired": false,
+      "workflow_run": {
+        "id": 39309581312,
+        "head_sha": "c569477fc0d125f3313e73742c34a2ea6aa5e454"
+      },
+      "files": {
+        "backend.json": "7ad63b5975c94aa5303dc25966dfae22e3367e425265552d2671ccfdf32dc55a"
+      },
+      "payload_utf8": {
+        "backend.json": "{\"gate\": \"backend\", \"source_revision\": \"c569477fc0d125f3313e73742c34a2ea6aa5e454\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12215620881,
+      "run_id": 39309581312,
+      "name": "backend-part-c569477fc0d125f3313e73742c34a2ea6aa5e454-39309581312-1-static",
+      "size_in_bytes": 315,
+      "digest": "sha256:2f4b89c9e1fe3a7dc3c5c90c928b694c8af2609dd2f661129ef107e9fb7ecd17",
+      "expired": false,
+      "workflow_run": {
+        "id": 39309581312,
+        "head_sha": "c569477fc0d125f3313e73742c34a2ea6aa5e454"
+      },
+      "files": {
+        "static.json": "ed0d3dbd2d6f4a9e406c9d350932b268fc8ff1ca69e0a395352a0b799203ec4c"
+      },
+      "payload_utf8": {
+        "static.json": "{\"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39309581312\"}, \"operations\": [\"go:vet:all\", \"go:build:all\"], \"profile\": \"static\", \"seconds\": 46.692760192, \"source_revision\": \"c569477fc0d125f3313e73742c34a2ea6aa5e454\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12215463080,
+      "run_id": 39309581312,
+      "name": "backend-part-c569477fc0d125f3313e73742c34a2ea6aa5e454-39309581312-1-load",
+      "size_in_bytes": 356,
+      "digest": "sha256:a36347e8d82dbe987360901f5100cd4b397a0f1aa2367dc0b940cbf2107e4f07",
+      "expired": false,
+      "workflow_run": {
+        "id": 39309581312,
+        "head_sha": "c569477fc0d125f3313e73742c34a2ea6aa5e454"
+      },
+      "files": {
+        "load.json": "eb3bc72ad33133bbb24a91c042f681a4cfa126623c0700f971b7335a9c3cfbfe"
+      },
+      "payload_utf8": {
+        "load.json": "{\"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39309581312\"}, \"operations\": [\"screen-share:matrix\", \"api:normal:2:20\", \"api:reconnect:2:20\", \"api:uploads:2:20:1024\", \"api:nat_auth:1:20\", \"api:faults:2:40\"], \"profile\": \"load\", \"seconds\": 257.254550813, \"source_revision\": \"c569477fc0d125f3313e73742c34a2ea6aa5e454\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12217303002,
+      "run_id": 39314566970,
+      "name": "backend-part-356d32c5ff6b661a747009ad93026c197bdd1b72-39314566970-1-static",
+      "size_in_bytes": 316,
+      "digest": "sha256:22cda764a41b38ee02da061ef537efa5c52c3907b841dc611f0d12f03af1050f",
+      "expired": false,
+      "workflow_run": {
+        "id": 39314566970,
+        "head_sha": "356d32c5ff6b661a747009ad93026c197bdd1b72"
+      },
+      "files": {
+        "static.json": "3d812f71396d86cc2162f67e738d59577da6a921da4bf06c75956c6fa39f2b7b"
+      },
+      "payload_utf8": {
+        "static.json": "{\"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39314566970\"}, \"operations\": [\"go:vet:all\", \"go:build:all\"], \"profile\": \"static\", \"seconds\": 49.665156341, \"source_revision\": \"356d32c5ff6b661a747009ad93026c197bdd1b72\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12217253618,
+      "run_id": 39314566970,
+      "name": "backend-part-356d32c5ff6b661a747009ad93026c197bdd1b72-39314566970-1-database",
+      "size_in_bytes": 344,
+      "digest": "sha256:b2ca70e4c9f0b7bf033f16a1b2ea6d5203d6b453b4af3de706fde9c781663392",
+      "expired": false,
+      "workflow_run": {
+        "id": 39314566970,
+        "head_sha": "356d32c5ff6b661a747009ad93026c197bdd1b72"
+      },
+      "files": {
+        "database.json": "103d509b30387e67201facf40de66631d281bcff2aea569c4034c9703bb8aac3"
+      },
+      "payload_utf8": {
+        "database.json": "{\"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39314566970\"}, \"operations\": [\"go:database-preflight\", \"go:test:all:uncached\", \"go:no-skip\"], \"profile\": \"database\", \"seconds\": 106.228560438, \"source_revision\": \"356d32c5ff6b661a747009ad93026c197bdd1b72\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    },
+    {
+      "id": 12217248915,
+      "run_id": 39314566970,
+      "name": "backend-part-356d32c5ff6b661a747009ad93026c197bdd1b72-39314566970-1-load",
+      "size_in_bytes": 359,
+      "digest": "sha256:63e812a6f158e4421659b64848517bf2633123956dd9dddfe02605ea0c9208f8",
+      "expired": false,
+      "workflow_run": {
+        "id": 39314566970,
+        "head_sha": "356d32c5ff6b661a747009ad93026c197bdd1b72"
+      },
+      "files": {
+        "load.json": "e443b5f8e40f8181a01baae5671c0c958b687745798c62d27c85ca066861f8c1"
+      },
+      "payload_utf8": {
+        "load.json": "{\"execution\": {\"run_attempt\": \"1\", \"run_id\": \"39314566970\"}, \"operations\": [\"screen-share:matrix\", \"api:normal:2:20\", \"api:reconnect:2:20\", \"api:uploads:2:20:1024\", \"api:nat_auth:1:20\", \"api:faults:2:40\"], \"profile\": \"load\", \"seconds\": 287.828616548, \"source_revision\": \"356d32c5ff6b661a747009ad93026c197bdd1b72\", \"status\": \"PASS\"}\n"
+      },
+      "zip_and_payload_verified": true
+    }
+  ],
+  "after_job_metadata": [
+    {
+      "id": 39306796863,
+      "head_sha": "59c15c65c6751173fc5e668be383e88a62276a58",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "path": ".github/workflows/build-server.yaml",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T18:56:46Z",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39306796863",
+      "jobs": [
+        {
+          "id": 118247209107,
+          "name": "backend / static",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:02:30Z",
+          "completed_at": "2026-10-19T19:04:22Z"
+        },
+        {
+          "id": 118247209123,
+          "name": "backend / database",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:00:25Z",
+          "completed_at": "2026-10-19T19:03:43Z"
+        },
+        {
+          "id": 118247209281,
+          "name": "backend / load",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:01:14Z",
+          "completed_at": "2026-10-19T19:06:05Z"
+        },
+        {
+          "id": 118250383650,
+          "name": "backend / backend",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:06:44Z",
+          "completed_at": "2026-10-19T19:06:54Z"
+        }
+      ]
+    },
+    {
+      "id": 39309581312,
+      "head_sha": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "path": ".github/workflows/build-server.yaml",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T19:16:25Z",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39309581312",
+      "jobs": [
+        {
+          "id": 118256143020,
+          "name": "backend / load",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:19:41Z",
+          "completed_at": "2026-10-19T19:24:18Z"
+        },
+        {
+          "id": 118256143102,
+          "name": "backend / static",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:21:48Z",
+          "completed_at": "2026-10-19T19:22:54Z"
+        },
+        {
+          "id": 118256143204,
+          "name": "backend / database",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:20:19Z",
+          "completed_at": "2026-10-19T19:23:03Z"
+        },
+        {
+          "id": 118259189051,
+          "name": "backend / backend",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:27:03Z",
+          "completed_at": "2026-10-19T19:27:14Z"
+        }
+      ]
+    },
+    {
+      "id": 39314566970,
+      "head_sha": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "path": ".github/workflows/build-server.yaml",
+      "run_attempt": 1,
+      "created_at": "2026-10-19T19:52:21Z",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39314566970",
+      "jobs": [
+        {
+          "id": 118272672561,
+          "name": "backend / load",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:52:43Z",
+          "completed_at": "2026-10-19T19:57:48Z"
+        },
+        {
+          "id": 118272672587,
+          "name": "backend / database",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:52:43Z",
+          "completed_at": "2026-10-19T19:55:12Z"
+        },
+        {
+          "id": 118272672747,
+          "name": "backend / static",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:53:07Z",
+          "completed_at": "2026-10-19T19:54:14Z"
+        },
+        {
+          "id": 118275129336,
+          "name": "backend / backend",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-19T19:57:51Z",
+          "completed_at": "2026-10-19T19:58:02Z"
+        }
+      ]
+    }
+  ],
+  "measurements": {
+    "schema_version": 1,
+    "scope": "backend-before-after-observational-metadata",
+    "baseline_record": "evidence/ci/baseline-2026-10-18/server_build.json",
+    "baseline_sha256": "bc7ee74e396aba03602080138b48c517a7fd7a7b96b0d118dfae1e2332255703",
+    "before": {
+      "samples": [
+        {
+          "run_id": 39155159380,
+          "source_revision": "bfea46b61c3bc641098caf7c35be8c4be798af59",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39155159380",
+          "run_attempt": 1,
+          "workflow_created_to_backend_available_seconds": 489.0,
+          "backend_execution_span_seconds": 486.0,
+          "sum_job_execution_seconds": 486.0,
+          "first_backend_start_delay_seconds": 3.0,
+          "job_ids": [
+            117756764295
+          ],
+          "job_names": [
+            "backend / backend"
+          ],
+          "outcome": "PASS"
+        },
+        {
+          "run_id": 39152131685,
+          "source_revision": "23d07e4af56b0ed0706e55efac2c626644a1e394",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39152131685",
+          "run_attempt": 1,
+          "workflow_created_to_backend_available_seconds": 517.0,
+          "backend_execution_span_seconds": 514.0,
+          "sum_job_execution_seconds": 514.0,
+          "first_backend_start_delay_seconds": 3.0,
+          "job_ids": [
+            117747771305
+          ],
+          "job_names": [
+            "backend / backend"
+          ],
+          "outcome": "PASS"
+        },
+        {
+          "run_id": 39145112482,
+          "source_revision": "68f07dd360a0e4989a40313ef72bc0d65ab448a4",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39145112482",
+          "run_attempt": 1,
+          "workflow_created_to_backend_available_seconds": 466.0,
+          "backend_execution_span_seconds": 463.0,
+          "sum_job_execution_seconds": 463.0,
+          "first_backend_start_delay_seconds": 3.0,
+          "job_ids": [
+            117727263323
+          ],
+          "job_names": [
+            "backend / backend"
+          ],
+          "outcome": "PASS"
+        }
+      ],
+      "summary": {
+        "workflow_created_to_backend_available_seconds": {
+          "n": 3,
+          "p50": 489.0,
+          "p90": 517.0,
+          "p95": 517.0,
+          "max": 517.0
+        },
+        "backend_execution_span_seconds": {
+          "n": 3,
+          "p50": 486.0,
+          "p90": 514.0,
+          "p95": 514.0,
+          "max": 514.0
+        },
+        "sum_job_execution_seconds": {
+          "n": 3,
+          "p50": 486.0,
+          "p90": 514.0,
+          "p95": 514.0,
+          "max": 514.0
+        },
+        "first_backend_start_delay_seconds": {
+          "n": 3,
+          "p50": 3.0,
+          "p90": 3.0,
+          "p95": 3.0,
+          "max": 3.0
+        }
+      },
+      "observed_failure_rate": 0.0,
+      "observed_retry_rate": 0.0,
+      "confirmed_flake_rate": null,
+      "observed_failed_run_occurrences": 0,
+      "observed_flaky_failed_run_occurrences": 0,
+      "observed_flaky_failed_run_rate": 0
+    },
+    "after": {
+      "samples": [
+        {
+          "run_id": 39306796863,
+          "source_revision": "59c15c65c6751173fc5e668be383e88a62276a58",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39306796863",
+          "run_attempt": 1,
+          "workflow_created_to_backend_available_seconds": 608.0,
+          "backend_execution_span_seconds": 389.0,
+          "sum_job_execution_seconds": 611.0,
+          "first_backend_start_delay_seconds": 219.0,
+          "job_ids": [
+            118247209107,
+            118247209123,
+            118247209281,
+            118250383650
+          ],
+          "job_names": [
+            "backend / static",
+            "backend / database",
+            "backend / load",
+            "backend / backend"
+          ],
+          "outcome": "PASS"
+        },
+        {
+          "run_id": 39309581312,
+          "source_revision": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39309581312",
+          "run_attempt": 1,
+          "workflow_created_to_backend_available_seconds": 649.0,
+          "backend_execution_span_seconds": 453.0,
+          "sum_job_execution_seconds": 518.0,
+          "first_backend_start_delay_seconds": 196.0,
+          "job_ids": [
+            118256143020,
+            118256143102,
+            118256143204,
+            118259189051
+          ],
+          "job_names": [
+            "backend / load",
+            "backend / static",
+            "backend / database",
+            "backend / backend"
+          ],
+          "outcome": "PASS"
+        },
+        {
+          "run_id": 39314566970,
+          "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39314566970",
+          "run_attempt": 1,
+          "workflow_created_to_backend_available_seconds": 341.0,
+          "backend_execution_span_seconds": 319.0,
+          "sum_job_execution_seconds": 532.0,
+          "first_backend_start_delay_seconds": 22.0,
+          "job_ids": [
+            118272672561,
+            118272672587,
+            118272672747,
+            118275129336
+          ],
+          "job_names": [
+            "backend / load",
+            "backend / database",
+            "backend / static",
+            "backend / backend"
+          ],
+          "outcome": "PASS"
+        }
+      ],
+      "summary": {
+        "workflow_created_to_backend_available_seconds": {
+          "n": 3,
+          "p50": 608.0,
+          "p90": 649.0,
+          "p95": 649.0,
+          "max": 649.0
+        },
+        "backend_execution_span_seconds": {
+          "n": 3,
+          "p50": 389.0,
+          "p90": 453.0,
+          "p95": 453.0,
+          "max": 453.0
+        },
+        "sum_job_execution_seconds": {
+          "n": 3,
+          "p50": 532.0,
+          "p90": 611.0,
+          "p95": 611.0,
+          "max": 611.0
+        },
+        "first_backend_start_delay_seconds": {
+          "n": 3,
+          "p50": 196.0,
+          "p90": 219.0,
+          "p95": 219.0,
+          "max": 219.0
+        }
+      },
+      "observed_failure_rate": 0.0,
+      "observed_retry_rate": 0.0,
+      "confirmed_flake_rate": null,
+      "observed_failed_run_occurrences": 0,
+      "observed_flaky_failed_run_occurrences": 0,
+      "observed_flaky_failed_run_rate": 0
+    },
+    "limits": [
+      "n=3 in each cohort; nearest-rank percentiles, not a capacity/SLO proof.",
+      "Historical different sources/runner load, not a matched same-SHA causal speedup experiment.",
+      "Availability includes shared runner/dispatch waits; execution span includes waits between parallel profiles and aggregate.",
+      "Rerun rate is not confirmed flaky-test frequency. No flaky root cause is asserted.",
+      "Live DB/load/receipt identity proof is separate in combined-integration-2026-10-19.json."
+    ]
+  },
+  "prior_proof": {
+    "path": "evidence/ci/combined-integration-2026-10-19.json",
+    "sha256": "c1717f75e8a641c95c799de01699f906a9346a2f8232b173ff22a9c1e480dab9"
+  },
+  "focused_negative_checks": {
+    "status": "PASS",
+    "source": "evidence/ci/backend-gates-2026-10-19.md",
+    "cases": 32
+  },
+  "limits": [
+    "Three historical before and three actual after sources; no population SLO or matched-SHA causal speedup claim.",
+    "All sampled backend executions succeeded on first attempt: zero observed failures, retries or flaky failed-run events. Intrinsic/confirmed flaky-test probability remains UNKNOWN.",
+    "Availability p50/p95 worsened with hosted-runner waits; execution-span improvement is not end-to-end acceleration.",
+    "This closes backend isolation/coverage/receipt/measurement scope only; owner required settings #385, broader same-SHA cutover controls #401 and physical/media capacity are separate.",
+    "No full test, native app, VM, production retry or new CI dispatch was started to collect this record.",
+    "The three-source receipt sample is supplemented by a complete 12-run after window, so cancellations and workflow failures are not silently filtered from gate-outcome statistics."
+  ],
+  "nearest_focused_recheck": {
+    "status": "PASS",
+    "cases": 10,
+    "seconds": 0.102,
+    "modules": [
+      "backend_gates.test_results",
+      "backend_gates.test_run",
+      "backend_gates.test_workflow"
+    ]
+  },
+  "complete_after_window": {
+    "created_at_start_inclusive": "2026-10-19T17:30:25Z",
+    "created_at_end_inclusive": "2026-10-19T20:12:42Z",
+    "selection": "Every master Build server run created in the interval, regardless of workflow conclusion; complete backend job states from the latest API job response.",
+    "samples": [
+      {
+        "id": 39294689762,
+        "head_sha": "d9a21b8a31229eb4ba955622773390112b9e880d",
+        "run_attempt": 1,
+        "created_at": "2026-10-19T17:30:25Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39294689762",
+        "jobs": [
+          {
+            "id": 118206979697,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "started_at": "2026-10-19T17:37:41Z",
+            "completed_at": "2026-10-19T17:39:15Z"
+          },
+          {
+            "id": 118206979771,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "started_at": "2026-10-19T17:37:36Z",
+            "completed_at": "2026-10-19T17:39:12Z"
+          },
+          {
+            "id": 118206980054,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "started_at": "2026-10-19T17:37:45Z",
+            "completed_at": "2026-10-19T17:39:10Z"
+          },
+          {
+            "id": 118208429570,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "failure",
+            "started_at": "2026-10-19T17:46:42Z",
+            "completed_at": "2026-10-19T17:46:56Z"
+          }
+        ],
+        "outcome": "CANCELLED_RED"
+      },
+      {
+        "id": 39295810643,
+        "head_sha": "67c06d7388d14d3153f39c3d31904ea354b4ba8e",
+        "run_attempt": 1,
+        "created_at": "2026-10-19T17:38:10Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39295810643",
+        "jobs": [
+          {
+            "id": 118215707489,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "started_at": "2026-10-19T17:54:20Z",
+            "completed_at": "2026-10-19T17:54:33Z"
+          },
+          {
+            "id": 118215707685,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "started_at": "2026-10-19T17:54:20Z",
+            "completed_at": "2026-10-19T17:54:33Z"
+          },
+          {
+            "id": 118215707695,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "started_at": "2026-10-19T17:54:20Z",
+            "completed_at": "2026-10-19T17:54:33Z"
+          },
+          {
+            "id": 118215814986,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "failure",
+            "started_at": "2026-10-19T17:56:25Z",
+            "completed_at": "2026-10-19T17:56:34Z"
+          }
+        ],
+        "outcome": "CANCELLED_RED"
+      },
+      {
+        "id": 39298106144,
+        "head_sha": "d4a0e6d4a47b51a3e72969ec5bb5b68bfc95a130",
+        "run_attempt": 1,
+        "created_at": "2026-10-19T17:54:32Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39298106144",
+        "jobs": [
+          {
+            "id": 118220235567,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:05:54Z",
+            "completed_at": "2026-10-19T18:07:36Z"
+          },
+          {
+            "id": 118220235780,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:06:11Z",
+            "completed_at": "2026-10-19T18:10:59Z"
+          },
+          {
+            "id": 118220236291,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:08:13Z",
+            "completed_at": "2026-10-19T18:11:22Z"
+          },
+          {
+            "id": 118223916199,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:11:34Z",
+            "completed_at": "2026-10-19T18:11:44Z"
+          }
+        ],
+        "outcome": "PASS",
+        "workflow_created_to_backend_available_seconds": 1032.0,
+        "backend_execution_span_seconds": 350.0,
+        "sum_job_execution_seconds": 589.0,
+        "first_backend_start_delay_seconds": 682.0
+      },
+      {
+        "id": 39300791738,
+        "head_sha": "3216603c6a50629e43dc13ac875bfde59ebf61bc",
+        "run_attempt": 2,
+        "created_at": "2026-10-19T18:14:02Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39300791738",
+        "jobs": [
+          {
+            "id": 118232002265,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:15:09Z",
+            "completed_at": "2026-10-19T18:17:38Z"
+          },
+          {
+            "id": 118232002685,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:15:09Z",
+            "completed_at": "2026-10-19T18:16:21Z"
+          },
+          {
+            "id": 118232006330,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:20:13Z",
+            "completed_at": "2026-10-19T18:20:26Z"
+          },
+          {
+            "id": 118232050135,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:15:10Z",
+            "completed_at": "2026-10-19T18:20:02Z"
+          }
+        ],
+        "outcome": "PASS",
+        "workflow_created_to_backend_available_seconds": 384.0,
+        "backend_execution_span_seconds": 317.0,
+        "sum_job_execution_seconds": 526.0,
+        "first_backend_start_delay_seconds": 67.0
+      },
+      {
+        "id": 39301937423,
+        "head_sha": "911d7c7989c6043a093bca1f88d8229ce3beab42",
+        "run_attempt": 1,
+        "created_at": "2026-10-19T18:22:22Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39301937423",
+        "jobs": [
+          {
+            "id": 118229675219,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "started_at": "2026-10-19T18:23:39Z",
+            "completed_at": "2026-10-19T18:26:26Z"
+          },
+          {
+            "id": 118229675228,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "started_at": "2026-10-19T18:23:39Z",
+            "completed_at": "2026-10-19T18:26:27Z"
+          },
+          {
+            "id": 118229675353,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "started_at": "2026-10-19T18:23:39Z",
+            "completed_at": "2026-10-19T18:25:09Z"
+          },
+          {
+            "id": 118231056549,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "failure",
+            "started_at": "2026-10-19T18:26:30Z",
+            "completed_at": "2026-10-19T18:26:37Z"
+          }
+        ],
+        "outcome": "CANCELLED_RED"
+      },
+      {
+        "id": 39304842850,
+        "head_sha": "b48d85c920ee067121f453575005cdc6bf27d5c8",
+        "run_attempt": 1,
+        "created_at": "2026-10-19T18:43:00Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39304842850",
+        "jobs": [
+          {
+            "id": 118239258231,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:45:04Z",
+            "completed_at": "2026-10-19T18:46:36Z"
+          },
+          {
+            "id": 118239258251,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "started_at": "2026-10-19T18:44:37Z",
+            "completed_at": "2026-10-19T18:49:46Z"
+          },
+          {
+            "id": 118239258266,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:45:08Z",
+            "completed_at": "2026-10-19T18:48:14Z"
+          },
+          {
+            "id": 118242427448,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "failure",
+            "started_at": "2026-10-19T18:49:49Z",
+            "completed_at": "2026-10-19T18:49:56Z"
+          }
+        ],
+        "outcome": "CANCELLED_RED"
+      },
+      {
+        "id": 39305729011,
+        "head_sha": "7930ac782d6d08bb2caba701f8ff956ed65df497",
+        "run_attempt": 1,
+        "created_at": "2026-10-19T18:49:14Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39305729011",
+        "jobs": [
+          {
+            "id": 118243175367,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:51:19Z",
+            "completed_at": "2026-10-19T18:53:56Z"
+          },
+          {
+            "id": 118243175379,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:51:19Z",
+            "completed_at": "2026-10-19T18:55:58Z"
+          },
+          {
+            "id": 118243175542,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:51:20Z",
+            "completed_at": "2026-10-19T18:52:44Z"
+          },
+          {
+            "id": 118245452765,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T18:56:36Z",
+            "completed_at": "2026-10-19T18:56:46Z"
+          }
+        ],
+        "outcome": "PASS",
+        "workflow_created_to_backend_available_seconds": 452.0,
+        "backend_execution_span_seconds": 327.0,
+        "sum_job_execution_seconds": 530.0,
+        "first_backend_start_delay_seconds": 125.0
+      },
+      {
+        "id": 39306796863,
+        "head_sha": "59c15c65c6751173fc5e668be383e88a62276a58",
+        "run_attempt": 1,
+        "created_at": "2026-10-19T18:56:46Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39306796863",
+        "jobs": [
+          {
+            "id": 118247209107,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:02:30Z",
+            "completed_at": "2026-10-19T19:04:22Z"
+          },
+          {
+            "id": 118247209123,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:00:25Z",
+            "completed_at": "2026-10-19T19:03:43Z"
+          },
+          {
+            "id": 118247209281,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:01:14Z",
+            "completed_at": "2026-10-19T19:06:05Z"
+          },
+          {
+            "id": 118250383650,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:06:44Z",
+            "completed_at": "2026-10-19T19:06:54Z"
+          }
+        ],
+        "outcome": "PASS",
+        "workflow_created_to_backend_available_seconds": 608.0,
+        "backend_execution_span_seconds": 389.0,
+        "sum_job_execution_seconds": 611.0,
+        "first_backend_start_delay_seconds": 219.0
+      },
+      {
+        "id": 39309581312,
+        "head_sha": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+        "run_attempt": 1,
+        "created_at": "2026-10-19T19:16:25Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39309581312",
+        "jobs": [
+          {
+            "id": 118256143020,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:19:41Z",
+            "completed_at": "2026-10-19T19:24:18Z"
+          },
+          {
+            "id": 118256143102,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:21:48Z",
+            "completed_at": "2026-10-19T19:22:54Z"
+          },
+          {
+            "id": 118256143204,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:20:19Z",
+            "completed_at": "2026-10-19T19:23:03Z"
+          },
+          {
+            "id": 118259189051,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:27:03Z",
+            "completed_at": "2026-10-19T19:27:14Z"
+          }
+        ],
+        "outcome": "PASS",
+        "workflow_created_to_backend_available_seconds": 649.0,
+        "backend_execution_span_seconds": 453.0,
+        "sum_job_execution_seconds": 518.0,
+        "first_backend_start_delay_seconds": 196.0
+      },
+      {
+        "id": 39312783337,
+        "head_sha": "768b81e3ec557eef20796fb610b19b5b646c8a9b",
+        "run_attempt": 1,
+        "created_at": "2026-10-19T19:39:19Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39312783337",
+        "jobs": [
+          {
+            "id": 118267496421,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:43:48Z",
+            "completed_at": "2026-10-19T19:45:17Z"
+          },
+          {
+            "id": 118267496593,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:44:13Z",
+            "completed_at": "2026-10-19T19:47:27Z"
+          },
+          {
+            "id": 118267496636,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:45:20Z",
+            "completed_at": "2026-10-19T19:49:53Z"
+          },
+          {
+            "id": 118271411400,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:49:59Z",
+            "completed_at": "2026-10-19T19:50:11Z"
+          }
+        ],
+        "outcome": "PASS",
+        "workflow_created_to_backend_available_seconds": 652.0,
+        "backend_execution_span_seconds": 383.0,
+        "sum_job_execution_seconds": 568.0,
+        "first_backend_start_delay_seconds": 269.0
+      },
+      {
+        "id": 39314566970,
+        "head_sha": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+        "run_attempt": 1,
+        "created_at": "2026-10-19T19:52:21Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39314566970",
+        "jobs": [
+          {
+            "id": 118272672561,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:52:43Z",
+            "completed_at": "2026-10-19T19:57:48Z"
+          },
+          {
+            "id": 118272672587,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:52:43Z",
+            "completed_at": "2026-10-19T19:55:12Z"
+          },
+          {
+            "id": 118272672747,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:53:07Z",
+            "completed_at": "2026-10-19T19:54:14Z"
+          },
+          {
+            "id": 118275129336,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T19:57:51Z",
+            "completed_at": "2026-10-19T19:58:02Z"
+          }
+        ],
+        "outcome": "PASS",
+        "workflow_created_to_backend_available_seconds": 341.0,
+        "backend_execution_span_seconds": 319.0,
+        "sum_job_execution_seconds": 532.0,
+        "first_backend_start_delay_seconds": 22.0
+      },
+      {
+        "id": 39317403465,
+        "head_sha": "b1c9f2c7500665018999b0af39ee6b07268a54f5",
+        "run_attempt": 1,
+        "created_at": "2026-10-19T20:12:42Z",
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39317403465",
+        "jobs": [
+          {
+            "id": 118282449123,
+            "name": "backend / database",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T20:14:15Z",
+            "completed_at": "2026-10-19T20:17:22Z"
+          },
+          {
+            "id": 118282449130,
+            "name": "backend / static",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T20:17:22Z",
+            "completed_at": "2026-10-19T20:18:53Z"
+          },
+          {
+            "id": 118282449223,
+            "name": "backend / load",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T20:17:19Z",
+            "completed_at": "2026-10-19T20:22:33Z"
+          },
+          {
+            "id": 118287053038,
+            "name": "backend / backend",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-19T20:22:59Z",
+            "completed_at": "2026-10-19T20:23:08Z"
+          }
+        ],
+        "outcome": "PASS",
+        "workflow_created_to_backend_available_seconds": 626.0,
+        "backend_execution_span_seconds": 533.0,
+        "sum_job_execution_seconds": 601.0,
+        "first_backend_start_delay_seconds": 93.0
+      }
+    ],
+    "outcomes": {
+      "PASS": 8,
+      "CANCELLED_RED": 4,
+      "FAIL": 0,
+      "NOT_RUN": 0
+    },
+    "summary_successful_backend_gates": {
+      "workflow_created_to_backend_available_seconds": {
+        "n": 8,
+        "p50": 608.0,
+        "p90": 1032.0,
+        "p95": 1032.0,
+        "max": 1032.0
+      },
+      "backend_execution_span_seconds": {
+        "n": 8,
+        "p50": 350.0,
+        "p90": 533.0,
+        "p95": 533.0,
+        "max": 533.0
+      },
+      "sum_job_execution_seconds": {
+        "n": 8,
+        "p50": 532.0,
+        "p90": 611.0,
+        "p95": 611.0,
+        "max": 611.0
+      },
+      "first_backend_start_delay_seconds": {
+        "n": 8,
+        "p50": 125.0,
+        "p90": 682.0,
+        "p95": 682.0,
+        "max": 682.0
+      }
+    },
+    "backend_required_red_rate": 0.3333333333333333,
+    "cancellation_propagated_red_rate": 0.3333333333333333,
+    "observed_non_cancelled_component_failure_rate": 0,
+    "observed_flaky_failed_run_events": 0,
+    "observed_retry_rate": 0,
+    "confirmed_intrinsic_flake_probability": null,
+    "limits": [
+      "Cancelled children are actual red required gates, not successful backend executions or confirmed flaky tests.",
+      "Historical workflow-level failures/cancellations do not override a fully successful backend component; raw backend states are retained.",
+      "Before remains the original three frozen #383 samples; unequal historical cohort sizes and runner load preclude causal speedup inference."
+    ],
+    "api_collection": {
+      "url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/runs?per_page=100&branch=master&event=push&created=2026-10-19T17%3A30%3A25Z..2026-10-19T20%3A12%3A42Z",
+      "total_count": 24,
+      "returned": 24,
+      "backend_run_ids": [
+        39294689762,
+        39295810643,
+        39298106144,
+        39300791738,
+        39301937423,
+        39304842850,
+        39305729011,
+        39306796863,
+        39309581312,
+        39312783337,
+        39314566970,
+        39317403465
+      ]
+    }
+  }
+}
