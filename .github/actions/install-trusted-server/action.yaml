@@ -1,0 +1,87 @@
+name: Install trusted server
+description: Verify, download, install and freshly acknowledge one exact retained server bundle
+inputs:
+  mode:
+    description: automatic or retained, bound to the protected caller
+    required: true
+  build-run-id:
+    description: Exact successful master Build server execution
+    required: true
+  revision:
+    description: Required exact source for retained installation
+    required: false
+    default: ''
+  github-token:
+    description: Read-only repository Actions token
+    required: true
+  ssh-private-key:
+    description: Protected production transport credential
+    required: true
+runs:
+  using: composite
+  steps:
+    - id: controller
+      name: Verify protected current controller and event bindings
+      shell: bash
+      env:
+        DELIVERY_MODE: ${{ inputs.mode }}
+        BUILD_RUN_ID: ${{ inputs.build-run-id }}
+        REQUESTED_REVISION: ${{ inputs.revision }}
+      run: python -m tools.release.delivery.step controller
+    - id: producer
+      name: Verify exact successful producer and retain immutable artifact authority
+      shell: bash
+      env:
+        BUILD_RUN_ID: ${{ inputs.build-run-id }}
+        REQUESTED_REVISION: ${{ inputs.revision }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: python -m tools.release.delivery.step producer
+    - id: download
+      name: Download exact artifact ID and verify actual ZIP digest and transport pair
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: python -m tools.release.delivery.step download
+    - id: recheck
+      name: Reject rerun or artifact replacement during download before using SSH
+      shell: bash
+      env:
+        BUILD_RUN_ID: ${{ inputs.build-run-id }}
+        REQUESTED_REVISION: ${{ inputs.revision }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: python -m tools.release.delivery.step recheck
+    - id: ssh
+      name: Configure pinned bounded SSH transport
+      shell: bash
+      env:
+        DEPLOY_SSH_PRIVATE_KEY: ${{ inputs.ssh-private-key }}
+      run: timeout --signal=TERM --kill-after=5s 30s bash tools/release/ssh/configure-deploy-ssh.sh
+    - id: install
+      name: Transfer verified bundle, install with current controller, verify fresh runtime readback
+      shell: bash
+      env:
+        RELEASE_REVISION: ${{ steps.producer.outputs.revision }}
+        CONTROLLER_REVISION: ${{ steps.controller.outputs.controller_revision }}
+      run: python -m tools.release.delivery.transfer
+    - id: receipt
+      name: Write sanitized delivery evidence including failed and skipped stages
+      if: always()
+      shell: bash
+      env:
+        STEP_CONTROLLER: ${{ steps.controller.outcome }}
+        STEP_PRODUCER: ${{ steps.producer.outcome }}
+        STEP_DOWNLOAD: ${{ steps.download.outcome }}
+        STEP_RECHECK: ${{ steps.recheck.outcome }}
+        STEP_SSH: ${{ steps.ssh.outcome }}
+        STEP_INSTALL: ${{ steps.install.outcome }}
+      run: python -m tools.release.delivery.receipt
+    - id: upload
+      name: Retain bounded public deployment receipt
+      if: always()
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      with:
+        name: delivery-${{ github.run_id }}-${{ github.run_attempt }}
+        path: .out/delivery/receipt.json
+        if-no-files-found: error
+        retention-days: 30
+        compression-level: 9

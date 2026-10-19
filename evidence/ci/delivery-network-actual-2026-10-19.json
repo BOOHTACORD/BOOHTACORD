@@ -1,0 +1,61 @@
+{
+  "acceptance": {
+    "checked_at": "2026-10-19T16:38:32.937426+00:00",
+    "controller_revision": "814ce3c06248467d59b8461ac2faeb600e226cbc",
+    "host_signature": "NOT_RUN",
+    "installation": "NOT_RUN",
+    "producer": {
+      "digest": "sha256:a2c356fa784c7a480e3402062ffbe15913bae1abb0525b203eec534f010d88fe",
+      "id": 12195206890,
+      "run_attempt": 1,
+      "run_id": 39268498370,
+      "size_in_bytes": 73502109,
+      "source_revision": "fe482078a2fa4e4964b6758770980d4b1a0b2fa6"
+    },
+    "scope": "Actual shipping GitHub network downloader; no image execution",
+    "shipping_module_sha256": {
+      "api.py": "bb6c597da47a84599151faa6ea2b9f0f2560f6653afc2824b880245ff5575bb4",
+      "artifact_download.py": "34ac5ed0b038e8609124ed776c541116b9e4fff11426ac15c6520e6ba7e7365f",
+      "artifact_zip.py": "5874e722f0a53f4bc2dd9164df30be3bfbf5961d23a42dc1abdae051cc160654",
+      "authority.py": "364f4c7502c119f6047633d108a6db695c772407ba666d8a06cd47f725fb7a10",
+      "download.py": "26f461f340b39304d1df3d6d14ec8fe504562d05c30a5451df1a665a90b3c26f",
+      "payload.py": "7cfc856482eab87596d19f2450026ef0761f2ee69a41108b579edbffb84591a1",
+      "preflight.py": "e841b7a07609e311edd33cdf6827bc31f2bcf5361d68642a6ab37a2acce9f6eb"
+    },
+    "status": "PASS",
+    "transport": {
+      "archive_bytes": 73502109,
+      "bundle_bytes": 73479854,
+      "bundle_sha256": "be319f41f75e5ccb94330c6a4aa40e7d55e0aabcd0c1d843d204785495c7fdfd",
+      "outer_digest": "verified"
+    }
+  },
+  "artifact": {
+    "bytes": 936,
+    "id": 12203102754,
+    "sha256": "9b7a4f26b0e97b039f91f7821905a80a902879a85110ae1c1888670982d2bc65"
+  },
+  "checked_network_at": "2026-10-19T16:38:32.937426+00:00",
+  "checkout_revision": "814ce3c06248467d59b8461ac2faeb600e226cbc",
+  "issue": 395,
+  "job": 118176860836,
+  "job_conclusion": "success",
+  "not_claimed": [
+    "host signature",
+    "SSH transfer",
+    "image import or execution",
+    "installation",
+    "compatible rollback",
+    "full #395 acceptance"
+  ],
+  "run": 39287076404,
+  "scope": "Actual hosted shipping downloader job; not installation or full release acceptance",
+  "source_head": "ef2c809a29772a442bb333eba9880ea63af0cd65",
+  "source_tree": "9f9522eda4b8176eafd39fb9a4f0cfbbe4a85b93",
+  "verification": [
+    "Authenticated GitHub completed successful job and every step inspected",
+    "Downloaded actual evidence-only artifact ZIP; size/digest matched GitHub metadata",
+    "Exactly one evidence.json entry inspected",
+    "All seven shipping module hashes match the reviewed checkout"
+  ]
+}

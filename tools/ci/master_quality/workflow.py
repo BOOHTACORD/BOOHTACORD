@@ -77,12 +77,11 @@ def validate(workflows):
             for gate in ('backend', 'web', 'contracts')]
             and all(not s.get('if') for s in downloads))
         require(len(uploads) == 1 and uploads[0]['with']['name'] == 'server-' + EXECUTION)
-        for name in ('deploy-production.yaml', 'install-retained-release.yaml'):
-            downloads = [s for s in workflows[name]['jobs']['install']['steps']
-                         if s.get('uses') == 'actions/download-artifact@v4']
-            require(len(downloads) == 1 and downloads[0].get('with') == {
-                'name': '${{ steps.producer.outputs.artifact_name }}', 'path': '.out/incoming',
-                'run-id': '${{ steps.producer.outputs.run_id }}', 'github-token': '${{ secrets.GITHUB_TOKEN }}'})
+        from tools.verify.workflows.shared_install import check as shared_install
+        from tools.verify.action_pins.policy import normalized
+        import yaml
+        action = ROOT/'.github/actions/install-trusted-server/action.yaml'
+        shared_install(workflows, yaml.load(normalized(action.read_text(encoding='utf-8')), Loader=yaml.BaseLoader))
         for name in ('build-server.yaml', 'ci-backend.yaml', 'ci-frontend.yaml', 'ci-contracts.yaml'):
             for job in workflows[name]['jobs'].values():
                 for step in job.get('steps', []):

@@ -17,7 +17,7 @@ class DeliveryWorkflowTests(unittest.TestCase):
 
     def test_installer_cannot_cancel_another_writer(self):
         broken = copy.deepcopy(self.workflows)
-        broken['deploy-production.yaml']['concurrency']['cancel-in-progress'] = 'true'
+        broken['deploy-production.yaml']['jobs']['install']['concurrency']['cancel-in-progress'] = 'true'
         with self.assertRaises(ValueError): check(broken)
 
     def test_builder_requires_all_source_bound_gates(self):

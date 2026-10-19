@@ -13,6 +13,15 @@ fail() {
   exit 1
 }
 
+# The current installer supplies a private owned file. Old retained runtimes
+# ignore this input and are reported explicitly as unmeasured legacy releases.
+delivery_phase() {
+  if [[ -n "${VOICE_PLATFORM_DELIVERY_PHASES:-}" ]]; then
+    [[ -f "$VOICE_PLATFORM_DELIVERY_PHASES" && ! -L "$VOICE_PLATFORM_DELIVERY_PHASES" ]] || fail "Delivery phase sink is unavailable."
+    printf '%s %s\n' "$1" "$(date +%s)" >> "$VOICE_PLATFORM_DELIVERY_PHASES"
+  fi
+}
+
 livekit_private_path_script="$script_dir/livekit_private_path.py"
 [[ -r "$livekit_private_path_script" ]] || fail "LiveKit private path preflight is missing from the release."
 
@@ -57,9 +66,11 @@ disable_maintenance_admission() {
     return 1
   fi
   admission_enabled=0
+  delivery_phase maintenance_disabled
 }
 
 enable_maintenance_admission() {
+  delivery_phase maintenance_requested
   if ! "${compose[@]}" --profile operator run --rm --no-deps maintenance-admission --enable; then
     if [[ -n "$temporary_compose" ]]; then
       python3 "$script_dir/reconcile-postgres-credential.py" "$project_dir" "$temporary_compose"
@@ -69,6 +80,7 @@ enable_maintenance_admission() {
     "${compose[@]}" --profile operator run --rm --no-deps maintenance-admission --enable
   fi
   admission_enabled=1
+  delivery_phase maintenance_enabled
 }
 
 cleanup() {
@@ -84,6 +96,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
+delivery_phase rollout_started
 postgres_output=''
 if ! postgres_output="$("${compose[@]}" up -d --wait postgres 2>&1)"; then
   printf '%s\n' "$postgres_output" >&2
@@ -115,10 +128,16 @@ rm -f "$temporary_env"
 temporary_env=''
 
 "${compose[@]}" up -d --wait postgres
+delivery_phase migration_started
 "${compose[@]}" run --rm --no-deps migrate
+delivery_phase migration_completed
+delivery_phase services_started
 "${compose[@]}" up -d --no-deps --no-build api web
 "${compose[@]}" up -d --no-deps --no-build --force-recreate proxy
 bash "$script_dir/assert-proxy-networks.sh" "$project_dir"
 "${compose[@]}" exec -T proxy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+delivery_phase health_started
 curl -fsS --retry 5 --retry-connrefused "https://${public_host}/api/v1/health"
+delivery_phase health_passed
 disable_maintenance_admission
+delivery_phase rollout_completed

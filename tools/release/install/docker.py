@@ -2,6 +2,9 @@
 import json
 import os
 import subprocess
+import tempfile
+from pathlib import Path
+from .timings import parse as rollout_timings
 from .guards import installed_digests, writer_topology
 from .paths import compose_arguments, rollout_script
 from tools.release.bundle.manifest import require
@@ -33,7 +36,13 @@ def deploy(directory, manifest):
     environment = {**os.environ, "VOICE_PLATFORM_DIR": str(directory)}
     for service, component in manifest["components"].items():
         environment[service.upper() + "_IMAGE"] = f"voice-platform-{service}@{component['index_digest']}"
-    subprocess.run(["bash", str(rollout_script(directory))], env=environment, check=True)
+    with tempfile.TemporaryDirectory(prefix='voice-platform-rollout-') as temporary:
+        phases = Path(temporary)/'phases.txt'
+        phases.touch(mode=0o600)
+        environment['VOICE_PLATFORM_DELIVERY_PHASES'] = str(phases)
+        subprocess.run(["bash", str(rollout_script(directory))], env=environment, check=True)
+        with phases.open('r', encoding='utf-8') as stream:
+            return rollout_timings(stream.read(8193))
 
 
 def verify_running(directory, manifest):

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "owned-postgres-schema-query-proof",
+  "status": "PASS",
+  "scope": "Only the committed catalog query on a private temporary native PostgreSQL 17.11 instance; not Docker, installation, production or media acceptance",
+  "tested_source_revision": "fb305757084ad06ce9265e3512581984f96bb6a7",
+  "platform": "Darwin/arm64",
+  "query_file_sha256": "a666e5c22e437762601c394b1cc4242428112e69e698f46ecc21c7a197113f44",
+  "database_rows_exported": false,
+  "tcp_listener_enabled": false,
+  "generated_database_retained": false,
+  "postgres_version": "postgres (PostgreSQL) 17.11 (Homebrew)",
+  "migrations_applied": 52,
+  "migrations_reapplied": 52,
+  "empty_schema_sha256": "cf803eea98bdb81be1fa08d282200b265ffe23635020aaeb444af342ab0cccdd",
+  "migrated_schema_sha256": "159a00aa4a8c20c98d32256f14887e568eaf8497b83b2c42342c40b99796dfcd",
+  "reapplied_schema_sha256": "159a00aa4a8c20c98d32256f14887e568eaf8497b83b2c42342c40b99796dfcd",
+  "repeat_query_stable": true,
+  "readonly_write_rejected": true,
+  "owned_postgres_stopped": true,
+  "checked_at": "2026-10-19T16:13:53.312872+00:00"
+}
