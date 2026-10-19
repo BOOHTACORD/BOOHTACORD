@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "profiles": ["lifecycle", "next", "sfu"],
+  "release_gates": ["compatible-rollback", "windows-installed-update", "macos-installed-update"],
+  "physical_gates": ["android-device", "ios-device", "macos-media", "windows-media"],
+  "rules": [
+    {"paths": ["docs/**", "evidence/**", "backlog/**", "README.md", "LICENSE", ".gitignore"], "profiles": [], "release": [], "physical": []},
+    {"paths": ["tools/qa/client_lifecycle/**", "tools/qa/refresh_baseline/**", "tools/qa/upload_reservations/**"], "profiles": ["lifecycle"], "release": [], "physical": []},
+    {"paths": ["tools/qa/next_client_acceptance/**", "clients/web/src/direct_message/**", "clients/web/src/conversation/**", "clients/web/src/search/**"], "profiles": ["lifecycle", "next"], "release": [], "physical": []},
+    {"paths": ["tools/qa/sfu_snapshot_measure/**"], "profiles": ["sfu"], "release": [], "physical": []},
+    {"paths": ["clients/flutter/**", "tools/build/desktop_updater/**", "tools/qa/desktop_updates/**", "tools/release/desktop_updates/**"], "profiles": ["lifecycle", "next", "sfu"], "release": ["windows-installed-update", "macos-installed-update"], "physical": ["android-device", "ios-device", "macos-media", "windows-media"]},
+    {"paths": ["deploy/**", "docker/**", "tools/release/**", "tools/qa/compatible_rollback/**", "tools/build/server/**"], "profiles": ["lifecycle", "next", "sfu"], "release": ["compatible-rollback"], "physical": []},
+    {"paths": ["backend/**", "clients/web/**", "contracts/**", ".github/**", "tools/ci/**", "tools/verify/**", "tools/qa/**", "tools/audio/**", "tools/build/**", "tools/toolchains.json", "tools/requirements-ci.txt", ".node-version", "Taskfile.yml", "AGENTS.md", "structure.config.yaml"], "profiles": ["lifecycle", "next", "sfu"], "release": [], "physical": []}
+  ]
+}

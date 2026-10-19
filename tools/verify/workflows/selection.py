@@ -4,7 +4,7 @@ import yaml
 from . import required
 
 GATES = {'ci-backend.yaml': 'backend', 'ci-frontend.yaml': 'web',
-         'ci-flutter.yaml': 'flutter', 'flutter-windows.yaml': 'windows'}
+         'ci-flutter.yaml': 'flutter', 'flutter-windows.yaml': 'windows', 'ci-actual-acceptance.yaml': 'actual'}
 
 
 def require(value, message):
@@ -31,7 +31,7 @@ def check(document):
             needs = job.get('needs', [])
             needs = [needs] if isinstance(needs, str) else needs
             require(selector in needs, f'{gate} must wait for change selection')
-            require(job.get('if') == f"needs.{selector}.outputs.{gate} == 'true'", f'{gate} must follow its selection')
+            require(job.get('if') == f"needs.{selector}.outputs.{gate + '_required' if gate == 'actual' else gate} == 'true'", f'{gate} must follow its selection')
             seen.add(gate)
             roles[gate] = job_name
     require(seen == {'contracts', *GATES.values()}, 'Missing a required native/contract gate')

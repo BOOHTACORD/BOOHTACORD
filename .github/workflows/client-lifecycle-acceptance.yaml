@@ -1,86 +1,13 @@
-name: Autonomous client lifecycle acceptance
+name: Manual actual acceptance — lifecycle
 
 on:
   workflow_dispatch:
-  pull_request:
-    paths:
-      - tools/qa/client_lifecycle/**
-      - tools/qa/upload_reservations/**
-      - tools/qa/critical_client_acceptance/**
-      - tools/qa/refresh_baseline/**
-      - clients/web/src/workspace/**
-      - clients/web/src/realtime/**
-      - clients/web/src/conversation/**
-      - clients/web/src/voice/**
-      - clients/web/src/guild/profile/**
-      - clients/web/src/identity/**
-      - clients/web/src/App.vue
-      - backend/**
-      - .github/workflows/client-lifecycle-acceptance.yaml
 
 permissions:
   contents: read
 
 jobs:
-  lifecycle:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    env:
-      VITE_PUBLIC_ORIGIN: https://localhost:4810
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
-        with:
-          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
-      - name: Verify selected Python interpreter
-        run: python -m tools.ci.toolchains.runtime python
-      - name: Prepare public Node SDK and locked dependency cache inputs
-        run: python3 -m tools.ci.toolchains.cache_inputs npm
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-          cache-dependency-path: .out/ci/cache-inputs/npm.json
-      - name: Prepare public Go SDK and dependency cache inputs
-        run: python3 -m tools.ci.toolchains.cache_inputs go
-      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
-        with:
-          go-version: '1.26.4'
-          cache-dependency-path: .out/ci/cache-inputs/go.json
-      - name: Install locked real browser
-        working-directory: clients/web
-        run: |
-          npm ci
-          npx playwright install --with-deps chromium
-      - name: Verify disposable resource guards
-        run: python3 -m unittest tools.qa.client_lifecycle.test_services tools.qa.client_lifecycle.test_telemetry tools.qa.critical_client_acceptance.test_stack
-      - name: Verify bounded request and roster transport observers
-        run: node --test tools/qa/critical_client_acceptance/requests.test.mjs tools/qa/critical_client_acceptance/roster_observer.test.mjs tools/qa/critical_client_acceptance/roster_diagnostics.test.mjs tools/qa/critical_client_acceptance/sfu_control.test.mjs tools/qa/critical_client_acceptance/roster_network.test.mjs tools/qa/client_lifecycle/login_diagnostics.test.mjs
-      - name: Measure previous native client REST requests
-        env:
-          QA_BASELINE_REVISION: ${{ github.event.pull_request.base.sha || github.sha }}
-        run: |
-          python3 -m unittest tools.qa.refresh_baseline.test_archive
-          python3 -m tools.qa.refresh_baseline.run --revision "$QA_BASELINE_REVISION"
-      - name: Run independent actual TLS API browser journeys
-        run: |
-          python3 -m tools.qa.client_lifecycle.run --critical --width 1440
-          python3 -m tools.qa.client_lifecycle.run --critical --width 1024
-      - name: Verify real attachment reservations and single API writer
-        run: |
-          python3 -m unittest tools.qa.upload_reservations.test_measure tools.qa.upload_reservations.test_scenario tools.qa.upload_reservations.test_client
-          python3 -m tools.qa.upload_reservations.run
-      - name: Retain synthetic actual screenshots and bounded results
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: autonomous-client-lifecycle-${{ github.sha }}
-          path: |
-            .out/client-lifecycle/
-            .out/upload-reservations/
-            .out/refresh-baseline/
-          if-no-files-found: ignore
-          retention-days: 30
+  acceptance:
+    uses: ./.github/workflows/ci-actual-acceptance.yaml
+    with:
+      profiles: '["lifecycle"]'

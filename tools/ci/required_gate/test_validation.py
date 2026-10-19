@@ -3,7 +3,7 @@ import unittest
 from .validation import validate
 
 JOBS = {'changes': 'changes', 'contracts': 'contracts', 'backend': 'backend',
-        'web': 'frontend', 'flutter': 'flutter', 'windows': 'windows'}
+        'web': 'frontend', 'flutter': 'flutter', 'windows': 'windows', 'actual': 'actual'}
 DIGEST = 'a' * 64
 
 
@@ -13,6 +13,11 @@ def fixture(selected):
     needs = {'changes': {'result': 'success', 'outputs': outputs}, 'contracts': {'result': 'success'}}
     needs.update({JOBS[gate]: {'result': 'success' if gate in selected else 'skipped'}
                   for gate in ('backend', 'web', 'flutter', 'windows')})
+    from tools.ci.actual_acceptance.plan import document
+    outputs.update(actual_profiles='["lifecycle","next","sfu"]' if selected else '[]',
+                   actual_required=str(bool(selected)).lower(),actual_map_sha256=document()[1],
+                   actual_release_required='[]',actual_physical_required='[]')
+    needs['actual']={'result':'success' if selected else 'skipped'}
     return needs
 
 
@@ -42,7 +47,7 @@ class RequiredGateTests(unittest.TestCase):
 
     def test_partial_invalid_stale_or_uncertain_selection_cannot_pass(self):
         for key, value in [('contracts', 'false'), ('backend', ''), ('web', 'TRUE'),
-                           ('map_version', '2'), ('map_sha256', 'b' * 64), ('uncertain', 'true')]:
+                           ('map_version', '2'), ('map_sha256', 'b' * 64), ('uncertain', 'true'), ('actual_profiles','[]'), ('actual_map_sha256','b'*64), ('actual_required','false')]:
             needs = fixture(['backend'])
             needs['changes']['outputs'][key] = value
             with self.subTest(key=key), self.assertRaises(ValueError):

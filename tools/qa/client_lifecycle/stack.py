@@ -1,5 +1,7 @@
 """Own one isolated database, Tempo, proxy and Linux API container."""
 import secrets
+import os
+import re
 import ssl
 import subprocess
 import time
@@ -23,7 +25,8 @@ def ready(url):
 class Stack:
     def __init__(self, root, work):
         self.root, self.work = root, work
-        self.owner = 'qa-client-'+secrets.token_hex(8)
+        self.owner = os.environ.get('BOOHTACORD_QA_OWNER') or 'qa-client-'+secrets.token_hex(8)
+        if not re.fullmatch('qa-client-[0-9a-f]{16}',self.owner):raise ValueError('Invalid owned QA namespace')
         self.resources, self.api = [], None
         self.image = self.owner+'-api'
         self.password = secrets.token_urlsafe(24)

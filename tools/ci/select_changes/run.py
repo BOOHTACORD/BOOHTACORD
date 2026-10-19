@@ -40,10 +40,16 @@ def main():
         paths = changed_paths(event, os.environ.get('GITHUB_EVENT_NAME'))
     except (OSError, ValueError, KeyError, TypeError, AttributeError):
         paths = None
+    from tools.ci.actual_acceptance.plan import select as acceptance
+    risk=acceptance(paths)
     classification = classify(paths)
     chosen = classification.pop('gates')
     values = {name: name in chosen for name in sorted(ALL)}
     values.update(classification)
+    values.update(actual_profiles=json.dumps(risk['profiles'],separators=(',',':')),
+                  actual_required=bool(risk['profiles']),actual_map_sha256=risk['map_sha256'],
+                  actual_release_required=json.dumps(risk['release_required'],separators=(',',':')),
+                  actual_physical_required=json.dumps(risk['physical_required'],separators=(',',':')))
     result = ''.join(f'{name}={str(value).lower() if type(value) is bool else value}\n'
                      for name, value in values.items())
     with Path(os.environ['GITHUB_OUTPUT']).open('a', encoding='utf-8') as output:

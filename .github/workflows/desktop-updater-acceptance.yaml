@@ -2,25 +2,18 @@ name: Desktop updater acceptance package
 
 on:
   workflow_dispatch:
-  push:
-    branches: [codex/issue337-desktop-updates]
-    paths:
-      - .github/workflows/desktop-updater-acceptance.yaml
-      - clients/flutter/lib/src/features/updates/desktop/**
-      - clients/flutter/lib/src/app/desktop_updates/**
-      - clients/flutter/lib/src/services/conversation_scroll*.dart
-      - clients/flutter/lib/src/screens/workspace_ui/conversation/**
-      - clients/flutter/lib/src/screens/workspace_ui/direct_conversation/**
-      - clients/flutter/native/desktop_recovery/**
-      - clients/flutter/macos/Runner/DesktopUpdates/**
-      - tools/build/desktop_updater/**
+    inputs:
+      publish_qa:
+        description: Explicitly publish an immutable QA-only prerelease (never latest)
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   macos-beta-package:
-    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_qa && github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
     environment: production
     runs-on: macos-26
     timeout-minutes: 35

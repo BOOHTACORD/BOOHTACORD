@@ -2,7 +2,7 @@
 import yaml
 from .spec import ROOT, approved_versions
 
-NPM = {'ci-frontend.yaml', 'client-lifecycle-acceptance.yaml',
+NPM = {'ci-actual-acceptance.yaml', 'ci-frontend.yaml', 'client-lifecycle-acceptance.yaml',
        'next-client-acceptance.yaml', 'qa-compatible-rollback.yaml', 'web-ci-shadow.yaml'}
 
 

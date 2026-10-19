@@ -19,7 +19,7 @@ class TrustBoundaryTests(unittest.TestCase):
                    {'env': {'KEY': '${{ secrets.RELEASE_SIGNING_PRIVATE_KEY }}'}}]
         for update in updates:
             broken = copy.deepcopy(self.workflows)
-            broken['client-lifecycle-acceptance.yaml']['jobs']['lifecycle'].update(update)
+            broken['ci-actual-acceptance.yaml']['jobs']['runtime'].update(update)
             with self.subTest(update=update), self.assertRaises(ValueError):
                 check(broken)
 
@@ -53,7 +53,7 @@ class TrustBoundaryTests(unittest.TestCase):
     def test_indirect_secret_access_and_workflow_env_are_not_a_bypass(self):
         for expression in ["${{ secrets['SIGNING_KEY'] }}", '${{ toJSON(secrets) }}']:
             broken = copy.deepcopy(self.workflows)
-            broken['client-lifecycle-acceptance.yaml']['jobs']['lifecycle']['env'] = {'KEY': expression}
+            broken['ci-actual-acceptance.yaml']['jobs']['runtime']['env'] = {'KEY': expression}
             with self.subTest(expression=expression), self.assertRaises(ValueError): check(broken)
         broken = copy.deepcopy(self.workflows)
         broken['ci.yaml']['env'] = {'KEY': '${{ secrets.SIGNING_KEY }}'}
@@ -62,7 +62,7 @@ class TrustBoundaryTests(unittest.TestCase):
     def test_runner_groups_expressions_and_unknown_labels_are_not_hosted(self):
         for runner in [{'group': 'production'}, '${{ inputs.runner }}', 'privileged-runner']:
             broken = copy.deepcopy(self.workflows)
-            broken['client-lifecycle-acceptance.yaml']['jobs']['lifecycle']['runs-on'] = runner
+            broken['ci-actual-acceptance.yaml']['jobs']['runtime']['runs-on'] = runner
             with self.subTest(runner=runner), self.assertRaises(ValueError): check(broken)
 
     def test_dependency_install_precedes_yaml_policy_imports(self):

@@ -1,12 +1,24 @@
 name: Compatible rollback acceptance
 
 on:
-  pull_request:
-    branches: [master]
-    paths:
-      - tools/qa/compatible_rollback/**
-      - .github/workflows/qa-compatible-rollback.yaml
   workflow_dispatch:
+    inputs:
+      current_source:
+        description: Exact 40-character current source with successful master producer
+        type: string
+        required: true
+      current_run:
+        description: Completed successful master quality run for current_source
+        type: string
+        required: true
+      previous_source:
+        description: Exact compatible previous source
+        type: string
+        required: true
+      previous_run:
+        description: Completed successful master quality run for previous_source
+        type: string
+        required: true
 
 permissions:
   contents: read
@@ -18,6 +30,7 @@ concurrency:
 
 jobs:
   rehearse:
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -37,13 +50,17 @@ jobs:
           node-version-file: .node-version
           cache: npm
           cache-dependency-path: .out/ci/cache-inputs/npm.json
-      - name: Fetch the exact retained source objects
-        run: |
-          git fetch --no-tags origin 4261f7208fdf9a486644ee967aab931df432aae9 bfea46b61c3bc641098caf7c35be8c4be798af59
+      - name: Validate and fetch explicit retained source objects
+        env:
+          CURRENT_SOURCE: ${{ inputs.current_source }}
+          CURRENT_RUN: ${{ inputs.current_run }}
+          PREVIOUS_SOURCE: ${{ inputs.previous_source }}
+          PREVIOUS_RUN: ${{ inputs.previous_run }}
+        run: python -m tools.ci.actual_acceptance.manual_inputs
       - name: Verify actual source-bound CI results
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: python -m tools.qa.compatible_rollback.ci_proof tools/qa/compatible_rollback/ci-inputs.json .out/issue60/ci-proof.json
+        run: python -m tools.qa.compatible_rollback.ci_proof .out/issue60/ci-inputs.json .out/issue60/ci-proof.json
       - name: Install locked browser dependencies
         working-directory: clients/web
         run: |
@@ -57,7 +74,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: qa60-${{ github.sha }}
+          name: qa60-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             .out/issue60/runtime/run.json
             .out/issue60/runtime/acceptance.json

@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import shutil
 from builder_identity import cache_identity
+from receipt_projection import write_receipts
 
 
 def build(work):
@@ -37,18 +38,7 @@ def build(work):
             source = work / role
             revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=source, text=True).strip()
             observed = proof[role]
-            if (observed['head'] != revision or observed['status'] != 'success'
-                    or set(observed['checks']) != {'backend', 'web', 'contracts'}
-                    or any(row['conclusion'] != 'success' for row in observed['checks'].values())):
-                raise ValueError('Actual exact-revision CI proof is required')
-            receipts = work / ('checks-' + role)
-            receipts.mkdir()
-            for gate in ('backend', 'web', 'contracts'):
-                (receipts / (gate + '.json')).write_text(json.dumps({
-                    'source_revision': revision, 'gate': gate, 'status': 'PASS',
-                    'observed_ci_run': observed['run'], 'observed_ci_job': observed['checks'][gate]['id'],
-                    'scope': 'Authenticated GitHub CI result for this exact source head; QA bundle only',
-                }) + '\n')
+            receipts = write_receipts(work, role, revision, observed)
             environment = dict(os.environ, VITE_PUBLIC_ORIGIN='https://qa60.localhost:5443')
             subprocess.run(['python3', '-m', 'tools.build.server.run', '--source', str(source), '--checks', str(receipts),
                             '--signing-key', str(key), '--output', str(work / 'releases')],
