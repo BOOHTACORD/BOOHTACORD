@@ -1,5 +1,6 @@
 """Ensure release routing shares the PR selector and cannot authorize deployment."""
 from .selection import require
+from tools.ci.toolchains.auxiliary import ROOT, python_input
 
 SELECT = 'python3 -m tools.ci.select_changes.run'
 IMPACT = "needs.changes.outputs.server_release_impact == 'true'"
@@ -22,8 +23,12 @@ def check(build, deploy, gates):
     require(route.get('permissions') == {'contents': 'read', 'actions': 'read'}, 'Route needs only metadata read permission')
     require(route.get('runs-on') == 'ubuntu-24.04', 'Route must run on an isolated hosted runner')
     steps = route.get('steps', [])
-    require(len(steps) == 2 and steps[0] == {'uses': 'actions/checkout@v4', 'with': {'persist-credentials': 'false'}}, 'Route checkout/actions must remain bounded')
-    reader = steps[1]
+    require(len(steps) == 4 and steps[0] == {'uses': 'actions/checkout@v4', 'with': {'persist-credentials': 'false'}}, 'Route checkout/actions must remain bounded')
+    require(steps[1] == {'uses': 'actions/setup-python@v5', 'with': {'python-version': python_input(ROOT)}}
+            and steps[2] == {'name': 'Verify selected Python interpreter',
+                             'run': 'python -m tools.ci.toolchains.runtime python'},
+            'Route may only add the exact reviewed read-only Python bootstrap')
+    reader = steps[3]
     require(reader.get('run') == 'python3 -m tools.release.delivery.routing' and reader.get('id') == 'route',
             'Route may only execute the read-only producer metadata verifier')
     require(reader.get('env') == {'BUILD_RUN_ID': '${{ github.event.workflow_run.id }}',

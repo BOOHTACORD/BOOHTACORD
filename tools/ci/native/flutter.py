@@ -11,9 +11,12 @@ def main():
     run("python3", "-m", "unittest", "tools.verify.test_flutter_webrtc_public_headers")
     run("flutter", "pub", "get", "--enforce-lockfile", cwd=app)
     run("flutter", "test", "--no-pub", cwd=app)
+    from tools.ci.flutter_setup.vendor_locks import prepare
+    from .process import ROOT
     for package in ("livekit_client", "flutter_webrtc"):
         path = app / "packages" / package
-        run("flutter", "pub", "get", cwd=path)
+        prepare(ROOT, package)
+        run("flutter", "pub", "get", "--enforce-lockfile", cwd=path)
         run("flutter", "test", "--no-pub", cwd=path)
     run("flutter", "analyze", "--no-pub", "--no-fatal-infos", cwd=app)
 

@@ -37,6 +37,9 @@ def main():
         print(error)
     if not errors:
         print("Committed toolchain declarations agree")
+    if not errors:
+        from tools.ci.toolchains.auxiliary import main as audit_auxiliary
+        audit_auxiliary()
     return bool(errors)
 
 
