@@ -44,13 +44,14 @@ jobs:
           printf 'memory_max=%s cpu_count=%s fresh_marker_present=%s\n' "$(cat /sys/fs/cgroup/memory.max)" "$(nproc)" "$(test -e /home/runner/previous-job-marker && echo yes || echo no)"
           test "$RUNNER_ENVIRONMENT" = self-hosted
           test "$BOOHTACORD_EPHEMERAL_GUEST" = true
+          python -c "import os; from pathlib import Path; assert Path(os.environ['GITHUB_WORKSPACE']).parents[1] == Path('/home/runner/work')"
           test "$(cat /sys/fs/cgroup/memory.max)" = 4294967296
           test "$(nproc)" = 3
           test ! -e /home/runner/previous-job-marker
           touch /home/runner/previous-job-marker
           psql -h 127.0.0.1 -U voice_platform_test -d voice_platform_test -c 'SELECT 1'
           python -m tools.ci.toolchains.runtime python
-          python -m unittest tools.ci.runner_pool.test_worker
+          python -m unittest tools.ci.runner_pool.test_worker tools.ci.runner_pool.test_diagnostics
           docker version --format '{{.Server.Version}}'
 
   metadata:
@@ -74,8 +75,9 @@ jobs:
           printf 'memory_max=%s cpu_count=%s fresh_marker_present=%s\n' "$(cat /sys/fs/cgroup/memory.max)" "$(nproc)" "$(test -e /home/runner/previous-job-marker && echo yes || echo no)"
           test "$RUNNER_ENVIRONMENT" = self-hosted
           test "$BOOHTACORD_EPHEMERAL_GUEST" = true
+          python -c "import os; from pathlib import Path; assert Path(os.environ['GITHUB_WORKSPACE']).parents[1] == Path('/home/runner/work')"
           test "$(cat /sys/fs/cgroup/memory.max)" = 536870912
           test "$(nproc)" = 1
           test ! -e /home/runner/previous-job-marker
           touch /home/runner/previous-job-marker
-          python -m unittest tools.ci.runner_pool.test_worker
+          python -m unittest tools.ci.runner_pool.test_worker tools.ci.runner_pool.test_diagnostics

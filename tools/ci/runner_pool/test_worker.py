@@ -119,6 +119,7 @@ class WorkerTests(unittest.TestCase):
                 patch.object(worker, 'RUNTIME', Path(temporary)), patch.object(worker, 'verify_base'):
             with self.assertRaises(RuntimeError): worker.cycle('3')
         self.assertEqual(['self-hosted', 'linux', 'x64', 'boohtacord-ci-meta'], payloads[0]['labels'])
+        self.assertEqual('/home/runner/work', payloads[0]['work_folder'])
         self.assertIn('limits.memory=512MiB', clones[0])
         self.assertIn('limits.cpu=6-6', clones[0])
 

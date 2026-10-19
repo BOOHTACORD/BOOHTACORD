@@ -35,6 +35,12 @@ The agent runs as its own guest systemd service, with the runner user's Docker
 group and explicit public SDK environment. Short LXD exec calls only inspect
 that service; no long-lived exec connection owns the runner process. Healthy
 cycles create a new guest after two seconds; a failed controller retries after 30 seconds.
+The workspace root is `/home/runner/work`, matching hosted cache archive path
+depth. Public SDK cache entries therefore restore to `/opt/hostedtoolcache`
+without extracting through an extra `actions-runner/_work` directory level.
+Before teardown, the host keeps only the latest numeric health receipt per slot
+under `/opt/boohtacord-ci/health` (root only). Memory/OOM, free-space and bounded
+exception counters are retained; guest log text and credentials are never copied.
 After six idle hours the controller first retires the registration through
 GitHub, which refuses removal of a busy runner. Only a successful retirement
 allows idle teardown. A refusal or unavailable API grants one bounded six-hour
@@ -66,6 +72,8 @@ credential directory, production database or signing key in the base image.
 Docker, test databases, published test ports and workspaces belong to each
 guest. Port 5432 in one guest does not compete with another guest or the host.
 The pool is capped at 20 GiB, with each guest root capped at 16 GiB.
+The pool uses transparent `compress=zstd:3`. The stopped clean base was compressed
+before cloning jobs; application data and production Docker storage are outside it.
 
 The network ACL rejects host 167.233.56.32, private/link-local/metadata ranges
 and unsolicited ingress. DNS to the guest bridge and public HTTP/HTTPS are

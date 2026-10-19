@@ -11,6 +11,11 @@ import subprocess
 import tempfile
 import time
 
+if __package__:
+    from .diagnostics import capture as capture_health
+else:
+    from diagnostics import capture as capture_health
+
 API = 'repos/Egkurilov/BOOHTACORD/actions/runners'
 BASE = 'boohtacord-ci-base'
 RUNTIME = Path(os.environ.get('RUNTIME_DIRECTORY', '/run/boohtacord-ci'))
@@ -123,7 +128,10 @@ def cycle(slot):
         name = ('BOOHTACORD-Hetzner-CI-' + slot + '-' +
                 datetime.now(timezone.utc).strftime('%H%M%S') + '-' + secrets.token_hex(3))
         labels = LABELS if not metadata else [*LABELS[:3], 'boohtacord-ci-meta']
-        payload = json.dumps(dict(name=name, runner_group_id=1, labels=labels, work_folder='_work'))
+        # Match hosted workspace depth so public cache tar relative paths resolve
+        # to the same /opt/hostedtoolcache and /home/runner cache locations.
+        payload = json.dumps(dict(name=name, runner_group_id=1, labels=labels,
+                                  work_folder='/home/runner/work'))
         registration = json.loads(command(['gh', 'api', '--method', 'POST', API + '/generate-jitconfig',
                                            '--input', '-'], stdin=payload))
         identity = registration['runner']['id']
@@ -149,9 +157,15 @@ def cycle(slot):
     finally:
         if token_path is not None:
             token_path.unlink(missing_ok=True)
-        command(['lxc', 'delete', '--force', guest], timeout=120, check=False)
-        if identity is not None:
-            command(['gh', 'api', '--method', 'DELETE', API + '/' + str(identity)], check=False)
+        try:
+            try:
+                capture_health(guest, command)
+            except OperationError:
+                pass
+        finally:
+            command(['lxc', 'delete', '--force', guest], timeout=120, check=False)
+            if identity is not None:
+                command(['gh', 'api', '--method', 'DELETE', API + '/' + str(identity)], check=False)
 
 
 def main():

@@ -2,7 +2,7 @@
   "status": "IN_PROGRESS",
   "scope": "CICD-12 runner isolation and scheduling; dependency CICD-01 metadata baseline",
   "source_commit": "768b81e3",
-  "observed_at_utc": "2026-10-19T22:43:02.005836+00:00",
+  "observed_at_utc": "2026-10-19T23:36:19.540021+00:00",
   "sample": "20 most recent workflow runs; all returned jobs, bounded first page up to 100 per run",
   "timing_limitations": "Execution seconds only for completed jobs; overlapping runs, not host CPU utilization or a complete historical capacity estimate",
   "job_labels": {
@@ -96,7 +96,7 @@
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
   "local_checks": "406 CI/policy/native-contract/promotion/next-diagnostics unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
-  "rollout_gate": "Latest master 4fa9db71 merged. Canonical local Python regressions PASS (1078 tests). Fixed-affinity pool probes and full final required CI pending.",
+  "rollout_gate": "Latest master f19b3348 merged; 1113 canonical local Python regressions PASS. Compressed-base, hosted-depth workspace and numeric health capture deployed; repeat four-slot proof and full final required CI pending.",
   "resource_limits": {
     "heavy_slots": 2,
     "heavy_cpu_each": 3,
@@ -113,7 +113,8 @@
       "2": "3-5",
       "3": "6-6",
       "4": "7-7"
-    }
+    },
+    "filesystem_compression": "zstd:3"
   },
   "pool_acceptance": {
     "status": "PASS",
@@ -130,9 +131,10 @@
   },
   "isolation_limit": "Unprivileged UID-isolated containers share the host kernel; no hardware VM isolation or media capacity claim.",
   "controller_sha256": {
-    "worker.py": "56bf1a3927a21a3bf0283e3af66df779116ff7ab70a31d8b315ed7bf3d9807e4",
+    "worker.py": "4dcc2123dd3c2505ca7a1777668132cd6037cfe38160025fdecfeeb145cd0dbf",
     "guest-runner.service": "160a3ba76c3aeea41e8368e94c5c5dd8019b87d18413ea05809b42e90ac43d62",
-    "start-runner.sh": "5635bd5b5a497c0bed7a28c1fca193cfa80729179cec69eef2c654da46d7f37f"
+    "start-runner.sh": "5635bd5b5a497c0bed7a28c1fca193cfa80729179cec69eef2c654da46d7f37f",
+    "diagnostics.py": "ce477135cdaac13fc4e703e5a2ab0075622e1ee0e9dd48dc1418cd96c34f6038"
   },
   "cpu_tuning": {
     "status": "IN_PROGRESS",
@@ -152,8 +154,8 @@
   "local_full_python": {
     "status": "PASS",
     "runner": "tools.verify.python_tests.run",
-    "tests": 1078,
-    "seconds": 53.062,
+    "tests": 1113,
+    "seconds": 49.924,
     "platform": "macOS arm64",
     "python": "3.14.8",
     "exit_code": 0,
@@ -184,5 +186,26 @@
     "configuration_parser_check": "PASS: LXD accepted explicit single-core ranges 6-6 and 7-7 in a temporary profile, which was then deleted.",
     "changes": "Pin all four CPU sets; preserve strict memory/CPU/freshness assertions and emit their non-sensitive numeric diagnostics.",
     "deployment": "PASS: all four controllers active; running guests expose CPU counts 3, 3, 1, 1 and memory limits 4 GiB, 4 GiB, 512 MiB, 512 MiB."
+  },
+  "storage_and_lost_communication": {
+    "status": "IN_PROGRESS",
+    "previous_ci_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39337652809",
+    "failed_jobs": [
+      118351944625,
+      118351944711
+    ],
+    "github_annotation": "Self-hosted runner lost communication",
+    "cause": "UNVERIFIED: both agents lost communication while the pool approached its space limit. No host-kernel OOM entries or explicit ENOSPC in the available Android log. Old guests were already recycled, so their final counters were unavailable.",
+    "cache_path_defect": "Hosted public cache archives used five parent traversals, but the original nested actions-runner/_work checkout was six levels deep; tar could not restore the SDK location. New absolute work root /home/runner/work matches hosted depth.",
+    "operations": [
+      "Stopped only the four CI controllers after cancelling this failed CI run",
+      "Removed 2.3 GiB regenerable root Go build cache",
+      "Enabled transparent Btrfs compress=zstd:3 and compressed only the stopped CI base",
+      "Preserved the 20 GiB pool, 16 GiB roots, CPU/memory limits, and existing DB/Web services"
+    ],
+    "base_pool_used_bytes_before": 7504879616,
+    "base_pool_used_bytes_after": 4310286336,
+    "host_free_after_gib_approx": 19,
+    "diagnostics": "Latest root-only numeric health receipt per slot; bounded time/output/log tails, strict integer allowlist, no guest log text or tokens copied."
   }
 }
