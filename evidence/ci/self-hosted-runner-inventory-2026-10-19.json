@@ -96,7 +96,7 @@
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
   "local_checks": "406 CI/policy/native-contract/promotion/next-diagnostics unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
-  "rollout_gate": "Linux contracts including the canonical Python suite and native wrappers PASS on 6c727222. Fixed-affinity pool probes and full final required CI pending. Canonical local Python regressions PASS.",
+  "rollout_gate": "Latest master 4fa9db71 merged. Canonical local Python regressions PASS (1078 tests). Fixed-affinity pool probes and full final required CI pending.",
   "resource_limits": {
     "heavy_slots": 2,
     "heavy_cpu_each": 3,
@@ -152,8 +152,8 @@
   "local_full_python": {
     "status": "PASS",
     "runner": "tools.verify.python_tests.run",
-    "tests": 1076,
-    "seconds": 51.021,
+    "tests": 1078,
+    "seconds": 53.062,
     "platform": "macOS arm64",
     "python": "3.14.8",
     "exit_code": 0,
@@ -182,6 +182,7 @@
     "previous_probe_failure_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39333745399/job/118337972451",
     "previous_probe_failure_cause": "UNVERIFIED: the old pre-SQL resource assertion emitted no measured values. CPU remapping was observed, but an out-of-bound count was not captured.",
     "configuration_parser_check": "PASS: LXD accepted explicit single-core ranges 6-6 and 7-7 in a temporary profile, which was then deleted.",
-    "changes": "Pin all four CPU sets; preserve strict memory/CPU/freshness assertions and emit their non-sensitive numeric diagnostics."
+    "changes": "Pin all four CPU sets; preserve strict memory/CPU/freshness assertions and emit their non-sensitive numeric diagnostics.",
+    "deployment": "PASS: all four controllers active; running guests expose CPU counts 3, 3, 1, 1 and memory limits 4 GiB, 4 GiB, 512 MiB, 512 MiB."
   }
 }
