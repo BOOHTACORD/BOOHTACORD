@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "scope": "actual-retained-required-gate-triage-and-historical-report",
+  "status": "PASS_METADATA_SCOPE",
+  "artifacts": [
+    {
+      "id": 12219477771,
+      "name": "triage-native-b1c9f2c7500665018999b0af39ee6b07268a54f5-39317404355-1",
+      "size_in_bytes": 1077,
+      "digest": "sha256:e2bac6b36f5b1fa0f33818fbe2d04c19f9729a218ed9bcfa51c66ae8c2fcad30",
+      "expired": false,
+      "workflow_run": {
+        "id": 39317404355,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "b1c9f2c7500665018999b0af39ee6b07268a54f5"
+      },
+      "zip_and_source_verified": true,
+      "payload_sha256": "129868a16bc3213d5a58499c75a65606910192fd7fdba36f31fccc7066122d26",
+      "payload_utf8": "{\"alerts\": [], \"api_head_sha\": \"b1c9f2c7500665018999b0af39ee6b07268a54f5\", \"completed_execution_seconds\": 2766.0, \"components\": [\"backend\", \"web\", \"flutter\", \"windows\"], \"confirmed_flake\": \"UNKNOWN\", \"confirmed_flake_rate\": null, \"failures\": [{\"component\": \"windows\", \"critical_step\": \"runtime-acceptance / step 6\", \"fingerprint\": \"a3e7ab6e24611a89fe210971d67e7f0d9d24fba2f25a2aaa2465e4a6281adcf7\", \"job_id\": 118291155761, \"owner\": \"Windows/Media\", \"reproduce\": \"python -m tools.ci.windows_gates.acceptance\", \"retry_test\": false, \"root_cause\": \"UNVERIFIED\", \"stage\": \"runtime-acceptance\", \"step_number\": 6, \"url\": \"https://github.com/Egkurilov/BOOHTACORD/actions/runs/39317404355/job/118291155761\"}, {\"component\": \"unknown\", \"critical_step\": \"component-check / step 5\", \"fingerprint\": \"1c6ea00e650f4c661a3ae80b5de3f015d9fb2448051f6a3022ecf509f3797f17\", \"job_id\": 118291340508, \"owner\": \"CI/Triage\", \"reproduce\": \"Inspect the source-bound job link; exact local command is not verified\", \"retry_test\": false, \"root_cause\": \"UNVERIFIED\", \"stage\": \"component-check\", \"step_number\": 5, \"url\": \"https://github.com/Egkurilov/BOOHTACORD/actions/runs/39317404355/job/118291340508\"}], \"first_start_delay_seconds\": 4.0, \"master_defect\": null, \"metadata_complete\": true, \"outcome\": \"CANCELLED\", \"queue_note\": \"Job creation/start delay may include dependencies, dispatch and approvals\", \"queue_seconds\": null, \"retry_count\": 0, \"retry_policy\": \"Only bounded Actions metadata GET transport retry; never repeat a gate/test/signing/health assertion\", \"retry_test\": false, \"run_attempt\": \"1\", \"run_id\": \"39317404355\", \"schema_version\": 1, \"scope\": \"native\", \"selected_gates\": [\"contracts\", \"backend\", \"web\", \"flutter\", \"windows\"], \"source_binding\": \"checked_checkout\", \"source_revision\": \"b1c9f2c7500665018999b0af39ee6b07268a54f5\", \"timing_note\": \"Current aggregate may still be running; completed-job seconds only\", \"total_execution_seconds\": null, \"url\": \"https://github.com/Egkurilov/BOOHTACORD/actions/runs/39317404355\"}\n",
+      "public_summary_replayed": true
+    },
+    {
+      "id": 12221445504,
+      "name": "triage-native-3d22e9007db090e6a2159841506e0e377ae8b0a4-39319882366-1",
+      "size_in_bytes": 716,
+      "digest": "sha256:db0cd7dd50ec20561006d7a75d548abac21669d8fb6bd52d8bf9b113096c75d2",
+      "expired": false,
+      "workflow_run": {
+        "id": 39319882366,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3d22e9007db090e6a2159841506e0e377ae8b0a4"
+      },
+      "zip_and_source_verified": true,
+      "payload_sha256": "5946fdf8538dd1f7152950730cdc9d015d4a975295401751d7f1b1edf230f393",
+      "payload_utf8": "{\"alerts\": [], \"api_head_sha\": \"3d22e9007db090e6a2159841506e0e377ae8b0a4\", \"completed_execution_seconds\": 2681.0, \"components\": [\"backend\", \"web\", \"flutter\", \"windows\"], \"confirmed_flake\": \"UNKNOWN\", \"confirmed_flake_rate\": null, \"failures\": [], \"first_start_delay_seconds\": 132.0, \"master_defect\": null, \"metadata_complete\": true, \"outcome\": \"PASS\", \"queue_note\": \"Job creation/start delay may include dependencies, dispatch and approvals\", \"queue_seconds\": null, \"retry_count\": 0, \"retry_policy\": \"Only bounded Actions metadata GET transport retry; never repeat a gate/test/signing/health assertion\", \"retry_test\": false, \"run_attempt\": \"1\", \"run_id\": \"39319882366\", \"schema_version\": 1, \"scope\": \"native\", \"selected_gates\": [\"contracts\", \"backend\", \"web\", \"flutter\", \"windows\"], \"source_binding\": \"checked_checkout\", \"source_revision\": \"3d22e9007db090e6a2159841506e0e377ae8b0a4\", \"timing_note\": \"Current aggregate may still be running; completed-job seconds only\", \"total_execution_seconds\": null, \"url\": \"https://github.com/Egkurilov/BOOHTACORD/actions/runs/39319882366\"}\n",
+      "public_summary_replayed": true
+    },
+    {
+      "id": 12220436000,
+      "name": "triage-pr-06b68a85da4170e2453f37bd5aa4ead55cf48806-39318341547-1",
+      "size_in_bytes": 749,
+      "digest": "sha256:41b815b6a00f39d35a930627e730ccbd6ff65a29b406800238836b1f32bd73a4",
+      "expired": false,
+      "workflow_run": {
+        "id": 39318341547,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "codex/issue402-pr-triage-history",
+        "head_sha": "48dab7faeccb2d25076ef70236b31254a9d0337c"
+      },
+      "zip_and_source_verified": true,
+      "payload_sha256": "df659a4074876f40dbd3d045f424638ae18ceca5f8fa0443b35dfbaa32ee98bc",
+      "payload_utf8": "{\"alerts\": [], \"api_head_sha\": \"48dab7faeccb2d25076ef70236b31254a9d0337c\", \"completed_execution_seconds\": 5766.0, \"components\": [\"backend\", \"web\", \"flutter\", \"windows\"], \"confirmed_flake\": \"UNKNOWN\", \"confirmed_flake_rate\": null, \"failures\": [], \"first_start_delay_seconds\": 201.0, \"master_defect\": null, \"metadata_complete\": true, \"outcome\": \"PASS\", \"queue_note\": \"Job creation/start delay may include dependencies, dispatch and approvals\", \"queue_seconds\": null, \"retry_count\": 0, \"retry_policy\": \"Only bounded Actions metadata GET transport retry; never repeat a gate/test/signing/health assertion\", \"retry_test\": false, \"run_attempt\": \"1\", \"run_id\": \"39318341547\", \"schema_version\": 1, \"scope\": \"pr\", \"selected_gates\": [\"contracts\", \"backend\", \"web\", \"flutter\", \"windows\", \"actual\"], \"source_binding\": \"checked_pr_merge_parent\", \"source_revision\": \"06b68a85da4170e2453f37bd5aa4ead55cf48806\", \"timing_note\": \"Current aggregate may still be running; completed-job seconds only\", \"total_execution_seconds\": null, \"url\": \"https://github.com/Egkurilov/BOOHTACORD/actions/runs/39318341547\"}\n",
+      "public_summary_replayed": true
+    }
+  ],
+  "pr_merge_binding": {
+    "sha": "06b68a85da4170e2453f37bd5aa4ead55cf48806",
+    "parents": [
+      "b1c9f2c7500665018999b0af39ee6b07268a54f5",
+      "48dab7faeccb2d25076ef70236b31254a9d0337c"
+    ]
+  },
+  "historical_report": {
+    "path": "evidence/ci/ci-triage-2026-10-19.json",
+    "sha256": "cf13c628a928c2a81fbd210e1c1034d3c5ba703d92d5725ed7d47d8710d40107",
+    "sample_count": 40,
+    "byte_semantics_replay": "PASS"
+  },
+  "focused_fault_checks": {
+    "status": "PASS",
+    "test_methods": 16,
+    "seconds": 0.424
+  },
+  "after_windows_report": {
+    "path": "evidence/ci/windows-gates-final-2026-10-20.json",
+    "sha256": "22521f6282c12289fbcd9aedc984ca456ac10dbbab969c165f7851dec78a5f44"
+  },
+  "limits": [
+    "Observed source-bound PR/native summaries cover both passing and cancelled/red aggregate journeys. A cancellation remains cancelled/red and is not classified as a proven code defect.",
+    "The red native aggregate includes an unverified own-step diagnosis in addition to the actionable Windows source-job/step/reproduction command. Unknown causes remain explicit.",
+    "The original actual-next failure in PR455 remains FAIL with unverified root cause; a subsequent changed-source PASS does not prove a flake or erase it.",
+    "Forty original frozen records provide historical p50/p95, delays, runner occupancy, rerun/failure and platform signals; current Windows observations are a separate bounded window.",
+    "No raw logs, credentials, actor names, user content or private fixture diagnostics are published. No new test/release dispatch or assertion retry was used for this collection."
+  ]
+}
