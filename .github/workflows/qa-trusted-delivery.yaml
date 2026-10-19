@@ -1,0 +1,49 @@
+name: Trusted delivery acceptance
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - tools/qa/trusted_delivery/**
+      - tools/release/delivery/**
+      - .github/workflows/qa-trusted-delivery.yaml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: qa395-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  network:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Verify transport proof failure handling
+        run: python -m unittest tools.qa.trusted_delivery.test_network
+      - name: Download the actual retained master producer with the shipping network path
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BUILD_RUN_ID: '39268498370'
+          REQUESTED_REVISION: fe482078a2fa4e4964b6758770980d4b1a0b2fa6
+        run: python -m tools.qa.trusted_delivery.network
+      - name: Retain only the sanitized transport proof
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: qa395-network-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/issue395/network/evidence.json
+          retention-days: 30
+          if-no-files-found: error

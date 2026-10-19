@@ -132,3 +132,22 @@ query itself is unchanged. New whole-candidate validation is recorded separately
 Latest candidate: **913 Python tests PASS**, 48.074 seconds after the exact-HTTP-200
 health fix; focused health/readback acknowledgement group **15 PASS**. Traceability
 again PASS_INDEX_ONLY39. This does not change the NOT_RUN boundaries above.
+
+## Shipping network path acceptance runner
+
+The separate `Trusted delivery acceptance` workflow now runs the actual shipping
+producer preparation, API/blob download and fresh producer recheck, with read-only
+Actions/contents authority and no production environment or SSH configuration.
+It selects the same actual retained master producer39268498370/sourcefe482 and
+uploads only a sanitized, source/module-bound transport receipt for30 days.
+Signature and installation are explicitly NOT_RUN; neither a connector download
+nor a successful transport receipt can satisfy the full installation gate.
+
+Focused failure-handling/workflow tests were written first (missing implementation
+and workflow RED), then all four passed. Whole candidate: **917 Python tests PASS**,
+46.149 seconds; actionlint1.7.11 PASS; full PowerShell workflow policy PASS for
+**31 workflows /2 local actions**; traceability PASS_INDEX_ONLY39. At this checkpoint
+the new workflow has not run: its real network result remains NOT_RUN. GitHub's
+19October Actions/status-update incident is external evidence, not a code PASS.
+The QA x86_64 VM was started without activating its Docker context; the existing
+default context and the12 original primary-checkout status entries are unchanged.
