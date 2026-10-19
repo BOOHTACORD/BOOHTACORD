@@ -25,7 +25,11 @@ Current gate diagnostics verify the checkout and API run/attempt identity. A PR
 API head may be the branch commit rather than the tested synthetic merge: the
 helper accepts that distinction only when the checked merge's second parent is
 exactly that head and GitHub identifies the PR merge ref. It records both SHAs
-and the binding. Master/native scopes require their own workflow identity.
+and the binding. The PR aggregate checkout uses depth two so Git exposes both
+merge parents; a default depth-one checkout makes that source check incomplete.
+The workflow policy rejects a missing, shallow or dynamic depth, and a real
+temporary-Git merge/clone regression test verifies the configured depth.
+Master/native scopes require their own workflow identity.
 The manual `Read-only CI triage` dispatch takes an exact run ID/API head SHA and
 labels it `api_head_only`; it never claims a verified historical tested merge.
 A cancelled PR/dependency remains cancelled/red and is not claimed as evidence
@@ -110,5 +114,8 @@ UNVERIFIED causes. No external notifications or automatic mutating repair are
 sent. Missing authenticated metadata is BLOCKED, not a successful quality result.
 Workflow contracts, source/privacy and fault tests run in the mandatory contracts
 gate; actionlint and the existing graph/trigger/permission verifiers remain active.
-New live summary integration and after-migration flake/performance observations
-remain NOT_RUN pending the combined acceptance campaign.
+Live server/native summaries have passed on source 356d32c5; the first PR summary
+exposed the depth-one checkout regression above. The focused fix is recorded in
+`evidence/ci/combined-integration-2026-10-19.json`; a fresh hosted PR result and
+after-migration flake/performance observations remain pending. Those historical
+red runs stay red and are not relabelled as flaky or successful.

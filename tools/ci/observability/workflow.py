@@ -4,6 +4,9 @@ from .triage import require
 
 def check_job(job,scope):
     require(job.get('permissions')=={'contents':'read','actions':'read'})
+    if scope=='pr':
+        checkouts=[s for s in job['steps'] if s.get('uses','').startswith('actions/checkout@')]
+        require(len(checkouts)==1 and checkouts[0].get('with',{}).get('fetch-depth')=='2')
     summaries=[s for s in job['steps'] if s.get('run')=='python -m tools.ci.observability.summary --scope '+scope]
     require(len(summaries)==1 and summaries[0].get('if')=='always()' and not summaries[0].get('continue-on-error'))
     require(summaries[0].get('env')=={'GITHUB_TOKEN':'${{ github.token }}','TRIAGE_NEEDS':'${{ toJSON(needs) }}','CI_GATE_OUTCOME':'${{ job.status }}'})
