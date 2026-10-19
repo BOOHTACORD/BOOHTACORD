@@ -49,7 +49,8 @@ class MasterWorkflowTests(unittest.TestCase):
         for mutation in ('receipts', 'bundle', 'download', 'retained', 'smoke'):
             value = copy.deepcopy(self.workflows); build = value['build-server.yaml']['jobs']['bundle']
             if mutation == 'receipts': build['steps'][1]['with']['pattern'] = 'check-*-${{ github.sha }}'
-            if mutation == 'bundle': build['steps'][-1]['with']['name'] = 'server-${{ github.sha }}'
+            if mutation == 'bundle':
+                next(s for s in build['steps'] if s.get('with',{}).get('name','').startswith('server-${{'))['with']['name'] = 'server-${{ github.sha }}'
             if mutation == 'smoke':
                 for step in value['ci-backend.yaml']['jobs']['backend']['steps']:
                     if step.get('with', {}).get('name', '').startswith('backend-load-smoke-'):

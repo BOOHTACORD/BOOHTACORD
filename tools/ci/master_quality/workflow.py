@@ -76,7 +76,11 @@ def validate(workflows):
             {'name': f'check-{gate}-' + EXECUTION, 'path': '.out/checks'}
             for gate in ('backend', 'web', 'contracts')]
             and all(not s.get('if') for s in downloads))
-        require(len(uploads) == 1 and uploads[0]['with']['name'] == 'server-' + EXECUTION)
+        require(len(uploads) == 2 and uploads[0]['with']['name'] == 'server-' + EXECUTION
+                and uploads[1].get('if') == 'always()' and uploads[1]['with'] == {
+                    'name':'build-metrics-server-' + EXECUTION,
+                    'path':'.out/releases/${{ github.sha }}.build.json',
+                    'if-no-files-found':'error','retention-days':'30'})
         from tools.verify.workflows.shared_install import check as shared_install
         from tools.verify.action_pins.policy import normalized
         import yaml
