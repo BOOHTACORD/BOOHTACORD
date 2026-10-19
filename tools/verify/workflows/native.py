@@ -8,7 +8,9 @@ from .selection import require
 
 def check(workflows):
     from tools.ci.artifact_policy.workflows import windows
-    windows(workflows['flutter-windows.yaml']['jobs']['windows'])
+    windows(workflows['flutter-windows.yaml']['jobs'])
+    from tools.ci.windows_gates.workflow import validate as validate_windows
+    validate_windows(workflows['flutter-windows.yaml'])
     from tools.ci.flutter_gates.workflow import validate
     validate(workflows['ci-flutter.yaml'])
     from tools.ci.flutter_gates.shadow_workflow import validate as validate_shadow

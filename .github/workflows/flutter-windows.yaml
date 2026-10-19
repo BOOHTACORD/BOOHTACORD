@@ -8,8 +8,9 @@ permissions:
   contents: read
 
 jobs:
-  windows:
+  windows-native-unit:
     runs-on: windows-2022
+    timeout-minutes: 35
     steps:
       - name: Enable long paths for Windows checkout
         shell: powershell
@@ -68,20 +69,55 @@ jobs:
         run: python -m tools.ci.native.flutter
       - name: Test GitHub release publisher
         run: node --test tools/release/android/publish.test.mjs tools/release/android/publish_retries.test.mjs tools/release/android/publish_conflicts.test.mjs
+
+  windows-build:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    steps:
+      - name: Enable long paths for Windows checkout
+        shell: powershell
+        run: git config --global core.longpaths true
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          # Keep the release publisher in the CI checkout for its HTTP contract tests.
+          sparse-checkout: |
+            .github/actions
+            clients/flutter
+            tools
+            contracts
+            backend
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - uses: ./.github/actions/flutter-setup
+        with:
+          flutter-version: 3.47.7
+          channel: stable
+          cache: true
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: '8.0.426'
+      - name: Verify selected dotnet SDK
+        run: python -m tools.ci.toolchains.runtime dotnet
+      - name: Initialize Flutter before reading machine JSON
+        run: flutter --version
+      - name: Verify the pinned Velopack tool before the full test run
+        run: python -c "from tools.build.windows.installer import prepare_packager; prepare_packager()"
       - name: Build and inspect Windows distribution
-        run: python -m tools.build.windows.run
-      - name: Exercise recovery and real Flutter relaunch after an absent replacement
-        run: python -m tools.qa.desktop_updates.windows_recovery --release clients/flutter/build/windows/x64/runner/Release --output .out/desktop-recovery/windows-smoke.json
-      - name: Retain native recovery component evidence
-        if: always()
+        run: python -m tools.build.windows.run --ci-acceptance
+      - name: Seal full native and installer payload for this exact execution
+        run: python -m tools.ci.windows_gates.transfer seal
+      - name: Retain the native payload binding
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: desktop-recovery-windows-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .out/desktop-recovery/windows-smoke.json
-          if-no-files-found: ignore
+          name: windows-transfer-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/windows-transfer.json
+          if-no-files-found: error
           retention-days: 30
       - name: Retain Windows build as workflow artifact
-        if: ${{ always() && hashFiles('clients/flutter/build/windows/x64/runner/Release/artifact-manifest.json') != '' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: BOOHTACORD-windows-x64-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -89,7 +125,6 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Retain per-user Windows installer and full update package
-        if: ${{ always() && hashFiles('.out/releases/windows/build-identity.json') != '' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: BOOHTACORD-windows-installer-x64-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -97,6 +132,47 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
+
+  windows-gui-sfu:
+    needs: windows-build
+    runs-on: windows-2022
+    timeout-minutes: 35
+    steps:
+      - name: Enable long paths for Windows checkout
+        shell: powershell
+        run: git config --global core.longpaths true
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          # Keep the release publisher in the CI checkout for its HTTP contract tests.
+          sparse-checkout: |
+            .github/actions
+            clients/flutter
+            tools
+            contracts
+            backend
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Download exact BOOHTACORD-windows-x64
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: BOOHTACORD-windows-x64-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: clients/flutter/build/windows/x64/runner/Release/
+      - name: Download exact BOOHTACORD-windows-installer-x64
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: BOOHTACORD-windows-installer-x64-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/releases/windows/
+      - name: Download exact windows-transfer
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: windows-transfer-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/
+      - name: Verify full native manifest, checksums and installer identity
+        run: python -m tools.ci.windows_gates.transfer verify
       - name: Prepare public Go SDK and dependency cache inputs
         run: python -m tools.ci.toolchains.cache_inputs go
       - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
@@ -105,9 +181,17 @@ jobs:
           cache-dependency-path: .out/ci/cache-inputs/go.json
       - name: Verify the Windows GUI acceptance result contract
         run: python -m unittest tools.qa.screen_setup.test_windows
-      - name: Check Escape in the real Windows GUI with an active SFU connection
+      - name: Exercise recovery and actual GUI/SFU on the same verified native package
         timeout-minutes: 15
-        run: python -m tools.qa.screen_setup.windows
+        run: python -m tools.ci.windows_gates.acceptance
+      - name: Retain native recovery component evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: desktop-recovery-windows-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/desktop-recovery/windows-smoke.json
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Retain synthetic Windows screen setup acceptance
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -116,3 +200,42 @@ jobs:
           path: .out/screen-setup-windows/
           if-no-files-found: ignore
           retention-days: 30
+      - name: Retain mandatory exact-build acceptance result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: windows-acceptance-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/windows-acceptance.json
+          if-no-files-found: error
+          retention-days: 30
+
+  windows:
+    if: always()
+    needs: [windows-native-unit, windows-build, windows-gui-sfu]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          # Keep the release publisher in the CI checkout for its HTTP contract tests.
+          sparse-checkout: |
+            .github/actions
+            clients/flutter
+            tools
+            contracts
+            backend
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Download only this execution's native acceptance result
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: windows-acceptance-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/
+      - name: Require native unit, unique build, recovery and real GUI/SFU success
+        env:
+          WINDOWS_NEEDS: ${{ toJSON(needs) }}
+        run: python -m tools.ci.windows_gates.aggregate

@@ -43,9 +43,10 @@ def capture_job(job, component, profile, test_command):
             and found[1] < job['steps'].index(item))
 
 
-def windows(job):
+def windows(jobs):
     suffix = '-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
-    retained = uploads(job)
+    retained = [step for job in jobs.values() for step in uploads(job)
+                if any(step['with']['name'].startswith(prefix + '-') for prefix in PREFIXES.values())]
     require(len(retained) == len(PREFIXES)
             and {s['with']['name'] for s in retained} == {name + suffix for name in PREFIXES.values()}
             and all(s['with'].get('retention-days') == '30' for s in retained))
