@@ -90,3 +90,25 @@ Mandatory profile parts remain durable regardless of later capture/post-job stat
 The complete updated local suite passes **829 tests in 42.249 seconds**, Actionlint
 and focused workflow checks. These two fixes still require a new published head
 and fresh CI. The predecessor318-file package is not relabeled as their proof.
+
+## Verified capture implementation and master integration
+
+Head7fc / CI39257204475 / actual checkoutbad15e produced four packages which
+were all downloaded and independently checked against API owner/run/head,
+ZIP size/SHA256, external checkout identity, manifest and restored file hashes:
+12189385853 (Dart35 logical files),12189291026 (shell359),12188691263
+(conversations313),12188436895 (voice411). All34 required Flutter frames and
+1080 original Web files survive alongside four explicit public diagnostics;
+hidden files are absent. The predecessor7fc data is not relabeled as evidence
+for any later integrated source. Native Android passed; Windows was still running.
+
+Master09b10d77 published accepted #393 evidence. Its adjacent backlog entry caused
+a merge conflict, resolved by preserving both evidence lists. Workflows/runtime/
+client source trees were unchanged by that documentation-only merge.
+
+A further failing compatibility test used the existing Flutter source-context
+contract, which accepts48-character namespaces. The package decoder now preserves
+that bounded capacity; Web remains limited to40 and oversized values reject.
+The complete local suite passes **830 tests in 42.439 seconds**. This final
+compatibility change still requires its own current-head hosted checks. Full
+PR/master/tag/QA measurements and release/acceptance proof remain open.

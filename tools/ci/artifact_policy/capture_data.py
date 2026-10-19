@@ -81,7 +81,7 @@ def identity(value):
             and re.fullmatch('[0-9a-f]{40}', value['source_revision'])
             and re.fullmatch('[1-9][0-9]{0,19}', value['run_id'])
             and re.fullmatch('[1-9][0-9]{0,3}', value['run_attempt'])
-            and re.fullmatch('[a-z][a-z0-9-]{0,39}', value['namespace'])
+            and re.fullmatch('[a-z][a-z0-9-]{0,' + ('47' if value['component'] == 'flutter' else '39') + '}', value['namespace'])
             and value['platform'] in ('linux', 'windows', 'macos'))
     require((value['component'] == 'flutter' and value['profile'] == 'dart')
             or (value['component'] == 'web' and value['profile'] in

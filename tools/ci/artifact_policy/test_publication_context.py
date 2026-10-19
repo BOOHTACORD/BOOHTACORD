@@ -58,3 +58,14 @@ class PublicationContextTests(unittest.TestCase):
                                    ('web', 'fast'), ('physical', 'desktop')]:
             with self.subTest(component=component, profile=profile), self.assertRaises(ValueError):
                 publication_context.checked(environment(), component, profile, git=git)
+
+    def test_existing_flutter_namespace_capacity_is_preserved_without_expanding_web(self):
+        from tools.ci.flutter_gates import source
+        env = environment(); env['FLUTTER_EVIDENCE_NAMESPACE'] = 'f' * 48
+        self.assertEqual('f' * 48, source.context(env)[3])
+        git = lambda *args: 'a' * 40 if args[0] == 'rev-parse' else ''
+        self.assertEqual('f' * 48, publication_context.checked(env, 'flutter', 'dart', git=git)['namespace'])
+        env['FLUTTER_EVIDENCE_NAMESPACE'] += 'f'
+        with self.assertRaises(ValueError): publication_context.checked(env, 'flutter', 'dart', git=git)
+        env['WEB_NAMESPACE'] = 'w' * 41
+        with self.assertRaises(ValueError): publication_context.checked(env, 'web', 'browser-shell', git=git)
