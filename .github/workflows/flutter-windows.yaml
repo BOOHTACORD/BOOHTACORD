@@ -76,7 +76,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: desktop-recovery-windows-${{ github.sha }}
+          name: desktop-recovery-windows-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .out/desktop-recovery/windows-smoke.json
           if-no-files-found: ignore
           retention-days: 30
@@ -84,7 +84,7 @@ jobs:
         if: ${{ always() && hashFiles('clients/flutter/build/windows/x64/runner/Release/artifact-manifest.json') != '' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: BOOHTACORD-windows-x64-${{ github.sha }}
+          name: BOOHTACORD-windows-x64-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: clients/flutter/build/windows/x64/runner/Release/
           if-no-files-found: error
           retention-days: 30
@@ -92,7 +92,7 @@ jobs:
         if: ${{ always() && hashFiles('.out/releases/windows/build-identity.json') != '' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: BOOHTACORD-windows-installer-x64-${{ github.sha }}
+          name: BOOHTACORD-windows-installer-x64-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .out/releases/windows/
           include-hidden-files: true
           if-no-files-found: error
@@ -112,7 +112,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: screen-setup-windows-${{ github.sha }}
+          name: screen-setup-windows-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .out/screen-setup-windows/
           if-no-files-found: ignore
           retention-days: 30

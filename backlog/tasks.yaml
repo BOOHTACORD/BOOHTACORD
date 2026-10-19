@@ -508,6 +508,11 @@ tasks:
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
     depends_on: [CICD-01, CICD-02, CICD-03, CICD-12]
     evidence: [tools/ci/master_quality/test_validation.py, tools/ci/master_quality/test_context.py, docs/ci/master-quality.md, evidence/ci/master-quality-foundation-2026-10-19.md, tools/ci/master_quality/test_execution.py, tools/ci/master_quality/test_workflow.py, tools/release/delivery/test_api.py, tools/release/delivery/test_producer_artifacts.py, tools/release/delivery/test_producer_preflight.py, tools/release/delivery/test_routing.py, tools/build/server/test_gate_receipts.py, evidence/ci/master-quality-implementation-2026-10-19.md, evidence/ci/master-quality-final-2026-10-19.json]
+  - id: CICD-18
+    title: Classified artifact retention, immutable naming and complete sanitized evidence without duplicate captures
+    requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
+    depends_on: [CICD-01, CICD-09]
+    evidence: [tools/ci/artifact_policy/test_retention.py, tools/ci/artifact_policy/test_names.py, docs/ci/artifact-policy.md, evidence/ci/artifact-policy-foundation-2026-10-19.md, tools/ci/artifact_policy/test_captures.py, evidence/ci/artifact-capture-package-local-2026-10-19.md, tools/ci/artifact_policy/test_publication_context.py, tools/ci/artifact_policy/test_capture_inventory.py, tools/ci/artifact_policy/test_publication.py, tools/ci/artifact_policy/test_run.py, tools/ci/artifact_policy/test_workflow_adoption.py, evidence/ci/artifact-runtime-local-2026-10-19.md, tools/ci/artifact_policy/test_archive.py, tools/ci/artifact_policy/test_inspect.py]
   - id: CICD-04
     title: Complete isolated Web suite profiles with a fail-closed source-bound aggregate
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]

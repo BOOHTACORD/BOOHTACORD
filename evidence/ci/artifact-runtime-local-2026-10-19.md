@@ -1,0 +1,114 @@
+# #387 / CICD-18 — local runtime and workflow checkpoint
+
+Status: **LOCAL_PASS; hosted publication, after measurements and release acceptance
+NOT_RUN**. No #387 workflow change has been published or merged at this checkpoint.
+
+The 817-test local Python suite passes in 41.957 seconds. Actionlint and the full
+PowerShell policy for 30 workflows and one local action pass. Each new boundary
+had a preceding failing focused test: context, inventory, failure publication,
+entrypoint and workflow adoption. Indexed traceability is checked separately;
+the approved external brief remains unavailable on this host.
+
+Publication requires a clean exact-source Git checkout, the upstream repository,
+bounded run/attempt/namespace, GitHub-hosted Linux execution and reviewed Web/Dart
+profiles. A pre-test marker refuses existing capture directories or profile parts.
+Final packaging verifies that marker, fixed output roots and current successful
+profile identity, then rechecks the source before retaining the new package.
+Source change removes only the newly created package. Links are not followed.
+Directory traversal and file count/size are bounded; no arbitrary input directory
+or personal desktop capture is accepted by the runtime.
+
+Successful Dart publication requires all 34 original frames with exact measured
+profile checksums. Web frames retain their original logical upload paths. The
+standalone R14 upload is removed because its bytes remain in the complete set.
+One extra public diagnostic JSON describes upstream status and capture count.
+On failure, partial frames or zero frames are valid diagnostics; the original job
+failure and mandatory profile-part upload remain independent. Logs, traces and
+text error bodies are excluded. Sensitive JSON rejection has no raw fallback.
+These boundaries do not infer universal pixel/text privacy: review of controlled
+fixture source and real hosted after artifacts is still required.
+
+Only successful ordinary PR synthetic captures use seven-day retention. Failed,
+cancelled, master, tag, merge-queue and manual QA captures retain 30 days. Mandatory
+parts, receipts, bundles, APKs and native/acceptance packages retain 30 days.
+Windows artifact names add run/attempt to source, while pinned historical fixture
+downloads, legacy controls and public release filenames remain unchanged.
+
+Static policy rejects missing freshness, skipped/ignored finish steps, fabricated
+upstream status, raw fallback uploads, shortened retention and incomplete naming.
+The package integrity result remains separate from the original QA result.
+
+Remaining at that checkpoint: download/restore CLI, controlled-fixture privacy review, actual hosted
+uploads and downloaded checksum/identity verification, matched PR/master/tag/QA
+count/bytes/occupancy, and retained release install/rollback acceptance. Local
+converter results and historical #393 measurements cannot substitute for them.
+
+## Download and restore checkpoint
+
+The CLI now verifies externally supplied ZIP size/SHA256 and execution identity,
+rejects unsafe/duplicate/linked members before extraction and checks the complete
+manifest and all payloads. It optionally restores original logical paths to a
+fresh directory. New regressions rejected linked destination parents before
+writing, and converted Git subprocess failures to constant diagnostic output.
+Tests failed before implementation at each boundary. The complete suite now
+passes **827 tests in 41.858 seconds**.
+
+The CLI also processed the final local prototype made from real old voice input
+artifact12182521674: all410 logical files verified and restored. This remains a
+local converter observation using old data, not a new hosted #387 upload or new
+GitHub producer ownership proof. Actual current after-#393 inventories were
+collected separately: PR39242729846 has20 artifacts/265348817 ZIP bytes; Native
+master39245985181 has10 artifacts/221483302 ZIP bytes. These are baseline metadata,
+not after-policy savings or local byte-verification of every archive.
+
+Hosted after uploads, matched per-context measurements, independent API ownership
+binding, controlled-fixture privacy review and install/rollback acceptance remain
+required before closing #387. No release/acceptance retention has been shortened.
+
+## First hosted package and completion review
+
+Draft PR433 predecessor head `d962a424def2a632b141ac6ebc8d7e901f270be3` runs
+CI39255876586 at verified merge checkout `08e758e05911d606cb143b671231233e3afbcb68`.
+Its first browser-conversations job succeeded. Artifact12187638602 was actually
+downloaded: 10116076 ZIP bytes, SHA256
+`89691a79e030ff9501ff0ecc163836c2b01b7dbb85b3d76f945306cfcaa2364c`.
+Independent API ownership/run/head checks and the repository inspect CLI verified
+its exact checkout identity, full manifest and all318 logical files. All312 old
+required paths remain. API expiry confirms seven days for the successful capture
+package, while the mandatory profile part remains30 days. This is one component
+integrity observation, not full PR or final matched performance acceptance.
+
+Review of the actual package found five additional hidden `.last-run.json` files,
+which the original upload action excluded. A failing test reproduced that boundary
+expansion. The collector now excludes hidden files/directories before reading their
+contents. Another failing test found that Dart's capture retention was decided
+before its mandatory part uploaded. That durable part now uploads first; workflow
+policy enforces the order. Retention expressions observe status at publication;
+future runner post-job failures cannot be predicted by an earlier upload step.
+Mandatory profile parts remain durable regardless of later capture/post-job status.
+
+The complete updated local suite passes **829 tests in 42.249 seconds**, Actionlint
+and focused workflow checks. These two fixes still require a new published head
+and fresh CI. The predecessor318-file package is not relabeled as their proof.
+
+## Verified capture implementation and master integration
+
+Head7fc / CI39257204475 / actual checkoutbad15e produced four packages which
+were all downloaded and independently checked against API owner/run/head,
+ZIP size/SHA256, external checkout identity, manifest and restored file hashes:
+12189385853 (Dart35 logical files),12189291026 (shell359),12188691263
+(conversations313),12188436895 (voice411). All34 required Flutter frames and
+1080 original Web files survive alongside four explicit public diagnostics;
+hidden files are absent. The predecessor7fc data is not relabeled as evidence
+for any later integrated source. Native Android passed; Windows was still running.
+
+Master09b10d77 published accepted #393 evidence. Its adjacent backlog entry caused
+a merge conflict, resolved by preserving both evidence lists. Workflows/runtime/
+client source trees were unchanged by that documentation-only merge.
+
+A further failing compatibility test used the existing Flutter source-context
+contract, which accepts48-character namespaces. The package decoder now preserves
+that bounded capacity; Web remains limited to40 and oversized values reject.
+The complete local suite passes **830 tests in 42.439 seconds**. This final
+compatibility change still requires its own current-head hosted checks. Full
+PR/master/tag/QA measurements and release/acceptance proof remain open.

@@ -71,6 +71,10 @@ jobs:
           node-version-file: .node-version
           cache: npm
           cache-dependency-path: .out/ci/cache-inputs/npm.json
+      - name: Require fresh synthetic browser capture outputs
+        env:
+          WEB_PROFILE: ${{ matrix.profile }}
+        run: python3 -m tools.ci.artifact_policy.run begin web "$WEB_PROFILE"
       - name: Run complete reviewed browser profile
         env:
           WEB_PROFILE: ${{ matrix.profile }}
@@ -83,30 +87,20 @@ jobs:
           path: .out/ci/web-parts/${{ matrix.profile }}.json
           if-no-files-found: error
           retention-days: 30
-      - name: Retain original sanitized browser and SFU evidence
+      - name: Package verified synthetic browser captures
+        if: always()
+        env:
+          WEB_PROFILE: ${{ matrix.profile }}
+          CAPTURE_UPSTREAM_STATUS: ${{ job.status }}
+        run: python3 -m tools.ci.artifact_policy.run finish web "$WEB_PROFILE"
+      - name: Retain verified synthetic browser evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: web-visual-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.profile }}
-          path: |
-            .out/responsive-shell-browser-results/**
-            .out/issue342/browser/**
-            .out/issue343/browser/**
-            .out/issue344/browser/**
-            .out/qa294-search-session-browser/**
-            .out/dw02-dm-starter/**
-            .out/issue346/browser/**
-            .out/issue348/browser/**
-            .out/issue347/browser/**
-            .out/issue345/browser/**
-            .out/issue350/browser/**
-            .out/issue349/browser/**
-            .out/issue352/browser/**
-            .out/issue351/browser/**
-            .out/mentions-inbox-browser-results/**
-            .out/readonly-archive-browser-results/**
-          if-no-files-found: ignore
-          retention-days: 30
+          path: .out/ci/capture-packages/web-${{ matrix.profile }}/
+          if-no-files-found: error
+          retention-days: ${{ github.event_name == 'pull_request' && startsWith(github.ref, 'refs/pull/') && job.status == 'success' && 7 || 30 }}
 
   sfu:
     runs-on: ubuntu-24.04

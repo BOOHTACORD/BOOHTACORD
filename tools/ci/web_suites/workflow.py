@@ -1,15 +1,11 @@
 """Enforce the mandatory Web fan-out and the original trusted receipt identity."""
 from .catalog import PROFILES
+from tools.ci.artifact_policy.capture_inventory import WEB_ROOTS
+from tools.ci.artifact_policy.workflows import capture_job
 
 PREFIX = 'web-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-'
 RECEIPT = 'python3 -m tools.ci.receipts.run web --parts .out/ci/web-parts'
-CAPTURES = {'.out/responsive-shell-browser-results/**', '.out/issue342/browser/**',
-            '.out/issue343/browser/**', '.out/issue344/browser/**',
-            '.out/qa294-search-session-browser/**', '.out/dw02-dm-starter/**',
-            '.out/issue346/browser/**', '.out/issue348/browser/**', '.out/issue347/browser/**',
-            '.out/issue345/browser/**', '.out/issue350/browser/**', '.out/issue349/browser/**',
-            '.out/issue352/browser/**', '.out/issue351/browser/**',
-            '.out/mentions-inbox-browser-results/**', '.out/readonly-archive-browser-results/**'}
+CAPTURES = {'.out/' + name + '/**' for name in WEB_ROOTS}
 SFU_CAPTURES = {'.out/screen-profile-browser-results/**/screen-share-sfu-smoke.json',
                 '.out/restricted-networks/*.json'}
 
@@ -52,6 +48,9 @@ def validate(document):
             require(command['run'] == expected)
             allowed = {'python -m tools.ci.toolchains.runtime python',
                        'python3 -m tools.ci.toolchains.cache_inputs npm', expected}
+            if name == 'browser':
+                allowed |= {'python3 -m tools.ci.artifact_policy.run ' + operation + ' web "$WEB_PROFILE"'
+                            for operation in ('begin', 'finish')}
             require({s['run'] for s in job['steps'] if 'run' in s} == allowed)
             node = [i for i, s in enumerate(job['steps']) if s.get('uses', '').startswith('actions/setup-node@')]
             require(len(node) == 1 and node[0] < job['steps'].index(command))
@@ -59,8 +58,8 @@ def validate(document):
             require(len(mandatory) == 1 and mandatory[0].get('if') == 'always()')
             require(mandatory[0]['with']['path'] == '.out/ci/web-parts/' + profile + '.json'
                     and mandatory[0]['with']['if-no-files-found'] == 'error')
-        visual = [s for s in uploads(jobs['browser']) if s['with']['name'].startswith('web-visual-')]
-        require(len(visual) == 1 and visual[0].get('if') == 'always()' and capture_paths(visual[0]) == CAPTURES)
+        capture_job(jobs['browser'], 'web', '${{ matrix.profile }}',
+                    'python3 -m tools.ci.web_suites.run --profile "$WEB_PROFILE"')
         sfu = [s for s in uploads(jobs['sfu']) if s['with']['name'].startswith('web-sfu-')]
         require(len(sfu) == 1 and sfu[0].get('if') == 'always()' and capture_paths(sfu[0]) == SFU_CAPTURES)
         job = jobs['frontend']
