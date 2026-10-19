@@ -8,7 +8,7 @@ from tools.audio.asset_build import build_assets
 from . import catalog, runner
 
 
-def checked_source():
+def checked_source(*, verify_node=True):
     source = output('git', 'rev-parse', 'HEAD')
     if os.environ.get('GITHUB_SHA', source) != source:
         raise ValueError('Web suite source differs from the checked-out revision')
@@ -16,7 +16,8 @@ def checked_source():
                           stdout=subprocess.DEVNULL).returncode
     if code not in (0, 1) or (code and os.environ.get('GITHUB_ACTIONS') == 'true'):
         raise ValueError('CI Web profiles require the exact clean source; Git failures cannot pass')
-    require_version('node', output('node', '--version').removeprefix('v'))
+    if verify_node:
+        require_version('node', output('node', '--version').removeprefix('v'))
     return source, bool(code)
 
 

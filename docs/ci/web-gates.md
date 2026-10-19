@@ -110,6 +110,10 @@ legacy interval includes its whole job. Initial created-to-start wait is reporte
 separately and may include intentional serial sampling; it is not called pure
 runner queue time.
 
+The analysis job uses only its reviewed Python interpreter. It enforces clean
+source without requiring an unused Node SDK; all application execution profiles
+and the legacy control retain the mandatory exact Node identity check.
+
 Nearest-rank p50/p95 use n=3 per arm, with no universal SLO/flake-rate claim.
 All samples must succeed; the measured new p50 and p95 must both be lower for a
 `PASS`. A complete slower/equal dataset is retained as `NO_GAIN` and the workflow

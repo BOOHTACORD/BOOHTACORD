@@ -12,6 +12,13 @@ SOURCE = 'a' * 40
 
 
 class SourceTests(unittest.TestCase):
+    def test_python_only_metadata_stage_does_not_require_an_unused_node_sdk(self):
+        with patch.dict(os.environ,GITHUB_ACTIONS='true',GITHUB_SHA=SOURCE), \
+             patch.object(run,'output',return_value=SOURCE) as output, \
+             patch.object(run.subprocess,'run',return_value=SimpleNamespace(returncode=0)):
+            self.assertEqual(run.checked_source(verify_node=False),(SOURCE,False))
+            output.assert_called_once_with('git','rev-parse','HEAD')
+
     def test_local_changes_are_allowed_and_marked_dirty(self):
         with patch.dict(os.environ, GITHUB_ACTIONS='false', GITHUB_SHA=SOURCE), \
              patch.object(run, 'output', side_effect=[SOURCE,'v24.18.0']), \

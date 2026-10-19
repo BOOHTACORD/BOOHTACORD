@@ -17,7 +17,7 @@ class MeasureCLITests(unittest.TestCase):
         run,jobs,needs,old,new=fixture()
         with tempfile.TemporaryDirectory() as name:
             root=Path(name)
-            with patch.object(measure,'ROOT',root), patch.object(measure,'checked_source',return_value=(SOURCE,False)), \
+            with patch.object(measure,'ROOT',root), patch.object(measure,'checked_source',return_value=(SOURCE,False)) as source_check, \
                  patch.object(measure.catalog,'execution',return_value={'run_id':'123','run_attempt':'1','namespace':'shadow-compare'}), \
                  patch.object(measure,'read_inputs',return_value=(old,new)), \
                  patch.object(measure,'read_api',side_effect=[run,jobs]) as read, \
@@ -25,6 +25,7 @@ class MeasureCLITests(unittest.TestCase):
                 measure.main()
             result=json.loads((root/'.out/ci/web-shadow.json').read_text())
             self.assertEqual(result['status'],'PASS');self.assertEqual(read.call_count,2)
+            source_check.assert_called_once_with(verify_node=False)
 
     def test_missing_control_replaces_stale_pass_and_fails(self):
         run,jobs,needs,old,new=fixture();old.pop()

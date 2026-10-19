@@ -43,7 +43,7 @@ def read_api(path):
 
 
 def main():
-    source,dirty=checked_source();comparison.require(not dirty)
+    source,dirty=checked_source(verify_node=False);comparison.require(not dirty)
     identity=catalog.execution()
     comparison.require(identity['run_id']!='local' and identity['namespace']=='shadow-compare')
     run_id,attempt=int(identity['run_id']),int(identity['run_attempt'])
