@@ -51,6 +51,8 @@ class WorkerTests(unittest.TestCase):
         execution = next(row for row in calls if row[:2] == ['lxc', 'exec'])
         self.assertIn('--disable-stdin', execution)
         self.assertEqual('non-interactive', execution[execution.index('--mode') + 1])
+        # LXD --user/--group alone omits supplementary groups, denying the guest's Docker socket.
+        self.assertEqual(['runuser', '-u', 'runner'], execution[execution.index('runuser'):execution.index('runuser') + 3])
 
     def test_refuses_privileged_or_host_mounted_base(self):
         safe = {'expanded_config': {'security.privileged': 'false', 'security.idmap.isolated': 'true',

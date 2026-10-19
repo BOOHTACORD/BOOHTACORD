@@ -72,9 +72,9 @@ def cycle(slot):
         token_path.unlink()
         token_path = None
         # The token is read inside the guest. The host argv and journal contain no token.
-        command(['lxc', 'exec', guest, '--disable-stdin', '--mode', 'non-interactive', '--user', '1001', '--group', '1001',
+        command(['lxc', 'exec', guest, '--disable-stdin', '--mode', 'non-interactive',
                  '--env', 'HOME=/home/runner', '--env', 'RUNNER_TOOL_CACHE=/opt/hostedtoolcache',
-                 '--cwd', '/home/runner/actions-runner', '--', 'bash', '-c',
+                 '--cwd', '/home/runner/actions-runner', '--', 'runuser', '-u', 'runner', '--', 'bash', '-c',
                  'jit=$(cat /home/runner/.jit); rm /home/runner/.jit; exec ./run.sh --jitconfig "$jit"'],
                 timeout=6 * 60 * 60, quiet=True)
     finally:
