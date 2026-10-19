@@ -3,9 +3,14 @@ import sys
 from .process import ROOT, output, require_version, run
 
 
-def main():
+def run_profile(profile):
     backend = ROOT / "backend"
-    require_version("go", output("go", "version", cwd=backend).split()[2].removeprefix("go"))
+    if profile == 'static':
+        run("go", "vet", "./...", cwd=backend)
+        run("go", "build", "./...", cwd=backend)
+        return
+    if profile != 'database':
+        raise ValueError('Unknown backend profile')
     run("go", "run", "./cmd/check-test-database", cwd=backend)
     destination = ROOT / ".out/checks"
     destination.mkdir(parents=True, exist_ok=True)
@@ -15,8 +20,12 @@ def main():
     verified = run(sys.executable, "tools/verify/go_test_events/verify-go-test-events.py", str(events), check=False)
     if result.returncode or verified.returncode:
         raise SystemExit(1)
-    run("go", "vet", "./...", cwd=backend)
-    run("go", "build", "./...", cwd=backend)
+
+
+def main():
+    require_version("go", output("go", "version", cwd=ROOT / "backend").split()[2].removeprefix("go"))
+    run_profile('database')
+    run_profile('static')
 
 
 if __name__ == "__main__":

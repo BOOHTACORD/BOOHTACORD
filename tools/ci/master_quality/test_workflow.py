@@ -52,7 +52,7 @@ class MasterWorkflowTests(unittest.TestCase):
             if mutation == 'bundle':
                 next(s for s in build['steps'] if s.get('with',{}).get('name','').startswith('server-${{'))['with']['name'] = 'server-${{ github.sha }}'
             if mutation == 'smoke':
-                for step in value['ci-backend.yaml']['jobs']['backend']['steps']:
+                for step in value['ci-backend.yaml']['jobs']['load']['steps']:
                     if step.get('with', {}).get('name', '').startswith('backend-load-smoke-'):
                         step['with']['name'] = 'backend-load-smoke-${{ github.sha }}'
             if mutation in ('download', 'retained'):
