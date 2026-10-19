@@ -4,6 +4,26 @@ from .summary import observe,markdown
 
 
 class SummaryTests(unittest.TestCase):
+    def test_each_required_aggregate_failure_names_its_exact_validation_command(self):
+        cases = [('pr','ci.yaml','ci-required','python -m tools.ci.required_gate.run'),
+                 ('server','build-server.yaml','server-quality','python -m tools.ci.master_quality.run server'),
+                 ('native','native-master.yaml','native-required','python -m tools.ci.master_quality.run native')]
+        for scope,workflow,job,command in cases:
+            with self.subTest(scope=scope):
+                run=dict(id=101,run_attempt=1,head_sha='a'*40,event='push',status='completed',conclusion='failure',
+                    path='.github/workflows/'+workflow,repository={'full_name':'Egkurilov/BOOHTACORD'})
+                env=dict(GITHUB_RUN_ID='101',GITHUB_RUN_ATTEMPT='1',CI_GATE_OUTCOME='failure')
+                jobs=[dict(id=12,name=job,conclusion='failure',steps=[dict(number=5,name='Require exact quality',conclusion='failure')])]
+                row=observe(scope,env,run,jobs,'a'*40,[],{})
+                failure=row['failures'][0]
+                self.assertEqual(failure['component'],'aggregate')
+                self.assertEqual(failure['reproduce'],command)
+                self.assertEqual(failure['stage'],'aggregate-validation')
+                self.assertEqual(failure['step_number'],5)
+                self.assertEqual(row['outcome'],'FAIL')
+                self.assertIn(command,markdown(row));self.assertIn('a'*40,markdown(row))
+                self.assertIn('/job/12',markdown(row));self.assertFalse(failure['retry_test'])
+
     def test_failed_or_missing_artifact_is_red_with_source_step_and_reproduction(self):
         run=dict(id=101,run_attempt=1,head_sha='a'*40,event='push',path='.github/workflows/build-server.yaml',repository={'full_name':'Egkurilov/BOOHTACORD'})
         env=dict(GITHUB_RUN_ID='101',GITHUB_RUN_ATTEMPT='1',CI_GATE_OUTCOME='failure')
