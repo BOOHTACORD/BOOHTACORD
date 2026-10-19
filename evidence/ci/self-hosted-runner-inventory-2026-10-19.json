@@ -2,7 +2,7 @@
   "status": "IN_PROGRESS",
   "scope": "CICD-12 runner isolation and scheduling; dependency CICD-01 metadata baseline",
   "source_commit": "768b81e3",
-  "observed_at_utc": "2026-10-19T21:59:52.475054+00:00",
+  "observed_at_utc": "2026-10-19T22:16:11.986732+00:00",
   "sample": "20 most recent workflow runs; all returned jobs, bounded first page up to 100 per run",
   "timing_limitations": "Execution seconds only for completed jobs; overlapping runs, not host CPU utilization or a complete historical capacity estimate",
   "job_labels": {
@@ -96,7 +96,7 @@
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
   "local_checks": "406 CI/policy/native-contract/promotion/next-diagnostics unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
-  "rollout_gate": "All four 3-vCPU/metadata probes PASS on f4cd7a9b with deployed controller. Final full required CI pending after explicit two-process Flutter execution; the prior two-vCPU Dart job timed out at 20 minutes.",
+  "rollout_gate": "Final three-vCPU pool probes, trusted delivery and dependency-cache acceptance PASS on e6a4f379. Full required CI pending after correcting the environment-dependent lock-order fixture; canonical local Python regressions PASS.",
   "resource_limits": {
     "heavy_slots": 2,
     "heavy_cpu_each": 3,
@@ -142,5 +142,19 @@
     "pool_proof_status": "PASS",
     "flutter_test_processes": 2,
     "test_process_reason": "test_core defaults to floor(numberOfProcessors / 2). Both native profiles and the immutable-source shadow control explicitly use two test processes in marked Linux guests; hosted/local commands retain SDK defaults."
+  },
+  "local_full_python": {
+    "status": "PASS",
+    "runner": "tools.verify.python_tests.run",
+    "tests": 1075,
+    "seconds": 56.545,
+    "platform": "macOS arm64",
+    "python": "3.14.8",
+    "exit_code": 0,
+    "limit": "The canonical Linux CI run remains required; platform-dependent test counts differ."
+  },
+  "contract_fixture_fix": {
+    "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39331849269/job/118331726640",
+    "reason": "Vendor lock unit fixture assumed the SDK-default test argv in every runtime. It now explicitly exercises local and disposable contexts and asserts lock preparation precedes locked pub resolution, which precedes every vendor test."
   }
 }
