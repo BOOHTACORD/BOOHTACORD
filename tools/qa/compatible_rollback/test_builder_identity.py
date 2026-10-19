@@ -8,7 +8,8 @@ class BuilderIdentityTests(unittest.TestCase):
     def test_cache_is_bound_to_sources_and_active_builder_dependencies(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            paths = ['tools/build/server/run.py', 'tools/audio/asset_build.py', 'tools/release/bundle/verify.py']
+            paths = ['tools/build/server/run.py', 'tools/build/server/buildkit-image.json',
+                     'tools/toolchains.json', 'tools/audio/asset_build.py', 'tools/release/bundle/verify.py']
             for name in paths:
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)

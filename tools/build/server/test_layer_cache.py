@@ -73,10 +73,26 @@ class LayerCacheTests(unittest.TestCase):
     def test_namespace_changes_with_lockfile_and_toolchain_not_revision_labels(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp)
-            for name in ('tools/toolchains.json','backend/Dockerfile','backend/go.mod','backend/go.sum'):
+            for name in ('tools/toolchains.json','tools/build/server/buildkit-image.json','backend/Dockerfile','backend/go.mod','backend/go.sum'):
                 path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('public-input')
-            original=namespace(root,'api')
+            original=namespace(root,'api',builder_root=root)
             (root/'unrelated').write_text('another-commit')
-            self.assertEqual(original,namespace(root,'api'))
+            self.assertEqual(original,namespace(root,'api',builder_root=root))
             (root/'backend/go.sum').write_text('updated-lock')
-            self.assertNotEqual(original,namespace(root,'api'))
+            self.assertNotEqual(original,namespace(root,'api',builder_root=root))
+            (root/'backend/go.sum').write_text('public-input')
+            self.assertEqual(original,namespace(root,'api',builder_root=root))
+            (root/'tools/build/server/buildkit-image.json').write_text('another-reviewed-backend')
+            self.assertNotEqual(original,namespace(root,'api',builder_root=root))
+
+    def test_retained_product_uses_the_actual_builder_policy_and_toolchains(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);product=root/'old-product';builder=root/'builder'
+            for parent,paths in ((product,('tools/toolchains.json','backend/Dockerfile','backend/go.mod','backend/go.sum')),
+                                 (builder,('tools/toolchains.json','tools/build/server/buildkit-image.json'))):
+                for name in paths:
+                    path=parent/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('public-input')
+            original=namespace(product,'api',builder_root=builder)
+            (builder/'tools/toolchains.json').write_text('new-reviewed-Buildx')
+            self.assertNotEqual(original,namespace(product,'api',builder_root=builder))
+            self.assertFalse((product/'tools/build/server/buildkit-image.json').exists())

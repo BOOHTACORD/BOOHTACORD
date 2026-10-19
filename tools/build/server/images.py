@@ -2,9 +2,12 @@
 import subprocess
 from contextlib import nullcontext
 from pathlib import Path
+import re
 from urllib.parse import urlsplit
 from tools.verify.oci.verify_oci import verify
 from .layer_cache import LayerCache, namespace
+from .oci_import import oci_root_identity
+from tools.release.bundle.manifest import require
 
 
 def web_build_arguments(environment):
@@ -38,6 +41,8 @@ def web_build_arguments(environment):
 
 def build(source, output, revision, source_hash, environment, *, metrics=None):
     receipts = {}
+    owner=environment.get('BOOHTACORD_BUILD_OWNER')
+    require(owner is None or isinstance(owner,str) and re.fullmatch('[0-9a-f]{32}',owner), 'Invalid builder owner')
     measure=metrics.stage if metrics else lambda _:nullcontext()
     cache_root=environment.get('BOOHTACORD_SERVER_CACHE_ROOT')
     with (LayerCache(Path(cache_root)) if cache_root else nullcontext(None)) as cache:
@@ -52,15 +57,20 @@ def build(source, output, revision, source_hash, environment, *, metrics=None):
                 subprocess.run(["docker", "buildx", "build", "--platform", "linux/amd64",
                             "--label", f"org.opencontainers.image.revision={revision}",
                             "--label", f"org.voice-platform.source-archive-sha256={source_hash}",
-                            "--sbom=true", "--provenance=mode=max,version=v0.2", "--load", "--tag", tag,
+                            *(['--label','org.boohtacord.builder.owner='+owner] if owner else []),
+                            "--sbom=true", "--provenance=mode=max,version=v0.2", "--tag", tag,
                             "--output", f"type=oci,dest={archive}",
                             '--build-arg', 'BOOHTACORD_CACHE_SCOPE='+key, *cache_args,
                             *( ["--file", str(source / "clients/web/Dockerfile"), *web_build_arguments(environment),
                                 "--build-arg", "SOURCE_REVISION=" + revision] if service == "web" else []),
                             str(source / context)], env=environment, check=True)
             with measure(service+'_oci_verify'):
+                verify(archive, revision, source_hash, oci_root_identity(archive))
+            with measure(service+'_oci_import'):
+                subprocess.run(['docker','image','load','--input',str(archive)],env=environment,check=True)
+            with measure(service+'_image_identity'):
                 image_id = subprocess.check_output(
-                ["docker", "image", "inspect", "--format", "{{.Id}}", tag], text=True
+                ["docker", "image", "inspect", "--format", "{{.Id}}", tag], text=True,env=environment
             ).strip()
                 receipts[service] = verify(archive, revision, source_hash, image_id)
             with measure(service+'_cache_publish'):
