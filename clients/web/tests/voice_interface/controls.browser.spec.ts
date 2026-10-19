@@ -169,11 +169,13 @@ for (const scale of [100, 200]) test(`mobile dock exposes all four actions with 
   await page.screenshot({ path: info.outputPath('closed-deafened.png'), fullPage: true })
 })
 
-test('mobile painted mute background and enlarged denied notice do not obscure their state', async ({ page }) => {
+test('mobile mute stays visibly filled without a red border and enlarged denied notice remains visible', async ({ page }, info) => {
   await open(page, 320, 200)
   await patch(page, { muted: true })
   const mic = page.getByTestId('voice-dock').locator('[data-state=muted]')
   expect(await mic.evaluate(button => getComputedStyle(button, '::before').backgroundColor)).toBe('rgb(185, 28, 28)')
+  expect(await mic.evaluate(button => getComputedStyle(button).borderWidth)).toBe('0px')
+  await page.screenshot({ path: info.outputPath('mobile-muted-dock-no-red-border.png'), fullPage: true })
   await patch(page, { denied: true, state: 'LISTENER' })
   const subtitle = await page.locator('.voice-dock-subtitle').boundingBox()
   const notice = await page.locator('.voice-dock-mic-notice').boundingBox()
