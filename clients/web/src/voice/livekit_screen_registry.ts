@@ -10,6 +10,7 @@ export interface ScreenParticipantPublication {
   identity: string
   isLocal?: boolean
   name?: string
+  ownerLeaseId?: string
   previewLeaseId?: string
   video?: ScreenViewerPublication
 }
@@ -34,6 +35,9 @@ export class LiveKitScreenRegistry {
       hasAudio: !participant.isLocal && participant.audio !== undefined,
       id: participant.isLocal ? `local:${participant.identity}:screen` : `${participant.identity}:screen`,
       isLocal: participant.isLocal,
+      ...(!participant.isLocal && (participant.ownerLeaseId || participant.previewLeaseId)
+        ? { ownerLeaseId: participant.ownerLeaseId ?? participant.previewLeaseId }
+        : {}),
       participantId: participant.identity,
       participantName: participant.isLocal ? 'Ваш экран' : participant.name?.trim() || 'Участник',
       ...this.profile(participant),

@@ -54,6 +54,14 @@ jobs:
         run: python3 -m unittest tools.release.desktop_updates.test_signing tools.verify.action_pins.test_release_boundary
       - name: Test stable required gate success and failure semantics
         run: python3 -m unittest tools.ci.required_gate.test_validation tools.ci.required_gate.test_run
+      - name: Verify migration control matrix, evidence readiness and configuration rollback safety
+        run: python -m unittest tools.ci.migration.test_readiness tools.ci.migration.test_rollback tools.ci.migration.test_controls tools.ci.migration.test_receipts tools.ci.migration.test_workflow
+      - name: Verify failure triage privacy, source binding and bounded infra-only retry
+        run: python -m unittest tools.ci.observability.test_triage tools.ci.observability.test_network tools.ci.observability.test_summary tools.ci.observability.test_report tools.ci.observability.test_workflow tools.ci.observability.test_alerts
+      - name: Verify fast macOS metadata, pinned SDK ABI and immutable publisher
+        run: |
+          python -m tools.ci.macos.fast
+          node --test tools/build/webrtc_macos/publish.test.mjs
       - name: Verify risk routing, real-runtime evidence and cleanup guards
         run: python -m unittest tools.ci.actual_acceptance.test_plan tools.ci.actual_acceptance.test_session tools.ci.actual_acceptance.test_validation tools.ci.actual_acceptance.test_fan_in tools.ci.actual_acceptance.test_manual_inputs tools.ci.actual_acceptance.test_workflow tools.ci.actual_acceptance.test_run tools.qa.compatible_rollback.test_receipt_projection
       - name: Verify manual operator capabilities, approvals and audit privacy

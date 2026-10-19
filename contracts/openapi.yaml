@@ -3767,6 +3767,23 @@
           "503": { "description": "Presence store unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } }
         },
         "security": [{ "SessionCookie": [] }]
+      },
+      "get": {
+        "operationId": "listScreenViewerPresenceForViewer",
+        "description": "An authenticated viewer may read the active subscribers of the selected owner's current screen track only when both leases remain active, unrevoked voice leases in the same open VOICE channel and the caller's lease has an active media subscription to that track. The viewer lease is bound to the caller's current session and account ACL; the server verifies the owner's current LiveKit ScreenShare publication. Response is private/no-store and contains account IDs only for the current stream, never in realtime events.",
+        "parameters": [
+          { "name": "viewerLeaseID", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "ownerLeaseID", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": {
+          "200": { "description": "Current subscribers of the selected screen track", "headers": { "Cache-Control": { "schema": { "const": "private, no-store, max-age=0" } }, "X-Request-ID": { "$ref": "#/components/headers/RequestID" } }, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["viewer_account_ids"], "properties": { "viewer_account_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string", "format": "uuid" } } } } } } },
+          "400": { "description": "Invalid viewer or owner lease ID", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "401": { "description": "No valid active session", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "404": { "description": "Caller and owner do not have active leases in the same channel", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "500": { "description": "Internal or middleware failure; an empty body may be returned", "x-empty-body-possible": true, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } },
+          "503": { "description": "Private LiveKit RoomService or presence store unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": { "X-Request-ID": { "$ref": "#/components/headers/RequestID" } } }
+        },
+        "security": [{ "SessionCookie": [] }]
       }
     },
     "/api/v1/voice/leases/{ownerLeaseID}/screen-viewers": {

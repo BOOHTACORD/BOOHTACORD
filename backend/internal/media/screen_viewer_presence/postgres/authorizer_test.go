@@ -65,7 +65,7 @@ func TestViewerAuthorizationRequiresBothActiveLeasesInOneChannel(t *testing.T) {
 	if err != nil || channel != "channel" || owner != "owner-account" || viewer != "viewer-account" {
 		t.Fatalf("channel=%q owner=%q viewer=%q err=%v", channel, owner, viewer, err)
 	}
-	for _, clause := range []string{"viewer.channel_id = owner.channel_id", "viewer.id = $1", "owner.id = $2", "viewer.user_id = $3", "viewer.session_token_digest = $4", "viewer.revoked_at IS NULL", "owner.revoked_at IS NULL", "owner_session.revoked_at IS NULL", "owner_account.blocked_at IS NULL"} {
+	for _, clause := range []string{"viewer.channel_id = owner.channel_id", "viewer.id = $1", "owner.id = $2", "viewer.user_id = $3", "viewer.session_token_digest = $4", "viewer.revoked_at IS NULL", "viewer_session.revoked_at IS NULL", "owner.revoked_at IS NULL", "owner_session.revoked_at IS NULL", "viewer_account.blocked_at IS NULL", "owner_account.blocked_at IS NULL", "channel.kind = 'VOICE'", "channel.archived_at IS NULL", "channel.admission_closed_at IS NULL"} {
 		if !strings.Contains(database.query, clause) {
 			t.Fatalf("viewer ACL omitted %q", clause)
 		}

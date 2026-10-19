@@ -19,7 +19,7 @@ class WorkflowSelectionTests(unittest.TestCase):
         jobs['arbitrary-native-build-name'] = jobs.pop('windows')
         aggregate = jobs['ci-required']
         aggregate['needs'] = ['arbitrary-native-build-name' if n == 'windows' else n for n in aggregate['needs']]
-        env = aggregate['steps'][-1]['env']
+        env = next(s for s in aggregate['steps'] if s.get('run') == 'python3 -m tools.ci.required_gate.run')['env']
         roles = json.loads(env['CI_JOBS'])
         roles['windows'] = 'arbitrary-native-build-name'
         env['CI_JOBS'] = json.dumps(roles)
@@ -48,6 +48,6 @@ class WorkflowSelectionTests(unittest.TestCase):
             check(self.document)
 
     def test_aggregate_cannot_interpolate_needs_as_shell_source(self):
-        self.document['jobs']['ci-required']['steps'][-1]['run'] = 'python3 -c "${{ toJSON(needs) }}"'
+        next(s for s in self.document['jobs']['ci-required']['steps'] if s.get('run') == 'python3 -m tools.ci.required_gate.run')['run'] = 'python3 -c "${{ toJSON(needs) }}"'
         with self.assertRaises(ValueError):
             check(self.document)

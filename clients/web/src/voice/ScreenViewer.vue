@@ -133,6 +133,6 @@ async function toggleFullscreen(): Promise<void> {
       </div>
     </div>
     <ScreenViewerRail v-if="cards.length" :cards="cards" :selected-id="selectedId" :show-return-to-voice="false" @select="select" />
-    <ScreenViewerParticipantStrip v-if="!mini" :participants="participants" :screens="cards" :screen-watcher-ids="screenWatcherIds" :self-account-id="selfAccountId" :self-deafened="deafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-name="selfName" :self-speaking="selfSpeaking" :own-screen-sharing="Boolean(ownScreenSharing)" />
+    <ScreenViewerParticipantStrip v-if="!mini" :participants="participants" :screens="cards" :selected-id="selectedId" :screen-watcher-ids="screenWatcherIds" :self-account-id="selfAccountId" :self-deafened="deafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-name="selfName" :self-speaking="selfSpeaking" :own-screen-sharing="Boolean(ownScreenSharing)" />
   </section>
 </template>

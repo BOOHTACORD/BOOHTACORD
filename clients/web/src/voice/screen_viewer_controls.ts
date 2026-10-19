@@ -14,6 +14,7 @@ export function createScreenViewerControls(
   error: Ref<string | null>,
   ended: Ref<boolean>,
   watcherIds?: Ref<string[]>,
+  ownerWatcherIds?: Ref<string[]>,
 ) {
   let controller: ScreenViewerController | null = null
   const observation = createViewObservation()
@@ -26,6 +27,7 @@ export function createScreenViewerControls(
   function sync(): void {
     cards.value = controller?.cards() ?? []
     if (watcherIds) watcherIds.value = controller?.watchers().map(watcher => watcher.id) ?? []
+    if (ownerWatcherIds) ownerWatcherIds.value = controller?.ownerWatchers().map(watcher => watcher.id) ?? []
     selectedId.value = controller?.selectedId ?? null
     ended.value = controller?.ended ?? false
     audioMuted.value = controller?.audioMuted ?? false

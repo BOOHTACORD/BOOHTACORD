@@ -31,6 +31,7 @@ type operationsStub struct {
 	owner              string
 	viewer             string
 	track              string
+	viewerSnapshot     int
 }
 
 func (stub *operationsStub) Watch(_ context.Context, _ presence.Principal, viewer, owner, track string) error {
@@ -45,6 +46,11 @@ func (stub *operationsStub) StopWatching(_ context.Context, _ presence.Principal
 }
 func (stub *operationsStub) Viewers(_ context.Context, _ presence.Principal, owner string) ([]string, error) {
 	stub.owner = owner
+	return stub.viewers, nil
+}
+func (stub *operationsStub) ViewersForViewer(_ context.Context, _ presence.Principal, viewer, owner string) ([]string, error) {
+	stub.viewerSnapshot++
+	stub.viewer, stub.owner = viewer, owner
 	return stub.viewers, nil
 }
 func (stub *operationsStub) ClearOwner(_ context.Context, _ presence.Principal, owner, track string) error {
@@ -63,6 +69,18 @@ func TestViewerPresenceMutationAndOwnerSnapshotArePrivateAndNoStore(t *testing.T
 	mux.ServeHTTP(response, request)
 	if response.Code != http.StatusNoContent || operations.watch != 1 || operations.viewer != viewerLease || operations.owner != ownerLease || operations.track != "TR_screen" {
 		t.Fatalf("watch response=%d op=%+v", response.Code, operations)
+	}
+	assertPrivateHeaders(t, response)
+
+	request = httptest.NewRequest(http.MethodGet, "/api/v1/voice/leases/"+viewerLease+"/screen-viewers/"+ownerLease, nil)
+	request.AddCookie(&http.Cookie{Name: session.CookieName, Value: "valid-session"})
+	response = httptest.NewRecorder()
+	mux.ServeHTTP(response, request)
+	var viewerBody struct {
+		ViewerAccountIDs []string `json:"viewer_account_ids"`
+	}
+	if response.Code != http.StatusOK || json.Unmarshal(response.Body.Bytes(), &viewerBody) != nil || len(viewerBody.ViewerAccountIDs) != 1 || viewerBody.ViewerAccountIDs[0] != operations.viewers[0] || operations.viewerSnapshot != 1 || operations.viewer != viewerLease || operations.owner != ownerLease {
+		t.Fatalf("viewer snapshot=%d op=%+v", response.Code, operations)
 	}
 	assertPrivateHeaders(t, response)
 
@@ -116,6 +134,12 @@ func TestViewerPresenceRequiresAuthenticatedSession(t *testing.T) {
 	mux.ServeHTTP(response, request)
 	if response.Code != http.StatusUnauthorized {
 		t.Fatalf("unauthenticated status=%d", response.Code)
+	}
+	request = httptest.NewRequest(http.MethodGet, "/api/v1/voice/leases/"+viewerLease+"/screen-viewers/"+ownerLease, nil)
+	response = httptest.NewRecorder()
+	mux.ServeHTTP(response, request)
+	if response.Code != http.StatusUnauthorized {
+		t.Fatalf("unauthenticated viewer snapshot status=%d", response.Code)
 	}
 }
 

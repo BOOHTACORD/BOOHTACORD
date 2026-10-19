@@ -1,6 +1,7 @@
 $watch = $openApi.paths.'/api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}'.put
 $stop = $openApi.paths.'/api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}'.delete
 $list = $openApi.paths.'/api/v1/voice/leases/{ownerLeaseID}/screen-viewers'.get
+$viewerList = $openApi.paths.'/api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}'.get
 $clear = $openApi.paths.'/api/v1/voice/leases/{ownerLeaseID}/screen-viewers'.delete
 if ($null -eq $watch -or $watch.operationId -ne 'reportScreenViewerPresence' -or
     $watch.description -notmatch 'active, unrevoked voice leases in the same open VOICE channel' -or
@@ -16,6 +17,13 @@ if ($null -eq $list -or $list.operationId -ne 'listScreenViewerPresence' -or
     $list.responses.'200'.headers.'Cache-Control'.schema.const -ne 'private, no-store, max-age=0' -or
     $list.responses.'200'.content.'application/json'.schema.properties.PSObject.Properties.Name.Count -ne 1) {
     throw 'Only the authenticated owner may read a private/no-store viewer snapshot.'
+}
+if ($null -eq $viewerList -or $viewerList.operationId -ne 'listScreenViewerPresenceForViewer' -or
+    $viewerList.description -notmatch 'active, unrevoked voice leases in the same open VOICE channel' -or
+    $viewerList.description -notmatch 'active media subscription' -or
+    $viewerList.responses.'200'.headers.'Cache-Control'.schema.const -ne 'private, no-store, max-age=0' -or
+    $viewerList.security[0].SessionCookie.Count -ne 0) {
+    throw 'An active same-channel viewer may read only a private/no-store screen audience snapshot.'
 }
 if ($null -eq $clear -or $clear.operationId -ne 'clearScreenViewerPresence' -or
     $clear.security[0].SessionCookie.Count -ne 0) {

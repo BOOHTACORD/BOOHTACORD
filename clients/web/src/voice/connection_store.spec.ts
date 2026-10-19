@@ -12,7 +12,7 @@ const fixture = vi.hoisted(() => {
     leave: vi.fn(),
     participantSource: { cards: vi.fn(() => [] as Array<{ accountId: string; id: string; microphoneMuted: boolean; name?: string; speaking: boolean }>), onChange: vi.fn(() => () => undefined) },
     room,
-    screenSource: { cards: vi.fn(() => [] as Array<{ accountId: string; hasAudio: boolean; id: string; participantId: string; participantName: string }>), watchers: vi.fn(() => []), onChange: vi.fn(() => () => undefined), selectedId: null, selectedAccountId: null, ended: false, setAudioVolume: vi.fn() },
+    screenSource: { cards: vi.fn(() => [] as Array<{ accountId: string; hasAudio: boolean; id: string; participantId: string; participantName: string }>), watchers: vi.fn(() => []), ownerWatchers: vi.fn(() => []), onChange: vi.fn(() => () => undefined), selectedId: null, selectedAccountId: null, ended: false, setAudioVolume: vi.fn() },
   }
 })
 

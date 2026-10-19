@@ -107,12 +107,16 @@
       "contracts/realtime.schema.json",
       "clients/web/src/voice/connection_state/media.ts",
       "clients/web/src/voice/connection_state/store.ts",
+      "clients/web/src/voice/screen_viewer_controller.ts",
+      "clients/web/src/voice/screen_viewer_types.ts",
+      "clients/web/src/voice/livekit_screen_registry.ts",
       "clients/web/src/voice/livekit_screen_viewer_adapter.ts",
       "clients/web/src/voice/livekit_screen_viewer_adapter.spec.ts",
       "clients/web/src/voice/screen_viewer_controls.ts",
       "clients/web/src/voice/screen_viewer_presence*",
       "clients/web/src/voice/ScreenViewer.vue",
       "clients/web/src/voice/ScreenViewerParticipantStrip.vue",
+      "clients/web/src/voice/VoiceRoomConnected.vue",
       "clients/web/src/voice/VoiceParticipantVolumes.vue",
       "clients/web/src/conversation/ConversationPane.vue",
       "clients/web/src/workspace/WorkspaceMain.vue",
@@ -120,6 +124,8 @@
       "clients/web/src/realtime/realtime_client*",
       "clients/web/src/realtime/realtime_reconnect.spec.ts",
       "tools/qa/critical_client_acceptance/screen_share_ui.mjs",
+      "clients/web/tests/screen_share_ui/fixture.ts",
+      "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts",
       "tools/qa/local_features/features.json",
       "tools/verify/contracts/screen_viewer_presence.ps1",
       "tools/verify/contracts/verify-contracts.ps1",
@@ -258,7 +264,7 @@
       "screen_watchers": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/screen_share_ui.mjs",
-        "scope": "After LiveKit confirms a screen-video subscription, the viewer reports it through the authenticated Go API under the active same-channel voice-lease ACL. The publisher gets a transient private invalidation and reloads its no-store viewer snapshot, then shows matching roster names and a compact count. Verify join/leave cleanup with an owned two-client API/SFU session. This indicates active media subscription, not human attention."
+        "scope": "After LiveKit confirms a screen-video subscription, the viewer reports it through the authenticated Go API under the active same-channel voice-lease ACL. The publisher gets a transient private invalidation and reloads its no-store viewer snapshot; the publisher and every viewer of the selected stream see matching roster names and a compact count, with viewer snapshots refreshed while that stream is selected. Verify join/leave cleanup with an owned two-client API/SFU session and render another active watcher in the Web participant strip. This indicates active media subscription, not human attention."
       },
       "issue349": {
         "browser": "clients/web/tests/mini_player/playwright.config.ts",

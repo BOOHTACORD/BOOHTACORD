@@ -41,6 +41,7 @@ const props = withDefaults(defineProps<{
   screenError: string | null
   screenViewerCards: ScreenViewerCard[]
   screenWatcherIds?: string[]
+  ownerScreenWatcherIds?: string[]
   screenViewerEnded: boolean
   screenViewerError: string | null
   screenDiagnostics: ScreenDiagnostics
@@ -62,6 +63,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   screenViewerCards: () => [],
   screenWatcherIds: () => [],
+  ownerScreenWatcherIds: () => [],
   screenViewerEnded: false,
   selectedScreenProfile: 'P1080_30',
   selectedScreenStreamId: null,
@@ -115,7 +117,7 @@ function clearScreenPreview(): void {
             />
           </template>
           <div v-if="!voiceIsActive || voiceState === 'LEAVING' || !selectedScreenStreamId" class="room-wrap">
-            <VoiceRoomConnected :activation-mode="activationMode" :deafen-changing="deafenChanging" v-if="!voiceChannel.admissionClosed && activeVoiceChannel?.id === voiceChannel.id" :room-name="voiceChannel.name" :voice-state="voiceState" :screen-state="screenState" :screen-error="screenError" :screen-diagnostics="screenDiagnostics" :screen-profile="screenProfile" :selected-screen-profile="selectedScreenProfile" :screen-viewer-cards="screenViewerCards" :screen-watcher-ids="screenWatcherIds" :voice-volume-error="voiceVolumeError" :voice-volume-participants="voiceVolumeParticipants" :self-account-id="accountId" :self-name="selfDisplayName" :self-deafened="selfDeafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-speaking="selfSpeaking" :toggle-microphone="toggleMicrophone" :toggle-deafen="toggleDeafen" @set-volume="(id, percent) => emit('setParticipantVolume', id, percent)" @watch-screen="watchScreen" @start-screen="emit('startScreen', $event)" @stop-screen="emit('stopScreen')" @leave="emit('leave')" @refresh-screen="emit('refreshScreen')" />
+            <VoiceRoomConnected :activation-mode="activationMode" :deafen-changing="deafenChanging" v-if="!voiceChannel.admissionClosed && activeVoiceChannel?.id === voiceChannel.id" :room-name="voiceChannel.name" :voice-state="voiceState" :screen-state="screenState" :screen-error="screenError" :screen-diagnostics="screenDiagnostics" :screen-profile="screenProfile" :selected-screen-profile="selectedScreenProfile" :screen-viewer-cards="screenViewerCards" :screen-watcher-ids="screenWatcherIds" :owner-screen-watcher-ids="ownerScreenWatcherIds" :selected-screen-stream-id="selectedScreenStreamId" :voice-volume-error="voiceVolumeError" :voice-volume-participants="voiceVolumeParticipants" :self-account-id="accountId" :self-name="selfDisplayName" :self-deafened="selfDeafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-speaking="selfSpeaking" :toggle-microphone="toggleMicrophone" :toggle-deafen="toggleDeafen" @set-volume="(id, percent) => emit('setParticipantVolume', id, percent)" @watch-screen="watchScreen" @start-screen="emit('startScreen', $event)" @stop-screen="emit('stopScreen')" @leave="emit('leave')" @refresh-screen="emit('refreshScreen')" />
             <VoicePrejoin :notice="voiceDisconnectNotice" v-else-if="!voiceChannel.admissionClosed" :channel-id="voiceChannel.id" :voice-error="voiceError" :voice-state="voiceState" :voice-transfer-required="voiceTransferRequired" :roster="voiceRoster ?? null" :roster-error="voiceRosterError ?? null" @join="(id, transfer, mode) => emit('join', id, transfer, mode)" @transfer="emit('transfer', $event)" />
           </div>
         </section>

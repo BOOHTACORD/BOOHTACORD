@@ -28,7 +28,7 @@ def quality(job, scope, roles):
             and job.get('runs-on') == 'ubuntu-24.04' and job.get('timeout-minutes') == '5'
             and not any(key in job for key in ('environment', 'secrets', 'continue-on-error', 'env')))
     steps = job.get('steps', [])
-    require(len(steps) == 5 and all(not s.get('continue-on-error') for s in steps))
+    require(len(steps) == 7 and all(not s.get('continue-on-error') for s in steps))
     require(steps[0] == {'uses': 'actions/checkout@v4', 'with': {'persist-credentials': 'false'}})
     require(steps[1] == {'uses': 'actions/setup-python@v5', 'with': {'python-version': python_input(ROOT)}})
     require(steps[2].get('run') == 'python -m tools.ci.toolchains.runtime python' and not steps[2].get('if'))
@@ -38,6 +38,13 @@ def quality(job, scope, roles):
             and steps[4].get('with') == {'name': f'quality-master-{scope}-' + EXECUTION,
                                        'path': f'.out/ci/master-{scope}.json',
                                        'if-no-files-found': 'error', 'retention-days': '30'})
+    require(steps[5].get('run') == 'python -m tools.ci.observability.summary --scope ' + scope
+            and steps[5].get('if') == 'always()'
+            and steps[5].get('env') == {'GITHUB_TOKEN':'${{ github.token }}','TRIAGE_NEEDS':'${{ toJSON(needs) }}','CI_GATE_OUTCOME':'${{ job.status }}'})
+    require(steps[6].get('uses') == 'actions/upload-artifact@v4' and steps[6].get('if') == 'always()'
+            and steps[6].get('with') == {'name':'triage-'+scope+'-'+EXECUTION,'path':'.out/ci/triage/'+scope+'.json',
+                'if-no-files-found':'error','retention-days':'30'})
+    require(job.get('permissions') == {'contents':'read','actions':'read'})
 
 
 def validate(workflows):

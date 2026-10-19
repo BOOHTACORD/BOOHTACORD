@@ -35,6 +35,7 @@
   "GET /api/v1/search/messages",
   "GET /api/v1/voice/participants",
 	"GET /api/v1/voice/leases/{ownerLeaseID}/screen-viewers",
+	"GET /api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}",
   "GET /api/v1/voice/rosters/events",
   "GET /api/v1/voice/screen-previews/v1/leases/{leaseID}/{generationID}",
   "PATCH /api/v1/admin/accounts/{accountID}",

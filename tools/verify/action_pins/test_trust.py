@@ -37,7 +37,7 @@ class TrustBoundaryTests(unittest.TestCase):
         with self.assertRaises(ValueError): check(broken)
 
     def test_release_and_persistent_runner_require_protected_trusted_source(self):
-        for workflow, job in [('android-release.yaml', 'android-release'), ('flutter-macos.yaml', 'macos')]:
+        for workflow, job in [('android-release.yaml', 'android-release'), ('webrtc-macos-sdk.yaml', 'publish')]:
             for update in [{'if': 'true'}, {'environment': None}]:
                 broken = copy.deepcopy(self.workflows)
                 broken[workflow]['jobs'][job].update(update)

@@ -1,44 +1,63 @@
 name: Flutter macOS CI
 
-# GitHub manual build while the macOS self-hosted runner is being migrated.
-
-# Keep manual dispatch until a GitHub macOS runner is provisioned.
 on:
   workflow_dispatch:
+    inputs:
+      full_build:
+        description: Also build the native universal app on a disposable hosted Mac
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
-  macos:
-    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
-    environment: production
-    runs-on: [self-hosted, macos]
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
-      - name: Set up Flutter 3.47.7
-        uses: ./.github/actions/flutter-setup
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Verify fast metadata and packaging regressions
+        run: python -m tools.ci.macos.fast
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: macos-fast-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/macos-fast.json
+          if-no-files-found: error
+          retention-days: 30
+
+  macos:
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && inputs.full_build
+    needs: checks
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Require reviewed native Apple host before SDK restoration
+        run: python -m tools.ci.macos.host --arch arm64
+      - uses: ./.github/actions/flutter-setup
         with:
           channel: stable
           flutter-version: 3.47.7
           cache: true
-      - name: Verify Flutter toolchain
-        run: flutter --version
       - name: Resolve locked Flutter dependencies
         working-directory: clients/flutter
         run: flutter pub get --enforce-lockfile
-      - name: Test macOS release packaging
-        run: bash tools/build/macos/package.test.sh
-      - name: Run Flutter tests
-        working-directory: clients/flutter
-        run: flutter test
-      - name: Analyze Flutter client
-        working-directory: clients/flutter
-        run: flutter analyze --no-fatal-infos
-      - name: Restore pinned Sparkle SDK
-        run: python3 -m tools.build.desktop_updater.sdk macos
       - name: Build universal macOS release client
         run: python3 -m tools.build.macos.run
       - name: Package macOS CI build and checksum
@@ -53,11 +72,17 @@ jobs:
             "$RUNNER_TEMP/boohtacord-macos-artifacts"
       - name: Inspect native identity and retain distribution manifest
         run: python3 -m tools.build.macos.metadata clients/flutter/build/macos/Build/Products/Release/BOOHTACORD.app "$RUNNER_TEMP/boohtacord-macos-artifacts"
-      - name: Retain macOS build and checksum as workflow artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: BOOHTACORD-macos-universal-${{ github.sha }}
+          name: BOOHTACORD-macos-universal-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/boohtacord-macos-artifacts/
           if-no-files-found: error
           retention-days: 30
           compression-level: 0
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: macos-host-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/macos-host.json
+          if-no-files-found: error
+          retention-days: 30

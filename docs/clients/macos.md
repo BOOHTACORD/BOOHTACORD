@@ -1,6 +1,6 @@
 # macOS-клиент BOOHTACORD
 
-Клиент macOS использует общий Flutter-код из [`clients/flutter/lib/`](../../clients/flutter/lib) и runner из [`clients/flutter/macos/`](../../clients/flutter/macos). Ручной GitHub Actions workflow на runner с метками `self-hosted`, `macos` запускает Flutter tests и analyzer, затем собирает Release для Apple Silicon и Intel. До регистрации GitHub runner запуск не подтверждён.
+Клиент macOS использует общий Flutter-код из [`clients/flutter/lib/`](../../clients/flutter/lib) и runner из [`clients/flutter/macos/`](../../clients/flutter/macos). GitHub Actions выполняет быстрые metadata/package проверки отдельно от полного native build. Ручной workflow с `full_build=true` собирает universal Release на disposable hosted `macos-26`; недоступный или несовместимый Apple toolchain даёт BLOCKED/failure. [Матрица CI/SDK и границы приёмки](../ci/macos-sdk.md).
 
 Для локального запуска:
 
