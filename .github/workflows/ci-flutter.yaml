@@ -28,25 +28,28 @@ jobs:
           channel: stable
           flutter-version: 3.47.7
           cache: true
+      - name: Require fresh synthetic Flutter capture outputs
+        env:
+          FLUTTER_EVIDENCE_NAMESPACE: ${{ inputs.evidence_namespace }}
+        run: python3 -m tools.ci.artifact_policy.run begin flutter dart
       - name: Test and analyze app and vendor packages
         env:
           FLUTTER_EVIDENCE_NAMESPACE: ${{ inputs.evidence_namespace }}
         run: python3 -m tools.ci.flutter_gates.run dart
-      - name: Upload Flutter navigation actual
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: flutter-navigation-actual-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .out/visual/flutter/R14-navigation-top.png
-          if-no-files-found: error
-          retention-days: 30
+      - name: Package verified synthetic Flutter captures
+        if: always()
+        env:
+          FLUTTER_EVIDENCE_NAMESPACE: ${{ inputs.evidence_namespace }}
+          CAPTURE_UPSTREAM_STATUS: ${{ job.status }}
+        run: python3 -m tools.ci.artifact_policy.run finish flutter dart
       - name: Retain Flutter UI/UX screenshot review set
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: uiux-flutter-visual-review-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .out/visual/flutter/**
+          path: .out/ci/capture-packages/flutter-dart/
           if-no-files-found: error
-          retention-days: 30
+          retention-days: ${{ github.event_name == 'pull_request' && startsWith(github.ref, 'refs/pull/') && job.status == 'success' && 7 || 30 }}
       - name: Retain mandatory Dart profile evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

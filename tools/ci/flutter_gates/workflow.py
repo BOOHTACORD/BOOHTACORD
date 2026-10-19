@@ -1,4 +1,5 @@
 """Guard native coverage, isolated jobs, mandatory uploads and stable aggregation."""
+from tools.ci.artifact_policy.workflows import capture_job
 CONTEXT = '${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
 
 
@@ -38,8 +39,7 @@ def validate(document):
         step = command(job, 'python3 -m tools.ci.flutter_gates.run ' + profile)
         require(step.get('env') == {'FLUTTER_EVIDENCE_NAMESPACE': '${{ inputs.evidence_namespace }}'})
         upload(job, '.out/ci/flutter-parts/' + profile + '.json', 'flutter-part-' + CONTEXT + '-' + profile, True)
-    upload(jobs['dart'], '.out/visual/flutter/R14-navigation-top.png', 'flutter-navigation-actual-' + CONTEXT)
-    upload(jobs['dart'], '.out/visual/flutter/**', 'uiux-flutter-visual-review-' + CONTEXT, True)
+    capture_job(jobs['dart'], 'flutter', 'dart', 'python3 -m tools.ci.flutter_gates.run dart')
     upload(jobs['android'], '.out/native/android-debug/', 'boohtacord-android-debug-apk-' + CONTEXT)
     aggregate = jobs['flutter']
     require(aggregate.get('if') == 'always()' and set(aggregate.get('needs', [])) == {'dart', 'android'}
