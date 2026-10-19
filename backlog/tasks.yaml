@@ -512,7 +512,7 @@ tasks:
     title: Classified artifact retention, immutable naming and complete sanitized evidence without duplicate captures
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
     depends_on: [CICD-01, CICD-09]
-    evidence: [tools/ci/artifact_policy/test_retention.py, tools/ci/artifact_policy/test_names.py, docs/ci/artifact-policy.md, evidence/ci/artifact-policy-foundation-2026-10-19.md, tools/ci/artifact_policy/test_captures.py, evidence/ci/artifact-capture-package-local-2026-10-19.md, tools/ci/artifact_policy/test_publication_context.py, tools/ci/artifact_policy/test_capture_inventory.py, tools/ci/artifact_policy/test_publication.py, tools/ci/artifact_policy/test_run.py, tools/ci/artifact_policy/test_workflow_adoption.py, evidence/ci/artifact-runtime-local-2026-10-19.md, tools/ci/artifact_policy/test_archive.py, tools/ci/artifact_policy/test_inspect.py]
+    evidence: [tools/ci/artifact_policy/test_retention.py, tools/ci/artifact_policy/test_names.py, docs/ci/artifact-policy.md, evidence/ci/artifact-policy-foundation-2026-10-19.md, tools/ci/artifact_policy/test_captures.py, evidence/ci/artifact-capture-package-local-2026-10-19.md, tools/ci/artifact_policy/test_publication_context.py, tools/ci/artifact_policy/test_capture_inventory.py, tools/ci/artifact_policy/test_publication.py, tools/ci/artifact_policy/test_run.py, tools/ci/artifact_policy/test_workflow_adoption.py, evidence/ci/artifact-runtime-local-2026-10-19.md, tools/ci/artifact_policy/test_archive.py, tools/ci/artifact_policy/test_inspect.py, evidence/ci/artifact-policy-final-2026-10-19.json]
   - id: CICD-04
     title: Complete isolated Web suite profiles with a fail-closed source-bound aggregate
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
