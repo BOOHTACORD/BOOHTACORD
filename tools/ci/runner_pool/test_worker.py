@@ -1,13 +1,47 @@
-"""The runner token never reaches a command line; failed jobs cannot retain workers."""
+"""Host account credentials stay outside guests; failed jobs cannot retain workers."""
 import json
 from pathlib import Path
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 from . import worker
 
 
 class WorkerTests(unittest.TestCase):
+    def test_idle_retirement_never_treats_busy_or_failed_api_as_success(self):
+        with patch.object(worker.subprocess, 'run', return_value=SimpleNamespace(returncode=1)) as run:
+            self.assertFalse(worker.retire_idle(42))
+        self.assertEqual(worker.subprocess.DEVNULL, run.call_args.kwargs['stdout'])
+        self.assertEqual(worker.subprocess.DEVNULL, run.call_args.kwargs['stderr'])
+        with patch.object(worker.subprocess, 'run', return_value=SimpleNamespace(returncode=0)):
+            self.assertTrue(worker.retire_idle(42))
+
+    def test_job_assigned_near_idle_deadline_gets_a_full_execution_window(self):
+        active = {'ActiveState': 'active', 'ExecMainStatus': '0'}
+        complete = {'ActiveState': 'inactive', 'ExecMainStatus': '0'}
+        with patch.object(worker, 'agent_state', side_effect=[active, complete]), \
+                patch.object(worker, 'retire_idle', return_value=False) as retire, \
+                patch.object(worker.time, 'monotonic', side_effect=[0, 21601, 21601]), \
+                patch.object(worker.time, 'sleep'):
+            self.assertFalse(worker.monitor_agent([], 42))
+        retire.assert_called_once_with(42)
+
+    def test_idle_guest_is_retired_atomically_before_local_destruction(self):
+        with patch.object(worker, 'agent_state', return_value={'ActiveState': 'active'}), \
+                patch.object(worker, 'retire_idle', return_value=True), \
+                patch.object(worker.time, 'monotonic', side_effect=[0, 21601]):
+            self.assertTrue(worker.monitor_agent([], 42))
+
+    def test_busy_or_unavailable_registration_cannot_extend_the_bound_forever(self):
+        with patch.object(worker, 'agent_state', return_value={'ActiveState': 'active'}), \
+                patch.object(worker, 'retire_idle', return_value=False) as retire, \
+                patch.object(worker.time, 'monotonic', side_effect=[0, 21601, 21601, 43202]), \
+                patch.object(worker.time, 'sleep'):
+            with self.assertRaisesRegex(RuntimeError, 'maximum execution time'):
+                worker.monitor_agent([], 42)
+        retire.assert_called_once_with(42)
+
     def test_transient_observation_failure_does_not_destroy_running_job(self):
         with patch.object(worker, 'command', side_effect=[
                 worker.OperationError('Runner operation failed: lxc exec status -15'),
@@ -113,7 +147,7 @@ class WorkerTests(unittest.TestCase):
 
     def test_refuses_privileged_or_host_mounted_base(self):
         safe = {'expanded_config': {'security.privileged': 'false', 'security.idmap.isolated': 'true',
-                           'limits.cpu': '2', 'limits.memory': '4GiB'},
+                           'limits.cpu': '3', 'limits.memory': '4GiB'},
                 'expanded_devices': {'root': {'type': 'disk', 'path': '/', 'pool': 'boohtacord-ci'},
                             'eth0': {'type': 'nic', 'network': 'boohtaci0'}}}
         with patch.object(worker, 'command', return_value=json.dumps(safe)):

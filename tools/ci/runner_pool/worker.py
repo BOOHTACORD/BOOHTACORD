@@ -36,7 +36,7 @@ def verify_base():
     config, devices = data['expanded_config'], data['expanded_devices']
     if not (config.get('security.privileged') == 'false'
             and config.get('security.idmap.isolated') == 'true'
-            and config.get('limits.cpu') == '2' and config.get('limits.memory') == '4GiB'
+            and config.get('limits.cpu') == '3' and config.get('limits.memory') == '4GiB'
             and set(devices) == {'root', 'eth0'}
             and devices['root'].get('type') == 'disk' and devices['root'].get('path') == '/'
             and devices['root'].get('pool') == 'boohtacord-ci'
@@ -69,6 +69,38 @@ def agent_state(execute):
             if attempt == 2:
                 raise
             time.sleep(2)
+
+
+def retire_idle(identity):
+    # GitHub rejects removal of a busy runner. Retire there before deleting an
+    # idle guest so a job cannot be assigned between an idle check and teardown.
+    try:
+        result = subprocess.run(['gh', 'api', '--method', 'DELETE', API + '/' + str(identity)],
+                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=30)
+        return result.returncode == 0
+    except (subprocess.TimeoutExpired, OSError):
+        return False
+
+
+def monitor_agent(execute, identity):
+    deadline = time.monotonic() + 6 * 60 * 60
+    grace = False
+    while True:
+        state = agent_state(execute)
+        if state.get('ActiveState') in ('inactive', 'failed'):
+            if state.get('ExecMainStatus') != '0':
+                raise RuntimeError('Guest agent exited unsuccessfully')
+            return False
+        if time.monotonic() >= deadline:
+            if grace:
+                raise RuntimeError('Guest agent exceeded maximum execution time')
+            if retire_idle(identity):
+                return True
+            # A job assigned late in the idle window still receives the full
+            # GitHub job budget. API unavailability gets the same bounded grace.
+            deadline = time.monotonic() + 6 * 60 * 60
+            grace = True
+        time.sleep(5)
 
 
 def cycle(slot):
@@ -111,15 +143,8 @@ def cycle(slot):
         command([*execute, 'daemon-reload'])
         command([*execute, 'start', 'boohtacord-agent'])
         # The agent is owned by guest PID 1, independent of a long-lived LXD exec session.
-        deadline = time.monotonic() + 6 * 60 * 60
-        while time.monotonic() < deadline:
-            state = agent_state(execute)
-            if state.get('ActiveState') in ('inactive', 'failed'):
-                if state.get('ExecMainStatus') != '0':
-                    raise RuntimeError('Guest agent exited unsuccessfully')
-                return
-            time.sleep(5)
-        raise RuntimeError('Guest agent exceeded maximum execution time')
+        if monitor_agent(execute, identity):
+            identity = None  # Already retired atomically while it was idle.
     finally:
         if token_path is not None:
             token_path.unlink(missing_ok=True)

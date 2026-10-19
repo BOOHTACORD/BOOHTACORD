@@ -2,7 +2,7 @@
   "status": "IN_PROGRESS",
   "scope": "CICD-12 runner isolation and scheduling; dependency CICD-01 metadata baseline",
   "source_commit": "768b81e3",
-  "observed_at_utc": "2026-10-19T20:55:56.215027+00:00",
+  "observed_at_utc": "2026-10-19T21:54:45.471613+00:00",
   "sample": "20 most recent workflow runs; all returned jobs, bounded first page up to 100 per run",
   "timing_limitations": "Execution seconds only for completed jobs; overlapping runs, not host CPU utilization or a complete historical capacity estimate",
   "job_labels": {
@@ -95,18 +95,19 @@
     "https://github.com/Egkurilov/BOOHTACORD/settings/actions/runners",
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
-  "local_checks": "390 CI/policy/native-contract/promotion unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
-  "rollout_gate": "Pool probes and trusted-delivery acceptance PASS. Full required application CI pending after correcting the cold Java download identity.",
+  "local_checks": "403 CI/policy/native-contract/promotion/next-diagnostics unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
+  "rollout_gate": "Previous 2-vCPU pool probes, contracts, Windows, PostgreSQL, web/SFU, actual/SFU, trusted delivery and cache acceptance PASS. Current 3-vCPU pool proof and full required CI pending after latest-master merge; old Dart job timed out at 20 minutes.",
   "resource_limits": {
     "heavy_slots": 2,
-    "heavy_cpu_each": 2,
+    "heavy_cpu_each": 3,
     "heavy_memory_gib_each": 4,
     "metadata_slots": 2,
     "metadata_cpu_each": 1,
     "metadata_memory_mib_each": 512,
     "ci_btrfs_pool_gib": 20,
     "guest_root_limit_gib": 16,
-    "minimum_host_disk_reserve_gib": 5
+    "minimum_host_disk_reserve_gib": 5,
+    "maximum_cpu_placements": 8
   },
   "pool_acceptance": {
     "status": "PASS",
@@ -118,12 +119,24 @@
       "Two metadata probes succeeded with 512 MiB memory limit",
       "Completed job registrations disappeared and fresh guest runner IDs appeared"
     ],
-    "limit": "All four probes passed with bounded read-only observation retry. Required application CI revealed an existing unresolvable cold Java pin; correction keeps the same reviewed runtime."
+    "limit": "All four probes passed with bounded read-only observation retry. Required application CI revealed an existing unresolvable cold Java pin; correction keeps the same reviewed runtime.",
+    "heavy_cpu_each": 2
   },
   "isolation_limit": "Unprivileged UID-isolated containers share the host kernel; no hardware VM isolation or media capacity claim.",
   "controller_sha256": {
-    "worker.py": "d198f2cdf3c3aa3720b8e6b2d291d16f39b63fd6219672ed373ee03ff5a8074b",
+    "worker.py": "90d7d62bcbba132e68bebb18d787ff4c7962bf60367cfea687a27d3509b7b895",
     "guest-runner.service": "160a3ba76c3aeea41e8368e94c5c5dd8019b87d18413ea05809b42e90ac43d62",
     "start-runner.sh": "5635bd5b5a497c0bed7a28c1fca193cfa80729179cec69eef2c654da46d7f37f"
+  },
+  "cpu_tuning": {
+    "status": "IN_PROGRESS",
+    "previous_heavy_cpu_each": 2,
+    "new_heavy_cpu_each": 3,
+    "unchanged_heavy_memory_gib_each": 4,
+    "preserved_dart_timeout_minutes": 20,
+    "timed_out_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39325508851/job/118311100763",
+    "started_at_utc": "2026-10-19T21:28:19Z",
+    "completed_at_utc": "2026-10-19T21:48:57Z",
+    "reason": "The full Dart/app/vendor profile exceeded the existing 20-minute wall budget on two vCPU. Keep the complete tests and budget; allocate three vCPU per heavy slot within the eight-vCPU host."
   }
 }

@@ -7,10 +7,10 @@ outside these repository workflow files.
 
 | Slots | Requested labels | Limit per guest | Work |
 | --- | --- | --- | --- |
-| 1, 2 | `self-hosted, linux, x64, boohtacord-ci-ephemeral` | 2 vCPU, 4 GiB RAM | Tests, browser/SFU fixtures, Android packaging, operational jobs |
+| 1, 2 | `self-hosted, linux, x64, boohtacord-ci-ephemeral` | 3 vCPU, 4 GiB RAM | Tests, browser/SFU fixtures, Android packaging, operational jobs |
 | 3, 4 | `self-hosted, linux, x64, boohtacord-ci-meta` | 1 vCPU, 512 MiB RAM | Top-level selectors, required aggregates, deployment route |
 
-The two heavy slots and two small slots consume at most 9 GiB RAM and six CPU
+The two heavy slots and two small slots consume at most 9 GiB RAM and eight CPU
 placements. This is a bounded concurrency configuration on one shared host,
 not a capacity or performance claim. Existing DB/Web runners are preserved;
 the signing builder keeps its dedicated `boohtacord-builder` label and trusted
@@ -32,6 +32,10 @@ The agent runs as its own guest systemd service, with the runner user's Docker
 group and explicit public SDK environment. Short LXD exec calls only inspect
 that service; no long-lived exec connection owns the runner process. Healthy
 cycles create a new guest after two seconds; a failed controller retries after 30 seconds.
+After six idle hours the controller first retires the registration through
+GitHub, which refuses removal of a busy runner. Only a successful retirement
+allows idle teardown. A refusal or unavailable API grants one bounded six-hour
+execution window, so a job assigned near the idle deadline is not cut short.
 Host free disk below 5 GiB or CI pool free space below 2 GiB blocks another
 cycle. A service must not be changed to persistent workspace reuse.
 
