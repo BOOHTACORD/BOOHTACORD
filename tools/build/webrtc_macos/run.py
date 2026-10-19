@@ -8,6 +8,10 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import time
+from . import contract,execution
+from .extract import extract
+from tools.ci.macos.host import inspect
 
 ROOT = Path(__file__).resolve().parents[3]
 RECIPE = Path(__file__).with_name('recipe.json')
@@ -41,9 +45,9 @@ def checkout(directory, url, revision, branch=None):
 
 
 def build(args):
-    recipe = json.loads(RECIPE.read_text())
-    workspace = args.workspace.resolve()
-    workspace.mkdir(parents=True, exist_ok=True)
+    started=time.monotonic();recipe=json.loads(RECIPE.read_text());toolchain=inspect(args.arch)
+    contract.require(not args.synced)
+    workspace=args.workspace.resolve();identity=execution.own(workspace,args.arch)
     depot = workspace.parent / 'depot_tools'
     source = workspace / 'src'
     checkout(depot, 'https://chromium.googlesource.com/chromium/tools/depot_tools.git', recipe['depot_revision'])
@@ -66,6 +70,7 @@ def build(args):
         call(depot / 'gclient', 'sync', '--nohooks', '--no-history', '--shallow', '-j', '6', cwd=workspace, env=env)
     elif not (workspace / '.gclient_entries').is_file():
         raise ValueError('A completed owned dependency sync is required')
+    contract.require(output('git','rev-parse','HEAD',cwd=source)==recipe['source_revision'])
     call(depot / 'gclient', 'runhooks', cwd=workspace, env=env)
     patches = [PATCHES / f'webrtc-sdk-m150-custom-source-{kind}.patch' for kind in ('routing', 'regression')]
     for patch in patches:
@@ -78,50 +83,47 @@ def build(args):
     call(depot / 'gn', 'gen', build_dir, '--args=' + gn_args, cwd=source, env=env)
     jobs = str(min(4, os.cpu_count() or 2))
     call(depot / 'ninja', '-C', build_dir, '-j', jobs, 'mac_framework_bundle', cwd=source, env=env)
-    if args.arch == 'arm64':
-        call(depot / 'ninja', '-C', build_dir, '-j', jobs, 'audio_engine_tests', cwd=source, env=env)
-        call(build_dir / 'audio_engine_tests', '--gtest_filter=AudioSendStreamTest.Boohtacord*', '--gtest_output=json:' + str(build_dir / 'routing-tests.json'), cwd=source)
-        tests = json.loads((build_dir / 'routing-tests.json').read_text())
-        if tests['tests'] != 2 or tests['failures'] != 0:
-            raise ValueError('Both real native routing regressions must execute and pass')
+    call(depot / 'ninja', '-C', build_dir, '-j', jobs, 'audio_engine_tests', cwd=source, env=env)
+    call(build_dir / 'audio_engine_tests', '--gtest_filter=AudioSendStreamTest.Boohtacord*', '--gtest_output=json:' + str(build_dir / 'routing-tests.json'), cwd=source)
+    tests=json.loads((build_dir/'routing-tests.json').read_text())
+    contract.require(tests.get('tests')==2 and all(tests.get(key)==0 for key in ('failures','disabled','errors')))
     retained = args.output.resolve()
-    retained.mkdir(parents=True, exist_ok=True)
+    retained.mkdir(parents=True, exist_ok=False)
     framework = build_dir / 'WebRTC.framework'
     binary = framework / 'WebRTC'
+    binary_arch=output('xcrun','lipo','-archs',binary,cwd=source).split()
+    contract.require(binary_arch==['arm64' if args.arch=='arm64' else 'x86_64'])
     symbols = output('xcrun', 'nm', '-gU', binary, cwd=source)
     if '_BoohtacordScreenAudioRoutingRevision' not in symbols:
         raise ValueError('Patched routing marker missing from actual SDK binary')
     archive = retained / ('WebRTC-' + args.arch + '.framework.zip')
     call('/usr/bin/ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', framework, archive, cwd=source)
-    receipt = {'source_revision': recipe['source_revision'], 'depot_revision': recipe['depot_revision'],
-               'version': recipe['version'], 'architecture': args.arch, 'gn_args': gn_args,
-               'routing_marker': recipe['routing_marker'], 'patches': {p.name: digest(p) for p in patches},
-               'framework_binary_sha256': digest(binary), 'archive_sha256': digest(archive),
-               'native_route_tests': 'PASS' if args.arch == 'arm64' else 'NOT_RUN',
-               'physical_playback_smoke': 'NOT_RUN'}
-    (retained / ('sdk-' + args.arch + '.json')).write_text(json.dumps(receipt, indent=2) + '\n')
-    if args.arch == 'arm64':
-        shutil.copy2(build_dir / 'routing-tests.json', retained / 'routing-tests.json')
+    receipt=dict(contract.inputs(),**identity,architecture=args.arch,gn_args=gn_args,toolchain=toolchain,
+                 framework_binary_sha256=digest(binary),archive_sha256=digest(archive),binary_architectures=binary_arch,
+                 native_route_tests='PASS',native_test_count=2,native_test_report_sha256=digest(build_dir/'routing-tests.json'),
+                 physical_playback_smoke='NOT_RUN',owned_workspace_removed=False,seconds=round(time.monotonic()-started,3))
+    (retained/('sdk-'+args.arch+'.json')).write_text(json.dumps(receipt,sort_keys=True)+'\n')
+    shutil.copy2(build_dir/'routing-tests.json',retained/'routing-tests.json')
     shutil.copy2(source / 'LICENSE', retained / 'LICENSE-WebRTC.txt')
 
 
 def assemble(args):
-    destination = args.output.resolve()
-    destination.mkdir(parents=True, exist_ok=True)
-    recipe = json.loads(RECIPE.read_text())
-    frameworks = []
-    receipts = []
+    started=time.monotonic();identity=execution.context();inspect('arm64')
+    destination=args.output.resolve();destination.mkdir(parents=True,exist_ok=False)
+    recipe=json.loads(RECIPE.read_text());frameworks=[];receipts=[]
     for arch in recipe['architectures']:
-        inputs = args.inputs.resolve() / arch
-        receipt = json.loads((inputs / ('sdk-' + arch + '.json')).read_text())
-        archive = inputs / ('WebRTC-' + arch + '.framework.zip')
-        if digest(archive) != receipt['archive_sha256'] or receipt['source_revision'] != recipe['source_revision']:
-            raise ValueError('SDK architecture receipt mismatch')
-        call('/usr/bin/ditto', '-x', '-k', archive, inputs, cwd=destination)
-        frameworks.append(inputs / 'WebRTC.framework')
-        receipts.append(receipt)
-    if receipts[0]['native_route_tests'] != 'PASS' or receipts[0]['patches'] != receipts[1]['patches']:
-        raise ValueError('SDK focused regression/patch mismatch')
+        inputs=args.inputs.resolve()/arch
+        receipt=json.loads((inputs/('sdk-'+arch+'.json')).read_text())
+        contract.validate_slice(receipt,arch,identity['builder_revision'],identity['run_id'],identity['run_attempt'])
+        archive=inputs/('WebRTC-'+arch+'.framework.zip')
+        contract.require(digest(archive)==receipt['archive_sha256'] and receipt.get('owned_workspace_removed') is True)
+        tests=inputs/'routing-tests.json';contract.require(digest(tests)==receipt['native_test_report_sha256'])
+        value=json.loads(tests.read_text());contract.require(value.get('tests')==2 and all(value.get(k)==0 for k in ('failures','disabled','errors')))
+        framework=extract(archive,inputs/'extracted');binary=framework/'WebRTC'
+        contract.require(digest(binary)==receipt['framework_binary_sha256']
+                         and output('xcrun','lipo','-archs',binary,cwd=destination).split()==receipt['binary_architectures'])
+        frameworks.append(framework);receipts.append(receipt)
+    contract.validate_matrix(receipts,identity['builder_revision'],identity['run_id'],identity['run_attempt'])
     universal = destination / 'universal/WebRTC.framework'
     universal.parent.mkdir()
     shutil.copytree(frameworks[0], universal, symlinks=True)
@@ -130,6 +132,7 @@ def assemble(args):
         binary = binary.resolve()
     call('xcrun', 'lipo', '-create', *(p / 'WebRTC' for p in frameworks), '-output', binary, cwd=destination)
     xcframework = destination / 'WebRTC.xcframework'
+    contract.require(set(output('xcrun','lipo','-archs',binary,cwd=destination).split())=={'arm64','x86_64'})
     call('xcodebuild', '-create-xcframework', '-framework', universal, '-output', xcframework, cwd=destination)
     mac_framework = xcframework / 'macos-arm64_x86_64/WebRTC.framework'
     mac_binary = mac_framework / 'WebRTC'
@@ -138,11 +141,12 @@ def assemble(args):
         shutil.move(mac_binary, mac_framework / 'Versions/A/WebRTC')
         mac_binary.symlink_to('Versions/Current/WebRTC')
     shutil.copy2(args.inputs / 'arm64/LICENSE-WebRTC.txt', xcframework / 'LICENSE')
+    call('/usr/bin/codesign','--force','--sign','-',mac_framework,cwd=destination)
+    call('/usr/bin/codesign','--verify','--deep','--strict',mac_framework,cwd=destination)
     archive = destination / 'WebRTC-macos.xcframework.zip'
     call('/usr/bin/ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', xcframework, archive, cwd=destination)
-    receipt = {'version': recipe['version'], 'source_revision': recipe['source_revision'],
-               'routing_marker': recipe['routing_marker'], 'architectures': receipts,
-               'xcframework_sha256': digest(archive), 'physical_playback_smoke': 'NOT_RUN'}
+    receipt=dict(contract.inputs(),**identity,architectures=receipts,xcframework_sha256=digest(archive),
+                 universal_binary_sha256=digest(mac_binary),signing='adhoc-framework-not-notarized',physical_playback_smoke='NOT_RUN',seconds=round(time.monotonic()-started,3))
     (destination / 'sdk-manifest.json').write_text(json.dumps(receipt, indent=2) + '\n')
     (destination / 'SHA256SUMS').write_text(f'{digest(archive)}  {archive.name}\n')
     print(json.dumps({'version': recipe['version'], 'checksum': digest(archive)}))

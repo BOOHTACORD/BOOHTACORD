@@ -538,6 +538,11 @@ tasks:
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
     depends_on: [CICD-11, CICD-04]
     evidence: [tools/ops/operator/test_policy.py, tools/ops/operator/test_approval.py, tools/ops/operator/test_run.py, tools/ops/operator/test_transport.py, tools/ops/operator/test_workflow.py, tools/ops/operator/test_remote.py, tools/ops/operator/test_operations.py, docs/ci/operator-workflows.md, evidence/ci/operator-workflows-2026-10-19.md]
+  - id: CICD-17
+    title: Disposable hosted macOS CI and separately published source recipe ABI bound native WebRTC SDK matrix
+    requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]
+    depends_on: [CICD-04, CICD-08, CICD-13, CICD-01]
+    evidence: [tools/ci/macos/test_host.py, tools/ci/macos/test_workflow.py, tools/build/webrtc_macos/test_contract.py, tools/build/webrtc_macos/test_extract.py, tools/build/webrtc_macos/test_execution.py, tools/build/webrtc_macos/test_assets.py, tools/build/webrtc_macos/test_plan.py, tools/build/webrtc_macos/publish.test.mjs, docs/ci/macos-sdk.md, evidence/ci/macos-sdk-2026-10-19.md]
   - id: CICD-10
     title: Private dependency-scoped bounded Buildx cache with mandatory image validation and stage timings
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02, REQ-SECURITY-01]

@@ -54,6 +54,10 @@ jobs:
         run: python3 -m unittest tools.release.desktop_updates.test_signing tools.verify.action_pins.test_release_boundary
       - name: Test stable required gate success and failure semantics
         run: python3 -m unittest tools.ci.required_gate.test_validation tools.ci.required_gate.test_run
+      - name: Verify fast macOS metadata, pinned SDK ABI and immutable publisher
+        run: |
+          python -m tools.ci.macos.fast
+          node --test tools/build/webrtc_macos/publish.test.mjs
       - name: Verify risk routing, real-runtime evidence and cleanup guards
         run: python -m unittest tools.ci.actual_acceptance.test_plan tools.ci.actual_acceptance.test_session tools.ci.actual_acceptance.test_validation tools.ci.actual_acceptance.test_fan_in tools.ci.actual_acceptance.test_manual_inputs tools.ci.actual_acceptance.test_workflow tools.ci.actual_acceptance.test_run tools.qa.compatible_rollback.test_receipt_projection
       - name: Verify manual operator capabilities, approvals and audit privacy

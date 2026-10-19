@@ -2,16 +2,47 @@ name: Patched macOS WebRTC SDK
 
 on:
   workflow_dispatch:
+    inputs:
+      publish_sdk:
+        description: Explicitly publish a new immutable SDK version after both native candidates pass
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 concurrency:
   group: boohtacord-webrtc-sdk-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Reject immutable version reuse before expensive SDK work
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SDK_PUBLISH_REQUESTED: ${{ inputs.publish_sdk && 'true' || 'false' }}
+        run: python -m tools.build.webrtc_macos.plan
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: sdk-plan-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/sdk-plan.json
+          if-no-files-found: error
+          retention-days: 30
+
   build:
+    needs: plan
     strategy:
       fail-fast: false
       matrix:
@@ -22,6 +53,8 @@ jobs:
             runner: macos-26-intel
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 180
+    env:
+      SDK_ARCH: ${{ matrix.arch }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -31,19 +64,71 @@ jobs:
           python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
       - name: Verify selected Python interpreter
         run: python -m tools.ci.toolchains.runtime python
-      - name: Build pinned SDK and focused native routing regressions
-        run: python3 -m tools.build.webrtc_macos.run build --arch '${{ matrix.arch }}' --workspace .out/webrtc/sdk --output .out/sdk-assets
+      - name: Verify exact Apple toolchain and native hardware architecture
+        run: python -m tools.ci.macos.host --arch "$SDK_ARCH"
+      - name: Build pinned SDK and execute both real native routing regressions
+        run: python3 -m tools.build.webrtc_macos.run build --arch "$SDK_ARCH" --workspace .out/webrtc/sdk --output .out/sdk-assets
+      - name: Remove only the exact owned SDK workspace
+        if: always()
+        run: python -m tools.build.webrtc_macos.execution --arch "$SDK_ARCH"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
         with:
-          name: sdk-${{ matrix.arch }}
+          name: sdk-${{ matrix.arch }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .out/sdk-assets/
           if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: sdk-host-${{ matrix.arch }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/macos-host.json
+          if-no-files-found: error
+          retention-days: 30
 
-  publish:
-    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
-    environment: production
+  assemble:
     needs: build
     runs-on: macos-26
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Require matching Apple assembly toolchain
+        run: python -m tools.ci.macos.host --arch arm64
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: sdk-arm64-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/sdk-inputs/arm64
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: sdk-x64-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/sdk-inputs/x64
+      - name: Assemble only matching native source recipe ABI tests and cleanup receipts
+        run: python3 -m tools.build.webrtc_macos.run assemble --inputs .out/sdk-inputs --output .out/sdk-release
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: sdk-universal-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .out/sdk-release/WebRTC-macos.xcframework.zip
+            .out/sdk-release/sdk-manifest.json
+            .out/sdk-release/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+
+  publish:
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch' && inputs.publish_sdk
+    environment: production
+    needs: assemble
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
@@ -55,36 +140,35 @@ jobs:
           python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
       - name: Verify selected Python interpreter
         run: python -m tools.ci.toolchains.runtime python
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .node-version
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          name: sdk-arm64
-          path: .out/sdk-inputs/arm64
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
-        with:
-          name: sdk-x64
-          path: .out/sdk-inputs/x64
-      - name: Assemble the matching universal macOS XCFramework
-        run: python3 -m tools.build.webrtc_macos.run assemble --inputs .out/sdk-inputs --output .out/sdk-release
-      - name: Publish new immutable SDK assets
+          name: sdk-universal-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/sdk-publish
+      - name: Reverify source recipe complete native matrix and SDK bytes before publication
+        run: python -m tools.build.webrtc_macos.assets
+      - name: Test immutable SDK publication boundaries
+        run: node --test tools/build/webrtc_macos/publish.test.mjs
+      - name: Publish verified new immutable SDK through an unpublished draft
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          SDK_PUBLISH_REQUESTED: ${{ inputs.publish_sdk && 'true' || 'false' }}
         with:
           script: |
-            const fs = require('fs');
-            const recipe = JSON.parse(fs.readFileSync('tools/build/webrtc_macos/recipe.json'));
-            const {owner, repo} = context.repo;
-            try {
-              await github.rest.repos.getReleaseByTag({owner, repo, tag: recipe.version});
-              throw new Error('SDK version already exists; choose a new immutable version.');
-            } catch (error) {
-              if (error.status !== 404) throw error;
-            }
-            const {data: release} = await github.rest.repos.createRelease({
-              owner, repo, tag_name: recipe.version, target_commitish: context.sha,
-              name: 'WebRTC m150 — BOOHTACORD custom screen-audio routing r1',
-              make_latest: 'false',
-              body: 'Universal macOS SDK from pinned m150 source with custom audio routing. Contains focused native route regressions and checksums. Physical playback acceptance is recorded separately in #335. Existing upstream assets are unchanged.'
-            });
-            for (const name of ['WebRTC-macos.xcframework.zip', 'sdk-manifest.json', 'SHA256SUMS']) {
-              await github.rest.repos.uploadReleaseAsset({owner, repo, release_id: release.id,
-                name, data: fs.readFileSync('.out/sdk-release/' + name)});
-            }
+            const fs = require('node:fs');
+            const {pathToFileURL} = require('node:url');
+            const {publishSdk} = await import(pathToFileURL(process.cwd()+'/tools/build/webrtc_macos/publish.mjs').href);
+            const contract = JSON.parse(fs.readFileSync('.out/sdk-contract.json','utf8'));
+            fs.writeFileSync('.out/sdk-publication.json',JSON.stringify({status:'FAIL',builder_revision:context.sha}));
+            const result = await publishSdk({github,context,authorized:process.env.SDK_PUBLISH_REQUESTED,contract,
+              directory:process.cwd()+'/.out/sdk-publish',execution:{run_id:process.env.GITHUB_RUN_ID,run_attempt:process.env.GITHUB_RUN_ATTEMPT}});
+            fs.writeFileSync('.out/sdk-publication.json',JSON.stringify(result)+'\n');
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: sdk-publication-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/sdk-publication.json
+          if-no-files-found: error
+          retention-days: 30
