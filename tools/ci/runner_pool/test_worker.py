@@ -9,6 +9,15 @@ from . import worker
 
 
 class WorkerTests(unittest.TestCase):
+    def test_cpu_sets_partition_the_eight_cpu_host_without_overlap(self):
+        allocations = []
+        for slot in ('1', '2', '3', '4'):
+            start, end = map(int, worker.CPUSETS[slot].split('-'))
+            allocations.append(set(range(start, end + 1)))
+        self.assertEqual([3, 3, 1, 1], list(map(len, allocations)))
+        self.assertEqual(set(range(8)), set().union(*allocations))
+        self.assertEqual(8, sum(map(len, allocations)))
+
     def test_idle_retirement_never_treats_busy_or_failed_api_as_success(self):
         with patch.object(worker.subprocess, 'run', return_value=SimpleNamespace(returncode=1)) as run:
             self.assertFalse(worker.retire_idle(42))
@@ -93,6 +102,7 @@ class WorkerTests(unittest.TestCase):
             worker.cycle('2')
             self.assertFalse(list(Path(temporary).iterdir()))
         self.assertIn(['lxc', 'delete', '--force', 'boohtacord-ci-2'], calls)
+        self.assertIn('limits.cpu=3-5', next(row for row in calls if row[:2] == ['lxc', 'copy']))
         self.assertIn(['gh', 'api', '--method', 'DELETE', worker.API + '/44'], calls)
 
     def test_metadata_slot_cannot_receive_a_heavy_linux_job(self):
@@ -110,7 +120,7 @@ class WorkerTests(unittest.TestCase):
             with self.assertRaises(RuntimeError): worker.cycle('3')
         self.assertEqual(['self-hosted', 'linux', 'x64', 'boohtacord-ci-meta'], payloads[0]['labels'])
         self.assertIn('limits.memory=512MiB', clones[0])
-        self.assertIn('limits.cpu=1', clones[0])
+        self.assertIn('limits.cpu=6-6', clones[0])
 
     def test_rejects_an_unknown_slot_before_creating_resources(self):
         with patch.object(worker, 'command') as command:

@@ -15,6 +15,7 @@ API = 'repos/Egkurilov/BOOHTACORD/actions/runners'
 BASE = 'boohtacord-ci-base'
 RUNTIME = Path(os.environ.get('RUNTIME_DIRECTORY', '/run/boohtacord-ci'))
 LABELS = ['self-hosted', 'linux', 'x64', 'boohtacord-ci-ephemeral']
+CPUSETS = {'1': '0-2', '2': '3-5', '3': '6-6', '4': '7-7'}
 
 
 class OperationError(RuntimeError):
@@ -112,10 +113,10 @@ def cycle(slot):
     identity = None
     token_path = None
     try:
-        clone = ['lxc', 'copy', BASE, guest, '--ephemeral']
+        clone = ['lxc', 'copy', BASE, guest, '--ephemeral', '--config', 'limits.cpu=' + CPUSETS[slot]]
         metadata = slot in ('3', '4')
         if metadata:
-            clone += ['--config', 'limits.cpu=1', '--config', 'limits.memory=512MiB']
+            clone += ['--config', 'limits.memory=512MiB']
         command(clone)
         command(['lxc', 'start', guest])
         wait_for_boot(guest)

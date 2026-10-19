@@ -2,7 +2,7 @@
   "status": "IN_PROGRESS",
   "scope": "CICD-12 runner isolation and scheduling; dependency CICD-01 metadata baseline",
   "source_commit": "768b81e3",
-  "observed_at_utc": "2026-10-19T22:26:59.225890+00:00",
+  "observed_at_utc": "2026-10-19T22:43:02.005836+00:00",
   "sample": "20 most recent workflow runs; all returned jobs, bounded first page up to 100 per run",
   "timing_limitations": "Execution seconds only for completed jobs; overlapping runs, not host CPU utilization or a complete historical capacity estimate",
   "job_labels": {
@@ -96,7 +96,7 @@
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
   "local_checks": "406 CI/policy/native-contract/promotion/next-diagnostics unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
-  "rollout_gate": "Three-vCPU pool probes and earlier component/cache/delivery acceptance PASS. Full required Linux CI pending after deterministic ACK-integrity unit fixture; canonical local Python regressions PASS.",
+  "rollout_gate": "Linux contracts including the canonical Python suite and native wrappers PASS on 6c727222. Fixed-affinity pool probes and full final required CI pending. Canonical local Python regressions PASS.",
   "resource_limits": {
     "heavy_slots": 2,
     "heavy_cpu_each": 3,
@@ -107,7 +107,13 @@
     "ci_btrfs_pool_gib": 20,
     "guest_root_limit_gib": 16,
     "minimum_host_disk_reserve_gib": 5,
-    "maximum_cpu_placements": 8
+    "maximum_cpu_placements": 8,
+    "cpu_sets": {
+      "1": "0-2",
+      "2": "3-5",
+      "3": "6-6",
+      "4": "7-7"
+    }
   },
   "pool_acceptance": {
     "status": "PASS",
@@ -124,7 +130,7 @@
   },
   "isolation_limit": "Unprivileged UID-isolated containers share the host kernel; no hardware VM isolation or media capacity claim.",
   "controller_sha256": {
-    "worker.py": "90d7d62bcbba132e68bebb18d787ff4c7962bf60367cfea687a27d3509b7b895",
+    "worker.py": "56bf1a3927a21a3bf0283e3af66df779116ff7ab70a31d8b315ed7bf3d9807e4",
     "guest-runner.service": "160a3ba76c3aeea41e8368e94c5c5dd8019b87d18413ea05809b42e90ac43d62",
     "start-runner.sh": "5635bd5b5a497c0bed7a28c1fca193cfa80729179cec69eef2c654da46d7f37f"
   },
@@ -146,8 +152,8 @@
   "local_full_python": {
     "status": "PASS",
     "runner": "tools.verify.python_tests.run",
-    "tests": 1075,
-    "seconds": 51.779,
+    "tests": 1076,
+    "seconds": 51.021,
     "platform": "macOS arm64",
     "python": "3.14.8",
     "exit_code": 0,
@@ -162,5 +168,20 @@
     "reason": "A background test thread could read the old nonce only after the next command was published, causing an unexpected timeout and late access to a removed temporary directory. The stale/failed-ACK unit case now uses a controlled clock and injects the matching failed response after command publication. Real HTTP and nonce round-trip checks remain separate.",
     "focused_tests": 10,
     "focused_status": "PASS"
+  },
+  "affinity_stabilization": {
+    "status": "IN_PROGRESS",
+    "observed_assignments_for_one_live_guest": [
+      "4-6",
+      "1-3",
+      "0-1,7"
+    ],
+    "sampled_cpu_counts": [
+      3
+    ],
+    "previous_probe_failure_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39333745399/job/118337972451",
+    "previous_probe_failure_cause": "UNVERIFIED: the old pre-SQL resource assertion emitted no measured values. CPU remapping was observed, but an out-of-bound count was not captured.",
+    "configuration_parser_check": "PASS: LXD accepted explicit single-core ranges 6-6 and 7-7 in a temporary profile, which was then deleted.",
+    "changes": "Pin all four CPU sets; preserve strict memory/CPU/freshness assertions and emit their non-sensitive numeric diagnostics."
   }
 }

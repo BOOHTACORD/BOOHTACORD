@@ -15,6 +15,9 @@ placements. This is a bounded concurrency configuration on one shared host,
 not a capacity or performance claim. Existing DB/Web runners are preserved;
 the signing builder keeps its dedicated `boohtacord-builder` label and trusted
 source/environment gates. The DB runner's shared database label is not copied.
+CPU affinity is fixed per slot: 0–2, 3–5, 6 and 7 respectively. The explicit
+single-core ranges `6-6` and `7-7` avoid LXD interpreting a bare integer as a
+CPU count. Fixed sets keep a guest's CPU view stable while neighbours recycle.
 
 ## Lifecycle and credentials
 

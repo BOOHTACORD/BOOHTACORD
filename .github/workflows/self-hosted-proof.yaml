@@ -41,6 +41,7 @@ jobs:
         env:
           PGPASSWORD: test-only-password
         run: |
+          printf 'memory_max=%s cpu_count=%s fresh_marker_present=%s\n' "$(cat /sys/fs/cgroup/memory.max)" "$(nproc)" "$(test -e /home/runner/previous-job-marker && echo yes || echo no)"
           test "$RUNNER_ENVIRONMENT" = self-hosted
           test "$BOOHTACORD_EPHEMERAL_GUEST" = true
           test "$(cat /sys/fs/cgroup/memory.max)" = 4294967296
@@ -70,6 +71,7 @@ jobs:
         run: python -m tools.ci.toolchains.runtime python
       - name: Verify bounded fresh metadata guest
         run: |
+          printf 'memory_max=%s cpu_count=%s fresh_marker_present=%s\n' "$(cat /sys/fs/cgroup/memory.max)" "$(nproc)" "$(test -e /home/runner/previous-job-marker && echo yes || echo no)"
           test "$RUNNER_ENVIRONMENT" = self-hosted
           test "$BOOHTACORD_EPHEMERAL_GUEST" = true
           test "$(cat /sys/fs/cgroup/memory.max)" = 536870912
