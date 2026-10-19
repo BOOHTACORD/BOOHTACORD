@@ -1,7 +1,7 @@
 name: Master quality release-mode proof
 on:
-  push:
-    branches: [codex/issue393-release-mode-proof]
+  pull_request:
+    branches: [codex/issue393-master-receipts]
 permissions:
   contents: read
   actions: read
