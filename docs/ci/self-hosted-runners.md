@@ -28,8 +28,10 @@ PR code. No registration or account token is stored in this repository.
 Each cycle clones the stopped clean `boohtacord-ci-base`, registers a unique
 one-job runner, starts it, then destroys the guest and removes that runner
 registration. Failed execution and graceful shutdown also attempt cleanup.
-`--disable-stdin --mode non-interactive` keeps the LXD exec session independent
-of the controller's closed stdin. A failed controller retries after 30 seconds.
+The agent runs as its own guest systemd service, with the runner user's Docker
+group and explicit public SDK environment. Short LXD exec calls only inspect
+that service; no long-lived exec connection owns the runner process. Healthy
+cycles create a new guest after two seconds; a failed controller retries after 30 seconds.
 Host free disk below 5 GiB or CI pool free space below 2 GiB blocks another
 cycle. A service must not be changed to persistent workspace reuse.
 

@@ -40,7 +40,7 @@ jobs:
         run: python -m pip install -r tools/requirements-ci.txt -r tools/verify/openapi_parity/requirements.txt
       - name: Verify reviewed Actions pins, least privilege and source trust
         run: |
-          python3 -m unittest tools.verify.action_pins.test_policy tools.verify.action_pins.test_local tools.verify.action_pins.test_trust tools.verify.action_pins.test_lint
+          python3 -m unittest tools.verify.action_pins.test_policy tools.verify.action_pins.test_local tools.verify.action_pins.test_trust tools.verify.action_pins.test_lint tools.ci.runner_pool.test_worker tools.ci.runner_pool.test_routing
           python3 -m tools.verify.action_pins.run
           python3 -m tools.verify.action_pins.lint
       - name: Verify SDK cache invalidation and unconditional checks
