@@ -16,5 +16,6 @@ temporary="$(mktemp -d /opt/voice-platform-installer.XXXXXX)"
 trap 'rm -rf "$temporary"' EXIT
 tar -xzf "$driver" -C "$temporary" --no-same-owner
 cd "$temporary"
-python3 -m tools.release.install.run "$bundle" "$revision" "$bundle_sha" --expected-current-revision "$current" </dev/null
+source tools/release/install/invocation.sh
+run_received_installer "$bundle" "$revision" "$bundle_sha" "$current" "$temporary"
 # Keep only this attempt's transport until a separate fresh readback acknowledges it.
