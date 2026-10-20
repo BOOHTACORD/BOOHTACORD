@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Reviewed retained SDK component inputs only",
+  "reviewed_source": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "sdk": {
+    "original_builder_source": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+    "original_run_id": "39319895246",
+    "unchanged_paths": [
+      ".github/workflows/webrtc-macos-sdk.yaml",
+      ".github/workflows/flutter-macos.yaml",
+      ".github/workflows/macos-release.yaml",
+      "tools/build/webrtc_macos",
+      "tools/ci/macos",
+      "tools/toolchains.json",
+      "clients/flutter/packages/flutter_webrtc/third_party/patches",
+      "tools/ci/native",
+      "tools/ci/toolchains",
+      "tools/requirements-ci.txt",
+      ".node-version",
+      ".github/actions"
+    ],
+    "original_evidence": {
+      "path": "evidence/ci/macos-sdk-final-2026-10-20.json",
+      "sha256": "4ea18896a93409d634ea15366cfeb6eb56d01721d6e361aee72fb33d997155cb"
+    }
+  },
+  "schema_compatible_rollback": {
+    "status": "NOT_ACCEPTED_FOR_CURRENT_SOURCE",
+    "runtime_inputs_equal": false,
+    "reason": "Existing strict runtime-input guard rejects reusing the retained schema rollback source after Web fixture/config changes; fresh qualified evidence required"
+  },
+  "limits": [
+    "Original SDK execution source/run are retained; this assessment does not claim a new native execution",
+    "No SDK publication, native application smoke or physical/media-capacity acceptance is asserted"
+  ]
+}
