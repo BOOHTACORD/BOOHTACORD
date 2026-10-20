@@ -57,10 +57,13 @@ class VoiceController extends VoiceState {
   }) : audioOutputDeviceSetter =
            audioOutputDeviceSetter ??
            ((room, device) => room.setAudioOutputDevice(device)),
-       microphoneForeground = microphoneForeground ?? MicrophoneForegroundSession(),
+       microphoneForeground =
+           microphoneForeground ?? MicrophoneForegroundSession(),
        super(
          createRoom: roomFactory ?? ((options) => Room(roomOptions: options)),
-       ) { this.microphoneForeground.onStopped = backgroundMicrophoneStopped; }
+       ) {
+    this.microphoneForeground.onStopped = backgroundMicrophoneStopped;
+  }
   final MicrophoneForegroundSession microphoneForeground;
   final Future<void> Function(Room, MediaDevice) audioOutputDeviceSetter;
   final Map<String, RemoteTrackPublication> screenThumbnailPublications = {};
@@ -73,6 +76,7 @@ class VoiceController extends VoiceState {
     disconnect.reset();
     disposed = true;
     operationRevision++;
+    unawaited(screenViewerPresence.clear());
     clearScreenPreviewReceivers();
     remoteScreenViewerRecoveryTimer?.cancel();
     remoteScreenViewerRecoveryTimer = null;

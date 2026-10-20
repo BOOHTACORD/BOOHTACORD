@@ -18,6 +18,8 @@ import '../audio_diagnostics/model.dart';
 import '../volumes/telemetry.dart';
 import '../disconnect_notice/state.dart';
 import '../screen_viewer/selection_state.dart';
+import '../screen_viewer_presence/controller.dart';
+
 abstract class VoiceState extends ChangeNotifier
     with VoiceScreenViewerSelectionState {
   VoiceState(
@@ -39,7 +41,13 @@ abstract class VoiceState extends ChangeNotifier
   final String Function(Object) formatError;
   final Room Function(RoomOptions) createRoom;
   final disconnect = VoiceDisconnectState();
-  set error(String? value) => reportError(disconnect.notice?.source == 'server' ? disconnect.notice!.message : disconnect.notice?.source == 'local' ? null : value);
+  set error(String? value) => reportError(
+    disconnect.notice?.source == 'server'
+        ? disconnect.notice!.message
+        : disconnect.notice?.source == 'local'
+        ? null
+        : value,
+  );
   bool disposed = false;
   int operationRevision = 0;
   int microphoneRevision = 0;
@@ -93,6 +101,7 @@ abstract class VoiceState extends ChangeNotifier
       unawaited(screen.previewLeaseChanged(_leaseId = value));
     }
   }
+
   bool listenerOnly = false;
   bool voiceAdmissionPending = false;
   final Map<String, String> revokedVoiceLeasesDuringJoin = {};
@@ -119,4 +128,30 @@ abstract class VoiceState extends ChangeNotifier
   String? get screenShareError => screen.error;
   set screenShareError(String? value) => screen.error = value;
   Map<String, Uint8List> get screenThumbnails => screen.thumbnails;
+
+  List<String> screenViewerAccountIds = const [];
+  List<String> ownerScreenViewerAccountIds = const [];
+
+  late final ScreenViewerPresenceController screenViewerPresence =
+      ScreenViewerPresenceController(
+        togglePresence: (viewerLeaseId, ownerLeaseId, trackSid, watching) =>
+            watching
+            ? api.setScreenViewerPresence(viewerLeaseId, ownerLeaseId, trackSid)
+            : api.stopScreenViewerPresence(
+                viewerLeaseId,
+                ownerLeaseId,
+                trackSid,
+              ),
+        clearOwnerAudience: api.clearScreenViewerAudience,
+        readOwnerAudience: api.readScreenViewerAccounts,
+        readViewerAudience: api.readScreenViewerAccountsForViewer,
+        onViewerAudienceChanged: (accountIds) {
+          screenViewerAccountIds = accountIds;
+          notifyListeners();
+        },
+        onOwnerAudienceChanged: (accountIds) {
+          ownerScreenViewerAccountIds = accountIds;
+          notifyListeners();
+        },
+      );
 }
