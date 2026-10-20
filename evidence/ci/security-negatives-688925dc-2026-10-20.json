@@ -1,0 +1,424 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Focused security/provenance regression checks; test fixtures, not production fault acceptance",
+  "reviewed_candidate": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "actual_test_checkout": "8da14d5a77ab1676e4631ed49228b089dffac93a",
+  "api_head": "89e1e30dbcd3707cf59839c6108e15c7656ac194",
+  "run_id": 39375469807,
+  "run_attempt": 1,
+  "job": {
+    "id": 118472514941,
+    "name": "contracts / contracts",
+    "status": "completed",
+    "conclusion": "success",
+    "run_id": 39375469807,
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify selected Python interpreter",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Prepare public Go SDK and dependency cache inputs",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Test owned browser startup and failure diagnostic privacy",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Test shared immutable native release publication",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Test bounded restricted-network evidence readiness",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install pinned CI verification dependencies",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify reviewed Actions pins, least privilege and source trust",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify SDK cache invalidation and unconditional checks",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify generated tracing contract bindings",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify publisher signatures and desktop promotion guards",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Test stable required gate success and failure semantics",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify migration control matrix, evidence readiness and configuration rollback safety",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify failure triage privacy, source binding and bounded infra-only retry",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify fast macOS metadata, pinned SDK ABI and immutable publisher",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify risk routing, real-runtime evidence and cleanup guards",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify manual operator capabilities, approvals and audit privacy",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify unified fail-closed CI and release routing",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Test read-only CI baseline collection and statistics",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify trusted server builder source and TCP readiness",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Reject stale or rewritten Windows promotion intents in the actual test merge",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify API and requirement traceability",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Validate Compose interpolation without starting services",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify private OTLP egress wiring",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify trace dashboard correlation",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify media QoE dashboard and rule semantics",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify roster dashboard and sustained alert semantics",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify paired screen acceptance evidence gate",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Reject implicit or latest Compose images",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Test proxy network deployment guard",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Test all negative release boundaries in ordinary CI",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify all deployment guard failures before producing a release receipt",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "Retain source-bound gate receipt",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "original_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39375469807/job/118472514941",
+  "original_log_witness": {
+    "tests": 1111,
+    "skipped": 18,
+    "summary_line": "Ran 1111 tests in 45.068s",
+    "result_line": "OK (skipped=18)",
+    "passed": 1093
+  },
+  "log_handling": "Original job log decoded in tool memory; only allowlisted summary retained, no raw logs saved or republished",
+  "source_hashes": {
+    "tools/ci/required_gate/test_validation.py": "88ce501b90f5850491e330103df3fb30c03cc4f1927788059283abfab1eb1299",
+    "tools/release/bundle/test_signature.py": "c940e12b1d83735ecafdef9b600e62ea2136df4ffcf281442c8295e9750250d1",
+    "tools/release/delivery/test_artifact_zip.py": "731ae44b574b8aa7a78810da35d76a98bfe2456f63fc1732843f41bfdc67c5ea",
+    "tools/release/delivery/test_authority.py": "4debce29413337f5418876b8938d85ede01453be501c91cf18733e4d32f7acd8",
+    "tools/release/delivery/test_payload.py": "2d4d1b572c2ab2327a268cc10e8c432886a430df1ead3520e3ce788ec47ae545",
+    "tools/release/delivery/test_producer_artifacts.py": "f2393f0871f24d8ddcf86a1ee7ecadbe0694f5d92e167b6818be441afd42b70e",
+    "tools/release/delivery/test_producer_preflight.py": "82e27490a2d0ac434a737ffc50cf730eb8c4d29e7c2c75743a5fe4edee4054d9",
+    "tools/release/delivery/test_provenance.py": "b75ea0f9aceb965b75b905250e8e959e142aeb57d13f854e76f2c4dfc3fa4ceb",
+    "tools/release/delivery/test_queue_boundaries.py": "78a853235d55da3f45811a9be9319a9e373088901479baa15d4ba037ddefd151",
+    "tools/release/delivery/test_readback_contract.py": "605a9cf269b10c2acd516ff0744c968a7f3c2dd08b731ff52bdf1e8c257bc815",
+    "tools/release/delivery/test_receipt.py": "71246ef81f5101f4ed211041c33bf5e6221ee4ebcabca9f40bd3e21e6683fa27",
+    ".github/workflows/ci-contracts.yaml": "cd690a1c36b543a602acfd849dfe91caa06c01cae0653c52369c9305a454fb78",
+    "tools/ci/receipts/run.py": "2d024bb11321e771520fc956f2373c8f9b5cdb19baf99a04ad5328c2cf77cc52",
+    "tools/ci/native/contracts.py": "3cd7cefdbaacbe181a60d5deef41009c33a0ded48f5b77599740c4be64d03096",
+    "tools/verify/python_tests/run.py": "78aeff50a0701cd972ebbacad0e9d6bd9743bfb7cb2c5522958568ba0543cb42",
+    "tools/ci/release_guards/test-negative-boundaries.sh": "7ec42463d711b55717ac1afe81f3d6bdb2791d169eb3e9ad86aa23695c997871",
+    "tools/release/rollout/deploy-images.test.sh": "4f9e834017d5256489d63c47425fc1eb37b3a340594f1ec50b3e3a19edfbc4ef",
+    "tools/release/delivery/provenance.py": "1d42f9b684a5c416d24d57fdbf1250c859b23732b25fb828972c473d29ea1837",
+    "tools/release/delivery/producer_artifacts.py": "6db472acd237c42ef6704e9f401d82c59aef44b2e60988454ac6a200a785e6a7",
+    "tools/release/delivery/preflight.py": "e841b7a07609e311edd33cdf6827bc31f2bcf5361d68642a6ab37a2acce9f6eb",
+    "tools/release/delivery/artifact_zip.py": "5874e722f0a53f4bc2dd9164df30be3bfbf5961d23a42dc1abdae051cc160654",
+    "tools/release/delivery/payload.py": "7cfc856482eab87596d19f2450026ef0761f2ee69a41108b579edbffb84591a1",
+    "tools/release/delivery/authority.py": "364f4c7502c119f6047633d108a6db695c772407ba666d8a06cd47f725fb7a10",
+    "tools/release/delivery/readback_contract.py": "a78fa631795396484f552b5c58e460c9a1c78e6cca3612677d0eaae82eb09153",
+    "tools/release/delivery/receipt.py": "78d69ad1f92f0ff43fd4406a23882ffd05d5a3ce17183b6f0dc16962a35c4d1f",
+    "tools/release/bundle/signature.py": "262f990410ed2d0b5bb9c2aa9de5102a31f7a9e46eea47c70e0d603d54214f37",
+    "tools/verify/workflows/delivery.py": "ab0932cbcc387dbecbd86de8469cc7d20a21f97977cdd4d49367afa58c4bcea1"
+  },
+  "required_focused_categories": {
+    "producer": {
+      "modules": [
+        "tools/release/delivery/test_provenance.py",
+        "tools/release/delivery/test_producer_artifacts.py",
+        "tools/release/delivery/test_producer_preflight.py"
+      ],
+      "test_methods": {
+        "tools/release/delivery/test_provenance.py": [
+          "ArtifactProvenanceTests.test_successful_master_build",
+          "ArtifactProvenanceTests.test_pr_fork_wrong_producer_or_failed_run_cannot_become_a_release"
+        ],
+        "tools/release/delivery/test_producer_artifacts.py": [
+          "ProducerArtifactTests.test_builder_metrics_do_not_enter_the_reserved_server_bundle_namespace",
+          "ProducerArtifactTests.test_exact_current_execution_name_and_ownership_are_required",
+          "ProducerArtifactTests.test_old_attempt_is_retained_but_cannot_replace_current_attempt",
+          "ProducerArtifactTests.test_legacy_signed_bundle_name_remains_readable",
+          "ProducerArtifactTests.test_same_sha_from_foreign_run_repository_branch_or_source_fails",
+          "ProducerArtifactTests.test_failed_incomplete_fork_pr_or_wrong_workflow_producer_is_rejected",
+          "ProducerArtifactTests.test_expired_unmeasured_or_invalid_metadata_is_not_a_bundle",
+          "ProducerArtifactTests.test_duplicate_truncated_missing_mixed_or_future_attempt_artifacts_fail",
+          "ProducerArtifactTests.test_boolean_or_nonpositive_run_attempt_is_not_an_execution_identity"
+        ],
+        "tools/release/delivery/test_producer_preflight.py": [
+          "ProducerPreflightTests.test_exact_source_current_attempt_artifact_is_the_only_download_output",
+          "ProducerPreflightTests.test_no_output_for_missing_failed_foreign_stale_or_no_release_evidence",
+          "ProducerPreflightTests.test_rerun_started_during_preflight_invalidates_output",
+          "ProducerPreflightTests.test_existing_trusted_legacy_bundle_keeps_exact_original_name"
+        ]
+      },
+      "none_skipped": "No skip decorators or skipTest calls in these source modules; all are collected by the unconditional tools Python runner"
+    },
+    "artifact": {
+      "modules": [
+        "tools/release/delivery/test_artifact_zip.py",
+        "tools/release/delivery/test_payload.py"
+      ],
+      "test_methods": {
+        "tools/release/delivery/test_artifact_zip.py": [
+          "ExactDownloadedZipTests.test_actual_archive_hash_and_bytes_publish_exact_pair",
+          "ExactDownloadedZipTests.test_digest_size_or_source_mismatch_never_publishes_partial_output",
+          "ExactDownloadedZipTests.test_links_traversal_extras_wrong_checksum_or_existing_output_fail",
+          "ExactDownloadedZipTests.test_legacy_missing_digest_is_explicit_and_still_checks_pair"
+        ],
+        "tools/release/delivery/test_payload.py": [
+          "DeliveryPayloadTests.test_exact_two_source_files_are_measured_without_an_install_verdict",
+          "DeliveryPayloadTests.test_tampered_payload_and_foreign_source_fail",
+          "DeliveryPayloadTests.test_checksum_must_be_one_canonical_line_for_the_actual_source_filename",
+          "DeliveryPayloadTests.test_extra_file_or_linked_payload_is_rejected",
+          "DeliveryPayloadTests.test_linked_parent_and_empty_file_are_not_accepted"
+        ]
+      },
+      "none_skipped": "No skip decorators or skipTest calls in these source modules; all are collected by the unconditional tools Python runner"
+    },
+    "signature": {
+      "modules": [
+        "tools/release/bundle/test_signature.py"
+      ],
+      "test_methods": {
+        "tools/release/bundle/test_signature.py": [
+          "SignatureTests.test_trusted_key_accepts_signature_and_rejects_tampering"
+        ]
+      },
+      "none_skipped": "No skip decorators or skipTest calls in these source modules; all are collected by the unconditional tools Python runner"
+    },
+    "health": {
+      "modules": [
+        "tools/release/delivery/test_readback_contract.py",
+        "tools/release/delivery/test_receipt.py"
+      ],
+      "test_methods": {
+        "tools/release/delivery/test_readback_contract.py": [
+          "TransferAcknowledgementTests.test_exact_fresh_receipt_is_the_only_acknowledgement",
+          "TransferAcknowledgementTests.test_stale_foreign_failed_or_incomplete_receipt_cannot_acknowledge_install",
+          "TransferAcknowledgementTests.test_unexpected_fields_duplicate_keys_or_private_response_are_not_republished",
+          "TransferAcknowledgementTests.test_observed_or_explicit_legacy_rollout_intervals_are_validated"
+        ],
+        "tools/release/delivery/test_receipt.py": [
+          "DeliveryReceiptTests.test_only_complete_successful_steps_and_fresh_readback_are_pass",
+          "DeliveryReceiptTests.test_skipped_failed_cancelled_missing_or_incomplete_steps_never_become_pass",
+          "DeliveryReceiptTests.test_private_extra_fields_errors_or_malformed_rows_are_not_republished",
+          "DeliveryReceiptTests.test_valid_failed_phase_is_retained_without_claiming_remote_process_stopped",
+          "DeliveryReceiptTests.test_public_producer_authority_rejects_extra_private_fields_or_loose_names"
+        ]
+      },
+      "none_skipped": "No skip decorators or skipTest calls in these source modules; all are collected by the unconditional tools Python runner"
+    },
+    "cancellation_race": {
+      "modules": [
+        "tools/ci/required_gate/test_validation.py",
+        "tools/release/delivery/test_authority.py",
+        "tools/release/delivery/test_queue_boundaries.py",
+        "tools/release/delivery/test_producer_preflight.py"
+      ],
+      "test_methods": {
+        "tools/ci/required_gate/test_validation.py": [
+          "RequiredGateTests.test_docs_backend_web_and_unknown_success_matrices",
+          "RequiredGateTests.test_required_failure_cancel_skip_missing_never_pass",
+          "RequiredGateTests.test_expected_skip_is_accepted_but_routing_drift_is_rejected",
+          "RequiredGateTests.test_partial_invalid_stale_or_uncertain_selection_cannot_pass",
+          "RequiredGateTests.test_job_names_can_change_only_with_explicit_complete_unique_role_mapping"
+        ],
+        "tools/release/delivery/test_authority.py": [
+          "DownloadSnapshotTests.test_snapshot_is_complete_private_and_revalidated_before_payload",
+          "DownloadSnapshotTests.test_changed_producer_cannot_reach_payload_or_key_configuration",
+          "DownloadSnapshotTests.test_existing_linked_or_oversized_snapshot_is_not_accepted",
+          "DownloadSnapshotTests.test_failed_producer_creates_no_download_outputs"
+        ],
+        "tools/release/delivery/test_queue_boundaries.py": [
+          "ProductionQueueBoundaryTests.test_no_bundle_reader_cannot_replace_a_pending_production_writer",
+          "ProductionQueueBoundaryTests.test_all_existing_production_writers_keep_the_same_non_cancellable_lock",
+          "ProductionQueueBoundaryTests.test_workflow_policy_rejects_a_reader_joining_the_writer_queue",
+          "ProductionQueueBoundaryTests.test_workflow_policy_rejects_an_unlocked_or_cancellable_installer",
+          "ProductionQueueBoundaryTests.test_additional_production_job_cannot_escape_the_shared_writer_lock"
+        ],
+        "tools/release/delivery/test_producer_preflight.py": [
+          "ProducerPreflightTests.test_exact_source_current_attempt_artifact_is_the_only_download_output",
+          "ProducerPreflightTests.test_no_output_for_missing_failed_foreign_stale_or_no_release_evidence",
+          "ProducerPreflightTests.test_rerun_started_during_preflight_invalidates_output",
+          "ProducerPreflightTests.test_existing_trusted_legacy_bundle_keeps_exact_original_name"
+        ]
+      },
+      "none_skipped": "No skip decorators or skipTest calls in these source modules; all are collected by the unconditional tools Python runner"
+    }
+  },
+  "shell_fixtures": {
+    "count": 19,
+    "commands": [
+      "bash tools/ops/attachment_headroom/check-attachment-volume-headroom.test.sh",
+      "bash tools/ops/attachment_audit/audit-attachment-volume.test.sh",
+      "bash tools/qa/active_uploads/sample_active_uploads.test.sh",
+      "bash tools/release/preflight/preflight.test.sh",
+      "python3 tools/verify/oci/test_verify_oci.py",
+      "bash tools/verify/running_images/verify_running.test.sh",
+      "bash tools/release/rollout/deploy-images.test.sh",
+      "bash tools/release/rollout/deploy-images-volume-guard.test.sh",
+      "bash tools/release/rollout/deploy-images-rollback.test.sh",
+      "bash tools/qa/legacy_rollback/image_ref.test.sh",
+      "bash tools/qa/legacy_rollback/preflight.test.sh",
+      "bash tools/qa/legacy_rollback/rehearse.test.sh",
+      "bash tools/qa/legacy_rollback/workflow.test.sh",
+      "bash tools/release/legacy_install/deploy-local-images.test.sh",
+      "bash tools/release/delivery/transfer.test.sh",
+      "bash tools/release/legacy_resume/resume.test.sh",
+      "bash tools/ops/docker_storage/reclaim_old_images.test.sh",
+      "bash tools/ops/docker_storage/prune_build_cache.test.sh",
+      "bash tools/ops/docker_storage/reclaim_deploy_headroom.test.sh"
+    ],
+    "actual_step_success": true,
+    "health_failure_guard": "deploy-images.test.sh requires failed health to fail deployment and tests maintenance cleanup"
+  },
+  "source_equivalence": "Actual control484 adds only the independently verified inert tools/audio/voice_parity/qa401-routing-control.md over688925dc; all listed test/execution/validator sources are byte-identical. Original test source remains8da14d5. Broad server-release runtime guard is not bypassed.",
+  "limits": [
+    "Python suite ran1111 tests:1093 passed,18 skipped,zero failures/errors. The selected negative modules have no skip/expected-failure paths; skipped tests are not promoted to PASS.",
+    "Signature tampering uses a real ephemeral RSA key; artifact/provenance/health/concurrency failures use focused controlled fixtures. No current production install, SSH fault, schema rollback or signing-host boundary runtime is asserted.",
+    "No new test run, assertion retry or gate-policy change was made."
+  ]
+}

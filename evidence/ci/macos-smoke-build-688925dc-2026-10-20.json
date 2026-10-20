@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "status": "BUILD_PASS_RUNTIME_BLOCKED",
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "host": {
+    "system": "Darwin",
+    "os_version": "27.0.1",
+    "architecture": "arm64",
+    "xcode": "Xcode 27.1\nBuild version 27A9275",
+    "sdk": "27.0"
+  },
+  "app_path": ".out/epic382-acceptance/macos-smoke-688925d/source/clients/flutter/build/macos/Build/Products/Debug/BOOHTACORD QA382.app",
+  "bundle_id": "ru.boohtacord.qa382.smoke136faac2f0785188",
+  "native_version": "1.0.43",
+  "native_build": "78",
+  "binary_sha256": "33fabb5e6540e890b5197b50309b0f1a278733b14e43564e105b984e42894a96",
+  "framework_sha256": "d32d628fd65835c39fb6d01d1371805d34a7246a60799acc70e174b356c1429d",
+  "architecture": "arm64",
+  "signature": {
+    "Identifier": "ru.boohtacord.qa382.smoke136faac2f0785188",
+    "Format": "app bundle with Mach-O thin (arm64)",
+    "Signature": "adhoc",
+    "TeamIdentifier": "not set"
+  },
+  "deep_signature_verify": "PASS",
+  "qa_entrypoint_sha256": "61409c61a24e6661f7623962dd0b8d78491299390898c7647102bf0f99b65604",
+  "tracked_source_files_verified": 5235,
+  "tracked_source_differences": [
+    "clients/flutter/macos/Runner/Configs/AppInfo.xcconfig"
+  ],
+  "source_difference_scope": "Reviewed QA bundle identifier/product name in AppInfo.xcconfig only; other differences, if any, require review before runtime acceptance",
+  "actual_runtime": false,
+  "native_process_verified": false,
+  "runtime": "BLOCKED: Computer Use reported locked Mac; no unlock or Keychain/password question requested",
+  "scope": "Local macOS27/Xcode27.1 debug artifact only; not hosted macos26 pinned release candidate, not native smoke PASS",
+  "mocks": "NOT_RUN; existing entry delegates to actual native storage in separate namespace, no in-memory adapter",
+  "credentials_embedded": false,
+  "stack_started": false,
+  "approval_bypassed": false,
+  "build_logs_sha256": {
+    "dependencies.log": "56f76373e247828c78e197020e0383e94697f43dab4db6bc8abd6975b68567a0",
+    "native-debug-build.log": "7dac1073090a1aeb78715fcb66cadf9eac5ea187cea0c402bde8511ba633b3b6"
+  },
+  "cleanup": {
+    "backend_vm_started": false,
+    "local_stack_started": false,
+    "native_application_started": false,
+    "private_runtime_configuration_created": false,
+    "qa_bundle_and_source_retained": "Owned ignored .out path for eventual manual/native-window verification; no credentials embedded"
+  }
+}

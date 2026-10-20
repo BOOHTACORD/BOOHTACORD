@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "criterion": "android-smoke",
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "status": "PASS",
+  "scope": "actual",
+  "executed": true,
+  "actual_runtime": true,
+  "mocks": false,
+  "native_process_verified": true,
+  "evidence": [
+    {
+      "path": "evidence/ci/android-smoke-688925dc-2026-10-20.json",
+      "sha256": "b21275c6ac36addaca0d6fd6d70179fa85bfd5f17f2f5353e765abb3ae426dfa"
+    }
+  ],
+  "limits": [
+    "Basic real-API/native UI smoke on dedicated Android35 arm64 emulator; debug QA payload, not signed stable publishing",
+    "No media/physical-device claim; original pre-app setup failure retained; app assertions executed once"
+  ]
+}

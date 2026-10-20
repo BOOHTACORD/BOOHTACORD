@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Synthetic Flutter widget-capture variation analysis only; not native, physical or media acceptance.",
+  "source_revision": "a946915037619d9d46a229c2ed60ba51a70a1ba7",
+  "run_id": 39394548666,
+  "run_attempt": 1,
+  "original_archives": [
+    {
+      "id": 12251072962,
+      "name": "uiux-flutter-visual-review-shadow-old-1-a946915037619d9d46a229c2ed60ba51a70a1ba7-39394548666-1",
+      "sha256": "21b4e89ade94934ebd71ed29e1b4ba00caa77287740c77b77ef8db7a5f5aed28",
+      "size_in_bytes": 4010471,
+      "images": [
+        {
+          "name": "flutter-admin-media-desktop-1440x900.png",
+          "sha256": "150f8ff062a3d26610ae01516007468ba97d43fd1006b7575f857cf7ed0b53e2",
+          "bytes": 140524
+        },
+        {
+          "name": "flutter-admin-media-mobile-393x852.png",
+          "sha256": "b552d638f4d99a243bd6b9d9e00c3d7b48fba66acafebdb446a1318a75fc6054",
+          "bytes": 210767
+        }
+      ]
+    },
+    {
+      "id": 12251523425,
+      "name": "uiux-flutter-visual-review-shadow-new-2-a946915037619d9d46a229c2ed60ba51a70a1ba7-39394548666-1",
+      "sha256": "1b7a102dfc536fcff4e69020e0075e57edfd847f1637dddd31b0218bbc572b45",
+      "size_in_bytes": 4015010,
+      "images": [
+        {
+          "name": "flutter-admin-media-desktop-1440x900.png",
+          "sha256": "1ba698d2a4145b023276b11ecedbd8793ec6f4ab4da5c59efeb19216cb2f8d3e",
+          "bytes": 140325
+        },
+        {
+          "name": "flutter-admin-media-mobile-393x852.png",
+          "sha256": "9f0e4aa7a39f19daeb1d234fadefc1d4083b3b0c37a8b5676d413e2faa48fc88",
+          "bytes": 210313
+        }
+      ]
+    },
+    {
+      "id": 12252980459,
+      "name": "uiux-flutter-visual-review-shadow-old-2-a946915037619d9d46a229c2ed60ba51a70a1ba7-39394548666-1",
+      "sha256": "48d6deffbbeb364ebbf9c3359f41793cba3435b8ce598a1a74d7f1f2228828be",
+      "size_in_bytes": 4010086,
+      "images": [
+        {
+          "name": "flutter-admin-media-desktop-1440x900.png",
+          "sha256": "6b561b6275d808095436332c74d2cf4aaa5fc84d45fc0eef8a5a6d3d9b5a5c8f",
+          "bytes": 140314
+        },
+        {
+          "name": "flutter-admin-media-mobile-393x852.png",
+          "sha256": "ea1649f384c06cca0f992bfbf8cf63fb2b4d22a817cd924dfdc56d77894aadbb",
+          "bytes": 210620
+        }
+      ]
+    },
+    {
+      "id": 12252586345,
+      "name": "uiux-flutter-visual-review-shadow-new-3-a946915037619d9d46a229c2ed60ba51a70a1ba7-39394548666-1",
+      "sha256": "03a158c3a792fada9feb7127d7cc6727740643824739346dd117d62e7bb8bb18",
+      "size_in_bytes": 4015294,
+      "images": [
+        {
+          "name": "flutter-admin-media-desktop-1440x900.png",
+          "sha256": "710ac13d893041b031ec34482546f59515c9a1def381f1ad5547a8cbe35771d3",
+          "bytes": 140344
+        },
+        {
+          "name": "flutter-admin-media-mobile-393x852.png",
+          "sha256": "34272c11b5076ed81e24527975d97ebb9311592101756b176fa54151afabe716",
+          "bytes": 210629
+        }
+      ],
+      "identity": {
+        "component": "flutter",
+        "namespace": "shadow-new-3",
+        "platform": "linux",
+        "profile": "dart",
+        "repository": "Egkurilov/BOOHTACORD",
+        "run_attempt": "1",
+        "run_id": "39394548666",
+        "source_revision": "a946915037619d9d46a229c2ed60ba51a70a1ba7"
+      }
+    }
+  ],
+  "images_viewed_at_original_resolution": 8,
+  "image_pairs_compared": 6,
+  "difference_analysis": [
+    {
+      "file": "flutter-admin-media-desktop-1440x900.png",
+      "against": "12251523425",
+      "size": [
+        2880,
+        1800
+      ],
+      "difference_bounds": [
+        2005,
+        557,
+        2040,
+        578
+      ],
+      "outside_timestamp_rectangle_identical": true
+    },
+    {
+      "file": "flutter-admin-media-desktop-1440x900.png",
+      "against": "12252980459",
+      "size": [
+        2880,
+        1800
+      ],
+      "difference_bounds": [
+        2005,
+        557,
+        2039,
+        578
+      ],
+      "outside_timestamp_rectangle_identical": true
+    },
+    {
+      "file": "flutter-admin-media-desktop-1440x900.png",
+      "against": "12252586345",
+      "size": [
+        2880,
+        1800
+      ],
+      "difference_bounds": [
+        2005,
+        557,
+        2039,
+        578
+      ],
+      "outside_timestamp_rectangle_identical": true
+    },
+    {
+      "file": "flutter-admin-media-mobile-393x852.png",
+      "against": "12251523425",
+      "size": [
+        1179,
+        2556
+      ],
+      "difference_bounds": [
+        120,
+        1182,
+        172,
+        1212
+      ],
+      "outside_timestamp_rectangle_identical": true
+    },
+    {
+      "file": "flutter-admin-media-mobile-393x852.png",
+      "against": "12252980459",
+      "size": [
+        1179,
+        2556
+      ],
+      "difference_bounds": [
+        120,
+        1182,
+        171,
+        1212
+      ],
+      "outside_timestamp_rectangle_identical": true
+    },
+    {
+      "file": "flutter-admin-media-mobile-393x852.png",
+      "against": "12252586345",
+      "size": [
+        1179,
+        2556
+      ],
+      "difference_bounds": [
+        120,
+        1182,
+        171,
+        1212
+      ],
+      "outside_timestamp_rectangle_identical": true
+    }
+  ],
+  "observation": "35 PNG digests in legacy1 versus new1 are identical. Against new2/new3,33 of35 are identical. The two admin-media desktop/mobile files differ only inside minute digits of the last successful refresh timestamp. Old1 versus old2 varies in the same region. All eight extracted original images were visually reviewed; no layout/content changes outside the timestamp region.",
+  "displayed_times": {
+    "shadow-old-1": "08:39",
+    "shadow-new-2": "08:49",
+    "shadow-old-2": "08:56",
+    "shadow-new-3": "08:58"
+  },
+  "source_files": [
+    {
+      "path": "clients/flutter/lib/src/screens/admin_ui/load_media_metrics/handler.dart",
+      "sha256": "9928916d8ac76ad920a9e835a45589f4efb23a5583f00029689a5d6c2d749693"
+    },
+    {
+      "path": "clients/flutter/lib/src/features/admin/media_metrics/panel.dart",
+      "sha256": "204509982590d277708d7db7c225c39b2542754e16b232d6dda3020b74a3ba1b"
+    }
+  ],
+  "source_explanation": "The existing admin media handler assigns DateTime.now().toUtc() after successful metrics load; the panel formats lastSuccessfulAt in its status. The code is byte-identical at the actual source and current master.",
+  "tests_rerun": false,
+  "baseline_changed": false,
+  "product_changed": false,
+  "invocation_limits": [
+    "Initial inspection assumed logical PNG paths for all archives; profile artifacts are lossless content-addressed packages, legacy artifacts retain raw names. Corrected by reading the manifest and checking original payload digests.",
+    "Initial pixel-analysis venv lacked Pillow; used already-bundled image runtime, no dependency installation."
+  ]
+}

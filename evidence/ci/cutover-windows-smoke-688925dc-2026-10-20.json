@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "criterion": "windows-smoke",
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "status": "PASS",
+  "scope": "actual",
+  "executed": true,
+  "actual_runtime": true,
+  "mocks": false,
+  "native_process_verified": true,
+  "evidence": [
+    {
+      "path": "evidence/ci/windows-smoke-688925dc-2026-10-20.json",
+      "sha256": "52e450873363d2676c7ccb437c7877bca3ca4aeb2bb783d82c484e124b5db911"
+    }
+  ],
+  "limits": [
+    "Assessed frozen688925d native code through exact-base control484; actual checkout8da14d5/public identity and QA package purpose preserved in original receipts.",
+    "Basic native/UI smoke; not a new stable release or old-client promotion acceptance."
+  ]
+}
