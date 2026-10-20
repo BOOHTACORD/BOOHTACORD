@@ -103,7 +103,7 @@
     "metadata_slots": 2,
     "metadata_cpu_each": 1,
     "metadata_memory_mib_each": 512,
-    "ci_btrfs_pool_gib": 20,
+    "ci_btrfs_pool_gib": 30,
     "guest_root_limit_gib": 16,
     "minimum_host_disk_reserve_gib": 5,
     "maximum_cpu_placements": 10,
@@ -348,5 +348,6 @@
     }
   },
   "next_diagnostic_evidence": "evidence/ci/self-hosted-next-runtime-diagnostic-2026-10-20.json",
-  "android_memory_evidence": "evidence/ci/self-hosted-android-memory-2026-10-20.json"
+  "android_memory_evidence": "evidence/ci/self-hosted-android-memory-2026-10-20.json",
+  "android_disk_correction_evidence": "evidence/ci/self-hosted-android-memory-2026-10-20.json"
 }

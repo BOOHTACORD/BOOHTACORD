@@ -78,7 +78,11 @@ There are no host filesystem mounts, host Docker socket, SSH agent, account
 credential directory, production database or signing key in the base image.
 Docker, test databases, published test ports and workspaces belong to each
 guest. Port 5432 in one guest does not compete with another guest or the host.
-The pool is capped at 20 GiB, with each guest root capped at 16 GiB.
+The pool is capped at 30 GiB, with each guest root capped at 16 GiB.
+The earlier 20 GiB pool exhausted space during two simultaneous Android jobs;
+30 GiB is under validation with the same job budgets and memory limits.
+Only unused host build cache was reclaimed to preserve the host disk reserve;
+application images, containers and data volumes were retained.
 The pool uses transparent `compress=zstd:3`. The stopped clean base was compressed
 before cloning jobs; application data and production Docker storage are outside it.
 

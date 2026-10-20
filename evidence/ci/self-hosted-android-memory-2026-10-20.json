@@ -95,11 +95,28 @@
   ],
   "root_cause": "Sequential compatibility builds retained multiple Gradle/Kotlin JVMs; under4GiB observed reclaim thenOOM. Merely raising limits did not remove that accumulation.",
   "dual_android_trial": {
-    "status": "IN_PROGRESS",
-    "plan": "Two fresh5GiB guests run the unchanged Android job simultaneously with the new daemon-free launcher. Final required CI/proof remain separate."
+    "status": "FAIL",
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39360897844",
+    "source": "2a530960bab7d879af18dfb730f03637fa89d2e6",
+    "cause": "Shared 20GiB Btrfs CI pool exhausted. Both guests had 8192 free bytes on teardown; no Gradle process remained and GitHub agents lost communication. No success or timing claim.",
+    "oom_kill_each": 0,
+    "memory_configuration_gib_each": 5,
+    "root_cause_scope": "Disk exhaustion confirmed; exact build operation at exhaustion not recovered.",
+    "teardown_observed_at_utc": "2026-10-20T03:19:38Z"
   },
   "source_urls": [
     "https://docs.gradle.org/current/userguide/gradle_daemon.html",
     "https://kotlinlang.org/docs/compiler-execution-strategy.html"
-  ]
+  ],
+  "disk_correction": {
+    "pool_before_gib": 20,
+    "pool_after_gib": 30,
+    "guest_root_gib_unchanged": 16,
+    "root_available_bytes_before_grow": 23219060736,
+    "unused_host_build_cache_reclaimed_gb": 7.773,
+    "data_images_containers_volumes_deleted": false,
+    "repeat_run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39363938794",
+    "repeat_status": "PENDING",
+    "full_required_ci": "NOT_RUN"
+  }
 }
