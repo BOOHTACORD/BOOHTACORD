@@ -1,4 +1,5 @@
 """Manual SSH jobs cannot cross capability, credential, approval or writer-queue boundaries."""
+from tools.ci.runner_pool.routing import LINUX
 from .policy import OPERATIONS,require
 
 JOBS={'audit':('audit-attachment-volume.yaml','audit'),'sample':('qa08-active-upload.yaml','sample'),
@@ -13,7 +14,7 @@ def validate(workflows):
         require(set(doc['on'])=={'workflow_dispatch'} and doc['permissions']=={'contents':'read','actions':'read'})
         require(doc['on']['workflow_dispatch']['inputs']['dry_run']=={
             'description':'Validate the plan and emit NOT_RUN without host access','type':'boolean','default':'true'})
-        require(job.get('environment')==environment and job.get('runs-on')=='ubuntu-24.04'
+        require(job.get('environment')==environment and job.get('runs-on')==LINUX
                 and job.get('if')==MASTER+(' && inputs.run_probe' if operation=='probe' else ''))
         require(job.get('env',{}).get('SSH_USER')==('shaneque' if risk=='mutation' else 'boohtacord-diag'))
         require(job.get('timeout-minutes')==str(20 if operation=='rollback' else 15 if operation=='probe' else 5))

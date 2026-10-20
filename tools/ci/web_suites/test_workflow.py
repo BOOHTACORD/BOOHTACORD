@@ -13,6 +13,18 @@ def document():
 
 
 class WorkflowTests(unittest.TestCase):
+    def test_shared_host_browser_budget_is_finite_and_other_profiles_keep_their_budget(self):
+        value = document()
+        value['jobs']['browser']['timeout-minutes'] = '25'
+        workflow.validate(value)
+        for profile in ('fast', 'sfu'):
+            changed = copy.deepcopy(value)
+            changed['jobs'][profile]['timeout-minutes'] = '25'
+            with self.subTest(profile=profile), self.assertRaises(ValueError): workflow.validate(changed)
+        for minutes in ('0', '360', ''):
+            value['jobs']['browser']['timeout-minutes'] = minutes
+            with self.subTest(minutes=minutes), self.assertRaises(ValueError): workflow.validate(value)
+
     def test_actual_workflow_has_complete_mandatory_parallel_gate(self):
         workflow.validate(document())
 

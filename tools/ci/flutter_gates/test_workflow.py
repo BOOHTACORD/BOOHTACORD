@@ -4,12 +4,33 @@ from pathlib import Path
 import unittest
 import yaml
 from tools.verify.action_pins.policy import normalized
+from tools.ci.runner_pool.routing import LINUX
 from . import workflow
 
 ROOT = Path(__file__).resolve().parents[3]
 
 
 class WorkflowTests(unittest.TestCase):
+    def test_split_android_jobs_keep_pool_sdk_and_independent_finite_budgets(self):
+        jobs = self.document()['jobs']
+        for profile in ('android-kotlin', 'android'):
+            with self.subTest(profile=profile):
+                job = jobs[profile]
+                self.assertEqual(LINUX, job['runs-on'])
+                self.assertEqual('30', job['timeout-minutes'])
+                java = next(step for step in job['steps'] if step.get('uses', '').startswith('actions/setup-java@'))
+                self.assertEqual('17.0.20+101', java['with']['java-version'])
+                self.assertNotIn('needs', job)
+
+    def test_shared_host_android_budget_is_finite_without_optional_commands(self):
+        workflow.validate(self.document())
+        for profile in ('android', 'android-kotlin'):
+            for minutes in ('0', '360', ''):
+                value = self.document()
+                value['jobs'][profile]['timeout-minutes'] = minutes
+                with self.subTest(profile=profile, minutes=minutes), self.assertRaises(ValueError):
+                    workflow.validate(value)
+
     def document(self):
         return yaml.load(normalized((ROOT / '.github/workflows/ci-flutter.yaml').read_text()), Loader=yaml.BaseLoader)
 
@@ -17,19 +38,20 @@ class WorkflowTests(unittest.TestCase):
         workflow.validate(self.document())
 
     def test_conditional_ignored_or_missing_native_commands_are_rejected(self):
-        for profile in ('dart', 'android'):
-            for field in ('if', 'continue-on-error', 'remove-command', 'job-if'):
+        for profile in ('dart', 'android', 'android-kotlin'):
+            for field in ('if', 'continue-on-error', 'remove-command', 'job-if', 'serial-dependency'):
                 document = self.document(); job = document['jobs'][profile]
                 step = next(s for s in job['steps'] if s.get('run') == 'python3 -m tools.ci.flutter_gates.run ' + profile)
                 if field == 'remove-command': job['steps'].remove(step)
                 elif field == 'job-if': job['if'] = 'false'
+                elif field == 'serial-dependency': job['needs'] = ['dart']
                 else: step[field] = 'true'
                 with self.subTest(profile=profile, field=field), self.assertRaises(ValueError):
                     workflow.validate(document)
 
     def test_profile_failures_uploads_or_proofs_cannot_be_optional(self):
-        for profile in ('dart', 'android'):
-            for path in ('proof', 'artifacts'):
+        for profile in ('dart', 'android', 'android-kotlin'):
+            for path in (('proof',) if profile == 'android-kotlin' else ('proof', 'artifacts')):
                 document = self.document(); job = document['jobs'][profile]
                 upload = next(s for s in job['steps'] if s.get('uses') == 'actions/upload-artifact@v4'
                               and (('.out/ci/flutter-parts/' in s['with']['path']) == (path == 'proof')))

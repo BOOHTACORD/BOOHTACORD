@@ -7,7 +7,7 @@ from . import profiles
 
 
 class ProfileTests(unittest.TestCase):
-    def exercise(self, profile, failure=None):
+    def exercise(self, profile, failure=None, env=None):
         commands = []
 
         def execute(*args, **kwargs):
@@ -15,13 +15,27 @@ class ProfileTests(unittest.TestCase):
             if failure == args:
                 raise RuntimeError('intentional command failure')
 
-        with patch.object(profiles, 'output', return_value=json.dumps({
+        with patch.dict('os.environ', env or {}, clear=True), patch.object(profiles, 'output', return_value=json.dumps({
                 'frameworkVersion': '3.47.7', 'dartSdkVersion': '3.13.5 (stable)',
                 'frameworkRevision': 'abaf9c523780a608bd46686fd5e53740a07077f8'})), \
              patch.object(profiles, 'run', side_effect=execute), \
              patch.object(profiles, 'prepare') as prepare:
             completed = profiles.execute(profile)
         return commands, completed, prepare
+
+    def test_disposable_pool_uses_four_processes_for_all_app_and_vendor_tests(self):
+        env = dict(RUNNER_ENVIRONMENT='self-hosted', RUNNER_OS='Linux',
+                   RUNNER_NAME='BOOHTACORD-Hetzner-CI-1-test', BOOHTACORD_EPHEMERAL_GUEST='true')
+        commands, completed, _ = self.exercise('dart', env=env)
+        tests = [args for args, _ in commands if args[:2] == ('flutter', 'test')]
+        self.assertEqual([('flutter', 'test', '--no-pub', '--concurrency=4')] * 3, tests)
+        self.assertEqual(list(profiles.OPERATIONS['dart']), completed)
+
+    def test_hosted_and_local_invocations_keep_the_sdk_default(self):
+        for env in ({}, dict(RUNNER_ENVIRONMENT='github-hosted', RUNNER_OS='Linux')):
+            commands, _, _ = self.exercise('dart', env=env)
+            self.assertEqual([('flutter', 'test', '--no-pub')] * 3,
+                             [a for a, _ in commands if a[:2] == ('flutter', 'test')])
 
     def test_dart_keeps_app_both_vendors_recursive_locks_and_analysis(self):
         commands, completed, prepare = self.exercise('dart')
@@ -40,13 +54,21 @@ class ProfileTests(unittest.TestCase):
         self.assertEqual([(profiles.ROOT, 'livekit_client'), (profiles.ROOT, 'flutter_webrtc')],
                          [call.args for call in prepare.call_args_list])
 
-    def test_android_keeps_both_real_kotlin_modes_and_verified_debug_builder(self):
+    def test_android_runs_verified_debug_builder_independently_of_kotlin_modes(self):
         commands, completed, prepare = self.exercise('android')
         self.assertEqual(list(profiles.OPERATIONS['android']), completed)
         self.assertEqual([
             (('flutter', 'pub', 'get', '--enforce-lockfile'), profiles.ROOT / 'clients/flutter'),
-            (('bash', 'tools/verify/android_kotlin/verify_android_kotlin_modes.sh'), None),
             (('python3', '-m', 'tools.build.android.run', '--debug', '--no-pub'), None),
+        ], commands)
+        prepare.assert_not_called()
+
+    def test_kotlin_profile_keeps_both_real_modes_without_rebuilding_distribution(self):
+        commands, completed, prepare = self.exercise('android-kotlin')
+        self.assertEqual(['app-dependencies', 'kotlin-modes'], completed)
+        self.assertEqual([
+            (('flutter', 'pub', 'get', '--enforce-lockfile'), profiles.ROOT / 'clients/flutter'),
+            (('bash', 'tools/verify/android_kotlin/verify_android_kotlin_modes.sh'), None),
         ], commands)
         prepare.assert_not_called()
 

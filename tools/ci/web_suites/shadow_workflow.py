@@ -1,4 +1,5 @@
 """Bounded manual read-only comparison, with no release receipts or publishers."""
+from tools.ci.runner_pool.routing import LINUX
 
 
 def require(value):
@@ -17,7 +18,7 @@ def validate(document):
                     and job.get('if') is None and not job.get('continue-on-error')
                     and not job.get('environment') and not job.get('secrets'))
         legacy=jobs['legacy']
-        require(legacy['runs-on']=='ubuntu-24.04' and legacy['timeout-minutes']=='35'
+        require(legacy['runs-on']==LINUX and legacy['timeout-minutes']=='35'
                 and legacy['env']=={'WEB_NAMESPACE':'shadow-old-${{ matrix.sample }}'})
         controls=[s for s in legacy['steps'] if 'tools.ci.web_suites.legacy' in s.get('run','')]
         require(len(controls)==1 and controls[0]['run']=='python3 -m tools.ci.web_suites.legacy'
@@ -28,7 +29,7 @@ def validate(document):
                 and jobs['profiles']['with']=={'release_receipt':'false','evidence_namespace':'shadow-new-${{ matrix.sample }}'})
         job=jobs['compare']
         require(job['if']=='always()' and set(job['needs'])=={'legacy','profiles'}
-                and job['runs-on']=='ubuntu-24.04' and job['timeout-minutes']=='5'
+                and job['runs-on']==LINUX and job['timeout-minutes']=='5'
                 and job['env']=={'WEB_NAMESPACE':'shadow-compare'} and not job.get('continue-on-error'))
         checks=[s for s in job['steps'] if 'tools.ci.web_suites.measure' in s.get('run','')]
         require(len(checks)==1 and checks[0]['run']=='python3 -m tools.ci.web_suites.measure'

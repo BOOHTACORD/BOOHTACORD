@@ -60,6 +60,7 @@ for (const kind of kinds) {
     await like.click()
     await expect(like).toBeFocused()
     await expect(tools.locator('.reaction-counts').getByRole('button', { name: 'Реакция 👍', exact: true })).toHaveAttribute('aria-pressed', 'true')
+    await expect(like).toBeFocused()
     await summary.press('Enter')
     await expect(picker).not.toHaveAttribute('open')
     const count = tools.locator('.reaction-counts').getByRole('button', { name: 'Реакция 👍', exact: true })

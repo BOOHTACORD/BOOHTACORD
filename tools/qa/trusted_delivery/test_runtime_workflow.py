@@ -27,7 +27,7 @@ class RuntimeWorkflowTests(unittest.TestCase):
         self.assertIs(False, choice['default'])
         job = value['jobs']['rehearse']
         self.assertIn("github.ref == 'refs/heads/master'", job['if'])
-        self.assertEqual('ubuntu-24.04', job['runs-on'])
+        self.assertEqual(['self-hosted', 'linux', 'x64', 'boohtacord-ci-ephemeral'], job['runs-on'])
         self.assertNotIn('environment', job)
         self.assertNotIn('secrets.', path.read_text())
         self.assertEqual({'contents': 'read', 'actions': 'read'}, value['permissions'])

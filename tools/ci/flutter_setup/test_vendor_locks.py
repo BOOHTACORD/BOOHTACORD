@@ -38,14 +38,24 @@ class VendorLockTests(unittest.TestCase):
         from tools.ci.flutter_gates import profiles
         machine = json.dumps({'frameworkVersion':'3.47.7', 'dartSdkVersion':'3.13.5',
                               'frameworkRevision':'abaf9c523780a608bd46686fd5e53740a07077f8'})
-        with patch.object(profiles,'output',return_value=machine), \
-             patch.object(profiles,'run') as run, patch.object(profiles,'prepare') as prepare:
-            flutter.main()
-        self.assertEqual(prepare.call_count,2)
-        for name in ('livekit_client','flutter_webrtc'):
-            path=ROOT/'clients/flutter/packages'/name
-            self.assertIn(call('flutter','pub','get','--enforce-lockfile',cwd=path),run.call_args_list)
-            self.assertIn(call('flutter','test','--no-pub',cwd=path),run.call_args_list)
+        pool = dict(RUNNER_ENVIRONMENT='self-hosted', RUNNER_OS='Linux',
+                    RUNNER_NAME='BOOHTACORD-Hetzner-CI-1-test', BOOHTACORD_EPHEMERAL_GUEST='true')
+        for env, extra in (({}, ()), (pool, ('--concurrency=4',))):
+            events = []
+            with self.subTest(environment=env.get('RUNNER_ENVIRONMENT', 'local')), \
+                    patch.dict('os.environ', env, clear=True), patch.object(profiles,'output',return_value=machine), \
+                    patch.object(profiles,'run',side_effect=lambda *a, **k: events.append(('run', a, k.get('cwd')))) as run, \
+                    patch.object(profiles,'prepare',side_effect=lambda root, name: events.append(('lock', name))) as prepare:
+                flutter.main()
+            self.assertEqual(prepare.call_count,2)
+            for name in ('livekit_client','flutter_webrtc'):
+                path=ROOT/'clients/flutter/packages'/name
+                pub=('flutter','pub','get','--enforce-lockfile')
+                test=('flutter','test','--no-pub',*extra)
+                self.assertIn(call(*pub,cwd=path),run.call_args_list)
+                self.assertIn(call(*test,cwd=path),run.call_args_list)
+                self.assertLess(events.index(('lock',name)),events.index(('run',pub,path)))
+                self.assertLess(events.index(('run',pub,path)),events.index(('run',test,path)))
 
     def test_recursive_example_analyzer_keeps_its_own_reviewed_lock(self):
         with tempfile.TemporaryDirectory() as name:

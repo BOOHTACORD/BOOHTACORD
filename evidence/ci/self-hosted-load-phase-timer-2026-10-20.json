@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "scope": "CICD-12 load-phase timer regression POC; actual Hetzner load profile and required CI pending",
+  "parent_source": "dcb35e997f27bfc0dd862dff0e38a176acdee1db",
+  "failed_execution": {
+    "source": "ee9ad984c5b5573d450279064a33bae6689f1fba",
+    "tested_merge": "27411954bab241639f4312cc990fec60c6d50103",
+    "run": 39403758551,
+    "job": 118565567683,
+    "profile": "normal",
+    "outcome": "FAIL",
+    "stop_reason": "measured_criterion_failed",
+    "driver_seconds": 20.125336037,
+    "fanout": {
+      "count": 182,
+      "errors": 1,
+      "p95_ms": 39.223827
+    },
+    "cursor_errors": 1,
+    "last_phase_errors": 2,
+    "owned_cleanup": "PASS",
+    "remaining_owned_resources": 0,
+    "sampled_api_cpu_max_percent": 8.617944912328284,
+    "sampled_api_rss_max_bytes": 91602944,
+    "sampled_attachment_free_min_bytes": 8181080064,
+    "interpretation": "Normal profile reached the overall boundary with late operation errors. The independent regression below proves cadence waits can overrun phase deadlines; fresh hardware execution must confirm the correction, without suppressing any errors."
+  },
+  "regression": {
+    "test": "TestPhaseDeadlineInterruptsCadencePause",
+    "phase_target_ms": 20,
+    "cadence_ms": 500,
+    "before": {
+      "status": "FAIL",
+      "elapsed_seconds": 0.501084,
+      "reason": "Cadence pause did not select on the phase timer"
+    },
+    "after": {
+      "status": "PASS",
+      "asserted_max_ms": 250
+    },
+    "parent_cancellation_remains_failure": true,
+    "strict_error_and_501ms_negative_tests": "PASS"
+  },
+  "correction": {
+    "wait_observes_phase_timer": true,
+    "timer_completion_checks_parent_context_error": true,
+    "phase_durations_unchanged": true,
+    "request_cadences_unchanged": true,
+    "overall_seconds_unchanged": true,
+    "fanout_p95_limit_ms_unchanged": 500,
+    "any_recorded_fanout_error_still_fails": true,
+    "cleanup_guards_unchanged": true,
+    "application_api_behavior_changed": false
+  },
+  "local_validation": {
+    "focused_phase_plan_timer_cancellation_and_strict_outcomes": "PASS",
+    "full_load_packages": "FAIL_ON_MAC_LOOPBACK_ENVIRONMENT",
+    "environment": "Darwin rejects binding synthetic actor source127.0.0.2: errno49 EADDRNOTAVAIL; unchanged actor/guard wire tests require Linux loopback aliases. No fixture test was skipped or modified."
+  },
+  "fresh_hardware_profile": "NOT_RUN",
+  "required_ci": "NOT_RUN"
+}

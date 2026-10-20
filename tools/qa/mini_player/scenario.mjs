@@ -49,8 +49,8 @@ async function snapshot(name, keepIdentity = false) {
  value.subscription_requests = { ...signaling }; report.observations.push(value); writeFileSync(process.env.QA_RESULT,JSON.stringify(report,null,2)+'\n'); return value
 }
 async function capture(name) { await expect(viewer.locator('.voice-stream-alert-notice')).toBeHidden({timeout:10000}); await viewer.evaluate(()=>document.fonts.ready); await viewer.screenshot({path: input.directory+'/'+name+'.png'}) }
-async function returnFull() { await viewer.getByRole('button',{name:'Открепить просмотр и вернуться в голос',exact:true}).click(); await viewer.getByRole('button',{name:'Закрепить просмотр',exact:true}).click() }
-async function pinnedText() { await select(); await viewer.getByRole('button',{name:'Закрепить просмотр',exact:true}).click(); await channel(viewer,'QaText'); await expect(viewer.locator('.voice-room--mini')).toBeVisible() }
+async function returnFull() { await channel(viewer,'QaScreen'); await expect(viewer.locator('.screen-viewer')).toBeVisible() }
+async function automaticText() { await select(); await expect(viewer.getByRole('button',{name:/закрепить просмотр|открепить просмотр/i})).toHaveCount(0); await channel(viewer,'QaText'); await expect(viewer.locator('.voice-room--mini')).toBeVisible() }
 async function clean(name) { await expect.poll(()=>viewer.locator('video.screen-player').count()).toBe(0); const s=await snapshot(name); assert.equal(s.video_outputs,0); assert.equal(s.audio_outputs,0) }
 async function nativePublisherHold() {
  const commandPath=input.directory+'/../publisher-command.json', ackPath=input.directory+'/../publisher-ack.json'
@@ -94,14 +94,14 @@ try {
  phase='select actual remote screen'; await select(); const selected = await snapshot('selected'); assert.equal(selected.video_outputs,1); assert.equal(selected.audio_outputs,1)
  assert.equal(signaling.subscribe,2); await capture('full-viewer')
  const before = {...signaling}
- phase = 'pin TEXT DM settings retains one actual output and subscription'
- await viewer.getByRole('button',{name:'Закрепить просмотр',exact:true}).click(); await channel(viewer,'QaText')
- await expect(viewer.locator('.voice-room--mini')).toBeVisible(); await snapshot('pinned TEXT',true); await capture('pinned-text')
+ phase = 'automatic TEXT DM settings retention keeps one actual output and subscription'
+ await channel(viewer,'QaText')
+ await expect(viewer.locator('.voice-room--mini')).toBeVisible(); await snapshot('automatic TEXT',true); await capture('automatic-text')
  await openNavigation(viewer); await viewer.getByRole('button',{name:'Личные',exact:true}).click(); await viewer.getByRole('navigation',{name:'Личные сообщения'}).getByRole('button',{name:/Источник проверки/}).click()
- await expect(viewer.locator('.direct-message-conversation')).toBeVisible(); await snapshot('pinned DM',true); await capture('pinned-dm')
- await security(viewer); await snapshot('pinned settings',true); await capture('pinned-settings')
+ await expect(viewer.locator('.direct-message-conversation')).toBeVisible(); await snapshot('automatic DM',true); await capture('automatic-dm')
+ await security(viewer); await snapshot('automatic settings',true); await capture('automatic-settings')
  assert.equal(signaling.subscribe,before.subscribe); assert.equal(signaling.unsubscribe,before.unsubscribe)
- report.checks.pin_TEXT_DM_settings_one_output_no_resubscription = 'PASS'
+ report.checks.automatic_TEXT_DM_settings_one_output_no_resubscription = 'PASS'
  phase = 'return full then expanded mini return'
  await returnFull(); await snapshot('return full',true)
  await viewer.getByLabel('Дополнительные действия',{exact:true}).click(); await viewer.getByRole('button',{name:'Развернуть на всю область',exact:true}).click()
@@ -114,7 +114,7 @@ try {
  await channel(viewer,'QaText')
  for (const width of [1024,768,393,320]) { await viewer.setViewportSize({width,height:900}); const s=await snapshot('viewport '+width,true); assert.equal(s.document_overflow,false)
    const mini=viewer.locator('.voice-room--mini'),box=await mini.boundingBox(); assert.ok(box&&box.x>=0&&box.x+box.width<=width+1)
-   await mini.getByRole('button',{name:'Открепить просмотр и вернуться в голос',exact:true}).focus(); await expect(mini.getByRole('button',{name:'Открепить просмотр и вернуться в голос',exact:true})).toBeFocused(); await capture('mini-width-'+width)
+   await mini.getByRole('button',{name:'Развернуть на всю область',exact:true}).focus(); await expect(mini.getByRole('button',{name:'Развернуть на всю область',exact:true})).toBeFocused(); await capture('mini-width-'+width)
  }
  report.checks.viewport_320_adaptive_keyboard_labels = 'PASS'
  await viewer.setViewportSize({width:1440,height:1000})
@@ -124,13 +124,13 @@ try {
  const stopBefore={...signaling}; await mini.getByRole('button',{name:'Остановить просмотр',exact:true}).click(); await clean('explicit stop'); await viewer.waitForTimeout(300)
  assert.equal(signaling.unsubscribe-stopBefore.unsubscribe,2); assert.equal(signaling.subscribe,stopBefore.subscribe)
  report.checks.stop_two_publications_exactly_once_and_mute = 'PASS'
- phase='unpinned navigation stops default'; await select(); const unpinnedBefore={...signaling}; await channel(viewer,'QaText'); await clean('unpinned route stop'); await viewer.waitForTimeout(300); assert.equal(signaling.unsubscribe-unpinnedBefore.unsubscribe,2)
- report.checks.no_pin_default_route_stop = 'PASS'
- phase='source removal clears'; await pinnedText(); await publisher.getByTestId('voice-dock').getByRole('button',{name:'Остановить демонстрацию экрана',exact:true}).click(); await clean('publisher removal'); report.checks.source_removal_cleanup='PASS'
+phase='automatic route retention and explicit stop'; await select(); const autoBefore={...signaling}; await channel(viewer,'QaText'); await expect(viewer.locator('.voice-room--mini')).toBeVisible(); await snapshot('automatic route retention',true); assert.equal(signaling.subscribe,autoBefore.subscribe); assert.equal(signaling.unsubscribe,autoBefore.unsubscribe); await viewer.locator('.voice-room--mini').getByRole('button',{name:'Остановить просмотр',exact:true}).click(); await clean('automatic route explicit stop'); await viewer.waitForTimeout(300); assert.equal(signaling.unsubscribe-autoBefore.unsubscribe,2)
+report.checks.automatic_route_retention_and_explicit_stop = 'PASS'
+phase='source removal clears'; await automaticText(); await publisher.getByTestId('voice-dock').getByRole('button',{name:'Остановить демонстрацию экрана',exact:true}).click(); await clean('publisher removal'); report.checks.source_removal_cleanup='PASS'
  phase='republish'; await publisher.getByTestId('voice-dock').getByRole('button',{name:'Начать демонстрацию экрана',exact:true}).click(); await start.first().click(); await expect(publisher.getByTestId('voice-dock').getByRole('button',{name:'Остановить демонстрацию экрана',exact:true})).toBeVisible({timeout:30000})
- phase='disconnect clears'; await pinnedText(); await viewer.getByTestId('voice-dock').getByRole('button',{name:'Выйти из голосового канала',exact:true}).click(); await clean('voice disconnect'); report.checks.disconnect_cleanup='PASS'
- phase='logout account switch clears'; await channel(viewer,'QaScreen'); await viewer.getByRole('button',{name:'Без микрофона',exact:true}).click(); await connected(viewer); await pinnedText(); await logout(); await clean('logout'); await login(viewer,'qa_admin',input.password); await clean('other account login'); report.checks.logout_account_switch_cleanup='PASS'
- phase='actual account revoke clears'; await logout(); await login(viewer,'qa_screen_viewer',input.password); await channel(viewer,'QaScreen'); await viewer.getByRole('button',{name:'Без микрофона',exact:true}).click(); await connected(viewer); await pinnedText(); status(await api(admin,`/admin/accounts/${b.body.id}`,'PATCH',{role:'MEMBER',blocked:true}),200); await expect(viewer.locator('.authentication-page')).toBeVisible({timeout:35000}); await clean('account revoke'); report.checks.revoke_cleanup='PASS'
+phase='disconnect clears'; await automaticText(); await viewer.getByTestId('voice-dock').getByRole('button',{name:'Выйти из голосового канала',exact:true}).click(); await clean('voice disconnect'); report.checks.disconnect_cleanup='PASS'
+phase='logout account switch clears'; await channel(viewer,'QaScreen'); await viewer.getByRole('button',{name:'Без микрофона',exact:true}).click(); await connected(viewer); await automaticText(); await logout(); await clean('logout'); await login(viewer,'qa_admin',input.password); await clean('other account login'); report.checks.logout_account_switch_cleanup='PASS'
+phase='actual account revoke clears'; await logout(); await login(viewer,'qa_screen_viewer',input.password); await channel(viewer,'QaScreen'); await viewer.getByRole('button',{name:'Без микрофона',exact:true}).click(); await connected(viewer); await automaticText(); status(await api(admin,`/admin/accounts/${b.body.id}`,'PATCH',{role:'MEMBER',blocked:true}),200); await expect(viewer.locator('.authentication-page')).toBeVisible({timeout:35000}); await clean('account revoke'); report.checks.revoke_cleanup='PASS'
  report.status='PASS'; phase='complete'
  writeFileSync(process.env.QA_RESULT,JSON.stringify(report,null,2)+'\n')
  console.log('#247 Web scenarios complete; synthetic publisher available for native receiver')

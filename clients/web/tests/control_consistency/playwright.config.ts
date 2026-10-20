@@ -1,7 +1,8 @@
+import { browserRuntime } from '../browser_runtime/workers'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from '@playwright/test'
 export default defineConfig({
-  testDir: '.', testMatch: '*.browser.spec.ts', workers: 1, timeout: 30000, reporter: 'list',
+  testDir: '.', testMatch: '*.browser.spec.ts', ...browserRuntime(), timeout: 30000, reporter: 'list',
   outputDir: '../../../../.out/issue342/browser',
   use: { baseURL: 'http://127.0.0.1:4952', headless: true, launchOptions: { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } },
   webServer: {

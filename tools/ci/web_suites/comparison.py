@@ -1,4 +1,5 @@
 """Compare complete same-source shadow samples using actual GitHub job intervals."""
+from tools.ci.runner_pool.routing import measurement_pool
 from datetime import datetime
 import math
 import re
@@ -56,7 +57,7 @@ def _compare(run,jobs,needs,old,new):
     reference,plan=catalog.baseline(),catalog.plan()
     require(len(old)==len(new)==len(SAMPLES))
     expected_jobs={'compare'}
-    roles=['fast','sfu','frontend',*[f'browser ({p})' for p in catalog.PROFILES[1:4]]]
+    roles=['fast','sfu','frontend',*[f'browser ({p})' for p in catalog.BROWSER_PROFILES]]
     for sample in SAMPLES:
         expected_jobs.add('legacy-'+str(sample))
         expected_jobs.update('profiles-'+str(sample)+' / '+role for role in roles)
@@ -64,8 +65,8 @@ def _compare(run,jobs,needs,old,new):
             and {row['name'] for row in jobs['jobs']}==expected_jobs)
     require(len({row['id'] for row in jobs['jobs']})==len(expected_jobs))
     require(all(type(row['id']) is int and row['id']>0 and row['run_id']==run_id and row['run_attempt']==attempt
-                and row['head_sha']==source and row['labels']==['ubuntu-24.04']
-                and row['runner_group_name']=='GitHub Actions' for row in jobs['jobs']))
+                and row['head_sha']==source  for row in jobs['jobs']))
+    pool=measurement_pool(jobs['jobs'])
     by_name={row['name']:row for row in jobs['jobs']}
     arms={'legacy':[],'profiles':[]}
     for arm,rows in [('legacy',old),('profiles',new)]:
@@ -111,7 +112,7 @@ def _compare(run,jobs,needs,old,new):
                            for field in ('critical_seconds','runner_minutes')}} for arm,rows in arms.items()}
     faster=all(summary['profiles']['critical_seconds'][p]<summary['legacy']['critical_seconds'][p] for p in ('p50','p95'))
     return {'schema_version':1,'source_revision':source,'run_id':run_id,'run_attempt':attempt,
-            'status':'PASS' if faster else 'NO_GAIN','samples':arms,'summary':summary,
+            'runner_pool':pool,'status':'PASS' if faster else 'NO_GAIN','samples':arms,'summary':summary,
             'legacy_reference_revision':reference['source_revision'],'legacy_source_sha256':reference['source_sha256'],
             'plan_sha256':catalog.digest(plan),
             'coverage':{'legacy_operations':len(reference['operations']),

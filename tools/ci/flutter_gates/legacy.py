@@ -1,10 +1,12 @@
 """Execute the hash-verified original Dart/builder control on current app source."""
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from tools.ci.native.process import ROOT, run
 from tools.build.client_identity import dart_defines, flutter_version_args
+from .profiles import test_command
 
 PATHS = ('tools/ci/native/flutter.py', 'tools/verify/android_kotlin/verify_android_kotlin_modes.sh',
          'tools/build/android/run.py', '.github/workflows/ci-flutter.yaml')
@@ -52,7 +54,10 @@ def invoke(path, package, expected, argv):
         index = len(completed)
         if index >= len(expected) or (args, kwargs.get('cwd')) != expected[index][1:]:
             raise ValueError('Original native control command coverage differs')
-        delegate(*args, **kwargs)
+        # Validate the immutable original coverage first, then apply the same
+        # guest execution policy as the new cohort without skipping any test.
+        actual = test_command(os.environ) if args == ('flutter', 'test', '--no-pub') else args
+        delegate(*actual, **kwargs)
         completed.append(expected[index][0])
 
     namespace['run'] = checked

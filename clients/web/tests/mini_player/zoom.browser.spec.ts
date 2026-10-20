@@ -8,7 +8,7 @@ for(const width of [640,780,2048,2880])test(`mini at actual 200% browser zoom ${
   await routes(page);await page.goto('http://127.0.0.1:4961/tests/mini_player/fixture.html')
   const zoom=await page.evaluate(()=>({outerWidth,innerWidth,dpr:devicePixelRatio,root:getComputedStyle(document.documentElement).fontSize,css:getComputedStyle(document.body).zoom,pinch:visualViewport!.scale}))
   expect(zoom).toEqual({outerWidth:width,innerWidth:width/2,dpr:2,root:'16px',css:'1',pinch:1})
-  await page.locator('[data-testid=stream-select]:visible').first().click();await page.getByRole('button',{name:'Закрепить просмотр',exact:true}).click()
+  await page.locator('[data-testid=stream-select]:visible').first().click()
   await page.locator('video.screen-player').evaluate(v=>{(window as any).__originalVideo=v;(window as any).__originalStream=(v as HTMLVideoElement).srcObject})
   await navigate(page,'text');await geometry(page)
   await page.locator('.composer textarea').fill('Черновик при масштабе 200%')
@@ -20,7 +20,7 @@ test('touch controls need no hover and remain above a resized keyboard viewport'
  const context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true})
  try{
   const page=await context.newPage();await routes(page);await page.goto('http://127.0.0.1:4961/tests/mini_player/fixture.html')
-  await page.locator('[data-testid=stream-select]:visible').first().tap();await page.getByRole('button',{name:'Закрепить просмотр',exact:true}).tap()
+  await page.locator('[data-testid=stream-select]:visible').first().tap()
   await page.locator('video.screen-player').evaluate(v=>{(window as any).__originalVideo=v;(window as any).__originalStream=(v as HTMLVideoElement).srcObject})
   await navigate(page,'text');await page.setViewportSize({width:390,height:460});await geometry(page)
   await page.getByRole('button',{name:'Приостановить видео',exact:true}).tap()

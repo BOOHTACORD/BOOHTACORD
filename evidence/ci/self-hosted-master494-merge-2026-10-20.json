@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "outcome": "PASS",
+  "scope": "Local integration POC after merging master PR494 into the Linux runner migration; no release, required-CI, hardware or media-capacity qualification.",
+  "parents": [
+    "af5c8d078a503e8cc1b04a747e7fa1ed1dfc142e",
+    "19aff0d6e0004a342b09bbacacd09887a74934dd"
+  ],
+  "upstream_pull_request": "https://github.com/Egkurilov/BOOHTACORD/pull/494",
+  "merge_conflicts": false,
+  "checks": {
+    "voice_unit": {
+      "outcome": "PASS",
+      "tests": 20,
+      "files": 3
+    },
+    "typescript": "PASS",
+    "voice_interface_browser": {
+      "outcome": "PASS",
+      "tests": 36,
+      "seconds": 21.1
+    },
+    "mini_player_browser": {
+      "outcome": "PASS",
+      "tests": 20,
+      "seconds": 13.8
+    },
+    "local_feature_policy_and_baseline": {
+      "outcome": "PASS",
+      "tests": 9
+    }
+  },
+  "runtime": "Local macOS, pinned Node24.18.0, prepared existing dependencies/assets, original serial browser configs and case deadlines.",
+  "full_current_linux_ci": "NOT_RUN",
+  "required_ci": "NOT_RUN",
+  "postmerge_rollout": "NOT_RUN",
+  "note": "The ongoing af5c8d07 CI qualifies only that previous source; a fresh source-bound CI is required after publication of this merge."
+}

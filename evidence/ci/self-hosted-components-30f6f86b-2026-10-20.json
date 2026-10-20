@@ -1,0 +1,505 @@
+{
+  "status": "PASS",
+  "scope": "CICD-12 complete actual Linux/native CI on source30f before subsequent master integration; not current-master release or media/capacity acceptance",
+  "source_revision": "30f6f86bfe5e85dcca72fd92608cb6f2633e0dff",
+  "tested_merge_revision": "6d6f3de8f030be34306e45642f8410f1c0569876",
+  "base_revision": "fd975bccea88de44aa18a2316c5ff5ab9f7f8d46",
+  "ci_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39406251610",
+  "ci_jobs": [
+    {
+      "id": 118573679058,
+      "name": "changes",
+      "conclusion": "success",
+      "runner_id": 388,
+      "runner_name": "BOOHTACORD-Hetzner-CI-4-101343-f85604",
+      "started_at": "2026-10-20T10:14:30Z",
+      "completed_at": "2026-10-20T10:15:17Z"
+    },
+    {
+      "id": 118573679425,
+      "name": "contracts / contracts",
+      "conclusion": "success",
+      "runner_id": 397,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-103844-3491fe",
+      "started_at": "2026-10-20T10:38:54Z",
+      "completed_at": "2026-10-20T10:44:44Z"
+    },
+    {
+      "id": 118573998644,
+      "name": "flutter / dart",
+      "conclusion": "success",
+      "runner_id": 393,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-101952-ddda8c",
+      "started_at": "2026-10-20T10:20:02Z",
+      "completed_at": "2026-10-20T10:38:28Z"
+    },
+    {
+      "id": 118573998668,
+      "name": "frontend / fast",
+      "conclusion": "success",
+      "runner_id": 391,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-101529-ca96cc",
+      "started_at": "2026-10-20T10:15:39Z",
+      "completed_at": "2026-10-20T10:19:38Z"
+    },
+    {
+      "id": 118573998720,
+      "name": "flutter / android",
+      "conclusion": "success",
+      "runner_id": 404,
+      "runner_name": "BOOHTACORD-Hetzner-CI-1-110556-7a6a21",
+      "started_at": "2026-10-20T11:06:05Z",
+      "completed_at": "2026-10-20T11:37:38Z"
+    },
+    {
+      "id": 118573998780,
+      "name": "frontend / sfu",
+      "conclusion": "success",
+      "runner_id": 395,
+      "runner_name": "BOOHTACORD-Hetzner-CI-1-102537-a6751a",
+      "started_at": "2026-10-20T10:25:47Z",
+      "completed_at": "2026-10-20T10:33:42Z"
+    },
+    {
+      "id": 118573998788,
+      "name": "backend / database",
+      "conclusion": "success",
+      "runner_id": 396,
+      "runner_name": "BOOHTACORD-Hetzner-CI-1-103357-6cdf52",
+      "started_at": "2026-10-20T10:34:07Z",
+      "completed_at": "2026-10-20T10:40:41Z"
+    },
+    {
+      "id": 118573998800,
+      "name": "actual / runtime (lifecycle)",
+      "conclusion": "success",
+      "runner_id": 402,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-104810-852441",
+      "started_at": "2026-10-20T10:48:17Z",
+      "completed_at": "2026-10-20T11:11:17Z"
+    },
+    {
+      "id": 118573998804,
+      "name": "actual / runtime (next)",
+      "conclusion": "success",
+      "runner_id": 408,
+      "runner_name": "BOOHTACORD-Hetzner-CI-1-113804-042ad4",
+      "started_at": "2026-10-20T11:38:12Z",
+      "completed_at": "2026-10-20T11:49:01Z"
+    },
+    {
+      "id": 118573998821,
+      "name": "actual / runtime (sfu)",
+      "conclusion": "success",
+      "runner_id": 405,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-111135-64d273",
+      "started_at": "2026-10-20T11:11:45Z",
+      "completed_at": "2026-10-20T11:19:19Z"
+    },
+    {
+      "id": 118573998826,
+      "name": "frontend / browser (browser-shell)",
+      "conclusion": "success",
+      "runner_id": 398,
+      "runner_name": "BOOHTACORD-Hetzner-CI-1-104053-4c253c",
+      "started_at": "2026-10-20T10:41:01Z",
+      "completed_at": "2026-10-20T10:56:11Z"
+    },
+    {
+      "id": 118573998913,
+      "name": "frontend / browser (browser-voice)",
+      "conclusion": "success",
+      "runner_id": 407,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-112848-656020",
+      "started_at": "2026-10-20T11:28:59Z",
+      "completed_at": "2026-10-20T11:46:01Z"
+    },
+    {
+      "id": 118573998965,
+      "name": "frontend / browser (browser-conversations)",
+      "conclusion": "success",
+      "runner_id": 403,
+      "runner_name": "BOOHTACORD-Hetzner-CI-1-105625-3e5a28",
+      "started_at": "2026-10-20T10:56:34Z",
+      "completed_at": "2026-10-20T11:05:37Z"
+    },
+    {
+      "id": 118573998987,
+      "name": "backend / static",
+      "conclusion": "success",
+      "runner_id": 394,
+      "runner_name": "BOOHTACORD-Hetzner-CI-1-102022-cea1de",
+      "started_at": "2026-10-20T10:20:34Z",
+      "completed_at": "2026-10-20T10:25:21Z"
+    },
+    {
+      "id": 118573998999,
+      "name": "windows / windows-native-unit",
+      "conclusion": "success",
+      "runner_id": 1000011234,
+      "runner_name": "GitHub Actions 1000011234",
+      "started_at": "2026-10-20T10:15:20Z",
+      "completed_at": "2026-10-20T10:26:39Z"
+    },
+    {
+      "id": 118573999003,
+      "name": "backend / load",
+      "conclusion": "success",
+      "runner_id": 406,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-111935-d27b26",
+      "started_at": "2026-10-20T11:19:46Z",
+      "completed_at": "2026-10-20T11:28:33Z"
+    },
+    {
+      "id": 118573999034,
+      "name": "windows / windows-build",
+      "conclusion": "success",
+      "runner_id": 1000011235,
+      "runner_name": "GitHub Actions 1000011235",
+      "started_at": "2026-10-20T10:15:20Z",
+      "completed_at": "2026-10-20T10:22:38Z"
+    },
+    {
+      "id": 118576867179,
+      "name": "windows / windows-gui-sfu",
+      "conclusion": "success",
+      "runner_id": 1000011258,
+      "runner_name": "GitHub Actions 1000011258",
+      "started_at": "2026-10-20T10:22:40Z",
+      "completed_at": "2026-10-20T10:29:21Z"
+    },
+    {
+      "id": 118579488713,
+      "name": "windows / windows",
+      "conclusion": "success",
+      "runner_id": 400,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-104607-be6f3a",
+      "started_at": "2026-10-20T10:46:16Z",
+      "completed_at": "2026-10-20T10:46:47Z"
+    },
+    {
+      "id": 118602428110,
+      "name": "backend / backend",
+      "conclusion": "success",
+      "runner_id": 409,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-114616-33f26c",
+      "started_at": "2026-10-20T11:46:24Z",
+      "completed_at": "2026-10-20T11:47:03Z"
+    },
+    {
+      "id": 118606011893,
+      "name": "flutter / flutter",
+      "conclusion": "success",
+      "runner_id": 410,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-114714-7ab5c4",
+      "started_at": "2026-10-20T11:47:22Z",
+      "completed_at": "2026-10-20T11:47:53Z"
+    },
+    {
+      "id": 118609312733,
+      "name": "frontend / frontend",
+      "conclusion": "success",
+      "runner_id": 411,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-114806-0c4b9a",
+      "started_at": "2026-10-20T11:48:14Z",
+      "completed_at": "2026-10-20T11:48:52Z"
+    },
+    {
+      "id": 118610500289,
+      "name": "actual / actual-acceptance",
+      "conclusion": "success",
+      "runner_id": 412,
+      "runner_name": "BOOHTACORD-Hetzner-CI-2-114903-2d9f77",
+      "started_at": "2026-10-20T11:49:12Z",
+      "completed_at": "2026-10-20T11:49:51Z"
+    },
+    {
+      "id": 118610824693,
+      "name": "ci-required",
+      "conclusion": "success",
+      "runner_id": 389,
+      "runner_name": "BOOHTACORD-Hetzner-CI-3-101344-971e4d",
+      "started_at": "2026-10-20T11:49:54Z",
+      "completed_at": "2026-10-20T11:50:40Z"
+    }
+  ],
+  "required_check": {
+    "id": 118610824693,
+    "name": "ci-required",
+    "app_id": 15368,
+    "head_sha": "30f6f86bfe5e85dcca72fd92608cb6f2633e0dff",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "pool": {
+    "status": "PASS",
+    "source": "30f6f86bfe5e85dcca72fd92608cb6f2633e0dff",
+    "run": 39406244798,
+    "jobs": [
+      {
+        "id": 118572762040,
+        "name": "metadata (one)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-20T10:12:13Z",
+        "completed_at": "2026-10-20T10:13:20Z",
+        "runner_id": 381,
+        "runner_name": "BOOHTACORD-Hetzner-CI-4-095433-df3d7f"
+      },
+      {
+        "id": 118572762350,
+        "name": "probe (two)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-20T10:47:10Z",
+        "completed_at": "2026-10-20T10:47:57Z",
+        "runner_id": 401,
+        "runner_name": "BOOHTACORD-Hetzner-CI-2-104659-446dee"
+      },
+      {
+        "id": 118572762504,
+        "name": "probe (one)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-20T10:45:08Z",
+        "completed_at": "2026-10-20T10:45:55Z",
+        "runner_id": 399,
+        "runner_name": "BOOHTACORD-Hetzner-CI-2-104459-b1ae0f"
+      },
+      {
+        "id": 118572762531,
+        "name": "metadata (two)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-20T10:12:13Z",
+        "completed_at": "2026-10-20T10:13:23Z",
+        "runner_id": 378,
+        "runner_name": "BOOHTACORD-Hetzner-CI-3-095255-c2b7e9"
+      }
+    ],
+    "distinct_runner_ids": 4,
+    "heavy_overlap_seconds": 0,
+    "scope": "Four fresh source-bound pool jobs pass. Heavy probes share the pool with full CI; no parallel-heavy claim from this run. Earlier source26 proved85second overlap on unchanged controller config; fresh idle merged-master proof remains pending."
+  },
+  "cache_acceptance": {
+    "status": "PASS",
+    "run": 39406251674
+  },
+  "trust_transport": {
+    "status": "PASS",
+    "run": 39406251960
+  },
+  "browser_shell": {
+    "status": "PASS",
+    "source": "30f6f86bfe5e85dcca72fd92608cb6f2633e0dff",
+    "tested_merge": "6d6f3de8f030be34306e45642f8410f1c0569876",
+    "run": 39406251610,
+    "job": 118573998826,
+    "job_seconds": 910,
+    "job_budget_minutes": 25,
+    "case_deadlines_unchanged": true,
+    "counts": {
+      "worker_headers": [
+        {
+          "at": "2026-10-20T10:42:15.2628279Z",
+          "cases": 110,
+          "workers": 2
+        },
+        {
+          "at": "2026-10-20T10:47:11.1933160Z",
+          "cases": 1,
+          "workers": 1
+        },
+        {
+          "at": "2026-10-20T10:47:21.2155388Z",
+          "cases": 26,
+          "workers": 2
+        },
+        {
+          "at": "2026-10-20T10:48:12.7077684Z",
+          "cases": 87,
+          "workers": 2
+        },
+        {
+          "at": "2026-10-20T10:50:18.5156343Z",
+          "cases": 72,
+          "workers": 2
+        },
+        {
+          "at": "2026-10-20T10:53:59.8517588Z",
+          "cases": 58,
+          "workers": 2
+        },
+        {
+          "at": "2026-10-20T10:55:21.6226567Z",
+          "cases": 4,
+          "workers": 2
+        },
+        {
+          "at": "2026-10-20T10:55:30.3774652Z",
+          "cases": 28,
+          "workers": 2
+        }
+      ],
+      "passed": [
+        {
+          "at": "2026-10-20T10:47:08.5150644Z",
+          "cases": 110,
+          "duration": "4.9m"
+        },
+        {
+          "at": "2026-10-20T10:47:18.2845090Z",
+          "cases": 1,
+          "duration": "8.4s"
+        },
+        {
+          "at": "2026-10-20T10:48:09.5358626Z",
+          "cases": 26,
+          "duration": "49.7s"
+        },
+        {
+          "at": "2026-10-20T10:50:15.2651551Z",
+          "cases": 87,
+          "duration": "2.1m"
+        },
+        {
+          "at": "2026-10-20T10:53:56.4645006Z",
+          "cases": 72,
+          "duration": "3.7m"
+        },
+        {
+          "at": "2026-10-20T10:55:18.3197849Z",
+          "cases": 58,
+          "duration": "1.3m"
+        },
+        {
+          "at": "2026-10-20T10:55:27.3931477Z",
+          "cases": 4,
+          "duration": "7.2s"
+        },
+        {
+          "at": "2026-10-20T10:55:56.8636666Z",
+          "cases": 28,
+          "duration": "27.9s"
+        }
+      ],
+      "total_passed": 386
+    },
+    "scope": "Actual warm-SDK Hetzner browser-shell execution and mandatory capture/upload steps passed. Not whole-CI or media-capacity acceptance."
+  },
+  "load_profiles": {
+    "status": "PASS",
+    "artifact_id": 12261201266,
+    "download_sha256_verified": "sha256:d2e63c09a4989e3ede870011cea495fd4cf3215da49ea2eea5c6846609df35da",
+    "profiles": {
+      "faults": {
+        "outcome": "PASS",
+        "cleanup": "PASS",
+        "elapsed_seconds": 30.783851396,
+        "phases": [
+          "warmup",
+          "ramp",
+          "steady",
+          "spike",
+          "recovery",
+          "saturation_stop"
+        ],
+        "fanout_count": 484,
+        "fanout_errors": 0,
+        "fanout_p95_ms": 24.454579,
+        "message_criterion": "PASS",
+        "resources_removed": true
+      },
+      "nat_auth": {
+        "outcome": "PASS",
+        "cleanup": "PASS",
+        "elapsed_seconds": 1.125633382,
+        "phases": [
+          "shared_nat_auth"
+        ],
+        "fanout_count": 0,
+        "fanout_errors": 0,
+        "fanout_p95_ms": null,
+        "message_criterion": "NOT_RUN",
+        "resources_removed": true
+      },
+      "normal": {
+        "outcome": "PASS",
+        "cleanup": "PASS",
+        "elapsed_seconds": 15.866328812999999,
+        "phases": [
+          "warmup",
+          "ramp",
+          "steady",
+          "spike",
+          "recovery",
+          "saturation_stop"
+        ],
+        "fanout_count": 263,
+        "fanout_errors": 0,
+        "fanout_p95_ms": 13.809675,
+        "message_criterion": "PASS",
+        "resources_removed": true
+      },
+      "reconnect": {
+        "outcome": "PASS",
+        "cleanup": "PASS",
+        "elapsed_seconds": 15.75607147,
+        "phases": [
+          "warmup",
+          "ramp",
+          "steady",
+          "spike",
+          "recovery",
+          "saturation_stop"
+        ],
+        "fanout_count": 203,
+        "fanout_errors": 0,
+        "fanout_p95_ms": 12.226561,
+        "message_criterion": "PASS",
+        "resources_removed": true
+      },
+      "uploads": {
+        "outcome": "PASS",
+        "cleanup": "PASS",
+        "elapsed_seconds": 15.679909984,
+        "phases": [
+          "warmup",
+          "ramp",
+          "steady",
+          "spike",
+          "recovery",
+          "saturation_stop"
+        ],
+        "fanout_count": 259,
+        "fanout_errors": 0,
+        "fanout_p95_ms": 12.716111,
+        "message_criterion": "PASS",
+        "resources_removed": true
+      }
+    },
+    "scope": "Five original protocol smoke profiles; media and capacity NOT_RUN.",
+    "source": "30f6f86bfe5e85dcca72fd92608cb6f2633e0dff",
+    "tested_merge": "6d6f3de8f030be34306e45642f8410f1c0569876",
+    "run": 39406251610,
+    "job": 118573999003
+  },
+  "limits": {
+    "heavy_slots": 2,
+    "heavy_vcpu_each": 4,
+    "heavy_memory_mib_each": 5632,
+    "metadata_slots": 2,
+    "metadata_memory_mib_each": 512,
+    "pool_gib": 30,
+    "guest_root_gib": 16,
+    "job_minutes": {
+      "android": 40,
+      "browser": 25
+    },
+    "browser_case_deadlines_unchanged": true
+  },
+  "later_master_included_in_this_record": false,
+  "latest_source_required_ci": "NOT_RUN",
+  "merged_master_idle_pool_proof": "NOT_RUN",
+  "rollout_gate": "NOT_RUN"
+}

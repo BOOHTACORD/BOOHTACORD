@@ -18,18 +18,17 @@ export function useConversationScreenState(props: ConversationScreenProps) {
   const screenCaptureAvailable = screenCaptureSupported()
   const captureUnavailableMessage = screenCaptureUnavailableMessage()
   const screenExpanded = ref(false)
-  const screenPinned = ref(false)
   const voiceVisible = computed(() => props.visible && !props.directMessage && props.channel?.kind === 'VOICE')
   const voiceChannel = computed(() => props.channel?.kind === 'VOICE' ? props.channel : props.activeVoiceChannel)
-  const miniVisible = computed(() => !screenExpanded.value && miniPlayerVisible(screenPinned.value, voiceVisible.value, props.selectedScreenStreamId, props.activeVoiceChannel?.id ?? null))
-  const keepVoiceRoom = computed(() => screenViewerMounted(screenPinned.value, voiceVisible.value, props.selectedScreenStreamId, props.activeVoiceChannel?.id ?? null))
+  const miniVisible = computed(() => !screenExpanded.value && miniPlayerVisible(voiceVisible.value, props.selectedScreenStreamId, props.activeVoiceChannel?.id ?? null))
+  const keepVoiceRoom = computed(() => screenViewerMounted(voiceVisible.value, props.selectedScreenStreamId, props.activeVoiceChannel?.id ?? null))
   const selectedScreenName = computed(() => props.screenViewerCards.find((screen) => screen.id === props.selectedScreenStreamId)?.participantName ?? null)
   const screenViewerRef = shallowRef<{ selectStream: (id: string) => void } | null>(null)
   let dismissedLocalPreviewId: string | null = null
   const localScreenId = computed(() => props.screenViewerCards.find((screen) => screen.isLocal)?.id ?? null)
   watch(voiceVisible, (visible) => { if (!visible) screenExpanded.value = false })
-  watch(() => props.activeVoiceChannel?.id, () => { screenPinned.value = false; screenExpanded.value = false })
-  watch(() => props.selectedScreenStreamId, (id) => { if (!id) { screenPinned.value = false; screenExpanded.value = false } })
+  watch(() => props.activeVoiceChannel?.id, () => { screenExpanded.value = false })
+  watch(() => props.selectedScreenStreamId, (id) => { if (!id) screenExpanded.value = false })
   watch([localScreenId, () => props.selectedScreenStreamId, () => props.screenViewerEnded], async ([localId, selectedId, ended]) => {
     if (!localId || selectedId !== null || ended || localId === dismissedLocalPreviewId) return
     await nextTick()
@@ -42,6 +41,6 @@ export function useConversationScreenState(props: ConversationScreenProps) {
     screenViewerRef.value?.selectStream(id)
   }
   function dismissLocalPreview(): void { dismissedLocalPreviewId = localScreenId.value }
-  return { screenCaptureAvailable, captureUnavailableMessage, screenExpanded, screenPinned,
+  return { screenCaptureAvailable, captureUnavailableMessage, screenExpanded,
     voiceChannel, miniVisible, keepVoiceRoom, selectedScreenName, screenViewerRef, watchScreen, dismissLocalPreview }
 }

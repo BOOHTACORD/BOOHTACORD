@@ -1,0 +1,116 @@
+{
+  "status": "PASS",
+  "scope": "CICD-12 public base SDK integrity and keyboard-focus regression POC; required CI remains pending",
+  "parent_source": "357a53829f774faf49c01850c7fd6d0468d4af3c",
+  "public_sdk_cache": {
+    "public_sdk_only": true,
+    "rendered_app_assets_prebuilt": false,
+    "node_bootstrap_driver": "/home/runner/actions-runner/externals/node24/bin/node",
+    "node_bootstrap_version": "v24.21.0",
+    "job_node_pin_unchanged": "24.18.0",
+    "playwright_core": "1.63.0",
+    "playwright_core_url": "https://registry.npmjs.org/playwright-core/-/playwright-core-1.63.0.tgz",
+    "playwright_core_integrity": "sha512-rYCsBF/M5HjUch52bbtVONEFjv6Xu8sm8h72dNlR5bzIE1fvC/bxgspzkjSfU+MweEMmPM8KJebG6nnyxo5mCg==",
+    "browser_cache_entries": [
+      "chromium-1243",
+      "chromium_headless_shell-1243",
+      "ffmpeg-1011"
+    ],
+    "browser_versions": [
+      {
+        "name": "chromium",
+        "revision": "1243",
+        "browserVersion": "153.0.8010.12"
+      },
+      {
+        "name": "chromium-headless-shell",
+        "revision": "1243",
+        "browserVersion": "153.0.8010.12"
+      },
+      {
+        "name": "ffmpeg",
+        "revision": "1011",
+        "browserVersion": null
+      }
+    ],
+    "compiler_image": "emscripten/emsdk:4.0.20@sha256:460fff8f8ac87e11b16447fbd66538a686eafa0e4fb977aa0989ed19fe2079f7",
+    "compiler_image_id": "sha256:460fff8f8ac87e11b16447fbd66538a686eafa0e4fb977aa0989ed19fe2079f7",
+    "compiler_repo_digests": [
+      "emscripten/emsdk@sha256:460fff8f8ac87e11b16447fbd66538a686eafa0e4fb977aa0989ed19fe2079f7"
+    ],
+    "compiler_image_size_bytes": 826605948,
+    "browser_cache_owner_uid": 1001
+  },
+  "maintenance": {
+    "all_four_controllers_stopped_before_base_start": true,
+    "base_stopped_before_all_four_controllers_restarted": true,
+    "guest_runner_credentials_absent": true,
+    "application_checkout_absent": true,
+    "application_assets_not_prebuilt": true,
+    "root_github_credentials_not_copied": true,
+    "unprivileged_guest_preflight": "PASS",
+    "cpu_memory_disk_network_limits_unchanged": true,
+    "locked_installs_and_original_assertions_still_execute": true
+  },
+  "hardware_observation": {
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39392868536",
+    "source": "6fb2b1adad23dea3e749a413e072338418a1a4e6",
+    "browser_job": 118528372237,
+    "browser_seconds": 1079,
+    "browser_conclusion": "FAIL",
+    "passed_suites": {
+      "accessibility": 110,
+      "disclosure_axe": 1,
+      "responsive_shell": 26,
+      "control_consistency": 87,
+      "microcopy": 72
+    },
+    "chat_rhythm": {
+      "passed": 52,
+      "failed": 2,
+      "assertion": "toBeFocused",
+      "kinds": [
+        "CHANNEL",
+        "DIRECT_MESSAGE"
+      ]
+    },
+    "scope": "Browser job failed its focus assertions before its unchanged 20-minute deadline. Android was still running when this POC record was written. This is not paired performance acceptance."
+  },
+  "regression": {
+    "reason": "Native disabled palette buttons can lose keyboard focus during asynchronous mutation/refresh. The existing toggle guard already rejects pending/error/loading activation.",
+    "correction": "Use aria-disabled on palette buttons to preserve focus and disabled accessibility semantics; retain the toggle guard. Do not restore focus programmatically after the user moves it.",
+    "deterministic_tests": 4,
+    "before": {
+      "failed": 3,
+      "passed": 1,
+      "assertion": "toBeFocused",
+      "held_mutation_response": true
+    },
+    "after": {
+      "chat_rhythm_cases": 58,
+      "passed": 58,
+      "seconds": 12.0,
+      "typecheck": "PASS",
+      "reaction_client_batch_hint_unit_tests": 8,
+      "full_local_browser_shell": {
+        "status": "PASS",
+        "cases": 386,
+        "seconds": 105.215,
+        "workers": 2,
+        "original_cli_invocations": 8,
+        "existing_dependencies_assets": true
+      }
+    },
+    "coverage": [
+      "CHANNEL and DIRECT_MESSAGE",
+      "focus preserved while request pending and after committed count",
+      "repeated Enter sends one mutation",
+      "explicit focus move remains after response"
+    ],
+    "server_acl_or_dm_privacy_changed": false,
+    "case_timeout_ms_unchanged": 30000,
+    "browser_job_minutes_unchanged": 20
+  },
+  "fresh_full_required_ci": "NOT_RUN",
+  "release_gate": "NOT_RUN"
+}

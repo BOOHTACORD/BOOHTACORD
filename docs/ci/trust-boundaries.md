@@ -1,5 +1,10 @@
 # Actions trust boundaries (CICD-12, #386)
 
+Linux runner routing is superseded by the bounded [disposable Hetzner pool](self-hosted-runners.md).
+PR workspaces and credentials are destroyed after each job; persistent signing
+builder restrictions, environment/source guards and token scopes below still apply.
+Windows/macOS native jobs remain on their matching hosted platforms.
+
 All 26 active workflows, local composite actions and the inactive scheduler fixture reference external
 Actions by reviewed full commit. `tools/verify/action_pins/pins.json` records the
 original ref, resolved commit, upstream source URL and resolution date. The refs
@@ -34,10 +39,10 @@ write access. New ref/environment restrictions still require actual release QA; 
 
 | Workflow(s) | Source / runner / token | Credential or effect boundary |
 | --- | --- | --- |
-| `ci`, `ci-backend`, `ci-contracts`, `ci-flutter`, `ci-frontend`, `flutter-windows` | PR/merge-group/master/manual or reusable; hosted; read | No deployment/signing secrets, no inherited secrets; all applicable gates remain mandatory |
+| `ci`, `ci-backend`, `ci-contracts`, `ci-flutter`, `ci-frontend`, `flutter-windows` | PR/merge-group/master/manual or reusable; disposable Linux pool / hosted Windows; read | No deployment/signing secrets, no inherited secrets; all applicable gates remain mandatory |
 | `client-lifecycle-acceptance`, `next-client-acceptance`, `sfu-snapshot-measure` | PR/manual as declared; hosted; read | Owned isolated test fixtures, no production credentials |
 | `qa-compatible-rollback` | PR/manual; hosted; contents/actions read | Owned isolated signing anchor, immutable retained sources, actual source-bound CI proofs; no production key |
-| `build-server` | master; hosted gates then dedicated self-hosted Linux builder; read | Exact upstream/master/source-impact guard, production environment, all three receipts before signer |
+| `build-server` | master; disposable Linux gates then dedicated self-hosted Linux builder; read | Exact upstream/master/source-impact guard, production environment, all three receipts before signer |
 | `deploy-production` | trusted completed master producer; hosted; contents/actions read | Read-only route before environment; protected installer repeats provenance; serialized production writer |
 | `install-retained-release`, `rehearse-compatible-rollback` | upstream master only; hosted; read | Production environment, existing pinned SSH/provenance/compatible rollback and non-cancellable writer lock |
 | `audit-attachment-volume`, `qa08-active-upload`, `qa11-preflight` | upstream master only; hosted; read | Production environment now required before the existing SSH credential is exposed; dedicated read-only operator separation remains #399 |

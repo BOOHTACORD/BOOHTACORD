@@ -34,7 +34,8 @@ onBeforeUnmount(()=>{alive=false;sequence++;stop()})
     <details class="reaction-picker">
       <summary>{{ canPin ? 'Реакции и закрепление' : 'Реакции' }}</summary>
       <div class="reaction-palette">
-        <button v-for="emoji in emojis" :key="emoji" type="button" :disabled="loading||busy||Boolean(error)" :aria-label="`Реакция ${emoji}`" :aria-pressed="mine(emoji)" @click="toggle(emoji)">{{emoji}}<span v-if="!loading&&!error&&count(emoji)"> {{count(emoji)}}</span></button>
+        <!-- Keep keyboard focus while the guarded mutation and refresh are pending. -->
+        <button v-for="emoji in emojis" :key="emoji" type="button" :aria-disabled="loading||busy||Boolean(error)" :aria-label="`Реакция ${emoji}`" :aria-pressed="mine(emoji)" @click="toggle(emoji)">{{emoji}}<span v-if="!loading&&!error&&count(emoji)"> {{count(emoji)}}</span></button>
         <slot :can-pin="canPin&&!loading&&!error" />
       </div>
     </details>

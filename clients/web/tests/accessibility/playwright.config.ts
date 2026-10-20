@@ -1,10 +1,11 @@
+import { browserRuntime } from '../browser_runtime/workers'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
   testDir: '.',
   testMatch: '*.browser.spec.ts',
-  workers: 1,
+  ...browserRuntime(),
   timeout: 30000,
   reporter: 'list',
   outputDir: '../../../../.out/accessibility-browser-results',

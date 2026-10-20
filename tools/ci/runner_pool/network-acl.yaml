@@ -1,0 +1,25 @@
+description: BOOHTACORD CI public egress only; no host or private networks
+ingress: []
+egress:
+  - action: allow
+    state: enabled
+    destination: 10.231.0.1
+    protocol: udp
+    destination_port: "53,67"
+  - action: allow
+    state: enabled
+    destination: 10.231.0.1
+    protocol: tcp
+    destination_port: "53"
+  - action: reject
+    state: enabled
+    destination: 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,169.254.0.0/16,100.64.0.0/10,127.0.0.0/8,167.233.56.32/32
+  - action: allow
+    state: enabled
+    destination: 176.108.242.211/32
+    protocol: tcp
+    destination_port: "22"
+  - action: allow
+    state: enabled
+    protocol: tcp
+    destination_port: "80,443"

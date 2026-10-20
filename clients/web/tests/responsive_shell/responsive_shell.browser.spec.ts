@@ -167,14 +167,15 @@ test('the channel favorite toggle stays inside its row at responsive widths', as
   }
 })
 
-test('production channel favorites remain reachable when adding a lower channel on narrow drawers', async ({ page, browserName }) => {
-  const shortViewports = [
-    { width: 320, height: 568 },
-    { width: 637, height: 584 },
-    { width: 1024, height: 584 },
-    { width: 1440, height: 584 },
-  ]
-  for (const viewport of [...viewports, ...shortViewports]) {
+const shortFavoriteViewports = [
+  { width: 320, height: 568 },
+  { width: 637, height: 584 },
+  { width: 1024, height: 584 },
+  { width: 1440, height: 584 },
+]
+// Each viewport gets the unchanged per-test timeout and a fresh browser context.
+for (const viewport of [...viewports, ...shortFavoriteViewports]) {
+  test(`production channel favorites remain reachable when adding a lower channel on narrow drawers (${viewport.width}x${viewport.height})`, async ({ page, browserName }) => {
     const { width } = viewport
     await page.setViewportSize(viewport)
     await page.goto('/')
@@ -248,8 +249,8 @@ test('production channel favorites remain reachable when adding a lower channel 
     await expect(favorite).toHaveAttribute('aria-pressed', 'true')
     await expect(favorite).toHaveAccessibleName('Убрать из избранного: Канал 18')
     await expect(favorite).toBeInViewport({ ratio: 0.99 })
-  }
-})
+  })
+}
 
 test('browser Back and Forward close and restore overlays without losing workspace or voice state', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })

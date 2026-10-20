@@ -15,7 +15,7 @@ concurrency:
 jobs:
   changes:
     if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-meta]
     outputs:
       contracts: ${{ steps.select.outputs.contracts }}
       map_version: ${{ steps.select.outputs.map_version }}
@@ -64,7 +64,7 @@ jobs:
     permissions:
       contents: read
       actions: read
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-meta]
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4

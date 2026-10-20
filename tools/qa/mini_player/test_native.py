@@ -111,18 +111,19 @@ class BridgeIntegrity(unittest.TestCase):
             bridge=PublisherBridge(directory,'test-owned-secret',port=0,timeout=.15)
             try:
                 (directory/'publisher-ack.json').write_text('{"request":0,"status":"PASS","actual_publisher_ui":true}')
-                with self.assertRaises(TimeoutError):bridge.control('remove')
-                def publisher():
-                    command=directory/'publisher-command.json'
-                    old=json.loads(command.read_text())['request']
-                    for _ in range(100):
-                        current=json.loads(command.read_text())
-                        if current['request']!=old:
-                            ack=directory/'ack.pending';ack.write_text(json.dumps({'request':current['request'],'status':'FAIL','actual_publisher_ui':True}));ack.replace(directory/'publisher-ack.json');return
-                        time.sleep(.005)
-                worker=threading.Thread(target=publisher);worker.start()
-                with self.assertRaises(RuntimeError):bridge.control('publish')
-                worker.join(timeout=1)
+                with patch('tools.qa.mini_player.bridge.time.monotonic', side_effect=[0, 0, .2]), \
+                        patch('tools.qa.mini_player.bridge.time.sleep'):
+                    with self.assertRaises(TimeoutError):bridge.control('remove')
+                def publisher(_duration):
+                    current=json.loads((directory/'publisher-command.json').read_text())
+                    ack=directory/'ack.pending'
+                    ack.write_text(json.dumps({'request':current['request'],'status':'FAIL','actual_publisher_ui':True}))
+                    ack.replace(directory/'publisher-ack.json')
+                # Inject the owned response after the new command is visible,
+                # independent of thread scheduling and host filesystem latency.
+                with patch('tools.qa.mini_player.bridge.time.monotonic', side_effect=[0, 0, .01]), \
+                        patch('tools.qa.mini_player.bridge.time.sleep', side_effect=publisher):
+                    with self.assertRaises(RuntimeError):bridge.control('publish')
             finally:bridge.server.server_close()
 
 

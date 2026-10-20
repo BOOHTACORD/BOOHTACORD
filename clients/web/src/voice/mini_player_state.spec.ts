@@ -13,11 +13,11 @@ function selectedScreen(): ScreenViewerCard {
   return { hasAudio: true, id: 'remote:screen', participantId: 'remote', participantName: 'Участник', isLocal: false }
 }
 
-describe('pinned screen mini player state', () => {
-  it('stops showing the viewer after navigation unless the user pinned it', () => {
+describe('screen mini player state', () => {
+  it('keeps the selected stream in the mini player after navigation without pinning', () => {
     const props = reactive({
-      visible: false,
-      channel: channel('text', 'TEXT') as TopologyChannel | null,
+      visible: true,
+      channel: channel('voice', 'VOICE') as TopologyChannel | null,
       activeVoiceChannel: channel('voice', 'VOICE') as TopologyChannel | null,
       directMessage: null,
       selectedScreenStreamId: 'remote:screen' as string | null,
@@ -28,13 +28,16 @@ describe('pinned screen mini player state', () => {
     let state!: ReturnType<typeof useConversationScreenState>
     scope.run(() => { state = useConversationScreenState(props) })
 
-    expect(state.screenPinned.value).toBe(false)
-    expect(state.keepVoiceRoom.value).toBe(false)
+    expect(state.keepVoiceRoom.value).toBe(true)
     expect(state.miniVisible.value).toBe(false)
+    props.channel = channel('text', 'TEXT')
+    props.visible = false
+    expect(state.keepVoiceRoom.value).toBe(true)
+    expect(state.miniVisible.value).toBe(true)
     scope.stop()
   })
 
-  it('reuses the pinned viewer reference from full view through mini view and back', async () => {
+  it('reuses the same viewer reference through voice, text and return navigation', async () => {
     const voice = channel('voice', 'VOICE')
     const props = reactive({
       visible: true,
@@ -50,7 +53,6 @@ describe('pinned screen mini player state', () => {
     scope.run(() => { state = useConversationScreenState(props) })
     const viewer = { selectStream: vi.fn() }
     state.screenViewerRef.value = viewer
-    state.screenPinned.value = true
 
     expect(state.keepVoiceRoom.value).toBe(true)
     expect(state.miniVisible.value).toBe(false)
@@ -74,13 +76,12 @@ describe('pinned screen mini player state', () => {
     scope.stop()
   })
 
-  it('expands a pinned chat viewer and returns to the same mini player without reselecting', async () => {
+  it('expands the chat viewer and returns to the same mini player without reselecting', async () => {
     const props = reactive({ visible: true, channel: channel('text', 'TEXT'), activeVoiceChannel: channel('voice', 'VOICE'), directMessage: null,
       selectedScreenStreamId: 'remote:screen' as string | null, screenViewerCards: [selectedScreen()], screenViewerEnded: false })
     const scope = effectScope()
     let state!: ReturnType<typeof useConversationScreenState>
     scope.run(() => { state = useConversationScreenState(props) })
-    state.screenPinned.value = true
     await nextTick()
     state.screenExpanded.value = true
     await nextTick()
@@ -92,12 +93,13 @@ describe('pinned screen mini player state', () => {
     expect(state.miniVisible.value).toBe(true)
     props.selectedScreenStreamId = null
     await nextTick()
-    expect(state.screenPinned.value).toBe(false)
     expect(state.screenExpanded.value).toBe(false)
+    expect(state.keepVoiceRoom.value).toBe(false)
+    expect(state.miniVisible.value).toBe(false)
     scope.stop()
   })
 
-  it('unpins and removes the mini viewer after stop, logout or lease revoke', async () => {
+  it('removes the mini viewer after stop, logout or lease revoke', async () => {
     const props = reactive({
       visible: false,
       channel: channel('text', 'TEXT') as TopologyChannel | null,
@@ -110,17 +112,12 @@ describe('pinned screen mini player state', () => {
     const scope = effectScope()
     let state!: ReturnType<typeof useConversationScreenState>
     scope.run(() => { state = useConversationScreenState(props) })
-    state.screenPinned.value = true
     expect(state.miniVisible.value).toBe(true)
 
     state.screenExpanded.value = true
     props.activeVoiceChannel = null
     await nextTick()
     expect(state.screenExpanded.value).toBe(false)
-    expect(state.screenPinned.value).toBe(false)
-    props.selectedScreenStreamId = null
-    await nextTick()
-    expect(state.screenPinned.value).toBe(false)
     expect(state.keepVoiceRoom.value).toBe(false)
     expect(state.miniVisible.value).toBe(false)
     scope.stop()

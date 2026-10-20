@@ -1,0 +1,218 @@
+"""Root-owned host controller: one JIT runner and one fresh unprivileged guest per job."""
+import argparse
+from datetime import datetime, timezone
+import json
+import os
+from pathlib import Path
+import secrets
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+import time
+
+if __package__:
+    from .diagnostics import capture as capture_health
+else:
+    from diagnostics import capture as capture_health
+
+API = 'repos/Egkurilov/BOOHTACORD/actions/runners'
+BASE = 'boohtacord-ci-base'
+RUNTIME = Path(os.environ.get('RUNTIME_DIRECTORY', '/run/boohtacord-ci'))
+LABELS = ['self-hosted', 'linux', 'x64', 'boohtacord-ci-ephemeral']
+CPUSETS = {'1': '0-3', '2': '4-7', '3': '0-0', '4': '4-4'}
+HEAVY_MEMORY_MIB = 5632
+
+
+class OperationError(RuntimeError):
+    """A bounded host operation failed, rather than controller shutdown."""
+
+
+def command(args, *, stdin=None, timeout=120, quiet=False, check=True):
+    if args[0] == 'lxc':
+        args = ['/snap/lxd/current/bin/lxc', *args[1:]]
+    result = subprocess.run(args, input=stdin, text=True, timeout=timeout,
+                            stdout=subprocess.DEVNULL if quiet else subprocess.PIPE,
+                            stderr=subprocess.STDOUT if not quiet else subprocess.DEVNULL)
+    if check and result.returncode:
+        # Never include subprocess output: registration responses contain credentials.
+        raise OperationError('Runner operation failed: ' + ' '.join(args[:2]) + ' status ' + str(result.returncode))
+    return result.stdout or ''
+
+
+def verify_base():
+    data = json.loads(command(['lxc', 'query', '/1.0/instances/' + BASE]))
+    config, devices = data['expanded_config'], data['expanded_devices']
+    if not (config.get('security.privileged') == 'false'
+            and config.get('security.idmap.isolated') == 'true'
+            and config.get('limits.cpu') == '4' and config.get('limits.memory') == str(HEAVY_MEMORY_MIB) + 'MiB'
+            and set(devices) == {'root', 'eth0'}
+            and devices['root'].get('type') == 'disk' and devices['root'].get('path') == '/'
+            and devices['root'].get('pool') == 'boohtacord-ci'
+            and not devices['root'].get('source')
+            and devices['eth0'].get('type') == 'nic'
+            and devices['eth0'].get('network') == 'boohtaci0'):
+        raise ValueError('CI base isolation differs from the approved pool')
+
+
+def wait_for_boot(guest):
+    # lxc start returns before guest PID 1 has created its system bus.
+    deadline = time.monotonic() + 120
+    while time.monotonic() < deadline:
+        state = command(['lxc', 'exec', guest, '--disable-stdin', '--', 'systemctl',
+                         'is-system-running'], check=False, timeout=15).strip()
+        if state in ('running', 'degraded'):
+            return
+        time.sleep(2)
+    raise RuntimeError('Guest boot is not ready for registration')
+
+
+def agent_state(execute):
+    # A failed observation must not immediately destroy a healthy running job.
+    # Retry read-only status queries only; never retry registration or execution.
+    for attempt in range(3):
+        try:
+            raw = command([*execute, 'show', 'boohtacord-agent', '-p', 'ActiveState', '-p', 'ExecMainStatus'], timeout=15)
+            return dict(line.split('=', 1) for line in raw.splitlines() if '=' in line)
+        except (OperationError, subprocess.TimeoutExpired):
+            if attempt == 2:
+                raise
+            time.sleep(2)
+
+
+def retire_idle(identity):
+    # GitHub rejects removal of a busy runner. Retire there before deleting an
+    # idle guest so a job cannot be assigned between an idle check and teardown.
+    try:
+        result = subprocess.run(['gh', 'api', '--method', 'DELETE', API + '/' + str(identity)],
+                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=30)
+        return result.returncode == 0
+    except (subprocess.TimeoutExpired, OSError):
+        return False
+
+
+def monitor_agent(execute, identity):
+    deadline = time.monotonic() + 6 * 60 * 60
+    grace = False
+    unavailable = False
+    while True:
+        try:
+            state = agent_state(execute)
+            if unavailable:
+                print('CI agent status observation recovered', file=sys.stderr)
+            unavailable = False
+        except (OperationError, subprocess.TimeoutExpired):
+            # Losing an observer transport is not evidence that the job ended.
+            # Keep its guest; the same absolute lifetime bound still applies.
+            if not unavailable:
+                print('CI agent status unavailable; retaining guest within lifetime bound', file=sys.stderr)
+            unavailable = True
+            state = {}
+        if state.get('ActiveState') in ('inactive', 'failed'):
+            if state.get('ExecMainStatus') != '0':
+                raise RuntimeError('Guest agent exited unsuccessfully')
+            return False
+        if time.monotonic() >= deadline:
+            if grace:
+                raise RuntimeError('Guest agent exceeded maximum execution time')
+            if retire_idle(identity):
+                return True
+            # A job assigned late in the idle window still receives the full
+            # GitHub job budget. API unavailability gets the same bounded grace.
+            deadline = time.monotonic() + 6 * 60 * 60
+            grace = True
+        time.sleep(5)
+
+
+def cycle(slot):
+    if slot not in ('1', '2', '3', '4'):
+        raise ValueError('Only four bounded CI slots are configured')
+    verify_base()
+    guest = 'boohtacord-ci-' + slot
+    command(['lxc', 'delete', '--force', guest], check=False)
+    identity = None
+    token_path = None
+    try:
+        clone = ['lxc', 'copy', BASE, guest, '--ephemeral', '--config', 'limits.cpu=' + CPUSETS[slot]]
+        metadata = slot in ('3', '4')
+        if metadata:
+            clone += ['--config', 'limits.memory=512MiB']
+        command(clone)
+        command(['lxc', 'start', guest])
+        wait_for_boot(guest)
+        # Ubuntu needrestart may otherwise restart the agent during an APT
+        # transaction. Protect only this disposable guest's job-critical units
+        # before registration; normal package updates remain enabled.
+        source = Path(__file__).parent
+        command(['lxc', 'exec', guest, '--disable-stdin', '--', 'install', '-d',
+                 '-m', '0755', '/etc/needrestart/conf.d'])
+        command(['lxc', 'file', 'push', str(source / 'needrestart.conf'),
+                 guest + '/etc/needrestart/conf.d/boohtacord-ci.conf',
+                 '--uid', '0', '--gid', '0', '--mode', '0644'])
+        name = ('BOOHTACORD-Hetzner-CI-' + slot + '-' +
+                datetime.now(timezone.utc).strftime('%H%M%S') + '-' + secrets.token_hex(3))
+        labels = LABELS if not metadata else [*LABELS[:3], 'boohtacord-ci-meta']
+        # Match hosted workspace depth so public cache tar relative paths resolve
+        # to the same /opt/hostedtoolcache and /home/runner cache locations.
+        payload = json.dumps(dict(name=name, runner_group_id=1, labels=labels,
+                                  work_folder='/home/runner/work'))
+        registration = json.loads(command(['gh', 'api', '--method', 'POST', API + '/generate-jitconfig',
+                                           '--input', '-'], stdin=payload))
+        identity = registration['runner']['id']
+        RUNTIME.mkdir(mode=0o700, parents=True, exist_ok=True)
+        with tempfile.NamedTemporaryFile(mode='w', dir=RUNTIME, delete=False) as stream:
+            token_path = Path(stream.name)
+            stream.write(registration['encoded_jit_config'])
+        command(['lxc', 'file', 'push', str(token_path), guest + '/home/runner/.jit',
+                 '--uid', '1001', '--gid', '1001', '--mode', '0600'])
+        token_path.unlink()
+        token_path = None
+        command(['lxc', 'file', 'push', str(source / 'start-runner.sh'),
+                 guest + '/home/runner/actions-runner/start-ci.sh', '--mode', '0755'])
+        command(['lxc', 'file', 'push', str(source / 'guest-runner.service'),
+                 guest + '/etc/systemd/system/boohtacord-agent.service', '--mode', '0644'])
+        execute = ['lxc', 'exec', guest, '--disable-stdin', '--', 'systemctl']
+        command([*execute, 'daemon-reload'])
+        command([*execute, 'start', 'boohtacord-agent'])
+        # The agent is owned by guest PID 1, independent of a long-lived LXD exec session.
+        if monitor_agent(execute, identity):
+            identity = None  # Already retired atomically while it was idle.
+    finally:
+        if token_path is not None:
+            token_path.unlink(missing_ok=True)
+        try:
+            try:
+                capture_health(guest, command)
+            except OperationError:
+                pass
+        finally:
+            command(['lxc', 'delete', '--force', guest], timeout=120, check=False)
+            if identity is not None:
+                command(['gh', 'api', '--method', 'DELETE', API + '/' + str(identity)], check=False)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('slot', choices=('1', '2', '3', '4'))
+    args = parser.parse_args()
+    def stop(_signum, _frame):
+        raise RuntimeError('Worker shutdown')
+    signal.signal(signal.SIGTERM, stop)
+    try:
+        while True:
+            if shutil.disk_usage('/').free < 5 * 1024 ** 3:
+                raise RuntimeError('Host disk reserve reached')
+            usage = json.loads(command(['lxc', 'query', '/1.0/storage-pools/boohtacord-ci/resources']))['space']
+            if usage['total'] - usage['used'] < 2 * 1024 ** 3:
+                raise RuntimeError('CI storage reserve reached')
+            cycle(args.slot)
+            time.sleep(2)
+    except RuntimeError as error:
+        raise SystemExit(str(error)) from None
+    except Exception as error:
+        raise SystemExit('CI worker cycle failed: ' + type(error).__name__ + '; guest cleanup attempted') from None
+
+
+if __name__ == '__main__':
+    main()

@@ -24,7 +24,7 @@ jobs:
   install:
     if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
     environment: production
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     timeout-minutes: 30
     env:
       DEPLOY_SERVER_IP: 176.108.242.211

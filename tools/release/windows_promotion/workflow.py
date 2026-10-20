@@ -1,4 +1,5 @@
 """No auto-merge, mixed write scopes, skipped CI or production writer readback."""
+from tools.ci.runner_pool.routing import LINUX
 from .intent import require
 
 PERMISSIONS={'push-candidate':{'contents':'write','pull-requests':'read'},
@@ -11,7 +12,7 @@ def validate(documents):
         workflow=documents['promote-windows-client-update.yaml'];jobs=workflow['jobs']
         require(set(jobs)==set(PERMISSIONS) and workflow['concurrency']=={'group':'windows-client-update-promotion','cancel-in-progress':'false'})
         for name,permissions in PERMISSIONS.items():
-            job=jobs[name];require(job['permissions']==permissions and job['environment']=='production' and job['runs-on']=='ubuntu-24.04')
+            job=jobs[name];require(job['permissions']==permissions and job['environment']=='production' and job['runs-on']==LINUX)
             require(not job.get('continue-on-error'))
             for step in job['steps']:
                 require(not step.get('continue-on-error') and 'gh pr merge' not in step.get('run','') and '--auto' not in step.get('run',''))
@@ -29,7 +30,7 @@ def validate(documents):
         require(readback['on']['workflow_run']=={'workflows':['Deploy production'],'branches':['master'],'types':['completed']}
                 and readback['permissions']=={'contents':'read','actions':'read','pull-requests':'read'})
         job=readback['jobs']['readback']
-        require(job['runs-on']=='ubuntu-24.04' and not job.get('environment') and not job.get('concurrency')
+        require(job['runs-on']==LINUX and not job.get('environment') and not job.get('concurrency')
                 and not job.get('secrets') and not job.get('continue-on-error'))
         commands=[s for s in job['steps'] if 'run' in s]
         require([s['run'] for s in commands]==['python -m tools.ci.toolchains.runtime python','python -m tools.release.windows_promotion.readback']

@@ -22,7 +22,7 @@ class StackLinuxRuntimeTests(unittest.TestCase):
 
         args = container.call_args.args
         self.assertEqual(args[:2], ('api', stack.image))
-        self.assertIn(('--tmpfs', '/attachments:rw,noexec,nosuid,nodev,uid=65532,gid=65532,mode=700'),
+        self.assertIn(('--tmpfs', '/attachments:rw,noexec,nosuid,nodev,uid=65532,gid=65532,mode=700,size=4g'),
                       list(zip(args, args[1:])))
         self.assertIn(('--publish', '127.0.0.1:4820:8080'), list(zip(args, args[1:])))
         self.assertIn('ATTACHMENTS_DIRECTORY=/attachments', args)

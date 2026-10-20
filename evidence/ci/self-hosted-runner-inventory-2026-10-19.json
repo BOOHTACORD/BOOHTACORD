@@ -1,0 +1,353 @@
+{
+  "status": "IN_PROGRESS",
+  "scope": "CICD-12 runner isolation and scheduling; dependency CICD-01 metadata baseline",
+  "source_commit": "768b81e3",
+  "observed_at_utc": "2026-10-20T01:18:00Z",
+  "sample": "20 most recent workflow runs; all returned jobs, bounded first page up to 100 per run",
+  "timing_limitations": "Execution seconds only for completed jobs; overlapping runs, not host CPU utilization or a complete historical capacity estimate",
+  "job_labels": {
+    "ubuntu-24.04": {
+      "jobs": 116,
+      "completed_seconds": 17746.0,
+      "queued": 0
+    },
+    "ubuntu-latest": {
+      "jobs": 7,
+      "completed_seconds": 231.0,
+      "queued": 0
+    },
+    "macos-26": {
+      "jobs": 2,
+      "completed_seconds": 49.0,
+      "queued": 0
+    },
+    "windows-2022": {
+      "jobs": 14,
+      "completed_seconds": 5580.0,
+      "queued": 0
+    },
+    "self-hosted,linux,x64,boohtacord-builder": {
+      "jobs": 1,
+      "completed_seconds": 0,
+      "queued": 0
+    }
+  },
+  "self_hosted_ui_inventory": [
+    {
+      "id": 3,
+      "name": "BOOHTACORD-Hetzner-DB",
+      "os": "Linux x64",
+      "status": "Idle",
+      "labels": [
+        "self-hosted",
+        "X64",
+        "Linux",
+        "boohtacord-hetzner",
+        "boohtacord-hetzner-db"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "BOOHTACORD-Hetzner-Web",
+      "os": "Linux x64",
+      "status": "Idle",
+      "labels": [
+        "self-hosted",
+        "X64",
+        "Linux",
+        "boohtacord-hetzner",
+        "boohtacord-builder"
+      ]
+    }
+  ],
+  "host_capacity": {
+    "cpu": 8,
+    "memory_mib": 15604,
+    "initial_available_memory_mib": 11864,
+    "initial_root_disk_available_gb": 22,
+    "ssh_user": "root",
+    "host": "167.233.56.32",
+    "ssh_host_ed25519_first_seen": "SHA256:zZXholI21wJkZlna6zwSg0b1XCRGut109wqDry/lhAI",
+    "base_image_fingerprint": "12a0de07e1683f41b169af0612897eae462efdeb84322281e91724c97e32fe0d"
+  },
+  "actions_taken": [
+    "Fetched latest master",
+    "Created isolated managed worktree; original edits preserved",
+    "Read GitHub runner settings and bounded public Actions metadata"
+  ],
+  "external_mutations": [
+    "Installed official Ubuntu LXD and GitHub CLI packages",
+    "Owner completed GitHub CLI authorization on Hetzner; root-only account configuration outside guests",
+    "Created bounded Btrfs CI pool, unprivileged UID-isolated base, private nested Docker and egress ACL",
+    "Started JIT controllers; existing signing/DB runners preserved",
+    "Removed approximately 5.4 GB of old unused Docker build cache (regenerable cache only)"
+  ],
+  "rollout_constraints": [
+    "User authorized multiple Linux runner instances on existing Hetzner hosts; no new paid capacity ordered",
+    "Measure CPU, available memory, disk and existing services before selecting parallelism",
+    "Keep PR CI isolated from production, database and the signing builder; separate disposable workers needed before routing PR code",
+    "Backend PostgreSQL service currently binds host port 5432; duplicates require isolated per-job networks/VMs or dynamic ports",
+    "Windows and Apple native builds need their matching OS/architecture/toolchain",
+    "Preserve artifact/provenance gates, production environments, source guards and serialized deployment locks"
+  ],
+  "next_inputs": [],
+  "source_urls": [
+    "https://github.com/Egkurilov/BOOHTACORD/settings/actions/runners",
+    "https://github.com/Egkurilov/BOOHTACORD/actions"
+  ],
+  "local_checks": "1147 canonical Python tests PASS (53.062s);32 focused runner-pool tests PASS after executable memory-proof regression;18 Node fixture and26 responsive tests previously PASS, browser source unchanged.",
+  "rollout_gate": "Latest mastere738c370 included. One fresh5.5GiB Android job PASS in1726s including setup/upload; second pending. Old5GiB proof assertion missed during budget update, now tied to controller constant with executable regression test. Source-bound final full CI/proof pending.",
+  "resource_limits": {
+    "heavy_slots": 2,
+    "heavy_cpu_each": 4,
+    "metadata_slots": 2,
+    "metadata_cpu_each": 1,
+    "metadata_memory_mib_each": 512,
+    "ci_btrfs_pool_gib": 30,
+    "guest_root_limit_gib": 16,
+    "minimum_host_disk_reserve_gib": 5,
+    "maximum_cpu_placements": 10,
+    "cpu_sets": {
+      "1": "0-3",
+      "2": "4-7",
+      "3": "0-0",
+      "4": "4-4"
+    },
+    "filesystem_compression": "zstd:3",
+    "metadata_cpu_sharing": "Metadata shares CPU 0 and 4 with heavy slots; eight host vCPU in total, not ten reserved CPUs",
+    "guest_memory_ceiling_gib": 12,
+    "host_memory_reserve_gib_approx": 3.2,
+    "heavy_memory_gib_each": 5.5
+  },
+  "pool_acceptance": {
+    "status": "PASS",
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39324247882",
+    "run_attempt": 1,
+    "source_commit": "c8503f724624cf2f921ace9fdc69010d8953a82d",
+    "checks": [
+      "Two isolated PostgreSQL-service probes succeeded on heavy slots",
+      "Two metadata probes succeeded with 512 MiB memory limit",
+      "Completed job registrations disappeared and fresh guest runner IDs appeared"
+    ],
+    "limit": "All four probes passed with bounded read-only observation retry. Required application CI revealed an existing unresolvable cold Java pin; correction keeps the same reviewed runtime.",
+    "heavy_cpu_each": 2
+  },
+  "isolation_limit": "Unprivileged UID-isolated containers share the host kernel; no hardware VM isolation or media capacity claim.",
+  "controller_sha256": {
+    "worker.py": "116d17e271d130a78d94af4905babebc844022fe1326dc26f76a00fd9ac9e0f6",
+    "guest-runner.service": "160a3ba76c3aeea41e8368e94c5c5dd8019b87d18413ea05809b42e90ac43d62",
+    "start-runner.sh": "8b582fd3a00e7c7305f51eb470da10e99bc3349cdb8f4903586027c19cce614c",
+    "diagnostics.py": "8bd1f07a586766549d72140f604456699d2bd2ced6935a8f3266bffeebf5c629"
+  },
+  "cpu_tuning": {
+    "status": "FAIL",
+    "previous_heavy_cpu_each": 2,
+    "new_heavy_cpu_each": 3,
+    "unchanged_heavy_memory_gib_each": 4,
+    "preserved_dart_timeout_minutes": 20,
+    "timed_out_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39325508851/job/118311100763",
+    "started_at_utc": "2026-10-19T21:28:19Z",
+    "completed_at_utc": "2026-10-19T21:48:57Z",
+    "reason": "The full Dart/app/vendor profile exceeded the existing 20-minute wall budget on two vCPU. Keep the complete tests and budget; allocate three vCPU per heavy slot within the eight-vCPU host.",
+    "pool_proof_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39331218419",
+    "pool_proof_status": "PASS",
+    "flutter_test_processes": 2,
+    "test_process_reason": "test_core defaults to floor(numberOfProcessors / 2). Both native profiles and the immutable-source shadow control explicitly use two test processes in marked Linux guests; hosted/local commands retain SDK defaults.",
+    "historical_trial": true
+  },
+  "local_full_python": {
+    "status": "PASS",
+    "runner": "tools.verify.python_tests.run",
+    "tests": 1143,
+    "seconds": 53.627,
+    "platform": "macOS arm64",
+    "python": "3.14.8",
+    "exit_code": 0,
+    "limit": "The canonical Linux CI run remains required; platform-dependent test counts differ."
+  },
+  "contract_fixture_fix": {
+    "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39331849269/job/118331726640",
+    "reason": "Vendor lock unit fixture assumed the SDK-default test argv in every runtime. It now explicitly exercises local and disposable contexts and asserts lock preparation precedes locked pub resolution, which precedes every vendor test."
+  },
+  "publisher_ack_fixture_fix": {
+    "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39333752241/job/118337995628",
+    "reason": "A background test thread could read the old nonce only after the next command was published, causing an unexpected timeout and late access to a removed temporary directory. The stale/failed-ACK unit case now uses a controlled clock and injects the matching failed response after command publication. Real HTTP and nonce round-trip checks remain separate.",
+    "focused_tests": 10,
+    "focused_status": "PASS"
+  },
+  "affinity_stabilization": {
+    "status": "IN_PROGRESS",
+    "observed_assignments_for_one_live_guest": [
+      "4-6",
+      "1-3",
+      "0-1,7"
+    ],
+    "sampled_cpu_counts": [
+      3
+    ],
+    "previous_probe_failure_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39333745399/job/118337972451",
+    "previous_probe_failure_cause": "UNVERIFIED: the old pre-SQL resource assertion emitted no measured values. CPU remapping was observed, but an out-of-bound count was not captured.",
+    "configuration_parser_check": "PASS: LXD accepted explicit single-core ranges 6-6 and 7-7 in a temporary profile, which was then deleted.",
+    "changes": "Pin all four CPU sets; preserve strict memory/CPU/freshness assertions and emit their non-sensitive numeric diagnostics.",
+    "deployment": "PASS: all four controllers active; running guests expose CPU counts 3, 3, 1, 1 and memory limits 4 GiB, 4 GiB, 512 MiB, 512 MiB."
+  },
+  "storage_and_lost_communication": {
+    "status": "IN_PROGRESS",
+    "previous_ci_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39337652809",
+    "failed_jobs": [
+      118351944625,
+      118351944711
+    ],
+    "github_annotation": "Self-hosted runner lost communication",
+    "cause": "UNVERIFIED: both agents lost communication while the pool approached its space limit. No host-kernel OOM entries or explicit ENOSPC in the available Android log. Old guests were already recycled, so their final counters were unavailable.",
+    "cache_path_defect": "Hosted public cache archives used five parent traversals, but the original nested actions-runner/_work checkout was six levels deep; tar could not restore the SDK location. New absolute work root /home/runner/work matches hosted depth.",
+    "operations": [
+      "Stopped only the four CI controllers after cancelling this failed CI run",
+      "Removed 2.3 GiB regenerable root Go build cache",
+      "Enabled transparent Btrfs compress=zstd:3 and compressed only the stopped CI base",
+      "Preserved the 20 GiB pool, 16 GiB roots, CPU/memory limits, and existing DB/Web services"
+    ],
+    "base_pool_used_bytes_before": 7504879616,
+    "base_pool_used_bytes_after": 4310286336,
+    "host_free_after_gib_approx": 19,
+    "diagnostics": "Latest root-only numeric health receipt per slot; bounded time/output/log tails, strict integer allowlist, no guest log text or tokens copied."
+  },
+  "four_cpu_trial": {
+    "status": "FAIL",
+    "reason": "The complete Dart job exceeded its unchanged 20-minute budget with three vCPU and two test processes. Increase CPU visibility to the reviewed four-vCPU baseline while metadata shares one CPU in each half. Memory and storage bounds stay unchanged.",
+    "previous_ci_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39342680160",
+    "previous_dart_job": 118368432325,
+    "annotation": "The job has exceeded the maximum execution time of 20m0s",
+    "observed_live_oom_kill": 0,
+    "observed_live_no_space_errors": 0,
+    "previous_pool_proof_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39342674466",
+    "previous_pool_proof_status": "PASS",
+    "test_processes": 2,
+    "heavy_cpu_each": 4,
+    "heavy_memory_gib_each": 4,
+    "metadata_memory_mib_each": 512,
+    "local_focused_tests": 37,
+    "local_focused_status": "PASS",
+    "limit": "A CPU allocation is not a throughput or media capacity claim; the full application gate remains pending.",
+    "historical_trial": true,
+    "outcome": "Four CPUs with two Dart test processes still exceeded the unchanged 20-minute timeout in job 118380462358. No assertion failure was observed in available output."
+  },
+  "current_pool_acceptance": {
+    "status": "PASS",
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39346376232",
+    "source_commit": "be94eb75daea0f5a0c0b6540ba785d1f045e254a",
+    "heavy_cpu_each": 4,
+    "heavy_memory_gib_each": 4,
+    "metadata_cpu_each": 1,
+    "metadata_memory_mib_each": 512,
+    "checks": [
+      "Two distinct PostgreSQL-service probes",
+      "Two distinct metadata probes",
+      "Four completed registrations recycled to fresh IDs"
+    ],
+    "limit": "Historical uniform4GiB proof atf3b73ddd; does not establish the final4/6GiB resource routing. Repeat proof on final source."
+  },
+  "observer_correction": {
+    "status": "PASS",
+    "focused_tests": 25,
+    "failed_android_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39346381098/job/118380462300",
+    "observed_failure": "Host lxc exec status 143 triggered guest teardown while the GitHub job was still running. Origin of the signal remains UNVERIFIED.",
+    "correction": "Use direct official LXD client and retain a guest through read-only status failures within the unchanged absolute lifetime bound; do not swallow shutdown.",
+    "deployment": "All controller files updated; slot1/meta restarted. Slot2 current native Android diagnostic preserved through main pause, must restart before final proof."
+  },
+  "browser_matrix_correction": {
+    "status": "PASS",
+    "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39346381098/job/118380462249",
+    "cause": "One test iterated 16 viewport cases under a single 30-second budget; locator.evaluate timed out without a layout assertion failure.",
+    "correction": "Parameterize all 16 cases with fresh contexts and the same 30-second per-test timeout. All assertions, viewports, large-text checks, keyboard and ARIA checks retained.",
+    "controlled_latency_before": "FAIL: original combined test exceeded 30 seconds with Playwright slowMo 300 ms",
+    "controlled_latency_after": "PASS: 16 cases in 41.2 seconds total with the same slowMo and per-test timeout",
+    "native_full_suite": {
+      "status": "PASS",
+      "tests": 26,
+      "seconds": 9.9,
+      "node": "24.18.0",
+      "playwright": "1.63.0",
+      "platform": "macOS arm64"
+    },
+    "limit": "Final Linux browser CI remains required; no application UI changed."
+  },
+  "dart_process_trial": {
+    "status": "PASS",
+    "test_processes": 4,
+    "heavy_cpu_each": 4,
+    "memory_gib_each": 4,
+    "preserved_timeout_minutes": 20,
+    "scope": "App and both vendors; native and frozen-source shadow delegates use the same policy only in approved marked guests. Hosted/local defaults unchanged.",
+    "manual_diagnostic_limit": "Retained guest after completed cancelled CI job, reused verified SDK, clean build outputs and fresh pub cache. Not a GitHub or release gate. Final CI must use fresh guests.",
+    "manual_diagnostic": {
+      "status": "PASS",
+      "release_gate": "NOT_RUN",
+      "retained_diagnostic_guest": true,
+      "sdk_reused": true,
+      "fresh_pub_cache": true,
+      "test_processes": 4,
+      "source_revision": "78f0fad523a21e66102e045cec2986cce49fac6c",
+      "app_input_tree": "cb167132c94f55ca5c31ac37f883e4d3b4296260",
+      "policy_sha256": "a44e91f895780034f6614bb99d5981d6a0c5be98c5233e8acbee15d3e5d4bd5c",
+      "cpu_count": 4,
+      "memory_max": "4294967296",
+      "phases": [
+        {
+          "command": "python3",
+          "elapsed_seconds": 0.19
+        },
+        {
+          "command": "flutter",
+          "elapsed_seconds": 19.95
+        },
+        {
+          "command": "flutter",
+          "elapsed_seconds": 582.14
+        },
+        {
+          "command": "flutter",
+          "elapsed_seconds": 8.17
+        },
+        {
+          "command": "flutter",
+          "elapsed_seconds": 80.85
+        },
+        {
+          "command": "flutter",
+          "elapsed_seconds": 3.15
+        },
+        {
+          "command": "flutter",
+          "elapsed_seconds": 27.67
+        },
+        {
+          "command": "flutter",
+          "elapsed_seconds": 73.42
+        }
+      ],
+      "build_outputs_cleaned": true,
+      "elapsed_seconds": 804.5,
+      "completed_operations": [
+        "public-headers",
+        "app-dependencies",
+        "app-tests",
+        "livekit-locks",
+        "livekit-dependencies",
+        "livekit-tests",
+        "webrtc-locks",
+        "webrtc-dependencies",
+        "webrtc-tests",
+        "app-analysis"
+      ],
+      "visual_count": 35,
+      "observed_oom_kill": 0,
+      "observed_dirty_paths": [
+        "tools/ci/flutter_gates/profiles.py"
+      ]
+    }
+  },
+  "next_diagnostic_evidence": "evidence/ci/self-hosted-next-runtime-diagnostic-2026-10-20.json",
+  "android_memory_evidence": "evidence/ci/self-hosted-android-memory-2026-10-20.json",
+  "android_disk_correction_evidence": "evidence/ci/self-hosted-android-memory-2026-10-20.json"
+}

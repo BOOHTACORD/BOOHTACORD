@@ -1,4 +1,6 @@
 """Finite read-only native control derived from the immutable original workflow."""
+from tools.ci.runner_pool.routing import LINUX
+from tools.ci.toolchains.auxiliary import policy
 import copy
 import hashlib
 import json
@@ -22,6 +24,7 @@ def definition():
         raise ValueError('Native control template differs from its original workflow')
     old = yaml.load(original, Loader=yaml.BaseLoader)['jobs']['flutter']
     legacy = copy.deepcopy(old)
+    legacy['runs-on'] = LINUX
     legacy.update({'name': 'legacy-${{ matrix.sample }}', 'timeout-minutes': 40,
                    'strategy': {'fail-fast': False, 'max-parallel': 1, 'matrix': {'sample': [1, 2, 3]}},
                    'env': {'FLUTTER_EVIDENCE_NAMESPACE': 'shadow-old-${{ matrix.sample }}'}})
@@ -30,6 +33,10 @@ def definition():
                 'bash tools/verify/android_kotlin/verify_android_kotlin_modes.sh': 'python3 -m tools.ci.flutter_gates.legacy kotlin',
                 'python3 -m tools.build.android.run --debug': 'python3 -m tools.ci.flutter_gates.legacy apk'}
     for step in legacy['steps']:
+        if step.get('uses', '').startswith('actions/setup-java@'):
+            # Both cohorts use the resolvable official pin for the same runtime;
+            # the original source bytes and phase inventory stay frozen.
+            step['with']['java-version'] = policy(ROOT)['java']
         if step.get('run') in commands:
             step['run'] = commands[step['run']]
         if step.get('uses') == UPLOAD:
@@ -41,7 +48,7 @@ def definition():
         {'name': 'Retain complete original source-bound execution', 'if': 'always()', 'uses': UPLOAD,
          'with': {'name': 'flutter-legacy-${{ env.FLUTTER_EVIDENCE_NAMESPACE }}-' + IDENTITY,
                   'path': '.out/ci/flutter-legacy.json', 'if-no-files-found': 'error', 'retention-days': 30}}])
-    compare = {'if': 'always()', 'needs': ['legacy', 'profiles'], 'runs-on': 'ubuntu-24.04', 'timeout-minutes': 5,
+    compare = {'if': 'always()', 'needs': ['legacy', 'profiles'], 'runs-on': LINUX, 'timeout-minutes': 5,
                'env': {'FLUTTER_EVIDENCE_NAMESPACE': 'shadow-compare'},
                'steps': [copy.deepcopy(old['steps'][0]), copy.deepcopy(old['steps'][1]), copy.deepcopy(old['steps'][2])]}
     for prefix, pattern in [('legacy', 'flutter-legacy-shadow-old-*-'), ('profile', 'flutter-part-shadow-new-*-')]:

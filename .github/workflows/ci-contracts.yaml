@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   contracts:
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -32,6 +32,8 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .node-version
+      - name: Test bounded disposable browser worker policy
+        run: node --test clients/web/tests/browser_runtime/workers.test.mjs
       - name: Test owned browser startup and failure diagnostic privacy
         run: node --test tools/qa/client_lifecycle/login_diagnostics.test.mjs tools/qa/next_client_acceptance/failure.test.mjs
       - name: Test shared immutable native release publication
@@ -42,7 +44,7 @@ jobs:
         run: python -m pip install -r tools/requirements-ci.txt -r tools/verify/openapi_parity/requirements.txt
       - name: Verify reviewed Actions pins, least privilege and source trust
         run: |
-          python3 -m unittest tools.verify.action_pins.test_policy tools.verify.action_pins.test_local tools.verify.action_pins.test_trust tools.verify.action_pins.test_lint
+          python3 -m unittest tools.verify.action_pins.test_policy tools.verify.action_pins.test_local tools.verify.action_pins.test_trust tools.verify.action_pins.test_lint tools.ci.runner_pool.test_worker tools.ci.runner_pool.test_routing tools.ci.runner_pool.test_guest_updates
           python3 -m tools.verify.action_pins.run
           python3 -m tools.verify.action_pins.lint
       - name: Verify SDK cache invalidation and unconditional checks
