@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "criterion": "control-matrix",
+  "status": "PASS",
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "scope": "actual",
+  "executed": true,
+  "evidence": [
+    {
+      "path": "evidence/ci/control-matrix-688925dc-2026-10-20.json",
+      "sha256": "6ce5f73a0176433a0628362f8e912253bf2b90674e94297ee6ab99933e965dcd"
+    }
+  ],
+  "cases": [
+    {
+      "name": "docs-only",
+      "status": "PASS",
+      "base_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+      "actual_workflow": true,
+      "run_id": 39375411183,
+      "pr": 478,
+      "head": "923cee1ff750f0ef3b663fa96fc0c1c94979a424",
+      "tested_merge": "d49057b845ad26314549a8ed2d0ae7089ea783d0",
+      "tree": "2b3639a91724393c80ef466e0ce3932106b55463"
+    },
+    {
+      "name": "backend",
+      "status": "PASS",
+      "base_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+      "actual_workflow": true,
+      "run_id": 39375417071,
+      "pr": 479,
+      "head": "474646ef57daed94037ad8cfa9dc8208ae42502f",
+      "tested_merge": "c9c5d10bc77b1e1a4595db650448f4636d40f370",
+      "tree": "f671e1cc99a2abdc2e4d2bdc1c0dbbe8626a93d2"
+    },
+    {
+      "name": "web",
+      "status": "PASS",
+      "base_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+      "actual_workflow": true,
+      "run_id": 39375423803,
+      "pr": 480,
+      "head": "46733613444393ad0c7abbc8ee56bd438f707251",
+      "tested_merge": "440f6dfa247fd205c246c0ee148f61707ec6c58d",
+      "tree": "69094c12490885217c93f568ac8b3181f305a326"
+    },
+    {
+      "name": "flutter",
+      "status": "PASS",
+      "base_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+      "actual_workflow": true,
+      "run_id": 39375432937,
+      "pr": 481,
+      "head": "dd36a18636914e0fda44abf818b7ad25d3a97670",
+      "tested_merge": "ffd947e424ab2ac8d03a56c33d5cd531bd80cad9",
+      "tree": "d1628bb97581254275eb9bdb6e0f6f8a011eec5e"
+    },
+    {
+      "name": "windows",
+      "status": "PASS",
+      "base_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+      "actual_workflow": true,
+      "run_id": 39375457699,
+      "pr": 482,
+      "head": "490aa1f6633db38b5f8c9464e77cee5f8edb616f",
+      "tested_merge": "9bd70000a002a1586cf2124e4412e374b27e40bf",
+      "tree": "7da622382fb6804b343cdf442d1244aa3bd011ce"
+    },
+    {
+      "name": "contracts",
+      "status": "PASS",
+      "base_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+      "actual_workflow": true,
+      "run_id": 39375464220,
+      "pr": 483,
+      "head": "544b9aab570f0ea833d5fb07797aabc404eb6313",
+      "tested_merge": "2f0d077a544eaa06bd3dd35413c68119bff7dd97",
+      "tree": "aadb7729f9652162889af1aa433c0b65e1aeb764"
+    },
+    {
+      "name": "shared",
+      "status": "PASS",
+      "base_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+      "actual_workflow": true,
+      "run_id": 39375469807,
+      "pr": 484,
+      "head": "89e1e30dbcd3707cf59839c6108e15c7656ac194",
+      "tested_merge": "8da14d5a77ab1676e4631ed49228b089dffac93a",
+      "tree": "4b91956f036b509843d1e4afa502e65109ae7771"
+    },
+    {
+      "name": "unknown",
+      "status": "PASS",
+      "base_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+      "actual_workflow": true,
+      "run_id": 39375477384,
+      "pr": 485,
+      "head": "50604fbe647b47c8decbf26b30f685a72064cdeb",
+      "tested_merge": "96de9e873ab83ce012a4ff94154f918627c93b97",
+      "tree": "9af3124997116da93cace0ffbbfc030d4622bade"
+    }
+  ],
+  "actual_runtime": true,
+  "mocks": false
+}

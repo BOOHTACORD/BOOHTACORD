@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "scope": "repository-required-status-admin-readback",
+  "status": "PASS",
+  "reviewed_source": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "repository": "Egkurilov/BOOHTACORD",
+  "ruleset_id": 25434147,
+  "enforcement": "active",
+  "target": "branch",
+  "conditions": {
+    "ref_name": {
+      "exclude": [],
+      "include": [
+        "refs/heads/master"
+      ]
+    }
+  },
+  "bypass_actors": [],
+  "rules": [
+    {
+      "type": "deletion"
+    },
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          {
+            "context": "ci-required",
+            "integration_id": 15368
+          }
+        ]
+      }
+    }
+  ],
+  "repository_settings_changed": false,
+  "independent_final_owner_go": "NOT_RUN"
+}

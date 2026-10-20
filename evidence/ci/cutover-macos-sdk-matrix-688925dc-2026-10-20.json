@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "criterion": "macos-sdk-matrix",
+  "status": "PASS",
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "scope": "actual",
+  "executed": true,
+  "evidence": [
+    {
+      "path": "evidence/ci/cutover-component-equivalence-688925dc-2026-10-20.json",
+      "sha256": "b3b7fa09f2b884eb3c56a872310a7364da176d43a591c9044b54130f78e7f808"
+    },
+    {
+      "path": "evidence/ci/macos-sdk-final-2026-10-20.json",
+      "sha256": "4ea18896a93409d634ea15366cfeb6eb56d01721d6e361aee72fb33d997155cb"
+    }
+  ],
+  "both_architectures_verified": true,
+  "native_route_tests_passed": true,
+  "actual_runtime": true,
+  "mocks": false
+}
