@@ -2,6 +2,12 @@
 STAGES = {'browser-launch', 'api-ready', 'login', 'fixture-setup', 'reload', 'uploads', 'unread', 'navigation', 'receipt'}
 MODULES = {'scenario.mjs', 'fixture.mjs', 'native_browser.mjs', 'uploads.mjs', 'unread.mjs', 'navigation.mjs',
            'cache_acl.mjs', 'navigation_fixture.mjs', 'window_visibility.mjs', 'input_files.mjs', 'revocation_sql.mjs'}
+KINDS = {'other', 'timeout', 'navigation-interrupted', 'target-closed', 'page-crashed', 'execution-context-destroyed',
+         'protocol-context-missing', 'protocol-error', 'strict-locator', 'frame-detached',
+         'ERR_CONNECTION_REFUSED', 'ERR_CONNECTION_CLOSED', 'ERR_CONNECTION_RESET', 'ERR_CONNECTION_TIMED_OUT',
+         'ERR_TIMED_OUT', 'ERR_ABORTED', 'ERR_NETWORK_CHANGED', 'ERR_NAME_NOT_RESOLVED', 'ERR_CERT_AUTHORITY_INVALID',
+         'ERR_EMPTY_RESPONSE', 'ERR_SSL_PROTOCOL_ERROR'}
+SIGNALS = {'SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT', 'SIGBUS', 'SIGFPE', 'SIGKILL', 'SIGSEGV', 'SIGPIPE', 'SIGTERM', 'other'}
 
 
 def require(condition):
@@ -13,9 +19,22 @@ def integer(value, low=0, high=1_000_000_000):
 
 
 def validate_context(row):
-    require(isinstance(row, dict) and set(row) == {'schema_version', 'status', 'stage', 'failure_type', 'frames'})
-    require(type(row['schema_version']) is int and row['schema_version'] == 1 and row['status'] == 'FAIL')
-    require(row['stage'] in STAGES and row['failure_type'] in {'Error', 'TimeoutError', 'AssertionError'})
+    require(isinstance(row, dict) and type(row.get('schema_version')) is int and row['schema_version'] in (1, 2))
+    version=row['schema_version']; fields={'schema_version', 'status', 'stage', 'failure_type', 'frames'}
+    if version == 2 and 'capture_failure_kind' in row:
+        fields.add('capture_failure_kind')
+        require(row['capture_failure_kind'] in KINDS)
+    require(set(row) == fields | ({'failure_kind', 'native_process'} if version == 2 else set()))
+    require(row['status'] == 'FAIL' and row['stage'] in STAGES | ({'origin-navigation'} if version == 2 else set())
+            and row['failure_type'] in {'Error', 'TimeoutError', 'AssertionError'})
+    if version == 2:
+        require(row['failure_kind'] in KINDS)
+        native=row['native_process']
+        if native is not None:
+            require(isinstance(native, dict) and set(native) == {'browser_connected', 'page_closed', 'exit_code', 'signal'})
+            require(type(native['browser_connected']) is bool and type(native['page_closed']) is bool)
+            require(native['exit_code'] is None or integer(native['exit_code'], 0, 255))
+            require(native['signal'] is None or native['signal'] in SIGNALS)
     require(isinstance(row['frames'], list) and len(row['frames']) <= 8)
     for frame in row['frames']:
         require(isinstance(frame, dict) and set(frame) == {'module', 'line', 'column'})
