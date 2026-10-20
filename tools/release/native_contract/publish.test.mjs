@@ -8,7 +8,8 @@ import { publishContract } from './publisher.mjs'
 
 const apiRoot='https://api.example.test'
 const source='a'.repeat(40)
-const context={repository:'Egkurilov/BOOHTACORD',source_revision:source,tag:'android-v1.0.15',execution:{run_id:'12',run_attempt:'1'}}
+const context={repository:'Egkurilov/BOOHTACORD',source_revision:source,tag:'android-v1.0.15',execution:{run_id:'12',run_attempt:'1'},
+  source_ref:'refs/tags/android-v1.0.15',source_event:'push',trigger_revision:source}
 
 async function fixture(body) {
   return withAsset(Buffer.from('public synthetic release bytes'),async asset=>{
@@ -101,7 +102,7 @@ test('the same transport contract publishes Android, Windows and macOS metadata'
   for(const platform of ['android','windows','macos'])await fixture(async(asset,contract)=>{
     contract.platform=platform;contract.tag=platform+'-v1.0.15';contract.source_ref='refs/tags/'+contract.tag
     contract.signing={status:platform==='macos'?'adhoc':platform==='windows'?'unsigned':'signed'}
-    const local={...context,tag:contract.tag};const remote=server(asset)
+    const local={...context,tag:contract.tag,source_ref:contract.source_ref};const remote=server(asset)
     const result=await publishContract({contract,directory:path.dirname(asset.path),context:local,token:'fixture',apiRoot,...remote,sleep:async()=>{}})
     assert.equal(result.release.tag_name,contract.tag)
     if(platform==='macos')assert.match(result.release.body,/not notarized/)
@@ -109,9 +110,43 @@ test('the same transport contract publishes Android, Windows and macOS metadata'
 })
 
 test('annotated remote tag peels to the exact approved commit',async()=>fixture(async(asset,contract)=>{
+  contract.trigger_revision='b'.repeat(40)
+  const annotatedContext={...context,trigger_revision:contract.trigger_revision}
   const remote=server(asset)
   const fetchImpl=async(url,init)=>String(url).includes('/git/ref/tags/')?json({object:{type:'tag',sha:'b'.repeat(40)}}):
     String(url).includes('/git/tags/')?json({object:{type:'commit',sha:source}}):remote.fetchImpl(url,init)
-  const result=await publishContract({contract,directory:path.dirname(asset.path),context,token:'fixture',apiRoot,fetchImpl,sleep:async()=>{}})
+  const result=await publishContract({contract,directory:path.dirname(asset.path),context:annotatedContext,token:'fixture',apiRoot,fetchImpl,sleep:async()=>{}})
   assert.equal(result.release.draft,false)
 }))
+
+test('existing protected master dispatch can publish each exact canonical tag',async()=>{
+  for(const platform of ['android','windows','macos'])await fixture(async(asset,contract)=>{
+    Object.assign(contract,{platform,tag:platform+'-v1.0.15',source_ref:'refs/heads/master',source_event:'workflow_dispatch'})
+    const local={...context,tag:contract.tag,source_ref:contract.source_ref,source_event:contract.source_event}
+    const remote=server(asset)
+    const result=await publishContract({contract,directory:path.dirname(asset.path),context:local,token:'fixture',apiRoot,...remote,sleep:async()=>{}})
+    assert.equal(result.release.draft,false)
+    assert.equal(result.release.target_commitish,source)
+  })
+})
+
+test('manual master cannot publish without actual matching event, source and verified tag',async()=>{
+  for(const kind of ['event','ref','trigger','both-event','both-ref','both-trigger','verified','candidate','remote-tag'])await fixture(async(asset,contract)=>{
+    Object.assign(contract,{source_ref:'refs/heads/master',source_event:'workflow_dispatch'})
+    const local={...context,source_ref:contract.source_ref,source_event:contract.source_event}
+    if(kind==='event')local.source_event='push'
+    if(kind==='ref')local.source_ref='refs/heads/foreign'
+    if(kind==='trigger')local.trigger_revision='b'.repeat(40)
+    if(kind==='both-event')contract.source_event=local.source_event='push'
+    if(kind==='both-ref')contract.source_ref=local.source_ref='refs/heads/foreign'
+    if(kind==='both-trigger')contract.trigger_revision=local.trigger_revision='b'.repeat(40)
+    if(kind==='verified')contract.tag_verified=false
+    if(kind==='candidate')contract.release_mode='candidate'
+    const remote=server(asset)
+    const fetchImpl=kind==='remote-tag'?(url,init)=>String(url).includes('/git/ref/tags/')?
+      json({object:{type:'commit',sha:'b'.repeat(40)}}):remote.fetchImpl(url,init):remote.fetchImpl
+    await assert.rejects(publishContract({contract,directory:path.dirname(asset.path),context:local,token:'fixture',apiRoot,fetchImpl,sleep:async()=>{}}))
+    assert.equal(remote.calls.some(([method])=>method!=='GET'),false)
+    if(kind!=='remote-tag')assert.equal(remote.calls.length,0)
+  })
+})
