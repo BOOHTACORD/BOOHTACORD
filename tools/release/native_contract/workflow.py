@@ -2,6 +2,7 @@
 from .source import PLATFORMS, require
 
 PUBLISH_IF="github.event_name != 'workflow_dispatch' || !inputs.dry_run"
+NATIVE_ENVIRONMENT="${{ startsWith(github.ref, 'refs/tags/') && 'native-release' || 'production' }}"
 
 
 def command(job,text):
@@ -18,7 +19,7 @@ def validate(workflows):
             require(doc['on']['workflow_dispatch']['inputs']['dry_run']['type']=='boolean'
                     and doc['on']['workflow_dispatch']['inputs']['dry_run']['default']=='false')
             require(job['runs-on']=={'android':'ubuntu-24.04','windows':'windows-2022','macos':'macos-26'}[platform]
-                    and job['environment']=='production' and job['permissions']=={'contents':'write'})
+                    and job['environment']==NATIVE_ENVIRONMENT and job['permissions']=={'contents':'write'})
             checkouts=[s for s in steps if s.get('uses','').startswith('actions/checkout@')]
             require(len(checkouts)==1 and checkouts[0]['with']=={'persist-credentials':'false','fetch-depth':'0'})
             require(job.get('env') == {'NATIVE_RELEASE_DRY_RUN':"${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && 'true' || 'false' }}"})

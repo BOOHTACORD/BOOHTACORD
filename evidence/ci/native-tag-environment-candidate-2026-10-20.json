@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "status": "CONFIGURATION_PENDING",
+  "issues": [
+    386,
+    396,
+    382
+  ],
+  "base_revision": "a946915037619d9d46a229c2ed60ba51a70a1ba7",
+  "finding": "Stable native jobs require canonical tags, while production permits only master. Existing master candidates do not prove tagged publishing can enter its environment.",
+  "observed_settings": {
+    "production": {
+      "id": 23142546512,
+      "branches": [
+        "master"
+      ],
+      "tags": [],
+      "reviewers": [
+        "Pistol121"
+      ],
+      "prevent_self_review": true,
+      "admin_bypass": false
+    },
+    "native_signing_secret_location": "Existing four Android keystore secret names read back at repository scope; values not accessed. Production environment has server SSH/signing secrets, not copied."
+  },
+  "proposed_settings": {
+    "native-release": {
+      "branches": [],
+      "tags": [
+        "android-v*",
+        "windows-v*",
+        "macos-v*"
+      ],
+      "reviewers": [
+        "Pistol121"
+      ],
+      "prevent_self_review": true,
+      "admin_bypass": false,
+      "new_secrets": []
+    },
+    "tag_rulesets": [
+      {
+        "name": "native-tags-admin-create",
+        "patterns": [
+          "refs/tags/android-v*",
+          "refs/tags/windows-v*",
+          "refs/tags/macos-v*"
+        ],
+        "enforcement": "active",
+        "rules": [
+          "creation"
+        ],
+        "bypass": "Repository administrators only"
+      },
+      {
+        "name": "native-tags-immutable",
+        "patterns": [
+          "refs/tags/android-v*",
+          "refs/tags/windows-v*",
+          "refs/tags/macos-v*"
+        ],
+        "enforcement": "active",
+        "rules": [
+          "update",
+          "deletion"
+        ],
+        "bypass": []
+      }
+    ]
+  },
+  "checks": {
+    "test_first": "Two new focused tests produced five expected assertion failures before implementation.",
+    "after_implementation": {
+      "python_tests": 18,
+      "status": "PASS",
+      "modules": [
+        "tools.release.native_contract.test_workflow",
+        "tools.verify.action_pins.test_trust",
+        "tools.release.native_contract.test_source"
+      ]
+    },
+    "native_workflow_policy": "PASS",
+    "action_pin_policy": "PASS:34 workflows,2 local actions",
+    "actionlint": "PASS"
+  },
+  "scope": {
+    "settings_applied": false,
+    "native_candidate": "NOT_RUN",
+    "stable_publication": "NOT_RUN",
+    "production_mutation": false,
+    "new_env_must_be_protected_before_merge": true,
+    "server_input_equivalence": "Changing tools/release/native_contract/workflow.py and test_workflow.py invalidates the current strict server runtime-input equivalence after merge. Do not weaken the guard or relabel retained producer evidence."
+  }
+}

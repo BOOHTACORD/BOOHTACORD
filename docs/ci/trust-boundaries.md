@@ -42,9 +42,9 @@ write access. New ref/environment restrictions still require actual release QA; 
 | `install-retained-release`, `rehearse-compatible-rollback` | upstream master only; hosted; read | Production environment, existing pinned SSH/provenance/compatible rollback and non-cancellable writer lock |
 | `audit-attachment-volume`, `qa08-active-upload`, `qa11-preflight` | upstream master only; hosted; read | Production environment now required before the existing SSH credential is exposed; dedicated read-only operator separation remains #399 |
 | `flutter-macos` | fast fixtures plus explicit upstream-master full build; disposable hosted macOS; read | No persistent Mac or signing secret; exact Apple toolchain, source-bound artifacts; actual hosted acceptance remains separate (#400) |
-| `android-release` | upstream master/manual or matching tag class; hosted; quality read, publisher contents write | Production environment, native quality dependency, signing queue, existing keystore/publisher verification |
-| `windows-release` | upstream master/manual or matching tag class; hosted; publisher contents write | Production environment, existing package/version/identity/publish guards, native signing queue |
-| `macos-release` | upstream matching macOS tag/manual; hosted; publisher contents write | Production environment, existing exact tag/version, ad-hoc signature/checksums; no notarization claim |
+| `android-release` | upstream master dry-run or matching tag class; hosted; quality read, publisher contents write | Tag-only `native-release`; master candidates retain `production`; native quality dependency, signing queue, existing keystore/publisher verification |
+| `windows-release` | upstream master dry-run or matching tag class; hosted; publisher contents write | Tag-only `native-release`; master candidates retain `production`; existing package/version/identity/publish guards, native signing queue |
+| `macos-release` | upstream master dry-run or matching macOS tag/manual; hosted; publisher contents write | Tag-only `native-release`; master candidates retain `production`; exact tag/version, ad-hoc signature/checksums; no notarization claim |
 | `webrtc-macos-sdk` | hosted arm64/x64 build read; upstream master publish contents write | Production-protected publish only; immutable SDK recipe/assets; no SDK rebuild added to PR |
 | `native-candidate-builds` | hosted recovery fixture read; Android signing upstream master only | Signing job enters production; legacy feature-branch push cannot access the keystore |
 | `desktop-updater-acceptance`, `windows-updater-acceptance` | hosted fixture jobs read; publishers upstream master only | Production-protected fixture publishing; legacy feature-branch publish triggers intentionally receive no write-capable job |
@@ -70,6 +70,11 @@ python3 -m unittest tools.verify.action_pins.test_policy tools.verify.action_pin
 python3 -m tools.verify.action_pins.run
 python3 -m tools.verify.action_pins.lint
 ```
+
+Native tag routing requires the protected environment to exist **before merge**.
+See [native environment configuration](native-release-contracts.md#required-environment-configuration)
+for reviewers, tag allowlists and tag rulesets. Do not allow native tags in the
+production/diagnostics environments: old tags may contain historical operator jobs.
 
 ## External acceptance still required
 

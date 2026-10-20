@@ -31,6 +31,13 @@ GUARDS = {
     ('install-retained-release.yaml', 'install'): MASTER,
 }
 DIAGNOSTICS = {('audit-attachment-volume.yaml','audit'),('qa08-active-upload.yaml','sample'),('qa11-preflight.yaml','inspect')}
+NATIVE = {(platform+'-release.yaml',platform+'-release') for platform in ('android','windows','macos')}
+
+
+def environment_for(identity):
+    if identity in NATIVE:
+        return "${{ startsWith(github.ref, 'refs/tags/') && 'native-release' || 'production' }}"
+    return 'production-diagnostics' if identity in DIAGNOSTICS else 'production'
 
 WRITERS = {('android-release.yaml', 'android-release'), ('windows-release.yaml', 'windows-release'),
            ('macos-release.yaml', 'macos-release'), ('webrtc-macos-sdk.yaml', 'publish'),
@@ -92,9 +99,9 @@ def check(workflows):
             if untrusted:
                 require(not persistent and not secrets and all(v == 'read' for v in permissions.values()))
             if identity in GUARDS:
-                require(job.get('if') == GUARDS[identity] and job.get('environment') == ('production-diagnostics' if identity in DIAGNOSTICS else 'production'))
+                require(job.get('if') == GUARDS[identity] and job.get('environment') == environment_for(identity))
             if persistent or secrets:
-                require(identity in GUARDS and job.get('environment') == ('production-diagnostics' if identity in DIAGNOSTICS else 'production'))
+                require(identity in GUARDS and job.get('environment') == environment_for(identity))
             for step in job.get('steps', []):
                 require(step.get('continue-on-error') in (None, False, 'false'))
                 if step.get('uses', '').startswith('actions/checkout@'):

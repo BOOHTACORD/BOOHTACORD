@@ -14,6 +14,20 @@ class TrustBoundaryTests(unittest.TestCase):
     def test_current_trust_matrix(self):
         check(self.workflows)
 
+    def test_native_tag_boundary_cannot_replace_master_operator_environment(self):
+        expected="${{ startsWith(github.ref, 'refs/tags/') && 'native-release' || 'production' }}"
+        for platform in ('android','windows','macos'):
+            name=platform+'-release.yaml';job_id=platform+'-release'
+            self.assertEqual(self.workflows[name]['jobs'][job_id]['environment'],expected)
+            for environment in ('production','native-release',None):
+                broken=copy.deepcopy(self.workflows)
+                broken[name]['jobs'][job_id]['environment']=environment
+                with self.subTest(platform=platform,environment=environment),self.assertRaises(ValueError):check(broken)
+        for name,job_id in [('build-server.yaml','bundle'),('deploy-production.yaml','install'),
+                            ('qa11-preflight.yaml','inspect')]:
+            broken=copy.deepcopy(self.workflows);broken[name]['jobs'][job_id]['environment']=expected
+            with self.subTest(operator=name),self.assertRaises(ValueError):check(broken)
+
     def test_untrusted_pr_cannot_get_write_self_hosted_or_signing_credentials(self):
         updates = [{'permissions': {'contents': 'write'}}, {'runs-on': ['self-hosted', 'linux']},
                    {'env': {'KEY': '${{ secrets.RELEASE_SIGNING_PRIVATE_KEY }}'}}]

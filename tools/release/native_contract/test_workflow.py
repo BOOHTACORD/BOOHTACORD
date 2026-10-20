@@ -10,6 +10,15 @@ ROOT=Path(__file__).resolve().parents[3]
 class WorkflowTests(unittest.TestCase):
     def documents(self):return {p.name:yaml.load(p.read_text(),Loader=yaml.BaseLoader) for p in (ROOT/'.github/workflows').glob('*.yaml')}
     def test_current_contracts(self):validate(self.documents())
+    def test_tags_have_separate_environment_without_expanding_production(self):
+        expected="${{ startsWith(github.ref, 'refs/tags/') && 'native-release' || 'production' }}"
+        for platform in ('android','windows','macos'):
+            with self.subTest(platform=platform):
+                self.assertEqual(self.documents()[platform+'-release.yaml']['jobs'][platform+'-release']['environment'],expected)
+        for environment in ('production','native-release',None,
+                "${{ startsWith(github.ref, 'refs/tags/') && 'production' || 'native-release' }}"):
+            d=self.documents();d['android-release.yaml']['jobs']['android-release']['environment']=environment
+            with self.subTest(environment=environment),self.assertRaises(ValueError):validate(d)
     def test_source_skip_foreign_publisher_missing_manifest_and_candidate_bypass_fail(self):
         for change in ('source','fetch','assets','publisher','dry-run','retention','legacy','replacement'):
             d=self.documents();job=d['android-release.yaml']['jobs']['android-release']

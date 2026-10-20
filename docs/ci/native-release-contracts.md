@@ -30,6 +30,29 @@ The publisher independently rejects every candidate contract. A normal stable
 dispatch must use the matching existing tag; dispatching master with dry_run=false
 fails before toolchain setup/signing. macOS remains manual-only.
 
+### Required environment configuration
+
+Before merging the tag-environment change, configure `native-release` with
+Required reviewers `Pistol121`, Prevent self-review enabled and administrator
+bypass disabled. Select tags only: `android-v*`, `windows-v*`, `macos-v*`.
+No branches or production SSH/signing secrets belong in this environment.
+Android keeps its existing repository keystore secrets; their values are not
+copied or exposed by configuration readback. Models of platform signing stay
+unchanged. A tag candidate also uses this protected environment.
+
+Native tag jobs select `native-release`; master dry-run jobs retain `production`.
+Keep `production` and `production-diagnostics` master-only: adding native tag
+patterns there could authorize historical operator workflows from old tags.
+Configure the new environment before merging: a missing environment can otherwise
+be created automatically without protection when a workflow first references it.
+The code policy verifies routing, not remote reviewer/settings enforcement.
+
+Protect all three canonical tag namespaces with active tag rulesets: restrict
+creation to repository administrators, and forbid updates/deletions without a
+bypass. These settings do not retroactively validate old releases or grant native
+tag workflows production deployment authority. Read back settings and retain
+actual native candidate evidence before accepting the release gate.
+
 The obsolete feature-branch/retained-run-ID candidate workflow is removed.
 The standalone Unicode/extended-path C++ regression and portable recovery
 preflight move to the mandatory Windows native-unit job. Full native recovery/GUI

@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "run_id": 39377129056,
+  "run_attempt": 1,
+  "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39377129056",
+  "original_artifact": {
+    "id": 12246770463,
+    "name": "web-ci-shadow-688925dc36bfc3f8c65a590053e0f1e91651cf8d-39377129056-1",
+    "size_in_bytes": 1089,
+    "sha256": "bf2dd3c0f4fb4fcd42331dbcbd7c6deb04885a2b1e59906adb94ef80595093d4",
+    "download_digest_verified": true
+  },
+  "report": {
+    "coverage": {
+      "legacy_operations": 38,
+      "original_coverage_preserved": true,
+      "profile_operations": 40
+    },
+    "failure_observation": {
+      "legacy_failed": 0,
+      "profiles_failed": 0,
+      "samples_per_arm": 3
+    },
+    "legacy_reference_revision": "0ed1cd91e3eeb2891afd06b1b51a6c19eca16d91",
+    "legacy_source_sha256": "5347eb64dae13cf622c86cfb7f7e9a501e81fc95dfc282f4de157108313e23c5",
+    "plan_sha256": "54ae5dcab3d07562378950d00d382ec270964e508cfbae336528d5892690179b",
+    "run_attempt": 1,
+    "run_id": 39377129056,
+    "samples": {
+      "legacy": [
+        {
+          "created_to_first_start_seconds": 18.0,
+          "critical_seconds": 1344.0,
+          "driver_critical_seconds": 1326.441449,
+          "job_ids": [
+            118477683472
+          ],
+          "runner_minutes": 22.4,
+          "sample": 1
+        },
+        {
+          "created_to_first_start_seconds": 1365.0,
+          "critical_seconds": 1287.0,
+          "driver_critical_seconds": 1270.143315,
+          "job_ids": [
+            118477683552
+          ],
+          "runner_minutes": 21.45,
+          "sample": 2
+        },
+        {
+          "created_to_first_start_seconds": 2654.0,
+          "critical_seconds": 1120.0,
+          "driver_critical_seconds": 1103.714163,
+          "job_ids": [
+            118477683368
+          ],
+          "runner_minutes": 18.666667,
+          "sample": 3
+        }
+      ],
+      "profiles": [
+        {
+          "created_to_first_start_seconds": 64.0,
+          "critical_seconds": 661.0,
+          "driver_critical_seconds": 492.938818,
+          "job_ids": [
+            118477683528,
+            118477683697,
+            118481010848,
+            118477683695,
+            118477683673,
+            118477683789
+          ],
+          "runner_minutes": 25.066667,
+          "sample": 1
+        },
+        {
+          "created_to_first_start_seconds": 2.0,
+          "critical_seconds": 510.0,
+          "driver_critical_seconds": 480.058086,
+          "job_ids": [
+            118481077064,
+            118481077046,
+            118483552870,
+            118481077247,
+            118481077171,
+            118481077213
+          ],
+          "runner_minutes": 26.333333,
+          "sample": 2
+        },
+        {
+          "created_to_first_start_seconds": 3.0,
+          "critical_seconds": 514.0,
+          "driver_critical_seconds": 479.903121,
+          "job_ids": [
+            118483602323,
+            118483602312,
+            118486074758,
+            118483602355,
+            118483602380,
+            118483602427
+          ],
+          "runner_minutes": 25.466667,
+          "sample": 3
+        }
+      ]
+    },
+    "schema_version": 1,
+    "scope": "Actual job execution including SDK/setup/uploads/fan-in; n=3 nearest-rank descriptive statistics. Initial wait can include deliberate serial sampling. No general CI SLO, flake-rate or media capacity claim.",
+    "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+    "status": "PASS",
+    "summary": {
+      "legacy": {
+        "critical_seconds": {
+          "p50": 1287.0,
+          "p95": 1344.0
+        },
+        "n": 3,
+        "runner_minutes": {
+          "p50": 21.45,
+          "p95": 22.4
+        }
+      },
+      "profiles": {
+        "critical_seconds": {
+          "p50": 514.0,
+          "p95": 661.0
+        },
+        "n": 3,
+        "runner_minutes": {
+          "p50": 25.466667,
+          "p95": 26.333333
+        }
+      }
+    }
+  },
+  "limits": [
+    "n=3 prescribed independent samples per arm, not failure retries",
+    "Original archive hash and embedded source verified; original input receipts and API job intervals still require independent collection before canonical same-sha-suite-shadows acceptance",
+    "No assertion rerun; no native/production acceptance"
+  ]
+}
