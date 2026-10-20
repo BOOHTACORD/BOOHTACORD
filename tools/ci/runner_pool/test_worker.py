@@ -9,14 +9,17 @@ from . import worker
 
 
 class WorkerTests(unittest.TestCase):
-    def test_cpu_sets_partition_the_eight_cpu_host_without_overlap(self):
+    def test_heavy_guests_cover_host_and_metadata_share_one_cpu_per_half(self):
         allocations = []
         for slot in ('1', '2', '3', '4'):
             start, end = map(int, worker.CPUSETS[slot].split('-'))
             allocations.append(set(range(start, end + 1)))
-        self.assertEqual([3, 3, 1, 1], list(map(len, allocations)))
+        self.assertEqual([4, 4, 1, 1], list(map(len, allocations)))
         self.assertEqual(set(range(8)), set().union(*allocations))
-        self.assertEqual(8, sum(map(len, allocations)))
+        self.assertFalse(allocations[0] & allocations[1])
+        self.assertEqual({0}, allocations[2])
+        self.assertEqual({4}, allocations[3])
+        self.assertEqual(10, sum(map(len, allocations)))
 
     def test_idle_retirement_never_treats_busy_or_failed_api_as_success(self):
         with patch.object(worker.subprocess, 'run', return_value=SimpleNamespace(returncode=1)) as run:
@@ -102,7 +105,7 @@ class WorkerTests(unittest.TestCase):
             worker.cycle('2')
             self.assertFalse(list(Path(temporary).iterdir()))
         self.assertIn(['lxc', 'delete', '--force', 'boohtacord-ci-2'], calls)
-        self.assertIn('limits.cpu=3-5', next(row for row in calls if row[:2] == ['lxc', 'copy']))
+        self.assertIn('limits.cpu=4-7', next(row for row in calls if row[:2] == ['lxc', 'copy']))
         self.assertIn(['gh', 'api', '--method', 'DELETE', worker.API + '/44'], calls)
 
     def test_metadata_slot_cannot_receive_a_heavy_linux_job(self):
@@ -121,7 +124,7 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(['self-hosted', 'linux', 'x64', 'boohtacord-ci-meta'], payloads[0]['labels'])
         self.assertEqual('/home/runner/work', payloads[0]['work_folder'])
         self.assertIn('limits.memory=512MiB', clones[0])
-        self.assertIn('limits.cpu=6-6', clones[0])
+        self.assertIn('limits.cpu=0-0', clones[0])
 
     def test_rejects_an_unknown_slot_before_creating_resources(self):
         with patch.object(worker, 'command') as command:
@@ -158,7 +161,7 @@ class WorkerTests(unittest.TestCase):
 
     def test_refuses_privileged_or_host_mounted_base(self):
         safe = {'expanded_config': {'security.privileged': 'false', 'security.idmap.isolated': 'true',
-                           'limits.cpu': '3', 'limits.memory': '4GiB'},
+                           'limits.cpu': '4', 'limits.memory': '4GiB'},
                 'expanded_devices': {'root': {'type': 'disk', 'path': '/', 'pool': 'boohtacord-ci'},
                             'eth0': {'type': 'nic', 'network': 'boohtaci0'}}}
         with patch.object(worker, 'command', return_value=json.dumps(safe)):

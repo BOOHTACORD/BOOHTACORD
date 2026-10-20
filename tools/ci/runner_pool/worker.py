@@ -20,7 +20,7 @@ API = 'repos/Egkurilov/BOOHTACORD/actions/runners'
 BASE = 'boohtacord-ci-base'
 RUNTIME = Path(os.environ.get('RUNTIME_DIRECTORY', '/run/boohtacord-ci'))
 LABELS = ['self-hosted', 'linux', 'x64', 'boohtacord-ci-ephemeral']
-CPUSETS = {'1': '0-2', '2': '3-5', '3': '6-6', '4': '7-7'}
+CPUSETS = {'1': '0-3', '2': '4-7', '3': '0-0', '4': '4-4'}
 
 
 class OperationError(RuntimeError):
@@ -42,7 +42,7 @@ def verify_base():
     config, devices = data['expanded_config'], data['expanded_devices']
     if not (config.get('security.privileged') == 'false'
             and config.get('security.idmap.isolated') == 'true'
-            and config.get('limits.cpu') == '3' and config.get('limits.memory') == '4GiB'
+            and config.get('limits.cpu') == '4' and config.get('limits.memory') == '4GiB'
             and set(devices) == {'root', 'eth0'}
             and devices['root'].get('type') == 'disk' and devices['root'].get('path') == '/'
             and devices['root'].get('pool') == 'boohtacord-ci'

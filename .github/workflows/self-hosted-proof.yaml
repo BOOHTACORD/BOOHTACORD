@@ -46,7 +46,7 @@ jobs:
           test "$BOOHTACORD_EPHEMERAL_GUEST" = true
           python -c "import os; from pathlib import Path; assert Path(os.environ['GITHUB_WORKSPACE']).parents[1] == Path('/home/runner/work')"
           test "$(cat /sys/fs/cgroup/memory.max)" = 4294967296
-          test "$(nproc)" = 3
+          test "$(nproc)" = 4
           test ! -e /home/runner/previous-job-marker
           touch /home/runner/previous-job-marker
           psql -h 127.0.0.1 -U voice_platform_test -d voice_platform_test -c 'SELECT 1'

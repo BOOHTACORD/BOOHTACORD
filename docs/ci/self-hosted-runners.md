@@ -7,16 +7,18 @@ outside these repository workflow files.
 
 | Slots | Requested labels | Limit per guest | Work |
 | --- | --- | --- | --- |
-| 1, 2 | `self-hosted, linux, x64, boohtacord-ci-ephemeral` | 3 vCPU, 4 GiB RAM | Tests, browser/SFU fixtures, Android packaging, operational jobs |
+| 1, 2 | `self-hosted, linux, x64, boohtacord-ci-ephemeral` | 4 vCPU, 4 GiB RAM | Tests, browser/SFU fixtures, Android packaging, operational jobs |
 | 3, 4 | `self-hosted, linux, x64, boohtacord-ci-meta` | 1 vCPU, 512 MiB RAM | Top-level selectors, required aggregates, deployment route |
 
-The two heavy slots and two small slots consume at most 9 GiB RAM and eight CPU
-placements. This is a bounded concurrency configuration on one shared host,
+The two heavy slots and two small slots consume at most 9 GiB RAM. The heavy
+guests cover the host's eight vCPU; metadata affinities share CPU 0 and 4 with
+them, giving ten logical CPU placements on eight host vCPU. This is a bounded
+concurrency configuration on one shared host,
 not a capacity or performance claim. Existing DB/Web runners are preserved;
 the signing builder keeps its dedicated `boohtacord-builder` label and trusted
 source/environment gates. The DB runner's shared database label is not copied.
-CPU affinity is fixed per slot: 0–2, 3–5, 6 and 7 respectively. The explicit
-single-core ranges `6-6` and `7-7` avoid LXD interpreting a bare integer as a
+CPU affinity is fixed per slot: 0–3, 4–7, 0 and 4 respectively. The explicit
+single-core ranges `0-0` and `4-4` avoid LXD interpreting a bare integer as a
 CPU count. Fixed sets keep a guest's CPU view stable while neighbours recycle.
 
 ## Lifecycle and credentials
@@ -59,8 +61,7 @@ The guest's user Gradle profile caps its heap at 2 GiB, Kotlin at 512 MiB and
 parallel workers at two, instead of the app template's 8 GiB local heap.
 This profile is outside the checkout and leaves local developer settings intact.
 App and vendor Flutter tests use two concurrent test processes in the marked
-Linux pool, preserving the former four-CPU hosted default instead of letting
-`test_core` round a three-CPU guest down to one. Both shadow cohorts use this
+Linux pool, explicitly preserving the reviewed four-CPU hosted default. Both shadow cohorts use this
 same pool policy; hosted and local commands retain their SDK defaults.
 
 ## Isolation

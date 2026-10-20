@@ -2,7 +2,7 @@
   "status": "IN_PROGRESS",
   "scope": "CICD-12 runner isolation and scheduling; dependency CICD-01 metadata baseline",
   "source_commit": "768b81e3",
-  "observed_at_utc": "2026-10-19T23:36:19.540021+00:00",
+  "observed_at_utc": "2026-10-20T00:10:57.127608+00:00",
   "sample": "20 most recent workflow runs; all returned jobs, bounded first page up to 100 per run",
   "timing_limitations": "Execution seconds only for completed jobs; overlapping runs, not host CPU utilization or a complete historical capacity estimate",
   "job_labels": {
@@ -96,10 +96,10 @@
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
   "local_checks": "406 CI/policy/native-contract/promotion/next-diagnostics unit tests PASS; action pins, actionlint, shell syntax and git diff --check PASS",
-  "rollout_gate": "Latest master f19b3348 merged; 1113 canonical local Python regressions PASS. Compressed-base, hosted-depth workspace and numeric health capture deployed; repeat four-slot proof and full final required CI pending.",
+  "rollout_gate": "Latest master 36d12a89 merged. All 1130 canonical local Python regressions PASS. Four-vCPU heavy slots deployed; fresh four-slot proof and complete final CI pending.",
   "resource_limits": {
     "heavy_slots": 2,
-    "heavy_cpu_each": 3,
+    "heavy_cpu_each": 4,
     "heavy_memory_gib_each": 4,
     "metadata_slots": 2,
     "metadata_cpu_each": 1,
@@ -107,14 +107,15 @@
     "ci_btrfs_pool_gib": 20,
     "guest_root_limit_gib": 16,
     "minimum_host_disk_reserve_gib": 5,
-    "maximum_cpu_placements": 8,
+    "maximum_cpu_placements": 10,
     "cpu_sets": {
-      "1": "0-2",
-      "2": "3-5",
-      "3": "6-6",
-      "4": "7-7"
+      "1": "0-3",
+      "2": "4-7",
+      "3": "0-0",
+      "4": "4-4"
     },
-    "filesystem_compression": "zstd:3"
+    "filesystem_compression": "zstd:3",
+    "metadata_cpu_sharing": "Metadata shares CPU 0 and 4 with heavy slots; eight host vCPU in total, not ten reserved CPUs"
   },
   "pool_acceptance": {
     "status": "PASS",
@@ -131,7 +132,7 @@
   },
   "isolation_limit": "Unprivileged UID-isolated containers share the host kernel; no hardware VM isolation or media capacity claim.",
   "controller_sha256": {
-    "worker.py": "4dcc2123dd3c2505ca7a1777668132cd6037cfe38160025fdecfeeb145cd0dbf",
+    "worker.py": "8e4978c3029cdff9a1fb9f9c4b56fb7da7293d2741be7e5c26485fe94f659aac",
     "guest-runner.service": "160a3ba76c3aeea41e8368e94c5c5dd8019b87d18413ea05809b42e90ac43d62",
     "start-runner.sh": "5635bd5b5a497c0bed7a28c1fca193cfa80729179cec69eef2c654da46d7f37f",
     "diagnostics.py": "ce477135cdaac13fc4e703e5a2ab0075622e1ee0e9dd48dc1418cd96c34f6038"
@@ -154,8 +155,8 @@
   "local_full_python": {
     "status": "PASS",
     "runner": "tools.verify.python_tests.run",
-    "tests": 1113,
-    "seconds": 49.924,
+    "tests": 1130,
+    "seconds": 50.847,
     "platform": "macOS arm64",
     "python": "3.14.8",
     "exit_code": 0,
@@ -207,5 +208,23 @@
     "base_pool_used_bytes_after": 4310286336,
     "host_free_after_gib_approx": 19,
     "diagnostics": "Latest root-only numeric health receipt per slot; bounded time/output/log tails, strict integer allowlist, no guest log text or tokens copied."
+  },
+  "four_cpu_trial": {
+    "status": "IN_PROGRESS",
+    "reason": "The complete Dart job exceeded its unchanged 20-minute budget with three vCPU and two test processes. Increase CPU visibility to the reviewed four-vCPU baseline while metadata shares one CPU in each half. Memory and storage bounds stay unchanged.",
+    "previous_ci_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39342680160",
+    "previous_dart_job": 118368432325,
+    "annotation": "The job has exceeded the maximum execution time of 20m0s",
+    "observed_live_oom_kill": 0,
+    "observed_live_no_space_errors": 0,
+    "previous_pool_proof_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39342674466",
+    "previous_pool_proof_status": "PASS",
+    "test_processes": 2,
+    "heavy_cpu_each": 4,
+    "heavy_memory_gib_each": 4,
+    "metadata_memory_mib_each": 512,
+    "local_focused_tests": 37,
+    "local_focused_status": "PASS",
+    "limit": "A CPU allocation is not a throughput or media capacity claim; the full application gate remains pending."
   }
 }

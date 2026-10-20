@@ -17,8 +17,8 @@ OPERATIONS = {
 def test_command(env):
     command = ('flutter', 'test', '--no-pub')
     if env.get('RUNNER_ENVIRONMENT') == 'self-hosted' and isolated_linux(env):
-        # test_core defaults to floor(CPU / 2): retain the former four-CPU
-        # hosted runner's two test processes on a bounded three-CPU guest.
+        # Keep the reviewed hosted two-process workload explicit in both
+        # disposable-pool shadow cohorts, independent of CPU visibility.
         return (*command, '--concurrency=2')
     return command
 
