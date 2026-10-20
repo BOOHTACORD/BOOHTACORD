@@ -1,9 +1,7 @@
 name: macOS Release
 
-# GitHub manual release from the matching macos-vX.Y.Z tag.
-
-# Dispatch from the matching macos-vX.Y.Z tag. The public runner builds the
-# existing ad-hoc distribution without a local signing key or runner setup.
+# Manual candidate or exact-tag-bound stable release from protected master.
+# The public runner builds the existing ad-hoc distribution.
 on:
   workflow_dispatch:
     inputs:
@@ -17,7 +15,7 @@ permissions:
 
 jobs:
   macos-release:
-    if: github.repository == 'Egkurilov/BOOHTACORD' && (startsWith(github.ref, 'refs/tags/macos-v') || (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch' && inputs.dry_run))
+    if: github.repository == 'Egkurilov/BOOHTACORD' && (startsWith(github.ref, 'refs/tags/macos-v') || (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'))
     environment: production
     permissions:
       contents: write

@@ -34,6 +34,9 @@ contract retains the actual master ref, `workflow_dispatch` event and trigger;
 the publisher independently binds those fields to its actual execution before
 any API write. It never changes a tag or accepts a candidate as stable. macOS
 remains manual-only.
+Its job-level source guard admits the protected master dispatch in both modes;
+`dry_run` selects candidate preflight and suppresses publication, rather than
+silently filtering stable master runs out before the exact-tag preflight.
 
 This master dispatch uses the existing `production` environment, reviewer,
 master-only deployment rule and shared signing queue. Repository settings stay

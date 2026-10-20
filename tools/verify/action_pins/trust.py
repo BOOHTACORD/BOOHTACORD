@@ -16,7 +16,7 @@ GUARDS = {
     ('build-server.yaml', 'bundle'): MASTER + " && needs.changes.outputs.server_release_impact == 'true'",
     ('android-release.yaml', 'android-release'): release_guard('android-v'),
     ('windows-release.yaml', 'windows-release'): release_guard('windows-v'),
-    ('macos-release.yaml', 'macos-release'): UPSTREAM + " && (startsWith(github.ref, 'refs/tags/macos-v') || (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch' && inputs.dry_run))",
+    ('macos-release.yaml', 'macos-release'): UPSTREAM + " && (startsWith(github.ref, 'refs/tags/macos-v') || (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'))",
     ('webrtc-macos-sdk.yaml', 'publish'): MASTER + " && github.event_name == 'workflow_dispatch' && inputs.publish_sdk",
     ('promote-windows-client-update.yaml', 'prepare-catalog-pr'): MASTER + " && needs.push-candidate.outputs.changed == 'true'",
     ('promote-windows-client-update.yaml', 'push-candidate'): MASTER,

@@ -2,6 +2,10 @@
 from .source import PLATFORMS, require
 
 PUBLISH_IF="github.event_name != 'workflow_dispatch' || !inputs.dry_run"
+UPSTREAM="github.repository == 'Egkurilov/BOOHTACORD'"
+SOURCE_IF={platform:UPSTREAM+" && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/"+platform+"-v'))"
+           for platform in ('android','windows')}
+SOURCE_IF['macos']=UPSTREAM+" && (startsWith(github.ref, 'refs/tags/macos-v') || (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'))"
 
 
 def command(job,text):
@@ -15,6 +19,7 @@ def validate(workflows):
         require('native-candidate-builds.yaml' not in workflows)
         for platform in PLATFORMS:
             doc=workflows[platform+'-release.yaml'];job=doc['jobs'][platform+'-release'];steps=job['steps']
+            require(job.get('if')==SOURCE_IF[platform])
             require(doc['on']['workflow_dispatch']['inputs']['dry_run']['type']=='boolean'
                     and doc['on']['workflow_dispatch']['inputs']['dry_run']['default']=='false')
             require(job['runs-on']=={'android':'ubuntu-24.04','windows':'windows-2022','macos':'macos-26'}[platform]

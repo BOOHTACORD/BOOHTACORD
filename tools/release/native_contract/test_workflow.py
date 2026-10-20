@@ -10,6 +10,19 @@ ROOT=Path(__file__).resolve().parents[3]
 class WorkflowTests(unittest.TestCase):
     def documents(self):return {p.name:yaml.load(p.read_text(),Loader=yaml.BaseLoader) for p in (ROOT/'.github/workflows').glob('*.yaml')}
     def test_current_contracts(self):validate(self.documents())
+    def test_stable_mac_master_dispatch_is_not_filtered_to_candidates(self):
+        job=self.documents()['macos-release.yaml']['jobs']['macos-release']
+        self.assertIn("github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'",job['if'])
+        self.assertNotIn('inputs.dry_run',job['if'])
+
+    def test_native_job_source_guard_cannot_be_skipped_or_silently_restricted(self):
+        for platform in ('android','windows','macos'):
+            for change in ('false','true','foreign-source','candidate-only'):
+                d=self.documents();job=d[platform+'-release.yaml']['jobs'][platform+'-release']
+                if change in ('false','true'):job['if']=change
+                elif change=='foreign-source':job['if']+=' || true'
+                else:job['if']+=' && inputs.dry_run'
+                with self.subTest(platform=platform,change=change),self.assertRaises(ValueError):validate(d)
     def test_source_skip_foreign_publisher_missing_manifest_and_candidate_bypass_fail(self):
         for change in ('source','fetch','assets','publisher','dry-run','retention','legacy','replacement','environment'):
             d=self.documents();job=d['android-release.yaml']['jobs']['android-release']
