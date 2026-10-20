@@ -43,7 +43,7 @@ Environment: macOS 26.6.1 arm64, Node 24.14.0, npm 11.9.0, Playwright 1.63.0, Py
 
 The prior GitHub Actions reference is [run 39459009233](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39459009233), associated with PR #453 and reported as 26 passing CI jobs. Its full job elapsed times were about 9m06s for `browser-shell`, 6m48s for `browser-content` and 15m31s for `browser-voice`, including setup and artifact upload. These CI job times are a reference only; they are not compared as if they were local suite durations.
 
-Post-change GitHub Actions profile durations and `ci-required` result: **NOT_RUN — branch has not yet been pushed**. Update this section with the new run's profile times and gate result before considering the CI evidence complete. The approved Windows product brief was unavailable on this Mac; the required traceability checker validated the committed requirement index and reported that limitation.
+Post-change GitHub Actions profile durations and `ci-required` result: **PENDING — [PR run 39501253259](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39501253259) is queued**. The `changes` classifier passed; at the latest check, `contracts` and the browser jobs were still queued, so no CI profile duration or required-gate conclusion is available yet. Record the run's profile times and `ci-required` result here once those jobs finish. The approved Windows product brief was unavailable on this Mac; the required traceability checker validated the committed requirement index and reported that limitation.
 
 ## Verification completed locally
 
