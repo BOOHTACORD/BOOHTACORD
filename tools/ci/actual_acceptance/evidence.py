@@ -10,20 +10,40 @@ from .catalog import REPORTS,ROOTS
 
 def collect_failure(root, profile, destination):
     if profile != 'next': return []
-    path = root/'.out/next-client-acceptance/controller-failure.json'
-    if not path.exists(): return []
-    require(path.is_file() and not path.is_symlink() and not any(p.is_symlink() for p in path.parents)
-            and 0 < path.stat().st_size <= 1024)
     from tools.qa.next_client_acceptance.diagnostics import validate
-    value = validate(strict_json(path.read_bytes()))
-    # Serialize validated finite fields, never raw private bytes or log tails.
-    raw = (json.dumps(value, sort_keys=True)+'\n').encode()
+    from tools.qa.next_client_acceptance.browser_diagnostics import validate_context, validate_dom
+    source = root/'.out/next-client-acceptance'
+    pending = []
+    for name, target, validator, limit in (
+            ('controller-failure.json', 'next-controller.json', validate, 1024),
+            ('browser-failure.json', 'next-browser.json', validate_context, 4096),
+            ('failure.json', 'next-dom.json', validate_dom, 4096)):
+        path = source/name
+        if not path.exists() and not path.is_symlink(): continue
+        require(path.is_file() and not path.is_symlink() and not any(p.is_symlink() for p in path.parents)
+                and 0 < path.stat().st_size <= limit)
+        value = validator(strict_json(path.read_bytes()))
+        # Serialize validated finite fields, never raw private bytes or log tails.
+        pending.append((target, (json.dumps(value, sort_keys=True)+'\n').encode()))
+    image = source/'failure.png'
+    if image.exists() or image.is_symlink():
+        require(image.is_file() and not image.is_symlink() and not any(p.is_symlink() for p in image.parents)
+                and 33 <= image.stat().st_size <= 16_000_000)
+        raw = image.read_bytes()
+        require(raw.startswith(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR')
+                and 0 < int.from_bytes(raw[16:20], 'big') <= 4096
+                and 0 < int.from_bytes(raw[20:24], 'big') <= 4096)
+        pending.append(('next-browser.png', raw))
+    if not pending: return []
     folder = destination/'diagnostics'; folder.mkdir(parents=True, exist_ok=True)
     require(not any(p.is_symlink() for p in folder.parents) and not folder.is_symlink())
-    target = folder/'next-controller.json'
-    require(not target.exists())
-    target.write_bytes(raw)
-    return [{'path': 'diagnostics/next-controller.json', 'sha256': hashlib.sha256(raw).hexdigest()}]
+    rows=[]
+    for name, raw in pending:
+        target=folder/name
+        require(not target.exists() and not target.is_symlink())
+        target.write_bytes(raw)
+        rows.append({'path': 'diagnostics/'+name, 'sha256': hashlib.sha256(raw).hexdigest()})
+    return rows
 
 
 def collect(root,profile,source,destination):
