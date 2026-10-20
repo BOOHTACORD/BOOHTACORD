@@ -1,0 +1,583 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "run_id": 39377129056,
+  "run_attempt": 1,
+  "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39377129056",
+  "original_artifact": {
+    "id": 12246770463,
+    "name": "web-ci-shadow-688925dc36bfc3f8c65a590053e0f1e91651cf8d-39377129056-1",
+    "size_in_bytes": 1089,
+    "sha256": "bf2dd3c0f4fb4fcd42331dbcbd7c6deb04885a2b1e59906adb94ef80595093d4",
+    "download_digest_verified": true
+  },
+  "report": {
+    "coverage": {
+      "legacy_operations": 38,
+      "original_coverage_preserved": true,
+      "profile_operations": 40
+    },
+    "failure_observation": {
+      "legacy_failed": 0,
+      "profiles_failed": 0,
+      "samples_per_arm": 3
+    },
+    "legacy_reference_revision": "0ed1cd91e3eeb2891afd06b1b51a6c19eca16d91",
+    "legacy_source_sha256": "5347eb64dae13cf622c86cfb7f7e9a501e81fc95dfc282f4de157108313e23c5",
+    "plan_sha256": "54ae5dcab3d07562378950d00d382ec270964e508cfbae336528d5892690179b",
+    "run_attempt": 1,
+    "run_id": 39377129056,
+    "samples": {
+      "legacy": [
+        {
+          "created_to_first_start_seconds": 18.0,
+          "critical_seconds": 1344.0,
+          "driver_critical_seconds": 1326.441449,
+          "job_ids": [
+            118477683472
+          ],
+          "runner_minutes": 22.4,
+          "sample": 1
+        },
+        {
+          "created_to_first_start_seconds": 1365.0,
+          "critical_seconds": 1287.0,
+          "driver_critical_seconds": 1270.143315,
+          "job_ids": [
+            118477683552
+          ],
+          "runner_minutes": 21.45,
+          "sample": 2
+        },
+        {
+          "created_to_first_start_seconds": 2654.0,
+          "critical_seconds": 1120.0,
+          "driver_critical_seconds": 1103.714163,
+          "job_ids": [
+            118477683368
+          ],
+          "runner_minutes": 18.666667,
+          "sample": 3
+        }
+      ],
+      "profiles": [
+        {
+          "created_to_first_start_seconds": 64.0,
+          "critical_seconds": 661.0,
+          "driver_critical_seconds": 492.938818,
+          "job_ids": [
+            118477683528,
+            118477683697,
+            118481010848,
+            118477683695,
+            118477683673,
+            118477683789
+          ],
+          "runner_minutes": 25.066667,
+          "sample": 1
+        },
+        {
+          "created_to_first_start_seconds": 2.0,
+          "critical_seconds": 510.0,
+          "driver_critical_seconds": 480.058086,
+          "job_ids": [
+            118481077064,
+            118481077046,
+            118483552870,
+            118481077247,
+            118481077171,
+            118481077213
+          ],
+          "runner_minutes": 26.333333,
+          "sample": 2
+        },
+        {
+          "created_to_first_start_seconds": 3.0,
+          "critical_seconds": 514.0,
+          "driver_critical_seconds": 479.903121,
+          "job_ids": [
+            118483602323,
+            118483602312,
+            118486074758,
+            118483602355,
+            118483602380,
+            118483602427
+          ],
+          "runner_minutes": 25.466667,
+          "sample": 3
+        }
+      ]
+    },
+    "schema_version": 1,
+    "scope": "Actual job execution including SDK/setup/uploads/fan-in; n=3 nearest-rank descriptive statistics. Initial wait can include deliberate serial sampling. No general CI SLO, flake-rate or media capacity claim.",
+    "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+    "status": "PASS",
+    "summary": {
+      "legacy": {
+        "critical_seconds": {
+          "p50": 1287.0,
+          "p95": 1344.0
+        },
+        "n": 3,
+        "runner_minutes": {
+          "p50": 21.45,
+          "p95": 22.4
+        }
+      },
+      "profiles": {
+        "critical_seconds": {
+          "p50": 514.0,
+          "p95": 661.0
+        },
+        "n": 3,
+        "runner_minutes": {
+          "p50": 25.466667,
+          "p95": 26.333333
+        }
+      }
+    }
+  },
+  "limits": [
+    "n=3 prescribed independent samples per arm, not failure retries",
+    "Original comparison archive, all six original inputs and 22 actual job intervals independently hash/source checked; recomputed comparison exactly matches original.",
+    "Web-only evidence: canonical whole-suite acceptance also needs current Flutter and backend same-source outcomes; no native/production acceptance."
+  ],
+  "independent_verification": {
+    "status": "PASS",
+    "input_archives": [
+      {
+        "id": 12245993397,
+        "name": "web-legacy-shadow-old-3-688925dc36bfc3f8c65a590053e0f1e91651cf8d-39377129056-1",
+        "size_in_bytes": 812,
+        "digest": "sha256:bc37ce503c61f7c424c7078500ffeca965c46df903810da2298db2ae9fa7837f"
+      },
+      {
+        "id": 12245423179,
+        "name": "web-legacy-shadow-old-2-688925dc36bfc3f8c65a590053e0f1e91651cf8d-39377129056-1",
+        "size_in_bytes": 812,
+        "digest": "sha256:30a95e73a05da88ff37847a94d24aae061de3468e49b271e4b4fc21e620c9c8f"
+      },
+      {
+        "id": 12245110058,
+        "name": "web-legacy-shadow-old-1-688925dc36bfc3f8c65a590053e0f1e91651cf8d-39377129056-1",
+        "size_in_bytes": 811,
+        "digest": "sha256:431a991ab93af5d04267766190a96f95ee16f14b02094f8acd528b732a4b5210"
+      },
+      {
+        "id": 12244850518,
+        "name": "web-fan-in-shadow-new-2-688925dc36bfc3f8c65a590053e0f1e91651cf8d-39377129056-1",
+        "size_in_bytes": 475,
+        "digest": "sha256:e7189584ae9e7bf354d0c38d195488ed9448fa0291d0b70a2e8902e2780d070f"
+      },
+      {
+        "id": 12244792845,
+        "name": "web-fan-in-shadow-new-3-688925dc36bfc3f8c65a590053e0f1e91651cf8d-39377129056-1",
+        "size_in_bytes": 474,
+        "digest": "sha256:5e1898456c1e53c3d8a805a247ddc2c4c61157e771fbff3bee79939d98421928"
+      },
+      {
+        "id": 12243814514,
+        "name": "web-fan-in-shadow-new-1-688925dc36bfc3f8c65a590053e0f1e91651cf8d-39377129056-1",
+        "size_in_bytes": 472,
+        "digest": "sha256:4006b3356e67dd8f9d2936279ca30a11f05b67758ebed92d6b349ce5753d71f5"
+      }
+    ],
+    "actual_run": {
+      "id": 39377129056,
+      "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+      "run_attempt": 1,
+      "path": ".github/workflows/web-ci-shadow.yaml",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "repository": {
+        "full_name": "Egkurilov/BOOHTACORD"
+      },
+      "head_repository": {
+        "full_name": "Egkurilov/BOOHTACORD"
+      }
+    },
+    "actual_jobs": {
+      "total_count": 22,
+      "jobs": [
+        {
+          "id": 118477683368,
+          "name": "legacy-3",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010927,
+          "created_at": "2026-10-20T05:51:28Z",
+          "started_at": "2026-10-20T06:35:42Z",
+          "completed_at": "2026-10-20T06:54:22Z"
+        },
+        {
+          "id": 118477683472,
+          "name": "legacy-1",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010852,
+          "created_at": "2026-10-20T05:51:28Z",
+          "started_at": "2026-10-20T05:51:46Z",
+          "completed_at": "2026-10-20T06:14:10Z"
+        },
+        {
+          "id": 118477683528,
+          "name": "profiles-1 / fast",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010858,
+          "created_at": "2026-10-20T05:51:28Z",
+          "started_at": "2026-10-20T05:52:32Z",
+          "completed_at": "2026-10-20T05:54:31Z"
+        },
+        {
+          "id": 118477683552,
+          "name": "legacy-2",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010909,
+          "created_at": "2026-10-20T05:51:28Z",
+          "started_at": "2026-10-20T06:14:13Z",
+          "completed_at": "2026-10-20T06:35:40Z"
+        },
+        {
+          "id": 118477683673,
+          "name": "profiles-1 / browser (browser-conversations)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010868,
+          "created_at": "2026-10-20T05:51:28Z",
+          "started_at": "2026-10-20T05:54:46Z",
+          "completed_at": "2026-10-20T05:58:35Z"
+        },
+        {
+          "id": 118477683695,
+          "name": "profiles-1 / browser (browser-shell)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010867,
+          "created_at": "2026-10-20T05:51:28Z",
+          "started_at": "2026-10-20T05:54:47Z",
+          "completed_at": "2026-10-20T06:03:20Z"
+        },
+        {
+          "id": 118477683697,
+          "name": "profiles-1 / sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010861,
+          "created_at": "2026-10-20T05:51:28Z",
+          "started_at": "2026-10-20T05:52:49Z",
+          "completed_at": "2026-10-20T05:57:41Z"
+        },
+        {
+          "id": 118477683789,
+          "name": "profiles-1 / browser (browser-voice)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010880,
+          "created_at": "2026-10-20T05:51:28Z",
+          "started_at": "2026-10-20T05:56:40Z",
+          "completed_at": "2026-10-20T06:02:21Z"
+        },
+        {
+          "id": 118481010848,
+          "name": "profiles-1 / frontend",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010893,
+          "created_at": "2026-10-20T06:03:20Z",
+          "started_at": "2026-10-20T06:03:23Z",
+          "completed_at": "2026-10-20T06:03:33Z"
+        },
+        {
+          "id": 118481077046,
+          "name": "profiles-2 / sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010895,
+          "created_at": "2026-10-20T06:03:34Z",
+          "started_at": "2026-10-20T06:03:36Z",
+          "completed_at": "2026-10-20T06:08:44Z"
+        },
+        {
+          "id": 118481077064,
+          "name": "profiles-2 / fast",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010894,
+          "created_at": "2026-10-20T06:03:34Z",
+          "started_at": "2026-10-20T06:03:36Z",
+          "completed_at": "2026-10-20T06:05:37Z"
+        },
+        {
+          "id": 118481077171,
+          "name": "profiles-2 / browser (browser-conversations)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010897,
+          "created_at": "2026-10-20T06:03:34Z",
+          "started_at": "2026-10-20T06:03:36Z",
+          "completed_at": "2026-10-20T06:07:32Z"
+        },
+        {
+          "id": 118481077213,
+          "name": "profiles-2 / browser (browser-voice)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010898,
+          "created_at": "2026-10-20T06:03:34Z",
+          "started_at": "2026-10-20T06:03:36Z",
+          "completed_at": "2026-10-20T06:10:24Z"
+        },
+        {
+          "id": 118481077247,
+          "name": "profiles-2 / browser (browser-shell)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010896,
+          "created_at": "2026-10-20T06:03:34Z",
+          "started_at": "2026-10-20T06:03:36Z",
+          "completed_at": "2026-10-20T06:11:56Z"
+        },
+        {
+          "id": 118483552870,
+          "name": "profiles-2 / frontend",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010903,
+          "created_at": "2026-10-20T06:11:56Z",
+          "started_at": "2026-10-20T06:11:59Z",
+          "completed_at": "2026-10-20T06:12:06Z"
+        },
+        {
+          "id": 118483602312,
+          "name": "profiles-3 / sfu",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010904,
+          "created_at": "2026-10-20T06:12:06Z",
+          "started_at": "2026-10-20T06:12:09Z",
+          "completed_at": "2026-10-20T06:16:58Z"
+        },
+        {
+          "id": 118483602323,
+          "name": "profiles-3 / fast",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010905,
+          "created_at": "2026-10-20T06:12:06Z",
+          "started_at": "2026-10-20T06:12:09Z",
+          "completed_at": "2026-10-20T06:13:51Z"
+        },
+        {
+          "id": 118483602355,
+          "name": "profiles-3 / browser (browser-shell)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010906,
+          "created_at": "2026-10-20T06:12:06Z",
+          "started_at": "2026-10-20T06:12:09Z",
+          "completed_at": "2026-10-20T06:20:29Z"
+        },
+        {
+          "id": 118483602380,
+          "name": "profiles-3 / browser (browser-conversations)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010907,
+          "created_at": "2026-10-20T06:12:06Z",
+          "started_at": "2026-10-20T06:12:09Z",
+          "completed_at": "2026-10-20T06:15:51Z"
+        },
+        {
+          "id": 118483602427,
+          "name": "profiles-3 / browser (browser-voice)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010908,
+          "created_at": "2026-10-20T06:12:06Z",
+          "started_at": "2026-10-20T06:12:09Z",
+          "completed_at": "2026-10-20T06:18:53Z"
+        },
+        {
+          "id": 118486074758,
+          "name": "profiles-3 / frontend",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010912,
+          "created_at": "2026-10-20T06:20:29Z",
+          "started_at": "2026-10-20T06:20:32Z",
+          "completed_at": "2026-10-20T06:20:43Z"
+        },
+        {
+          "id": 118496602506,
+          "name": "compare",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 39377129056,
+          "run_attempt": 1,
+          "head_sha": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+          "labels": [
+            "ubuntu-24.04"
+          ],
+          "runner_group_name": "GitHub Actions",
+          "runner_id": 1000010931,
+          "created_at": "2026-10-20T06:54:23Z",
+          "started_at": "2026-10-20T06:54:25Z",
+          "completed_at": "2026-10-20T06:54:36Z"
+        }
+      ]
+    },
+    "recomputed_report_matches_original": true,
+    "local_recomparison": "No test assertions rerun; replay of original public input reports and GitHub job intervals."
+  }
+}
