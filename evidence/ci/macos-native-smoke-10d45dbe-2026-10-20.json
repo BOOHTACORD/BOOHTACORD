@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "source_revision": "10d45dbe6ede75e9af8da0ddabc6116fd14d8cbb",
+  "artifact_source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "scope": "Basic actual macOS native UI and local TLS/API smoke; unchanged client subtree reused explicitly, not a fresh stable release",
+  "actual_runtime": true,
+  "mocks": false,
+  "native_process_verified": true,
+  "bundle_id": "ru.boohtacord.qa382.smoke136faac2f0785188",
+  "native_version": "1.0.43",
+  "native_build": "78",
+  "native_binary_sha256": "33fabb5e6540e890b5197b50309b0f1a278733b14e43564e105b984e42894a96",
+  "app_framework_sha256": "d32d628fd65835c39fb6d01d1371805d34a7246a60799acc70e174b356c1429d",
+  "signature": "ad-hoc QA debug, deep verify PASS; no notarization/stable-signing claim",
+  "host": {
+    "system": "Darwin",
+    "os_version": "27.0.1",
+    "architecture": "arm64",
+    "xcode": "Xcode 27.1\nBuild version 27A9275",
+    "sdk": "27.0"
+  },
+  "source_equivalence": {
+    "clients/flutter": {
+      "artifact_source_tree": "cb167132c94f55ca5c31ac37f883e4d3b4296260",
+      "reviewed_master_tree": "cb167132c94f55ca5c31ac37f883e4d3b4296260"
+    },
+    "backend": {
+      "artifact_source_tree": "94a19beaa4f9c96a67dae94a56a0e84758ff7fc3",
+      "reviewed_master_tree": "94a19beaa4f9c96a67dae94a56a0e84758ff7fc3"
+    },
+    "contracts": {
+      "artifact_source_tree": "c2386054d8c9b7d69ec39bbc98ecfc444a3f99ec",
+      "reviewed_master_tree": "c2386054d8c9b7d69ec39bbc98ecfc444a3f99ec"
+    },
+    "tools/audio": {
+      "artifact_source_tree": "375499392c6450b836ab274ce025e5a44d607e2d",
+      "reviewed_master_tree": "375499392c6450b836ab274ce025e5a44d607e2d"
+    }
+  },
+  "qa_adaptation": "Reviewed QA bundle identifier/product name in AppInfo.xcconfig only; other differences, if any, require review before runtime acceptance",
+  "qa_entrypoint_sha256": "61409c61a24e6661f7623962dd0b8d78491299390898c7647102bf0f99b65604",
+  "entrypoint": "Existing integration_test/desktop_updates/native_app.dart invokes production.main with actual native secure storage in isolated accountName/key prefix; no in-memory session adapter",
+  "api_source_revision": "10d45dbe6ede75e9af8da0ddabc6116fd14d8cbb",
+  "api_image_sha256": "sha256:d0dd352e5e009e36edf652dce8d8b4f64b0b882e0382f860474a0116ce729484",
+  "local_services": "Real PostgreSQL tmpfs, Go API, pinned LiveKit fixture and Caddy loopback TLS; own CA validated by native HttpClient, no public production request",
+  "process_observation": {
+    "bootstrap_disabled_before_restart": true,
+    "bootstrap_password_removed_by_app": true,
+    "native_stopped_before_restart": true,
+    "first_pid": 70767,
+    "second_pid": 70915,
+    "session_and_admin_route_restored": true,
+    "bootstrap_reauthentication": false,
+    "third_pid": 70956,
+    "signed_out_after_second_restart": true
+  },
+  "executed_checks": [
+    "real-local-TLS-authenticated-workspace",
+    "profile-and-build-identity",
+    "native-audio-device-enumeration",
+    "scroll-to-last-audio-reset-control",
+    "admin-users-real-API",
+    "admin-media-empty-metrics-real-API",
+    "full-process-restart-restored-session-and-admin-route-with-bootstrap-disabled",
+    "logout-returned-to-authentication",
+    "second-process-restart-preserved-logout"
+  ],
+  "visual_review": "11 original full-resolution window captures reviewed; no Flutter exception/overflow or inaccessible bottom button observed. Audio page scroll reaches complete final reset section. Users role dropdown visually truncates its long selected label; control remains visible, no new behavior change made.",
+  "captures": [
+    {
+      "name": "01-workspace.jpg",
+      "sha256": "958beb25cfb66be0d322451066370d76d017f89cfa90e92931eb143ec0135027",
+      "bytes": 172439,
+      "width": 2880,
+      "height": 1800,
+      "format": "JPEG",
+      "reviewed_at_original_resolution": true
+    },
+    {
+      "name": "02-profile.jpg",
+      "sha256": "58754a4e9b05afe0946f0709ae0ce591563cf4ba92f9276616586446420e37c2",
+      "bytes": 246834,
+      "width": 2880,
+      "height": 1800,
+      "format": "JPEG",
+      "reviewed_at_original_resolution": true
+    },
+    {
+      "name": "03-about.jpg",
+      "sha256": "0d1f52d2073ee1858b80cf35a1b2adce4b8062f04e8f5933e50fba58df46ba5f",
+      "bytes": 227231,
+      "width": 2880,
+      "height": 1800,
+      "format": "JPEG",
+      "reviewed_at_original_resolution": true
+    },
+    {
+      "name": "04-audio.jpg",
+      "sha256": "3ecb3052a946961ecd4f84d32c35a48082d3fdcd7d209cb51cfdf419020f5d24",
+      "bytes": 381419,
+      "width": 2880,
+      "height": 1800,
+      "format": "JPEG",
+      "reviewed_at_original_resolution": true
+    },
+    {
+      "name": "05-audio-bottom.jpg",
+      "sha256": "f79ef9e45875d845f44e174fd4324ef19280db404888bc9dc3243c1165437335",
+      "bytes": 354249,
+      "width": 2880,
+      "height": 1800,
+      "format": "JPEG",
+      "reviewed_at_original_resolution": true
+    },
+    {
+      "name": "06-audio-end.jpg",
+      "sha256": "9c56d4eb0a552b4e64f644c6a194261b0c9128755dd38b772cd5b075faa509b2",
+      "bytes": 346929,
+      "width": 2880,
+      "height": 1800,
+      "format": "JPEG",
+      "reviewed_at_original_resolution": true
+    },
+    {
+      "name": "07-administration.jpg",
+      "sha256": "d25342b5b1aec16f989735d518260f2b763a4a7bf6f2c615502f10f0da7e8d29",
+      "bytes": 242125,
+      "width": 2880,
+      "height": 1800,
+      "format": "JPEG",
+      "reviewed_at_original_resolution": true
+    },
+    {
+      "name": "08-admin-media.jpg",
+      "sha256": "88d743f98d5fe41c5528f5f24de7ce7442de63133310df015cf7b89b488e7757",
+      "bytes": 289277,
+      "width": 2880,
+      "height": 1800,
+      "format": "JPEG",
+      "reviewed_at_original_resolution": true
+    },
+    {
+      "name": "09-restored-session.jpg",
+      "sha256": "c1bcdcfd74ba695c3b794bfe40ae0d68ce9e4e638c7f2ac76f853731c0594bc1",
+      "bytes": 289491,
+      "width": 2880,
+      "height": 1800,
+      "format": "JPEG",
+      "reviewed_at_original_resolution": true
+    },
+    {
+      "name": "10-signed-out.jpg",
+      "sha256": "cfad890b3702e9aacaebaa9664f47f4f8cbf725e1dc7da9e6dad84680e6f006b",
+      "bytes": 370483,
+      "width": 2880,
+      "height": 1800,
+      "format": "JPEG",
+      "reviewed_at_original_resolution": true
+    },
+    {
+      "name": "11-signed-out-after-restart.jpg",
+      "sha256": "8264d83e33e4153c06ac79e4c1b7b5343e31b6f9450cb944f4c7897d0db0e5f3",
+      "bytes": 370267,
+      "width": 2880,
+      "height": 1800,
+      "format": "JPEG",
+      "reviewed_at_original_resolution": true
+    }
+  ],
+  "capture_count": 11,
+  "unique_capture_count": 11,
+  "original_capture_location": ".out/epic382-acceptance/macos-basic-native-10d45dbe/captures (local only; generated media not staged)",
+  "capture_tool": "Computer Use native app JPEG screenshots, original2880x1800",
+  "native_security_prompt_requested": false,
+  "private_configuration_mode": "0o600",
+  "cleanup": {
+    "private_configuration_removed": true,
+    "owned_stack_and_image_removed": true,
+    "global_prune": false,
+    "native_application_stopped": true,
+    "qa_vm_stopped": true,
+    "initial_docker_context": "default",
+    "final_docker_context": "default",
+    "native_logout_verified": true
+  },
+  "limitations": [
+    "Original archived688 client artifact retained with full hashes and original BUILD_PASS_RUNTIME_BLOCKED record; current10d product/client subtrees exactly match by Git tree IDs. No artifact is relabeled as freshly built10d.",
+    "Basic native smoke only: no screen capture, transmitted media, physical two-device test, stable release publishing or updater N-to-N+1 acceptance.",
+    "Host macOS27/Xcode27.1 differs from pinned hosted macos26 release runner.",
+    "Administrator role dropdown truncates its long selected label; control is visible. No unrelated UI modification made.",
+    "Preparation-only launch created own sandbox before private configuration and ran no auth/assertions. Bootstrap secret removed by application before restart, no secret output retained.",
+    "Evidence indexing initially assumed PNG and stopped at a format assertion before writing receipts. Actual Computer Use bytes are JPEG; corrected extensions without reencoding and verified hashes. Native assertions were not repeated."
+  ]
+}
