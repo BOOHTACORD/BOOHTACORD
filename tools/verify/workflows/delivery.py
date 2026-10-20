@@ -20,6 +20,8 @@ def check(workflows):
     validate_master(workflows)
     from tools.ci.backend_gates.workflow import validate as validate_backend
     validate_backend(workflows['ci-backend.yaml'])
+    from tools.ci.backend_gates.shadow_workflow import validate as validate_backend_shadow
+    validate_backend_shadow(workflows['backend-ci-shadow.yaml'])
     from tools.ci.web_suites.workflow import validate as validate_web
     validate_web(workflows['ci-frontend.yaml'])
     from tools.ci.web_suites.shadow_workflow import validate as validate_shadow
