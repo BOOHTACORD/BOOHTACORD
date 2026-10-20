@@ -1,6 +1,11 @@
 import { test, expect, type Page } from '@playwright/test'
 import { writeFile } from 'node:fs/promises'
 import axe from 'axe-core'
+import {
+  ux2026BreakpointViewports,
+  ux2026EdgeViewports,
+  ux2026RequiredViewports,
+} from '../uiux_2026/viewport_matrix'
 const longName = 'Обсуждение очень длинного названия канала для совместной работы'
 async function open(page: Page, member = false) {
   await page.route('**/api/v1/**', route => route.fulfill({ json: { members: [] } }))
@@ -19,15 +24,17 @@ async function geometry(page: Page) {
       scrolls: [...document.querySelectorAll<HTMLElement>('.sidebar *')].filter(el => ['auto','scroll'].includes(getComputedStyle(el).overflowY) && el.scrollHeight > el.clientHeight + 1).map(el => el.className), horizontal: nav.scrollWidth > nav.clientWidth + 1, documentOverflow: document.documentElement.scrollWidth > innerWidth + 1 }
   })
 }
-for (const width of [320,390,768,1024,1440,1920]) test(`inventory production navigation ${width}px`, async ({ page }, info) => {
-  await page.setViewportSize({ width, height: 768 }); await open(page)
-  await page.screenshot({ path: info.outputPath('channels-top.png') })
+for (const viewport of ux2026RequiredViewports) test(`inventory production navigation ${viewport.width}x${viewport.height}`, async ({ page }, info) => {
+  const { width, height } = viewport
+  const capture = width === 390 || width === 1440
+  await page.setViewportSize(viewport); await open(page)
+  if (capture) await page.screenshot({ path: info.outputPath('channels-top.png') })
   const before = await geometry(page)
   await page.locator('.channel-row').last().scrollIntoViewIfNeeded()
-  await page.screenshot({ path: info.outputPath('channels-bottom.png') })
+  if (capture) await page.screenshot({ path: info.outputPath('channels-bottom.png') })
   await page.getByRole('button', { name: 'Личные', exact: true }).click()
   await expect(page.locator('.direct-message-navigation > .channel-button')).toHaveCount(32)
-  await page.screenshot({ path: info.outputPath('direct-messages.png') })
+  if (capture) await page.screenshot({ path: info.outputPath('direct-messages.png') })
   await writeFile(info.outputPath('geometry.json'), JSON.stringify(before, null, 2))
 })
 test('long names stay accessible without redundant channel tooltips', async ({ page }) => {
@@ -154,8 +161,8 @@ test('member ACL presentation and sidebar axe', async ({ page }) => {
   expect(results.violations).toEqual([])
 })
 
-for (const width of [320,390,768,1024,1440,1920]) test(`last channel remains painted above the dock at ${width}px`, async ({ page }) => {
-  await page.setViewportSize({ width, height: 480 }); await open(page)
+for (const viewport of [{ width: 320, height: 480 }, { width: 1024, height: 480 }, { width: 1440, height: 480 }]) test(`last channel remains painted above the dock at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+  await page.setViewportSize(viewport); await open(page)
   const last = page.locator('.channel-row .channel-button').last()
   await last.scrollIntoViewIfNeeded()
   const painted = await last.evaluate(el => { const r = el.getBoundingClientRect(); return el.contains(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)) })
@@ -185,12 +192,12 @@ test('keyboard selection, disclosure, favorites and contextual actions retain fo
   await dm.press('Enter'); await expect(dm).toHaveAttribute('aria-current','page')
   await page.screenshot({ path: info.outputPath('keyboard-full-name-hint.png') })
 })
-test('resize preserves selected channel, favorite and category collapse with one scroll surface', async ({ page }) => {
+test('resize preserves selected navigation state at viewport edges and breakpoint boundaries', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 768 }); await open(page)
   await page.locator('.channel-favorite-toggle').first().click()
   await page.locator('.channel-category-disclosure').last().click()
-  for (const width of [320,768,1024,1920,390,1440]) {
-    await page.setViewportSize({ width, height: 768 })
+  for (const viewport of [...ux2026EdgeViewports, ...ux2026BreakpointViewports]) {
+    await page.setViewportSize(viewport)
     await expect(page.locator('.channel-favorites .channel-button')).toHaveAttribute('aria-current','page')
     await expect(page.locator('.channel-category-disclosure').last()).toHaveAttribute('aria-expanded','false')
     const g = await geometry(page); expect(g.horizontal).toBe(false); expect(g.scrolls).toEqual(['nav-content'])

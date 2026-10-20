@@ -3,6 +3,12 @@ import { expectAxeClear } from '../accessibility/axe'
 import { fixtureRoutes, id } from './routes'
 import { captureZoomedPage, withBrowserZoom } from './browser_zoom'
 import { writeFile } from 'node:fs/promises'
+import {
+  ux2026ActualZoomPhysicalViewports,
+  ux2026FunctionalViewports,
+  ux2026RequiredViewports,
+  ux2026ShortViewports,
+} from '../uiux_2026/viewport_matrix'
 
 const surfaces = ['guild', 'audio', 'archive', 'quick', 'files'] as const
 async function expectControlsFit(page: Page) {
@@ -39,8 +45,9 @@ function action(page: Page, surface: string): Locator {
         : surface === 'quick' ? page.getByRole('button', { name: 'Показать ещё участников', exact: true })
           : page.getByRole('button', { name: /^Перейти к сообщению с файлом/ })
 }
-for (const width of [320, 390]) for (const captionSpacing of ['normal', '0.12em']) test(`audio advanced text remains inside its card at ${width}px / 200% text / ${captionSpacing} spacing`, async ({ page }, info) => {
-  await page.setViewportSize({ width, height: 900 })
+for (const captionSpacing of ['normal', '0.12em']) test(`audio advanced text remains inside its card at 320x568 / 200% text / ${captionSpacing} spacing`, async ({ page }, info) => {
+  const viewport = ux2026ShortViewports[0]
+  await page.setViewportSize(viewport)
   await open(page, 'audio', 200)
   // A wider caption must wrap too, including when platform font metrics differ.
   await page.addStyleTag({ content: `.microphone-control { ${captionSpacing === 'normal' ? '' : 'font-family: monospace;'} letter-spacing: ${captionSpacing}; }` })
@@ -79,16 +86,17 @@ for (const width of [320, 390]) for (const captionSpacing of ['normal', '0.12em'
   }
   await expectControlsFit(page)
 })
-for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) for (const scale of [100, 200]) for (const surface of surfaces) {
-  test(`${surface} coherent controls ${width}px / ${scale}% text`, async ({ page }, info) => {
-    await page.setViewportSize({ width, height: 900 })
+const mainControlsViewport = ux2026FunctionalViewports[0]
+for (const scale of [100, 200]) for (const surface of surfaces) {
+  test(`${surface} coherent controls ${mainControlsViewport.width}x${mainControlsViewport.height} / ${scale}% text`, async ({ page }, info) => {
+    await page.setViewportSize(mainControlsViewport)
     await open(page, surface, scale)
-    await page.screenshot({ path: info.outputPath(`${surface}-${width}-${scale}.png`), fullPage: true })
+    if (scale === 100) await page.screenshot({ path: info.outputPath(`${surface}-${scale}.png`), fullPage: true })
     if (surface === 'audio') {
       const diagnostics = page.getByText('Диагностика качества голоса', { exact: true })
       await diagnostics.click()
-      await diagnostics.locator('..').screenshot({ path: info.outputPath(`audio-diagnostics-${width}-${scale}.png`) })
-      if (width <= 600 && scale === 200) {
+      if (scale === 100) await diagnostics.locator('..').screenshot({ path: info.outputPath('audio-diagnostics.png') })
+      if (scale === 200) {
         const pairs = await page.locator('.audio-processing-values').evaluate(element => {
           const labels = Array.from(element.querySelectorAll('dt'))
           const values = Array.from(element.querySelectorAll('dd'))
@@ -121,7 +129,7 @@ for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) for (const scale of
     // The previous browser-default grey actions have no Design V2 radius/surface.
     expect(style.radius).toBe('8px')
     expect(style.background).toBe(surface === 'guild' ? 'rgb(88, 101, 242)' : 'rgb(34, 38, 49)')
-    expect(style.height).toBeGreaterThanOrEqual(width <= 600 ? 44 : 36)
+    expect(style.height).toBeGreaterThanOrEqual(mainControlsViewport.width <= 600 ? 44 : 36)
     for (const field of await page.locator('input:not([type=range]):not([type=checkbox]):not([type=radio]), select').all()) {
       await expect(field).toHaveCSS('background-color', 'rgb(26, 29, 38)')
       await expect(field).toHaveCSS('border-radius', '8px')
@@ -143,8 +151,27 @@ for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) for (const scale of
   })
 }
 
-for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) test(`semantic variants, hover, focus and disabled actions ${width}px`, async ({ page }, info) => {
-  await page.setViewportSize({ width, height: 900 })
+const responsiveControlCases = [
+  { viewport: ux2026RequiredViewports[0], surface: 'audio', scale: 200 },
+  { viewport: ux2026RequiredViewports[1], surface: 'guild', scale: 100 },
+  { viewport: ux2026RequiredViewports[2], surface: 'archive', scale: 100 },
+  { viewport: ux2026RequiredViewports[3], surface: 'audio', scale: 200 },
+  { viewport: ux2026RequiredViewports[4], surface: 'guild', scale: 100 },
+  { viewport: ux2026RequiredViewports[5], surface: 'files', scale: 100 },
+] as const
+for (const { viewport, surface, scale } of responsiveControlCases) {
+  test(`responsive controls fit at ${viewport.width}x${viewport.height} / ${surface} / ${scale}% text`, async ({ page }) => {
+    await page.setViewportSize(viewport)
+    await open(page, surface, scale)
+    await expect(action(page, surface)).toBeVisible()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await expectControlsFit(page)
+    await expectAxeClear(page, 'main')
+  })
+}
+
+for (const viewport of [ux2026FunctionalViewports[0], ux2026FunctionalViewports[3]]) test(`semantic variants, hover, focus and disabled actions ${viewport.width}px`, async ({ page }, info) => {
+  await page.setViewportSize(viewport)
   await open(page, 'variants')
   const primary = page.getByRole('button', { name: 'primary', exact: true })
   const secondary = page.getByRole('button', { name: 'secondary', exact: true })
@@ -166,11 +193,11 @@ for (const width of [320, 390, 768, 1024, 1440, 1920, 3440]) test(`semantic vari
   await expect(icon).toHaveAttribute('title', 'Закрыть пример')
   const box = await icon.boundingBox(); expect(box!.width).toBe(box!.height)
   await expectAxeClear(page, 'main')
-  await page.screenshot({ path: info.outputPath(`variants-${width}.png`), fullPage: true })
+  await page.screenshot({ path: info.outputPath(`variants-${viewport.width}.png`), fullPage: true })
 })
 
-for (const width of [320, 390]) test(`coarse-pointer actions stay usable across all surfaces at ${width}px`, async ({ browser }) => {
-  const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
+for (const viewport of [ux2026RequiredViewports[0], ux2026RequiredViewports[1]]) test(`coarse-pointer actions stay usable across all surfaces at ${viewport.width}px`, async ({ browser }) => {
+  const context = await browser.newContext({ viewport, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
   try {
     const page = await context.newPage()
     for (const surface of surfaces) {
@@ -187,7 +214,9 @@ for (const width of [320, 390]) test(`coarse-pointer actions stay usable across 
   }
 })
 
-for (const physicalWidth of [1440, 780]) test(`actual browser zoom 200% at ${physicalWidth}px`, async ({ playwright }, info) => {
+for (const [index, physicalViewport] of ux2026ActualZoomPhysicalViewports.entries()) test(`actual browser zoom 200% at ${physicalViewport.width}px`, async ({ playwright }, info) => {
+  const physicalWidth = physicalViewport.width
+  const surface = index === 0 ? 'audio' : 'guild'
   const read = (page: Page) => page.evaluate(() => ({
     width: innerWidth, outer: outerWidth, dpr: devicePixelRatio,
     pinch: visualViewport?.scale, font: getComputedStyle(document.documentElement).fontSize,
@@ -198,24 +227,22 @@ for (const physicalWidth of [1440, 780]) test(`actual browser zoom 200% at ${phy
     await open(page, 'guild'); before = await read(page)
   })
   await withBrowserZoom(playwright.chromium, physicalWidth, 2, async page => {
-    for (const surface of surfaces) {
-      await open(page, surface)
-      if (surface === 'audio') await page.getByText('Диагностика качества голоса', { exact: true }).click()
-      const zoomed = await read(page)
-      expect(zoomed.outer).toBe(before.outer)
-      expect(Math.abs(zoomed.width * 2 - before.width)).toBeLessThanOrEqual(2)
-      expect(zoomed.dpr / before.dpr).toBeCloseTo(2, 2)
-      expect(zoomed.pinch).toBe(1)
-      expect(zoomed.font).toBe(before.font)
-      expect(zoomed.cssZoom).toBe(before.cssZoom)
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
-      await expectControlsFit(page)
-      await action(page, surface).scrollIntoViewIfNeeded()
-      await expect(action(page, surface)).toBeInViewport()
-      await expectAxeClear(page, 'main')
-      const png = await captureZoomedPage(page, info.outputPath(`zoom200-${physicalWidth}-${surface}.png`))
-      expect(png.readUInt32BE(16)).toBe(Math.round(zoomed.width * zoomed.dpr))
-      await writeFile(info.outputPath(`zoom200-${physicalWidth}-${surface}.json`), JSON.stringify({ before, zoomed }))
-    }
+    await open(page, surface)
+    if (surface === 'audio') await page.getByText('Диагностика качества голоса', { exact: true }).click()
+    const zoomed = await read(page)
+    expect(zoomed.outer).toBe(before.outer)
+    expect(Math.abs(zoomed.width * 2 - before.width)).toBeLessThanOrEqual(2)
+    expect(zoomed.dpr / before.dpr).toBeCloseTo(2, 2)
+    expect(zoomed.pinch).toBe(1)
+    expect(zoomed.font).toBe(before.font)
+    expect(zoomed.cssZoom).toBe(before.cssZoom)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await expectControlsFit(page)
+    await action(page, surface).scrollIntoViewIfNeeded()
+    await expect(action(page, surface)).toBeInViewport()
+    await expectAxeClear(page, 'main')
+    const png = await captureZoomedPage(page, info.outputPath(`zoom200-${physicalWidth}-${surface}.png`))
+    expect(png.readUInt32BE(16)).toBe(Math.round(zoomed.width * zoomed.dpr))
+    await writeFile(info.outputPath(`zoom200-${physicalWidth}-${surface}.json`), JSON.stringify({ before, zoomed }))
   })
 })

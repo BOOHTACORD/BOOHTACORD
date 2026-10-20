@@ -1,8 +1,9 @@
 import { test, expect, chromium } from '@playwright/test'
 import { writeFile } from 'node:fs/promises'
 import { captureZoomedPage, withBrowserZoom } from '../control_consistency/browser_zoom'
+import { ux2026ActualZoomPhysicalViewports } from '../uiux_2026/viewport_matrix'
 
-for (const width of [640, 780, 2048, 2880]) test(`voice at actual 200% browser zoom in ${width}px`, async ({}, info) => {
+for (const { width } of ux2026ActualZoomPhysicalViewports) test(`voice at actual 200% browser zoom in ${width}px`, async ({}, info) => {
   await withBrowserZoom(chromium, width, 2, async page => {
     await page.route('**/api/**', route => route.fulfill({ status: 200, contentType: 'application/json', body: '{}' }))
     await page.goto('http://127.0.0.1:4957/tests/voice_interface/fixture.html')

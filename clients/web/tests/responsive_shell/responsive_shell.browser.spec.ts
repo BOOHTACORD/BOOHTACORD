@@ -1,8 +1,19 @@
 import { expect, test, type Page } from '@playwright/test'
-import { ux2026ShellViewports } from '../uiux_2026/viewport_matrix'
+import {
+  ux2026BreakpointViewports,
+  ux2026FunctionalViewports,
+  ux2026RequiredViewports,
+  ux2026ShortViewports,
+  ux2026ShellViewports,
+} from '../uiux_2026/viewport_matrix'
 
 const viewports = ux2026ShellViewports
 const screenshotViewports = new Set(viewports.map(({ width, height }) => `${width}x${height}`))
+const shellSweepViewports = [
+  ...viewports,
+  ...ux2026BreakpointViewports.filter(({ width, height }) =>
+    !viewports.some(viewport => viewport.width === width && viewport.height === height)),
+]
 
 async function dismissDrawerOutsideNavigation(page: Page) {
   const scrim = page.locator('.drawer-scrim')
@@ -23,7 +34,7 @@ test('production shell CSS stays within the viewport and preserves its workspace
   await page.setViewportSize(viewports[2])
   await page.goto('/tests/responsive_shell/fixture.html')
 
-  for (const viewport of viewports) {
+  for (const viewport of shellSweepViewports) {
     await page.setViewportSize(viewport)
     const main = await page.getByTestId('workspace-main').boundingBox()
     const shell = await page.getByTestId('workspace-shell').boundingBox()
@@ -128,8 +139,8 @@ test('the mobile navigation drawer opens inside its available width', async ({ p
   }
 })
 
-test('the channel favorite toggle stays inside its row at responsive widths', async ({ page }) => {
-  for (const viewport of viewports) {
+test('the channel favorite toggle stays inside its row at representative layout sizes', async ({ page }) => {
+  for (const viewport of ux2026FunctionalViewports) {
     const { width, height } = viewport
     await page.setViewportSize(viewport)
     await page.goto('/tests/responsive_shell/fixture.html')
@@ -167,14 +178,15 @@ test('the channel favorite toggle stays inside its row at responsive widths', as
   }
 })
 
-const shortFavoriteViewports = [
-  { width: 320, height: 568 },
-  { width: 637, height: 584 },
-  { width: 1024, height: 584 },
-  { width: 1440, height: 584 },
+const representativeFavoriteViewports = [
+  ux2026RequiredViewports[0],
+  ux2026FunctionalViewports[0],
+  ux2026RequiredViewports[3],
+  { width: 1280, height: 800 },
+  ux2026FunctionalViewports[3],
 ]
 // Each viewport gets the unchanged per-test timeout and a fresh browser context.
-for (const viewport of [...viewports, ...shortFavoriteViewports]) {
+for (const viewport of [...representativeFavoriteViewports, ...ux2026ShortViewports]) {
   test(`production channel favorites remain reachable when adding a lower channel on narrow drawers (${viewport.width}x${viewport.height})`, async ({ page, browserName }) => {
     const { width } = viewport
     await page.setViewportSize(viewport)

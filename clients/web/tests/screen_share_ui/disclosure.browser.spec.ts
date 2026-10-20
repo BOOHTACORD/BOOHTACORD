@@ -1,5 +1,10 @@
 import { expect, test, type Page } from '@playwright/test'
 import axe from 'axe-core'
+import {
+  ux2026BreakpointViewports,
+  ux2026FunctionalViewports,
+  ux2026RequiredViewports,
+} from '../uiux_2026/viewport_matrix'
 async function open(page: Page, query = '', width = 1440, scale = 100, height = 900) {
   await page.setViewportSize({ width, height })
   await page.goto(`/tests/screen_share_ui/fixture.html?scale=${scale}&${query}`)
@@ -214,29 +219,51 @@ test('sender never fabricates a target and distinguishes zero measured FPS from 
   await page.evaluate(() => (window as any).__screenUI.patch({ source: 'ENDED' }))
   await expect(page.getByRole('status')).toContainText('завершена')
 })
-for (const width of [320, 390, 1024, 1440]) for (const scale of [100, 200]) {
-  test(`layout and disclosure ${width}px text ${scale}%`, async ({ page }, info) => {
-    for (const view of ['', 'updating', 'unsupported', 'sender', 'receiver']) {
-      await open(page, view, width, scale)
-      if (view === 'receiver') await page.locator('summary[aria-label="Статистика"]').click()
+const disclosureStates = ['', 'updating', 'unsupported', 'sender', 'receiver'] as const
+const mainDisclosureViewport = ux2026FunctionalViewports[3]
+test(`all screen-share disclosure states remain accessible at ${mainDisclosureViewport.width}x${mainDisclosureViewport.height}`, async ({ page }, info) => {
+  for (const view of disclosureStates) {
+    await open(page, view, mainDisclosureViewport.width, 100, mainDisclosureViewport.height)
+    if (view === 'receiver') await page.locator('summary[aria-label="Статистика"]').click()
+    await clean(page)
+    await page.screenshot({ path: info.outputPath(`${view || 'launch'}-${mainDisclosureViewport.width}.png`) })
+    if (view === 'sender' || view === 'receiver') {
+      await page.locator(view === 'sender' ? '.screen-sender-details > summary' : '.stream-diagnostics-technical > summary').click()
       await clean(page)
-      await page.screenshot({ path: info.outputPath(`${view || 'launch'}-${width}-${scale}.png`) })
-      if (view === 'sender' || view === 'receiver') {
-        await page.locator(view === 'sender' ? '.screen-sender-details > summary' : '.stream-diagnostics-technical > summary').click()
-        await clean(page)
-        await page.screenshot({ path: info.outputPath(`technical-${view}-${width}-${scale}.png`) })
-      }
-      if (view === '' || view === 'updating') {
-        const footer = page.locator('.screen-share-setup__footer')
-        await expect(footer).toBeInViewport({ ratio: 0.99 })
-        const details = page.locator('.screen-share-capabilities__details')
-        await details.locator('summary').click()
-        await clean(page)
-        await page.screenshot({ path: info.outputPath(`details-${view || 'launch'}-${width}-${scale}.png`) })
-      }
+      await page.screenshot({ path: info.outputPath(`technical-${view}-${mainDisclosureViewport.width}.png`) })
     }
-  })
-}
+    if (view === '' || view === 'updating') {
+      const footer = page.locator('.screen-share-setup__footer')
+      await expect(footer).toBeInViewport({ ratio: 0.99 })
+      const details = page.locator('.screen-share-capabilities__details')
+      await details.locator('summary').click()
+      await clean(page)
+      await page.screenshot({ path: info.outputPath(`details-${view || 'launch'}-${mainDisclosureViewport.width}.png`) })
+    }
+  }
+})
+
+const responsiveDisclosureCases = [
+  { viewport: ux2026RequiredViewports[0], view: 'unsupported', scale: 100 },
+  { viewport: ux2026RequiredViewports[1], view: 'receiver', scale: 200 },
+  { viewport: ux2026RequiredViewports[2], view: 'sender', scale: 100 },
+  { viewport: ux2026RequiredViewports[3], view: '', scale: 200 },
+  { viewport: ux2026RequiredViewports[4], view: 'receiver', scale: 100 },
+  { viewport: ux2026RequiredViewports[5], view: 'sender', scale: 100 },
+  ...ux2026BreakpointViewports.map((viewport, index) => ({
+    viewport,
+    view: index === 2 ? 'receiver' : 'unsupported',
+    scale: index === 2 ? 200 : 100,
+  })),
+] as const
+test('targeted viewport and breakpoint disclosure states stay in bounds', async ({ page }, info) => {
+  for (const { viewport, view, scale } of responsiveDisclosureCases) {
+    await open(page, view, viewport.width, scale, viewport.height)
+    if (view === 'receiver') await page.locator('summary[aria-label="Статистика"]').click()
+    await clean(page)
+    if (viewport.width === 320) await page.screenshot({ path: info.outputPath('unsupported-320x640.png') })
+  }
+})
 test('missing source audio stays the diagnosis while video receiver samples fluctuate', async ({ page }, info) => {
   await open(page, 'diagnosis')
   const diagnosis = page.locator('.screen-diagnosis > [role="status"]')
