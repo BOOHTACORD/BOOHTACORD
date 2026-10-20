@@ -95,12 +95,11 @@
     "https://github.com/Egkurilov/BOOHTACORD/settings/actions/runners",
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
-  "local_checks": "1140 canonical Python regressions PASS on current master c47ae7fd plus changes; 44 focused pool/Flutter policy tests PASS; action pins, actionlint and git diff --check PASS; 26 responsive browser tests PASS.",
-  "rollout_gate": "Current master c47ae7fd included. 1140 local Python tests and the 13m25s retained-guest Dart diagnostic PASS. Final source-bound fresh-guest proof and complete required CI remain pending.",
+  "local_checks": "1143 canonical Python tests PASS;31 focused pool/launcher tests PASS;17 next-fixture Node tests PASS;26 responsive browser tests PASS;action pins/actionlint/diff checks PASS.",
+  "rollout_gate": "Latest master619b68a1 included. Native next unlimited diagnostic PASS after network/TTL fixture corrections. Persistent duplicate compiler JVMs identified in Android trial; fresh dual-Android5GiB proof with daemon-free shared2.5GiB heap pending. Final full CI/proof pending.",
   "resource_limits": {
     "heavy_slots": 2,
     "heavy_cpu_each": 4,
-    "heavy_memory_gib_each": 4,
     "metadata_slots": 2,
     "metadata_cpu_each": 1,
     "metadata_memory_mib_each": 512,
@@ -115,7 +114,10 @@
       "4": "4-4"
     },
     "filesystem_compression": "zstd:3",
-    "metadata_cpu_sharing": "Metadata shares CPU 0 and 4 with heavy slots; eight host vCPU in total, not ten reserved CPUs"
+    "metadata_cpu_sharing": "Metadata shares CPU 0 and 4 with heavy slots; eight host vCPU in total, not ten reserved CPUs",
+    "guest_memory_ceiling_gib": 11,
+    "host_memory_reserve_gib_approx": 4.2,
+    "heavy_memory_gib_each": 5
   },
   "pool_acceptance": {
     "status": "PASS",
@@ -132,9 +134,9 @@
   },
   "isolation_limit": "Unprivileged UID-isolated containers share the host kernel; no hardware VM isolation or media capacity claim.",
   "controller_sha256": {
-    "worker.py": "cea3f1439d38bebf0b59469dea1bd2b421788ee5f8670546437318d1d0db8b8b",
+    "worker.py": "116d17e271d130a78d94af4905babebc844022fe1326dc26f76a00fd9ac9e0f6",
     "guest-runner.service": "160a3ba76c3aeea41e8368e94c5c5dd8019b87d18413ea05809b42e90ac43d62",
-    "start-runner.sh": "5635bd5b5a497c0bed7a28c1fca193cfa80729179cec69eef2c654da46d7f37f",
+    "start-runner.sh": "8b582fd3a00e7c7305f51eb470da10e99bc3349cdb8f4903586027c19cce614c",
     "diagnostics.py": "8bd1f07a586766549d72140f604456699d2bd2ced6935a8f3266bffeebf5c629"
   },
   "cpu_tuning": {
@@ -156,8 +158,8 @@
   "local_full_python": {
     "status": "PASS",
     "runner": "tools.verify.python_tests.run",
-    "tests": 1140,
-    "seconds": 51.042,
+    "tests": 1143,
+    "seconds": 53.627,
     "platform": "macOS arm64",
     "python": "3.14.8",
     "exit_code": 0,
@@ -243,7 +245,7 @@
       "Two distinct metadata probes",
       "Four completed registrations recycled to fresh IDs"
     ],
-    "limit": "This run predates the observer correction; repeat proof at final source."
+    "limit": "Historical uniform4GiB proof atf3b73ddd; does not establish the final4/6GiB resource routing. Repeat proof on final source."
   },
   "observer_correction": {
     "status": "PASS",
@@ -251,7 +253,7 @@
     "failed_android_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39346381098/job/118380462300",
     "observed_failure": "Host lxc exec status 143 triggered guest teardown while the GitHub job was still running. Origin of the signal remains UNVERIFIED.",
     "correction": "Use direct official LXD client and retain a guest through read-only status failures within the unchanged absolute lifetime bound; do not swallow shutdown.",
-    "deployment": "All four slots run corrected controller code; retained diagnostic guest cleaned and slot 1 restarted before final CI."
+    "deployment": "All controller files updated; slot1/meta restarted. Slot2 current native Android diagnostic preserved through main pause, must restart before final proof."
   },
   "browser_matrix_correction": {
     "status": "PASS",
@@ -344,5 +346,7 @@
         "tools/ci/flutter_gates/profiles.py"
       ]
     }
-  }
+  },
+  "next_diagnostic_evidence": "evidence/ci/self-hosted-next-runtime-diagnostic-2026-10-20.json",
+  "android_memory_evidence": "evidence/ci/self-hosted-android-memory-2026-10-20.json"
 }

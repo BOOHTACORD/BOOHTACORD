@@ -1,9 +1,17 @@
 import { writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
+export function failureLocation(error) {
+  if (typeof error?.stack !== 'string') return 'unknown'
+  // Keep only reviewed source names and line numbers; never copy stack text.
+  const frame = error.stack.slice(0, 8192).match(/^\s+at [^\r\n]*\/tools\/qa\/next_client_acceptance\/(fixture|uploads|unread|navigation|cache_acl|scenario|native_browser|window_visibility|input_files|visibility_smoke|navigation_fixture)\.mjs:([1-9][0-9]{0,3}):[0-9]{1,4}\)?$/m)
+  return frame ? `${frame[1]}.mjs:${frame[2]}` : 'unknown'
+}
+
 export function failureSummary(error) {
   const name = ['Error', 'TimeoutError', 'AssertionError'].includes(error?.name) ? error.name : 'Error'
-  return `FAIL: next-client acceptance (${name}); bounded diagnostics only`
+  const location = failureLocation(error)
+  return `FAIL: next-client acceptance (${name}); bounded diagnostics only` + (location === 'unknown' ? '' : `; source=${location}`)
 }
 
 export async function captureFailure(page, directory) {

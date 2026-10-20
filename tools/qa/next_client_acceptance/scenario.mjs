@@ -6,13 +6,15 @@ import { uploads } from './uploads.mjs'
 import { unread } from './unread.mjs'
 import { navigation } from './navigation.mjs'
 import { captureFailure, failureSummary } from './failure.mjs'
+import { freshBrowser } from './fresh_browser.mjs'
 const input = JSON.parse(readFileSync(process.env.QA_INPUT,'utf8'))
 assert.equal(process.env.QA_ORIGIN,'https://localhost:4810')
-const owned = await nativeBrowser(), browser = owned.browser
+let owned = await nativeBrowser(), browser = owned.browser
 try {
   const context = owned.context
   context.setDefaultTimeout(20000)
-  const page = owned.page, report = { status:'PASS', capacity_limited:input.limited }
+  let page = owned.page
+  const report = { status:'PASS', capacity_limited:input.limited }
   await page.setViewportSize({ width:1440, height:900 })
   await page.goto(process.env.QA_ORIGIN)
   await expect.poll(async () => page.evaluate(async () => {
@@ -23,7 +25,14 @@ try {
   await login(page,'qa_admin',input.password)
   const fixture = await setup(page,input.password)
   await page.reload()
-  await uploads(page,input,report,fixture)
+  await uploads(page,input,report,fixture, async () => {
+    owned = await freshBrowser(owned, nativeBrowser)
+    browser = owned.browser; page = owned.page
+    owned.context.setDefaultTimeout(20000)
+    await page.setViewportSize({ width:1440, height:900 })
+    await page.goto(process.env.QA_ORIGIN)
+    return page
+  })
   console.log('stage=actual-managed-uploads-accepted')
   if (!input.limited) {
     await unread(page,browser,fixture,input,report)

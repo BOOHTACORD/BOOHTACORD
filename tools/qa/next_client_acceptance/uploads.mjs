@@ -17,10 +17,16 @@ async function selectFiles(page, selector, files, stage) {
   await input.setInputFiles(files)
   console.log(`stage=upload-files-selected-${stage}`)
 }
-export async function uploads(page, input, report, fixture) {
+export async function uploads(page, input, report, fixture, freshPage) {
   const file = (name,size) => fixtureFile(input.files_directory,name,size)
   await select(page, 'NextA')
-  const picker = page.locator('.attachment-picker'), queue = picker.locator('[data-upload-status]')
+  let picker = page.locator('.attachment-picker'), queue = picker.locator('[data-upload-status]')
+  async function independentPublication() {
+    await freshUploadWindow(page)
+    page = await freshPage()
+    picker = page.locator('.attachment-picker'); queue = picker.locator('[data-upload-status]')
+    await select(page, 'NextA')
+  }
   let count = 0
   page.on('request', request => { if (request.method()==='POST' && /\/attachments$/.test(new URL(request.url()).pathname)) count++ })
   if (input.limited) {
@@ -63,7 +69,7 @@ export async function uploads(page, input, report, fixture) {
     assert.equal(sql("SELECT count(*) FROM attachments WHERE original_name IN ('cancel.bin','switch-scope.bin')"),'0')
     await session.send('Network.emulateNetworkConditions', { offline: false, latency: 0, downloadThroughput: -1, uploadThroughput: -1 })
     await session.detach()
-    await freshUploadWindow(page)
+    await independentPublication()
     mkdirSync(input.files_directory,{recursive:true})
     const paths = Array.from({length:10},(_,i)=>join(input.files_directory,`batch-${i}.bin`))
     for (const path of paths) writeFileSync(path,Buffer.alloc(1_000_000),{flag:'wx'})
@@ -73,7 +79,7 @@ export async function uploads(page, input, report, fixture) {
     await page.getByRole('button', { name: 'Отправить сообщение', exact: true }).click()
     await expect(queue).toHaveCount(0)
     assert.equal(sql(`SELECT count(*) FROM attachments WHERE channel_id='${fixture.a}' AND state='ATTACHED'`),'10')
-    await freshUploadWindow(page)
+    await independentPublication()
     await page.getByRole('button', { name: 'Личные', exact: true }).click()
     await page.locator('.direct-message-navigation .channel-button').filter({ hasText: 'qa_next_member' }).click()
     await selectFiles(page, '#dm-attachments', file('dm-real.bin', 1_000_000), 'direct-message')

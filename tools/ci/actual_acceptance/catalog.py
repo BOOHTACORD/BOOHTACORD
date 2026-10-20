@@ -11,7 +11,7 @@ OPERATIONS={
         [PY,'-m','tools.qa.client_lifecycle.run','--critical','--width','1024','--output-root','.out/client-lifecycle'],
         [PY,'-m','tools.qa.upload_reservations.run']],
     'next':[
-        ['node','--test','tools/qa/next_client_acceptance/input_files.test.mjs','tools/qa/next_client_acceptance/failure.test.mjs','tools/qa/next_client_acceptance/navigation_fixture.test.mjs'],
+        ['node','--test','tools/qa/next_client_acceptance/input_files.test.mjs','tools/qa/next_client_acceptance/failure.test.mjs','tools/qa/next_client_acceptance/navigation_fixture.test.mjs','tools/qa/next_client_acceptance/fresh_browser.test.mjs','tools/qa/next_client_acceptance/mutation_session.test.mjs','tools/qa/next_client_acceptance/revocation_sql.test.mjs'],
         ['xvfb-run','--auto-servernum','bash','-c','openbox --sm-disable >/dev/null 2>&1 & wm=$!; trap "kill $wm" EXIT; node tools/qa/next_client_acceptance/visibility_smoke.mjs'],
         ['xvfb-run','--auto-servernum','bash','-c','openbox --sm-disable >/dev/null 2>&1 & wm=$!; trap "kill $wm" EXIT; '+PY+' -m tools.qa.next_client_acceptance.run']],
     'sfu':[[PY,'-m','unittest','tools.qa.sfu_snapshot_measure.test_identity'],

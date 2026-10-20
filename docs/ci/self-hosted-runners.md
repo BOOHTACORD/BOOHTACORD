@@ -7,10 +7,10 @@ outside these repository workflow files.
 
 | Slots | Requested labels | Limit per guest | Work |
 | --- | --- | --- | --- |
-| 1, 2 | `self-hosted, linux, x64, boohtacord-ci-ephemeral` | 4 vCPU, 4 GiB RAM | Tests, browser/SFU fixtures, Android packaging, operational jobs |
+| 1, 2 | `self-hosted, linux, x64, boohtacord-ci-ephemeral` | 4 vCPU, 5 GiB RAM | Tests, browser/SFU fixtures, Android packaging, operational jobs |
 | 3, 4 | `self-hosted, linux, x64, boohtacord-ci-meta` | 1 vCPU, 512 MiB RAM | Top-level selectors, required aggregates, deployment route |
 
-The two heavy slots and two small slots consume at most 9 GiB RAM. The heavy
+The two heavy slots and two small slots consume at most 11 GiB RAM, leaving about 4.2 GiB outside guest limits. The heavy
 guests cover the host's eight vCPU; metadata affinities share CPU 0 and 4 with
 them, giving ten logical CPU placements on eight host vCPU. This is a bounded
 concurrency configuration on one shared host,
@@ -60,8 +60,10 @@ the existing PowerShell 7.6.6 SDK. Existing owner-accepted Android license
 markers were reused. Workflows still select and verify the exact public
 Python/Go/Node/Java/Flutter SDK versions from the repository toolchain policy.
 No dependency cache may suppress the original checks or locked installs.
-The guest's user Gradle profile caps its heap at 2 GiB, Kotlin at 512 MiB and
-parallel workers at two, instead of the app template's 8 GiB local heap.
+The guest's user Gradle profile shares a 2.5 GiB heap with in-process Kotlin
+compilation, disables persistent Gradle daemons and caps parallel workers at two.
+The two Android compatibility modes still execute sequentially, with their
+original assertions and job budgets.
 This profile is outside the checkout and leaves local developer settings intact.
 App and vendor Flutter tests use four concurrent test processes in the marked
 Linux pool, matching its four-CPU allocation. Both shadow cohorts use this

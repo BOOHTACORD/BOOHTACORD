@@ -45,7 +45,7 @@ def verify_base():
     config, devices = data['expanded_config'], data['expanded_devices']
     if not (config.get('security.privileged') == 'false'
             and config.get('security.idmap.isolated') == 'true'
-            and config.get('limits.cpu') == '4' and config.get('limits.memory') == '4GiB'
+            and config.get('limits.cpu') == '4' and config.get('limits.memory') == '5GiB'
             and set(devices) == {'root', 'eth0'}
             and devices['root'].get('type') == 'disk' and devices['root'].get('path') == '/'
             and devices['root'].get('pool') == 'boohtacord-ci'
