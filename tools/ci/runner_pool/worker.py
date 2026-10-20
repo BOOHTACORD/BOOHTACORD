@@ -22,6 +22,7 @@ BASE = 'boohtacord-ci-base'
 RUNTIME = Path(os.environ.get('RUNTIME_DIRECTORY', '/run/boohtacord-ci'))
 LABELS = ['self-hosted', 'linux', 'x64', 'boohtacord-ci-ephemeral']
 CPUSETS = {'1': '0-3', '2': '4-7', '3': '0-0', '4': '4-4'}
+HEAVY_MEMORY_MIB = 5632
 
 
 class OperationError(RuntimeError):
@@ -45,7 +46,7 @@ def verify_base():
     config, devices = data['expanded_config'], data['expanded_devices']
     if not (config.get('security.privileged') == 'false'
             and config.get('security.idmap.isolated') == 'true'
-            and config.get('limits.cpu') == '4' and config.get('limits.memory') == '5632MiB'
+            and config.get('limits.cpu') == '4' and config.get('limits.memory') == str(HEAVY_MEMORY_MIB) + 'MiB'
             and set(devices) == {'root', 'eth0'}
             and devices['root'].get('type') == 'disk' and devices['root'].get('path') == '/'
             and devices['root'].get('pool') == 'boohtacord-ci'

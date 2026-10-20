@@ -1,9 +1,12 @@
 import copy
+import shlex
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 import yaml
 from tools.verify.action_pins.policy import ROOT, normalized
 from tools.verify.action_pins.trust import check
+from . import worker
 from .routing import LINUX, META, measured_linux, measurement_pool, isolated_linux
 
 
@@ -46,3 +49,19 @@ class RoutingTests(unittest.TestCase):
         self.assertFalse(isolated_linux(dict(env, RUNNER_NAME='BOOHTACORD-Hetzner-Web')))
         env.pop('BOOHTACORD_EPHEMERAL_GUEST')
         self.assertFalse(isolated_linux(env))
+
+    def test_heavy_proof_executes_the_controller_memory_contract(self):
+        steps = self.docs['self-hosted-proof.yaml']['jobs']['probe']['steps']
+        run = next(step['run'] for step in steps if step.get('name') ==
+                   'Verify isolated guest, private Docker and fresh workspace')
+        lines = [line for line in run.splitlines() if 'memory.max' in line
+                 and line.strip().startswith('python -c ')]
+        self.assertEqual(len(lines), 1)
+        script = shlex.split(lines[0])[2]
+        expected = worker.HEAVY_MEMORY_MIB * 1024 ** 2
+        with patch.object(Path, 'read_text', return_value=str(expected)):
+            exec(script, {})
+        for value in (str(5 * 1024 ** 3), str(6 * 1024 ** 3), 'max'):
+            with self.subTest(memory=value), patch.object(Path, 'read_text', return_value=value):
+                with self.assertRaises((AssertionError, ValueError)):
+                    exec(script, {})

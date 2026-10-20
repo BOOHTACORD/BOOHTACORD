@@ -45,7 +45,7 @@ jobs:
           test "$RUNNER_ENVIRONMENT" = self-hosted
           test "$BOOHTACORD_EPHEMERAL_GUEST" = true
           python -c "import os; from pathlib import Path; assert Path(os.environ['GITHUB_WORKSPACE']).parents[1] == Path('/home/runner/work')"
-          test "$(cat /sys/fs/cgroup/memory.max)" = 5368709120
+          python -c "from pathlib import Path; from tools.ci.runner_pool.worker import HEAVY_MEMORY_MIB; assert int(Path('/sys/fs/cgroup/memory.max').read_text()) == HEAVY_MEMORY_MIB * 1024**2"
           test "$(nproc)" = 4
           test ! -e /home/runner/previous-job-marker
           touch /home/runner/previous-job-marker

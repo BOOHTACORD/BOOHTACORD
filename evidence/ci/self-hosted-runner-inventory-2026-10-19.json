@@ -95,8 +95,8 @@
     "https://github.com/Egkurilov/BOOHTACORD/settings/actions/runners",
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
-  "local_checks": "1146 canonical Python tests PASS (51.571s) after5.5GiB guard update;26 controller/launcher/health tests PASS;18 next-fixture Node and26 responsive browser tests previously PASS; no browser source change since master merge.",
-  "rollout_gate": "Latest mastere738c370 included. Dual Android5GiB/30GiB run confirmed guest OOM during concurrent Gradle and Dart frontend compilation. Uniform5.5GiB resource correction pending fresh dual build and full source-bound CI/proof.",
+  "local_checks": "1147 canonical Python tests PASS (53.062s);32 focused runner-pool tests PASS after executable memory-proof regression;18 Node fixture and26 responsive tests previously PASS, browser source unchanged.",
+  "rollout_gate": "Latest mastere738c370 included. One fresh5.5GiB Android job PASS in1726s including setup/upload; second pending. Old5GiB proof assertion missed during budget update, now tied to controller constant with executable regression test. Source-bound final full CI/proof pending.",
   "resource_limits": {
     "heavy_slots": 2,
     "heavy_cpu_each": 4,

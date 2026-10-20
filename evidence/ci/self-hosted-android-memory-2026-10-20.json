@@ -138,9 +138,37 @@
     }
   },
   "fresh_5_5_gib_trial": {
-    "status": "PENDING",
+    "status": "IN_PROGRESS",
     "memory_bytes_each": 5905580032,
     "pool_gib": 30,
-    "scope": "Fresh simultaneous unchanged Android jobs required; then full source-bound CI/proof. No current success claim."
+    "scope": "Fresh simultaneous unchanged Android jobs required; then full source-bound CI/proof. No current success claim.",
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39365619477",
+    "source": "e7635fe1b2e992bfc6e6a5fbad0d39c125802c77",
+    "completed_jobs": [
+      {
+        "job_id": 118441685648,
+        "status": "PASS",
+        "all_operations": [
+          "app-dependencies",
+          "kotlin-modes",
+          "debug-apk"
+        ],
+        "job_seconds": 1726,
+        "profile_seconds": 1586.818984305486,
+        "runner_id": 271,
+        "apk_artifact_id": 12240341155,
+        "artifact_bytes": 124005474,
+        "oom_kill": 0
+      }
+    ],
+    "remaining_job": 118441685832
+  },
+  "proof_assertion_correction": {
+    "status": "FIXED_LOCALLY",
+    "failed_run": 39365623499,
+    "failed_job": 118441694345,
+    "cause": "Proof still asserted old5GiB bytes after controller/base moved to5632MiB. Actual guest was correctly bounded; proof correctly failed.",
+    "fix": "Proof executes Python assertion using controller HEAVY_MEMORY_MIB. Focused test executes actual assertion with correct and mismatched/unbounded values.",
+    "full_gate": "PENDING new source CI/proof"
   }
 }
