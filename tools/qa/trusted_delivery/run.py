@@ -1,5 +1,6 @@
 """One isolated actual SSH installation/retry/fault/rollback rehearsal."""
 import argparse
+from datetime import datetime,timezone
 import hashlib
 import json
 import os
@@ -59,6 +60,8 @@ def main():
         ci_proof=original,runtime_role_mapping={'baseline':'previous','next':'current'},
         scope='Owned isolated Linux amd64 daemon and QA-only trust; no production access',
         production='NOT_RUN',harness_sha256=harness_hashes(root),builder_sha256=builder_hashes(root))
+    began=datetime.now(timezone.utc)
+    report['started_at']=began.isoformat()
     def save(): (destination/'run.json').write_text(json.dumps(report,indent=2)+'\n')
     save()
     try:
@@ -98,7 +101,7 @@ def main():
                     if node.wait(timeout=20):raise RuntimeError('Actual browser observers failed')
                 stack.reclaim()
                 receipt=json.loads((work/'delivery-runtime.json').read_text())
-                validate(receipt)
+                validate(receipt,window=(began,datetime.now(timezone.utc)))
                 if harness_hashes(root)!=report['harness_sha256'] or builder_hashes(root)!=report['builder_sha256']:
                     raise RuntimeError('Accepted controller source changed during execution')
                 shutil.copyfile(work/'delivery-runtime.json',destination/'delivery.json')
@@ -115,8 +118,15 @@ def main():
                     finally:report['owned_resources_removed']=not stack.resources
     except BaseException as error:
         report.update(status='FAIL',error_type=type(error).__name__)
+        from tools.qa.compatible_rollback.diagnostics import diagnose,public_guards
+        messages=public_guards(root)
+        report['diagnostics']={name:diagnose(path.read_text(errors='replace'),messages)
+            for name in ('prepare-private','controller-private')
+            if (path:=destination/(name+'.log')).is_file()}
         raise
-    finally:save()
+    finally:
+        report['finished_at']=datetime.now(timezone.utc).isoformat()
+        save()
 
 
 if __name__=='__main__':main()

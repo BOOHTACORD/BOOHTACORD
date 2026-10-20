@@ -1,5 +1,6 @@
 """Observe real shipping SSH installations and the approved QA-only rollback CLI."""
 import json
+from datetime import datetime,timezone
 import os
 from pathlib import Path
 import secrets
@@ -72,10 +73,13 @@ def install(work, report, name, before, after, warning, complete):
                 if process.returncode or active or enabled is None:
                     raise RuntimeError('Actual installer failed or maintenance boundary was not observed')
                 result=checked(json.loads((work/('attempt-'+name+'.json')).read_text()))
+                acknowledged_at=datetime.now(timezone.utc).isoformat()
+                plan=json.loads((work/'private'/('attempt-'+name+'.json')).read_text())
                 if (result['source_revision']!=after or result['readback']['previous_source_revision']!=before
-                        or result['controller_revision']!=report['controller']):
+                        or result['controller_revision']!=report['controller'] or result['readback']['nonce']!=plan['nonce']):
                     raise RuntimeError('Actual transfer acknowledgement differs')
-                report['installations'].append({'name':name,'delivery':result,'observed_seconds':round(observed-began,6),
+                report['installations'].append({'name':name,'delivery':result,'attempt_nonce':plan['nonce'],
+                    'acknowledged_at':acknowledged_at,'observed_seconds':round(observed-began,6),
                     'maintenance_observed_seconds':round(disabled-enabled,6),
                     'maintenance_enable_uncertainty_seconds':round(enabled-last_inactive,6),
                     'maintenance_disable_uncertainty_seconds':round(disabled-last_active,6),

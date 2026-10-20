@@ -47,6 +47,15 @@ try{
   const category=await api(admin,'/admin/categories','POST',{name:'QA395'});status(category,201)
   const channels={}
   for(const kind of ['TEXT','VOICE']){const r=await api(admin,`/admin/categories/${category.body.id}/channels`,'POST',{name:'QA395 '+kind,kind});status(r,201);channels[kind]=r.body.id}
+  const initialPolicy=await api(admin,'/admin/roles');status(initialPolicy,200)
+  const memberPolicy=initialPolicy.body.roles.find(r=>r.role==='MEMBER');assert.ok(memberPolicy)
+  assert.equal(memberPolicy.permissions['category.create'],true)
+  const changed=await api(admin,'/admin/roles/MEMBER/permissions','PUT',{
+    expected_revision:initialPolicy.body.revision,confirm_delete_grants:false,
+    permissions:{...memberPolicy.permissions,'category.create':false},
+  });status(changed,200)
+  const roleBaseline=await api(admin,'/admin/roles');status(roleBaseline,200)
+  assert.equal(roleBaseline.body.roles.find(r=>r.role==='MEMBER').permissions['category.create'],false)
   for(const name of ['qa_delivery_a','qa_delivery_b'])clients.push(await client(name))
   const dm=await api(clients[0],'/direct-messages','POST',{participant_id:members[1].id});status(dm,201)
   const textPrefix='/channels/'+channels.TEXT, dmPrefix='/direct-messages/'+dm.body.id
@@ -63,6 +72,12 @@ try{
     if(!existsSync(work+'/command.json')){await new Promise(r=>setTimeout(r,100));continue}
     const command=JSON.parse(readFileSync(work+'/command.json','utf8'));if(seen.has(command.phase)){await new Promise(r=>setTimeout(r,100));continue}
     phase=command.phase;const expected=phases[seen.size];assert.equal(phase,expected.name);assert.equal(command.revision,expected.source==='baseline'?input.current:input.previous);const maintenance=phase.endsWith('_maintenance'),rows=[]
+    const policy=await api(admin,'/admin/roles');status(policy,200);assert.deepEqual(policy.body,roleBaseline.body)
+    const permissionsSha=createHash('sha256').update(JSON.stringify(policy.body)).digest('hex')
+    const adminHistory=await api(admin,dmPrefix+'/messages');status(adminHistory,404)
+    const dmFile=files.find(file=>file.path.startsWith(dmPrefix));assert.ok(dmFile)
+    const adminAttachment=await admin.evaluate(async path=>(await fetch('/api/v1'+path,{credentials:'same-origin'})).status,dmFile.path)
+    assert.equal(adminAttachment,404)
     for(let i=0;i<2;i++){
       const page=clients[i]
       if(!maintenance){
@@ -75,6 +90,7 @@ try{
       if(maintenance)await expect(banner).toBeVisible({timeout:8000});else await expect(banner).toHaveCount(0)
       const session=await api(page,'/auth/session');status(session,200);assert.equal(session.body.account_id,members[i].id)
       const auth=await api(page,'/me/sessions');status(auth,200)
+      const privileged=await api(page,'/admin/roles');status(privileged,403)
       const revision=await page.evaluate(async()=>{const r=await fetch('/release-receipt.json',{cache:'no-store'});return(await r.json()).source_revision})
       assert.equal(revision,command.revision)
       const admission=await api(page,`/voice/channels/${channels.VOICE}/leases`,'POST',{transfer:false})
@@ -91,7 +107,9 @@ try{
         await probe.context().close()
       }
       await page.screenshot({path:destination+'/'+phase+'-'+i+'.png'})
-      rows.push({phase,browser:i,authenticated:true,banner:maintenance,admission:admission.status,login_status:loginStatus,revision})
+      rows.push({phase,browser:i,authenticated:true,banner:maintenance,admission:admission.status,login_status:loginStatus,revision,
+        permissions_sha256:permissionsSha,policy_unchanged:true,member_admin_status:privileged.status,
+        admin_dm_history_status:adminHistory.status,admin_dm_attachment_status:adminAttachment})
     }
     report.observations.push(...rows);save()
     writeFileSync(work+'/ack-'+phase+'.pending',JSON.stringify(rows))
