@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "scope": "Bounded temporary startup diagnosis; no shipping fix or final acceptance claim",
+  "source_revision": "7ce39488fbc47479ad05ea2844613af0773c5778",
+  "hosted": {
+    "schema_version": 1,
+    "status": "PASS",
+    "source_revision": "7ce39488fbc47479ad05ea2844613af0773c5778",
+    "run_id": 39365838935,
+    "artifact_id": 12239517013,
+    "artifact_sha256": "5a8a94c5b54d7cba3cd65be57a1366764807eb80356f7386b4d320fd3540de12",
+    "owned_resources_removed": true,
+    "original_failed_controls_superseded": false,
+    "captures_verified": 4,
+    "report_source_hashes_verified": true,
+    "original_failure_reproduced": false,
+    "root_cause": "UNVERIFIED"
+  },
+  "local_arm64": {
+    "schema_version": 1,
+    "scope": "One real local native ARM64 Linux startup diagnosis; not original AMD64 CI or final acceptance",
+    "source_revision": "7ce39488fbc47479ad05ea2844613af0773c5778",
+    "status": "LOCAL_FAILURE",
+    "owned_resources_removed": true,
+    "started_at": "2026-10-20T03:50:00.814257+00:00",
+    "original_failure_equivalence": "UNVERIFIED",
+    "failure_type": "CalledProcessError",
+    "controller-failure.json": {
+      "capacity_profile": "limited",
+      "failure_type": "CalledProcessError",
+      "schema_version": 1,
+      "stage": "browser-scenario",
+      "status": "FAIL"
+    },
+    "browser-failure.json": {
+      "schema_version": 2,
+      "status": "FAIL",
+      "stage": "uploads",
+      "failure_type": "Error",
+      "failure_kind": "other",
+      "native_process": {
+        "browser_connected": true,
+        "page_closed": false,
+        "exit_code": null,
+        "signal": null
+      },
+      "frames": [
+        {
+          "module": "fixture.mjs",
+          "line": 39,
+          "column": 67
+        },
+        {
+          "module": "uploads.mjs",
+          "line": 22,
+          "column": 9
+        },
+        {
+          "module": "scenario.mjs",
+          "line": 41,
+          "column": 9
+        }
+      ]
+    },
+    "captures": [],
+    "finished_at": "2026-10-20T03:52:13.130055+00:00"
+  },
+  "local_retention": {
+    "scope": "One local native ARM64 Linux startup diagnostic; not original AMD64 CI or final acceptance",
+    "status": "LOCAL_FAILURE",
+    "original_failure_equivalence": "UNVERIFIED",
+    "source_revision": "7ce39488fbc47479ad05ea2844613af0773c5778",
+    "files": {
+      "local-result.json": "fc8587b6cf60db0da716fa74f9251489255ba017dabd49d7e216457b29f9e8db",
+      "browser-failure.json": "1800a0f5c7207bc471024fbcfed1f9687d74fe3d873bdac580be69b94d5c6d74",
+      "controller-failure.json": "a513a26df8096254e058cbe36e52b0ceefde802afcb6829df94bcb14a3f730a0"
+    },
+    "source_files": {
+      "tools/qa/next_client_acceptance/input_files.test.mjs": "5945d8428bd7233b1fc4fb3f48f3dfe11f19fc493426f6d49615469fce83c446",
+      "tools/qa/next_client_acceptance/browser_diagnostics.py": "cc094f0f3c31dbd6ef78cffb4e6f45ed1a7e03bf5cbb2f574da019f43f89c39f",
+      "tools/qa/next_client_acceptance/window_visibility.mjs": "61fef676660e94b546798722f65f4b124f6de6a9a68c4850eae827d564407ed2",
+      "tools/qa/next_client_acceptance/run.py": "d4a4b48f54b18471fc26a21d29ece65413bf57c1b84eab4f63d0ee1ae608bbb6",
+      "tools/qa/next_client_acceptance/native_browser.mjs": "55dafcbf485c52f4999a4fce07504c0f8655d451eed52d9ceb9045ad5d9439b2",
+      "tools/qa/next_client_acceptance/fixture.mjs": "067074e0344c112e5a7e3bcadc9a01e1e921e66d45f919ed570a89ddbe17c135",
+      "tools/qa/next_client_acceptance/cache_acl.mjs": "29ef7d4cc5facd86e946b00ff48bde7aa67ae00eff30311815d8f192067212de",
+      "tools/qa/next_client_acceptance/diagnostics.py": "5be88d85ab90a5d7eb3a6bed4bfb88484aeedf2535f3691653e6e6965f26c496",
+      "tools/qa/next_client_acceptance/failure.mjs": "e979c9af9edefd417b1b23693c44231bf7a6121425bf384a2490d6398ffb75f7",
+      "tools/qa/next_client_acceptance/test_run.py": "f83f60fa23bde87bb14d9af5b292dc58ca292b51c4e28ab1933ea979d28363ad",
+      "tools/qa/next_client_acceptance/visibility_smoke.mjs": "8c150182680b4d033e46413cb91fcde88509d8b8ef3d5544fccd8df8b944bad4",
+      "tools/qa/next_client_acceptance/navigation.mjs": "b91cedcb94b81973543fedb59e4a70afd1f30b65431bda260964cc5da2130fef",
+      "tools/qa/next_client_acceptance/failure.test.mjs": "9f616fc82d7eec05fa99ccc1cf5ebdaaa75c852512756a92df3d01703a0a4caf",
+      "tools/qa/next_client_acceptance/uploads.mjs": "54ce7ba8e80f534fd5535cdf64ba95d5dc940e56d15bc2ccc8e98dd566e7a7c6",
+      "tools/qa/next_client_acceptance/stack.py": "31ff7113670748234f3caf2cd2bbd8473355a1fbc8b8d65270f802d14c1e21da",
+      "tools/qa/next_client_acceptance/navigation_fixture.test.mjs": "678c26ae5e8356f4b8245483aa7665f28164021c473f695b8450eeb8b5dd8172",
+      "tools/qa/next_client_acceptance/navigation_fixture.mjs": "df3c7e08a8141e0bb9e5d8cf1b4c2966249caece49a1a4155d36eef0861fe073",
+      "tools/qa/next_client_acceptance/scenario.mjs": "5fbb25bd4165e58b0517b197281fac3b86770eb6026bc83ecb0999f365e89c9c",
+      "tools/qa/next_client_acceptance/revocation_sql.mjs": "751e066af128d6ee3d6689f238ca4a952073132378ee5b4bb3930c7e791d3777",
+      "tools/qa/next_client_acceptance/input_files.mjs": "95bb14d0f24c702313fde3911f837dbab742aca75bae2438a03dd375cba23597",
+      "tools/qa/next_client_acceptance/revocation_sql.test.mjs": "4dd297c683d86bc5d799a9e8087ac3f87bd1616ccffcae41b7f65cf78f7abb81",
+      "tools/qa/next_client_acceptance/unread.mjs": "03267412466b72f710e598f2b16baa538f196f2501299a480717506f0ada502f"
+    }
+  },
+  "original_failure_equivalence": "UNVERIFIED",
+  "original_failed_controls_superseded": false,
+  "temporary_probe_merged": false,
+  "cleanup": {
+    "owned_controller_removed": true,
+    "owned_stack_cleanup": true,
+    "temporary_source_and_fixture_cache_removed": true,
+    "owned_diagnostic_image_removed": true,
+    "arm_vm": "Stopped",
+    "x64_vm": "Stopped",
+    "docker_context": "default"
+  },
+  "independent_review": {
+    "server_producer": 39354644959,
+    "status": "WAITING",
+    "human_response": "Pistol121 will approve later",
+    "repeat_request_sent": false
+  },
+  "diagnostic_plan": {
+    "fresh_browser_starts_before_each_original_capacity_scenario": 20,
+    "failure_ends_run": true,
+    "original_application_assertions_and_deadlines_changed": false,
+    "new_finite_fields": [
+      "error category",
+      "browser connected",
+      "page closed",
+      "process exit code",
+      "process signal"
+    ],
+    "exception_messages_or_urls_exported": false,
+    "old_schema_one_artifacts_still_supported": true,
+    "hosted_execution": "PASS within bounded diagnostic scope; original failure not reproduced"
+  }
+}
