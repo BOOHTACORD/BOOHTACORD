@@ -69,6 +69,9 @@ App and vendor Flutter tests use four concurrent test processes in the marked
 Linux pool, matching its four-CPU allocation. Both shadow cohorts use this
 same pool policy; hosted and local commands retain their SDK defaults.
 The full test inventory and existing job timeouts remain unchanged.
+Native microcopy zoom is checked per width and surface, with the original
+30-second deadline and full geometry, keyboard, tooltip and screenshot assertions
+for each of the fourteen combinations.
 The browser-shell fixture suites use two independent Playwright workers, including
 within one test file, only when all disposable Linux pool markers and the four-CPU
 allocation match. Local, hosted, metadata and other native runtimes remain serial.
