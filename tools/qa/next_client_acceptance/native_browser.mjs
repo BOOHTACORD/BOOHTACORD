@@ -2,6 +2,7 @@ import { spawn } from 'node:child_process'
 import { mkdirSync, mkdtempSync, rmSync } from 'node:fs'
 import { resolve, sep } from 'node:path'
 import { chromium } from './fixture.mjs'
+import { browserState } from './failure.mjs'
 
 // A disposable owned profile avoids Playwright's forced focus/visibility override.
 export async function nativeBrowser() {
@@ -47,6 +48,6 @@ export async function nativeBrowser() {
     browser = await chromium.connectOverCDP(endpoint, { noDefaults: true, isLocal: true })
     const context = browser.contexts()[0]
     const page = context.pages()[0] ?? await context.newPage()
-    return { browser, context, page, close }
+    return { browser, context, page, close, diagnostics: () => browserState(child, browser, page) }
   } catch (error) { await close(); throw error }
 }

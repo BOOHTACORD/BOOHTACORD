@@ -6,6 +6,7 @@ import { uploads } from './uploads.mjs'
 import { unread } from './unread.mjs'
 import { navigation } from './navigation.mjs'
 import { captureFailure, failureSummary } from './failure.mjs'
+import { prepareOwnedLoopback } from '../client_lifecycle/loopback_navigation.mjs'
 const input = JSON.parse(readFileSync(process.env.QA_INPUT,'utf8'))
 assert.equal(process.env.QA_ORIGIN,'https://localhost:4810')
 let owned, stage = 'browser-launch'
@@ -16,7 +17,10 @@ try {
   context.setDefaultTimeout(20000)
   const page = owned.page, report = { status:'PASS', capacity_limited:input.limited }
   await page.setViewportSize({ width:1440, height:900 })
-  await page.goto(process.env.QA_ORIGIN)
+  // The first renderer request needs the same owned network-readiness barrier
+  // as login; otherwise it can fail before login ever reaches that barrier.
+  stage = 'origin-navigation'
+  await prepareOwnedLoopback(page, process.env.QA_ORIGIN)
   stage = 'api-ready'
   await expect.poll(async () => page.evaluate(async () => {
     try { return (await fetch('/api/v1/health', { cache:'no-store' })).status }
@@ -43,6 +47,6 @@ try {
   stage = 'receipt'
   writeFileSync(process.env.QA_RESULT,JSON.stringify(report,null,2)+'\n',{mode:0o600})
 } catch (error) {
-  await captureFailure(owned?.page, input.directory, error, stage).catch(() => console.error('FAIL: bounded fixture diagnostics unavailable'))
+  await captureFailure(owned?.page, input.directory, error, stage, owned?.diagnostics()).catch(() => console.error('FAIL: bounded fixture diagnostics unavailable'))
   console.error(failureSummary(error)); process.exitCode=1
 } finally { await owned?.close() }
