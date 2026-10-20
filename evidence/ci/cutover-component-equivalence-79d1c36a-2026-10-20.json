@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "reviewed-retained-component-execution-equivalence",
+  "reviewed_source": "79d1c36a1f7bc3053a01c88a32b7e78cc8b5a821",
+  "sdk": {
+    "original_builder_source": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+    "run_id": 39319895246,
+    "unchanged_paths": [
+      ".github/workflows/webrtc-macos-sdk.yaml",
+      ".github/workflows/flutter-macos.yaml",
+      ".github/workflows/macos-release.yaml",
+      "tools/build/webrtc_macos",
+      "tools/ci/macos",
+      "tools/toolchains.json",
+      "clients/flutter/packages/flutter_webrtc/third_party/patches"
+    ],
+    "original_evidence": {
+      "path": "evidence/ci/macos-sdk-final-2026-10-20.json",
+      "sha256": "4ea18896a93409d634ea15366cfeb6eb56d01721d6e361aee72fb33d997155cb"
+    }
+  },
+  "rollback": {
+    "original_harness_source": "8add045642585429b1e573cea458fe5bcc72722b",
+    "run_id": 39328262697,
+    "original_product_sources": [
+      "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "356d32c5ff6b661a747009ad93026c197bdd1b72"
+    ],
+    "runtime_inputs_equal": true,
+    "harness_files_verified": 25,
+    "builder_files_verified": 44,
+    "original_evidence": {
+      "path": "evidence/ci/compatible-rollback-final-2026-10-20.json",
+      "sha256": "e26a2dcf3469f13c8314c2f6feaf96a78f7ab619a35937fa9677539d75277723"
+    }
+  },
+  "limits": [
+    "Assessment at the reviewed source reuses verified unchanged component inputs; it does not relabel the original execution or claim a new native/QA run.",
+    "Only isolated compatible rollback and SDK matrix criteria are accepted. Production SSH, installed client promotion, native application publishing and owner GO remain separate."
+  ]
+}

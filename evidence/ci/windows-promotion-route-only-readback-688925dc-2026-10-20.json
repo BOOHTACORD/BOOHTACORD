@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "scope": "Original nonqualifying Windows promotion readback; route-only parent is not a deployment",
+  "status": "FAIL",
+  "run_id": 39376532596,
+  "job_id": 118475816934,
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "deploy_parent_run": 39375959838,
+  "deploy_parent_jobs": [
+    {
+      "id": 118474039272,
+      "name": "route",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 118475802182,
+      "name": "install",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ],
+  "artifact_id": 12243706050,
+  "artifact_sha256": "893bd37df71e1d4b7d81f3ffef0b14cd5dfda47627e94bd186a728e516b69149",
+  "original_trace_verified": true,
+  "failure_stage": "deployment",
+  "endpoint_observation": "NOT_RUN",
+  "qualifies_as_master_to_healthy_sample": false,
+  "qualifies_as_actual_promotion": false,
+  "blind_rerun_launched": false,
+  "global_acceptance": "NO-GO"
+}

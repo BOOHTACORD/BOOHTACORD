@@ -1,0 +1,1715 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "actual-concurrent-PR-runtime-isolation",
+  "profile": "lifecycle",
+  "actual_runtime": true,
+  "mocks": false,
+  "controller_overlap": {
+    "start": "2026-10-19T19:40:04Z",
+    "end": "2026-10-19T19:43:30Z",
+    "seconds": 206.0
+  },
+  "runs": [
+    {
+      "run": {
+        "id": 39312750405,
+        "head_sha": "2296c01f6aa2a6c0e536993a87eb160d34efc030",
+        "event": "pull_request",
+        "head_branch": "codex/issue402-ci-observability",
+        "path": ".github/workflows/ci.yaml",
+        "conclusion": "failure"
+      },
+      "job": {
+        "id": 118266382286,
+        "name": "actual / runtime (lifecycle)",
+        "run_id": 39312750405,
+        "status": "completed",
+        "conclusion": "success",
+        "controller_step": {
+          "name": "Run original controllers in one disposable VM namespace",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-19T19:40:04Z",
+          "completed_at": "2026-10-19T19:48:13Z"
+        }
+      },
+      "tested_merge": {
+        "sha": "b648e0029c6e396bda1cebbeaf6520f555424789",
+        "tree": "ee8ab02f4c314bb1ee4d8f2b18cf2764206d9a7a",
+        "parents": [
+          "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+          "2296c01f6aa2a6c0e536993a87eb160d34efc030"
+        ]
+      },
+      "artifact": {
+        "id": 12216277994,
+        "name": "actual-lifecycle-b648e0029c6e396bda1cebbeaf6520f555424789-39312750405-1",
+        "size_in_bytes": 17325764,
+        "digest": "sha256:c81697f4d18d3e51a086cd8325cf2f8c8b2c9118c9d281fb3602bf12a161b2a1"
+      },
+      "result": {
+        "captures": [
+          {
+            "bytes": 131945,
+            "path": ".out/client-lifecycle/1024/authentication-rate-limit.png",
+            "sha256": "45db567f39a60ff682b5069cd30f54957788ffbe1b94a9661781cea62649fd5a"
+          },
+          {
+            "bytes": 98858,
+            "path": ".out/client-lifecycle/1024/authentication.png",
+            "sha256": "7ff391c6161622a4976b368526215957dba0e80c3a5b6699234c5af5e8de71fa"
+          },
+          {
+            "bytes": 71816,
+            "path": ".out/client-lifecycle/1024/channel-log.png",
+            "sha256": "2550591b950c9a45acc90fcee95b268ea4773b6278aa39de64514467fe52e3cb"
+          },
+          {
+            "bytes": 149418,
+            "path": ".out/client-lifecycle/1024/channel-participants-200.png",
+            "sha256": "1c90755049d0a256c149c5ca3248b9fbcc2568fc82c3aac83f3b49bac86d8c6a"
+          },
+          {
+            "bytes": 103116,
+            "path": ".out/client-lifecycle/1024/channel-participants.png",
+            "sha256": "083210f03896d39ceb62fde2f6baa5156c93566b97861bb90e5f683ea756cafb"
+          },
+          {
+            "bytes": 110347,
+            "path": ".out/client-lifecycle/1024/channel-text-200.png",
+            "sha256": "657aaa7d6c50c74ed421803d9d8ca196fc76d4d6c0b1d4c2537bf6fadd2cfc2c"
+          },
+          {
+            "bytes": 80473,
+            "path": ".out/client-lifecycle/1024/channel-text-actions.png",
+            "sha256": "09541e4d5dc288307f614944ed4ce5ee6c325f406d2960701b41230c4b419606"
+          },
+          {
+            "bytes": 76615,
+            "path": ".out/client-lifecycle/1024/channel-text.png",
+            "sha256": "1658a5d1e15d4ad3a66c599059204adab89a59cb668a0728274a0f7c9bf3539e"
+          },
+          {
+            "bytes": 60342,
+            "path": ".out/client-lifecycle/1024/chat-failed-media-connected.png",
+            "sha256": "5d3cbc36300cc2819360198079d24519906bc61f57416c667e86ee84427918a3"
+          },
+          {
+            "bytes": 104149,
+            "path": ".out/client-lifecycle/1024/compact-archive.png",
+            "sha256": "4e3ae40578c3b025d85b97fe6b5e508a8bb0f85e429d322042ed849f7122a4e4"
+          },
+          {
+            "bytes": 60020,
+            "path": ".out/client-lifecycle/1024/compact-files.png",
+            "sha256": "9a85e0d23cccd1f5ad7b17e8369e4dfb4ddf869470bfaf94539614b257710f02"
+          },
+          {
+            "bytes": 91886,
+            "path": ".out/client-lifecycle/1024/compact-mentions.png",
+            "sha256": "b50eeda8f38a569f3e04b45627d86d80c5c4608385dcac6c57fdaa937f57528d"
+          },
+          {
+            "bytes": 95842,
+            "path": ".out/client-lifecycle/1024/compact-pins.png",
+            "sha256": "adf5378dea829acae20336dd1ac292cd57ba8adacb5524772de2bcc3bdc4eb55"
+          },
+          {
+            "bytes": 88384,
+            "path": ".out/client-lifecycle/1024/compact-quick-jump.png",
+            "sha256": "bdd473443da9cc9cd4c6face487fcdd43d9c4a1c3e886615e36bba4634aaced8"
+          },
+          {
+            "bytes": 107623,
+            "path": ".out/client-lifecycle/1024/compact-search-filters.png",
+            "sha256": "4727c876f8cbbe237a82d1e79907d558c275a6fe2b6566dca152a4ae10d97889"
+          },
+          {
+            "bytes": 110955,
+            "path": ".out/client-lifecycle/1024/compact-search-return.png",
+            "sha256": "0457aa1619ce27dd2a728b053789c50acfd91dc7b81b81ccc7fb709922b8512c"
+          },
+          {
+            "bytes": 46589,
+            "path": ".out/client-lifecycle/1024/direct-message-header.png",
+            "sha256": "c125b1e87784615121045c04d527597ccd200390a2e80d2314af1ae6c05ced86"
+          },
+          {
+            "bytes": 46553,
+            "path": ".out/client-lifecycle/1024/dm-conversation.png",
+            "sha256": "6cc86c559aaa5206bc43f28f49b5e55b59c61981b1bd4c529f0a1fa777af53a4"
+          },
+          {
+            "bytes": 38067,
+            "path": ".out/client-lifecycle/1024/dm-empty-conversation.png",
+            "sha256": "fde6964814cb36bb64d20204650f243544348f36ac9de4572cf18d3e1443b8ee"
+          },
+          {
+            "bytes": 38067,
+            "path": ".out/client-lifecycle/1024/dm-list.png",
+            "sha256": "fde6964814cb36bb64d20204650f243544348f36ac9de4572cf18d3e1443b8ee"
+          },
+          {
+            "bytes": 58619,
+            "path": ".out/client-lifecycle/1024/dm-search.png",
+            "sha256": "a25eb5d851d85560e5cb1c23556e2b96a4de116bcdf0b374c26a2964b86887c5"
+          },
+          {
+            "bytes": 41617,
+            "path": ".out/client-lifecycle/1024/dm-starter-dialog.png",
+            "sha256": "6ea1c8a29dcc16205bf33f62c0f45c06fe896b39da6c6d2efdc54f5068fdb498"
+          },
+          {
+            "bytes": 71946,
+            "path": ".out/client-lifecycle/1024/global-search-result-context.png",
+            "sha256": "404b37936a1abca8edc0af8d3e36052afaddbcc8b047f2e821b7492777c6ddcf"
+          },
+          {
+            "bytes": 60296,
+            "path": ".out/client-lifecycle/1024/global-search.png",
+            "sha256": "007388f91260a62e1e8ea733257cce6ea6c383bcb7cda1d8da99af6a1b7576bd"
+          },
+          {
+            "bytes": 87196,
+            "path": ".out/client-lifecycle/1024/guild-audit.png",
+            "sha256": "f0026dbced4de5d05497f4a4a0350e30e61ff4be2742f93953126cb7acea28f4"
+          },
+          {
+            "bytes": 87173,
+            "path": ".out/client-lifecycle/1024/guild-channels.png",
+            "sha256": "01eabba9befbd6805d4b6557f691ece2176c0a2719f446be21e9e80aed4cd185"
+          },
+          {
+            "bytes": 72263,
+            "path": ".out/client-lifecycle/1024/guild-media.png",
+            "sha256": "279510fd11ec41809694bab00144820fc254689ae33151dfef5de2d62ef71509"
+          },
+          {
+            "bytes": 88800,
+            "path": ".out/client-lifecycle/1024/guild-members.png",
+            "sha256": "b5bd215d79685112d08f4b5a25988354da1f3fcd828356fb5fa786ada1599aa2"
+          },
+          {
+            "bytes": 68588,
+            "path": ".out/client-lifecycle/1024/guild-readiness.png",
+            "sha256": "b0dd04f3540fd6322f1b62d0b5086dcbcc75c1e4c91eedf0714e8f09439fc955"
+          },
+          {
+            "bytes": 82702,
+            "path": ".out/client-lifecycle/1024/guild-roles.png",
+            "sha256": "0e82d9c9a83af68feb4ce367b43d9b52b97dd686712d079ffcb6bea9e0d631b4"
+          },
+          {
+            "bytes": 90945,
+            "path": ".out/client-lifecycle/1024/guild-settings-200.png",
+            "sha256": "4f7cbf98091cdef5bf668540f5901efd1d2efc58d130c56fd3005ae65834301e"
+          },
+          {
+            "bytes": 61898,
+            "path": ".out/client-lifecycle/1024/guild-settings-initial.png",
+            "sha256": "1bc8266f7154ee915ba8ccfd50410854cab3d1068d8c823b8c79a7c161cc4403"
+          },
+          {
+            "bytes": 62407,
+            "path": ".out/client-lifecycle/1024/guild-settings.png",
+            "sha256": "6328c837067547c71ba707a97bcb6cf85756c5963b2fb7de3a7571297b7766d4"
+          },
+          {
+            "bytes": 51942,
+            "path": ".out/client-lifecycle/1024/header-dm-overflow.png",
+            "sha256": "7770dfb958659afcfe42fce8129f317c42b9c3f40b8fe97631cd129f7e66ed7a"
+          },
+          {
+            "bytes": 46589,
+            "path": ".out/client-lifecycle/1024/header-dm-returned.png",
+            "sha256": "c125b1e87784615121045c04d527597ccd200390a2e80d2314af1ae6c05ced86"
+          },
+          {
+            "bytes": 82969,
+            "path": ".out/client-lifecycle/1024/header-text-overflow.png",
+            "sha256": "bbf67a56a1e7654b33c13aa55ddcca6aaaf285d8e9964f32ab8c92b9ab0b9ff7"
+          },
+          {
+            "bytes": 76615,
+            "path": ".out/client-lifecycle/1024/header-text-returned.png",
+            "sha256": "1658a5d1e15d4ad3a66c599059204adab89a59cb668a0728274a0f7c9bf3539e"
+          },
+          {
+            "bytes": 69493,
+            "path": ".out/client-lifecycle/1024/header-voice-search-navigation.png",
+            "sha256": "277313c06f911e495ba02d51caf1fe868cecaea24e18a454d1f972e02a0f8c4f"
+          },
+          {
+            "bytes": 109748,
+            "path": ".out/client-lifecycle/1024/member-profile-text.png",
+            "sha256": "fa097455e585cbf934e1b5ef6279d004e356196250b08980b721e5805ece1417"
+          },
+          {
+            "bytes": 72855,
+            "path": ".out/client-lifecycle/1024/member-profile-voice-admin.png",
+            "sha256": "4f5bb9c1f6ac07019115800031c1106fdb678ea186ab0e392b9c1331d25f0ab5"
+          },
+          {
+            "bytes": 70519,
+            "path": ".out/client-lifecycle/1024/member-profile-voice-member.png",
+            "sha256": "1c97328b811f745f045ebb1c7bf427634a718d3430c84fbd621723a26f3719ce"
+          },
+          {
+            "bytes": 61776,
+            "path": ".out/client-lifecycle/1024/mini-player-dm.png",
+            "sha256": "2261f75af6fc018f78b7fb1140d9769312c75119bf49a40239db92011a49de00"
+          },
+          {
+            "bytes": 98855,
+            "path": ".out/client-lifecycle/1024/mini-player-text.png",
+            "sha256": "d42a48f0462782e76782e247045bcb3e0e1eca19ce020c048726a963e18d040c"
+          },
+          {
+            "bytes": 96003,
+            "path": ".out/client-lifecycle/1024/old-page-delete.png",
+            "sha256": "c8662b0e17f4111c2a16fec59faeac157b0185222defe40f712078f19dd86430"
+          },
+          {
+            "bytes": 77237,
+            "path": ".out/client-lifecycle/1024/own-sessions.png",
+            "sha256": "e76cbbede0943e01ede57e73116c2d5c12f7d436a12b42702a2f71ab6ead7a60"
+          },
+          {
+            "bytes": 115561,
+            "path": ".out/client-lifecycle/1024/password-reset-expired.png",
+            "sha256": "1e9146ee28a25fb9ac4b73ade23a64d371ccb7fbd87ef6d7a7ff023b7b91211a"
+          },
+          {
+            "bytes": 117238,
+            "path": ".out/client-lifecycle/1024/registration-login-failed.png",
+            "sha256": "162491238d9bb8f80ca884c10438141681ea1dd7daf472dd9a53e854647fb43c"
+          },
+          {
+            "bytes": 97838,
+            "path": ".out/client-lifecycle/1024/screen-share-compact-statistics.png",
+            "sha256": "be396b52bfa7a43aa0112df73cf0cdbf038f913bd5f5743eca75a9272802a1c9"
+          },
+          {
+            "bytes": 24157,
+            "path": ".out/client-lifecycle/1024/screen-share-owner-preview-short-height.png",
+            "sha256": "5cc3fbd9e7a60fc94d556c33e55d95c4e55604b29682123c8430b25796b70cd3"
+          },
+          {
+            "bytes": 75155,
+            "path": ".out/client-lifecycle/1024/screen-share-owner-preview.png",
+            "sha256": "61650cb4144731b04a7cffa826a57d0b5ed6b87bcce3a2efb5004540d8048274"
+          },
+          {
+            "bytes": 75243,
+            "path": ".out/client-lifecycle/1024/search-tabs-archive.png",
+            "sha256": "4232796fcdc82d5f67ef40546bb445ff2cab394bfb847862e88c9626d6d25008"
+          },
+          {
+            "bytes": 77227,
+            "path": ".out/client-lifecycle/1024/search-tabs-mentions.png",
+            "sha256": "5481eb2301034affc09cbbb996617079f9e77f8e94cfe8d03ff44582c59c3dd2"
+          },
+          {
+            "bytes": 79577,
+            "path": ".out/client-lifecycle/1024/search-tabs-messages.png",
+            "sha256": "b59c9da3547fc0e9ee1982cf6ddfb55e5ce77b70445549e1ed32d319f4a05db7"
+          },
+          {
+            "bytes": 77330,
+            "path": ".out/client-lifecycle/1024/search-tabs-pinned.png",
+            "sha256": "d999be505fbc191c2f6e3ceac1a629975f72872a6c2094a868e08d2940b57fcd"
+          },
+          {
+            "bytes": 86845,
+            "path": ".out/client-lifecycle/1024/settings-audio-advanced.png",
+            "sha256": "6a995548228484a3e4eef099c7336694e2b903f67fb50d213609b20c41a94939"
+          },
+          {
+            "bytes": 75115,
+            "path": ".out/client-lifecycle/1024/settings-audio-basic.png",
+            "sha256": "44cc3b1c5d9392e13349e20697302f7d0ef6db2ffd3a28127984ff05b9bbc6c8"
+          },
+          {
+            "bytes": 75191,
+            "path": ".out/client-lifecycle/1024/settings-notifications.png",
+            "sha256": "696d602fde42b0bb3f94bbcd70705f516c9f9dbcadd5ab77a56dd057a41f33cf"
+          },
+          {
+            "bytes": 68984,
+            "path": ".out/client-lifecycle/1024/settings-profile-saved.png",
+            "sha256": "2551514ec66c0d9d60b8f3eb84684ec654cfdcb39ab872dfe1c6091a9ebf1f3a"
+          },
+          {
+            "bytes": 69324,
+            "path": ".out/client-lifecycle/1024/settings-security-cancelled.png",
+            "sha256": "d6f94c6f6794e00b6e3d184c427755a94c116f4e71c42c47547efbac8583f8a5"
+          },
+          {
+            "bytes": 59376,
+            "path": ".out/client-lifecycle/1024/sfu-unavailable.png",
+            "sha256": "7face24e1e078b9928ed717b60f7b6aa3e24e63e693d8abf34e2a53662c9ab5b"
+          },
+          {
+            "bytes": 53891,
+            "path": ".out/client-lifecycle/1024/voice-after-leave.png",
+            "sha256": "728560b5625dcc5c2dc11c82b75bb48f188569c3df1da37ad30e4a3172433547"
+          },
+          {
+            "bytes": 61148,
+            "path": ".out/client-lifecycle/1024/voice-connected-compact.png",
+            "sha256": "2bcc5b9deb4abee3906b3e250cf3504a8a511c73ed4b9f132b4075947375d6e3"
+          },
+          {
+            "bytes": 64080,
+            "path": ".out/client-lifecycle/1024/voice-deafened-compact.png",
+            "sha256": "9c0f97c5310443c8222678f265fe506a52a0eee5895a1fed9710810bbb5208ad"
+          },
+          {
+            "bytes": 50861,
+            "path": ".out/client-lifecycle/1024/voice-prejoin.png",
+            "sha256": "cd7621f5792188685eb4e68d8bd04b3f7336ddced1ab234e34f37d5a6e697df0"
+          },
+          {
+            "bytes": 102357,
+            "path": ".out/client-lifecycle/1024/voice-text-navigation.png",
+            "sha256": "bb6813fb926eab05505c3479d581f40fee017718ee3c9e3496cb28ed1c743298"
+          },
+          {
+            "bytes": 78192,
+            "path": ".out/client-lifecycle/1024/welcome-a.png",
+            "sha256": "3e15563f458679cbe831e8934e17f01616b6ef07758db235200149c0794daff3"
+          },
+          {
+            "bytes": 78163,
+            "path": ".out/client-lifecycle/1024/welcome-b.png",
+            "sha256": "ec9dfaef0ffadfc07e5668d8d274e5773797eb3a3783eaafe3314a5ca43e8e7c"
+          },
+          {
+            "bytes": 131955,
+            "path": ".out/client-lifecycle/1440/authentication-rate-limit.png",
+            "sha256": "02f221ea07f52eda5040b8d13dd85e7c26e23cec89b8e81e6593a32a8e92626c"
+          },
+          {
+            "bytes": 602873,
+            "path": ".out/client-lifecycle/1440/authentication.png",
+            "sha256": "7e321d13b695dedae3bd07be39bb7e534639e54b9858e3a3d3d92da04a61c6ee"
+          },
+          {
+            "bytes": 269376,
+            "path": ".out/client-lifecycle/1440/channel-log.png",
+            "sha256": "7a1a1173b9acde9f53475f3279aa81365e03d23789ee84b5c184b54a982dde77"
+          },
+          {
+            "bytes": 409966,
+            "path": ".out/client-lifecycle/1440/channel-participants-200.png",
+            "sha256": "32b93ef19b5ef0fbdfcb93f7480b2ec70bbaa9bbd083036347a7f8ced46c052e"
+          },
+          {
+            "bytes": 286382,
+            "path": ".out/client-lifecycle/1440/channel-participants.png",
+            "sha256": "ee62e96d270a9effdc4dadce5b1fe47b2be29946b9747385a204c5a194a03b8a"
+          },
+          {
+            "bytes": 409966,
+            "path": ".out/client-lifecycle/1440/channel-text-200.png",
+            "sha256": "32b93ef19b5ef0fbdfcb93f7480b2ec70bbaa9bbd083036347a7f8ced46c052e"
+          },
+          {
+            "bytes": 292588,
+            "path": ".out/client-lifecycle/1440/channel-text-actions.png",
+            "sha256": "a91650b875ce8d577139575f3443f987ac16a0c03e27576c75ac34e0c48ea701"
+          },
+          {
+            "bytes": 283694,
+            "path": ".out/client-lifecycle/1440/channel-text.png",
+            "sha256": "c35fe5cddd73ecf024c4ca65d543d2105a76ffa2e1b564519746380ae3942e14"
+          },
+          {
+            "bytes": 154290,
+            "path": ".out/client-lifecycle/1440/chat-failed-media-connected.png",
+            "sha256": "63cf0112c990713b16be1a3041f85a46d777dce6fbb10fd3d020b4b10652b50b"
+          },
+          {
+            "bytes": 307573,
+            "path": ".out/client-lifecycle/1440/compact-archive.png",
+            "sha256": "2788fb6971b378ec843c5194232331d8b4fc486ec9d356fe46899ed451256c1f"
+          },
+          {
+            "bytes": 241812,
+            "path": ".out/client-lifecycle/1440/compact-files.png",
+            "sha256": "57451dc88c078621b1b4c13643398ac97430d7f8fd25389ec31d46d0f1cbb4c1"
+          },
+          {
+            "bytes": 276438,
+            "path": ".out/client-lifecycle/1440/compact-mentions.png",
+            "sha256": "e88dbd7e22ba4d90a966a2b98ac6d8db2022fb07725cb9320e818377063b6b2d"
+          },
+          {
+            "bytes": 285672,
+            "path": ".out/client-lifecycle/1440/compact-pins.png",
+            "sha256": "2cf049cbc29ba6f439fff13e568cc5bbd8b8b027f6b3516fb946bc58cc51cb6e"
+          },
+          {
+            "bytes": 261010,
+            "path": ".out/client-lifecycle/1440/compact-quick-jump.png",
+            "sha256": "b502bd03c5bc3efbd6ac6c8e6a7622c7d74f40c9c2bb1fd412d939bfd7917935"
+          },
+          {
+            "bytes": 319140,
+            "path": ".out/client-lifecycle/1440/compact-search-filters.png",
+            "sha256": "c605d4fdc51590865dedfe299545f6bd7418c078a5e3ff43401df4f0a5176ead"
+          },
+          {
+            "bytes": 323703,
+            "path": ".out/client-lifecycle/1440/compact-search-return.png",
+            "sha256": "efa6d9f134bde4168a8d2792829e2e07a3eedbe28980a0876166424c05e8fb3b"
+          },
+          {
+            "bytes": 116662,
+            "path": ".out/client-lifecycle/1440/direct-message-header.png",
+            "sha256": "6a077979f0f9283a0461fe7b1dd1096620ec6a48db59993f09dbe27999a6075a"
+          },
+          {
+            "bytes": 112487,
+            "path": ".out/client-lifecycle/1440/dm-conversation.png",
+            "sha256": "e269c94650203fceff1a14b079248c9b5f3361b60719d3bf0dd5f7840840efcb"
+          },
+          {
+            "bytes": 97746,
+            "path": ".out/client-lifecycle/1440/dm-empty-conversation.png",
+            "sha256": "79745574e50b5db367f450985ee6bd0bad12a25c872829368c748223d595679f"
+          },
+          {
+            "bytes": 97746,
+            "path": ".out/client-lifecycle/1440/dm-list.png",
+            "sha256": "79745574e50b5db367f450985ee6bd0bad12a25c872829368c748223d595679f"
+          },
+          {
+            "bytes": 145422,
+            "path": ".out/client-lifecycle/1440/dm-search.png",
+            "sha256": "69cfa79a84accf3e66da9ea89ec1609adaa005aed06b5b5182832e54ea5b2f2b"
+          },
+          {
+            "bytes": 107495,
+            "path": ".out/client-lifecycle/1440/dm-starter-dialog.png",
+            "sha256": "bd2ea0580dc6ac34b33d911d9b4c9b1cf5a1dca18a43825c389604b73755825f"
+          },
+          {
+            "bytes": 270106,
+            "path": ".out/client-lifecycle/1440/global-search-result-context.png",
+            "sha256": "058a29b515ba548ff03e2ccc092ded1502c31820cbadf23dc0e18454e906bf16"
+          },
+          {
+            "bytes": 170543,
+            "path": ".out/client-lifecycle/1440/global-search.png",
+            "sha256": "1688c3f1f588ad682030c955e9810cfad33f095ff63ac1d13e06c97011f62a39"
+          },
+          {
+            "bytes": 233987,
+            "path": ".out/client-lifecycle/1440/guild-audit.png",
+            "sha256": "a82799d5d38ef1d8f34c46d9a9a3104f9dd0611cb2e03bdbe1b8fc4b8fe775fc"
+          },
+          {
+            "bytes": 207376,
+            "path": ".out/client-lifecycle/1440/guild-channels.png",
+            "sha256": "4e3e46411360b433e9a89c33e007ce1a13393ad90f84146a3c0c532c7d3a33c2"
+          },
+          {
+            "bytes": 177101,
+            "path": ".out/client-lifecycle/1440/guild-media.png",
+            "sha256": "638a6fe65d5b3da521879b29cb321e60d794c99e9520172f570a969fe6e1e8cc"
+          },
+          {
+            "bytes": 235048,
+            "path": ".out/client-lifecycle/1440/guild-members.png",
+            "sha256": "36c6f4af415a49502cb25bd801e07ae485d0c1a0086d9f87ecf03d7a5cb45d99"
+          },
+          {
+            "bytes": 169813,
+            "path": ".out/client-lifecycle/1440/guild-readiness.png",
+            "sha256": "5211afc4c30630f9c237a0b8b2193a521bd2dacbe0d42fbfe0164ce3146b8f2d"
+          },
+          {
+            "bytes": 196417,
+            "path": ".out/client-lifecycle/1440/guild-roles.png",
+            "sha256": "ea5320a9803b1a4292ba17279aaa32d5412df157ce9454ba11b072f531482444"
+          },
+          {
+            "bytes": 212518,
+            "path": ".out/client-lifecycle/1440/guild-settings-200.png",
+            "sha256": "a05297f6efe56f6b034dc8d098376e45ed48e528b82b3b93cec087e94deb7ccc"
+          },
+          {
+            "bytes": 150906,
+            "path": ".out/client-lifecycle/1440/guild-settings-initial.png",
+            "sha256": "eb7feff672ad3a1d5020dc6a97cd07508309c9b131a01adb119dcaf4e09163c0"
+          },
+          {
+            "bytes": 152482,
+            "path": ".out/client-lifecycle/1440/guild-settings.png",
+            "sha256": "8dbb0d360d362d90c4ea86a1e06778a1f02b8edd551e372403d12f34a99c4346"
+          },
+          {
+            "bytes": 128395,
+            "path": ".out/client-lifecycle/1440/header-dm-overflow.png",
+            "sha256": "fe98d0ccc924e2fc61c6d39008665b6f074bd056ba87f8a8e9e74bfde1d74f7b"
+          },
+          {
+            "bytes": 116662,
+            "path": ".out/client-lifecycle/1440/header-dm-returned.png",
+            "sha256": "6a077979f0f9283a0461fe7b1dd1096620ec6a48db59993f09dbe27999a6075a"
+          },
+          {
+            "bytes": 287249,
+            "path": ".out/client-lifecycle/1440/header-text-overflow.png",
+            "sha256": "362e1c0eef8965d09e74a512dd1c053696f1d5f3e85544d682240299f1357eef"
+          },
+          {
+            "bytes": 283694,
+            "path": ".out/client-lifecycle/1440/header-text-returned.png",
+            "sha256": "c35fe5cddd73ecf024c4ca65d543d2105a76ffa2e1b564519746380ae3942e14"
+          },
+          {
+            "bytes": 217345,
+            "path": ".out/client-lifecycle/1440/header-voice-search-navigation.png",
+            "sha256": "a59378d5a076cf2281ec86068515cecf97f5843213c9549a68699fee99594970"
+          },
+          {
+            "bytes": 321585,
+            "path": ".out/client-lifecycle/1440/member-profile-text.png",
+            "sha256": "b849a24571a4b71f5c0374deaf9b8c4af9bedaf028a9b95cb6823cec1781ed33"
+          },
+          {
+            "bytes": 188856,
+            "path": ".out/client-lifecycle/1440/member-profile-voice-admin.png",
+            "sha256": "2c748cf0aa4b7f7a06acbf5032ece19a1eec3f0e56aa6d1ed6e13c77e189bb0c"
+          },
+          {
+            "bytes": 186293,
+            "path": ".out/client-lifecycle/1440/member-profile-voice-member.png",
+            "sha256": "652a3805b35a76f4f7b508c47d5f03f69d0475500175f92c34219798a6be8368"
+          },
+          {
+            "bytes": 150665,
+            "path": ".out/client-lifecycle/1440/mini-player-dm.png",
+            "sha256": "99e134dde9149dc8c92c58279c2bd0d198e8d13539d433eba01f32341572dc6b"
+          },
+          {
+            "bytes": 356437,
+            "path": ".out/client-lifecycle/1440/mini-player-text.png",
+            "sha256": "3a8852a0b7f44ebbcf785b0bd21c6ec2e519964133c4389b4b880102e6feca90"
+          },
+          {
+            "bytes": 352879,
+            "path": ".out/client-lifecycle/1440/old-page-delete.png",
+            "sha256": "68a43bfa4b7015618b0d2d4f22def2af8a13df817112c648d693ddd0e3270cff"
+          },
+          {
+            "bytes": 204911,
+            "path": ".out/client-lifecycle/1440/own-sessions.png",
+            "sha256": "b594e17d673e3f4eaa7db9c2ee4f756194f3a2292de2776ccd7cf2a270431850"
+          },
+          {
+            "bytes": 115561,
+            "path": ".out/client-lifecycle/1440/password-reset-expired.png",
+            "sha256": "1e9146ee28a25fb9ac4b73ade23a64d371ccb7fbd87ef6d7a7ff023b7b91211a"
+          },
+          {
+            "bytes": 188214,
+            "path": ".out/client-lifecycle/1440/registration-login-failed.png",
+            "sha256": "908d940ebfa30c1542e2d294cdadfdaac90f1e980ea2565f247de9d2e445e8d2"
+          },
+          {
+            "bytes": 243625,
+            "path": ".out/client-lifecycle/1440/screen-share-compact-statistics.png",
+            "sha256": "ef63c072823ea0c943e96c7480fc900bf03a279e0ff0099a7f481d5e7efd2a6e"
+          },
+          {
+            "bytes": 56008,
+            "path": ".out/client-lifecycle/1440/screen-share-owner-preview-short-height.png",
+            "sha256": "efc600e77762c7e6ecbd0dc33bc1294e982c93b7fc0f98439087562da0675444"
+          },
+          {
+            "bytes": 186989,
+            "path": ".out/client-lifecycle/1440/screen-share-owner-preview.png",
+            "sha256": "c2f9294e9b8ffbff416e1263ff4af9bc12b64482737a5eda1db135c0ad1dc8ef"
+          },
+          {
+            "bytes": 222827,
+            "path": ".out/client-lifecycle/1440/search-tabs-archive.png",
+            "sha256": "2f6b28ba4e0223d703aff1297776c08e7b356e69ef386ab12b9824e0d14c50b9"
+          },
+          {
+            "bytes": 226962,
+            "path": ".out/client-lifecycle/1440/search-tabs-mentions.png",
+            "sha256": "7e3d93029250c7d4cc0bd981f783b1a90fc3e08c5122d5e009b3fcc62cdfb07a"
+          },
+          {
+            "bytes": 230999,
+            "path": ".out/client-lifecycle/1440/search-tabs-messages.png",
+            "sha256": "64ea80a2ca62bae4af7b52ebbe751910e5f871d52686785ca98f0edf8693ffbe"
+          },
+          {
+            "bytes": 227534,
+            "path": ".out/client-lifecycle/1440/search-tabs-pinned.png",
+            "sha256": "d31988c5cbf9a1f8e6463999917368c2bf385881687f246d4a6b327cc5c2d385"
+          },
+          {
+            "bytes": 226792,
+            "path": ".out/client-lifecycle/1440/settings-audio-advanced.png",
+            "sha256": "c39058174c67e917472d18730f6b44dff31bb5b612ff5515bff14aa3a0148428"
+          },
+          {
+            "bytes": 203473,
+            "path": ".out/client-lifecycle/1440/settings-audio-basic.png",
+            "sha256": "fba825aeedf89e7ce1ef28949d50af79cfc409898552c2bc4372eaad57aa6570"
+          },
+          {
+            "bytes": 198627,
+            "path": ".out/client-lifecycle/1440/settings-notifications.png",
+            "sha256": "9ca45ee9c1f4ae4bb8acf584c022345aac17cd5e56bc3cd1993ecd544613f0b2"
+          },
+          {
+            "bytes": 168908,
+            "path": ".out/client-lifecycle/1440/settings-profile-saved.png",
+            "sha256": "f2deee6faa1717564b4c373b9070f684c593dfc908b37a60b17090984881bdd6"
+          },
+          {
+            "bytes": 188871,
+            "path": ".out/client-lifecycle/1440/settings-security-cancelled.png",
+            "sha256": "9c16361e1079f684cb099a32aae1699375dd3a698ad585a47655226eb2bd0aec"
+          },
+          {
+            "bytes": 150121,
+            "path": ".out/client-lifecycle/1440/sfu-unavailable.png",
+            "sha256": "8f550ecf747986469de2f8002c5fa246cf45cde469f21d0a426607eb70c8db17"
+          },
+          {
+            "bytes": 142533,
+            "path": ".out/client-lifecycle/1440/voice-after-leave.png",
+            "sha256": "d3bb9c91149a8433fdc28acbb67df6550ca17aee8bb3fd71efd35b49ebb1d5b2"
+          },
+          {
+            "bytes": 158298,
+            "path": ".out/client-lifecycle/1440/voice-connected-compact.png",
+            "sha256": "a6fd57bb1c509a5c6f095d870c646f12bdb9a414358c68971f5d0737c1f511cf"
+          },
+          {
+            "bytes": 164771,
+            "path": ".out/client-lifecycle/1440/voice-deafened-compact.png",
+            "sha256": "4b021ac75309e5cbc5fa3cf3bd8e795fb34dcea4d3ca62e497729cfcb5827212"
+          },
+          {
+            "bytes": 128104,
+            "path": ".out/client-lifecycle/1440/voice-prejoin.png",
+            "sha256": "b3cc21c3fa78658ddd4345408481836752b5b123d58a97dc3a7333aaf462206c"
+          },
+          {
+            "bytes": 364438,
+            "path": ".out/client-lifecycle/1440/voice-text-navigation.png",
+            "sha256": "088433aa557b6c1759d84ea88b40bda94e176ebbcb004b4627e22e7e8157a6bc"
+          },
+          {
+            "bytes": 287546,
+            "path": ".out/client-lifecycle/1440/welcome-a.png",
+            "sha256": "cb09294c03b6f52d57b72f5e67d1fca23238f97850fa96e2c395d273cb22107e"
+          },
+          {
+            "bytes": 286382,
+            "path": ".out/client-lifecycle/1440/welcome-b.png",
+            "sha256": "ee62e96d270a9effdc4dadce5b1fe47b2be29946b9747385a204c5a194a03b8a"
+          }
+        ],
+        "job": "runtime",
+        "map_sha256": "c21695d83f1a943a2494a15f0d09da146ad916c11f2c115cff295e38aaab9483",
+        "operation": 5,
+        "operations": [
+          {
+            "index": 0,
+            "seconds": 0.301
+          },
+          {
+            "index": 1,
+            "seconds": 0.902
+          },
+          {
+            "index": 2,
+            "seconds": 133.149
+          },
+          {
+            "index": 3,
+            "seconds": 111.91
+          },
+          {
+            "index": 4,
+            "seconds": 112.019
+          },
+          {
+            "index": 5,
+            "seconds": 131.115
+          }
+        ],
+        "owned_resources_removed": true,
+        "owner": "qa-client-aa5f792cdc811a19",
+        "physical_acceptance": "NOT_RUN",
+        "port_namespace": "disposable-github-hosted-vm/39312750405/1/runtime/aa5f792cdc811a19",
+        "profile": "lifecycle",
+        "release_acceptance": "NOT_RUN",
+        "reports": [
+          {
+            "path": ".out/refresh-baseline/report.json",
+            "sha256": "78ae76c0a4e4577a2d3ef7444cf5023135efb374229754c1ef27926070f58f75"
+          },
+          {
+            "path": ".out/client-lifecycle/1440/report.json",
+            "sha256": "056ea080673d24dc41eedaec4748f5054fb98a11faad176b44fe6d7b3450a956"
+          },
+          {
+            "path": ".out/client-lifecycle/1024/report.json",
+            "sha256": "350a14e51f58d6fee3904457549a67aa1dcae2cb32439c0d08ddba6314388f6f"
+          },
+          {
+            "path": ".out/upload-reservations/report.json",
+            "sha256": "47838296a5e96e8d15fb03b004e6465d4a476db42510bf0deb2dfe175196f6d8"
+          }
+        ],
+        "run_attempt": "1",
+        "run_id": "39312750405",
+        "schema_version": 1,
+        "scope": "automatic-PR-real-runtime",
+        "seconds": 489.543,
+        "source_revision": "b648e0029c6e396bda1cebbeaf6520f555424789",
+        "status": "PASS"
+      },
+      "reports_verified": [
+        {
+          "path": ".out/refresh-baseline/report.json",
+          "sha256": "78ae76c0a4e4577a2d3ef7444cf5023135efb374229754c1ef27926070f58f75",
+          "status": "PASS",
+          "owned_resources_removed": true,
+          "actual_source": "b648e0029c6e396bda1cebbeaf6520f555424789"
+        },
+        {
+          "path": ".out/client-lifecycle/1440/report.json",
+          "sha256": "056ea080673d24dc41eedaec4748f5054fb98a11faad176b44fe6d7b3450a956",
+          "status": "PASS",
+          "owned_resources_removed": true,
+          "actual_source": "b648e0029c6e396bda1cebbeaf6520f555424789"
+        },
+        {
+          "path": ".out/client-lifecycle/1024/report.json",
+          "sha256": "350a14e51f58d6fee3904457549a67aa1dcae2cb32439c0d08ddba6314388f6f",
+          "status": "PASS",
+          "owned_resources_removed": true,
+          "actual_source": "b648e0029c6e396bda1cebbeaf6520f555424789"
+        },
+        {
+          "path": ".out/upload-reservations/report.json",
+          "sha256": "47838296a5e96e8d15fb03b004e6465d4a476db42510bf0deb2dfe175196f6d8",
+          "status": "PASS",
+          "owned_resources_removed": true,
+          "actual_source": "b648e0029c6e396bda1cebbeaf6520f555424789"
+        }
+      ],
+      "zip_and_all_payloads_verified": true,
+      "reviewed_capture": {
+        "bytes": 283694,
+        "path": ".out/client-lifecycle/1440/channel-text.png",
+        "sha256": "c35fe5cddd73ecf024c4ca65d543d2105a76ffa2e1b564519746380ae3942e14"
+      }
+    },
+    {
+      "run": {
+        "id": 39311951333,
+        "head_sha": "6d75e94a064dc125f5b769326db3cf7a731272ed",
+        "event": "pull_request",
+        "head_branch": "codex/web-stream-viewer-audience",
+        "path": ".github/workflows/ci.yaml",
+        "conclusion": "success"
+      },
+      "job": {
+        "id": 118263610836,
+        "name": "actual / runtime (lifecycle)",
+        "run_id": 39311951333,
+        "status": "completed",
+        "conclusion": "success",
+        "controller_step": {
+          "name": "Run original controllers in one disposable VM namespace",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-19T19:34:18Z",
+          "completed_at": "2026-10-19T19:43:30Z"
+        }
+      },
+      "tested_merge": {
+        "sha": "2593a2f8d8314d6abf96495f98c696694d2e4c07",
+        "tree": "f9a8d71337a29c432a2653cc54be605cb15935a9",
+        "parents": [
+          "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+          "6d75e94a064dc125f5b769326db3cf7a731272ed"
+        ]
+      },
+      "artifact": {
+        "id": 12215923242,
+        "name": "actual-lifecycle-2593a2f8d8314d6abf96495f98c696694d2e4c07-39311951333-1",
+        "size_in_bytes": 17523490,
+        "digest": "sha256:e118433d9db00a0ca2ab9fdd49795964742236b79bad7da36183de7663acfc5d"
+      },
+      "result": {
+        "captures": [
+          {
+            "bytes": 131961,
+            "path": ".out/client-lifecycle/1024/authentication-rate-limit.png",
+            "sha256": "8969e42baed8fb45022afaf4d0ced8057a12c1cab76dee8f64f7e76d25314826"
+          },
+          {
+            "bytes": 98858,
+            "path": ".out/client-lifecycle/1024/authentication.png",
+            "sha256": "7ff391c6161622a4976b368526215957dba0e80c3a5b6699234c5af5e8de71fa"
+          },
+          {
+            "bytes": 71453,
+            "path": ".out/client-lifecycle/1024/channel-log.png",
+            "sha256": "4bc5f358e02db9403e4d7b115cb351e582a7a363d59278d99c4c89b53c3d9e07"
+          },
+          {
+            "bytes": 150132,
+            "path": ".out/client-lifecycle/1024/channel-participants-200.png",
+            "sha256": "8dbf0cb1c1662482df67be4423061e514254526c4468959ae46cc9c6debf48e3"
+          },
+          {
+            "bytes": 103744,
+            "path": ".out/client-lifecycle/1024/channel-participants.png",
+            "sha256": "6e60b5d58d07ae10c2b5df9d95cc449a477b9959c8c7142a284934fe0a85ad10"
+          },
+          {
+            "bytes": 110552,
+            "path": ".out/client-lifecycle/1024/channel-text-200.png",
+            "sha256": "4a1d71581146006161c102beeafb3927f2faa8b2b795993d9497e12c79653ddb"
+          },
+          {
+            "bytes": 80539,
+            "path": ".out/client-lifecycle/1024/channel-text-actions.png",
+            "sha256": "f122c33f595d529eeca15a885585db0421e86e8ec4ee453c4c5533b26afbb6e9"
+          },
+          {
+            "bytes": 76665,
+            "path": ".out/client-lifecycle/1024/channel-text.png",
+            "sha256": "fceaa00fd7f66fb227a4b0119b4b88ef43da8549d701e61fbba201c4e4c65e47"
+          },
+          {
+            "bytes": 60305,
+            "path": ".out/client-lifecycle/1024/chat-failed-media-connected.png",
+            "sha256": "d04844cf2b80823b3dd2c0ae357395b89bec07b8fedec338364104b9455da828"
+          },
+          {
+            "bytes": 104136,
+            "path": ".out/client-lifecycle/1024/compact-archive.png",
+            "sha256": "293fdeffcc1eceeaf664efbd7072f0029378c04eb931cf4ed4ca14fe3e1c2ed3"
+          },
+          {
+            "bytes": 60012,
+            "path": ".out/client-lifecycle/1024/compact-files.png",
+            "sha256": "bcd8c1daaaa631e06a5e01648bb12f35861e45be290ea4ddebff3d71a487db74"
+          },
+          {
+            "bytes": 91883,
+            "path": ".out/client-lifecycle/1024/compact-mentions.png",
+            "sha256": "1947ed6763a3c764b3c5f96ef89edb012f27d98e8ef4f1f041d8663d4937855c"
+          },
+          {
+            "bytes": 95799,
+            "path": ".out/client-lifecycle/1024/compact-pins.png",
+            "sha256": "0976d018e9bbcb10668dfb2b3999db9e24ebb94525443d175aa4b1ea712227b2"
+          },
+          {
+            "bytes": 86446,
+            "path": ".out/client-lifecycle/1024/compact-quick-jump.png",
+            "sha256": "8352fb10064b82c2dab75a9707bce16a401b3705defab9fc0efa6beb8de4d5ae"
+          },
+          {
+            "bytes": 107616,
+            "path": ".out/client-lifecycle/1024/compact-search-filters.png",
+            "sha256": "dab36a8c30cd196afc00bcd687eb5cafe7f2766f86592170b966b75f8c591f24"
+          },
+          {
+            "bytes": 110899,
+            "path": ".out/client-lifecycle/1024/compact-search-return.png",
+            "sha256": "ebd0ab40ab79a39807da97886de880df59498ccd84a8f44a23feab5b7af62f95"
+          },
+          {
+            "bytes": 46412,
+            "path": ".out/client-lifecycle/1024/direct-message-header.png",
+            "sha256": "528f6dbfd0942780ed6079e8570d3712e56397cfaeabfd9e51150588e926a5f3"
+          },
+          {
+            "bytes": 44401,
+            "path": ".out/client-lifecycle/1024/dm-conversation.png",
+            "sha256": "a0d515124529c77a88e0892bde0b384d8bf31f0300121973768b3602bff2671f"
+          },
+          {
+            "bytes": 38011,
+            "path": ".out/client-lifecycle/1024/dm-empty-conversation.png",
+            "sha256": "06913e0911299891ed6f863f7a02a2c4ddc58e026c1e33e1c7a1bdbfa36fd83a"
+          },
+          {
+            "bytes": 38011,
+            "path": ".out/client-lifecycle/1024/dm-list.png",
+            "sha256": "06913e0911299891ed6f863f7a02a2c4ddc58e026c1e33e1c7a1bdbfa36fd83a"
+          },
+          {
+            "bytes": 58250,
+            "path": ".out/client-lifecycle/1024/dm-search.png",
+            "sha256": "aa9b3df95d3429aceaccabb625ff890364d65f91d68ecdfe2d0b7418894aae4e"
+          },
+          {
+            "bytes": 42387,
+            "path": ".out/client-lifecycle/1024/dm-starter-dialog.png",
+            "sha256": "337f57020edf70b2bbf09fc23527818588ce61dbd6546527b2e0fb8719f32cf9"
+          },
+          {
+            "bytes": 71587,
+            "path": ".out/client-lifecycle/1024/global-search-result-context.png",
+            "sha256": "ecc4a71ed214760ffb17d9bc730239a27cc312f174203b2942500909bb4b7e29"
+          },
+          {
+            "bytes": 60015,
+            "path": ".out/client-lifecycle/1024/global-search.png",
+            "sha256": "05f1b4a2096754ccf110fcb04eac218f6748a7a58a68b14fe92990367bb50f65"
+          },
+          {
+            "bytes": 87145,
+            "path": ".out/client-lifecycle/1024/guild-audit.png",
+            "sha256": "47bf94ff9565c3e072a38187d1c38e74500084753a5c34f898cfc1c03fa80d6e"
+          },
+          {
+            "bytes": 87167,
+            "path": ".out/client-lifecycle/1024/guild-channels.png",
+            "sha256": "d86ea98a59c9a76bea109f92cfcc76cb3a1e57c4982b5c9f50741124b167c163"
+          },
+          {
+            "bytes": 71954,
+            "path": ".out/client-lifecycle/1024/guild-media.png",
+            "sha256": "5ac1f195468412c9375eb3c9b73065bf0509ae23724fecf3c08f40adadd64f7c"
+          },
+          {
+            "bytes": 90115,
+            "path": ".out/client-lifecycle/1024/guild-members.png",
+            "sha256": "3f8dac3b87c1f703553eb40e6789151a75cd8ac942fcd8ca46b80a1316e49e10"
+          },
+          {
+            "bytes": 68578,
+            "path": ".out/client-lifecycle/1024/guild-readiness.png",
+            "sha256": "c7108e4cb77613802a71210510719b41c370ffa76a95cbfd166ecba93704d086"
+          },
+          {
+            "bytes": 82686,
+            "path": ".out/client-lifecycle/1024/guild-roles.png",
+            "sha256": "f203ed760d302fe7e527922bfcd2afdfa4edc6afd33cb7f7ad525167b7222b41"
+          },
+          {
+            "bytes": 90921,
+            "path": ".out/client-lifecycle/1024/guild-settings-200.png",
+            "sha256": "d022b47ca72d0fd2f8056c129aa1a9d7feaf03abe84a1e2023a1d701a00c1c98"
+          },
+          {
+            "bytes": 61889,
+            "path": ".out/client-lifecycle/1024/guild-settings-initial.png",
+            "sha256": "d5daee8c7051d80c5c5926491f151efc52cfeaae86b529afb5629a32b9ecedd0"
+          },
+          {
+            "bytes": 62397,
+            "path": ".out/client-lifecycle/1024/guild-settings.png",
+            "sha256": "858aa4d57c689ffb65dc027171db2ac33d1496ef0b07d2918fe8963aacfd48b0"
+          },
+          {
+            "bytes": 51729,
+            "path": ".out/client-lifecycle/1024/header-dm-overflow.png",
+            "sha256": "78515105d945e82a92e7e5b6ca3b49496d5e73b60cebb3b110207e9aeec2136a"
+          },
+          {
+            "bytes": 46412,
+            "path": ".out/client-lifecycle/1024/header-dm-returned.png",
+            "sha256": "528f6dbfd0942780ed6079e8570d3712e56397cfaeabfd9e51150588e926a5f3"
+          },
+          {
+            "bytes": 83054,
+            "path": ".out/client-lifecycle/1024/header-text-overflow.png",
+            "sha256": "787d5956a853ec2abe4260b5662691cdffae40bb21d63ce482b57d8182bde31e"
+          },
+          {
+            "bytes": 76665,
+            "path": ".out/client-lifecycle/1024/header-text-returned.png",
+            "sha256": "fceaa00fd7f66fb227a4b0119b4b88ef43da8549d701e61fbba201c4e4c65e47"
+          },
+          {
+            "bytes": 69351,
+            "path": ".out/client-lifecycle/1024/header-voice-search-navigation.png",
+            "sha256": "3594beed177499d595ef2803eff94ec4d7b421400d5d8b131f2e63998baa91b6"
+          },
+          {
+            "bytes": 105610,
+            "path": ".out/client-lifecycle/1024/member-profile-text.png",
+            "sha256": "97c219952c6001658a767e6e53d22b46babd428851605e6197aa6a925b7e9ebe"
+          },
+          {
+            "bytes": 72647,
+            "path": ".out/client-lifecycle/1024/member-profile-voice-admin.png",
+            "sha256": "539ab465f728ec2724a269e20a3b24722f95604c030743e138e01f6c50436bea"
+          },
+          {
+            "bytes": 70342,
+            "path": ".out/client-lifecycle/1024/member-profile-voice-member.png",
+            "sha256": "95d245b5a75ce2f0411164eadc70e1860551afc05ba65e7824e194cc7b6ca4c1"
+          },
+          {
+            "bytes": 61405,
+            "path": ".out/client-lifecycle/1024/mini-player-dm.png",
+            "sha256": "6ec80fa7ac11f43ac67352da24955316648d1de7f0da2a2308684cd751b0248b"
+          },
+          {
+            "bytes": 98318,
+            "path": ".out/client-lifecycle/1024/mini-player-text.png",
+            "sha256": "ac1241a64ac54a2f07e2d7b9393c508525bb2232193f858b08fb3d15778f8e7a"
+          },
+          {
+            "bytes": 96031,
+            "path": ".out/client-lifecycle/1024/old-page-delete.png",
+            "sha256": "0cc9f208bd1615eb9143697dadde14d4d38bafffad443295a75509948e9f5700"
+          },
+          {
+            "bytes": 76834,
+            "path": ".out/client-lifecycle/1024/own-sessions.png",
+            "sha256": "ccf37fe1a4d18ea2849c88dfa3423a11933cbee3a0e82234ff684d44b7b49ff7"
+          },
+          {
+            "bytes": 115561,
+            "path": ".out/client-lifecycle/1024/password-reset-expired.png",
+            "sha256": "1e9146ee28a25fb9ac4b73ade23a64d371ccb7fbd87ef6d7a7ff023b7b91211a"
+          },
+          {
+            "bytes": 117238,
+            "path": ".out/client-lifecycle/1024/registration-login-failed.png",
+            "sha256": "162491238d9bb8f80ca884c10438141681ea1dd7daf472dd9a53e854647fb43c"
+          },
+          {
+            "bytes": 99127,
+            "path": ".out/client-lifecycle/1024/screen-share-compact-statistics.png",
+            "sha256": "f5e347d7b0efcde81cfce11aad4eb59410cb8fd963088f40073f2c825ea3ac97"
+          },
+          {
+            "bytes": 24173,
+            "path": ".out/client-lifecycle/1024/screen-share-owner-preview-short-height.png",
+            "sha256": "0bcebf86566313e14a538a08696325be45b74ac86bd881cd9009f90371b8cd28"
+          },
+          {
+            "bytes": 76045,
+            "path": ".out/client-lifecycle/1024/screen-share-owner-preview.png",
+            "sha256": "9991407193b40ea96d1fcdcea8a8e234d631e0dc980655d7313c7815eabb3b67"
+          },
+          {
+            "bytes": 75242,
+            "path": ".out/client-lifecycle/1024/search-tabs-archive.png",
+            "sha256": "62c4040ae1c96a16a6f17999243d44e121dc621814fea60419188add6c7a7916"
+          },
+          {
+            "bytes": 77297,
+            "path": ".out/client-lifecycle/1024/search-tabs-mentions.png",
+            "sha256": "e80c69593d37e5e157926b3622a60a3b6b4687bb49a66c76ff5f7d48af96c4f1"
+          },
+          {
+            "bytes": 79591,
+            "path": ".out/client-lifecycle/1024/search-tabs-messages.png",
+            "sha256": "d6831cc2697f90a2260580577a91713ba061588789960fc488b6d29db3c0e660"
+          },
+          {
+            "bytes": 77336,
+            "path": ".out/client-lifecycle/1024/search-tabs-pinned.png",
+            "sha256": "b6e6def23e8dc7ba39a3681cd2bce487f8f5a3ad9e83f9768cb48ef5ffba14d7"
+          },
+          {
+            "bytes": 86851,
+            "path": ".out/client-lifecycle/1024/settings-audio-advanced.png",
+            "sha256": "590bbbd2b3e201d6afc2b349f18a5d186985503f30b153cee778c89d0b67c300"
+          },
+          {
+            "bytes": 75101,
+            "path": ".out/client-lifecycle/1024/settings-audio-basic.png",
+            "sha256": "88f0d6dfc627d8dc41245ac4c5e8718f49758bf747d775ed53ade8a1234cafa4"
+          },
+          {
+            "bytes": 75188,
+            "path": ".out/client-lifecycle/1024/settings-notifications.png",
+            "sha256": "a4360f25db66b13e7b30dcb4bf28d840a7f40739b4934a098582b9bd515d8b34"
+          },
+          {
+            "bytes": 68987,
+            "path": ".out/client-lifecycle/1024/settings-profile-saved.png",
+            "sha256": "4504505050e3288b9a77c9b1a560acf3679be2dccf20191aa495d3363b085f04"
+          },
+          {
+            "bytes": 69325,
+            "path": ".out/client-lifecycle/1024/settings-security-cancelled.png",
+            "sha256": "a14b1ababa78bdd812a43dcbb7b8fb118c6cbfeeb9536756e1d20acaa1b59ffe"
+          },
+          {
+            "bytes": 57634,
+            "path": ".out/client-lifecycle/1024/sfu-unavailable.png",
+            "sha256": "64e427332c3c4c5acefd368384e40e8f420070aaa8f3d1c8ac8636f03d70a1a2"
+          },
+          {
+            "bytes": 53873,
+            "path": ".out/client-lifecycle/1024/voice-after-leave.png",
+            "sha256": "b5688c3dfc012b47c86a933e09e45fc7faafd108e7ff116eedb8901206977534"
+          },
+          {
+            "bytes": 62785,
+            "path": ".out/client-lifecycle/1024/voice-connected-compact.png",
+            "sha256": "c42b50e41c0d99bcbed96b9adad91937a1340268a31d47753e148f3079fcaf0c"
+          },
+          {
+            "bytes": 65708,
+            "path": ".out/client-lifecycle/1024/voice-deafened-compact.png",
+            "sha256": "bb47b91c81993b2f22d3a2387d5857c2cc13f7164a18b79714a72ab03b1d1569"
+          },
+          {
+            "bytes": 50847,
+            "path": ".out/client-lifecycle/1024/voice-prejoin.png",
+            "sha256": "10495db4240c8930b5445574d6db024bf3eb31c62fc256943827d3ff0052793d"
+          },
+          {
+            "bytes": 101510,
+            "path": ".out/client-lifecycle/1024/voice-text-navigation.png",
+            "sha256": "8d6f25812ef9e51d5765290a0542662d6afd4b4bcf34cb4b0da9e25f8ae9257b"
+          },
+          {
+            "bytes": 78194,
+            "path": ".out/client-lifecycle/1024/welcome-a.png",
+            "sha256": "b0a5875e997ffc97d0083b9ca4ae22e1766ad0cde5064b2c9a9c24588b54f14f"
+          },
+          {
+            "bytes": 78168,
+            "path": ".out/client-lifecycle/1024/welcome-b.png",
+            "sha256": "a77c373108e4f977b105d8945d0b0b34f5f732ecd98b2d68184ef720a5c37f50"
+          },
+          {
+            "bytes": 131945,
+            "path": ".out/client-lifecycle/1440/authentication-rate-limit.png",
+            "sha256": "45db567f39a60ff682b5069cd30f54957788ffbe1b94a9661781cea62649fd5a"
+          },
+          {
+            "bytes": 602873,
+            "path": ".out/client-lifecycle/1440/authentication.png",
+            "sha256": "7e321d13b695dedae3bd07be39bb7e534639e54b9858e3a3d3d92da04a61c6ee"
+          },
+          {
+            "bytes": 268868,
+            "path": ".out/client-lifecycle/1440/channel-log.png",
+            "sha256": "4019fb63ae8408d447469d9d64fd4cfa5d81587c98b61fb24f6deec74b51f67f"
+          },
+          {
+            "bytes": 398722,
+            "path": ".out/client-lifecycle/1440/channel-participants-200.png",
+            "sha256": "e54e6953e5f609e5a2db637966024ab3981d1a303b51a071df56228b351bd555"
+          },
+          {
+            "bytes": 277087,
+            "path": ".out/client-lifecycle/1440/channel-participants.png",
+            "sha256": "a673ee22091ae2d07d64de4d66fc0ffafe9e394458cd82e05bb0c06f8205d9cd"
+          },
+          {
+            "bytes": 398722,
+            "path": ".out/client-lifecycle/1440/channel-text-200.png",
+            "sha256": "e54e6953e5f609e5a2db637966024ab3981d1a303b51a071df56228b351bd555"
+          },
+          {
+            "bytes": 291396,
+            "path": ".out/client-lifecycle/1440/channel-text-actions.png",
+            "sha256": "43317b3dc86fbb41bef00ca286e1296a5e3a4073df4de2a25b7aba2c3446f4af"
+          },
+          {
+            "bytes": 282330,
+            "path": ".out/client-lifecycle/1440/channel-text.png",
+            "sha256": "0cfe57120d3848f56cfc212a40320f9bf9f36f760c64474fd2c8c02bf773513b"
+          },
+          {
+            "bytes": 154440,
+            "path": ".out/client-lifecycle/1440/chat-failed-media-connected.png",
+            "sha256": "949872de4fd9b55692a9e90149f0d22364046aa1f169d4d6839e0cc23bf9da9b"
+          },
+          {
+            "bytes": 306840,
+            "path": ".out/client-lifecycle/1440/compact-archive.png",
+            "sha256": "e99d1c01c6e47b5c7c1759c9c5075c779b37f1697476dfc5a0e626565321c002"
+          },
+          {
+            "bytes": 241583,
+            "path": ".out/client-lifecycle/1440/compact-files.png",
+            "sha256": "f029206eb24ee142af2aa4c3360d8aa87316218ebad2b411d4db3f35f960a908"
+          },
+          {
+            "bytes": 275393,
+            "path": ".out/client-lifecycle/1440/compact-mentions.png",
+            "sha256": "56a36487d180b947fc563e9786200d14eac7d1577a56bc87a389042174fffaa2"
+          },
+          {
+            "bytes": 284939,
+            "path": ".out/client-lifecycle/1440/compact-pins.png",
+            "sha256": "1a101a9d9c9941783dc2a20e7486f3d22e7dad2382c7cd19fd6d25b2d2e1cbf2"
+          },
+          {
+            "bytes": 260007,
+            "path": ".out/client-lifecycle/1440/compact-quick-jump.png",
+            "sha256": "2faf5d34983d51f299729eec2b0b5875010c40de0a57ef47bfb16ea740742ac0"
+          },
+          {
+            "bytes": 318021,
+            "path": ".out/client-lifecycle/1440/compact-search-filters.png",
+            "sha256": "06f4aea8fad8d8c77b289400d57be076937587a4cf2e0f760344ec82729fdc87"
+          },
+          {
+            "bytes": 322501,
+            "path": ".out/client-lifecycle/1440/compact-search-return.png",
+            "sha256": "7916192d8287ff47defaa0e08c895af3ef101c93b1868f70df7d1966765a1265"
+          },
+          {
+            "bytes": 116633,
+            "path": ".out/client-lifecycle/1440/direct-message-header.png",
+            "sha256": "b3c366d96fecc08006ff0de9eb2cbaef1b3379583af7bae9fd4b9ac2a9f0b3d5"
+          },
+          {
+            "bytes": 112460,
+            "path": ".out/client-lifecycle/1440/dm-conversation.png",
+            "sha256": "00df5eea01e874bfdb3f93e7c77f10e8b80a679b35c8fd9c0ab1f3f4cd5c655e"
+          },
+          {
+            "bytes": 97772,
+            "path": ".out/client-lifecycle/1440/dm-empty-conversation.png",
+            "sha256": "5b873f41fadeca33735396ab3a3f8694750b027a080c62a8e61705cb53ad2f4a"
+          },
+          {
+            "bytes": 97772,
+            "path": ".out/client-lifecycle/1440/dm-list.png",
+            "sha256": "5b873f41fadeca33735396ab3a3f8694750b027a080c62a8e61705cb53ad2f4a"
+          },
+          {
+            "bytes": 145317,
+            "path": ".out/client-lifecycle/1440/dm-search.png",
+            "sha256": "a777f5b3c0ac1f424b43596388a9de623dc2723d5ddc4dd867344d6a489e3853"
+          },
+          {
+            "bytes": 108192,
+            "path": ".out/client-lifecycle/1440/dm-starter-dialog.png",
+            "sha256": "1e856f234a143e0739b0fbd186528021858da9458d360b7205b938a2ad130d80"
+          },
+          {
+            "bytes": 270502,
+            "path": ".out/client-lifecycle/1440/global-search-result-context.png",
+            "sha256": "210c505ca3f00e831d652ba55dcbfffc9a73f1596c1b55dc614192ae4b510579"
+          },
+          {
+            "bytes": 170602,
+            "path": ".out/client-lifecycle/1440/global-search.png",
+            "sha256": "c15b86b992196f60993cc555ffd08e91fd69a03a2b456f2d1e0e0ee1dfeb478c"
+          },
+          {
+            "bytes": 233661,
+            "path": ".out/client-lifecycle/1440/guild-audit.png",
+            "sha256": "69a9a599528fd7582ef37e4d10588a834a571991e472d96bce3f741af5d20082"
+          },
+          {
+            "bytes": 207327,
+            "path": ".out/client-lifecycle/1440/guild-channels.png",
+            "sha256": "61a30c48d0fe72fc8448042071661041c479cb2cb4b4994da74d526943bca10a"
+          },
+          {
+            "bytes": 176579,
+            "path": ".out/client-lifecycle/1440/guild-media.png",
+            "sha256": "f6051f15e3488adc7b330e203b6b0ad7f4ddfb5cfcebf1cf311e35801ba547cc"
+          },
+          {
+            "bytes": 233985,
+            "path": ".out/client-lifecycle/1440/guild-members.png",
+            "sha256": "0c3ec4e1a3bd378b3e9a6130f0dcee86227f0c2759a556f7049fccb1dcdaa5d2"
+          },
+          {
+            "bytes": 169794,
+            "path": ".out/client-lifecycle/1440/guild-readiness.png",
+            "sha256": "775bbd116e201c21fc3d62d6b8565afccd5390d702b2e52df6606b7d60a93918"
+          },
+          {
+            "bytes": 196375,
+            "path": ".out/client-lifecycle/1440/guild-roles.png",
+            "sha256": "bef3660899177ba635de44015f888bf911ec37610fa6288e23dd99d274cb83a4"
+          },
+          {
+            "bytes": 212451,
+            "path": ".out/client-lifecycle/1440/guild-settings-200.png",
+            "sha256": "7bf9419074891ed7a5a8dbe2037c072c129c207780bf90394d93626b0d7ed38c"
+          },
+          {
+            "bytes": 150876,
+            "path": ".out/client-lifecycle/1440/guild-settings-initial.png",
+            "sha256": "3623c6ecc14aeec9f156753620a7e4a7c98793ee28a0a2dc41cebae05b811cd6"
+          },
+          {
+            "bytes": 152452,
+            "path": ".out/client-lifecycle/1440/guild-settings.png",
+            "sha256": "fc1ff1a89a78d706a188f45f0eb9d36e56e28c32d699c87eb490ec40af62d905"
+          },
+          {
+            "bytes": 128459,
+            "path": ".out/client-lifecycle/1440/header-dm-overflow.png",
+            "sha256": "e1f707fc0d4a9abbec4352aa389b168c47b655757a2d2deac07d770d5c8b0340"
+          },
+          {
+            "bytes": 116633,
+            "path": ".out/client-lifecycle/1440/header-dm-returned.png",
+            "sha256": "b3c366d96fecc08006ff0de9eb2cbaef1b3379583af7bae9fd4b9ac2a9f0b3d5"
+          },
+          {
+            "bytes": 285846,
+            "path": ".out/client-lifecycle/1440/header-text-overflow.png",
+            "sha256": "e3810bf10f80c8326fa1f1fedabf0495840cc04685685ce1f58d73334951588e"
+          },
+          {
+            "bytes": 282330,
+            "path": ".out/client-lifecycle/1440/header-text-returned.png",
+            "sha256": "0cfe57120d3848f56cfc212a40320f9bf9f36f760c64474fd2c8c02bf773513b"
+          },
+          {
+            "bytes": 215158,
+            "path": ".out/client-lifecycle/1440/header-voice-search-navigation.png",
+            "sha256": "0e1a88fa0015d9865eb1925079fc2ec7bec03fb538849e48df4c723005aec02f"
+          },
+          {
+            "bytes": 305224,
+            "path": ".out/client-lifecycle/1440/member-profile-text.png",
+            "sha256": "2220a590f8b33ab03dcde79d454ce23408948a5b44073c82d72ee84b642d0b49"
+          },
+          {
+            "bytes": 190889,
+            "path": ".out/client-lifecycle/1440/member-profile-voice-admin.png",
+            "sha256": "6255f0b857799ab9fe066624ccabb4ae8ff2ac10d0228b5b8dae039c27e8ad3c"
+          },
+          {
+            "bytes": 186116,
+            "path": ".out/client-lifecycle/1440/member-profile-voice-member.png",
+            "sha256": "4bbadab9ff3f6926df105a3b817ef26aeabb59e0ceeb18ef0f766f45ebe39f46"
+          },
+          {
+            "bytes": 150934,
+            "path": ".out/client-lifecycle/1440/mini-player-dm.png",
+            "sha256": "e5db73977fdac09abd0196a1060a18269490498add64a8aa1bd8fdc073532893"
+          },
+          {
+            "bytes": 356900,
+            "path": ".out/client-lifecycle/1440/mini-player-text.png",
+            "sha256": "39825425b196427de989600d06922fa0bc71f63565f4f889881ae65c5ba05d35"
+          },
+          {
+            "bytes": 351538,
+            "path": ".out/client-lifecycle/1440/old-page-delete.png",
+            "sha256": "1b8e0c296845598385829a04d5ccc1af47004dfe1382cdd0f0cfbee30c1ac292"
+          },
+          {
+            "bytes": 206484,
+            "path": ".out/client-lifecycle/1440/own-sessions.png",
+            "sha256": "e512c9d6218ea652fbdd52e0bf91b8dc0e467dc116b671958e7d6dd051090ea6"
+          },
+          {
+            "bytes": 115561,
+            "path": ".out/client-lifecycle/1440/password-reset-expired.png",
+            "sha256": "1e9146ee28a25fb9ac4b73ade23a64d371ccb7fbd87ef6d7a7ff023b7b91211a"
+          },
+          {
+            "bytes": 188214,
+            "path": ".out/client-lifecycle/1440/registration-login-failed.png",
+            "sha256": "908d940ebfa30c1542e2d294cdadfdaac90f1e980ea2565f247de9d2e445e8d2"
+          },
+          {
+            "bytes": 250984,
+            "path": ".out/client-lifecycle/1440/screen-share-compact-statistics.png",
+            "sha256": "7a928700c776bfbe6c764676761a179ab4abeeea3495a94c5ede5190e7cab076"
+          },
+          {
+            "bytes": 55931,
+            "path": ".out/client-lifecycle/1440/screen-share-owner-preview-short-height.png",
+            "sha256": "a09be877d930b1bff8299d1e178ac927dc1ccbc5e8eaaa01084d7ea49ff757ad"
+          },
+          {
+            "bytes": 184859,
+            "path": ".out/client-lifecycle/1440/screen-share-owner-preview.png",
+            "sha256": "13948493812ced0c232d2d610934d8ab0eb8a87f178470043708f70390b6d406"
+          },
+          {
+            "bytes": 221440,
+            "path": ".out/client-lifecycle/1440/search-tabs-archive.png",
+            "sha256": "4650f72d70b7df026aa94ed7c6dbd8f92a55c2366936f00b1f19848871318ad5"
+          },
+          {
+            "bytes": 225589,
+            "path": ".out/client-lifecycle/1440/search-tabs-mentions.png",
+            "sha256": "ab41bf39d6f2f4272b71d987dd7a2cd8b2c8d94fa7bcf8f910da282b1055668e"
+          },
+          {
+            "bytes": 229816,
+            "path": ".out/client-lifecycle/1440/search-tabs-messages.png",
+            "sha256": "4936f67a0a9ceeb7ed1aa165caf1690262bbd40a297ed96ba7a0418eb8ceee67"
+          },
+          {
+            "bytes": 226377,
+            "path": ".out/client-lifecycle/1440/search-tabs-pinned.png",
+            "sha256": "facb79657d5ecd0c5f82677c97fa80c1a2771b67964053318d70053d6a28fd91"
+          },
+          {
+            "bytes": 228653,
+            "path": ".out/client-lifecycle/1440/settings-audio-advanced.png",
+            "sha256": "84c652461a73a9f139c1b2c0e01e738ad4b18f80c48e442f896b67adf4f2b07f"
+          },
+          {
+            "bytes": 192706,
+            "path": ".out/client-lifecycle/1440/settings-audio-basic.png",
+            "sha256": "a6fb2a7771bb8f81270c1f484df170515c84da842d358b158ccb0e071e287fa9"
+          },
+          {
+            "bytes": 198621,
+            "path": ".out/client-lifecycle/1440/settings-notifications.png",
+            "sha256": "1808373f4f2f5de0cdf75fc0d19663e32463dae5c6d9a59c198e395006d9e35e"
+          },
+          {
+            "bytes": 168896,
+            "path": ".out/client-lifecycle/1440/settings-profile-saved.png",
+            "sha256": "a423f0fd8614ddb9614963eacce7e29288cae2a3ba678b1c2d3cb2601e63acc1"
+          },
+          {
+            "bytes": 189451,
+            "path": ".out/client-lifecycle/1440/settings-security-cancelled.png",
+            "sha256": "0aac84391d254121a7a4625de124e58afc5a5cc347cd05876acd9d041ed2925e"
+          },
+          {
+            "bytes": 150665,
+            "path": ".out/client-lifecycle/1440/sfu-unavailable.png",
+            "sha256": "a9610f27cd959f5d252c34ab5857ff3ad2e027fc2cdc312ec94e76699c130661"
+          },
+          {
+            "bytes": 142778,
+            "path": ".out/client-lifecycle/1440/voice-after-leave.png",
+            "sha256": "5a31e0bdf68213129e221065ca63eb8a7097cbc2a1b50aa70823ad21e72f45ac"
+          },
+          {
+            "bytes": 156809,
+            "path": ".out/client-lifecycle/1440/voice-connected-compact.png",
+            "sha256": "aedb98e7dbb6931201417a30cbdd7ddfc445e1345db86517e5d894e11db9220d"
+          },
+          {
+            "bytes": 163547,
+            "path": ".out/client-lifecycle/1440/voice-deafened-compact.png",
+            "sha256": "628ecee6b3d9e23b16a1c158d4a65649d4d462b2e87a163a4d4ccdbf9ee815b3"
+          },
+          {
+            "bytes": 128103,
+            "path": ".out/client-lifecycle/1440/voice-prejoin.png",
+            "sha256": "d0feba6d3edd65e0d5edfccf773c1eb967d71d88dd7feedf7b709a5caadf73b2"
+          },
+          {
+            "bytes": 367700,
+            "path": ".out/client-lifecycle/1440/voice-text-navigation.png",
+            "sha256": "8b4cb753e6820b71325826fbc7a845eec6d5821649bc17d3f07a0540886898c8"
+          },
+          {
+            "bytes": 286398,
+            "path": ".out/client-lifecycle/1440/welcome-a.png",
+            "sha256": "c564100fb469692490d2cf3fdb199c37ef142a8e0ab6be2dfd17361a9eb8ddbe"
+          },
+          {
+            "bytes": 270958,
+            "path": ".out/client-lifecycle/1440/welcome-b.png",
+            "sha256": "09d05b73a987990dc034f8893ecb4b489d6bfbac47a289e42119de83746429cc"
+          }
+        ],
+        "job": "runtime",
+        "map_sha256": "c21695d83f1a943a2494a15f0d09da146ad916c11f2c115cff295e38aaab9483",
+        "operation": 5,
+        "operations": [
+          {
+            "index": 0,
+            "seconds": 0.601
+          },
+          {
+            "index": 1,
+            "seconds": 0.902
+          },
+          {
+            "index": 2,
+            "seconds": 147.584
+          },
+          {
+            "index": 3,
+            "seconds": 117.941
+          },
+          {
+            "index": 4,
+            "seconds": 117.589
+          },
+          {
+            "index": 5,
+            "seconds": 166.611
+          }
+        ],
+        "owned_resources_removed": true,
+        "owner": "qa-client-5e9580ab33ee869b",
+        "physical_acceptance": "NOT_RUN",
+        "port_namespace": "disposable-github-hosted-vm/39311951333/1/runtime/5e9580ab33ee869b",
+        "profile": "lifecycle",
+        "release_acceptance": "NOT_RUN",
+        "reports": [
+          {
+            "path": ".out/refresh-baseline/report.json",
+            "sha256": "ca63ea23f4567b78447b2679028adc008dc3845cbd06d17022526af58b548eb1"
+          },
+          {
+            "path": ".out/client-lifecycle/1440/report.json",
+            "sha256": "af8bda9f9ba431819676bc34bb4cc01ede13d03ebfcef22bbba7c6f2788e39df"
+          },
+          {
+            "path": ".out/client-lifecycle/1024/report.json",
+            "sha256": "cc3de41a3067c9399c57bc4d5743ea8c461cd768f52f80b1d4441143ab0ecf57"
+          },
+          {
+            "path": ".out/upload-reservations/report.json",
+            "sha256": "f9bf3e38d7c086c50beccbcbc1be36e488358c5042b00403239a3498b6906a30"
+          }
+        ],
+        "run_attempt": "1",
+        "run_id": "39311951333",
+        "schema_version": 1,
+        "scope": "automatic-PR-real-runtime",
+        "seconds": 551.447,
+        "source_revision": "2593a2f8d8314d6abf96495f98c696694d2e4c07",
+        "status": "PASS"
+      },
+      "reports_verified": [
+        {
+          "path": ".out/refresh-baseline/report.json",
+          "sha256": "ca63ea23f4567b78447b2679028adc008dc3845cbd06d17022526af58b548eb1",
+          "status": "PASS",
+          "owned_resources_removed": true,
+          "actual_source": "2593a2f8d8314d6abf96495f98c696694d2e4c07"
+        },
+        {
+          "path": ".out/client-lifecycle/1440/report.json",
+          "sha256": "af8bda9f9ba431819676bc34bb4cc01ede13d03ebfcef22bbba7c6f2788e39df",
+          "status": "PASS",
+          "owned_resources_removed": true,
+          "actual_source": "2593a2f8d8314d6abf96495f98c696694d2e4c07"
+        },
+        {
+          "path": ".out/client-lifecycle/1024/report.json",
+          "sha256": "cc3de41a3067c9399c57bc4d5743ea8c461cd768f52f80b1d4441143ab0ecf57",
+          "status": "PASS",
+          "owned_resources_removed": true,
+          "actual_source": "2593a2f8d8314d6abf96495f98c696694d2e4c07"
+        },
+        {
+          "path": ".out/upload-reservations/report.json",
+          "sha256": "f9bf3e38d7c086c50beccbcbc1be36e488358c5042b00403239a3498b6906a30",
+          "status": "PASS",
+          "owned_resources_removed": true,
+          "actual_source": "2593a2f8d8314d6abf96495f98c696694d2e4c07"
+        }
+      ],
+      "zip_and_all_payloads_verified": true,
+      "reviewed_capture": {
+        "bytes": 282330,
+        "path": ".out/client-lifecycle/1440/channel-text.png",
+        "sha256": "0cfe57120d3848f56cfc212a40320f9bf9f36f760c64474fd2c8c02bf773513b"
+      }
+    }
+  ],
+  "distinct_owner_namespaces": true,
+  "distinct_port_namespaces": true,
+  "distinct_artifact_names": true,
+  "isolated_accounts": "Each controller uses its own actual API/PostgreSQL stack on a separately required disposable GitHub-hosted VM.",
+  "unchanged_isolation_validator_paths": [
+    "tools/ci/actual_acceptance/session.py",
+    "tools/ci/actual_acceptance/validation.py",
+    "tools/ci/actual_acceptance/fan_in.py",
+    "tools/ci/actual_acceptance/plan-v1.json"
+  ],
+  "isolation_code_reviewed_at": "79d1c36a1f7bc3053a01c88a32b7e78cc8b5a821",
+  "rejected_actual_receipt_mutations": [
+    {
+      "run_id": 39312750405,
+      "field": "owned_resources_removed",
+      "rejected": true
+    },
+    {
+      "run_id": 39312750405,
+      "field": "source_revision",
+      "rejected": true
+    },
+    {
+      "run_id": 39312750405,
+      "field": "run_id",
+      "rejected": true
+    },
+    {
+      "run_id": 39312750405,
+      "field": "map_sha256",
+      "rejected": true
+    },
+    {
+      "run_id": 39312750405,
+      "field": "status",
+      "rejected": true
+    },
+    {
+      "run_id": 39311951333,
+      "field": "owned_resources_removed",
+      "rejected": true
+    },
+    {
+      "run_id": 39311951333,
+      "field": "source_revision",
+      "rejected": true
+    },
+    {
+      "run_id": 39311951333,
+      "field": "run_id",
+      "rejected": true
+    },
+    {
+      "run_id": 39311951333,
+      "field": "map_sha256",
+      "rejected": true
+    },
+    {
+      "run_id": 39311951333,
+      "field": "status",
+      "rejected": true
+    }
+  ],
+  "measurement": {
+    "path": "evidence/ci/after-observation-2026-10-20.json",
+    "sha256": "8451087eefdb9ac1cc577282991e5215d6ba2550e012bc2b061f35db095ed43c",
+    "qualified_PR_metadata_samples": 33,
+    "confirmed_flake_rate": null
+  },
+  "visual_review": {
+    "status": "PASS",
+    "original": ".out/client-lifecycle/1440/channel-text.png",
+    "observed": "Both independent captures show the selected text channel, participants and visible composer controls/footer with synthetic fixtures; no error dialog or overlap in the reviewed main layout."
+  },
+  "limits": [
+    "Only original synthetic fixture captures and finite reports are retained. No private test logs or real user content were read or published.",
+    "One enclosing PR later failed its separate source-binding triage. Its successful lifecycle profile is not relabelled a successful entire PR; the triage regression is separately fixed in PR451.",
+    "These two old sources remain labelled by their tested synthetic PR merge SHAs; current isolation validation code and risk-map are explicitly unchanged.",
+    "Critical-path observations include cancelled/failed runs and component strata; actual wall times do not prove a confirmed flake rate or a causal performance win.",
+    "Physical/device, installed updater and protected native release acceptance remain separate, explicitly NOT_RUN in these receipts; no physical media/capacity claim is made.",
+    "No new runtime dispatch, production mutation, account login or signing operation was performed for this independent artifact replay."
+  ]
+}

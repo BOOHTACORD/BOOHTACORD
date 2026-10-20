@@ -24,3 +24,14 @@ class BuildMetricsTests(unittest.TestCase):
                     with metrics.stage('smoke'):raise error
                 value=json.loads(path.read_text());self.assertEqual('FAIL',value['status'])
                 self.assertNotIn('canary',path.read_text())
+
+    def test_owned_storage_cleanup_is_required_before_release_metrics_pass(self):
+        for cleanup in ({'status':'RUNNING','owned_resources_removed':False},
+                        {'status':'FAIL','owned_resources_removed':True},
+                        {'status':'PASS','owned_resources_removed':False}):
+            with self.subTest(cleanup=cleanup), tempfile.TemporaryDirectory() as tmp:
+                metrics=Metrics(Path(tmp)/'build.json','a'*40)
+                with metrics.stage('package'):pass
+                metrics.value['builder_storage']=cleanup
+                with self.assertRaises(ValueError):
+                    metrics.complete({'api':'sha256:'+'b'*64,'web':'sha256:'+'c'*64})

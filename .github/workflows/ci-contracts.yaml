@@ -32,6 +32,8 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .node-version
+      - name: Test owned browser startup and failure diagnostic privacy
+        run: node --test tools/qa/client_lifecycle/login_diagnostics.test.mjs tools/qa/next_client_acceptance/failure.test.mjs
       - name: Test shared immutable native release publication
         run: node --test tools/release/native_contract/publish.test.mjs
       - name: Test bounded restricted-network evidence readiness
@@ -63,7 +65,7 @@ jobs:
           python -m tools.ci.macos.fast
           node --test tools/build/webrtc_macos/publish.test.mjs
       - name: Verify risk routing, real-runtime evidence and cleanup guards
-        run: python -m unittest tools.ci.actual_acceptance.test_plan tools.ci.actual_acceptance.test_session tools.ci.actual_acceptance.test_validation tools.ci.actual_acceptance.test_fan_in tools.ci.actual_acceptance.test_manual_inputs tools.ci.actual_acceptance.test_workflow tools.ci.actual_acceptance.test_run tools.qa.compatible_rollback.test_receipt_projection
+        run: python -m unittest tools.ci.actual_acceptance.test_plan tools.ci.actual_acceptance.test_session tools.ci.actual_acceptance.test_validation tools.ci.actual_acceptance.test_fan_in tools.ci.actual_acceptance.test_manual_inputs tools.ci.actual_acceptance.test_workflow tools.ci.actual_acceptance.test_run tools.ci.actual_acceptance.test_diagnostics tools.ci.actual_acceptance.test_browser_failure tools.qa.compatible_rollback.test_receipt_projection
       - name: Verify manual operator capabilities, approvals and audit privacy
         run: python -m unittest tools.ops.operator.test_policy tools.ops.operator.test_approval tools.ops.operator.test_run tools.ops.operator.test_transport tools.ops.operator.test_workflow tools.ops.operator.test_remote tools.ops.operator.test_operations
       - name: Verify unified fail-closed CI and release routing

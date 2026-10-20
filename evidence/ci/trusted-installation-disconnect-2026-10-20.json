@@ -1,0 +1,318 @@
+{
+  "schema_version": 1,
+  "kind": "trusted-installation-interruption-failure",
+  "status": "FAIL",
+  "scope": "Original hosted Linux amd64 signed QA installs; exact interruption failure, not production or whole acceptance PASS",
+  "origin": {
+    "repository": "Egkurilov/BOOHTACORD",
+    "run": {
+      "id": 39351839757,
+      "head_sha": "c47ae7fd0f225a14f5b6aa1dcef187df25ba00ea",
+      "status": "completed",
+      "conclusion": "failure",
+      "event": "workflow_dispatch",
+      "path": ".github/workflows/qa-compatible-rollback.yaml",
+      "run_attempt": 1,
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39351839757"
+    },
+    "job": {
+      "id": 118397600099,
+      "run_id": 39351839757,
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-20T01:09:30Z",
+      "completed_at": "2026-10-20T01:18:49Z"
+    },
+    "artifact": {
+      "id": 12234415451,
+      "name": "qa60-c47ae7fd0f225a14f5b6aa1dcef187df25ba00ea-39351839757-1",
+      "size_in_bytes": 878773,
+      "digest": "sha256:49a8e81e264b0b025528f9eca5ac64f7a7d04f0f95860489c05e9a168a029c47"
+    }
+  },
+  "started_at": "2026-10-20T01:10:08.419736+00:00",
+  "finished_at": "2026-10-20T01:18:46.931288+00:00",
+  "source_hashes_verified": {
+    "harness_sha256": 61,
+    "builder_sha256": 56
+  },
+  "full_native_qa_builds": [
+    {
+      "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "status": "PASS",
+      "metrics_sha256": "a982568cd14a88cc7fd38e750c1f1f961845011f92bd86821dc756a9b9382633"
+    },
+    {
+      "source_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "status": "PASS",
+      "metrics_sha256": "b4028ffc125e421da0a9312464b7ddade128ce2bec5e18badc3617f81505781c"
+    }
+  ],
+  "historically_checked_successful_installations": [
+    {
+      "name": "initial",
+      "status": "PASS",
+      "source_revision": "356d32c5ff6b661a747009ad93026c197bdd1b72",
+      "controller_revision": "c47ae7fd0f225a14f5b6aa1dcef187df25ba00ea",
+      "acknowledged_at": "2026-10-20T01:16:38.809440+00:00",
+      "receipt_sha256": "0c0a232ea097b9cb925053ce94c848ad3ca647462ab3dd552a1ea58b9f3fd024"
+    },
+    {
+      "name": "upgrade",
+      "status": "PASS",
+      "source_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "controller_revision": "c47ae7fd0f225a14f5b6aa1dcef187df25ba00ea",
+      "acknowledged_at": "2026-10-20T01:17:30.105306+00:00",
+      "receipt_sha256": "bf657f10caaadbd6c7b6b120d831fd2a9c9e6ae0bef9a0a6a741ab4518bdbf94"
+    },
+    {
+      "name": "retry",
+      "status": "PASS",
+      "source_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "controller_revision": "c47ae7fd0f225a14f5b6aa1dcef187df25ba00ea",
+      "acknowledged_at": "2026-10-20T01:18:10.305058+00:00",
+      "receipt_sha256": "01e3655fae5e10aa5fcdf3da656da66390ef55345e09a1b92e92a458dc6eae05"
+    }
+  ],
+  "historical_check_scope": "Original live ACK validation times and original nonces within authenticated job execution interval; not fresh production ACKs now",
+  "partial_whole_evidence_rejected": true,
+  "interruption_diagnostics": {
+    "client_return_code": 143,
+    "controller_revision": "c47ae7fd0f225a14f5b6aa1dcef187df25ba00ea",
+    "delivery": {
+      "controller_revision": "c47ae7fd0f225a14f5b6aa1dcef187df25ba00ea",
+      "kind": "delivery-phases",
+      "phases": [
+        {
+          "elapsed_seconds": 0.168561,
+          "exit_code": null,
+          "failure_code": null,
+          "limit_seconds": 45,
+          "phase": "current_revision",
+          "status": "PASS"
+        },
+        {
+          "elapsed_seconds": 0.003543,
+          "exit_code": null,
+          "failure_code": null,
+          "limit_seconds": 10,
+          "phase": "history",
+          "status": "PASS"
+        },
+        {
+          "elapsed_seconds": 0.751659,
+          "exit_code": null,
+          "failure_code": null,
+          "limit_seconds": 300,
+          "phase": "transfer_bundle",
+          "status": "PASS"
+        },
+        {
+          "elapsed_seconds": 0.165127,
+          "exit_code": null,
+          "failure_code": null,
+          "limit_seconds": 60,
+          "phase": "transfer_driver",
+          "status": "PASS"
+        },
+        {
+          "elapsed_seconds": 6.51095,
+          "exit_code": null,
+          "failure_code": "interrupted",
+          "limit_seconds": 600,
+          "phase": "remote_install",
+          "status": "FAIL"
+        }
+      ],
+      "schema_version": 1,
+      "source_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+      "status": "FAIL"
+    },
+    "error_type": "RuntimeError",
+    "lock_idle_wait_seconds": 14.017798,
+    "lock_observed_held": true,
+    "lock_observed_idle": true,
+    "maintenance_active": true,
+    "remote_completion": "UNKNOWN",
+    "source_revision": "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+    "stage": "maintenance_disabled",
+    "status": "FAIL"
+  },
+  "sanitized_controller_diagnostics": {
+    "livekit_probe_failures": [],
+    "frames": [
+      {
+        "file": "tools/qa/trusted_delivery/controller.py",
+        "line": 40,
+        "function": "<module>"
+      },
+      {
+        "file": "tools/qa/trusted_delivery/controller.py",
+        "line": 27,
+        "function": "main"
+      },
+      {
+        "file": "tools/qa/trusted_delivery/positive.py",
+        "line": 142,
+        "function": "run"
+      },
+      {
+        "file": "tools/qa/trusted_delivery/interruption.py",
+        "line": 80,
+        "function": "exercise"
+      }
+    ],
+    "guard_messages": [],
+    "exit_codes": [],
+    "memory_exhaustion": false,
+    "disk_exhaustion": false,
+    "address_collision": false,
+    "tcp_not_ready": false,
+    "sql_states": [],
+    "registry_failure": false
+  },
+  "browser": {
+    "observations": 16,
+    "policy_sha256": "03a16e4cf54ba6df8a8100880a49c374359618edec623bd4088dbd501cedf78d",
+    "policy_unchanged": true,
+    "member_admin_status": 403,
+    "admin_foreign_dm_history_status": 404,
+    "admin_foreign_dm_attachment_status": 404,
+    "stable_storage_observations": 4,
+    "storage_and_contents_unchanged": true,
+    "status_marker": "RUNNING",
+    "status_scope": "Original incomplete browser marker, parent job is terminal FAIL"
+  },
+  "cleanup": true,
+  "original_public_files": [
+    {
+      "file": "baseline-0.png",
+      "bytes": 54183,
+      "sha256": "6eb1fa02bc3a59848086821dcde732a2f8af3c205ae530f2e207984a41663710"
+    },
+    {
+      "file": "baseline-1.png",
+      "bytes": 60419,
+      "sha256": "c87a0615e87636506c883f2be358e23d2a0bfa6788f1b944493f3c715dbc949f"
+    },
+    {
+      "file": "browser.json",
+      "bytes": 7685,
+      "sha256": "698ef9fefe62bbd4ccc938ca1687db76d480f40972199092ce257bcf0b689809"
+    },
+    {
+      "file": "build-356d32c5ff6b661a747009ad93026c197bdd1b72.json",
+      "bytes": 4181,
+      "sha256": "a982568cd14a88cc7fd38e750c1f1f961845011f92bd86821dc756a9b9382633"
+    },
+    {
+      "file": "build-3d22e9007db090e6a2159841506e0e377ae8b0a4.json",
+      "bytes": 4195,
+      "sha256": "b4028ffc125e421da0a9312464b7ddade128ce2bec5e18badc3617f81505781c"
+    },
+    {
+      "file": "delivery.json",
+      "bytes": 33261,
+      "sha256": "666583323cc49fca866f6d6e60825b15842743471c4ac501ec2ab503929d5607"
+    },
+    {
+      "file": "initial-0.png",
+      "bytes": 54183,
+      "sha256": "6eb1fa02bc3a59848086821dcde732a2f8af3c205ae530f2e207984a41663710"
+    },
+    {
+      "file": "initial-1.png",
+      "bytes": 60419,
+      "sha256": "c87a0615e87636506c883f2be358e23d2a0bfa6788f1b944493f3c715dbc949f"
+    },
+    {
+      "file": "initial_maintenance-0.png",
+      "bytes": 54781,
+      "sha256": "047df6743aed0329b933cfdf5a0787aa0483c29dbc4baa1a8164ca6623919b4b"
+    },
+    {
+      "file": "initial_maintenance-1.png",
+      "bytes": 60608,
+      "sha256": "de2be81a31e1d6df94366c2c4706582de30397a56a8a9ccc7cfe63e16ae38b6a"
+    },
+    {
+      "file": "interrupted_maintenance-0.png",
+      "bytes": 54781,
+      "sha256": "047df6743aed0329b933cfdf5a0787aa0483c29dbc4baa1a8164ca6623919b4b"
+    },
+    {
+      "file": "interrupted_maintenance-1.png",
+      "bytes": 60608,
+      "sha256": "de2be81a31e1d6df94366c2c4706582de30397a56a8a9ccc7cfe63e16ae38b6a"
+    },
+    {
+      "file": "retried-0.png",
+      "bytes": 54183,
+      "sha256": "6eb1fa02bc3a59848086821dcde732a2f8af3c205ae530f2e207984a41663710"
+    },
+    {
+      "file": "retried-1.png",
+      "bytes": 60419,
+      "sha256": "c87a0615e87636506c883f2be358e23d2a0bfa6788f1b944493f3c715dbc949f"
+    },
+    {
+      "file": "retry_maintenance-0.png",
+      "bytes": 54781,
+      "sha256": "047df6743aed0329b933cfdf5a0787aa0483c29dbc4baa1a8164ca6623919b4b"
+    },
+    {
+      "file": "retry_maintenance-1.png",
+      "bytes": 60608,
+      "sha256": "de2be81a31e1d6df94366c2c4706582de30397a56a8a9ccc7cfe63e16ae38b6a"
+    },
+    {
+      "file": "run.json",
+      "bytes": 18104,
+      "sha256": "f76b1790d7da250575597997fd459f64b34bf6cee00ddd37a6175798868fc272"
+    },
+    {
+      "file": "upgrade_maintenance-0.png",
+      "bytes": 54781,
+      "sha256": "047df6743aed0329b933cfdf5a0787aa0483c29dbc4baa1a8164ca6623919b4b"
+    },
+    {
+      "file": "upgrade_maintenance-1.png",
+      "bytes": 60608,
+      "sha256": "de2be81a31e1d6df94366c2c4706582de30397a56a8a9ccc7cfe63e16ae38b6a"
+    },
+    {
+      "file": "upgraded-0.png",
+      "bytes": 54183,
+      "sha256": "6eb1fa02bc3a59848086821dcde732a2f8af3c205ae530f2e207984a41663710"
+    },
+    {
+      "file": "upgraded-1.png",
+      "bytes": 60419,
+      "sha256": "c87a0615e87636506c883f2be358e23d2a0bfa6788f1b944493f3c715dbc949f"
+    }
+  ],
+  "visual": {
+    "reviewed": [
+      "baseline-0.png",
+      "interrupted_maintenance-1.png"
+    ],
+    "source_resolution": "1200x800",
+    "observations": [
+      "Synthetic TEXT and 34-byte attachment visible in both original captures.",
+      "Maintenance banner visible in interrupted phase.",
+      "Existing maintenance layout clips the lower footer/composer at 800px height; no UI baseline changed."
+    ],
+    "remaining_captures": "NOT_REVIEWED",
+    "whole_visual_acceptance": "NOT_RUN"
+  },
+  "not_run": [
+    "safe recovery",
+    "recovery retry",
+    "compatible rollback and restore",
+    "remaining transport and health negatives",
+    "production",
+    "self-hosted performance",
+    "corrected installer full SSH acceptance"
+  ],
+  "interpretation": "At remote_install client interruption, host lock was independently observed held, then idle after 14.017798s, while maintenance remained active. Exact delivered signal to each remote descendant is not recorded; no claim that SSH termination stopped Docker. The next change protects the foreground canonical installer from SSH HUP/closed output; nearest real-process regressions pass, full actual retry still required."
+}

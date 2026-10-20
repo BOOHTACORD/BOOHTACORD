@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "description": "Five current-source criteria only: actual eight-case routing matrix, baseline, strict required status, local configuration rollback candidate, unchanged retained SDK matrix. Global NO-GO; no owner GO.",
+  "records": [
+    "evidence/ci/cutover-baseline-688925dc-2026-10-20.json",
+    "evidence/ci/cutover-control-matrix-688925dc-2026-10-20.json",
+    "evidence/ci/cutover-required-status-owner-readback-688925dc-2026-10-20.json",
+    "evidence/ci/cutover-workflow-configuration-rollback-688925dc-2026-10-20.json",
+    "evidence/ci/cutover-macos-sdk-matrix-688925dc-2026-10-20.json"
+  ],
+  "pending": [
+    "same-source shadows",
+    "security negatives",
+    "server release/install/current-source compatible rollback",
+    "native application smokes",
+    "promotion/old client",
+    "operator restrictions",
+    "qualified after observations",
+    "authenticated owner GO"
+  ],
+  "retained_schema_rollback_note": "Earlier source-bound schema rollback PASS is retained historically but is not reused for this changed runtime-input set."
+}

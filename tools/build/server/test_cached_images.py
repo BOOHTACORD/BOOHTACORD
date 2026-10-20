@@ -7,30 +7,46 @@ from . import images
 
 
 class CachedImageTests(unittest.TestCase):
-    def build(self,root,*,reject=False):
+    def build(self,root,*,reject=False,owner=None):
         cache=Mock();cache.arguments.return_value=['--cache-from','type=local,src=/private/cache,digest=sha256:'+'c'*64]
         cache.__enter__=Mock(return_value=cache);cache.__exit__=Mock(return_value=False)
         verified=Mock(side_effect=ValueError('foreign source') if reject else None,return_value={'index_digest':'sha256:'+'a'*64})
+        environment={'VITE_PUBLIC_ORIGIN':'https://qa.invalid','BOOHTACORD_SERVER_CACHE_ROOT':'/private/cache'}
+        if owner is not None:environment['BOOHTACORD_BUILD_OWNER']=owner
         with patch.object(images,'LayerCache',return_value=cache),patch.object(images,'namespace',return_value='d'*64), \
+                patch.object(images,'oci_root_identity',return_value='sha256:'+'a'*64,create=True), \
                 patch.object(images.subprocess,'run') as run,patch.object(images.subprocess,'check_output',return_value='sha256:'+'a'*64), \
                 patch.object(images,'verify',verified):
             if reject:
-                with self.assertRaises(ValueError):images.build(root,root,'a'*40,'b'*64,{'VITE_PUBLIC_ORIGIN':'https://qa.invalid','BOOHTACORD_SERVER_CACHE_ROOT':'/private/cache'})
-            else:images.build(root,root,'a'*40,'b'*64,{'VITE_PUBLIC_ORIGIN':'https://qa.invalid','BOOHTACORD_SERVER_CACHE_ROOT':'/private/cache'})
+                with self.assertRaises(ValueError):images.build(root,root,'a'*40,'b'*64,environment)
+            else:images.build(root,root,'a'*40,'b'*64,environment)
         return cache,verified,run
 
     def test_warm_images_keep_source_labels_sbom_provenance_and_both_verifiers(self):
         with tempfile.TemporaryDirectory() as tmp:cache,verify,run=self.build(Path(tmp))
-        self.assertEqual(2,verify.call_count);self.assertEqual(2,cache.publish.call_count)
+        self.assertEqual(4,verify.call_count);self.assertEqual(2,cache.publish.call_count)
         for call in run.call_args_list:
             args=call.args[0]
+            if args[:3]!=['docker','buildx','build']:continue
             for token in ('--sbom=true','--provenance=mode=max,version=v0.2','org.opencontainers.image.revision='+'a'*40,
                           'org.voice-platform.source-archive-sha256='+'b'*64,'--cache-from'):
                 self.assertIn(token,args)
 
+    def test_owned_backend_exports_then_imports_exact_oci_without_docker_exporter(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);cache,verified,run=self.build(root,owner='e'*32)
+        commands=[call.args[0] for call in run.call_args_list]
+        self.assertEqual(4,len(commands))
+        for index,service in ((0,'api'),(2,'web')):
+            self.assertNotIn('--load',commands[index])
+            self.assertIn('org.boohtacord.builder.owner='+'e'*32,commands[index])
+            self.assertEqual(['docker','image','load','--input',str(root/(service+'.oci.tar'))],commands[index+1])
+
     def test_foreign_cached_output_stops_before_cache_publication(self):
         with tempfile.TemporaryDirectory() as tmp:cache,verify,run=self.build(Path(tmp),reject=True)
         self.assertEqual(1,verify.call_count);cache.publish.assert_not_called()
+        self.assertEqual(1,run.call_count)
+        self.assertEqual(['docker','buildx','build'],run.call_args.args[0][:3])
 
     def test_npm_layer_is_independent_of_release_sha_and_go_caches_are_dependency_scoped(self):
         root=Path(__file__).resolve().parents[3]

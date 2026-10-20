@@ -11,10 +11,16 @@ OWNER={'kind':'boohtacord-server-layer-cache','version':1}
 SERVICES=('api','web')
 
 
-def namespace(root,service):
+def namespace(root,service,*,builder_root=None):
     paths={'api':('backend/Dockerfile','backend/go.mod','backend/go.sum'),
            'web':('clients/web/Dockerfile','clients/web/package.json','clients/web/package-lock.json')}[service]
     values={name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in ('tools/toolchains.json',*paths)}
+    # Retained product sources may predate the current backend pin. Bind the
+    # actual trusted builder policy, not an optional file in that old archive.
+    builder_root=builder_root or Path(__file__).resolve().parents[3]
+    policy=builder_root/'tools/build/server/buildkit-image.json'
+    values['trusted-buildkit-policy']=hashlib.sha256(policy.read_bytes()).hexdigest()
+    values['trusted-builder-toolchains']=hashlib.sha256((builder_root/'tools/toolchains.json').read_bytes()).hexdigest()
     return hashlib.sha256(json.dumps({'version':1,'service':service,'inputs':values},sort_keys=True).encode()).hexdigest()
 
 
