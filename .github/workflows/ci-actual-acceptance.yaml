@@ -48,7 +48,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Install window manager for real visibility transitions
         if: matrix.profile == 'next'
-        run: sudo apt-get update && sudo apt-get install -y openbox
+        run: sudo apt-get update && sudo apt-get install -y openbox x11-utils
       - name: Run original controllers in one disposable VM namespace
         env:
           ACTUAL_PROFILE: ${{ matrix.profile }}
