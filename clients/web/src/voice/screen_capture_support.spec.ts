@@ -12,7 +12,7 @@ import { screenFailureMessage } from './screen_feedback'
 afterEach(() => vi.unstubAllGlobals())
 
 describe('browser screen capture availability', () => {
-  it('explains unsupported Android Chrome before opening a nonexistent chooser', async () => {
+  it('keeps unsupported Android screen capture actionable so its explanation can appear on demand', async () => {
     const androidChrome = 'Mozilla/5.0 (Linux; Android 16) AppleWebKit/537.36 Chrome/152.0 Mobile Safari/537.36'
     const androidUnavailableMessage = 'В браузере Android нельзя начать трансляцию экрана. Откройте приложение BOOHTACORD.'
     expect(screenCaptureSupported(androidChrome, { getDisplayMedia: vi.fn() })).toBe(false)
@@ -25,7 +25,8 @@ describe('browser screen capture availability', () => {
       error: null, activationMode: 'VAD', deafened: false, deafenChanging: false,
       microphoneMuted: true, microphonePermissionDenied: false, state: 'CONNECTED',
     }))
-    expect(html).toMatch(/aria-label="[^"]*Откройте приложение BOOHTACORD[^"]*"[^>]* disabled/)
+    expect(html).toMatch(/aria-label="Начать демонстрацию экрана"[^>]* data-state="idle"/)
+    expect(html).not.toContain('voice-capture-unavailable')
   })
 
   it('allows browsers that expose display capture outside unsupported mobile Chrome', () => {

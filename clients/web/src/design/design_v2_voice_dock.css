@@ -46,6 +46,7 @@
 
 .voice-dock { position: relative; min-width: 0; max-width: 100%; }
 .voice-dock .voice-dock-copy { min-width: 0; flex: 1; }
+.voice-dock .voice-capture-unavailable { max-width: none; flex: 0 0 auto; margin-top: 8px; }
 .voice-dock .voice-status { white-space: normal; overflow-wrap: anywhere; text-wrap: balance; }
 .voice-dock:has(.voice-connection-details) .voice-dock-header { padding-right: 36px; }
 .voice-dock .voice-connection-details { margin: 0; border: 0; padding: 0; }

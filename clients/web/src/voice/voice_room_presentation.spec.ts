@@ -104,7 +104,9 @@ describe('voice-room visual status and screen presentation', () => {
     const main = source('../workspace/WorkspaceMain.vue')
     const dock = source('./VoiceDock.vue')
 
-    expect(source('./VoiceRoomControls.vue')).toContain("emit('startScreen', selectedScreenProfile)")
+    expect(source('./VoiceRoomControls.vue')).toContain('function activateScreenShare(event: MouseEvent)')
+    expect(source('./VoiceRoomControls.vue')).toContain("emit('startScreen', props.selectedScreenProfile)")
+    expect(source('./VoiceRoomControls.vue')).toContain("emit('captureUnavailable', captureMessage)")
     expect(pane).toContain('@start-screen="emit(\'startScreen\', $event)"')
     expect(main).toContain(':selected-screen-profile="selectedScreenProfile"')
     expect(workspace).toContain('@start-screen="openScreenShareSetup"')
