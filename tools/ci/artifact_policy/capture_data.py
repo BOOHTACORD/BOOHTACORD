@@ -85,7 +85,7 @@ def identity(value):
             and value['platform'] in ('linux', 'windows', 'macos'))
     require((value['component'] == 'flutter' and value['profile'] == 'dart')
             or (value['component'] == 'web' and value['profile'] in
-                ('browser-shell', 'browser-voice', 'browser-conversations')))
+                ('browser-shell', 'browser-content', 'browser-voice', 'browser-conversations')))
 
 
 def payload(path, extension):

@@ -40,13 +40,21 @@ class ProfileTests(unittest.TestCase):
         self.assertEqual([(profiles.ROOT, 'livekit_client'), (profiles.ROOT, 'flutter_webrtc')],
                          [call.args for call in prepare.call_args_list])
 
-    def test_android_keeps_both_real_kotlin_modes_and_verified_debug_builder(self):
+    def test_android_runs_verified_debug_builder_independently_of_kotlin_modes(self):
         commands, completed, prepare = self.exercise('android')
         self.assertEqual(list(profiles.OPERATIONS['android']), completed)
         self.assertEqual([
             (('flutter', 'pub', 'get', '--enforce-lockfile'), profiles.ROOT / 'clients/flutter'),
-            (('bash', 'tools/verify/android_kotlin/verify_android_kotlin_modes.sh'), None),
             (('python3', '-m', 'tools.build.android.run', '--debug', '--no-pub'), None),
+        ], commands)
+        prepare.assert_not_called()
+
+    def test_kotlin_profile_keeps_both_real_modes_without_rebuilding_distribution(self):
+        commands, completed, prepare = self.exercise('android-kotlin')
+        self.assertEqual(['app-dependencies', 'kotlin-modes'], completed)
+        self.assertEqual([
+            (('flutter', 'pub', 'get', '--enforce-lockfile'), profiles.ROOT / 'clients/flutter'),
+            (('bash', 'tools/verify/android_kotlin/verify_android_kotlin_modes.sh'), None),
         ], commands)
         prepare.assert_not_called()
 

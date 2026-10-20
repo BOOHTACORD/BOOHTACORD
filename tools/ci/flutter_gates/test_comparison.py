@@ -1,7 +1,7 @@
 """Only complete same-source hosted controls may establish the measured split."""
 import copy
 import unittest
-from . import comparison, results, legacy
+from . import comparison, results, legacy, profiles
 from .test_results import record
 
 
@@ -28,7 +28,7 @@ def fixtures():
                        'artifacts': {p: record(p)['artifacts'] for p in ('dart', 'android')}}
         old.append(legacy_part)
         parts = []
-        for profile in ('dart', 'android', 'flutter'):
+        for profile in (*profiles.OPERATIONS, 'flutter'):
             job(f'profiles-{sample} / {profile}', 12 if profile == 'android' else 10, 100 + sample * 10 + len(parts))
             if profile == 'flutter':
                 jobs[-1]['started_at'] = '2026-10-19T00:12:03Z'
@@ -46,7 +46,7 @@ class ComparisonTests(unittest.TestCase):
         self.assertEqual('PASS', value['status'])
         self.assertEqual({'p50': 1200.0, 'p95': 1200.0}, value['summary']['legacy']['critical_seconds'])
         self.assertEqual({'p50': 732.0, 'p95': 732.0}, value['summary']['profiles']['critical_seconds'])
-        self.assertEqual({'p50': 22.166667, 'p95': 22.166667}, value['summary']['profiles']['runner_minutes'])
+        self.assertEqual({'p50': 32.166667, 'p95': 32.166667}, value['summary']['profiles']['runner_minutes'])
         self.assertEqual(3, value['summary']['dart']['n'])
         self.assertEqual(3, value['summary']['android']['n'])
 
@@ -59,7 +59,7 @@ class ComparisonTests(unittest.TestCase):
             elif mutation == 'source': jobs[1]['head_sha'] = 'b' * 40
             elif mutation == 'attempt': jobs[1]['run_attempt'] = 2
             elif mutation == 'runner': jobs[2]['runner_id'] = jobs[1]['runner_id']
-            else: jobs[3]['started_at'] = '2026-10-19T00:00:01Z'
+            else: jobs[4]['started_at'] = '2026-10-19T00:00:01Z'
             with self.subTest(mutation=mutation), self.assertRaises(ValueError): comparison.compare(*args)
 
     def test_partial_stale_unmeasured_or_foreign_parts_are_rejected(self):

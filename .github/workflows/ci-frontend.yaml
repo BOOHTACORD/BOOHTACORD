@@ -54,7 +54,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        profile: [browser-shell, browser-conversations, browser-voice]
+        profile: [browser-shell, browser-content, browser-conversations, browser-voice]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:

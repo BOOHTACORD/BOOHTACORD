@@ -27,12 +27,12 @@ def main():
         if capture.exists():
             raise ValueError('Native visual captures require a fresh profile directory')
         os.environ['BOOHTACORD_VISUAL_CAPTURE_DIR'] = str(capture)
-    elif (ROOT / '.out/native/android-debug').exists():
+    elif args.profile == 'android' and (ROOT / '.out/native/android-debug').exists():
         raise ValueError('Debug APK requires a fresh profile directory')
     completed = profiles.execute(args.profile)
     source.verify(revision)
     measured = (artifacts.visuals(capture) if args.profile == 'dart' else
-                artifacts.android(ROOT / '.out/native/android-debug', revision))
+                artifacts.android(ROOT / '.out/native/android-debug', revision) if args.profile == 'android' else {})
     part = {'schema_version': 1, 'profile': args.profile, 'source_revision': revision,
             'run_id': run_id, 'run_attempt': attempt, 'namespace': namespace, 'status': 'PASS', 'completed': completed,
             'seconds': time.perf_counter() - started, 'sdk': results.expected_sdk(), 'artifacts': measured}

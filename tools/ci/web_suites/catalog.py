@@ -8,7 +8,8 @@ import re
 ROOT = Path(__file__).resolve().parents[3]
 DIRECTORY = Path(__file__).resolve().parent
 BASELINE_SHA256 = '30384e8d783a60707decf85bcaafc5171d882c1829c68deb75e674c9c2a92188'
-PROFILES = ('fast', 'browser-shell', 'browser-conversations', 'browser-voice', 'sfu-network')
+BROWSER_PROFILES = ('browser-shell', 'browser-content', 'browser-conversations', 'browser-voice')
+PROFILES = ('fast', *BROWSER_PROFILES, 'sfu-network')
 
 
 def require(value):

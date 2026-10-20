@@ -16,7 +16,7 @@ def read_inputs(root, sha, run_id, attempt):
     for sample in (1, 2, 3):
         suffix = sha + '-' + run_id + '-' + attempt
         expected[f'flutter-legacy-shadow-old-{sample}-{suffix}'] = ('legacy', sample, 'flutter-legacy.json')
-        for profile in ('dart', 'android'):
+        for profile in ('dart', 'android', 'android-kotlin'):
             expected[f'flutter-part-shadow-new-{sample}-{suffix}-{profile}'] = (profile, sample, profile + '.json')
     comparison.require({p.name for p in root.iterdir()} == set(expected))
     old, new = {}, {n: [] for n in (1, 2, 3)}

@@ -17,6 +17,12 @@ def fixture():
 
 
 class FanInTests(unittest.TestCase):
+    def test_missing_second_shell_group_fails_even_when_matrix_is_green(self):
+        needs, rows = fixture()
+        rows = [row for row in rows if row['profile'] != 'browser-content']
+        with self.assertRaises(ValueError):
+            fan_in.validate_results(SOURCE, needs, rows)
+
     def test_all_exact_source_profiles_are_required_for_success(self):
         needs, rows = fixture()
         self.assertEqual(fan_in.validate_results(SOURCE, needs, rows)['status'], 'PASS')

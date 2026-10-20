@@ -28,7 +28,7 @@ def fixture():
                     'legacy_reference_revision':reference['source_revision'],'legacy_source_sha256':reference['source_sha256'],
                     'seconds':duration-20,'execution':identity})
         job('legacy-'+str(sample),sample*1000,duration)
-        durations={'fast':60,'browser-shell':200+10*sample,'browser-conversations':100,'browser-voice':180,'sfu-network':150}
+        durations={'fast':60,'browser-shell':200+10*sample,'browser-content':100,'browser-conversations':100,'browser-voice':180,'sfu-network':150}
         new.append({'source_revision':SOURCE,'status':'PASS','profiles':sorted(plan['profiles']),
                     'plan_sha256':catalog.digest(plan),'checked_operations':sum(map(len,plan['profiles'].values())),
                     'observed_profile_seconds':{p:t-10 for p,t in durations.items()},
