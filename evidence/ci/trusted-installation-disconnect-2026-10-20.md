@@ -49,6 +49,11 @@ This fixture is a nearest process regression, **not** a real SSH/Docker install.
 transfer fixture suite passed 28 tests in 2.308s; 7 historical/diagnostic/workflow
 checks passed in 0.638s, including the exact manual guard command under `python -S`.
 Bash syntax, actionlint and diff checks passed.
+The final change keeps that existing manual workflow unchanged: the new
+process regression runs through the already mandatory `transfer.test.sh` in
+ordinary contracts/release-boundary CI. The two workflow checks were rerun
+against the final unmodified workflow and passed. No routing rule was weakened;
+the remaining change has server-only ownership under the existing map.
 
 The actual corrected SSH scenario remains **NOT_RUN**. This is a production
 driver change, so the strict retained-source currency guard now requires a fresh
