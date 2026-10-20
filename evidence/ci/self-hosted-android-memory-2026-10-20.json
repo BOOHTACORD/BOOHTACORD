@@ -30,11 +30,11 @@
   },
   "correction": {
     "heavy_slots": 2,
-    "heavy_memory_bytes_each": 5368709120,
+    "heavy_memory_bytes_each": 5905580032,
     "metadata_slots": 2,
     "metadata_memory_bytes": 536870912,
-    "guest_ceiling_gib": 11,
-    "host_memory_outside_guest_ceilings_gib_approx": 4.2,
+    "guest_ceiling_gib": 12,
+    "host_memory_outside_guest_ceilings_gib_approx": 3.2,
     "unchanged_cpu_each": 4,
     "unchanged_android_timeout_minutes": 30,
     "compiler_profile": {
@@ -62,7 +62,7 @@
     },
     "reason": "Superseded after duplicate-JVM cause identified. Source/profile unchanged during this exploratory5->6->7GiB run; no successful6GiB capacity claim."
   },
-  "deployment_note": "All four CI controllers stopped for uniform5GiB admission and launcher refresh. Existing DB/Web runners preserved. Restart all four after deployment.",
+  "deployment_note": "Uniform5.5GiB base/profile and fail-closed worker guard installed while four controllers stopped. Restart all four after fresh dual diagnostic queued. Existing DB/Web services preserved.",
   "five_gib_trial": {
     "memory_bytes": 5368709120,
     "some_avg10": 70.6,
@@ -116,7 +116,31 @@
     "unused_host_build_cache_reclaimed_gb": 7.773,
     "data_images_containers_volumes_deleted": false,
     "repeat_run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39363938794",
-    "repeat_status": "PENDING",
+    "repeat_status": "FAIL guest OOM, disk reserve retained",
     "full_required_ci": "NOT_RUN"
+  },
+  "five_gib_30gib_trial": {
+    "status": "FAIL",
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39363938794",
+    "job_id": 118436608278,
+    "oom": 1,
+    "oom_kill": 1,
+    "teardown_free_bytes": 16283471872,
+    "observed_at_utc": "2026-10-20T03:38:25Z",
+    "cause": "One Gradle JVM (~3.4GiB RSS) and Dart frontend (~1.1GiB RSS) overlapped with wrapper/agent/native overhead; memory pressure and OOM occurred despite no accumulated Kotlin daemons. Other job cancelled for correction.",
+    "observed_anon_bytes": 5162520576,
+    "pressure_some_avg10": 91.26,
+    "pressure_full_avg10": 47.0,
+    "demand_before_oom_process_rss_kib": {
+      "gradle_java": 3413844,
+      "gradle_wrapper": 244280,
+      "dart_frontend": 1121180
+    }
+  },
+  "fresh_5_5_gib_trial": {
+    "status": "PENDING",
+    "memory_bytes_each": 5905580032,
+    "pool_gib": 30,
+    "scope": "Fresh simultaneous unchanged Android jobs required; then full source-bound CI/proof. No current success claim."
   }
 }

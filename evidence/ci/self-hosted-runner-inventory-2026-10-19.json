@@ -95,8 +95,8 @@
     "https://github.com/Egkurilov/BOOHTACORD/settings/actions/runners",
     "https://github.com/Egkurilov/BOOHTACORD/actions"
   ],
-  "local_checks": "1143 canonical Python tests PASS;31 focused pool/launcher tests PASS;17 next-fixture Node tests PASS;26 responsive browser tests PASS;action pins/actionlint/diff checks PASS.",
-  "rollout_gate": "Latest master619b68a1 included. Native next unlimited diagnostic PASS after network/TTL fixture corrections. Persistent duplicate compiler JVMs identified in Android trial; fresh dual-Android5GiB proof with daemon-free shared2.5GiB heap pending. Final full CI/proof pending.",
+  "local_checks": "1146 canonical Python tests PASS (51.571s) after5.5GiB guard update;26 controller/launcher/health tests PASS;18 next-fixture Node and26 responsive browser tests previously PASS; no browser source change since master merge.",
+  "rollout_gate": "Latest mastere738c370 included. Dual Android5GiB/30GiB run confirmed guest OOM during concurrent Gradle and Dart frontend compilation. Uniform5.5GiB resource correction pending fresh dual build and full source-bound CI/proof.",
   "resource_limits": {
     "heavy_slots": 2,
     "heavy_cpu_each": 4,
@@ -115,9 +115,9 @@
     },
     "filesystem_compression": "zstd:3",
     "metadata_cpu_sharing": "Metadata shares CPU 0 and 4 with heavy slots; eight host vCPU in total, not ten reserved CPUs",
-    "guest_memory_ceiling_gib": 11,
-    "host_memory_reserve_gib_approx": 4.2,
-    "heavy_memory_gib_each": 5
+    "guest_memory_ceiling_gib": 12,
+    "host_memory_reserve_gib_approx": 3.2,
+    "heavy_memory_gib_each": 5.5
   },
   "pool_acceptance": {
     "status": "PASS",

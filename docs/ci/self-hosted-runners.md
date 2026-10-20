@@ -7,10 +7,10 @@ outside these repository workflow files.
 
 | Slots | Requested labels | Limit per guest | Work |
 | --- | --- | --- | --- |
-| 1, 2 | `self-hosted, linux, x64, boohtacord-ci-ephemeral` | 4 vCPU, 5 GiB RAM | Tests, browser/SFU fixtures, Android packaging, operational jobs |
+| 1, 2 | `self-hosted, linux, x64, boohtacord-ci-ephemeral` | 4 vCPU, 5.5 GiB RAM | Tests, browser/SFU fixtures, Android packaging, operational jobs |
 | 3, 4 | `self-hosted, linux, x64, boohtacord-ci-meta` | 1 vCPU, 512 MiB RAM | Top-level selectors, required aggregates, deployment route |
 
-The two heavy slots and two small slots consume at most 11 GiB RAM, leaving about 4.2 GiB outside guest limits. The heavy
+The two heavy slots and two small slots consume at most 12 GiB RAM, leaving about 3.2 GiB outside guest limits. The heavy
 guests cover the host's eight vCPU; metadata affinities share CPU 0 and 4 with
 them, giving ten logical CPU placements on eight host vCPU. This is a bounded
 concurrency configuration on one shared host,

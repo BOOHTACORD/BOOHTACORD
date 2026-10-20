@@ -191,11 +191,17 @@ class WorkerTests(unittest.TestCase):
 
     def test_refuses_privileged_or_host_mounted_base(self):
         safe = {'expanded_config': {'security.privileged': 'false', 'security.idmap.isolated': 'true',
-                           'limits.cpu': '4', 'limits.memory': '5GiB'},
+                           'limits.cpu': '4', 'limits.memory': '5632MiB'},
                 'expanded_devices': {'root': {'type': 'disk', 'path': '/', 'pool': 'boohtacord-ci'},
                             'eth0': {'type': 'nic', 'network': 'boohtaci0'}}}
         with patch.object(worker, 'command', return_value=json.dumps(safe)):
             worker.verify_base()
+        for memory in ('5GiB', '6GiB', ''):
+            with self.subTest(memory=memory):
+                safe['expanded_config']['limits.memory'] = memory
+                with patch.object(worker, 'command', return_value=json.dumps(safe)):
+                    with self.assertRaises(ValueError): worker.verify_base()
+        safe['expanded_config']['limits.memory'] = '5632MiB'
         safe['expanded_devices']['credentials'] = {'type': 'disk', 'path': '/host', 'source': '/root'}
         with patch.object(worker, 'command', return_value=json.dumps(safe)):
             with self.assertRaises(ValueError): worker.verify_base()
