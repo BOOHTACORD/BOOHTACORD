@@ -40,6 +40,15 @@ cycles create a new guest after two seconds; a failed controller retries after 3
 The controller uses the direct LXD client. Read-only status failures retain
 the guest and retry within the same absolute lifetime bound; an observer
 transport failure is not evidence that a running job has ended.
+Before registration, the controller installs a root-owned needrestart drop-in
+which excludes exactly `boohtacord-agent.service` and `docker.service` from
+APT-triggered automatic restarts. Package updates and all other service policies
+remain enabled. Ubuntu's default needrestart behavior can otherwise send SIGTERM
+to an active agent during an automatic package upgrade, losing the one-job JIT
+session and its mandatory artifacts. The guest is replaced after the job; this
+policy never changes the host or a persistent application service.
+See [Ubuntu automatic updates](https://ubuntu.com/server/docs/how-to/software/automatic-updates/).
+
 The workspace root is `/home/runner/work`, matching hosted cache archive path
 depth. Public SDK cache entries therefore restore to `/opt/hostedtoolcache`
 without extracting through an extra `actions-runner/_work` directory level.
@@ -136,6 +145,8 @@ arbitrary persistent self-hosted runtime still cannot publish that evidence.
 Inspect `systemctl status 'boohtacord-ci@*'`, `lxc list` and repository Actions
 runner metadata. Stop a slot with `systemctl stop boohtacord-ci@N`; keep the
 base stopped. A running slot name changes after each job by design.
+Deploy `needrestart.conf` beside `worker.py` when updating the controller. Its
+installation is mandatory before registration, including metadata guests.
 Updating/rebuilding the base requires stopping all four services first and
 repeating network, Docker, toolchain and lifecycle acceptance.
 

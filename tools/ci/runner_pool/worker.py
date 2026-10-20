@@ -141,6 +141,15 @@ def cycle(slot):
         command(clone)
         command(['lxc', 'start', guest])
         wait_for_boot(guest)
+        # Ubuntu needrestart may otherwise restart the agent during an APT
+        # transaction. Protect only this disposable guest's job-critical units
+        # before registration; normal package updates remain enabled.
+        source = Path(__file__).parent
+        command(['lxc', 'exec', guest, '--disable-stdin', '--', 'install', '-d',
+                 '-m', '0755', '/etc/needrestart/conf.d'])
+        command(['lxc', 'file', 'push', str(source / 'needrestart.conf'),
+                 guest + '/etc/needrestart/conf.d/boohtacord-ci.conf',
+                 '--uid', '0', '--gid', '0', '--mode', '0644'])
         name = ('BOOHTACORD-Hetzner-CI-' + slot + '-' +
                 datetime.now(timezone.utc).strftime('%H%M%S') + '-' + secrets.token_hex(3))
         labels = LABELS if not metadata else [*LABELS[:3], 'boohtacord-ci-meta']
@@ -159,7 +168,6 @@ def cycle(slot):
                  '--uid', '1001', '--gid', '1001', '--mode', '0600'])
         token_path.unlink()
         token_path = None
-        source = Path(__file__).parent
         command(['lxc', 'file', 'push', str(source / 'start-runner.sh'),
                  guest + '/home/runner/actions-runner/start-ci.sh', '--mode', '0755'])
         command(['lxc', 'file', 'push', str(source / 'guest-runner.service'),

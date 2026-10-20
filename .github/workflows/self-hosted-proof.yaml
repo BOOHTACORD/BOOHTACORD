@@ -47,12 +47,14 @@ jobs:
           python -c "import os; from pathlib import Path; assert Path(os.environ['GITHUB_WORKSPACE']).parents[1] == Path('/home/runner/work')"
           python -c "from pathlib import Path; from tools.ci.runner_pool.worker import HEAVY_MEMORY_MIB; assert int(Path('/sys/fs/cgroup/memory.max').read_text()) == HEAVY_MEMORY_MIB * 1024**2"
           test "$(nproc)" = 4
+          test "$(stat -c %u:%g:%a /etc/needrestart/conf.d/boohtacord-ci.conf)" = 0:0:644
+          cmp -s tools/ci/runner_pool/needrestart.conf /etc/needrestart/conf.d/boohtacord-ci.conf
           test ! -e /home/runner/previous-job-marker
           touch /home/runner/previous-job-marker
           psql -h 127.0.0.1 -U voice_platform_test -d voice_platform_test -c 'SELECT 1'
           python -m tools.ci.toolchains.runtime python
           python -c "from pathlib import Path; p=Path('/home/runner/.gradle/gradle.properties').read_text().splitlines(); assert 'org.gradle.daemon=false' in p and 'kotlin.compiler.execution.strategy=in-process' in p"
-          python -m unittest tools.ci.runner_pool.test_launcher tools.ci.runner_pool.test_worker tools.ci.runner_pool.test_diagnostics
+          python -m unittest tools.ci.runner_pool.test_launcher tools.ci.runner_pool.test_worker tools.ci.runner_pool.test_diagnostics tools.ci.runner_pool.test_guest_updates
           docker version --format '{{.Server.Version}}'
 
   metadata:
@@ -79,7 +81,9 @@ jobs:
           python -c "import os; from pathlib import Path; assert Path(os.environ['GITHUB_WORKSPACE']).parents[1] == Path('/home/runner/work')"
           test "$(cat /sys/fs/cgroup/memory.max)" = 536870912
           test "$(nproc)" = 1
+          test "$(stat -c %u:%g:%a /etc/needrestart/conf.d/boohtacord-ci.conf)" = 0:0:644
+          cmp -s tools/ci/runner_pool/needrestart.conf /etc/needrestart/conf.d/boohtacord-ci.conf
           test ! -e /home/runner/previous-job-marker
           touch /home/runner/previous-job-marker
           python -c "from pathlib import Path; p=Path('/home/runner/.gradle/gradle.properties').read_text().splitlines(); assert 'org.gradle.daemon=false' in p and 'kotlin.compiler.execution.strategy=in-process' in p"
-          python -m unittest tools.ci.runner_pool.test_launcher tools.ci.runner_pool.test_worker tools.ci.runner_pool.test_diagnostics
+          python -m unittest tools.ci.runner_pool.test_launcher tools.ci.runner_pool.test_worker tools.ci.runner_pool.test_diagnostics tools.ci.runner_pool.test_guest_updates

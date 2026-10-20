@@ -146,7 +146,7 @@ class WorkerTests(unittest.TestCase):
                 payloads.append(json.loads(options['stdin']))
                 return json.dumps({'runner': {'id': 43}, 'encoded_jit_config': 'secret-jit'})
             if args[:2] == ['lxc', 'copy']: clones.append(args)
-            if args[:2] == ['lxc', 'exec']: raise RuntimeError('fixture failure')
+            if args[:2] == ['lxc', 'exec'] and 'daemon-reload' in args: raise RuntimeError('fixture failure')
             return ''
         with tempfile.TemporaryDirectory() as temporary, patch.object(worker, 'command', command), \
                 patch.object(worker, 'RUNTIME', Path(temporary)), patch.object(worker, 'verify_base'):
