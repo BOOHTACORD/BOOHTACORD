@@ -52,6 +52,15 @@ The 30-day `delivery-RUN-ATTEMPT` artifact contains one bounded sanitized receip
 Missing, failed or skipped stages cannot produce PASS. Timeout/interruption means
 remote completion is UNKNOWN; killing the local SSH process does not prove that
 remote Docker work stopped. Do not blindly rerun or roll back after such a result.
+The verified current driver invokes the canonical installer in the foreground
+with HUP ignored and inherited by its rollout children. Installer stdout/stderr
+go to a mode-0600 file inside the existing private driver directory, so a closed
+SSH pipe cannot abort maintenance cleanup. The wrapper waits for the real exit
+status before its EXIT trap removes that directory; no alternate installer,
+background success, released host lock or synthetic acknowledgement is added.
+Interruption still fails the client receipt. Recovery requires independent idle
+lock, maintenance-off and fresh health/state checks; this protection does not
+turn a lost connection into confirmed success or ignore administrator SIGTERM.
 New signed runtimes also emit ten ordered Unix-second markers for admission,
 migration, services, health and rollout completion. Their intervals are recomputed
 from those exact events; partial, reordered or inconsistent reports fail closed.
