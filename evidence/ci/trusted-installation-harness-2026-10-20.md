@@ -77,3 +77,48 @@ The original hosted failure remains FAIL, not a flake or a successful runtime
 acceptance. A fresh actual run is required only after the corrected protected
 source is merged. Installation/interruption/rollback, visual review and #395
 closure remain NOT_RUN/OPEN at this checkpoint.
+
+## Native Linux run after the dependency correction
+
+PR #461 merged as `edb6c71d30705cef56532af81fe734a213f7e9ce`, tree
+`f21e2735724ea312f1f258bb4bd183179fef96a7`, after all 25 checks passed.
+[Run 39346655478](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39346655478),
+job 118380773873, completed **FAIL in the interrupted-install case**. Its guard
+suite passed; both full genuine QA builds passed OCI/import/smoke/sign/package and
+owned-storage cleanup. Source-qualified installation, upgrade and same-SHA retry
+passed, with unchanged recorded volume/network/logical fingerprints. The next
+observed phase was interrupted maintenance, then the controller failed. The old
+report omitted the exact interrupted receipt/lock/maintenance guard. The cause is
+**UNVERIFIED**; no signal/maintenance race is asserted as a proven root cause.
+
+Artifact 12230774786 was verified independently: 823372 bytes, SHA256
+`f941c5740feb7b51b887c29953606968db81bd69cc5dbe8ecaef26db3d8c9324`.
+All 58 origin harness hashes matched exact Git source, and all 56 builder hashes
+matched the current builder. Three ACKs, immutable running indices and four stable
+fingerprint observations were independently checked. Historical ACK inspection
+used the authenticated job completion time; it did not claim a fresh ACK now.
+The [partial record](trusted-installation-partial-2026-10-20.json) retains original
+FAIL/RUNNING markers and all component facts. The terminal parent cleaned its
+resources; the browser's original RUNNING marker is not evidence of a live process.
+
+Nonoverlapping root build intervals were 247.078470 s cold and 69.696671 s warm;
+nested image/package timings are not added a second time. Both private cache
+namespaces remained the same, warm imports were VERIFIED and both storage owners
+removed their images, worker/state and smoke resources. This is one hosted x64
+fixture pair, including compiler-image warming, not a self-hosted performance or
+production deployment result. Four of sixteen original PNGs were reviewed: stable
+TEXT/attachment/member/composer content is visible, and maintenance banners are
+visible. The maintenance layout clips lower footer/member content at 1200x800;
+that observation is retained and no screenshot baseline is changed. This partial
+record cannot close #394, #395 or #401.
+
+The next candidate keeps every interruption guard and adds finite persisted
+signal/receipt/lock/maintenance checkpoints plus source-frame diagnostics from
+private logs. Focused tests first reproduced the missing checkpoint. A separate
+historical ACK regression demonstrated that a long scenario needs recorded live
+validation times, request nonces and an explicit trusted execution window; the
+new QA-only reader leaves production's five-minute freshness check unchanged.
+Malformed/private timestamp errors are sanitized. The next scenario also checks
+a preserved non-default role policy and real MEMBER/admin and nonparticipant DM
+denials in every browser phase. Complete runtime, recovery/rollback, all negatives
+and 30-capture review remain **NOT_RUN** for these new checks.
