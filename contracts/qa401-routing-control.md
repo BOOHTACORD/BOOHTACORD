@@ -1,6 +1,6 @@
 # QA401 routing control: contracts
 
 Inert text marker for the actual GitHub PR control matrix.
-Base revision: e738c3709a8d60ffa298f36639b03c05844c8ab2
-Scope: path selection and required-status behaviour.
+Base revision: d9647ff793095f5e79f33fde3631838a4d05771d
+Scope: path selection and required-status behaviour after initial-origin readiness.
 This temporary control is closed after evidence collection.
