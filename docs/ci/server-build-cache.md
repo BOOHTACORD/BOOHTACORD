@@ -78,6 +78,16 @@ reclaim that exact orphan before starting. A corrupt journal, different daemon
 or incomplete cleanup fails closed and preserves the journal for investigation.
 Metrics cannot PASS while cleanup is missing, failed or still running.
 
+If the initial Docker metadata preflight fails before this controller acquires
+resources and its exclusive lease has no active journal, it releases the lease
+without repeating the failed Docker probe. The build remains FAIL and no
+`filesystem_after` measurement is invented. An existing orphan journal still
+blocks this path and is preserved without unverified Docker mutations.
+Docker command failures report only finite operation/reason categories (for
+example `daemon_info`/`timeout`) in `setup_failure` or `cleanup_failure`; command
+arguments, paths, stdout, stderr and raw exception text are excluded. An actual
+cleanup or its final verification failure remains fatal.
+
 The worker has an 8GiB GC target and 2GiB minimum-free target. These are GC targets,
 not filesystem write quotas; in-use data can temporarily exceed them. A 14GiB
 free-space preflight reserves room for a fresh worker, one cache export and the
