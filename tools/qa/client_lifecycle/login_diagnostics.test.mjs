@@ -38,6 +38,21 @@ test('known startup network change resets the read-only stability window', async
   assert.equal(failedAt, 1000)
   assert.ok(healthy.at(-1) - healthy[0] >= 3000)
 })
+test('the first renderer read can report startup network change before any document exists', async () => {
+  const clock = readinessClock(), reads = []
+  const origin = 'https://localhost:4810', health = origin+'/api/v1/health'
+  const page = { goto: async url => {
+    reads.push({ url, time: clock.now() })
+    if (reads.length === 1) throw Error('page.goto: net::ERR_NETWORK_CHANGED')
+    return { status: () => 200, url: () => url }
+  } }
+  await prepareOwnedLoopback(page, origin, clock)
+  assert.equal(reads[0].url, health)
+  assert.equal(reads.at(-1).url, origin)
+  assert.ok(reads.slice(1,-1).every(read => read.url === health))
+  assert.ok(reads.at(-2).time-reads[1].time >= 3000)
+  assert.equal(reads.filter(read => read.url === origin).length, 1)
+})
 test('health preparation is bounded and never retries TLS, HTTP failure or a foreign origin', async () => {
   const clock = readinessClock()
   let calls = 0
