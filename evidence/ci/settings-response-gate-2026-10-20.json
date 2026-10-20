@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "scope": "CICD-19 / #401: confirmed browser fixture synchronization defect",
+  "base_revision": "d9647ff793095f5e79f33fde3631838a4d05771d",
+  "original": {
+    "status": "FAIL",
+    "run_id": 39370749453,
+    "job_id": 118459289731,
+    "api_head": "48ea564a3cb3b489116a79504dd1cae6184c3ace",
+    "tested_merge": "1883dc362e2958c89c7dc777f0795374811a0843",
+    "profile_artifact_id": 12242296603,
+    "profile_artifact_sha256": "335fd953daba532f8f50c2d47e5fbae5ba762472d9796ea6718548bfc690f5b0",
+    "profile_bytes_and_source_verified": true,
+    "file": "clients/web/tests/settings_hierarchy/hierarchy.browser.spec.ts",
+    "file_sha256": "a42367d31a3cf82d73bed575135dda13e73c75299b774803353e2931b0ca8a21",
+    "line": 63,
+    "column": 152,
+    "failure": "TypeError: release is not a function",
+    "cause": "UI pending state can precede route-handler assignment of the release callback",
+    "failed_tests": 1,
+    "passed_tests_in_failed_command": 20
+  },
+  "change": {
+    "request_response_pairing": "FIFO gate waits for an actual held request before releasing its response",
+    "coverage": "Guild conflict and both profile save attempts",
+    "application_assertions_changed": false,
+    "application_code_changed": false,
+    "timeouts_changed": false,
+    "assertion_retries_added": false,
+    "raw_logs_published": false
+  },
+  "local_checks": {
+    "tests_written_before_implementation": true,
+    "unit_red": "Missing helper module before implementation",
+    "unit_green": {"status": "PASS", "tests": 3},
+    "focused_browser": {
+      "status": "PASS",
+      "tests": 2,
+      "command": "playwright test -c tests/settings_hierarchy/playwright.config.ts --grep 'guild explicit save state|profile and password cancellation'",
+      "runtime": "macOS arm64, headless Playwright Chromium, mocked HTTP fixture",
+      "native_or_production_acceptance": false
+    },
+    "ci_catalog_and_source": {"status": "PASS", "tests": 10},
+    "hosted_fix_validation": "NOT_RUN"
+  },
+  "limitations": [
+    "The original failed control remains FAIL; no job rerun was launched",
+    "This confirmed fixture defect does not establish the cause of historical first-navigation failures or blank captures",
+    "A new source requires fresh qualification; historical matrix receipts are not relabelled",
+    "Global #401 acceptance remains NO-GO"
+  ]
+}

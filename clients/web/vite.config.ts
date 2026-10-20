@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => {
     }],
     test: {
       environment: 'node',
-      include: ['src/**/*.spec.ts', 'tests/uiux_2026/visual_matrix.spec.ts'],
+      include: ['src/**/*.spec.ts', 'tests/uiux_2026/visual_matrix.spec.ts', 'tests/settings_hierarchy/*.unit.spec.ts'],
     },
   }
 })

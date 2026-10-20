@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test'
 import { routes } from '../microcopy/routes'
 import { expectAxeClear } from '../accessibility/axe'
 import { captureZoomedPage, withBrowserZoom } from '../control_consistency/browser_zoom'
+import { createResponseGate } from './response_gate'
 
 const scenes = [
   ...['guild', 'members', 'roles', 'channels', 'audit', 'media', 'readiness'].map(section => `admin&section=${section}`),
@@ -54,12 +55,12 @@ test('guild explicit save state, pending, cancellation and conflict never silent
   const form=page.getByRole('form',{name:'Настройки гильдии'}),name=page.getByLabel('Название гильдии',{exact:true}),save=form.getByRole('button',{name:'Сохранить',exact:true})
   await expect(save).toBeDisabled();await name.fill('Черновик');await expect(form.getByRole('status')).toHaveText('Есть несохранённые изменения')
   await form.getByRole('button',{name:'Отменить',exact:true}).click();await expect(name).toHaveValue('Тестовая гильдия');await expect(save).toBeDisabled()
-  let release!:()=>void
+  const response = createResponseGate()
   await page.route('**/api/v1/admin/guild-settings',async route=>{
     if(route.request().method()==='GET')return route.fulfill({json:{name:'Чужая правка',revision:2,welcome_channel_id:null}})
-    await new Promise<void>(resolve=>{release=resolve});await route.fulfill({status:409,json:{error:{code:'CONFLICT'}}})
+    await response.hold();await route.fulfill({status:409,json:{error:{code:'CONFLICT'}}})
   })
-  await name.fill('Мой черновик');await save.click();await expect(form.getByRole('status')).toHaveText('Сохраняем…');await expect(name).toBeDisabled();release()
+  await name.fill('Мой черновик');await save.click();await expect(form.getByRole('status')).toHaveText('Сохраняем…');await expect(name).toBeDisabled();await response.releaseNext()
   await expect(form.getByRole('alert')).toContainText('другой администратор');await expect(name).toHaveValue('Мой черновик');await expect(save).toBeEnabled()
   await form.getByRole('button',{name:'Отменить',exact:true}).click();await expect(name).toHaveValue('Чужая правка');await expect(save).toBeDisabled()
 })
@@ -90,16 +91,17 @@ test('microphone processing failure is visible while Advanced is closed',async({
 })
 test('profile and password cancellation send no mutation; explicit name save exposes pending/error/result',async({page})=>{
  await open(page,'profile');const name=page.getByRole('textbox',{name:'Отображаемое имя',exact:true}),save=page.getByRole('button',{name:'Сохранить профиль',exact:true})
- let writes=0,fail=true,release!:()=>void
+ let writes=0,fail=true
+ const response=createResponseGate()
  await page.route('**/api/v1/me',async route=>{
   if(route.request().method()!=='PATCH')return route.fallback()
-  writes++;await new Promise<void>(resolve=>{release=resolve})
+  writes++;await response.hold()
   await route.fulfill(fail?{status:403,json:{error:{code:'FORBIDDEN'}}}:{json:{account_id:'11111111-1111-4111-8111-111111111111',login:'fixture',display_name:'Новое имя',role:'ADMINISTRATOR',avatar_url:null}})
  })
  await name.fill('Черновик');await page.getByRole('button',{name:'Отменить',exact:true}).click();await expect(name).toHaveValue('Тестовый участник');expect(writes).toBe(0)
- await name.fill('Новое имя');await save.click();await expect(page.getByRole('status')).toHaveText('Сохраняем имя профиля…');await expect(name).toBeDisabled();release()
+ await name.fill('Новое имя');await save.click();await expect(page.getByRole('status')).toHaveText('Сохраняем имя профиля…');await expect(name).toBeDisabled();await response.releaseNext()
  await expect(page.getByRole('alert')).toBeVisible();await expect(name).toHaveValue('Новое имя')
- fail=false;await save.click();await expect(name).toBeDisabled();release();await expect(page.getByRole('status')).toHaveText('Имя профиля сохранено.');expect(writes).toBe(2)
+ fail=false;await save.click();await expect(name).toBeDisabled();await response.releaseNext();await expect(page.getByRole('status')).toHaveText('Имя профиля сохранено.');expect(writes).toBe(2)
  await page.getByRole('tab',{name:'Безопасность',exact:true}).click();await page.getByLabel('Текущий пароль',{exact:true}).fill('SyntheticOldOnly')
  await page.getByLabel('Новый пароль',{exact:true}).fill('SyntheticNewOnly');await page.getByRole('button',{name:'Отменить',exact:true}).click()
  await expect(page.getByLabel('Текущий пароль',{exact:true})).toHaveValue('');await expect(page.getByLabel('Новый пароль',{exact:true})).toHaveValue('')
