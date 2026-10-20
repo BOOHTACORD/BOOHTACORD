@@ -6,6 +6,7 @@ import tempfile
 import unittest
 
 from .builder_storage import BuilderStorage
+from .storage_docker import DockerCommandError
 
 REVISION = 'a' * 40
 ARCHIVE = 'b' * 64
@@ -140,6 +141,63 @@ class BuilderStorageTests(unittest.TestCase):
             with self.scope():
                 self.fail('Bootstrap failed')
         self.assertFalse(self.docker.containers or self.docker.volumes)
+
+    def test_initial_docker_timeout_is_not_retried_or_replaced_by_cleanup(self):
+        calls = []
+        def unavailable():
+            calls.append('snapshot')
+            raise DockerCommandError('daemon_info', 'timeout')
+        self.docker.snapshot = unavailable
+        storage = self.scope()
+        with self.assertRaisesRegex(DockerCommandError, 'daemon_info: timeout'):
+            with storage:
+                self.fail('Unavailable Docker was accepted')
+        self.assertEqual(['snapshot'], calls)
+        self.assertFalse(self.docker.calls)
+        self.assertEqual({'operation': 'daemon_info', 'reason': 'timeout'},
+                         storage.report['setup_failure'])
+        self.assertEqual('FAIL', storage.report['status'])
+        self.assertTrue(storage.report['owned_resources_removed'])
+        self.assertNotIn('filesystem_after', storage.report)
+        self.assertFalse((self.root/'lease/active.json').exists())
+        self.assertFalse(storage.active)
+
+    def test_initial_timeout_preserves_existing_orphan_without_docker_mutations(self):
+        self.docker.fail_remove = True
+        with self.assertRaises(ValueError):
+            with self.scope():
+                pass
+        journal = self.root/'lease/active.json'
+        original = journal.read_bytes()
+        calls = list(self.docker.calls)
+        def unavailable():
+            raise DockerCommandError('image_list', 'timeout')
+        self.docker.snapshot = unavailable
+        storage = self.scope()
+        with self.assertRaises(ValueError):
+            with storage:
+                self.fail('Unverified orphan was accepted')
+        self.assertEqual(original, journal.read_bytes())
+        self.assertEqual(calls, self.docker.calls)
+        self.assertFalse(storage.report['owned_resources_removed'])
+        self.assertEqual({'operation': 'image_list', 'reason': 'timeout'},
+                         storage.report['setup_failure'])
+        self.assertEqual('FAIL', storage.report['status'])
+        self.assertFalse(storage.active)
+
+    def test_cleanup_docker_failure_retains_journal_and_finite_reason(self):
+        def unavailable():
+            raise DockerCommandError('daemon_info', 'timeout')
+        with self.assertRaisesRegex(ValueError, 'cleanup or verification is incomplete'):
+            with self.scope() as storage:
+                self.docker.snapshot = unavailable
+        self.assertFalse(storage.report['owned_resources_removed'])
+        self.assertEqual('FAIL', storage.report['status'])
+        self.assertEqual({'operation': 'daemon_info', 'reason': 'timeout'},
+                         storage.report['cleanup_failure'])
+        self.assertTrue((self.root/'lease/active.json').is_file())
+        self.assertTrue(self.docker.volumes)
+        self.assertFalse(any(c[0].startswith('remove-') for c in self.docker.calls))
 
     def test_foreign_matching_tag_blocks_before_any_resource_mutation(self):
         self.docker.add_image('sha256:'+'4'*64, archive='f'*64, tags=['voice-platform-api:'+REVISION])

@@ -15,6 +15,16 @@ IMAGE_FORMAT = ('{"id":{{json .Id}},"owner":{{json (index .Config.Labels "'+LABE
     '"tags":{{json .RepoTags}},"digests":{{json .RepoDigests}}}')
 
 
+class DockerCommandError(ValueError):
+    """Safe finite diagnostics for metrics and the public exception message."""
+    def __init__(self, operation, reason):
+        operations = {'daemon_info', 'image_list', 'resource_command'}
+        reasons = {'timeout', 'exit_status', 'output_limit', 'encoding', 'os_error'}
+        require(operation in operations and reason in reasons)
+        self.operation, self.reason = operation, reason
+        super().__init__('Builder Docker '+operation+': '+reason)
+
+
 class Docker:
     def __init__(self, environment):
         self.environment = environment
@@ -22,15 +32,24 @@ class Docker:
         require(not environment.get('DOCKER_HOST') or environment['DOCKER_HOST'].startswith('unix://'))
 
     def command(self, *args, timeout=30):
+        operation = ('daemon_info' if args[:1] == ('info',) else
+                     'image_list' if args[:2] == ('image', 'ls') else 'resource_command')
         with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
             try:
                 result = subprocess.run(['docker', *args], env=self.environment, stdout=stdout,
                                         stderr=stderr, timeout=timeout)
-                require(result.returncode == 0 and stdout.tell() <= 1_000_000 and stderr.tell() <= 1_000_000)
+                if result.returncode != 0:
+                    raise DockerCommandError(operation, 'exit_status')
+                if stdout.tell() > 1_000_000 or stderr.tell() > 1_000_000:
+                    raise DockerCommandError(operation, 'output_limit')
                 stdout.seek(0)
                 return stdout.read().decode('utf-8').strip()
-            except (OSError, UnicodeError, subprocess.TimeoutExpired):
-                raise ValueError('Builder resource command failed') from None
+            except subprocess.TimeoutExpired:
+                raise DockerCommandError(operation, 'timeout') from None
+            except UnicodeError:
+                raise DockerCommandError(operation, 'encoding') from None
+            except OSError:
+                raise DockerCommandError(operation, 'os_error') from None
 
     def snapshot(self):
         info = json.loads(self.command('info', '--format', '{"id":{{json .ID}},"root":{{json .DockerRootDir}}}'))
