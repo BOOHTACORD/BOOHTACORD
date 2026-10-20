@@ -57,7 +57,7 @@ def _compare(run,jobs,needs,old,new):
     reference,plan=catalog.baseline(),catalog.plan()
     require(len(old)==len(new)==len(SAMPLES))
     expected_jobs={'compare'}
-    roles=['fast','sfu','frontend',*[f'browser ({p})' for p in catalog.PROFILES[1:4]]]
+    roles=['fast','sfu','frontend',*[f'browser ({p})' for p in catalog.BROWSER_PROFILES]]
     for sample in SAMPLES:
         expected_jobs.add('legacy-'+str(sample))
         expected_jobs.update('profiles-'+str(sample)+' / '+role for role in roles)

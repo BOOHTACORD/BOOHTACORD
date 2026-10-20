@@ -10,7 +10,8 @@ OPERATIONS = {
     'dart': ('public-headers', 'app-dependencies', 'app-tests', 'livekit-locks',
              'livekit-dependencies', 'livekit-tests', 'webrtc-locks',
              'webrtc-dependencies', 'webrtc-tests', 'app-analysis'),
-    'android': ('app-dependencies', 'kotlin-modes', 'debug-apk'),
+    'android': ('app-dependencies', 'debug-apk'),
+    'android-kotlin': ('app-dependencies', 'kotlin-modes'),
 }
 
 
@@ -42,9 +43,10 @@ def execute(profile):
     if profile == 'dart':
         command('public-headers', 'python3', '-m', 'unittest', 'tools.verify.test_flutter_webrtc_public_headers')
     command('app-dependencies', 'flutter', 'pub', 'get', '--enforce-lockfile', cwd=app)
-    if profile == 'android':
+    if profile == 'android-kotlin':
         # The existing script exercises legacy KGP and AGP built-in Kotlin.
         command('kotlin-modes', 'bash', 'tools/verify/android_kotlin/verify_android_kotlin_modes.sh')
+    elif profile == 'android':
         command('debug-apk', 'python3', '-m', 'tools.build.android.run', '--debug', '--no-pub')
     else:
         command('app-tests', *test_command(os.environ), cwd=app)

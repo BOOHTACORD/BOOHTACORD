@@ -1,14 +1,15 @@
 # Web profiles and source-bound results (#388)
 
-The Web gate uses five complete profiles in separate hosted Ubuntu jobs. The
-browser matrix uses three independent VMs; ports, synthetic users, Docker and
+The Web gate uses six complete profiles in separate hosted Ubuntu jobs. The
+browser matrix uses four independent VMs; ports, synthetic users, Docker and
 `.out` directories belong to those disposable machines. Commands within a profile
 remain serial. Do not run multiple profiles in the same local checkout at once.
 
 | Profile | Required coverage |
 | --- | --- |
 | fast | Native DSP tests, Node fixture/import tests, dependency/UI matrix checks, Vitest, TypeScript/Vite build and social preview verification |
-| browser-shell | Accessibility (both existing commands), responsive shell, controls, microcopy, chat rhythm, message social and navigation |
+| browser-shell | Accessibility (both existing commands), responsive shell and controls |
+| browser-content | Microcopy, chat rhythm, message social and navigation |
 | browser-conversations | Search sessions/presentation/dates, DM starter, own sessions, delivery, guild lifecycle, mentions inbox and readonly archive |
 | browser-voice | Screen profile/setup/track names, mini player, member roster/popover, settings, header, passwords and voice interface/shortcuts/disconnect notice |
 | sfu-network | Audio quality, actual screen-profile SFU and audio browser, then every restricted-network profile |
@@ -34,6 +35,7 @@ Use the existing approved SDKs and `tools/requirements-ci.txt` environment:
 ```sh
 python -m tools.ci.native.web --profile fast
 python -m tools.ci.native.web --profile browser-shell
+python -m tools.ci.native.web --profile browser-content
 python -m tools.ci.native.web --profile browser-conversations
 python -m tools.ci.native.web --profile browser-voice
 python -m tools.ci.native.web --profile sfu-network
@@ -56,7 +58,7 @@ identity and immutable release rules remain unchanged.
 ## Fan-in and artifacts
 
 `frontend` always observes `fast`, the whole `browser` matrix and `sfu`. It requires
-successful job results and exactly five bounded, flat JSON files. Every file must
+successful job results and exactly six bounded, flat JSON files. Every file must
 match its profile, source SHA, plan digest, run ID, run attempt and reusable caller
 namespace, with its full ordered operation list and positive finite timing.
 Missing/failed/cancelled/skipped/partial/foreign/duplicate evidence is failure.
@@ -87,7 +89,7 @@ own gates; #385's setting is managed by the owner.
 ## Same-source shadow comparison
 
 The read-only `Web CI same-source shadow` workflow uses three declared samples
-per arm. Each arm permits one sample at a time; the new arm still runs all five
+per arm. Each arm permits one sample at a time; the new arm still runs all six
 profiles in parallel. Sampling is finite, failures are retained, and no failed
 assertion is retried or discarded to obtain a green dataset.
 
@@ -105,7 +107,7 @@ reads the actual run/jobs API with `actions:read`. It checks the upstream repo,
 source SHA, attempt, complete successful jobs, hosted Ubuntu labels, distinct
 parallel runners, timestamps and report timings. The measured new critical path
 spans the first profile's start through the final fan-in's completion, including
-SDK setup/uploads/internal waits. Runner-minutes sum all six job durations. The
+SDK setup/uploads/internal waits. Runner-minutes sum all seven job durations. The
 legacy interval includes its whole job. Initial created-to-start wait is reported
 separately and may include intentional serial sampling; it is not called pure
 runner queue time.

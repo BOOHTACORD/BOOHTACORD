@@ -60,7 +60,7 @@ jobs:
           retention-days: ${{ github.event_name == 'pull_request' && startsWith(github.ref, 'refs/pull/') && job.status == 'success' && 7 || 30 }}
   android:
     runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
-    timeout-minutes: 40
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -81,7 +81,7 @@ jobs:
           channel: stable
           flutter-version: 3.47.7
           cache: true
-      - name: Verify both Kotlin modes and build the inspected debug APK
+      - name: Build the inspected debug APK
         env:
           FLUTTER_EVIDENCE_NAMESPACE: ${{ inputs.evidence_namespace }}
         run: python3 -m tools.ci.flutter_gates.run android
@@ -101,9 +101,45 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  android-kotlin:
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17.0.20+101'
+      - name: Verify selected java SDK
+        run: python -m tools.ci.toolchains.runtime java
+      - uses: ./.github/actions/flutter-setup
+        with:
+          channel: stable
+          flutter-version: 3.47.7
+          cache: true
+      - name: Verify both Kotlin compatibility modes
+        env:
+          FLUTTER_EVIDENCE_NAMESPACE: ${{ inputs.evidence_namespace }}
+        run: python3 -m tools.ci.flutter_gates.run android-kotlin
+      - name: Retain mandatory Kotlin profile evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: flutter-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-android-kotlin
+          path: .out/ci/flutter-parts/android-kotlin.json
+          if-no-files-found: error
+          retention-days: 30
+
   flutter:
     if: always()
-    needs: [dart, android]
+    needs: [dart, android, android-kotlin]
     runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     timeout-minutes: 5
     steps:
@@ -120,7 +156,7 @@ jobs:
           pattern: flutter-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-*
           path: .out/ci/flutter-parts
           merge-multiple: true
-      - name: Require complete current Dart and Android evidence
+      - name: Require complete current Dart, Kotlin and APK evidence
         env:
           FLUTTER_NEEDS: ${{ toJSON(needs) }}
           FLUTTER_EVIDENCE_NAMESPACE: ${{ inputs.evidence_namespace }}

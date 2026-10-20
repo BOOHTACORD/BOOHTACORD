@@ -74,10 +74,11 @@ public SDK receipt. Cache maintenance follows the stopped-controller/base
 procedure below and requires fresh browser/Android timing acceptance.
 The guest's user Gradle profile shares a 2.5 GiB heap with in-process Kotlin
 compilation, disables persistent Gradle daemons and caps parallel workers at two.
-The two Android compatibility modes still execute sequentially, with their
-original assertions. Android has a finite 40-minute whole-job budget on the
-shared host: the observed cold sequence completed both Kotlin modes before
-30 minutes but the final separately inspected APK rebuild crossed that deadline.
+The two Android compatibility modes execute sequentially in their own job,
+with their original assertions. Kotlin verification and the separately inspected
+APK build each have an independent finite 30-minute whole-job budget and use
+the same heavy pool. The aggregate requires all three current Dart, Kotlin and
+APK parts; a previous combined Android receipt cannot replace a split part.
 This profile is outside the checkout and leaves local developer settings intact.
 App and vendor Flutter tests use four concurrent test processes in the marked
 Linux pool, matching its four-CPU allocation. Both shadow cohorts use this
