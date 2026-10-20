@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "scope": "#401 original next-client failure diagnostics; not final acceptance",
+  "base_revision": "619b68a13db0c958b7d8b4cb68b10ed1da993b82",
+  "original_failure": {
+    "run_id": 39356335983,
+    "job_id": 118411916690,
+    "status": "FAIL",
+    "stage": "browser-scenario",
+    "capacity_profile": "unlimited",
+    "failure_type": "CalledProcessError",
+    "artifact_id": 12236025038,
+    "artifact_sha256": "175386d8f7d4503ce06dd63de1c006bc484799049d6238d34dbbff2aa3eca515",
+    "exact_assertion": "NOT_RETAINED",
+    "root_cause": "UNVERIFIED"
+  },
+  "local_linux_arm64_diagnostic": {
+    "status": "NOT_REPRODUCED",
+    "product_source": "d807bc9daeb5a55ba2eaeae262135f2a744f2ec6",
+    "assertions_changed": false,
+    "owned_resources_removed": true,
+    "vm_stopped": true,
+    "supersedes_original_ci_failure": false
+  },
+  "change": {
+    "public_fields": "finite stage, error type, allowlisted source module and integer coordinates; existing bounded DOM metrics and original synthetic PNG",
+    "private_exception_text_or_arguments_exported": false,
+    "private_log_exported": false,
+    "assertions_or_deadlines_changed": false,
+    "controller_failure_remains_red": true
+  },
+  "focused_tests": {
+    "python": {
+      "status": "PASS",
+      "tests": 24
+    },
+    "node": {
+      "status": "PASS",
+      "tests": 4
+    },
+    "negative_cases": [
+      "private fields",
+      "unknown modules",
+      "invalid coordinates",
+      "boolean coordinates",
+      "frame bound",
+      "duplicate JSON keys",
+      "symlinks",
+      "invalid DOM",
+      "invalid PNG",
+      "unavailable page"
+    ]
+  },
+  "hosted_diagnostic": {
+    "status": "PASS",
+    "source_revision": "8b7c44ef08523415654b711999d95ce543d22866",
+    "run_id": 39361893650,
+    "run_attempt": 1,
+    "artifact_id": 12237738260,
+    "artifact_sha256": "5e460887ba153c31720e9d6773c5cb2f8ed7ced42f341d1241895892a109cd41",
+    "original_report_source_hashes_verified": true,
+    "original_captures_verified": 4,
+    "owned_resources_removed": true,
+    "original_failure_reproduced": false,
+    "original_failed_controls_superseded": false
+  },
+  "epic_acceptance": "NO-GO"
+}
