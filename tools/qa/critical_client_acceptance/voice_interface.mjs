@@ -7,21 +7,26 @@ import { channel, expect } from '../client_lifecycle/request.mjs'
 export async function voiceInterface(page, input, report) {
   const dock = page.getByTestId('voice-dock')
   const room = page.locator('.room-wrap')
+  const primaryControls = input.viewport.width <= 600 ? dock : room
   await expect(room.getByTestId('participant-card')).toHaveCount(2, { timeout: 15000 })
   await expect(room.getByRole('status')).toHaveText('Режим слушателя')
+  if (input.viewport.width <= 600) {
+    await expect(room.locator('.voice-room-controls')).toBeHidden()
+    await expect(dock.locator('.voice-actions')).toBeVisible()
+  }
   await page.screenshot({ path: input.directory + '/voice-connected-compact.png' })
-  await room.getByRole('button', { name: 'Выключить удалённый звук', exact: true }).click()
-  await expect(room.getByRole('button', { name: 'Включить удалённый звук', exact: true })).toHaveAttribute('aria-pressed', 'true')
-  await expect(room.getByRole('button', { name: 'Включить микрофон', exact: true })).toBeDisabled()
+  await primaryControls.getByRole('button', { name: 'Выключить удалённый звук', exact: true }).click()
+  await expect(primaryControls.getByRole('button', { name: 'Включить удалённый звук', exact: true })).toHaveAttribute('aria-pressed', 'true')
+  await expect(primaryControls.getByRole('button', { name: 'Включить микрофон', exact: true })).toBeDisabled()
   await page.screenshot({ path: input.directory + '/voice-deafened-compact.png' })
-  await room.getByRole('button', { name: 'Включить удалённый звук', exact: true }).click()
-  await expect(room.getByRole('button', { name: 'Выключить удалённый звук', exact: true })).toHaveAttribute('aria-pressed', 'false')
-  await room.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true }).click()
+  await primaryControls.getByRole('button', { name: 'Включить удалённый звук', exact: true }).click()
+  await expect(primaryControls.getByRole('button', { name: 'Выключить удалённый звук', exact: true })).toHaveAttribute('aria-pressed', 'false')
+  await primaryControls.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true }).click()
   const setup = page.getByRole('dialog', { name: 'Демонстрация экрана', exact: true })
   await expect(setup).toBeVisible()
   await page.keyboard.press('Escape')
   await expect(setup).toHaveCount(0)
-  await expect(room.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true })).toBeFocused()
+  await expect(primaryControls.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true })).toBeFocused()
   assert.equal(await page.evaluate(() => window.__qaCaptureRequests), 0)
   await page.evaluate(() => { window.__qaVoicePeers = window.__qaPeers.filter(peer => peer.connectionState === 'connected') })
   const checkTransport = async () => {
