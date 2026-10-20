@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "criterion": "security-provenance-negatives",
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "status": "PASS",
+  "scope": "focused",
+  "executed": true,
+  "producer_artifact_signature_health_cancel_race_passed": true,
+  "evidence": [
+    {
+      "path": "evidence/ci/security-negatives-688925dc-2026-10-20.json",
+      "sha256": "70ad08a810bb9142d8f1aadcdf4e00005676bac38e83ee780859bb00e5e91d51"
+    }
+  ],
+  "limits": [
+    "Focused unchanged-code tests from exact-base control484, not a production runtime verdict."
+  ]
+}

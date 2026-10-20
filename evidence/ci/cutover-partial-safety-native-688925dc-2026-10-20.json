@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "description": "Eight source-assessed criteria: previous seven plus verified current-code focused producer/artifact/signature/health/cancel-race negatives. NO-GO; actual server/native/operator/promotion/after/owner work remains.",
+  "records": [
+    "evidence/ci/cutover-baseline-688925dc-2026-10-20.json",
+    "evidence/ci/cutover-control-matrix-688925dc-2026-10-20.json",
+    "evidence/ci/cutover-required-status-owner-readback-688925dc-2026-10-20.json",
+    "evidence/ci/cutover-workflow-configuration-rollback-688925dc-2026-10-20.json",
+    "evidence/ci/cutover-macos-sdk-matrix-688925dc-2026-10-20.json",
+    "evidence/ci/cutover-android-smoke-688925dc-2026-10-20.json",
+    "evidence/ci/cutover-windows-smoke-688925dc-2026-10-20.json",
+    "evidence/ci/cutover-security-negatives-688925dc-2026-10-20.json"
+  ],
+  "pending": [
+    "same-source shadows",
+    "server release/install/current-source compatible rollback",
+    "promotion/old client",
+    "operator restrictions",
+    "qualified after observations",
+    "authenticated owner GO",
+    "macOS native runtime smoke"
+  ],
+  "retained_schema_rollback_note": "Earlier source-bound schema rollback PASS is retained historically but is not reused for this changed runtime-input set."
+}

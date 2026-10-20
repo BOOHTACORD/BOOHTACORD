@@ -1,0 +1,621 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Original current-base control Windows native package/recovery/GUI-SFU evidence, not stable publishing or old-client promotion",
+  "run_id": 39375469807,
+  "api_head": "89e1e30dbcd3707cf59839c6108e15c7656ac194",
+  "actual_checkout": "8da14d5a77ab1676e4631ed49228b089dffac93a",
+  "artifact_origins": [
+    {
+      "id": 12244405319,
+      "name": "windows-acceptance-8da14d5a77ab1676e4631ed49228b089dffac93a-39375469807-1",
+      "size_in_bytes": 361,
+      "digest": "sha256:815348ae627bd5520b879b9262a29396aaebb5f48df24cfc235620fdf0008b36"
+    },
+    {
+      "id": 12243668533,
+      "name": "desktop-recovery-windows-8da14d5a77ab1676e4631ed49228b089dffac93a-39375469807-1",
+      "size_in_bytes": 402,
+      "digest": "sha256:93680a0aeb1b2227bb00f04a9c3ade666599bc79a47dcc656c1074fa4ce0c8af"
+    },
+    {
+      "id": 12243499841,
+      "name": "screen-setup-windows-8da14d5a77ab1676e4631ed49228b089dffac93a-39375469807-1",
+      "size_in_bytes": 379923,
+      "digest": "sha256:494e78fa21ce4f9aad853839388cf281823bd9eedb0336bd85e42ed8ec23cc37"
+    },
+    {
+      "id": 12243258982,
+      "name": "windows-transfer-8da14d5a77ab1676e4631ed49228b089dffac93a-39375469807-1",
+      "size_in_bytes": 3766,
+      "digest": "sha256:5202cd829ecb5a8214754e2931a20e328e1f0eeee5082d29337d9eff9a07dcc6"
+    }
+  ],
+  "native_executable_sha256": "ffa6272c0f89ed49c8eaf1b324dabeda372ea01cf9e6a591e13843a885e6b61f",
+  "native_executable_bytes": 225280,
+  "manifest_sha256": "bbbc1d8773691280305656325baecb7c3a6dc5ac7343da25f259ea1db59eb15d",
+  "acceptance": {
+    "execution": {
+      "run_attempt": "1",
+      "run_id": "39375469807"
+    },
+    "gui_sfu": true,
+    "manifest_sha256": "bbbc1d8773691280305656325baecb7c3a6dc5ac7343da25f259ea1db59eb15d",
+    "recovery": true,
+    "source_revision": "8da14d5a77ab1676e4631ed49228b089dffac93a",
+    "status": "PASS"
+  },
+  "recovery": {
+    "schema_version": 1,
+    "status": "PASS",
+    "native_build": "78",
+    "elapsed_seconds": 124,
+    "real_monitor": true,
+    "real_flutter_relaunch": true,
+    "inherited_current_directory_released": true,
+    "whole_baseline_hashes_match": true,
+    "unicode_paths": true,
+    "synthetic_external_profile_retained": true,
+    "finished_transaction_replay_noop": true,
+    "one_shot_registration_removed": true,
+    "n_to_n1_ui_acceptance": "NOT_RUN"
+  },
+  "gui": {
+    "status": "PASS",
+    "os": "\"Windows Server 2022 Datacenter\" 10.0 (Build 20348)",
+    "input": "Win32 SendInput with exact foreground PID guard",
+    "cases": [
+      {
+        "case": "header-initial",
+        "escape": true,
+        "focus_returned": true,
+        "same_connected_room_and_lease": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "footer_visible": true
+      },
+      {
+        "case": "header-traversed",
+        "escape": true,
+        "focus_returned": true,
+        "same_connected_room_and_lease": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "footer_visible": true,
+        "quality_reachable": true,
+        "cancel_keyboard_reachable": true
+      },
+      {
+        "case": "dock-initial",
+        "escape": true,
+        "focus_returned": true,
+        "same_connected_room_and_lease": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "footer_visible": true
+      },
+      {
+        "case": "dock-traversed",
+        "escape": true,
+        "focus_returned": true,
+        "same_connected_room_and_lease": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "footer_visible": true,
+        "quality_reachable": true,
+        "cancel_keyboard_reachable": true
+      }
+    ],
+    "scope": "Actual release Windows GUI, real API/PostgreSQL/LiveKit listener. No acoustic/media quality claim.",
+    "source": "8da14d5a77ab1676e4631ed49228b089dffac93a",
+    "flutter": "3.47.7",
+    "dart": "3.13.5",
+    "manifest_sha256": "bbbc1d8773691280305656325baecb7c3a6dc5ac7343da25f259ea1db59eb15d",
+    "build_scope": "CI acceptance package; stable release NOT_RUN",
+    "captures": [
+      {
+        "file": "header-initial.png",
+        "sha256": "9ce8751e39c6aaa4cf5b2cab48984c4b551494303936b0c11a7c2e1095aaeb49",
+        "bytes": 31671,
+        "visual_observation": "After Escape, real voice workspace restored; green connected indicator, muted microphone and header launcher visible."
+      },
+      {
+        "file": "header-traversed.png",
+        "sha256": "419734132bf0898a1a48246b624d8cc7ba1d34b6fcb646aa0b126be8e74bd197",
+        "bytes": 31533,
+        "visual_observation": "After keyboard traversal/Escape, connected workspace and header launcher remain visible."
+      },
+      {
+        "file": "dock-initial.png",
+        "sha256": "b45d48fb15d843208156ddf2ac66fac143d362cf2ceda366c951a9f4b79fc2af",
+        "bytes": 31130,
+        "visual_observation": "After dock path/Escape, connected room preserved, microphone muted; keyboard focus visible."
+      },
+      {
+        "file": "dock-traversed.png",
+        "sha256": "b45d48fb15d843208156ddf2ac66fac143d362cf2ceda366c951a9f4b79fc2af",
+        "bytes": 31130,
+        "visual_observation": "Byte-identical to dock-initial capture; hash verified."
+      },
+      {
+        "file": "header-open.png",
+        "sha256": "c498fcfc79a032834dd7b7290c1556489674b88c346a577d9b13e955f94c139b",
+        "bytes": 72725,
+        "visual_observation": "Dialog header/close and fixed bottom Cancel/Start controls fit; native source thumbnail visible, no source selected and Start disabled."
+      },
+      {
+        "file": "dock-open.png",
+        "sha256": "0046a6307c06bd943de49287e6befb49aaddc91e88b20e923f7fcc0b6b57935f",
+        "bytes": 72782,
+        "visual_observation": "Same real dialog from dock launcher; header and fixed footer remain visible."
+      },
+      {
+        "file": "header-footer.png",
+        "sha256": "641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f",
+        "bytes": 68590,
+        "visual_observation": "After scroll, quality/content controls visible above fixed footer; no lower button clipping."
+      },
+      {
+        "file": "dock-footer.png",
+        "sha256": "641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f",
+        "bytes": 68590,
+        "visual_observation": "Byte-identical to header-footer capture; hash verified."
+      }
+    ]
+  },
+  "captures_verified": 8,
+  "original_JSON_payloads": {
+    "windows-acceptance.json": {
+      "sha256": "eb8245268e6ad04a7b8f94a5b92ba4faaff0f123994b911b6361e13c6d588b7e",
+      "data": {
+        "execution": {
+          "run_attempt": "1",
+          "run_id": "39375469807"
+        },
+        "gui_sfu": true,
+        "manifest_sha256": "bbbc1d8773691280305656325baecb7c3a6dc5ac7343da25f259ea1db59eb15d",
+        "recovery": true,
+        "source_revision": "8da14d5a77ab1676e4631ed49228b089dffac93a",
+        "status": "PASS"
+      }
+    },
+    "windows-smoke.json": {
+      "sha256": "c36598fbe74d20d8629c60538ae764e42cf859d459946e0d066045cb02e74498",
+      "data": {
+        "schema_version": 1,
+        "status": "PASS",
+        "native_build": "78",
+        "elapsed_seconds": 124,
+        "real_monitor": true,
+        "real_flutter_relaunch": true,
+        "inherited_current_directory_released": true,
+        "whole_baseline_hashes_match": true,
+        "unicode_paths": true,
+        "synthetic_external_profile_retained": true,
+        "finished_transaction_replay_noop": true,
+        "one_shot_registration_removed": true,
+        "n_to_n1_ui_acceptance": "NOT_RUN"
+      }
+    },
+    "result.json": {
+      "sha256": "bbfd78811afc2732df25d37a3253351a8e3d0bf7ae26f59161ba245866dcdc6b",
+      "data": {
+        "status": "PASS",
+        "os": "\"Windows Server 2022 Datacenter\" 10.0 (Build 20348)",
+        "input": "Win32 SendInput with exact foreground PID guard",
+        "cases": [
+          {
+            "case": "header-initial",
+            "escape": true,
+            "focus_returned": true,
+            "same_connected_room_and_lease": true,
+            "mute_deafen_preserved": true,
+            "no_publication": true,
+            "footer_visible": true
+          },
+          {
+            "case": "header-traversed",
+            "escape": true,
+            "focus_returned": true,
+            "same_connected_room_and_lease": true,
+            "mute_deafen_preserved": true,
+            "no_publication": true,
+            "footer_visible": true,
+            "quality_reachable": true,
+            "cancel_keyboard_reachable": true
+          },
+          {
+            "case": "dock-initial",
+            "escape": true,
+            "focus_returned": true,
+            "same_connected_room_and_lease": true,
+            "mute_deafen_preserved": true,
+            "no_publication": true,
+            "footer_visible": true
+          },
+          {
+            "case": "dock-traversed",
+            "escape": true,
+            "focus_returned": true,
+            "same_connected_room_and_lease": true,
+            "mute_deafen_preserved": true,
+            "no_publication": true,
+            "footer_visible": true,
+            "quality_reachable": true,
+            "cancel_keyboard_reachable": true
+          }
+        ],
+        "scope": "Actual release Windows GUI, real API/PostgreSQL/LiveKit listener. No acoustic/media quality claim.",
+        "source": "8da14d5a77ab1676e4631ed49228b089dffac93a",
+        "flutter": "3.47.7",
+        "dart": "3.13.5",
+        "manifest_sha256": "bbbc1d8773691280305656325baecb7c3a6dc5ac7343da25f259ea1db59eb15d",
+        "build_scope": "CI acceptance package; stable release NOT_RUN",
+        "captures": [
+          {
+            "file": "header-initial.png",
+            "sha256": "9ce8751e39c6aaa4cf5b2cab48984c4b551494303936b0c11a7c2e1095aaeb49",
+            "bytes": 31671
+          },
+          {
+            "file": "header-traversed.png",
+            "sha256": "419734132bf0898a1a48246b624d8cc7ba1d34b6fcb646aa0b126be8e74bd197",
+            "bytes": 31533
+          },
+          {
+            "file": "dock-initial.png",
+            "sha256": "b45d48fb15d843208156ddf2ac66fac143d362cf2ceda366c951a9f4b79fc2af",
+            "bytes": 31130
+          },
+          {
+            "file": "dock-traversed.png",
+            "sha256": "b45d48fb15d843208156ddf2ac66fac143d362cf2ceda366c951a9f4b79fc2af",
+            "bytes": 31130
+          },
+          {
+            "file": "header-open.png",
+            "sha256": "c498fcfc79a032834dd7b7290c1556489674b88c346a577d9b13e955f94c139b",
+            "bytes": 72725
+          },
+          {
+            "file": "dock-open.png",
+            "sha256": "0046a6307c06bd943de49287e6befb49aaddc91e88b20e923f7fcc0b6b57935f",
+            "bytes": 72782
+          },
+          {
+            "file": "header-footer.png",
+            "sha256": "641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f",
+            "bytes": 68590
+          },
+          {
+            "file": "dock-footer.png",
+            "sha256": "641c66b1c5620afd58d762597c0f10289b8460f2b61d4791ef2e3e03c546dd6f",
+            "bytes": 68590
+          }
+        ]
+      }
+    },
+    "windows-transfer.json": {
+      "sha256": "30608d6adb2d2e3c0a2acdfeef1d9aad4b9e7dcbf5bb0667ae6f082729d52009",
+      "data": {
+        "execution": {
+          "run_attempt": "1",
+          "run_id": "39375469807"
+        },
+        "installer": {
+          "RELEASES-stable": {
+            "bytes": 96,
+            "sha256": "5e0e70bc7d208eb04fb93e52b5273ddd8b317c62b3570db45f23bc691ba317d7"
+          },
+          "assets.stable.json": {
+            "bytes": 160,
+            "sha256": "eaa346448482cd44f291f7d3d6c69ca706ecda25658499f7307407660bd7eb93"
+          },
+          "boohtacord_desktop-1.0.43-stable-full.nupkg": {
+            "bytes": 30794481,
+            "sha256": "cabb760127babd18a91af3b91ce4946d4b813ccac2964691f08797341ff76d5e"
+          },
+          "boohtacord_desktop-stable-Setup.exe": {
+            "bytes": 38308593,
+            "sha256": "b53dc5641db129ad822a93658cb62cb3572830d8f2765f8ed57b4f1f2a50cf89"
+          },
+          "build-identity.json": {
+            "bytes": 221,
+            "sha256": "1885a891b146970456353f5d0df2c0e040a735f3a325bf6e6420428009b85862"
+          },
+          "releases.stable.json": {
+            "bytes": 279,
+            "sha256": "373a4db9a0fc867f3665867769ddbddd29c9b15c4bf4ebfdc8b8c35bf79ee7ab"
+          }
+        },
+        "purpose": {
+          "entrypoint": "integration_test/screen_setup_windows_app.dart",
+          "purpose": "windows-ci-acceptance",
+          "schema_version": 1,
+          "stable_release": false
+        },
+        "release": {
+          "BOOHTACORDRecovery.exe": {
+            "bytes": 350720,
+            "sha256": "5b496671141e82f4fce6a1800195a1f94b1d2d548c60587878985bbdaa267cea"
+          },
+          "FLAC.dll": {
+            "bytes": 483328,
+            "sha256": "c0498038842c4f78b22770b72a1cf8bcee3cd2653fa58533a6b1f8a01d9b679a"
+          },
+          "LICENSE-RNNoise.txt": {
+            "bytes": 1612,
+            "sha256": "0bb95d752b966f69fea022227297ad49fdb4464eb45f1c1fff494a435bfbeaa5"
+          },
+          "LICENSE-Velopack.txt": {
+            "bytes": 1111,
+            "sha256": "03281b7debf1730d5b2a2cdfb6f98c542edcd965867453686bfe6d1177bc134e"
+          },
+          "SHA256SUMS": {
+            "bytes": 5216,
+            "sha256": "d33e6e70531847a2cf5902560242fa8bc766a07ae8692d86d46ce8f65eb93baa"
+          },
+          "artifact-manifest.json": {
+            "bytes": 11196,
+            "sha256": "bbbc1d8773691280305656325baecb7c3a6dc5ac7343da25f259ea1db59eb15d"
+          },
+          "boohtacord_desktop.exe": {
+            "bytes": 225280,
+            "sha256": "ffa6272c0f89ed49c8eaf1b324dabeda372ea01cf9e6a591e13843a885e6b61f"
+          },
+          "ci-purpose.json": {
+            "bytes": 148,
+            "sha256": "1805cf6fdad2a97f71b204d4582cbc06ad6dc2ce9e13bee40d78b98f30e6c516"
+          },
+          "clipboard_plugin.dll": {
+            "bytes": 129024,
+            "sha256": "9d12204ccd9db453bfd5d6b1cf78e2ee2690f8b4e18fa662ca50ab3d2d1739bb"
+          },
+          "concrt140.dll": {
+            "bytes": 324208,
+            "sha256": "2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376"
+          },
+          "connectivity_plus_plugin.dll": {
+            "bytes": 102912,
+            "sha256": "6afbf89db2f2855e9cc1db5abdc88cb3b136b3caef69e1f71918db1f0e62b377"
+          },
+          "dartjni.dll": {
+            "bytes": 59904,
+            "sha256": "04443928be6f8d278f52f6cd7aded61c1fbbb0214a34b8e1b3a4d0aae1eeaefa"
+          },
+          "data/app.so": {
+            "bytes": 13910920,
+            "sha256": "c316e3874ab2be686ad9db20c089c2657ea8d0cc533abee37e16270193ea4555"
+          },
+          "data/flutter_assets/AssetManifest.bin": {
+            "bytes": 565,
+            "sha256": "5f20c3dd836e379fc69518a09981509343a329bf06a804b5ac3314b1d1265d98"
+          },
+          "data/flutter_assets/FontManifest.json": {
+            "bytes": 280,
+            "sha256": "996d8a068f0d41fd1c05b8047837cc710d54e52ac5c37b1bfe36600b9f0eac3b"
+          },
+          "data/flutter_assets/NOTICES.Z": {
+            "bytes": 120677,
+            "sha256": "767f3b30b01e31154b6a753d542c021fda97f4752e00ee7d5690d5141c9c37b0"
+          },
+          "data/flutter_assets/NativeAssetsManifest.json": {
+            "bytes": 45,
+            "sha256": "9548a31e4a048135c1d94f919328bfb62ae2c7bb3cab96557c7941daa97776cb"
+          },
+          "data/flutter_assets/assets/branding/brand.png": {
+            "bytes": 5177,
+            "sha256": "f2e91a6ddab0f4556572d8111ca959065e2d009f62ef23e67f3bf2894c5a2864"
+          },
+          "data/flutter_assets/assets/emoji/emoji_full_catalog.json": {
+            "bytes": 333696,
+            "sha256": "ea67a76971c44cd9334d5a11b8490c8087ff711343337f735d73646776e12946"
+          },
+          "data/flutter_assets/assets/fonts/InterVariable.ttf": {
+            "bytes": 879708,
+            "sha256": "f87caf5cdc61c6acb34dcdf6ae38909f6bef73cc86ee5da3691601a54cd6a314"
+          },
+          "data/flutter_assets/assets/licenses/rnnoise.txt": {
+            "bytes": 1849,
+            "sha256": "76ed76e5e90a01e28ed4ba8146ece9ecb5f6b193f426da34dc090be871b5fac4"
+          },
+          "data/flutter_assets/assets/licenses/unicode-emoji.txt": {
+            "bytes": 277,
+            "sha256": "fcb69f163c4eaafa3d8164650440503dcafddd2950b86b8b6e4449bcaa373c95"
+          },
+          "data/flutter_assets/assets/updates/publisher.pub": {
+            "bytes": 83,
+            "sha256": "fd08ce8ee3761c3276d3d7651994066542125fe79b31661c17502a42f093f916"
+          },
+          "data/flutter_assets/fonts/MaterialIcons-Regular.otf": {
+            "bytes": 15092,
+            "sha256": "40fd819b1d20199aab0960fce26edade103a6fc03cdbd137b8a4da515e82a050"
+          },
+          "data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": {
+            "bytes": 257628,
+            "sha256": "67c44fe9183b002e79dde7f6977e2988661c9a3e4a3c5fce968787efdbed823c"
+          },
+          "data/flutter_assets/shaders/ink_sparkle.frag": {
+            "bytes": 21856,
+            "sha256": "1fe8436a743884cb65078fe8c7b38e18f5365f2a2961270916f426fd13c604af"
+          },
+          "data/flutter_assets/shaders/stretch_effect.frag": {
+            "bytes": 17616,
+            "sha256": "bc7599dbbbaab310efe41520574138d21fb18a88c8fe4495ed79315309336f6f"
+          },
+          "data/icudtl.dat": {
+            "bytes": 864880,
+            "sha256": "325a86063d26334c2eabe1743cea073b612540fbf3d8fc2ef0b5708e3763a8c7"
+          },
+          "file_selector_windows_plugin.dll": {
+            "bytes": 111616,
+            "sha256": "efe7b9f02c39dec6b1cc01ce35f6fcce0cd26618be6e6035576805fd0fb953f4"
+          },
+          "flutter_local_notifications_windows.dll": {
+            "bytes": 91136,
+            "sha256": "e19a41490fc80378a8e597caa7c74dbd0d80a22b60139581d23f297a684d8fea"
+          },
+          "flutter_secure_storage_windows_plugin.dll": {
+            "bytes": 159744,
+            "sha256": "6543a28bbf219ee78728c329b9abdc24dcbf310130692fe22a0c68dc5fc10579"
+          },
+          "flutter_soloud_plugin.dll": {
+            "bytes": 1111040,
+            "sha256": "220115cbcc69e8d6722256f7a2ae6b6007d53b1d391a2f983c35360176c3ee38"
+          },
+          "flutter_webrtc_plugin.dll": {
+            "bytes": 660992,
+            "sha256": "b108b6b3ab2086259a145e5342b0a7803b9223d6eec5d913d648ea3f3374708f"
+          },
+          "flutter_windows.dll": {
+            "bytes": 21274112,
+            "sha256": "7b03815958c49d72385be497fbd0eb1bb2ae27d24989d6c9aee83eafbd93e9d3"
+          },
+          "libwebrtc.dll": {
+            "bytes": 20538880,
+            "sha256": "dfdbcc9670618ac4c3696d7e232aac2fe8034ef202f46d732a6828ccfcb017dd"
+          },
+          "livekit_client_plugin.dll": {
+            "bytes": 176640,
+            "sha256": "c823e934312302e7102a661d4a2863b87de7ed61bf8dc19e437a28cc7d13c8a9"
+          },
+          "msvcp140.dll": {
+            "bytes": 557728,
+            "sha256": "0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9"
+          },
+          "msvcp140_1.dll": {
+            "bytes": 35952,
+            "sha256": "bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d"
+          },
+          "msvcp140_2.dll": {
+            "bytes": 280200,
+            "sha256": "3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9"
+          },
+          "msvcp140_atomic_wait.dll": {
+            "bytes": 50304,
+            "sha256": "640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479"
+          },
+          "msvcp140_codecvt_ids.dll": {
+            "bytes": 31872,
+            "sha256": "f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18"
+          },
+          "ogg.dll": {
+            "bytes": 30208,
+            "sha256": "aad3763723ba548a885fcb9e750d7092970c16234fd4c5d021135b8b89753d3b"
+          },
+          "opus.dll": {
+            "bytes": 460288,
+            "sha256": "1072b0b1f2f50835b48f6428a793b03b417009afe8311bdca595f73a12cb1581"
+          },
+          "record_windows_plugin.dll": {
+            "bytes": 216064,
+            "sha256": "217301578b3515036d6dec226d2ffa77c02cd7e6a3d7af393df7368e999b21c8"
+          },
+          "rnnoise-component.cdx.json": {
+            "bytes": 1018,
+            "sha256": "744d313555579461c847508971950196f9b99775af9f3c180ad0a10696d1f615"
+          },
+          "screen_retriever_windows_plugin.dll": {
+            "bytes": 119296,
+            "sha256": "9b965ea949370d4be43854ce328643d7514ba13c5dbf5911d614b785f8f25f62"
+          },
+          "url_launcher_windows_plugin.dll": {
+            "bytes": 98304,
+            "sha256": "143b10e18c0abd2fc41e44c3acc944954601b27b7a7a121d6a30919cdbaa783a"
+          },
+          "vccorlib140.dll": {
+            "bytes": 352384,
+            "sha256": "19839407c3fdbc824e5bce189bf68ddf8097f12ec28b757797ffa0415c144ddd"
+          },
+          "vcruntime140.dll": {
+            "bytes": 124544,
+            "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+          },
+          "vcruntime140_1.dll": {
+            "bytes": 49792,
+            "sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f"
+          },
+          "vcruntime140_threads.dll": {
+            "bytes": 38528,
+            "sha256": "219915cf20822f34d5e7c1fdd4e21ae7f3396881096c51036225fb8f84b47afa"
+          },
+          "velopack_libc.dll": {
+            "bytes": 2691072,
+            "sha256": "3387c5f362501374b2f2d942466c3ec565ac573ec24e3d6e7679c0b8e7828b12"
+          },
+          "vorbis.dll": {
+            "bytes": 737792,
+            "sha256": "adbd21ba4d265995cff8172a5762ca41d6fce13b49a275edea1581aad34b98c1"
+          },
+          "vorbisenc.dll": {
+            "bytes": 563200,
+            "sha256": "1b2134d5035c3be889bd7b14eaaa3ea530dd1c7765295605513bcd2e156a51ee"
+          },
+          "vorbisfile.dll": {
+            "bytes": 36864,
+            "sha256": "3ea75ed11a88f12d46333b3848fc849e05ed730bf5cd3346502d499440435b2b"
+          },
+          "window_manager_plugin.dll": {
+            "bytes": 130048,
+            "sha256": "1c4d919ba506591b69848107b4ff5f4a9735ce18123da4dcada107ccb52debce"
+          }
+        },
+        "schema_version": 1,
+        "source_revision": "8da14d5a77ab1676e4631ed49228b089dffac93a"
+      }
+    }
+  },
+  "reviewed_candidate": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "native_process_verified": true,
+  "actual_runtime": true,
+  "mocks": false,
+  "source_equivalence": {
+    "kind": "Native component assessment only; original actual checkout/public source stamp stays8da14d5, not relabelled master688925d",
+    "only_difference": {
+      "status": "A",
+      "path": "tools/audio/voice_parity/qa401-routing-control.md",
+      "sha256": "0b57b060402ecd809f6c9b8bae5cc376e9c0cee422fb09944161f08f91fc34be",
+      "content_verified_against_control_intent": true,
+      "mode": "100644",
+      "executable": false
+    },
+    "unchanged_native_runtime_input_paths": [
+      "clients/flutter",
+      "backend",
+      "contracts",
+      "deploy",
+      "tools/build/windows",
+      "tools/ci/windows_gates",
+      "tools/qa/screen_setup",
+      "tools/qa/desktop_updates",
+      "tools/toolchains.json",
+      ".node-version",
+      ".github/workflows/flutter-windows.yaml",
+      ".github/actions"
+    ],
+    "marker_closed_without_merge": 484,
+    "strict_server_runtime_input_guard": "Not claimed: broad server guard includes tools/audio. This is a native/UI smoke comparison, not master producer or server release authority."
+  },
+  "visual_review": {
+    "original_captures": 8,
+    "unique_images_viewed": 6,
+    "resolution": "Original1008x720",
+    "observations": {
+      "header-open.png": "Dialog header/close and fixed bottom Cancel/Start controls fit; native source thumbnail visible, no source selected and Start disabled.",
+      "dock-open.png": "Same real dialog from dock launcher; header and fixed footer remain visible.",
+      "header-footer.png": "After scroll, quality/content controls visible above fixed footer; no lower button clipping.",
+      "dock-footer.png": "Byte-identical to header-footer capture; hash verified.",
+      "header-initial.png": "After Escape, real voice workspace restored; green connected indicator, muted microphone and header launcher visible.",
+      "header-traversed.png": "After keyboard traversal/Escape, connected workspace and header launcher remain visible.",
+      "dock-initial.png": "After dock path/Escape, connected room preserved, microphone muted; keyboard focus visible.",
+      "dock-traversed.png": "Byte-identical to dock-initial capture; hash verified."
+    }
+  },
+  "limits": [
+    "QA-instrumented release-mode native Windows package around actual production main, real API/PostgreSQL/LiveKit and actual scoped native storage; not an uninstrumented stable release.",
+    "Native process is established by actual Win32 input guarded against the exact app PID, source-bound manifest and four completed cases; raw process PID is not retained.",
+    "Original archive hashes/input source and all capture hashes independently checked; full29MB executable/64MB installer artifacts were not downloaded a second time. The actual CI job verifies complete payload before/after both native journeys.",
+    "Basic Windows native/UI smoke only. Stable publication, N-to-N+1 installed update, physical two-device/media/audio quality remain NOT_RUN.",
+    "No new run or assertion retry was started."
+  ]
+}
