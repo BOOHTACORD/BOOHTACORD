@@ -59,10 +59,25 @@
     "os": "macOS"
   },
   "full_browser_voice": {
-    "status": "PENDING",
-    "planned_commands": 12,
+    "status": "PASS",
+    "validated_commit": "fddea139c7f041c1e52dc6f43ac8a60733798373",
+    "commands": [
+      "npm:test:screen-profile",
+      "npm:test:screen-share-ui",
+      "npm:test:mini-player",
+      "npm:test:screen-track-name",
+      "npm:test:member-roster",
+      "npm:test:settings-hierarchy",
+      "npm:test:header-actions",
+      "npm:test:member-popover",
+      "npm:test:password-generation",
+      "npm:test:voice-interface",
+      "npm:test:voice-shortcuts",
+      "npm:test:voice-disconnect-notice"
+    ],
+    "seconds": 135.248845,
     "prepared_dependencies_and_assets": true,
-    "scope": "local existing dependencies/assets; no GitHub gate claim"
+    "scope": "local macOS exactNode24.18 with existing dependencies/assets; full source-bound GitHub CI remains pending"
   },
   "release_gate": "NOT_RUN"
 }
