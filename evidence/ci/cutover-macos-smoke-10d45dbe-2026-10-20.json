@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "criterion": "macos-smoke",
+  "source_revision": "10d45dbe6ede75e9af8da0ddabc6116fd14d8cbb",
+  "status": "PASS",
+  "scope": "actual",
+  "executed": true,
+  "actual_runtime": true,
+  "mocks": false,
+  "native_process_verified": true,
+  "evidence": [
+    {
+      "path": "evidence/ci/macos-native-smoke-10d45dbe-2026-10-20.json",
+      "sha256": "87c90fc233fe1b887667a53b0385ac86f8b8c3953ef785b30e4d62151651e06c"
+    }
+  ],
+  "limits": [
+    "Actual current10d API with byte-equivalent688 native client subtree, explicitly retained original artifact/build identity; not a freshly rebuilt release.",
+    "Basic native UI/device enumeration/secure-session restart/logout only; media and stable signing remain separate."
+  ]
+}
