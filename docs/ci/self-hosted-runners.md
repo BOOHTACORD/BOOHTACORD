@@ -60,6 +60,18 @@ the existing PowerShell 7.6.6 SDK. Existing owner-accepted Android license
 markers were reused. Workflows still select and verify the exact public
 Python/Go/Node/Java/Flutter SDK versions from the repository toolchain policy.
 No dependency cache may suppress the original checks or locked installs.
+The base caches the locked Playwright Chromium/headless-shell/FFmpeg binaries
+and the digest-bound RNNoise compiler image. Each profile still performs npm ci,
+Playwright install with dependencies, and a fresh source-bound asset build.
+Application checkouts, compiled application assets and prior capture outputs are
+absent from the base. The public playwright-core package is extracted under
+`/opt/boohtacord-public-sdk/` after verifying the package-lock SHA-512; its
+bundled CLI installs browsers as runner with HOME=/home/runner. The GitHub runner
+Node bootstrap driver only installs this public SDK. Jobs continue selecting the
+Node version in `.node-version`. Preserve the core package so browser-cache links
+remain valid, and retain `/opt/boohtacord-public-sdk/cache-manifest.json` as the
+public SDK receipt. Cache maintenance follows the stopped-controller/base
+procedure below and requires fresh browser/Android timing acceptance.
 The guest's user Gradle profile shares a 2.5 GiB heap with in-process Kotlin
 compilation, disables persistent Gradle daemons and caps parallel workers at two.
 The two Android compatibility modes still execute sequentially, with their
@@ -76,6 +88,10 @@ The browser-shell fixture suites use two independent Playwright workers, includi
 within one test file, only when all disposable Linux pool markers and the four-CPU
 allocation match. Local, hosted, metadata and other native runtimes remain serial.
 Each worker has its own browser/context, mocked routes and per-test output path.
+Reaction palette buttons use aria-disabled during pending requests so keyboard
+focus survives the mutation and refresh; the existing toggle guard prevents
+duplicate activation. Held-response tests cover channels, DMs and an intentional
+focus move before the response, without moving focus back programmatically.
 Both shadow cohorts read the same current-source test configurations; their
 verified command inventories and deadlines remain unchanged.
 
