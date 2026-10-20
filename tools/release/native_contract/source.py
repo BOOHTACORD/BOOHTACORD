@@ -23,17 +23,20 @@ def preflight(platform):
     require(mode in ('true','false'))
     candidate=mode=='true'
     ref=os.environ.get('GITHUB_REF')
+    event=os.environ.get('GITHUB_EVENT_NAME','')
     tagged=ref=='refs/tags/'+tag
-    require(tagged or (candidate and ref=='refs/heads/master' and os.environ.get('GITHUB_EVENT_NAME')=='workflow_dispatch'))
+    manual_master=ref=='refs/heads/master' and event=='workflow_dispatch'
+    require(event in ('push','workflow_dispatch') and (tagged or manual_master))
     revision=output('git','rev-parse','HEAD')
     trigger=os.environ.get('GITHUB_SHA','')
     require(re.fullmatch('[0-9a-f]{40}',revision) and re.fullmatch('[0-9a-f]{40}',trigger)
             and output('git','rev-parse',trigger+'^{commit}') == revision)
-    if tagged:require(output('git','rev-parse','refs/tags/'+tag+'^{commit}') == revision)
+    verified_tag=tagged or not candidate
+    if verified_tag:require(output('git','rev-parse','refs/tags/'+tag+'^{commit}') == revision)
     subprocess.run(['git','diff','--exit-code','HEAD','--'],cwd=ROOT,check=True,stdout=subprocess.DEVNULL)
     subprocess.run(['git','merge-base','--is-ancestor',revision,'refs/remotes/origin/master'],
                    cwd=ROOT,check=True,stdout=subprocess.DEVNULL)
     return {'schema_version':1,'repository':REPOSITORY,'platform':platform,'tag':tag,
             'source_revision':revision,'identity':identity,'execution':execution(),
-            'release_mode':'candidate' if candidate else 'stable','source_ref':ref,'tag_verified':tagged,
+            'release_mode':'candidate' if candidate else 'stable','source_ref':ref,'source_event':event,'tag_verified':verified_tag,
             'trigger_revision':trigger}
