@@ -9,6 +9,10 @@ import urllib.request
 from pathlib import Path
 from .services import LABEL, TEMPO, caddy_config, local_docker, ports_available, remove_owned, run
 
+# The upload-space guard needs at least 2 GiB free plus one maximum-sized upload.
+# This is only the tmpfs limit; the disposable API container still has a 1 GiB memory cap.
+ATTACHMENT_TMPFS = '/attachments:rw,noexec,nosuid,nodev,uid=65532,gid=65532,mode=700,size=4g'
+
 
 def ready(url):
     for _ in range(150):
@@ -106,7 +110,7 @@ FROM generate_series(1, 19) AS member_index;"""
         arguments = [
             '--publish', '127.0.0.1:4820:8080',
             '--add-host', 'host.docker.internal:host-gateway',
-            '--tmpfs', '/attachments:rw,noexec,nosuid,nodev,uid=65532,gid=65532,mode=700',
+            '--tmpfs', ATTACHMENT_TMPFS,
         ]
         for key, value in self.environment.items():
             arguments.extend(('--env', key+'='+value))

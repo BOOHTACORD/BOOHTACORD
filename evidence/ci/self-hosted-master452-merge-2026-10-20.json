@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "scope": "CICD-12 local integration POC after master952fd47c; fresh source-bound CI pending",
+  "master": "952fd47c28d09c375199962fd46977b23490250d",
+  "previous_local_parent": "2b7a19ae70275f6aac9d20a234996358326e6033",
+  "merge_resolution": {
+    "file": "tools/ci/actual_acceptance/catalog.py",
+    "before_guard": "FAIL: upstream-only resolution drops fresh_browser, mutation_session and revocation_sql regression commands",
+    "after_guard": "PASS: all six existing Node files and new window-manager unit/readiness check retained",
+    "linux_heavy_targets_preserved": true,
+    "workflow_installs_openbox_and_x11_utils": true,
+    "runtime_deadlines_unchanged": true
+  },
+  "code_hashes": {
+    "tools/ci/actual_acceptance/catalog.py": "8ebd61f7896db319deb07672e56d2e1a688a9c6697a76194d1b6086ee51e73bb",
+    "tools/ci/actual_acceptance/test_workflow.py": "fc8166b27892de3cf426a63ea126f0f06ccf1af15da1950347c0c98ff50285ab",
+    ".github/workflows/ci-actual-acceptance.yaml": "053ab78f0eeafbc666d0ea609bf157ddb555efa5cd204c3a787d32c2ddca3ed8"
+  },
+  "validation": {
+    "python_canonical": {
+      "tests": 1173,
+      "seconds": 58.592,
+      "status": "PASS"
+    },
+    "frontend_unit": {
+      "files": 478,
+      "tests": 1593,
+      "status": "PASS"
+    },
+    "typescript": "PASS",
+    "actionlint": "PASS",
+    "focused_merge_python": {
+      "tests": 12,
+      "status": "PASS"
+    },
+    "browser_shell": {
+      "tests": 386,
+      "seconds": 108.692,
+      "workers": 2,
+      "status": "PASS"
+    },
+    "mini_player": {
+      "tests": 20,
+      "seconds": 15.5,
+      "status": "PASS"
+    },
+    "member_roster": {
+      "tests": 22,
+      "seconds": 16.4,
+      "status": "PASS"
+    }
+  },
+  "local_existing_dependencies_assets": true,
+  "current_linux_source_bound_ci": "NOT_RUN",
+  "rollout_gate": "NOT_RUN"
+}

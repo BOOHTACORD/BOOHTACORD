@@ -34,11 +34,10 @@ def archive_previous(output):
 
 
 REQUIRED_CHECKS = (
-    'pin_TEXT_DM_settings_one_receiver_no_resubscription',
-    'full_mini_full_return_preserves_subscription',
-    'stop_exactly_once_and_mute', 'no_pin_default_route_stop',
-    'unpinned_source_restart_outside_voice_does_not_resubscribe',
-    'viewport_320_adaptive_focus', 'source_removal_cleanup',
+    'automatic_TEXT_DM_settings_one_output_no_resubscription',
+    'full_mini_full_return_preserves_stream',
+    'stop_two_publications_exactly_once_and_mute', 'automatic_route_retention_and_explicit_stop',
+    'viewport_320_adaptive_keyboard_labels', 'source_removal_cleanup',
     'disconnect_cleanup', 'logout_account_switch_cleanup', 'revoke_cleanup',
 )
 

@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 function source(path: string): string { return readFileSync(new URL(path, import.meta.url), 'utf8') }
 
 describe('selected-stream toolbar layout', () => {
-  it('keeps audio, pin, statistics and fullscreen controls beside the real player', () => {
+  it('keeps audio, statistics and fullscreen controls beside the real player without a pin action', () => {
     const viewer = source('./ScreenViewer.vue')
     const rail = source('./ScreenViewerRail.vue')
     const css = source('../design/design_v2_screen_viewer.css')
@@ -12,6 +12,7 @@ describe('selected-stream toolbar layout', () => {
     expect(viewer).toContain('ScreenViewerAudioControl')
     expect(viewer).toContain('ScreenReceiverDiagnosticsPanel')
     expect(viewer).toContain('class="screen-fullscreen-button stream-tool-button"')
+    expect(viewer).not.toContain('Закрепить просмотр')
     expect(viewer).toContain('<ScreenViewerRail')
     expect(rail).not.toContain("emit('returnVoice')")
     expect(css).toContain('grid-template-rows: minmax(0, 1fr) auto 48px auto 92px')

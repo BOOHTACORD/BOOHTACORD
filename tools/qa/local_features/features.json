@@ -139,6 +139,20 @@
       "clients/flutter/lib/src/services/pinned_screen_mini_player_policy.dart",
       "clients/web/src/voice/screen_profile_metadata/*",
       "clients/web/src/voice/ScreenViewer*.vue",
+      "clients/web/src/voice/mini_player_policy*",
+      "clients/web/src/voice/use_conversation_screen_state*",
+      "clients/web/src/voice/ScreenMiniToolbar.vue",
+      "clients/web/src/voice/mini_player_state.spec.ts",
+      "clients/web/tests/mini_player/**",
+      "clients/web/tests/member_roster/helpers.ts",
+      "clients/web/tests/member_roster/roster.browser.spec.ts",
+      "clients/web/artifacts/design-v2/screen-viewer/verify-interactions.mjs",
+      "evidence/qa/issue349-web-stream-text-navigation-2026-10-19.md",
+      "tools/qa/client_lifecycle/stack.py",
+      "tools/qa/client_lifecycle/test_stack.py",
+      "tools/qa/critical_client_acceptance/mini_player_ui.mjs",
+      "tools/qa/mini_player/scenario.mjs",
+      "tools/qa/mini_player/native.py",
       "clients/web/src/conversation/ConversationPane.vue",
       "clients/web/src/design/design_v2_screen_viewer.css",
       "clients/web/src/design/voice_participant_screens.css",
@@ -199,7 +213,7 @@
         "browser": "tools/qa/mini_player/run.py",
         "native": "tools/qa/mini_player/native.py",
         "target": "integration_test/mini_player_qa_test.dart",
-        "scope": "Actual selected synthetic SFU source; exact target availability recorded in evidence",
+        "scope": "Actual selected synthetic SFU source is retained automatically in the Web dock across TEXT/DM navigation without manual pinning; native receiver target availability and physical-device acceptance recorded separately",
         "focused": [
           "tools/qa/mini_player/test_environment.py",
           "tools/qa/mini_player/test_native.py"
@@ -257,7 +271,7 @@
       "issue349": {
         "browser": "clients/web/tests/mini_player/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/mini_player_ui.mjs",
-        "scope": "Reserved dock, TEXT/DM simultaneous typing, settings, pause/mute/unpin/expand/close; media element/track/peer identity, subscription counters and per-stream volume through actual API/SFU. Synthetic canvas/audio only; no hardware/native/QoE claim."
+        "scope": "Automatically keeps a selected stream in the dock when navigating from its active VOICE channel to TEXT/DM/settings, with no pin/unpin control. TEXT/DM simultaneous typing, settings, pause/mute/expand/close; same media element/track/peer identity and subscription counters through actual API/SFU. Leaving, stream end and logout clear the viewer. Synthetic canvas/audio only; no hardware/native/QoE claim."
       },
       "issue288": {
         "native": "tools/qa/screen_setup/windows.py",

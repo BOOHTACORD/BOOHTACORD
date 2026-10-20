@@ -20,7 +20,7 @@ describe('screen viewer layout reference', () => {
     expect(tokens).toContain('--gc-layout-row-voice-member: 24px')
   })
 
-  it('keeps one media player while the same view moves between full, mini and pinned modes', () => {
+  it('keeps one media player while the same view moves between full and mini modes', () => {
     const viewer = source('./ScreenViewer.vue')
     const pane = source('../conversation/ConversationPane.vue')
 
@@ -29,7 +29,8 @@ describe('screen viewer layout reference', () => {
     expect(viewer).not.toMatch(/<(video|audio)\b[^>]*\bv-if=/)
     expect(pane).toContain(':disabled="!screenExpanded && !(miniVisible && miniPlayerTarget)"')
     expect(pane).toContain(':mini="miniVisible"')
-    expect(pane).toContain(':pinned="screenPinned"')
+    expect(viewer).not.toContain('Закрепить просмотр')
+    expect(viewer).not.toContain('Открепить просмотр')
   })
 
   it('stacks viewer controls at zoomed and narrow widths', () => {
