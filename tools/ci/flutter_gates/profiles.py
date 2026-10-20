@@ -17,9 +17,9 @@ OPERATIONS = {
 def test_command(env):
     command = ('flutter', 'test', '--no-pub')
     if env.get('RUNNER_ENVIRONMENT') == 'self-hosted' and isolated_linux(env):
-        # Keep the reviewed hosted two-process workload explicit in both
-        # disposable-pool shadow cohorts, independent of CPU visibility.
-        return (*command, '--concurrency=2')
+        # Match the four-CPU guest budget in both disposable-pool cohorts.
+        # Hosted and local runs retain the SDK default.
+        return (*command, '--concurrency=4')
     return command
 
 

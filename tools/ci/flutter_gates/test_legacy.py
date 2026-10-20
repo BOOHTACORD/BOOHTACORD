@@ -47,7 +47,7 @@ class LegacyTests(unittest.TestCase):
             completed = legacy.dart()
         self.assertEqual(legacy.reference()['operations'][:8], completed)
         self.assertEqual(3, [call.args for call in run.call_args_list].count(
-            ('flutter', 'test', '--no-pub', '--concurrency=2')))
+            ('flutter', 'test', '--no-pub', '--concurrency=4')))
 
     def test_kotlin_control_invokes_the_unchanged_real_two_mode_script(self):
         with patch.object(legacy, 'original', side_effect=legacy.frozen), patch.object(legacy, 'run') as run:

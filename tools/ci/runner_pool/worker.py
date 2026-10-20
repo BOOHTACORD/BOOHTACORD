@@ -8,6 +8,7 @@ import secrets
 import shutil
 import signal
 import subprocess
+import sys
 import tempfile
 import time
 
@@ -28,6 +29,8 @@ class OperationError(RuntimeError):
 
 
 def command(args, *, stdin=None, timeout=120, quiet=False, check=True):
+    if args[0] == 'lxc':
+        args = ['/snap/lxd/current/bin/lxc', *args[1:]]
     result = subprocess.run(args, input=stdin, text=True, timeout=timeout,
                             stdout=subprocess.DEVNULL if quiet else subprocess.PIPE,
                             stderr=subprocess.STDOUT if not quiet else subprocess.DEVNULL)
@@ -91,8 +94,20 @@ def retire_idle(identity):
 def monitor_agent(execute, identity):
     deadline = time.monotonic() + 6 * 60 * 60
     grace = False
+    unavailable = False
     while True:
-        state = agent_state(execute)
+        try:
+            state = agent_state(execute)
+            if unavailable:
+                print('CI agent status observation recovered', file=sys.stderr)
+            unavailable = False
+        except (OperationError, subprocess.TimeoutExpired):
+            # Losing an observer transport is not evidence that the job ended.
+            # Keep its guest; the same absolute lifetime bound still applies.
+            if not unavailable:
+                print('CI agent status unavailable; retaining guest within lifetime bound', file=sys.stderr)
+            unavailable = True
+            state = {}
         if state.get('ActiveState') in ('inactive', 'failed'):
             if state.get('ExecMainStatus') != '0':
                 raise RuntimeError('Guest agent exited unsuccessfully')

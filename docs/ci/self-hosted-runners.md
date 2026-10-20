@@ -37,6 +37,9 @@ The agent runs as its own guest systemd service, with the runner user's Docker
 group and explicit public SDK environment. Short LXD exec calls only inspect
 that service; no long-lived exec connection owns the runner process. Healthy
 cycles create a new guest after two seconds; a failed controller retries after 30 seconds.
+The controller uses the direct LXD client. Read-only status failures retain
+the guest and retry within the same absolute lifetime bound; an observer
+transport failure is not evidence that a running job has ended.
 The workspace root is `/home/runner/work`, matching hosted cache archive path
 depth. Public SDK cache entries therefore restore to `/opt/hostedtoolcache`
 without extracting through an extra `actions-runner/_work` directory level.
@@ -60,9 +63,10 @@ No dependency cache may suppress the original checks or locked installs.
 The guest's user Gradle profile caps its heap at 2 GiB, Kotlin at 512 MiB and
 parallel workers at two, instead of the app template's 8 GiB local heap.
 This profile is outside the checkout and leaves local developer settings intact.
-App and vendor Flutter tests use two concurrent test processes in the marked
-Linux pool, explicitly preserving the reviewed four-CPU hosted default. Both shadow cohorts use this
+App and vendor Flutter tests use four concurrent test processes in the marked
+Linux pool, matching its four-CPU allocation. Both shadow cohorts use this
 same pool policy; hosted and local commands retain their SDK defaults.
+The full test inventory and existing job timeouts remain unchanged.
 
 ## Isolation
 

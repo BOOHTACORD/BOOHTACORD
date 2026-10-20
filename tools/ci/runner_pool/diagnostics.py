@@ -39,7 +39,8 @@ def capture(guest, execute, directory=Path('/opt/boohtacord-ci/health')):
         raise ValueError('Only bounded CI guests can produce health receipts')
     # Guest binaries/output are untrusted. Bound both time and bytes outside
     # the guest; suppress stderr before the byte cap as well.
-    args = ['timeout', '15', 'lxc', 'exec', guest, '--disable-stdin', '--', 'python3', '-c', QUERY]
+    args = ['timeout', '15', '/snap/lxd/current/bin/lxc', 'exec', guest,
+            '--disable-stdin', '--', 'python3', '-c', QUERY]
     pipeline = shlex.join(args) + ' 2>/dev/null | head -c 8193'
     temporary = None
     try:

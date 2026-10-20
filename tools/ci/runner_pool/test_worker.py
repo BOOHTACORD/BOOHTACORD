@@ -9,6 +9,36 @@ from . import worker
 
 
 class WorkerTests(unittest.TestCase):
+    def test_host_operations_use_the_bundled_lxd_client_without_snap_wrapper(self):
+        with patch.object(worker.subprocess, 'run', return_value=SimpleNamespace(returncode=0, stdout='ok')) as run:
+            self.assertEqual('ok', worker.command(['lxc', 'query', '/1.0']))
+        self.assertEqual(['/snap/lxd/current/bin/lxc', 'query', '/1.0'], run.call_args.args[0])
+
+    def test_monitor_retains_job_through_failed_read_only_observations(self):
+        complete = {'ActiveState': 'inactive', 'ExecMainStatus': '0'}
+        for failure in (worker.OperationError('lxc exec status 143'),
+                        worker.subprocess.TimeoutExpired(['lxc', 'exec'], 15)):
+            with self.subTest(failure=type(failure).__name__), patch.object(worker, 'agent_state',
+                side_effect=[failure, {'ActiveState': 'active'}, complete]), \
+                patch.object(worker.time, 'monotonic', side_effect=[0, 1, 2]), \
+                patch.object(worker.time, 'sleep'):
+                self.assertFalse(worker.monitor_agent([], 42))
+
+    def test_unavailable_observations_still_obey_the_absolute_lifetime_bound(self):
+        with patch.object(worker, 'agent_state', side_effect=worker.OperationError('transport unavailable')), \
+                patch.object(worker, 'retire_idle', return_value=False) as retire, \
+                patch.object(worker.time, 'monotonic', side_effect=[0, 21601, 21601, 43202]), \
+                patch.object(worker.time, 'sleep'):
+            with self.assertRaisesRegex(RuntimeError, 'maximum execution time'):
+                worker.monitor_agent([], 42)
+        retire.assert_called_once_with(42)
+
+    def test_monitor_does_not_turn_controller_shutdown_into_an_observation_retry(self):
+        with patch.object(worker, 'agent_state', side_effect=RuntimeError('Worker shutdown')), \
+                patch.object(worker.time, 'monotonic', return_value=0):
+            with self.assertRaisesRegex(RuntimeError, 'Worker shutdown'):
+                worker.monitor_agent([], 42)
+
     def test_heavy_guests_cover_host_and_metadata_share_one_cpu_per_half(self):
         allocations = []
         for slot in ('1', '2', '3', '4'):

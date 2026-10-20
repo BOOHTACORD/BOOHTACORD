@@ -33,6 +33,7 @@ class DiagnosticsTests(unittest.TestCase):
         self.assertNotIn('cpu_count', record['metrics'])
         self.assertIn('head -c 8193', calls[0][0][-1])
         self.assertIn('timeout 15', calls[0][0][-1])
+        self.assertIn('/snap/lxd/current/bin/lxc', calls[0][0][-1])
         self.assertEqual(20, calls[0][1]['timeout'])
 
     def test_oversized_or_invalid_output_cannot_create_a_record(self):

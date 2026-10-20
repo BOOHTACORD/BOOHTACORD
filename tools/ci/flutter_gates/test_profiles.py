@@ -23,12 +23,12 @@ class ProfileTests(unittest.TestCase):
             completed = profiles.execute(profile)
         return commands, completed, prepare
 
-    def test_disposable_pool_keeps_two_processes_for_all_app_and_vendor_tests(self):
+    def test_disposable_pool_uses_four_processes_for_all_app_and_vendor_tests(self):
         env = dict(RUNNER_ENVIRONMENT='self-hosted', RUNNER_OS='Linux',
                    RUNNER_NAME='BOOHTACORD-Hetzner-CI-1-test', BOOHTACORD_EPHEMERAL_GUEST='true')
         commands, completed, _ = self.exercise('dart', env=env)
         tests = [args for args, _ in commands if args[:2] == ('flutter', 'test')]
-        self.assertEqual([('flutter', 'test', '--no-pub', '--concurrency=2')] * 3, tests)
+        self.assertEqual([('flutter', 'test', '--no-pub', '--concurrency=4')] * 3, tests)
         self.assertEqual(list(profiles.OPERATIONS['dart']), completed)
 
     def test_hosted_and_local_invocations_keep_the_sdk_default(self):
