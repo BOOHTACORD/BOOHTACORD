@@ -111,3 +111,33 @@ must complete before recording PASS; unit tests or a dispatch are **NOT_RUN** fo
 runtime acceptance. Native publishing, production operations, #249 physical
 Windows acceptance, capacity claims and independent owner cutover GO remain
 separate gates.
+
+### Interrupted-attempt diagnostics and historical inspection
+
+The original second dispatch reached three successful real installations and
+then failed after the interrupted-maintenance browser observation. Its public
+report did not retain the interrupted attempt receipt or the exact failed guard;
+the reason remains UNVERIFIED. New failure checkpoints retain only the finite
+stage, client exit code, already validated public phase receipt, lock observations
+and maintenance boolean. Failed reports keep those facts before cleanup. The
+existing sanitized diagnostic reader also exposes bounded public source frames
+from private logs, without republishing unknown error messages or log contents.
+These changes preserve the original interruption guards; they do not wait away
+or waive an unsafe lock/maintenance result.
+
+Each successful attempt still uses the unchanged production validator while the
+ACK is live. It additionally records the actual client validation time and the
+original request nonce. Final QA audit uses a separate structural reader with
+that recorded time inside a caller-supplied trusted execution window (at most an
+hour). The controller uses its own clock interval; offline review must use the
+authenticated job start/completion metadata. Every nonce must match its request
+and be unique. An ACK must have been no more than 300 seconds old when received;
+an older valid historical record cannot be reused as a fresh production ACK now.
+No clock, response, original timestamp or production freshness check is patched.
+
+The next complete scenario also seeds a non-default MEMBER role policy by
+removing category-create permission. Every browser phase must observe the same
+policy fingerprint. Both members must receive 403 from the privileged role API,
+and the authenticated administrator must receive 404 for the other participants'
+DM history and attachment. These are real server ACL requests, including while
+maintenance is active; IDs and the administrator role cannot grant DM access.

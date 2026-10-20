@@ -1,5 +1,6 @@
 """Do not accept partial installations, unrelated failures or private runtime fields."""
 from copy import deepcopy
+from datetime import datetime,timedelta,timezone
 import unittest
 from .evidence import validate
 from .test_catalog import rows, BASELINE, NEXT
@@ -9,13 +10,18 @@ from tools.release.delivery.test_readback_contract import fixture as acknowledge
 from tools.release.delivery.phases import LIMITS
 
 CONTROLLER = 'c'*40
+START=datetime(2026,1,1,tzinfo=timezone.utc)
+WINDOW=(START,START+timedelta(minutes=30))
+STAMP=START+timedelta(minutes=3)
 STABLE = ('baseline','initial','upgraded','retried','recovered','recovery_retried','rolled_back','restored')
 
 
-def delivery(source, prior):
+def delivery(source, prior, *, stamp=None, nonce=None):
     readback = acknowledgement()
     readback.update(source_revision=source, previous_source_revision=prior, controller_revision=CONTROLLER,
                     sources={'api': source, 'web': source},running_images=dict.fromkeys(('api','web'),'sha256:'+'f'*64))
+    if stamp is not None:readback['checked_at']=stamp.isoformat()
+    if nonce is not None:readback['nonce']=nonce
     return dict(schema_version=1, kind='delivery-phases', source_revision=source,
         controller_revision=CONTROLLER, status='PASS', readback=readback,
         phases=[dict(phase=p,limit_seconds=n,status='PASS',failure_code=None,exit_code=None,elapsed_seconds=.1)
@@ -35,7 +41,9 @@ def receipt():
     installations=[]
     for name,source,prior in [('initial',BASELINE,BASELINE),('upgrade',NEXT,BASELINE),
                               ('retry',NEXT,NEXT),('recovery-retry',NEXT,NEXT)]:
-        installations.append(dict(name=name,delivery=delivery(source,prior),observed_seconds=20,
+        nonce=f'{len(installations)+1:032x}'
+        installations.append(dict(name=name,delivery=delivery(source,prior,stamp=STAMP,nonce=nonce),
+            attempt_nonce=nonce,acknowledged_at=(STAMP+timedelta(seconds=1)).isoformat(),observed_seconds=20,
             maintenance_observed_seconds=15,maintenance_enable_uncertainty_seconds=.1,
             maintenance_disable_uncertainty_seconds=.1,
             scope='Polling observations, not exact enable/disable timestamps; signed runtime may be legacy'))
@@ -57,8 +65,26 @@ def receipt():
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_recorded_ack_freshness_uses_actual_receipt_time_and_trusted_execution_window(self):
+        from tools.release.delivery.receipt import checked
+        value=receipt()
+        # A valid historical proof must never become a fresh production ACK now.
+        with self.assertRaises(ValueError):checked(value['installations'][0]['delivery'])
+        validate(value,window=WINDOW)
+        for mode in ('stale_at_receipt','future_at_receipt','outside_window','nonce','reused_nonce'):
+            value=receipt();row=value['installations'][0]
+            if mode=='stale_at_receipt':row['acknowledged_at']=(STAMP+timedelta(seconds=301)).isoformat()
+            if mode=='future_at_receipt':row['acknowledged_at']=(STAMP-timedelta(seconds=31)).isoformat()
+            if mode=='outside_window':row['acknowledged_at']=(START-timedelta(seconds=1)).isoformat()
+            if mode=='nonce':row['attempt_nonce']='0'*32
+            if mode=='reused_nonce':
+                later=value['installations'][3];later['attempt_nonce']=row['attempt_nonce']
+                later['delivery']['readback']['nonce']=row['attempt_nonce']
+            with self.subTest(mode=mode),self.assertRaises(ValueError):validate(value,window=WINDOW)
+        with self.assertRaises(ValueError):validate(receipt())
+
     def test_complete_actual_install_retry_interruption_rollback_and_failures_are_required(self):
-        validate(receipt())
+        validate(receipt(),window=WINDOW)
         for mode in ('observation','storage','running','install','retry','negative','health','source','controller',
                      'approval','scope','private','remote_claim','busy_lock','interrupt_phase','drift','image','nan'):
             value=receipt()
@@ -80,4 +106,4 @@ class EvidenceTests(unittest.TestCase):
             if mode=='drift':value['storage'][2]['content']['database']='0'*64
             if mode=='image':value['running'][2]['images']['api']['configured']='voice-platform-api:mutable'
             if mode=='nan':value['installations'][0]['observed_seconds']=float('nan')
-            with self.subTest(mode=mode),self.assertRaises(ValueError):validate(value)
+            with self.subTest(mode=mode),self.assertRaises(ValueError):validate(value,window=WINDOW)

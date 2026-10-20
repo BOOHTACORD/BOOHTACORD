@@ -1,5 +1,6 @@
 """Trusted QA phases inside the owned Unix-only Linux daemon."""
 import json
+from datetime import datetime,timezone
 import os
 from pathlib import Path
 import subprocess
@@ -18,6 +19,7 @@ def main():
         from .ssh_fixture import start
         (work/'ssh-public.json').write_text(json.dumps(start(work)))
     elif sys.argv[1:] == ['exercise']:
+        began=datetime.now(timezone.utc)
         os.environ['CURL_CA_BUNDLE'] = str(work/'ca.crt')
         from .positive import run
         from .faults import run as negatives
@@ -25,7 +27,7 @@ def main():
         report = run(work)
         try:
             report['negatives'] = negatives(work, report)
-            validate(report)
+            validate(report,window=(began,datetime.now(timezone.utc)))
         except BaseException:
             report['status'] = 'FAIL'
             raise

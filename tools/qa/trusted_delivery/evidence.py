@@ -5,18 +5,19 @@ from tools.release.delivery.receipt import checked
 from .catalog import validate_observations
 from .interruption import checked_failure
 from .faults import EXPECTED, require_failure
+from .historical_delivery import checked as recorded,execution_window
 
 STABLE = ('baseline','initial','upgraded','retried','recovered','recovery_retried','rolled_back','restored')
 
 
-def validate(value):
+def validate(value, *, window=None):
     try:
-        check(value)
+        check(value,execution_window(window))
     except (KeyError, TypeError, AttributeError, IndexError, OverflowError):
         raise ValueError('Incomplete public real-installation evidence') from None
 
 
-def check(value):
+def check(value,window):
     require(set(value)=={'status','scope','baseline','next','controller','observations','storage','running',
         'installations','rollback_preflight','qa_operator_approval','interruption','negatives'})
     require(value['status']=='PASS' and value['scope']=='isolated-real-stack'
@@ -46,11 +47,14 @@ def check(value):
         else:state_by_source[source]=state['images']
     expected=[('initial',baseline,baseline),('upgrade',newer,baseline),('retry',newer,newer),('recovery-retry',newer,newer)]
     require(len(value['installations'])==len(expected))
+    nonces=set()
     for row,(name,source,prior) in zip(value['installations'],expected):
-        require(set(row)=={'name','delivery','observed_seconds','maintenance_observed_seconds',
+        require(set(row)=={'name','delivery','attempt_nonce','acknowledged_at','observed_seconds','maintenance_observed_seconds',
             'maintenance_enable_uncertainty_seconds','maintenance_disable_uncertainty_seconds','scope'})
         require(row['name']==name and row['scope']=='Polling observations, not exact enable/disable timestamps; signed runtime may be legacy')
-        receipt=checked(row['delivery'])
+        receipt=recorded(row['delivery'],nonce=row['attempt_nonce'],observed_at=row['acknowledged_at'],window=window)
+        require(row['attempt_nonce'] not in nonces)
+        nonces.add(row['attempt_nonce'])
         require(receipt['status']=='PASS' and receipt['source_revision']==source
                 and receipt['controller_revision']==controller and receipt['readback']['previous_source_revision']==prior
                 and receipt['readback']['running_images']=={s:i['running'] for s,i in state_by_source[source].items()})
