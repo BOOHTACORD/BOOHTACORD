@@ -101,6 +101,8 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
     return !state.video.srcObject && !state.audio.srcObject
   }), true)
   // Restore the original voice view so the following publisher-stop and transport-fault cases remain independent.
+  await openNavigation(receiver)
+  await receiver.getByRole('button', { name: 'Каналы', exact: true }).click()
   await channel(receiver, 'VoiceLab')
   await receiver.locator('[data-testid=stream-select]:visible').first().click()
   await expect.poll(() => receiver.locator('video.screen-player').evaluate(v => v.videoWidth > 0)).toBe(true)
