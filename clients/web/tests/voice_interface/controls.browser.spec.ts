@@ -8,7 +8,8 @@ async function open(page: Page, width = 1440, scale = 100, scenario = '') {
     ? route.fulfill({ status: 200, contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>' })
     : route.fulfill({ status: 200, contentType: 'application/json', body: '{}' }))
   await page.goto(`/tests/voice_interface/fixture.html?scale=${scale}${scenario ? `&${scenario}` : ''}`)
-  await expect(page.locator('.voice-room-controls').first()).toBeVisible()
+  if (width <= 600) await expect(page.locator('.voice-room-controls').first()).toBeHidden()
+  else await expect(page.locator('.voice-room-controls').first()).toBeVisible()
 }
 
 test('prejoin has two short explicit actions, retains listener mode and blocks double joins', async ({ page }) => {
@@ -214,26 +215,32 @@ test('a pending active join never claims to be connected and blocks microphone a
   await open(page, 390)
   await patch(page, { state: 'JOINING', active: true })
   await expect(page.locator('.room-wrap').getByRole('status')).toHaveText('Подключаемся…')
-  await expect(page.locator('.room-wrap').getByRole('button', { name: 'Выключить микрофон', exact: true })).toBeDisabled()
+  await expect(page.getByTestId('voice-dock').getByRole('button', { name: 'Выключить микрофон', exact: true })).toBeDisabled()
   await page.screenshot({ path: info.outputPath('pending-active-join.png') })
   await patch(page, { state: 'CONNECTED', deafenChanging: true })
-  await expect(page.locator('.room-wrap').getByRole('button', { name: 'Выключить микрофон', exact: true })).toBeDisabled()
+  await expect(page.getByTestId('voice-dock').getByRole('button', { name: 'Выключить микрофон', exact: true })).toBeDisabled()
   await expect(page.getByTestId('voice-dock').getByRole('button', { name: 'Выключить удалённый звук', exact: true })).toBeDisabled()
 })
 
-test('unsupported capture keeps a visible explanation while voice and leave stay usable', async ({ page }, info) => {
+test('unsupported capture explains itself only when requested while voice and leave stay usable', async ({ page }, info) => {
   await page.addInitScript(() => { Object.defineProperty(navigator.mediaDevices, 'getDisplayMedia', { value: undefined }) })
   await open(page, 390)
-  await expect(page.locator('.room-wrap').getByRole('status').filter({ hasText: 'Этот браузер не поддерживает показ экрана' })).toBeVisible()
-  const share = page.locator('.voice-room-controls button').nth(2)
-  await expect(share).toBeDisabled()
-  await expect(share).toHaveAccessibleName(/Используйте браузер на ПК/)
-  await expect(page.locator('.room-wrap').getByRole('button', { name: 'Выключить микрофон', exact: true })).toBeEnabled()
-  await expect(page.locator('.room-wrap').getByRole('button', { name: 'Выйти из голосового канала' })).toBeEnabled()
+  const room = page.locator('.room-wrap')
+  const dock = page.getByTestId('voice-dock')
+  await expect(room.getByRole('status').filter({ hasText: 'нельзя начать трансляцию' })).toHaveCount(0)
+  await expect(room.locator('.voice-room-controls')).toBeHidden()
+  expect(await room.evaluate(element => Number.parseFloat(getComputedStyle(element).paddingTop))).toBeLessThanOrEqual(24)
+  await expect(page.locator('.mobile-voice-dock.mobile-visible')).toBeVisible()
+  const share = dock.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true })
+  await expect(share).toBeEnabled()
+  await expect(dock.getByRole('button', { name: 'Выключить микрофон', exact: true })).toBeEnabled()
+  await expect(dock.getByRole('button', { name: 'Выйти из голосового канала' })).toBeEnabled()
+  await share.click()
+  await expect(dock.locator('.voice-capture-unavailable')).toHaveText('Этот браузер не поддерживает показ экрана. Используйте браузер на ПК с доступным захватом экрана.')
   await page.screenshot({ path: info.outputPath('capture-unavailable.png') })
 })
 
-test('Android browser explains unavailable screen capture while voice remains usable', async ({ page }, info) => {
+test('Android screen-capture alert appears after tapping the mobile dock action', async ({ page }, info) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'userAgent', {
       configurable: true,
@@ -241,17 +248,27 @@ test('Android browser explains unavailable screen capture while voice remains us
     })
   })
   await open(page, 393)
-  const notice = page.locator('.room-wrap').getByRole('status').filter({ hasText: 'нельзя начать трансляцию' })
-  await expect(notice).toHaveClass(/voice-capture-unavailable/)
+  await patch(page, { state: 'LISTENER' })
+  const room = page.locator('.room-wrap')
+  const dock = page.getByTestId('voice-dock')
+  await expect(room.getByRole('status').filter({ hasText: 'нельзя начать трансляцию' })).toHaveCount(0)
+  await expect(room.locator('.voice-room-controls')).toBeHidden()
+  expect(await room.evaluate(element => Number.parseFloat(getComputedStyle(element).paddingTop))).toBeLessThanOrEqual(24)
+  await expect(page.locator('.mobile-voice-dock.mobile-visible')).toBeVisible()
+  const share = dock.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true })
+  await expect(share).toBeEnabled()
+  await expect(dock.locator('.voice-capture-unavailable')).toHaveCount(0)
+  await expect(dock.getByRole('button', { name: 'Выключить микрофон', exact: true })).toBeEnabled()
+  await expect(dock.getByRole('button', { name: 'Выйти из голосового канала' })).toBeEnabled()
+  await share.click()
+  const notice = dock.locator('.voice-capture-unavailable')
   await expect(notice).toHaveText('В браузере Android нельзя начать трансляцию экрана. Откройте приложение BOOHTACORD.')
+  await expect(notice).toHaveClass(/voice-capture-unavailable/)
   expect(await notice.evaluate(element => getComputedStyle(element).display)).toBe('flex')
-  expect((await notice.boundingBox())!.height).toBeLessThanOrEqual(60)
-  const controls = page.locator('.voice-room-controls')
-  const share = controls.getByRole('button', { name: /Откройте приложение BOOHTACORD/ })
-  await expect(share).toBeDisabled()
-  await expect(controls.getByRole('button', { name: 'Выключить микрофон' })).toBeEnabled()
-  await expect(controls.getByRole('button', { name: 'Выйти из голосового канала' })).toBeEnabled()
+  await page.mouse.move(1, 1)
   await page.screenshot({ path: info.outputPath('android-capture-unavailable.png') })
+  await dock.getByRole('button', { name: 'Выйти из голосового канала', exact: true }).click()
+  await expect(notice).toHaveCount(0)
 })
 
 for (const width of [320, 390]) test(`screen-sharing participant cards can scroll above the fixed voice dock at ${width}px / 200% text`, async ({ page }) => {

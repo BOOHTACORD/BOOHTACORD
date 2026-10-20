@@ -2,7 +2,7 @@
 import VoiceRoomControls from './VoiceRoomControls.vue'
 import { voiceRoomSummary } from './voice_room_copy'
 import type { VoiceDisconnectNotice } from './disconnect_notice/model'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { TopologyChannel } from '../channel/topology_client'
 import type { ScreenShareState, VoiceConnectionState } from './connection_store'
 import type { VoiceActivationMode } from './activation_store'
@@ -27,6 +27,9 @@ const props = withDefaults(defineProps<{
   state: VoiceConnectionState
 }>(), { screenShareState: 'IDLE', connectionQuality: 'UNKNOWN', pingMs: null })
 const emit = defineEmits<{ leave: []; startScreen: []; stopScreen: []; toggleDeafen: []; toggleMicrophone: [] }>()
+const captureUnavailableNotice = ref<string | null>(null)
+watch(() => props.state, state => { if (state === 'LEAVING' || state === 'IDLE') captureUnavailableNotice.value = null })
+function leave() { captureUnavailableNotice.value = null; emit('leave') }
 const connected = computed(() => (props.channel !== null || props.activeSession) && (props.state === 'CONNECTED' || props.state === 'LISTENER'))
 const connectionQualityLabel = computed(() => voiceConnectionQualityLabel(props.connectionQuality))
 const connectionPingLabel = computed(() => props.pingMs === null ? '—' : `${props.pingMs} мс`)
@@ -56,7 +59,8 @@ const status = computed(() => {
     <p v-else-if="error" class="state state-error" role="alert">{{ error }}</p>
     <p v-if="microphonePermissionDenied" class="voice-dock-mic-notice state" role="status">{{ microphonePermissionMessage }}</p>
     <p v-if="channel && activationMode === 'PTT' && touchPttEnabled" class="voice-dock-ptt-hint">Удерживайте кнопку микрофона, чтобы говорить.</p>
-    <VoiceRoomControls v-if="channel || activeSession" dock :channel-available="Boolean(channel)" :voice-state="state" :screen-state="screenShareState" :activation-mode="activationMode" :touch-ptt-enabled="touchPttEnabled" :set-touch-ptt-pressed="setTouchPttPressed" :microphone-muted="microphoneMuted" :microphone-permission-denied="microphonePermissionDenied" :deafened="deafened" :deafen-changing="deafenChanging" :toggle-microphone="() => emit('toggleMicrophone')" :toggle-deafen="() => emit('toggleDeafen')" @start-screen="emit('startScreen')" @stop-screen="emit('stopScreen')" @leave="emit('leave')" />
+    <p v-if="captureUnavailableNotice" class="voice-capture-unavailable" role="status"><svg class="voice-capture-unavailable__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span>{{ captureUnavailableNotice }}</span></p>
+    <VoiceRoomControls v-if="channel || activeSession" dock :channel-available="Boolean(channel)" :voice-state="state" :screen-state="screenShareState" :activation-mode="activationMode" :touch-ptt-enabled="touchPttEnabled" :set-touch-ptt-pressed="setTouchPttPressed" :microphone-muted="microphoneMuted" :microphone-permission-denied="microphonePermissionDenied" :deafened="deafened" :deafen-changing="deafenChanging" :toggle-microphone="() => emit('toggleMicrophone')" :toggle-deafen="() => emit('toggleDeafen')" @capture-unavailable="captureUnavailableNotice = $event" @start-screen="emit('startScreen')" @stop-screen="emit('stopScreen')" @leave="leave" />
     <details v-if="connected" class="voice-connection-details">
       <summary class="voice-quality" :class="[`voice-quality--${connectionQuality.toLowerCase()}`, { 'voice-quality--unmeasured': pingMs === null }]" :aria-label="`Сведения о соединении. ${connectionQualityDescription}`" :title="connectionQualityDescription">
         <svg class="voice-quality-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 13h3v5H2zM7 9h3v9H7zM12 5h3v13h-3zM17 1h2v17h-2z" /></svg>

@@ -19,7 +19,9 @@ describe('Design V2 voice dock icons', () => {
     expect(controls).toContain('<rect x="2" y="3" width="20" height="14" rx="2"/>')
     expect(controls).toContain('<path d="M8 21h8M12 17v4"/>')
     expect(controls).toContain('<path v-else d="m8 11 4-4 4 4M12 7v6"/>')
-    expect(controls).toContain("emit('stopScreen') : emit('startScreen', selectedScreenProfile)")
+    expect(controls).toContain('@click="activateScreenShare"')
+    expect(controls).toContain("emit('stopScreen')")
+    expect(controls).toContain("emit('startScreen', props.selectedScreenProfile)")
   })
 
   it('uses a bolder filled end-call glyph and balanced desktop control sizing', () => {
