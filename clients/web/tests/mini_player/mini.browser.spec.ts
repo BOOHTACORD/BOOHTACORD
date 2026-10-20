@@ -21,7 +21,7 @@ test('a wrapped draft follows conversation width changes without typing or a win
  await expect.poll(()=>textarea.evaluate(el=>el.clientHeight)).toBe(initial.height)
  await expect(textarea).toHaveValue(draft)
 })
-test('390px at 200% text keeps wrapped DM draft visible beside the pinned mini player',async({page},info)=>{
+test('390px at 200% text keeps wrapped DM draft visible beside the automatically retained mini player',async({page},info)=>{
  await mount(page,390,900,200);await navigate(page,'dm');await geometry(page)
  const textarea=page.locator('.composer textarea'),shortDraft='Черновик'
  await textarea.fill(shortDraft);await expect(textarea).toHaveValue(shortDraft)
@@ -59,9 +59,11 @@ for(const width of [320,390,1024,1440])for(const scale of [100,200])test(`chat z
   await page.screenshot({path:info.outputPath(`${view}.png`)})
  }
 })
-test('short viewport controls, pause, expand, unpin and close preserve media identity',async({page},info)=>{
+test('short viewport controls, pause, expand and close preserve media identity after text navigation',async({page},info)=>{
  await mount(page,390,500);await navigate(page,'text');await geometry(page)
  const mini=page.locator('.voice-room--mini')
+ await expect(mini).toBeVisible()
+ await expect(mini.getByRole('button',{name:/закрепить|открепить просмотр/i})).toHaveCount(0)
  const pause=mini.getByRole('button',{name:'Приостановить видео',exact:true});await pause.focus();await pause.press('Enter')
  await expect(mini.getByRole('button',{name:'Продолжить видео',exact:true})).toHaveAttribute('aria-pressed','true')
  await expect.poll(()=>page.locator('video.screen-player').evaluate((v:HTMLVideoElement)=>v.paused)).toBe(true)
@@ -69,16 +71,16 @@ test('short viewport controls, pause, expand, unpin and close preserve media ide
  await page.screenshot({path:info.outputPath('short-paused.png')})
  await mini.getByRole('button',{name:'Развернуть на всю область',exact:true}).click()
  await expect(page.locator('.voice-room--screen-expanded')).toBeVisible();await expect(page.locator('.voice-room--mini')).toHaveCount(0)
+ await expect(page.locator('.voice-prejoin')).toHaveCount(0)
+ await expect(page.locator('.voice-room-controls')).toBeVisible()
  await expect(page.getByRole('button',{name:'Продолжить видео',exact:true})).toBeVisible()
  await page.keyboard.press('Escape');await geometry(page)
  await expect(mini.getByRole('button',{name:'Развернуть на всю область',exact:true})).toBeFocused()
  await page.getByRole('button',{name:'Продолжить видео',exact:true}).click()
  await expect.poll(()=>page.locator('video.screen-player').evaluate((v:HTMLVideoElement)=>v.paused)).toBe(false)
  await navigate(page,'settings');await expect(mini).toBeVisible()
- await mini.getByRole('button',{name:'Открепить просмотр и вернуться в голос',exact:true}).click()
- await expect(mini).toHaveCount(0);await expect(page.getByRole('button',{name:'Закрепить просмотр',exact:true})).toBeVisible()
+ await expect(mini.getByRole('button',{name:'Открепить просмотр и вернуться в голос',exact:true})).toHaveCount(0)
  expect(await page.locator('video.screen-player').evaluate(v=>v===(window as any).__originalVideo)).toBe(true)
- await page.getByRole('button',{name:'Закрепить просмотр',exact:true}).click();await navigate(page,'text')
  await page.getByRole('button',{name:'Остановить просмотр',exact:true}).click();await expect(mini).toHaveCount(0)
  expect(await page.evaluate(()=>(window as any).__miniFixture.events)).toEqual(['select','clear','clear'])
 })
@@ -107,7 +109,7 @@ test('long member rail scrolls independently while the mini player and composer 
  await page.screenshot({path:info.outputPath('roster-scroll.png')})
 })
 
-test('selecting a different voice room closes the old pinned viewer and keeps the original voice session',async({page})=>{
+test('selecting a different voice room closes the old viewer and keeps the original voice session',async({page})=>{
  await mount(page);await navigate(page,'other-voice')
  await expect(page.locator('video.screen-player')).toHaveCount(0)
  await expect(page.locator('.voice-room--mini')).toHaveCount(0)
