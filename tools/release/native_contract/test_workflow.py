@@ -11,8 +11,9 @@ class WorkflowTests(unittest.TestCase):
     def documents(self):return {p.name:yaml.load(p.read_text(),Loader=yaml.BaseLoader) for p in (ROOT/'.github/workflows').glob('*.yaml')}
     def test_current_contracts(self):validate(self.documents())
     def test_source_skip_foreign_publisher_missing_manifest_and_candidate_bypass_fail(self):
-        for change in ('source','fetch','assets','publisher','dry-run','retention','legacy','replacement'):
+        for change in ('source','fetch','assets','publisher','dry-run','retention','legacy','replacement','environment'):
             d=self.documents();job=d['android-release.yaml']['jobs']['android-release']
+            if change=='environment':job['environment']='native-release'
             if change=='fetch':next(s for s in job['steps'] if 'checkout@' in s.get('uses',''))['with']['fetch-depth']='1'
             if change=='legacy':d['native-candidate-builds.yaml']={'jobs':{}}
             if change=='replacement':

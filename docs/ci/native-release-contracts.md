@@ -5,9 +5,9 @@ There is one shared source/asset verifier and immutable GitHub publisher.
 
 | Platform | Stable trigger/source | Version/build | Measured signature | Public assets | Promotion / recovery |
 | --- | --- | --- | --- | --- | --- |
-| Android | `android-vX.Y.Z` push or dispatch from that tag | `client-build.json` + Flutter pubspec; ABI versionCode checks retained | Existing pinned Android release certificate; no new key | Existing three ABI APK names, manifest, SHA256SUMS, RNNoise license/SBOM | Publish immutable tag assets; installed-client/user update path unchanged; no downgrade claim |
-| Windows | `windows-vX.Y.Z` push or dispatch from that tag | Same client identity and native build | Existing unsigned or measured Authenticode state; no new certificate | Existing ZIP, Setup.exe, full NUPKG, releases.stable.json, manifest, SHA256SUMS | Existing signed updater catalog/promotion remains separate; no automatic promotion or rollback added |
-| macOS | Manual dispatch from `macos-vX.Y.Z` tag only | Same client identity and native build | Existing ad-hoc signature; notarization NOT_RUN | Existing ZIP, .zip.sha256, manifest, SHA256SUMS; now also the existing manifest-referenced RNNoise license/SBOM | Existing direct distribution/update promotion remains separate; no notarization or installed recovery claim |
+| Android | `android-vX.Y.Z` push/tag dispatch, or protected master dispatch whose exact commit has that tag | `client-build.json` + Flutter pubspec; ABI versionCode checks retained | Existing pinned Android release certificate; no new key | Existing three ABI APK names, manifest, SHA256SUMS, RNNoise license/SBOM | Publish immutable tag assets; installed-client/user update path unchanged; no downgrade claim |
+| Windows | `windows-vX.Y.Z` push/tag dispatch, or protected master dispatch whose exact commit has that tag | Same client identity and native build | Existing unsigned or measured Authenticode state; no new certificate | Existing ZIP, Setup.exe, full NUPKG, releases.stable.json, manifest, SHA256SUMS | Existing signed updater catalog/promotion remains separate; no automatic promotion or rollback added |
+| macOS | Manual matching-tag dispatch, or protected master dispatch whose exact commit has `macos-vX.Y.Z` | Same client identity and native build | Existing ad-hoc signature; notarization NOT_RUN | Existing ZIP, .zip.sha256, manifest, SHA256SUMS; now also the existing manifest-referenced RNNoise license/SBOM | Existing direct distribution/update promotion remains separate; no notarization or installed recovery claim |
 | iOS | No repository release workflow/owned `tools/build` or `tools/release` automation found | Separate manual Xcode/App Store Connect process | Existing provisioning/distribution policy untouched | Outside this three-platform contract | Separate scope decision; automated pipeline, physical acceptance and TestFlight publication NOT_RUN |
 
 ## Source authority and candidate mode
@@ -26,9 +26,22 @@ trusted master or the matching platform tag to build and verify a candidate
 without creating a tag, release or upload to GitHub Releases. The canonical tag
 string supplies existing package filenames, but a master candidate records
 `tag_verified:false`, its real source ref and `release_mode:candidate`.
-The publisher independently rejects every candidate contract. A normal stable
-dispatch must use the matching existing tag; dispatching master with dry_run=false
-fails before toolchain setup/signing. macOS remains manual-only.
+The publisher independently rejects every candidate contract. A stable dispatch
+with `dry_run=false` may use master only when the already-existing canonical
+platform/version tag resolves to the exact checkout and raw master trigger SHA.
+Missing, different or moved tags fail before toolchain setup/signing. The
+contract retains the actual master ref, `workflow_dispatch` event and trigger;
+the publisher independently binds those fields to its actual execution before
+any API write. It never changes a tag or accepts a candidate as stable. macOS
+remains manual-only.
+
+This master dispatch uses the existing `production` environment, reviewer,
+master-only deployment rule and shared signing queue. Repository settings stay
+unchanged: no new environment, tag allowlist, tag rule or copied secret. With the
+current master-only production policy, direct tag jobs remain ineligible for the
+protected job; use the existing master workflow-dispatch route after the normal
+version/tag preparation and independent production review. A canonical tag at
+another commit is not retargeted to make the run pass; publish a new version.
 
 The obsolete feature-branch/retained-run-ID candidate workflow is removed.
 The standalone Unicode/extended-path C++ regression and portable recovery

@@ -19,8 +19,9 @@ async function main() {
   const contract=JSON.parse(await readFile(path.join(root,'.out/native-release',platform,'contract.json'),'utf8'))
   require(/^[0-9a-f]{40}$/.test(process.env.GITHUB_SHA??''))
   const trigger=execFileSync('git',['rev-parse',process.env.GITHUB_SHA+'^{commit}'],{cwd:root,encoding:'utf8'}).trim()
-  require(source===trigger&&process.env.GITHUB_REF===`refs/tags/${contract.tag}`)
+  require(source===trigger)
   const context={repository:process.env.GITHUB_REPOSITORY,source_revision:source,tag:contract.tag,
+    source_ref:process.env.GITHUB_REF,source_event:process.env.GITHUB_EVENT_NAME,trigger_revision:process.env.GITHUB_SHA,
     execution:{run_id:process.env.GITHUB_RUN_ID,run_attempt:process.env.GITHUB_RUN_ATTEMPT}}
   const {release}=await publishContract({contract,context,directory:path.join(root,'clients/flutter/build/release-assets'),token:process.env.GITHUB_TOKEN})
   await writeFile(receipt,JSON.stringify({status:'PASS',source_revision:source,tag:contract.tag,
