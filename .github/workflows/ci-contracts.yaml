@@ -32,6 +32,8 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: .node-version
+      - name: Test bounded disposable browser worker policy
+        run: node --test clients/web/tests/browser_runtime/workers.test.mjs
       - name: Test owned browser startup and failure diagnostic privacy
         run: node --test tools/qa/client_lifecycle/login_diagnostics.test.mjs tools/qa/next_client_acceptance/failure.test.mjs
       - name: Test shared immutable native release publication
