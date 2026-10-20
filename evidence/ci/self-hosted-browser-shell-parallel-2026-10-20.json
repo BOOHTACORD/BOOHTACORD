@@ -1,0 +1,103 @@
+{
+  "status": "PASS",
+  "scope": "CICD-12 browser-shell resource-policy and local isolation POC; fresh Hetzner and full required CI remain pending",
+  "parent_source": "1ad3de547e25e16f5bb2afb989d169d0c745a805",
+  "tested_parent_merge_revision": "82be2c020b43da4ea1f732e1fb2e7d8907238bec",
+  "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39375663359/job/118473751482",
+  "before": {
+    "job_timeout_minutes": 20,
+    "job_started_at": "2026-10-20T06:04:12Z",
+    "job_completed_at": "2026-10-20T06:24:36Z",
+    "conclusion": "cancelled",
+    "completed_suites": [
+      {
+        "name": "accessibility",
+        "passed": 110,
+        "duration": "7.2m"
+      },
+      {
+        "name": "conversation_action_disclosure_axe",
+        "passed": 1,
+        "duration": "9.9s"
+      },
+      {
+        "name": "responsive_shell",
+        "passed": 26,
+        "duration": "1.2m"
+      },
+      {
+        "name": "control_consistency",
+        "passed": 87,
+        "duration": "3.2m"
+      },
+      {
+        "name": "microcopy",
+        "passed": 60,
+        "duration": "3.8m"
+      }
+    ],
+    "incomplete_suite": "chat_rhythm"
+  },
+  "correction": {
+    "eligible_runtime": {
+      "GITHUB_ACTIONS": "true",
+      "RUNNER_ENVIRONMENT": "self-hosted",
+      "RUNNER_OS": "Linux",
+      "BOOHTACORD_EPHEMERAL_GUEST": "true",
+      "available_parallelism": 4
+    },
+    "workers": 2,
+    "fully_parallel_within_file": true,
+    "other_runtimes_workers": 1,
+    "assertions_changed": false,
+    "job_timeout_minutes_unchanged": 20,
+    "test_timeout_ms_unchanged": 30000,
+    "original_npm_scripts_unchanged": true,
+    "original_command_inventory_unchanged": true,
+    "frozen_legacy_driver_unchanged": true,
+    "cohort_policy": "Frozen reference driver and new profiles both use current-source test configs."
+  },
+  "validation": {
+    "unit_tests": {
+      "status": "PASS",
+      "cases": 4,
+      "red": "Missing policy module before implementation"
+    },
+    "local_full_shell": {
+      "status": "PASS",
+      "os": "macOS",
+      "node": "24.18.0",
+      "playwright": "1.63.0",
+      "original_script_count": 7,
+      "playwright_invocations": 8,
+      "tests": 370,
+      "seconds": 102.633,
+      "workers": 2,
+      "fully_parallel": true,
+      "prepared_dependencies_and_assets": true,
+      "cli_overrides_used_to_exercise_parallelism_on_local_mac": true,
+      "scope": "Isolation and assertion coverage, not four-CPU Hetzner performance acceptance."
+    },
+    "actionlint": "PASS",
+    "fresh_hetzner_component": "NOT_RUN",
+    "required_ci": "NOT_RUN",
+    "canonical_python": {
+      "status": "PASS",
+      "tests": 1148,
+      "seconds": 53.756,
+      "first_run": {
+        "status": "FAIL",
+        "failures": 1,
+        "test": "MacRecoveryPreflightTests.test_real_sandboxed_parent_can_hand_off_its_own_transaction",
+        "reason": "Cocoa launch error256 in independent native macOS fixture"
+      },
+      "focused_rerun": {
+        "status": "PASS",
+        "tests": 1,
+        "seconds": 2.771
+      },
+      "source_changes_for_native_fixture": false
+    }
+  },
+  "release_gate": "NOT_RUN"
+}

@@ -1,4 +1,5 @@
 """Manual operator audit receipt; raw host output, keys and observations never become artifacts."""
+from tools.ci.runner_pool.routing import isolated_linux
 import argparse
 import json
 import os
@@ -23,7 +24,7 @@ def execute(operation):
         require(output('git','rev-parse','HEAD')==plan['source_revision'])
         if plan['dry_run']:
             receipt.update(status='NOT_RUN',phase='dry-run',reason='NoHostAccess');return
-        require(os.environ.get('GITHUB_ACTIONS')=='true' and os.environ.get('RUNNER_ENVIRONMENT')=='github-hosted')
+        require(os.environ.get('GITHUB_ACTIONS')=='true' and isolated_linux(os.environ))
         receipt['phase']='approval';receipt['reviewer_ids']=approval.verify(plan)
         def interrupted(*_):raise InterruptedError('Operator execution interrupted')
         old_signal=signal.signal(signal.SIGTERM,interrupted)

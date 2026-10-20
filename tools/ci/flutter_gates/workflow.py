@@ -1,4 +1,5 @@
 """Guard native coverage, isolated jobs, mandatory uploads and stable aggregation."""
+from tools.ci.runner_pool.routing import LINUX
 from tools.ci.artifact_policy.workflows import capture_job
 CONTEXT = '${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
 
@@ -31,7 +32,7 @@ def validate(document):
     require(set(jobs) == {'dart', 'android', 'android-kotlin', 'flutter'})
     for profile, timeout in (('dart', '20'), ('android', '30'), ('android-kotlin', '30')):
         job = jobs[profile]
-        require(job.get('runs-on') == 'ubuntu-24.04' and job.get('timeout-minutes') == timeout
+        require(job.get('runs-on') == LINUX and job.get('timeout-minutes') == timeout
                 and not any(job.get(k) for k in ('if', 'needs', 'continue-on-error', 'environment', 'secrets')))
         sdk = [s for s in job.get('steps', []) if s.get('uses') == './.github/actions/flutter-setup']
         require(len(sdk) == 1 and sdk[0].get('with') == {'channel': 'stable', 'flutter-version': '3.47.7', 'cache': 'true'}
@@ -43,7 +44,7 @@ def validate(document):
     upload(jobs['android'], '.out/native/android-debug/', 'boohtacord-android-debug-apk-' + CONTEXT)
     aggregate = jobs['flutter']
     require(aggregate.get('if') == 'always()' and set(aggregate.get('needs', [])) == {'dart', 'android', 'android-kotlin'}
-            and aggregate.get('runs-on') == 'ubuntu-24.04' and aggregate.get('timeout-minutes') == '5'
+            and aggregate.get('runs-on') == LINUX and aggregate.get('timeout-minutes') == '5'
             and not aggregate.get('continue-on-error'))
     downloads = [s for s in aggregate.get('steps', []) if s.get('uses') == 'actions/download-artifact@v4']
     require(len(downloads) == 1 and not downloads[0].get('if') and downloads[0].get('with') == {

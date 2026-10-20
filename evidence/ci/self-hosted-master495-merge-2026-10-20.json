@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "outcome": "PASS",
+  "scope": "Local integration of master PR495 CI-only fan-out into runner migration CICD-12. No application changes.",
+  "parents": [
+    "090f5f1eaa073752febbdde6fe80b9756b27ad3c",
+    "a65ac10184278e2c279dcea2a1b3efcafd5b75f3"
+  ],
+  "upstream_pull_request": "https://github.com/Egkurilov/BOOHTACORD/pull/495",
+  "resolved_conflicts": [
+    ".github/workflows/ci-flutter.yaml",
+    "tools/ci/flutter_gates/workflow.py",
+    "tools/ci/web_suites/workflow.py"
+  ],
+  "policy": {
+    "android_profiles": [
+      "android",
+      "android-kotlin"
+    ],
+    "android_pool": "boohtacord-ci-ephemeral",
+    "android_job_budget_minutes": 30,
+    "java": "17.0.20+101",
+    "flutter_parts": 3,
+    "browser_profiles": 4,
+    "browser_cases_preserved": 386
+  },
+  "checks": {
+    "routing_regression_before_fix": "FAIL: new Kotlin hosted route and combined APK budget",
+    "focused_tests": {
+      "outcome": "PASS",
+      "tests": 51
+    },
+    "all_python": {
+      "outcome": "PASS",
+      "tests": 1178,
+      "seconds": 63.982
+    },
+    "actionlint": "PASS",
+    "diff_check": "PASS"
+  },
+  "full_current_linux_ci": "NOT_RUN",
+  "required_ci": "NOT_RUN",
+  "postmerge_rollout": "NOT_RUN",
+  "note": "Fresh exact-source CI with 26 jobs and same-attempt split receipts is required after publishing this merge. Historical090 Android repeat passed with all inspected APK uploads; not qualification for this source."
+}

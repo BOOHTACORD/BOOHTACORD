@@ -1,5 +1,6 @@
 """Manual quality-only experiment; never another publisher or master producer."""
 from .results import require
+from tools.ci.runner_pool.routing import LINUX
 
 MASTER="github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'"
 POSTGRES='postgres://voice_platform_test:test-only-password@127.0.0.1:5432/voice_platform_test?sslmode=disable'
@@ -23,8 +24,8 @@ def validate(document):
         require(jobs['profiles']=={'if':MASTER,'uses':'./.github/workflows/ci-backend.yaml',
                                    'with':{'release_receipt':'false'}})
         old,new=jobs['legacy'],jobs['compare']
-        require(old['if']==MASTER and old['runs-on']=='ubuntu-24.04' and old['timeout-minutes']=='30'
-                and new['if']=='always() && '+MASTER and new['runs-on']=='ubuntu-24.04'
+        require(old['if']==MASTER and old['runs-on']==LINUX and old['timeout-minutes']=='30'
+                and new['if']=='always() && '+MASTER and new['runs-on']==LINUX
                 and new['needs']==['legacy','profiles'] and new['timeout-minutes']=='10')
         require(old['services']['postgres']['image']=='postgres:17.6-alpine'
                 and old['services']['postgres']['ports']==['5432:5432']

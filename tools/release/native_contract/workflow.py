@@ -1,4 +1,5 @@
 """All platforms use one contract/publisher; signing stays in protected native jobs."""
+from tools.ci.runner_pool.routing import LINUX
 from .source import PLATFORMS, require
 
 PUBLISH_IF="github.event_name != 'workflow_dispatch' || !inputs.dry_run"
@@ -17,7 +18,7 @@ def validate(workflows):
             doc=workflows[platform+'-release.yaml'];job=doc['jobs'][platform+'-release'];steps=job['steps']
             require(doc['on']['workflow_dispatch']['inputs']['dry_run']['type']=='boolean'
                     and doc['on']['workflow_dispatch']['inputs']['dry_run']['default']=='false')
-            require(job['runs-on']=={'android':'ubuntu-24.04','windows':'windows-2022','macos':'macos-26'}[platform]
+            require(job['runs-on']=={'android':LINUX,'windows':'windows-2022','macos':'macos-26'}[platform]
                     and job['environment']=='production' and job['permissions']=={'contents':'write'})
             checkouts=[s for s in steps if s.get('uses','').startswith('actions/checkout@')]
             require(len(checkouts)==1 and checkouts[0]['with']=={'persist-credentials':'false','fetch-depth':'0'})

@@ -1,5 +1,7 @@
 """Independent Dart and Android checks; each runner owns its dependency state."""
 import json
+import os
+from tools.ci.runner_pool.routing import isolated_linux
 from tools.ci.native.process import ROOT, VERSIONS, client, output, require_version, run
 from tools.ci.flutter_setup.vendor_locks import prepare
 from tools.ci.flutter_setup.metadata import check_machine
@@ -11,6 +13,15 @@ OPERATIONS = {
     'android': ('app-dependencies', 'debug-apk'),
     'android-kotlin': ('app-dependencies', 'kotlin-modes'),
 }
+
+
+def test_command(env):
+    command = ('flutter', 'test', '--no-pub')
+    if env.get('RUNNER_ENVIRONMENT') == 'self-hosted' and isolated_linux(env):
+        # Match the four-CPU guest budget in both disposable-pool cohorts.
+        # Hosted and local runs retain the SDK default.
+        return (*command, '--concurrency=4')
+    return command
 
 
 def execute(profile):
@@ -38,13 +49,13 @@ def execute(profile):
     elif profile == 'android':
         command('debug-apk', 'python3', '-m', 'tools.build.android.run', '--debug', '--no-pub')
     else:
-        command('app-tests', 'flutter', 'test', '--no-pub', cwd=app)
+        command('app-tests', *test_command(os.environ), cwd=app)
         for package, prefix in (('livekit_client', 'livekit'), ('flutter_webrtc', 'webrtc')):
             prepare(ROOT, package)
             completed.append(prefix + '-locks')
             path = app / 'packages' / package
             command(prefix + '-dependencies', 'flutter', 'pub', 'get', '--enforce-lockfile', cwd=path)
-            command(prefix + '-tests', 'flutter', 'test', '--no-pub', cwd=path)
+            command(prefix + '-tests', *test_command(os.environ), cwd=path)
         command('app-analysis', 'flutter', 'analyze', '--no-pub', '--no-fatal-infos', cwd=app)
     if completed != list(OPERATIONS[profile]):
         raise ValueError('Incomplete Flutter CI operation inventory')

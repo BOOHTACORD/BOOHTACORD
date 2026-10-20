@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "outcome": "PASS",
+  "scope": "CICD-12 synthetic Linux integration POC for guest service restarts; not current-source full CI or release qualification.",
+  "parent": "8d06fd619344ea4c436cefad48cfcab316cbe572",
+  "failed_job": {
+    "run": 39452496221,
+    "job": 118734003020,
+    "profile": "flutter / android",
+    "runner_id": 495,
+    "source": "8d06fd619344ea4c436cefad48cfcab316cbe572",
+    "job_outcome": "FAIL",
+    "step_outcome": "cancelled",
+    "artifacts": "SKIPPED",
+    "observed_sequence": [
+      {
+        "at_utc": "2026-10-20T16:25:44.843212Z",
+        "event": "apt-daily-upgrade.service activating; agent still active"
+      },
+      {
+        "at_utc": "2026-10-20T16:25:58.660091Z",
+        "event": "Agent deactivating with ExecMainCode2/ExecMainStatus15 (SIGTERM)"
+      },
+      {
+        "at_utc": "2026-10-20T16:26:08.747622Z",
+        "event": "Agent attempted restart and failed with exit1; one-job JIT file already consumed"
+      }
+    ],
+    "kernel_or_guest_oom_kill_observed": 0
+  },
+  "attribution": "APT-triggered restart inferred from the recorded lifecycle sequence, Ubuntu default needrestart behavior and the controlled reproduction. The deleted failed guest has no retained raw service log proving the exact needrestart invocation.",
+  "reference": "https://ubuntu.com/server/docs/how-to/software/automatic-updates/",
+  "policy": {
+    "sha256": "69fd6c5098fd900628dc07546fd70e7daa5af894f9ed36cd1c66ff8458f7d76a",
+    "excluded_services": [
+      "boohtacord-agent.service",
+      "docker.service"
+    ],
+    "owner": "root:root",
+    "mode": "0644",
+    "installed_before_jit_registration": true,
+    "package_updates_remain_enabled": true,
+    "other_service_policies_unchanged": true,
+    "base_or_host_policy_changed": false
+  },
+  "synthetic_poc": {
+    "outcome": "PASS",
+    "needrestart_version": "3.6-7ubuntu4.5",
+    "method": "Two no-token services hold a replaced ELF shared library; run actual needrestart automatic mode before and after policy. Batch mode was excluded because it only reports service candidates.",
+    "baseline_both_services_restarted": true,
+    "protected_agent_pid_retained": true,
+    "unrelated_service_still_restarted": true,
+    "guest_removed": true,
+    "no_git_source_or_github_identity_in_test_guest": true
+  },
+  "local_checks": {
+    "regression_before_fix": "FAIL: missing policy and missing installation before JIT",
+    "focused_runner_pool_tests": {
+      "outcome": "PASS",
+      "tests": 34
+    },
+    "all_python": {
+      "outcome": "PASS",
+      "tests": 1180,
+      "seconds": 56.068
+    },
+    "actionlint": "PASS",
+    "diff_check": "PASS"
+  },
+  "fresh_current_source_ci": "NOT_RUN",
+  "current_source_pool_proof": "NOT_RUN",
+  "postmerge_rollout": "NOT_RUN"
+}

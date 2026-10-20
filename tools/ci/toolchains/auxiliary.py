@@ -32,7 +32,7 @@ def validate_workflows(documents, root):
         for job in workflow['jobs'].values():
             steps = job.get('steps', [])
             needs_python = any('python' in s.get('run', '') or s.get('uses') == './.github/actions/flutter-setup' for s in steps)
-            if needs_python and not isinstance(job.get('runs-on'), list):
+            if needs_python and job.get('runs-on') != ['self-hosted', 'linux', 'x64', 'boohtacord-builder']:
                 setups = [i for i, s in enumerate(steps) if s.get('uses', '').startswith('actions/setup-python@')]
                 if len(setups) != 1 or any('python' in s.get('run', '') for s in steps[:setups[0]]):
                     raise ValueError('Hosted Python commands require one prior reviewed interpreter selection')

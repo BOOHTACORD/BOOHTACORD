@@ -25,7 +25,7 @@ jobs:
   audit:
     if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
     environment: production-diagnostics
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     timeout-minutes: 5
     concurrency:
       group: v-bootybay-operator-diagnostics

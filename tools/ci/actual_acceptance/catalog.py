@@ -12,7 +12,7 @@ OPERATIONS={
         [PY,'-m','tools.qa.upload_reservations.run']],
     'next':[
         [PY,'-m','unittest','tools.qa.next_client_acceptance.test_window_manager'],
-        ['node','--test','tools/qa/next_client_acceptance/input_files.test.mjs','tools/qa/next_client_acceptance/failure.test.mjs','tools/qa/next_client_acceptance/navigation_fixture.test.mjs'],
+        ['node','--test','tools/qa/next_client_acceptance/input_files.test.mjs','tools/qa/next_client_acceptance/failure.test.mjs','tools/qa/next_client_acceptance/navigation_fixture.test.mjs','tools/qa/next_client_acceptance/fresh_browser.test.mjs','tools/qa/next_client_acceptance/mutation_session.test.mjs','tools/qa/next_client_acceptance/revocation_sql.test.mjs'],
         ['xvfb-run','--auto-servernum','bash','-c','set -euo pipefail; openbox --sm-disable >/dev/null 2>&1 & wm=$!; trap \'kill "$wm" 2>/dev/null || true; wait "$wm" 2>/dev/null || true\' EXIT; python3 -m tools.qa.next_client_acceptance.window_manager; node tools/qa/next_client_acceptance/visibility_smoke.mjs'],
         ['xvfb-run','--auto-servernum','bash','-c','openbox --sm-disable >/dev/null 2>&1 & wm=$!; trap "kill $wm" EXIT; '+PY+' -m tools.qa.next_client_acceptance.run']],
     'sfu':[[PY,'-m','unittest','tools.qa.sfu_snapshot_measure.test_identity'],

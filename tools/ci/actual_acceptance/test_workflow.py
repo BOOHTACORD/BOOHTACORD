@@ -13,7 +13,7 @@ def workflow(name):return yaml.load((ROOT/'.github/workflows'/name).read_text(),
 class WorkflowTests(unittest.TestCase):
     def test_original_controllers_are_reused_in_disposable_vms_with_strict_fan_in(self):
         doc=workflow('ci-actual-acceptance.yaml');runtime=doc['jobs']['runtime'];fan=doc['jobs']['actual-acceptance']
-        self.assertEqual('ubuntu-24.04',runtime['runs-on']);self.assertEqual('false',runtime['strategy']['fail-fast'])
+        self.assertEqual(['self-hosted','linux','x64','boohtacord-ci-ephemeral'],runtime['runs-on']);self.assertEqual('false',runtime['strategy']['fail-fast'])
         self.assertEqual('always()',fan['if']);self.assertEqual('runtime',fan['needs'])
         self.assertTrue(any('actual_acceptance.fan_in' in s.get('run','') for s in fan['steps']))
         for profile,commands in OPERATIONS.items():
@@ -24,6 +24,13 @@ class WorkflowTests(unittest.TestCase):
         install=next(s for s in runtime['steps'] if s.get('name')=='Install window manager for real visibility transitions')
         self.assertIn('openbox x11-utils',install['run'])
         self.assertEqual({'contents':'read'},doc['permissions'])
+
+    def test_next_keeps_runner_regressions_and_window_manager_readiness(self):
+        node = next(command for command in OPERATIONS['next'] if command[:2] == ['node', '--test'])
+        for name in ('fresh_browser', 'mutation_session', 'revocation_sql'):
+            self.assertIn('tools/qa/next_client_acceptance/'+name+'.test.mjs', node)
+        self.assertTrue(any('tools.qa.next_client_acceptance.test_window_manager' in command
+                            for command in OPERATIONS['next']))
 
     def test_no_duplicate_pr_trigger_or_feature_push_can_publish(self):
         for name in ('client-lifecycle-acceptance','next-client-acceptance','sfu-snapshot-measure'):

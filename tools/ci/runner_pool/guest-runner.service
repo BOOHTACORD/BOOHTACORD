@@ -1,0 +1,19 @@
+[Unit]
+Description=One-job BOOHTACORD guest runner
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=exec
+User=runner
+Group=runner
+SupplementaryGroups=docker
+WorkingDirectory=/home/runner/actions-runner
+Environment=HOME=/home/runner RUNNER_TOOL_CACHE=/opt/hostedtoolcache BOOHTACORD_EPHEMERAL_GUEST=true
+Environment=ANDROID_HOME=/usr/local/lib/android/sdk ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+ExecStart=/home/runner/actions-runner/start-ci.sh
+Restart=no
+KillMode=control-group
+StandardOutput=journal
+StandardError=journal

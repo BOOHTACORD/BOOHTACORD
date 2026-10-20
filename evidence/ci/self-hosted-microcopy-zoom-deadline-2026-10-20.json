@@ -1,0 +1,126 @@
+{
+  "status": "PASS",
+  "scope": "CICD-12 native-zoom deadline POC and complete local browser-shell isolation; fresh paired Hetzner validation pending",
+  "parent_source": "5bef72a0a0069d863f7d07bdb89932b7dba405a6",
+  "tested_parent_merge_revision": "b3b3fd22676d5349d017142f71514671aed6a658",
+  "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39381245575/job/118491432652",
+  "before": {
+    "job_started_at": "2026-10-20T06:46:09Z",
+    "job_completed_at": "2026-10-20T07:03:06Z",
+    "failure_kind": "Two30000ms aggregate native-zoom test timeouts; not the20-minute job deadline",
+    "widths": [
+      1440,
+      780
+    ],
+    "surfaces_per_test": 7,
+    "failed_cases": 2,
+    "other_microcopy_cases_passed": 58,
+    "actual_worker_headers": [
+      {
+        "cases": 110,
+        "workers": 2
+      },
+      {
+        "cases": 26,
+        "workers": 2
+      },
+      {
+        "cases": 87,
+        "workers": 2
+      },
+      {
+        "cases": 60,
+        "workers": 2
+      }
+    ]
+  },
+  "correction": {
+    "cases": 14,
+    "widths": [
+      1440,
+      780
+    ],
+    "surfaces": [
+      "prejoin",
+      "audio",
+      "profile",
+      "chat",
+      "dm",
+      "search",
+      "share"
+    ],
+    "test_timeout_ms_unchanged": 30000,
+    "job_timeout_minutes_unchanged": 20,
+    "full_shell_cases": 382,
+    "original_npm_scripts_unchanged": true,
+    "checks_preserved": [
+      "unmodified native page zoom and DPR",
+      "layout viewport and outer width",
+      "font/CSS zoom/pinch unchanged",
+      "overflow and search form bounds",
+      "keyboard audio help",
+      "chat/DM focus, tooltip bounds and Escape",
+      "full native PNG and geometry JSON"
+    ],
+    "app_ui_changed": false,
+    "controller_or_base_changed": false
+  },
+  "controlled": {
+    "old_slow1000_ms": {
+      "status": "PASS",
+      "cases": 1,
+      "seconds": 22.795
+    },
+    "old_slow1500_ms": {
+      "status": "FAIL",
+      "cases": 1,
+      "seconds": 30.988,
+      "reason": "30000ms test deadline"
+    },
+    "new_slow1500_ms_two_workers": {
+      "status": "PASS",
+      "cases": 7,
+      "seconds": 24.651
+    },
+    "new_slow1500_ms_one_worker": {
+      "status": "PASS",
+      "cases": 7,
+      "seconds": 46.519
+    },
+    "width": 1440,
+    "temporary_slow_motion_helper_restored": true
+  },
+  "validation": {
+    "full_local_shell": {
+      "status": "PASS",
+      "os": "macOS",
+      "node": "24.18.0",
+      "playwright": "1.63.0",
+      "original_npm_scripts": 7,
+      "playwright_invocations": 8,
+      "case_counts": [
+        110,
+        1,
+        26,
+        87,
+        72,
+        54,
+        4,
+        28
+      ],
+      "cases": 382,
+      "seconds": 106.48,
+      "workers": 2,
+      "fully_parallel": true,
+      "dependencies_and_assets_prepared": true,
+      "scope": "Local assertion and isolation check; not Hetzner timing acceptance."
+    },
+    "capture_inventory_publication_tests": {
+      "status": "PASS",
+      "cases": 27
+    },
+    "fresh_paired_hetzner": "NOT_RUN",
+    "required_ci": "NOT_RUN"
+  },
+  "release_gate": "NOT_RUN"
+}

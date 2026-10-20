@@ -11,6 +11,7 @@ from .results import OPERATIONS, PROFILES
 from . import shadow_compare, shadow_legacy
 from tools.ci.native import backend
 from . import run as runner
+from tools.ci.runner_pool.routing import LINUX
 
 SOURCE='a'*40
 IDENTITY={'run_id':'123','run_attempt':'1'}
@@ -40,6 +41,18 @@ def fixture():
 
 
 class ComparisonTests(unittest.TestCase):
+    def test_complete_disposable_pool_pair_and_historical_hosted_pair_are_separate(self):
+        args = copy.deepcopy(fixture())
+        for job in args[1]['jobs']:
+            job.update(labels=LINUX, runner_group_name='Default',
+                       runner_name=f"BOOHTACORD-Hetzner-CI-1-{job['id']}")
+        self.assertEqual(shadow_compare.compare(*args)['runner_pool'], 'boohtacord-ci-ephemeral')
+        self.assertEqual(shadow_compare.compare(*fixture())['runner_pool'], 'github-hosted')
+        args[1]['jobs'][0].update(labels=['ubuntu-24.04'], runner_group_name='GitHub Actions')
+        with self.assertRaises(ValueError): shadow_compare.compare(*args)
+        args[1]['jobs'][0].update(labels=LINUX, runner_name='BOOHTACORD-Hetzner-Web')
+        with self.assertRaises(ValueError): shadow_compare.compare(*args)
+
     def test_complete_actual_pair_preserves_coverage_and_reports_n1_without_speed_claim(self):
         value=shadow_compare.compare(*fixture())
         self.assertEqual(value['status'],'PASS')

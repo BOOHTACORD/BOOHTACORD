@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   dart:
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -59,7 +59,7 @@ jobs:
           if-no-files-found: error
           retention-days: ${{ github.event_name == 'pull_request' && startsWith(github.ref, 'refs/pull/') && job.status == 'success' && 7 || 30 }}
   android:
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -73,7 +73,7 @@ jobs:
       - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
         with:
           distribution: temurin
-          java-version: '17.0.20+1'
+          java-version: '17.0.20+101'
       - name: Verify selected java SDK
         run: python -m tools.ci.toolchains.runtime java
       - uses: ./.github/actions/flutter-setup
@@ -102,7 +102,7 @@ jobs:
           retention-days: 30
 
   android-kotlin:
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -116,7 +116,7 @@ jobs:
       - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
         with:
           distribution: temurin
-          java-version: '17.0.20+1'
+          java-version: '17.0.20+101'
       - name: Verify selected java SDK
         run: python -m tools.ci.toolchains.runtime java
       - uses: ./.github/actions/flutter-setup
@@ -140,7 +140,7 @@ jobs:
   flutter:
     if: always()
     needs: [dart, android, android-kotlin]
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4

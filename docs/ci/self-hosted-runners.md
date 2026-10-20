@@ -1,0 +1,160 @@
+# Hetzner Linux CI pool
+
+The Linux workflow targets are disposable LXD guests on the existing Hetzner
+host, 167.233.56.32. Windows and Apple native jobs retain their matching hosted
+OS and architecture. GitHub-managed Dependabot and automatic Pages jobs are
+outside these repository workflow files.
+
+| Slots | Requested labels | Limit per guest | Work |
+| --- | --- | --- | --- |
+| 1, 2 | `self-hosted, linux, x64, boohtacord-ci-ephemeral` | 4 vCPU, 5.5 GiB RAM | Tests, browser/SFU fixtures, Android packaging, operational jobs |
+| 3, 4 | `self-hosted, linux, x64, boohtacord-ci-meta` | 1 vCPU, 512 MiB RAM | Top-level selectors, required aggregates, deployment route |
+
+The two heavy slots and two small slots consume at most 12 GiB RAM, leaving about 3.2 GiB outside guest limits. The heavy
+guests cover the host's eight vCPU; metadata affinities share CPU 0 and 4 with
+them, giving ten logical CPU placements on eight host vCPU. This is a bounded
+concurrency configuration on one shared host,
+not a capacity or performance claim. Existing DB/Web runners are preserved;
+the signing builder keeps its dedicated `boohtacord-builder` label and trusted
+source/environment gates. The DB runner's shared database label is not copied.
+CPU affinity is fixed per slot: 0–3, 4–7, 0 and 4 respectively. The explicit
+single-core ranges `0-0` and `4-4` avoid LXD interpreting a bare integer as a
+CPU count. Fixed sets keep a guest's CPU view stable while neighbours recycle.
+
+## Lifecycle and credentials
+
+Root-owned `/opt/boohtacord-ci/controller/worker.py` runs as the four
+`boohtacord-ci@N` systemd services. It obtains a fresh repository-scoped JIT
+runner configuration through the explicitly authorized GitHub CLI session.
+The CLI account configuration stays under root's private directory on the
+host, outside every guest. The host API controller never checks out or runs
+PR code. No registration or account token is stored in this repository.
+
+Each cycle clones the stopped clean `boohtacord-ci-base`, registers a unique
+one-job runner, starts it, then destroys the guest and removes that runner
+registration. Failed execution and graceful shutdown also attempt cleanup.
+The agent runs as its own guest systemd service, with the runner user's Docker
+group and explicit public SDK environment. Short LXD exec calls only inspect
+that service; no long-lived exec connection owns the runner process. Healthy
+cycles create a new guest after two seconds; a failed controller retries after 30 seconds.
+The controller uses the direct LXD client. Read-only status failures retain
+the guest and retry within the same absolute lifetime bound; an observer
+transport failure is not evidence that a running job has ended.
+Before registration, the controller installs a root-owned needrestart drop-in
+which excludes exactly `boohtacord-agent.service` and `docker.service` from
+APT-triggered automatic restarts. Package updates and all other service policies
+remain enabled. Ubuntu's default needrestart behavior can otherwise send SIGTERM
+to an active agent during an automatic package upgrade, losing the one-job JIT
+session and its mandatory artifacts. The guest is replaced after the job; this
+policy never changes the host or a persistent application service.
+See [Ubuntu automatic updates](https://ubuntu.com/server/docs/how-to/software/automatic-updates/).
+
+The workspace root is `/home/runner/work`, matching hosted cache archive path
+depth. Public SDK cache entries therefore restore to `/opt/hostedtoolcache`
+without extracting through an extra `actions-runner/_work` directory level.
+Before teardown, the host keeps only the latest numeric health receipt per slot
+under `/opt/boohtacord-ci/health` (root only). Memory/OOM, free-space and bounded
+exception counters are retained; guest log text and credentials are never copied.
+After six idle hours the controller first retires the registration through
+GitHub, which refuses removal of a busy runner. Only a successful retirement
+allows idle teardown. A refusal or unavailable API grants one bounded six-hour
+execution window, so a job assigned near the idle deadline is not cut short.
+Host free disk below 5 GiB or CI pool free space below 2 GiB blocks another
+cycle. A service must not be changed to persistent workspace reuse.
+
+The base is Ubuntu 24.04, with the official GitHub runner 2.338.0 archive
+verified by SHA-256, private nested Docker, PostgreSQL client, native build
+dependencies, Android 36/build-tools 36.0.0/NDK 28.2.13676358/CMake 3.22.1, and
+the existing PowerShell 7.6.6 SDK. Existing owner-accepted Android license
+markers were reused. Workflows still select and verify the exact public
+Python/Go/Node/Java/Flutter SDK versions from the repository toolchain policy.
+No dependency cache may suppress the original checks or locked installs.
+The base caches the locked Playwright Chromium/headless-shell/FFmpeg binaries
+and the digest-bound RNNoise compiler image. Each profile still performs npm ci,
+Playwright install with dependencies, and a fresh source-bound asset build.
+Application checkouts, compiled application assets and prior capture outputs are
+absent from the base. The public playwright-core package is extracted under
+`/opt/boohtacord-public-sdk/` after verifying the package-lock SHA-512; its
+bundled CLI installs browsers as runner with HOME=/home/runner. The GitHub runner
+Node bootstrap driver only installs this public SDK. Jobs continue selecting the
+Node version in `.node-version`. Preserve the core package so browser-cache links
+remain valid, and retain `/opt/boohtacord-public-sdk/cache-manifest.json` as the
+public SDK receipt. Cache maintenance follows the stopped-controller/base
+procedure below and requires fresh browser/Android timing acceptance.
+The guest's user Gradle profile shares a 2.5 GiB heap with in-process Kotlin
+compilation, disables persistent Gradle daemons and caps parallel workers at two.
+The two Android compatibility modes execute sequentially in their own job,
+with their original assertions. Kotlin verification and the separately inspected
+APK build each have an independent finite 30-minute whole-job budget and use
+the same heavy pool. The aggregate requires all three current Dart, Kotlin and
+APK parts; a previous combined Android receipt cannot replace a split part.
+This profile is outside the checkout and leaves local developer settings intact.
+App and vendor Flutter tests use four concurrent test processes in the marked
+Linux pool, matching its four-CPU allocation. Both shadow cohorts use this
+same pool policy; hosted and local commands retain their SDK defaults.
+The full test inventory and 30-second browser case deadlines remain unchanged.
+Browser profile jobs have a 25-minute overall budget, including SDK/asset setup,
+capture validation and mandatory uploads. Fast/SFU and Dart budgets remain 20
+minutes. These are bounded shared-host execution budgets, not faster-run claims
+or replacements for any assertion, source guard or mandatory artifact.
+Native microcopy zoom is checked per width and surface, with the original
+30-second deadline and full geometry, keyboard, tooltip and screenshot assertions
+for each of the fourteen combinations.
+The browser-shell fixture suites use two independent Playwright workers, including
+within one test file, only when all disposable Linux pool markers and the four-CPU
+allocation match. Local, hosted, metadata and other native runtimes remain serial.
+Each worker has its own browser/context, mocked routes and per-test output path.
+Reaction palette buttons use aria-disabled during pending requests so keyboard
+focus survives the mutation and refresh; the existing toggle guard prevents
+duplicate activation. Held-response tests cover channels, DMs and an intentional
+focus move before the response, without moving focus back programmatically.
+Both shadow cohorts read the same current-source test configurations; their
+verified command inventories and per-case deadlines remain unchanged.
+
+## Isolation
+
+Guests are unprivileged, have separate UID maps, and receive only a root disk
+from the dedicated `boohtacord-ci` Btrfs pool and a NIC on `boohtaci0`.
+There are no host filesystem mounts, host Docker socket, SSH agent, account
+credential directory, production database or signing key in the base image.
+Docker, test databases, published test ports and workspaces belong to each
+guest. Port 5432 in one guest does not compete with another guest or the host.
+The pool is capped at 30 GiB, with each guest root capped at 16 GiB.
+The earlier 20 GiB pool exhausted space during two simultaneous Android jobs;
+30 GiB is under validation with the same job budgets and memory limits.
+Only unused host build cache was reclaimed to preserve the host disk reserve;
+application images, containers and data volumes were retained.
+The pool uses transparent `compress=zstd:3`. The stopped clean base was compressed
+before cloning jobs; application data and production Docker storage are outside it.
+
+The network ACL rejects host 167.233.56.32, private/link-local/metadata ranges
+and unsolicited ingress. DNS to the guest bridge and public HTTP/HTTPS are
+allowed; SSH egress is restricted to the existing production installer host
+176.108.242.211. Guest root is not host root. These are containers sharing the
+host kernel, not hardware-isolated VMs. GitHub environment approval/ref rules,
+read-only PR tokens and source guards remain necessary. Labels alone never
+authorize a signing or production operation.
+
+Shadow measurement accepts old hosted records for historical replay or complete
+new heavy-pool records. Mixing these machine cohorts in one comparison fails.
+New capture/QA/diagnostic execution may use the marked disposable pool; an
+arbitrary persistent self-hosted runtime still cannot publish that evidence.
+
+## Operations and acceptance
+
+Inspect `systemctl status 'boohtacord-ci@*'`, `lxc list` and repository Actions
+runner metadata. Stop a slot with `systemctl stop boohtacord-ci@N`; keep the
+base stopped. A running slot name changes after each job by design.
+Deploy `needrestart.conf` beside `worker.py` when updating the controller. Its
+installation is mandatory before registration, including metadata guests.
+Updating/rebuilding the base requires stopping all four services first and
+repeating network, Docker, toolchain and lifecycle acceptance.
+
+`self-hosted-proof.yaml` runs two PostgreSQL-service probes plus two bounded
+metadata probes. Observe successful jobs on distinct registered runner IDs,
+then observe their removal and replacement by fresh IDs/guests. This is the
+rollout gate; unit tests or online registrations alone do not prove it.
+
+The manual backend functional shadow also targets the same heavy Linux pool.
+Comparison accepts a complete historical hosted cohort or a complete disposable
+cohort, rejects mixing the two, and records the measured pool explicitly.

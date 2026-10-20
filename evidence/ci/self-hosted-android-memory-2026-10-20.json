@@ -1,0 +1,174 @@
+{
+  "status": "IN_PROGRESS",
+  "scope": "CICD-12 disposable Linux runner resource correction; no media capacity claim",
+  "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39353593114/job/118403811964",
+  "failed_attempt": 1,
+  "branch_head": "f3b73ddd48814bf66b199626b9102b1ceb28de11",
+  "merge_source": "513fde051136d79eda1db73384642bd915c6dff0",
+  "old_guest_memory_bytes": 4294967296,
+  "observed_pressure": {
+    "memory_current": 4294930432,
+    "anonymous_bytes": 4062437376,
+    "file_bytes": 111779840,
+    "major_page_faults": 315193,
+    "workingset_refault_file": 111025111,
+    "memory_some_avg10": 79.27,
+    "memory_some_avg60": 81.16,
+    "memory_full_avg10": 37.3,
+    "memory_full_avg60": 35.92,
+    "cpu_throttled_events": 0
+  },
+  "post_failure_receipt": {
+    "observed_at_utc": "2026-10-20T02:04:37.925307+00:00",
+    "oom": 1,
+    "oom_kill": 1,
+    "no_space_errors": 0
+  },
+  "host_observation_before_correction": {
+    "total_mib": 15604,
+    "available_mib": 7129
+  },
+  "correction": {
+    "heavy_slots": 2,
+    "heavy_memory_bytes_each": 5905580032,
+    "metadata_slots": 2,
+    "metadata_memory_bytes": 536870912,
+    "guest_ceiling_gib": 12,
+    "host_memory_outside_guest_ceilings_gib_approx": 3.2,
+    "unchanged_cpu_each": 4,
+    "unchanged_android_timeout_minutes": 30,
+    "compiler_profile": {
+      "gradle_heap_mib": 2560,
+      "persistent_gradle_daemon": false,
+      "kotlin_execution": "in-process",
+      "kotlin_daemon_fallback_heap_mib": 512,
+      "parallel_gradle_workers": 2
+    }
+  },
+  "focused_trial": {
+    "status": "CANCELLED",
+    "run_id": 39353593114,
+    "run_attempt": 2,
+    "job_id": 118415514535,
+    "fresh_guest": true,
+    "scope": "Original Android job only; source-bound final full CI and 5GiB pool proof still required.",
+    "resource_transition": "Started fresh at5GiB; increased live to6GiB after measured reclaim pressure. No timing claim for a clean6GiB run; final fresh6GiB CI required.",
+    "six_gib_pressure_sample": {
+      "some_avg10": 0.0,
+      "some_avg60": 0.25,
+      "full_avg10": 0.0,
+      "full_avg60": 0.17,
+      "oom_kill": 0
+    },
+    "reason": "Superseded after duplicate-JVM cause identified. Source/profile unchanged during this exploratory5->6->7GiB run; no successful6GiB capacity claim."
+  },
+  "deployment_note": "Uniform5.5GiB base/profile and fail-closed worker guard installed while four controllers stopped. Restart all four after fresh dual diagnostic queued. Existing DB/Web services preserved.",
+  "five_gib_trial": {
+    "memory_bytes": 5368709120,
+    "some_avg10": 70.6,
+    "some_avg60": 27.66,
+    "full_avg10": 33.09,
+    "full_avg60": 13.91,
+    "oom_kill_at_sample": 0
+  },
+  "observed_compiler_processes": [
+    {
+      "role": "GradleDaemon",
+      "rss_kib": 3573000
+    },
+    {
+      "role": "KotlinCompileDaemon",
+      "rss_kib": 599188
+    },
+    {
+      "role": "KotlinCompileDaemon",
+      "rss_kib": 792376
+    },
+    {
+      "role": "GradleWrapperMain",
+      "rss_kib": 92980
+    },
+    {
+      "role": "GradleDaemon",
+      "rss_kib": 887140
+    }
+  ],
+  "root_cause": "Sequential compatibility builds retained multiple Gradle/Kotlin JVMs; under4GiB observed reclaim thenOOM. Merely raising limits did not remove that accumulation.",
+  "dual_android_trial": {
+    "status": "FAIL",
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39360897844",
+    "source": "2a530960bab7d879af18dfb730f03637fa89d2e6",
+    "cause": "Shared 20GiB Btrfs CI pool exhausted. Both guests had 8192 free bytes on teardown; no Gradle process remained and GitHub agents lost communication. No success or timing claim.",
+    "oom_kill_each": 0,
+    "memory_configuration_gib_each": 5,
+    "root_cause_scope": "Disk exhaustion confirmed; exact build operation at exhaustion not recovered.",
+    "teardown_observed_at_utc": "2026-10-20T03:19:38Z"
+  },
+  "source_urls": [
+    "https://docs.gradle.org/current/userguide/gradle_daemon.html",
+    "https://kotlinlang.org/docs/compiler-execution-strategy.html"
+  ],
+  "disk_correction": {
+    "pool_before_gib": 20,
+    "pool_after_gib": 30,
+    "guest_root_gib_unchanged": 16,
+    "root_available_bytes_before_grow": 23219060736,
+    "unused_host_build_cache_reclaimed_gb": 7.773,
+    "data_images_containers_volumes_deleted": false,
+    "repeat_run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39363938794",
+    "repeat_status": "FAIL guest OOM, disk reserve retained",
+    "full_required_ci": "NOT_RUN"
+  },
+  "five_gib_30gib_trial": {
+    "status": "FAIL",
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39363938794",
+    "job_id": 118436608278,
+    "oom": 1,
+    "oom_kill": 1,
+    "teardown_free_bytes": 16283471872,
+    "observed_at_utc": "2026-10-20T03:38:25Z",
+    "cause": "One Gradle JVM (~3.4GiB RSS) and Dart frontend (~1.1GiB RSS) overlapped with wrapper/agent/native overhead; memory pressure and OOM occurred despite no accumulated Kotlin daemons. Other job cancelled for correction.",
+    "observed_anon_bytes": 5162520576,
+    "pressure_some_avg10": 91.26,
+    "pressure_full_avg10": 47.0,
+    "demand_before_oom_process_rss_kib": {
+      "gradle_java": 3413844,
+      "gradle_wrapper": 244280,
+      "dart_frontend": 1121180
+    }
+  },
+  "fresh_5_5_gib_trial": {
+    "status": "IN_PROGRESS",
+    "memory_bytes_each": 5905580032,
+    "pool_gib": 30,
+    "scope": "Fresh simultaneous unchanged Android jobs required; then full source-bound CI/proof. No current success claim.",
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39365619477",
+    "source": "e7635fe1b2e992bfc6e6a5fbad0d39c125802c77",
+    "completed_jobs": [
+      {
+        "job_id": 118441685648,
+        "status": "PASS",
+        "all_operations": [
+          "app-dependencies",
+          "kotlin-modes",
+          "debug-apk"
+        ],
+        "job_seconds": 1726,
+        "profile_seconds": 1586.818984305486,
+        "runner_id": 271,
+        "apk_artifact_id": 12240341155,
+        "artifact_bytes": 124005474,
+        "oom_kill": 0
+      }
+    ],
+    "remaining_job": 118441685832
+  },
+  "proof_assertion_correction": {
+    "status": "FIXED_LOCALLY",
+    "failed_run": 39365623499,
+    "failed_job": 118441694345,
+    "cause": "Proof still asserted old5GiB bytes after controller/base moved to5632MiB. Actual guest was correctly bounded; proof correctly failed.",
+    "fix": "Proof executes Python assertion using controller HEAVY_MEMORY_MIB. Focused test executes actual assertion with correct and mismatched/unbounded values.",
+    "full_gate": "PENDING new source CI/proof"
+  }
+}

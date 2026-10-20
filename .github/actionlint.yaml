@@ -4,6 +4,8 @@ self-hosted-runner:
     - boohtacord-hetzner
     - boohtacord-hetzner-db
     - boohtacord-builder
+    - boohtacord-ci-ephemeral
+    - boohtacord-ci-meta
     # Supported hosted Intel label not yet in actionlint v1.7.11 catalog.
     # https://docs.github.com/en/actions/reference/runners/github-hosted-runners
     - macos-26-intel

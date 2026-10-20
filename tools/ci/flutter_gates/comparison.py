@@ -1,4 +1,5 @@
 """Measure complete same-source native shadow samples from actual job intervals."""
+from tools.ci.runner_pool.routing import measurement_pool
 from datetime import datetime
 import math
 import re
@@ -50,8 +51,9 @@ def _compare(run, jobs, needs, old, new):
             and {j['name'] for j in jobs['jobs']} == names and len({j['id'] for j in jobs['jobs']}) == len(names))
     require(all(type(j['id']) is int and j['id'] > 0 and j['head_sha'] == sha
                 and j['run_id'] == run_id and j['run_attempt'] == attempt
-                and j['labels'] == ['ubuntu-24.04'] and j['runner_group_name'] == 'GitHub Actions'
+
                 for j in jobs['jobs']))
+    pool = measurement_pool(jobs['jobs'])
     by_name = {j['name']: j for j in jobs['jobs']}
     require(len(old) == len(new) == 3)
     arms = {'legacy': [], 'profiles': [], 'dart': [], 'android': [], 'android-kotlin': []}
@@ -95,6 +97,6 @@ def _compare(run, jobs, needs, old, new):
                for key in ('critical_seconds', 'runner_minutes')}} for name, rows in arms.items()}
     faster = all(summary['profiles']['critical_seconds'][p] < summary['legacy']['critical_seconds'][p] for p in ('p50', 'p95'))
     return {'schema_version': 1, 'source_revision': sha, 'run_id': run_id, 'run_attempt': attempt,
-            'status': 'PASS' if faster else 'NO_GAIN', 'samples': arms, 'summary': summary,
+            'runner_pool': pool, 'status': 'PASS' if faster else 'NO_GAIN', 'samples': arms, 'summary': summary,
             'baseline': legacy.reference(), 'original_coverage_preserved': True,
             'scope': 'Actual SDK/setup/test/upload/fan-in job intervals; n=3 nearest-rank descriptive p50/p95. Initial wait may include deliberate serial sampling. No billing, device/media acceptance, flake-rate or general CI SLO claim.'}

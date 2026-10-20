@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "scope": "CICD-12 workflow policy POC after master0c8278a3 integration; hardware acceptance and required CI pending",
+  "master": "0c8278a3",
+  "paired_run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39392868536",
+  "paired_source": "6fb2b1adad23dea3e749a413e072338418a1a4e6",
+  "observed_android": {
+    "job": 118528372694,
+    "started_at": "2026-10-20T08:22:02Z",
+    "completed_at": "2026-10-20T08:52:36Z",
+    "conclusion": "cancelled",
+    "legacy_kotlin_apk_built_at": "2026-10-20T08:45:13Z",
+    "builtin_kotlin_build_success_at": "2026-10-20T08:49:18Z",
+    "final_inspected_apk_command_started_at": "2026-10-20T08:50:10Z",
+    "accepted_final_apk": false,
+    "oom_kill": 0,
+    "no_space_errors": 0
+  },
+  "budgets": {
+    "reason": "Cold, bounded four-vCPU shared-host jobs require setup, both Kotlin modes, a separate inspected APK rebuild or the complete browser corpus plus mandatory artifact checks. Overall wall-clock budgets must include that work.",
+    "android_minutes": {
+      "before": 30,
+      "after": 40
+    },
+    "browser_profile_minutes": {
+      "before": 20,
+      "after": 25
+    },
+    "dart_fast_sfu_minutes_unchanged": 20,
+    "browser_case_timeout_ms_unchanged": 30000,
+    "all_commands_assertions_and_required_uploads_preserved": true,
+    "cpu_memory_disk_limits_unchanged": true
+  },
+  "new_master_workflow": {
+    "file": ".github/workflows/backend-ci-shadow.yaml",
+    "jobs": [
+      "legacy",
+      "compare"
+    ],
+    "target": "boohtacord-ci-ephemeral",
+    "manual_master_only_guard_preserved": true,
+    "read_only_permissions_preserved": true,
+    "coverage_unchanged": true,
+    "cohort_policy": "Accept complete historical hosted or complete disposable cohort; reject mixed, persistent or unknown runners. Record runner_pool in result."
+  },
+  "tdd": {
+    "backend_shadow_routing_before": "FAIL: new pool cohort rejected; hosted routing remained in new workflow",
+    "backend_shadow_and_routing_after": {
+      "status": "PASS",
+      "tests": 27
+    },
+    "new_job_budget_policy_before": "FAIL: both newly bounded budgets rejected",
+    "canonical_after": {
+      "status": "PASS",
+      "tests": 1161,
+      "seconds": 54.365,
+      "actionlint": "PASS"
+    }
+  },
+  "required_ci": "NOT_RUN",
+  "rollout_gate": "NOT_RUN"
+}

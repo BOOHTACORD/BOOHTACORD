@@ -6,19 +6,19 @@ import { uploads } from './uploads.mjs'
 import { unread } from './unread.mjs'
 import { navigation } from './navigation.mjs'
 import { captureFailure, failureSummary } from './failure.mjs'
+import { freshBrowser } from './fresh_browser.mjs'
 import { prepareOwnedLoopback } from '../client_lifecycle/loopback_navigation.mjs'
 const input = JSON.parse(readFileSync(process.env.QA_INPUT,'utf8'))
 assert.equal(process.env.QA_ORIGIN,'https://localhost:4810')
-let owned, stage = 'browser-launch'
+let owned, browser, stage = 'browser-launch'
 try {
   owned = await nativeBrowser()
-  const browser = owned.browser
+  browser = owned.browser
   const context = owned.context
   context.setDefaultTimeout(20000)
-  const page = owned.page, report = { status:'PASS', capacity_limited:input.limited }
+  let page = owned.page
+  const report = { status:'PASS', capacity_limited:input.limited }
   await page.setViewportSize({ width:1440, height:900 })
-  // The first renderer request needs the same owned network-readiness barrier
-  // as login; otherwise it can fail before login ever reaches that barrier.
   stage = 'origin-navigation'
   await prepareOwnedLoopback(page, process.env.QA_ORIGIN)
   stage = 'api-ready'
@@ -34,7 +34,14 @@ try {
   stage = 'reload'
   await page.reload()
   stage = 'uploads'
-  await uploads(page,input,report,fixture)
+  await uploads(page,input,report,fixture, async () => {
+    owned = await freshBrowser(owned, nativeBrowser)
+    browser = owned.browser; page = owned.page
+    owned.context.setDefaultTimeout(20000)
+    await page.setViewportSize({ width:1440, height:900 })
+    await prepareOwnedLoopback(page, process.env.QA_ORIGIN)
+    return page
+  })
   console.log('stage=actual-managed-uploads-accepted')
   if (!input.limited) {
     stage = 'unread'
