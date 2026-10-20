@@ -3,6 +3,7 @@ from datetime import datetime
 import math
 import re
 from .results import PROFILES, OPERATIONS, require
+from tools.ci.runner_pool.routing import measurement_pool
 
 LEGACY_OPERATIONS=('go:database-preflight','go:test:all:uncached','go:no-skip','go:vet:all','go:build:all',
                    'screen-share:matrix','api:normal:2:20','api:reconnect:2:20','api:uploads:2:20:1024',
@@ -38,8 +39,8 @@ def compare(run,jobs,needs,legacy,parts,fanin):
                 and len({j['id'] for j in jobs['jobs']})==len(NAMES))
         require(all(type(j['id']) is int and j['id']>0 and type(j['run_id']) is int and j['run_id']==run_id
                     and type(j['run_attempt']) is int and j['run_attempt']==attempt
-                    and j['head_sha']==source and j['labels']==['ubuntu-24.04']
-                    and j['runner_group_name']=='GitHub Actions' for j in jobs['jobs']))
+                    and j['head_sha']==source for j in jobs['jobs']))
+        pool=measurement_pool(jobs['jobs'])
         by_name={j['name']:j for j in jobs['jobs']}
         identity={'run_id':str(run_id),'run_attempt':str(attempt)}
         current_operations=[name for names in OPERATIONS.values() for name in names]
@@ -70,7 +71,7 @@ def compare(run,jobs,needs,legacy,parts,fanin):
                 and len({by_name['profiles / '+n]['runner_id'] for n in PROFILES})==len(PROFILES)
                 and times[-1][0]>=max(t[1] for t in times[:-1]))
         return {'schema_version':1,'status':'PASS','source_revision':source,'run_id':run_id,'run_attempt':attempt,
-                'same_source_verified':True,'coverage_not_reduced':True,'old_new_equivalent':True,
+                'same_source_verified':True,'coverage_not_reduced':True,'old_new_equivalent':True,'runner_pool':pool,
                 'checked_operations':len(LEGACY_OPERATIONS),'samples_per_arm':1,'performance_gain_asserted':False,
                 'coverage_reference_revision':REFERENCE_REVISION,
                 'measurements':{

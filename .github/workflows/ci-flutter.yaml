@@ -60,7 +60,7 @@ jobs:
           retention-days: ${{ github.event_name == 'pull_request' && startsWith(github.ref, 'refs/pull/') && job.status == 'success' && 7 || 30 }}
   android:
     runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:

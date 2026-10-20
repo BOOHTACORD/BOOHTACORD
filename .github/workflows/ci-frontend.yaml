@@ -50,7 +50,7 @@ jobs:
 
   browser:
     runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
-    timeout-minutes: 20
+    timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:

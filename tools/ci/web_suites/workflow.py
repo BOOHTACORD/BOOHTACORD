@@ -33,7 +33,7 @@ def validate(document):
         for name in ('fast', 'browser', 'sfu'):
             job = jobs[name]
             require(job.get('if') is None and not job.get('needs') and not job.get('continue-on-error'))
-            require(job['runs-on'] == LINUX and job['timeout-minutes'] == '20')
+            require(job['runs-on'] == LINUX and job['timeout-minutes'] == ('25' if name == 'browser' else '20'))
             profile = {'fast': 'fast', 'browser': '${{ matrix.profile }}', 'sfu': 'sfu-network'}[name]
             commands = [s for s in job['steps'] if 'tools.ci.web_suites.run' in s.get('run', '')]
             require(len(commands) == 1 and commands[0].get('if') is None

@@ -30,7 +30,7 @@ def validate(document):
         'evidence_namespace': {'type': 'string', 'default': 'flutter'}}}})
     jobs = document.get('jobs', {})
     require(set(jobs) == {'dart', 'android', 'flutter'})
-    for profile, timeout in (('dart', '20'), ('android', '30')):
+    for profile, timeout in (('dart', '20'), ('android', '40')):
         job = jobs[profile]
         require(job.get('runs-on') == LINUX and job.get('timeout-minutes') == timeout
                 and not any(job.get(k) for k in ('if', 'needs', 'continue-on-error', 'environment', 'secrets')))

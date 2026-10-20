@@ -10,6 +10,14 @@ ROOT = Path(__file__).resolve().parents[3]
 
 
 class WorkflowTests(unittest.TestCase):
+    def test_shared_host_android_budget_is_finite_without_optional_commands(self):
+        value = self.document()
+        value['jobs']['android']['timeout-minutes'] = '40'
+        workflow.validate(value)
+        for minutes in ('0', '360', ''):
+            value['jobs']['android']['timeout-minutes'] = minutes
+            with self.subTest(minutes=minutes), self.assertRaises(ValueError): workflow.validate(value)
+
     def document(self):
         return yaml.load(normalized((ROOT / '.github/workflows/ci-flutter.yaml').read_text()), Loader=yaml.BaseLoader)
 

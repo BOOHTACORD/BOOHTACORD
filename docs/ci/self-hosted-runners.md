@@ -75,12 +75,18 @@ procedure below and requires fresh browser/Android timing acceptance.
 The guest's user Gradle profile shares a 2.5 GiB heap with in-process Kotlin
 compilation, disables persistent Gradle daemons and caps parallel workers at two.
 The two Android compatibility modes still execute sequentially, with their
-original assertions and job budgets.
+original assertions. Android has a finite 40-minute whole-job budget on the
+shared host: the observed cold sequence completed both Kotlin modes before
+30 minutes but the final separately inspected APK rebuild crossed that deadline.
 This profile is outside the checkout and leaves local developer settings intact.
 App and vendor Flutter tests use four concurrent test processes in the marked
 Linux pool, matching its four-CPU allocation. Both shadow cohorts use this
 same pool policy; hosted and local commands retain their SDK defaults.
-The full test inventory and existing job timeouts remain unchanged.
+The full test inventory and 30-second browser case deadlines remain unchanged.
+Browser profile jobs have a 25-minute overall budget, including SDK/asset setup,
+capture validation and mandatory uploads. Fast/SFU and Dart budgets remain 20
+minutes. These are bounded shared-host execution budgets, not faster-run claims
+or replacements for any assertion, source guard or mandatory artifact.
 Native microcopy zoom is checked per width and surface, with the original
 30-second deadline and full geometry, keyboard, tooltip and screenshot assertions
 for each of the fourteen combinations.
@@ -93,7 +99,7 @@ focus survives the mutation and refresh; the existing toggle guard prevents
 duplicate activation. Held-response tests cover channels, DMs and an intentional
 focus move before the response, without moving focus back programmatically.
 Both shadow cohorts read the same current-source test configurations; their
-verified command inventories and deadlines remain unchanged.
+verified command inventories and per-case deadlines remain unchanged.
 
 ## Isolation
 
@@ -136,3 +142,7 @@ repeating network, Docker, toolchain and lifecycle acceptance.
 metadata probes. Observe successful jobs on distinct registered runner IDs,
 then observe their removal and replacement by fresh IDs/guests. This is the
 rollout gate; unit tests or online registrations alone do not prove it.
+
+The manual backend functional shadow also targets the same heavy Linux pool.
+Comparison accepts a complete historical hosted cohort or a complete disposable
+cohort, rejects mixing the two, and records the measured pool explicitly.
