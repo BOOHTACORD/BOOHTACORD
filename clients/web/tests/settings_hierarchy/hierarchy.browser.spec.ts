@@ -23,14 +23,13 @@ async function fit(page: Page) {
     const r=e.getBoundingClientRect();return { text:e.textContent?.trim().slice(0,60), left:r.left, right:r.right, width:innerWidth, clipped:e.tagName==='BUTTON' && e.scrollWidth>e.clientWidth+2 }
   }))) { expect(row.left).toBeGreaterThanOrEqual(-1); expect(row.right).toBeLessThanOrEqual(row.width+1); expect(row.clipped,JSON.stringify(row)).toBe(false) }
 }
-for (const width of [390, 1024, 1440]) test(`settings inventory and hierarchy ${width}px`, async ({ page }, info) => {
+// Give each viewport/scene pair its own context and existing test deadline.
+for (const width of [390, 1024, 1440]) for (const scene of scenes) test(`settings inventory and hierarchy ${width}px ${scene}`, async ({ page }, info) => {
   await page.setViewportSize({ width, height: 900 })
-  for (const scene of scenes) {
-    await open(page, scene)
-    await fit(page)
-    await page.screenshot({ path: info.outputPath(`${scene.replaceAll(/[&=]/g, '-')}.png`), fullPage: true })
-    await expectAxeClear(page, 'main')
-  }
+  await open(page, scene)
+  await fit(page)
+  await page.screenshot({ path: info.outputPath(`${scene.replaceAll(/[&=]/g, '-')}.png`), fullPage: true })
+  await expectAxeClear(page, 'main')
 })
 for (const width of [390,1024,1440]) for (const scale of [100,200]) test(`basic and advanced audio preserve values and expose warnings ${width}/${scale}`, async ({page},info)=>{
   await page.setViewportSize({width,height:900});await open(page,'audio',scale)

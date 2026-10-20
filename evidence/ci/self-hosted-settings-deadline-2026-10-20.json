@@ -1,0 +1,68 @@
+{
+  "status": "PASS",
+  "scope": "CICD-12 settings fixture deadline POC; full source-bound CI still pending",
+  "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39368931494/job/118452788322",
+  "parent_source": "cd07231d284f116e5ae5563b9872b650ec7e0afc",
+  "before": {
+    "failed_cases": 3,
+    "test_timeout_ms": 30000,
+    "scenes_per_test": 13,
+    "widths": [
+      390,
+      1024,
+      1440
+    ],
+    "failure_calls": [
+      "page.goto",
+      "page.evaluate"
+    ],
+    "oom_kill": 0
+  },
+  "correction": {
+    "independent_inventory_cases": 39,
+    "scenes": 13,
+    "widths": [
+      390,
+      1024,
+      1440
+    ],
+    "test_timeout_ms_unchanged": 30000,
+    "workers_unchanged": 1,
+    "assertions": [
+      "open exact scene",
+      "fit geometry",
+      "full-page screenshot",
+      "axe main"
+    ],
+    "app_ui_changed": false
+  },
+  "controlled_before": {
+    "slow_mo_ms": 2000,
+    "width": 390,
+    "cases": 1,
+    "status": "FAIL",
+    "cause": "original30000ms test deadline"
+  },
+  "controlled_after": {
+    "slow_mo_ms": 2000,
+    "width": 390,
+    "cases": 13,
+    "status": "PASS",
+    "total_seconds": 38.9
+  },
+  "normal_full_settings": {
+    "status": "PASS",
+    "cases": 57,
+    "seconds": 23.5,
+    "node": "24.18.0",
+    "playwright": "1.63.0",
+    "os": "macOS"
+  },
+  "full_browser_voice": {
+    "status": "PENDING",
+    "planned_commands": 12,
+    "prepared_dependencies_and_assets": true,
+    "scope": "local existing dependencies/assets; no GitHub gate claim"
+  },
+  "release_gate": "NOT_RUN"
+}
