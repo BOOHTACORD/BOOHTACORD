@@ -6,7 +6,7 @@ import re
 import signal
 import time
 import uuid
-from .storage_docker import Docker
+from .storage_docker import Docker, DockerCommandError
 from .storage_lease import Lease, require
 
 CONFIG = '''[worker.oci]
@@ -92,7 +92,9 @@ class BuilderStorage:
                                transient_gc_target_bytes=8*1024**3,
                                gc_target_is_write_quota=False, setup_seconds=round(time.monotonic()-started,6))
             return self
-        except BaseException:
+        except BaseException as error:
+            if isinstance(error, DockerCommandError):
+                self.report['setup_failure'] = dict(operation=error.operation, reason=error.reason)
             self.finish(failed=True)
             raise
 
@@ -161,11 +163,19 @@ class BuilderStorage:
                 self.report['removed_image_count'] = self.cleanup(self.state)
                 self.lease.clear()
             require(self.lease.read() is None)
+            # Before acquiring any resources, an empty journal proves there is
+            # nothing owned to remove. Do not repeat a failed daemon preflight.
+            if self.state is None:
+                require(failed)
+                self.report.update(owned_resources_removed=True, status='FAIL')
+                return
             self.report.update(owned_resources_removed=True, filesystem_after=self.docker.snapshot(),
                                status='FAIL' if failed else 'PASS')
-        except BaseException:
+        except BaseException as error:
             self.report.update(status='FAIL', owned_resources_removed=False)
-            raise ValueError('Owned builder cleanup is incomplete; journal retained') from None
+            if isinstance(error, DockerCommandError):
+                self.report['cleanup_failure'] = dict(operation=error.operation, reason=error.reason)
+            raise ValueError('Owned builder cleanup or verification is incomplete') from None
         finally:
             self.report['cleanup_seconds'] = round(time.monotonic()-started,6)
             if self.old_signal is not None:
