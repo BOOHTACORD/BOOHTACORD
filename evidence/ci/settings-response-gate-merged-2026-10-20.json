@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "scope": "Protected ordinary PR476 merge; confirmed settings fixture defect only",
+  "status": "PASS",
+  "pr": 476,
+  "merge_revision": "88f42cfae324826f73e7b55810ee10f510b7f4f7",
+  "merge_tree": "8adb37482aaacac238bb7687ce328b6834364417",
+  "parent": "d9647ff793095f5e79f33fde3631838a4d05771d",
+  "api_head": "56d93f229feeb141d022d7d288b5730f3e67c71f",
+  "tested_merge": "319505c5964aabae7ac546f947f263a61b8761f5",
+  "run_id": 39373672627,
+  "attempt": 1,
+  "successful_jobs": 13,
+  "expected_skips": [
+    "backend",
+    "flutter",
+    "windows"
+  ],
+  "required_check": {
+    "id": 118470026925,
+    "app": 15368,
+    "head": "56d93f229feeb141d022d7d288b5730f3e67c71f",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "old_producer_619_runtime_inputs_match": false,
+  "old_producer_invalidated_by": [
+    "clients/web/tests/settings_hierarchy/hierarchy.browser.spec.ts",
+    "clients/web/tests/settings_hierarchy/response_gate.ts",
+    "clients/web/tests/settings_hierarchy/response_gate.unit.spec.ts",
+    "clients/web/vite.config.ts"
+  ],
+  "new_master_server_run": 39374816147,
+  "global_acceptance": "NO-GO",
+  "historical_controls_superseded": false
+}
