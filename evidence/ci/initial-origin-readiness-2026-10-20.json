@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "scope": "Initial owned renderer readiness and finite failure diagnostics; refs #401",
+  "base_revision": "27b152311e17d250c532454c3954ee6e742ccbf0",
+  "observed_originals": {
+    "matrix_base": "e738c3709a8d60ffa298f36639b03c05844c8ab2",
+    "failed_runs": [
+      39364604424,
+      39364662829
+    ],
+    "source_operation": "first page.goto before health/login",
+    "original_root_cause": "UNVERIFIED",
+    "original_failures_superseded": false
+  },
+  "change": {
+    "first_navigation_uses_existing_owned_health_stability_barrier": true,
+    "new_retry_policy_added": false,
+    "mutations_retried": false,
+    "application_assertions_changed": false,
+    "application_deadlines_changed": false,
+    "temporary_twenty_launch_probe_included": false,
+    "diagnostics": "Finite error/process/capture categories only; raw errors/URLs/logs not exported; historical schema one accepted"
+  },
+  "focused_validation": {
+    "python_actual_acceptance": 23,
+    "python_controller": 1,
+    "node_readiness_and_diagnostics": 17,
+    "status": "PASS",
+    "tests_before_implementation": "New finite schema/export tests failed before implementation",
+    "test_invocation_corrections": [
+      "Nonexistent test_evidence module removed from invocation",
+      "Namespace test directory loaded by explicit module names instead of discovery"
+    ],
+    "syntax_and_diff": "PASS"
+  },
+  "hosted_runtime_at_creation": "NOT_RUN",
+  "global_acceptance": "NO-GO",
+  "root_cause_of_historical_failures": "UNVERIFIED"
+}
