@@ -1,0 +1,164 @@
+{
+  "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+  "status": "PASS",
+  "phase": "test-complete",
+  "process_observed": true,
+  "observed_pids": [
+    "2069"
+  ],
+  "raw_output_saved": false,
+  "assertion_retries": 0,
+  "boot_verified": true,
+  "test_source_sha256": "179acb7ae964902aa470f09bb4cf8455b66cc86da681a2a6e693da3d2e6e6995",
+  "driver_sha256": "8526cb5ee3e352fb75ab5e0e90fd9310096f1a29088b4e668247f5f52e3db3bd",
+  "controller_exit_code": 0,
+  "finite_output_events": [
+    "gradle-build",
+    "install",
+    "test-complete"
+  ],
+  "captures": [
+    {
+      "name": "native-admin.png",
+      "sha256": "81ce9bb46de492cb4186ff7646e72aa128b264eab1b68430fd3bd19f479e544c",
+      "bytes": 162205,
+      "width": 1080,
+      "height": 2400,
+      "visual_observation": "20 seeded synthetic members; expanded member role/block/save/reset/timeout controls fit; vertical list continues below viewport."
+    },
+    {
+      "name": "native-audio.png",
+      "sha256": "b958c742382aa3710c3dfe898e604e2a6575dc704ff17c8ca27539accc5d9aa8",
+      "bytes": 194461,
+      "width": 1080,
+      "height": 2400,
+      "visual_observation": "Device selectors and both local test buttons visible. No audio capture/playback or remote audibility asserted."
+    },
+    {
+      "name": "native-auth.png",
+      "sha256": "512ef35fe9e17c9e402f37e9089b9ba64a0947c9a19b68aabbdb6423074f7231",
+      "bytes": 111896,
+      "width": 1080,
+      "height": 2400,
+      "visual_observation": "Login fields/action and local endpoint fully visible. Observed QA app identity 1.0.43 (78), not a stable signed release."
+    },
+    {
+      "name": "native-navigation.png",
+      "sha256": "c24e1a50f844ca3f9aefe50c46c9309be2c9cf79ae015c64d41d66d47ccb0cae",
+      "bytes": 77111,
+      "width": 1080,
+      "height": 2400,
+      "visual_observation": "Guild drawer and settings action fit;20 synthetic participants; empty initial channel list is intentional fixture data."
+    },
+    {
+      "name": "native-profile.png",
+      "sha256": "aa2de8851daff13a44e95453ed845a441788ad1c4f583264b4574db64d5ddc33",
+      "bytes": 118679,
+      "width": 1080,
+      "height": 2400,
+      "visual_observation": "Profile fields/save state fit; settings tabs extend in their horizontal viewport; no full tab inventory claim."
+    },
+    {
+      "name": "native-screen-motion-independent-fps.png",
+      "sha256": "30087164e780c3727ef2a5272d4305032f09f5acb02182ba36f8d215e0996608",
+      "bytes": 218405,
+      "width": 1080,
+      "height": 2400,
+      "visual_observation": "After content scroll, Motion selected while independent720p/15FPS preserved; bottom cancel/start controls remain visible."
+    },
+    {
+      "name": "native-screen-text-independent-fps.png",
+      "sha256": "d6c9ba504fd21bd39c0fea551a289c370405846ae7a0e996221236ecf87ff450",
+      "bytes": 202121,
+      "width": 1080,
+      "height": 2400,
+      "visual_observation": "Text selected with720p/15FPS; bottom cancel/start controls fully visible. Capture was cancelled, not started."
+    },
+    {
+      "name": "native-signed-out.png",
+      "sha256": "512ef35fe9e17c9e402f37e9089b9ba64a0947c9a19b68aabbdb6423074f7231",
+      "bytes": 111896,
+      "width": 1080,
+      "height": 2400,
+      "visual_observation": "Byte-identical to initial signed-out frame, confirmed by hash; authenticated state exited."
+    },
+    {
+      "name": "native-workspace.png",
+      "sha256": "7354afb2f769661a7713c833847c69dd5c6bbf2c749cf75b290997ce09f30963",
+      "bytes": 36133,
+      "width": 1080,
+      "height": 2400,
+      "visual_observation": "Drawer closes; select-channel empty state and header actions visible."
+    }
+  ],
+  "apk_hashes": [
+    "6e43aab75ee2f6567b49ba53801b79dc26e13b7f9dc01eb709306df3712338c5"
+  ],
+  "stock_runtime": {
+    "status": "PASS",
+    "platform": "android",
+    "device": "emulator-5580",
+    "mocks": false,
+    "scope": "auth, authenticated workspace, profile/audio/admin panels, logout",
+    "media": "NOT_RUN",
+    "physical_device": false
+  },
+  "emulator_stopped": true,
+  "schema_version": 1,
+  "scope": "Basic Android real API/native UI smoke only",
+  "actual_runtime": true,
+  "mocks": false,
+  "tracked_source_files_verified": 5235,
+  "tracked_source_mismatches": [],
+  "flutter_framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8",
+  "flutter_version": "3.47.7",
+  "dart_version": "3.13.5",
+  "visual_scope": "9 original1080x2400 captures,8 unique images inspected at original resolution; identical signed-out image hash verified",
+  "original_failure": "observations.json retained as original pre-app setup FAIL; app assertions were not executed before Buildx correction",
+  "controller_launches": 2,
+  "app_assertion_retries": 0,
+  "stable_candidate": "NOT_RUN",
+  "media": "NOT_RUN",
+  "physical_device": false,
+  "cleanup": {
+    "containers_remaining": [],
+    "adb_devices": "List of devices attached",
+    "default_docker_context": "default",
+    "qa_colima_final_status": "Stopped, restored to initial state"
+  },
+  "private_artifact_cleanup": {
+    "compiled_QA_password_APK_and_build_tree_removed": true,
+    "owned_AVD_userdata_removed": true,
+    "original_captures_and_public_hashes_retained": true,
+    "raw_logs_saved": false
+  },
+  "infrastructure_correction": {
+    "original_setup_failure": "Legacy Docker builder rejects mandatory RUN --mount; app/assertions not run",
+    "official_package": "Homebrew docker-buildx 0.38.0",
+    "plugin_version": "github.com/docker/buildx v0.38.0 Homebrew",
+    "configuration": "Task-owned DOCKER_CONFIG and explicit local Colima unix socket; global Docker config/context not edited",
+    "stock_controller_launches_planned": 2,
+    "app_assertion_retries": 0
+  },
+  "original_setup_failure": {
+    "source_revision": "688925dc36bfc3f8c65a590053e0f1e91651cf8d",
+    "status": "FAIL",
+    "phase": "stock-controller",
+    "process_observed": false,
+    "observed_pids": [],
+    "raw_output_saved": false,
+    "assertion_retries": 0,
+    "boot_verified": true,
+    "test_source_sha256": "179acb7ae964902aa470f09bb4cf8455b66cc86da681a2a6e693da3d2e6e6995",
+    "driver_sha256": "8526cb5ee3e352fb75ab5e0e90fd9310096f1a29088b4e668247f5f52e3db3bd",
+    "controller_exit_code": 1,
+    "finite_output_events": [],
+    "captures": [],
+    "apk_hashes": [],
+    "emulator_stopped": true
+  },
+  "operational_wrapper_hashes": {
+    "run-android-688-original.py": "11c4e1f51ac212874b886eb67dccd50b0152fcc79aea9153eaaa1bf8015fe9ba",
+    "run-android-688.py": "01219ffe209494fa2e1b30b2070781ea407d22685c54fa4b3c36092ef1e3f94d"
+  }
+}

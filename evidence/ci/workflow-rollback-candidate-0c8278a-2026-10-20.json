@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "scope": "local-configuration-rollback-candidate",
+  "source_revision": "0c8278a3363cb98fd6933388e75809a7ad5aa75d",
+  "candidate_revision": "916c647c9fba704c4dc5e711b71684758435cea2",
+  "candidate_tree": "0f8cf058df9ae282b0b71e8d648c31de49e8de03",
+  "candidate_branch": "codex/workflow-rollback-0c8278a3",
+  "checkpoint": "c569477fc0d125f3313e73742c34a2ea6aa5e454",
+  "patch_sha256": "bdd07384a9c0f9b24ac7af27bdceeb735ace22496229f9e650e76838ab4fbd71",
+  "production_mutation": false,
+  "remote_refs_changed": false,
+  "checks": [
+    {
+      "name": "action-pins",
+      "status": "PASS",
+      "exit_code": 0,
+      "output_sha256": "f23937dd1cd31b63aa4d6c0fe1fef45e4730b3a3e8763fce0c61889477f74c6b"
+    },
+    {
+      "name": "selection",
+      "status": "PASS",
+      "exit_code": 0,
+      "output_sha256": "ffa919c65ff7006997e1675aaca23b80b2bcef6a84003391ffce0e628619ab1b"
+    },
+    {
+      "name": "delivery",
+      "status": "PASS",
+      "exit_code": 0,
+      "output_sha256": "32bc10db9d13a7169573037ecd96aba1927d399fc6cbc089dc2c2b1c0efffd83"
+    },
+    {
+      "name": "native",
+      "status": "PASS",
+      "exit_code": 0,
+      "output_sha256": "16b22fae703bbef676fb700dba60cc83f6ddeb5ded92f139e8ac0657947c8e00"
+    },
+    {
+      "name": "actionlint",
+      "status": "PASS",
+      "exit_code": 0,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "eight-focused-controls",
+      "status": "PASS",
+      "exit_code": 0,
+      "output_sha256": "a626407facf1102b512cc38f00f6e7d889aa6280a5c03d1722ac6d1c4eb08dc5"
+    }
+  ],
+  "preserved_tree_proofs": [
+    {
+      "path": "backend",
+      "source_tree": "94a19beaa4f9c96a67dae94a56a0e84758ff7fc3",
+      "candidate_tree": "94a19beaa4f9c96a67dae94a56a0e84758ff7fc3"
+    },
+    {
+      "path": "clients",
+      "source_tree": "dcbb25d0d7f8b77e9ec0377707f9a525bb468997",
+      "candidate_tree": "dcbb25d0d7f8b77e9ec0377707f9a525bb468997"
+    },
+    {
+      "path": "contracts",
+      "source_tree": "c2386054d8c9b7d69ec39bbc98ecfc444a3f99ec",
+      "candidate_tree": "c2386054d8c9b7d69ec39bbc98ecfc444a3f99ec"
+    },
+    {
+      "path": "deploy",
+      "source_tree": "0e9be8e824e3e96b38365839b7089ca028ade775",
+      "candidate_tree": "0e9be8e824e3e96b38365839b7089ca028ade775"
+    },
+    {
+      "path": "tools/build",
+      "source_tree": "4fe1ad9a98bf0f8f61269323c16db2f8bbe22189",
+      "candidate_tree": "4fe1ad9a98bf0f8f61269323c16db2f8bbe22189"
+    },
+    {
+      "path": "tools/release",
+      "source_tree": "3e6877fac12ccdda7a7f9bc80ced262057483555",
+      "candidate_tree": "3e6877fac12ccdda7a7f9bc80ced262057483555"
+    },
+    {
+      "path": "tools/ops",
+      "source_tree": "92921e3e427af7fc04c4f635ef43dd82a43e863c",
+      "candidate_tree": "92921e3e427af7fc04c4f635ef43dd82a43e863c"
+    },
+    {
+      "path": "tools/qa",
+      "source_tree": "75b74d5ef6f8860f92ccb1b2435345c681f0dc57",
+      "candidate_tree": "75b74d5ef6f8860f92ccb1b2435345c681f0dc57"
+    },
+    {
+      "path": "tools/verify/contracts",
+      "source_tree": "99a6dbd251d571d8d9acc549c4ce5a20b2b1caa6",
+      "candidate_tree": "99a6dbd251d571d8d9acc549c4ce5a20b2b1caa6"
+    },
+    {
+      "path": "tools/verify/openapi_parity",
+      "source_tree": "76ad823a4cbb6573cf306af517c8cdd32dfd4b78",
+      "candidate_tree": "76ad823a4cbb6573cf306af517c8cdd32dfd4b78"
+    },
+    {
+      "path": "evidence",
+      "source_tree": "f2e4a33cb3fad30f5d98504860ffcc98d8ff59f6",
+      "candidate_tree": "f2e4a33cb3fad30f5d98504860ffcc98d8ff59f6"
+    },
+    {
+      "path": "docs",
+      "source_tree": "0dac7fc782df34657abee956ede73350a0ef259e",
+      "candidate_tree": "0dac7fc782df34657abee956ede73350a0ef259e"
+    },
+    {
+      "path": "backlog",
+      "source_tree": "878b0fb02bd8f72047df0f47165139c53bd82e07",
+      "candidate_tree": "878b0fb02bd8f72047df0f47165139c53bd82e07"
+    }
+  ],
+  "product_and_evidence_preserved": true,
+  "configuration_paths": [
+    ".github/workflows/backend-ci-shadow.yaml",
+    ".github/workflows/build-server.yaml",
+    ".github/workflows/ci-contracts.yaml",
+    ".github/workflows/ci-cutover-review.yaml",
+    ".github/workflows/ci-observability.yaml",
+    ".github/workflows/ci.yaml",
+    ".github/workflows/native-master.yaml",
+    ".github/workflows/qa-compatible-rollback.yaml",
+    "Taskfile.yml",
+    "tools/ci/actual_acceptance/catalog.py",
+    "tools/ci/actual_acceptance/evidence.py",
+    "tools/ci/actual_acceptance/run.py",
+    "tools/ci/actual_acceptance/test_browser_failure.py",
+    "tools/ci/actual_acceptance/test_diagnostics.py",
+    "tools/ci/backend_gates/shadow_compare.py",
+    "tools/ci/backend_gates/shadow_legacy.py",
+    "tools/ci/backend_gates/shadow_measure.py",
+    "tools/ci/backend_gates/shadow_workflow.py",
+    "tools/ci/backend_gates/test_shadow.py",
+    "tools/ci/backend_gates/test_shadow_measure.py",
+    "tools/ci/backend_gates/test_shadow_workflow.py",
+    "tools/ci/master_quality/test_workflow.py",
+    "tools/ci/master_quality/workflow.py",
+    "tools/ci/migration/criteria-v1.json",
+    "tools/ci/migration/readiness.py",
+    "tools/ci/migration/rollback.py",
+    "tools/ci/migration/test_controls.py",
+    "tools/ci/migration/test_readiness.py",
+    "tools/ci/migration/test_receipts.py",
+    "tools/ci/migration/test_rollback.py",
+    "tools/ci/migration/test_workflow.py",
+    "tools/ci/migration/workflow.py",
+    "tools/ci/observability/alerts.py",
+    "tools/ci/observability/network.py",
+    "tools/ci/observability/policy-v1.json",
+    "tools/ci/observability/policy.py",
+    "tools/ci/observability/report.py",
+    "tools/ci/observability/summary.py",
+    "tools/ci/observability/test_alerts.py",
+    "tools/ci/observability/test_network.py",
+    "tools/ci/observability/test_report.py",
+    "tools/ci/observability/test_summary.py",
+    "tools/ci/observability/test_triage.py",
+    "tools/ci/observability/test_workflow.py",
+    "tools/ci/observability/triage.py",
+    "tools/ci/observability/workflow.py",
+    "tools/verify/github_workflows/verify-github-workflows.ps1",
+    "tools/verify/workflows/delivery.py",
+    "tools/verify/workflows/required.py",
+    "tools/verify/workflows/test_selection.py"
+  ],
+  "status": "PASS",
+  "source_restored": true,
+  "limitations": [
+    "Local configuration policy/graph/negative controls only, not application/native/production execution or rollback.",
+    "Eight focused routing subcases do not replace actual GitHub control PR matrix.",
+    "Candidate retained locally for review, not pushed or merged. Historical checkpoints restore configuration only; preserve all product/release/evidence trees."
+  ]
+}
