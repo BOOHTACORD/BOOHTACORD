@@ -1,0 +1,701 @@
+{
+  "schema_version": 1,
+  "scope": "Eight exact-base actual routing controls; unexpected failures retained; final acceptance remains NO-GO",
+  "base_revision": "e738c3709a8d60ffa298f36639b03c05844c8ab2",
+  "status": "FAIL",
+  "passed": 6,
+  "failed": 2,
+  "all_control_prs_closed_without_merge": true,
+  "cases": [
+    {
+      "name": "docs-only",
+      "pr": 464,
+      "head": "dcd84eccad31d638672c8dbb2ebda5f79488b7a6",
+      "tested_merge": "8e5f91f80b8a99b69b21e75cdca9b66d79ad320d",
+      "tree": "51bc9db10b50092fcc325e3b882a1d753ee4b2fa",
+      "base_revision": "e738c3709a8d60ffa298f36639b03c05844c8ab2",
+      "schema_version": 1,
+      "kind": "actual-routing-control",
+      "status": "PASS",
+      "run_id": 39364586909,
+      "actual_workflow": true,
+      "scope": "Actual ordinary GitHub CI routing/required-status control; one inert text marker",
+      "expected_roles": {
+        "changes": "success",
+        "contracts / contracts": "success",
+        "ci-required": "success",
+        "backend": "skipped",
+        "frontend": "skipped",
+        "flutter": "skipped",
+        "windows": "skipped",
+        "actual": "skipped"
+      },
+      "selector_values_verified": true,
+      "selected_gates": [
+        "contracts"
+      ],
+      "required_check": {
+        "id": 118439203805,
+        "name": "ci-required",
+        "status": "completed",
+        "conclusion": "success",
+        "head": "dcd84eccad31d638672c8dbb2ebda5f79488b7a6",
+        "app": 15368
+      },
+      "artifact_sha256_verified": true,
+      "triage_payload_sha256": "eec1253dac38dab601db23397f8c6a0e1dc526ae89b5d7055dbf11e3ed2572da",
+      "original_triage": {
+        "alerts": [],
+        "api_head_sha": "dcd84eccad31d638672c8dbb2ebda5f79488b7a6",
+        "completed_execution_seconds": 159.0,
+        "components": [],
+        "confirmed_flake": "UNKNOWN",
+        "confirmed_flake_rate": null,
+        "failures": [],
+        "first_start_delay_seconds": 17.0,
+        "master_defect": null,
+        "metadata_complete": true,
+        "outcome": "PASS",
+        "queue_note": "Job creation/start delay may include dependencies, dispatch and approvals",
+        "queue_seconds": null,
+        "retry_count": 0,
+        "retry_policy": "Only bounded Actions metadata GET transport retry; never repeat a gate/test/signing/health assertion",
+        "retry_test": false,
+        "run_attempt": "1",
+        "run_id": "39364586909",
+        "schema_version": 1,
+        "scope": "pr",
+        "selected_gates": [
+          "contracts"
+        ],
+        "source_binding": "checked_pr_merge_parent",
+        "source_revision": "8e5f91f80b8a99b69b21e75cdca9b66d79ad320d",
+        "timing_note": "Current aggregate may still be running; completed-job seconds only",
+        "total_execution_seconds": null,
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39364586909"
+      },
+      "source_binding_verified": true,
+      "release_and_physical_acceptance": "NOT_RUN",
+      "control_closed_without_merge": true
+    },
+    {
+      "name": "backend",
+      "pr": 465,
+      "head": "bea80e23698148ced4f431a61cfa7deaa577e20f",
+      "tested_merge": "ffa794ad25af690f6c270cbc0f162b7fc4dc542d",
+      "tree": "d587e0b09073d7df727b81ff249d52f1756ab9c5",
+      "base_revision": "e738c3709a8d60ffa298f36639b03c05844c8ab2",
+      "schema_version": 1,
+      "kind": "actual-routing-control",
+      "status": "PASS",
+      "run_id": 39364595121,
+      "actual_workflow": true,
+      "scope": "Actual ordinary GitHub CI routing/required-status control; one inert text marker",
+      "expected_roles": {
+        "changes": "success",
+        "contracts / contracts": "success",
+        "ci-required": "success",
+        "backend / backend": "success",
+        "frontend": "skipped",
+        "flutter": "skipped",
+        "windows": "skipped",
+        "actual / actual-acceptance": "success"
+      },
+      "selector_values_verified": true,
+      "selected_gates": [
+        "actual",
+        "backend",
+        "contracts"
+      ],
+      "required_check": {
+        "id": 118442867478,
+        "name": "ci-required",
+        "status": "completed",
+        "conclusion": "success",
+        "head": "bea80e23698148ced4f431a61cfa7deaa577e20f",
+        "app": 15368
+      },
+      "artifact_sha256_verified": true,
+      "triage_payload_sha256": "c341254b98e82da2d8364cc9c96c0142b61df22cf1534358e67f1ba5729f4a99",
+      "original_triage": {
+        "alerts": [],
+        "api_head_sha": "bea80e23698148ced4f431a61cfa7deaa577e20f",
+        "completed_execution_seconds": 1840.0,
+        "components": [
+          "backend"
+        ],
+        "confirmed_flake": "UNKNOWN",
+        "confirmed_flake_rate": null,
+        "failures": [],
+        "first_start_delay_seconds": 14.0,
+        "master_defect": null,
+        "metadata_complete": true,
+        "outcome": "PASS",
+        "queue_note": "Job creation/start delay may include dependencies, dispatch and approvals",
+        "queue_seconds": null,
+        "retry_count": 0,
+        "retry_policy": "Only bounded Actions metadata GET transport retry; never repeat a gate/test/signing/health assertion",
+        "retry_test": false,
+        "run_attempt": "1",
+        "run_id": "39364595121",
+        "schema_version": 1,
+        "scope": "pr",
+        "selected_gates": [
+          "contracts",
+          "backend",
+          "actual"
+        ],
+        "source_binding": "checked_pr_merge_parent",
+        "source_revision": "ffa794ad25af690f6c270cbc0f162b7fc4dc542d",
+        "timing_note": "Current aggregate may still be running; completed-job seconds only",
+        "total_execution_seconds": null,
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39364595121"
+      },
+      "source_binding_verified": true,
+      "release_and_physical_acceptance": "NOT_RUN",
+      "control_closed_without_merge": true
+    },
+    {
+      "name": "web",
+      "pr": 466,
+      "head": "d0abd343daeee747226de8dfffc6605ba8feda8b",
+      "tested_merge": "422aac6ac1c40e325f2f4cea4e1d10b83c3575dc",
+      "tree": "f6a46693215477fe93cf4e084563afc09bd5b147",
+      "base_revision": "e738c3709a8d60ffa298f36639b03c05844c8ab2",
+      "status": "FAIL",
+      "run_id": 39364604424,
+      "diagnostic": {
+        "status": "FAIL",
+        "run_id": 39364604424,
+        "source_merge": "422aac6ac1c40e325f2f4cea4e1d10b83c3575dc",
+        "api_head": "d0abd343daeee747226de8dfffc6605ba8feda8b",
+        "owned_resources_removed": true,
+        "files": [
+          "next/diagnostics/next-browser.json",
+          "next/diagnostics/next-controller.json",
+          "next/result.json"
+        ],
+        "diagnostics": {
+          "next-controller.json": {
+            "capacity_profile": "limited",
+            "failure_type": "CalledProcessError",
+            "schema_version": 1,
+            "stage": "browser-scenario",
+            "status": "FAIL"
+          },
+          "next-browser.json": {
+            "failure_type": "Error",
+            "frames": [
+              {
+                "column": 14,
+                "line": 19,
+                "module": "scenario.mjs"
+              }
+            ],
+            "schema_version": 1,
+            "stage": "browser-launch",
+            "status": "FAIL"
+          }
+        }
+      },
+      "required_check": {
+        "id": 118445722777,
+        "status": "completed",
+        "conclusion": "failure",
+        "head": "d0abd343daeee747226de8dfffc6605ba8feda8b",
+        "app": 15368
+      },
+      "artifact": {
+        "id": 12239097658,
+        "node_id": "MDg6QXJ0aWZhY3QxMjIzOTA5NzY1OA==",
+        "name": "actual-next-422aac6ac1c40e325f2f4cea4e1d10b83c3575dc-39364604424-1",
+        "size_in_bytes": 1256,
+        "url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12239097658",
+        "archive_download_url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12239097658/zip",
+        "expired": false,
+        "digest": "sha256:48ffb1697857394c6af3149f7b52c480109130e0ee8ef93fd24d8b2831f49633",
+        "created_at": "2026-10-20T03:34:48Z",
+        "updated_at": "2026-10-20T03:34:48Z",
+        "expires_at": "2026-11-19T03:34:47Z",
+        "workflow_run": {
+          "id": 39364604424,
+          "repository_id": 1398599178,
+          "head_repository_id": 1398599178,
+          "head_branch": "codex/qa401-619b68a1-web-20261020",
+          "head_sha": "d0abd343daeee747226de8dfffc6605ba8feda8b"
+        }
+      },
+      "root_cause": "UNVERIFIED",
+      "blind_rerun_launched": false,
+      "control_closed_without_merge": true
+    },
+    {
+      "name": "flutter",
+      "pr": 467,
+      "head": "6fdefe34b9f641fc074f035c71b4dfca457d9224",
+      "tested_merge": "25d5029155ab2d41c95720f7d8051c955e4c9cd0",
+      "tree": "e3667b225e856ed1d81ca693d735c8f545b47558",
+      "base_revision": "e738c3709a8d60ffa298f36639b03c05844c8ab2",
+      "schema_version": 1,
+      "kind": "actual-routing-control",
+      "status": "PASS",
+      "run_id": 39364611485,
+      "actual_workflow": true,
+      "scope": "Actual ordinary GitHub CI routing/required-status control; one inert text marker",
+      "expected_roles": {
+        "changes": "success",
+        "contracts / contracts": "success",
+        "ci-required": "success",
+        "backend": "skipped",
+        "frontend": "skipped",
+        "flutter / flutter": "success",
+        "windows / windows": "success",
+        "actual / actual-acceptance": "success"
+      },
+      "selector_values_verified": true,
+      "selected_gates": [
+        "actual",
+        "contracts",
+        "flutter",
+        "windows"
+      ],
+      "required_check": {
+        "id": 118444165310,
+        "name": "ci-required",
+        "status": "completed",
+        "conclusion": "success",
+        "head": "6fdefe34b9f641fc074f035c71b4dfca457d9224",
+        "app": 15368
+      },
+      "artifact_sha256_verified": true,
+      "triage_payload_sha256": "159861f51ec5d2e1641b47fb677b1f297bffe9dc5a168ba04e4ecced6bc6f5fd",
+      "original_triage": {
+        "alerts": [],
+        "api_head_sha": "6fdefe34b9f641fc074f035c71b4dfca457d9224",
+        "completed_execution_seconds": 3758.0,
+        "components": [
+          "flutter",
+          "windows"
+        ],
+        "confirmed_flake": "UNKNOWN",
+        "confirmed_flake_rate": null,
+        "failures": [],
+        "first_start_delay_seconds": 14.0,
+        "master_defect": null,
+        "metadata_complete": true,
+        "outcome": "PASS",
+        "queue_note": "Job creation/start delay may include dependencies, dispatch and approvals",
+        "queue_seconds": null,
+        "retry_count": 0,
+        "retry_policy": "Only bounded Actions metadata GET transport retry; never repeat a gate/test/signing/health assertion",
+        "retry_test": false,
+        "run_attempt": "1",
+        "run_id": "39364611485",
+        "schema_version": 1,
+        "scope": "pr",
+        "selected_gates": [
+          "contracts",
+          "flutter",
+          "windows",
+          "actual"
+        ],
+        "source_binding": "checked_pr_merge_parent",
+        "source_revision": "25d5029155ab2d41c95720f7d8051c955e4c9cd0",
+        "timing_note": "Current aggregate may still be running; completed-job seconds only",
+        "total_execution_seconds": null,
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39364611485"
+      },
+      "source_binding_verified": true,
+      "release_and_physical_acceptance": "NOT_RUN",
+      "control_closed_without_merge": true
+    },
+    {
+      "name": "windows",
+      "pr": 468,
+      "head": "518ddfdd6a8b0a60eeb4445c1e03c94947de6488",
+      "tested_merge": "3c3e06740ae849f2f5fe6f4a4926ff084dbd1b97",
+      "tree": "d06302f5a8c614310d9f5fb98fe92d2003a71133",
+      "base_revision": "e738c3709a8d60ffa298f36639b03c05844c8ab2",
+      "schema_version": 1,
+      "kind": "actual-routing-control",
+      "status": "PASS",
+      "run_id": 39364636149,
+      "actual_workflow": true,
+      "scope": "Actual ordinary GitHub CI routing/required-status control; one inert text marker",
+      "expected_roles": {
+        "changes": "success",
+        "contracts / contracts": "success",
+        "ci-required": "success",
+        "backend": "skipped",
+        "frontend": "skipped",
+        "flutter / flutter": "success",
+        "windows / windows": "success",
+        "actual / actual-acceptance": "success"
+      },
+      "selector_values_verified": true,
+      "selected_gates": [
+        "actual",
+        "contracts",
+        "flutter",
+        "windows"
+      ],
+      "required_check": {
+        "id": 118444794015,
+        "name": "ci-required",
+        "status": "completed",
+        "conclusion": "success",
+        "head": "518ddfdd6a8b0a60eeb4445c1e03c94947de6488",
+        "app": 15368
+      },
+      "artifact_sha256_verified": true,
+      "triage_payload_sha256": "1c7dc6eabbea319071e916508dc39a932160dafb21a46a825400a1683db1c952",
+      "original_triage": {
+        "alerts": [],
+        "api_head_sha": "518ddfdd6a8b0a60eeb4445c1e03c94947de6488",
+        "completed_execution_seconds": 4030.0,
+        "components": [
+          "flutter",
+          "windows"
+        ],
+        "confirmed_flake": "UNKNOWN",
+        "confirmed_flake_rate": null,
+        "failures": [],
+        "first_start_delay_seconds": 142.0,
+        "master_defect": null,
+        "metadata_complete": true,
+        "outcome": "PASS",
+        "queue_note": "Job creation/start delay may include dependencies, dispatch and approvals",
+        "queue_seconds": null,
+        "retry_count": 0,
+        "retry_policy": "Only bounded Actions metadata GET transport retry; never repeat a gate/test/signing/health assertion",
+        "retry_test": false,
+        "run_attempt": "1",
+        "run_id": "39364636149",
+        "schema_version": 1,
+        "scope": "pr",
+        "selected_gates": [
+          "contracts",
+          "flutter",
+          "windows",
+          "actual"
+        ],
+        "source_binding": "checked_pr_merge_parent",
+        "source_revision": "3c3e06740ae849f2f5fe6f4a4926ff084dbd1b97",
+        "timing_note": "Current aggregate may still be running; completed-job seconds only",
+        "total_execution_seconds": null,
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39364636149"
+      },
+      "source_binding_verified": true,
+      "release_and_physical_acceptance": "NOT_RUN",
+      "control_closed_without_merge": true
+    },
+    {
+      "name": "contracts",
+      "pr": 469,
+      "head": "af7928248c32d51e872e32f0515e03f0dc548c27",
+      "tested_merge": "1f5fa12ec6738f82fd1886ea8b8789a008779bb8",
+      "tree": "3f8d681ca3632199b5fbd0dbc0506a9fa0e48e2c",
+      "base_revision": "e738c3709a8d60ffa298f36639b03c05844c8ab2",
+      "schema_version": 1,
+      "kind": "actual-routing-control",
+      "status": "PASS",
+      "run_id": 39364647006,
+      "actual_workflow": true,
+      "scope": "Actual ordinary GitHub CI routing/required-status control; one inert text marker",
+      "expected_roles": {
+        "changes": "success",
+        "contracts / contracts": "success",
+        "ci-required": "success",
+        "backend / backend": "success",
+        "frontend / frontend": "success",
+        "flutter / flutter": "success",
+        "windows / windows": "success",
+        "actual / actual-acceptance": "success"
+      },
+      "selector_values_verified": true,
+      "selected_gates": [
+        "actual",
+        "backend",
+        "contracts",
+        "flutter",
+        "web",
+        "windows"
+      ],
+      "required_check": {
+        "id": 118447124940,
+        "name": "ci-required",
+        "status": "completed",
+        "conclusion": "success",
+        "head": "af7928248c32d51e872e32f0515e03f0dc548c27",
+        "app": 15368
+      },
+      "artifact_sha256_verified": true,
+      "triage_payload_sha256": "a8bc30b02a5b17d192ef8ca2e7bb75b1bb570934bdefaac0aefd97e6939aaa25",
+      "original_triage": {
+        "alerts": [],
+        "api_head_sha": "af7928248c32d51e872e32f0515e03f0dc548c27",
+        "completed_execution_seconds": 5983.0,
+        "components": [
+          "backend",
+          "web",
+          "flutter",
+          "windows"
+        ],
+        "confirmed_flake": "UNKNOWN",
+        "confirmed_flake_rate": null,
+        "failures": [],
+        "first_start_delay_seconds": 290.0,
+        "master_defect": null,
+        "metadata_complete": true,
+        "outcome": "PASS",
+        "queue_note": "Job creation/start delay may include dependencies, dispatch and approvals",
+        "queue_seconds": null,
+        "retry_count": 0,
+        "retry_policy": "Only bounded Actions metadata GET transport retry; never repeat a gate/test/signing/health assertion",
+        "retry_test": false,
+        "run_attempt": "1",
+        "run_id": "39364647006",
+        "schema_version": 1,
+        "scope": "pr",
+        "selected_gates": [
+          "contracts",
+          "backend",
+          "web",
+          "flutter",
+          "windows",
+          "actual"
+        ],
+        "source_binding": "checked_pr_merge_parent",
+        "source_revision": "1f5fa12ec6738f82fd1886ea8b8789a008779bb8",
+        "timing_note": "Current aggregate may still be running; completed-job seconds only",
+        "total_execution_seconds": null,
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39364647006"
+      },
+      "source_binding_verified": true,
+      "release_and_physical_acceptance": "NOT_RUN",
+      "control_closed_without_merge": true
+    },
+    {
+      "name": "shared",
+      "pr": 470,
+      "head": "3353a082f1ebebe6e63caea2f035ac653fa974dd",
+      "tested_merge": "6992498f278fa20e54f7877ffd2620f24beb87de",
+      "tree": "20d621316cc41b3272f64ae652bea684dc98988a",
+      "base_revision": "e738c3709a8d60ffa298f36639b03c05844c8ab2",
+      "schema_version": 1,
+      "kind": "actual-routing-control",
+      "status": "PASS",
+      "run_id": 39364653849,
+      "actual_workflow": true,
+      "scope": "Actual ordinary GitHub CI routing/required-status control; one inert text marker",
+      "expected_roles": {
+        "changes": "success",
+        "contracts / contracts": "success",
+        "ci-required": "success",
+        "backend / backend": "success",
+        "frontend / frontend": "success",
+        "flutter / flutter": "success",
+        "windows / windows": "success",
+        "actual / actual-acceptance": "success"
+      },
+      "selector_values_verified": true,
+      "selected_gates": [
+        "actual",
+        "backend",
+        "contracts",
+        "flutter",
+        "web",
+        "windows"
+      ],
+      "required_check": {
+        "id": 118447796536,
+        "name": "ci-required",
+        "status": "completed",
+        "conclusion": "success",
+        "head": "3353a082f1ebebe6e63caea2f035ac653fa974dd",
+        "app": 15368
+      },
+      "artifact_sha256_verified": true,
+      "triage_payload_sha256": "606eaff864c7b44ca7f535379764dce0b8af76f84e550ee1090f5f21ec54c82c",
+      "original_triage": {
+        "alerts": [],
+        "api_head_sha": "3353a082f1ebebe6e63caea2f035ac653fa974dd",
+        "completed_execution_seconds": 5855.0,
+        "components": [
+          "backend",
+          "web",
+          "flutter",
+          "windows"
+        ],
+        "confirmed_flake": "UNKNOWN",
+        "confirmed_flake_rate": null,
+        "failures": [],
+        "first_start_delay_seconds": 824.0,
+        "master_defect": null,
+        "metadata_complete": true,
+        "outcome": "PASS",
+        "queue_note": "Job creation/start delay may include dependencies, dispatch and approvals",
+        "queue_seconds": null,
+        "retry_count": 0,
+        "retry_policy": "Only bounded Actions metadata GET transport retry; never repeat a gate/test/signing/health assertion",
+        "retry_test": false,
+        "run_attempt": "1",
+        "run_id": "39364653849",
+        "schema_version": 1,
+        "scope": "pr",
+        "selected_gates": [
+          "contracts",
+          "backend",
+          "web",
+          "flutter",
+          "windows",
+          "actual"
+        ],
+        "source_binding": "checked_pr_merge_parent",
+        "source_revision": "6992498f278fa20e54f7877ffd2620f24beb87de",
+        "timing_note": "Current aggregate may still be running; completed-job seconds only",
+        "total_execution_seconds": null,
+        "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39364653849"
+      },
+      "source_binding_verified": true,
+      "release_and_physical_acceptance": "NOT_RUN",
+      "control_closed_without_merge": true
+    },
+    {
+      "name": "unknown",
+      "pr": 471,
+      "head": "a3d38eaf83d169fbe4456027f85d1e25787e532b",
+      "tested_merge": "b5e83f6dcfbc6c23e68ffe562ae1cc226563d66d",
+      "tree": "d224f1dc63d9d0b49d376d7233f1447875497ddd",
+      "base_revision": "e738c3709a8d60ffa298f36639b03c05844c8ab2",
+      "status": "FAIL",
+      "run_id": 39364662829,
+      "diagnostic": {
+        "status": "FAIL",
+        "run_id": 39364662829,
+        "source_merge": "b5e83f6dcfbc6c23e68ffe562ae1cc226563d66d",
+        "api_head": "a3d38eaf83d169fbe4456027f85d1e25787e532b",
+        "owned_resources_removed": true,
+        "files": [
+          "next/diagnostics/next-browser.json",
+          "next/diagnostics/next-controller.json",
+          "next/result.json"
+        ],
+        "diagnostics": {
+          "next-controller.json": {
+            "capacity_profile": "unlimited",
+            "failure_type": "CalledProcessError",
+            "schema_version": 1,
+            "stage": "browser-scenario",
+            "status": "FAIL"
+          },
+          "next-browser.json": {
+            "failure_type": "Error",
+            "frames": [
+              {
+                "column": 14,
+                "line": 19,
+                "module": "scenario.mjs"
+              }
+            ],
+            "schema_version": 1,
+            "stage": "browser-launch",
+            "status": "FAIL"
+          }
+        }
+      },
+      "required_check": {
+        "id": 118445740078,
+        "status": "completed",
+        "conclusion": "failure",
+        "head": "a3d38eaf83d169fbe4456027f85d1e25787e532b",
+        "app": 15368
+      },
+      "artifact": {
+        "id": 12238847995,
+        "node_id": "MDg6QXJ0aWZhY3QxMjIzODg0Nzk5NQ==",
+        "name": "actual-next-b5e83f6dcfbc6c23e68ffe562ae1cc226563d66d-39364662829-1",
+        "size_in_bytes": 1259,
+        "url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12238847995",
+        "archive_download_url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12238847995/zip",
+        "expired": false,
+        "digest": "sha256:0c2fc7a35f5190189eaafc7099abdc7bd093a38bcf363a5667c64c0a9ab22d03",
+        "created_at": "2026-10-20T03:41:59Z",
+        "updated_at": "2026-10-20T03:41:59Z",
+        "expires_at": "2026-11-19T03:41:58Z",
+        "workflow_run": {
+          "id": 39364662829,
+          "repository_id": 1398599178,
+          "head_repository_id": 1398599178,
+          "head_branch": "codex/qa401-619b68a1-unknown-20261020",
+          "head_sha": "a3d38eaf83d169fbe4456027f85d1e25787e532b"
+        }
+      },
+      "root_cause": "UNVERIFIED",
+      "blind_rerun_launched": false,
+      "control_closed_without_merge": true
+    }
+  ],
+  "root_cause": "UNVERIFIED",
+  "original_failed_controls_superseded": false,
+  "repeat_failed_job_runs": false,
+  "release_and_physical_acceptance": "NOT_RUN",
+  "closure_readback": [
+    {
+      "number": 464,
+      "state": "closed",
+      "merged": false,
+      "head": "dcd84eccad31d638672c8dbb2ebda5f79488b7a6",
+      "base": "e738c3709a8d60ffa298f36639b03c05844c8ab2"
+    },
+    {
+      "number": 465,
+      "state": "closed",
+      "merged": false,
+      "head": "bea80e23698148ced4f431a61cfa7deaa577e20f",
+      "base": "e738c3709a8d60ffa298f36639b03c05844c8ab2"
+    },
+    {
+      "number": 466,
+      "state": "closed",
+      "merged": false,
+      "head": "d0abd343daeee747226de8dfffc6605ba8feda8b",
+      "base": "e738c3709a8d60ffa298f36639b03c05844c8ab2"
+    },
+    {
+      "number": 467,
+      "state": "closed",
+      "merged": false,
+      "head": "6fdefe34b9f641fc074f035c71b4dfca457d9224",
+      "base": "e738c3709a8d60ffa298f36639b03c05844c8ab2"
+    },
+    {
+      "number": 468,
+      "state": "closed",
+      "merged": false,
+      "head": "518ddfdd6a8b0a60eeb4445c1e03c94947de6488",
+      "base": "e738c3709a8d60ffa298f36639b03c05844c8ab2"
+    },
+    {
+      "number": 469,
+      "state": "closed",
+      "merged": false,
+      "head": "af7928248c32d51e872e32f0515e03f0dc548c27",
+      "base": "e738c3709a8d60ffa298f36639b03c05844c8ab2"
+    },
+    {
+      "number": 470,
+      "state": "closed",
+      "merged": false,
+      "head": "3353a082f1ebebe6e63caea2f035ac653fa974dd",
+      "base": "e738c3709a8d60ffa298f36639b03c05844c8ab2"
+    },
+    {
+      "number": 471,
+      "state": "closed",
+      "merged": false,
+      "head": "a3d38eaf83d169fbe4456027f85d1e25787e532b",
+      "base": "e738c3709a8d60ffa298f36639b03c05844c8ab2"
+    }
+  ]
+}

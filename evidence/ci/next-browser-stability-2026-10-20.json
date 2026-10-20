@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "scope": "Bounded diagnosis of the original 3/8 unexpected unlimited-browser failures, not a retry-to-green or final acceptance",
+  "planned_runs": 3,
+  "source_revision": "bfeb7025e345bfb668ff8fce396b045755aa77bf",
+  "branch": "codex/issue401-retain-browser-failure",
+  "workflow": "next-client-acceptance.yaml",
+  "assertions_changed": false,
+  "retain_all_outcomes": true,
+  "original_failed_controls_superseded": false,
+  "blind_failed_job_reruns": false,
+  "status": "PASS",
+  "interpretation": "Original failure NOT_REPRODUCED; root cause UNVERIFIED",
+  "outcomes": [
+    {
+      "schema_version": 1,
+      "status": "PASS",
+      "source_revision": "bfeb7025e345bfb668ff8fce396b045755aa77bf",
+      "run_id": 39363830826,
+      "artifact_id": 12238951457,
+      "artifact_sha256": "1ad51f5f38be39103f3ff4daad09b23cba2ad90d6de720f8355b4e71f993d879",
+      "owned_resources_removed": true,
+      "original_failed_controls_superseded": false,
+      "captures_verified": 4,
+      "report_source_hashes_verified": true,
+      "original_failure_reproduced": false,
+      "root_cause": "UNVERIFIED"
+    },
+    {
+      "schema_version": 1,
+      "status": "PASS",
+      "source_revision": "bfeb7025e345bfb668ff8fce396b045755aa77bf",
+      "run_id": 39363926233,
+      "artifact_id": 12239186091,
+      "artifact_sha256": "e44b3336a8964dc01a8a401263296b8dad5a118e177e76bc0065684e7b994a3e",
+      "owned_resources_removed": true,
+      "original_failed_controls_superseded": false,
+      "captures_verified": 4,
+      "report_source_hashes_verified": true,
+      "original_failure_reproduced": false,
+      "root_cause": "UNVERIFIED"
+    },
+    {
+      "schema_version": 1,
+      "status": "PASS",
+      "source_revision": "bfeb7025e345bfb668ff8fce396b045755aa77bf",
+      "run_id": 39363958584,
+      "artifact_id": 12239000920,
+      "artifact_sha256": "90176ea408fbcfaba86b08d0811b3759cdb88c2633aaaeaaeb8101f617626cfc",
+      "owned_resources_removed": true,
+      "original_failed_controls_superseded": false,
+      "captures_verified": 4,
+      "report_source_hashes_verified": true,
+      "original_failure_reproduced": false,
+      "root_cause": "UNVERIFIED"
+    }
+  ]
+}
