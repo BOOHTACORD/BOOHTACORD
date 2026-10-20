@@ -38,7 +38,7 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 			return phase, ctx.Err()
 		case <-timer.C:
 			phase.Seconds = time.Since(started).Seconds()
-			return phase, nil
+			return phase, ctx.Err()
 		default:
 		}
 		var group sync.WaitGroup
@@ -86,6 +86,9 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 		pause := time.NewTimer(cadence(name))
 		select {
 		case <-ctx.Done():
+			pause.Stop()
+			return phase, ctx.Err()
+		case <-timer.C:
 			pause.Stop()
 			return phase, ctx.Err()
 		case <-pause.C:
