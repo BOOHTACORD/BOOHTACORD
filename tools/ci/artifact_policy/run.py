@@ -11,7 +11,7 @@ def main(arguments=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('operation', choices=('begin', 'finish'))
     parser.add_argument('component', choices=('web', 'flutter'))
-    parser.add_argument('profile', choices=('browser-shell', 'browser-voice', 'browser-conversations', 'dart'))
+    parser.add_argument('profile', choices=('browser-shell', 'browser-content', 'browser-voice', 'browser-conversations', 'dart'))
     args = parser.parse_args(arguments)
     made = None
     try:

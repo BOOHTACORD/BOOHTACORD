@@ -2,7 +2,7 @@
 from datetime import datetime
 import math
 import re
-from . import legacy, results
+from . import legacy, profiles, results
 
 
 def require(value):
@@ -45,7 +45,7 @@ def _compare(run, jobs, needs, old, new):
             and run['event'] in ('workflow_dispatch', 'push'))
     require(set(needs) == {'legacy', 'profiles'} and all(v.get('result') == 'success' for v in needs.values()))
     names = {'compare'} | {'legacy-' + str(n) for n in (1, 2, 3)} | {
-        f'profiles-{n} / {p}' for n in (1, 2, 3) for p in ('dart', 'android', 'flutter')}
+        f'profiles-{n} / {p}' for n in (1, 2, 3) for p in (*profiles.OPERATIONS, 'flutter')}
     require(jobs['total_count'] == len(jobs['jobs']) == len(names)
             and {j['name'] for j in jobs['jobs']} == names and len({j['id'] for j in jobs['jobs']}) == len(names))
     require(all(type(j['id']) is int and j['id'] > 0 and j['head_sha'] == sha
@@ -54,7 +54,7 @@ def _compare(run, jobs, needs, old, new):
                 for j in jobs['jobs']))
     by_name = {j['name']: j for j in jobs['jobs']}
     require(len(old) == len(new) == 3)
-    arms = {'legacy': [], 'profiles': [], 'dart': [], 'android': []}
+    arms = {'legacy': [], 'profiles': [], 'dart': [], 'android': [], 'android-kotlin': []}
 
     def measured(sample, selected, driver):
         times = [interval(j) for j in selected]
@@ -79,16 +79,16 @@ def _compare(run, jobs, needs, old, new):
         for profile in ('dart', 'android'):
             results.validate_artifacts(profile, row['artifacts'][profile])
         arms['legacy'].append(measured(n, [by_name['legacy-' + str(n)]], row['seconds']))
-        matches = [parts for parts in new if len(parts) == 2 and
+        matches = [parts for parts in new if len(parts) == len(profiles.OPERATIONS) and
                    all(p.get('namespace') == 'shadow-new-' + str(n) for p in parts)]
         require(len(matches) == 1)
         parts = results.validate(matches[0], {p: {'result': by_name[f'profiles-{n} / {p}']['conclusion']}
-                                             for p in ('dart', 'android')}, sha, str(run_id), str(attempt), 'shadow-new-' + str(n))
-        selected = [by_name[f'profiles-{n} / {p}'] for p in ('dart', 'android', 'flutter')]
+                                             for p in profiles.OPERATIONS}, sha, str(run_id), str(attempt), 'shadow-new-' + str(n))
+        selected = [by_name[f'profiles-{n} / {p}'] for p in (*profiles.OPERATIONS, 'flutter')]
         require(all(type(j.get('runner_id')) is int and j['runner_id'] > 0 for j in selected)
-                and len({j['runner_id'] for j in selected[:2]}) == 2)
-        require(interval(selected[2])[1] >= max(interval(j)[2] for j in selected[:2]))
-        for profile, job in zip(('dart', 'android'), selected[:2]):
+                and len({j['runner_id'] for j in selected[:-1]}) == len(profiles.OPERATIONS))
+        require(interval(selected[-1])[1] >= max(interval(j)[2] for j in selected[:-1]))
+        for profile, job in zip(profiles.OPERATIONS, selected[:-1]):
             arms[profile].append(measured(n, [job], parts[profile]['seconds']))
         arms['profiles'].append(measured(n, selected, max(p['seconds'] for p in parts.values())))
     summary = {name: {'n': 3, **{key: percentiles([r[key] for r in rows])

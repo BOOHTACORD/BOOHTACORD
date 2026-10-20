@@ -1,5 +1,5 @@
 """Enforce the mandatory Web fan-out and the original trusted receipt identity."""
-from .catalog import PROFILES
+from .catalog import BROWSER_PROFILES
 from tools.ci.artifact_policy.capture_inventory import WEB_ROOTS
 from tools.ci.artifact_policy.workflows import capture_job
 
@@ -42,7 +42,7 @@ def validate(document):
             if name == 'browser':
                 expected = 'python3 -m tools.ci.web_suites.run --profile "$WEB_PROFILE"'
                 require(command.get('env') == {'WEB_PROFILE': '${{ matrix.profile }}'})
-                require(job['strategy'] == {'fail-fast':'false', 'matrix':{'profile':list(PROFILES[1:4])}})
+                require(job['strategy'] == {'fail-fast':'false', 'matrix':{'profile':list(BROWSER_PROFILES)}})
             else:
                 require('strategy' not in job)
             require(command['run'] == expected)

@@ -2,7 +2,7 @@
 import json
 import os
 from tools.ci.native.process import ROOT
-from . import results, source
+from . import profiles, results, source
 
 
 def main():
@@ -12,8 +12,8 @@ def main():
     if directory.is_symlink() or directory.resolve() != directory or not directory.is_dir():
         raise ValueError('Native profile results are missing or indirect')
     paths = list(directory.iterdir())
-    if {p.name for p in paths} != {'dart.json', 'android.json'}:
-        raise ValueError('Exactly the two current native profile results are mandatory')
+    if {p.name for p in paths} != {name + '.json' for name in profiles.OPERATIONS}:
+        raise ValueError('Exactly the three current native profile results are mandatory')
     parts = []
     for path in sorted(paths):
         if path.is_symlink() or not path.is_file() or not 0 < path.stat().st_size <= 64 * 1024:

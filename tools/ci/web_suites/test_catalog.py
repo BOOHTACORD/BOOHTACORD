@@ -24,7 +24,18 @@ class CoverageTests(unittest.TestCase):
                      'python:tools.audio.native_tests.run'):
             self.assertIn(name, operations)
         self.assertEqual(set(plan['profiles']),
-                         {'fast', 'browser-shell', 'browser-conversations', 'browser-voice', 'sfu-network'})
+                         {'fast', 'browser-shell', 'browser-content', 'browser-conversations', 'browser-voice', 'sfu-network'})
+
+    def test_shell_split_preserves_all_forty_operations_exactly_once(self):
+        plan = catalog.plan()
+        self.assertEqual(['npm:test:accessibility', 'npm:test:responsive-shell', 'npm:test:controls'],
+                         plan['profiles']['browser-shell'])
+        self.assertEqual(['npm:test:microcopy', 'npm:test:chat-rhythm',
+                          'npm:test:message-social', 'npm:test:navigation'],
+                         plan['profiles']['browser-content'])
+        operations = [op for group in plan['profiles'].values() for op in group]
+        self.assertEqual(40, len(operations))
+        self.assertEqual(40, len(set(operations)))
 
     def test_missing_duplicate_unknown_and_changed_command_are_rejected(self):
         for change in ('missing', 'duplicate', 'unknown', 'redirect'):
