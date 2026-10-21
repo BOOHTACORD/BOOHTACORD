@@ -113,10 +113,33 @@ class MasterWorkflowTests(unittest.TestCase):
                         for field in ('sha', 'run_id', 'run_attempt'):
                             self.assertIn('${{ github.' + field + ' }}', artifact)
 
-    def test_builder_downloads_three_exact_receipt_names_without_wildcard_merge(self):
+    def test_builder_downloads_same_run_receipt_attempts_and_selects_latest_validated_set(self):
         steps = self.workflows['build-server.yaml']['jobs']['bundle']['steps']
         downloads = [s for s in steps if s.get('uses') == 'actions/download-artifact@v4']
-        execution = '${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
-        self.assertEqual([{'name': 'check-' + gate + '-' + execution, 'path': '.out/checks'}
+        execution = '${{ github.sha }}-${{ github.run_id }}-*'
+        self.assertEqual([{'pattern': 'check-' + gate + '-' + execution, 'path': '.out/gate-artifacts',
+                           'merge-multiple': 'false'}
                           for gate in ('backend', 'web', 'contracts')], [s['with'] for s in downloads])
         self.assertTrue(all(not s.get('if') for s in downloads))
+        collector = next(step for step in steps if step.get('run', '').startswith('python3 -m tools.build.server.gate_receipts'))
+        self.assertEqual('python3 -m tools.build.server.gate_receipts --collect .out/gate-artifacts .out/checks', collector['run'])
+        self.assertEqual({'GATE_SOURCE_REVISION': '${{ github.sha }}', 'GATE_RUN_ID': '${{ github.run_id }}',
+                          'GATE_RUN_ATTEMPT': '${{ github.run_attempt }}'}, collector['env'])
+
+    def test_bundle_selects_and_verifies_its_reviewed_python_before_running_collector(self):
+        steps = self.workflows['build-server.yaml']['jobs']['bundle']['steps']
+        setup = next(step for step in steps if step.get('uses') == 'actions/setup-python@v5')
+        verify = next(step for step in steps if step.get('run') == 'python -m tools.ci.toolchains.runtime python')
+        collector = next(step for step in steps if step.get('run', '').startswith('python3 -m tools.build.server.gate_receipts'))
+        self.assertEqual({'python-version': '${{ runner.os == \'Linux\' && \'3.12.15\' || \'3.12.10\' }}'}, setup['with'])
+        self.assertLess(steps.index(setup), steps.index(verify))
+        self.assertLess(steps.index(verify), steps.index(collector))
+        for mutation in ('missing-setup', 'missing-check', 'late-check'):
+            broken = copy.deepcopy(self.workflows)
+            target = broken['build-server.yaml']['jobs']['bundle']['steps']
+            if mutation == 'missing-setup': target.remove(next(step for step in target if step.get('uses') == 'actions/setup-python@v5'))
+            if mutation == 'missing-check': target.remove(next(step for step in target if step.get('run') == 'python -m tools.ci.toolchains.runtime python'))
+            if mutation == 'late-check':
+                check = next(step for step in target if step.get('run') == 'python -m tools.ci.toolchains.runtime python')
+                target.remove(check); target.insert(target.index(next(step for step in target if step.get('run', '').startswith('python3 -m tools.build.server.gate_receipts')))+1, check)
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError): workflow.validate(broken)

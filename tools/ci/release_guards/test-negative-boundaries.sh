@@ -11,7 +11,7 @@ bash tools/ops/attachment_headroom/check-attachment-volume-headroom.test.sh
 bash tools/ops/attachment_audit/audit-attachment-volume.test.sh
 bash tools/qa/active_uploads/sample_active_uploads.test.sh
 bash tools/release/preflight/preflight.test.sh
-python3 tools/verify/oci/test_verify_oci.py
+python3 -m unittest tools.verify.oci.test_verify_oci
 bash tools/verify/running_images/verify_running.test.sh
 bash tools/release/rollout/deploy-images.test.sh
 bash tools/release/rollout/deploy-images-volume-guard.test.sh

@@ -1,4 +1,5 @@
 """Build and validate OCI artifacts with the exact source labels and attestations."""
+import json
 import subprocess
 from contextlib import nullcontext
 from pathlib import Path
@@ -53,6 +54,7 @@ def build(source, output, revision, source_hash, environment, *, metrics=None):
                 if metrics and cache:metrics.value['cache']=cache.report
             tag = f"voice-platform-{service}:{revision}"
             archive = output / (service + ".oci.tar")
+            docker_archive = output / (service + ".docker.tar")
             with measure(service+'_build_export'):
                 subprocess.run(["docker", "buildx", "build", "--platform", "linux/amd64",
                             "--label", f"org.opencontainers.image.revision={revision}",
@@ -60,19 +62,24 @@ def build(source, output, revision, source_hash, environment, *, metrics=None):
                             *(['--label','org.boohtacord.builder.owner='+owner] if owner else []),
                             "--sbom=true", "--provenance=mode=max,version=v0.2", "--tag", tag,
                             "--output", f"type=oci,dest={archive}",
+                            "--output", f"type=docker,name={tag},dest={docker_archive}",
                             '--build-arg', 'BOOHTACORD_CACHE_SCOPE='+key, *cache_args,
                             *( ["--file", str(source / "clients/web/Dockerfile"), *web_build_arguments(environment),
                                 "--build-arg", "SOURCE_REVISION=" + revision] if service == "web" else []),
                             str(source / context)], env=environment, check=True)
             with measure(service+'_oci_verify'):
-                verify(archive, revision, source_hash, oci_root_identity(archive))
-            with measure(service+'_oci_import'):
-                subprocess.run(['docker','image','load','--input',str(archive)],env=environment,check=True)
+                index_digest = oci_root_identity(archive)
+                verify(archive, revision, source_hash, index_digest)
+            with measure(service+'_docker_import'):
+                subprocess.run(['docker','image','load','--input',str(docker_archive)],env=environment,check=True)
             with measure(service+'_image_identity'):
-                image_id = subprocess.check_output(
-                ["docker", "image", "inspect", "--format", "{{.Id}}", tag], text=True,env=environment
-            ).strip()
-                receipts[service] = verify(archive, revision, source_hash, image_id)
+                identity = subprocess.check_output(
+                    ["docker", "image", "inspect", "--format", "{{.Id}}\n{{json .RootFS.Layers}}", tag],
+                    text=True, env=environment).splitlines()
+                require(len(identity) == 2, 'Docker image inspection returned an invalid identity')
+                image_id, rootfs_layers = identity
+                receipts[service] = verify(archive, revision, source_hash, index_digest,
+                                           docker_image_id=image_id, docker_rootfs_layers=json.loads(rootfs_layers))
             with measure(service+'_cache_publish'):
                 if cache:cache.publish(service,key)
     return receipts

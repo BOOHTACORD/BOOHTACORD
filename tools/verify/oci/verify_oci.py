@@ -13,7 +13,8 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def verify(archive_path, revision, source_hash, image_id):
+def verify(archive_path, revision, source_hash, expected_index_digest,
+           docker_image_id=None, docker_rootfs_layers=None):
     require(re.fullmatch(r"[0-9a-f]{40}", revision), "invalid revision")
     require(re.fullmatch(r"[0-9a-f]{64}", source_hash), "invalid source archive hash")
     with tarfile.open(archive_path, "r") as archive:
@@ -43,7 +44,7 @@ def verify(archive_path, revision, source_hash, image_id):
         roots = root_document().get("manifests", [])
         require(len(roots) == 1, "expected one OCI index root")
         root = roots[0]
-        require(root["digest"] == image_id, "loaded image ID differs from OCI index")
+        require(root["digest"] == expected_index_digest, "OCI root digest differs from expected index digest")
         nested = checked_blob(root, document=True)
         require("manifests" in nested, "expected nested OCI index")
         manifests = nested["manifests"]
@@ -56,6 +57,17 @@ def verify(archive_path, revision, source_hash, image_id):
         require(attest["annotations"].get("vnd.docker.reference.digest") == runtime["digest"], "attestation targets another image")
         runtime_doc = checked_blob(runtime, document=True)
         config = checked_blob(runtime_doc["config"], document=True)
+        config_digest = runtime_doc["config"]["digest"]
+        require(re.fullmatch(r"sha256:[0-9a-f]{64}", config_digest), "invalid image config digest")
+        if docker_image_id is not None:
+            require(docker_image_id == config_digest, "loaded Docker image ID differs from verified OCI config")
+        diff_ids = config.get("rootfs", {}).get("diff_ids")
+        require(isinstance(diff_ids, list) and len(diff_ids) == len(runtime_doc["layers"])
+                and all(isinstance(value, str) and re.fullmatch(r"sha256:[0-9a-f]{64}", value)
+                        for value in diff_ids), "invalid image root filesystem")
+        if docker_rootfs_layers is not None:
+            require(docker_rootfs_layers == diff_ids,
+                    "loaded Docker image layers differ from verified OCI config")
         labels = config.get("config", {}).get("Labels", {})
         require(labels.get("org.opencontainers.image.revision") == revision, "image revision label differs")
         require(labels.get("org.voice-platform.source-archive-sha256") == source_hash, "image source hash differs")
@@ -73,7 +85,7 @@ def verify(archive_path, revision, source_hash, image_id):
             predicates.add(statement.get("predicateType"))
         require("https://spdx.dev/Document" in predicates, "SBOM attestation absent")
         require("https://slsa.dev/provenance/v0.2" in predicates, "provenance attestation absent")
-        return {"index_digest": image_id, "manifest_digest": runtime["digest"],
+        return {"index_digest": expected_index_digest, "manifest_digest": runtime["digest"], "image_id": config_digest,
                 "revision": revision, "source_archive_sha256": source_hash,
                 "attestation_predicates": sorted(predicates)}
 
