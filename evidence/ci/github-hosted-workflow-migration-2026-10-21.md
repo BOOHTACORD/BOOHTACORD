@@ -12,6 +12,8 @@ services or unregister runners on that host.
 
 - **PASS** — 90 focused tests covering action trust, workflow routing, CI gates,
   toolchains, runner detection, and release/operator workflow contracts.
+- **PASS** — 15 Flutter shadow-control tests after updating the legacy runner
+  expectation to GitHub-hosted defaults.
 - **PASS** — `python3 -m tools.verify.action_pins.run` (36 workflows, 2 local
   actions).
 - **PASS** — `python3 -m tools.verify.workflows.delivery`.
@@ -24,13 +26,17 @@ services or unregister runners on that host.
 
 ## External acceptance
 
-- **PARTIAL** — The initial [PR #506 CI run](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39618968735)
-  used the `ubuntu-24.04` hosted image. Its contracts job found that the
-  simulated hosted environment in an operator test omitted `RUNNER_OS`; the
-  fixture now supplies `Linux` so the test reaches its intended SSH-timeout
-  assertion.
-- **NOT_RUN** — Fresh hosted checks after that fixture correction are pending.
-  The initial red result remains recorded and is not relabeled as a pass.
+- **PASS** — [PR #506 CI](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39620521386)
+  passed all 26 jobs on commit `6e6f699ba4d42993704c744cf64a76223e1cd12f`.
+  The hosted contract suite, Linux, Windows, Flutter, browser, backend, and
+  runtime jobs all completed successfully.
+- **PASS** — [GitHub-hosted runner proof](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39620511796),
+  [dependency cache acceptance](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39620521391),
+  and [trusted-delivery acceptance](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39620521428)
+  passed on the same commit.
+- **RESOLVED** — Earlier CI runs exposed two stale test fixtures: the operator
+  hosted environment omitted `RUNNER_OS`, and a Flutter legacy test expected
+  self-hosted-only concurrency. Both were corrected before the successful run.
 - **NOT_RUN** — Production SSH connectivity from a GitHub-hosted runner. The
   production environment, source/provenance guards, protected approval, and
   serialized writer remain in place; no production workflow was dispatched.
