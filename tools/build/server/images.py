@@ -40,6 +40,19 @@ def web_build_arguments(environment):
             "--build-arg", "VITE_PUBLIC_ORIGIN=https://" + authority]
 
 
+def _cache_import_arguments(arguments):
+    result = []
+    index = 0
+    while index < len(arguments):
+        option = arguments[index]
+        if option not in ("--cache-from", "--cache-to") or index + 1 >= len(arguments):
+            raise ValueError("Invalid Buildx cache arguments")
+        if option == "--cache-from":
+            result.extend(arguments[index:index + 2])
+        index += 2
+    return result
+
+
 def build(source, output, revision, source_hash, environment, *, metrics=None):
     receipts = {}
     owner=environment.get('BOOHTACORD_BUILD_OWNER')
@@ -55,21 +68,24 @@ def build(source, output, revision, source_hash, environment, *, metrics=None):
             tag = f"voice-platform-{service}:{revision}"
             archive = output / (service + ".oci.tar")
             docker_archive = output / (service + ".docker.tar")
-            with measure(service+'_build_export'):
-                subprocess.run(["docker", "buildx", "build", "--platform", "linux/amd64",
-                            "--label", f"org.opencontainers.image.revision={revision}",
-                            "--label", f"org.voice-platform.source-archive-sha256={source_hash}",
-                            *(['--label','org.boohtacord.builder.owner='+owner] if owner else []),
-                            "--sbom=true", "--provenance=mode=max,version=v0.2", "--tag", tag,
-                            "--output", f"type=oci,dest={archive}",
-                            "--output", f"type=docker,name={tag},dest={docker_archive}",
-                            '--build-arg', 'BOOHTACORD_CACHE_SCOPE='+key, *cache_args,
-                            *( ["--file", str(source / "clients/web/Dockerfile"), *web_build_arguments(environment),
-                                "--build-arg", "SOURCE_REVISION=" + revision] if service == "web" else []),
-                            str(source / context)], env=environment, check=True)
+            build_args = ["docker", "buildx", "build", "--platform", "linux/amd64",
+                          "--label", f"org.opencontainers.image.revision={revision}",
+                          "--label", f"org.voice-platform.source-archive-sha256={source_hash}",
+                          *(['--label','org.boohtacord.builder.owner='+owner] if owner else []),
+                          "--tag", tag, '--build-arg', 'BOOHTACORD_CACHE_SCOPE='+key,
+                          *( ["--file", str(source / "clients/web/Dockerfile"), *web_build_arguments(environment),
+                              "--build-arg", "SOURCE_REVISION=" + revision] if service == "web" else [])]
+            with measure(service+'_oci_build_export'):
+                subprocess.run([*build_args, "--sbom=true", "--provenance=mode=max,version=v0.2",
+                                "--output", f"type=oci,dest={archive}", *cache_args, str(source / context)],
+                               env=environment, check=True)
             with measure(service+'_oci_verify'):
                 index_digest = oci_root_identity(archive)
                 verify(archive, revision, source_hash, index_digest)
+            with measure(service+'_docker_build_export'):
+                subprocess.run([*build_args, "--sbom=false", "--provenance=false",
+                                "--output", f"type=docker,name={tag},dest={docker_archive}",
+                                *_cache_import_arguments(cache_args), str(source / context)], env=environment, check=True)
             with measure(service+'_docker_import'):
                 subprocess.run(['docker','image','load','--input',str(docker_archive)],env=environment,check=True)
             with measure(service+'_image_identity'):
