@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
+	"time"
 
 	"voice-platform/backend/internal/identity/password"
 	"voice-platform/backend/internal/identity/registration"
@@ -36,11 +37,12 @@ type Accounts interface {
 }
 
 type Sessions interface {
-	Create(context.Context, string, [sha256.Size]byte) error
+	Create(context.Context, string, [sha256.Size]byte, time.Time) error
 }
 
 type Result struct {
-	Token string
+	Token     string
+	ExpiresAt time.Time
 }
 
 type Service struct {
@@ -83,10 +85,11 @@ func (service Service) Login(context context.Context, input Input) (result Resul
 	if err != nil {
 		return Result{}, fmt.Errorf("issue session: %w", err)
 	}
-	if err := service.sessions.Create(context, account.ID, issued.Digest); err != nil {
+	expiresAt := time.Now().Add(session.AbsoluteLifetime)
+	if err := service.sessions.Create(context, account.ID, issued.Digest, expiresAt); err != nil {
 		return Result{}, fmt.Errorf("persist session: %w", err)
 	}
 	span.SetAttributes(correlatesession.Attributes(account.ID, issued.Digest)...)
 	flowstage.Mark(context, "commit", "success")
-	return Result{Token: issued.Token}, nil
+	return Result{Token: issued.Token, ExpiresAt: expiresAt}, nil
 }

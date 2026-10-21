@@ -31,6 +31,14 @@ func TestReadOnlyCallerSessionsWithSafeDTO(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
+	expired := sha256.Sum256([]byte("expired-session"))
+	idle := sha256.Sum256([]byte("idle-session"))
+	if _, err = f.Pool.Exec(f.Context, `INSERT INTO sessions(user_id,token_digest,expires_at) VALUES($1,$2,now()-interval '1 second')`, f.Admin, expired[:]); err != nil {
+		t.Fatal("insert expired session:", err)
+	}
+	if _, err = f.Pool.Exec(f.Context, `INSERT INTO sessions(user_id,token_digest,last_active_at) VALUES($1,$2,now()-interval '31 days')`, f.Admin, idle[:]); err != nil {
+		t.Fatal("insert idle session:", err)
+	}
 	page, err := New(f.Pool).Read(f.Context, f.Admin, current, "")
 	if err != nil || len(page.Sessions) != 2 {
 		t.Fatal("caller session boundary failed", err)

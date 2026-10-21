@@ -8,22 +8,25 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"voice-platform/backend/internal/identity/authenticate_session"
+	"voice-platform/backend/internal/identity/session"
 )
 
 const selectActivePrincipal = `
 WITH active AS MATERIALIZED (
-SELECT u.id::text, u.role, u.display_name
+SELECT u.id::text, u.role, u.display_name, s.expires_at
 FROM sessions s
 JOIN users u ON u.id = s.user_id
 WHERE s.token_digest = $1
   AND s.revoked_at IS NULL
+  AND s.expires_at > now()
+  AND s.last_active_at > now() - ($2::double precision * interval '1 second')
   AND u.blocked_at IS NULL
 ), touched AS (
  UPDATE sessions SET last_active_at=now()
  WHERE token_digest=$1 AND EXISTS(SELECT 1 FROM active)
    AND last_active_at < now() - interval '60 seconds'
 )
-SELECT id,role,display_name FROM active`
+SELECT id,role,display_name,expires_at FROM active`
 
 type Row interface {
 	Scan(...any) error
@@ -43,7 +46,7 @@ func New(database Database) Repository {
 
 func (repository Repository) FindActive(context context.Context, digest [sha256.Size]byte) (authenticatesession.Principal, error) {
 	var principal authenticatesession.Principal
-	err := repository.database.QueryRow(context, selectActivePrincipal, digest[:]).Scan(&principal.AccountID, &principal.Role, &principal.DisplayName)
+	err := repository.database.QueryRow(context, selectActivePrincipal, digest[:], int64(session.IdleLifetime.Seconds())).Scan(&principal.AccountID, &principal.Role, &principal.DisplayName, &principal.ExpiresAt)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return authenticatesession.Principal{}, authenticatesession.ErrSessionNotFound
 	}

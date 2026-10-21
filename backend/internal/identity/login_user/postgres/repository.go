@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"voice-platform/backend/internal/identity/login_user"
@@ -16,8 +17,8 @@ FROM users
 WHERE login = $1`
 
 const insertSession = `
-INSERT INTO sessions (token_digest, user_id)
-VALUES ($1, $2)`
+INSERT INTO sessions (token_digest, user_id, expires_at)
+VALUES ($1, $2, $3)`
 
 type Row interface {
 	Scan(...any) error
@@ -53,8 +54,8 @@ func (repository Repository) FindByLogin(context context.Context, login string) 
 	return account, nil
 }
 
-func (repository Repository) Create(context context.Context, accountID string, digest [sha256.Size]byte) error {
-	if err := repository.database.Exec(context, insertSession, digest[:], accountID); err != nil {
+func (repository Repository) Create(context context.Context, accountID string, digest [sha256.Size]byte, expiresAt time.Time) error {
+	if err := repository.database.Exec(context, insertSession, digest[:], accountID, expiresAt); err != nil {
 		return fmt.Errorf("insert session: %w", err)
 	}
 	return nil

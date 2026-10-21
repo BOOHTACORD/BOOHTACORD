@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
 	"voice-platform/backend/internal/identity/password"
 	"voice-platform/backend/internal/identity/session"
@@ -30,6 +31,9 @@ func TestLoginNormalizesLoginAndCreatesServerSideSession(t *testing.T) {
 	}
 	if sessions.accountID != "account-1" || !session.Verify(result.Token, sessions.digest) {
 		t.Fatal("Login() did not create a verifiable server-side session")
+	}
+	if result.ExpiresAt.Before(time.Now().Add(session.AbsoluteLifetime-time.Minute)) || result.ExpiresAt.After(time.Now().Add(session.AbsoluteLifetime+time.Minute)) || !sessions.expiresAt.Equal(result.ExpiresAt) {
+		t.Fatalf("session expiry = %s, stored expiry = %s", result.ExpiresAt, sessions.expiresAt)
 	}
 }
 
@@ -94,10 +98,12 @@ func (accounts *fakeAccounts) FindByLogin(_ context.Context, login string) (Acco
 type fakeSessions struct {
 	accountID string
 	digest    [32]byte
+	expiresAt time.Time
 }
 
-func (sessions *fakeSessions) Create(_ context.Context, accountID string, digest [32]byte) error {
+func (sessions *fakeSessions) Create(_ context.Context, accountID string, digest [32]byte, expiresAt time.Time) error {
 	sessions.accountID = accountID
 	sessions.digest = digest
+	sessions.expiresAt = expiresAt
 	return nil
 }

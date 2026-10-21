@@ -5,6 +5,7 @@
   "physical_gates": ["android-device", "ios-device", "macos-media", "windows-media"],
   "rules": [
     {"paths": ["docs/**", "evidence/**", "backlog/**", "README.md", "LICENSE", ".gitignore"], "profiles": [], "release": [], "physical": []},
+    {"paths": ["tools/qa/local_features/features.json"], "profiles": [], "release": [], "physical": []},
     {"paths": ["tools/qa/client_lifecycle/**", "tools/qa/refresh_baseline/**", "tools/qa/upload_reservations/**"], "profiles": ["lifecycle"], "release": [], "physical": []},
     {"paths": ["tools/qa/next_client_acceptance/**", "clients/web/src/direct_message/**", "clients/web/src/conversation/**", "clients/web/src/search/**"], "profiles": ["lifecycle", "next"], "release": [], "physical": []},
     {"paths": ["tools/qa/sfu_snapshot_measure/**"], "profiles": ["sfu"], "release": [], "physical": []},

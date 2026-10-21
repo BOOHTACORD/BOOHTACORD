@@ -3,7 +3,6 @@ package logoutapi
 import (
 	"context"
 	"net/http"
-	"time"
 
 	"voice-platform/backend/internal/identity/session"
 )
@@ -27,16 +26,7 @@ func NewHandler(logouter Logouter) http.Handler {
 			}
 		}
 
-		http.SetCookie(writer, &http.Cookie{
-			Name:     session.CookieName,
-			Value:    "",
-			Path:     "/",
-			HttpOnly: true,
-			Secure:   true,
-			SameSite: http.SameSiteLaxMode,
-			MaxAge:   -1,
-			Expires:  time.Unix(1, 0),
-		})
+		session.ClearCookie(writer)
 		writer.WriteHeader(http.StatusNoContent)
 	})
 }

@@ -6,13 +6,16 @@ import (
 	"errors"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"voice-platform/backend/internal/identity/authenticate_session"
+	"voice-platform/backend/internal/identity/session"
 )
 
 func TestRepositoryLoadsOnlyActiveUnblockedPrincipal(t *testing.T) {
-	database := &fakeDatabase{row: fakeRow{values: []any{"account-1", "MEMBER", "Аня [QA]"}}}
+	expiresAt := time.Now().Add(24 * time.Hour)
+	database := &fakeDatabase{row: fakeRow{values: []any{"account-1", "MEMBER", "Аня [QA]", expiresAt}}}
 	repository := New(database)
 	digest := sha256.Sum256([]byte("opaque session"))
 
@@ -21,7 +24,7 @@ func TestRepositoryLoadsOnlyActiveUnblockedPrincipal(t *testing.T) {
 		t.Fatalf("FindActive() error = %v", err)
 	}
 	storedDigest, ok := database.arguments[0].([]byte)
-	if principal != (authenticatesession.Principal{AccountID: "account-1", Role: "MEMBER", DisplayName: "Аня [QA]"}) || !ok || len(storedDigest) != sha256.Size || !strings.Contains(database.statement, "s.revoked_at IS NULL") || !strings.Contains(database.statement, "u.blocked_at IS NULL") || !strings.Contains(database.statement, "u.display_name") {
+	if principal != (authenticatesession.Principal{AccountID: "account-1", Role: "MEMBER", DisplayName: "Аня [QA]", ExpiresAt: expiresAt}) || !ok || len(storedDigest) != sha256.Size || database.arguments[1] != int64(session.IdleLifetime.Seconds()) || !strings.Contains(database.statement, "s.revoked_at IS NULL") || !strings.Contains(database.statement, "u.blocked_at IS NULL") || !strings.Contains(database.statement, "u.display_name") || !strings.Contains(database.statement, "s.expires_at > now()") || !strings.Contains(database.statement, "s.last_active_at > now() - ($2::double precision * interval '1 second')") {
 		t.Fatalf("principal = %#v, statement = %s, arguments = %#v", principal, database.statement, database.arguments)
 	}
 }
@@ -56,7 +59,14 @@ func (row fakeRow) Scan(destinations ...any) error {
 		return row.err
 	}
 	for index, value := range row.values {
-		*destinations[index].(*string) = value.(string)
+		switch destination := destinations[index].(type) {
+		case *string:
+			*destination = value.(string)
+		case *time.Time:
+			*destination = value.(time.Time)
+		default:
+			return errors.New("unexpected scan destination")
+		}
 	}
 	return nil
 }

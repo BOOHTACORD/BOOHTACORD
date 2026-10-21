@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"voice-platform/backend/internal/identity/login_user"
 	"voice-platform/backend/internal/identity/registration"
@@ -63,15 +64,12 @@ func NewHandlerWithFailureLimiter(loginer Loginer, failureLimiter *ratelimit.Lim
 			writeError(writer, request, http.StatusInternalServerError, "INTERNAL", "Не удалось выполнить вход")
 			return
 		}
+		if result.Token == "" || !result.ExpiresAt.After(time.Now()) {
+			writeError(writer, request, http.StatusInternalServerError, "INTERNAL", "Не удалось выполнить вход")
+			return
+		}
 
-		http.SetCookie(writer, &http.Cookie{
-			Name:     session.CookieName,
-			Value:    result.Token,
-			Path:     "/",
-			HttpOnly: true,
-			Secure:   true,
-			SameSite: http.SameSiteLaxMode,
-		})
+		session.SetCookie(writer, result.Token, result.ExpiresAt)
 		writer.WriteHeader(http.StatusNoContent)
 	})
 }

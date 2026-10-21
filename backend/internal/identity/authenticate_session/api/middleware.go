@@ -46,6 +46,7 @@ func Require(authenticator Authenticator) func(http.Handler) http.Handler {
 				writer.WriteHeader(http.StatusInternalServerError)
 				return
 			}
+			session.SetCookie(writer, cookie.Value, principal.ExpiresAt)
 			next.ServeHTTP(writer, request.WithContext(authenticatedContext(writer, request, principal)))
 		})
 	}
@@ -68,6 +69,7 @@ func Optional(authenticator Authenticator) func(http.Handler) http.Handler {
 				writer.WriteHeader(http.StatusInternalServerError)
 				return
 			}
+			session.SetCookie(writer, cookie.Value, principal.ExpiresAt)
 			next.ServeHTTP(writer, request.WithContext(authenticatedContext(writer, request, principal)))
 		})
 	}
