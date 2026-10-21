@@ -8,6 +8,7 @@ import '../screen_preview/capture_policy.dart';
 import '../screen_viewer/audio_publication.dart';
 import '../screen_viewer/discovery.dart';
 import '../screen_viewer/subscription_failure.dart';
+import '../screen_viewer_presence/identity.dart';
 import '../../../services/screen_share_diagnostics.dart';
 import 'remote_participants.dart';
 import 'refresh_voice_navigation.dart';
@@ -25,7 +26,23 @@ extension VoiceEventsRemoteTracks on VoiceController {
       if (!identical(this.room, room)) return;
       if (event.publication.source == TrackSource.screenShareVideo &&
           event.track is RemoteVideoTrack) {
-        logRemoteVoiceState(room, ScreenShareDiagnosticEvent.remoteTrackSubscribed);
+        logRemoteVoiceState(
+          room,
+          ScreenShareDiagnosticEvent.remoteTrackSubscribed,
+        );
+        final viewerLeaseId = leaseId;
+        final ownerLeaseId = voiceLeaseIdFromLiveKitIdentity(
+          event.participant.identity,
+        );
+        if (viewerLeaseId != null && ownerLeaseId != null) {
+          unawaited(
+            screenViewerPresence.remoteTrackSubscribed(
+              viewerLeaseId,
+              ownerLeaseId,
+              event.publication.sid,
+            ),
+          );
+        }
         unawaited(
           captureSelectedRemoteScreenThumbnail(
             capture: () => captureRemoteThumbnail(
@@ -64,7 +81,10 @@ extension VoiceEventsRemoteTracks on VoiceController {
         if (shouldAutomaticallySubscribeRemoteTrack(event.publication.source)) {
           unawaited(setRemoteTrackSubscription(event.publication, true));
         } else if (event.publication.source == TrackSource.screenShareVideo) {
-          logRemoteVoiceState(room, ScreenShareDiagnosticEvent.remoteTrackPublished);
+          logRemoteVoiceState(
+            room,
+            ScreenShareDiagnosticEvent.remoteTrackPublished,
+          );
           if (event.participant.identity ==
               selectedRemoteScreenViewerIdentity) {
             subscribeRemoteScreenForViewing(room, event.participant.identity);
@@ -83,7 +103,21 @@ extension VoiceEventsRemoteTracks on VoiceController {
     listener.on<TrackUnpublishedEvent>((event) {
       if (!owns()) return;
       if (event.publication.source == TrackSource.screenShareVideo) {
-        logRemoteVoiceState(room, ScreenShareDiagnosticEvent.remoteTrackUnpublished);
+        logRemoteVoiceState(
+          room,
+          ScreenShareDiagnosticEvent.remoteTrackUnpublished,
+        );
+        final ownerLeaseId = voiceLeaseIdFromLiveKitIdentity(
+          event.participant.identity,
+        );
+        if (ownerLeaseId != null) {
+          unawaited(
+            screenViewerPresence.remoteTrackUnsubscribed(
+              ownerLeaseId,
+              event.publication.sid,
+            ),
+          );
+        }
         removeRemoteScreenThumbnail(
           event.participant.identity,
           publication: event.publication,
@@ -104,13 +138,33 @@ extension VoiceEventsRemoteTracks on VoiceController {
       }
       refreshRemoteVoiceNavigation(this, room, owns);
     });
-    listener.on<TrackMutedEvent>((_) => refreshRemoteVoiceNavigation(this, room, owns));
-    listener.on<TrackUnmutedEvent>((_) => refreshRemoteVoiceNavigation(this, room, owns));
-    listener.on<TrackSubscribedEvent>((_) => refreshRemoteVoiceNavigation(this, room, owns));
+    listener.on<TrackMutedEvent>(
+      (_) => refreshRemoteVoiceNavigation(this, room, owns),
+    );
+    listener.on<TrackUnmutedEvent>(
+      (_) => refreshRemoteVoiceNavigation(this, room, owns),
+    );
+    listener.on<TrackSubscribedEvent>(
+      (_) => refreshRemoteVoiceNavigation(this, room, owns),
+    );
     listener.on<TrackUnsubscribedEvent>((event) {
       if (!owns()) return;
       if (event.publication.source == TrackSource.screenShareVideo) {
-        logRemoteVoiceState(room, ScreenShareDiagnosticEvent.remoteTrackUnsubscribed);
+        logRemoteVoiceState(
+          room,
+          ScreenShareDiagnosticEvent.remoteTrackUnsubscribed,
+        );
+        final ownerLeaseId = voiceLeaseIdFromLiveKitIdentity(
+          event.participant.identity,
+        );
+        if (ownerLeaseId != null) {
+          unawaited(
+            screenViewerPresence.remoteTrackUnsubscribed(
+              ownerLeaseId,
+              event.publication.sid,
+            ),
+          );
+        }
       }
       refreshRemoteVoiceNavigation(this, room, owns);
     });

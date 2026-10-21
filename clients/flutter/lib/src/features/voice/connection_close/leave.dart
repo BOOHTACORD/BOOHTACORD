@@ -44,6 +44,7 @@ extension VoiceConnectionCloseLeave on VoiceController {
     clearScreenPreviewReceivers();
     screenThumbnails.clear();
     screenThumbnailPublications.clear();
+    unawaited(screenViewerPresence.clear());
     selectedRemoteScreenViewerIdentity = null;
     leaseId = null;
     api.transport.session.telemetry.endMedia();

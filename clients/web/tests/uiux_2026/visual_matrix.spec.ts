@@ -2,7 +2,16 @@ import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { ux2026ReferenceViewports, ux2026RequiredViewports, ux2026ShellViewports } from './viewport_matrix'
+import {
+  ux2026ActualZoomPhysicalViewports,
+  ux2026BreakpointViewports,
+  ux2026EdgeViewports,
+  ux2026FunctionalViewports,
+  ux2026ReferenceViewports,
+  ux2026RequiredViewports,
+  ux2026ShellViewports,
+  ux2026ShortViewports,
+} from './viewport_matrix'
 
 type MatrixEntry = {
   id: string
@@ -96,6 +105,38 @@ describe('UIUX-2026 visual regression inventory', () => {
     expect([...screenshotViewports]).toEqual(['320x640', '390x844', '768x1024', '1024x768', '1440x900', '1920x1080'])
     expect([...sourceViewports]).toEqual(['1440x900', '393x852'])
     for (const viewport of [...screenshotViewports, ...sourceViewports]) expect(shellViewports.has(viewport), `${viewport} is swept`).toBe(true)
+  })
+
+  it('defines reusable functional, edge, breakpoint, short-height and real-zoom samples', () => {
+    expect([...ux2026FunctionalViewports]).toEqual([
+      { width: 390, height: 844 },
+      { width: 768, height: 1024 },
+      { width: 1024, height: 768 },
+      { width: 1440, height: 900 },
+    ])
+    expect([...ux2026EdgeViewports]).toEqual([
+      { width: 320, height: 640 },
+      { width: 393, height: 852 },
+      { width: 1920, height: 1080 },
+    ])
+    expect([...ux2026BreakpointViewports]).toEqual([
+      { width: 1023, height: 768 },
+      { width: 1024, height: 768 },
+      { width: 1025, height: 768 },
+      { width: 1279, height: 800 },
+      { width: 1280, height: 800 },
+      { width: 1281, height: 800 },
+    ])
+    expect([...ux2026ShortViewports]).toEqual([
+      { width: 320, height: 568 },
+      { width: 637, height: 584 },
+      { width: 1024, height: 584 },
+      { width: 1440, height: 584 },
+    ])
+    expect([...ux2026ActualZoomPhysicalViewports]).toEqual([
+      { width: 640, height: 900 },
+      { width: 2880, height: 900 },
+    ])
   })
 
   it('catalogues all 41 desktop and mobile reference slots', () => {

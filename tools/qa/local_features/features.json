@@ -154,8 +154,14 @@
       "clients/web/src/media/*",
       "clients/web/src/screen*",
       "clients/flutter/lib/src/features/screen/*",
+      "clients/flutter/lib/src/features/voice/**",
       "clients/flutter/lib/src/services/screen*",
+      "clients/flutter/lib/src/services/api_client.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_participant_strip/**",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_strip_person/**",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_screen_viewer/**",
       "clients/flutter/lib/src/widgets/screen*",
+      "evidence/qa/flutter-screen-audience-2026-10-21.md",
       "clients/flutter/packages/livekit_client/lib/src/widgets/video_track_renderer*",
       "clients/flutter/ios/ScreenShareExtension/*",
       "clients/flutter/lib/src/services/pinned_screen_mini_player_policy.dart",
@@ -223,7 +229,11 @@
       "test/features/screen/capture/dimension_publish_test.dart",
       "test/screen_setup/keyboard_test.dart",
       "test/screen_setup/footer_layout_test.dart",
-      "test/screen_setup/action_scope_test.dart"
+      "test/screen_setup/action_scope_test.dart",
+      "test/screen_viewer_presence_api_test.dart",
+      "test/screen_viewer_presence_controller_test.dart",
+      "test/voice_lease_identity_test.dart",
+      "test/voice_participant_strip_audience_test.dart"
     ],
     "acceptance": {
       "issue325_audio": {
@@ -288,7 +298,13 @@
       "screen_watchers": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/screen_share_ui.mjs",
-        "scope": "After LiveKit confirms a screen-video subscription, the viewer reports it through the authenticated Go API under the active same-channel voice-lease ACL. The publisher gets a transient private invalidation and reloads its no-store viewer snapshot; the publisher and every viewer of the selected stream see matching roster names and a compact count, with viewer snapshots refreshed while that stream is selected. Verify join/leave cleanup with an owned two-client API/SFU session and render another active watcher in the Web participant strip. This indicates active media subscription, not human attention."
+        "focused": [
+          "clients/flutter/test/screen_viewer_presence_api_test.dart",
+          "clients/flutter/test/screen_viewer_presence_controller_test.dart",
+          "clients/flutter/test/voice_lease_identity_test.dart",
+          "clients/flutter/test/voice_participant_strip_audience_test.dart"
+        ],
+        "scope": "After LiveKit confirms a screen-video subscription, both clients report it through the authenticated Go API under the active same-channel voice-lease ACL. Flutter refreshes private no-store audience snapshots, clears presence on unsubscribe, disconnect and leave, and shows the selected stream's viewer count and watcher markers in its participant strip. The publisher and every viewer of the selected stream see matching roster names and a compact count. Verify join/leave cleanup with an owned two-client API/SFU session and render another active watcher in Web. This indicates active media subscription, not human attention. Flutter controller/API/widget coverage is registered; a feature-specific paired native stream journey remains NOT_RUN."
       },
       "issue349": {
         "browser": "clients/web/tests/mini_player/playwright.config.ts",

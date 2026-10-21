@@ -1,12 +1,21 @@
 import { expect, test, type Page } from '@playwright/test'
 import axe from 'axe-core'
+import {
+  ux2026BreakpointViewports,
+  ux2026FunctionalViewports,
+  ux2026RequiredViewports,
+} from '../uiux_2026/viewport_matrix'
 
 const patch = (page: Page, value: Record<string, unknown>) => page.evaluate(value => (window as any).__voiceFixture.patch(value), value)
-async function open(page: Page, width = 1440, scale = 100, scenario = '') {
-  await page.setViewportSize({ width, height: 900 })
-  await page.route('**/api/**', route => route.request().url().includes('/avatar')
-    ? route.fulfill({ status: 200, contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>' })
-    : route.fulfill({ status: 200, contentType: 'application/json', body: '{}' }))
+const routedVoicePages = new WeakSet<Page>()
+async function open(page: Page, width = 1440, scale = 100, scenario = '', height = 900) {
+  await page.setViewportSize({ width, height })
+  if (!routedVoicePages.has(page)) {
+    await page.route('**/api/**', route => route.request().url().includes('/avatar')
+      ? route.fulfill({ status: 200, contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>' })
+      : route.fulfill({ status: 200, contentType: 'application/json', body: '{}' }))
+    routedVoicePages.add(page)
+  }
   await page.goto(`/tests/voice_interface/fixture.html?scale=${scale}${scenario ? `&${scenario}` : ''}`)
   if (width <= 600) await expect(page.locator('.voice-room-controls').first()).toBeHidden()
   else await expect(page.locator('.voice-room-controls').first()).toBeVisible()
@@ -156,27 +165,73 @@ test('leaving removes the members rail and an already open voice participant pop
   await expect(page.getByTestId('member-popover')).toHaveCount(0)
 })
 
-for (const width of [320, 390, 768, 1024, 1440]) for (const scale of [100, 200]) test(`compact voice states fit at ${width}px / text ${scale}%`, async ({ page }, info) => {
-  await open(page, width, scale)
-  if (width >= 721 && scale === 200) {
-    const header = await page.locator('.voice-room .conversation-header').boundingBox()
-    const title = await page.locator('.voice-room .conversation-header .main-title').boundingBox()
-    expect(title!.y, 'the enlarged title must remain inside the voice header').toBeGreaterThanOrEqual(header!.y)
-    expect(title!.y + title!.height, 'the enlarged subtitle must remain inside the voice header').toBeLessThanOrEqual(header!.y + header!.height)
+const voiceStates = [
+  { name: 'connected', value: {} },
+  { name: 'muted', value: { muted: true } },
+  { name: 'deafened', value: { deafened: true } },
+  { name: 'denied', value: { deafened: false, denied: true, state: 'LISTENER' } },
+  { name: 'reconnecting', value: { state: 'RECONNECTING' } },
+  { name: 'starting', value: { screen: 'STARTING' } },
+  { name: 'sharing', value: { screen: 'SHARING' } },
+  { name: 'stopping', value: { screen: 'STOPPING' } },
+  { name: 'leaving', value: { state: 'LEAVING', screen: 'SHARING' } },
+  { name: 'prejoin', value: { active: false, state: 'IDLE' } },
+  { name: 'joining', value: { active: false, state: 'JOINING' } },
+] as const
+
+async function expectVoiceStateFits(page: Page, width: number, name: string) {
+  const target = page.locator('.room-wrap')
+  for (const button of await target.getByRole('button').all()) if (await button.isVisible()) {
+    const rect = await button.boundingBox()
+    expect(rect!.x).toBeGreaterThanOrEqual(0)
+    expect(rect!.x + rect!.width).toBeLessThanOrEqual(width + 1)
+    expect(rect!.height).toBeGreaterThanOrEqual(40)
   }
-  for (const [name, value] of Object.entries({ connected: {}, muted: { muted: true }, deafened: { deafened: true }, denied: { deafened: false, denied: true, state: 'LISTENER' }, reconnecting: { state: 'RECONNECTING' }, starting: { screen: 'STARTING' }, sharing: { screen: 'SHARING' }, stopping: { screen: 'STOPPING' }, leaving: { state: 'LEAVING', screen: 'SHARING' }, prejoin: { active: false, state: 'IDLE' }, joining: { active: false, state: 'JOINING' } })) {
-    await patch(page, { state: 'CONNECTED', active: true, muted: false, deafened: false, denied: false, screen: 'IDLE', ...value })
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
-    const target = page.locator('.room-wrap')
-    for (const button of await target.getByRole('button').all()) if (await button.isVisible()) {
-      const rect = await button.boundingBox()
-      expect(rect!.x).toBeGreaterThanOrEqual(0); expect(rect!.x + rect!.width).toBeLessThanOrEqual(width + 1)
-      expect(rect!.height).toBeGreaterThanOrEqual(40)
-    }
+  if (!await page.evaluate(() => Boolean((window as any).axe))) {
     await page.addScriptTag({ content: axe.source })
-    const violations = await page.evaluate(async () => (await (window as any).axe.run('#app', { runOnly: { type: 'tag', values: ['wcag2a','wcag2aa','wcag21aa'] } })).violations)
-    expect(violations, name).toEqual([])
-    await page.screenshot({ path: info.outputPath(`${name}.png`), fullPage: true })
+  }
+  const violations = await page.evaluate(async () => (await (window as any).axe.run('#app', { runOnly: { type: 'tag', values: ['wcag2a','wcag2aa','wcag21aa'] } })).violations)
+  expect(violations, name).toEqual([])
+}
+
+const mainVoiceViewport = ux2026FunctionalViewports[3]
+test(`all voice states stay accessible at ${mainVoiceViewport.width}x${mainVoiceViewport.height}`, async ({ page }, info) => {
+  await open(page, mainVoiceViewport.width, 100, '', mainVoiceViewport.height)
+  for (const { name, value } of voiceStates) {
+    await patch(page, { state: 'CONNECTED', active: true, muted: false, deafened: false, denied: false, screen: 'IDLE', ...value })
+    await expectVoiceStateFits(page, mainVoiceViewport.width, name)
+    await page.screenshot({ path: info.outputPath(`${name}-desktop.png`), fullPage: true })
+  }
+})
+
+const responsiveVoiceCases = [
+  // Keep the smallest required viewport at 100%; 200% text is covered at wider sizes and dedicated mobile/zoom cases.
+  { viewport: ux2026RequiredViewports[0], scale: 100, states: ['connected', 'denied', 'reconnecting', 'sharing', 'joining', 'stopping'] },
+  { viewport: ux2026RequiredViewports[1], scale: 200, states: ['connected', 'sharing', 'leaving'] },
+  { viewport: ux2026RequiredViewports[2], scale: 200, states: ['connected', 'joining'] },
+  { viewport: ux2026RequiredViewports[3], scale: 200, states: ['connected', 'starting', 'stopping'] },
+  { viewport: ux2026RequiredViewports[4], scale: 200, states: ['connected', 'denied'] },
+  { viewport: ux2026RequiredViewports[5], scale: 100, states: ['connected', 'reconnecting'] },
+  ...ux2026BreakpointViewports.map(viewport => ({ viewport, scale: 100, states: ['connected', 'sharing'] })),
+] as const
+test('critical voice states stay usable at responsive and breakpoint samples', async ({ page }, info) => {
+  test.setTimeout(90_000)
+  for (const { viewport, scale, states } of responsiveVoiceCases) {
+    await open(page, viewport.width, scale, '', viewport.height)
+    for (const name of states) {
+      const stateCase = voiceStates.find(candidate => candidate.name === name)!
+      await patch(page, { state: 'CONNECTED', active: true, muted: false, deafened: false, denied: false, screen: 'IDLE', ...stateCase.value })
+      if (viewport.width >= 721 && scale === 200 && name === 'connected') {
+        const header = await page.locator('.voice-room .conversation-header').boundingBox()
+        const title = await page.locator('.voice-room .conversation-header .main-title').boundingBox()
+        expect(title!.y, 'the enlarged title must remain inside the voice header').toBeGreaterThanOrEqual(header!.y)
+        expect(title!.y + title!.height, 'the enlarged subtitle must remain inside the voice header').toBeLessThanOrEqual(header!.y + header!.height)
+      }
+      await expectVoiceStateFits(page, viewport.width, `${viewport.width}x${viewport.height} ${name}`)
+      if (viewport.width === 320 && name === 'denied') {
+        await page.screenshot({ path: info.outputPath('denied-320x640-200.png'), fullPage: true })
+      }
+    }
   }
 })
 

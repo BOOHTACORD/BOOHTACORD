@@ -9,8 +9,9 @@ from . import artifacts
 
 class ArtifactTests(unittest.TestCase):
     def test_mandatory_visual_inventory_keeps_all_uiux_capture_scenarios(self):
-        self.assertEqual(35, len(artifacts.VISUALS))
+        self.assertEqual(36, len(artifacts.VISUALS))
         self.assertIn('password-reset-visibility-mobile.png', artifacts.VISUALS)
+        self.assertIn('flutter-screen-audience-viewer-strip-1024x92@2x.png', artifacts.VISUALS)
         for channel in ('text-channel', 'dm-conversation'):
             for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900')):
                 self.assertIn(f'flutter-{channel}-{profile}-{size}.png', artifacts.VISUALS)
