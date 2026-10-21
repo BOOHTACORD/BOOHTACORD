@@ -48,6 +48,27 @@
       }
     }
   },
+  "connection_status": {
+    "paths": [
+      "clients/web/src/workspace/connection_status/**",
+      "clients/web/tests/connection_status/**",
+      "tools/qa/local_features/features.json"
+    ],
+    "web": [
+      "tests/connection_status/playwright.config.ts"
+    ],
+    "flutter": [],
+    "acceptance": {
+      "recovery_panel": {
+        "browser": "clients/web/tests/connection_status/playwright.config.ts",
+        "focused": [
+          "clients/web/src/workspace/connection_status/model.spec.ts",
+          "clients/web/tests/connection_status/status.browser.spec.ts"
+        ],
+        "scope": "Web connection recovery panel preserves independent chat, voice and roster status; retry actions remain separately accessible and operable. The panel wraps within a narrow sidebar and uses visible focus and status indicators. No native or media-quality claim."
+      }
+    }
+  },
   "voice": {
     "paths": [
       "clients/web/src/voice/*",
