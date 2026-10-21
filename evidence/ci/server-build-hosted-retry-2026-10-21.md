@@ -24,4 +24,7 @@ PASS; changed Python modules compile; `git diff --check` PASS.
 NOT_RUN: a live GitHub-hosted multi-export Buildx build and Docker import. The
 local Docker daemon was unavailable in this environment. Hosted workflow
 acceptance remains pending PR checks; no release-gate PASS or production build
-is claimed by this record.
+is claimed by this record. The full local Python runner was also attempted, but
+host-only tests requiring writes under `~/Applications` and the local Go standard
+library did not run successfully in this sandbox; the focused affected suites
+above passed.

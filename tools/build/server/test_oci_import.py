@@ -11,7 +11,7 @@ from .oci_import import oci_root_identity
 
 
 def exported(path):
-    identity,_=fixture(path)
+    identity=fixture(path)
     with tarfile.open(path) as archive:
         rows=[(item,archive.extractfile(item).read()) for item in archive]
     result=[]

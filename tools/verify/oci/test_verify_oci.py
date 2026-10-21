@@ -13,7 +13,7 @@ REVISION = "b" * 40
 SOURCE_HASH = "a" * 64
 
 
-def fixture(path, *, bad_subject=False):
+def fixture(path, *, bad_subject=False, include_config=False):
     blobs = {}
 
     def add(value):
@@ -47,7 +47,7 @@ def fixture(path, *, bad_subject=False):
             member = tarfile.TarInfo(name)
             member.size = len(data)
             archive.addfile(member, io.BytesIO(data))
-    return nested["digest"], config["digest"]
+    return (nested["digest"], config["digest"]) if include_config else nested["digest"]
 
 
 class VerifyOciTests(unittest.TestCase):
@@ -60,7 +60,7 @@ class VerifyOciTests(unittest.TestCase):
     def test_valid_nested_index_with_two_attestations(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "image.oci.tar"
-            index_digest, image_id = fixture(path)
+            index_digest, image_id = fixture(path, include_config=True)
             result = self.run_verifier(path, index_digest)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual(json.loads(result.stdout)["index_digest"], index_digest)
@@ -69,7 +69,7 @@ class VerifyOciTests(unittest.TestCase):
     def test_loaded_docker_id_is_checked_against_the_verified_image_config(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "image.oci.tar"
-            index_digest, image_id = fixture(path)
+            index_digest, image_id = fixture(path, include_config=True)
             from tools.verify.oci.verify_oci import verify
             self.assertEqual(image_id, verify(path, REVISION, SOURCE_HASH, index_digest,
                                               docker_image_id=image_id, docker_rootfs_layers=[])["image_id"])
@@ -82,9 +82,9 @@ class VerifyOciTests(unittest.TestCase):
     def test_rejects_wrong_subject_and_loaded_id(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "image.oci.tar"
-            index_digest, _ = fixture(path, bad_subject=True)
+            index_digest = fixture(path, bad_subject=True)
             self.assertNotEqual(self.run_verifier(path, index_digest).returncode, 0)
-            index_digest, _ = fixture(path)
+            index_digest = fixture(path)
             self.assertNotEqual(self.run_verifier(path, "sha256:" + "f" * 64).returncode, 0)
 
 
