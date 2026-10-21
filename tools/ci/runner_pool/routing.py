@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 338)
-Total output lines: 32
-
 """Runner identities for GitHub-hosted gates and the isolated comparison pool."""
 GITHUB_LINUX = 'ubuntu-24.04'
 LINUX = ['self-hosted', 'linux', 'x64', 'boohtacord-ci-ephemeral']
@@ -15,7 +12,10 @@ def isolated_linux(env):
             and str(env.get('RUNNER_NAME', '')).startswith('BOOHTACORD-Hetzner-CI-'))
 
 
-def measur…38 tokens truncated…tions':
+def measurement_pool(jobs):
+    pools = set()
+    for job in jobs:
+        if job.get('labels') == ['ubuntu-24.04'] and job.get('runner_group_name') == 'GitHub Actions':
             pools.add('github-hosted')
         elif measured_linux(job):
             pools.add('boohtacord-ci-ephemeral')
