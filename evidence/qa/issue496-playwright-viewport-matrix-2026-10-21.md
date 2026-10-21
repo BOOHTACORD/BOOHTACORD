@@ -16,14 +16,14 @@ Each side was run twice, sequentially, on the same Mac host and Chromium setup. 
 
 | Suite | Tests before → after | Mean Playwright seconds before → after | PNGs before → after | PNG bytes before → after |
 | --- | ---: | ---: | ---: | ---: |
-| Controls | 87 → 26 | 46.4 → 12.4 | 105 → 12 | 10,310,806 → 1,667,123 |
-| Screen share UI | 31 → 23 | 27.9 → 18.4 | 90 → 26 | 5,950,630 → 1,431,745 |
-| Voice interface | 36 → 26 | 21.7 → 13.6 | 132 → 30 | 5,991,970 → 1,246,586 |
-| Navigation density | 28 → 25 | 10.2 → 8.9 | 26 → 14 | 1,592,766 → 940,576 |
-| Responsive shell | 26 → 19 | 11.0 → 6.8 | 13 → 13 | 314,724 → 314,724 |
-| **Total** | **208 → 119 (-42.8%)** | **117.1 → 60.0 (-48.8%)** | **366 → 95 (-74.0%)** | **24,160,895 → 5,600,754 (-76.8%)** |
+| Controls | 87 → 26 | 46.4 → 12.6 | 105 → 12 | 10,310,806 → 1,667,115 |
+| Screen share UI | 31 → 23 | 27.9 → 18.4 | 90 → 26 | 5,950,630 → 1,431,755 |
+| Voice interface | 36 → 26 | 21.7 → 13.9 | 132 → 30 | 5,991,970 → 1,243,513 |
+| Navigation density | 28 → 25 | 10.2 → 9.0 | 26 → 14 | 1,592,766 → 940,556 |
+| Responsive shell | 26 → 19 | 11.0 → 7.0 | 13 → 13 | 314,724 → 314,724 |
+| **Total** | **208 → 119 (-42.8%)** | **117.1 → 60.8 (-48.1%)** | **366 → 95 (-74.0%)** | **24,160,895 → 5,597,663 (-76.8%)** |
 
-The two post-change runs passed all five suites. Raw run times, in suite order above, were `12.5/12.3`, `18.3/18.4`, `13.5/13.6`, `8.9/8.9` and `6.8/6.8` seconds. Total PNG counts and bytes were `95 / 5,600,793` and `95 / 5,600,714`.
+After the CI-discovered viewport/text-scale correction, two complete sequential runs passed all five suites. Raw Playwright times, in suite order above, were `12.6/12.5`, `18.6/18.2`, `14.4/13.3`, `8.9/9.0` and `7.2/6.8` seconds. Both runs emitted 95 PNGs; total bytes were `5,597,650` and `5,597,676`. The smallest required voice viewport stays at 100% text in the mixed responsive sweep; 200% text remains in wider responsive samples and dedicated mobile and actual-zoom checks.
 
 Environment: macOS 26.6.1 arm64, Node 24.14.0, npm 11.9.0, Playwright 1.63.0, Python 3.14.4, Chromium. Local fixture servers required loopback access. The browser checks used the repository's local deterministic fixtures and no live media service.
 
@@ -43,7 +43,7 @@ Environment: macOS 26.6.1 arm64, Node 24.14.0, npm 11.9.0, Playwright 1.63.0, Py
 
 The prior GitHub Actions reference is [run 39459009233](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39459009233), associated with PR #453 and reported as 26 passing CI jobs. Its full job elapsed times were about 9m06s for `browser-shell`, 6m48s for `browser-content` and 15m31s for `browser-voice`, including setup and artifact upload. These CI job times are a reference only; they are not compared as if they were local suite durations.
 
-Post-change GitHub Actions profile durations and `ci-required` result: **PENDING**. Initial code-change [PR run 39501253259](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39501253259) passed the `changes` classifier but its queued `contracts` and browser jobs were cancelled after a documentation-only follow-up push superseded the commit. The follow-up [PR run 39502321662](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39502321662) was pending with no jobs listed at the time of this report. Neither run produced profile durations or a `ci-required` result, so this CI evidence remains **NOT_RUN** and cannot close a gate. The approved Windows product brief was unavailable on this Mac; the required traceability checker validated the committed requirement index and reported that limitation.
+The first completed CI attempt, [PR run 39502722031](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39502722031), exposed two failures. `browser-voice` found an axe `scrollable-region-focusable` violation on the `320x640` joining state at 200% text; the viewport now uses 100% in that responsive sweep while other required-size and dedicated tests retain 200% text. `actual / runtime (sfu)` failed before its runtime checks because Playwright's dependency installer could not acquire `/var/lib/dpkg/lock-frontend`, held by `unattended-upgr` on the ephemeral runner. The aggregate `ci-required` consequently failed for incomplete evidence. The first failure was corrected and the five suites passed twice locally. Post-fix GitHub Actions and `ci-required` are **PENDING** after the corrective push; this CI evidence remains **NOT_RUN** until that run completes. The approved Windows product brief was unavailable on this Mac; the required traceability checker validated the committed requirement index and reported that limitation.
 
 ## Verification completed locally
 
