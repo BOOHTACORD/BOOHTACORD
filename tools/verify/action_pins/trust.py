@@ -1,7 +1,7 @@
 """Repository workflow trust policy; external environment/runner settings need readback."""
 import json
 import re
-from tools.ci.runner_pool.routing import GITHUB_LINUX, LINUX, META
+from tools.ci.runner_pool.routing import GITHUB_LINUX
 
 UPSTREAM = "github.repository == 'Egkurilov/BOOHTACORD'"
 MASTER = UPSTREAM + " && github.ref == 'refs/heads/master'"
@@ -46,7 +46,6 @@ def require(value):
 
 
 HOSTED = {GITHUB_LINUX, 'windows-2022', 'macos-26', 'macos-26-intel'}
-PERSISTENT = {('build-server.yaml', 'bundle'): ['self-hosted', 'linux', 'x64', 'boohtacord-builder']}
 
 
 def sensitive(value):
@@ -63,7 +62,7 @@ def hosted_runner(identity, job):
         rows = job.get('strategy', {}).get('matrix', {}).get('include', [])
         return runner == '${{ matrix.runner }}' and rows == [
             {'arch': 'arm64', 'runner': 'macos-26'}, {'arch': 'x64', 'runner': 'macos-26-intel'}]
-    return runner == LINUX or runner == META or isinstance(runner, str) and runner in HOSTED
+    return isinstance(runner, str) and runner in HOSTED
 
 
 def check(workflows):
@@ -87,14 +86,13 @@ def check(workflows):
             if special: expected=promotion_permissions[identity[1]]
             require(permissions == expected if identity in WRITERS or special else
                     all(value == 'read' for value in permissions.values()))
-            persistent = identity in PERSISTENT
-            require(job.get('runs-on') == PERSISTENT[identity] if persistent else hosted_runner(identity, job))
+            require(hosted_runner(identity, job))
             secrets = sensitive(job)
             if untrusted:
-                require(not persistent and not secrets and all(v == 'read' for v in permissions.values()))
+                require(not secrets and all(v == 'read' for v in permissions.values()))
             if identity in GUARDS:
                 require(job.get('if') == GUARDS[identity] and job.get('environment') == ('production-diagnostics' if identity in DIAGNOSTICS else 'production'))
-            if persistent or secrets:
+            if secrets:
                 require(identity in GUARDS and job.get('environment') == ('production-diagnostics' if identity in DIAGNOSTICS else 'production'))
             for step in job.get('steps', []):
                 require(step.get('continue-on-error') in (None, False, 'false'))

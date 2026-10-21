@@ -1,6 +1,6 @@
 """Cutover reporting has no production mutation or repository-admin capability."""
 from .readiness import require
-from tools.ci.runner_pool.routing import META
+from tools.ci.runner_pool.routing import GITHUB_LINUX
 from tools.verify.action_pins.trust import MASTER
 
 
@@ -10,7 +10,7 @@ def validate(workflows):
     jobs=doc['jobs'];require(set(jobs)=={'prepare','review'} and not jobs['prepare'].get('environment')
         and jobs['review'].get('if')==MASTER+" && inputs.request_go_review && needs.prepare.outputs.ready == 'true'" and jobs['review'].get('environment')=='production' and jobs['review'].get('needs')=='prepare')
     for job in jobs.values():
-        require(job.get('runs-on')==META and not job.get('continue-on-error') and not job.get('concurrency'))
+        require(job.get('runs-on')==GITHUB_LINUX and not job.get('continue-on-error') and not job.get('concurrency'))
         for step in job['steps']:
             require(not step.get('continue-on-error') and 'secrets.' not in str(step))
             if step.get('uses','').startswith('actions/upload-artifact@'):

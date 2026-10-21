@@ -1,5 +1,5 @@
 """Ensure release routing shares the PR selector and cannot authorize deployment."""
-from tools.ci.runner_pool.routing import META
+from tools.ci.runner_pool.routing import GITHUB_LINUX
 from .selection import require
 from tools.ci.toolchains.auxiliary import ROOT, python_input
 
@@ -25,7 +25,7 @@ def check(build, deploy, gates):
     require(not route.get('environment') and not route.get('env') and not route.get('secrets'),
             'Read-only route must not enter production or receive deployment credentials')
     require(route.get('permissions') == {'contents': 'read', 'actions': 'read'}, 'Route needs only metadata read permission')
-    require(route.get('runs-on') == META, 'Route must run on an isolated hosted runner')
+    require(route.get('runs-on') == GITHUB_LINUX, 'Route must run on a GitHub-hosted Linux runner')
     steps = route.get('steps', [])
     require(len(steps) == 4 and steps[0] == {'uses': 'actions/checkout@v4', 'with': {'persist-credentials': 'false'}}, 'Route checkout/actions must remain bounded')
     require(steps[1] == {'uses': 'actions/setup-python@v5', 'with': {'python-version': python_input(ROOT)}}

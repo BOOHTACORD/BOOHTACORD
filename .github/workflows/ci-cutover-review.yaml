@@ -24,7 +24,7 @@ jobs:
   prepare:
     outputs:
       ready: ${{ steps.prepare.outputs.ready_for_review }}
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-meta]
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -54,7 +54,7 @@ jobs:
     if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && inputs.request_go_review && needs.prepare.outputs.ready == 'true'
     needs: prepare
     environment: production
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-meta]
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4

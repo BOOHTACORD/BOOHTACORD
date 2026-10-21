@@ -5,11 +5,9 @@ META = ['self-hosted', 'linux', 'x64', 'boohtacord-ci-meta']
 
 
 def isolated_linux(env):
-    return (env.get('RUNNER_ENVIRONMENT') == 'github-hosted' or
-            env.get('RUNNER_ENVIRONMENT') == 'self-hosted'
-            and env.get('RUNNER_OS') == 'Linux'
-            and env.get('BOOHTACORD_EPHEMERAL_GUEST') == 'true'
-            and str(env.get('RUNNER_NAME', '')).startswith('BOOHTACORD-Hetzner-CI-'))
+    """Accept only the repository's pinned GitHub-hosted Linux image."""
+    return (env.get('RUNNER_ENVIRONMENT') == 'github-hosted'
+            and env.get('RUNNER_OS') == 'Linux')
 
 
 def measurement_pool(jobs):

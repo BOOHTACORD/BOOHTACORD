@@ -32,8 +32,8 @@ LF for Windows checkout. It detects changes to the wrapper/plugin/SDK recipes an
 existing binary digests. It is not a hash of every installed OS/compiler binary.
 Xcode, MSVC/CMake and runner image patch revisions remain platform-image inputs;
 runner compatibility/publication acceptance belongs to #400/#386/#396. The
-self-hosted server-builder bootstrap interpreter is not replaced or cached here.
-Hosted Python commands select/check the policy before running; a retained-release
+self-hosted server-builder bootstrap interpreter is now selected on the same
+GitHub-hosted Linux image. Hosted Python commands select/check the policy before running; a retained-release
 checkout does not re-run a new module from an old source revision. Deploy's
 read-only route permits only the exact reviewed SDK bootstrap and metadata reader.
 

@@ -38,9 +38,8 @@ class VendorLockTests(unittest.TestCase):
         from tools.ci.flutter_gates import profiles
         machine = json.dumps({'frameworkVersion':'3.47.7', 'dartSdkVersion':'3.13.5',
                               'frameworkRevision':'abaf9c523780a608bd46686fd5e53740a07077f8'})
-        pool = dict(RUNNER_ENVIRONMENT='self-hosted', RUNNER_OS='Linux',
-                    RUNNER_NAME='BOOHTACORD-Hetzner-CI-1-test', BOOHTACORD_EPHEMERAL_GUEST='true')
-        for env, extra in (({}, ()), (pool, ('--concurrency=4',))):
+        hosted = dict(RUNNER_ENVIRONMENT='github-hosted', RUNNER_OS='Linux')
+        for env, extra in (({}, ()), (hosted, ())):
             events = []
             with self.subTest(environment=env.get('RUNNER_ENVIRONMENT', 'local')), \
                     patch.dict('os.environ', env, clear=True), patch.object(profiles,'output',return_value=machine), \

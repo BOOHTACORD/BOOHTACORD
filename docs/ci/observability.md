@@ -112,8 +112,8 @@ The versioned triage thresholds are signals, not production capacity/SLO claims:
   source/step evidence; do not label it flaky without proof;
 - queued/waiting workflow or required status above 900s: inspect selected DAG,
   approvals, runner allocation and cancellation before retrying;
-- self-hosted waiting job above 600s: CI/Operations checks runner availability
-  and pending environment approval; metadata alone does not prove it is offline;
+- GitHub-hosted waiting job above 600s: CI/Operations checks runner allocation
+  and pending environment approval; metadata alone does not prove a capacity issue;
 - failed/missing evidence retention: CI/Artifacts restores the mandatory artifact
   path and source/attempt binding; an old or empty artifact is not a replacement.
 

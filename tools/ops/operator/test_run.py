@@ -31,7 +31,7 @@ class OperatorRunTests(unittest.TestCase):
     def test_unavailable_host_is_red_and_private_identity_is_removed(self):
         with tempfile.TemporaryDirectory() as directory:
             env=context(OPERATOR_DRY_RUN='false',OPERATOR_CONFIRM='read-only-observation',GITHUB_ACTIONS='true',
-                        RUNNER_ENVIRONMENT='github-hosted',RUNNER_TEMP=directory)
+                        RUNNER_ENVIRONMENT='github-hosted',RUNNER_OS='Linux',RUNNER_TEMP=directory)
             with patch.object(run,'ROOT',Path(directory)),patch.object(run,'output',return_value='a'*40), \
                  patch.dict('os.environ',env,clear=True),patch.object(run.approval,'verify',return_value=[43]), \
                  patch.object(run,'SSH'),patch.object(run,'perform',side_effect=ExecutionFailed('timeout')):

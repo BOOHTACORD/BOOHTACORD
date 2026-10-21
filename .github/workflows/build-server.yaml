@@ -15,7 +15,7 @@ concurrency:
 jobs:
   changes:
     if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-meta]
+    runs-on: ubuntu-24.04
     outputs:
       contracts: ${{ steps.select.outputs.contracts }}
       map_version: ${{ steps.select.outputs.map_version }}
@@ -64,7 +64,7 @@ jobs:
     permissions:
       contents: read
       actions: read
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-meta]
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -107,7 +107,7 @@ jobs:
     if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && needs.changes.outputs.server_release_impact == 'true'
     environment: production
     needs: [changes, backend, web, contracts, server-quality]
-    runs-on: [self-hosted, linux, x64, boohtacord-builder]
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     concurrency:
       group: trusted-server-bundle-${{ github.repository }}

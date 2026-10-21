@@ -16,7 +16,7 @@ class LocalActionPolicyTests(unittest.TestCase):
 permissions: {contents: read}
 jobs:
   proof:
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
+    runs-on: ubuntu-24.04
     steps:
       - uses: ./.github/actions/fixture
 """)
