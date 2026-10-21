@@ -30,4 +30,6 @@ Inspected original images with `view_image(detail=original)`; all PNG dimensions
 
 An additional production-state probe reproduced short-IME overflow and a large-text screen-stage footer overflow. The follow-up fixes add a short-pane scroll policy, wrapping ended-screen actions and compact accessible audience counts; the final 188-test capture run passes those regressions.
 
+Hosted CI on the first PR revision passed the complete Dart profile but rejected the screenshot package because the new parity captures were not yet in the finite publication inventory. The follow-up explicitly registers all 90 deterministic synthetic names and retains the existing exact-set/freshness/privacy/integrity checks; it does not relax publication policy.
+
 These records describe implementation/presentation acceptance. They do not close the blocked native/physical gates or #303.
