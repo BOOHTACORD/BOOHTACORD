@@ -19,6 +19,11 @@ extension WorkspaceDirectConversationStateDidUpdateWidgetAction
   void executeWorkspaceDirectConversationStateDidUpdateWidget(
     WorkspaceDirectConversation oldWidget,
   ) {
+    if (oldWidget.conversation.id != widget.conversation.id ||
+        widget.state.user?.accountId != workspaceDraftAccountId) {
+      workspaceInitialUnreadCount = widget.conversation.unreadCount;
+      workspaceUnreadStartId = null;
+    }
     if (oldWidget.conversation.id != widget.conversation.id) {
       workspaceRememberDraftFor(oldWidget.conversation.id);
     }

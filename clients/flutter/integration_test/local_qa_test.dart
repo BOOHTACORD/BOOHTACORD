@@ -7,6 +7,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:boohtacord_desktop/src/app.dart';
 import 'package:boohtacord_desktop/src/app_state.dart';
+import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/show_screen_share_setup/component.dart';
 
@@ -76,6 +77,40 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byTooltip('Закрыть навигацию').hitTestable(), findsNothing);
     await binding.takeScreenshot('native-workspace');
+    final channel = state.topology!.categories
+        .expand((c) => c.channels)
+        .firstWhere((c) => c.kind == ChannelKind.text);
+    await tester.runAsync(() => state.selectChannel(channel));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Действия диалога'));
+    await tester.pumpAndSettle();
+    expect(find.text('Закреплённые'), findsOneWidget);
+    await tester.tap(find.text('Поиск в диалоге'));
+    await tester.pumpAndSettle();
+    expect(state.workspacePanel, WorkspacePanel.search);
+    expect(
+      tester
+          .widget<FilledButton>(
+            find.byKey(const ValueKey('workspace-search-submit')),
+          )
+          .onPressed,
+      isNull,
+    );
+    expect(
+      tester
+          .widget<DropdownButtonFormField<String>>(
+            find.byType(DropdownButtonFormField<String>),
+          )
+          .initialValue,
+      'current',
+    );
+    await binding.takeScreenshot('native-context-search');
+    await tester.tap(find.byTooltip('Закрыть поиск'));
+    await tester.pumpAndSettle();
+    expect(state.workspacePanel, WorkspacePanel.none);
+    expect(find.byTooltip('Закрыть навигацию').hitTestable(), findsNothing);
+    expect(find.byTooltip('Действия диалога').hitTestable(), findsOneWidget);
+
     // Exercise the changed production chooser on a real native surface. Cancel
     // before capture: this confirms UI behaviour, not MediaProjection/media.
     final selectedQuality = state.screenShareSelectedQuality;
@@ -125,6 +160,28 @@ void main() {
       expect(state.workspacePanel, panel);
       expect(tester.takeException(), isNull);
       await binding.takeScreenshot('native-${panel.name}');
+      if (panel == WorkspacePanel.audio) {
+        final scrollable = find.descendant(
+          of: find.byKey(const ValueKey('audio-settings-list')),
+          matching: find.byType(Scrollable),
+        );
+        await tester.scrollUntilVisible(
+          find.text('Дополнительно'),
+          120,
+          scrollable: scrollable,
+        );
+        await tester.ensureVisible(find.text('Дополнительно'));
+        await tester.tap(find.text('Дополнительно'));
+        await tester.pumpAndSettle();
+        final processing = find.text('Автоматическая регулировка усиления');
+        expect(processing, findsOneWidget);
+        final mounted = tester.element(processing);
+        await binding.takeScreenshot('native-audio-advanced');
+        await tester.ensureVisible(find.text('Дополнительно'));
+        await tester.tap(find.text('Дополнительно'));
+        await tester.pumpAndSettle();
+        expect(mounted.mounted, isTrue);
+      }
     }
     state.showChannels();
     await tester.pumpAndSettle();

@@ -4,6 +4,10 @@ import 'widget.dart';
 
 abstract class WorkspaceScreenStateContext extends State<WorkspaceScreen>
     with WidgetsBindingObserver, WindowListener {
+  final workspaceMainSurfaceKey = GlobalKey(
+    debugLabel: 'workspace-main-content',
+  );
+  final workspacePinnedMiniKey = GlobalKey(debugLabel: 'workspace-pinned-mini');
   bool workspaceShowMobileSidebar = false;
   bool workspaceInitialNavigationApplied = false;
   bool workspaceShowMembersDrawer = false;

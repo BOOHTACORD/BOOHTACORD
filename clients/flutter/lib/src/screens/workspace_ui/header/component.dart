@@ -75,13 +75,16 @@ class WorkspaceHeader extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
+                    Tooltip(
+                      message: title,
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                     Text(
@@ -96,7 +99,7 @@ class WorkspaceHeader extends StatelessWidget {
                   ],
                 ),
               ),
-              if (!compactConversation) ?trailing,
+              ?trailing,
               if (onOpenMembers != null)
                 IconButton(
                   tooltip: 'Открыть участников',

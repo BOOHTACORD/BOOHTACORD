@@ -14,12 +14,7 @@ mixin WorkspaceMembersPanelStateWorkspaceCloseMemberProfileBinding
 extension WorkspaceMembersPanelStateWorkspaceCloseMemberProfileAction
     on WorkspaceMembersPanelStateContext {
   void executeWorkspaceMembersPanelStateWorkspaceCloseMemberProfile() {
-    workspaceProfilePortal.hide();
-    workspaceMutateView(() => workspaceProfileMemberId = null);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && workspaceProfileTriggerFocus.canRequestFocus) {
-        workspaceProfileTriggerFocus.requestFocus();
-      }
-    });
+    final dialog = workspaceProfileDialogContext;
+    if (dialog != null && dialog.mounted) Navigator.of(dialog).pop();
   }
 }

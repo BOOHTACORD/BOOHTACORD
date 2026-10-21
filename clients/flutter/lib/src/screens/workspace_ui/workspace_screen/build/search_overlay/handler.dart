@@ -20,7 +20,10 @@ extension RenderWorkspaceScreenSearchOverlayAction
           key: const ValueKey('workspace-search-overlay'),
           child: WorkspaceDrawerSurface(
             debugLabel: 'workspace-search',
-            child: WorkspaceWorkspaceSearchPanel(state: widget.state),
+            child: WorkspaceWorkspaceSearchPanel(
+              key: ValueKey(widget.state.workspace.searchSessionEpoch),
+              state: widget.state,
+            ),
           ),
         ),
       ),

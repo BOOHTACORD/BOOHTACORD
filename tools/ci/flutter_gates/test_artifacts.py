@@ -9,7 +9,13 @@ from . import artifacts
 
 class ArtifactTests(unittest.TestCase):
     def test_mandatory_visual_inventory_keeps_all_uiux_capture_scenarios(self):
-        self.assertEqual(36, len(artifacts.VISUALS))
+        self.assertEqual(126, len(artifacts.VISUALS))
+        self.assertEqual(len(artifacts.VISUALS), len(set(artifacts.VISUALS)))
+        parity = [name for name in artifacts.VISUALS if name.startswith('parity-')]
+        self.assertEqual(90, len(parity))
+        self.assertIn('parity-pinned-workspace-320x480-ime180-scale2.png', parity)
+        self.assertIn('parity-mini-320x240-scale2.png', parity)
+        self.assertIn('parity-search-1440x480-scale2.png', parity)
         self.assertIn('password-reset-visibility-mobile.png', artifacts.VISUALS)
         self.assertIn('flutter-screen-audience-viewer-strip-1024x92@2x.png', artifacts.VISUALS)
         for channel in ('text-channel', 'dm-conversation'):

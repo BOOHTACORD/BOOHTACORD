@@ -34,9 +34,13 @@ mixin AppSearchAccess on AppOwners {
 
   set searchContextError(String? value) => workspace.searchContextError = value;
 
-  void openSearchPanel() => workspace.openSearchPanel();
+  void openSearchPanel({bool currentConversation = false, bool pins = false}) =>
+      workspace.openSearchPanel(
+        currentConversation: currentConversation,
+        pins: pins,
+      );
 
-  void closeSearchPanel({bool restoreLauncherFocus = true}) =>
+  void closeSearchPanel({bool? restoreLauncherFocus}) =>
       workspace.closeSearchPanel(restoreLauncherFocus: restoreLauncherFocus);
 
   Future<void> openSearchContext(SearchMessage target, {String? heading}) =>

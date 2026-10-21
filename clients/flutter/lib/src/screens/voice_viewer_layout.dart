@@ -19,14 +19,38 @@ class VoiceViewerLayout extends StatelessWidget {
   final Widget participants;
 
   @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      Expanded(child: stage),
-      diagnostics,
-      ?audioControls,
-      ?streamRail,
-      ?bottomActions,
-      participants,
-    ],
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final short =
+          constraints.maxHeight < 360 ||
+          (MediaQuery.textScalerOf(context).scale(12) > 16 &&
+              constraints.maxHeight < 600);
+      final details = <Widget>[
+        diagnostics,
+        ?audioControls,
+        ?streamRail,
+        ?bottomActions,
+        participants,
+      ];
+      if (short) {
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: (constraints.maxHeight * .5).clamp(80.0, 240.0),
+                child: stage,
+              ),
+              ...details,
+            ],
+          ),
+        );
+      }
+      return Column(
+        children: [
+          Expanded(child: stage),
+          ...details,
+        ],
+      );
+    },
   );
 }

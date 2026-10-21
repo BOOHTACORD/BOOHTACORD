@@ -15,6 +15,7 @@ class AudioProcessingAdvancedSettings extends StatelessWidget {
     required this.onProcessingChanged,
     required this.voiceConnected,
     required this.voiceDiagnostics,
+    this.inline = false,
   });
 
   final AudioProcessingPreferences processing;
@@ -22,15 +23,11 @@ class AudioProcessingAdvancedSettings extends StatelessWidget {
   final Future<void> Function(AudioProcessingPreferences) onProcessingChanged;
   final bool voiceConnected;
   final VoiceAudioDiagnostics? voiceDiagnostics;
+  final bool inline;
 
   @override
-  Widget build(BuildContext context) => ExpansionTile(
-    key: const ValueKey('audio-processing-advanced'),
-    tilePadding: EdgeInsets.zero,
-    childrenPadding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
-    title: const Text('Расширенные настройки и диагностика'),
-    subtitle: const Text('Шумоподавление, состояние обработки и статистика'),
-    children: [
+  Widget build(BuildContext context) {
+    final controls = [
       NoiseSuppressionSettings(
         processing: processing,
         runtime: runtime,
@@ -45,6 +42,20 @@ class AudioProcessingAdvancedSettings extends StatelessWidget {
         connected: voiceConnected,
         diagnostics: voiceDiagnostics,
       ),
-    ],
-  );
+    ];
+    if (inline)
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: controls,
+      );
+    return ExpansionTile(
+      key: const ValueKey('audio-processing-advanced'),
+      tilePadding: EdgeInsets.zero,
+      childrenPadding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+      title: const Text('Расширенные настройки и диагностика'),
+      subtitle: const Text('Шумоподавление, состояние обработки и статистика'),
+      maintainState: true,
+      children: controls,
+    );
+  }
 }

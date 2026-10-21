@@ -16,11 +16,6 @@ class QualityPicker extends StatelessWidget {
   final ValueChanged<ScreenShareQuality> onChanged;
   final bool advancedInitiallyExpanded;
 
-  static const _recommended = ScreenShareQuality(
-    resolution: 1080,
-    frameRate: 60,
-  );
-
   @override
   Widget build(BuildContext context) {
     final compact = MediaQuery.sizeOf(context).width < 640;
@@ -51,72 +46,28 @@ class QualityPicker extends StatelessWidget {
               ),
             ],
           ),
-          if (!advancedInitiallyExpanded) ...[
-            const SizedBox(height: 10),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: GcColors.surface,
-                border: Border.all(color: GcColors.borderSubtle),
-                borderRadius: BorderRadius.circular(GcRadii.md),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Рекомендуемый профиль',
-                    style: TextStyle(
-                      color: GcColors.textSecondary,
-                      fontSize: GcTypography.small,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    '${_recommended.resolution}p · ${_recommended.frameRate} FPS',
-                    style: const TextStyle(
-                      color: GcColors.text,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  if (quality != _recommended)
-                    OutlinedButton(
-                      key: const ValueKey('apply-recommended-screen-profile'),
-                      onPressed: () => onChanged(_recommended),
-                      child: const Text('Применить рекомендованный профиль'),
-                    ),
-                  Semantics(
-                    liveRegion: true,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Text(
-                        'Текущий выбор: ${quality.resolution}p · ${quality.frameRate} FPS',
-                        style: const TextStyle(
-                          color: GcColors.text,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'Профиль задаёт цель; фактическое качество зависит от выбранного источника, устройства и сети.',
-                    style: TextStyle(
-                      color: GcColors.muted,
-                      fontSize: GcTypography.caption,
-                    ),
-                  ),
-                ],
-              ),
+          const SizedBox(height: 8),
+          Semantics(
+            liveRegion: true,
+            child: Text(
+              'Выбрано: ${quality.resolution}p · ${quality.frameRate} FPS',
+              style: const TextStyle(fontWeight: FontWeight.w600),
             ),
-          ],
+          ),
+          const Text(
+            'Фактическое качество зависит от источника, устройства и сети.',
+            style: TextStyle(
+              color: GcColors.muted,
+              fontSize: GcTypography.caption,
+            ),
+          ),
           const SizedBox(height: 8),
           Material(
             color: Colors.transparent,
             child: ExpansionTile(
               key: const ValueKey('screen-share-advanced-quality'),
               initiallyExpanded: advancedInitiallyExpanded,
+              maintainState: true,
               tilePadding: EdgeInsets.zero,
               childrenPadding: EdgeInsets.zero,
               title: const Text('Дополнительные настройки качества'),

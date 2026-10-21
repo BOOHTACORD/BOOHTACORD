@@ -152,7 +152,6 @@ void main() {
           }
           if (section == AdminSection.guild && profile.textScale > 1) {
             final helper = find.text(
-              'Название показывается участникам и на экране входа. '
               'От 1 до 80 символов, без переводов строк.',
             );
             expect(helper, findsOneWidget);

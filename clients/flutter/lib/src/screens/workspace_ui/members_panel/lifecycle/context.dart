@@ -4,12 +4,17 @@ import 'widget.dart';
 
 abstract class WorkspaceMembersPanelStateContext
     extends State<WorkspaceMembersPanel> {
-  final OverlayPortalController workspaceProfilePortal =
-      OverlayPortalController();
-  final LayerLink workspaceProfileLink = LayerLink();
-  final FocusNode workspaceProfileTriggerFocus = FocusNode(
-    debugLabel: 'member-profile-trigger',
-  );
+  final workspaceProfileAnchorKeys = <String, GlobalKey>{};
+  final workspaceProfileFocusNodes = <String, FocusNode>{};
+  GlobalKey workspaceAnchorFor(String id) =>
+      workspaceProfileAnchorKeys.putIfAbsent(id, GlobalKey.new);
+  FocusNode workspaceFocusFor(String id) => workspaceProfileFocusNodes
+      .putIfAbsent(id, () => FocusNode(debugLabel: 'member-profile-trigger'));
+  GlobalKey get workspaceProfileAnchorKey =>
+      workspaceAnchorFor(workspaceProfileTriggerMemberId!);
+  FocusNode get workspaceProfileTriggerFocus =>
+      workspaceFocusFor(workspaceProfileTriggerMemberId!);
+  BuildContext? workspaceProfileDialogContext;
   String? workspaceProfileMemberId;
   String? workspaceProfileTriggerMemberId;
   AppState get state;

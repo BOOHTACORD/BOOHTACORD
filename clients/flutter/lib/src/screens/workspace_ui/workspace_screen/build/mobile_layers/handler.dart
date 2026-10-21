@@ -1,5 +1,5 @@
 import '../search_drawer/handler.dart';
-import 'pinned_content/handler.dart';
+import '../../../../../widgets/pinned_screen_dock.dart';
 import '../drawer_sidebar/handler.dart';
 import '../../../drawer_surface/component.dart';
 import '../../../members_panel/component.dart';
@@ -18,27 +18,20 @@ extension WorkspaceScreenMobileLayersRenderer on WorkspaceScreenStateContext {
     BoxConstraints constraints,
   ) => Stack(
     children: [
-      if (pinnedMiniVisible)
-        Positioned.fill(
-          child: WorkspacePinnedScreenMobileContent(
-            content: Stack(
-              children: [
-                renderWorkspaceScreenDrawerSidebar(
-                  searchPanelModal,
-                  pinnedMiniVisible,
-                  showMemberToggle,
-                ),
-              ],
-            ),
-            mini: pinnedMiniLayer(),
+      Positioned.fill(
+        child: PinnedScreenDock(
+          content: Stack(
+            children: [
+              renderWorkspaceScreenDrawerSidebar(
+                searchPanelModal,
+                pinnedMiniVisible,
+                showMemberToggle,
+              ),
+            ],
           ),
-        )
-      else
-        renderWorkspaceScreenDrawerSidebar(
-          searchPanelModal,
-          pinnedMiniVisible,
-          showMemberToggle,
+          mini: pinnedMiniVisible ? pinnedMiniLayer() : null,
         ),
+      ),
       renderWorkspaceScreenSearchDrawer(searchPanelModal, fullScreenSearch),
       SlidingDrawerLayer(
         visible: workspaceShowMobileSidebar,
@@ -81,7 +74,10 @@ extension WorkspaceScreenMobileLayersRenderer on WorkspaceScreenStateContext {
           width: (constraints.maxWidth - 40).clamp(0.0, 320.0).toDouble(),
           child: WorkspaceDrawerSurface(
             debugLabel: 'workspace-search',
-            child: WorkspaceWorkspaceSearchPanel(state: widget.state),
+            child: WorkspaceWorkspaceSearchPanel(
+              key: ValueKey(widget.state.workspace.searchSessionEpoch),
+              state: widget.state,
+            ),
           ),
         ),
     ],

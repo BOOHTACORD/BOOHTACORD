@@ -32,6 +32,7 @@ class WorkspaceVoiceParticipantStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final watcherIds = watcherAccountIds.map((id) => id.toLowerCase()).toSet();
+    final compactLabels = MediaQuery.textScalerOf(context).scale(12) > 16;
     return Container(
       height: 92,
       padding: const EdgeInsets.fromLTRB(18, 10, 18, 12),
@@ -42,39 +43,106 @@ class WorkspaceVoiceParticipantStrip extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: showAudience ? 120 : 110,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Участники',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  '${participants.length + 1} в комнате',
-                  style: const TextStyle(color: GcColors.muted, fontSize: 11),
-                ),
-                if (showAudience) ...[
-                  const SizedBox(height: 3),
-                  Semantics(
-                    liveRegion: true,
-                    label: 'Зрители трансляции: ${watcherAccountIds.length}',
-                    child: ExcludeSemantics(
-                      child: Text(
-                        'Зрители · ${watcherAccountIds.length}',
-                        key: const ValueKey('screen-viewer-audience-count'),
+            width: compactLabels
+                ? 96
+                : showAudience
+                ? 120
+                : 110,
+            child: compactLabels
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Semantics(
+                        label:
+                            'Участники: ${participants.length + 1} в комнате',
+                        child: ExcludeSemantics(
+                          child: Row(
+                            children: [
+                              const Icon(Icons.people_outline, size: 18),
+                              const SizedBox(width: 6),
+                              Flexible(
+                                child: Text(
+                                  '${participants.length + 1}',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 11),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      if (showAudience) ...[
+                        const SizedBox(height: 3),
+                        Semantics(
+                          liveRegion: true,
+                          label:
+                              'Зрители трансляции: ${watcherAccountIds.length}',
+                          child: ExcludeSemantics(
+                            child: Row(
+                              children: [
+                                const Icon(Icons.visibility_outlined, size: 18),
+                                const SizedBox(width: 6),
+                                Flexible(
+                                  child: Text(
+                                    '${watcherAccountIds.length}',
+                                    key: const ValueKey(
+                                      'screen-viewer-audience-count',
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(fontSize: 11),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Участники',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        '${participants.length + 1} в комнате',
                         style: const TextStyle(
                           color: GcColors.muted,
                           fontSize: 11,
                         ),
                       ),
-                    ),
+                      if (showAudience) ...[
+                        const SizedBox(height: 3),
+                        Semantics(
+                          liveRegion: true,
+                          label:
+                              'Зрители трансляции: ${watcherAccountIds.length}',
+                          child: ExcludeSemantics(
+                            child: Text(
+                              'Зрители · ${watcherAccountIds.length}',
+                              key: const ValueKey(
+                                'screen-viewer-audience-count',
+                              ),
+                              style: const TextStyle(
+                                color: GcColors.muted,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
-                ],
-              ],
-            ),
           ),
           Expanded(
             child: ListView(

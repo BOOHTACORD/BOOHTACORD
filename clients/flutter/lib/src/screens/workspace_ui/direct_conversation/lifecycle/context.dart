@@ -6,6 +6,8 @@ import 'widget.dart';
 
 abstract class WorkspaceDirectConversationStateContext
     extends State<WorkspaceDirectConversation> {
+  int workspaceInitialUnreadCount = 0;
+  String? workspaceUnreadStartId;
   final workspaceController = TextEditingController();
   final workspaceComposerFocus = FocusNode();
   final workspaceAttachmentComposerKey =

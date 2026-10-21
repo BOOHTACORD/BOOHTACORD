@@ -10,6 +10,7 @@ abstract class WorkspacePinnedScreenMiniPlayerContext extends StatelessWidget {
     required this.fullscreenSelection,
     required this.onReturnToVoice,
     required this.onStopWatching,
+    this.onFullscreenSelectionChanged,
   });
   final AppState state;
   final String identity;
@@ -18,4 +19,5 @@ abstract class WorkspacePinnedScreenMiniPlayerContext extends StatelessWidget {
   final ScreenFullscreenSelection? fullscreenSelection;
   final VoidCallback onReturnToVoice;
   final VoidCallback onStopWatching;
+  final ValueChanged<ScreenFullscreenSelection?>? onFullscreenSelectionChanged;
 }

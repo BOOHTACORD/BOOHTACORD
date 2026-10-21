@@ -5,6 +5,7 @@ import 'mention_label/handler.dart';
 import '../../message_social/component.dart';
 import '../../reply_preview/component.dart';
 import '../../native_bindings.dart';
+import '../../../../widgets/message_timestamp.dart';
 
 import '../lifecycle/context.dart';
 import '../handler_bindings.dart';
@@ -39,20 +40,32 @@ extension WorkspaceMessageRowBuildAction on WorkspaceMessageRowContext {
             : null,
       );
     }
-    final time =
-        '${message.createdAt.hour.toString().padLeft(2, '0')}:${message.createdAt.minute.toString().padLeft(2, '0')}';
+    final time = MessageTimestamp.short(message.createdAt);
+    final gutter = (MediaQuery.textScalerOf(context).scale(10) * 3.6).clamp(
+      avatarDiameter,
+      double.infinity,
+    );
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (grouped)
-          SizedBox(width: avatarDiameter, height: 0)
+          SizedBox(
+            width: gutter,
+            child: MessageTimestamp(message.createdAt, compact: true),
+          )
         else
-          AuthenticatedAvatar(
-            state: state,
-            name: authorName,
-            avatarUrl: member?.avatarUrl,
-            radius: avatarDiameter / 2,
-            backgroundColor: GcColors.accent,
+          SizedBox(
+            width: gutter,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: AuthenticatedAvatar(
+                state: state,
+                name: authorName,
+                avatarUrl: member?.avatarUrl,
+                radius: avatarDiameter / 2,
+                backgroundColor: GcColors.accent,
+              ),
+            ),
           ),
         SizedBox(width: compact ? 8 : 12),
         Expanded(

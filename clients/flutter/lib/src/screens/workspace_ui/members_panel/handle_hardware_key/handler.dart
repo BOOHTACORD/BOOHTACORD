@@ -16,7 +16,8 @@ extension WorkspaceMembersPanelStateWorkspaceHandleHardwareKeyAction
   bool executeWorkspaceMembersPanelStateWorkspaceHandleHardwareKey(
     KeyEvent event,
   ) {
-    if (workspaceProfileMemberId != null &&
+    if (workspaceProfileDialogContext == null &&
+        workspaceProfileMemberId != null &&
         event is KeyDownEvent &&
         event.logicalKey == LogicalKeyboardKey.escape) {
       workspaceCloseMemberProfile();
