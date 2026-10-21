@@ -1,0 +1,512 @@
+{
+  "uid": "boohtacord-fleet-fleet",
+  "title": "BOOHTACORD · Registered installations",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": [
+    "boohtacord",
+    "installation-scoped"
+  ],
+  "refresh": "15s",
+  "templating": {
+    "list": [
+      {
+        "name": "installation",
+        "label": "Installation",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "boohtacord_prometheus"
+        },
+        "query": "label_values(boohtacord_installation_registered, installation_id)",
+        "refresh": 1,
+        "multi": false,
+        "includeAll": false
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Registered installations",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "boohtacord_installation_registered"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Last seen (zero means never connected)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "boohtacord_installation_last_seen_seconds"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Enabled (zero means revoked)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "boohtacord_installation_enabled"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "Explicitly disabled export",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "boohtacord_installation_export_disabled"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "Observed API builds",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max by (installation_id, service_version) (boohtacord_telemetry_build_info)"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "Registered accounts per installation (replicas deduplicated)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max by (installation_id) (boohtacord_users_registered)"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "Daily active accounts per installation (not unique people across installations)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max by (installation_id) (boohtacord_users_daily_active{period=\"today\"})"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "HTTP errors per installation",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (installation_id) (rate(boohtacord_http_server_requests_total{status=~\"5..\"}[5m]))"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 9,
+      "title": "HTTP latency per installation",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 32,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.95, sum by (installation_id, le) (rate(boohtacord_http_server_duration_seconds_bucket[5m])))"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 10,
+      "title": "Observed media cadence per installation",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 32,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.50, sum by (installation_id, le, direction) (rate(boohtacord_media_fps_bucket[5m])))"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 11,
+      "title": "Observed SFU participants",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 40,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (installation_id) (livekit_participant_total)"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 12,
+      "title": "Dropped export batches (visible after delivery recovers)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 40,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (installation_id) (boohtacord_telemetry_dropped_batches_total)"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 13,
+      "title": "Pending export batches",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 48,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (installation_id) (boohtacord_telemetry_queue_batches)"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "description": "Registered opt-in installations only. Legacy/local history remains in the original dashboards; it is never attributed to an installation."
+}

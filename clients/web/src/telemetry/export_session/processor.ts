@@ -44,7 +44,7 @@ export class SessionProcessor implements SpanProcessor {
    let response:Response|undefined
    const active=new AbortController();this.active=active
    try {response=await this.send(origin+apiBaseUrl+'/telemetry/traces',{method:'POST',credentials:'same-origin',
-    headers:{'Content-Type':'application/x-protobuf','X-Client-Platform':'web','X-Telemetry-Session':owner.binding},
+    headers:{...(owner.installation?{'X-Installation-ID':owner.installation}:{}),'Content-Type':'application/x-protobuf','X-Client-Platform':'web','X-Telemetry-Session':owner.binding},
     body:body as BodyInit,signal:AbortSignal.any([active.signal,AbortSignal.timeout(3000)])})}catch{}
    finally{if(this.active===active)this.active=null}
    if(!this.session.current(owner)||this.stopped){this.status.dropped+=spans.length;return}

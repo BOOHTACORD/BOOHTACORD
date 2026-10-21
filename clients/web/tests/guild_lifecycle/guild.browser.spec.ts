@@ -14,7 +14,7 @@ test('real public name, admin conflict, welcome selector and enlarged layout',as
  await expect(page.getByLabel('Приветствия новых участников').locator('option')).toHaveCount(2)
  await page.getByLabel('Название гильдии',{exact:true}).fill('Черновик')
  await page.getByRole('button',{name:'Сохранить',exact:true}).click()
- await expect(page.getByRole('alert')).toContainText('другой администратор')
+ await expect(page.locator('.guild-settings').getByRole('alert')).toContainText('другой администратор')
  await expect(page.getByLabel('Название гильдии',{exact:true})).toHaveValue('Черновик');expect(writes).toBe(1)
  await page.getByRole('button',{name:'Сохранить',exact:true}).click()
  await expect(page).toHaveTitle('Черновик')

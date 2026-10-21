@@ -1,0 +1,16 @@
+{
+  "kind": "source-only-livekit-network-revalidation",
+  "observed_at": "2026-10-21",
+  "status": "PASS",
+  "source_base": "321f6fed5c7970eadcae8822ed2d6373275b42f3",
+  "historical_evidence": "evidence/media/livekit-network-config-2026-10-07.json",
+  "change": "Remove deployment-specific metric.bootybay.ru host override from shared product Compose. LiveKit image, listeners, network peers, ports and private metrics allowlist are unchanged. Source checker includes this explicit supplement.",
+  "physical_acceptance": "NOT_RUN; no historical production/network proof is promoted",
+  "checks": [
+    "Native network model and checked-in artifact hashes PASS"
+  ],
+  "repository_artifacts": {
+    "deploy/compose.yaml": "sha256:9b92fcfff9ccad8817eb417368369b89ecb0362ba79edeca755a31e25847c842",
+    "tools/verify/livekit_network_config/check.py": "sha256:ad56ee02f6e977a7ed0611317a051f3bac39e13ab43518147e241dcf74981f8a"
+  }
+}

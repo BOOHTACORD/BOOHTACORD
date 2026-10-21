@@ -1339,6 +1339,236 @@
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}}, "409": {"description": "SESSION_ACCOUNT_CHANGED; no mutation", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}}},
         "security": [{"SessionCookie": []}]}},
+    "/api/v1/installation": {
+    "get": {
+      "operationId": "getInstallationIdentity",
+      "security": [],
+      "responses": {
+        "200": {
+          "description": "Installation telemetry state; no secrets",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstallationIdentity"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal middleware failure",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Error"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/api/v1/admin/telemetry": {
+    "get": {
+      "operationId": "getInstallationTelemetry",
+      "security": [
+        {
+          "SessionCookie": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Installation telemetry state; no secrets",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstallationTelemetry"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal middleware failure",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Error"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Active session required",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Error"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Administrator and trusted Origin required",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Error"
+              }
+            }
+          }
+        }
+      }
+    },
+    "patch": {
+      "operationId": "updateInstallationTelemetry",
+      "security": [
+        {
+          "SessionCookie": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Installation telemetry state; no secrets",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstallationTelemetry"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal middleware failure",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Error"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Active session required",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Error"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Administrator and trusted Origin required",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Error"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid mode, endpoint or missing explicit consent",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Error"
+              }
+            }
+          }
+        },
+        "503": {
+          "description": "Registration or persistence unavailable",
+          "headers": {
+            "X-Request-ID": {
+              "$ref": "#/components/headers/RequestID"
+            }
+          },
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Error"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "Origin",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InstallationTelemetryUpdate"
+            }
+          }
+        }
+      }
+    }
+  },
     "/api/v1/guild-profile": {"get": {"operationId": "getGuildProfile", "description": "Public name and revision of the single deployment guild. No private settings or guild ID.", "responses": {"200": {"description": "Public guild profile", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/GuildProfile"}}},
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}}, "500": {"description": "Profile unavailable. Middleware failure may emit an empty body.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
@@ -1603,147 +1833,195 @@
       }
     },
     "/api/v1/telemetry/traces": {
-      "post": {
-        "operationId": "ingestClientTraces",
-        "description": "Authenticated same-origin OTLP protobuf relay. The server accepts at most 256 KiB and 32 fixed-name spans, strips all client attributes, events, links and resource fields, then forwards metadata-only traces with a server-side collector credential. The client never receives that credential. Authenticated OTLP relay validates telemetry-flow-v1.json. V1 records must match the verified diagnostic session. Malformed, oversized or stale-session batches fail as a whole; unsupported records are partially rejected. IDs do not grant authorization. Client fields are observations, not server media truth.",
-        "parameters": [
-          {
-            "name": "X-Client-Platform",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "web",
-                "android",
-                "ios",
-                "windows",
-                "macos"
-              ]
-            }
-          },
-          {
-            "name": "Origin",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Exact configured PUBLIC_ORIGIN (scheme, host and port; no path or trailing slash). Required on every public mutation, including login, registration, reset and logout. This is the server CSRF boundary; no CSRF token header is accepted."
-          },
-          {
-            "name": "X-Telemetry-Session",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Optional diagnostic session guard. If supplied it must match the session derived from the authenticated cookie; it grants no access."
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/x-protobuf": {
-              "schema": {
-                "type": "string",
-                "format": "binary",
-                "maxLength": 262144
-              }
-            }
-          }
+  "post": {
+    "operationId": "ingestClientTraces",
+    "description": "Authenticated same-origin OTLP protobuf relay. The server accepts at most 256 KiB and 32 fixed-name spans, strips all client attributes, events, links and resource fields, then forwards metadata-only traces with a server-side collector credential. The client never receives that credential. Authenticated OTLP relay validates telemetry-flow-v1.json. V1 records must match the verified diagnostic session. Malformed, oversized or stale-session batches fail as a whole; unsupported records are partially rejected. IDs do not grant authorization. Client fields are observations, not server media truth.",
+    "parameters": [
+      {
+        "name": "X-Client-Platform",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "web",
+            "android",
+            "ios",
+            "windows",
+            "macos"
+          ]
+        }
+      },
+      {
+        "name": "Origin",
+        "in": "header",
+        "schema": {
+          "type": "string"
         },
-        "responses": {
-          "202": {
-            "description": "Metadata-only spans accepted by collector",
-            "headers": {
-              "X-Telemetry-Accepted": {
-                "description": "Sanitized accepted/rejected record count; partial rejection is not retried.",
-                "schema": {
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 32
-                }
-              },
-              "X-Telemetry-Rejected": {
-                "description": "Sanitized accepted/rejected record count; partial rejection is not retried.",
-                "schema": {
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 32
-                }
-              },
-              "X-Request-ID": {"$ref": "#/components/headers/RequestID"}
-            }
-          },
-          "400": {
-            "description": "Invalid OTLP batch or operation name; empty response body.",
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
-            "x-empty-body-possible": true
-          },
-          "401": {
-            "description": "No active server-side session",
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
-            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
-          },
-          "413": {
-            "description": "OTLP batch exceeds size limit; empty response body.",
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
-            "x-empty-body-possible": true
-          },
-          "415": {
-            "description": "OTLP protobuf content type required; empty response body.",
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
-            "x-empty-body-possible": true
-          },
-          "429": {
-            "description": "Telemetry rate limit exceeded",
-            "headers": {
-              "X-Request-ID": {
-                "$ref": "#/components/headers/RequestID"
-              },
-              "Retry-After": {
-                "description": "Retry delay in whole seconds.",
-                "schema": {
-                  "type": "integer",
-                  "minimum": 1
-                }
-              }
-            },
-            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
-          },
-          "503": {
-            "description": "Collector unavailable or not configured; empty response body.",
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
-            "x-empty-body-possible": true
-          },
-          "403": {
-            "description": "Origin rejected before dispatch",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            },
-            "headers": {
-              "X-Request-ID": {
-                "$ref": "#/components/headers/RequestID"
-              }
-            }
-          },
-          "500": {
-            "description": "Internal failure; request-ID generation or session lookup can fail before dispatch with an empty body.",
-            "x-empty-body-possible": true,
-            "headers": {
-              "X-Request-ID": {
-                "$ref": "#/components/headers/RequestID"
-              }
-            }
-          }
+        "required": true,
+        "description": "Exact configured PUBLIC_ORIGIN (scheme, host and port; no path or trailing slash). Required on every public mutation, including login, registration, reset and logout. This is the server CSRF boundary; no CSRF token header is accepted."
+      },
+      {
+        "name": "X-Telemetry-Session",
+        "in": "header",
+        "schema": {
+          "type": "string"
         },
-        "security": [{"SessionCookie": []}]
+        "description": "Optional diagnostic session guard. If supplied it must match the session derived from the authenticated cookie; it grants no access."
+      },
+      {
+        "name": "X-Installation-ID",
+        "in": "header",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "description": "Optional queue ownership guard for current clients. Mismatch with this installation is rejected; absence remains compatible with legacy clients."
+      }
+    ],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/x-protobuf": {
+          "schema": {
+            "type": "string",
+            "format": "binary",
+            "maxLength": 262144
+          }
+        }
       }
     },
+    "responses": {
+      "202": {
+        "description": "Metadata-only spans accepted by collector",
+        "headers": {
+          "X-Telemetry-Accepted": {
+            "description": "Sanitized accepted/rejected record count; partial rejection is not retried.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32
+            }
+          },
+          "X-Telemetry-Rejected": {
+            "description": "Sanitized accepted/rejected record count; partial rejection is not retried.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32
+            }
+          },
+          "X-Request-ID": {
+            "$ref": "#/components/headers/RequestID"
+          }
+        }
+      },
+      "400": {
+        "description": "Invalid OTLP batch or operation name; empty response body.",
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/RequestID"
+          }
+        },
+        "x-empty-body-possible": true
+      },
+      "401": {
+        "description": "No active server-side session",
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/RequestID"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "413": {
+        "description": "OTLP batch exceeds size limit; empty response body.",
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/RequestID"
+          }
+        },
+        "x-empty-body-possible": true
+      },
+      "415": {
+        "description": "OTLP protobuf content type required; empty response body.",
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/RequestID"
+          }
+        },
+        "x-empty-body-possible": true
+      },
+      "429": {
+        "description": "Telemetry rate limit exceeded",
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/RequestID"
+          },
+          "Retry-After": {
+            "description": "Retry delay in whole seconds.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "503": {
+        "description": "Collector unavailable or not configured; empty response body.",
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/RequestID"
+          }
+        },
+        "x-empty-body-possible": true
+      },
+      "403": {
+        "description": "Origin rejected before dispatch",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        },
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/RequestID"
+          }
+        }
+      },
+      "500": {
+        "description": "Internal failure; request-ID generation or session lookup can fail before dispatch with an empty body.",
+        "x-empty-body-possible": true,
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/RequestID"
+          }
+        }
+      }
+    },
+    "security": [
+      {
+        "SessionCookie": []
+      }
+    ]
+  }
+},
     "/api/v1/direct-messages": {
       "post": {
         "operationId": "openDirectMessage",
@@ -7458,6 +7736,123 @@
     "OwnMessageDelivery": {"type": "object", "additionalProperties": false, "required": ["account_id", "message_id"], "properties": {"account_id": {"type": "string", "format": "uuid"}, "message_id": {"type": ["string", "null"], "format": "uuid"}}},
     "OwnSession": {"type": "object", "additionalProperties": false, "required": ["id", "label", "created_at", "last_active_at", "current"], "properties": {"id": {"type": "string", "format": "uuid"}, "label": {"type": "string"}, "created_at": {"type": "string", "format": "date-time"}, "last_active_at": {"type": "string", "format": "date-time"}, "current": {"type": "boolean"}}},
     "OwnSessionPage": {"type": "object", "additionalProperties": false, "required": ["account_id", "sessions", "next_cursor"], "properties": {"account_id": {"type": "string", "format": "uuid"}, "sessions": {"type": "array", "maxItems": 100, "items": {"$ref": "#/components/schemas/OwnSession"}}, "next_cursor": {"type": ["string", "null"], "format": "uuid"}}},
+      "InstallationIdentity": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "installation_id",
+      "mode",
+      "state"
+    ],
+    "properties": {
+      "installation_id": {
+        "type": "string",
+        "description": "Persistent UUIDv4, or empty when identity is unavailable; never regenerated silently."
+      },
+      "mode": {
+        "type": "string",
+        "enum": [
+          "local_only",
+          "central"
+        ]
+      },
+      "state": {
+        "type": "string",
+        "enum": [
+          "disabled",
+          "unavailable",
+          "never_connected",
+          "exporting",
+          "degraded",
+          "revoked",
+          "stale"
+        ]
+      }
+    }
+  },
+  "InstallationTelemetry": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "installation_id",
+      "mode",
+      "state",
+      "registered",
+      "last_accepted_at",
+      "queued",
+      "dropped"
+    ],
+    "properties": {
+      "installation_id": {
+        "type": "string",
+        "description": "Persistent UUIDv4, or empty when identity is unavailable; never regenerated silently."
+      },
+      "mode": {
+        "type": "string",
+        "enum": [
+          "local_only",
+          "central"
+        ]
+      },
+      "state": {
+        "type": "string",
+        "enum": [
+          "disabled",
+          "unavailable",
+          "never_connected",
+          "exporting",
+          "degraded",
+          "revoked",
+          "stale"
+        ]
+      },
+      "registered": {
+        "type": "boolean"
+      },
+      "last_accepted_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date-time",
+        "description": "Gateway acceptance, not proof of durable storage."
+      },
+      "queued": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 32
+      },
+      "dropped": {
+        "type": "integer",
+        "minimum": 0
+      }
+    }
+  },
+  "InstallationTelemetryUpdate": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "mode"
+    ],
+    "properties": {
+      "mode": {
+        "type": "string",
+        "enum": [
+          "local_only",
+          "central"
+        ]
+      },
+      "endpoint": {
+        "type": "string",
+        "maxLength": 512,
+        "description": "Public HTTPS origin for central enrollment; no credentials/query/path."
+      },
+      "confirmed": {
+        "type": "boolean",
+        "description": "Must be true to enable external export. Default local_only."
+      }
+    }
+  },
       "GuildProfile": {"type": "object", "additionalProperties": false, "required": ["name", "revision"], "properties": {"name": {"type": "string", "minLength": 1, "maxLength": 80}, "revision": {"type": "integer", "minimum": 1}}},
       "GuildSettings": {"type": "object", "additionalProperties": false, "required": ["name", "revision", "welcome_channel_id"], "properties": {"name": {"type": "string", "minLength": 1, "maxLength": 80}, "revision": {"type": "integer", "minimum": 1}, "welcome_channel_id": {"type": ["string", "null"], "format": "uuid"}}},
       "GuildSettingsUpdateRequest": {"type": "object", "additionalProperties": false, "required": ["expected_revision"], "anyOf": [{"required": ["name"]}, {"required": ["welcome_channel_id"]}], "properties": {"name": {"type": "string", "minLength": 1, "maxLength": 80, "description": "Trim outer whitespace; preserve internal whitespace and case; reject controls and line separators."}, "welcome_channel_id": {"type": ["string", "null"], "format": "uuid", "description": "Active TEXT channel UUID, or null to disable."}, "expected_revision": {"type": "integer", "minimum": 1}}},

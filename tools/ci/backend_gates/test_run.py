@@ -17,13 +17,16 @@ class RunnerTests(unittest.TestCase):
         for test_code, verify_code in ((0,0), (1,0), (0,1)):
             with tempfile.TemporaryDirectory() as name, patch.object(backend,'ROOT',Path(name)), \
                  patch.object(backend,'run',side_effect=[SimpleNamespace(returncode=0),
-                    SimpleNamespace(returncode=test_code),SimpleNamespace(returncode=verify_code)]) as run:
+                    SimpleNamespace(returncode=test_code),SimpleNamespace(returncode=verify_code),SimpleNamespace(returncode=0)]) as run:
                 if test_code or verify_code:
                     with self.assertRaises(SystemExit): backend.run_profile('database')
                 else: backend.run_profile('database')
                 self.assertEqual(run.call_args_list[0].args, ('go','run','./cmd/check-test-database'))
                 self.assertEqual(run.call_args_list[1].args, ('go','test','-json','-count=1','./...'))
                 self.assertIn('tools/verify/go_test_events/verify-go-test-events.py', run.call_args_list[2].args)
+                if not test_code and not verify_code:
+                    self.assertEqual(run.call_args_list[3].args[1:], ('-m','tools.qa.installation_telemetry.run'))
+                else:self.assertEqual(run.call_count,3)
 
     def test_static_preserves_vet_and_build_and_load_preserves_five_profiles(self):
         with patch.object(backend,'run') as run: backend.run_profile('static')

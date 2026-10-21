@@ -66,6 +66,7 @@ class ApiTransport {
   }) async {
     ensureCurrent();
     final ticket = RequestScope.current?.ticket ?? session.scope.capture();
+    session.telemetry.bindInstallation(response.headers['x-installation-id']);
     session.telemetry.bind(
       response.headers['x-telemetry-session'],
       response.headers['x-telemetry-schema'],

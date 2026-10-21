@@ -47,8 +47,6 @@ services:
       CLIENT_UPDATE_CATALOG_PATH: /etc/boohtacord/client-updates/catalog.json
       CLIENT_UPDATE_ALLOWED_HOSTS: ${PUBLIC_HOST:-localhost},github.com
       TRUSTED_PROXY_CIDRS: ${TRUSTED_PROXY_CIDRS:-172.30.254.2/32}
-    extra_hosts:
-      - metric.bootybay.ru:167.233.56.32
     depends_on:
       migrate:
         condition: service_completed_successfully

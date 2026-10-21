@@ -14,11 +14,13 @@ class TelemetrySnapshot {
     this.ticket,
     this.media,
     this.leaseId,
-    this.mediaFlow,
-  );
+    this.mediaFlow, [
+    this.installation,
+  ]);
   final int generation;
   final String visit, origin;
   final String? binding, media, leaseId, mediaFlow;
+  final String? installation;
   final SessionTicket ticket;
 }
 
@@ -28,7 +30,7 @@ class TelemetrySession {
   final String Function() readOrigin;
   int generation = 0;
   String visit = diagnosticId();
-  String? binding, media, leaseId, mediaFlow;
+  String? binding, media, leaseId, mediaFlow, installation;
   final Set<void Function()> _listeners = {};
   TelemetrySnapshot snapshot() => TelemetrySnapshot(
     generation,
@@ -39,13 +41,16 @@ class TelemetrySession {
     media,
     leaseId,
     mediaFlow,
+    installation,
   );
   bool current(TelemetrySnapshot s) =>
       s.generation == generation &&
       s.binding == binding &&
+      s.installation == installation &&
       s.origin == readOrigin() &&
       s.ticket.isCurrent;
   void reset() {
+    installation = null;
     generation++;
     visit = diagnosticId();
     binding = null;
@@ -59,8 +64,23 @@ class TelemetrySession {
 
   void bind(String? id, String? schema) {
     if (schema != '1' || !validFlowField('session.id', id)) return;
-    if (binding != null && binding != id) reset();
+    if (binding != null && binding != id) {
+      final previousInstallation = installation;
+      reset();
+      installation = previousInstallation;
+    }
     binding = id;
+  }
+
+  void bindInstallation(String? id) {
+    if (id == null ||
+        !RegExp(
+          r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
+        ).hasMatch(id)) {
+      return;
+    }
+    if (installation != null && installation != id) reset();
+    installation = id;
   }
 
   String beginMedia() {
@@ -71,7 +91,10 @@ class TelemetrySession {
 
   bool bindMediaLease(String id) {
     final compact = id.toLowerCase().replaceAll('-', '');
-    if (!RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$', caseSensitive: false).hasMatch(id) ||
+    if (!RegExp(
+          r'^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
+          caseSensitive: false,
+        ).hasMatch(id) ||
         !validFlowField('app.media.session.id', compact)) {
       return false;
     }
