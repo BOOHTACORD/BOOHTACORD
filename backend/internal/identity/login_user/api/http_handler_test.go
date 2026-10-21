@@ -9,14 +9,16 @@ import (
 	"time"
 
 	"voice-platform/backend/internal/identity/login_user"
+	"voice-platform/backend/internal/identity/session"
 	"voice-platform/backend/internal/security/rate_limit"
 )
 
 func TestHandlerSetsSecureOpaqueSessionCookie(t *testing.T) {
 	var captured loginuser.Input
+	expiresAt := time.Now().Add(session.AbsoluteLifetime)
 	handler := NewHandler(loginerFunc(func(_ context.Context, input loginuser.Input) (loginuser.Result, error) {
 		captured = input
-		return loginuser.Result{Token: "opaque-session-token"}, nil
+		return loginuser.Result{Token: "opaque-session-token", ExpiresAt: expiresAt}, nil
 	}))
 
 	request := httptest.NewRequest(http.MethodPost, "/api/v1/auth/login", strings.NewReader(`{"login":"egor","password":"correct horse battery staple"}`))
@@ -27,7 +29,7 @@ func TestHandlerSetsSecureOpaqueSessionCookie(t *testing.T) {
 		t.Fatalf("status = %d, input = %#v, body = %q", recorder.Code, captured, recorder.Body.String())
 	}
 	cookies := recorder.Result().Cookies()
-	if len(cookies) != 1 || cookies[0].Name != "vp_session" || cookies[0].Value != "opaque-session-token" || !cookies[0].HttpOnly || !cookies[0].Secure || cookies[0].SameSite != http.SameSiteLaxMode || cookies[0].Path != "/" {
+	if len(cookies) != 1 || cookies[0].Name != "vp_session" || cookies[0].Value != "opaque-session-token" || !cookies[0].HttpOnly || !cookies[0].Secure || cookies[0].SameSite != http.SameSiteLaxMode || cookies[0].Path != "/" || cookies[0].MaxAge <= 0 || cookies[0].Expires.Unix() != expiresAt.Unix() {
 		t.Fatalf("cookie = %#v", cookies)
 	}
 }
@@ -80,7 +82,7 @@ func TestFailedLoginBudgetIsPerNormalizedAccountAndDoesNotBlockValidPassword(t *
 	}
 	handler := NewHandlerWithFailureLimiter(loginerFunc(func(_ context.Context, input loginuser.Input) (loginuser.Result, error) {
 		if input.Password == "correct" {
-			return loginuser.Result{Token: "synthetic"}, nil
+			return loginuser.Result{Token: "synthetic", ExpiresAt: time.Now().Add(session.AbsoluteLifetime)}, nil
 		}
 		return loginuser.Result{}, loginuser.ErrInvalidCredentials
 	}), limiter)

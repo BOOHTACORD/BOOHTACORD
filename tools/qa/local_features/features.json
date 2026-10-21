@@ -6,17 +6,38 @@
       "clients/flutter/lib/src/screens/password_reset_screen.dart",
       "clients/flutter/lib/src/features/session/*",
       "clients/flutter/lib/src/core/session/*",
+      "backend/internal/identity/session/*",
+      "backend/internal/identity/login_user/**",
+      "backend/internal/identity/authenticate_session/**",
+      "backend/internal/identity/list_own_sessions/**",
+      "backend/internal/database/migrate/migrations/0047*",
+      "docs/adr/ADR-002-opaque-session-tokens.md",
+      "evidence/qa/web-session-retention-2026-10-21.md",
+      "clients/web/tests/auth_session_retention/**",
       "tools/qa/local_features/features.json"
     ],
     "web": [
       "tests/password_generation/playwright.config.ts",
-      "tests/password_reset_visibility/playwright.config.ts"
+      "tests/password_reset_visibility/playwright.config.ts",
+      "tests/auth_session_retention/playwright.config.ts"
     ],
     "flutter": [
       "test/password_generation/visual_test.dart",
       "test/password_reset_screen_test.dart"
     ],
     "acceptance": {
+      "session_retention": {
+        "browser": "clients/web/tests/auth_session_retention/playwright.config.ts",
+        "focused": [
+          "clients/web/tests/auth_session_retention/session_retention.browser.spec.ts",
+          "backend/internal/identity/login_user/api/http_handler_test.go",
+          "backend/internal/identity/authenticate_session/api/middleware_test.go",
+          "backend/internal/identity/authenticate_session/postgres/repository_test.go",
+          "backend/internal/identity/authenticate_session/postgres/expiry_integration_test.go",
+          "backend/internal/identity/list_own_sessions/postgres/read_integration_test.go"
+        ],
+        "scope": "Web login issues a persistent secure session cookie, session restore keeps the authenticated state after reload, and the API enforces idle and absolute expiration server-side."
+      },
       "password_reset_visibility": {
         "browser": "clients/web/tests/password_reset_visibility/playwright.config.ts",
         "focused": [

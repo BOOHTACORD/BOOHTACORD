@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Восстановление web-сессии</title>
+  </head>
+  <body>
+    <main>
+      <h1>Проверка сессии</h1>
+      <p id="session-state" role="status">Проверяем…</p>
+      <button id="login" type="button">Войти</button>
+    </main>
+    <script type="module">
+      import { login } from '/src/identity/auth_client.ts'
+      import { loadCurrentSession } from '/src/identity/current_session.ts'
+
+      const state = document.querySelector('#session-state')
+      async function refresh() {
+        const session = await loadCurrentSession()
+        state.textContent = session ? 'Сессия сохранена' : 'Гость'
+      }
+      document.querySelector('#login').addEventListener('click', async () => {
+        await login({ login: 'session-qa', password: 'synthetic-test-password' })
+        await refresh()
+      })
+      void refresh()
+    </script>
+  </body>
+</html>

@@ -6,13 +6,15 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"voice-platform/backend/internal/identity/authenticate_session"
 	"voice-platform/backend/internal/identity/session"
 )
 
 func TestRequireAddsVerifiedPrincipalToContext(t *testing.T) {
-	want := authenticatesession.Principal{AccountID: "account-1", Role: "MEMBER"}
+	expiresAt := time.Now().Add(session.AbsoluteLifetime)
+	want := authenticatesession.Principal{AccountID: "account-1", Role: "MEMBER", ExpiresAt: expiresAt}
 	middleware := Require(authenticatorFunc(func(_ context.Context, token string) (authenticatesession.Principal, error) {
 		if token != "opaque-token" {
 			t.Fatalf("token = %q", token)
@@ -34,6 +36,27 @@ func TestRequireAddsVerifiedPrincipalToContext(t *testing.T) {
 
 	if recorder.Code != http.StatusNoContent {
 		t.Fatalf("status = %d", recorder.Code)
+	}
+	cookies := recorder.Result().Cookies()
+	if len(cookies) != 1 || cookies[0].Name != session.CookieName || cookies[0].Value != "opaque-token" || cookies[0].MaxAge <= 0 || cookies[0].Expires.Unix() != expiresAt.Unix() {
+		t.Fatalf("renewed session cookie = %#v", cookies)
+	}
+}
+
+func TestOptionalRenewsCookieForExistingBrowserSession(t *testing.T) {
+	expiresAt := time.Now().Add(session.AbsoluteLifetime)
+	want := authenticatesession.Principal{AccountID: "account-1", Role: "MEMBER", ExpiresAt: expiresAt}
+	middleware := Optional(authenticatorFunc(func(context.Context, string) (authenticatesession.Principal, error) {
+		return want, nil
+	}))
+	request := httptest.NewRequest(http.MethodGet, "/api/v1/auth/session", nil)
+	request.AddCookie(&http.Cookie{Name: session.CookieName, Value: "opaque-token"})
+	recorder := httptest.NewRecorder()
+	middleware(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {})).ServeHTTP(recorder, request)
+
+	cookies := recorder.Result().Cookies()
+	if len(cookies) != 1 || cookies[0].Name != session.CookieName || cookies[0].Value != "opaque-token" || cookies[0].MaxAge <= 0 || cookies[0].Expires.Unix() != expiresAt.Unix() {
+		t.Fatalf("renewed existing session cookie = %#v", cookies)
 	}
 }
 

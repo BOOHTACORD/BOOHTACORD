@@ -6,6 +6,7 @@ import (
 	"errors"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"voice-platform/backend/internal/identity/login_user"
@@ -36,12 +37,13 @@ func TestRepositoryStoresOnlySessionDigest(t *testing.T) {
 	database := &fakeDatabase{}
 	repository := New(database)
 	digest := sha256.Sum256([]byte("opaque session"))
+	expiresAt := time.Now().Add(24 * time.Hour)
 
-	if err := repository.Create(context.Background(), "account-1", digest); err != nil {
+	if err := repository.Create(context.Background(), "account-1", digest, expiresAt); err != nil {
 		t.Fatalf("Create() error = %v", err)
 	}
 	storedDigest, ok := database.arguments[0].([]byte)
-	if !ok || len(storedDigest) != sha256.Size || database.arguments[1] != "account-1" || strings.Contains(database.statement, "opaque session") {
+	if !ok || len(storedDigest) != sha256.Size || database.arguments[1] != "account-1" || database.arguments[2] != expiresAt || strings.Contains(database.statement, "opaque session") || !strings.Contains(database.statement, "expires_at") {
 		t.Fatalf("statement = %s, arguments = %#v", database.statement, database.arguments)
 	}
 }

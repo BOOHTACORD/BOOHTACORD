@@ -61,8 +61,7 @@ func New(store Store) http.Handler {
 			return
 		}
 		if result.CurrentRevoked {
-			http.SetCookie(w, &http.Cookie{Name: session.CookieName, Value: "", Path: "/", MaxAge: -1,
-				HttpOnly: true, Secure: true, SameSite: http.SameSiteLaxMode})
+			session.ClearCookie(w)
 		}
 		w.WriteHeader(http.StatusNoContent)
 	})

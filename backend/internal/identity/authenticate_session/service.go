@@ -20,6 +20,7 @@ type Principal struct {
 	Role          string
 	DisplayName   string
 	SessionDigest [sha256.Size]byte
+	ExpiresAt     time.Time
 }
 
 type Sessions interface {
