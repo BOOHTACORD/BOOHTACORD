@@ -14,7 +14,7 @@ func TestRepositoryRejectsIdleAndAbsoluteExpiredSessions(t *testing.T) {
 	pool := newSessionFixture(t)
 	ctx := context.Background()
 	userID := uuid.NewString()
-	if _, err := pool.Exec(ctx, `INSERT INTO users(id,login,display_name,password_hash,role) VALUES($1,$2,'QA session','test','MEMBER')`, userID, "qa-session-expiry-"+userID); err != nil {
+	if _, err := pool.Exec(ctx, `INSERT INTO users(id,login,display_name,password_hash,role) VALUES($1,$2,'QA session','test','MEMBER')`, userID, "qa-session-"+userID[:8]); err != nil {
 		t.Fatal(err)
 	}
 	digests := map[string][sha256.Size]byte{

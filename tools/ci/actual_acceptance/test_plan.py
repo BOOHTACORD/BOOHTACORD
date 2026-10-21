@@ -10,6 +10,7 @@ class PlanTests(unittest.TestCase):
                      'clients/flutter/lib/src/features/updates/desktop/controller.dart','contracts/openapi.yaml'):
             with self.subTest(path=path):self.assertTrue(plan.select([path])['profiles'])
         self.assertEqual(plan.select(['docs/contributing.md'])['profiles'],[])
+        self.assertEqual(plan.select(['tools/qa/local_features/features.json'])['profiles'],[])
         self.assertEqual(plan.select(['new-unknown/file'])['profiles'],list(plan.PROFILES))
         self.assertEqual(plan.select(None)['profiles'],list(plan.PROFILES))
         self.assertTrue(plan.select(['clients/flutter/lib/src/features/updates/desktop/controller.dart'])['release_required'])

@@ -3,6 +3,32 @@
   "rules": [
     {
       "paths": [
+        "tools/qa/local_features/features.json"
+      ],
+      "gates": [
+        "contracts",
+        "backend",
+        "web",
+        "flutter"
+      ],
+      "server": false,
+      "native": false
+    },
+    {
+      "paths": [
+        "tools/ci/select_changes/dependencies.json",
+        "tools/ci/select_changes/test_routing.py",
+        "tools/ci/actual_acceptance/plan-v1.json",
+        "tools/ci/actual_acceptance/test_plan.py"
+      ],
+      "gates": [
+        "contracts"
+      ],
+      "server": false,
+      "native": false
+    },
+    {
+      "paths": [
         "contracts/**",
         ".github/**",
         "tools/ci/**",
