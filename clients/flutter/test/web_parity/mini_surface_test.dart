@@ -73,6 +73,10 @@ void main() {
           await t.pumpAndSettle();
           expect(find.byTooltip('Продолжить видео'), findsOneWidget);
           final stop = find.byTooltip('Остановить просмотр');
+          if (height < 360) {
+            await t.ensureVisible(stop);
+            await t.pumpAndSettle();
+          }
           expect(stop, findsOneWidget);
           final mini = t.getRect(find.byType(WorkspacePinnedScreenMiniPlayer));
           final composer = t.getRect(

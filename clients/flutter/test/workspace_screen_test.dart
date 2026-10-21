@@ -5741,6 +5741,15 @@ void main() {
                 .setMockMethodCallHandler(recorder, null),
           );
 
+          const rtcEvents = MethodChannel('FlutterWebRTC.Event');
+          tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+            rtcEvents,
+            (_) async => null,
+          );
+          addTearDown(
+            () => tester.binding.defaultBinaryMessenger
+                .setMockMethodCallHandler(rtcEvents, null),
+          );
           tester.view.devicePixelRatio = 1;
           tester.view.physicalSize = Size(width, 480);
           addTearDown(tester.view.reset);
@@ -5871,6 +5880,134 @@ void main() {
       );
     }
   }
+  testWidgets('pinned production workspace survives TEXT DM short IME and end', (
+    t,
+  ) async {
+    const rtcEvents = MethodChannel('FlutterWebRTC.Event');
+    t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      rtcEvents,
+      (_) async => null,
+    );
+    addTearDown(
+      () => t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        rtcEvents,
+        null,
+      ),
+    );
+    t.view.devicePixelRatio = 1;
+    t.view.physicalSize = const Size(1440, 900);
+    addTearDown(t.view.reset);
+    await loadUiuxVisualCaptureFonts();
+    final root = GlobalKey();
+    final room = _PublishedScreenRoom();
+    // ignore: invalid_use_of_internal_member
+    final created = await RemoteParticipant.createFromInfo(
+      room: room,
+      info: lk.ParticipantInfo(
+        sid: 'sid',
+        identity: 'remote',
+        name: 'Streamer',
+        tracks: [
+          lk.TrackInfo(
+            sid: 'screen',
+            type: lk.TrackType.VIDEO,
+            source: lk.TrackSource.SCREEN_SHARE,
+            muted: false,
+          ),
+        ],
+      ),
+    );
+    room.members['remote'] = created.participant;
+    final state = _PublishedScreenState(room);
+    await state.initialize();
+    state.selectedChannel = _PortraitApi.voiceChannel;
+    state.voiceChannel = _PortraitApi.voiceChannel;
+    state.voicePhase = VoicePhase.connected;
+    await t.pumpWidget(
+      RepaintBoundary(
+        key: root,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: guildTheme(),
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: const TextScaler.linear(2)),
+            child: child!,
+          ),
+          home: AnimatedBuilder(
+            animation: state,
+            builder: (_, _) => WorkspaceScreen(state: state),
+          ),
+        ),
+      ),
+    );
+    await t.pumpAndSettle();
+    (t.state(find.byType(WorkspaceScreen)) as dynamic)
+        .workspaceToggleVoiceScreenPin('remote');
+    await t.pump();
+    await state.selectChannel(_PortraitApi.channel);
+    await t.pump(const Duration(milliseconds: 200));
+    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+    await t.enterText(
+      find.byWidgetPredicate(
+        (w) =>
+            w is TextField && w.decoration?.hintText == 'Написать сообщение…',
+      ),
+      'Сохранённый черновик',
+    );
+    for (final size in [
+      const Size(1440, 900),
+      const Size(390, 480),
+      const Size(320, 480),
+    ]) {
+      for (final ime in [0.0, 180.0]) {
+        t.view.physicalSize = size;
+        t.view.viewInsets = FakeViewPadding(bottom: ime);
+        await t.pump(const Duration(milliseconds: 200));
+        expect(t.takeException(), isNull, reason: '$size IME$ime');
+        expect(find.text('Сохранённый черновик'), findsOneWidget);
+        if (ime > 0) {
+          await t.ensureVisible(find.byTooltip('Остановить просмотр'));
+          await t.pump();
+        }
+        await captureUiuxBoundary(
+          t,
+          find.byKey(root),
+          fileName:
+              'parity-pinned-workspace-${size.width.toInt()}x${size.height.toInt()}-ime${ime.toInt()}-scale2.png',
+          pixelRatio: 1,
+        );
+      }
+    }
+    t.view.viewInsets = const FakeViewPadding();
+    t.view.physicalSize = const Size(390, 844);
+    await state.openDirectConversation(
+      const DirectConversation(
+        id: 'dm-1',
+        participantId: 'account-2',
+        displayName: 'Собеседник',
+        unreadCount: 0,
+      ),
+    );
+    await t.pump();
+    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+    state.toggleWorkspacePanel(WorkspacePanel.profile);
+    await t.pump();
+    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+    await state.selectChannel(_PortraitApi.voiceChannel);
+    await t.pump();
+    expect(find.byTooltip('Приостановить видео'), findsNothing);
+    await state.selectChannel(_PortraitApi.channel);
+    await t.pump();
+    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+    room.members.clear();
+    state.notifyListeners();
+    await t.pump();
+    expect(find.byTooltip('Приостановить видео'), findsNothing);
+    await t.pumpWidget(const SizedBox.shrink());
+    state.dispose();
+    await t.runAsync(room.dispose);
+  });
 }
 
 class _PublishedScreenRoom extends Room {

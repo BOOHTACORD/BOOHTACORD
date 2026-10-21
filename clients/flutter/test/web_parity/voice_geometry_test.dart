@@ -14,6 +14,7 @@ import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_dock/component.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_participant_room/component.dart';
+import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_participant_strip/component.dart';
 
 void main() {
   for (final platform in [TargetPlatform.windows, TargetPlatform.android]) {
@@ -85,6 +86,44 @@ void main() {
         ),
       );
       expect(find.text('Все в сборе'), findsNothing);
+      expect(t.takeException(), isNull);
+    },
+  );
+  testWidgets(
+    'screen audience strip keeps large-text counts and watchers inside 92 dp',
+    (t) async {
+      t.view.devicePixelRatio = 1;
+      t.view.physicalSize = const Size(320, 92);
+      addTearDown(t.view.reset);
+      final state = AppState(ApiClient());
+      addTearDown(state.dispose);
+      await t.pumpWidget(
+        MaterialApp(
+          theme: guildTheme(),
+          home: MediaQuery(
+            data: const MediaQueryData(
+              size: Size(320, 92),
+              textScaler: TextScaler.linear(2),
+            ),
+            child: Material(
+              child: WorkspaceVoiceParticipantStrip(
+                state: state,
+                localName: 'Вы',
+                localAvatarUrl: null,
+                localMuted: false,
+                localSpeaking: false,
+                participants: const [],
+                showAudience: true,
+                watcherAccountIds: const ['one', 'two'],
+              ),
+            ),
+          ),
+        ),
+      );
+      expect(
+        find.byKey(const ValueKey('screen-viewer-audience-count')),
+        findsOneWidget,
+      );
       expect(t.takeException(), isNull);
     },
   );
