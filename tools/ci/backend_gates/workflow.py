@@ -1,5 +1,5 @@
 """Keep every backend profile mandatory and all PostgreSQL fixtures isolated."""
-from tools.ci.runner_pool.routing import LINUX
+from tools.ci.runner_pool.routing import GITHUB_LINUX
 from .results import PROFILES
 
 EXECUTION='${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
@@ -19,7 +19,7 @@ def validate(document):
         for name in PROFILES:
             job=jobs[name]
             require(job.get('if') is None and not job.get('needs') and not job.get('continue-on-error')
-                    and not job.get('strategy') and job['runs-on'] == LINUX)
+                    and not job.get('strategy') and job['runs-on'] == GITHUB_LINUX)
             require(job['timeout-minutes'] == '20')
             if name == 'database':
                 require(job['env'] == {'VOICE_PLATFORM_TEST_DATABASE_URL':DATABASE,'TEST_DATABASE_URL':DATABASE})

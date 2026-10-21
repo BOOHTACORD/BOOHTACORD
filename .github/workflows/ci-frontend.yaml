@@ -19,7 +19,7 @@ env:
 
 jobs:
   fast:
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -49,7 +49,7 @@ jobs:
           retention-days: 30
 
   browser:
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     strategy:
       fail-fast: false
@@ -103,7 +103,7 @@ jobs:
           retention-days: ${{ github.event_name == 'pull_request' && startsWith(github.ref, 'refs/pull/') && job.status == 'success' && 7 || 30 }}
 
   sfu:
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -145,7 +145,7 @@ jobs:
   frontend:
     if: always()
     needs: [fast, browser, sfu]
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
