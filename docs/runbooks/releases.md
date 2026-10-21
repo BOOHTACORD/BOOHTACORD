@@ -75,3 +75,14 @@ Physical media acceptance остаётся отдельной проверкой
 вложения, schema и идентичность persistent resources. Его отдельный временный
 ключ предназначен для тестового контура. Прогон не меняет production trust anchor
 и не выполняет production maintenance.
+
+## Ротация локальных артефактов
+
+На host работает [release artifact rotation](../../tools/ops/release_rotation/README.md):
+каждые 15 минут сохраняет последние 10 подписанных выпусков, текущую версию,
+предыдущую из успешного readback и используемые контейнерами версии. У старых
+выпусков удаляет OCI archives и только их неиспользуемые image references;
+metadata и runtime остаются. Общая `.install.lock` исключает пересечение с
+install/rollback. Timer устанавливается отдельно от приложения и не зависит
+от успешного следующего деплоя. Старые удалённые bundles следует получать
+через обычный подписанный delivery workflow, а не обходить проверку целостности.
