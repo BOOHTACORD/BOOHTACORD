@@ -1,7 +1,7 @@
 """Repository workflow trust policy; external environment/runner settings need readback."""
 import json
 import re
-from tools.ci.runner_pool.routing import LINUX, META
+from tools.ci.runner_pool.routing import GITHUB_LINUX, LINUX, META
 
 UPSTREAM = "github.repository == 'Egkurilov/BOOHTACORD'"
 MASTER = UPSTREAM + " && github.ref == 'refs/heads/master'"
@@ -45,7 +45,7 @@ def require(value):
         raise ValueError('Actions trust/permission/credential policy violation')
 
 
-HOSTED = {'windows-2022', 'macos-26', 'macos-26-intel'}
+HOSTED = {GITHUB_LINUX, 'windows-2022', 'macos-26', 'macos-26-intel'}
 PERSISTENT = {('build-server.yaml', 'bundle'): ['self-hosted', 'linux', 'x64', 'boohtacord-builder']}
 
 

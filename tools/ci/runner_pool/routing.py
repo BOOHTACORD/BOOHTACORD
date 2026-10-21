@@ -1,4 +1,5 @@
-"""The only general Linux CI target is the bounded, one-job disposable pool."""
+"""Runner identities for GitHub-hosted gates and the isolated comparison pool."""
+GITHUB_LINUX = 'ubuntu-24.04'
 LINUX = ['self-hosted', 'linux', 'x64', 'boohtacord-ci-ephemeral']
 META = ['self-hosted', 'linux', 'x64', 'boohtacord-ci-meta']
 

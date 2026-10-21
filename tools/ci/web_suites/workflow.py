@@ -1,5 +1,5 @@
 """Enforce the mandatory Web fan-out and the original trusted receipt identity."""
-from tools.ci.runner_pool.routing import LINUX
+from tools.ci.runner_pool.routing import GITHUB_LINUX
 from .catalog import BROWSER_PROFILES
 from tools.ci.artifact_policy.capture_inventory import WEB_ROOTS
 from tools.ci.artifact_policy.workflows import capture_job
@@ -33,7 +33,7 @@ def validate(document):
         for name in ('fast', 'browser', 'sfu'):
             job = jobs[name]
             require(job.get('if') is None and not job.get('needs') and not job.get('continue-on-error'))
-            require(job['runs-on'] == LINUX and job['timeout-minutes'] == ('25' if name == 'browser' else '20'))
+            require(job['runs-on'] == GITHUB_LINUX and job['timeout-minutes'] == ('25' if name == 'browser' else '20'))
             profile = {'fast': 'fast', 'browser': '${{ matrix.profile }}', 'sfu': 'sfu-network'}[name]
             commands = [s for s in job['steps'] if 'tools.ci.web_suites.run' in s.get('run', '')]
             require(len(commands) == 1 and commands[0].get('if') is None
@@ -66,7 +66,7 @@ def validate(document):
         job = jobs['frontend']
         require(job.get('name', 'frontend') == 'frontend' and job.get('if') == 'always()'
                 and set(job['needs']) == {'fast', 'browser', 'sfu'} and not job.get('continue-on-error'))
-        require(job['runs-on'] == LINUX and job['timeout-minutes'] == '5')
+        require(job['runs-on'] == GITHUB_LINUX and job['timeout-minutes'] == '5')
         consumers = [s for s in job['steps'] if s.get('uses', '').startswith('actions/download-artifact@')]
         require(len(consumers) == 1 and consumers[0].get('if') is None
                 and consumers[0]['with'] == {'pattern':PREFIX + '*', 'path':'.out/ci/web-parts', 'merge-multiple':'true'})

@@ -16,7 +16,7 @@ class ShadowWorkflowTests(unittest.TestCase):
 
     def test_new_privileges_source_bypass_ignored_failure_or_foreign_artifact_are_rejected(self):
         for change in ('permissions','trigger','source','failure','database','callee','artifact',
-                       'late-invalidation','early-measure','skip-checkout','extra-command','skip-sdk','hosted-runner'):
+                       'late-invalidation','early-measure','skip-checkout','extra-command','skip-sdk','unsupported-runner'):
             value=copy.deepcopy(self.document());jobs=value['jobs']
             if change=='permissions':value['permissions']['contents']='write'
             if change=='trigger':value['on']['push']={}
@@ -33,5 +33,5 @@ class ShadowWorkflowTests(unittest.TestCase):
             if change=='skip-checkout':jobs['legacy']['steps'][0]['if']='false'
             if change=='extra-command':jobs['legacy']['steps'].insert(-1,{'run':'true'})
             if change=='skip-sdk':jobs['legacy']['steps'][4]['if']='false'
-            if change=='hosted-runner':jobs['legacy']['runs-on']='ubuntu-24.04'
+            if change=='unsupported-runner':jobs['legacy']['runs-on']='ubuntu-22.04'
             with self.subTest(change=change),self.assertRaises(ValueError):validate(value)
