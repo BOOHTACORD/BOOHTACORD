@@ -1,0 +1,13 @@
+groups:
+  - name: installation-health
+    rules:
+      - alert: InstallationHTTPServerErrors
+        expr: sum by (installation_id) (rate(boohtacord_http_server_requests_total{status=~"5.."}[5m])) > 1
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: "Installation HTTP errors; inspect this installation only"}
+      - alert: InstallationTelemetryStale
+        expr: (time() - boohtacord_installation_last_seen_seconds > 120) and on (installation_id) (boohtacord_installation_last_seen_seconds > 0) and on (installation_id) (boohtacord_installation_enabled == 1) and on (installation_id) (boohtacord_installation_export_disabled == 0)
+        for: 2m
+        labels: {severity: warning}
+        annotations: {summary: "No fresh observed telemetry; server shutdown is not implied"}

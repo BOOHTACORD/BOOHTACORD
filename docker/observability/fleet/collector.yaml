@@ -1,0 +1,18 @@
+receivers:
+  otlp:
+    protocols:
+      http: {endpoint: "0.0.0.0:4318", max_request_body_size: 2097152}
+processors:
+  memory_limiter: {check_interval: 1s, limit_mib: 128, spike_limit_mib: 32}
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    resource_to_telemetry_conversion: {enabled: false}
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter]
+      exporters: [prometheus]
+# Traces bypass Collector entirely: each gateway request keeps its authenticated
+# installation tenant all the way to private Tempo; no cross-tenant batching.

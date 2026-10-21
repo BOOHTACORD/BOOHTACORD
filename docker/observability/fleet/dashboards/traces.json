@@ -1,0 +1,150 @@
+{
+  "uid": "boohtacord-fleet-traces",
+  "title": "Installation · User and flow traces",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": [
+    "boohtacord",
+    "installation-scoped"
+  ],
+  "refresh": "15s",
+  "templating": {
+    "list": [
+      {
+        "name": "installation",
+        "label": "Installation",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "boohtacord_prometheus"
+        },
+        "query": "label_values(boohtacord_installation_registered, installation_id)",
+        "refresh": 1,
+        "multi": false,
+        "includeAll": false
+      },
+      {
+        "name": "user",
+        "label": "User",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "t-${installation}"
+        },
+        "field": "user.id",
+        "query": {
+          "type": 1,
+          "label": "user.id",
+          "query": "{ resource.boohtacord.installation.id = \"$installation\" }"
+        },
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": false
+      },
+      {
+        "name": "session",
+        "label": "Session",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "t-${installation}"
+        },
+        "field": "session.id",
+        "query": {
+          "type": 1,
+          "label": "session.id",
+          "query": "{ resource.boohtacord.installation.id = \"$installation\" && span.user.id =~ \"${user:regex}\" }"
+        },
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": false
+      },
+      {
+        "name": "visit",
+        "label": "Visit",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "t-${installation}"
+        },
+        "field": "app.visit.id",
+        "query": {
+          "type": 1,
+          "label": "app.visit.id",
+          "query": "{ resource.boohtacord.installation.id = \"$installation\" && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" }"
+        },
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": false
+      },
+      {
+        "name": "flow",
+        "label": "Flow",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "t-${installation}"
+        },
+        "field": "app.flow.id",
+        "query": {
+          "type": 1,
+          "label": "app.flow.id",
+          "query": "{ resource.boohtacord.installation.id = \"$installation\" && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" }"
+        },
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": false
+      },
+      {
+        "name": "media",
+        "label": "Media",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "t-${installation}"
+        },
+        "field": "app.media.session.id",
+        "query": {
+          "type": 1,
+          "label": "app.media.session.id",
+          "query": "{ resource.boohtacord.installation.id = \"$installation\" && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" && span.app.flow.id =~ \"${flow:regex}\" }"
+        },
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": false
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Correlated traces (pseudonyms only)",
+      "type": "table",
+      "datasource": {
+        "type": "tempo",
+        "uid": "t-${installation}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 14
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "query": "{ resource.boohtacord.installation.id = \"$installation\" && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" && span.app.flow.id =~ \"${flow:regex}\" }",
+          "limit": 100
+        }
+      ],
+      "description": "Datasource is provisioned per registered tenant through the private owner read gateway. Installation selection is not an ACL."
+    }
+  ],
+  "description": "Registered opt-in installations only. Legacy/local history remains in the original dashboards; it is never attributed to an installation."
+}

@@ -1,0 +1,10 @@
+global: {scrape_interval: 15s}
+rule_files: [/etc/prometheus/alerts.yaml]
+scrape_configs:
+  - job_name: boohtacord-fleet
+    static_configs: [{targets: ["collector:8889"]}]
+    honor_labels: true
+# API instruments come from OTLP exactly once. Private SFU instruments arrive
+# through the optional per-installation agent, never a central remote scrape.
+  - job_name: boohtacord-installations
+    static_configs: [{targets: ["gateway:8081"]}]

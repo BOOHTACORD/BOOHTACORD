@@ -6,8 +6,8 @@
   "DELETE /api/v1/me/avatar",
   "DELETE /api/v1/me/sessions/{sessionID}",
   "DELETE /api/v1/voice/leases/{leaseID}",
-	"DELETE /api/v1/voice/leases/{ownerLeaseID}/screen-viewers",
-	"DELETE /api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}",
+  "DELETE /api/v1/voice/leases/{ownerLeaseID}/screen-viewers",
+  "DELETE /api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}",
   "DELETE /api/v1/voice/leases/{leaseID}/screen-previews/v1/{generationID}",
   "GET /api/v1/admin/accounts",
   "GET /api/v1/admin/audit",
@@ -34,8 +34,8 @@
   "GET /api/v1/realtime",
   "GET /api/v1/search/messages",
   "GET /api/v1/voice/participants",
-	"GET /api/v1/voice/leases/{ownerLeaseID}/screen-viewers",
-	"GET /api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}",
+  "GET /api/v1/voice/leases/{ownerLeaseID}/screen-viewers",
+  "GET /api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}",
   "GET /api/v1/voice/rosters/events",
   "GET /api/v1/voice/screen-previews/v1/leases/{leaseID}/{generationID}",
   "PATCH /api/v1/admin/accounts/{accountID}",
@@ -70,5 +70,7 @@
   "PUT /api/v1/me/avatar",
   "PUT /api/v1/voice/leases/{leaseID}/screen-previews/v1/{generationID}",
   "PUT /api/v1/voice/leases/{leaseID}/screen-profile/v1",
-	"PUT /api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}"
+  "PUT /api/v1/voice/leases/{viewerLeaseID}/screen-viewers/{ownerLeaseID}",
+  "GET /api/v1/admin/telemetry",
+  "PATCH /api/v1/admin/telemetry"
 ]

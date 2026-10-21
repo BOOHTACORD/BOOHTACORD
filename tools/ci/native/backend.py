@@ -20,6 +20,7 @@ def run_profile(profile):
     verified = run(sys.executable, "tools/verify/go_test_events/verify-go-test-events.py", str(events), check=False)
     if result.returncode or verified.returncode:
         raise SystemExit(1)
+    run(sys.executable, "-m", "tools.qa.installation_telemetry.run")
 
 
 def main():

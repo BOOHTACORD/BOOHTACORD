@@ -1,0 +1,112 @@
+{
+  "uid": "boohtacord-fleet-incidents",
+  "title": "Installation · Incidents",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": [
+    "boohtacord",
+    "installation-scoped"
+  ],
+  "refresh": "15s",
+  "templating": {
+    "list": [
+      {
+        "name": "installation",
+        "label": "Installation",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "boohtacord_prometheus"
+        },
+        "query": "label_values(boohtacord_installation_registered, installation_id)",
+        "refresh": 1,
+        "multi": false,
+        "includeAll": false
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "HTTP errors",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (installation_id) (rate(boohtacord_http_server_requests_total{installation_id=\"$installation\",status=~\"5..\"}[5m]))"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Last accepted telemetry age",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "time() - boohtacord_installation_last_seen_seconds{installation_id=\"$installation\"}"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Registration enabled",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "boohtacord_installation_enabled{installation_id=\"$installation\"}"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ]
+    }
+  ],
+  "description": "Registered opt-in installations only. Legacy/local history remains in the original dashboards; it is never attributed to an installation."
+}

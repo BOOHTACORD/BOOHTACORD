@@ -2,6 +2,7 @@
 import { computed, onMounted, onBeforeUnmount } from 'vue'
 import type { TopologyCategory } from '../../channel/topology_client'
 import { createGuildSettingsState } from './state'
+import AdminTelemetrySettings from '../telemetry/AdminTelemetrySettings.vue'
 const props = defineProps<{ categories: TopologyCategory[] }>()
 const state = createGuildSettingsState()
 const { name, welcome, revision, busy, error, saved, dirty } = state
@@ -9,6 +10,7 @@ const channels = computed(() => props.categories.flatMap(category => category.ch
 onMounted(() => { void state.load() }); onBeforeUnmount(state.dispose)
 </script>
 <template>
+  <div>
   <form class="guild-settings" aria-label="Настройки гильдии" :aria-busy="busy" @submit.prevent="state.save(channels.map(channel => channel.id))">
     <h2>Гильдия</h2>
     <label for="guild-name">Название гильдии</label><input id="guild-name" class="gc-field" v-model="name" :disabled="busy || !revision" autocomplete="off" aria-describedby="guild-name-help">
@@ -27,6 +29,8 @@ onMounted(() => { void state.load() }); onBeforeUnmount(state.dispose)
     <button v-if="!revision && !busy" class="gc-button gc-button--secondary" type="button" @click="state.load">Загрузить настройки</button>
     <details class="copy-help"><summary>О названии гильдии</summary><p>Название отображается участникам и на экране входа.</p></details>
   </form>
+  <AdminTelemetrySettings />
+  </div>
 </template>
 <style scoped>
 .guild-settings { display: grid; gap: 12px; max-width: 580px; padding: 24px; }

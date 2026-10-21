@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"time"
+	centralexport "voice-platform/backend/internal/observability/central_export"
 	incident "voice-platform/backend/internal/observability/observe_incidents"
 
 	"go.opentelemetry.io/otel"
@@ -16,11 +17,18 @@ import (
 // Start exports only explicitly recorded instruments; existing private Prometheus metrics remain intact.
 func Start(ctx context.Context) (func(context.Context) error, error) {
 	configured := os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT") != "" || os.Getenv("OTEL_EXPORTER_OTLP_METRICS_ENDPOINT") != ""
+	central := centralexport.From(ctx)
 	incident.Default.SetEnabled("metric_export", configured)
-	if !configured {
+	if !configured && central == nil {
 		return func(context.Context) error { return nil }, nil
 	}
 	options := []otlpmetrichttp.Option{}
+	if central != nil {
+		options = append(options, otlpmetrichttp.WithHTTPClient(central.Transport()), otlpmetrichttp.WithCompression(otlpmetrichttp.NoCompression))
+		if !configured {
+			options = append(options, otlpmetrichttp.WithEndpointURL("http://boohtacord-local-export.invalid/v1/metrics"))
+		}
+	}
 	if authorization := os.Getenv("OTEL_INGEST_AUTH"); authorization != "" {
 		options = append(options, otlpmetrichttp.WithHeaders(map[string]string{"Authorization": authorization}))
 	}
@@ -28,10 +36,14 @@ func Start(ctx context.Context) (func(context.Context) error, error) {
 	if err != nil {
 		return nil, err
 	}
-	service, err := resource.New(ctx, resource.WithAttributes(
+	attrs := []attribute.KeyValue{
 		attribute.String("service.name", "boohtacord-api"),
 		attribute.String("service.version", os.Getenv("APP_VERSION")),
-	))
+	}
+	if central != nil {
+		attrs = append(attrs, central.Attributes()...)
+	}
+	service, err := resource.New(ctx, resource.WithAttributes(attrs...))
 	if err != nil {
 		return nil, err
 	}

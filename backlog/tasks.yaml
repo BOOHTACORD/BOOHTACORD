@@ -803,3 +803,8 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-SCREEN-01]
     depends_on: [FV2-003, DW-010, T-061]
     evidence: [tools/qa/mini_player/test_environment.py, tools/qa/mini_player/test_native.py, clients/flutter/integration_test/mini_player_qa_test.dart, evidence/qa/issue247-mini-player-acceptance-2026-10-18.md]
+  - id: IT-001
+    title: Installation-scoped opt-in telemetry gateway and fleet visibility (GitHub #336)
+    requirements: [REQ-ISOLATION-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-OPS-01]
+    depends_on: [T-052]
+    evidence: [backend/internal/observability/installation/identity_test.go, backend/internal/observability/central_projection/traces_test.go, backend/internal/observability/central_gateway/gateway_test.go, backend/internal/observability/central_export/runtime_test.go, evidence/observability/issue336-installations.md]

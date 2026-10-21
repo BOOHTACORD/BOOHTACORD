@@ -67,6 +67,7 @@ func TestRunExecutesEmbeddedMigrations(t *testing.T) {
 		{"CREATE TABLE IF NOT EXISTS voice_timeouts", "enforce_voice_timeout_on_lease", "voice_timeout_lease_guard", "ERRCODE='42501'"},
 		{"CREATE TABLE IF NOT EXISTS text_message_reactions", "CREATE TABLE IF NOT EXISTS direct_message_reactions", "CREATE TABLE IF NOT EXISTS text_message_pins", "clear_text_message_social", "clear_direct_message_social"},
 		{"ADD COLUMN IF NOT EXISTS expires_at", "180 days", "ALTER COLUMN expires_at SET NOT NULL"},
+		{"installation_identity", "pg_advisory_xact_lock", "pseudonym_key", "enrollment_seed", "local_only"},
 	}
 	if len(executor.statements) != len(expected) {
 		t.Fatalf("migration count = %d", len(executor.statements))

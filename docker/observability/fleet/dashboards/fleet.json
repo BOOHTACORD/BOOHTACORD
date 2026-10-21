@@ -1,0 +1,139 @@
+{
+  "uid": "boohtacord-fleet-fleet",
+  "title": "BOOHTACORD · Registered installations",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": [
+    "boohtacord",
+    "installation-scoped"
+  ],
+  "refresh": "15s",
+  "templating": {
+    "list": [
+      {
+        "name": "installation",
+        "label": "Installation",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "boohtacord_prometheus"
+        },
+        "query": "label_values(boohtacord_installation_registered, installation_id)",
+        "refresh": 1,
+        "multi": false,
+        "includeAll": false
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Registered installations",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "boohtacord_installation_registered"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Last seen (zero means never connected)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "boohtacord_installation_last_seen_seconds"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Enabled (zero means revoked)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "boohtacord_installation_enabled"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Explicitly disabled export",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "boohtacord_prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "boohtacord_installation_export_disabled"
+        }
+      ],
+      "links": [
+        {
+          "title": "Installation traces",
+          "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
+        }
+      ]
+    }
+  ],
+  "description": "Registered opt-in installations only. Legacy/local history remains in the original dashboards; it is never attributed to an installation."
+}

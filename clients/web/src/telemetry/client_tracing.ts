@@ -27,6 +27,7 @@ export function createTracedFetch(tracer: Tracer, transport: typeof fetch): type
       if (String(input) === `${apiBaseUrl}/auth/session`) acceptSessionResponse(response, snapshot)
       return response
     }
+    const owner = telemetrySession.snapshot()
     const method = safeMethod(init?.method ?? (input instanceof Request ? input.method : 'GET'))
     const span = tracer.startSpan('api.request', { kind: SpanKind.CLIENT })
     span.setAttribute('http.request.method', method)
@@ -39,6 +40,7 @@ export function createTracedFetch(tracer: Tracer, transport: typeof fetch): type
     }
     try {
       const response = await transport(input, { ...init, headers })
+      acceptSessionResponse(response, owner)
       span.setAttribute('http.response.status_code', response.status)
       if (response.status >= 500) span.setStatus({ code: SpanStatusCode.ERROR })
       return response

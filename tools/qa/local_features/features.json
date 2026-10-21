@@ -530,6 +530,13 @@
           "clients/flutter/test/workspace_screen_test.dart"
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+      },
+      "installation_telemetry_336": {
+        "focused": [
+          "clients/web/src/admin/telemetry/client.spec.ts",
+          "backend/internal/observability/installation/api/handler_test.go"
+        ],
+        "scope": "Explicit opt-in installation telemetry settings, secret-free state, disabled queue flush and same-origin administrator boundaries; no media changes."
       }
     }
   },
@@ -766,6 +773,31 @@
       "issue327": {
         "browser": "tools/qa/track_name/run.py",
         "scope": "Actual pinned SDK publish peer via Go voice lease and SFU; synthetic target fallback correctness only, physical Mac/quality gate remains separate"
+      }
+    }
+  },
+  "telemetry": {
+    "paths": [
+      "clients/web/src/telemetry/**",
+      "clients/web/src/admin/telemetry/**",
+      "clients/flutter/lib/src/core/http/transport.dart",
+      "clients/flutter/lib/src/features/telemetry/**"
+    ],
+    "web": [
+      "tests/accessibility/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/features/telemetry/session_processor_test.dart",
+      "test/features/telemetry/action_scope_test.dart",
+      "test/features/telemetry/runtime_export_test.dart"
+    ],
+    "acceptance": {
+      "installation_336": {
+        "focused": [
+          "backend/internal/observability/installation_acceptance/acceptance_test.go",
+          "tools/qa/installation_telemetry/run.py"
+        ],
+        "scope": "Origin/account/session/installation queue ownership, explicit opt-in administration and real two-database tenant isolation."
       }
     }
   }

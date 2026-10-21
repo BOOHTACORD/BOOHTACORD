@@ -8,7 +8,7 @@ import re
 PROFILES = ('static', 'database', 'load')
 OPERATIONS = {
     'static': ('go:vet:all', 'go:build:all'),
-    'database': ('go:database-preflight', 'go:test:all:uncached', 'go:no-skip'),
+    'database': ('go:database-preflight', 'go:test:all:uncached', 'go:no-skip', 'telemetry:two-installation-runtime'),
     'load': ('screen-share:matrix', 'api:normal:2:20', 'api:reconnect:2:20',
              'api:uploads:2:20:1024', 'api:nat_auth:1:20', 'api:faults:2:40'),
 }
