@@ -7,7 +7,7 @@ import yaml
 from tools.verify.action_pins.policy import ROOT, normalized
 from tools.verify.action_pins.trust import check
 from . import worker
-from .routing import LINUX, META, measured_linux, measurement_pool, isolated_linux
+from .routing import GITHUB_LINUX, LINUX, META, measured_linux, measurement_pool, isolated_linux
 
 
 class RoutingTests(unittest.TestCase):
@@ -15,15 +15,31 @@ class RoutingTests(unittest.TestCase):
         self.docs = {p.name: yaml.load(normalized(p.read_text()), Loader=yaml.BaseLoader)
                      for p in (ROOT / '.github/workflows').glob('*.yaml')}
 
-    def test_every_general_linux_job_uses_ephemeral_pool(self):
+    def test_default_ci_jobs_use_github_hosted_linux(self):
+        expected = {
+            'ci.yaml': {'changes', 'ci-required'},
+            'ci-contracts.yaml': {'contracts'},
+            'ci-backend.yaml': {'static', 'database', 'load', 'backend'},
+            'ci-frontend.yaml': {'fast', 'browser', 'sfu', 'frontend'},
+            'ci-flutter.yaml': {'dart', 'android', 'android-kotlin', 'flutter'},
+            'ci-actual-acceptance.yaml': {'runtime', 'actual-acceptance'},
+            'ci-observability.yaml': {'triage'},
+            'flutter-windows.yaml': {'windows'},
+        }
+        for name, identities in expected.items():
+            jobs = self.docs[name]['jobs']
+            with self.subTest(workflow=name):
+                self.assertTrue(identities <= set(jobs))
+                for identity in identities:
+                    with self.subTest(job=identity):
+                        self.assertEqual(GITHUB_LINUX, jobs[identity]['runs-on'])
         count = 0
         for name, doc in self.docs.items():
-            for ident, job in doc['jobs'].items():
+            for job in doc['jobs'].values():
                 runner = job.get('runs-on')
-                with self.subTest(workflow=name, job=ident):
-                    self.assertNotIn(runner if isinstance(runner, str) else '', ('ubuntu-24.04', 'ubuntu-latest'))
-                if runner == LINUX or runner == META: count += 1
-        self.assertGreater(count, 40)
+                if runner == LINUX or runner == META:
+                    count += 1
+        self.assertGreater(count, 20)
         check(self.docs)
 
     def test_general_pr_cannot_target_the_signing_builder(self):

@@ -4,7 +4,7 @@ from pathlib import Path
 import unittest
 import yaml
 from tools.verify.action_pins.policy import normalized
-from tools.ci.runner_pool.routing import LINUX
+from tools.ci.runner_pool.routing import GITHUB_LINUX
 from . import workflow
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -16,7 +16,7 @@ class WorkflowTests(unittest.TestCase):
         for profile in ('android-kotlin', 'android'):
             with self.subTest(profile=profile):
                 job = jobs[profile]
-                self.assertEqual(LINUX, job['runs-on'])
+                self.assertEqual(GITHUB_LINUX, job['runs-on'])
                 self.assertEqual('30', job['timeout-minutes'])
                 java = next(step for step in job['steps'] if step.get('uses', '').startswith('actions/setup-java@'))
                 self.assertEqual('17.0.20+101', java['with']['java-version'])
