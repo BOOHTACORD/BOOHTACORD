@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import '../../../models.dart';
 import '../../../core/session/scope.dart';
 import '../../../services/voice_volume_preferences.dart';
 import '../../../services/voice_lease_revocation.dart';
 import '../lifecycle/controller.dart';
-import '../screen_preview/receive.dart';
 
 class CancelledVoiceAdmission implements Exception {}
 
@@ -25,9 +26,14 @@ extension VoiceAdmissionPrepare on VoiceController {
     if (account == null) return;
     await flushVoiceVolumes();
     checkAdmission(ticket, revision, lease);
-    final preferences = await VoiceVolumePreferences.open(account.accountId, origin: api.baseUrl);
+    final preferences = await VoiceVolumePreferences.open(
+      account.accountId,
+      origin: api.baseUrl,
+    );
     checkAdmission(ticket, revision, lease);
-    if (readUser()?.accountId != account.accountId || !preferences.belongsTo(account.accountId, api.baseUrl)) throw CancelledVoiceAdmission();
+    if (readUser()?.accountId != account.accountId ||
+        !preferences.belongsTo(account.accountId, api.baseUrl))
+      throw CancelledVoiceAdmission();
     voiceVolumePreferences = preferences;
     volumePreferenceOutcome(preferences.status);
   }
@@ -50,6 +56,7 @@ extension VoiceAdmissionPrepare on VoiceController {
     disconnect.channelId = channel.id;
     final disconnectGeneration = disconnect.generation;
     final revision = ++operationRevision;
+    unawaited(screenViewerPresence.clear());
     clearScreenPreviewReceivers();
     screenThumbnails.clear();
     screenThumbnailPublications.clear();

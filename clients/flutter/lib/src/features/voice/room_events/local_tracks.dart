@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:livekit_client/livekit_client.dart'
     hide ChatMessage, voiceReconnectAttemptLimit;
@@ -18,6 +20,15 @@ extension VoiceEventsLocalTracks on VoiceController {
           event.publication.source != TrackSource.screenShareVideo) {
         return;
       }
+      final ownerLeaseId = leaseId;
+      if (ownerLeaseId != null) {
+        unawaited(
+          screenViewerPresence.localTrackPublished(
+            ownerLeaseId,
+            event.publication.sid,
+          ),
+        );
+      }
       final track = event.publication.track;
       logScreenShareDiagnostic(
         ScreenShareDiagnosticEvent.localPublished,
@@ -30,6 +41,15 @@ extension VoiceEventsLocalTracks on VoiceController {
     listener.on<LocalTrackUnpublishedEvent>((event) {
       if (!owns()) return;
       if (event.publication.source != TrackSource.screenShareVideo) return;
+      final ownerLeaseId = leaseId;
+      if (ownerLeaseId != null) {
+        unawaited(
+          screenViewerPresence.localTrackUnpublished(
+            ownerLeaseId,
+            event.publication.sid,
+          ),
+        );
+      }
       final track = event.publication.track;
       logScreenShareDiagnostic(
         ScreenShareDiagnosticEvent.localUnpublished,
