@@ -115,6 +115,26 @@ corrected and require a fresh exact-head CI run; no gate is removed or relaxed.
 Focused corrected Python suites: 29 PASS. Browser guild lifecycle: 6 PASS;
 control consistency behaviour: 2 PASS.
 
+## Final dimension review
+
+Focused regressions exposed and fixed two SFU issues before merge: the optional
+agent's Prometheus filter must preserve histogram bucket/sum/count samples, and
+projection must retain the reviewed finite `incoming`/`outgoing`, transmission,
+source/type dimensions. The same review preserves bounded API route templates,
+incident/pool statistics and media stage/role dimensions. Private node/user IDs
+remain stripped. Conflicting series produced by dropping an unapproved dimension
+are rejected rather than silently emitted with the same timestamp and labels.
+These corrections have RED→GREEN regression tests. The normal owned fixture
+passes again (44.475s), including two simultaneous API route series per process
+with identical timestamps; readiness and cleanup PASS. This final local working
+tree is based on `9a9dadf7`; exact committed-source CI remains required.
+
+The latest broad local-feature Web attempt again passes all unit/build/browser
+stages. Its app runtime stages now reach Docker build and fail because this host's
+Docker CLI lacks BuildKit support for the existing Dockerfile `--mount`; no app
+runtime PASS is claimed from that run. The independent #336 fixture does not need
+an API image build and its actual storage acceptance remains separately recorded.
+
 ## Remaining operational verification
 
 Production deployment/enrollment, real operator credentials/datasource setup,

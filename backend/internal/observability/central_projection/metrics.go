@@ -7,7 +7,9 @@ import (
 	"google.golang.org/protobuf/proto"
 	"math"
 	"regexp"
+	"sort"
 	"strconv"
+	"strings"
 	"time"
 	flow "voice-platform/backend/internal/observability/flow_contract"
 	identity "voice-platform/backend/internal/observability/installation"
@@ -20,14 +22,19 @@ func ValidMetricVersion(value string) bool {
 }
 
 var labelValues = map[string]map[string]bool{
-	"period":    {"today": true, "yesterday": true},
-	"platform":  {"web": true, "ios_web": true, "android_web": true, "desktop_web": true, "android_native": true, "ios_native": true, "windows_native": true, "macos_native": true, "desktop_native": true, "macos": true, "windows": true, "android": true, "ios": true},
-	"method":    {"GET": true, "POST": true, "PATCH": true, "PUT": true, "DELETE": true, "OPTIONS": true, "HEAD": true},
-	"codec":     {"vp8": true, "h264": true, "vp9": true, "av1": true, "unknown": true},
-	"direction": {"sender": true, "receiver": true, "send": true, "receive": true},
-	"state":     {"active": true, "inactive": true, "unavailable": true, "stale": true, "unknown": true, "waiting_first_frame": true, "playing": true, "stalled": true},
-	"result":    {"success": true, "failed": true, "timeout": true, "unavailable": true, "denied": true, "unknown": true},
-	"profile":   {"720p30": true, "720p60": true, "1080p30": true, "1080p60": true, "1440p30": true, "1440p60": true},
+	"node_type":    {"SERVER": true, "MEDIA": true},
+	"kind":         {"incoming": true, "outgoing": true},
+	"transmission": {"initial": true, "retransmit": true},
+	"source":       {"UNKNOWN": true, "CAMERA": true, "MICROPHONE": true, "SCREEN_SHARE": true, "SCREEN_SHARE_AUDIO": true},
+	"type":         {"AUDIO": true, "VIDEO": true, "DATA": true, "out": true, "dropped": true},
+	"period":       {"today": true, "yesterday": true},
+	"platform":     {"web": true, "ios_web": true, "android_web": true, "desktop_web": true, "android_native": true, "ios_native": true, "windows_native": true, "macos_native": true, "desktop_native": true, "macos": true, "windows": true, "android": true, "ios": true},
+	"method":       {"GET": true, "POST": true, "PATCH": true, "PUT": true, "DELETE": true, "OPTIONS": true, "HEAD": true},
+	"codec":        {"vp8": true, "h264": true, "vp9": true, "av1": true, "unknown": true},
+	"direction":    {"incoming": true, "outgoing": true, "sender": true, "receiver": true, "send": true, "receive": true},
+	"state":        {"active": true, "inactive": true, "unavailable": true, "stale": true, "unknown": true, "waiting_first_frame": true, "playing": true, "stalled": true},
+	"result":       {"success": true, "failed": true, "timeout": true, "unavailable": true, "denied": true, "unknown": true},
+	"profile":      {"720p30": true, "720p60": true, "1080p30": true, "1080p60": true, "1440p30": true, "1440p60": true},
 }
 
 func MetricLabels(in []*common.KeyValue, i identity.Identity, service, instance string) []*common.KeyValue {
@@ -37,10 +44,9 @@ func MetricLabels(in []*common.KeyValue, i identity.Identity, service, instance 
 	}
 	seen := map[string]bool{}
 	for _, a := range in {
-		if a == nil || a.Value == nil || seen[a.Key] {
+		if a == nil || a.Value == nil {
 			continue
 		}
-		seen[a.Key] = true
 		key := a.Key
 		if key == "http.request.method" {
 			key = "method"
@@ -48,13 +54,26 @@ func MetricLabels(in []*common.KeyValue, i identity.Identity, service, instance 
 		if key == "http.response.status_code" {
 			key = "status"
 		}
+		if key == "http.route" {
+			key = "route"
+		}
+		if seen[key] {
+			continue
+		}
+		seen[key] = true
 		s := a.Value.GetStringValue()
 		if key == "status" && s == "" {
 			if number, ok := value(a.Value).(int64); ok {
 				s = strconv.FormatInt(number, 10)
 			}
 		}
-		if key == "service_version" && ValidMetricVersion(s) || labelValues[key][s] || (key == "operation" && flow.Operations[s]) {
+		if key == "route" || key == "http.route" {
+			if OperationNames[s] || metricRoutes[s] {
+				out = append(out, String("route", s))
+			}
+			continue
+		}
+		if key == "service_version" && ValidMetricVersion(s) || labelValues[key][s] || extraLabelValues[key][s] || (key == "operation" && flow.Operations[s]) {
 			out = append(out, String(key, s))
 			continue
 		}
@@ -75,6 +94,20 @@ func Metrics(raw []byte, i identity.Identity) ([]byte, error) {
 	var batch collector.ExportMetricsServiceRequest
 	if (proto.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(raw, &batch) != nil {
 		return nil, ErrPolicy
+	}
+	series := map[string]bool{}
+	accept := func(name string, attrs []*common.KeyValue, at uint64) bool {
+		parts := make([]string, 0, len(attrs))
+		for _, attr := range attrs {
+			parts = append(parts, attr.Key+"="+attr.Value.GetStringValue())
+		}
+		sort.Strings(parts)
+		key := name + "\x00" + strings.Join(parts, "\x00") + "\x00" + strconv.FormatUint(at, 10)
+		if series[key] {
+			return false
+		}
+		series[key] = true
+		return true
 	}
 	points := 0
 	instruments := 0
@@ -133,6 +166,9 @@ func Metrics(raw []byte, i identity.Identity) ([]byte, error) {
 							return nil, ErrPolicy
 						}
 						p.Attributes = MetricLabels(p.Attributes, i, name, instance)
+						if !accept(m.Name, p.Attributes, p.TimeUnixNano) {
+							return nil, ErrPolicy
+						}
 						p.Exemplars = nil
 						previous := math.Inf(-1)
 						for _, bound := range p.ExplicitBounds {
@@ -160,6 +196,9 @@ func Metrics(raw []byte, i identity.Identity) ([]byte, error) {
 						return nil, ErrPolicy
 					}
 					p.Attributes = MetricLabels(p.Attributes, i, name, instance)
+					if !accept(m.Name, p.Attributes, p.TimeUnixNano) {
+						return nil, ErrPolicy
+					}
 					p.Exemplars = nil
 					points++
 				}

@@ -50,3 +50,51 @@ func TestVersionLabelsAreBoundedAndCannotCarryFreeFormValues(t *testing.T) {
 		}
 	}
 }
+
+func TestPrivateSFUDimensionsRemainDistinctWithoutPrivateNodeLabels(t *testing.T) {
+	i, _ := identity.New()
+	for _, direction := range []string{"incoming", "outgoing"} {
+		labels := MetricLabels([]*common.KeyValue{String("node_type", "SERVER"), String("direction", direction), String("transmission", "initial"), String("source", "SCREEN_SHARE"), String("type", "VIDEO"), String("node_id", "PRIVATE_NODE"), String("country", "PRIVATE_LOCATION")}, i, "boohtacord-livekit", "")
+		found := map[string]string{}
+		for _, label := range labels {
+			found[label.Key] = label.Value.GetStringValue()
+		}
+		if found["direction"] != direction || found["source"] != "SCREEN_SHARE" || found["type"] != "VIDEO" || found["transmission"] != "initial" {
+			t.Fatal("distinct bounded SFU series collapsed")
+		}
+		if found["node_id"] != "" || found["country"] != "" {
+			t.Fatal("private SFU label leaked")
+		}
+	}
+}
+
+func TestApprovedAPIAndMediaDimensionsDoNotCollapseDuringProjection(t *testing.T) {
+	i, _ := identity.New()
+	expected := map[string]string{"route": "GET /api/v1/channels", "stat": "participants", "stage": "decoded", "role": "actual_short_edge", "field": "fps", "outcome": "failure", "operation": "metric_export", "freshness": "fresh", "source": "client_report"}
+	var in []*common.KeyValue
+	for k, v := range expected {
+		in = append(in, String(k, v))
+	}
+	found := map[string]string{}
+	for _, v := range MetricLabels(in, i, "boohtacord-api", "") {
+		found[v.Key] = v.Value.GetStringValue()
+	}
+	for key, value := range expected {
+		if found[key] != value {
+			t.Fatalf("bounded dimension dropped: %s", key)
+		}
+	}
+}
+
+func TestDiscardedPrivateDimensionsCannotProduceConflictingSeries(t *testing.T) {
+	i, _ := identity.New()
+	points := []*metric.NumberDataPoint{}
+	for _, private := range []string{"PRIVATE_A", "PRIVATE_B"} {
+		points = append(points, &metric.NumberDataPoint{Attributes: []*common.KeyValue{String("private_dimension", private)}, Value: &metric.NumberDataPoint_AsInt{AsInt: 1}})
+	}
+	batch := &collector.ExportMetricsServiceRequest{ResourceMetrics: []*metric.ResourceMetrics{{ScopeMetrics: []*metric.ScopeMetrics{{Metrics: []*metric.Metric{{Name: "boohtacord.users.registered", Data: &metric.Metric_Gauge{Gauge: &metric.Gauge{DataPoints: points}}}}}}}}}
+	raw, _ := proto.Marshal(batch)
+	if _, err := Metrics(raw, i); err == nil {
+		t.Fatal("conflicting projected points accepted")
+	}
+}

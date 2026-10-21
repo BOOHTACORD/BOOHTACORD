@@ -238,7 +238,10 @@ func TestTwoInstallationsThroughActualStorage(t *testing.T) {
 	metricBody := func(i identity.Identity, instance string) []byte {
 		now := uint64(time.Now().UnixNano())
 		point := &metrics.NumberDataPoint{StartTimeUnixNano: now - 1000000, TimeUnixNano: now, Value: &metrics.NumberDataPoint_AsInt{AsInt: 1}, Attributes: []*common.KeyValue{projection.String("user.id", "SYNTHETIC_PRIVATE"), projection.String("status", "200")}}
-		instrument := &metrics.Metric{Name: "boohtacord.http.server.requests", Data: &metrics.Metric_Sum{Sum: &metrics.Sum{IsMonotonic: true, AggregationTemporality: metrics.AggregationTemporality_AGGREGATION_TEMPORALITY_CUMULATIVE, DataPoints: []*metrics.NumberDataPoint{point}}}}
+		point.Attributes = append(point.Attributes, projection.String("http.route", "GET /api/v1/channels"))
+		secondPoint := proto.Clone(point).(*metrics.NumberDataPoint)
+		secondPoint.Attributes[len(secondPoint.Attributes)-1] = projection.String("http.route", "GET /api/v1/admin/accounts")
+		instrument := &metrics.Metric{Name: "boohtacord.http.server.requests", Data: &metrics.Metric_Sum{Sum: &metrics.Sum{IsMonotonic: true, AggregationTemporality: metrics.AggregationTemporality_AGGREGATION_TEMPORALITY_CUMULATIVE, DataPoints: []*metrics.NumberDataPoint{point, secondPoint}}}}
 		rm := &metrics.ResourceMetrics{Resource: &resource.Resource{Attributes: []*common.KeyValue{projection.String("service.name", "boohtacord-api"), projection.String("service.instance.id", instance)}}, ScopeMetrics: []*metrics.ScopeMetrics{{Metrics: []*metrics.Metric{instrument}}}}
 		raw, _ := proto.Marshal(&metricscollector.ExportMetricsServiceRequest{ResourceMetrics: []*metrics.ResourceMetrics{rm}})
 		out, e := projection.Metrics(raw, i)
