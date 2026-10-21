@@ -22,53 +22,38 @@ extension WorkspaceSearchPanelSearchInputRenderer
       children: [
         renderWorkspaceSearchPanelScopePicker(compact),
         const SizedBox(height: 12),
-        SizedBox(
-          height: compact ? 44 : 32,
+        ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 44),
           child: Row(
             children: [
               Expanded(child: scopeField),
               const SizedBox(width: 12),
-              Semantics(
-                label: 'Нажмите Enter, чтобы найти',
-                child: Row(
-                  key: const ValueKey('workspace-search-enter-hint'),
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 3,
-                      ),
-                      decoration: BoxDecoration(
-                        color: GcColors.raised,
-                        border: Border.all(color: GcColors.borderSubtle),
-                        borderRadius: BorderRadius.circular(GcRadii.xs),
-                      ),
-                      child: const Text(
-                        'Enter',
-                        style: TextStyle(
-                          color: GcColors.textSecondary,
-                          fontSize: 11,
-                          height: 16 / 11,
-                          fontFamily: GcTypography.fontMonoFamily,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    const Text(
-                      'найти',
-                      style: TextStyle(
-                        color: GcColors.muted,
-                        fontSize: 12,
-                        height: 18 / 12,
-                      ),
-                    ),
-                  ],
-                ),
+              FilledButton(
+                key: const ValueKey('workspace-search-submit'),
+                onPressed: workspaceCanSubmit ? () => workspaceSearch() : null,
+                child: const Text('Найти'),
               ),
             ],
           ),
         ),
+        if (!compact &&
+            switch (defaultTargetPlatform) {
+              TargetPlatform.macOS ||
+              TargetPlatform.windows ||
+              TargetPlatform.linux => true,
+              _ => false,
+            })
+          const Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: EdgeInsets.only(top: 6),
+              child: Text(
+                'Enter — найти',
+                key: ValueKey('workspace-search-enter-hint'),
+                style: TextStyle(color: GcColors.muted, fontSize: 12),
+              ),
+            ),
+          ),
       ],
     ),
   );

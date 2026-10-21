@@ -21,6 +21,26 @@ VISUALS = (
     for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900')))
 
 
+# Finite synthetic scenarios introduced by #499–502; keep publication fail-closed.
+VISUALS += tuple(
+    f'parity-{surface}-{width}x480-scale{scale}.png'
+    for surface in ('text', 'search', 'dm', 'audio', 'voice', 'text-ime')
+    for width in (320, 390, 768, 1024, 1440) for scale in (1, 2)
+) + tuple(
+    f'parity-voice-{count}-{width}x480-scale2.png'
+    for count in (1, 5, 10) for width in (320, 768, 1440)
+) + tuple(
+    f'parity-profile-{width}x480-ime-scale2.png'
+    for width in (320, 390, 768, 1024, 1440)
+) + tuple(
+    f'parity-mini-{width}x{height}-scale2.png'
+    for width in (320, 390, 768, 1024, 1440) for height in (480, 240)
+) + tuple(
+    f'parity-pinned-workspace-{width}x{height}-ime{ime}-scale2.png'
+    for width, height in ((1440, 900), (390, 480), (320, 480)) for ime in (0, 180)
+)
+
+
 def regular(path, maximum):
     if path.is_symlink() or path.resolve() != path or not path.is_file() or not 0 < path.stat().st_size <= maximum:
         raise ValueError('Required public CI artifact is missing, indirect, empty or oversized')

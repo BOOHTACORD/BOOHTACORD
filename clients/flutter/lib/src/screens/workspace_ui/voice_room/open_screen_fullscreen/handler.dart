@@ -1,3 +1,4 @@
+import '../../../screen_fullscreen_route.dart';
 import 'fullscreen_content/handler.dart';
 import '../../native_bindings.dart';
 
@@ -36,76 +37,21 @@ extension WorkspaceVoiceRoomStateWorkspaceOpenScreenFullscreenAction
     required VoidCallback? onFirstFrameRendered,
     required bool showingLocalScreen,
   }) async {
-    ScreenFullscreenPresentation? presentation;
-    final rendererLease = ScreenFullscreenRendererLease();
-    BuildContext? overlayContext;
-    var closing = false;
-    final capturedRoom = widget.state.room;
-    bool stillPublished() => screenFullscreenGenerationIsPublished(
-      room: widget.state.room,
-      capturedRoom: capturedRoom,
+    await presentScreenFullscreen(
+      context: context,
+      state: widget.state,
       publisherIdentity: publisherIdentity,
-      viewerGeneration: viewerGeneration,
-      localCaptureActive:
-          widget.state.screenSharePhase == ScreenSharePhase.sharing,
-    );
-
-    void closeWhenEnded() {
-      final target = overlayContext;
-      if (closing || target == null || !target.mounted || stillPublished()) {
-        return;
-      }
-      closing = true;
-      rendererLease.expire(() => Navigator.of(target).pop());
-    }
-
-    widget.onFullscreenSelectionChanged(
-      ScreenFullscreenSelection(
-        identity: publisherIdentity,
-        generation: viewerGeneration,
+      generation: viewerGeneration,
+      onSelectionChanged: widget.onFullscreenSelectionChanged,
+      content: (lease, target) => renderVoiceRoomFullscreenContent(
+        publisherName,
+        viewerGeneration,
+        onFirstFrameRendered,
+        showingLocalScreen,
+        lease,
+        track,
+        target,
       ),
     );
-    try {
-      await WidgetsBinding.instance.endOfFrame;
-      if (!mounted) return;
-      presentation = await ScreenFullscreenPresentation.enter();
-      if (!mounted) return;
-      widget.state.addListener(closeWhenEnded);
-      capturedRoom?.addListener(closeWhenEnded);
-      await showGeneralDialog<void>(
-        context: context,
-        barrierDismissible: true,
-        barrierLabel: 'Закрыть полноэкранный режим',
-        barrierColor: Colors.black,
-        transitionDuration: const Duration(milliseconds: 160),
-        pageBuilder: (dialogContext, _, _) {
-          overlayContext = dialogContext;
-          WidgetsBinding.instance.addPostFrameCallback((_) => closeWhenEnded());
-          return renderVoiceRoomFullscreenContent(
-            publisherName,
-            viewerGeneration,
-            onFirstFrameRendered,
-            showingLocalScreen,
-            rendererLease,
-            track,
-            dialogContext,
-          );
-        },
-      );
-    } catch (_) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Не удалось развернуть демонстрацию на весь экран.'),
-          ),
-        );
-      }
-    } finally {
-      widget.state.removeListener(closeWhenEnded);
-      capturedRoom?.removeListener(closeWhenEnded);
-      rendererLease.dispose();
-      await presentation?.restore();
-      widget.onFullscreenSelectionChanged(null);
-    }
   }
 }

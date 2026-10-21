@@ -3,6 +3,7 @@ import 'composer_region/handler.dart';
 import '../../empty_conversation/component.dart';
 import '../../error_banner/component.dart';
 import '../../header/component.dart';
+import '../../header/conversation_actions.dart';
 import '../../native_bindings.dart';
 
 import '../lifecycle/context.dart';
@@ -56,10 +57,11 @@ extension WorkspaceConversationStateBuildAction
           mobileConversationLayout: true,
           onToggleNavigation: widget.onToggleNavigation,
           onOpenMembers: widget.onOpenMembers,
-          trailing: IconButton(
-            tooltip: 'Обновить историю',
-            onPressed: () => widget.state.selectChannel(widget.channel),
-            icon: const Icon(Icons.refresh),
+          trailing: ConversationHeaderActions(
+            state: widget.state,
+            direct: false,
+            busy: widget.state.loadingMessages,
+            onRefresh: () => widget.state.selectChannel(widget.channel),
           ),
         ),
         if (widget.state.error != null)

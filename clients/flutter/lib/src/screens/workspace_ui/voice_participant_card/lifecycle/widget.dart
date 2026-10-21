@@ -13,6 +13,7 @@ class WorkspaceVoiceParticipantCard extends WorkspaceVoiceParticipantCardContext
     super.volume,
     super.onVolumeChanged,
     super.hasScreen = false,
+    super.watchingScreen = false,
     super.isLocal = false,
     super.onScreenTap,
     super.microphoneUnavailable = false,

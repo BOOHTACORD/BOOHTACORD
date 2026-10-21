@@ -15,6 +15,7 @@ extension WorkspaceWorkspaceSearchPanelStateInitStateAction
     on WorkspaceWorkspaceSearchPanelStateContext {
   void executeWorkspaceWorkspaceSearchPanelStateInitState() {
     final current = workspaceCurrentConversation();
+    pinsMode = state.workspace.searchPinsRequested && current?.direct == false;
     final sessionKey = current == null
         ? 'all'
         : '${current.direct ? 'dm' : 'channel'}:${current.id}';

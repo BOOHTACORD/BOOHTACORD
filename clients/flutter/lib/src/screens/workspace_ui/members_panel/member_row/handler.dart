@@ -22,10 +22,22 @@ extension WorkspaceMembersPanelStateWorkspaceMemberRowAction
       member,
       state.memberPresence(member),
     );
-    if (workspaceProfileTriggerMemberId != member.id) return tile;
-    return CompositedTransformTarget(
-      link: workspaceProfileLink,
-      child: Focus(focusNode: workspaceProfileTriggerFocus, child: tile),
+    return SizedBox(
+      key: workspaceAnchorFor(member.id),
+      child: Focus(
+        focusNode: workspaceFocusFor(member.id),
+        onKeyEvent: (node, event) {
+          if (node.hasPrimaryFocus &&
+              event is KeyDownEvent &&
+              (event.logicalKey == LogicalKeyboardKey.enter ||
+                  event.logicalKey == LogicalKeyboardKey.space)) {
+            workspaceShowMemberProfile(member);
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        },
+        child: tile,
+      ),
     );
   }
 }

@@ -61,13 +61,14 @@ class VoiceScreenEndedView extends StatelessWidget {
           ),
     bottomActions: Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-      child: Row(
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 4,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          const Expanded(
-            child: Text(
-              'Невыбранные демонстрации не воспроизводятся.',
-              style: TextStyle(color: GcColors.muted, fontSize: 12),
-            ),
+          const Text(
+            'Невыбранные демонстрации не воспроизводятся.',
+            style: TextStyle(color: GcColors.muted, fontSize: 12),
           ),
           TextButton.icon(
             onPressed: onReturnToParticipants,

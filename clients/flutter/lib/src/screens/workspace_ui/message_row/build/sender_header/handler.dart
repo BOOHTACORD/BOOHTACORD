@@ -1,5 +1,6 @@
 import '../../../message_action_menu/component.dart';
 import '../../../native_bindings.dart';
+import '../../../../../widgets/message_timestamp.dart';
 import '../../lifecycle/context.dart';
 
 extension MessageRowSenderHeaderRenderer on WorkspaceMessageRowContext {
@@ -13,7 +14,7 @@ extension MessageRowSenderHeaderRenderer on WorkspaceMessageRowContext {
         ),
       ),
       const SizedBox(width: 8),
-      Text(time, style: const TextStyle(color: GcColors.muted, fontSize: 12)),
+      Flexible(child: MessageTimestamp(message.createdAt)),
       if (!message.deleted && message.sendStatus == null)
         WorkspaceMessageActionMenu(
           message: message,

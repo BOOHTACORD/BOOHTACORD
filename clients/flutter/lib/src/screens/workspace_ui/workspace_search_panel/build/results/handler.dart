@@ -24,7 +24,7 @@ extension WorkspaceSearchPanelResultsRenderer
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             itemCount:
                 workspaceResults.length + (workspaceNextCursor == null ? 0 : 1),
-            separatorBuilder: (_, _) => const SizedBox(height: 12),
+            separatorBuilder: (_, _) => const Divider(height: 1),
             itemBuilder: (context, index) {
               if (index == workspaceResults.length) {
                 return Center(
@@ -51,11 +51,7 @@ extension WorkspaceSearchPanelResultsRenderer
                     onTap: () => state.openSearchContext(message),
                     borderRadius: BorderRadius.circular(GcRadii.md),
                     child: Ink(
-                      decoration: BoxDecoration(
-                        color: GcColors.surface,
-                        border: Border.all(color: GcColors.borderSubtle),
-                        borderRadius: BorderRadius.circular(GcRadii.md),
-                      ),
+                      decoration: BoxDecoration(color: Colors.transparent),
                       child: renderWorkspaceSearchPanelResultHit(
                         message,
                         author,

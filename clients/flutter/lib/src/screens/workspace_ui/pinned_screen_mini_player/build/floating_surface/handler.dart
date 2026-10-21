@@ -1,3 +1,5 @@
+import '../../../../../widgets/local_video_presentation.dart';
+import '../../fullscreen.dart';
 import '../video_preview/handler.dart';
 import '../header_controls/handler.dart';
 import '../../../native_bindings.dart';
@@ -5,7 +7,7 @@ import '../../lifecycle/context.dart';
 
 extension PinnedScreenMiniPlayerFloatingSurfaceRenderer
     on WorkspacePinnedScreenMiniPlayerContext {
-  Material renderPinnedScreenMiniPlayerFloatingSurface(
+  Widget renderPinnedScreenMiniPlayerFloatingSurface(
     String name,
     bool hasAudio,
     RemoteParticipant? participant,
@@ -17,68 +19,84 @@ extension PinnedScreenMiniPlayerFloatingSurfaceRenderer
     ScreenViewerPublicationGeneration? miniGeneration,
     ScreenViewerPublicationGeneration? selectedGeneration,
     ScreenFullscreenSelection? selectedFullscreen,
-  ) => Material(
-    color: GcColors.surface,
-    elevation: 16,
-    shadowColor: const Color(0x70000000),
-    shape: RoundedRectangleBorder(
-      side: const BorderSide(color: GcColors.border),
-      borderRadius: BorderRadius.circular(12),
-    ),
-    clipBehavior: Clip.antiAlias,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        renderPinnedScreenMiniPlayerHeaderControls(
-          name,
-          hasAudio,
-          participant,
-          screenVolume,
-        ),
-        Flexible(
-          fit: FlexFit.loose,
-          child: renderPinnedScreenMiniPlayerVideoPreview(
-            track,
-            publicationSid,
-            participant,
-            publication,
-            rendererOwner,
-            miniGeneration,
-            selectedGeneration,
-            selectedFullscreen,
+  ) => LocalVideoPresentation(
+    generation: '$identity:${publicationSid ?? 'unknown'}',
+    builder: (context, paused, toggleVideo) => LayoutBuilder(
+      builder: (context, constraints) {
+        final short =
+            constraints.hasBoundedHeight && constraints.maxHeight < 120;
+        return Material(
+          color: GcColors.surface,
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(color: GcColors.border),
+            borderRadius: BorderRadius.circular(12),
           ),
-        ),
-        if (hasAudio && screenVolume != null && participant != null)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 12, 4),
-            child: Row(
-              children: [
-                const Icon(Icons.volume_down_outlined, size: 18),
-                Expanded(
-                  child: Semantics(
-                    label: 'Громкость звука выбранной демонстрации',
-                    child: Slider(
-                      value: screenVolume.toDouble(),
-                      min: 0,
-                      max: 200,
-                      divisions: 200,
-                      semanticFormatterCallback: (value) =>
-                          '${value.round()} процентов',
-                      onChanged: state.deafened
-                          ? null
-                          : (value) => unawaited(
-                              state.setScreenShareVolume(
-                                participant,
-                                value.round(),
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              renderPinnedScreenMiniPlayerHeaderControls(
+                context,
+                name,
+                hasAudio,
+                participant,
+                screenVolume,
+                paused: paused,
+                toggleVideo: toggleVideo,
+                singleLine: short,
+                expand:
+                    track == null ||
+                        publicationSid == null ||
+                        onFullscreenSelectionChanged == null ||
+                        fullscreenSelection != null
+                    ? null
+                    : () {
+                        if (paused) toggleVideo();
+                        unawaited(
+                          openPinnedScreenFullscreen(
+                            context: context,
+                            state: state,
+                            identity: identity,
+                            name: name,
+                            publicationSid: publicationSid,
+                            track: track,
+                            onSelectionChanged: onFullscreenSelectionChanged!,
+                          ),
+                        );
+                      },
+              ),
+              if (!short)
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: paused
+                      ? const AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: ColoredBox(
+                            color: Colors.black,
+                            child: Center(
+                              child: Text(
+                                'Видео на паузе',
+                                style: TextStyle(color: GcColors.muted),
                               ),
                             ),
-                    ),
-                  ),
+                          ),
+                        )
+                      : renderPinnedScreenMiniPlayerVideoPreview(
+                          track,
+                          publicationSid,
+                          participant,
+                          publication,
+                          rendererOwner,
+                          miniGeneration,
+                          selectedGeneration,
+                          selectedFullscreen,
+                        ),
                 ),
-              ],
-            ),
+            ],
           ),
-      ],
+        );
+      },
     ),
   );
 }

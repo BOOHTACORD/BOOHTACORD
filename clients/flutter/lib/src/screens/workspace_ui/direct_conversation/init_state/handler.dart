@@ -15,6 +15,7 @@ mixin WorkspaceDirectConversationStateInitStateBinding
 extension WorkspaceDirectConversationStateInitStateAction
     on WorkspaceDirectConversationStateContext {
   void executeWorkspaceDirectConversationStateInitState() {
+    workspaceInitialUnreadCount = widget.conversation.unreadCount;
     workspaceDraftAccountId = widget.state.user?.accountId;
     workspaceDraftEpoch = ComposerDraftMemory.epoch;
     workspaceController.addListener(workspaceRememberDraft);

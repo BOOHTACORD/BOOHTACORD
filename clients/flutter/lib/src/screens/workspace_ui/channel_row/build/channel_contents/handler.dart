@@ -32,14 +32,18 @@ extension ChannelRowChannelContentsRenderer on WorkspaceChannelRowStateContext {
       ),
       const SizedBox(width: 10),
       Expanded(
-        child: Text(
-          channel.name,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            color: selected || voiceConnected
-                ? GcColors.text
-                : GcColors.textSecondary,
-            fontSize: 14,
+        child: Tooltip(
+          message: channel.name,
+          child: Text(
+            channel.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: selected || voiceConnected
+                  ? GcColors.text
+                  : GcColors.textSecondary,
+              fontSize: 14,
+            ),
           ),
         ),
       ),

@@ -3,24 +3,44 @@ import '../../../reply_preview/component.dart';
 import '../../../native_bindings.dart';
 import '../../../message_social/component.dart';
 import '../../lifecycle/context.dart';
+import '../../../../../widgets/message_timestamp.dart';
 
 extension DirectConversationMessageBubbleRenderer
     on WorkspaceDirectConversationStateContext {
   Flexible renderDirectConversationMessageBubble(
     bool own,
-    DirectChatMessage message,
-  ) => Flexible(
+    DirectChatMessage message, {
+    bool grouped = false,
+  }) => Flexible(
     child: Container(
-      constraints: const BoxConstraints(maxWidth: 560),
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
       decoration: BoxDecoration(
-        color: own ? GcColors.selected : GcColors.surface,
-        borderRadius: BorderRadius.circular(12),
+        color: own
+            ? GcColors.selected.withValues(alpha: .3)
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(4),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (!grouped)
+            Wrap(
+              spacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Text(
+                  own
+                      ? '${workspaceDirectAuthorName(message.authorId)} (вы)'
+                      : workspaceDirectAuthorName(message.authorId),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: own ? GcColors.accentText : GcColors.text,
+                  ),
+                ),
+                MessageTimestamp(message.createdAt),
+              ],
+            ),
           if (workspaceDirectReplyLabel(message) case final label?)
             WorkspaceReplyPreview(
               label: label,

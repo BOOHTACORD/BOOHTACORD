@@ -36,6 +36,11 @@ class AdminGuildSettingsState extends State<AdminGuildSettings> {
     }
   }
 
+  void _cancel() {
+    state.cancel();
+    name.text = state.name;
+  }
+
   List<GuildChannel> get _channels => widget.channels
       .where(
         (channel) =>
@@ -56,6 +61,8 @@ class AdminGuildSettingsState extends State<AdminGuildSettings> {
     channels: _channels,
     onSave: _save,
     onLoad: _load,
-    onWelcomeChanged: (value) => setState(() => state.welcome = value),
+    onCancel: _cancel,
+    onNameChanged: (value) => state.name = value,
+    onWelcomeChanged: (value) => state.welcome = value,
   );
 }

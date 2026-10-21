@@ -62,6 +62,7 @@ class WorkspaceController extends ChangeNotifier {
   int searchContextSequence = 0;
   int searchSessionEpoch = 0;
   final Map<String, WorkspaceSearchSession> searchSessions = {};
+  bool searchPinsRequested = false;
 
   bool accepts(SessionTicket ticket) => !disposed && ticket.isActive;
   void changed() {
@@ -94,6 +95,7 @@ class WorkspaceController extends ChangeNotifier {
     searchOriginDirectMessage = null;
     searchSessionEpoch++;
     searchSessions.clear();
+    searchPinsRequested = false;
   }
 
   void cancelOperations() {

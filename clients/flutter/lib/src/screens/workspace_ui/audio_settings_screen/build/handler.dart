@@ -6,6 +6,7 @@ import '../../audio_device_shown_by_dropdown/component.dart';
 import '../../audio_settings_card/component.dart';
 import '../../header/component.dart';
 import '../../native_bindings.dart';
+import '../../../../widgets/noise_suppression_settings.dart';
 
 import '../lifecycle/context.dart';
 import '../handler_bindings.dart';
@@ -100,9 +101,40 @@ extension WorkspaceAudioSettingsScreenBuildAction
                       outputDevice,
                     ),
                     renderAudioSettingsScreenMicrophoneActivation(compact),
-                    if (!state.usesTouchPushToTalk || hardwareKeyboardAvailable)
-                      renderAudioSettingsScreenVoiceShortcuts(compact),
-                    renderAudioSettingsScreenMicrophoneProcessing(compact),
+                    if (const [
+                      'fallback',
+                      'error',
+                      'unsupported',
+                    ].contains(state.noiseSuppressionRuntime.status))
+                      Semantics(
+                        liveRegion: true,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Text(
+                            state.noiseSuppressionRuntime.requestedMode !=
+                                    state.audioProcessing.noiseSuppressionMode
+                                ? 'Ожидание подтверждения настройки обработки микрофона.'
+                                : 'Обработка микрофона: ${NoiseSuppressionSettings.label(state.noiseSuppressionRuntime.effectiveMode)}. '
+                                      '${NoiseSuppressionSettings.reason(state.noiseSuppressionRuntime.failureReason)}',
+                            style: const TextStyle(color: GcColors.warning),
+                          ),
+                        ),
+                      ),
+                    ExpansionTile(
+                      key: const PageStorageKey('audio-settings-advanced'),
+                      title: const Text('Дополнительно'),
+                      subtitle: const Text(
+                        'Обработка микрофона, сочетания клавиш и диагностика',
+                      ),
+                      tilePadding: EdgeInsets.zero,
+                      maintainState: true,
+                      children: [
+                        if (!state.usesTouchPushToTalk ||
+                            hardwareKeyboardAvailable)
+                          renderAudioSettingsScreenVoiceShortcuts(compact),
+                        renderAudioSettingsScreenMicrophoneProcessing(compact),
+                      ],
+                    ),
                     WorkspaceAudioSettingsCard(
                       cardKey: const ValueKey('audio-settings-playback-card'),
                       title: 'Воспроизведение',

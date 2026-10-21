@@ -1,6 +1,7 @@
 import '../../../search_avatar_foreground/component.dart';
 import '../../../search_avatar_initials/component.dart';
 import '../../../search_date/component.dart';
+import '../../../../../widgets/message_timestamp.dart';
 import '../../../native_bindings.dart';
 import '../../lifecycle/context.dart';
 
@@ -11,25 +12,29 @@ extension WorkspaceSearchPanelResultHitRenderer
     String author,
     GuildMember? member,
   ) => ConstrainedBox(
-    constraints: const BoxConstraints(minHeight: 118),
+    constraints: const BoxConstraints(minHeight: 76),
     child: Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '${workspaceConversationLabel(message)} · ${workspaceSearchDate(message.createdAt)}',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: GcColors.muted,
-              fontSize: 12,
-              height: 16 / 12,
+          Tooltip(
+            message:
+                '${workspaceConversationLabel(message)} · ${MessageTimestamp.full(message.createdAt)}',
+            child: Text(
+              '${workspaceConversationLabel(message)} · ${workspaceSearchDate(message.createdAt)}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: GcColors.muted,
+                fontSize: 12,
+                height: 16 / 12,
+              ),
             ),
           ),
-          const SizedBox(height: 12),
-          SizedBox(
-            height: 28,
+          const SizedBox(height: 6),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 28),
             child: Row(
               children: [
                 AuthenticatedAvatar(

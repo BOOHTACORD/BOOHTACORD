@@ -12,6 +12,7 @@ extension RenderWorkspaceScreenPinnedLayerAction
     GuildChannel? activeVoiceChannel,
   ) {
     final mini = SizedBox(
+      key: workspacePinnedMiniKey,
       width: (constraints.maxWidth - (compact ? 24 : 32))
           .clamp(0.0, 360.0)
           .toDouble(),
@@ -28,10 +29,11 @@ extension RenderWorkspaceScreenPinnedLayerAction
             onReturnToVoice: () =>
                 unawaited(widget.state.selectChannel(activeVoiceChannel!)),
             onStopWatching: workspaceStopWatchingPinnedScreen,
+            onFullscreenSelectionChanged: workspaceSetFullscreenScreenSelection,
           ),
         ),
       ),
     );
-    return compact ? mini : Positioned(right: 16, bottom: 16, child: mini);
+    return mini;
   }
 }

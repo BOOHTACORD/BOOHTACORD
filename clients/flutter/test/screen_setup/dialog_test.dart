@@ -101,7 +101,7 @@ void main() {
   }, variant: TargetPlatformVariant({TargetPlatform.android}));
 
   testWidgets(
-    'setup recommends a starting profile and progressively reveals quality options',
+    'setup shows the selected profile and progressively reveals quality options',
     (tester) async {
       tester.view.physicalSize = const Size(360, 640);
       tester.view.devicePixelRatio = 1;
@@ -119,17 +119,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Рекомендуемый профиль'), findsOneWidget);
-      expect(find.text('1080p · 60 FPS'), findsOneWidget);
-      expect(find.text('Текущий выбор: 720p · 15 FPS'), findsOneWidget);
+      expect(find.text('Рекомендуемый профиль'), findsNothing);
+      expect(find.text('Выбрано: 720p · 15 FPS'), findsOneWidget);
       expect(find.text('Разрешение'), findsNothing);
 
-      await tester.ensureVisible(
-        find.text('Применить рекомендованный профиль'),
-      );
-      await tester.tap(find.text('Применить рекомендованный профиль'));
-      await tester.pumpAndSettle();
-      expect(find.text('Текущий выбор: 1080p · 60 FPS'), findsOneWidget);
+      expect(find.text('Применить рекомендованный профиль'), findsNothing);
 
       await tester.ensureVisible(
         find.text('Дополнительные настройки качества'),

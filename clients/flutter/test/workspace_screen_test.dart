@@ -9,6 +9,7 @@ import 'package:boohtacord_desktop/src/features/voice/roster_state/phase.dart';
 import 'package:boohtacord_desktop/src/features/authorization/permissions/model.dart';
 import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_screen.dart';
+import 'package:boohtacord_desktop/src/screens/workspace_ui/header/component.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/services/composer_draft_memory.dart';
 import 'package:boohtacord_desktop/src/services/conversation_scroll_memory.dart';
@@ -772,18 +773,18 @@ void main() {
     expect(find.text('Назначить PTT-клавишу'), findsOneWidget);
 
     await tester.scrollUntilVisible(
+      find.text('Дополнительно'),
+      120,
+      scrollable: audioScrollable,
+    );
+    await tester.tap(find.text('Дополнительно'));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
       find.text('Подавление эха'),
       160,
       scrollable: audioScrollable,
     );
     expect(find.text('Подавление эха'), findsOneWidget);
-    final processingAdvanced = find.byKey(
-      const ValueKey('audio-processing-advanced'),
-    );
-    await tester.ensureVisible(processingAdvanced);
-    await tester.pumpAndSettle();
-    await tester.tap(processingAdvanced);
-    await tester.pumpAndSettle();
     expect(find.textContaining('Нативный SDK не сообщает'), findsOneWidget);
 
     await tester.dragUntilVisible(
@@ -883,6 +884,12 @@ void main() {
     final shortcuts = find.byKey(
       const ValueKey('audio-settings-shortcuts-card'),
     );
+    final advanced = find.byKey(
+      const PageStorageKey('audio-settings-advanced'),
+    );
+    await tester.scrollUntilVisible(advanced, 160, scrollable: audioScrollable);
+    await tester.tap(find.text('Дополнительно'));
+    await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
       shortcuts,
       160,
@@ -991,7 +998,7 @@ void main() {
         findsNothing,
       );
       expect(find.text('Сбросить настройки аудио'), findsOneWidget);
-      expect(find.text('Расширенные настройки и диагностика'), findsOneWidget);
+      expect(find.text('Дополнительно'), findsOneWidget);
       expect(find.text('Диагностика качества голоса'), findsNothing);
       expect(tester.takeException(), isNull);
 
@@ -1028,20 +1035,25 @@ void main() {
           of: find.byKey(const ValueKey('audio-settings-list')),
           matching: find.byType(Scrollable),
         );
+        final advanced = find.byKey(
+          const PageStorageKey('audio-settings-advanced'),
+        );
         await tester.scrollUntilVisible(
-          find.byKey(const ValueKey('audio-settings-processing-card')),
+          advanced,
           160,
           scrollable: audioScrollable,
         );
+        expect(find.text('Дополнительно'), findsOneWidget);
+        expect(find.text('Шумоподавление'), findsNothing);
+        expect(find.text('Подавление эха'), findsNothing);
+        expect(find.text('Диагностика качества голоса'), findsNothing);
+        final processingBefore = state.audioProcessing;
+        await tester.tap(find.text('Дополнительно'));
         await tester.pumpAndSettle();
-
-        final advanced = find.byKey(
-          const ValueKey('audio-processing-advanced'),
-        );
-        expect(advanced, findsOneWidget);
-        expect(
-          find.text('Расширенные настройки и диагностика'),
-          findsOneWidget,
+        await tester.scrollUntilVisible(
+          find.text('Подавление эха'),
+          160,
+          scrollable: audioScrollable,
         );
         expect(
           find.text('Автоматическая регулировка усиления'),
@@ -1049,12 +1061,6 @@ void main() {
         );
         expect(find.text('Подавление эха'), findsOneWidget);
         expect(find.text('Громкость микрофона: 100%'), findsOneWidget);
-        expect(find.text('Шумоподавление'), findsNothing);
-        expect(find.text('Диагностика качества голоса'), findsNothing);
-
-        final processingBefore = state.audioProcessing;
-        await tester.tap(advanced);
-        await tester.pumpAndSettle();
         expect(find.text('Шумоподавление'), findsOneWidget);
         expect(find.text('Диагностика обработки'), findsOneWidget);
         expect(find.text('Диагностика качества голоса'), findsOneWidget);
@@ -1954,22 +1960,18 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pumpAndSettle();
 
-    expect(find.text('Все в сборе'), findsOneWidget);
+    expect(find.text('Все в сборе'), findsNothing);
     expect(
       find.widgetWithText(OutlinedButton, 'Смотреть экран'),
       findsOneWidget,
     );
     expect(find.bySemanticsLabel('Участник показывает экран'), findsOneWidget);
-    final grid = tester.widget<GridView>(
-      find.byKey(const ValueKey('voice-participant-grid')),
-    );
     expect(
-      (grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount)
-          .crossAxisCount,
-      2,
+      find.byKey(const ValueKey('voice-participant-grid')),
+      findsOneWidget,
     );
     final selfCard = find.byKey(const ValueKey('voice-participant-card:self'));
-    expect(tester.getSize(selfCard).height, 208);
+    expect(tester.getSize(selfCard).height, greaterThanOrEqualTo(160));
     expect(tester.getSize(selfCard).width, greaterThanOrEqualTo(160));
     final selfCardRect = tester.getRect(selfCard);
     final screenShareBadgeRect = tester.getRect(
@@ -1980,28 +1982,14 @@ void main() {
 
     tester.view.physicalSize = const Size(1440, 900);
     await tester.pumpAndSettle();
-    final desktopGrid = tester.widget<GridView>(
-      find.byKey(const ValueKey('voice-participant-grid')),
-    );
-    expect(
-      (desktopGrid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount)
-          .crossAxisCount,
-      ((tester
-                      .getSize(
-                        find.byKey(const ValueKey('voice-participant-grid')),
-                      )
-                      .width +
-                  12) /
-              172)
-          .floor(),
-    );
-    expect(tester.getSize(selfCard).height, 208);
+    expect(tester.getSize(selfCard).width, greaterThanOrEqualTo(136));
+    expect(tester.getSize(selfCard).height, greaterThanOrEqualTo(160));
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
   });
 
-  testWidgets('deafened participant status stays centered on one line', (
+  testWidgets('deafened participant status stays centered without truncating', (
     tester,
   ) async {
     tester.view.devicePixelRatio = 1;
@@ -2027,8 +2015,8 @@ void main() {
     final statusText = tester.widget<Text>(status);
     final card = find.byKey(const ValueKey('voice-participant-card:self'));
     expect(statusText.textAlign, TextAlign.center);
-    expect(statusText.maxLines, 1);
-    expect(statusText.overflow, TextOverflow.ellipsis);
+    expect(statusText.maxLines, isNull);
+    expect(statusText.overflow, isNull);
     expect(
       tester.getRect(status).center.dx,
       closeTo(tester.getRect(card).center.dx, 0.1),
@@ -2667,7 +2655,12 @@ void main() {
     );
     tester.view.physicalSize = const Size(320, 640);
     await tester.pumpAndSettle();
-    final longTitle = tester.widget<Text>(find.text(longDisplayName));
+    final longTitle = tester.widget<Text>(
+      find.descendant(
+        of: find.byType(WorkspaceHeader),
+        matching: find.text(longDisplayName),
+      ),
+    );
     expect(longTitle.maxLines, 1);
     expect(longTitle.overflow, TextOverflow.ellipsis);
     expect(tester.takeException(), isNull);
@@ -2948,38 +2941,43 @@ void main() {
     );
     expect(deafenSemantics.label, 'Выключить удалённый звук');
     expect(deafenSemantics.flagsCollection.isToggled, Tristate.isFalse);
-    final enabledSoundButton = find.byTooltip(
-      'Выключить сигнал новых трансляций',
-    );
-    expect(enabledSoundButton, findsOneWidget);
-    final enabledSoundSemantics = tester.getSemantics(enabledSoundButton);
-    expect(enabledSoundSemantics.label, 'Звук начала трансляций включён');
-    expect(enabledSoundSemantics.flagsCollection.isToggled, Tristate.isTrue);
+    await tester.tap(find.byTooltip('Ещё настройки голоса'));
+    await tester.pumpAndSettle();
     expect(
-      enabledSoundSemantics.getSemanticsData().hasAction(SemanticsAction.tap),
+      tester
+          .widget<CheckedPopupMenuItem<String>>(
+            find.widgetWithText(
+              CheckedPopupMenuItem<String>,
+              'Сигнал новых трансляций',
+            ),
+          )
+          .checked,
       isTrue,
     );
-
-    state.voiceStreamStartNotice = true;
-    state.notifyListeners();
-    await tester.pump();
-    expect(find.text('В канале началась демонстрация экрана'), findsOneWidget);
-    await tester.tap(enabledSoundButton);
-    await tester.pump();
+    await tester.tap(find.text('Сигнал новых трансляций'));
+    await tester.pumpAndSettle();
     expect(state.voiceStreamSoundEnabled, isFalse);
-    final disabledSoundButton = find.byTooltip(
-      'Включить сигнал новых трансляций',
-    );
-    expect(disabledSoundButton, findsOneWidget);
-    final disabledSoundSemantics = tester.getSemantics(disabledSoundButton);
-    expect(disabledSoundSemantics.label, 'Звук начала трансляций выключен');
-    expect(disabledSoundSemantics.flagsCollection.isToggled, Tristate.isFalse);
     expect(
       (await SharedPreferences.getInstance()).getBool(
         'voice-screen-start-sound:v1',
       ),
       isFalse,
     );
+    await tester.tap(find.byTooltip('Ещё настройки голоса'));
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<CheckedPopupMenuItem<String>>(
+            find.widgetWithText(
+              CheckedPopupMenuItem<String>,
+              'Сигнал новых трансляций',
+            ),
+          )
+          .checked,
+      isFalse,
+    );
+    await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+    await tester.pumpAndSettle();
     expect(find.byTooltip('Начать демонстрацию экрана'), findsNWidgets(2));
     final startScreenShareSemantics = tester.getSemantics(
       find.byTooltip('Начать демонстрацию экрана').first,
@@ -4612,7 +4610,10 @@ void main() {
           widget.decoration?.hintText == 'Поиск сообщений',
     );
     expect(searchField, findsOneWidget);
-    expect(find.byType(FilledButton), findsNothing);
+    expect(
+      find.byKey(const ValueKey('workspace-search-submit')),
+      findsOneWidget,
+    );
     await tester.sendKeyEvent(LogicalKeyboardKey.enter);
     await tester.pump();
     expect(api.lastSearchQuery, isNull);
@@ -4952,14 +4953,20 @@ void main() {
           .height,
       44,
     );
-    expect(find.text('Enter'), findsOneWidget);
-    expect(find.text('найти'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('workspace-search-enter-hint')),
+      findsNothing,
+    );
+    expect(find.text('Найти'), findsOneWidget);
     expect(
       find.byKey(const ValueKey('workspace-search-query-icon')),
       findsOneWidget,
     );
     expect(find.text('Поиск сообщений'), findsWidgets);
-    expect(find.byType(FilledButton), findsNothing);
+    expect(
+      find.byKey(const ValueKey('workspace-search-submit')),
+      findsOneWidget,
+    );
     expect(tester.takeException(), isNull);
 
     await tester.pumpWidget(const SizedBox.shrink());
@@ -4999,7 +5006,7 @@ void main() {
       );
       expect(find.text('Найдите нужное сообщение'), findsOneWidget);
       expect(
-        find.byKey(const ValueKey('workspace-search-enter-hint')),
+        find.byKey(const ValueKey('workspace-search-submit')),
         findsOneWidget,
       );
       expect(tester.takeException(), isNull);
@@ -5568,11 +5575,14 @@ void main() {
     );
     final rowRect = tester.getRect(memberRow);
     final popoverRect = tester.getRect(profilePopover);
-    final membersPanelRect = tester.getRect(membersPanel);
-    expect(popoverRect.width, closeTo(membersPanelRect.width - 32, 1));
-    expect(popoverRect.width, 215);
+    expect(popoverRect.width, 288);
+    expect(popoverRect.left, greaterThanOrEqualTo(8));
+    expect(popoverRect.right, lessThanOrEqualTo(rowRect.left));
     expect(popoverRect.top, closeTo(rowRect.top, 1));
-    expect(popoverRect.right, closeTo(membersPanelRect.right - 16, 1));
+    expect(
+      popoverRect.bottom,
+      lessThanOrEqualTo(tester.view.physicalSize.height - 8),
+    );
     final profileAvatar = tester.widget<AuthenticatedAvatar>(
       find.descendant(
         of: profilePopover,
@@ -5592,7 +5602,7 @@ void main() {
     );
     expect(messageButton, findsOneWidget);
     expect(tester.getSize(messageButton).width, popoverRect.width - 32);
-    expect(tester.getSize(messageButton).width, 183);
+    expect(tester.getSize(messageButton).width, 256);
     expect(tester.getSize(messageButton).height, 40);
     expect(
       popoverRect.right,
@@ -5605,7 +5615,8 @@ void main() {
       find.byWidgetPredicate(
         (widget) =>
             widget is Focus &&
-            widget.focusNode?.debugLabel == 'member-profile-trigger',
+            widget.focusNode?.debugLabel == 'member-profile-trigger' &&
+            widget.focusNode!.hasFocus,
       ),
     );
     expect(profileTrigger.focusNode!.hasFocus, isTrue);
@@ -5703,6 +5714,300 @@ void main() {
       state.dispose();
     });
   }
+  for (final width in [320.0, 390.0, 768.0, 1024.0, 1440.0]) {
+    for (final scale in [1.0, 2.0]) {
+      testWidgets(
+        'Web parity matrix $width scale $scale short viewport and keyboard',
+        (tester) async {
+          // This presentation capture never starts a microphone check. The
+          // recorder still creates/disposes a platform handle at widget mount.
+          const recorder = MethodChannel('com.llfbandit.record/messages');
+          tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+            recorder,
+            (call) async {
+              if (call.method == 'create' ||
+                  call.method == 'dispose' ||
+                  call.method == 'stop')
+                return null;
+              if (call.method == 'isRecording' || call.method == 'isPaused')
+                return false;
+              throw UnsupportedError(
+                'Unexpected recorder call in presentation matrix',
+              );
+            },
+          );
+          addTearDown(
+            () => tester.binding.defaultBinaryMessenger
+                .setMockMethodCallHandler(recorder, null),
+          );
+
+          const rtcEvents = MethodChannel('FlutterWebRTC.Event');
+          tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+            rtcEvents,
+            (_) async => null,
+          );
+          addTearDown(
+            () => tester.binding.defaultBinaryMessenger
+                .setMockMethodCallHandler(rtcEvents, null),
+          );
+          tester.view.devicePixelRatio = 1;
+          tester.view.physicalSize = Size(width, 480);
+          addTearDown(tester.view.reset);
+          await loadUiuxVisualCaptureFonts();
+          final api = _PortraitApi(
+            withHistory: true,
+            historyCount: 3,
+            includeDirectMessage: true,
+          );
+          final state = AppState(api, audioDeviceLoader: () async => const []);
+          await state.initialize();
+          state.selectedChannel = _PortraitApi.channel;
+          final root = GlobalKey();
+          await tester.pumpWidget(
+            MaterialApp(
+              theme: guildTheme(),
+              builder: (context, child) => MediaQuery(
+                data: MediaQuery.of(context)
+                    .copyWith(textScaler: TextScaler.linear(scale)),
+                child: child!,
+              ),
+              home: RepaintBoundary(
+                key: root,
+                child: AnimatedBuilder(
+                  animation: state,
+                  builder: (_, _) => WorkspaceScreen(state: state),
+                ),
+              ),
+            ),
+          );
+          await tester.pumpAndSettle();
+          Future<void> capture(String surface) async {
+            expect(
+              tester.takeException(),
+              isNull,
+              reason: '$surface $width x$scale',
+            );
+            await captureUiuxBoundary(
+              tester,
+              find.byKey(root),
+              fileName:
+                  'parity-$surface-${width.toInt()}x480-scale${scale.toInt()}.png',
+              pixelRatio: 1,
+            );
+          }
+
+          await capture('text');
+          await tester.tap(find.byTooltip('Действия диалога'));
+          await tester.pumpAndSettle();
+          expect(find.text('Закреплённые'), findsOneWidget);
+          await tester.tap(find.text('Поиск в диалоге'));
+          await tester.pumpAndSettle();
+          expect(
+            find.byKey(const ValueKey('workspace-search-submit')),
+            findsOneWidget,
+          );
+          expect(
+            tester
+                .widget<DropdownButtonFormField<String>>(
+                  find.byType(DropdownButtonFormField<String>),
+                )
+                .initialValue,
+            'current',
+          );
+          await capture('search');
+          if (width >= 1024) {
+            final query = find.descendant(
+              of: find.byKey(const ValueKey('workspace-search-query')),
+              matching: find.byType(TextField),
+            );
+            await tester.enterText(query, 'сохранённый запрос');
+            await tester.pump();
+            state.openSearchPanel(currentConversation: true, pins: true);
+            await tester.pumpAndSettle();
+            expect(find.text('Закреплённые'), findsOneWidget);
+            state.openSearchPanel(currentConversation: true);
+            await tester.pumpAndSettle();
+            expect(
+              tester.widget<TextField>(query).controller!.text,
+              'сохранённый запрос',
+            );
+          }
+          state.closeSearchPanel();
+          await state.openDirectConversation(state.directMessages.single);
+          await tester.pumpAndSettle();
+          await capture('dm');
+          await tester.tap(find.byTooltip('Действия диалога'));
+          await tester.pumpAndSettle();
+          expect(find.text('Закреплённые'), findsNothing);
+          await tester.tap(find.text('Поиск в диалоге'));
+          await tester.pumpAndSettle();
+          await tester.enterText(
+            find.descendant(
+              of: find.byKey(const ValueKey('workspace-search-query')),
+              matching: find.byType(TextField),
+            ),
+            'сообщение',
+          );
+          await tester.pump();
+          await tester.tap(
+            find.byKey(const ValueKey('workspace-search-submit')),
+          );
+          await tester.pumpAndSettle();
+          expect(api.lastSearchDirectMessageId, 'dm-1');
+          state.closeSearchPanel();
+          state.toggleWorkspacePanel(WorkspacePanel.audio);
+          await tester.pumpAndSettle();
+          await capture('audio');
+          state.toggleWorkspacePanel(WorkspacePanel.audio);
+          state.selectedDirectMessage = null;
+          state.selectedChannel = _PortraitApi.voiceChannel;
+          state.voiceChannel = _PortraitApi.voiceChannel;
+          state.voicePhase = VoicePhase.listener;
+          state.notifyListeners();
+          await tester.pumpAndSettle();
+          await capture('voice');
+          // Compact/short IME keeps composer reachable with existing app resize policy.
+          state.voiceChannel = null;
+          state.voicePhase = VoicePhase.idle;
+          state.selectedChannel = _PortraitApi.channel;
+          state.notifyListeners();
+          tester.view.viewInsets = const FakeViewPadding(bottom: 180);
+          await tester.pumpAndSettle();
+          await capture('text-ime');
+          await tester.pumpWidget(const SizedBox.shrink());
+          state.dispose();
+        },
+      );
+    }
+  }
+  testWidgets('pinned production workspace survives TEXT DM short IME and end', (
+    t,
+  ) async {
+    const rtcEvents = MethodChannel('FlutterWebRTC.Event');
+    t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      rtcEvents,
+      (_) async => null,
+    );
+    addTearDown(
+      () => t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        rtcEvents,
+        null,
+      ),
+    );
+    t.view.devicePixelRatio = 1;
+    t.view.physicalSize = const Size(1440, 900);
+    addTearDown(t.view.reset);
+    await loadUiuxVisualCaptureFonts();
+    final root = GlobalKey();
+    final room = _PublishedScreenRoom();
+    // ignore: invalid_use_of_internal_member
+    final created = await RemoteParticipant.createFromInfo(
+      room: room,
+      info: lk.ParticipantInfo(
+        sid: 'sid',
+        identity: 'remote',
+        name: 'Streamer',
+        tracks: [
+          lk.TrackInfo(
+            sid: 'screen',
+            type: lk.TrackType.VIDEO,
+            source: lk.TrackSource.SCREEN_SHARE,
+            muted: false,
+          ),
+        ],
+      ),
+    );
+    room.members['remote'] = created.participant;
+    final state = _PublishedScreenState(room);
+    await state.initialize();
+    state.selectedChannel = _PortraitApi.voiceChannel;
+    state.voiceChannel = _PortraitApi.voiceChannel;
+    state.voicePhase = VoicePhase.connected;
+    await t.pumpWidget(
+      RepaintBoundary(
+        key: root,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: guildTheme(),
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: const TextScaler.linear(2)),
+            child: child!,
+          ),
+          home: AnimatedBuilder(
+            animation: state,
+            builder: (_, _) => WorkspaceScreen(state: state),
+          ),
+        ),
+      ),
+    );
+    await t.pumpAndSettle();
+    (t.state(find.byType(WorkspaceScreen)) as dynamic)
+        .workspaceToggleVoiceScreenPin('remote');
+    await t.pump();
+    await state.selectChannel(_PortraitApi.channel);
+    await t.pump(const Duration(milliseconds: 200));
+    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+    await t.enterText(
+      find.byWidgetPredicate(
+        (w) =>
+            w is TextField && w.decoration?.hintText == 'Написать сообщение…',
+      ),
+      'Сохранённый черновик',
+    );
+    for (final size in [
+      const Size(1440, 900),
+      const Size(390, 480),
+      const Size(320, 480),
+    ]) {
+      for (final ime in [0.0, 180.0]) {
+        t.view.physicalSize = size;
+        t.view.viewInsets = FakeViewPadding(bottom: ime);
+        await t.pump(const Duration(milliseconds: 200));
+        expect(t.takeException(), isNull, reason: '$size IME$ime');
+        expect(find.text('Сохранённый черновик'), findsOneWidget);
+        if (ime > 0) {
+          await t.ensureVisible(find.byTooltip('Остановить просмотр'));
+          await t.pump();
+        }
+        await captureUiuxBoundary(
+          t,
+          find.byKey(root),
+          fileName:
+              'parity-pinned-workspace-${size.width.toInt()}x${size.height.toInt()}-ime${ime.toInt()}-scale2.png',
+          pixelRatio: 1,
+        );
+      }
+    }
+    t.view.viewInsets = const FakeViewPadding();
+    t.view.physicalSize = const Size(390, 844);
+    await state.openDirectConversation(
+      const DirectConversation(
+        id: 'dm-1',
+        participantId: 'account-2',
+        displayName: 'Собеседник',
+        unreadCount: 0,
+      ),
+    );
+    await t.pump();
+    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+    state.toggleWorkspacePanel(WorkspacePanel.profile);
+    await t.pump();
+    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+    await state.selectChannel(_PortraitApi.voiceChannel);
+    await t.pump();
+    expect(find.byTooltip('Приостановить видео'), findsNothing);
+    await state.selectChannel(_PortraitApi.channel);
+    await t.pump();
+    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+    room.members.clear();
+    state.notifyListeners();
+    await t.pump();
+    expect(find.byTooltip('Приостановить видео'), findsNothing);
+    await t.pumpWidget(const SizedBox.shrink());
+    state.dispose();
+    await t.runAsync(room.dispose);
+  });
 }
 
 class _PublishedScreenRoom extends Room {

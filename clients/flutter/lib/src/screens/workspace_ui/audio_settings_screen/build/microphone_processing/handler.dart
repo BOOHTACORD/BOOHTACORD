@@ -40,6 +40,7 @@ extension AudioSettingsScreenMicrophoneProcessingRenderer
           agc: state.audioProcessing.autoGainControl,
         ),
         AudioProcessingAdvancedSettings(
+          inline: true,
           processing: state.audioProcessing,
           runtime: state.noiseSuppressionRuntime,
           onProcessingChanged: state.setAudioProcessing,

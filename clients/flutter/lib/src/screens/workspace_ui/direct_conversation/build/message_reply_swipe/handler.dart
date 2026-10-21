@@ -2,6 +2,7 @@ import '../message_bubble/handler.dart';
 import '../../../direct_message_action_menu/component.dart';
 import '../../../native_bindings.dart';
 import '../../lifecycle/context.dart';
+import '../../../../../widgets/message_timestamp.dart';
 
 extension DirectConversationMessageReplySwipeRenderer
     on WorkspaceDirectConversationStateContext {
@@ -9,8 +10,9 @@ extension DirectConversationMessageReplySwipeRenderer
     GlobalKey<State<StatefulWidget>> key,
     BuildContext context,
     DirectChatMessage message,
-    bool own,
-  ) => KeyedSubtree(
+    bool own, {
+    bool grouped = false,
+  }) => KeyedSubtree(
     key: key,
     child: HorizontalSwipeRegion(
       enabled:
@@ -22,12 +24,29 @@ extension DirectConversationMessageReplySwipeRenderer
       canStart: (position, _) => position.dx >= 72,
       onSwipeRight: () => workspaceReplyToDirect(message),
       child: Row(
-        mainAxisAlignment: own
-            ? MainAxisAlignment.end
-            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          renderDirectConversationMessageBubble(own, message),
+          SizedBox(
+            width: MediaQuery.textScalerOf(context).scale(10) * 3.6,
+            child: grouped
+                ? MessageTimestamp(message.createdAt, compact: true)
+                : Align(
+                    alignment: Alignment.topLeft,
+                    child: AuthenticatedAvatar(
+                      state: widget.state,
+                      name: workspaceDirectAuthorName(message.authorId),
+                      avatarUrl: own
+                          ? widget.state.profile?.avatarUrl
+                          : widget.state.members
+                                .where((m) => m.id == message.authorId)
+                                .firstOrNull
+                                ?.avatarUrl,
+                      radius: 16,
+                    ),
+                  ),
+          ),
+          const SizedBox(width: 8),
+          renderDirectConversationMessageBubble(own, message, grouped: grouped),
           if (!message.deleted && message.sendStatus == null)
             WorkspaceDirectMessageActionMenu(
               message: message,

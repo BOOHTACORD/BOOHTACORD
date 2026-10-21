@@ -59,6 +59,7 @@ class WorkspaceAudioDeviceDropdown extends StatelessWidget {
               isExpanded: true,
               value: selected,
               style: const TextStyle(
+                fontFamily: 'Inter',
                 color: GcColors.text,
                 fontSize: GcTypography.body,
                 height: GcTypography.bodyLine / GcTypography.body,
@@ -78,14 +79,14 @@ class WorkspaceAudioDeviceDropdown extends StatelessWidget {
                 for (var index = 0; index < devices.length; index++)
                   DropdownMenuItem(
                     value: devices[index].deviceId,
-                  child: Tooltip(
-                    message: deviceLabel(devices[index], index),
-                    child: Text(
-                      deviceLabel(devices[index], index),
-                      overflow: TextOverflow.ellipsis,
-                      semanticsLabel: deviceLabel(devices[index], index),
+                    child: Tooltip(
+                      message: deviceLabel(devices[index], index),
+                      child: Text(
+                        deviceLabel(devices[index], index),
+                        overflow: TextOverflow.ellipsis,
+                        semanticsLabel: deviceLabel(devices[index], index),
+                      ),
                     ),
-                  ),
                   ),
               ],
               onChanged: devices.isEmpty || switching
