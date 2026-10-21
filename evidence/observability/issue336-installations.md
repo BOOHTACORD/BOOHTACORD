@@ -2,8 +2,10 @@
 
 Date: 2026-10-21. Leaf: IT-001, dependency T-052.
 Implementation base: `07a73cec706c5e54b88fea17bdfb6e5a02f46a16`.
-Status at the local checkpoint: implementation present; functional integration
-PASS; full local readiness/acceptance BLOCKED. Linux CI acceptance is recorded below; final exact-head CI remains required before merge.
+Status at the final local checkpoint: full two-installation acceptance PASS,
+including actual readiness and cleanup. Earlier BLOCKED attempts are retained
+below. Linux CI acceptance is also recorded; final exact-head CI remains required
+before merge.
 No production mutation, capture, media recording or real-user data was used.
 
 ## Delivered
@@ -28,8 +30,11 @@ No production mutation, capture, media recording or real-user data was used.
 ## Actual local integration
 
 Runner: `python3 -m tools.qa.installation_telemetry.run`.
-The diagnostic rerun explicitly retained readiness as FAIL/BLOCKED while testing
-functional writes/reads; it did not replace the health response with a success.
+Earlier diagnostic runs retained readiness as FAIL/BLOCKED. The final normal
+run, with localhost excluded from the macOS system proxy, passes readiness and
+both acceptance tests (44.289s), including production delivery-health SDK metrics
+queried in real Prometheus. It tested the final working tree based on `9b63d675`;
+CI provides the subsequent committed-source verification.
 Receipts/logs are ignored under `.out/installation-telemetry-336/`.
 
 | Check | Result | Evidence boundary |
@@ -46,8 +51,8 @@ Receipts/logs are ignored under `.out/installation-telemetry-336/`.
 | Rotation/re-enrollment, revoke A without affecting B | PASS | Actual registry policy updates and HTTP 401/200 outcomes; causal key remains stable |
 | Disable and central disabled acknowledgement | PASS | Queue rejects new batches; registry receives explicit disabled state |
 | Clone reset and missing identity | PASS | New ID/keys/credential state, synthetic product account retained; rerun migration does not regenerate deleted identity |
-| Tempo `/ready` | FAIL/BLOCKED | Continuous ingester minimum-ready wait on this Colima host, including the explicit single-node diagnostic configuration. Successful storage queries are recorded separately |
-| Full local fixture | BLOCKED | Never promoted to PASS despite functional tests succeeding; owned cleanup PASS |
+| Tempo `/ready` | PASS final / earlier BLOCKED | The final normal run bypassed the host system proxy for loopback only; no health gate or TLS check was bypassed |
+| Full local fixture | PASS final | Both actual tests PASS, normal readiness PASS, owned cleanup PASS. Earlier diagnostic BLOCKED receipts/logs are distinct attempts |
 
 The initial integration attempt exposed an implementation error: valid OTLP
 responses containing an empty `partial_success` message were classified as
@@ -74,11 +79,24 @@ rejections from actual partial loss; the regression test and real writes passed.
   reachable through ordinary page scroll, no horizontal clipping.
 - Flutter telemetry tests: 10 PASS, one pre-existing skip; this is not a no-skip
   native acceptance result. Targeted analyzer: PASS, no issues. Full native
-  Android/iOS API runtime remains NOT_RUN at this checkpoint because the same
-  owned stack preflight is blocked. No physical/mobile/media PASS is inferred.
+  Android/iOS API runtime remains NOT_RUN at this checkpoint in this issue; the earlier broad
+  owned-stack app preflight failure is retained as a separate attempt. No physical/mobile/media PASS is inferred.
 - Fleet dashboard generation/scoping and backend profile receipt tests: PASS.
   The existing database CI profile also requires the owned two-installation
   runner; its successful source-bound receipt cannot omit that runtime check.
+
+## Additional verification
+
+The full 1198-test Python suite passes with loopback excluded from the host's
+system HTTP proxy (`NO_PROXY=127.0.0.1,localhost`); the original local attempt's
+nine loopback HTTP errors remain in its ignored log. The egress checker now
+requires shared Compose to have no deployment-specific host overrides, while
+retaining its explicit OTLP configuration and outbound-network checks. Native
+Compose image verification PASS using the installed standalone Compose CLI.
+Delivery loss/queue/build instruments have focused SDK collection and strict
+version-label tests; versions accept only bounded numeric semantic versions or
+`unknown`, with per-installation cardinality enforcement unchanged. Fleet account
+panels deduplicate process replicas rather than summing the same database gauge.
 
 ## Linux CI checkpoint
 

@@ -129,3 +129,11 @@ and concurrent initialization. It removes owned resources in `finally` and never
 contacts production. The backend database CI profile includes this runner before
 issuing a successful source-bound receipt. A failed readiness or missing runtime
 test remains FAIL/BLOCKED, even if separate functional diagnostics succeed.
+
+Delivery health: `boohtacord.telemetry.queue.batches` and the monotonic
+`boohtacord.telemetry.dropped.batches` observe pending/lost batches without
+network work in the collection callback. Loss is visible centrally after
+delivery recovers. `boohtacord.telemetry.build.info` carries only a bounded
+numeric semantic version (`service_version`) or `unknown`; no arbitrary build
+strings become metric labels. Fleet account gauges use max per installation to
+deduplicate replicas of the same product database.

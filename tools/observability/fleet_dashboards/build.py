@@ -48,7 +48,16 @@ def build():
             ('Registered installations', 'boohtacord_installation_registered'),
             ('Last seen (zero means never connected)', 'boohtacord_installation_last_seen_seconds'),
             ('Enabled (zero means revoked)', 'boohtacord_installation_enabled'),
-            ('Explicitly disabled export', 'boohtacord_installation_export_disabled')]),
+            ('Explicitly disabled export', 'boohtacord_installation_export_disabled'),
+            ('Observed API builds', 'max by (installation_id, service_version) (boohtacord_telemetry_build_info)'),
+            ('Registered accounts per installation (replicas deduplicated)', 'max by (installation_id) (boohtacord_users_registered)'),
+            ('Daily active accounts per installation (not unique people across installations)', 'max by (installation_id) (boohtacord_users_daily_active{period="today"})'),
+            ('HTTP errors per installation', 'sum by (installation_id) (rate(boohtacord_http_server_requests_total{status=~"5.."}[5m]))'),
+            ('HTTP latency per installation', 'histogram_quantile(0.95, sum by (installation_id, le) (rate(boohtacord_http_server_duration_seconds_bucket[5m])))'),
+            ('Observed media cadence per installation', 'histogram_quantile(0.50, sum by (installation_id, le, direction) (rate(boohtacord_media_fps_bucket[5m])))'),
+            ('Observed SFU participants', 'sum by (installation_id) (livekit_participant_total)'),
+            ('Dropped export batches (visible after delivery recovers)', 'sum by (installation_id) (boohtacord_telemetry_dropped_batches_total)'),
+            ('Pending export batches', 'sum by (installation_id) (boohtacord_telemetry_queue_batches)')]),
     }
     trace = dashboard('traces', 'Installation · User and flow traces', [])
     variables = trace['templating']['list']

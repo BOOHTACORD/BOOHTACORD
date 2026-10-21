@@ -16,11 +16,8 @@ try {
             throw "API must receive $required from the private deployment environment."
         }
     }
-    $entry = @($api.extra_hosts) | Where-Object {
-        $_ -eq 'metric.bootybay.ru=167.233.56.32'
-    }
-    if ($entry.Count -ne 1) {
-        throw 'API must resolve metric.bootybay.ru through the observability server address.'
+    if ($api.extra_hosts -and @($api.extra_hosts).Count -gt 0) {
+        throw 'Shared API Compose must not hardcode deployment-specific host/IP overrides; use an operator overlay.'
     }
     if (@($api.networks.PSObject.Properties.Name) -notcontains 'telemetry-egress') {
         throw 'API needs a dedicated outbound network for OTLP export.'

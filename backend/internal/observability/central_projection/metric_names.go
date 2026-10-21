@@ -2,6 +2,9 @@
 package centralprojection
 
 var MetricNames = map[string]bool{
+	"boohtacord.telemetry.queue.batches":          true,
+	"boohtacord.telemetry.dropped.batches":        true,
+	"boohtacord.telemetry.build.info":             true,
 	"boohtacord.users.registrations":              true,
 	"boohtacord.users.daily_active":               true,
 	"boohtacord.users.previous_day_complete":      true,

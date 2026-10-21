@@ -2,6 +2,7 @@ package startmetrics
 
 import (
 	"context"
+	"errors"
 	"os"
 	"time"
 	centralexport "voice-platform/backend/internal/observability/central_export"
@@ -51,6 +52,20 @@ func Start(ctx context.Context) (func(context.Context) error, error) {
 		sdkmetric.WithResource(service),
 		sdkmetric.WithReader(sdkmetric.NewPeriodicReader(incident.MetricExporter{Exporter: exporter}, sdkmetric.WithInterval(15*time.Second))),
 	)
+	var stopHealth func() error
+	if central != nil {
+		stopHealth, err = central.RegisterMetrics(provider, os.Getenv("APP_VERSION"))
+		if err != nil {
+			_ = provider.Shutdown(ctx)
+			return nil, err
+		}
+	}
 	otel.SetMeterProvider(provider)
-	return provider.Shutdown, nil
+	return func(stop context.Context) error {
+		var healthError error
+		if stopHealth != nil {
+			healthError = stopHealth()
+		}
+		return errors.Join(healthError, provider.Shutdown(stop))
+	}, nil
 }

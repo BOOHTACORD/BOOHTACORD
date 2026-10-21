@@ -6,11 +6,18 @@ import (
 	metric "go.opentelemetry.io/proto/otlp/metrics/v1"
 	"google.golang.org/protobuf/proto"
 	"math"
+	"regexp"
 	"strconv"
 	"time"
 	flow "voice-platform/backend/internal/observability/flow_contract"
 	identity "voice-platform/backend/internal/observability/installation"
 )
+
+var metricVersion = regexp.MustCompile(`^v?[0-9]{1,6}\.[0-9]{1,6}\.[0-9]{1,6}([+-][0-9]{1,8})?$`)
+
+func ValidMetricVersion(value string) bool {
+	return value == "unknown" || metricVersion.MatchString(value)
+}
 
 var labelValues = map[string]map[string]bool{
 	"period":    {"today": true, "yesterday": true},
@@ -47,7 +54,7 @@ func MetricLabels(in []*common.KeyValue, i identity.Identity, service, instance 
 				s = strconv.FormatInt(number, 10)
 			}
 		}
-		if labelValues[key][s] || (key == "operation" && flow.Operations[s]) {
+		if key == "service_version" && ValidMetricVersion(s) || labelValues[key][s] || (key == "operation" && flow.Operations[s]) {
 			out = append(out, String(key, s))
 			continue
 		}

@@ -14,6 +14,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
+	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
 	metricscollector "go.opentelemetry.io/proto/otlp/collector/metrics/v1"
 	collector "go.opentelemetry.io/proto/otlp/collector/trace/v1"
 	common "go.opentelemetry.io/proto/otlp/common/v1"
@@ -42,6 +43,7 @@ import (
 	relay "voice-platform/backend/internal/observability/ingest_client_traces"
 	identity "voice-platform/backend/internal/observability/installation"
 	installationapi "voice-platform/backend/internal/observability/installation/api"
+	metricstart "voice-platform/backend/internal/observability/start_metrics"
 	tracing "voice-platform/backend/internal/observability/start_tracing"
 )
 
@@ -274,6 +276,25 @@ func TestTwoInstallationsThroughActualStorage(t *testing.T) {
 		return instances[ra.Instance()] && instances[secondA.Instance()]
 	})
 
+	// Exercise production delivery-health instruments through the actual SDK,
+	// privacy projector, authenticated gateway and Prometheus translation.
+	t.Setenv("OTEL_EXPORTER_OTLP_METRICS_ENDPOINT", "")
+	t.Setenv("APP_VERSION", "1.0.44")
+	previousMeter := otel.GetMeterProvider()
+	defer otel.SetMeterProvider(previousMeter)
+	stopMetrics, err := metricstart.Start(central.Context(ctx, ra))
+	must(t, err, "start real delivery-health metrics")
+	defer stopMetrics(context.Background())
+	must(t, otel.GetMeterProvider().(*sdkmetric.MeterProvider).ForceFlush(ctx), "flush delivery-health instruments")
+	eventually(t, "delivery-health build and installation in real Prometheus", func() bool {
+		response, e := http.Get(os.Getenv("BOOHTACORD_TELEMETRY_TEST_PROMETHEUS") + "/api/v1/query?query=" + url.QueryEscape(`boohtacord_telemetry_build_info{installation_id="`+a.ID+`",service_version="1.0.44"}`))
+		if e != nil {
+			return false
+		}
+		defer response.Body.Close()
+		body, _ := io.ReadAll(response.Body)
+		return bytes.Contains(body, []byte(a.ID)) && bytes.Contains(body, []byte("service_version"))
+	})
 	for _, fixture := range []struct {
 		identity identity.Identity
 		runtime  *central.Runtime

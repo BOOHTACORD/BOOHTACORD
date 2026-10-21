@@ -33,3 +33,20 @@ func TestMetricsDropsUnboundedLabelsAndUnknownNames(t *testing.T) {
 		t.Fatal("installation scope missing")
 	}
 }
+
+func TestVersionLabelsAreBoundedAndCannotCarryFreeFormValues(t *testing.T) {
+	i, _ := identity.New()
+	for _, version := range []string{"1.0.44", "v1.0.44+79", "unknown", "private-account-name", "1.2.3+private-token"} {
+		labels := MetricLabels([]*common.KeyValue{String("service_version", version)}, i, "boohtacord-api", "")
+		found := false
+		for _, entry := range labels {
+			if entry.Key == "service_version" {
+				found = true
+			}
+		}
+		expected := version == "1.0.44" || version == "v1.0.44+79" || version == "unknown"
+		if found != expected {
+			t.Fatal("version label escaped bounded build contract")
+		}
+	}
+}
