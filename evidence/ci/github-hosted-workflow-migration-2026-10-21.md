@@ -10,7 +10,7 @@ services or unregister runners on that host.
 
 ## Local validation
 
-- **PASS** — 88 focused tests covering action trust, workflow routing, CI gates,
+- **PASS** — 90 focused tests covering action trust, workflow routing, CI gates,
   toolchains, runner detection, and release/operator workflow contracts.
 - **PASS** — `python3 -m tools.verify.action_pins.run` (36 workflows, 2 local
   actions).
@@ -24,9 +24,13 @@ services or unregister runners on that host.
 
 ## External acceptance
 
-- **NOT_RUN** — GitHub-hosted execution for this revision is pending publication
-  of the branch. Validate the PR checks before treating hosted runner routing
-  as externally accepted.
+- **PARTIAL** — The initial [PR #506 CI run](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39618968735)
+  used the `ubuntu-24.04` hosted image. Its contracts job found that the
+  simulated hosted environment in an operator test omitted `RUNNER_OS`; the
+  fixture now supplies `Linux` so the test reaches its intended SSH-timeout
+  assertion.
+- **NOT_RUN** — Fresh hosted checks after that fixture correction are pending.
+  The initial red result remains recorded and is not relabeled as a pass.
 - **NOT_RUN** — Production SSH connectivity from a GitHub-hosted runner. The
   production environment, source/provenance guards, protected approval, and
   serialized writer remain in place; no production workflow was dispatched.
