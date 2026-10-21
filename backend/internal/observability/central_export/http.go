@@ -124,11 +124,10 @@ func (r *Runtime) deliver(ctx context.Context, next item, i identity.Identity) i
 }
 
 // Transport tees already encoded OTLP into a private bounded projection. Existing
-// local diagnostics are delivered only to the explicit local Collector boundary.
+// local diagnostics are delivered only to resolved private/loopback destinations.
 func (r *Runtime) Transport() *http.Client {
-	local := http.DefaultTransport.(*http.Transport).Clone()
-	local.Proxy = nil
-	return &http.Client{Timeout: 3 * time.Second, Transport: roundTripper(func(req *http.Request) (*http.Response, error) {
+	local := privateCollectorTransport(net.DefaultResolver.LookupIPAddr)
+	return &http.Client{Timeout: 3 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }, Transport: roundTripper(func(req *http.Request) (*http.Response, error) {
 		raw, err := io.ReadAll(io.LimitReader(req.Body, projection.MaxBytes+1))
 		if err != nil {
 			return nil, err
@@ -149,16 +148,14 @@ func (r *Runtime) Transport() *http.Client {
 		if err == nil {
 			r.Enqueue(kind, body)
 		}
-		switch req.URL.Hostname() {
-		case "localhost", "127.0.0.1", "::1", "collector":
-			req.Body = io.NopCloser(bytes.NewReader(raw))
-			return local.RoundTrip(req)
+		if req.URL.Hostname() == "boohtacord-local-export.invalid" {
+			return &http.Response{StatusCode: http.StatusOK, Header: make(http.Header), Body: io.NopCloser(strings.NewReader("")), Request: req}, nil
 		}
-		status := http.StatusOK
-		if req.URL.Hostname() != "boohtacord-local-export.invalid" {
-			status = http.StatusServiceUnavailable
+		if req.URL.User != nil || (req.URL.Scheme != "http" && req.URL.Scheme != "https") {
+			return nil, errors.New("invalid local collector destination")
 		}
-		return &http.Response{StatusCode: status, Header: make(http.Header), Body: io.NopCloser(strings.NewReader("")), Request: req}, nil
+		req.Body = io.NopCloser(bytes.NewReader(raw))
+		return local.RoundTrip(req)
 	})}
 }
 

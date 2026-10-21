@@ -135,6 +135,18 @@ Docker CLI lacks BuildKit support for the existing Dockerfile `--mount`; no app
 runtime PASS is claimed from that run. The independent #336 fixture does not need
 an API image build and its actual storage acceptance remains separately recorded.
 
+## Local diagnostics compatibility
+
+The broad Linux lifecycle runtime exposed a local-export regression: accepting
+only fixed Collector hostnames blocked the owned `qa-…-tempo` service and its raw
+local trace checks. Local forwarding now resolves arbitrary operator-configured
+service names but requires every resolved address to be private or loopback at
+dial time, pins the selected address, disables proxies and refuses redirects.
+Public and mixed public/private DNS answers fail closed; the separate central
+projection still uses its public-HTTPS transport. Focused private-alias/public/
+mixed-DNS regressions cover the boundary. The lifecycle gate must pass on the final
+commit; the previous failed attempt is not reclassified as successful.
+
 ## Remaining operational verification
 
 Production deployment/enrollment, real operator credentials/datasource setup,
