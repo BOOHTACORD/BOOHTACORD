@@ -14,7 +14,7 @@ from .positive import attempt, stop
 from .variant import variant
 
 EXPECTED={'ssh-refused':('current_revision','exit'),'scp-timeout':('transfer_bundle','timeout'),
-          'immutable':('remote_install','exit'),'downgrade':('history','exit')}
+          'immutable':('remote_install','installer_release_directory'),'downgrade':('history','exit')}
 
 
 def require_failure(name, value):

@@ -8,6 +8,7 @@ from unittest.mock import patch
 from . import transfer
 from .commands import ExecutionFailed
 from .test_readback_contract import fixture, SHA, PRIOR, CONTROLLER, NONCE
+from tools.release.install.diagnostics import failure_response, success_response
 
 
 class SharedTransferTests(unittest.TestCase):
@@ -25,8 +26,8 @@ class SharedTransferTests(unittest.TestCase):
             if argv[0] == 'ssh':
                 if len(argv[argv.index('--')+1:]) == 1: return PRIOR.encode()+b'\n'
                 if '--' in argv and len(argv[argv.index('--')+1:]) == 6:
-                    if failure == 'install': raise ExecutionFailed('exit', 17)
-                    return b''
+                    result = failure_response('deployment') if failure == 'install' else success_response()
+                    return json.dumps(result).encode()
                 value=fixture(); value['nonce']='0'*32 if forged else NONCE
                 return json.dumps(value).encode()
             return b''
@@ -57,9 +58,13 @@ class SharedTransferTests(unittest.TestCase):
     def test_nonzero_installer_or_old_readback_never_reports_pass(self):
         for failure,forged in [('install',False),(None,True)]:
             with tempfile.TemporaryDirectory() as tmp:
-                value,_=self.fixture(Path(tmp).resolve(), failure=failure, forged=forged)
+                value,calls=self.fixture(Path(tmp).resolve(), failure=failure, forged=forged)
                 with self.assertRaises(transfer.PhaseFailed): value.run()
-                self.assertEqual('FAIL',value.phases.failure()['status'])
+                receipt=value.phases.failure()
+                self.assertEqual('FAIL',receipt['status'])
+                if failure == 'install':
+                    self.assertEqual('installer_deployment',receipt['phases'][-1]['failure_code'])
+                    self.assertEqual(2,len([argv for argv,_,_ in calls if argv[0]=='ssh']))
 
     def test_bad_controller_or_bundle_checksum_cannot_reach_any_ssh(self):
         for mutation in ('head','bundle'):
