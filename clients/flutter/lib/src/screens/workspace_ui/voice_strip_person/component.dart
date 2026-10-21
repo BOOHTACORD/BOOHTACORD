@@ -11,6 +11,8 @@ class WorkspaceVoiceStripPerson extends StatelessWidget {
     this.microphoneUnavailable = false,
     this.deafened = false,
     this.screenSharing = false,
+    this.watchingScreen = false,
+    this.watcherLabel = 'Смотрит трансляцию',
   });
 
   final AppState state;
@@ -21,6 +23,8 @@ class WorkspaceVoiceStripPerson extends StatelessWidget {
   final bool microphoneUnavailable;
   final bool deafened;
   final bool screenSharing;
+  final bool watchingScreen;
+  final String watcherLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class WorkspaceVoiceStripPerson extends StatelessWidget {
       speaking: speaking,
     );
     return Container(
-      width: 148,
+      width: 160,
       margin: const EdgeInsets.only(right: 8),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
@@ -61,6 +65,15 @@ class WorkspaceVoiceStripPerson extends StatelessWidget {
             ),
           ),
           if (screenSharing) const VoiceStreamIndicator(),
+          if (watchingScreen)
+            Tooltip(
+              message: watcherLabel,
+              child: const Icon(
+                Icons.visibility_outlined,
+                size: 14,
+                color: GcColors.accentText,
+              ),
+            ),
           Tooltip(
             message: presentation.label,
             child: Icon(

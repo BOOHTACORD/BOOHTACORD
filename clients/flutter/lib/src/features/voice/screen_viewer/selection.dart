@@ -6,6 +6,7 @@ import 'discovery.dart';
 import 'publication_generation.dart';
 import 'transition.dart';
 import '../../telemetry/observe_render/view.dart';
+import '../screen_viewer_presence/identity.dart';
 
 extension VoiceScreenViewerSelection on VoiceController {
   void markRemoteScreenFirstFrameRendered(
@@ -54,8 +55,7 @@ extension VoiceScreenViewerSelection on VoiceController {
     final previousIdentity = selectedRemoteScreenViewerIdentity;
     final previousGeneration = selectedRemoteScreenViewerGeneration;
     final previousPublication = selectedRemoteScreenViewerPublication;
-    final previousAudioPublication =
-        selectedRemoteScreenViewerAudioPublication;
+    final previousAudioPublication = selectedRemoteScreenViewerAudioPublication;
     if (previousIdentity == nextIdentity &&
         previousGeneration == nextGeneration &&
         previousAudioPublication?.sid == nextAudioPublication?.sid) {
@@ -91,6 +91,12 @@ extension VoiceScreenViewerSelection on VoiceController {
     selectedRemoteScreenViewerGeneration = nextGeneration;
     selectedRemoteScreenViewerPublication = nextPublication;
     selectedRemoteScreenViewerAudioPublication = nextAudioPublication;
+    unawaited(
+      screenViewerPresence.selectAudience(
+        leaseId,
+        voiceLeaseIdFromLiveKitIdentity(nextIdentity),
+      ),
+    );
     queueRemoteScreenSubscriptionTransition(
       this,
       previousPublication: previousPublication,

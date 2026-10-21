@@ -85,6 +85,16 @@ extension WorkspaceVoiceScreenViewerBuildAction
       localMuted: localMuted,
       localSpeaking: localSpeaking,
       participants: participants,
+      showAudience:
+          showingLocalScreen ||
+          workspaceSelectedVoiceScreenSender(screens, selectedIdentity) !=
+              null,
+      watcherAccountIds: showingLocalScreen
+          ? state.voice.ownerScreenViewerAccountIds
+          : state.voice.screenViewerAccountIds,
+      watcherLabel: showingLocalScreen
+          ? 'Смотрит вашу трансляцию'
+          : 'Смотрит эту трансляцию',
     ),
   );
 }

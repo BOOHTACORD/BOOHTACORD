@@ -37,6 +37,7 @@ import '../features/direct/read_cursor/facade.dart';
 import '../features/realtime/connect/facade.dart';
 import '../features/text/messages/facade.dart';
 import '../features/voice/leases/facade.dart';
+import '../features/voice/screen_viewer_presence/facade.dart';
 import '../features/authorization/permissions/facade.dart';
 import '../features/admin/role_permissions/facade.dart';
 import '../features/admin/readiness/facade.dart';
@@ -85,6 +86,7 @@ class ApiClient extends ApiFacadeBase
         RealtimeConnectFacade,
         TextMessagesFacade,
         VoiceLeasesFacade,
+        ScreenViewerPresenceFacade,
         PermissionsFacade,
         RolePermissionsFacade,
         AdminReadinessFacade,
