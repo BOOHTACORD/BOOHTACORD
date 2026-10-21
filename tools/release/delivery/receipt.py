@@ -5,11 +5,13 @@ import math
 import os
 from pathlib import Path
 import re
+from tools.release.install.diagnostics import INSTALL_PHASES
 from .phases import LIMITS
 from .readback_contract import validate as acknowledgement, unique
 
 STEPS = ('controller', 'producer', 'download', 'recheck', 'ssh', 'install')
 CODES = {'start', 'exit', 'timeout', 'output', 'cleanup', 'invalid_output', 'execution', 'interrupted'}
+INSTALL_FAILURE_CODES = {'installer_' + phase for phase in INSTALL_PHASES}
 BASE = {'schema_version', 'kind', 'source_revision', 'controller_revision', 'status', 'phases'}
 
 
@@ -33,9 +35,11 @@ def checked(value):
             if row['failure_code'] is not None or row['exit_code'] is not None: raise ValueError
         else:
             failed=True
-            if row['failure_code'] not in CODES: raise ValueError
             code=row['exit_code']
             if code is not None and (type(code) is not int or not -255<=code<=255): raise ValueError
+            if row['failure_code'] in INSTALL_FAILURE_CODES:
+                if name != 'remote_install' or code is not None: raise ValueError
+            elif row['failure_code'] not in CODES: raise ValueError
     if value['status']=='PASS':
         if failed or len(rows)!=len(LIMITS) or 'readback' not in value: raise ValueError
         readback=value['readback']

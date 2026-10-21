@@ -55,12 +55,18 @@ remote Docker work stopped. Do not blindly rerun or roll back after such a resul
 The verified current driver invokes the canonical installer in the foreground
 with HUP ignored and inherited by its rollout children. Installer stdout/stderr
 go to a mode-0600 file inside the existing private driver directory, so a closed
-SSH pipe cannot abort maintenance cleanup. The wrapper waits for the real exit
-status before its EXIT trap removes that directory; no alternate installer,
-background success, released host lock or synthetic acknowledgement is added.
-Interruption still fails the client receipt. Recovery requires independent idle
-lock, maintenance-off and fresh health/state checks; this protection does not
-turn a lost connection into confirmed success or ignore administrator SIGTERM.
+SSH pipe cannot abort maintenance cleanup. On normal installer failure, a second
+mode-0600 receipt records only a fixed phase label (for example
+`bundle_verification`, `image_load` or `deployment`). The wrapper publishes that
+bounded JSON response over SSH; the client validates it and retains the phase as
+`installer_<phase>` in the failed `remote_install` receipt. Raw exception text,
+command output and credentials remain private. A missing or malformed private
+receipt becomes `installer_diagnostic_unavailable`. The wrapper waits for the
+installer and cleanup before returning; this status response cannot acknowledge
+installation, which still requires a separate fresh readback. Interruption still
+fails the client receipt. Recovery requires independent idle lock,
+maintenance-off and fresh health/state checks; this protection does not turn a
+lost connection into confirmed success or ignore administrator SIGTERM.
 New signed runtimes also emit ten ordered Unix-second markers for admission,
 migration, services, health and rollout completion. Their intervals are recomputed
 from those exact events; partial, reordered or inconsistent reports fail closed.
