@@ -51,7 +51,17 @@
           "title": "Installation traces",
           "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
         }
-      ]
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
     },
     {
       "id": 2,
@@ -78,7 +88,17 @@
           "title": "Installation traces",
           "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
         }
-      ]
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
     },
     {
       "id": 3,
@@ -105,7 +125,17 @@
           "title": "Installation traces",
           "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
         }
-      ]
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
     },
     {
       "id": 4,
@@ -132,7 +162,17 @@
           "title": "Installation traces",
           "url": "/d/boohtacord-fleet-traces?var-installation=${installation}"
         }
-      ]
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "title": "Inspect this installation",
+              "url": "/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}"
+            }
+          ]
+        }
+      }
     }
   ],
   "description": "Registered opt-in installations only. Legacy/local history remains in the original dashboards; it is never attributed to an installation."

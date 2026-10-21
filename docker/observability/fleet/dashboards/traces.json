@@ -144,6 +144,52 @@
         }
       ],
       "description": "Datasource is provisioned per registered tenant through the private owner read gateway. Installation selection is not an ACL."
+    },
+    {
+      "id": 2,
+      "title": "Media correlation",
+      "type": "table",
+      "datasource": {
+        "type": "tempo",
+        "uid": "t-${installation}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 14,
+        "w": 24,
+        "h": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "query": "{ resource.boohtacord.installation.id = \"$installation\" && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.media.session.id =~ \"${media:regex}\" }",
+          "limit": 100
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "All installation traces including background and unauthenticated failures",
+      "type": "table",
+      "datasource": {
+        "type": "tempo",
+        "uid": "t-${installation}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 24,
+        "h": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "query": "{ resource.boohtacord.installation.id = \"$installation\" }",
+          "limit": 100
+        }
+      ]
     }
   ],
   "description": "Registered opt-in installations only. Legacy/local history remains in the original dashboards; it is never attributed to an installation."

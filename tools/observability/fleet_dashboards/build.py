@@ -65,6 +65,18 @@ def build():
                         'gridPos': {'x': 0, 'y': 0, 'w': 24, 'h': 14},
                         'targets': [{'refId': 'A', 'queryType': 'traceql', 'query': query, 'limit': 100}],
                         'description': 'Datasource is provisioned per registered tenant through the private owner read gateway. Installation selection is not an ACL.'}]
+    media_query = '{ resource.boohtacord.installation.id = "$installation" && span.user.id =~ "${user:regex}" && span.session.id =~ "${session:regex}" && span.app.media.session.id =~ "${media:regex}" }'
+    trace['panels'].extend([
+        {'id': 2, 'title': 'Media correlation', 'type': 'table', 'datasource': TEMPO,
+         'gridPos': {'x': 0, 'y': 14, 'w': 24, 'h': 10},
+         'targets': [{'refId': 'A', 'queryType': 'traceql', 'query': media_query, 'limit': 100}]},
+        {'id': 3, 'title': 'All installation traces including background and unauthenticated failures', 'type': 'table', 'datasource': TEMPO,
+         'gridPos': {'x': 0, 'y': 24, 'w': 24, 'h': 10},
+         'targets': [{'refId': 'A', 'queryType': 'traceql', 'query': '{ resource.boohtacord.installation.id = "$installation" }', 'limit': 100}]},
+    ])
+    for panel in docs['fleet']['panels']:
+        panel['fieldConfig'] = {'defaults': {'links': [{'title': 'Inspect this installation',
+            'url': '/d/boohtacord-fleet-runtime?var-installation=${__field.labels.installation_id}'}]}}
     docs['traces'] = trace
     return docs
 

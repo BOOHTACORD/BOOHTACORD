@@ -33,7 +33,7 @@ def fixture():
     parts=[dict(source_revision=SOURCE,profile=n,status='PASS',operations=list(OPERATIONS[n]),
                 seconds={'static':40,'database':90,'load':190}[n],execution=IDENTITY) for n in PROFILES]
     fanin=dict(source_revision=SOURCE,status='PASS',execution=IDENTITY,
-               observed_profile_seconds={r['profile']:r['seconds'] for r in parts},checked_operations=11)
+               observed_profile_seconds={r['profile']:r['seconds'] for r in parts},checked_operations=12)
     legacy=dict(schema_version=1,source_revision=SOURCE,status='PASS',execution=IDENTITY,
                 operations=list(shadow_compare.LEGACY_OPERATIONS),seconds=900,
                 coverage_reference_revision=shadow_compare.REFERENCE_REVISION)
@@ -101,12 +101,13 @@ class SequentialRunnerTests(unittest.TestCase):
                  patch.dict(os.environ,GITHUB_ACTIONS='true',GITHUB_RUN_ID='123',GITHUB_RUN_ATTEMPT='1'):
                 shadow_legacy.execute()
             row=json.loads((root/'.out/ci/backend-shadow-legacy.json').read_text())
-            self.assertEqual(row['status'],'PASS');self.assertEqual(len(calls),11)
+            self.assertEqual(row['status'],'PASS');self.assertEqual(len(calls),12)
             self.assertEqual(calls[0],('go','run','./cmd/check-test-database'))
             self.assertEqual(calls[1],('go','test','-json','-count=1','./...'))
             self.assertIn('tools/verify/go_test_events/verify-go-test-events.py',calls[2])
-            self.assertEqual(calls[3:5],[('go','vet','./...'),('go','build','./...')])
-            self.assertEqual([c[c.index('--profile')+1] for c in calls[6:]],['normal','reconnect','uploads','nat_auth','faults'])
+            self.assertEqual(calls[3][1:],('-m','tools.qa.installation_telemetry.run'))
+            self.assertEqual(calls[4:6],[('go','vet','./...'),('go','build','./...')])
+            self.assertEqual([c[c.index('--profile')+1] for c in calls[7:]],['normal','reconnect','uploads','nat_auth','faults'])
 
     def test_preflight_or_later_check_failure_invalidates_old_success(self):
         with tempfile.TemporaryDirectory() as tmp,patch.object(shadow_legacy,'ROOT',Path(tmp)), \

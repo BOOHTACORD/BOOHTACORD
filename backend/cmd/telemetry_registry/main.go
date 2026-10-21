@@ -3,6 +3,8 @@ package main
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
@@ -10,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+	gateway "voice-platform/backend/internal/observability/central_gateway"
 )
 
 func main() {
@@ -26,6 +29,14 @@ func run() error {
 		return err
 	}
 	defer db.Close()
+	if len(os.Args) == 3 && os.Args[1] == "inspect" {
+		record, err := (gateway.Postgres{DB: db}).Get(ctx, os.Args[2])
+		if err != nil {
+			return err
+		}
+		fingerprint := sha256.Sum256(record.PublicKey)
+		return json.NewEncoder(os.Stdout).Encode(map[string]any{"installation": record, "key_fingerprint": hex.EncodeToString(fingerprint[:]), "policy_version": 1})
+	}
 	if len(os.Args) == 3 && (os.Args[1] == "revoke" || os.Args[1] == "rotate") {
 		id, err := uuid.Parse(os.Args[2])
 		if err != nil || id.String() != os.Args[2] {

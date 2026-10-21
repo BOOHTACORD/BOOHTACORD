@@ -64,6 +64,7 @@ self-registration. The existing private local diagnostics are independent.
 After enrollment, a central operator with direct private registry access can run:
 
 ```sh
+registry inspect INSTALLATION_UUID
 registry rotate INSTALLATION_UUID
 registry revoke INSTALLATION_UUID
 registry datasources /private/grafana/provisioning/datasources

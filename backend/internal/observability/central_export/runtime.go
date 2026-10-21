@@ -71,11 +71,19 @@ func (r *Runtime) Snapshot() Snapshot {
 	} else if r.last != nil && time.Since(*r.last) > time.Minute {
 		s = "stale"
 	}
-	return Snapshot{i.ID, i.Mode, s, i.Enrolled, r.last, len(r.queue), r.dropped}
+	mode := i.Mode
+	if mode != "central" {
+		mode = "local_only"
+	}
+	return Snapshot{i.ID, mode, s, i.Enrolled, r.last, len(r.queue), r.dropped}
 }
 func (r *Runtime) replace(i identity.Identity) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if i.ID != r.identity.ID {
+		r.last = i.LastAccepted
+		r.state = "never_connected"
+	}
 	if i.ID != r.identity.ID || i.Credential != r.identity.Credential || i.Mode != r.identity.Mode || i.Endpoint != r.identity.Endpoint {
 		r.generation++
 		r.queue = nil

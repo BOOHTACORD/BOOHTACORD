@@ -3,7 +3,7 @@
 Date: 2026-10-21. Leaf: IT-001, dependency T-052.
 Implementation base: `07a73cec706c5e54b88fea17bdfb6e5a02f46a16`.
 Status at the local checkpoint: implementation present; functional integration
-PASS; full local readiness/acceptance BLOCKED. Final PR CI is recorded separately.
+PASS; full local readiness/acceptance BLOCKED. Linux CI acceptance is recorded below; final exact-head CI remains required before merge.
 No production mutation, capture, media recording or real-user data was used.
 
 ## Delivered
@@ -73,12 +73,29 @@ rejections from actual partial loss; the regression test and real writes passed.
   installation ID is readable, consent and status text wrap, buttons remain
   reachable through ordinary page scroll, no horizontal clipping.
 - Flutter telemetry tests: 10 PASS, one pre-existing skip; this is not a no-skip
-  native acceptance result. Targeted analyzer is run separately. Full native
+  native acceptance result. Targeted analyzer: PASS, no issues. Full native
   Android/iOS API runtime remains NOT_RUN at this checkpoint because the same
   owned stack preflight is blocked. No physical/mobile/media PASS is inferred.
 - Fleet dashboard generation/scoping and backend profile receipt tests: PASS.
   The existing database CI profile also requires the owned two-installation
   runner; its successful source-bound receipt cannot omit that runtime check.
+
+## Linux CI checkpoint
+
+PR #512, source `773022c92ddbba47990a1897b14b6a6520971bf0`,
+[run 39663120180](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39663120180):
+backend database profile PASS, including ordinary uncached Go/no-skip tests and
+both actual two-installation acceptance tests (32.949s). The runner used its
+normal readiness gate, with no diagnostic override. This establishes a complete
+functional Linux fixture PASS independently of the retained Colima BLOCKED result.
+Backend static/load also PASS. This intermediate run was not globally green:
+contract Python checks exposed the new supplemental operation missing from the
+sequential-shadow parity declarations and the intentional Compose change lacking
+a source-only network evidence supplement. Two browser profiles needed alerts
+scoped to the guild form now that the telemetry form has its own alert. These are
+corrected and require a fresh exact-head CI run; no gate is removed or relaxed.
+Focused corrected Python suites: 29 PASS. Browser guild lifecycle: 6 PASS;
+control consistency behaviour: 2 PASS.
 
 ## Remaining operational verification
 

@@ -87,7 +87,7 @@ func NewHandler(endpoint, authorization string, client *http.Client, options ...
 		if central != nil {
 			for _, resource := range clean.ResourceSpans {
 				for _, attr := range central.Attributes() {
-					if string(attr.Key) == "boohtacord.installation.id" {
+					if string(attr.Key) != "service.instance.id" {
 						resource.Resource.Attributes = append(resource.Resource.Attributes, flowAttrValue(string(attr.Key), attr.Value.AsString()))
 					}
 				}

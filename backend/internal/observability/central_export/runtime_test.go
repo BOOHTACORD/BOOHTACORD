@@ -35,3 +35,11 @@ func TestDisabledExportCannotQueueAndOverflowDoesNotBlock(t *testing.T) {
 		t.Fatal("disable retained pending queue")
 	}
 }
+
+func TestUnavailableIdentityHasValidLocalOnlyPublicState(t *testing.T) {
+	r := New(identity.Identity{}, nil, nil)
+	s := r.Snapshot()
+	if s.Mode != "local_only" || s.State != "unavailable" || s.InstallationID != "" || s.Registered {
+		t.Fatal("invalid public unavailable state")
+	}
+}
