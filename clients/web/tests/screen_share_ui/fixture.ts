@@ -15,7 +15,7 @@ const params = new URLSearchParams(location.search)
 document.documentElement.style.fontSize = params.get('scale') === '200' ? '200%' : '100%'
 if (params.has('unsupported')) Object.defineProperty(navigator, 'mediaDevices', { value: {}, configurable: true })
 const events: unknown[] = []
-const state = reactive({ open: true, profile: params.get('profile') ?? 'P1080_60', source: 'ACTIVE', fps: 1, sampledAt: null as number | null, hasAudio: false, audioMuted: false })
+const state = reactive({ open: true, expanded: false, selectedId: (params.has('watching-remote') || params.has('remote-audio') ? 'remote-screen' : 'local-screen') as string | null, profile: params.get('profile') ?? 'P1080_60', source: 'ACTIVE', fps: 1, sampledAt: null as number | null, hasAudio: false, audioMuted: false })
 Object.assign(window, { __screenUI: { events, patch: (value: object) => Object.assign(state, value) } })
 const diagnostics = (): ScreenDiagnostics => ({ source: state.source as ScreenDiagnostics['source'], audioTrack: 'ABSENT', connectionQuality: 'GOOD', measured: { width: 1920, height: 654, framesPerSecond: state.fps }, roundTripTimeMs: 42 })
 const viewerParticipants: VoiceVolumeParticipant[] = [
@@ -49,14 +49,14 @@ const IntermittentDiagnosis = defineComponent({
     })
   },
 })
-const viewerStrip = () => h('section', { class: 'voice-room', style: `height:${params.get('height') ?? '760'}px` }, [
+const viewerStrip = () => h('section', { class: ['voice-room', state.expanded && 'voice-room--screen-expanded'], style: `height:${params.get('height') ?? '760'}px` }, [
   h(ScreenViewer, {
     audioMuted: state.audioMuted,
     cards: viewerScreens,
     deafened: false,
     ended: false,
     error: null,
-    expanded: false,
+    expanded: state.expanded,
     mini: false,
     ownScreenSharing: !params.has('watching-remote'),
     pinned: false,
@@ -68,13 +68,16 @@ const viewerStrip = () => h('section', { class: 'voice-room', style: `height:${p
     selfName: 'Очень длинное имя владельца трансляции для проверки ширины',
     selfSpeaking: false,
     selectedAudioVolume: 100,
-    selectedId: params.has('watching-remote') || params.has('remote-audio') ? 'remote-screen' : 'local-screen',
+    selectedId: state.selectedId,
     sourceDiagnostics: diagnostics(),
     onToggleAudio: () => { state.audioMuted = !state.audioMuted },
     onStopScreen: () => events.push('stop-screen'),
+    onClear: () => { events.push('clear'); state.selectedId = null },
+    'onUpdate:expanded': (expanded: boolean) => { state.expanded = expanded },
+    onSelect: (id: string) => { state.selectedId = id },
   }),
 ])
-createApp({ render: () => params.has('viewer-strip') ?
+createApp({ render: () => params.has('viewer-strip') || params.has('viewer-controls') ?
   h('main', { style: 'width:100%;padding:0' }, [viewerStrip()]) :
   h('main', { style: 'padding:16px;max-width:720px;margin:auto' }, [
     h('h1', { style: 'font-size:1rem' }, 'Проверка демонстрации'),

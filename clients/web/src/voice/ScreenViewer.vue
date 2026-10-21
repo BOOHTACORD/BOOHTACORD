@@ -27,12 +27,15 @@ const fullscreenActive = ref(false)
 const fullscreenFeedback = ref('')
 const playbackFeedback = ref('')
 const videoPaused = ref(false)
+const stageControlsVisible = ref(false)
+const viewerSizeExpanded = computed(() => props.expanded || fullscreenActive.value)
 const videoPlaybackBlocked=ref(false),audioPlaybackBlocked=ref(false)
 const playbackBlocked = computed(() => videoPlaybackBlocked.value || audioPlaybackBlocked.value)
 let playbackRequestGeneration=0,requestedSelectionId:string|null=null
 const { firstFrameMs, presentationSource, actualVideoQuality, markVideoReady,playbackFps,presentedFrames,refreshVideoQuality, resetVideoFrame, videoReady } = useScreenPlaybackQuality(video, () => props.selectedId, () => props.ended)
 let fullscreenControls: ReturnType<typeof createScreenFullscreenControls> | null = null
 let stopReporting: (() => void) | null = null
+let stageControlsHideTimer: number | null = null
 const selectedStream = computed(() => props.cards.find((stream) => stream.id === props.selectedId) ?? null)
 const {metrics:receiverMetrics,sampledAt:receiverSampledAt,refresh:refreshReceiverMetrics}=useScreenReceiverDiagnostics(selectedStream,()=>props.ended)
 const adjustable = computed(() => Boolean(selectedStream.value?.hasAudio && selectedStream.value.accountId && !selectedStream.value.isLocal))
@@ -58,6 +61,40 @@ function retry(automatic=false): void {
   if(!automatic)playFromGesture()
 }
 function changeQuality(): void { if (moreActions.value) moreActions.value.open = false; emit('changeQuality') }
+function revealStageControls(): void {
+  stageControlsVisible.value = true
+  if (stageControlsHideTimer !== null) window.clearTimeout(stageControlsHideTimer)
+  stageControlsHideTimer = window.setTimeout(() => {
+    stageControlsVisible.value = false
+    stageControlsHideTimer = null
+  }, 1800)
+}
+async function stopWatching(): Promise<void> {
+  if (moreActions.value) moreActions.value.open = false
+  if (fullscreenActive.value) {
+    try {
+      const available = await fullscreenControls?.toggle()
+      if (!available) { fullscreenFeedback.value = 'Полноэкранный режим недоступен в этом браузере.'; return }
+    } catch {
+      fullscreenFeedback.value = 'Не удалось выйти из полноэкранного режима.'
+      return
+    }
+  }
+  emit('clear')
+}
+async function toggleViewerSize(): Promise<void> {
+  if (!viewerSizeExpanded.value) { emit('update:expanded', true); return }
+  if (fullscreenActive.value) {
+    try {
+      const available = await fullscreenControls?.toggle()
+      if (!available) { fullscreenFeedback.value = 'Полноэкранный режим недоступен в этом браузере.'; return }
+    } catch {
+      fullscreenFeedback.value = 'Не удалось свернуть демонстрацию.'
+      return
+    }
+  }
+  emit('update:expanded', false)
+}
 function selectStream(id: string): void { select(id) }
 defineExpose({ selectStream })
 function stageVisible():boolean {const box=stage.value?.getBoundingClientRect();return Boolean(document.visibilityState==='visible'&&box&&box.width>0&&box.height>0&&box.bottom>0&&box.right>0&&box.top<innerHeight&&box.left<innerWidth)}
@@ -85,6 +122,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   stopReporting?.()
   fullscreenControls?.dispose()
+  if (stageControlsHideTimer !== null) window.clearTimeout(stageControlsHideTimer)
   window.removeEventListener('keydown', handleKeydown)
   if (props.expanded) emit('update:expanded', false)
   emit('clear')
@@ -94,6 +132,7 @@ async function toggleFullscreen(): Promise<void> {
   try {
     const available = await fullscreenControls?.toggle()
     if (!available) fullscreenFeedback.value = 'Полноэкранный режим недоступен в этом браузере.'
+    else revealStageControls()
   } catch {
     fullscreenFeedback.value = 'Не удалось развернуть демонстрацию на весь экран.'
   }
@@ -104,7 +143,7 @@ async function toggleFullscreen(): Promise<void> {
       <ScreenMiniToolbar v-if="mini && selectedId" :name="selectedStream?.participantName ?? 'Демонстрация'" :paused="videoPaused" :ended="ended" :ready="videoReady" :has-audio="Boolean(selectedStream?.hasAudio && !selectedStream.isLocal)" :muted="audioMuted || selectedAudioVolume === 0" :deafened="deafened"
         @pause="toggleVideoPause" @audio="emit('toggleAudio');audioPlaybackBlocked && playFromGesture()" @expand="emit('update:expanded', true)" @close="emit('clear')" />
       <p v-if="error" class="state state-error" role="alert">{{ error }}</p>
-      <div ref="stage" class="screen-stage" :class="{ 'screen-stage--waiting': !selectedStream }">
+      <div ref="stage" class="screen-stage" :class="{ 'screen-stage--waiting': !selectedStream }" @pointermove="revealStageControls" @pointerdown="revealStageControls">
       <p v-if="ended" class="state" role="status">{{ mini ? 'Трансляция завершена' : 'Демонстрация завершена. Выберите другую вручную или вернитесь к участникам.' }}</p>
       <p v-else-if="selectedStream && !videoReady" class="state screen-loading-state" role="status">{{ mini ? 'Подключение…' : 'Получаем первый кадр демонстрации…' }}</p>
       <p v-else-if="!selectedId && cards.length === 0" class="state">Участники пока не показывают экран.</p>
@@ -114,6 +153,11 @@ async function toggleFullscreen(): Promise<void> {
       <template v-if="selectedStream">
         <div class="screen-stage-top">
           <span class="screen-stage-label"><span class="screen-stage-avatar" :style="{ backgroundColor: avatarBackground(selectedStream.accountId ?? selectedStream.participantId), color: avatarForeground(selectedStream.accountId ?? selectedStream.participantId) }" aria-hidden="true">{{ selectedStream.participantName.slice(0, 2).toLocaleUpperCase('ru-RU') }}</span>{{ selectedStream.isLocal ? 'Ваш экран' : `Экран ${selectedStream.participantName || 'участника'}` }}<b>ЭФИР</b></span>
+        </div>
+        <div v-if="!mini" class="screen-stage-actions" :class="{ 'screen-stage-actions--visible': stageControlsVisible }" role="group" aria-label="Управление просмотром" @focusin="revealStageControls">
+          <button class="screen-stage-action screen-stage-action--size" type="button" :aria-label="viewerSizeExpanded ? 'Свернуть просмотр' : 'Развернуть просмотр'" :title="viewerSizeExpanded ? 'Свернуть просмотр' : 'Развернуть просмотр'" @click="toggleViewerSize"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="viewerSizeExpanded" d="M8 3v5H3M16 3v5h5M3 16h5v5M21 16h-5v5"/><path v-else d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg><span>{{ viewerSizeExpanded ? 'Свернуть' : 'Развернуть' }}</span></button>
+          <button v-if="fullscreenActive" class="screen-stage-action" type="button" aria-label="Выйти из полноэкранного режима" title="Выйти из полноэкранного режима" @click="toggleFullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v6H3M15 3v6h6M3 15h6v6M21 15h-6v6"/></svg><span>Оконный режим</span></button>
+          <button v-if="!selectedStream.isLocal" class="screen-stage-action screen-stage-action--stop" type="button" aria-label="Прекратить просмотр" title="Прекратить просмотр этой трансляции" @click="stopWatching"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg><span>Прекратить просмотр</span></button>
         </div>
       </template>
       <p v-if="fullscreenFeedback" class="screen-fullscreen-feedback" role="status" aria-live="polite">{{ fullscreenFeedback }}</p>
@@ -129,7 +173,7 @@ async function toggleFullscreen(): Promise<void> {
         <button type="button" class="stream-tool-button" :disabled="ended || !videoReady" :aria-label="videoPaused ? 'Продолжить видео' : 'Приостановить видео'" :aria-pressed="videoPaused" @click="toggleVideoPause"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="videoPaused" d="m8 4 12 8-12 8Z"/><path v-else d="M8 4v16M16 4v16"/></svg></button>
         <ScreenReceiverDiagnosticsPanel :actual-video-quality="actualVideoQuality" :has-audio="selectedStream.hasAudio" :is-local="Boolean(selectedStream.isLocal)" :metrics="receiverMetrics" :sampled-at="receiverSampledAt" :target-profile="selectedStream.targetProfile" :descriptor="selectedStream.descriptor" :metadata-receipt-key="selectedStream.id" :sender-diagnostics="selectedStream.isLocal ? sourceDiagnostics : undefined" :profile-source="selectedStream.profileSource" :participant-name="selectedStream.participantName" :presented-fps="playbackFps" />
         <button class="screen-fullscreen-button stream-tool-button" type="button" :aria-label="fullscreenActive ? 'Выйти из полноэкранного режима' : 'Развернуть демонстрацию на весь экран'" :aria-pressed="fullscreenActive" :title="fullscreenActive ? 'Выйти из полноэкранного режима' : 'Развернуть демонстрацию на весь экран'" @click="toggleFullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="fullscreenActive" d="M9 3v6H3M15 3v6h6M3 15h6v6M21 15h-6v6" /><path v-else d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5" /></svg></button>
-        <details ref="moreActions" class="stream-more-actions"><summary class="stream-tool-button" aria-label="Дополнительные действия"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></summary><div class="stream-voice-return"><p class="gc-sr-only">{{ participantAudioMessage(deafened) }}</p><button v-if="ownScreenSharing" type="button" @click="changeQuality">Качество трансляции</button><button type="button" @click="emit('update:expanded', !expanded)">{{ expanded ? 'Вернуть в окно канала' : 'Развернуть на всю область' }}</button><button type="button" @click="emit('clear')">К участникам</button></div></details>
+        <details ref="moreActions" class="stream-more-actions"><summary class="stream-tool-button" aria-label="Дополнительные действия"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></summary><div class="stream-voice-return"><p class="gc-sr-only">{{ participantAudioMessage(deafened) }}</p><button v-if="ownScreenSharing" type="button" @click="changeQuality">Качество трансляции</button><button type="button" @click="emit('update:expanded', !expanded)">{{ expanded ? 'Вернуть в окно канала' : 'Развернуть на всю область' }}</button><button type="button" @click="stopWatching">К участникам</button></div></details>
       </div>
     </div>
     <ScreenViewerRail v-if="cards.length" :cards="cards" :selected-id="selectedId" :show-return-to-voice="false" @select="select" />

@@ -7,6 +7,14 @@
 .voice-room .screen-player { width: 100%; height: 100%; max-height: 100%; object-fit: contain; background: #050608; }
 .voice-room .screen-stage-top { inset: 16px auto auto 16px; }
 .voice-room .screen-stage-label { display: flex; height: 40px; align-items: center; gap: 10px; border-radius: 8px; padding: 6px 10px; color: var(--gc-text-primary); background: rgba(8, 10, 15, .85); font-size: 0.75rem; font-weight: 700; }
+.screen-stage-actions { position: absolute; z-index: 3; inset: auto 16px 16px auto; display: flex; max-width: calc(100% - 32px); align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; border: 1px solid rgba(255, 255, 255, .12); border-radius: 12px; padding: 6px; background: rgba(8, 10, 15, .82); backdrop-filter: blur(14px); opacity: 0; pointer-events: none; transform: translateY(14px); transition: opacity 180ms ease, transform 180ms ease; }
+.screen-stage-actions--visible, .screen-stage-actions:focus-within { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.screen-stage-action { display: inline-flex; width: auto; min-width: 40px; height: 40px; min-height: 40px; flex: 0 1 auto; align-items: center; justify-content: center; gap: 8px; border: 1px solid rgba(255, 255, 255, .1); border-radius: 8px; padding: 0 12px; color: var(--gc-text-primary); background: rgba(31, 35, 45, .88); cursor: pointer; font: inherit; font-size: 0.8125rem; font-weight: 600; white-space: nowrap; }
+.screen-stage-action:hover, .screen-stage-action:focus-visible { border-color: var(--gc-border-control); background: var(--gc-surface-hover); }
+.screen-stage-action:focus-visible { outline: 2px solid var(--gc-accent); outline-offset: 2px; }
+.screen-stage-action svg { width: 18px; height: 18px; flex: 0 0 18px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+.screen-stage-action--stop { color: var(--gc-danger); }
+.screen-stage-action--stop:hover, .screen-stage-action--stop:focus-visible { border-color: var(--gc-danger); color: var(--gc-on-danger); background: var(--gc-danger-solid); }
 .screen-stage-avatar { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; font-size: 0.6875rem; font-weight: 600; }
 .screen-stage-label b, .stream-option-copy b { flex: none; border-radius: 6px; padding: 2px 6px; color: #FF9AD5; background: #3D1831; font-size: 0.75rem; line-height: 1rem; font-weight: 600; }
 .voice-room .stream-quality-row { display: flex; width: 100%; height: 48px; min-height: 48px; align-items: center; gap: 8px; border: 1px solid var(--gc-border-subtle); border-radius: 10px; padding: 4px 8px; background: var(--gc-sidebar); }
@@ -67,6 +75,9 @@
   .voice-room .screen-stage-top { inset: 8px auto auto 8px; }
   .voice-room .screen-stage { border-radius: 10px; }
   .voice-room .screen-stage-label { height: 28px; gap: 6px; padding: 4px 8px; font-size: 0.6875rem; }
+  .screen-stage-actions { inset: auto 8px 8px; gap: 4px; border-radius: 10px; padding: 4px; opacity: 1; pointer-events: auto; transform: none; }
+  .screen-stage-action { height: 36px; min-height: 36px; gap: 5px; padding: 0 8px; font-size: 0.75rem; }
+  .screen-stage-action svg { width: 16px; height: 16px; flex-basis: 16px; }
   .voice-room .screen-stage-avatar { display: none; }
   .voice-room .stream-quality-row { height: 56px; min-height: 56px; gap: 2px; padding: 4px; }
   .voice-room .stream-quality-row .volume-control { display: none; }
@@ -85,6 +96,8 @@
   .voice-room .voice-viewer-participant-strip { gap: 8px; padding: 8px 12px 10px; }
   .voice-viewer-participant-summary { width: 130px; flex-basis: 130px; }
 }
+@media (hover: none) { .screen-stage-actions { opacity: 1; pointer-events: auto; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .screen-stage-actions { transition: none; } }
 @media (max-height: 640px) {
   .voice-room:not(.voice-room--mini) .screen-viewer.stream-wrap { overflow-y: auto; grid-template-rows: minmax(160px, 1fr) auto auto auto 92px; }
   .voice-room:not(.voice-room--mini) .screen-stage { min-height: 160px; }
