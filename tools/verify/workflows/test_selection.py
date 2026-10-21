@@ -14,6 +14,13 @@ class WorkflowSelectionTests(unittest.TestCase):
     def test_current_dependency_graph(self):
         check(self.document)
 
+    def test_required_aggregate_runner_is_exact_hosted_image(self):
+        for runner in ('ubuntu-latest', ['self-hosted', 'linux', 'x64', 'boohtacord-ci-meta']):
+            invalid = copy.deepcopy(self.document)
+            invalid['jobs']['ci-required']['runs-on'] = runner
+            with self.subTest(runner=runner), self.assertRaises(ValueError):
+                check(invalid)
+
     def test_display_and_job_names_do_not_define_policy(self):
         jobs = self.document['jobs']
         jobs['arbitrary-native-build-name'] = jobs.pop('windows')
