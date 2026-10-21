@@ -1,0 +1,174 @@
+{
+  "id": "production-release-rotation-2026-10-21",
+  "task": "T-054",
+  "kind": "production-storage-maintenance-integration",
+  "status": "PASS",
+  "implementation_source_commit": "412efebbf2f4f8d883ea0b86df19e6fda06320e8",
+  "installed_package_sha256": "7714534956317a81076e2d07d6bb1188b9b07dad17395b12fe6189e8db988a96",
+  "scope": "One-time obsolete signed release archive/image cleanup and persistent 15-minute host maintenance timer. No application deployment or service restart. This does not close sustained capacity or active-upload gates.",
+  "checks": {
+    "local_python_unit_tests": {
+      "status": "PASS",
+      "tests": 18
+    },
+    "production_linux_rotation_tests": {
+      "status": "PASS",
+      "tests": 13
+    },
+    "build_cache_shell_boundary_tests": {
+      "status": "PASS"
+    },
+    "installed_runtime_matches_repository": {
+      "status": "PASS"
+    },
+    "scheduled_second_run_is_idempotent": {
+      "status": "PASS",
+      "archives_removed": 0,
+      "images_removed": 0
+    },
+    "api_health": {
+      "status": "PASS",
+      "value": "ok"
+    },
+    "attachment_guard": {
+      "status": "PASS"
+    }
+  },
+  "policy": {
+    "keep_newest_signed_releases": 10,
+    "also_protect": [
+      "current API/web source",
+      "previous source from successful deployment readback",
+      "all container-linked revisions, bind mounts and image IDs, including stopped containers"
+    ],
+    "remove_only": [
+      "exact api.oci.tar/web.oci.tar of obsolete signed releases",
+      "exact unused API/web image digest references from those manifests",
+      "unused Docker build cache older than 168 hours with 2 GB target retention"
+    ],
+    "never_remove": [
+      "application data",
+      "Docker volumes",
+      "containers",
+      "release manifests/signatures/receipts/runtime/configuration"
+    ],
+    "serialize_with": "/opt/voice-platform-releases/.install.lock",
+    "on_busy": "SKIPPED_BUSY, no Docker query or deletion"
+  },
+  "fix_verified": {
+    "unordered_docker_mount_inventory": "Canonicalize inventory order while still detecting actual mount or container changes; regression test PASS."
+  },
+  "limitations": [
+    "Root filesystem also contains other applications and user data. Retention cannot guarantee unlimited disk capacity.",
+    "Application deployment during investigation was independent of this maintenance. The cleanup re-read the then-current source under the installation lock.",
+    "Full legacy Linux shell recovery suite was not run on macOS Bash 3.2; new rotation tests passed natively on Linux."
+  ],
+  "host_proof": {
+    "observed_at": "2026-10-21T20:16:16.755434+00:00",
+    "host": "176.108.242.211",
+    "records": [
+      {
+        "after": {
+          "available_bytes": 28137684992,
+          "guard_pass": true,
+          "required_bytes": 10569208282,
+          "total_bytes": 52721041408
+        },
+        "archive_candidate_bytes": 10783916032,
+        "archive_candidates": 310,
+        "before": {
+          "available_bytes": 12446969856,
+          "guard_pass": true,
+          "required_bytes": 10569208282,
+          "total_bytes": 52721041408
+        },
+        "containers_unchanged": true,
+        "current_revision": "321f6fed5c7970eadcae8822ed2d6373275b42f3",
+        "finished_at": "2026-10-21T20:14:00.989848+00:00",
+        "image_candidates": 310,
+        "kind": "release-artifact-rotation",
+        "observed_at": "2026-10-21T20:11:52.871609+00:00",
+        "obsolete_release_count": 155,
+        "previous_revision": "cb1094dd787676566e0f61961ffa1231a2c3b1b3",
+        "removed_archive_bytes": 10783916032,
+        "removed_image_references": 310,
+        "retained_revisions": [
+          "031a3a16df38541a786c103bb2a75acb61dd648c",
+          "07a73cec706c5e54b88fea17bdfb6e5a02f46a16",
+          "321f6fed5c7970eadcae8822ed2d6373275b42f3",
+          "356d32c5ff6b661a747009ad93026c197bdd1b72",
+          "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+          "8d11efdfcd4220092b6ac7b8a21af28526da5a6b",
+          "a2839b55b7acef99d1d80756dca1b38f48043111",
+          "a759d4019b655febf8d76cff5184735bf8d30e91",
+          "b1c9f2c7500665018999b0af39ee6b07268a54f5",
+          "bbe2fa110a6dc4ef6113468d28c42b80f88feb43",
+          "cb1094dd787676566e0f61961ffa1231a2c3b1b3"
+        ],
+        "schema_version": 1,
+        "signed_release_count": 165,
+        "status": "PASS",
+        "volume": "voice-platform_attachments-data"
+      },
+      {
+        "after": {
+          "available_bytes": 28137553920,
+          "guard_pass": true,
+          "required_bytes": 10569208282,
+          "total_bytes": 52721041408
+        },
+        "archive_candidate_bytes": 0,
+        "archive_candidates": 0,
+        "before": {
+          "available_bytes": 28137553920,
+          "guard_pass": true,
+          "required_bytes": 10569208282,
+          "total_bytes": 52721041408
+        },
+        "containers_unchanged": true,
+        "current_revision": "321f6fed5c7970eadcae8822ed2d6373275b42f3",
+        "finished_at": "2026-10-21T20:15:37.427385+00:00",
+        "image_candidates": 0,
+        "kind": "release-artifact-rotation",
+        "observed_at": "2026-10-21T20:15:36.917266+00:00",
+        "obsolete_release_count": 155,
+        "previous_revision": "cb1094dd787676566e0f61961ffa1231a2c3b1b3",
+        "removed_archive_bytes": 0,
+        "removed_image_references": 0,
+        "retained_revisions": [
+          "031a3a16df38541a786c103bb2a75acb61dd648c",
+          "07a73cec706c5e54b88fea17bdfb6e5a02f46a16",
+          "321f6fed5c7970eadcae8822ed2d6373275b42f3",
+          "356d32c5ff6b661a747009ad93026c197bdd1b72",
+          "3d22e9007db090e6a2159841506e0e377ae8b0a4",
+          "8d11efdfcd4220092b6ac7b8a21af28526da5a6b",
+          "a2839b55b7acef99d1d80756dca1b38f48043111",
+          "a759d4019b655febf8d76cff5184735bf8d30e91",
+          "b1c9f2c7500665018999b0af39ee6b07268a54f5",
+          "bbe2fa110a6dc4ef6113468d28c42b80f88feb43",
+          "cb1094dd787676566e0f61961ffa1231a2c3b1b3"
+        ],
+        "schema_version": 1,
+        "signed_release_count": 165,
+        "status": "PASS",
+        "volume": "voice-platform_attachments-data"
+      }
+    ],
+    "api_health": "ok",
+    "observed_source": "321f6fed5c7970eadcae8822ed2d6373275b42f3",
+    "guard_output": "Attachment volume pre-build headroom: 28137512960 bytes available; 10569208282 bytes required.",
+    "timer": "NextElapseUSecRealtime=Wed 2026-10-21 23:30:05 MSK\nLastTriggerUSec=Wed 2026-10-21 23:15:22 MSK\nActiveState=active\nUnitFileState=enabled",
+    "service": "Result=success\nExecMainStatus=0\nActiveState=inactive",
+    "installed_version": "6648b5a4e4a3ccac092fb375343de8e468bc3db31af427b8d5dc6bdcb5a69fdd",
+    "installed_file_sha256": {
+      "tools/ops/release_rotation/catalog.py": "475f42aeda809d9bf86de59ab118ccbcf5c1a37adf18a11d52f49f8a2f9acbb2",
+      "tools/ops/release_rotation/policy.py": "4aa68292adec83918b4b09d4d5ed63280aa9c7942872a5128b8ed8113706e386",
+      "tools/ops/release_rotation/run.py": "93ab9e573d8cff23fbf7c047bfc7f183a60968f948890fb977dd108ace1ed35e",
+      "tools/ops/release_rotation/test_rotation.py": "8582d3122627da5e722ea5b7b19e4c6d96ede955598d46702862e16db069f14f",
+      "tools/release/bundle/manifest.py": "9ca38a7f61ff2c5a2189e0de4b2defb79e3f78e05b05d4f7521b7306fe622bce",
+      "tools/release/bundle/signature.py": "262f990410ed2d0b5bb9c2aa9de5102a31f7a9e46eea47c70e0d603d54214f37"
+    },
+    "remaining_api_archives": 10,
+    "remaining_web_archives": 10
+  }
+}
