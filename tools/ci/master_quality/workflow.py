@@ -85,11 +85,20 @@ def validate(workflows):
         require(bundle.get('if') == MASTER + " && needs.changes.outputs.server_release_impact == 'true'")
         require(all(not build['jobs'][name].get('concurrency') for name in ('changes', 'server-quality')))
         downloads = [s for s in bundle['steps'] if s.get('uses') == 'actions/download-artifact@v4']
+        collectors = [s for s in bundle['steps']
+                      if s.get('run') == 'python3 -m tools.build.server.gate_receipts --collect .out/gate-artifacts .out/checks']
         uploads = [s for s in bundle['steps'] if s.get('uses') == 'actions/upload-artifact@v4']
         require([s.get('with') for s in downloads] == [
-            {'name': f'check-{gate}-' + EXECUTION, 'path': '.out/checks'}
+            {'pattern': f"check-{gate}-${{{{ github.sha }}}}-${{{{ github.run_id }}}}-*",
+             'path': '.out/gate-artifacts', 'merge-multiple': 'false'}
             for gate in ('backend', 'web', 'contracts')]
             and all(not s.get('if') for s in downloads))
+        require(len(collectors) == 1 and collectors[0].get('env') == {
+            'GATE_SOURCE_REVISION': '${{ github.sha }}', 'GATE_RUN_ID': '${{ github.run_id }}',
+            'GATE_RUN_ATTEMPT': '${{ github.run_attempt }}'}
+            and bundle['steps'].index(collectors[0]) > max(bundle['steps'].index(step) for step in downloads)
+            and bundle['steps'].index(collectors[0]) < next(i for i, step in enumerate(bundle['steps'])
+                if step.get('run') == 'bash tools/release/delivery/build.sh'))
         require(len(uploads) == 2 and uploads[0]['with']['name'] == 'server-' + EXECUTION
                 and uploads[1].get('if') == 'always()' and uploads[1]['with'] == {
                     'name':'build-metrics-server-' + EXECUTION,

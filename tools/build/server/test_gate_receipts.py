@@ -4,6 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from .run import gate_receipts
+from .gate_receipts import collect
 
 SOURCE = 'a' * 40
 GATES = ('backend', 'web', 'contracts')
@@ -14,6 +15,57 @@ class GateReceiptTests(unittest.TestCase):
         for gate in GATES:
             (root / (gate + '.json')).write_text(json.dumps({
                 'source_revision': SOURCE, 'gate': gate, 'status': 'PASS'}))
+
+    def artifacts(self, root, *, run_id='123', attempts=(1,)):
+        for gate in GATES:
+            for attempt in attempts:
+                artifact = root / f'check-{gate}-{SOURCE}-{run_id}-{attempt}'
+                artifact.mkdir(parents=True, exist_ok=True)
+                (artifact / (gate + '.json')).write_text(json.dumps({
+                    'source_revision': SOURCE, 'gate': gate, 'status': 'PASS'}))
+
+    def test_collection_uses_latest_available_attempt_for_the_exact_source_and_run(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); downloaded = root / 'artifacts'; downloaded.mkdir()
+            self.artifacts(downloaded, attempts=(1, 2))
+            destination = root / 'checks'
+            self.assertEqual(dict.fromkeys(GATES, 'PASS'), collect(downloaded, destination, SOURCE, '123', 2))
+            self.assertEqual({gate + '.json' for gate in GATES}, {path.name for path in destination.iterdir()})
+
+    def test_bundle_retry_can_reuse_passed_gates_from_the_prior_attempt_of_the_same_run(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); downloaded = root / 'artifacts'; downloaded.mkdir()
+            self.artifacts(downloaded, attempts=(1,))
+            self.assertEqual(dict.fromkeys(GATES, 'PASS'),
+                             collect(downloaded, root / 'checks', SOURCE, '123', 2))
+
+    def test_collection_rejects_wrong_source_run_and_future_attempt_artifacts(self):
+        for artifact_name in (f'check-backend-{"b" * 40}-123-1',
+                              f'check-backend-{SOURCE}-999-1',
+                              f'check-backend-{SOURCE}-123-3'):
+            with self.subTest(artifact=artifact_name), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp); downloaded = root / 'artifacts'; downloaded.mkdir()
+                self.artifacts(downloaded)
+                (downloaded / f'check-backend-{SOURCE}-123-1').rename(downloaded / artifact_name)
+                with self.assertRaises(ValueError): collect(downloaded, root / 'checks', SOURCE, '123', 2)
+
+    def test_collection_rejects_invalid_latest_receipt_without_falling_back(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); downloaded = root / 'artifacts'; downloaded.mkdir()
+            self.artifacts(downloaded, attempts=(1, 2))
+            latest = downloaded / f'check-backend-{SOURCE}-123-2' / 'backend.json'
+            latest.write_text(json.dumps({'source_revision': SOURCE, 'gate': 'backend', 'status': 'FAIL'}))
+            with self.assertRaises(ValueError): collect(downloaded, root / 'checks', SOURCE, '123', 2)
+
+    def test_collection_rejects_extra_files_and_preexisting_destination(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); downloaded = root / 'artifacts'; downloaded.mkdir(); self.artifacts(downloaded)
+            (downloaded / f'check-backend-{SOURCE}-123-1' / 'extra.json').write_text('{}')
+            with self.assertRaises(ValueError): collect(downloaded, root / 'checks', SOURCE, '123', 1)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); downloaded = root / 'artifacts'; downloaded.mkdir(); self.artifacts(downloaded)
+            destination = root / 'checks'; destination.mkdir()
+            with self.assertRaises(ValueError): collect(downloaded, destination, SOURCE, '123', 1)
 
     def test_three_original_flat_receipts_keep_the_existing_result_contract(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -113,10 +113,15 @@ class MasterWorkflowTests(unittest.TestCase):
                         for field in ('sha', 'run_id', 'run_attempt'):
                             self.assertIn('${{ github.' + field + ' }}', artifact)
 
-    def test_builder_downloads_three_exact_receipt_names_without_wildcard_merge(self):
+    def test_builder_downloads_same_run_receipt_attempts_and_selects_latest_validated_set(self):
         steps = self.workflows['build-server.yaml']['jobs']['bundle']['steps']
         downloads = [s for s in steps if s.get('uses') == 'actions/download-artifact@v4']
-        execution = '${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
-        self.assertEqual([{'name': 'check-' + gate + '-' + execution, 'path': '.out/checks'}
+        execution = '${{ github.sha }}-${{ github.run_id }}-*'
+        self.assertEqual([{'pattern': 'check-' + gate + '-' + execution, 'path': '.out/gate-artifacts',
+                           'merge-multiple': 'false'}
                           for gate in ('backend', 'web', 'contracts')], [s['with'] for s in downloads])
         self.assertTrue(all(not s.get('if') for s in downloads))
+        collector = next(step for step in steps if step.get('run', '').startswith('python3 -m tools.build.server.gate_receipts'))
+        self.assertEqual('python3 -m tools.build.server.gate_receipts --collect .out/gate-artifacts .out/checks', collector['run'])
+        self.assertEqual({'GATE_SOURCE_REVISION': '${{ github.sha }}', 'GATE_RUN_ID': '${{ github.run_id }}',
+                          'GATE_RUN_ATTEMPT': '${{ github.run_attempt }}'}, collector['env'])

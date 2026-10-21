@@ -20,7 +20,7 @@ class SignedPackageMetricsTests(unittest.TestCase):
             subprocess.run(['openssl','pkey','-in',str(key),'-pubout','-out',str(public)],check=True,capture_output=True)
             receipts={}
             for name in ('api','web'):
-                path=bundle/(name+'.oci.tar');digest=fixture(path);receipts[name]=verify(path,REVISION,SOURCE_HASH,digest)
+                path=bundle/(name+'.oci.tar');digest,_=fixture(path);receipts[name]=verify(path,REVISION,SOURCE_HASH,digest)
             (bundle/'runtime.tar.gz').write_bytes(b'isolated tiny unit fixture')
             metrics=Metrics(root/'metrics.json',REVISION)
             archive=package(bundle,REVISION,SOURCE_HASH,receipts,manifest_fixture()['compatibility'],
