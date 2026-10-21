@@ -8,7 +8,8 @@ from . import images
 
 class CachedImageTests(unittest.TestCase):
     def build(self,root,*,reject=False,owner=None):
-        cache=Mock();cache.arguments.return_value=['--cache-from','type=local,src=/private/cache,digest=sha256:'+'c'*64]
+        cache=Mock();cache.arguments.return_value=['--cache-from','type=local,src=/private/cache,digest=sha256:'+'c'*64,
+                                                    '--cache-to','type=local,dest=/private/staging,mode=max,reset=true']
         cache.__enter__=Mock(return_value=cache);cache.__exit__=Mock(return_value=False)
         verified=Mock(side_effect=ValueError('foreign source') if reject else None,
                       return_value={'index_digest':'sha256:'+'a'*64,'image_id':'sha256:'+'c'*64})
@@ -26,33 +27,49 @@ class CachedImageTests(unittest.TestCase):
     def test_warm_images_keep_source_labels_sbom_provenance_and_both_verifiers(self):
         with tempfile.TemporaryDirectory() as tmp:cache,verify,run=self.build(Path(tmp))
         self.assertEqual(4,verify.call_count);self.assertEqual(2,cache.publish.call_count)
-        for call in run.call_args_list:
-            args=call.args[0]
-            if args[:3]!=['docker','buildx','build']:continue
-            for token in ('--sbom=true','--provenance=mode=max,version=v0.2','org.opencontainers.image.revision='+'a'*40,
-                          'org.voice-platform.source-archive-sha256='+'b'*64,'--cache-from'):
-                self.assertIn(token,args)
+        builds=[call.args[0] for call in run.call_args_list if call.args[0][:3]==['docker','buildx','build']]
+        self.assertEqual(4,len(builds))
+        for oci_build,docker_build in zip(builds[::2],builds[1::2]):
+            for token in ('--sbom=true','--provenance=mode=max,version=v0.2'):
+                self.assertIn(token,oci_build)
+            self.assertIn('--sbom=false',docker_build)
+            self.assertIn('--provenance=false',docker_build)
+            for args in (oci_build,docker_build):
+                for token in ('org.opencontainers.image.revision='+'a'*40,
+                              'org.voice-platform.source-archive-sha256='+'b'*64,'--cache-from'):
+                    self.assertIn(token,args)
+            self.assertIn('--cache-to',oci_build)
+            self.assertNotIn('--cache-to',docker_build)
 
     def test_owned_backend_exports_verified_oci_and_docker_archive_then_loads_docker_archive(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);cache,verified,run=self.build(root,owner='e'*32)
         commands=[call.args[0] for call in run.call_args_list]
-        self.assertEqual(4,len(commands))
+        self.assertEqual(6,len(commands))
         self.assertEqual('sha256:'+'a'*64,verified.call_args_list[1].args[3])
         self.assertEqual('sha256:'+'a'*64,verified.call_args_list[3].args[3])
         self.assertEqual({'docker_image_id':'sha256:'+'c'*64,'docker_rootfs_layers':[]},
                          verified.call_args_list[1].kwargs)
         self.assertEqual({'docker_image_id':'sha256:'+'c'*64,'docker_rootfs_layers':[]},
                          verified.call_args_list[3].kwargs)
-        for index,service in ((0,'api'),(2,'web')):
-            self.assertNotIn('--load',commands[index])
+        for index,service in ((0,'api'),(3,'web')):
+            oci_build,docker_build=commands[index:index+2]
+            self.assertEqual(['docker','buildx','build'],oci_build[:3])
+            self.assertEqual(['docker','buildx','build'],docker_build[:3])
             self.assertIn(['--output',f'type=oci,dest={root/(service+".oci.tar")}'],
-                          [commands[index][i:i+2] for i in range(len(commands[index])-1)])
+                          [oci_build[i:i+2] for i in range(len(oci_build)-1)])
             docker_export='type=docker,name=voice-platform-'+service+':'+'a'*40+',dest='+str(root/(service+'.docker.tar'))
             self.assertIn(['--output',docker_export],
-                          [commands[index][i:i+2] for i in range(len(commands[index])-1)])
-            self.assertIn('org.boohtacord.builder.owner='+'e'*32,commands[index])
-            self.assertEqual(['docker','image','load','--input',str(root/(service+'.docker.tar'))],commands[index+1])
+                          [docker_build[i:i+2] for i in range(len(docker_build)-1)])
+            self.assertIn('--sbom=true',oci_build)
+            self.assertIn('--provenance=mode=max,version=v0.2',oci_build)
+            self.assertIn('--sbom=false',docker_build)
+            self.assertIn('--provenance=false',docker_build)
+            for command in (oci_build,docker_build):
+                self.assertIn('org.boohtacord.builder.owner='+'e'*32,command)
+                self.assertIn('org.opencontainers.image.revision='+'a'*40,command)
+                self.assertIn('org.voice-platform.source-archive-sha256='+'b'*64,command)
+            self.assertEqual(['docker','image','load','--input',str(root/(service+'.docker.tar'))],commands[index+2])
 
     def test_foreign_cached_output_stops_before_cache_publication(self):
         with tempfile.TemporaryDirectory() as tmp:cache,verify,run=self.build(Path(tmp),reject=True)

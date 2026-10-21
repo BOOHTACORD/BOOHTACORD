@@ -28,3 +28,25 @@ is claimed by this record. The full local Python runner was also attempted, but
 host-only tests requiring writes under `~/Applications` and the local Go standard
 library did not run successfully in this sandbox; the focused affected suites
 above passed.
+
+## Follow-up: Buildx Docker exporter failure
+
+Scope: merged master run `39638849339`, bundle job `119362261267`, source
+revision `d10822280eb6b678326758ded34b9a1376e5bad6`.
+
+The hosted runner rejected the combined OCI and Docker outputs with SBOM and
+provenance enabled: `docker exporter does not support exporting manifest lists`.
+The attested OCI export and receipt collection succeeded; all jobs before the
+bundle passed. Docker documents that attestations attach to the image index and
+that `--provenance=false --sbom=false` disables them for a Docker-image-store
+export ([Build attestations](https://docs.docker.com/build/metadata/attestations/)).
+
+The follow-up keeps the attested OCI build as the source of release verification,
+then performs a Docker-archive export with attestations disabled. It reuses the
+same pinned source, labels, build arguments and cache import, and still verifies
+the loaded Docker image ID and root filesystem against the OCI config before
+smoke tests. Cache publication remains tied to successful image verification.
+
+Focused verification: 74 server-builder tests PASS, including the two-export
+command contract. NOT_RUN: a hosted Buildx/Docker rerun for this follow-up; the
+local Docker daemon is unavailable in this environment.
