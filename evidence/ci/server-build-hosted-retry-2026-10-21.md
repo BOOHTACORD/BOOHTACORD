@@ -16,9 +16,10 @@ the exact source SHA and workflow run; the collector selects each gate's latest
 available attempt and fails closed on foreign, future, malformed or failing
 receipts.
 
-Local verification: 74 server-builder tests PASS; 3 OCI verifier tests PASS; 20
+Local verification: 74 server-builder tests PASS; 3 OCI verifier tests PASS; 21
 master-quality and delivery workflow tests PASS; delivery graph and pinned
-Actions checks PASS; changed Python modules compile; `git diff --check` PASS.
+Actions checks PASS; reviewed Python selection and auxiliary SDK workflow checks
+PASS; changed Python modules compile; `git diff --check` PASS.
 
 NOT_RUN: a live GitHub-hosted multi-export Buildx build and Docker import. The
 local Docker daemon was unavailable in this environment. Hosted workflow

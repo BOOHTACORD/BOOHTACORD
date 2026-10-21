@@ -125,3 +125,21 @@ class MasterWorkflowTests(unittest.TestCase):
         self.assertEqual('python3 -m tools.build.server.gate_receipts --collect .out/gate-artifacts .out/checks', collector['run'])
         self.assertEqual({'GATE_SOURCE_REVISION': '${{ github.sha }}', 'GATE_RUN_ID': '${{ github.run_id }}',
                           'GATE_RUN_ATTEMPT': '${{ github.run_attempt }}'}, collector['env'])
+
+    def test_bundle_selects_and_verifies_its_reviewed_python_before_running_collector(self):
+        steps = self.workflows['build-server.yaml']['jobs']['bundle']['steps']
+        setup = next(step for step in steps if step.get('uses') == 'actions/setup-python@v5')
+        verify = next(step for step in steps if step.get('run') == 'python -m tools.ci.toolchains.runtime python')
+        collector = next(step for step in steps if step.get('run', '').startswith('python3 -m tools.build.server.gate_receipts'))
+        self.assertEqual({'python-version': '${{ runner.os == \'Linux\' && \'3.12.15\' || \'3.12.10\' }}'}, setup['with'])
+        self.assertLess(steps.index(setup), steps.index(verify))
+        self.assertLess(steps.index(verify), steps.index(collector))
+        for mutation in ('missing-setup', 'missing-check', 'late-check'):
+            broken = copy.deepcopy(self.workflows)
+            target = broken['build-server.yaml']['jobs']['bundle']['steps']
+            if mutation == 'missing-setup': target.remove(next(step for step in target if step.get('uses') == 'actions/setup-python@v5'))
+            if mutation == 'missing-check': target.remove(next(step for step in target if step.get('run') == 'python -m tools.ci.toolchains.runtime python'))
+            if mutation == 'late-check':
+                check = next(step for step in target if step.get('run') == 'python -m tools.ci.toolchains.runtime python')
+                target.remove(check); target.insert(target.index(next(step for step in target if step.get('run', '').startswith('python3 -m tools.build.server.gate_receipts')))+1, check)
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError): workflow.validate(broken)

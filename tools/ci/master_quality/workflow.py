@@ -80,13 +80,20 @@ def validate(workflows):
                     and receipts[0]['with']['name'] == f'check-{gate}-' + EXECUTION
                     and receipts[0]['with']['if-no-files-found'] == 'error')
         bundle = build['jobs']['bundle']
+        downloads = [s for s in bundle['steps'] if s.get('uses') == 'actions/download-artifact@v4']
+        collectors = [s for s in bundle['steps']
+                      if s.get('run') == 'python3 -m tools.build.server.gate_receipts --collect .out/gate-artifacts .out/checks']
+        setup_python = [step for step in bundle['steps'] if step.get('uses') == 'actions/setup-python@v5']
+        verify_python = [step for step in bundle['steps']
+                         if step.get('run') == 'python -m tools.ci.toolchains.runtime python']
+        require(len(setup_python) == 1 and setup_python[0].get('with') == {
+            'python-version': python_input(ROOT)} and len(verify_python) == 1 and not verify_python[0].get('if')
+            and bundle['steps'].index(setup_python[0]) < bundle['steps'].index(verify_python[0])
+            and bundle['steps'].index(verify_python[0]) < bundle['steps'].index(collectors[0]))
         require(bundle.get('concurrency') == {
             'group': 'trusted-server-bundle-${{ github.repository }}', 'cancel-in-progress': 'false'})
         require(bundle.get('if') == MASTER + " && needs.changes.outputs.server_release_impact == 'true'")
         require(all(not build['jobs'][name].get('concurrency') for name in ('changes', 'server-quality')))
-        downloads = [s for s in bundle['steps'] if s.get('uses') == 'actions/download-artifact@v4']
-        collectors = [s for s in bundle['steps']
-                      if s.get('run') == 'python3 -m tools.build.server.gate_receipts --collect .out/gate-artifacts .out/checks']
         uploads = [s for s in bundle['steps'] if s.get('uses') == 'actions/upload-artifact@v4']
         require([s.get('with') for s in downloads] == [
             {'pattern': f"check-{gate}-${{{{ github.sha }}}}-${{{{ github.run_id }}}}-*",
