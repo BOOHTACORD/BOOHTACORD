@@ -18,6 +18,8 @@ class TelemetryExportApi {
       headers: {
         ...headers,
         'x-telemetry-session': owner.binding!,
+        if (owner.installation != null)
+          'x-installation-id': owner.installation!,
         'content-type': 'application/x-protobuf',
         'x-client-platform': Platform.operatingSystem,
       },

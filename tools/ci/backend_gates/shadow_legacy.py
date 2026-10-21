@@ -16,7 +16,8 @@ def execute():
     started=time.monotonic()
     try:
         # This preserves database preflight, uncached complete Go tests,
-        # mandatory no-skip verification, vet/build, matrix and all five API loads.
+        # mandatory no-skip verification, supplemental two-installation telemetry,
+        # vet/build, matrix and all five API loads.
         backend.main()
         load_smoke()
         if checked_source()!=source:raise ValueError('Backend shadow source changed')

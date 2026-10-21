@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	centralexport "voice-platform/backend/internal/observability/central_export"
 
 	livekitcredential "voice-platform/backend/internal/media/livekit_credential"
 	removelivekitparticipant "voice-platform/backend/internal/media/remove_livekit_participant"
@@ -33,6 +34,8 @@ type Config struct {
 	TelemetryLimiter                                                             *ratelimit.Limiter
 	TelemetryEndpoint                                                            string
 	TelemetryAuth                                                                string
+	CausalKey                                                                    string
+	CentralTelemetry                                                             *centralexport.Runtime
 	AttachmentRoot                                                               string
 	TrustedProxyCIDRs                                                            []string
 	RealtimeConnectionLimiter                                                    *admitconnection.Limiter

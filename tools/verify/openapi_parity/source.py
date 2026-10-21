@@ -6,7 +6,7 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[3]
 LEAF = Path(__file__).resolve().parent
-PRIVATE = {"GET /metrics", "GET /internal/media-admission", "POST /internal/livekit/roster"}
+PRIVATE = {"GET /metrics", "GET /internal/media-admission", "POST /internal/livekit/roster", "POST /internal/telemetry/metrics"}
 
 
 def routes():

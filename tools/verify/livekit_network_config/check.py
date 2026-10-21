@@ -37,7 +37,9 @@ def main():
     # records intentional alert wiring changes without claiming a new physical probe.
     current = root / "evidence/media/livekit-network-config-2026-10-08-roster-alerts.json"
     revalidation = json.loads(current.read_text(encoding="utf-8"))
-    expected_artifacts = evidence["repository_artifacts"] | revalidation["repository_artifacts"]
+    telemetry = read(root, "evidence/media/livekit-network-config-2026-10-21-telemetry.json")
+    expected_artifacts = (evidence["repository_artifacts"] | revalidation["repository_artifacts"]
+                          | telemetry["repository_artifacts"])
     for path, expected in expected_artifacts.items():
         content = (root / path).read_bytes().replace(b"\r\n", b"\n")
         actual = hashlib.sha256(content).hexdigest()
