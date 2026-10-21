@@ -4,27 +4,26 @@
 
 1. GitHub `master` запускает [Build server](../../.github/workflows/build-server.yaml).
    Backend, web и contracts формируют PASS receipts для того же полного SHA.
-2. Trusted builder создаёт OCI archives, SBOM/provenance и smoke-проверяет
+2. GitHub-hosted Linux bundle job создаёт OCI archives, SBOM/provenance и smoke-проверяет
    собранные API/web images. Подписанный bundle сохраняется в Actions 30 дней.
 3. [Deploy production](../../.github/workflows/deploy-production.yaml) проверяет
    происхождение producer run и устанавливает именно его artifact.
 
 Production environment разрешает только `master`. Его секрет
-`RELEASE_SIGNING_PRIVATE_KEY` доступен builder; `DEPLOY_SSH_PRIVATE_KEY` —
-установщику. Public trust anchor заранее находится на host:
+`RELEASE_SIGNING_PRIVATE_KEY` доступен только GitHub-hosted bundle job;
+`DEPLOY_SSH_PRIVATE_KEY` — установщику. Public trust anchor заранее находится на host:
 `/etc/voice-platform/release-signing.pub.pem`. Полученный bundle не может
 назначить собственный ключ доверия. Staging имеет отдельную пару ключей.
 
-Для проверки retained source trusted builder принимает `--source /path/to/repo`:
+Для проверки retained source bundle builder принимает `--source /path/to/repo`:
 это должен быть корень чистого Git checkout, а PASS receipts должны относиться
 к его точному `HEAD`. Без параметра собирается репозиторий самого builder.
 Smoke ожидает готовности PostgreSQL по TCP перед двумя проходами миграций.
 
-Server builder назначается только runner с меткой `boohtacord-builder`.
-Его service account должен иметь доступ к Docker socket (на Hetzner это
-`SupplementaryGroups=docker` в systemd override сервиса Web runner).
-Перед назначением метки проверьте `docker info` от имени этого пользователя.
-Общая метка Hetzner не подтверждает готовность runner к сборке OCI images.
+Bundle job uses the repository's pinned `ubuntu-24.04` image. It does not depend
+on a persistent builder account or Docker socket on the production host. Its
+exact-source receipts, production environment guard and non-cancellable build
+queue remain required.
 
 Host prerequisites: Python 3, OpenSSL, Docker с OCI storage, Compose, Bash и
 действующий `.env` в `/opt/voice-platform/.env`. Install не загружает SDK,

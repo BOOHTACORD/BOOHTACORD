@@ -1,8 +1,8 @@
-name: Self-hosted Linux pool proof
+name: GitHub-hosted Linux runner proof
 
 on:
   push:
-    branches: [codex/self-hosted-runners]
+    branches: [codex/github-hosted-runners]
   workflow_dispatch:
 
 permissions:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   probe:
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     strategy:
       fail-fast: false
@@ -22,7 +22,7 @@ jobs:
         env:
           POSTGRES_DB: voice_platform_test
           POSTGRES_USER: voice_platform_test
-          POSTGRES_PASSWORD: test-only-password
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 5432:5432
         options: >-
@@ -37,28 +37,19 @@ jobs:
           python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
       - name: Verify selected Python interpreter
         run: python -m tools.ci.toolchains.runtime python
-      - name: Verify isolated guest, private Docker and fresh workspace
-        env:
-          PGPASSWORD: test-only-password
+      - name: Verify GitHub-hosted Linux runner and isolated workspace
         run: |
-          printf 'memory_max=%s cpu_count=%s fresh_marker_present=%s\n' "$(cat /sys/fs/cgroup/memory.max)" "$(nproc)" "$(test -e /home/runner/previous-job-marker && echo yes || echo no)"
-          test "$RUNNER_ENVIRONMENT" = self-hosted
-          test "$BOOHTACORD_EPHEMERAL_GUEST" = true
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$RUNNER_OS" = Linux
           python -c "import os; from pathlib import Path; assert Path(os.environ['GITHUB_WORKSPACE']).parents[1] == Path('/home/runner/work')"
-          python -c "from pathlib import Path; from tools.ci.runner_pool.worker import HEAVY_MEMORY_MIB; assert int(Path('/sys/fs/cgroup/memory.max').read_text()) == HEAVY_MEMORY_MIB * 1024**2"
-          test "$(nproc)" = 4
-          test "$(stat -c %u:%g:%a /etc/needrestart/conf.d/boohtacord-ci.conf)" = 0:0:644
-          cmp -s tools/ci/runner_pool/needrestart.conf /etc/needrestart/conf.d/boohtacord-ci.conf
           test ! -e /home/runner/previous-job-marker
           touch /home/runner/previous-job-marker
           psql -h 127.0.0.1 -U voice_platform_test -d voice_platform_test -c 'SELECT 1'
           python -m tools.ci.toolchains.runtime python
-          python -c "from pathlib import Path; p=Path('/home/runner/.gradle/gradle.properties').read_text().splitlines(); assert 'org.gradle.daemon=false' in p and 'kotlin.compiler.execution.strategy=in-process' in p"
-          python -m unittest tools.ci.runner_pool.test_launcher tools.ci.runner_pool.test_worker tools.ci.runner_pool.test_diagnostics tools.ci.runner_pool.test_guest_updates
           docker version --format '{{.Server.Version}}'
 
   metadata:
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-meta]
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     strategy:
       fail-fast: false
@@ -73,17 +64,10 @@ jobs:
           python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
       - name: Verify selected Python interpreter
         run: python -m tools.ci.toolchains.runtime python
-      - name: Verify bounded fresh metadata guest
+      - name: Verify GitHub-hosted metadata runner and isolated workspace
         run: |
-          printf 'memory_max=%s cpu_count=%s fresh_marker_present=%s\n' "$(cat /sys/fs/cgroup/memory.max)" "$(nproc)" "$(test -e /home/runner/previous-job-marker && echo yes || echo no)"
-          test "$RUNNER_ENVIRONMENT" = self-hosted
-          test "$BOOHTACORD_EPHEMERAL_GUEST" = true
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$RUNNER_OS" = Linux
           python -c "import os; from pathlib import Path; assert Path(os.environ['GITHUB_WORKSPACE']).parents[1] == Path('/home/runner/work')"
-          test "$(cat /sys/fs/cgroup/memory.max)" = 536870912
-          test "$(nproc)" = 1
-          test "$(stat -c %u:%g:%a /etc/needrestart/conf.d/boohtacord-ci.conf)" = 0:0:644
-          cmp -s tools/ci/runner_pool/needrestart.conf /etc/needrestart/conf.d/boohtacord-ci.conf
           test ! -e /home/runner/previous-job-marker
           touch /home/runner/previous-job-marker
-          python -c "from pathlib import Path; p=Path('/home/runner/.gradle/gradle.properties').read_text().splitlines(); assert 'org.gradle.daemon=false' in p and 'kotlin.compiler.execution.strategy=in-process' in p"
-          python -m unittest tools.ci.runner_pool.test_launcher tools.ci.runner_pool.test_worker tools.ci.runner_pool.test_diagnostics tools.ci.runner_pool.test_guest_updates

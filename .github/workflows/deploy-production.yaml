@@ -16,7 +16,7 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == 'master' &&
       github.event.workflow_run.head_repository.full_name == github.repository
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-meta]
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       actions: read
@@ -50,7 +50,7 @@ jobs:
       group: v-bootybay-production
       cancel-in-progress: false
     environment: production
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       DEPLOY_SERVER_IP: 176.108.242.211

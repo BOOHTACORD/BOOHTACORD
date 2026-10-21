@@ -14,7 +14,14 @@ class TrustBoundaryTests(unittest.TestCase):
     def test_current_trust_matrix(self):
         check(self.workflows)
 
-    def test_untrusted_pr_cannot_get_write_self_hosted_or_signing_credentials(self):
+    def test_every_workflow_job_targets_github_hosted_runners(self):
+        for workflow, document in self.workflows.items():
+            for job_id, job in document.get('jobs', {}).items():
+                runner = job.get('runs-on')
+                with self.subTest(workflow=workflow, job=job_id):
+                    self.assertNotIn('self-hosted', str(runner))
+
+    def test_untrusted_pr_cannot_get_write_runner_or_signing_credentials(self):
         updates = [{'permissions': {'contents': 'write'}}, {'runs-on': ['self-hosted', 'linux']},
                    {'env': {'KEY': '${{ secrets.RELEASE_SIGNING_PRIVATE_KEY }}'}}]
         for update in updates:
@@ -60,7 +67,8 @@ class TrustBoundaryTests(unittest.TestCase):
         with self.assertRaises(ValueError): check(broken)
 
     def test_runner_groups_expressions_and_unknown_labels_are_not_hosted(self):
-        for runner in [{'group': 'production'}, '${{ inputs.runner }}', 'privileged-runner']:
+        for runner in [{'group': 'production'}, '${{ inputs.runner }}', 'privileged-runner',
+                       ['self-hosted', 'linux', 'x64', 'boohtacord-builder']]:
             broken = copy.deepcopy(self.workflows)
             broken['ci-actual-acceptance.yaml']['jobs']['runtime']['runs-on'] = runner
             with self.subTest(runner=runner), self.assertRaises(ValueError): check(broken)

@@ -1,7 +1,6 @@
 """Independent Dart and Android checks; each runner owns its dependency state."""
 import json
 import os
-from tools.ci.runner_pool.routing import isolated_linux
 from tools.ci.native.process import ROOT, VERSIONS, client, output, require_version, run
 from tools.ci.flutter_setup.vendor_locks import prepare
 from tools.ci.flutter_setup.metadata import check_machine
@@ -16,12 +15,8 @@ OPERATIONS = {
 
 
 def test_command(env):
-    command = ('flutter', 'test', '--no-pub')
-    if env.get('RUNNER_ENVIRONMENT') == 'self-hosted' and isolated_linux(env):
-        # Match the four-CPU guest budget in both disposable-pool cohorts.
-        # Hosted and local runs retain the SDK default.
-        return (*command, '--concurrency=4')
-    return command
+    del env  # Flutter's default process count follows the runner's available CPUs.
+    return ('flutter', 'test', '--no-pub')
 
 
 def execute(profile):

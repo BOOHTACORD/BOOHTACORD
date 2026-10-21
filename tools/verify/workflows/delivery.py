@@ -51,8 +51,8 @@ def check(workflows):
     for name in ('changes', 'bundle', 'server-quality'):
         require(build['jobs'][name].get('name', name) == name, 'Producer root job identity drift')
     builder = builders[0]
-    require(set(builder.get('runs-on', [])) == {'self-hosted', 'linux', 'x64', 'boohtacord-builder'},
-            'Signed builds require the dedicated Docker-capable builder runner')
+    require(builder.get('runs-on') == 'ubuntu-24.04',
+            'Signed builds must use the pinned GitHub-hosted Linux runner')
     require(set(builder.get('needs', [])) == gates | {'changes', 'server-quality'}, 'Builder must depend on all source-bound receipts and master quality')
     require(builder.get('if') == GUARDS[('build-server.yaml', 'bundle')] and builder.get('environment') == 'production',
             'Only protected master builds can use the production signer')

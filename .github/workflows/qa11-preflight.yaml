@@ -34,7 +34,7 @@ jobs:
   inspect:
     if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
     environment: production-diagnostics
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     concurrency:
       group: v-bootybay-operator-diagnostics
@@ -70,7 +70,7 @@ jobs:
   probe:
     if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && inputs.run_probe
     environment: production
-    runs-on: [self-hosted, linux, x64, boohtacord-ci-ephemeral]
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     concurrency:
       group: v-bootybay-production

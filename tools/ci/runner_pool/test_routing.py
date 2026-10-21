@@ -1,12 +1,8 @@
 import copy
-import shlex
-from pathlib import Path
 import unittest
-from unittest.mock import patch
 import yaml
 from tools.verify.action_pins.policy import ROOT, normalized
 from tools.verify.action_pins.trust import check
-from . import worker
 from .routing import GITHUB_LINUX, LINUX, META, measured_linux, measurement_pool, isolated_linux
 
 
@@ -37,9 +33,9 @@ class RoutingTests(unittest.TestCase):
         for name, doc in self.docs.items():
             for job in doc['jobs'].values():
                 runner = job.get('runs-on')
-                if runner == LINUX or runner == META:
+                if runner == GITHUB_LINUX:
                     count += 1
-        self.assertGreater(count, 20)
+        self.assertGreater(count, 30)
         check(self.docs)
 
     def test_general_pr_cannot_target_the_signing_builder(self):
@@ -58,26 +54,18 @@ class RoutingTests(unittest.TestCase):
         self.assertEqual('boohtacord-ci-ephemeral', measurement_pool([pool, pool]))
         with self.assertRaises(ValueError): measurement_pool([hosted, pool])
 
-    def test_persistent_or_unmarked_self_hosted_runtime_cannot_publish(self):
-        env = dict(RUNNER_ENVIRONMENT='self-hosted', RUNNER_OS='Linux',
-                   BOOHTACORD_EPHEMERAL_GUEST='true', RUNNER_NAME='BOOHTACORD-Hetzner-CI-1-unique')
+    def test_only_github_hosted_linux_is_an_isolated_linux_runtime(self):
+        env = dict(RUNNER_ENVIRONMENT='github-hosted', RUNNER_OS='Linux')
         self.assertTrue(isolated_linux(env))
-        self.assertFalse(isolated_linux(dict(env, RUNNER_NAME='BOOHTACORD-Hetzner-Web')))
-        env.pop('BOOHTACORD_EPHEMERAL_GUEST')
-        self.assertFalse(isolated_linux(env))
+        self.assertFalse(isolated_linux(dict(env, RUNNER_OS='Windows')))
+        self.assertFalse(isolated_linux(dict(env, RUNNER_ENVIRONMENT='self-hosted')))
 
-    def test_heavy_proof_executes_the_controller_memory_contract(self):
+    def test_hosted_proof_checks_runner_environment_without_pool_specific_limits(self):
         steps = self.docs['self-hosted-proof.yaml']['jobs']['probe']['steps']
         run = next(step['run'] for step in steps if step.get('name') ==
-                   'Verify isolated guest, private Docker and fresh workspace')
-        lines = [line for line in run.splitlines() if 'memory.max' in line
-                 and line.strip().startswith('python -c ')]
-        self.assertEqual(len(lines), 1)
-        script = shlex.split(lines[0])[2]
-        expected = worker.HEAVY_MEMORY_MIB * 1024 ** 2
-        with patch.object(Path, 'read_text', return_value=str(expected)):
-            exec(script, {})
-        for value in (str(5 * 1024 ** 3), str(6 * 1024 ** 3), 'max'):
-            with self.subTest(memory=value), patch.object(Path, 'read_text', return_value=value):
-                with self.assertRaises((AssertionError, ValueError)):
-                    exec(script, {})
+                   'Verify GitHub-hosted Linux runner and isolated workspace')
+        self.assertIn('RUNNER_ENVIRONMENT', run)
+        self.assertIn('github-hosted', run)
+        self.assertIn('GITHUB_WORKSPACE', run)
+        self.assertNotIn('BOOHTACORD_EPHEMERAL_GUEST', run)
+        self.assertNotIn('/etc/needrestart', run)

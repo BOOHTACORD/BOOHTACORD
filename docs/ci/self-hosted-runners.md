@@ -1,9 +1,15 @@
-# Hetzner Linux CI pool
+# Legacy Hetzner Linux runner pool
 
-The Linux workflow targets are disposable LXD guests on the existing Hetzner
-host, 167.233.56.32. Windows and Apple native jobs retain their matching hosted
-OS and architecture. GitHub-managed Dependabot and automatic Pages jobs are
-outside these repository workflow files.
+No active repository workflow targets these labels after the GitHub-hosted
+cutover. This runbook records the former pool and its host controller; changing
+workflow assignments does not stop services or remove registered runners on the
+Hetzner host. Decommission that infrastructure separately after checking its
+current use and registrations.
+
+The former Linux workflow targets were disposable LXD guests on Hetzner host
+167.233.56.32. The remaining sections are operational history, not current
+workflow routing guidance. GitHub-managed Dependabot and automatic Pages jobs
+are outside these repository workflow files.
 
 | Slots | Requested labels | Limit per guest | Work |
 | --- | --- | --- | --- |
@@ -14,9 +20,9 @@ The two heavy slots and two small slots consume at most 12 GiB RAM, leaving abou
 guests cover the host's eight vCPU; metadata affinities share CPU 0 and 4 with
 them, giving ten logical CPU placements on eight host vCPU. This is a bounded
 concurrency configuration on one shared host,
-not a capacity or performance claim. Existing DB/Web runners are preserved;
-the signing builder keeps its dedicated `boohtacord-builder` label and trusted
-source/environment gates. The DB runner's shared database label is not copied.
+not a capacity or performance claim. The described DB/Web runners and signing
+builder belong to the former pool. Current workflow source and environment guards
+remain authoritative for trusted release work.
 CPU affinity is fixed per slot: 0–3, 4–7, 0 and 4 respectively. The explicit
 single-core ranges `0-0` and `4-4` avoid LXD interpreting a bare integer as a
 CPU count. Fixed sets keep a guest's CPU view stable while neighbours recycle.
@@ -89,9 +95,9 @@ APK build each have an independent finite 30-minute whole-job budget and use
 the same heavy pool. The aggregate requires all three current Dart, Kotlin and
 APK parts; a previous combined Android receipt cannot replace a split part.
 This profile is outside the checkout and leaves local developer settings intact.
-App and vendor Flutter tests use four concurrent test processes in the marked
-Linux pool, matching its four-CPU allocation. Both shadow cohorts use this
-same pool policy; hosted and local commands retain their SDK defaults.
+App and vendor Flutter tests use the Flutter SDK's default process count on
+GitHub-hosted runners. Historical pool measurements remain available for
+comparison, but new workflow timing records use GitHub-hosted images.
 The full test inventory and 30-second browser case deadlines remain unchanged.
 Browser profile jobs have a 25-minute overall budget, including SDK/asset setup,
 capture validation and mandatory uploads. Fast/SFU and Dart budgets remain 20
@@ -150,11 +156,10 @@ installation is mandatory before registration, including metadata guests.
 Updating/rebuilding the base requires stopping all four services first and
 repeating network, Docker, toolchain and lifecycle acceptance.
 
-`self-hosted-proof.yaml` runs two PostgreSQL-service probes plus two bounded
-metadata probes. Observe successful jobs on distinct registered runner IDs,
-then observe their removal and replacement by fresh IDs/guests. This is the
-rollout gate; unit tests or online registrations alone do not prove it.
+`self-hosted-proof.yaml` is retained as a filename for history; it now runs two
+GitHub-hosted PostgreSQL-service probes plus two metadata probes. It checks the
+hosted environment and per-job workspace isolation, not the former LXD controller.
 
-The manual backend functional shadow also targets the same heavy Linux pool.
-Comparison accepts a complete historical hosted cohort or a complete disposable
-cohort, rejects mixing the two, and records the measured pool explicitly.
+The manual backend functional shadow now uses GitHub-hosted Linux for both arms.
+Comparison still accepts complete historical hosted or disposable cohorts,
+rejects mixing them, and records the measured pool explicitly.
