@@ -93,7 +93,7 @@ bindWorkspaceReady({ readiness: props.readiness,
           <ConnectionStatus :chat="realtimeStore.state" :voice="voiceConnection.state" :roster-available="voiceRoster.channels.value !== null && !voiceRoster.error.value" :last-updated-at="voiceRoster.lastUpdatedAt.value" :roster-retained="voiceRoster.channels.value !== null" @retry-chat="realtimeStore.reconnect()" @retry-roster="voiceRoster.reconnect()" />
           <template v-if="sidebarSection === 'channels'">
             <p v-if="topologyStore.loading" class="state" aria-live="polite">Загружаем каналы…</p>
-            <p v-else-if="topologyStore.error" class="state state-error" role="alert">{{ topologyStore.error }} Войдите в аккаунт или повторите попытку.</p>
+            <p v-else-if="topologyStore.error" class="state state-error" role="alert">{{ topologyStore.error }}</p>
             <template v-if="topologyStore.topology">
               <ChannelTopologyActions :account-id="props.accountId" :active-voice-channel-id="activeVoiceChannel?.id" :selected-channel-id="selectedChannelId ?? undefined" :topology="topologyStore.topology" :permissions="permissions.snapshot?.permissions ?? { 'channel.text.create': false, 'channel.text.delete': false, 'channel.voice.create': false, 'channel.voice.delete': false, 'category.create': false, 'category.delete': false }" :voice-presence="voiceNavigationPresence" :voice-rosters="voiceRoster.channels.value" @select="requestSelectChannel" @changed="refreshTopology" />
             </template>

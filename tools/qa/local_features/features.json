@@ -52,6 +52,10 @@
     "paths": [
       "clients/web/src/workspace/connection_status/**",
       "clients/web/tests/connection_status/**",
+      "clients/web/src/channel/topology_store.ts",
+      "clients/web/src/channel/topology_store.spec.ts",
+      "clients/web/src/workspace/WorkspaceApp.vue",
+      "clients/web/src/request_feedback.ts",
       "tools/qa/local_features/features.json"
     ],
     "web": [
@@ -63,9 +67,10 @@
         "browser": "clients/web/tests/connection_status/playwright.config.ts",
         "focused": [
           "clients/web/src/workspace/connection_status/model.spec.ts",
+          "clients/web/src/channel/topology_store.spec.ts",
           "clients/web/tests/connection_status/status.browser.spec.ts"
         ],
-        "scope": "Web connection recovery panel preserves independent chat, voice and roster status; retry actions remain separately accessible and operable. The panel wraps within a narrow sidebar and uses visible focus and status indicators. No native or media-quality claim."
+        "scope": "Web connection recovery panel preserves independent chat, voice and roster status; retry actions remain separately accessible and operable. Network failures use localized retry guidance instead of raw browser errors or an incorrect login prompt. The panel wraps within a narrow sidebar and uses visible focus and status indicators. No native or media-quality claim."
       }
     }
   },
@@ -719,6 +724,13 @@
         "browser": "clients/web/tests/member_roster/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/member_profile.mjs",
         "scope": "Production roster/profile with 30 synthetic members; long guild and voice participant names stay inside the panel width without horizontal overflow, three presence groups, voice status/volume/admin visibility, pagination, empty/loading/retry/denied, keyboard/touch and focus, 320/390/1024/1440, root text and actual browser zoom 200%. Real Go API member-to-DM opening and actual SFU voice volume with MEMBER kick denial. No physical screen reader, native or media quality claim."
+      },
+      "mobile_account_footer": {
+        "browser": "clients/web/tests/responsive_shell/playwright.config.ts",
+        "focused": [
+          "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts"
+        ],
+        "scope": "At 320x640, an open mobile navigation drawer with an update banner and connection warning keeps the account profile fully visible above the voice dock."
       },
       "issue352": {
         "browser": "clients/web/tests/header_actions/playwright.config.ts",
