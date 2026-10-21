@@ -13,7 +13,7 @@ REVISION = "b" * 40
 SOURCE_HASH = "a" * 64
 
 
-def fixture(path, *, bad_subject=False):
+def fixture(path, *, bad_subject=False, include_config=False):
     blobs = {}
 
     def add(value):
@@ -25,7 +25,7 @@ def fixture(path, *, bad_subject=False):
     config = add({"config": {"Labels": {
         "org.opencontainers.image.revision": REVISION,
         "org.voice-platform.source-archive-sha256": SOURCE_HASH,
-    }}})
+    }}, "rootfs": {"type": "layers", "diff_ids": []}})
     runnable = add({"config": config, "layers": []})
     subject = "sha256:" + ("0" * 64) if bad_subject else runnable["digest"]
     layers = []
@@ -47,7 +47,7 @@ def fixture(path, *, bad_subject=False):
             member = tarfile.TarInfo(name)
             member.size = len(data)
             archive.addfile(member, io.BytesIO(data))
-    return nested["digest"]
+    return (nested["digest"], config["digest"]) if include_config else nested["digest"]
 
 
 class VerifyOciTests(unittest.TestCase):
@@ -60,17 +60,31 @@ class VerifyOciTests(unittest.TestCase):
     def test_valid_nested_index_with_two_attestations(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "image.oci.tar"
-            image_id = fixture(path)
-            result = self.run_verifier(path, image_id)
+            index_digest, image_id = fixture(path, include_config=True)
+            result = self.run_verifier(path, index_digest)
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(json.loads(result.stdout)["index_digest"], image_id)
+            self.assertEqual(json.loads(result.stdout)["index_digest"], index_digest)
+            self.assertEqual(json.loads(result.stdout)["image_id"], image_id)
+
+    def test_loaded_docker_id_is_checked_against_the_verified_image_config(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "image.oci.tar"
+            index_digest, image_id = fixture(path, include_config=True)
+            from tools.verify.oci.verify_oci import verify
+            self.assertEqual(image_id, verify(path, REVISION, SOURCE_HASH, index_digest,
+                                              docker_image_id=image_id, docker_rootfs_layers=[])["image_id"])
+            with self.assertRaises(ValueError):
+                verify(path, REVISION, SOURCE_HASH, index_digest, docker_image_id="sha256:" + "f" * 64)
+            with self.assertRaises(ValueError):
+                verify(path, REVISION, SOURCE_HASH, index_digest, docker_image_id=image_id,
+                       docker_rootfs_layers=["sha256:" + "f" * 64])
 
     def test_rejects_wrong_subject_and_loaded_id(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "image.oci.tar"
-            image_id = fixture(path, bad_subject=True)
-            self.assertNotEqual(self.run_verifier(path, image_id).returncode, 0)
-            fixture(path)
+            index_digest = fixture(path, bad_subject=True)
+            self.assertNotEqual(self.run_verifier(path, index_digest).returncode, 0)
+            index_digest = fixture(path)
             self.assertNotEqual(self.run_verifier(path, "sha256:" + "f" * 64).returncode, 0)
 
 

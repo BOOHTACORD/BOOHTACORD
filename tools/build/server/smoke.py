@@ -55,7 +55,7 @@ def run_smoke(receipts, output, *, environment=None):
     suffix = uuid.uuid4().hex[:12]
     network, database = "release-smoke-" + suffix, "db-" + suffix
     containers = []
-    api, web = [receipts[name]["index_digest"] for name in ("api", "web")]
+    api, web = [receipts[name]["image_id"] for name in ("api", "web")]
     client("network", "create", network)
     try:
         containers.append(client("run", "-d", "--rm", "--name", database, "--network", network,
