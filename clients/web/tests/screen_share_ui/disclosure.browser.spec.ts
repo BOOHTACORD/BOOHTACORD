@@ -152,6 +152,63 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
   await page.screenshot({ path: info.outputPath('viewer-participants-1440.png') })
 })
 
+test('screen viewing controls expand and collapse the viewer, exit browser fullscreen, and stop watching', async ({ page }, info) => {
+  await open(page, 'viewer-controls&watching-remote', 1280, 100, 800)
+  const stage = page.locator('.screen-stage')
+  const stageActions = page.getByRole('group', { name: 'Управление просмотром' })
+
+  await expect(stageActions).toHaveCSS('opacity', '0')
+  const idleTransform = await stageActions.evaluate(element => getComputedStyle(element).transform)
+  expect(idleTransform).not.toBe('none')
+  await page.screenshot({ path: info.outputPath('viewer-controls-idle-hidden.png') })
+  const stageBounds = await stage.boundingBox()
+  await page.mouse.move(stageBounds!.x + stageBounds!.width / 2, stageBounds!.y + stageBounds!.height / 2)
+  await expect(stageActions).toHaveCSS('opacity', '1')
+  const visibleTransform = await stageActions.evaluate(element => getComputedStyle(element).transform)
+  expect(visibleTransform).not.toBe(idleTransform)
+  await expect.poll(() => stageActions.evaluate(element => getComputedStyle(element).opacity), { timeout: 3000 }).toBe('0')
+  expect(await stageActions.evaluate(element => getComputedStyle(element).transform)).toBe(idleTransform)
+  await page.mouse.move(stageBounds!.x + stageBounds!.width / 2, stageBounds!.y + stageBounds!.height / 2)
+  await expect(stageActions).toHaveCSS('opacity', '1')
+
+  await page.getByRole('button', { name: 'Развернуть просмотр', exact: true }).click()
+  await expect(page.locator('.voice-room')).toHaveClass(/voice-room--screen-expanded/)
+  await page.screenshot({ path: info.outputPath('viewer-controls-expanded.png') })
+  await page.getByRole('button', { name: 'Свернуть просмотр', exact: true }).click()
+  await expect(page.locator('.voice-room')).not.toHaveClass(/voice-room--screen-expanded/)
+
+  await page.getByRole('button', { name: 'Развернуть демонстрацию на весь экран', exact: true }).click()
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(true)
+  await page.screenshot({ path: info.outputPath('viewer-controls-browser-fullscreen.png') })
+  await stageActions.getByRole('button', { name: 'Выйти из полноэкранного режима', exact: true }).click()
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(false)
+
+  await page.getByRole('button', { name: 'Развернуть демонстрацию на весь экран', exact: true }).click()
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(true)
+  await stageActions.getByRole('button', { name: 'Прекратить просмотр', exact: true }).click()
+  await expect(page.locator('.screen-stage-actions')).toHaveCount(0)
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(false)
+  expect(await page.evaluate(() => (window as any).__screenUI.events)).toEqual(['clear'])
+})
+
+test('screen viewing overlay stays inside a narrow viewport at 200% text', async ({ page }, info) => {
+  await open(page, 'viewer-controls&watching-remote', 390, 200, 844)
+  const actions = page.getByRole('group', { name: 'Управление просмотром' })
+  await expect(actions.getByRole('button', { name: 'Развернуть просмотр', exact: true })).toBeVisible()
+  await expect(actions.getByRole('button', { name: 'Прекратить просмотр', exact: true })).toBeVisible()
+  await expect(actions).toHaveCSS('opacity', '1')
+  await clean(page)
+
+  const bounds = await actions.evaluate(element => {
+    const rect = element.getBoundingClientRect()
+    return { left: rect.left, right: rect.right, viewportWidth: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth }
+  })
+  expect(bounds.left).toBeGreaterThanOrEqual(0)
+  expect(bounds.right).toBeLessThanOrEqual(bounds.viewportWidth)
+  expect(bounds.scrollWidth).toBeLessThanOrEqual(bounds.viewportWidth)
+  await page.screenshot({ path: info.outputPath('viewer-controls-mobile-text-200.png') })
+})
+
 test('a viewer sees the selected stream audience, including another watcher', async ({ page }, info) => {
   await open(page, 'viewer-strip&watching-remote', 390)
   const strip = page.getByTestId('viewer-participants')
