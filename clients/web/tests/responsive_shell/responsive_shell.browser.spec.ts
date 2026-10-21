@@ -139,6 +139,43 @@ test('the mobile navigation drawer opens inside its available width', async ({ p
   }
 })
 
+test('the mobile account profile stays above the voice dock with an update banner', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 320, height: 640 })
+  await page.goto('/tests/responsive_shell/fixture.html')
+  await page.getByRole('button', { name: 'Открыть навигацию' }).click()
+
+  const footer = page.locator('.user-footer')
+  const dock = page.getByTestId('mobile-voice-dock')
+  await page.evaluate(() => {
+    const root = document.querySelector('#app')!
+    const banner = document.createElement('section')
+    banner.className = 'update-banner'
+    banner.setAttribute('aria-live', 'polite')
+    banner.textContent = 'Доступна новая версия BOOHTACORD'
+    root.prepend(banner)
+
+    const navContent = document.querySelector('.nav-content')!
+    const status = document.createElement('section')
+    status.className = 'connection-status'
+    status.textContent = 'Чат обновляется · Голос подключён · Состав устарел'
+    const warning = document.createElement('p')
+    warning.className = 'state state-error'
+    warning.textContent = 'Нет соединения с сервером. Проверьте подключение.'
+    navContent.prepend(warning)
+    navContent.prepend(status)
+  })
+
+  const after = await footer.boundingBox()
+  const dockBox = await dock.boundingBox()
+  expect(after).not.toBeNull()
+  expect(dockBox).not.toBeNull()
+  expect(after!.y + after!.height).toBeLessThanOrEqual(dockBox!.y + 1)
+  expect(after!.y + after!.height).toBeLessThanOrEqual(640)
+  expect(dockBox!.y + dockBox!.height).toBeLessThanOrEqual(640)
+  await expect(footer).toBeVisible()
+  await page.screenshot({ path: testInfo.outputPath('account-footer-with-update-banner-320x640.png') })
+})
+
 test('the channel favorite toggle stays inside its row at representative layout sizes', async ({ page }) => {
   for (const viewport of ux2026FunctionalViewports) {
     const { width, height } = viewport

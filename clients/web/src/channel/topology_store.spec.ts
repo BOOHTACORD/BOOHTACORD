@@ -17,6 +17,14 @@ describe('channel topology store', () => {
     expect(store.loading).toBe(false)
     expect(store.error).toContain('401')
   })
+  it('turns a network fetch failure into localized retry guidance', async () => {
+    const store = useTopologyStore()
+
+    await store.refresh(async () => { throw new TypeError('Failed to fetch') })
+
+    expect(store.error).toBe('Нет соединения с сервером. Проверьте подключение.')
+    expect(store.error).not.toContain('Failed to fetch')
+  })
   it('serializes realtime and unread refreshes and fetches the latest queued state', async () => {
     const store = useTopologyStore()
     let resolve!: (response: Response) => void

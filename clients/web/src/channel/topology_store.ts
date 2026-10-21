@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+import { requestFailureMessage } from '../request_feedback'
 import { loadTopology, type ChannelTopology, type TopologyRequest } from './topology_client'
 
 export const useTopologyStore = defineStore('channel-topology', () => {
@@ -22,7 +23,7 @@ export const useTopologyStore = defineStore('channel-topology', () => {
         try {
           topology.value = await loadTopology(request)
         } catch (cause) {
-          error.value = cause instanceof Error ? cause.message : 'Не удалось получить каналы.'
+          error.value = requestFailureMessage(cause, 'Не удалось получить каналы.')
         }
       } while (pending)
     } finally {
