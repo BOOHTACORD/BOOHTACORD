@@ -1,7 +1,7 @@
 """A successful subprocess is not by itself a complete installed-source verdict."""
 import json
 import unittest
-from .phases import Phases, PhaseFailed
+from .phases import Phases, PhaseFailed, ReportedFailure
 from .commands import ExecutionFailed
 
 SOURCE = 'a' * 40
@@ -58,6 +58,21 @@ class DeliveryPhaseTests(unittest.TestCase):
             value.run('current_revision', ['controlled'], validator=invalid)
         self.assertNotIn('canary', str(result.exception))
         self.assertEqual('invalid_output', value.failure()['phases'][0]['failure_code'])
+
+    def test_validated_remote_install_failure_is_preserved_as_a_safe_subphase(self):
+        value = self.phase()
+        for name in ORDER[:-1]:
+            if name == 'remote_install':
+                def failed(raw): raise ReportedFailure('deployment')
+                with self.assertRaises(PhaseFailed):
+                    value.run(name, ['controlled'], validator=failed, capture_limit=1024)
+                break
+            value.run(name, ['controlled'])
+        row = value.failure()['phases'][-1]
+        self.assertEqual('remote_install', row['phase'])
+        self.assertEqual('installer_deployment', row['failure_code'])
+        self.assertIsNone(row['exit_code'])
+        self.assertNotIn('canary', json.dumps(value.failure()))
 
     def test_interruption_or_unexpected_execution_error_is_a_failed_stage(self):
         for exception,code in [(SystemExit(143),'interrupted'), (RuntimeError('private-canary'),'execution')]:

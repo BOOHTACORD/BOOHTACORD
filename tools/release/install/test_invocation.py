@@ -21,19 +21,29 @@ class ReceivedInstallerInvocationTests(unittest.TestCase):
         worker.write_text('#!' + sys.executable + '\n' + '''import fcntl,os,sys,time
 from pathlib import Path
 root=Path(os.environ['QA_INVOCATION_ROOT'])
-assert sys.argv[1:3]==['-m','tools.release.install.run']
+if sys.argv[1:3]==['-m','tools.release.install.run']:
+ failure=Path(sys.argv[sys.argv.index('--failure-receipt')+1])
+ run_installer=True
+elif sys.argv[1:3]==['-m','tools.release.install.diagnostics']:
+ run_installer=False
+else:raise AssertionError('unexpected installer command')
 with (root/'lock').open('a') as lock:
  fcntl.flock(lock,fcntl.LOCK_EX)
- (root/'maintenance').write_text('on')
- (root/'ready').touch()
- deadline=time.monotonic()+5
- while not (root/'release').exists():
-  if time.monotonic()>deadline:raise RuntimeError('Owned fixture release timed out')
-  time.sleep(.01)
- os.write(1,b'private-output-canary\\n');os.write(2,b'private-error-canary\\n')
- (root/'maintenance').write_text('off')
- (root/'worker-complete').touch()
-sys.exit(int(os.environ['QA_INVOCATION_EXIT']))
+ if run_installer:
+  (root/'maintenance').write_text('on')
+  (root/'ready').touch()
+  deadline=time.monotonic()+5
+  while not (root/'release').exists():
+   if time.monotonic()>deadline:raise RuntimeError('Owned fixture release timed out')
+   time.sleep(.01)
+  os.write(1,b'private-output-canary\\n');os.write(2,b'private-error-canary\\n')
+  (root/'maintenance').write_text('off')
+  (root/'worker-complete').touch()
+  if int(os.environ['QA_INVOCATION_EXIT']):
+   failure.write_text('{"schema_version":1,"kind":"install-result","status":"FAIL","phase":"deployment"}')
+  sys.exit(int(os.environ['QA_INVOCATION_EXIT']))
+ print(Path(sys.argv[-1]).read_text())
+sys.exit(0)
 ''')
         worker.chmod(0o700)
         invocation = Path(__file__).with_name('invocation.sh')
@@ -93,16 +103,19 @@ sys.exit(int(os.environ['QA_INVOCATION_EXIT']))
             self.assertTrue((root/'cleanup').exists())
             self.assertFalse(private.exists())
 
-    def test_normal_exit_status_is_preserved_without_private_output_on_the_channel(self):
+    def test_normal_exit_and_failure_are_reported_with_safe_json_only(self):
         for code in (0, 17):
             with self.subTest(exit_code=code), tempfile.TemporaryDirectory() as temporary:
                 root = Path(temporary)
                 process, private = self.fixture(root, code)
                 (root/'release').touch()
                 out, err = process.communicate(timeout=5)
-                self.assertEqual(code, process.returncode)
-                self.assertEqual((b'', b''), (out, err))
+                self.assertEqual(0, process.returncode)
+                expected = (b'{"schema_version":1,"kind":"install-result","status":"PASS"}\n' if code == 0 else
+                            b'{"schema_version":1,"kind":"install-result","status":"FAIL","phase":"deployment"}\n')
+                self.assertEqual((expected, b''), (out, err))
+                self.assertNotIn(b'private-', out + err)
                 self.assertEqual('off', (root/'maintenance').read_text())
                 self.assertTrue((root/'cleanup').exists())
-                self.assertEqual(code == 0, (root/'parent-complete').exists())
+                self.assertTrue((root/'parent-complete').exists())
                 self.assertFalse(private.exists())
