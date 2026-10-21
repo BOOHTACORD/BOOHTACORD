@@ -35,6 +35,8 @@ extension WorkspaceMembersPanelStateWorkspaceMemberTileAction
       color: GcColors.sidebar,
       child: ListTile(
         contentPadding: EdgeInsets.zero,
+        dense: true,
+        minTileHeight: 48,
         onTap: () => workspaceShowMemberProfile(member),
         leading: Stack(
           children: [
@@ -59,14 +61,15 @@ extension WorkspaceMembersPanelStateWorkspaceMemberTileAction
             ),
           ],
         ),
-        title: Text(
-          member.displayName,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          presence.$1,
-          style: const TextStyle(color: GcColors.muted, fontSize: 11),
+        title: Tooltip(
+          excludeFromSemantics: true,
+          message: member.displayName,
+          child: Text(
+            member.displayName,
+            semanticsLabel: '${member.displayName}, ${presence.$1}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ),
     );

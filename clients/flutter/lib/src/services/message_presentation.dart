@@ -41,6 +41,32 @@ const _russianMonths = [
   'декабря',
 ];
 
+String conversationDateLabel(DateTime value) {
+  final local = value.toLocal();
+  return '${local.day} ${_russianMonths[local.month - 1]} ${local.year}';
+}
+
+bool sameConversationDay(DateTime a, DateTime b) {
+  final x = a.toLocal(), y = b.toLocal();
+  return x.year == y.year && x.month == y.month && x.day == y.day;
+}
+
+bool canGroupConversationMessage({
+  required String? previousAuthor,
+  required String author,
+  required DateTime? previousDate,
+  required DateTime date,
+  bool boundary = false,
+}) {
+  if (boundary ||
+      previousAuthor != author ||
+      previousDate == null ||
+      !sameConversationDay(previousDate, date))
+    return false;
+  final gap = date.difference(previousDate);
+  return !gap.isNegative && gap <= const Duration(minutes: 5);
+}
+
 List<PresentedMessage> presentMessages(List<ChatMessage> messages) {
   final result = <PresentedMessage>[];
   ChatMessage? previous;
@@ -52,28 +78,27 @@ List<PresentedMessage> presentMessages(List<ChatMessage> messages) {
         date.year != previousDate.year ||
         date.month != previousDate.month ||
         date.day != previousDate.day;
-    final gap = previous == null
-        ? null
-        : message.createdAt.difference(previous.createdAt);
-    final grouped =
-        previous != null &&
-        !startsDate &&
-        previous.authorId == message.authorId &&
-        previous.kind != 'SYSTEM_WELCOME' && message.kind != 'SYSTEM_WELCOME' &&
-        previous.replyToId == null &&
-        message.replyToId == null &&
-        !previous.deleted &&
-        !message.deleted &&
-        previous.sendStatus == null &&
-        message.sendStatus == null &&
-        gap != null &&
-        !gap.isNegative &&
-        gap <= const Duration(minutes: 5);
+    final grouped = canGroupConversationMessage(
+      previousAuthor: previous?.authorId,
+      author: message.authorId,
+      previousDate: previous?.createdAt,
+      date: message.createdAt,
+      boundary:
+          previous == null ||
+          previous.kind == 'SYSTEM_WELCOME' ||
+          message.kind == 'SYSTEM_WELCOME' ||
+          previous.replyToId != null ||
+          message.replyToId != null ||
+          previous.deleted ||
+          message.deleted ||
+          previous.sendStatus != null ||
+          message.sendStatus != null,
+    );
     result.add(
       PresentedMessage(
         message: message,
         showDate: startsDate,
-        dateLabel: '${date.day} ${_russianMonths[date.month - 1]} ${date.year}',
+        dateLabel: conversationDateLabel(date),
         grouped: grouped,
       ),
     );

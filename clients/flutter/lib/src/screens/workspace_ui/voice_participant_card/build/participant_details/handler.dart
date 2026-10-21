@@ -12,19 +12,25 @@ extension VoiceParticipantCardParticipantDetailsRenderer
         state: state,
         name: name,
         avatarUrl: avatarUrl,
-        radius: 32,
-        fallbackFontSize: 26,
+        radius: 28,
+        fallbackFontSize: 24,
       ),
       const SizedBox(height: 8),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Flexible(
-            child: Text(
-              isLocal ? '$name (вы)' : name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            child: Tooltip(
+              message: name,
+              child: Text(
+                isLocal && name != 'Вы' ? '$name (вы)' : name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ),
           const SizedBox(width: 7),
@@ -50,11 +56,8 @@ extension VoiceParticipantCardParticipantDetailsRenderer
       const SizedBox(height: 8),
       SizedBox(
         width: double.infinity,
-        height: 16,
         child: Text(
           presentation.label,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
           style: TextStyle(
             color: presentation.isSpeaking ? GcColors.success : GcColors.muted,
@@ -62,6 +65,14 @@ extension VoiceParticipantCardParticipantDetailsRenderer
           ),
         ),
       ),
+      if (watchingScreen) ...[
+        const SizedBox(height: 6),
+        const Text(
+          'Смотрит трансляцию',
+          style: TextStyle(color: GcColors.muted, fontSize: 12),
+          textAlign: TextAlign.center,
+        ),
+      ],
       if (hasScreen) ...[
         const SizedBox(height: 8),
         OutlinedButton(
@@ -69,7 +80,7 @@ extension VoiceParticipantCardParticipantDetailsRenderer
           onPressed: onScreenTap,
           style: OutlinedButton.styleFrom(
             foregroundColor: GcColors.accentText,
-            minimumSize: const Size(0, 34),
+            minimumSize: const Size(44, 44),
             padding: const EdgeInsets.symmetric(horizontal: 8),
           ),
           child: const Text('Смотреть экран'),

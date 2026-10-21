@@ -2,6 +2,7 @@ import 'history_list/handler.dart';
 import 'composer_region/handler.dart';
 import '../../error_banner/component.dart';
 import '../../header/component.dart';
+import '../../header/conversation_actions.dart';
 import '../../native_bindings.dart';
 
 import '../lifecycle/context.dart';
@@ -52,12 +53,12 @@ extension WorkspaceDirectConversationStateBuildAction
           subtitle: 'Личный диалог',
           mobileConversationLayout: true,
           onToggleNavigation: widget.onToggleNavigation,
-          onOpenMembers: widget.onOpenMembers,
-          trailing: IconButton(
-            tooltip: 'Обновить диалог',
-            onPressed: () =>
+          trailing: ConversationHeaderActions(
+            state: widget.state,
+            direct: true,
+            busy: widget.state.loadingDirectMessages,
+            onRefresh: () =>
                 widget.state.openDirectConversation(widget.conversation),
-            icon: const Icon(Icons.refresh),
           ),
         ),
         if (widget.state.error != null)

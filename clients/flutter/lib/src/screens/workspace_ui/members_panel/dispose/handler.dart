@@ -16,6 +16,8 @@ extension WorkspaceMembersPanelStateDisposeAction
     on WorkspaceMembersPanelStateContext {
   void executeWorkspaceMembersPanelStateDispose() {
     HardwareKeyboard.instance.removeHandler(workspaceHandleHardwareKey);
-    workspaceProfileTriggerFocus.dispose();
+    for (final focus in workspaceProfileFocusNodes.values) {
+      focus.dispose();
+    }
   }
 }

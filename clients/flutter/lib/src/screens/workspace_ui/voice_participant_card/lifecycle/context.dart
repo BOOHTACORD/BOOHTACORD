@@ -11,6 +11,7 @@ abstract class WorkspaceVoiceParticipantCardContext extends StatelessWidget {
     this.volume,
     this.onVolumeChanged,
     this.hasScreen = false,
+    this.watchingScreen = false,
     this.isLocal = false,
     this.onScreenTap,
     this.microphoneUnavailable = false,
@@ -24,6 +25,7 @@ abstract class WorkspaceVoiceParticipantCardContext extends StatelessWidget {
   final int? volume;
   final ValueChanged<int>? onVolumeChanged;
   final bool hasScreen;
+  final bool watchingScreen;
   final bool isLocal;
   final VoidCallback? onScreenTap;
   final bool microphoneUnavailable;

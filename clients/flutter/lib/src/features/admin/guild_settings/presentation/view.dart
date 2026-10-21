@@ -13,11 +13,14 @@ class GuildSettingsPresentation extends StatelessWidget {
     required this.onSave,
     required this.onLoad,
     required this.onWelcomeChanged,
+    required this.onCancel,
+    required this.onNameChanged,
   });
   final GuildSettingsController state;
   final TextEditingController name;
   final List<GuildChannel> channels;
-  final VoidCallback onSave, onLoad;
+  final VoidCallback onSave, onLoad, onCancel;
+  final ValueChanged<String> onNameChanged;
   final ValueChanged<String?> onWelcomeChanged;
   @override
   Widget build(BuildContext context) {
@@ -46,12 +49,11 @@ class GuildSettingsPresentation extends StatelessWidget {
                   const SizedBox(height: 16),
                   TextField(
                     controller: name,
+                    onChanged: onNameChanged,
                     enabled: !state.busy && state.revision > 0,
                     decoration: const InputDecoration(
                       labelText: 'Название гильдии',
-                      helperText:
-                          'Название показывается участникам и на экране входа. '
-                          'От 1 до 80 символов, без переводов строк.',
+                      helperText: 'От 1 до 80 символов, без переводов строк.',
                       helperMaxLines: 10,
                     ),
                   ),
@@ -72,20 +74,35 @@ class GuildSettingsPresentation extends StatelessWidget {
                     ),
                   const SizedBox(height: 16),
                   FilledButton(
-                    onPressed: state.busy || state.revision == 0
+                    onPressed: state.busy || state.revision == 0 || !state.dirty
                         ? null
                         : onSave,
                     child: Semantics(
                       liveRegion: state.busy,
                       excludeSemantics: state.busy,
                       label: state.busy
-                          ? (state.revision == 0
+                          ? (state.loading
                                 ? 'Загружаем настройки гильдии…'
                                 : 'Сохраняем настройки гильдии…')
                           : null,
-                      child: Text(state.busy ? 'Сохраняем…' : 'Сохранить'),
+                      child: Text(
+                        state.busy
+                            ? (state.loading ? 'Загружаем…' : 'Сохраняем…')
+                            : 'Сохранить',
+                      ),
                     ),
                   ),
+                  TextButton(
+                    onPressed: state.busy || (!state.dirty && !state.conflict)
+                        ? null
+                        : onCancel,
+                    child: const Text('Отмена'),
+                  ),
+                  if (state.conflict)
+                    TextButton(
+                      onPressed: state.busy ? null : onLoad,
+                      child: const Text('Перечитать настройки'),
+                    ),
                   if (state.revision == 0 && !state.busy)
                     TextButton(
                       onPressed: onLoad,

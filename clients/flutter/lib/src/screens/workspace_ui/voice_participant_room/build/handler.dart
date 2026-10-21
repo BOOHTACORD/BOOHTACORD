@@ -24,34 +24,18 @@ extension WorkspaceVoiceParticipantRoomBuildAction
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      state.voicePhase == VoicePhase.reconnecting
-                          ? 'Восстанавливаем связь'
-                          : 'Все в сборе',
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      state.voicePhase == VoicePhase.reconnecting
-                          ? 'Состояние микрофона сохранено.'
-                          : '${participants.length + 1} ${workspacePeopleWord(participants.length + 1)} в комнате'
-                                '${screens.isEmpty ? '' : ' · демонстраций: ${screens.length}'}',
-                      style: const TextStyle(color: GcColors.textSecondary),
-                    ),
-                  ],
-                ),
+          Semantics(
+            liveRegion: true,
+            child: Text(
+              state.voicePhase == VoicePhase.reconnecting
+                  ? 'Восстанавливаем связь · состояние микрофона сохранено'
+                  : '${participants.length + 1} ${workspacePeopleWord(participants.length + 1)} в комнате'
+                        '${screens.isEmpty ? '' : ' · демонстраций: ${screens.length}'}',
+              style: const TextStyle(
+                color: GcColors.textSecondary,
+                fontSize: 13,
               ),
-            ],
+            ),
           ),
           if (state.error != null) ...[
             const SizedBox(height: 18),
@@ -68,30 +52,16 @@ extension WorkspaceVoiceParticipantRoomBuildAction
                   : () => unawaited(state.toggleMicrophone()),
             ),
           ],
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           LayoutBuilder(
             builder: (context, gridConstraints) {
-              final calculatedColumns =
-                  ((gridConstraints.maxWidth + 12) / (160 + 12)).floor();
-              final crossAxisCount = calculatedColumns < 1
-                  ? 1
-                  : calculatedColumns;
-              final hasScreenShare =
-                  participants.any(
-                    (participant) => participant.videoTrackPublications.any(
-                      (publication) =>
-                          publication.source == TrackSource.screenShareVideo &&
-                          !publication.muted,
-                    ),
-                  ) ||
-                  state.screenSharePhase == ScreenSharePhase.sharing;
-              // The native button keeps Material's 48 dp touch target; the
-              // web share action is 30 px tall, so shared cards need the
-              // additional vertical room rather than squeezing their content.
-              final cardHeight = hasScreenShare ? 208.0 : 176.0;
+              final minWidth = MediaQuery.textScalerOf(context)
+                  .scale(136)
+                  .clamp(160.0, 320.0);
+              final columns =
+                  ((gridConstraints.maxWidth + 12) / (minWidth + 12)).floor();
               return renderVoiceParticipantRoomParticipantsGrid(
-                crossAxisCount,
-                cardHeight,
+                columns < 1 ? 1 : columns,
               );
             },
           ),

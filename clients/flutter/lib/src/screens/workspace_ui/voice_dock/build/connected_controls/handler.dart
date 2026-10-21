@@ -6,9 +6,8 @@ import '../../lifecycle/context.dart';
 import '../../../../voice_overlay_settings/factory.dart';
 
 extension VoiceDockConnectedControlsRenderer on WorkspaceVoiceDockContext {
-  Row renderVoiceDockConnectedControls(BuildContext context) => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
+  Widget renderVoiceDockConnectedControls(BuildContext context) {
+    final controls = <Widget>[
       if (compact &&
           state.usesTouchPushToTalk &&
           state.audioActivationMode == AudioActivationMode.ptt)
@@ -80,35 +79,6 @@ extension VoiceDockConnectedControlsRenderer on WorkspaceVoiceDockContext {
       ),
       WorkspaceVoiceDockButton(
         compact: compact,
-        tooltip: state.voiceStreamSoundEnabled
-            ? 'Выключить сигнал новых трансляций'
-            : 'Включить сигнал новых трансляций',
-        semanticsLabel: state.voiceStreamSoundEnabled
-            ? 'Звук начала трансляций включён'
-            : 'Звук начала трансляций выключен',
-        icon: state.voiceStreamSoundEnabled
-            ? Icons.notifications_active_outlined
-            : Icons.notifications_off_outlined,
-        danger: false,
-        toggled: state.voiceStreamSoundEnabled,
-        onTap: () => unawaited(
-          state.setVoiceStreamSoundEnabled(!state.voiceStreamSoundEnabled),
-        ),
-      ),
-      VoiceOverlayToggle(
-        onSettings: () => unawaited(showVoiceOverlaySettings(context, state)),
-        onEdit: () => unawaited(toggleVoiceOverlayEditing(state)),
-        editing:
-            state.voiceOverlayWindowsClient?.configuration.editing ?? false,
-        enabled: state.voiceOverlay.enabled,
-        onlySpeakers: state.voiceOverlay.onlySpeakers,
-        available: workspaceConnected,
-        onChanged: state.setVoiceOverlayEnabled,
-        onOnlySpeakersChanged: (value) =>
-            state.setVoiceOverlayOnlySpeakers(value),
-      ),
-      WorkspaceVoiceDockButton(
-        compact: compact,
         tooltip: state.voicePhase == VoicePhase.leaving
             ? 'Выходим…'
             : 'Выйти из голосового канала',
@@ -117,6 +87,86 @@ extension VoiceDockConnectedControlsRenderer on WorkspaceVoiceDockContext {
         enabled: state.voicePhase != VoicePhase.leaving,
         onTap: state.leaveVoice,
       ),
-    ],
-  );
+    ];
+    final buttons = <Widget>[
+      ...controls.take(3),
+      SizedBox.square(
+        dimension: compact ? 48 : 40,
+        child: PopupMenuButton<String>(
+          tooltip: 'Ещё настройки голоса',
+          enabled: state.voicePhase != VoicePhase.leaving,
+          onSelected: (action) {
+            switch (action) {
+              case 'sounds':
+                unawaited(
+                  state.setVoiceStreamSoundEnabled(
+                    !state.voiceStreamSoundEnabled,
+                  ),
+                );
+              case 'overlay':
+                state.setVoiceOverlayEnabled(!state.voiceOverlay.enabled);
+              case 'speakers':
+                state.setVoiceOverlayOnlySpeakers(
+                  !state.voiceOverlay.onlySpeakers,
+                );
+              case 'settings':
+                unawaited(showVoiceOverlaySettings(context, state));
+              case 'edit':
+                unawaited(toggleVoiceOverlayEditing(state));
+            }
+          },
+          itemBuilder: (_) => [
+            CheckedPopupMenuItem(
+              value: 'sounds',
+              checked: state.voiceStreamSoundEnabled,
+              child: const Text('Сигнал новых трансляций'),
+            ),
+            if (!kIsWeb && defaultTargetPlatform == TargetPlatform.windows) ...[
+              CheckedPopupMenuItem(
+                value: 'overlay',
+                checked: state.voiceOverlay.enabled,
+                enabled: workspaceConnected,
+                child: const Text('Панель говорящих'),
+              ),
+              CheckedPopupMenuItem(
+                value: 'speakers',
+                checked: state.voiceOverlay.onlySpeakers,
+                enabled: workspaceConnected,
+                child: const Text('Только говорящие'),
+              ),
+              PopupMenuItem(
+                value: 'settings',
+                enabled: workspaceConnected,
+                child: const Text('Настройки панели'),
+              ),
+              PopupMenuItem(
+                value: 'edit',
+                enabled: workspaceConnected && state.voiceOverlay.enabled,
+                child: Text(
+                  state.voiceOverlayWindowsClient?.configuration.editing == true
+                      ? 'Завершить перемещение'
+                      : 'Переместить панель',
+                ),
+              ),
+            ],
+          ],
+          icon: const Icon(Icons.more_horiz),
+        ),
+      ),
+      controls.last,
+    ];
+    return LayoutBuilder(
+      builder: (_, constraints) {
+        final minimumWidth =
+            4 * (compact ? 48.0 : 42.0) + (compact ? 48.0 : 40.0);
+        if (constraints.maxWidth < minimumWidth) {
+          return Wrap(spacing: 4, runSpacing: 4, children: buttons);
+        }
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: buttons,
+        );
+      },
+    );
+  }
 }

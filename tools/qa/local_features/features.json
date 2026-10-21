@@ -89,7 +89,11 @@
       "clients/web/tests/voice_interface/fixture.ts",
       "clients/web/tests/voice_interface/controls.browser.spec.ts",
       "clients/web/tests/voice_interface/zoom.browser.spec.ts",
-      "tools/qa/critical_client_acceptance/voice_interface.mjs"
+      "tools/qa/critical_client_acceptance/voice_interface.mjs",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_dock/**",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_participant_card/**",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_participant_room/**",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_room/open_screen_fullscreen/**"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -97,7 +101,8 @@
       "tests/voice_disconnect_notice/playwright.config.ts"
     ],
     "flutter": [
-      "test/voice_disconnect/visual_capture_test.dart"
+      "test/voice_disconnect/visual_capture_test.dart",
+      "test/web_parity/voice_geometry_test.dart"
     ],
     "acceptance": {
       "issue59": {
@@ -131,6 +136,13 @@
         "browser": "clients/web/tests/voice_interface/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/voice_interface.mjs",
         "scope": "Shared one-click controls, keyboard and Android touch PTT/denied/reconnect/leaving presentation, stale stream/roster cleanup, compact disclosure. Touch PTT shows its muted idle state in red, returns to neutral while transmitting, explains the hold action in the dock below participants, and transmits only while the dock mic is held; verify real pointer and Android touch input plus release on cancellation, focus loss or dock teardown. Settings do not ask touch devices for a hardware key. Verify the prejoin empty roster is geometrically centered against its card despite compact roster indentation. Muted dock controls retain their solid red state without a red border; keyboard focus remains visibly distinct. At narrow mobile width, reconnecting status wraps into balanced lines. Mobile connected voice shows only the persistent bottom dock; Android Chrome has no persistent screen-capture warning, and tapping its enabled share action shows the unsupported-browser explanation without starting capture. Reduce the listener heading's mobile top inset. Fixture viewport/text/actual zoom plus actual two-client SFU session continuity, TEXT/drawer/resize and leave. No native, hardware capture or media QoE claim."
+      },
+      "flutter_web_parity_499_502": {
+        "focused": [
+          "clients/flutter/test/web_parity/voice_geometry_test.dart",
+          "clients/flutter/test/workspace_screen_test.dart"
+        ],
+        "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
       }
     }
   },
@@ -224,7 +236,12 @@
       "clients/flutter/lib/src/telemetry/traced_app_state.dart",
       "clients/web/src/voice/viewer_diagnosis/*",
       "clients/web/tests/screen_share_ui/fixture.ts",
-      "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
+      "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts",
+      "clients/flutter/lib/src/screens/screen_fullscreen_route.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/pinned_screen_mini_player/**",
+      "clients/flutter/lib/src/widgets/local_video_presentation.dart",
+      "clients/flutter/lib/src/widgets/pinned_screen_dock.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/**"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -254,7 +271,13 @@
       "test/screen_viewer_presence_api_test.dart",
       "test/screen_viewer_presence_controller_test.dart",
       "test/voice_lease_identity_test.dart",
-      "test/voice_participant_strip_audience_test.dart"
+      "test/voice_participant_strip_audience_test.dart",
+      "test/web_parity/mini_video_test.dart",
+      "test/web_parity/pinned_dock_test.dart",
+      "test/screen_video_renderer_ownership_test.dart",
+      "test/screen_fullscreen_renderer_gate_test.dart",
+      "test/web_parity/fullscreen_handoff_test.dart",
+      "test/web_parity/mini_surface_test.dart"
     ],
     "acceptance": {
       "issue325_audio": {
@@ -343,6 +366,18 @@
         "target": "integration_test/screen_setup_windows_app.dart",
         "focused": "test/screen_setup/footer_layout_test.dart",
         "scope": "Pinned header/footer with scrollable source and quality content; Windows 1008x720 actual release GUI geometry, OS Tab/Shift+Tab and Escape; widget matrix 800x680, 1008x720, 1024x768, 1440x900 at 1x/2x text with pending/empty/12-source inventory and expanded quality. Android/iOS runtime regression; no media quality claim."
+      },
+      "flutter_web_parity_499_502": {
+        "focused": [
+          "clients/flutter/test/web_parity/mini_video_test.dart",
+          "clients/flutter/test/web_parity/pinned_dock_test.dart",
+          "clients/flutter/test/screen_video_renderer_ownership_test.dart",
+          "clients/flutter/test/screen_fullscreen_renderer_gate_test.dart",
+          "clients/flutter/test/workspace_screen_test.dart",
+          "clients/flutter/test/web_parity/fullscreen_handoff_test.dart",
+          "clients/flutter/test/web_parity/mini_surface_test.dart"
+        ],
+        "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
       }
     }
   },
@@ -403,7 +438,11 @@
       "clients/web/src/notification/*",
       "clients/web/src/voice/AudioSettings.vue",
       "clients/web/src/design/design_v2_audio_presentation.css",
-      "clients/flutter/lib/src/screens/profile*"
+      "clients/flutter/lib/src/screens/profile*",
+      "clients/flutter/lib/src/screens/workspace_ui/audio_settings_screen/**",
+      "clients/flutter/lib/src/widgets/audio_processing_advanced_settings.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/members_panel/**",
+      "clients/flutter/lib/src/screens/workspace_ui/audio_device_dropdown/**"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -411,7 +450,10 @@
     ],
     "flutter": [
       "test/uiux_2026/personal_settings_visual_capture_test.dart",
-      "test/profile_screen_test.dart"
+      "test/profile_screen_test.dart",
+      "test/web_parity/audio_hierarchy_test.dart",
+      "test/web_parity/popover_layout_test.dart",
+      "test/web_parity/profile_overlay_test.dart"
     ],
     "acceptance": {
       "issue297": {
@@ -428,6 +470,15 @@
         "browser": "clients/web/tests/settings_hierarchy/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/settings_hierarchy.mjs",
         "scope": "13 actual component settings/admin surfaces at 390/1024/1440; explicit save/cancel/pending/error/403/409, visible unsaved/security warnings, retained mounted advanced audio controls at text/native browser zoom. Touch PTT settings offer on-screen hold guidance without requesting a hardware key. At enlarged mobile text, profile avatar removal remains inside its card. Owned Go API profile writes and actual SFU transport continuity during audio settings navigation; no native or hardware/audio quality claim."
+      },
+      "flutter_web_parity_499_502": {
+        "focused": [
+          "clients/flutter/test/web_parity/audio_hierarchy_test.dart",
+          "clients/flutter/test/web_parity/popover_layout_test.dart",
+          "clients/flutter/test/workspace_screen_test.dart",
+          "clients/flutter/test/web_parity/profile_overlay_test.dart"
+        ],
+        "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
       }
     }
   },
@@ -436,7 +487,8 @@
       "clients/web/src/admin/*",
       "clients/web/src/guild/*",
       "clients/flutter/lib/src/features/admin/*",
-      "clients/flutter/lib/src/features/guild/*"
+      "clients/flutter/lib/src/features/guild/*",
+      "clients/flutter/lib/src/features/admin/guild_settings/**"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts"
@@ -444,7 +496,10 @@
     "flutter": [
       "test/uiux_2026/admin_visual_capture_test.dart",
       "test/admin_accessibility/section_context_test.dart",
-      "test/admin_accessibility/create_error_readability_test.dart"
+      "test/admin_accessibility/create_error_readability_test.dart",
+      "test/web_parity/guild_settings_test.dart",
+      "test/admin_guild_settings_test.dart",
+      "test/guild_settings_widgets_test.dart"
     ],
     "acceptance": {
       "issue295": {
@@ -458,6 +513,15 @@
         "native": "tools/qa/admin_dialogs/run_native.py",
         "target": "integration_test/admin_dialogs_qa_test.dart",
         "scope": "Actual available admin sections and dialogs; simulator/automated observations do not clear physical device gates"
+      },
+      "flutter_web_parity_499_502": {
+        "focused": [
+          "clients/flutter/test/web_parity/guild_settings_test.dart",
+          "clients/flutter/test/admin_guild_settings_test.dart",
+          "clients/flutter/test/guild_settings_widgets_test.dart",
+          "clients/flutter/test/workspace_screen_test.dart"
+        ],
+        "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
       }
     }
   },
@@ -478,7 +542,13 @@
       "clients/web/src/conversation/reactions/*",
       "clients/web/src/conversation/system_welcome/*",
       "clients/web/src/conversation/message_body/*",
-      "clients/flutter/lib/src/widgets/message_attachment_composer.dart"
+      "clients/flutter/lib/src/widgets/message_attachment_composer.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/conversation/**",
+      "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/**",
+      "clients/flutter/lib/src/screens/workspace_ui/message_row/**",
+      "clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/**",
+      "clients/flutter/lib/src/widgets/message_timestamp.dart",
+      "clients/flutter/lib/src/services/message_presentation.dart"
     ],
     "web": [
       "tests/conversation_action_disclosure/playwright.config.ts",
@@ -498,7 +568,8 @@
       "test/features/workspace/dm_drafts/widget_test.dart",
       "test/clipboard_paste_edit_generation_test.dart",
       "test/message_attachment_composer_test.dart",
-      "test/workspace_screen_test.dart"
+      "test/workspace_screen_test.dart",
+      "test/web_parity/message_policy_test.dart"
     ],
     "acceptance": {
       "composer_text_scale": {
@@ -559,6 +630,13 @@
         ],
         "actual": "tools/qa/client_lifecycle/run.py",
         "scope": "Sanitized regression bridge from the 15 October production tour to current-master Vue components: 320/390/768/1024/1440/1920/3440 CSS widths, 100/200% root text, independently measured actual browser zoom, keyboard and coarse-pointer actions. Voluntary voice leave stays neutral while server revocations remain errors; the authenticated actual-stack task journeys and voice/share smoke are separate evidence gates. Private tour images are never copied into this registry or repository. Soft-wrapped drafts must grow and shrink on conversation-only width changes without typing; 320/390px at 200% text checks rendered audio labels against their card boundaries, in addition to control/viewport bounds."
+      },
+      "flutter_web_parity_499_502": {
+        "focused": [
+          "clients/flutter/test/web_parity/message_policy_test.dart",
+          "clients/flutter/test/workspace_screen_test.dart"
+        ],
+        "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
       }
     }
   },
@@ -576,7 +654,11 @@
       "clients/flutter/lib/src/screens/guild_quick_jump/*",
       "clients/flutter/lib/src/features/workspace/*",
       "clients/web/src/shared/action_hint/*",
-      "clients/web/src/shared/workspace_header/*"
+      "clients/web/src/shared/workspace_header/*",
+      "clients/flutter/lib/src/screens/workspace_ui/header/**",
+      "clients/flutter/lib/src/screens/workspace_ui/channel_row/**",
+      "clients/flutter/lib/src/screens/workspace_ui/direct_message_navigation/**",
+      "clients/flutter/lib/src/features/workspace/search/**"
     ],
     "web": [
       "tests/responsive_shell/playwright.config.ts",
@@ -596,7 +678,8 @@
       "test/features/workspace/quick_jump/widget_test.dart",
       "test/features/workspace/quick_jump/workspace_navigation_test.dart",
       "test/workspace_navigation_text_scale_test.dart",
-      "test/workspace_navigation_top_test.dart"
+      "test/workspace_navigation_top_test.dart",
+      "test/web_parity/presentation_test.dart"
     ],
     "acceptance": {
       "issue292": {
@@ -638,6 +721,13 @@
         "browser": "clients/web/tests/header_actions/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/header_actions.mjs",
         "scope": "Actual production TEXT/DM/VOICE/search/settings header controls; 320/390/768/1440, text/native browser zoom 200%, keyboard/hints/overflow/focus. Owned API/SFU confirms same selected object, drafts and voice transport through search/panel close; Web only, no hardware or physical screen-reader claim."
+      },
+      "flutter_web_parity_499_502": {
+        "focused": [
+          "clients/flutter/test/web_parity/presentation_test.dart",
+          "clients/flutter/test/workspace_screen_test.dart"
+        ],
+        "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
       }
     }
   },

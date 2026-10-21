@@ -22,8 +22,7 @@ extension WorkspaceVoiceParticipantCardBuildAction
       speaking: speaking,
     );
     return Container(
-      constraints: const BoxConstraints(minHeight: 176),
-      padding: const EdgeInsets.fromLTRB(12, 20, 12, 12),
+      padding: const EdgeInsets.fromLTRB(12, 16, 12, 12),
       decoration: BoxDecoration(
         color: GcColors.surface,
         borderRadius: BorderRadius.circular(16),

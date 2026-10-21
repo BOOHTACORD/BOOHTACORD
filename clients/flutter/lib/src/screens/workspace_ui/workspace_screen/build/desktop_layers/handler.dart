@@ -30,8 +30,8 @@ extension WorkspaceScreenDesktopLayersRenderer on WorkspaceScreenStateContext {
         showPermanentMembers,
         searchPanelActive,
         searchPanelModal,
+        pinnedMiniLayer,
       ),
-      if (pinnedMiniVisible) pinnedMiniLayer(),
       if (workspaceShowMembersDrawer || (searchPanelModal && !fullScreenSearch))
         Positioned.fill(
           child: WorkspaceDrawerScrim(onTap: workspaceCloseScrim),
@@ -57,7 +57,10 @@ extension WorkspaceScreenDesktopLayersRenderer on WorkspaceScreenStateContext {
           width: (constraints.maxWidth - 32).clamp(0.0, 320.0).toDouble(),
           child: WorkspaceDrawerSurface(
             debugLabel: 'workspace-search',
-            child: WorkspaceWorkspaceSearchPanel(state: widget.state),
+            child: WorkspaceWorkspaceSearchPanel(
+              key: ValueKey(widget.state.workspace.searchSessionEpoch),
+              state: widget.state,
+            ),
           ),
         ),
     ],

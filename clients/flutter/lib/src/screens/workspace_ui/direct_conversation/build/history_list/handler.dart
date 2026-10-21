@@ -3,6 +3,8 @@ import '../../../older_history_error_row/component.dart';
 import '../../../native_bindings.dart';
 import '../../lifecycle/context.dart';
 import '../../../../../services/conversation_scroll_restore.dart';
+import '../../../../../services/message_presentation.dart';
+import '../../../history_date_divider/component.dart';
 
 extension DirectConversationHistoryListRenderer
     on WorkspaceDirectConversationStateContext {
@@ -44,12 +46,11 @@ extension DirectConversationHistoryListRenderer
         itemCount:
             widget.state.directMessageHistory.length + directHistoryHeaderCount,
         findChildIndexCallback: (key) {
-          final messageKey = workspaceDirectMessageKeys.entries
-              .where((entry) => identical(entry.value, key))
-              .firstOrNull;
-          if (messageKey == null) return null;
-          final messageId = messageKey.key.substring(
-            widget.conversation.id.length + 1,
+          if (key is! ValueKey<String> ||
+              !key.value.startsWith('direct-row:${widget.conversation.id}:'))
+            return null;
+          final messageId = key.value.substring(
+            'direct-row:${widget.conversation.id}:'.length,
           );
           final messageIndex = widget.state.directMessageHistory.indexWhere(
             (message) => message.id == messageId,
@@ -89,6 +90,36 @@ extension DirectConversationHistoryListRenderer
           }
           final messageIndex = index - directHistoryHeaderCount;
           final message = widget.state.directMessageHistory[messageIndex];
+          final previous = messageIndex == 0
+              ? null
+              : widget.state.directMessageHistory[messageIndex - 1];
+          if (workspaceUnreadStartId == null &&
+              workspaceInitialUnreadCount > 0 &&
+              !widget.state.loadingDirectMessages) {
+            final history = widget.state.directMessageHistory;
+            workspaceUnreadStartId =
+                history[(history.length - workspaceInitialUnreadCount).clamp(
+                      0,
+                      history.length - 1,
+                    )]
+                    .id;
+          }
+          final startsUnread = message.id == workspaceUnreadStartId;
+          final grouped = canGroupConversationMessage(
+            previousAuthor: previous?.authorId,
+            author: message.authorId,
+            previousDate: previous?.createdAt,
+            date: message.createdAt,
+            boundary:
+                startsUnread ||
+                previous == null ||
+                previous.deleted ||
+                message.deleted ||
+                previous.replyToId != null ||
+                message.replyToId != null ||
+                previous.sendStatus != null ||
+                message.sendStatus != null,
+          );
           observeMessageRender(message, context);
           final own = message.authorId == widget.state.user?.accountId;
           final key = workspaceDirectMessageKeys.putIfAbsent(
@@ -97,11 +128,32 @@ extension DirectConversationHistoryListRenderer
               debugLabel: '${widget.conversation.id}:${message.id}',
             ),
           );
-          return renderDirectConversationMessageReplySwipe(
+          final row = renderDirectConversationMessageReplySwipe(
             key,
             context,
             message,
             own,
+            grouped: grouped,
+          );
+          return Column(
+            key: ValueKey('direct-row:${widget.conversation.id}:${message.id}'),
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (previous == null ||
+                  !sameConversationDay(previous.createdAt, message.createdAt))
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: WorkspaceHistoryDateDivider(
+                    label: conversationDateLabel(message.createdAt),
+                  ),
+                ),
+              if (startsUnread)
+                const WorkspaceHistoryDateDivider(label: 'Новые сообщения'),
+              Padding(
+                padding: EdgeInsets.only(top: grouped ? 4 : 12),
+                child: row,
+              ),
+            ],
           );
         },
       ),

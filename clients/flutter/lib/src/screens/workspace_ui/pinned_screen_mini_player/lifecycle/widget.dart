@@ -13,5 +13,6 @@ class WorkspacePinnedScreenMiniPlayer
     required super.fullscreenSelection,
     required super.onReturnToVoice,
     required super.onStopWatching,
+    super.onFullscreenSelectionChanged,
   });
 }

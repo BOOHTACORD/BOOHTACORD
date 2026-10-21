@@ -4,6 +4,7 @@ import '../../../sidebar/component.dart';
 import '../../../workspace_search_panel/component.dart';
 import '../../../native_bindings.dart';
 import '../../lifecycle/context.dart';
+import '../../../../../widgets/pinned_screen_dock.dart';
 
 extension WorkspaceScreenWorkspacePanelsRenderer
     on WorkspaceScreenStateContext {
@@ -16,6 +17,7 @@ extension WorkspaceScreenWorkspacePanelsRenderer
     bool showPermanentMembers,
     bool searchPanelActive,
     bool searchPanelModal,
+    Widget Function() pinnedMiniLayer,
   ) => ExcludeFocus(
     excluding: modalOverlayActive,
     child: Row(
@@ -38,25 +40,33 @@ extension WorkspaceScreenWorkspacePanelsRenderer
         ),
         const VerticalDivider(width: 1),
         Expanded(
-          child: KeyedSubtree(
-            key: const ValueKey('workspace-main-surface'),
-            child: WorkspaceMainSurface(
-              state: widget.state,
-              selectedScreenIdentity: workspaceVisibleVoiceScreenIdentity,
-              onSelectScreen: workspaceSelectVoiceScreen,
-              pinnedMiniVisible: pinnedMiniVisible,
-              fullscreenSelection: workspaceFullscreenScreenSelection,
-              onFullscreenSelectionChanged:
-                  workspaceSetFullscreenScreenSelection,
-              pinnedScreenIdentity: workspaceVisiblePinnedScreenIdentity,
-              onToggleScreenPin: workspaceToggleVoiceScreenPin,
-              onOpenMembers: showMemberToggle ? workspaceToggleMembers : null,
-              onCapturePttKey: workspaceBeginPttKeyCapture,
-              capturingPttKey: workspaceCapturingPttKey,
-              onCaptureVoiceShortcut: workspaceBeginVoiceShortcutCapture,
-              capturingVoiceShortcut: workspaceCapturingVoiceShortcut,
-              hardwareKeyboardAvailable:
-                  workspaceShortcutAvailability.hardwareKeyboard,
+          child: PinnedScreenDock(
+            mini: pinnedMiniVisible ? pinnedMiniLayer() : null,
+            content: KeyedSubtree(
+              key: const ValueKey('workspace-main-surface'),
+              child: KeyedSubtree(
+                key: workspaceMainSurfaceKey,
+                child: WorkspaceMainSurface(
+                  state: widget.state,
+                  selectedScreenIdentity: workspaceVisibleVoiceScreenIdentity,
+                  onSelectScreen: workspaceSelectVoiceScreen,
+                  pinnedMiniVisible: pinnedMiniVisible,
+                  fullscreenSelection: workspaceFullscreenScreenSelection,
+                  onFullscreenSelectionChanged:
+                      workspaceSetFullscreenScreenSelection,
+                  pinnedScreenIdentity: workspaceVisiblePinnedScreenIdentity,
+                  onToggleScreenPin: workspaceToggleVoiceScreenPin,
+                  onOpenMembers: showMemberToggle
+                      ? workspaceToggleMembers
+                      : null,
+                  onCapturePttKey: workspaceBeginPttKeyCapture,
+                  capturingPttKey: workspaceCapturingPttKey,
+                  onCaptureVoiceShortcut: workspaceBeginVoiceShortcutCapture,
+                  capturingVoiceShortcut: workspaceCapturingVoiceShortcut,
+                  hardwareKeyboardAvailable:
+                      workspaceShortcutAvailability.hardwareKeyboard,
+                ),
+              ),
             ),
           ),
         ),
@@ -71,7 +81,10 @@ extension WorkspaceScreenWorkspacePanelsRenderer
           const VerticalDivider(width: 1),
           SizedBox(
             width: 380,
-            child: WorkspaceWorkspaceSearchPanel(state: widget.state),
+            child: WorkspaceWorkspaceSearchPanel(
+              key: ValueKey(widget.state.workspace.searchSessionEpoch),
+              state: widget.state,
+            ),
           ),
         ],
       ],
