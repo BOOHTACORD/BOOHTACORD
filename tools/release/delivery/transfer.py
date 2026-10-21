@@ -10,11 +10,19 @@ import signal
 import tempfile
 from .commands import execute
 from .payload import inspect
-from .phases import Phases, PhaseFailed
+from .phases import Phases, PhaseFailed, ReportedFailure
 from .readback_contract import validate as acknowledgement
+from tools.release.install.diagnostics import validate_response
 
 DRIVER_PATHS = ('tools/release/archive', 'tools/release/bundle', 'tools/release/install',
                 'tools/release/delivery/commands.py', 'tools/verify/oci/verify_oci.py')
+
+
+def install_response(raw):
+    response = validate_response(raw)
+    if response['status'] == 'FAIL':
+        raise ReportedFailure(response['phase'])
+    return response
 
 
 class Transfer:
@@ -75,7 +83,8 @@ class Transfer:
                                     ('transfer_driver', driver, '.installer.tar.gz')):
             self.phases.run(phase, ['scp', '-B', *self.options, str(path), self.scp_remote + ':' + self.stage + '/' + self.source + suffix])
         with (self.scripts/'install_received.sh').open('rb') as stream:
-            self.phases.run('remote_install', self.ssh(self.source, payload['sha256'], driver_sha, prior, self.controller, self.nonce), stdin=stream)
+            self.phases.run('remote_install', self.ssh(self.source, payload['sha256'], driver_sha, prior, self.controller, self.nonce),
+                            stdin=stream, validator=install_response, capture_limit=1024)
         with (self.scripts/'read_received.sh').open('rb') as stream:
             result = self.phases.run('readback', self.ssh(self.source, driver_sha, self.controller, self.nonce),
                                      stdin=stream, capture_limit=16384,

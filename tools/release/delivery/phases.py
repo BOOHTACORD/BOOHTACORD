@@ -11,6 +11,15 @@ class PhaseFailed(RuntimeError):
     pass
 
 
+class ReportedFailure(Exception):
+    """A remote command returned a validated, finite failure phase."""
+    def __init__(self, phase):
+        if not isinstance(phase, str) or not re.fullmatch('[a-z][a-z0-9_]{0,63}', phase):
+            raise ValueError('Invalid reported delivery phase')
+        self.phase = phase
+        super().__init__('Remote delivery stage failed')
+
+
 class Phases:
     def __init__(self, source, controller, *, executor=execute, clock=time.monotonic):
         if any(not isinstance(v, str) or not re.fullmatch('[a-f0-9]{40}', v) for v in (source, controller)):
@@ -32,11 +41,16 @@ class Phases:
             if validator is not None:
                 try:
                     result = validator(result)
+                except ReportedFailure:
+                    raise
                 except Exception:
                     row['failure_code'] = 'invalid_output'
                     raise PhaseFailed('Delivery result validation failed') from None
             row['status'] = 'PASS'
             return result
+        except ReportedFailure as error:
+            row['failure_code'] = 'installer_' + error.phase
+            raise PhaseFailed('Delivery stage failed: ' + name) from None
         except ExecutionFailed as error:
             row['failure_code'], row['exit_code'] = error.code, error.returncode
             raise PhaseFailed('Delivery stage failed: ' + name) from None

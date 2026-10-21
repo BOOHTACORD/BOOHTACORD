@@ -55,7 +55,7 @@ class ActualFailureReceiptTests(unittest.TestCase):
 
     def test_expected_exit_or_real_timeout_is_required_at_the_actual_failure_stage(self):
         cases={'ssh-refused':('current_revision','exit'),'scp-timeout':('transfer_bundle','timeout'),
-               'immutable':('remote_install','exit'),'downgrade':('history','exit')}
+               'immutable':('remote_install','installer_release_directory'),'downgrade':('history','exit')}
         for name,(phase,code) in cases.items():
             original=failed(phase,code)
             require_failure(name,original)

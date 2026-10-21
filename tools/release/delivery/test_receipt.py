@@ -47,6 +47,21 @@ class DeliveryReceiptTests(unittest.TestCase):
         self.assertEqual('timeout',output['delivery']['phases'][-1]['failure_code'])
         self.assertEqual('UNKNOWN',output['remote_completion'])
 
+    def test_validated_installer_subphase_survives_public_receipt_without_raw_error_text(self):
+        value=result(); value.pop('readback'); value['status']='FAIL'
+        value['phases']=value['phases'][:5]
+        value['phases'][-1].update(status='FAIL',failure_code='installer_bundle_verification')
+        output=receipt.build(outcomes(),value)
+        self.assertEqual('installer_bundle_verification',output['delivery']['phases'][-1]['failure_code'])
+        self.assertEqual('UNKNOWN',output['remote_completion'])
+        self.assertNotIn('private-canary',json.dumps(output))
+        for invalid in ('installer_private-canary','installer_bundle_verification'):
+            malformed={**value,'phases':[dict(row) for row in value['phases']]}
+            malformed['phases'][-1]['failure_code']=invalid
+            if invalid == 'installer_bundle_verification':
+                malformed['phases'][-1]['phase']='transfer_driver'
+            self.assertEqual('FAIL',receipt.build(outcomes(),malformed)['status'])
+
     def test_public_producer_authority_rejects_extra_private_fields_or_loose_names(self):
         from .test_producer_artifacts import fixtures
         from .producer_artifacts import select

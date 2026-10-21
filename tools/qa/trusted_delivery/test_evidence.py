@@ -49,7 +49,7 @@ def receipt():
             scope='Polling observations, not exact enable/disable timestamps; signed runtime may be legacy'))
     transport=[]
     for name,phase,code in [('ssh-refused','current_revision','exit'),('scp-timeout','transfer_bundle','timeout'),
-                             ('immutable','remote_install','exit'),('downgrade','history','exit')]:
+                             ('immutable','remote_install','installer_release_directory'),('downgrade','history','exit')]:
         result=failed(phase,code); result.update(source_revision=BASELINE if name=='downgrade' else NEXT,controller_revision=CONTROLLER)
         transport.append(dict(name=name,status='EXPECTED_FAIL',delivery=result,state_unchanged=True,
             fault='real bandwidth-limited SCP with one-second local deadline' if name=='scp-timeout' else name))
