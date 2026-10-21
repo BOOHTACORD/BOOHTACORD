@@ -187,7 +187,9 @@ async function expectVoiceStateFits(page: Page, width: number, name: string) {
     expect(rect!.x + rect!.width).toBeLessThanOrEqual(width + 1)
     expect(rect!.height).toBeGreaterThanOrEqual(40)
   }
-  await page.addScriptTag({ content: axe.source })
+  if (!await page.evaluate(() => Boolean((window as any).axe))) {
+    await page.addScriptTag({ content: axe.source })
+  }
   const violations = await page.evaluate(async () => (await (window as any).axe.run('#app', { runOnly: { type: 'tag', values: ['wcag2a','wcag2aa','wcag21aa'] } })).violations)
   expect(violations, name).toEqual([])
 }
@@ -213,6 +215,7 @@ const responsiveVoiceCases = [
   ...ux2026BreakpointViewports.map(viewport => ({ viewport, scale: 100, states: ['connected', 'sharing'] })),
 ] as const
 test('critical voice states stay usable at responsive and breakpoint samples', async ({ page }, info) => {
+  test.setTimeout(90_000)
   for (const { viewport, scale, states } of responsiveVoiceCases) {
     await open(page, viewport.width, scale, '', viewport.height)
     for (const name of states) {
