@@ -55,6 +55,7 @@ extension PinnedScreenMiniPlayerFloatingSurfaceRenderer
                         if (paused) toggleVideo();
                         unawaited(
                           openPinnedScreenFullscreen(
+                            onStopWatching: onStopWatching,
                             context: context,
                             state: state,
                             identity: identity,

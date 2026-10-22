@@ -38,6 +38,8 @@ jobs:
         run: node --test tools/qa/client_lifecycle/login_diagnostics.test.mjs tools/qa/next_client_acceptance/failure.test.mjs
       - name: Test shared immutable native release publication
         run: node --test tools/release/native_contract/publish.test.mjs
+      - name: Test canonical native tag preparation source boundaries
+        run: python -m unittest tools.release.native_contract.test_tags
       - name: Test bounded restricted-network evidence readiness
         run: node --test tools/network/restricted/measurement.test.mjs
       - name: Install pinned CI verification dependencies
@@ -52,6 +54,12 @@ jobs:
           python3 -m unittest tools.ci.toolchains.test_cache_inputs tools.ci.toolchains.test_workflows tools.ci.flutter_setup.test_metadata tools.ci.flutter_setup.test_run tools.ci.flutter_setup.test_workflow
           python3 -m tools.ci.toolchains.workflows
           python3 -m tools.ci.toolchains.auxiliary
+      - name: Verify shared-client parity scenarios and platform regression decisions
+        env:
+          PARITY_BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python -m unittest tools.verify.client_parity.test_policy tools.release.ios_artifact.test_verify
+          python -m tools.verify.client_parity.run --base "$PARITY_BASE"
       - name: Verify generated tracing contract bindings
         run: node tools/observability/flow_contract/generate.mjs --check
       - name: Verify publisher signatures and desktop promotion guards

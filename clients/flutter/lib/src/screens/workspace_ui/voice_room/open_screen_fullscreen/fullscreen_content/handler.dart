@@ -50,5 +50,11 @@ extension VoiceRoomFullscreenContentRenderer on WorkspaceVoiceRoomStateContext {
       ),
     ),
     onClose: () => Navigator.of(dialogContext).pop(),
+    onStopWatching: showingLocalScreen
+        ? null
+        : () {
+            Navigator.of(dialogContext).pop();
+            widget.onSelectScreen('');
+          },
   );
 }

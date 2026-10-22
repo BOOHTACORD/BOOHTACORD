@@ -98,6 +98,7 @@
 		046108459DEDAB4706E14D77 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		C72E26CCE6387FAB92568D2C /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		3176DF2F67FDC6AF1051E3C5 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		D51800000000000000000001 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				544BEB4C6EB54176D7A1D551 /* ScreenShareExtension.entitlements */,
+				D51800000000000000000001 /* Version.xcconfig */,
 				A409678F0E355872B5C6F3D5 /* Info.plist */,
 				638111133EAB3485E0EED293 /* SampleHandler.swift */,
 				328137B2FC3DB422026CB642 /* SampleUploader.swift */,
@@ -719,13 +721,15 @@
 		};
 		093E0B80F6ED1C0FC22F3688 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D51800000000000000000001 /* Version.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ScreenShareExtension/ScreenShareExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
 				DEVELOPMENT_TEAM = 8FA7GMXG58;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ScreenShareExtension/Info.plist;
@@ -744,13 +748,15 @@
 		};
 		1FAC72170776E541CB30B547 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D51800000000000000000001 /* Version.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ScreenShareExtension/ScreenShareExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
 				DEVELOPMENT_TEAM = 8FA7GMXG58;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ScreenShareExtension/Info.plist;
@@ -769,13 +775,15 @@
 		};
 		46245E62AF4F159ABF28FF59 /* Profile */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D51800000000000000000001 /* Version.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ScreenShareExtension/ScreenShareExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
 				DEVELOPMENT_TEAM = 8FA7GMXG58;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ScreenShareExtension/Info.plist;

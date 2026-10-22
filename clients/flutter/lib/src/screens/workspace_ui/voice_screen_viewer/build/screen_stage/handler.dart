@@ -73,7 +73,9 @@ extension VoiceScreenViewerScreenStageRenderer
         right: 28,
         top: 28,
         child: IconButton.filledTonal(
-          tooltip: 'Вернуться к участникам',
+          tooltip: showingLocalScreen
+              ? 'Вернуться к участникам'
+              : 'Остановить просмотр',
           onPressed: onClose,
           icon: const Icon(Icons.close_fullscreen_outlined),
         ),

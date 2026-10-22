@@ -21,26 +21,40 @@ class WorkspaceRealtimeDispatch {
     this.profileChanged,
     this.screenPreviewUpdated,
     this.screenPreviewInvalidated,
+    this.screenViewersChanged,
   });
   final WorkspaceController workspace;
   final ConversationController conversation;
   final void Function(RealtimeEvent) notifyMessage;
   final FutureOr<void> Function(Map<String, dynamic>) voiceRevoked;
   final FutureOr<void> Function() permissionsChanged;
-  final void Function(int)? guildChanged;
+  final FutureOr<void> Function(int)? guildChanged;
+  final FutureOr<void> Function()? screenViewersChanged;
   final FutureOr<void> Function(String, int)? profileChanged;
   final void Function(Map<String, dynamic>)? screenPreviewUpdated;
   final void Function(Map<String, dynamic>)? screenPreviewInvalidated;
-  void call(RealtimeEvent event) {
-    if (dispatchMemberProfileUpdated(event, workspace, profileChanged)) return;
-    if (dispatchConversationEvent(event, workspace, conversation, notifyMessage)) return;
-    if (dispatchScreenPreviewEvent(event, screenPreviewUpdated, screenPreviewInvalidated)) return;
+  Future<void> call(RealtimeEvent event) async {
+    if (await dispatchMemberProfileUpdated(event, workspace, profileChanged))
+      return;
+    if (await dispatchConversationEvent(
+      event,
+      workspace,
+      conversation,
+      notifyMessage,
+    ))
+      return;
+    if (dispatchScreenPreviewEvent(
+      event,
+      screenPreviewUpdated,
+      screenPreviewInvalidated,
+    ))
+      return;
     final payload = event.payload;
     switch (event.kind) {
       case 'guild.profile.updated':
         final revision = payload['revision'];
         if (payload.length == 1 && revision is int && revision > 0) {
-          guildChanged?.call(revision);
+          await guildChanged?.call(revision);
         }
       case 'session.state_changed':
         if (payload.isEmpty) notifyOwnSessionsChanged();
@@ -52,47 +66,52 @@ class WorkspaceRealtimeDispatch {
           payload['presence'],
         );
       case 'channel.updated':
-        unawaited(
-          processEffect(
-            event,
-            conversation.api.transport.session.telemetry,
-            workspace.refreshTopology,
-          ),
+        await processEffect(
+          event,
+          conversation.api.transport.session.telemetry,
+          () => workspace.refreshTopology(strict: true),
         );
       case 'role.permissions.updated':
       case 'auth.permissions.invalidated':
-        unawaited(
-          processEffect(
-            event,
-            conversation.api.transport.session.telemetry,
-            () => Future<void>.sync(permissionsChanged),
-          ),
+        await processEffect(
+          event,
+          conversation.api.transport.session.telemetry,
+          () => Future<void>.sync(permissionsChanged),
         );
+      case 'screen_viewers.changed':
+        if (payload.isEmpty) await screenViewersChanged?.call();
       case 'connection.ready':
-        guildChanged?.call(0);
+        await guildChanged?.call(0);
+        await permissionsChanged();
+        await screenViewersChanged?.call();
       case 'connection.resync_required':
-        guildChanged?.call(0);
-        unawaited(
-          processEffect(
-            event,
-            conversation.api.transport.session.telemetry,
-            () => Future.wait<void>([
-              workspace.refreshTopology(),
-              workspace.refreshMembers(),
+        await guildChanged?.call(0);
+        await processEffect(
+          event,
+          conversation.api.transport.session.telemetry,
+          () async {
+            await workspace.refreshTopology(strict: true);
+            await Future.wait<void>([
+              workspace.refreshMembers(strict: true),
+              workspace.refreshDirectMessages(strict: true),
+              Future<void>.sync(permissionsChanged),
               if (workspace.selectedChannel?.kind == ChannelKind.text)
-                conversation.refreshSelectedTextHistory(),
+                conversation.refreshSelectedTextHistory(
+                  strict: true,
+                  replace: true,
+                ),
               if (conversation.selectedDirectMessage != null)
-                refreshDirectEvent(conversation),
-            ]).then((_) {}),
-          ),
+                refreshDirectEvent(conversation, null, true),
+              if (screenViewersChanged != null)
+                Future<void>.sync(screenViewersChanged!),
+            ]);
+          },
         );
       case 'voice.lease_revoked':
-        unawaited(
-          processEffect(
-            event,
-            conversation.api.transport.session.telemetry,
-            () => Future<void>.sync(() => voiceRevoked(payload)),
-          ),
+        await processEffect(
+          event,
+          conversation.api.transport.session.telemetry,
+          () => Future<void>.sync(() => voiceRevoked(payload)),
         );
     }
   }

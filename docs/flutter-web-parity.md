@@ -1,3 +1,43 @@
+# Current shared-client parity contract (#518)
+
+The machine-readable scenario matrix lives in the existing
+[`tools/qa/local_features/features.json`](../tools/qa/local_features/features.json),
+under each feature's `parity` records. Stable IDs cover auth/session/security,
+TEXT/DM/social/files, search/navigation, notifications, topology/admin,
+voice/reconnect/PTT/devices, publish/view/mini/fullscreen/audience,
+update awareness, telemetry and support (#516). This is the current source
+comparison; historical reports below keep their original build/date scope.
+
+`PARITY` means the sources implement the same expected user result. It does
+**not** assert physical runtime acceptance. `GAP` requires a tracking issue;
+`PLATFORM_EXCEPTION` needs a reason and an available alternative; `PLANNED`
+is shared future scope; `NOT_VERIFIED` does not become a pass because Dart is
+shared. Each client has its own runtime state, permissions/conditions and tests.
+The final [#518 report](../evidence/qa/issue518-client-parity.md) binds actual
+runs/builds to source and records outstanding physical gates.
+
+Every PR changing a common scenario updates `parity_review` for affected
+features: implementation and regression on Web/iOS/Android, an agreed platform
+exception, or a linked gap. CI rejects duplicate IDs, missing client paths/tests,
+missing platform decisions and unsupported runtime PASS claims. It also runs
+the existing Web/Flutter suites; metadata validation alone is not a behavior test.
+A shared Dart implementation is one code path with **two distinct native runs**.
+Never delay an urgent security fix for simultaneous releases: track the second
+client as an explicit priority gap. Coordinated noncritical features can use an
+agreed feature flag until applicable clients are ready.
+
+PAR-01/02: durable cursor advances only after awaited effects; bounded queue
+and dedup, overflow/handler error/expired cursor reset to server snapshots.
+Cursor is memory-only and bound to server/auth scope/capabilities. Socket-open
+is not protocol-ready: only `connection.ready` resets jittered retry; generation
+changes cancel old callbacks/timers. The UI exposes recovery and manual retry.
+PAR-03 preserves lease heartbeat and polling fallback while coalescing scoped
+empty viewer hints. PAR-04 is the existing Guild settings telemetry panel:
+admin-only API, explicit consent/HTTPS and honest delivery/error states.
+PAR-05 keeps fullscreen exit separate from stop viewing; stop changes only
+remote subscriptions and preserves voice/publisher state and renderer handoff.
+PAR-06 updates the actual iOS app-only/broadcast paths in its README.
+
 # Flutter ↔ web parity plan
 
 ## Flutter admin parity epic #188

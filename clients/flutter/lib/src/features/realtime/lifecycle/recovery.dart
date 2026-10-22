@@ -3,15 +3,29 @@ import 'dart:async';
 import 'controller.dart';
 
 extension RealtimeRecovery on RealtimeController {
+  void retryNow() {
+    if (!admission()()) return;
+    if (socket != null || connecting) return;
+    retry?.cancel();
+    retry = null;
+    unawaited(connect());
+  }
+
   void handleClosed() {
     handshake?.finish('failed', reason: 'network');
     handshake = null;
+    readyTimeout?.cancel();
+    readyTimeout = null;
+    delivery.disconnected();
     final previous = socket;
+    final previousSubscription = subscription;
+    if (previousSubscription != null) unawaited(previousSubscription.cancel());
     generation++;
     socket = null;
     subscription = null;
     connected = false;
     connecting = false;
+    checkingSession = false;
     if (previous != null) unawaited(previous.close().catchError((Object _) {}));
     invalidatePresence();
     changed();
@@ -39,14 +53,17 @@ extension RealtimeRecovery on RealtimeController {
 
   void scheduleRetry() {
     final active = admission();
-    if (!active() || retry != null) return;
+    if (!active() || retry != null || socket != null || connecting) return;
     invalidatePresence();
-    changed();
-    final seconds = 1 << attempt.clamp(0, 5);
-    attempt++;
-    retry = Timer(Duration(seconds: seconds), () {
+    final ceilingMs = (1000 * (1 << attempt.clamp(0, 5))).clamp(1000, 30000);
+    final delay = Duration(
+      milliseconds: (ceilingMs * (0.5 + jitter().clamp(0, 1) * 0.5)).round(),
+    );
+    attempt = (attempt + 1).clamp(0, 30);
+    retry = Timer(delay, () {
       retry = null;
       if (active()) unawaited(connect());
     });
+    changed();
   }
 }

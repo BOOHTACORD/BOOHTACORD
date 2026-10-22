@@ -52,6 +52,7 @@ Future<void> refreshReceived(
     // Missing or hidden messages stay incomplete; REST success is not UI success.
   } catch (_) {
     scope.finish('failed', reason: 'dependency');
+    rethrow;
   }
 }
 
@@ -68,5 +69,6 @@ Future<void> processEffect(
     }
   } catch (_) {
     action.finish('failed', reason: 'dependency');
+    rethrow;
   }
 }

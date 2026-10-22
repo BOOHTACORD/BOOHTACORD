@@ -7,7 +7,7 @@ Future<void> refreshTextEvent(
   String? messageID,
 ) async {
   final active = conversation.admission();
-  await conversation.refreshSelectedTextHistory();
+  await conversation.refreshSelectedTextHistory(strict: true, at: messageID);
   if (!active()) return;
   final welcome = conversation.messages
       .where(

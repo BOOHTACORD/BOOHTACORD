@@ -5,6 +5,9 @@ extension RealtimeCleanup on RealtimeController {
     handshake?.finish('cancelled', reason: 'disposed');
     handshake = null;
     generation++;
+    readyTimeout?.cancel();
+    readyTimeout = null;
+    attempt = 0;
     retry?.cancel();
     retry = null;
     final previousSubscription = subscription;
@@ -14,7 +17,10 @@ extension RealtimeCleanup on RealtimeController {
     connected = false;
     connecting = false;
     checkingSession = false;
-    eventIds.clear();
+    delivery.reset();
+    deliveryTicket = null;
+    deliveryServer = null;
+    deliveryInstallation = null;
     if (!disposed) {
       invalidatePresence();
       changed();

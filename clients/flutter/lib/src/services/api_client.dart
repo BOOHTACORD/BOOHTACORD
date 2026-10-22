@@ -6,6 +6,7 @@ import '../features/session/maintenance/facade.dart';
 import '../features/session/own_sessions/facade.dart';
 import '../features/guild/profile/facade.dart';
 import '../features/admin/guild_settings/facade.dart';
+import '../features/admin/telemetry/api.dart';
 import '../features/conversation/delivery/lookup_facade.dart';
 import '../features/telemetry/export/facade.dart';
 import '../features/media/report_metrics/facade.dart';
@@ -55,6 +56,7 @@ class ApiClient extends ApiFacadeBase
         OwnSessionsFacade,
         GuildProfileFacade,
         GuildSettingsFacade,
+        AdminTelemetryFacade,
         DeliveryLookupFacade,
         TelemetryExportFacade,
         ScreenMetricsReportFacade,

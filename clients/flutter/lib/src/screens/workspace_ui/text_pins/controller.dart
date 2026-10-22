@@ -13,7 +13,7 @@ class TextPinsController extends ChangeNotifier {
     stop = SocialHints.forTransport(transport).subscribe((hint) {
       if (hint == null ||
           !hint.direct && hint.pins && hint.conversation == channel) {
-        load();
+        return load(strict: true);
       }
     });
   }
@@ -34,7 +34,7 @@ class TextPinsController extends ChangeNotifier {
     if (!disposed) notifyListeners();
   }
 
-  Future<void> load({bool more = false}) async {
+  Future<void> load({bool more = false, bool strict = false}) async {
     if (!active) return;
     final own = ++sequence, previous = cursor;
     loading = true;
@@ -53,6 +53,7 @@ class TextPinsController extends ChangeNotifier {
       cursor = page.nextCursor;
       canManage = page.canManage;
     } catch (cause) {
+      if (strict) rethrow;
       if (active && own == sequence) {
         pins = [];
         cursor = null;
