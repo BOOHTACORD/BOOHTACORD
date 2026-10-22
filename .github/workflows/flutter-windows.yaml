@@ -72,14 +72,14 @@ jobs:
           dotnet-version: '8.0.426'
       - name: Verify selected dotnet SDK
         run: python -m tools.ci.toolchains.runtime dotnet
+      - name: Test GitHub release publisher
+        run: node --test tools/release/android/publish.test.mjs tools/release/android/publish_retries.test.mjs tools/release/android/publish_conflicts.test.mjs tools/release/windows/publish.test.mjs tools/release/native_contract/publish.test.mjs
       - name: Initialize Flutter before reading machine JSON
         run: flutter --version
       - name: Verify the pinned Velopack tool before the full test run
         run: python -c "from tools.build.windows.installer import prepare_packager; prepare_packager()"
       - name: Test and analyze app and vendor packages
         run: python -m tools.ci.native.flutter
-      - name: Test GitHub release publisher
-        run: node --test tools/release/android/publish.test.mjs tools/release/android/publish_retries.test.mjs tools/release/android/publish_conflicts.test.mjs
 
   windows-build:
     runs-on: windows-2022
