@@ -134,7 +134,7 @@ Android and Windows publish through their existing manual-master path.
 Public distribution evidence is kept separately by each immutable publisher:
 
 - Android: https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.45
-- Windows: https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.45
+- Windows: https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.47
 - macOS: https://github.com/Egkurilov/BOOHTACORD/releases/tag/macos-v1.0.45
 
 Each completed publisher retains source-bound contract/publication.json and
@@ -165,7 +165,8 @@ Windows publication follow-up: the actual 1.0.45 release job stopped before
 application compilation on Windows fixture file-URL handling. The corrected
 fixtures and native CI coverage are tracked in PR #525 and
 `evidence/qa/issue518-windows-release.md`. The original unpublished Windows tag
-is preserved; its replacement is windows-v1.0.46 / build 81 / r60. Public
+is preserved; its replacement advances through the separately recorded Windows packaging
+follow-ups below. Public
 macOS/Android and the signed iOS IPA remain 1.0.45 (80), with their original
 source receipts. The portal uses actual per-platform published versions, not
 the next global Flutter build defaults. Final publication readbacks on #518
@@ -183,5 +184,18 @@ universal macOS ZIP SHA256 is
 Windows follow-up PR #525 merged as 24936e68585f4aba9733d8f39ed74a15c50483d3
 after all 26 jobs of CI 39764639901 passed at e3084b53. Local 1210 Python
 tests passed, and the complete publisher suite passed on actual Windows.
-Windows 1.0.46 publication is based on that master, separate from the already
-delivered 1.0.45 source. Its final public receipt follows on #518.
+Windows Release 39767005427 compiled and packaged 1.0.46 from that master,
+then correctly stopped before publication on a pinned Velopack filename-format
+mismatch. Follow-up #528 matches the measured stable suffix while retaining
+exact application/version/channel, checksum, source and QA-purpose checks.
+Windows uses the next canonical 1.0.47 (82), r61; earlier tags are preserved.
+Its final source and public receipt follow on #518.
+
+PR #528 merged as f5cd783518349e2f79a78910a91908882ba87cc1 after all 26
+jobs of CI 39769767549 passed at f7a51655, including actual Windows build and
+GUI/SFU. The final fix matches the measured pinned Velopack stable package name;
+the producer/SDK inventory is unchanged. Windows 1.0.47 (82), r61 publication
+is bound to that master. The earlier unpublished Windows tags are not moved.
+The portal's final Windows fallback targets that replacement release, while
+macOS/Android retain the verified 1.0.45 assets and signed iOS retains its
+original IPA receipt. Final public readback is recorded on #518 before closure.

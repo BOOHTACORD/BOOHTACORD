@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const {resolve}=require('node:path');
 const root=process.env.BOOHTACORD_PORTAL_TEST_ROOT||resolve(__dirname,'../../..');
 // Public releases are source-bound independently of the next build contract.
-const published={windows:'1.0.46',macos:'1.0.45',android:'1.0.45'};
+const published={windows:'1.0.47',macos:'1.0.45',android:'1.0.45'};
 const fallback=published.windows;
 const parts=fallback.split('.').map(Number);parts[2]++;const newer=parts.join('.');
 const html=readFileSync(process.argv[2]||resolve(root,'index.html'),'utf8');
