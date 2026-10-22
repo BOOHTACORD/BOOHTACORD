@@ -27,7 +27,12 @@ class _AdminTelemetryPanelState extends State<AdminTelemetryPanel> {
           ticket.isActive &&
           server == widget.api.transport.session.serverRevision,
     )..addListener(_changed);
-    unawaited(state.load());
+    unawaited(_load());
+  }
+
+  Future<void> _load() async {
+    consent = false;
+    await state.load();
   }
 
   void _changed() {
@@ -144,7 +149,7 @@ class _AdminTelemetryPanelState extends State<AdminTelemetryPanel> {
         if (state.error != null)
           Semantics(liveRegion: true, child: Text(state.error!)),
         TextButton(
-          onPressed: state.busy || !state.active ? null : state.load,
+          onPressed: state.busy || !state.active ? null : _load,
           child: Text(state.busy ? 'Проверяем…' : 'Обновить состояние'),
         ),
       ],

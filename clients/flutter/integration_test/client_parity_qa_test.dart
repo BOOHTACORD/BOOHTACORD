@@ -195,9 +195,11 @@ void main() {
           'password': password,
         });
         final members = await api.members();
-        final target = members.firstWhere((m) => m.id != app.user!.accountId);
         final signedPeer = await peerCall('GET', '/auth/session');
-        expect(signedPeer['account_id'], target.id);
+        final target = members.firstWhere(
+          (m) => m.id == signedPeer['account_id'],
+        );
+        expect(target.id != app.user!.accountId, isTrue);
         final id = await api.openDirectMessage(target.id);
         await app.refreshDirectMessages();
         pair = app.directMessages.firstWhere((dm) => dm.id == id);

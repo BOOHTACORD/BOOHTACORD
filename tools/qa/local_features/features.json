@@ -124,6 +124,15 @@
           "clients/web/tests/connection_status/status.browser.spec.ts"
         ],
         "scope": "Web connection recovery panel preserves independent chat, voice and roster status; retry actions remain separately accessible and operable. Network failures use localized retry guidance instead of raw browser errors or an incorrect login prompt. The panel wraps within a narrow sidebar and uses visible focus and status indicators. No native or media-quality claim."
+      },
+      "client_parity_518": {
+        "focused": [
+          "clients/flutter/integration_test/client_parity_qa_test.dart",
+          "tools/qa/client_parity/native.py",
+          "clients/flutter/test/realtime_scope/delivery_test.dart",
+          "clients/flutter/test/admin_telemetry/api_test.dart"
+        ],
+        "scope": "Owned real Go/PostgreSQL/TLS runtime: durable TEXT/DM replay after socket closure, edits/deletes/social state, ordinary second account, reachable administrator telemetry; Android and iOS have separate runs. Physical media remains NOT_RUN."
       }
     },
     "parity": [
@@ -435,7 +444,8 @@
       "test/screen_fullscreen_renderer_gate_test.dart",
       "test/web_parity/fullscreen_handoff_test.dart",
       "test/web_parity/mini_surface_test.dart",
-      "test/parity518/viewer_commands_test.dart"
+      "test/parity518/viewer_commands_test.dart",
+      "test/parity518/audience_hints_test.dart"
     ],
     "acceptance": {
       "issue325_audio": {
@@ -920,6 +930,15 @@
           "backend/internal/observability/installation/api/handler_test.go"
         ],
         "scope": "Explicit opt-in installation telemetry settings, secret-free state, disabled queue flush and same-origin administrator boundaries; no media changes."
+      },
+      "client_parity_518": {
+        "focused": [
+          "clients/flutter/integration_test/client_parity_qa_test.dart",
+          "tools/qa/client_parity/native.py",
+          "clients/flutter/test/realtime_scope/delivery_test.dart",
+          "clients/flutter/test/admin_telemetry/api_test.dart"
+        ],
+        "scope": "Owned real Go/PostgreSQL/TLS runtime: durable TEXT/DM replay after socket closure, edits/deletes/social state, ordinary second account, reachable administrator telemetry; Android and iOS have separate runs. Physical media remains NOT_RUN."
       }
     },
     "parity": [
@@ -1380,7 +1399,9 @@
     "web": [
       "tests/track_name/playwright.config.ts"
     ],
-    "flutter": [],
+    "flutter": [
+      "test/parity518/audience_hints_test.dart"
+    ],
     "acceptance": {
       "issue327": {
         "browser": "tools/qa/track_name/run.py",
