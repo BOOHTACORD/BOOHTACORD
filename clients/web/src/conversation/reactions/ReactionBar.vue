@@ -9,10 +9,10 @@ let sequence=0,alive=true
 const key=()=>`${props.kind}:${props.conversationId}:${props.messageId}`
 const mine=(emoji:Emoji)=>rows.value.find(row=>row.emoji===emoji)?.mine??false
 const count=(emoji:Emoji)=>rows.value.find(row=>row.emoji===emoji)?.count??0
-async function load():Promise<void> {
+async function load(strict=false):Promise<void> {
   const ticket=++sequence;loading.value=true;error.value=''
   try { const page=await readReactionFor(props.kind,props.conversationId,props.messageId);if(!alive||ticket!==sequence)return;rows.value=page.rows;canPin.value=page.canPin }
-  catch(reason){if(alive&&ticket===sequence){rows.value=[];canPin.value=false;error.value=reason instanceof Error?reason.message:'Реакции недоступны.'}}
+  catch(reason){if(alive&&ticket===sequence){rows.value=[];canPin.value=false;error.value=reason instanceof Error?reason.message:'Реакции недоступны.'}if(strict&&alive&&ticket===sequence)throw reason}
   finally{if(alive&&ticket===sequence)loading.value=false}
 }
 async function toggle(emoji:Emoji):Promise<void> {
@@ -23,7 +23,7 @@ async function toggle(emoji:Emoji):Promise<void> {
   finally{if(alive)busy.value=false}
 }
 watch(()=>[props.kind,props.conversationId,props.messageId],()=>{rows.value=[];canPin.value=false;void load()},{immediate:true})
-const stop=subscribeSocialHints(hint=>{if(!hint||hint.kind===props.kind&&hint.conversationId===props.conversationId&&hint.messageId===props.messageId)void load()})
+const stop=subscribeSocialHints(hint=>{if(!hint||hint.kind===props.kind&&hint.conversationId===props.conversationId&&hint.messageId===props.messageId)return load(true)})
 onBeforeUnmount(()=>{alive=false;sequence++;stop()})
 </script>
 <template>

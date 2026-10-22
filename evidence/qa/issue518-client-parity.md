@@ -75,3 +75,25 @@ release builds already pass the shared explicit Dart identity defines. Defaults
 are now synchronized to 1.0.45/80/r59. The focused profile regression passes;
 the final Flutter/native run and CI verify the corrected source. The original
 red report is retained, not relabeled as a green run.
+
+Final Web parity follow-up: async reaction/pin observers now return their refresh
+work to durable delivery; cursor advancement waits for that work, failures force
+resync, and a late observer after account reset cannot dispatch into the next
+scope. Local UI notifications retain best-effort error presentation. The focused
+regression reproduced the premature cursor (RED); Web full suite then passed
+1610 tests, with a further late-reset regression passing in the focused suite.
+Production Web build passes with the explicit owned QA public origin. A fresh
+actual Go/SFU compact journey is recorded separately, preserving the earlier
+1440/393 acceptance rather than rewriting its source identity.
+
+The final registered Flutter/native run at d3e94cb5 has empty working diff:
+1592 tests plus the existing skip, component captures, Android and iOS smoke all
+PASS. `.out/local-features/20261022-113300/report.json` keeps REVIEW_REQUIRED for
+its broad 157-image gallery. Focused changed-screen review inspected production
+fullscreen and telemetry widgets at portrait/landscape text2, native telemetry,
+DM replay, Guild loading-state captures and profile. No wholesale new baseline
+was approved and no physical-media gate is claimed.
+
+Ordinary macOS candidate at d3e94cb5: build PASS; universal arm64/x86_64,
+ad-hoc signature verified, ZIP 47,507,925 bytes, manifest/checksums generated.
+The public immutable native releases and portal are published after merge.

@@ -1,5 +1,5 @@
 import type { RealtimeEvent } from './realtime_client'
-import { notifySocialHint,notifySocialRecovery } from '../conversation/reactions/hints'
+import { applySocialHint,applySocialRecovery } from '../conversation/reactions/hints'
 
 export type EventHandler = (event: RealtimeEvent) => void | Promise<void>
 type RecoveryHandler = () => void | Promise<void>
@@ -32,26 +32,27 @@ export function createRealtimeDelivery(onEvent: EventHandler, onRecovery: Recove
       const durable = durableKinds.has(event.kind)
       if (durable && seen.has(event.eventId)) continue
       const generation = epoch
+      const current=()=>active&&generation===epoch
+      const chain=(work:void|Promise<void>,next:()=>void|Promise<void>):void|Promise<void> =>
+        work ? work.then(()=>current()?next():undefined) : current()?next():undefined
       let work: void | Promise<void>
       try {
         if (event.kind === 'connection.resync_required') {
           cursor = null
           seen.clear()
           fullResyncNeeded = true
-          work = onEvent(event)
+          work = chain(onEvent(event),applySocialRecovery)
         } else if (event.kind === 'connection.ready') {
           if (!fullResyncNeeded) continue
-          work = onRecovery?.()
+          work = chain(onRecovery?.(),applySocialRecovery)
         } else {
-          notifySocialHint(event)
-          work = onEvent(event)
+          work = chain(applySocialHint(event),()=>onEvent(event))
         }
       } catch (cause) { fail(cause); return }
       const complete = () => {
         if (!active || generation !== epoch) return
         if (durable) remember(event.eventId)
         if (event.kind === 'connection.ready' || event.kind === 'connection.resync_required') fullResyncNeeded = false
-        if (event.kind === 'connection.ready' || event.kind === 'connection.resync_required') notifySocialRecovery()
       }
       if (work && typeof work.then === 'function') {
         busy = true
