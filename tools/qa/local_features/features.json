@@ -1257,6 +1257,13 @@
         ],
         "scope": "At 320x640, an open mobile navigation drawer with an update banner and connection warning keeps the account profile fully visible above the voice dock."
       },
+      "category_context_menu_dismissal": {
+        "browser": "clients/web/tests/accessibility/playwright.config.ts",
+        "focused": [
+          "clients/web/tests/accessibility/category_context_menu_dismissal.browser.spec.ts"
+        ],
+        "scope": "The Web category context menu closes on outside pointer interaction or Escape while preserving the outside action and returning keyboard focus to the category."
+      },
       "issue352": {
         "browser": "clients/web/tests/header_actions/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/header_actions.mjs",
@@ -1395,7 +1402,7 @@
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "This Web screen-viewer overlay styling change is isolated from workspace shell navigation. Web fullscreen controls fade after pointer inactivity; iOS/Android keep their native touch controls because hover-driven hiding is Web-specific. No shell or native runtime behavior change is claimed."
+      "scope": "This Web change makes category context menus dismissible by outside pointer interaction or Escape while preserving outside actions and keyboard focus. Native navigation remains unchanged; no iOS/Android runtime behavior change is claimed."
     }
   },
   "screen_track_name": {
