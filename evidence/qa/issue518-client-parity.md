@@ -154,3 +154,9 @@ a pre-existing SSH listener occupied QA port 4812. That listener was left intact
 the attempt supplies no product PASS. Earlier separate Android/iOS actual-stack
 smokes retain their recorded source/diff identities above, and final-head CI
 passed the common Flutter/native and actual Windows GUI/SFU gates.
+
+Production server/Web delivery completed: Build server 39757666419 and Deploy
+production 39758958966 succeeded. Public /release-receipt.json readback confirms
+version 1.0.45, release_id web-browser-stable-r59 and source revision
+9c221897fdefec8098f707d61ca5b6e8b28bb0bd. The receipt is retained in ignored
+`.out/issue518/web-public-receipt.json`.
