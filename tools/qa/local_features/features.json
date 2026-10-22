@@ -361,6 +361,7 @@
       "clients/flutter/lib/src/widgets/screen*",
       "evidence/qa/flutter-screen-audience-2026-10-21.md",
       "evidence/qa/web-screen-viewer-controls-2026-10-21.md",
+      "evidence/qa/web-screen-viewer-fullscreen-2026-10-22.md",
       "clients/flutter/packages/livekit_client/lib/src/widgets/video_track_renderer*",
       "clients/flutter/ios/ScreenShareExtension/*",
       "clients/flutter/lib/src/services/pinned_screen_mini_player_policy.dart",
@@ -476,7 +477,7 @@
         "focused": [
           "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
         ],
-        "scope": "Mouse movement reveals overlay actions that fade and slide down after inactivity; keyboard focus and touch remain accessible. Actions expand/collapse the viewer, exit browser fullscreen without Escape, and stop viewing a remote screen share."
+        "scope": "Mouse movement reveals overlay actions that fade and slide down after inactivity; keyboard focus and touch remain accessible. The primary overlay action enters/exits browser fullscreen without enabling app-area expansion; the separate menu action expands to the app area. Viewer controls also stop viewing a remote screen share."
       },
       "issue328": {
         "runtime": "tools/qa/macos_sender/run.py",
