@@ -62,6 +62,8 @@ class FailureDiagnosticTests(unittest.TestCase):
             self.assertEqual(last_short_stage_geometry(log), {
                 'height': 160, 'visibleHeight': 82, 'dockHeight': 112, 'dockCoversStage': True,
             })
+            log.write_text('stage=chat-recovery-navigation-open\n')
+            self.assertEqual(last_failure_stage(log), 'chat-recovery-navigation-open')
 
     def test_unknown_fields_stages_or_links_are_rejected(self):
         for case in ('extra', 'stage', 'large', 'link', 'duplicate'):
