@@ -2324,6 +2324,7 @@
         "operationId": "sendDirectMessage",
         "description": "Authenticated participant only. The caller must belong to this DM and both participants must be active; administrator role supplies no exception. Up to ten private attachment_ids must belong to the caller and this DM, and bind atomically to the new message. Reusing the same author-and-DM-scoped client_message_id returns the existing message without adding links.",
         "parameters": [
+          {"name":"X-Boohtacord-Support-Publication","in":"header","required":false,"schema":{"type":"string","enum":["v1"]},"description":"Updated publication-aware client. Product support rejects legacy clients even when the account consented on another device. Ordinary DMs remain compatible; current user consent is enforced separately."},
           {
             "name": "directMessageID",
             "in": "path",
@@ -2348,6 +2349,7 @@
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DirectMessageMessageCreateRequest" } } }
         },
         "responses": {
+          "409": {"description":"Product support requires a publication-aware client; SUPPORT_CLIENT_UPDATE_REQUIRED.","headers":{"X-Request-ID":{"$ref":"#/components/headers/RequestID"}},"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Error"}}}},
           "201": { "description": "Message created or idempotently returned", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DirectMessageMessage" } } },
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
           "400": { "description": "Malformed or oversized message", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },

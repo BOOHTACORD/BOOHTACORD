@@ -81,7 +81,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(TextField), findsNothing);
     expect(find.text('Согласен на публикацию'), findsOneWidget);
-    expect(find.textContaining('доступны всем'), findsOneWidget);
+    expect(find.textContaining('общедоступны'), findsOneWidget);
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox());
   });

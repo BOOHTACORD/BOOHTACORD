@@ -88,12 +88,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "connection_status": {
@@ -175,12 +176,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "voice": {
@@ -300,12 +302,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "screen": {
@@ -651,12 +654,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "screen_metrics": {
@@ -1158,12 +1162,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "shell": {
@@ -1382,12 +1387,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "screen_track_name": {
@@ -1552,6 +1558,7 @@
       "clients/web/src/workspace/WorkspaceApp.vue",
       "clients/web/src/workspace/WorkspaceUserFooter.vue",
       "clients/flutter/lib/src/features/direct/conversations/**",
+      "clients/flutter/lib/src/features/direct/messages/api.dart",
       "clients/flutter/lib/src/features/workspace/**",
       "clients/flutter/lib/src/app/workspace_access/direct_navigation.dart",
       "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/**",
@@ -1629,15 +1636,53 @@
             "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
           }
         }
+      },
+      {
+        "id": "product-support-public-github",
+        "status": "NOT_VERIFIED",
+        "expected": "Default product support opens from ?, requires current explicit consent, publishes a new issue and file, appends follow-ups, and returns a repository writer reply to the same pair; legacy clients cannot publish. The visible warning uses generic public-data disclosure without a provider name or repository link.",
+        "source": "SP-002 / ADR-029 owner decision 2026-10-22",
+        "shipped": "Pending protected master deployment",
+        "issue": 522,
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/support/SupportPublicationConsent.vue",
+            "tests": [
+              "clients/web/src/support/public.spec.ts",
+              "tools/qa/support_contact/public_scenario.mjs"
+            ],
+            "conditions": "Owned real API and intentional synthetic public provider proof. Native OS picker and physical device/media acceptance remain NOT_RUN.",
+            "runtime": "NOT_RUN"
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/workspace/support/consent.dart",
+            "tests": [
+              "clients/flutter/integration_test/support_qa_test.dart",
+              "clients/flutter/integration_test/public_support_fixture.dart"
+            ],
+            "conditions": "Owned real API and intentional synthetic public provider proof. Native OS picker and physical device/media acceptance remain NOT_RUN.",
+            "runtime": "NOT_RUN"
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/workspace/support/consent.dart",
+            "tests": [
+              "clients/flutter/integration_test/support_qa_test.dart",
+              "clients/flutter/integration_test/public_support_fixture.dart"
+            ],
+            "conditions": "Owned real API and intentional synthetic public provider proof. Native OS picker and physical device/media acceptance remain NOT_RUN.",
+            "runtime": "NOT_RUN"
+          }
+        }
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   }
 }

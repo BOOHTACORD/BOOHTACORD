@@ -4,6 +4,12 @@ import { telemetrySession } from '../telemetry/action_scope/session'
 import type { SupportContact } from './contact'
 const accountId='22222222-2222-4222-8222-222222222222'
 beforeEach(()=>telemetrySession.reset())
+it('waits for confirmed metadata when the initial navigation read was superseded',async()=>{
+ let contact:SupportContact={state:'not_configured',revision:0};let reads=0
+ const flow=createSupportOpener({refresh:async()=>{if(++reads>=2)contact={state:'available',revision:2,accountId}},contact:()=>contact,has:()=>true})
+ const id=await flow.openSupport(async()=>new Response(JSON.stringify({id:'pair',participant_one_id:'actor',participant_two_id:accountId,created_at:'2026-10-22T00:00:00Z'})))
+ expect(id).toBe('pair');expect(flow.supportNotice.value).toBeNull()
+})
 it('unconfigured support never creates a DM or sends a message',async()=>{
  let requests=0
  const flow=createSupportOpener({refresh:async()=>{},contact:()=>({state:'not_configured',revision:1}),has:()=>false})

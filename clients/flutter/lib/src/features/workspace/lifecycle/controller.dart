@@ -117,6 +117,7 @@ class WorkspaceController extends ChangeNotifier {
     supportSequence++;
     directNavigationSequence++;
     supportOpening = false;
+    supportConsenting = false;
     searchContextSequence++;
     membersLoading = false;
     loadingSearchContext = false;

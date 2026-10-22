@@ -23,7 +23,7 @@ export function supportPresentation(item: {otherParticipantId: string; otherPart
  return isSupportPeer(item.otherParticipantId, contact) ? 'Поддержка' : item.otherParticipantDisplayName
 }
 export const supportPrivacy = 'Сообщения видит назначенная поддержка этого сервера. Для исправления ошибок команда может создать публичную техническую задачу без вашего текста и файлов.'
-export const publicSupportPrivacy = 'Публичная поддержка: текст и файлы будут доступны всем в GitHub Egkurilov/BOOHTACORD. Не отправляйте пароли и личные данные. Первое сообщение создаёт issue, следующие — комментарии. Изменение или удаление здесь не удаляет публикацию в GitHub.'
-export function supportPrivacyNotice(contact:SupportContact,peer=''):string {return contact.mode!=='product'&&!isProductSupportPeer(peer,contact)?supportPrivacy:contact.repositoryPublic!==false?publicSupportPrivacy:'Текст и файлы передаются поддержке BOOHTACORD в GitHub Egkurilov/BOOHTACORD. Доступ определяется правами репозитория. Изменение или удаление здесь не удаляет публикацию в GitHub.'}
+export const publicSupportPrivacy = 'Сообщения и файлы могут быть общедоступны. Не отправляйте пароли и личные данные.'
+export function supportPrivacyNotice(contact:SupportContact,peer=''):string {return contact.mode!=='product'&&!isProductSupportPeer(peer,contact)?supportPrivacy:publicSupportPrivacy}
 export const supportPrompt = 'Опишите проблему или предложение. Можно прикрепить скриншот'
 export function unavailableSupport(contact: SupportContact): string { return contact.state === 'self' ? 'Вы назначены поддержкой этого сервера. Отвечайте пользователям в обычных личных диалогах.' : contact.state === 'not_configured' ? 'Поддержка этого сервера пока не назначена.' : 'Поддержка этого сервера сейчас недоступна. Повторите позже.' }

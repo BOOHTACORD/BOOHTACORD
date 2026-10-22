@@ -1,7 +1,7 @@
 """Seed only the freshly owned QA database, preserving real API auth limits."""
 import uuid
 import re
-from tools.load.guard.ownership import owned, query, verify_marker
+from tools.load.guard.ownership import owned, query, verify_marker,HUMAN_USERS
 from .request import api
 
 
@@ -20,7 +20,7 @@ def provision(stack, nonce, count):
     if not re.fullmatch("[a-f0-9]{64}", nonce):
         raise ValueError("Invalid private fixture nonce")
     owned(stack, 'db')
-    if query(stack, "SELECT current_database(), count(*) FROM users;") != 'qa|1':
+    if query(stack, "SELECT current_database(), count(*) "+HUMAN_USERS) != 'qa|1':
         raise ValueError('Provisioning requires a new single-admin disposable database')
     rows = account_rows(count)
     values = ','.join(f"('{row['ID']}'::uuid,'{row['Login']}')" for row in rows)

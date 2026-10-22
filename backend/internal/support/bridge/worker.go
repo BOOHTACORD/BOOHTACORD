@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"log/slog"
+	"path/filepath"
 	"time"
 	send "voice-platform/backend/internal/chat/send_direct_message"
 	sendpostgres "voice-platform/backend/internal/chat/send_direct_message/postgres"
@@ -39,7 +40,7 @@ func NewWorker(ctx context.Context, db *pgxpool.Pool, root, endpoint string, eve
 	if err != nil {
 		return Worker{}, err
 	}
-	storage, err := files.NewFileStore(root)
+	storage, err := files.NewFileStore(filepath.Join(root, "unattached"))
 	if err != nil {
 		return Worker{}, err
 	}

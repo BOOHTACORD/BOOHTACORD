@@ -24,11 +24,9 @@ class SupportContact {
   bool get product => mode == 'product';
   bool isProductPeer(String peer) =>
       productAccountId == peer || product && accountId == peer;
-  String privacyFor(String peer) => isProductPeer(peer)
-      ? productSupportPrivacy(repositoryPublic)
-      : privacyNotice;
-  String get privacyNotice =>
-      product ? productSupportPrivacy(repositoryPublic) : supportPrivacy;
+  String privacyFor(String peer) =>
+      isProductPeer(peer) ? publicSupportPrivacy : privacyNotice;
+  String get privacyNotice => product ? publicSupportPrivacy : supportPrivacy;
   SupportContact get unavailable => SupportContact(
     state: 'unavailable',
     revision: revision,

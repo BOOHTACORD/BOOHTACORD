@@ -103,7 +103,7 @@ void main() {
     expect(state.supportContact.consentRequired, isTrue);
     expect(find.text('Согласен на публикацию'), findsOneWidget);
     expect(state.selectedDirectMessage, isNotNull);
-    expect(find.textContaining('доступны всем'), findsOneWidget);
+    expect(find.textContaining('общедоступны'), findsOneWidget);
     await binding.takeScreenshot('native-public-support-default');
     await tester.pumpAndSettle();
     expect(find.byTooltip('Закрыть навигацию').hitTestable(), findsNothing);

@@ -12,13 +12,20 @@ def main():
     if not re.fullmatch('Synthetic BOOHTACORD public bridge QA [a-f0-9]{16}',marker) or phase not in {'reply','followup','close'}:
         raise ValueError('Only the fixed synthetic public proof is allowed')
     config=json.loads(Path(os.environ['BOOHTACORD_SUPPORT_QA_OPERATOR']).read_text())
+    wait=int(os.environ.get('BOOHTACORD_SUPPORT_PROOF_WAIT','0'))
+    if not 0<=wait<=240:raise ValueError('Invalid bounded proof wait')
     if config['host']!='root@167.233.56.32':raise ValueError('Select the existing support gateway operator')
     args=['ssh','-F','/dev/null','-i',config['identity'],'-o','IdentitiesOnly=yes','-o','BatchMode=yes',
           '-o','ConnectTimeout=8','-o','StrictHostKeyChecking=yes','-o','UserKnownHostsFile='+config['known_hosts'],config['host'],'python3 -']
-    script='''import hashlib,json,re,sqlite3,subprocess,sys,urllib.request
-marker=MARKER;phase=PHASE
+    if config.get('control_path'):
+        args[1:1]=['-o','ControlMaster=auto','-o','ControlPersist=60','-o','ControlPath='+config['control_path']]
+    script='''import hashlib,json,re,sqlite3,subprocess,sys,time,urllib.request
+marker=MARKER;phase=PHASE;deadline=time.monotonic()+WAIT
 db=sqlite3.connect('/var/lib/boohtacord-support/routing.sqlite')
-row=db.execute("SELECT issue FROM jobs WHERE state='published' AND json_extract(payload,'$.body')=?",(marker+(' follow-up' if phase=='followup' else ''),)).fetchone()
+while True:
+ row=db.execute("SELECT issue FROM jobs WHERE state='published' AND json_extract(payload,'$.body')=?",(marker+(' follow-up' if phase=='followup' else ''),)).fetchone()
+ if row or time.monotonic()>=deadline:break
+ time.sleep(2)
 if not row:sys.exit(75)
 issue=row[0];repo='repos/Egkurilov/BOOHTACORD'
 def api(path,method='GET',data=None):
@@ -40,9 +47,9 @@ if phase=='reply':
  assert content==b'Synthetic public support QA file\\n'
  result['public_file_verified']=True
 print(json.dumps(result))
-'''.replace('MARKER',repr(marker)).replace('PHASE',repr(phase))
+'''.replace('MARKER',repr(marker)).replace('PHASE',repr(phase)).replace('WAIT',str(wait))
     for _ in range(15):
-        result=subprocess.run(args,input=script.encode(),capture_output=True,timeout=50)
+        result=subprocess.run(args,input=script.encode(),capture_output=True,timeout=wait+50)
         if result.returncode==0:
             print(json.dumps(json.loads(result.stdout)));return
         if result.returncode!=75:raise RuntimeError('Controlled live operator proof failed; no provider payload logged')

@@ -11,6 +11,8 @@ import 'package:boohtacord_desktop/src/app.dart';
 import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 
+import 'public_support_fixture.dart';
+
 class OwnedTls extends HttpOverrides {
   OwnedTls(this.pin);
   final String pin;
@@ -43,10 +45,11 @@ void main() {
       addTearDown(state.dispose);
       await tester.pumpWidget(BoohtacordApp(state: state));
       await tester.runAsync(state.initialize);
-      await tester.pumpAndSettle();
+      debugPrint('support_qa_phase=initialized');
+      await tester.pump(const Duration(milliseconds: 500));
       if (Platform.isAndroid) {
         await binding.convertFlutterSurfaceToImage();
-        await tester.pumpAndSettle();
+        await tester.pump(const Duration(milliseconds: 500));
       }
       final fields = find.byType(TextFormField);
       await tester.enterText(fields.at(0), 'qa_support_a');
@@ -58,7 +61,8 @@ void main() {
         await tester.pump(const Duration(milliseconds: 250));
       }
       expect(state.phase, AppPhase.ready);
-      await tester.pumpAndSettle();
+      debugPrint('support_qa_phase=authenticated');
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byTooltip('Помощь и обратная связь'));
       for (
         var i = 0;
@@ -68,12 +72,12 @@ void main() {
       ) {
         await tester.pump(const Duration(milliseconds: 250));
       }
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
       expect(state.supportAvailable, isTrue);
+      debugPrint('support_qa_phase=contact_ready');
       final pair = state.selectedDirectMessage!;
       expect(state.isSupportConversation(pair), isTrue);
       expect(find.text('Поддержка').hitTestable(), findsOneWidget);
-      await binding.takeScreenshot('native-support-pair-empty');
       final composer = find.byWidgetPredicate(
         (w) =>
             w is TextField && w.decoration?.hintText == 'Написать сообщение…',
@@ -82,22 +86,34 @@ void main() {
         expect(state.supportContact.product, isTrue);
         expect(state.supportContact.consentRequired, isTrue);
         expect(composer, findsNothing);
-        expect(find.textContaining('доступны всем'), findsOneWidget);
+        expect(find.textContaining('общедоступны'), findsOneWidget);
         await binding.takeScreenshot('native-public-support-consent');
         await tester.tap(find.text('Согласен на публикацию'));
         for (var i = 0; i < 120 && state.supportContact.consentRequired; i++) {
           await tester.pump(const Duration(milliseconds: 250));
         }
-        await tester.pumpAndSettle();
+        await tester.pump(const Duration(milliseconds: 500));
         expect(state.supportContact.consentRequired, isFalse);
         expect(composer, findsOneWidget);
-        expect(find.textContaining('доступны всем'), findsOneWidget);
+        expect(find.textContaining('общедоступны'), findsOneWidget);
         await binding.takeScreenshot('native-public-support-consented');
+        const marker = String.fromEnvironment('QA_PUBLIC_MARKER');
+        if (marker.isNotEmpty) {
+          await verifyPublicSupportBridge(
+            tester,
+            binding,
+            state,
+            api,
+            pair.id,
+            marker,
+          );
+        }
         expect(tester.takeException(), isNull);
         await tester.runAsync(state.logout);
-        await tester.pumpAndSettle();
+        await tester.pump(const Duration(milliseconds: 500));
         return;
       }
+      await binding.takeScreenshot('native-support-pair-empty');
       await tester.enterText(composer, 'Synthetic native request');
       await tester.pump();
       await tester.tap(find.byTooltip('Отправить личное сообщение'));
@@ -117,7 +133,7 @@ void main() {
         ),
         isTrue,
       );
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
       await binding.takeScreenshot('native-support-pair-sent');
       await tester.runAsync(() async {
         final file = await api.uploadDirectMessageAttachment(
@@ -133,7 +149,7 @@ void main() {
         );
         await state.openDirectConversation(pair);
       });
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
       expect(find.text('synthetic-native.txt'), findsOneWidget);
       final operator = HttpClient();
       addTearDown(() => operator.close(force: true));
@@ -180,19 +196,19 @@ void main() {
         ),
         isTrue,
       );
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
       await binding.takeScreenshot('native-support-pair-replied');
       final same = await tester.runAsync(state.openSupport);
       expect(same, isTrue);
       expect(state.selectedDirectMessage?.id, pair.id);
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
       expect(tester.takeException(), isNull);
       await tester.tap(find.byTooltip('Открыть навигацию'));
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
       await binding.takeScreenshot('native-support-pair-pinned');
       expect(tester.takeException(), isNull);
       await tester.runAsync(state.logout);
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
       expect(state.phase, AppPhase.signedOut);
     },
   );

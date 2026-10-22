@@ -4,8 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/google/uuid"
+	"io"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"voice-platform/backend/internal/database/migrate"
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
@@ -35,16 +37,29 @@ func TestWorkerOnlyExportsNewConsentedSupportAndImportsReplyExactlyOnce(t *testi
 	if _, err := db.Exec(ctx, `INSERT INTO support_public_consents(user_id,notice_version) VALUES($1,1)`, actor); err != nil {
 		t.Fatal(err)
 	}
-	for _, dm := range []string{supportDM, ordinary} {
-		if _, err := db.Exec(ctx, `INSERT INTO direct_message_messages(id,direct_message_id,author_id,client_message_id,body) VALUES($1,$2,$3,$4,'Synthetic public test')`, uuid.NewString(), dm, actor, uuid.NewString()); err != nil {
+	messageID := uuid.NewString()
+	for index, dm := range []string{supportDM, ordinary} {
+		id := messageID
+		if index != 0 {
+			id = uuid.NewString()
+		}
+		if _, err := db.Exec(ctx, `INSERT INTO direct_message_messages(id,direct_message_id,author_id,client_message_id,body) VALUES($1,$2,$3,$4,'Synthetic public test')`, id, dm, actor, uuid.NewString()); err != nil {
 			t.Fatal(err)
 		}
 	}
+	root, fixture := seedPublicFile(t, db, actor, supportDM, messageID)
 	exports := 0
+	uploaded := false
 	conversation := ""
 	invalid := false
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
+		if r.Method == "PUT" && strings.HasPrefix(r.URL.Path, "/support/v1/blobs/") {
+			body, _ := io.ReadAll(r.Body)
+			uploaded = string(body) == string(fixture)
+			w.WriteHeader(200)
+			return
+		}
 		switch r.URL.Path {
 		case "/support/v1/status":
 			json.NewEncoder(w).Encode(map[string]any{"notice_version": 1, "public": true, "repository": "Egkurilov/BOOHTACORD"})
@@ -55,7 +70,7 @@ func TestWorkerOnlyExportsNewConsentedSupportAndImportsReplyExactlyOnce(t *testi
 			}
 			exports++
 			conversation = payload.Conversation
-			if payload.Body != "Synthetic public test" || payload.Consent != 1 || conversation == supportDM || payload.Operation == "" {
+			if payload.Body != "Synthetic public test" || payload.Consent != 1 || conversation == supportDM || payload.Operation == "" || len(payload.Files) != 1 {
 				invalid = true
 			}
 			w.WriteHeader(202)
@@ -71,7 +86,7 @@ func TestWorkerOnlyExportsNewConsentedSupportAndImportsReplyExactlyOnce(t *testi
 		}
 	}))
 	defer server.Close()
-	worker, err := NewWorker(ctx, db, t.TempDir(), server.URL+"/support/v1", eventhub.New(64))
+	worker, err := NewWorker(ctx, db, root, server.URL+"/support/v1", eventhub.New(64))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -88,7 +103,7 @@ func TestWorkerOnlyExportsNewConsentedSupportAndImportsReplyExactlyOnce(t *testi
 	if err = db.QueryRow(ctx, `SELECT count(*) FROM support_public_outbox WHERE delivered_at IS NULL`).Scan(&pending); err != nil {
 		t.Fatal(err)
 	}
-	if invalid || exports != 1 || replies != 1 || pending != 0 {
+	if invalid || !uploaded || exports != 1 || replies != 1 || pending != 0 {
 		t.Fatalf("unsafe bridge result exports=%d replies=%d pending=%d", exports, replies, pending)
 	}
 }

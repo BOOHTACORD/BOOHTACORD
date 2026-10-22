@@ -15,7 +15,7 @@ void main() {
         'repository_public': true,
       });
       expect(contact.isProductPeer(peer), isTrue);
-      expect(contact.privacyFor(peer), contains('доступны всем'));
+      expect(contact.privacyFor(peer), contains('общедоступны'));
     },
   );
   test(
@@ -34,7 +34,7 @@ void main() {
       expect(contact.product, isTrue);
       expect(contact.consentRequired, isTrue);
       expect(contact.matches(peer), isTrue);
-      expect(contact.privacyNotice, contains('доступны всем'));
+      expect(contact.privacyNotice, contains('общедоступны'));
       expect(
         SupportContact.fromJson({
           'state': 'available',

@@ -96,12 +96,6 @@ func Run(ctx context.Context) (result error) {
 	resources.Add(func(context.Context) error { return stopUsage() })
 	events, stopRealtime := workerruntime.StartRealtime(ctx, database)
 	resources.Add(stopRealtime)
-	supportWorker, supportErr := supportbridge.NewWorker(ctx, database, configuration.AttachmentRoot, os.Getenv("PRODUCT_SUPPORT_ENDPOINT"), events)
-	if supportErr != nil {
-		slog.Warn("product support worker unavailable")
-	} else {
-		resources.Add(supportWorker.Start(ctx))
-	}
 	screenViewers := presencememory.New(screenviewerpresenceapp.NewHints(events).Changed)
 	resources.Add(func(context.Context) error { return screenViewers.Close() })
 	updates := clientupdates.NewStore(configuration.ClientUpdateCatalogPath, configuration.ClientUpdateAllowedHosts, metrics)
@@ -109,6 +103,13 @@ func Run(ctx context.Context) (result error) {
 	handler, err := routes(database, configuration, events, metrics, updates, usage, previews, screenViewers)
 	if err != nil {
 		return err
+	}
+	// Storage route composition has now created the same private file directory used by downloads.
+	supportWorker, supportErr := supportbridge.NewWorker(ctx, database, configuration.AttachmentRoot, os.Getenv("PRODUCT_SUPPORT_ENDPOINT"), events)
+	if supportErr != nil {
+		slog.Warn("product support worker unavailable")
+	} else {
+		resources.Add(supportWorker.Start(ctx))
 	}
 	space, err := reserve.NewFilesystem(configuration.AttachmentRoot)
 	if err != nil {
