@@ -54,9 +54,7 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     await sender.screenshot({ path: input.directory + '/screen-share-owner-preview.png' })
     const ownerViewport = sender.viewportSize()
     assert.ok(ownerViewport)
-    // The receiver is the active tab after selecting it for the SFU checks.
-    // Chromium may throttle decoded frames in a background page, so keep the
-    // owner's preview active while validating playback through a short resize.
+    // Keep the owner's preview active while validating playback through a short resize.
     await sender.bringToFront()
     const framesBeforeShortViewport = await sender.locator('video.screen-player').evaluate(video => video.getVideoPlaybackQuality().totalVideoFrames)
     await sender.setViewportSize({ width: ownerViewport.width, height: 208 })
@@ -73,11 +71,11 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     await expect.poll(() => sender.locator('video.screen-player').evaluate(video => video.getVideoPlaybackQuality().totalVideoFrames), { timeout: 5000 }).toBeGreaterThan(framesBeforeShortViewport)
     await sender.screenshot({ path: input.directory + '/screen-share-owner-preview-short-height.png' })
     await sender.setViewportSize(ownerViewport)
+    await openViewerPanel(sender, 'participants')
     await expect(sender.getByRole('status', { name: 'Зрители трансляции: 0' })).toBeVisible()
     await selectVisibleStream(receiver)
     await expect.poll(() => receiver.locator('video.screen-player').evaluate(video => video.videoWidth > 0 && video.getVideoPlaybackQuality().totalVideoFrames > 0), { timeout: 30000 }).toBe(true)
     await openViewerPanel(receiver, 'participants')
-    await openViewerPanel(sender, 'participants')
     const receiverParticipants = receiver.getByTestId('viewer-participants')
     await expect(receiverParticipants.getByRole('status', { name: 'Зрители трансляции: 1' })).toBeVisible({ timeout: 15000 })
     await expect(receiverParticipants.getByRole('img', { name: 'Смотрит эту трансляцию' })).toHaveCount(1)
