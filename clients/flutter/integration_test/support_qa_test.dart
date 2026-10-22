@@ -78,6 +78,26 @@ void main() {
         (w) =>
             w is TextField && w.decoration?.hintText == 'Написать сообщение…',
       );
+      if (const bool.fromEnvironment('QA_PRODUCT_SUPPORT')) {
+        expect(state.supportContact.product, isTrue);
+        expect(state.supportContact.consentRequired, isTrue);
+        expect(composer, findsNothing);
+        expect(find.textContaining('доступны всем'), findsOneWidget);
+        await binding.takeScreenshot('native-public-support-consent');
+        await tester.tap(find.text('Согласен на публикацию'));
+        for (var i = 0; i < 120 && state.supportContact.consentRequired; i++) {
+          await tester.pump(const Duration(milliseconds: 250));
+        }
+        await tester.pumpAndSettle();
+        expect(state.supportContact.consentRequired, isFalse);
+        expect(composer, findsOneWidget);
+        expect(find.textContaining('доступны всем'), findsOneWidget);
+        await binding.takeScreenshot('native-public-support-consented');
+        expect(tester.takeException(), isNull);
+        await tester.runAsync(state.logout);
+        await tester.pumpAndSettle();
+        return;
+      }
       await tester.enterText(composer, 'Synthetic native request');
       await tester.pump();
       await tester.tap(find.byTooltip('Отправить личное сообщение'));

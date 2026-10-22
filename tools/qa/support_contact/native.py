@@ -49,19 +49,21 @@ def main():
                         '-v', 'ON_ERROR_STOP=1', '-c', sql, stdout=subprocess.DEVNULL)
                     account = output('docker', 'exec', stack.owner + '-db', 'psql', '-U', 'qa', '-d', 'qa',
                                      '-At', '-c', "SELECT id FROM users WHERE login='qa_support_s'")
-                    run('docker', 'exec', stack.owner + '-api', '/support-contact', 'set', '--account-id', account,
-                        stdout=subprocess.DEVNULL)
                     with socket.create_connection(('127.0.0.1', 4810), timeout=5) as plain:
                         with ssl._create_unverified_context().wrap_socket(plain, server_hostname='localhost') as secure:
                             pin = hashlib.sha256(secure.getpeercert(binary_form=True)).hexdigest()
                     defines = work / 'defines.json'
-                    defines.write_text(json.dumps({'QA_API_BASE': 'https://localhost:4810/api/v1',
-                                                   'QA_CERT_SHA256': pin, 'QA_PASSWORD': stack.password}))
-                    defines.chmod(0o600)
-                    run_owned(['flutter', 'drive', '--driver', 'test_driver/local_qa.dart',
-                               '--target', 'integration_test/support_qa_test.dart', '-d', args.device,
-                               '--dart-define-from-file', str(defines)], cwd=ROOT / 'clients/flutter',
-                              env=dict(os.environ, BOOHTACORD_NATIVE_CAPTURE_DIR=str(destination)), timeout=600)
+                    for product in [True,False]:
+                        if not product:
+                            run('docker','exec',stack.owner+'-api','/support-contact','set','--account-id',account,stdout=subprocess.DEVNULL)
+                        defines.write_text(json.dumps({'QA_API_BASE':'https://localhost:4810/api/v1','QA_CERT_SHA256':pin,
+                                                       'QA_PASSWORD':stack.password,'QA_PRODUCT_SUPPORT':product}))
+                        defines.chmod(0o600)
+                        run_owned(['flutter','drive','--driver','test_driver/local_qa.dart',
+                                   '--target','integration_test/support_qa_test.dart','-d',args.device,
+                                   '--dart-define-from-file',str(defines)],cwd=ROOT/'clients/flutter',
+                                  env=dict(os.environ,BOOHTACORD_NATIVE_CAPTURE_DIR=str(destination)),timeout=600)
+                        report['public_consent_runtime' if product else 'local_operator_runtime']='PASS'
                 finally:
                     stack.close()
                 report['owned_resources_removed'] = True

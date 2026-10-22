@@ -8,6 +8,15 @@ import 'support_contact.dart';
 class DirectConversationsApi {
   DirectConversationsApi(this.transport);
   final ApiTransport transport;
+  Future<void> acceptSupportPublication(int version) async {
+    await transport.checked(
+      await transport.client.post(
+        transport.uri('/support/consent'),
+        headers: await transport.headers(jsonBody: true),
+        body: jsonEncode({'notice_version': version}),
+      ),
+    );
+  }
 
   Future<List<DirectConversation>> directMessages() async {
     final data = await transport.checked(

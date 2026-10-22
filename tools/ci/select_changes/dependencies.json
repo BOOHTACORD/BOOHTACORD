@@ -2,6 +2,12 @@
   "version": 1,
   "rules": [
     {
+      "paths": ["support_gateway/**", "tests/support_gateway/**"],
+      "gates": ["contracts"],
+      "server": false,
+      "native": false
+    },
+    {
       "paths": [
         "tools/qa/local_features/features.json"
       ],

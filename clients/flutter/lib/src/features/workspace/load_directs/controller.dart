@@ -33,7 +33,7 @@ extension WorkspaceDirects on WorkspaceController {
       }
     } catch (cause) {
       if (accepts(ticket) && sequence == directNavigationSequence) {
-        supportContact = const SupportContact(state: 'unavailable');
+        supportContact = supportContact.unavailable;
         effects.error(effects.message(cause));
       }
     }

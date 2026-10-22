@@ -16,6 +16,7 @@ export '../load_members/controller.dart';
 export '../load_topology/controller.dart';
 export '../load_directs/controller.dart';
 export '../support/open.dart';
+export '../support/consent.dart';
 export '../search/navigation.dart';
 export '../search/context.dart';
 export '../search/resolve.dart';
@@ -34,6 +35,7 @@ class WorkspaceController extends ChangeNotifier {
   List<DirectConversation> directMessages = const [];
   SupportContact supportContact = const SupportContact();
   bool supportOpening = false, supportChanged = false;
+  bool supportConsenting = false;
   String? supportNotice;
   int supportSequence = 0, directNavigationSequence = 0;
   bool isSupportConversation(DirectConversation value) =>

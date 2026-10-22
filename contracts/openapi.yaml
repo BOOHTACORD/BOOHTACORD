@@ -6,6 +6,23 @@
     "description": "Public HTTP API for one deployment guild. Cookie sessions and server ACL protect resources. Every public POST/PUT/PATCH/DELETE requires the exact configured Origin (CSRF boundary), including anonymous auth operations. WebSocket handshake checks same host when Origin is present. Response X-Request-ID is server generated. Most JSON errors use Error; compact code-only errors, flat client-update errors, empty bodies and text/stream errors are described where emitted. Wrong method/unmatched paths are ServeMux operational responses outside declared operations."
   },
   "paths": {
+    "/api/v1/support/consent": {
+      "post": {
+        "operationId": "acceptProductSupportPublication",
+        "parameters": [{"name":"Origin","in":"header","required":true,"schema":{"type":"string"}}],
+        "description": "Authenticated same-origin explicit agreement to the current product support notice. Only the caller's consent is recorded. A public repository makes future support text/files public. No ordinary or historical DM is exported. Returns 409 if the notice or product contact changed.",
+        "security": [{"SessionCookie": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"type": "object", "additionalProperties": false, "required": ["notice_version"], "properties": {"notice_version": {"type": "integer", "minimum": 1, "maximum": 1000000}}}}}},
+        "responses": {
+          "204": {"description": "Current notice explicitly accepted; empty body.","headers":{"X-Request-ID":{"$ref":"#/components/headers/RequestID"}}},
+          "400": {"description": "Missing, invalid or unknown fields; empty body.","headers":{"X-Request-ID":{"$ref":"#/components/headers/RequestID"}}},
+          "401": {"description": "Authentication required.","headers":{"X-Request-ID":{"$ref":"#/components/headers/RequestID"}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}},
+          "403": {"description": "Origin rejected.","headers":{"X-Request-ID":{"$ref":"#/components/headers/RequestID"}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}},
+          "409": {"description": "Contact or notice changed, or unavailable; empty body.","headers":{"X-Request-ID":{"$ref":"#/components/headers/RequestID"}}},
+          "500": {"description": "Session authentication dependency failed; empty body.","headers":{"X-Request-ID":{"$ref":"#/components/headers/RequestID"}}}
+        }
+      }
+    },
     "/api/v1/channels/{channelID}/message-reactions": {
       "get": {
         "operationId": "listTextMessageReactions",
@@ -8139,9 +8156,14 @@
         "properties": {
           "state": { "type": "string", "enum": ["available", "not_configured", "unavailable", "self"] },
           "revision": { "type": "integer", "minimum": 0 },
-          "account_id": { "type": "string", "format": "uuid", "description": "Present only for the active server-assigned other participant. Presentation alias only; normal pair ACL remains mandatory." }
+          "account_id": { "type": "string", "format": "uuid", "description": "Active local operator or non-login product service peer. Normal pair ACL remains mandatory." },
+          "mode": {"type": "string", "enum": ["product", "local", "disabled"]},
+          "product_account_id": {"type":"string","format":"uuid","description":"Non-login local product peer, retained to mark previously public support history after a local override; grants no reading rights."},
+          "notice_version": {"type": "integer", "minimum": 1},
+          "repository_public": {"type": "boolean"},
+          "consent_required": {"type": "boolean"}
         },
-        "description": "Local support operator metadata, not a privileged inbox. Older servers may omit this field. Unconfigured, blocked, missing or self contacts do not expose an actionable account. A replacement creates a new ordinary pair; old participants/history never change."
+        "description": "ADR-029 product support defaults to a non-login local service peer and explicitly consented GitHub publication. Explicit local operator/disabled overrides survive migration. Older servers may omit this metadata. Replacement never rewrites old pair participants/history. Public/private notice and consent apply only to new product support messages."
       },
       "DirectMessageListItem": {
         "type": "object",

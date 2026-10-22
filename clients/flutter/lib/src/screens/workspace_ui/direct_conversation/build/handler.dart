@@ -1,4 +1,5 @@
 import '../../../../features/direct/conversations/support_contact.dart';
+import '../../support_contact/publication.dart';
 import 'history_list/handler.dart';
 import 'composer_region/handler.dart';
 import '../../error_banner/component.dart';
@@ -65,17 +66,9 @@ extension WorkspaceDirectConversationStateBuildAction
           ),
         ),
         if (widget.state.isSupportConversation(widget.conversation))
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 88),
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(
-                widget.state.supportChanged
-                    ? 'Оператор поддержки изменился. Старые диалоги сохраняют прежних участников и историю. $supportPrivacy'
-                    : supportPrivacy,
-                style: const TextStyle(color: GcColors.muted, fontSize: 12),
-              ),
-            ),
+          SupportPublicationNotice(
+            state: widget.state,
+            conversation: widget.conversation,
           ),
         if (widget.state.error != null)
           WorkspaceErrorBanner(message: widget.state.error!),
@@ -112,11 +105,12 @@ extension WorkspaceDirectConversationStateBuildAction
                   olderDirectHistoryError,
                 ),
         ),
-        renderDirectConversationComposerRegion(
-          compact,
-          composerBorderRadius,
-          compactComposerActions,
-        ),
+        if (!widget.state.supportPublicationBlocked(widget.conversation))
+          renderDirectConversationComposerRegion(
+            compact,
+            composerBorderRadius,
+            compactComposerActions,
+          ),
       ],
     );
   }

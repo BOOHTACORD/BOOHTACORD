@@ -21,6 +21,7 @@ WHERE s.token_digest = $1
   AND s.expires_at > now()
   AND s.last_active_at > now() - ($2::double precision * interval '1 second')
   AND u.blocked_at IS NULL
+  AND NOT EXISTS(SELECT 1 FROM support_product_identity WHERE account_id=u.id)
 ), touched AS (
  UPDATE sessions SET last_active_at=now()
  WHERE token_digest=$1 AND EXISTS(SELECT 1 FROM active)

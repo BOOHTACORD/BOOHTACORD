@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "scope": "Central gateway HTTPS/signature/file/issue/operator-reply transport only; this is not application deployment or native acceptance.",
+  "date": "2026-10-22",
+  "repository": "Egkurilov/BOOHTACORD",
+  "public_test_issue": "https://github.com/Egkurilov/BOOHTACORD/issues/521",
+  "operator_comment_id": 6337476042,
+  "deployed_gateway_archive_sha256": "f8077bf75555168272fb57818891dd4ba5327a96cd5bcd7477a4827702bd40be",
+  "data": "Synthetic fixture only. No real account, session, installation or DM identifiers, messages or files exported.",
+  "checks": {
+    "https_ingress": "PASS",
+    "ed25519_signed_message_and_blob": "PASS",
+    "durable_issue_publication": "PASS",
+    "public_file_download_matches_fixture_bytes": "PASS",
+    "operator_comment_returned_to_same_signed_tenant_and_conversation": "PASS",
+    "gateway_focused_tests_on_host": "14 PASS",
+    "application_browser_round_trip": "NOT_RUN in this record",
+    "android_and_ios_runtime": "NOT_RUN in this record"
+  }
+}

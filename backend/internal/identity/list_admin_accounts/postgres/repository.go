@@ -10,7 +10,7 @@ import (
 const listAccounts = `
 SELECT id::text, login, display_name, role, blocked_at IS NOT NULL, created_at, updated_at
 FROM users
-WHERE ($1::uuid IS NULL OR id > $1::uuid)
+WHERE NOT EXISTS(SELECT 1 FROM support_product_identity WHERE account_id=users.id) AND ($1::uuid IS NULL OR id > $1::uuid)
 ORDER BY id ASC LIMIT $2`
 
 type Rows interface {

@@ -26,6 +26,7 @@ import (
 	ratelimit "voice-platform/backend/internal/security/rate_limit"
 	writerlock "voice-platform/backend/internal/storage/acquire_writer_lock"
 	reserve "voice-platform/backend/internal/storage/reserve_upload_space"
+	supportbridge "voice-platform/backend/internal/support/bridge"
 )
 
 func Run(ctx context.Context) (result error) {
@@ -95,6 +96,12 @@ func Run(ctx context.Context) (result error) {
 	resources.Add(func(context.Context) error { return stopUsage() })
 	events, stopRealtime := workerruntime.StartRealtime(ctx, database)
 	resources.Add(stopRealtime)
+	supportWorker, supportErr := supportbridge.NewWorker(ctx, database, configuration.AttachmentRoot, os.Getenv("PRODUCT_SUPPORT_ENDPOINT"), events)
+	if supportErr != nil {
+		slog.Warn("product support worker unavailable")
+	} else {
+		resources.Add(supportWorker.Start(ctx))
+	}
 	screenViewers := presencememory.New(screenviewerpresenceapp.NewHints(events).Changed)
 	resources.Add(func(context.Context) error { return screenViewers.Close() })
 	updates := clientupdates.NewStore(configuration.ClientUpdateCatalogPath, configuration.ClientUpdateAllowedHosts, metrics)

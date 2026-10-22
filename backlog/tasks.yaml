@@ -813,3 +813,8 @@ tasks:
     requirements: [REQ-DM-01, REQ-UI-01, REQ-UI-02, REQ-SECURITY-02, REQ-STORAGE-01]
     depends_on: [T-010, T-041, T-044]
     evidence: [backend/internal/support/contact/contact_test.go, clients/web/src/support/contact.spec.ts, clients/flutter/test/support/contact_test.dart, evidence/qa/issue516-support-dm.md]
+  - id: SP-002
+    title: Opt-in public product support DM to GitHub issue and reply bridge
+    requirements: [REQ-DM-01, REQ-UI-01, REQ-UI-02, REQ-SECURITY-02, REQ-STORAGE-01]
+    depends_on: [SP-001, T-052, T-054]
+    evidence: [docs/adr/ADR-029-product-support-github-bridge.md, tests/support_gateway, evidence/qa/sp002-public-gateway-2026-10-22.json]

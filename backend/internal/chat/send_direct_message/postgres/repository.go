@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	senddirectmessage "voice-platform/backend/internal/chat/send_direct_message"
 	flowstage "voice-platform/backend/internal/observability/flow_stage"
 )
@@ -108,6 +109,10 @@ func (repository Repository) Send(context context.Context, request senddirectmes
 		return senddirectmessage.Result{}, senddirectmessage.ErrDirectMessageUnavailable
 	}
 	if err != nil {
+		var denied *pgconn.PgError
+		if errors.As(err, &denied) && denied.Code == "42501" {
+			return senddirectmessage.Result{}, senddirectmessage.ErrDirectMessageUnavailable
+		}
 		return senddirectmessage.Result{}, fmt.Errorf("insert direct message: %w", err)
 	}
 	if result.ID == request.ID {

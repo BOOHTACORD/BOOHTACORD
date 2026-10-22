@@ -26,6 +26,39 @@ const other = DirectConversation(
   unreadCount: 0,
 );
 void main() {
+  testWidgets('public support hides the composer until explicit consent', (
+    tester,
+  ) async {
+    final state = AppState(ApiClient());
+    state.user = const SessionUser(accountId: 'qa-account', role: 'MEMBER');
+    addTearDown(state.dispose);
+    state.workspace.supportContact = const SupportContact(
+      state: 'available',
+      revision: 2,
+      accountId: peer,
+      mode: 'product',
+      noticeVersion: 1,
+      consentRequired: true,
+      repositoryPublic: true,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: guildTheme(),
+        home: Scaffold(
+          body: WorkspaceDirectConversation(
+            state: state,
+            conversation: support,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(TextField), findsNothing);
+    expect(find.text('Согласен на публикацию'), findsOneWidget);
+    expect(find.textContaining('доступны всем'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+  });
   testWidgets(
     'support uses ordinary composer and retains other conversation draft',
     (tester) async {

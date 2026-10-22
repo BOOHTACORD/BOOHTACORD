@@ -14,7 +14,7 @@ import (
 const selectLoginAccount = `
 SELECT id::text, login, password_hash, blocked_at IS NOT NULL
 FROM users
-WHERE login = $1`
+WHERE login = $1 AND NOT EXISTS(SELECT 1 FROM support_product_identity WHERE account_id=users.id)`
 
 const insertSession = `
 INSERT INTO sessions (token_digest, user_id, expires_at)

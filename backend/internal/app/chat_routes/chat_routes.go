@@ -66,6 +66,7 @@ import (
 )
 
 func ConfigureChatRoutes(mux *http.ServeMux, database *pgxpool.Pool, sessions authenticatesession.Service, events *eventhub.Hub) {
+	mux.Handle("POST /api/v1/support/consent", sessionapi.Require(sessions)(support.ConsentHandler(support.New(database))))
 	configureDeliveryRoutes(mux, database, sessions)
 	service := createtextmessage.New(messagepostgres.New(messagepostgres.NewPoolDatabase(database)))
 	editService := edittextmessage.New(editpostgres.New(editpostgres.NewPoolDatabase(database)))

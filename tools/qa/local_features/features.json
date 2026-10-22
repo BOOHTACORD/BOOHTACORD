@@ -811,6 +811,9 @@
   },
   "support": {
     "paths": [
+      "support_gateway/**",
+      "tests/support_gateway/**",
+      "docs/adr/ADR-029-product-support-github-bridge.md",
       "backend/cmd/support_contact/**",
       "backend/internal/support/**",
       "backend/internal/chat/list_direct_messages/**",
@@ -856,7 +859,7 @@
     "acceptance": {
       "issue516": {
         "browser": "tools/qa/support_contact/run.py",
-        "scope": "Owned real API ordinary A/B/S support DM text/files/replies, pair-only ACL, replacement and responsive captures. Flutter widget tests are not physical acceptance; unavailable platforms/media stay NOT_RUN.",
+        "scope": "ADR-029 default product peer, explicit current publication consent, server denial without consent, persistent public warning and composer gating on Web/Android/iOS. Repeatable QA does not publish GitHub issues; controlled live issue/comment/reply/file proof is a separate release record. Also preserves ordinary local A/B/S support DM text/files/replies, pair-only ACL, replacement and responsive captures. Component captures do not prove native/media acceptance.",
         "native": "tools/qa/support_contact/native.py",
         "target": "integration_test/support_qa_test.dart"
       }
