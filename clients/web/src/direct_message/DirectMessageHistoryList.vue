@@ -12,7 +12,7 @@ import { useDirectMessageStore } from './direct_message_store'
 import { navigateToReplyTarget } from '../conversation/reply_context_navigation'
 import { useDirectMessageScrollAnchor } from './history_scroll_anchor'
 
-const props = defineProps<{ directMessageId: string; session: CurrentSession | null; otherParticipantId: string; otherParticipantDisplayName: string }>()
+const props = defineProps<{ directMessageId: string; session: CurrentSession | null; otherParticipantId: string; otherParticipantDisplayName: string; emptyText?: string }>()
 const emit = defineEmits<{ reply: [message: DirectMessageHistoryItem]; retry: [message: DirectMessageHistoryItem]; replyContext: [messageId: string]; viewportChange: [] }>()
 const store = useDirectMessageStore()
 const authors = useAuthorDirectory()
@@ -105,7 +105,7 @@ async function loadOlder(): Promise<void> {
       />
     </li>
     </template>
-    <li role="presentation" v-if="store.historyLoaded && !store.error && !store.messages.length && !store.loadingHistory" class="state">Сообщений пока нет.</li>
+    <li role="presentation" v-if="store.historyLoaded && !store.error && !store.messages.length && !store.loadingHistory" class="state">{{ props.emptyText ?? 'Сообщений пока нет.' }}</li>
   </ol>
   </div>
 </template>

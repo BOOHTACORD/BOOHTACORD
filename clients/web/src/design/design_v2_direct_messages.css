@@ -39,3 +39,6 @@
   .sidebar.is-open .direct-message-navigation > .channel-button { min-height: 44px; height: auto; }
   .direct-message-conversation .composer-wrap { padding-right: 8px; padding-left: 8px; }
 }
+
+/* Keep the privacy explanation readable without displacing the composer at large text. */
+.support-privacy {margin:0;padding:8px 16px;color:var(--gc-text-secondary);font-size:0.8125rem;overflow-wrap:anywhere;max-height:96px;flex-shrink:0;overflow:auto;}

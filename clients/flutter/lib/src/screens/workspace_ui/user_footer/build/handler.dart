@@ -65,6 +65,22 @@ extension WorkspaceUserFooterBuildAction on WorkspaceUserFooterContext {
                   ),
                 ),
               ),
+              IconButton(
+                tooltip: 'Помощь и обратная связь',
+                constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
+                onPressed: state.supportOpening
+                    ? null
+                    : () async {
+                        if (await state.openSupport() && context.mounted) {
+                          onNavigate?.call();
+                        }
+                      },
+                icon: const Icon(
+                  Icons.help_outline,
+                  size: 20,
+                  color: GcColors.muted,
+                ),
+              ),
               renderUserFooterAccountMenu(),
             ],
           ),

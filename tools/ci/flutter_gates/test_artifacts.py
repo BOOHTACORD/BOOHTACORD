@@ -9,7 +9,7 @@ from . import artifacts
 
 class ArtifactTests(unittest.TestCase):
     def test_mandatory_visual_inventory_keeps_all_uiux_capture_scenarios(self):
-        self.assertEqual(126, len(artifacts.VISUALS))
+        self.assertEqual(133, len(artifacts.VISUALS))
         self.assertEqual(len(artifacts.VISUALS), len(set(artifacts.VISUALS)))
         parity = [name for name in artifacts.VISUALS if name.startswith('parity-')]
         self.assertEqual(90, len(parity))
@@ -21,6 +21,16 @@ class ArtifactTests(unittest.TestCase):
         for channel in ('text-channel', 'dm-conversation'):
             for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900')):
                 self.assertIn(f'flutter-{channel}-{profile}-{size}.png', artifacts.VISUALS)
+
+    def test_support_capture_names_are_finite_and_unknown_images_remain_rejected(self):
+        from tools.ci.artifact_policy.capture_inventory import complete
+        support = {f'support-{width}-text{scale}.png'
+                   for width in (320, 393, 1440) for scale in (1.0, 2.0)}
+        support.add('support-320-text2-ime.png')
+        self.assertEqual(support, {name for name in artifacts.VISUALS if name.startswith('support-')})
+        complete('flutter', dict.fromkeys(artifacts.VISUALS))
+        with self.assertRaises(ValueError):
+            complete('flutter', dict.fromkeys((*artifacts.VISUALS, 'support-user-upload.png')))
 
     def test_all_current_visual_captures_are_mandatory_valid_nonempty_pngs(self):
         with tempfile.TemporaryDirectory() as temporary:

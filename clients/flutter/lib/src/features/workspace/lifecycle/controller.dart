@@ -5,6 +5,7 @@ import '../../admin/shell/types.dart';
 import '../../../guild_presence_state.dart';
 import '../../../models.dart';
 import '../../../services/api_client.dart';
+import '../../direct/conversations/support_contact.dart';
 import 'effects.dart';
 import 'types.dart';
 import '../search/session.dart';
@@ -14,6 +15,7 @@ export '../navigation/controller.dart';
 export '../load_members/controller.dart';
 export '../load_topology/controller.dart';
 export '../load_directs/controller.dart';
+export '../support/open.dart';
 export '../search/navigation.dart';
 export '../search/context.dart';
 export '../search/resolve.dart';
@@ -30,6 +32,14 @@ class WorkspaceController extends ChangeNotifier {
   bool membersLoading = false;
   String? membersError;
   List<DirectConversation> directMessages = const [];
+  SupportContact supportContact = const SupportContact();
+  bool supportOpening = false, supportChanged = false;
+  String? supportNotice;
+  int supportSequence = 0, directNavigationSequence = 0;
+  bool isSupportConversation(DirectConversation value) =>
+      supportContact.matches(value.participantId);
+  String directDisplayName(DirectConversation value) =>
+      isSupportConversation(value) ? 'Поддержка' : value.displayName;
   List<DirectCandidate> directMessageCandidates = const [];
   int selectionRevision = 0;
   DirectConversation? _selectedDirectMessage;
@@ -78,6 +88,9 @@ class WorkspaceController extends ChangeNotifier {
     membersError = null;
     guildPresence.invalidate();
     directMessages = const [];
+    supportContact = const SupportContact();
+    supportChanged = false;
+    supportNotice = null;
     directMessageCandidates = const [];
     selectedDirectMessage = null;
     selectedChannel = null;
@@ -99,6 +112,9 @@ class WorkspaceController extends ChangeNotifier {
   }
 
   void cancelOperations() {
+    supportSequence++;
+    directNavigationSequence++;
+    supportOpening = false;
     searchContextSequence++;
     membersLoading = false;
     loadingSearchContext = false;

@@ -41,7 +41,7 @@ const emit = defineEmits<{ sessionExpired: []; loggedOut: [] }>()
 const adminSection = ref<AdminSection>('members')
 const { activeVoiceChannel, audioSettings, loadAudioDevices, joinVoice, leaveVoice, selectAudioDevice, selectedChannel, selectedChannelId, selectChannel: selectWorkspaceChannel, selectDirectMessage: selectWorkspaceDirectMessage, startScreen, topologyStore, voiceActivation, voiceConnection } = useWorkspaceVoiceControls(props.accountId)
 const { confirmScreenShare, openScreenShareSetup, screenShareSetupOpen, selectedScreenProfile, selectedScreenMode } = useScreenShareSetup(() => voiceConnection.screenState, startScreen, props.accountId)
-const { activePanel, closeDrawers, directMessageStore, memberHeaderExpandedState, membersOpen, modalDrawer, navOpen, openDirectMessageFromMember, returnToVoice, selectedDirectMessage, selectChannel, selectDirectMessage, selectOpenedDirectMessage, sidebarSection, toggleMembers, toggleNavigation, togglePanel, voiceStageWide } = useWorkspaceNavigation(props.role, selectedChannel, topologyStore, selectWorkspaceChannel, selectWorkspaceDirectMessage)
+const { openSupport, activePanel, closeDrawers, directMessageStore, memberHeaderExpandedState, membersOpen, modalDrawer, navOpen, openDirectMessageFromMember, returnToVoice, selectedDirectMessage, selectChannel, selectDirectMessage, selectOpenedDirectMessage, sidebarSection, toggleMembers, toggleNavigation, togglePanel, voiceStageWide } = useWorkspaceNavigation(props.role, selectedChannel, topologyStore, selectWorkspaceChannel, selectWorkspaceDirectMessage)
 const profileSettings = ref<{ hasUnsavedChanges: boolean } | null>(null)
 const profileExitConfirmation = ref<{ ask: (message: string) => Promise<boolean> } | null>(null)
 const messageStore = useMessageStore()
@@ -62,6 +62,7 @@ async function beforeWorkspaceNavigation(action: () => void | Promise<unknown>):
   const hasUnsavedProfileChanges = activePanel.value === 'profile' && Boolean(profileSettings.value?.hasUnsavedChanges)
   await navigateWithSettingsGuard(hasUnsavedProfileChanges, async () => Boolean(await profileExitConfirmation.value?.ask('Введённое имя или пароль ещё не сохранены. Если уйти, эти данные будут потеряны. Продолжить?')), action)
 }
+function requestSupport(): Promise<void> { return beforeWorkspaceNavigation(openSupport) }
 function requestPanel(panel: 'admin' | 'audio' | 'profile' | 'search'): Promise<void> { return beforeWorkspaceNavigation(() => togglePanel(panel)) }
 function requestGuildPanel(): Promise<void> { return props.role === 'ADMINISTRATOR' ? requestPanel('admin') : Promise.resolve() }
 function requestSelectChannel(channel: TopologyChannel): Promise<void> { return beforeWorkspaceNavigation(() => selectChannel(channel)) }
@@ -102,6 +103,7 @@ bindWorkspaceReady({ readiness: props.readiness,
           <DirectMessageNavigation
             v-else
             :direct-messages="directMessageStore.directMessages"
+            :support-contact="directMessageStore.supportContact" :support-opening="directMessageStore.supportOpening" :support-notice="directMessageStore.supportNotice" :support-changed="directMessageStore.supportChanged" @support="requestSupport"
             :error="directMessageStore.error"
             :loading="directMessageStore.loadingNavigation"
             :selected-direct-message-id="directMessageStore.directMessageId ?? undefined"
@@ -113,7 +115,7 @@ bindWorkspaceReady({ readiness: props.readiness,
         <VoiceDock :notice="voiceConnection.disconnectNotice" class="mobile-voice-dock" :activation-mode="voiceActivation.mode" :touch-ptt-enabled="voiceActivation.touchPttEnabled" :set-touch-ptt-pressed="voiceActivation.setTouchPttPressed" :channel="activeVoiceChannel" :participant-count="voiceConnection.voiceVolumeParticipants.length + 1" :active-session="voiceConnection.active !== null" :error="voiceConnection.error" :deafen-changing="voiceConnection.deafenChanging" :deafened="voiceConnection.deafened"
           :microphone-muted="voiceConnection.microphoneMuted" :microphone-permission-denied="voiceConnection.microphonePermissionDenied" :screen-share-state="voiceConnection.screenState" :connection-quality="voiceConnection.connectionQuality" :ping-ms="voiceConnection.pingMs" :state="voiceConnection.state" @leave="leaveVoice" @start-screen="openScreenShareSetup" @stop-screen="voiceConnection.stopScreen"
           @toggle-deafen="voiceConnection.toggleDeafen" @toggle-microphone="voiceConnection.toggleMicrophone" />
-        <WorkspaceUserFooter :online="realtimeStore.state === 'CONNECTED'" :role="props.role" :display-name="profile?.display_name" :avatar-u-r-l="profile?.avatar_url" :account-i-d="profile?.account_id" @open-profile="requestPanel('profile')" @open-settings="requestPanel('audio')" />
+        <WorkspaceUserFooter :online="realtimeStore.state === 'CONNECTED'" :role="props.role" :display-name="profile?.display_name" :avatar-u-r-l="profile?.avatar_url" :account-i-d="profile?.account_id" @open-support="requestSupport" :support-opening="directMessageStore.supportOpening" @open-profile="requestPanel('profile')" @open-settings="requestPanel('audio')" />
       </aside>
       <main id="main-region" class="main" data-testid="main-region">
         <WorkspaceMain :account-id="props.accountId" :active-voice-channel="activeVoiceChannel" :panel="activePanel === 'search' ? 'none' : activePanel" :channel="selectedChannel" :direct-message="selectedDirectMessage" :join-voice="joinVoice" :leave-voice="leaveVoice" :activation-mode="voiceActivation.mode" :start-screen="openScreenShareSetup" :selected-screen-profile="selectedScreenProfile"
