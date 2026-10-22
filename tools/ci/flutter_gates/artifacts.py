@@ -41,6 +41,13 @@ VISUALS += tuple(
 )
 
 
+# #516: reviewed synthetic support widgets only; retain the exact inventory.
+VISUALS += tuple(
+    f'support-{width}-text{scale}.png'
+    for width in (320, 393, 1440) for scale in (1.0, 2.0)
+) + ('support-320-text2-ime.png',)
+
+
 def regular(path, maximum):
     if path.is_symlink() or path.resolve() != path or not path.is_file() or not 0 < path.stat().st_size <= maximum:
         raise ValueError('Required public CI artifact is missing, indirect, empty or oversized')

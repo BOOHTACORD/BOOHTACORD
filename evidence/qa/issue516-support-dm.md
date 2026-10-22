@@ -29,6 +29,8 @@ The initial aggregate report remains **FAIL**, rather than being overwritten: it
 
 The first PR CI database profile caught a non-idempotent 0055 table/seed. The migration now uses `IF NOT EXISTS` and `ON CONFLICT DO NOTHING`; the actual PostgreSQL support test reapplies all migrations after assigning an operator and verifies that both account and revision survive. The earlier local migration integration had been skipped because it uses `TEST_DATABASE_URL`, whereas the DM fixture uses `VOICE_PLATFORM_TEST_DATABASE_URL`; the corrected runner sets both. All 11 nearest packages, including both empty/existing migration schemas, guild settings and usage-retention regressions, pass in `db-repeat-green.log`. The failed first CI attempt is retained, not represented as a pass.
 
+CI on the corrected migration passed backend, Web, SFU, Android and Windows build. The Dart tests/analyzer passed, then exact-set capture publication correctly rejected the seven newly added support widget images because their names were not registered. The finite mandatory `VISUALS` inventory now includes exactly those seven reviewed synthetic names (133 total); regression tests require all seven and still reject an arbitrary `support-user-upload.png`. All 109 artifact-policy/Flutter-gate tests PASS (`capture-policy-green.log`), including rejection of an unregistered support image. No wildcard, privacy filter or source/integrity check was relaxed.
+
 ## Visual review
 
 Inspected applicable source-sized synthetic captures: Web support empty/conversation/replacement at 1440, drawer/conversation at 393 and 320, enlarged root text 200%; Flutter pinned row/footer at 320/393/1440 dp and scale 1/2, 320 dp enlarged text with IME; actual Android and iOS unassigned support screens.
