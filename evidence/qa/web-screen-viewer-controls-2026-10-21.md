@@ -2,6 +2,14 @@
 
 **Scope:** Direct controls over a selected screen share: expand or collapse the viewer, exit browser fullscreen without Escape, and stop watching a remote stream.
 
+## Follow-up — 2026-10-22
+
+- Regression coverage now checks that the overlay fades after entering browser fullscreen, including when the expand button retains mouse focus. It also checks narrow hover-capable layouts. Moving the pointer over the stage reveals the actions again.
+- Final `screen_share_ui` Playwright suite: **PASS** (26 tests), including the fullscreen idle-hide, narrow-window and keyboard-focus regressions. Web unit/build/accessibility, all selected Web browser suites, Flutter unit tests and Flutter component captures: **PASS**.
+- Real API/SFU scenarios: **FAIL during environment setup** because the configured Colima Docker socket `/Users/pistol121/.colima/boohtacord-qa/docker.sock` is unavailable. Android/iOS runtime checks remain **BLOCKED**. The complete local-feature report is therefore **FAIL** and its full visual review remains **NOT_RUN**.
+- Reviewed the four relevant captures from `.out/local-features/20261022-205401` at their source resolution. In the 1280 × 800 idle capture the stage is unobstructed; the fullscreen captures keep both actions within the lower-right stage overlay. At 390 × 844 and 200% text, both labels wrap inside the overlay without horizontal page overflow. These are synthetic fixture captures with a first-frame placeholder, not live-media evidence.
+- Full local-feature report: `.out/local-features/20261022-205401/index.html`.
+
 ## Results
 
 - Focused Playwright behavior and layout checks: **PASS** (2 scenarios). The browser test confirmed app-level expand/collapse, the in-stage fullscreen exit, and stopping a remote stream while fullscreen is active.
