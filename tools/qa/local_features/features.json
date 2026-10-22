@@ -656,13 +656,13 @@
       }
     ],
     "parity_review": {
-      "issue": 538,
+      "issue": 539,
       "decisions": {
         "web": "implementation_and_regression",
-        "ios": "implementation_and_regression",
-        "android": "implementation_and_regression"
+        "ios": "platform_exception",
+        "android": "platform_exception"
       },
-      "scope": "Web viewer overlay enters/exits browser fullscreen without enabling app-area expansion; fullscreen exit preserves watching and stop still clears the remote viewer. iOS/Android native fullscreen actions and renderer ownership are unchanged; no platform media-runtime claim is made."
+      "scope": "Web viewer actions fade after pointer inactivity, including after browser fullscreen entry and at narrow hover-capable widths; keyboard focus remains visible and touch-only Web layouts keep actions available. iOS/Android retain their native fullscreen and stop-viewing controls because this pointer-driven overlay behavior is Web-specific; no native runtime claim is made."
     }
   },
   "screen_metrics": {
@@ -1389,13 +1389,13 @@
       }
     ],
     "parity_review": {
-      "issue": 522,
+      "issue": 539,
       "decisions": {
         "web": "implementation_and_regression",
-        "ios": "implementation_and_regression",
-        "android": "implementation_and_regression"
+        "ios": "platform_exception",
+        "android": "platform_exception"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. Windows package follow-up: shared Flutter 1.0.47/82/r61 defaults stay synchronized. Web/iOS/Android behavior is unchanged; client-identity/profile version regressions apply to both runners. Shipped 1.0.45 artifacts retain their recorded source. The public package validator now checks the exact measured Velopack stable filename, application identity and version; the pinned producer and SDK inputs are unchanged."
+      "scope": "This Web screen-viewer overlay styling change is isolated from workspace shell navigation. Web fullscreen controls fade after pointer inactivity; iOS/Android keep their native touch controls because hover-driven hiding is Web-specific. No shell or native runtime behavior change is claimed."
     }
   },
   "screen_track_name": {

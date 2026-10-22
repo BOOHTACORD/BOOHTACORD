@@ -174,6 +174,9 @@ test('screen viewing controls enter and exit browser fullscreen without enabling
   await page.getByRole('button', { name: 'Развернуть на весь экран', exact: true }).click()
   await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(true)
   await expect(page.locator('.voice-room')).not.toHaveClass(/voice-room--screen-expanded/)
+  await expect.poll(() => stageActions.evaluate(element => getComputedStyle(element).opacity), { timeout: 3000 }).toBe('0')
+  await page.mouse.move(stageBounds!.x + stageBounds!.width / 2, stageBounds!.y + stageBounds!.height / 2)
+  await expect(stageActions).toHaveCSS('opacity', '1')
   await page.screenshot({ path: info.outputPath('viewer-controls-expanded.png') })
   await stageActions.getByRole('button', { name: 'Свернуть просмотр', exact: true }).click()
   await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(false)
@@ -192,9 +195,24 @@ test('screen viewing controls enter and exit browser fullscreen without enabling
   expect(await page.evaluate(() => (window as any).__screenUI.events)).toEqual(['clear'])
 })
 
+test('keyboard focus keeps the viewer actions visible after the idle timer', async ({ page }) => {
+  await open(page, 'viewer-controls&watching-remote', 1280, 100, 800)
+  const actions = page.getByRole('group', { name: 'Управление просмотром' })
+  const expand = page.getByRole('button', { name: 'Развернуть на весь экран', exact: true })
+
+  await page.keyboard.press('Tab')
+  await expect(expand).toBeFocused()
+  await expect(actions).toHaveCSS('opacity', '1')
+  await expect.poll(() => actions.evaluate(element => getComputedStyle(element).opacity), { timeout: 2500 }).toBe('1')
+})
+
 test('screen viewing overlay stays inside a narrow viewport at 200% text', async ({ page }, info) => {
   await open(page, 'viewer-controls&watching-remote', 390, 200, 844)
   const actions = page.getByRole('group', { name: 'Управление просмотром' })
+  await expect(actions).toHaveCSS('opacity', '0')
+  const stage = page.locator('.screen-stage')
+  const stageBounds = await stage.boundingBox()
+  await page.mouse.move(stageBounds!.x + stageBounds!.width / 2, stageBounds!.y + stageBounds!.height / 2)
   await expect(actions.getByRole('button', { name: 'Развернуть на весь экран', exact: true })).toBeVisible()
   await expect(actions.getByRole('button', { name: 'Прекратить просмотр', exact: true })).toBeVisible()
   await expect(actions).toHaveCSS('opacity', '1')
