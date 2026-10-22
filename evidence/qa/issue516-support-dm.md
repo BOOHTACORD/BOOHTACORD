@@ -6,7 +6,7 @@ Source: `codex/issue516-support-dm`, based on `a77da2cc86eb09110039da2e970549d4e
 
 | Check | Outcome / evidence |
 | --- | --- |
-| Go focused + actual disposable PostgreSQL | PASS: support resolution/configuration, migration 0055, A/S and B/S messages/replies/history, ClientMessageID dedup, attachment download metadata and known-UUID denial to B/admin, blocked/self/unassigned contact and reassignment without history disclosure; `.out/issue516/db-tests.log` (9 packages). |
+| Go focused + actual disposable PostgreSQL | PASS: support resolution/configuration, migration 0055, A/S and B/S messages/replies/history, ClientMessageID dedup, attachment download metadata and known-UUID denial to B/admin, blocked/self/unassigned contact and reassignment without history disclosure; `.out/issue516/db-repeat-green.log` (11 packages, with both supported database-test environment variables). |
 | Backend regression | All other packages PASS on macOS. The two load packages bind additional 127/8 addresses unavailable on this host; both PASS under the production `golang:1.26.4-alpine` Linux image (`go-linux-load.log`). No product changes to the load harness. |
 | Web full unit + production build | PASS: 482 files / 1607 tests (`web-all-final.log`), production Vue/TypeScript build. Includes ordinary route reuse and stale installation/account callbacks. |
 | Flutter full unit | PASS: 1570 tests, one existing skipped test (`flutter-all-final.log`). Focused support contact/opener/drafts/IME/geometry tests PASS; targeted Dart analysis has no issues. |
@@ -26,6 +26,8 @@ Required feature command was run:
 ```
 
 The initial aggregate report remains **FAIL**, rather than being overwritten: it captured a scoped-style contract error (moved into shared DM tokens), keyboard order before adding the help button to the test, a 4 px history-anchor timing failure (all 14 anchor cases passed on repeat), a Flutter compiler/test snapshot during an edit (fresh full suite above passed), and missing owned native text-channel fixtures. The compact mini-player assertion contradicted the existing mobile voice acceptance: it now checks the persistent dock and hidden room controls. Native setup creates its channel through the authenticated admin API; the iOS scroll/tap helper centers the disclosure above the fixed footer. Corrected named runs above supersede those individual failures; the old report is not labelled a blanket green run.
+
+The first PR CI database profile caught a non-idempotent 0055 table/seed. The migration now uses `IF NOT EXISTS` and `ON CONFLICT DO NOTHING`; the actual PostgreSQL support test reapplies all migrations after assigning an operator and verifies that both account and revision survive. The earlier local migration integration had been skipped because it uses `TEST_DATABASE_URL`, whereas the DM fixture uses `VOICE_PLATFORM_TEST_DATABASE_URL`; the corrected runner sets both. All 11 nearest packages, including both empty/existing migration schemas, guild settings and usage-retention regressions, pass in `db-repeat-green.log`. The failed first CI attempt is retained, not represented as a pass.
 
 ## Visual review
 

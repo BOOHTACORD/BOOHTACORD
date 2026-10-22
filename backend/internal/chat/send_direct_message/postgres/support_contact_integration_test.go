@@ -12,6 +12,7 @@ import (
 	open "voice-platform/backend/internal/chat/open_direct_message"
 	openpg "voice-platform/backend/internal/chat/open_direct_message/postgres"
 	send "voice-platform/backend/internal/chat/send_direct_message"
+	"voice-platform/backend/internal/database/migrate"
 	download "voice-platform/backend/internal/storage/download_direct_message_attachment"
 	downloadpg "voice-platform/backend/internal/storage/download_direct_message_attachment/postgres"
 	support "voice-platform/backend/internal/support/contact"
@@ -21,8 +22,16 @@ func TestSupportContactUsesOnlyOrdinaryPairsAndCannotTransferHistory(t *testing.
 	f := newDMFixture(t)
 	ctx := context.Background()
 	config := support.New(f.pool)
-	if _, err := config.Assign(ctx, f.peer); err != nil {
+	assigned, err := config.Assign(ctx, f.peer)
+	if err != nil {
 		t.Fatal("active support assignment failed")
+	}
+	if err := migrate.Run(ctx, f.pool); err != nil {
+		t.Fatal("repeat migrations with assigned support", err)
+	}
+	persisted, err := config.Resolve(ctx, f.actor)
+	if err != nil || persisted.AccountID != f.peer || persisted.Revision != assigned {
+		t.Fatal("repeat migrations changed the assigned operator or revision")
 	}
 	opener := open.New(openpg.New(openpg.NewPoolDatabase(f.pool)))
 	pairA, err := opener.Open(ctx, open.Input{ActorID: f.actor, ParticipantID: f.peer})
