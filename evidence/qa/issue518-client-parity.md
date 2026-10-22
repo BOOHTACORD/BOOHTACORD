@@ -108,3 +108,94 @@ A protected manual canonical-tag preparation job supplies the missing local
 push operation for release publication; tests reject forks, non-master events,
 stale master, unknown platforms and replacement tags. Existing release source,
 signing and immutable publication checks are unchanged.
+
+## Final master and distribution receipts
+
+PR #519 merged as `9c221897fdefec8098f707d61ca5b6e8b28bb0bd` after all 26
+jobs of CI 39755415602 passed (head 7309547c). Final master client source trees
+are unchanged from the tested 7bf0f220 product trees; the intervening changes
+updated master ancestry and the protected release-tag procedure.
+
+Final-master signed iOS IPA: 1.0.45 (80), 34,603,157 bytes, SHA256
+`c4bd3684e745b8dd046ebc38be43740d31b3b6d6c3fc13d424fc633d8e07906c`.
+Both ru.boohtacord.app.test and its ScreenShareExtension verify at 1.0.45 (80);
+codesign verification passed. The disposable signing keychain was removed and
+the original search list restored. This is a built signed IPA, not a claim of
+TestFlight distribution. The delivery file is retained under the task's ignored
+`.out/testflight/2026-10-22/` in the primary checkout.
+
+Canonical android/windows/macos-v1.0.45 tags were prepared on this exact master
+by production-guarded jobs. macOS initially failed before any build steps
+because production allowed only the master branch. The owner explicitly approved
+adding only the exact tag macos-v1.0.45; readback shows master plus that one tag.
+Other protection settings were preserved and the same macOS run was retried.
+Android and Windows publish through their existing manual-master path.
+
+Public distribution evidence is kept separately by each immutable publisher:
+
+- Android: https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.45
+- Windows: https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.47
+- macOS: https://github.com/Egkurilov/BOOHTACORD/releases/tag/macos-v1.0.45
+
+Each completed publisher retains source-bound contract/publication.json and
+verifies all public asset hashes; artifact-manifest.json and SHA256SUMS identify
+the actual version/build, architectures, source and measured signing state.
+These links are release destinations, not a PASS claim while jobs are pending.
+The final public readback and resulting PASS/failure are recorded on #518 before
+closing it. A successful candidate build alone does not satisfy publication.
+
+The portal has explicit stable 1.0.45 fallback URLs plus the existing online
+release discovery. Its regression rejects a stale API response downgrading those
+fallbacks, and keeps release pages separate from permanent direct-file URLs.
+Publication of the portal PR waits for the actual distribution readback.
+
+An optional additional master-native smoke attempt stopped before client launch:
+a pre-existing SSH listener occupied QA port 4812. That listener was left intact;
+the attempt supplies no product PASS. Earlier separate Android/iOS actual-stack
+smokes retain their recorded source/diff identities above, and final-head CI
+passed the common Flutter/native and actual Windows GUI/SFU gates.
+
+Production server/Web delivery completed: Build server 39757666419 and Deploy
+production 39758958966 succeeded. Public /release-receipt.json readback confirms
+version 1.0.45, release_id web-browser-stable-r59 and source revision
+9c221897fdefec8098f707d61ca5b6e8b28bb0bd. The receipt is retained in ignored
+`.out/issue518/web-public-receipt.json`.
+
+Windows publication follow-up: the actual 1.0.45 release job stopped before
+application compilation on Windows fixture file-URL handling. The corrected
+fixtures and native CI coverage are tracked in PR #525 and
+`evidence/qa/issue518-windows-release.md`. The original unpublished Windows tag
+is preserved; its replacement advances through the separately recorded Windows packaging
+follow-ups below. Public
+macOS/Android and the signed iOS IPA remain 1.0.45 (80), with their original
+source receipts. The portal uses actual per-platform published versions, not
+the next global Flutter build defaults. Final publication readbacks on #518
+remain required before closure.
+
+Android Release 39758328262 attempt 2 and macOS Release 39757918654 attempt 2
+completed successfully. Public release, manifest and SHA256SUMS readbacks PASS:
+both are 1.0.45 (80), exact source 9c221897, release order 59. Android's three
+ABIs verify the existing signing certificate; macOS verifies arm64+x86_64 and
+ad-hoc signing (not Apple notarization). Android arm64 APK SHA256 is
+7091a98c326e3bea9ecff1f4a10192d3ce8545a298690b17c90d0453ddde8e70;
+universal macOS ZIP SHA256 is
+51228053715c0854ed6e91439bba1f405c99dfd917b790dcfa91e176cdbefd39.
+
+Windows follow-up PR #525 merged as 24936e68585f4aba9733d8f39ed74a15c50483d3
+after all 26 jobs of CI 39764639901 passed at e3084b53. Local 1210 Python
+tests passed, and the complete publisher suite passed on actual Windows.
+Windows Release 39767005427 compiled and packaged 1.0.46 from that master,
+then correctly stopped before publication on a pinned Velopack filename-format
+mismatch. Follow-up #528 matches the measured stable suffix while retaining
+exact application/version/channel, checksum, source and QA-purpose checks.
+Windows uses the next canonical 1.0.47 (82), r61; earlier tags are preserved.
+Its final source and public receipt follow on #518.
+
+PR #528 merged as f5cd783518349e2f79a78910a91908882ba87cc1 after all 26
+jobs of CI 39769767549 passed at f7a51655, including actual Windows build and
+GUI/SFU. The final fix matches the measured pinned Velopack stable package name;
+the producer/SDK inventory is unchanged. Windows 1.0.47 (82), r61 publication
+is bound to that master. The earlier unpublished Windows tags are not moved.
+The portal's final Windows fallback targets that replacement release, while
+macOS/Android retain the verified 1.0.45 assets and signed iOS retains its
+original IPA receipt. Final public readback is recorded on #518 before closure.
