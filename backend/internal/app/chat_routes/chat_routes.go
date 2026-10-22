@@ -3,6 +3,7 @@ package chatroutes
 import (
 	"net/http"
 	messageevents "voice-platform/backend/internal/chat/create_text_message/realtime"
+	support "voice-platform/backend/internal/support/contact"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	advancedirectmessagereadcursor "voice-platform/backend/internal/chat/advance_direct_message_read_cursor"
@@ -91,7 +92,7 @@ func ConfigureChatRoutes(mux *http.ServeMux, database *pgxpool.Pool, sessions au
 	mux.Handle("DELETE /api/v1/channels/{channelID}/messages/{messageID}", sessionapi.Require(sessions)(deletehandler.NewHandler(deletetextmessagerealtime.New(deleteService, events))))
 	mux.Handle("POST /api/v1/direct-messages", sessionapi.Require(sessions)(directmessageapi.NewHandler(directMessageService)))
 	mux.Handle("GET /api/v1/direct-message-candidates", sessionapi.Require(sessions)(listdirectmessagecandidatesapi.NewHandler(directMessageCandidates)))
-	mux.Handle("GET /api/v1/direct-messages", sessionapi.Require(sessions)(listdirectmessagesapi.NewHandler(directMessages)))
+	mux.Handle("GET /api/v1/direct-messages", sessionapi.Require(sessions)(listdirectmessagesapi.NewHandler(directMessages, support.New(database))))
 	mux.Handle("POST /api/v1/direct-messages/{directMessageID}/messages", sessionapi.Require(sessions)(senddirectmessageapi.NewHandler(senddirectmessagerealtime.New(directMessageSender, directMessageRecipients, events))))
 	mux.Handle("GET /api/v1/direct-messages/{directMessageID}/messages", sessionapi.Require(sessions)(listdirectmessagehistoryapi.NewHandler(directMessageHistory)))
 	mux.Handle("GET /api/v1/direct-messages/{directMessageID}/search", sessionapi.Require(sessions)(searchdirectmessagehistoryapi.NewHandler(directMessageSearch)))

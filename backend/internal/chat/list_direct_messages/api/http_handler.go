@@ -6,6 +6,7 @@ import (
 	"errors"
 	"net/http"
 	"time"
+	support "voice-platform/backend/internal/support/contact"
 
 	listdirectmessages "voice-platform/backend/internal/chat/list_direct_messages"
 	sessionapi "voice-platform/backend/internal/identity/authenticate_session/api"
@@ -16,7 +17,11 @@ type Lister interface {
 	List(context.Context, listdirectmessages.Input) (listdirectmessages.Result, error)
 }
 
-func NewHandler(lister Lister) http.Handler {
+type SupportResolver interface {
+	Resolve(context.Context, string) (support.Contact, error)
+}
+
+func NewHandler(lister Lister, resolvers ...SupportResolver) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		principal, ok := sessionapi.PrincipalFrom(request.Context())
 		if !ok {
@@ -32,13 +37,22 @@ func NewHandler(lister Lister) http.Handler {
 			writeError(writer, request, http.StatusInternalServerError, "INTERNAL", "Не удалось загрузить личные диалоги")
 			return
 		}
+		var contact *support.Contact
+		if len(resolvers) > 0 && resolvers[0] != nil {
+			value, err := resolvers[0].Resolve(request.Context(), principal.AccountID)
+			if err != nil {
+				value = support.Contact{State: "unavailable"}
+			}
+			contact = &value
+		}
 		writer.Header().Set("Content-Type", "application/json; charset=utf-8")
-		_ = json.NewEncoder(writer).Encode(response{DirectMessages: directMessages(result.DirectMessages)})
+		_ = json.NewEncoder(writer).Encode(response{DirectMessages: directMessages(result.DirectMessages), SupportContact: contact})
 	})
 }
 
 type response struct {
-	DirectMessages []directMessage `json:"direct_messages"`
+	SupportContact *support.Contact `json:"support_contact,omitempty"`
+	DirectMessages []directMessage  `json:"direct_messages"`
 }
 type directMessage struct {
 	ID                          string    `json:"id"`

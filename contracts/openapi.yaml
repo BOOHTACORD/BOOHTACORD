@@ -8129,8 +8129,19 @@
         "additionalProperties": false,
         "required": ["direct_messages"],
         "properties": {
-          "direct_messages": { "type": "array", "items": { "$ref": "#/components/schemas/DirectMessageListItem" } }
+          "direct_messages": { "type": "array", "items": { "$ref": "#/components/schemas/DirectMessageListItem" } },
+          "support_contact": { "$ref": "#/components/schemas/SupportContact" }
         }
+      },
+      "SupportContact": {
+        "type": "object", "additionalProperties": false,
+        "required": ["state", "revision"],
+        "properties": {
+          "state": { "type": "string", "enum": ["available", "not_configured", "unavailable", "self"] },
+          "revision": { "type": "integer", "minimum": 0 },
+          "account_id": { "type": "string", "format": "uuid", "description": "Present only for the active server-assigned other participant. Presentation alias only; normal pair ACL remains mandatory." }
+        },
+        "description": "Local support operator metadata, not a privileged inbox. Older servers may omit this field. Unconfigured, blocked, missing or self contacts do not expose an actionable account. A replacement creates a new ordinary pair; old participants/history never change."
       },
       "DirectMessageListItem": {
         "type": "object",

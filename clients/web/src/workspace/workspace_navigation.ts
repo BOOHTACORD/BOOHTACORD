@@ -1,3 +1,4 @@
+import { isSupportPeer } from '../support/contact'
 import { computed, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
 
 import type { TopologyChannel } from '../channel/topology_client'
@@ -22,7 +23,19 @@ export function useWorkspaceNavigation(role: 'MEMBER' | 'ADMINISTRATOR', selecte
   const sidebarSection = ref<'channels' | 'messages'>('channels')
   const activePanel = ref<Panel>('none')
   const { navOpen, membersOpen, modalDrawer, closeDrawers, closeDrawersForNavigation, toggleNavigation, toggleMembers } = useWorkspaceDrawers(activePanel)
-  const selectedDirectMessage = computed(() => directMessageStore.directMessages.find((item) => item.id === directMessageStore.directMessageId) ?? null)
+  const selectedDirectMessage = computed(() => {
+   const item=directMessageStore.directMessages.find(item=>item.id===directMessageStore.directMessageId)
+   return item && isSupportPeer(item.otherParticipantId,directMessageStore.supportContact) ? {...item,otherParticipantDisplayName:'Поддержка'} : item??null
+  })
+  let navigationRevision=0
+  let active=true
+  onBeforeUnmount(()=>{active=false})
+  async function openSupport(): Promise<void> {
+   activePanel.value='none';sidebarSection.value='messages'
+   const revision=++navigationRevision
+   const id=await directMessageStore.openSupport()
+   if(active && revision===navigationRevision && sidebarSection.value==='messages' && activePanel.value==='none' && id) selectDirectMessage(id)
+  }
   const voiceStageWide = computed(() => selectedChannel.value?.kind === 'VOICE' && !selectedDirectMessage.value && activePanel.value === 'none')
   const memberHeaderExpandedState = useMemberHeaderExpanded(voiceStageWide, membersOpen, closeDrawers)
 
@@ -44,6 +57,7 @@ export function useWorkspaceNavigation(role: 'MEMBER' | 'ADMINISTRATOR', selecte
   }
 
   function selectChannel(channel: TopologyChannel, updateLocation = true): void {
+    navigationRevision++
     if (updateLocation) writeChannelLocation(channel.id)
     closeDrawersForNavigation()
     activePanel.value = 'none'
@@ -55,6 +69,7 @@ export function useWorkspaceNavigation(role: 'MEMBER' | 'ADMINISTRATOR', selecte
   function returnToVoice(channelId: string): void { const channel = topologyStore.topology?.categories.flatMap(({ channels }) => channels).find(({ id, kind }) => id === channelId && kind === 'VOICE'); if (channel) selectChannel(channel) }
 
   function selectDirectMessage(id: string): void {
+    navigationRevision++
     closeDrawersForNavigation()
     clearChannelLocation()
     activePanel.value = 'none'
@@ -65,6 +80,7 @@ export function useWorkspaceNavigation(role: 'MEMBER' | 'ADMINISTRATOR', selecte
 
   async function selectOpenedDirectMessage(id: string): Promise<void> { await directMessageStore.refreshNavigation(); selectDirectMessage(id) }
   async function openDirectMessageFromMember(userID: string): Promise<void> {
+    navigationRevision++
     closeDrawersForNavigation(); activePanel.value = 'none'; sidebarSection.value = 'messages'; directMessageStore.close()
     const directMessageID = await directMessageCandidateStore.open(userID)
     if (directMessageID) await selectOpenedDirectMessage(directMessageID)
@@ -100,7 +116,7 @@ export function useWorkspaceNavigation(role: 'MEMBER' | 'ADMINISTRATOR', selecte
   onMounted(() => window.addEventListener('popstate', restoreChannelFromLocation))
   onBeforeUnmount(() => window.removeEventListener('popstate', restoreChannelFromLocation))
 
-  function togglePanel(panel: Exclude<Panel, 'none'>): void { closeDrawersForNavigation(); activePanel.value = activePanel.value === panel ? 'none' : panel }
+  function togglePanel(panel: Exclude<Panel, 'none'>): void { navigationRevision++; closeDrawersForNavigation(); activePanel.value = activePanel.value === panel ? 'none' : panel }
   function openGuildPanel(): void { if (role === 'ADMINISTRATOR') togglePanel('admin') }
-  return { activePanel, closeDrawers, directMessageStore, memberHeaderExpandedState, membersOpen, modalDrawer, navOpen, openDirectMessageFromMember, openGuildPanel, returnToVoice, selectedDirectMessage, selectChannel, selectDirectMessage, selectOpenedDirectMessage, sidebarSection, toggleMembers, toggleNavigation, togglePanel, voiceStageWide }
+  return { openSupport, activePanel, closeDrawers, directMessageStore, memberHeaderExpandedState, membersOpen, modalDrawer, navOpen, openDirectMessageFromMember, openGuildPanel, returnToVoice, selectedDirectMessage, selectChannel, selectDirectMessage, selectOpenedDirectMessage, sidebarSection, toggleMembers, toggleNavigation, togglePanel, voiceStageWide }
 }

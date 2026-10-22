@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { noSupport, isSupportPeer, type SupportContact } from '../support/contact'
+import SupportRow from '../support/SupportRow.vue'
 import { vActionHint } from '../shared/action_hint/directive'
 import { computed, onMounted } from 'vue'
 import { useMemberDirectory } from '../identity/member_directory'
@@ -10,10 +12,16 @@ const props = defineProps<{
   error: string | null
   loading: boolean
   selectedDirectMessageId?: string
+  supportContact?: SupportContact
+  supportOpening?: boolean
+  supportNotice?: string|null
+  supportChanged?: boolean
 }>()
 
-const emit = defineEmits<{ select: [directMessageId: string]; open: [directMessageId: string] }>()
+const emit = defineEmits<{ select: [directMessageId: string]; open: [directMessageId: string]; support: [] }>()
 const memberDirectory = useMemberDirectory()
+const contact = computed(()=>props.supportContact??noSupport)
+const ordinary = computed(()=>props.directMessages.filter(item=>!isSupportPeer(item.otherParticipantId,contact.value)))
 const members = computed(() => memberDirectory.byId)
 onMounted(() => { void memberDirectory.refresh() })
 
@@ -24,19 +32,22 @@ onMounted(() => { void memberDirectory.refresh() })
     <h2>
       СООБЩЕНИЯ
       <DirectMessageStarter
-        v-if="props.loading || props.error || props.directMessages.length"
+        v-if="props.loading || props.error || props.directMessages.length || contact.state === 'available'"
         @open="emit('open', $event)"
       />
     </h2>
+    <SupportRow :contact="contact" :direct-messages="props.directMessages" :selected-id="props.selectedDirectMessageId" :busy="props.supportOpening" @open="emit('support')" />
+    <p v-if="props.supportNotice" class="empty-category" role="status">{{ props.supportNotice }}</p>
+    <p v-if="props.supportChanged" class="empty-category" role="status">Оператор поддержки изменился. Старые диалоги сохраняют прежних участников и историю.</p>
     <p v-if="props.loading" class="empty-category" aria-live="polite">Загружаем диалоги…</p>
     <p v-else-if="props.error" class="empty-category state-error" role="alert">{{ props.error }}</p>
-    <div v-else-if="!props.directMessages.length" class="direct-message-empty">
+    <div v-else-if="!props.directMessages.length && contact.state !== 'available'" class="direct-message-empty">
       <p>Начните личный разговор с участником.</p>
       <DirectMessageStarter prominent @open="emit('open', $event)" />
     </div>
     <button
       v-action-hint="directMessage.otherParticipantDisplayName"
-      v-for="directMessage in props.directMessages"
+      v-for="directMessage in ordinary"
       :key="directMessage.id"
       class="channel-button"
       :class="{ selected: props.selectedDirectMessageId === directMessage.id }"

@@ -72,7 +72,40 @@ void main() {
     expect(state.phase, AppPhase.ready);
     expect(tester.takeException(), isNull);
     await tester.pumpAndSettle();
+    // This stack starts empty. Seed the channel used by later navigation checks
+    // through the actual authenticated admin API, not a widget fixture.
+    if (state.topology!.categories.isEmpty) {
+      await tester.runAsync(() async {
+        await api.createCategory('Native QA');
+        await state.refreshTopology();
+        final category = state.topology!.categories.firstWhere(
+          (value) => value.name == 'Native QA',
+        );
+        await api.createChannel(
+          categoryId: category.id,
+          name: 'Native QA Text',
+          kind: ChannelKind.text,
+        );
+        await state.refreshTopology();
+      });
+      await tester.pumpAndSettle();
+    }
     await binding.takeScreenshot('native-navigation');
+    // Real API, no configured support: the footer opens existing DM navigation
+    // and quietly explains availability; no dead support row or self DM.
+    await tester.tap(find.byTooltip('Помощь и обратная связь'));
+    for (var attempt = 0; attempt < 120 && state.supportOpening; attempt++) {
+      await tester.pump(const Duration(milliseconds: 250));
+    }
+    await tester.pumpAndSettle();
+    expect(state.supportAvailable, isFalse);
+    expect(
+      find.text('Поддержка этого сервера пока не назначена.'),
+      findsOneWidget,
+    );
+    expect(state.selectedDirectMessage, isNull);
+    await binding.takeScreenshot('native-support-unassigned');
+
     await tester.tap(find.byTooltip('Закрыть навигацию'));
     await tester.pumpAndSettle();
     expect(find.byTooltip('Закрыть навигацию').hitTestable(), findsNothing);
@@ -170,14 +203,22 @@ void main() {
           120,
           scrollable: scrollable,
         );
-        await tester.ensureVisible(find.text('Дополнительно'));
+        await Scrollable.ensureVisible(
+          tester.element(find.text('Дополнительно')),
+          alignment: 0.5,
+        );
+        await tester.pumpAndSettle();
         await tester.tap(find.text('Дополнительно'));
         await tester.pumpAndSettle();
         final processing = find.text('Автоматическая регулировка усиления');
         expect(processing, findsOneWidget);
         final mounted = tester.element(processing);
         await binding.takeScreenshot('native-audio-advanced');
-        await tester.ensureVisible(find.text('Дополнительно'));
+        await Scrollable.ensureVisible(
+          tester.element(find.text('Дополнительно')),
+          alignment: 0.5,
+        );
+        await tester.pumpAndSettle();
         await tester.tap(find.text('Дополнительно'));
         await tester.pumpAndSettle();
         expect(mounted.mounted, isTrue);

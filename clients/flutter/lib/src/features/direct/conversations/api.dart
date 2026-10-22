@@ -3,6 +3,7 @@ import 'dart:convert';
 import '../../../models.dart';
 import '../../../core/http/transport.dart';
 import 'candidate_page.dart';
+import 'support_contact.dart';
 
 class DirectConversationsApi {
   DirectConversationsApi(this.transport);
@@ -15,11 +16,15 @@ class DirectConversationsApi {
         headers: await transport.headers(),
       ),
     ) as Map<String, dynamic>;
-    return (data['direct_messages'] as List<dynamic>)
-        .map(
-          (value) => DirectConversation.fromJson(value as Map<String, dynamic>),
-        )
-        .toList(growable: false);
+    return DirectNavigation(
+      (data['direct_messages'] as List<dynamic>)
+          .map(
+            (value) =>
+                DirectConversation.fromJson(value as Map<String, dynamic>),
+          )
+          .toList(growable: false),
+      support: SupportContact.fromJson(data['support_contact']),
+    );
   }
 
   Future<List<DirectCandidate>> directMessageCandidates() async {

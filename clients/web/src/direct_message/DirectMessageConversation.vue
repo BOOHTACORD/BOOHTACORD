@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isSupportPeer, supportPrivacy, supportPrompt } from '../support/contact'
 import { vActionHint } from '../shared/action_hint/directive'
 import { computed, useId, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { loadCurrentSession, type CurrentSession } from '../identity/current_session'
@@ -29,6 +30,7 @@ import { useVisibleRead } from '../conversation/use_visible_read'
 const props = defineProps<{ accountId: string; active: boolean; directMessageId: string; otherParticipantId: string; otherParticipantDisplayName: string; navOpen: boolean }>()
 const emit = defineEmits<{ toggleNav: [] }>()
 const store = useDirectMessageStore()
+const support = computed(()=>isSupportPeer(props.otherParticipantId,store.supportContact))
 const firstUnread = computed(() => store.directMessages.find(({ id }) => id === props.directMessageId)?.firstUnreadMessageId)
 const { unreadBoundary, unreadContextOpen, readUnlocked, showUnread, continueAtLatest } = useUnreadBoundary(() => props.directMessageId, firstUnread, () => { void showLatest().then(queueVisibleRead) })
 const searchTarget = useSearchTargetStore()
@@ -94,6 +96,7 @@ onBeforeUnmount(() => searchTarget.clearFor('DIRECT_MESSAGE', props.directMessag
       <WorkspaceHeaderActions :members-expanded="false" :nav-expanded="props.navOpen" :show-members="false" @toggle-navigation="emit('toggleNav')"><button v-action-hint ref="searchTrigger" class="header-action" type="button" aria-label="Найти сообщение" :aria-expanded="searchOpen && !contextOpen()" :aria-controls="searchPanelId" @click="toggleSearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m16 16 4 4" /></svg></button><template #overflow><ConversationOverflowMenu ref="overflow" :search-expanded="searchOpen && !contextOpen()" :search-controls="searchPanelId" show-files @search="openSearch" @files="filesOpen = true" /></template></WorkspaceHeaderActions>
     </header>
     <div v-if="searchMounted" v-show="searchOpen && !contextOpen()" class="conversation-tools" :id="searchPanelId"><KeepAlive><DirectMessageSearch v-if="searchOpen" :key="props.directMessageId" :direct-message-id="props.directMessageId" @open="searchTarget.open({ kind: 'DIRECT_MESSAGE', conversationId: props.directMessageId, messageId: $event })" @close="closeSearch" /></KeepAlive></div>
+    <p v-if="support" class="support-privacy" tabindex="0" role="region" aria-label="Приватность поддержки"><span v-if="store.supportChanged">Оператор поддержки изменился. Старые диалоги сохраняют прежних участников и историю. </span>{{ supportPrivacy }}</p>
     <p v-if="store.loadingHistory" class="state" aria-live="polite">Загружаем историю…</p>
     <p v-if="store.error" id="direct-conversation-error" class="state state-error" role="alert">{{ store.error }} <span v-if="store.historyLoaded">Показанная история может быть устаревшей.</span> <button v-if="store.retryableError" type="button" @click="store.refreshHistory()">Повторить загрузку</button></p>
     <div v-if="!filesOpen && unreadBoundary && !readUnlocked" class="unread-boundary-actions" role="status">
@@ -106,7 +109,7 @@ onBeforeUnmount(() => searchTarget.clearFor('DIRECT_MESSAGE', props.directMessag
     <SearchMessageContext v-else-if="replyContextTarget" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :message-id="replyContextTarget" heading="Контекст ответа" @close="replyContextTarget = null" />
     <SearchMessageContext v-else-if="unreadContextOpen" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :message-id="unreadBoundary" heading="Первое непрочитанное сообщение" unread :active="props.active" @read="store.refreshNavigation()" @viewport-change="savePosition" @close="continueAtLatest" />
     <SearchMessageContext v-else-if="restored" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :message-id="restored.id" :offset="restored.offset" heading="Сохранённая позиция" @viewport-change="savePosition" @close="restored = null" />
-    <DirectMessageHistoryList v-show="!contextOpen()" :direct-message-id="props.directMessageId" :session="session" :other-participant-id="props.otherParticipantId" :other-participant-display-name="props.otherParticipantDisplayName" @reply="replyTarget = $event" @reply-context="replyContextTarget = $event" @retry="retry" @viewport-change="onViewportChange" />
+    <DirectMessageHistoryList :empty-text="support ? supportPrompt : undefined" v-show="!contextOpen()" :direct-message-id="props.directMessageId" :session="session" :other-participant-id="props.otherParticipantId" :other-participant-display-name="props.otherParticipantDisplayName" @reply="replyTarget = $event" @reply-context="replyContextTarget = $event" @retry="retry" @viewport-change="onViewportChange" />
     <div class="composer-wrap">
       <MentionAutocomplete v-model="draft" v-model:mention-user-ids="mentionUserIds" :self-id="session?.accountId ?? ''" :disabled="store.sending || !session" :only-participant="{ id: props.otherParticipantId, displayName: props.otherParticipantDisplayName }" />
       <form class="message-composer composer" @submit.prevent="send" @dragover="onDragOver" @drop="onDrop">

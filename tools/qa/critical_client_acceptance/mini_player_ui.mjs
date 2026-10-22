@@ -80,7 +80,12 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
   await mini.getByRole('button', { name: 'Развернуть на всю область', exact: true }).click()
   await expect(receiver.locator('.voice-room--screen-expanded')).toBeVisible()
   await expect(receiver.locator('.voice-prejoin')).toHaveCount(0)
-  await expect(receiver.locator('.voice-room-controls')).toBeVisible()
+  // Compact clients intentionally use the persistent dock, just as the
+  // voiceInterface acceptance above verifies; room controls stay hidden.
+  if (input.viewport.width <= 600) {
+    await expect(receiver.getByTestId('voice-dock').locator('.voice-actions')).toBeVisible()
+    await expect(receiver.locator('.voice-room-controls')).toBeHidden()
+  } else await expect(receiver.locator('.voice-room-controls')).toBeVisible()
   await expect(receiver.getByRole('button', { name: 'Продолжить видео', exact: true })).toBeVisible()
   await expect(receiver.getByRole('button', { name: 'Включить звук трансляции', exact: true })).toBeVisible()
   assert.equal(await range.inputValue(), '65')

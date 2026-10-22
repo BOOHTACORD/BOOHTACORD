@@ -808,5 +808,53 @@
         "scope": "Origin/account/session/installation queue ownership, explicit opt-in administration and real two-database tenant isolation."
       }
     }
+  },
+  "support": {
+    "paths": [
+      "backend/cmd/support_contact/**",
+      "backend/internal/support/**",
+      "backend/internal/chat/list_direct_messages/**",
+      "backend/internal/chat/send_direct_message/postgres/support_contact_integration_test.go",
+      "backend/internal/app/chat_routes/chat_routes.go",
+      "backend/internal/database/migrate/**",
+      "backend/Dockerfile",
+      "backlog/tasks.yaml",
+      "contracts/openapi.yaml",
+      "clients/web/src/support/**",
+      "clients/web/src/direct_message/**",
+      "clients/web/src/workspace/workspace_navigation.ts",
+      "clients/web/src/workspace/WorkspaceApp.vue",
+      "clients/web/src/workspace/WorkspaceUserFooter.vue",
+      "clients/flutter/lib/src/features/direct/conversations/**",
+      "clients/flutter/lib/src/features/workspace/**",
+      "clients/flutter/lib/src/app/workspace_access/direct_navigation.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/**",
+      "clients/flutter/lib/src/screens/workspace_ui/direct_message_navigation/**",
+      "clients/flutter/lib/src/screens/workspace_ui/user_footer/**",
+      "clients/flutter/lib/src/screens/workspace_ui/support_contact/**",
+      "clients/flutter/test/support/**",
+      "tools/qa/support_contact/**",
+      "docs/runbooks/support-contact.md",
+      "evidence/qa/issue516-support-dm.md",
+      "clients/web/src/design/design_v2_direct_messages.css",
+      "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+      "clients/flutter/integration_test/local_qa_test.dart",
+      "tools/qa/critical_client_acceptance/mini_player_ui.mjs"
+    ],
+    "web": [
+      "tests/accessibility/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/support/contact_test.dart",
+      "test/support/open_test.dart",
+      "test/support/widget_test.dart",
+      "test/features/workspace/dm_drafts/widget_test.dart"
+    ],
+    "acceptance": {
+      "issue516": {
+        "browser": "tools/qa/support_contact/run.py",
+        "scope": "Owned real API ordinary A/B/S support DM text/files/replies, pair-only ACL, replacement and responsive captures. Flutter widget tests are not physical acceptance; unavailable platforms/media stay NOT_RUN."
+      }
+    }
   }
 }
