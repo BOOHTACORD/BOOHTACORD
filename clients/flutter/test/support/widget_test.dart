@@ -83,6 +83,34 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     },
   );
+  testWidgets('selected busy support paints above the sidebar background', (
+    tester,
+  ) async {
+    final state = AppState(ApiClient());
+    state.user = const SessionUser(accountId: 'qa-account', role: 'MEMBER');
+    addTearDown(state.dispose);
+    state.workspace.supportContact = const SupportContact(
+      state: 'available',
+      revision: 1,
+      accountId: peer,
+    );
+    state.directMessages = [support];
+    state.selectedDirectMessage = support;
+    state.workspace.supportOpening = true;
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: guildTheme(),
+        home: Scaffold(
+          body: ColoredBox(
+            color: GcColors.sidebar,
+            child: SupportContactRow(state: state),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  });
   testWidgets('support composer stays visible with enlarged text and IME', (
     tester,
   ) async {

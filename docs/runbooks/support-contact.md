@@ -33,3 +33,15 @@ docker compose exec api /support-contact clear
 Не копируйте исходные DM, ответы, снимки/видео/файлы/логи пользователя, private hostname/IP, имена/email, user/install/session/flow/media IDs, токены, исключения или приватные ссылки. Не публикуйте даже ссылку на приватную беседу. Метка не делает публичную issue приватной. Ответьте пользователю в исходном BOOHTACORD DM; закрытие GitHub issue не является ответом пользователю.
 
 Никаких GitHub API/webhook, автоматического экспорта/псевдообезличивания, private repo, App, `/reply` или outbox в этой реализации нет.
+
+## Локальная проверка разработчиком
+
+Из корня checkout, с локальными зависимостями/эмуляторами из `tools/qa/local_features/README.md`:
+
+```sh
+python3 -m tools.qa.support_contact.run
+python3 -m tools.qa.support_contact.native --platform android --device emulator-5554 --output .out/support-native-android-RUN
+python3 -m tools.qa.support_contact.native --platform ios --device '<UUID BOOHTACORD QA Simulator>' --output .out/support-native-ios-RUN
+```
+
+Используйте свежие выходные каталоги. Runner принимает только выделенные QA-эмуляторы, создаёт временную БД и обычные синтетические аккаунты, назначает оператора штатной командой, проверяет настоящий native composer и ответ оператора через обычный API; ресурсы удаляются после прогона. TLS-разрешение действует только для точного сертификата временного `https://localhost:4810`. Upload проверяется существующим native API; это не приёмка системного picker, физического захвата или качества media. Для GitHub публикации допустимы только проверенные синтетические captures, не содержимое реальных обращений.

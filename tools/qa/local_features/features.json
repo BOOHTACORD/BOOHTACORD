@@ -839,7 +839,10 @@
       "clients/web/src/design/design_v2_direct_messages.css",
       "clients/web/tests/accessibility/accessibility.browser.spec.ts",
       "clients/flutter/integration_test/local_qa_test.dart",
-      "tools/qa/critical_client_acceptance/mini_player_ui.mjs"
+      "tools/qa/critical_client_acceptance/mini_player_ui.mjs",
+      "clients/flutter/integration_test/support_qa_test.dart",
+      "tools/ci/flutter_gates/artifacts.py",
+      "tools/ci/flutter_gates/test_artifacts.py"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts"
@@ -853,7 +856,9 @@
     "acceptance": {
       "issue516": {
         "browser": "tools/qa/support_contact/run.py",
-        "scope": "Owned real API ordinary A/B/S support DM text/files/replies, pair-only ACL, replacement and responsive captures. Flutter widget tests are not physical acceptance; unavailable platforms/media stay NOT_RUN."
+        "scope": "Owned real API ordinary A/B/S support DM text/files/replies, pair-only ACL, replacement and responsive captures. Flutter widget tests are not physical acceptance; unavailable platforms/media stay NOT_RUN.",
+        "native": "tools/qa/support_contact/native.py",
+        "target": "integration_test/support_qa_test.dart"
       }
     }
   }

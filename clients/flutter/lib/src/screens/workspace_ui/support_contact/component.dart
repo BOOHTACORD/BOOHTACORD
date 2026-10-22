@@ -13,24 +13,27 @@ class SupportContactRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (state.supportAvailable)
-          ListTile(
-            minTileHeight: 48,
-            leading: const Icon(Icons.help_outline, color: GcColors.muted),
-            title: const Text('Поддержка'),
-            subtitle: const Text('Поддержка этого сервера · закреплено'),
-            selected:
-                existing != null &&
-                state.selectedDirectMessage?.id == existing.id,
-            selectedTileColor: GcColors.selected,
-            trailing: existing != null && existing.unreadCount > 0
-                ? Badge(label: Text('${existing.unreadCount}'))
-                : null,
-            enabled: !state.supportOpening,
-            onTap: () async {
-              if (await state.openSupport() && context.mounted) {
-                onSelected?.call();
-              }
-            },
+          Material(
+            color: Colors.transparent,
+            child: ListTile(
+              minTileHeight: 48,
+              leading: const Icon(Icons.help_outline, color: GcColors.muted),
+              title: const Text('Поддержка'),
+              subtitle: const Text('Поддержка этого сервера · закреплено'),
+              selected:
+                  existing != null &&
+                  state.selectedDirectMessage?.id == existing.id,
+              selectedTileColor: GcColors.selected,
+              trailing: existing != null && existing.unreadCount > 0
+                  ? Badge(label: Text('${existing.unreadCount}'))
+                  : null,
+              enabled: !state.supportOpening,
+              onTap: () async {
+                if (await state.openSupport() && context.mounted) {
+                  onSelected?.call();
+                }
+              },
+            ),
           ),
         if (state.supportNotice != null)
           Padding(
