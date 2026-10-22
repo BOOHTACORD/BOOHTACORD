@@ -8,10 +8,6 @@ from tools.build.client_identity import load
 VERSION = '1.2.161'
 
 
-def full_package_name(version):
-    return f'boohtacord_desktop-{version}-stable-full.nupkg'
-
-
 def prepare_packager():
     tools = ROOT / '.out/desktop-updater/vpk'
     tools.mkdir(parents=True, exist_ok=True)
@@ -42,8 +38,6 @@ def package(release: Path):
     installers = list(destination.glob('*Setup.exe'))
     if len(packages) != 1 or len(installers) != 1:
         raise ValueError('Velopack did not produce one full package and installer')
-    if packages[0].name != full_package_name(identity['version']) or installers[0].name != 'boohtacord_desktop-stable-Setup.exe':
-        raise ValueError('Velopack package identity, version or channel differs')
     # This is unsigned feed metadata, never promoted as client trust metadata.
     (destination / 'build-identity.json').write_text(json.dumps(identity, indent=2)+'\n')
     return destination

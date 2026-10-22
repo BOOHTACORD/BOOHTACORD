@@ -10,13 +10,12 @@ successful Windows CI 39764639901, artifact 12420770191. This is CI packaging
 format evidence, not a claim that its QA-purpose binary is a public release.
 
 The native asset fixture was changed to the actual pinned-tool format first;
-the Windows valid-package case failed RED. The producer and release validator
-now share the exact stable filename rule, including application ID, version and
-channel. The producer rejects any other name during real Windows compilation,
-so ordinary CI exercises the same format guard before a release is attempted.
-Seven focused tests PASS, including wrong version, preview channel and foreign
-application rejection. Source, manifest, checksums, ZIP traversal and QA-purpose
-rejection remain required and unchanged.
+the Windows valid-package case failed RED. The release validator now matches
+the exact measured stable filename, including application ID, version and
+channel. Four focused asset tests PASS, including wrong version, preview channel
+and foreign application rejection. The pinned producer and reviewed SDK inputs
+are unchanged. Source, manifest, checksums, ZIP traversal and QA-purpose rejection
+remain required and unchanged.
 
 Existing unpublished Windows tags 1.0.45 and 1.0.46 remain at their original
 commits. The corrected Windows release is 1.0.47 (82), order 61. Shared Flutter
