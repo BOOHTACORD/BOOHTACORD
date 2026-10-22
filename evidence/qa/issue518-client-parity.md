@@ -44,7 +44,23 @@ Verification in progress:
   displays the peer's updated message. Screenshots are synthetic private QA data.
 - Flutter analyzer: PASS with existing informational lints; no errors/warnings.
 - CI action-pin/source policy: PASS (36 workflows / 2 local actions), 8 tests.
-- Final registered feature smoke and exact-source release receipts: pending.
+- Compact telemetry widget at 320×568 / text scale 2: PASS; opening performs
+  no writes, refresh clears consent, HTTP blocks enrollment, HTTPS + explicit
+  consent permits exactly the intended update.
+- iOS release metadata defect reproduced in the first exported IPA: Runner 80,
+  extension 1 / missing marketing version. Fixed all extension configurations to
+  read Flutter Generated.xcconfig through Version.xcconfig; effective native
+  build settings now report CURRENT_PROJECT_VERSION=80 / MARKETING_VERSION=1.0.45.
+  Three IPA artifact regressions PASS. The corrected actual signed IPA verifies
+  both approved bundle IDs at 1.0.45 (80), SHA-256
+  `a7861517184762b7d7fb712d497ed29f8ebe6010c76796569f938a0226d3e99d`;
+  codesign --verify --deep --strict PASS. Distribution uses the owner's existing
+  ru.boohtacord.app.test variant, two supplied profiles and existing App Group.
+  Signing used a disposable private keychain, which was deleted after export;
+  the original user keychain search list was restored. No credential is in Git.
+- Registered Web viewport suites and actual Go/SFU stack at 1440 and 393: PASS.
+  Registered full Flutter, component captures and general native smoke are
+  finishing; final release/portal publication receipts follow after merge.
 - Release candidates: 1.0.45 (80), release order 59; release receipts pending.
 
 Physical iPhone/Android capture with/without audio, OS stop, background and

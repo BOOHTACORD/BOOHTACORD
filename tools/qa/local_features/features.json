@@ -407,7 +407,8 @@
       "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/**",
       "clients/flutter/lib/src/screens/voice_screen_ended.dart",
       "clients/flutter/lib/src/screens/voice_viewer_layout.dart",
-      "clients/flutter/lib/src/screens/workspace_ui/voice_participant_strip/**"
+      "clients/flutter/lib/src/screens/workspace_ui/voice_participant_strip/**",
+      "clients/flutter/lib/src/screens/screen_fullscreen_overlay.dart"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -887,7 +888,8 @@
       "clients/web/src/guild/*",
       "clients/flutter/lib/src/features/admin/*",
       "clients/flutter/lib/src/features/guild/*",
-      "clients/flutter/lib/src/features/admin/guild_settings/**"
+      "clients/flutter/lib/src/features/admin/guild_settings/**",
+      "clients/flutter/lib/src/features/authorization/permissions/**"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts"
@@ -900,7 +902,8 @@
       "test/admin_guild_settings_test.dart",
       "test/guild_settings_widgets_test.dart",
       "test/admin_telemetry/api_test.dart",
-      "test/admin_telemetry/controller_test.dart"
+      "test/admin_telemetry/controller_test.dart",
+      "test/admin_telemetry/panel_test.dart"
     ],
     "acceptance": {
       "issue295": {
@@ -962,7 +965,8 @@
             "entrypoint": "clients/flutter/lib/src/features/admin/telemetry/panel.dart",
             "tests": [
               "clients/flutter/test/admin_telemetry/api_test.dart",
-              "clients/flutter/test/admin_telemetry/controller_test.dart"
+              "clients/flutter/test/admin_telemetry/controller_test.dart",
+              "clients/flutter/test/admin_telemetry/panel_test.dart"
             ],
             "runtime": "NOT_VERIFIED",
             "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
@@ -971,7 +975,8 @@
             "entrypoint": "clients/flutter/lib/src/features/admin/telemetry/panel.dart",
             "tests": [
               "clients/flutter/test/admin_telemetry/api_test.dart",
-              "clients/flutter/test/admin_telemetry/controller_test.dart"
+              "clients/flutter/test/admin_telemetry/controller_test.dart",
+              "clients/flutter/test/admin_telemetry/panel_test.dart"
             ],
             "runtime": "NOT_VERIFIED",
             "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
@@ -1011,7 +1016,8 @@
       "clients/flutter/lib/src/screens/workspace_ui/message_row/**",
       "clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/**",
       "clients/flutter/lib/src/widgets/message_timestamp.dart",
-      "clients/flutter/lib/src/services/message_presentation.dart"
+      "clients/flutter/lib/src/services/message_presentation.dart",
+      "clients/flutter/lib/src/features/text/history_state/**"
     ],
     "web": [
       "tests/conversation_action_disclosure/playwright.config.ts",

@@ -56,7 +56,7 @@ jobs:
         env:
           PARITY_BASE: ${{ github.event.pull_request.base.sha }}
         run: |
-          python -m unittest tools.verify.client_parity.test_policy
+          python -m unittest tools.verify.client_parity.test_policy tools.release.ios_artifact.test_verify
           python -m tools.verify.client_parity.run --base "$PARITY_BASE"
       - name: Verify generated tracing contract bindings
         run: node tools/observability/flow_contract/generate.mjs --check

@@ -34,3 +34,22 @@ flutter build ios --release
 | Администрирование | UI в общем Flutter-коде зависит от роли; серверный ACL остаётся обязательным. Сценарии ролей и отказа в доступе на iPhone не проверены. |
 
 Публичный архив/IPA, TestFlight и App Store не создавались. До выпуска выполните [матрицу приёмки](ACCEPTANCE.md) и зафиксируйте отдельное продуктовое решение. Не добавляйте camera, recording, group DM, federation или собственный media proxy в рамках этого клиента; cookies, содержимое DM и media credentials не должны попадать в diagnostics/evidence.
+
+## App and ScreenShareExtension version identity (#518)
+
+`ScreenShareExtension/Version.xcconfig` reads Flutter's generated build name and
+number. Debug/Release/Profile all use those values for the extension's marketing
+version and build number, matching Runner. Do not leave the extension at build 1.
+After exporting the signed distribution variant, verify the **actual IPA**:
+
+```sh
+python3 -m tools.release.ios_artifact.verify /absolute/path/BOOHTACORD.ipa \
+  --application-id ru.boohtacord.app.test
+```
+
+The verifier requires exactly the application and approved screen extension,
+both with the version/build from `contracts/client-build.json`. An archive/export
+success for Runner alone does not establish extension metadata validity, upload
+processing, TestFlight availability or physical ReplayKit acceptance. Keep the
+existing two supplied provisioning profiles and shared App Group for this
+distribution variant; never put profiles, private keys or passwords in Git.
