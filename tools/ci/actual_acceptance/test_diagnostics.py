@@ -50,6 +50,15 @@ class FailureDiagnosticTests(unittest.TestCase):
             root=Path(temporary).resolve()
             self.assertEqual(evidence.collect_failure(root, 'next', root/'public'), [])
 
+    def test_failure_stage_keeps_only_allowlisted_stage_names(self):
+        from .failure_stage import last_failure_stage
+        with tempfile.TemporaryDirectory() as temporary:
+            log=Path(temporary)/'lifecycle.log'
+            log.write_text('stage=screen-share-short-height:{"height":160}\n'
+                           'stage=private-token-value\n'
+                           'stage=screen-configuration-status:configuration\n')
+            self.assertEqual(last_failure_stage(log), 'screen-configuration-status')
+
     def test_unknown_fields_stages_or_links_are_rejected(self):
         for case in ('extra', 'stage', 'large', 'link', 'duplicate'):
             with tempfile.TemporaryDirectory() as temporary, self.subTest(case=case):
