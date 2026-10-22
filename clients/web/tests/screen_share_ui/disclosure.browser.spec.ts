@@ -382,6 +382,17 @@ test('the owner can stop their own broadcast while the screen preview is open', 
 
 test('short room height keeps the selected screen preview visible', async ({ page }) => {
   await open(page, 'viewer-strip&height=208', 417, 100, 208)
+  const loadingState = page.locator('.screen-loading-state')
+  const stageTop = page.locator('.screen-stage-top')
+  const loadingBounds = await loadingState.evaluate(element => {
+    const range = document.createRange()
+    range.selectNodeContents(element)
+    const rect = range.getBoundingClientRect()
+    return { y: rect.y, bottom: rect.bottom }
+  })
+  const stageTopBounds = await stageTop.boundingBox()
+  expect(stageTopBounds).not.toBeNull()
+  expect(loadingBounds.y).toBeGreaterThanOrEqual(stageTopBounds!.y + stageTopBounds!.height)
   const geometry = await page.locator('.screen-stage').evaluate(stage => {
     const rect = stage.getBoundingClientRect()
     const viewer = stage.closest('.screen-viewer')!
