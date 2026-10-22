@@ -11,6 +11,15 @@ scrape_configs:
   - job_name: boohtacord-otel-metrics
     static_configs:
       - targets: ["collector:8889"]
+    metric_relabel_configs:
+      # target_info contains arbitrary OTLP resource metadata. Consumers use
+      # only the bounded service labels explicitly copied by the exporter.
+      - source_labels: [__name__]
+        regex: "target_info|otel_scope_info"
+        action: drop
+  - job_name: boohtacord-collector
+    static_configs:
+      - targets: ["collector:8888"]
   - job_name: boohtacord-tempo
     static_configs:
       - targets: ["tempo:3200"]

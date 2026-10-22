@@ -302,13 +302,13 @@
       }
     ],
     "parity_review": {
-      "issue": 522,
+      "issue": 513,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
+      "scope": "Instrumentation-only review: presence transport, flow ownership and timeout/cancelled diagnostics preserve existing voice/screen behavior. Focused Web/shared Dart and actual presence/relay/SDK runtime evidence in #513; physical media and mobile-device acceptance remain separate."
     }
   },
   "screen": {
@@ -654,13 +654,13 @@
       }
     ],
     "parity_review": {
-      "issue": 522,
+      "issue": 513,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
+      "scope": "Instrumentation-only review: presence transport, flow ownership and timeout/cancelled diagnostics preserve existing voice/screen behavior. Focused Web/shared Dart and actual presence/relay/SDK runtime evidence in #513; physical media and mobile-device acceptance remain separate."
     }
   },
   "screen_metrics": {
@@ -1470,7 +1470,14 @@
       "clients/web/src/telemetry/**",
       "clients/web/src/admin/telemetry/**",
       "clients/flutter/lib/src/core/http/transport.dart",
-      "clients/flutter/lib/src/features/telemetry/**"
+      "clients/flutter/lib/src/features/telemetry/**",
+      "clients/web/src/voice/screen_viewer_presence.ts",
+      "clients/flutter/lib/src/services/tracing_http_client.dart",
+      "clients/flutter/lib/src/services/client_telemetry.dart",
+      "backend/internal/observability/**",
+      "docker/observability/**",
+      "docs/observability/signal-catalog.json",
+      "tools/observability/signal_catalog/**"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts"
@@ -1480,7 +1487,10 @@
       "test/features/telemetry/action_scope_test.dart",
       "test/features/telemetry/runtime_export_test.dart",
       "test/admin_telemetry/api_test.dart",
-      "test/admin_telemetry/controller_test.dart"
+      "test/admin_telemetry/controller_test.dart",
+      "test/client_telemetry_polling_test.dart",
+      "test/client_telemetry_relay_test.dart",
+      "test/features/telemetry/stale_context_test.dart"
     ],
     "acceptance": {
       "installation_336": {
@@ -1489,6 +1499,21 @@
           "tools/qa/installation_telemetry/run.py"
         ],
         "scope": "Origin/account/session/installation queue ownership, explicit opt-in administration and real two-database tenant isolation."
+      },
+      "traces_513": {
+        "focused": [
+          "clients/web/src/telemetry/client_tracing.spec.ts",
+          "clients/web/src/telemetry/action_scope/failure.spec.ts",
+          "clients/web/src/voice/screen_viewer_telemetry.spec.ts",
+          "clients/flutter/test/client_telemetry_polling_test.dart",
+          "clients/flutter/test/features/telemetry/action_scope_test.dart",
+          "tools/observability/signal_catalog/test_build.py",
+          "tools/verify/trace_dashboard/test_flow_dashboard.py",
+          "clients/web/src/telemetry/action_scope/stale_context.spec.ts",
+          "clients/flutter/test/features/telemetry/stale_context_test.dart"
+        ],
+        "runtime": "tools/qa/tracing_flow/README.md",
+        "scope": "Successful unscoped presence polling is omitted without losing errors, stops, flow attempts or server aggregate metrics; cancellation/timeout and account-generation ownership remain truthful. Real SDK -> authenticated sanitizer -> Collector -> Tempo proof and deployed Grafana UID/org readback/rollback are separate required evidence; component screenshots do not imply native/media acceptance."
       }
     },
     "parity": [
@@ -1527,10 +1552,47 @@
             "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
           }
         }
+      },
+      {
+        "id": "telemetry.action.outcomes",
+        "expected": "Successful unscoped presence polling is quiet; errors, real transitions, timeout/cancelled outcomes and account-generation ownership remain observable without message/media contents.",
+        "issue": 513,
+        "status": "PARITY",
+        "source": "Reviewed Web and shared native implementations; source-hashed signal catalog and #513 evidence bind verification.",
+        "shipped": "Publication and exact build/source are recorded separately in evidence/observability/issue513-action-traces.md; no release inferred.",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/telemetry/client_tracing.ts",
+            "tests": [
+              "clients/web/src/voice/screen_viewer_telemetry.spec.ts",
+              "clients/web/src/telemetry/action_scope/failure.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Real browser SDK/component -> relay -> Collector -> Tempo is separately verified; deployed client build and Grafana publication require final source-bound readback."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/services/tracing_http_client.dart",
+            "tests": [
+              "clients/flutter/test/client_telemetry_polling_test.dart",
+              "clients/flutter/test/features/telemetry/action_scope_test.dart"
+            ],
+            "runtime": "NOT_RUN",
+            "conditions": "Shared Dart logic and real macOS Flutter engine -> relay -> Tempo verified separately. No iOS/Android device or physical media PASS is inferred; source platform header/enum boundaries retain existing behavior."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/services/tracing_http_client.dart",
+            "tests": [
+              "clients/flutter/test/client_telemetry_polling_test.dart",
+              "clients/flutter/test/features/telemetry/action_scope_test.dart"
+            ],
+            "runtime": "NOT_RUN",
+            "conditions": "Shared Dart logic and real macOS Flutter engine -> relay -> Tempo verified separately. No iOS/Android device or physical media PASS is inferred; source platform header/enum boundaries retain existing behavior."
+          }
+        }
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 513,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",

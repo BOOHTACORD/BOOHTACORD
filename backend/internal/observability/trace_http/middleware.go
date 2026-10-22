@@ -1,6 +1,8 @@
 package tracehttp
 
 import (
+	stdcontext "context"
+	"errors"
 	"net/http"
 	"strconv"
 	"time"
@@ -63,6 +65,10 @@ func Middleware(tracer trace.Tracer, mux *http.ServeMux, next http.Handler) http
 				span.SetStatus(codes.Error, "panic")
 			} else if status >= 500 {
 				span.SetStatus(codes.Error, "HTTP "+strconv.Itoa(status))
+			} else if errors.Is(request.Context().Err(), stdcontext.DeadlineExceeded) {
+				span.SetStatus(codes.Error, "request_deadline")
+			} else if errors.Is(request.Context().Err(), stdcontext.Canceled) {
+				span.AddEvent("app.http.cancelled")
 			}
 			span.End()
 			if panicValue != nil {

@@ -51,12 +51,12 @@ func Start(ctx context.Context) (func(context.Context) error, error) {
 	provider := sdktrace.NewTracerProvider(
 		sdktrace.WithResource(service),
 		sdktrace.WithSampler(configuredSampler()),
-		sdktrace.WithBatcher(incident.TraceExporter{SpanExporter: exporter},
+		sdktrace.WithSpanProcessor(requestProcessor{next: sdktrace.NewBatchSpanProcessor(incident.TraceExporter{SpanExporter: exporter},
 			sdktrace.WithMaxQueueSize(128),
 			sdktrace.WithMaxExportBatchSize(16),
 			sdktrace.WithBatchTimeout(5*time.Second),
 			sdktrace.WithExportTimeout(3*time.Second),
-		),
+		)}),
 	)
 	otel.SetTracerProvider(provider)
 	otel.SetTextMapPropagator(propagation.TraceContext{})

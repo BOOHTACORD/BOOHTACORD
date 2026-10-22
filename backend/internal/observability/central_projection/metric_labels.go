@@ -28,7 +28,7 @@ var extraLabelValues = map[string]map[string]bool{
 	"stage":          enum("encoded", "decoded", "presented", "list_rooms", "list_participants", "snapshot", "encode", "write", "publish", "database", "realtime"),
 	"field":          enum("fps", "fps_target_ratio", "target_fps", "resolution_pixels", "resolution_target_ratio", "bitrate_kbps", "rtt_milliseconds", "jitter_milliseconds", "packet_loss_percent", "packet_loss_window_milliseconds", "dropped_frames", "sample_age_milliseconds"),
 	"quality":        enum("UNKNOWN", "EXCELLENT", "GOOD", "POOR", "LOST", "unreported"),
-	"reason":         enum("none", "cpu", "bandwidth", "other", "unreported", "canceled", "session_expired", "session_store", "snapshot", "write", "invalid_payload", "rate_limited", "disabled", "policy", "unavailable"),
+	"reason":         enum("unsupported", "malformed", "size", "session_mismatch", "collector_rejected", "none", "cpu", "bandwidth", "other", "unreported", "canceled", "session_expired", "session_store", "snapshot", "write", "invalid_payload", "rate_limited", "disabled", "policy", "unavailable"),
 }
 var metricRoutes = func() map[string]bool {
 	out := map[string]bool{"unmatched": true}

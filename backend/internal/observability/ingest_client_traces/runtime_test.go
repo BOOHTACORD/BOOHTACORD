@@ -90,7 +90,7 @@ func TestRuntimeRelayStoresSanitizedFlowInTempo(t *testing.T) {
 			stored, _ := io.ReadAll(io.LimitReader(fetched.Body, 1<<20))
 			_ = fetched.Body.Close()
 			if fetched.StatusCode == 200 {
-				for _, required := range []string{"screen.view", "first_frame", "timeout", binding, principal.AccountID, "server_confirmed", "app.cause.flow.id"} {
+				for _, required := range []string{"screen.view", "first_frame", "timeout", binding, principal.AccountID, "server_confirmed", "app.cause.flow.id", "client.platform"} {
 					if !bytes.Contains(stored, []byte(required)) {
 						t.Fatalf("stored trace missing %s", required)
 					}
@@ -100,7 +100,7 @@ func TestRuntimeRelayStoresSanitizedFlowInTempo(t *testing.T) {
 						t.Fatalf("stored trace leaked %s", forbidden)
 					}
 				}
-				t.Logf("stored sanitized synthetic trace=%s spans=1 rejected=1", traceID)
+				t.Log("stored sanitized synthetic trace spans=1 rejected=1; client platform preserved")
 				return
 			}
 		}

@@ -57,7 +57,7 @@ func sanitizeBatch(input *collectortrace.ExportTraceServiceRequest, platform, se
 		}
 	}
 	output := &collectortrace.ExportTraceServiceRequest{ResourceSpans: []*tracepb.ResourceSpans{{
-		Resource:   &resourcepb.Resource{Attributes: []*commonpb.KeyValue{flowAttrValue("service.name", "boohtacord-"+platform)}},
+		Resource:   &resourcepb.Resource{Attributes: []*commonpb.KeyValue{flowAttrValue("service.name", "boohtacord-"+platform), flowAttrValue("client.platform", platform)}},
 		ScopeSpans: []*tracepb.ScopeSpans{{Scope: &commonpb.InstrumentationScope{Name: "boohtacord-client"}}}}}}
 	destination := output.ResourceSpans[0].ScopeSpans[0]
 	for _, span := range spans {

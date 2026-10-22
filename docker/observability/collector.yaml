@@ -29,10 +29,20 @@ exporters:
       max_elapsed_time: 30s
   prometheus:
     endpoint: 0.0.0.0:8889
-    resource_to_telemetry_conversion:
-      enabled: true
+    # Trace identity stays in Tempo; never promote arbitrary resource fields.
+    resource_constant_labels:
+      included: [service.name, service.version, service.instance.id]
+    without_scope_info: true
 
 service:
+  telemetry:
+    metrics:
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: 0.0.0.0
+                port: 8888
   pipelines:
     traces:
       receivers: [otlp]

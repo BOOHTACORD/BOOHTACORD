@@ -3,8 +3,58 @@ import { InMemorySpanExporter, SimpleSpanProcessor, BasicTracerProvider } from '
 import { ZoneContextManager } from '@opentelemetry/context-zone'
 import { context } from '@opentelemetry/api'
 import { createTracedFetch, traceOperation } from './client_tracing'
+import { telemetrySession } from './action_scope/session'
 
 describe('manual web tracing', () => {
+  it('routine presence responses keep session rejection and installation replacement guards', async () => {
+    const provider=new BasicTracerProvider()
+    const request=createTracedFetch(provider.getTracer('test'),vi.fn(async()=>new Response(null,{status:401})))
+    telemetrySession.reset();telemetrySession.bindInstallation('11111111-1111-4111-8111-111111111111');telemetrySession.bind('1'.repeat(32),'1')
+    const path='/api/v1/voice/leases/viewer/screen-viewers/owner'
+    await request(path,{method:'GET'})
+    expect(telemetrySession.snapshot().binding).toBeNull()
+    telemetrySession.bindInstallation('11111111-1111-4111-8111-111111111111');telemetrySession.bind('1'.repeat(32),'1')
+    const before=telemetrySession.snapshot()
+    const replacement=createTracedFetch(provider.getTracer('test'),vi.fn(async()=>new Response(null,{status:204,headers:{
+      'X-Installation-ID':'22222222-2222-4222-8222-222222222222','X-Telemetry-Session':'2'.repeat(32),'X-Telemetry-Schema':'1',
+    }})))
+    await replacement(path,{method:'PUT'})
+    expect(telemetrySession.current(before)).toBe(false)
+    expect(telemetrySession.snapshot()).toMatchObject({installation:'22222222-2222-4222-8222-222222222222',binding:'2'.repeat(32)})
+    telemetrySession.reset();await provider.shutdown()
+  })
+
+  it('does not mark user cancellation as a product error', async () => {
+    const exporter = new InMemorySpanExporter()
+    const provider = new BasicTracerProvider({ spanProcessors: [new SimpleSpanProcessor(exporter)] })
+    await expect(traceOperation(provider.getTracer('test'), 'screen.view', async () => {
+      throw new DOMException('private cancellation', 'AbortError')
+    })).rejects.toThrow()
+    const terminal=exporter.getFinishedSpans().find(span=>span.attributes['app.flow.record']==='terminal')!
+    expect(terminal.attributes['app.flow.outcome']).toBe('cancelled')
+    expect(terminal.status.code).not.toBe(2)
+    await provider.shutdown()
+  })
+
+  it('omits successful unscoped presence polling while retaining errors, stop and action requests', async () => {
+    const exporter = new InMemorySpanExporter()
+    const provider = new BasicTracerProvider({ spanProcessors: [new SimpleSpanProcessor(exporter)] })
+    const transport = vi.fn(async () => new Response(null, { status: 204 })) as unknown as typeof fetch
+    const request = createTracedFetch(provider.getTracer('test'), transport)
+    const path='/api/v1/voice/leases/private-viewer/screen-viewers/private-owner'
+    for(let i=0;i<12;i++) {await request(path,{method:'GET'});await request(path,{method:'PUT'})}
+    expect(exporter.getFinishedSpans()).toHaveLength(0)
+    ;(transport as ReturnType<typeof vi.fn>).mockResolvedValueOnce(new Response(null,{status:503}))
+    await request(path,{method:'PUT'})
+    ;(transport as ReturnType<typeof vi.fn>).mockRejectedValueOnce(new DOMException('private-timeout','TimeoutError'))
+    await expect(request(path,{method:'GET'})).rejects.toThrow()
+    await request(path,{method:'DELETE'})
+    expect(exporter.getFinishedSpans()).toHaveLength(3)
+    expect(exporter.getFinishedSpans().slice(0,2).every(span=>span.status.code===2)).toBe(true)
+    expect(JSON.stringify(exporter.getFinishedSpans().map(span=>span.attributes))).not.toContain('private-')
+    await provider.shutdown()
+  })
+
   it('links an API call without recording its URL, body or credentials', async () => {
     const exporter = new InMemorySpanExporter()
     const provider = new BasicTracerProvider({ spanProcessors: [new SimpleSpanProcessor(exporter)] })
@@ -45,7 +95,7 @@ describe('manual web tracing', () => {
     const request = createTracedFetch(tracer, vi.fn(async () => new Response(null, { status: 204 })) as unknown as typeof fetch)
     await traceOperation(tracer, 'voice.join', async (within) => {
       await Promise.resolve()
-      return within(() => request('/api/v1/voice', { method: 'POST' }))
+      return within(() => request('/api/v1/voice/leases/viewer/screen-viewers/owner', { method: 'PUT' }))
     })
     const api = exporter.getFinishedSpans().find(span => span.name === 'api.request')!
     const voice = exporter.getFinishedSpans().find(span => span.attributes['app.flow.record'] === 'terminal')!

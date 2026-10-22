@@ -1,0 +1,23 @@
+# Monitor-host topology: no public API scrape or cross-host Docker network.
+# No alert rules for absent API/SFU scrape targets are silently installed.
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: boohtacord-otel-metrics
+    static_configs:
+      - targets: ["collector:8889"]
+    metric_relabel_configs:
+      # Match the colocated profile's resource metadata privacy boundary.
+      - source_labels: [__name__]
+        regex: "target_info|otel_scope_info"
+        action: drop
+  - job_name: boohtacord-collector
+    static_configs:
+      - targets: ["collector:8888"]
+  - job_name: boohtacord-tempo
+    static_configs:
+      - targets: ["tempo:3200"]
+  - job_name: boohtacord-prometheus
+    static_configs:
+      - targets: ["localhost:9090"]

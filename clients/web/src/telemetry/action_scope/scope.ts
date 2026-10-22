@@ -39,7 +39,12 @@ export class ActionScope {
  private emit(record: string,outcome: string): void {
   this.tracer.startSpan(this.name,{kind:SpanKind.INTERNAL,attributes:this.attributes(record,outcome),links:this.links},this.context).end()
  }
- within<R>(call:()=>R):R { return this.session.current(this.snapshot) && !this.ended ? context.with(this.context,call) : call() }
+ within<R>(call:()=>R):R {
+  if(this.session.current(this.snapshot)&&!this.ended)return context.with(this.context,call)
+  const ambient=activeAction()
+  if(!ambient||(!ambient.complete&&ambient.session.current(ambient.snapshot)))return call()
+  return context.with(ROOT_CONTEXT,call)
+ }
  step(stage: string): void {
   if(this.ended || !this.session.current(this.snapshot) || !fields['app.flow.stage'].values?.includes(stage))return
   this.stage=stage;this.emit('checkpoint','unknown')

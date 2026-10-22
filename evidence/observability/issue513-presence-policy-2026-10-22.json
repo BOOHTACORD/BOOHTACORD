@@ -1,0 +1,43 @@
+{
+  "additional_requests_each": 2,
+  "baseline_source": "bb51c0d unfiltered NewBatchSpanProcessor constructor",
+  "bytes_measure": "OTLP HTTP request bodies sent to Collector, excludes transport headers and storage cost",
+  "cadence_seconds": 5,
+  "finished_at": "2026-10-22T13:57:43Z",
+  "phases": {
+    "issue513-after": {
+      "body_bytes_per_minute": 172.75990941069867,
+      "exported_spans": 4,
+      "http_aggregate_failure": 1,
+      "http_aggregate_success": 121,
+      "otlp_batches": 2,
+      "otlp_body_bytes": 1742,
+      "preauth_401_without_user": "PASS",
+      "private_metric_labels": "PASS",
+      "spans_per_minute": 0.39669324778576043,
+      "start_transition_and_stop": "PASS",
+      "status_503": "PASS",
+      "stored_traces": 4
+    },
+    "issue513-before": {
+      "body_bytes_per_minute": 5972.811885286302,
+      "exported_spans": 124,
+      "http_aggregate_failure": 1,
+      "http_aggregate_success": 121,
+      "otlp_batches": 119,
+      "otlp_body_bytes": 60226,
+      "preauth_401_without_user": "PASS",
+      "private_metric_labels": "PASS",
+      "spans_per_minute": 12.297490681358573,
+      "start_transition_and_stop": "PASS",
+      "status_503": "PASS",
+      "stored_traces": 124
+    }
+  },
+  "presence_requests_each": 122,
+  "sampling": "always_on identical both phases",
+  "scope": "isolated synthetic presence policy comparison, not production traffic",
+  "started_at": "2026-10-22T13:47:38Z",
+  "status": "PASS",
+  "wall_seconds": 605.001474917
+}

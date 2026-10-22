@@ -1,37 +1,3976 @@
 {
   "uid": "boohtacord-traces",
   "title": "BOOHTACORD | Traces",
-  "description": "Пользователи, сессии и действия с переходом к конкретному трейсу.",
-  "tags": ["boohtacord","sre","traces"],
+  "description": "User → session → client visit → action/attempt → stage/outcome/cause. Bounded sampled history; private technical and delivery diagnostics retain the same UID and legacy user/session deep links.",
+  "tags": [
+    "boohtacord",
+    "sre",
+    "traces"
+  ],
   "schemaVersion": 40,
-  "version": 1,
+  "version": 2,
   "editable": true,
   "timezone": "browser",
   "refresh": "30s",
-  "time": {"from":"now-6h","to":"now"},
-  "templating": {"list":[{"name":"user","label":"Пользователь · имя и ID","type":"query","datasource":{"type":"tempo","uid":"boohtacord_tempo"},"query":{"type":1,"label":"user.label","refId":"TempoDatasourceVariableQueryEditor-VariableQuery"},"refresh":2,"sort":1,"includeAll":true,"allValue":".*","multi":false,"current":{"text":"All","value":"$__all"},"options":[],"regex":"/^(?<text>[\\s\\S]* · (?<value>[0-9a-fA-F-]{36}))$/"},{"name":"session","label":"Сессия","type":"query","datasource":{"type":"tempo","uid":"boohtacord_tempo"},"query":{"type":1,"label":"session.id","refId":"TempoDatasourceVariableQueryEditor-VariableQuery"},"refresh":2,"sort":1,"includeAll":true,"allValue":".*","multi":false,"current":{"text":"All","value":"$__all"},"options":[]},{"name":"visit","label":"Visit","type":"query","datasource":{"type":"tempo","uid":"boohtacord_tempo"},"query":{"type":1,"label":"app.visit.id","refId":"TempoDatasourceVariableQueryEditor-VariableQuery","query":"{ span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" }"},"refresh":2,"sort":1,"includeAll":true,"allValue":".*","multi":true,"current":{"text":"All","value":"$__all"},"options":[],"regex":"","definition":"app.visit.id"},{"name":"flow","label":"Flow","type":"query","datasource":{"type":"tempo","uid":"boohtacord_tempo"},"query":{"type":1,"label":"app.flow.id","refId":"TempoDatasourceVariableQueryEditor-VariableQuery","query":"{ span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" }"},"refresh":2,"sort":1,"includeAll":true,"allValue":".*","multi":true,"current":{"text":"All","value":"$__all"},"options":[],"regex":"","definition":"app.flow.id"},{"name":"media","label":"Media session","type":"query","datasource":{"type":"tempo","uid":"boohtacord_tempo"},"query":{"type":1,"label":"app.media.session.id","refId":"TempoDatasourceVariableQueryEditor-VariableQuery","query":"{ span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" && span.app.flow.id =~ \"${flow:regex}\" }"},"refresh":2,"sort":1,"includeAll":true,"allValue":".*","multi":true,"current":{"text":"All","value":"$__all"},"options":[],"regex":"","definition":"app.media.session.id"},{"name":"platform","label":"Platform","type":"query","datasource":{"type":"tempo","uid":"boohtacord_tempo"},"query":{"type":1,"label":"service.name","refId":"TempoDatasourceVariableQueryEditor-VariableQuery"},"refresh":2,"sort":1,"includeAll":true,"allValue":".*","multi":true,"current":{"text":"All","value":"$__all"},"options":[],"regex":""},{"name":"client_version","label":"Client version","type":"query","datasource":{"type":"tempo","uid":"boohtacord_tempo"},"query":{"type":1,"label":"app.client.version","refId":"TempoDatasourceVariableQueryEditor-VariableQuery"},"refresh":2,"sort":1,"includeAll":true,"allValue":".*","multi":true,"current":{"text":"All","value":"$__all"},"options":[],"regex":""},{"name":"operation","label":"Operation","type":"query","datasource":{"type":"tempo","uid":"boohtacord_tempo"},"query":{"type":1,"label":"app.flow.name","refId":"TempoDatasourceVariableQueryEditor-VariableQuery"},"refresh":2,"sort":1,"includeAll":true,"allValue":".*","multi":true,"current":{"text":"All","value":"$__all"},"options":[],"regex":""},{"name":"outcome","label":"Outcome","type":"query","datasource":{"type":"tempo","uid":"boohtacord_tempo"},"query":{"type":1,"label":"app.flow.outcome","refId":"TempoDatasourceVariableQueryEditor-VariableQuery"},"refresh":2,"sort":1,"includeAll":true,"allValue":".*","multi":true,"current":{"text":"All","value":"$__all"},"options":[],"regex":""}]},
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "user",
+        "label": "Пользователь · ID / псевдоним",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "boohtacord_tempo"
+        },
+        "query": {
+          "type": 1,
+          "label": "user.id",
+          "refId": "TempoDatasourceVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "description": "Стабильный server-derived ID; имя, если разрешено, находится в строке действия. Старые var-user ссылки сохраняются; UUID не обязателен."
+      },
+      {
+        "name": "session",
+        "label": "Сессия · global list",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "boohtacord_tempo"
+        },
+        "query": {
+          "type": 1,
+          "label": "session.id",
+          "refId": "TempoDatasourceVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "description": "Tempo 13 LabelValues supports a global list only. Use scoped selector tables / row links for dependent navigation and descendant reset. A selected missing legacy field gives no rows; use All explicitly."
+      },
+      {
+        "name": "visit",
+        "label": "Visit · global list",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "boohtacord_tempo"
+        },
+        "query": {
+          "type": 1,
+          "label": "app.visit.id",
+          "refId": "TempoDatasourceVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "description": "Tempo 13 LabelValues supports a global list only. Use scoped selector tables / row links for dependent navigation and descendant reset. A selected missing legacy field gives no rows; use All explicitly."
+      },
+      {
+        "name": "flow",
+        "label": "Flow · global list",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "boohtacord_tempo"
+        },
+        "query": {
+          "type": 1,
+          "label": "app.flow.id",
+          "refId": "TempoDatasourceVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "description": "Tempo 13 LabelValues supports a global list only. Use scoped selector tables / row links for dependent navigation and descendant reset. A selected missing legacy field gives no rows; use All explicitly."
+      },
+      {
+        "name": "media",
+        "label": "Media session · global list",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "boohtacord_tempo"
+        },
+        "query": {
+          "type": 1,
+          "label": "app.media.session.id",
+          "refId": "TempoDatasourceVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "description": "Tempo 13 LabelValues supports a global list only. Use scoped selector tables / row links for dependent navigation and descendant reset. A selected missing legacy field gives no rows; use All explicitly."
+      },
+      {
+        "name": "platform",
+        "label": "Client platform",
+        "type": "custom",
+        "query": "web,android,ios,windows,macos",
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [
+          {
+            "text": "web",
+            "value": "web",
+            "selected": false
+          },
+          {
+            "text": "android",
+            "value": "android",
+            "selected": false
+          },
+          {
+            "text": "ios",
+            "value": "ios",
+            "selected": false
+          },
+          {
+            "text": "windows",
+            "value": "windows",
+            "selected": false
+          },
+          {
+            "text": "macos",
+            "value": "macos",
+            "selected": false
+          }
+        ],
+        "regex": "",
+        "description": "Реальный клиент: client.platform; старые записи — resource service / media.platform. API producer не считается клиентской платформой; неизвестный legacy Flutter виден в All."
+      },
+      {
+        "name": "producer",
+        "label": "Producer service",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "boohtacord_tempo"
+        },
+        "query": {
+          "type": 1,
+          "label": "service.name",
+          "refId": "TempoDatasourceVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "description": "Сервис, создавший span, независимо от наблюдаемой client platform. Выбор API скрывает client-root строки."
+      },
+      {
+        "name": "client_version",
+        "label": "Client version · global list",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "boohtacord_tempo"
+        },
+        "query": {
+          "type": 1,
+          "label": "app.client.version",
+          "refId": "TempoDatasourceVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "description": "Tempo 13 LabelValues supports a global list only. Use scoped selector tables / row links for dependent navigation and descendant reset. A selected missing legacy field gives no rows; use All explicitly."
+      },
+      {
+        "name": "api_version",
+        "label": "API version · technical only · global list",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "boohtacord_tempo"
+        },
+        "query": {
+          "type": 1,
+          "label": "service.version",
+          "refId": "TempoDatasourceVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "description": "Tempo 13 LabelValues supports a global list only. Use scoped selector tables / row links for dependent navigation and descendant reset. A selected missing legacy field gives no rows; use All explicitly."
+      },
+      {
+        "name": "operation",
+        "label": "Operation · global list",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "boohtacord_tempo"
+        },
+        "query": {
+          "type": 1,
+          "label": "app.flow.name",
+          "refId": "TempoDatasourceVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "description": "Tempo 13 LabelValues supports a global list only. Use scoped selector tables / row links for dependent navigation and descendant reset. A selected missing legacy field gives no rows; use All explicitly."
+      },
+      {
+        "name": "outcome",
+        "label": "Outcome · global list",
+        "type": "query",
+        "datasource": {
+          "type": "tempo",
+          "uid": "boohtacord_tempo"
+        },
+        "query": {
+          "type": 1,
+          "label": "app.flow.outcome",
+          "refId": "TempoDatasourceVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "description": "Tempo 13 LabelValues supports a global list only. Use scoped selector tables / row links for dependent navigation and descendant reset. A selected missing legacy field gives no rows; use All explicitly."
+      }
+    ]
+  },
   "panels": [
-    {"id":40,"title":"User flows v1","type":"text","gridPos":{"h":4,"w":24,"x":0,"y":0},"options":{"mode":"markdown","content":"Short actions: start / checkpoints / terminal (120 s). A missing terminal means incomplete, never success. Client observations and server confirmations have separate provenance. Connect does not prove audibility; decoded frames do not prove presentation; sender render is not a receiver receipt. Search is bounded to 500 rows and selected time range; sampling, delayed ingestion and dropped exports can hide records. Filters grant no access. Legacy views and existing user/session links remain below."}},
-    {"id":41,"title":"Completed attempts: observed result","type":"table","gridPos":{"h":8,"w":24,"x":0,"y":4},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ span.app.schema.version = 1 && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" && span.app.flow.id =~ \"${flow:regex}\" && resource.service.name =~ \"boohtacord-(web|android|ios|windows|macos)\" && span.app.flow.record = \"terminal\" && resource.service.name =~ \"${platform:regex}\" && (span.app.client.version =~ \"${client_version:regex}\" || (span.app.client.version = nil && \"${client_version:regex}\" = \".*\")) && (span.app.flow.name =~ \"${operation:regex}\" || (span.app.flow.name = nil && \"${operation:regex}\" = \".*\")) && (span.app.flow.outcome =~ \"${outcome:regex}\" || (span.app.flow.outcome = nil && \"${outcome:regex}\" = \".*\")) } | select(span.user.id, span.session.id, span.app.visit.id, span.app.flow.id, span.app.flow.name, span.app.flow.attempt, span.app.flow.stage, span.app.flow.outcome, span.app.flow.reason, span.app.provenance, span.app.client.version, span.app.media.session.id, span.app.voice.mode)","limit":500,"spss":20,"tableType":"spans"}],"fieldConfig":{"defaults":{"noValue":"unknown"},"overrides":[]},"options":{"showHeader":true,"cellHeight":"sm"},"description":"Exactly one client terminal per attempt. Success is the observable client result, not a guarantee about another client or physical media. Click trace ID for stages and causal links."},
-    {"id":42,"title":"Incomplete: start without stored client terminal","type":"table","gridPos":{"h":6,"w":24,"x":0,"y":12},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ span.app.schema.version = 1 && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" && span.app.flow.id =~ \"${flow:regex}\" && resource.service.name =~ \"boohtacord-(web|android|ios|windows|macos)\" && span.app.flow.record = \"terminal\" } !> { span.app.schema.version = 1 && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" && span.app.flow.id =~ \"${flow:regex}\" && resource.service.name =~ \"boohtacord-(web|android|ios|windows|macos)\" && span.app.flow.record = \"start\" }","limit":500,"spss":20,"tableType":"spans"}],"fieldConfig":{"defaults":{"noValue":"unknown"},"overrides":[]},"options":{"showHeader":true,"cellHeight":"sm"},"description":"Unknown until terminal arrives. Selected time range, sampling and storage blocks can hide a terminal. This is an incomplete observed trace, not proof of product failure."},
-    {"id":43,"title":"Failed / rejected / timeout / cancelled","type":"table","gridPos":{"h":6,"w":12,"x":0,"y":18},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ span.app.schema.version = 1 && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" && span.app.flow.id =~ \"${flow:regex}\" && span.app.flow.record = \"terminal\" && span.app.flow.outcome != \"success\" && span.app.flow.outcome != \"unknown\" && resource.service.name =~ \"${platform:regex}\" && (span.app.client.version =~ \"${client_version:regex}\" || (span.app.client.version = nil && \"${client_version:regex}\" = \".*\")) && (span.app.flow.name =~ \"${operation:regex}\" || (span.app.flow.name = nil && \"${operation:regex}\" = \".*\")) && (span.app.flow.outcome =~ \"${outcome:regex}\" || (span.app.flow.outcome = nil && \"${outcome:regex}\" = \".*\")) } | select(span.user.id, span.session.id, span.app.visit.id, span.app.flow.id, span.app.flow.name, span.app.flow.attempt, span.app.flow.stage, span.app.flow.outcome, span.app.flow.reason, span.app.provenance, span.app.client.version, span.app.media.session.id, span.app.voice.mode)","limit":500,"spss":20,"tableType":"spans"}],"fieldConfig":{"defaults":{"noValue":"unknown"},"overrides":[]},"options":{"showHeader":true,"cellHeight":"sm"},"description":""},
-    {"id":44,"title":"Durable worker attempts","type":"table","gridPos":{"h":6,"w":12,"x":12,"y":18},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ name = \"voice.sfu_revocation.attempt\" && (span.app.flow.id =~ \"${flow:regex}\" || (\"${flow:regex}\" = \".*\" && span.app.flow.id = nil)) } | select(span.app.flow.id, span.app.worker.attempt, span.app.worker.queue_wait_ms, span.app.worker.result, span.app.flow.outcome, span.app.provenance)","limit":500,"spss":20,"tableType":"spans"}],"fieldConfig":{"defaults":{"noValue":"unknown"},"overrides":[]},"options":{"showHeader":true,"cellHeight":"sm"},"description":"Server-confirmed SFU API acknowledgment or participant absence is not acoustic silence. Each attempt is a short root linked to the original persisted cause; legacy rows may lack IDs."},
-    {"id":45,"title":"Media: numeric samples and provenance","type":"table","gridPos":{"h":8,"w":24,"x":0,"y":24},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ span.app.schema.version = 1 && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" && span.app.flow.id =~ \"${flow:regex}\" && name = \"media.sample\" && span.app.media.session.id =~ \"${media:regex}\" && resource.service.name =~ \"${platform:regex}\" && (span.app.client.version =~ \"${client_version:regex}\" || (span.app.client.version = nil && \"${client_version:regex}\" = \".*\")) && (span.app.flow.name =~ \"${operation:regex}\" || (span.app.flow.name = nil && \"${operation:regex}\" = \".*\")) && (span.app.flow.outcome =~ \"${outcome:regex}\" || (span.app.flow.outcome = nil && \"${outcome:regex}\" = \".*\")) } | select(span.user.id, span.session.id, span.app.visit.id, span.app.flow.id, span.app.flow.name, span.app.flow.attempt, span.app.flow.stage, span.app.flow.outcome, span.app.flow.reason, span.app.provenance, span.app.client.version, span.app.media.session.id, span.app.voice.mode, span.app.media.direction, span.app.media.source, span.app.media.sample_state, span.app.sample.age_ms, span.app.sample.window_ms, span.app.media.capture_fps, span.app.media.encoded_fps, span.app.media.decoded_fps, span.app.media.presented_fps, span.app.media.bitrate_bps, span.app.media.rtt_ms, span.app.media.jitter_ms, span.app.media.loss_percent, span.app.media.target_fps)","limit":500,"spss":20,"tableType":"spans"}],"fieldConfig":{"defaults":{"noValue":"unknown"},"overrides":[{"matcher":{"id":"byName","options":"app.media.bitrate_bps"},"properties":[{"id":"unit","value":"bps"}]},{"matcher":{"id":"byName","options":"app.media.rtt_ms"},"properties":[{"id":"unit","value":"ms"}]},{"matcher":{"id":"byName","options":"app.media.jitter_ms"},"properties":[{"id":"unit","value":"ms"}]},{"matcher":{"id":"byName","options":"app.sample.age_ms"},"properties":[{"id":"unit","value":"ms"}]},{"matcher":{"id":"byName","options":"app.media.loss_percent"},"properties":[{"id":"unit","value":"percent"}]}]},"options":{"showHeader":true,"cellHeight":"sm"},"description":"Client-observed WebRTC and presentation samples are separate. Unknown/stale samples omit measurements; absent values never mean zero. Capture settings are not measured capture FPS."},
-    {"id":46,"title":"Relay accepted / rejected records","type":"timeseries","gridPos":{"h":6,"w":12,"x":0,"y":32},"datasource":{"type":"prometheus","uid":"boohtacord_metrics"},"targets":[{"refId":"A","expr":"sum by (outcome, reason) (rate(boohtacord_telemetry_relay_records_total[5m]))","legendFormat":"{{outcome}} / {{reason}}"}],"fieldConfig":{"defaults":{"noValue":"unknown"},"overrides":[]},"description":"Fixed labels only; no user/session/flow IDs. No samples means unknown, never healthy zero."},
-    {"id":47,"title":"Relay export freshness","type":"stat","gridPos":{"h":6,"w":12,"x":12,"y":32},"datasource":{"type":"prometheus","uid":"boohtacord_metrics"},"targets":[{"refId":"A","expr":"time() - max(boohtacord_telemetry_relay_last_accept_seconds)","instant":true}],"fieldConfig":{"defaults":{"unit":"s","noValue":"unknown"},"overrides":[]},"description":"Age since last accepted non-empty batch. Absence, silence and sampling do not prove collector health."},
-    {"id":48,"title":"Flow: observed stages and attempts","type":"table","gridPos":{"h":8,"w":24,"x":0,"y":38},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ span.app.schema.version = 1 && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" && span.app.flow.id =~ \"${flow:regex}\" && resource.service.name =~ \"boohtacord-(web|android|ios|windows|macos)\" && name != \"telemetry.export.health\" && resource.service.name =~ \"${platform:regex}\" && (span.app.client.version =~ \"${client_version:regex}\" || (span.app.client.version = nil && \"${client_version:regex}\" = \".*\")) && (span.app.flow.name =~ \"${operation:regex}\" || (span.app.flow.name = nil && \"${operation:regex}\" = \".*\")) && (span.app.flow.outcome =~ \"${outcome:regex}\" || (span.app.flow.outcome = nil && \"${outcome:regex}\" = \".*\")) } | select(span.user.id, span.session.id, span.app.visit.id, span.app.flow.id, span.app.flow.name, span.app.flow.record, span.app.flow.attempt, span.app.flow.stage, span.app.flow.outcome, span.app.flow.reason, span.app.provenance, span.app.client.version, span.app.media.session.id, span.app.voice.mode)","limit":500,"spss":20,"tableType":"spans"}],"fieldConfig":{"defaults":{"noValue":"unknown"},"overrides":[]},"options":{"showHeader":true,"cellHeight":"sm"},"description":"Separate traces are linked causes, not a fabricated cross-client waterfall. Select flow and open the actual Tempo trace. Cross-host clock differences are not measured latency."},
-    {"id":49,"title":"Client exporter: observed queue / drops / retry","type":"table","gridPos":{"h":8,"w":24,"x":0,"y":46},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ name = \"telemetry.export.health\" && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.app.visit.id =~ \"${visit:regex}\" } | select(span.user.id, span.session.id, span.app.visit.id, span.app.export.queued, span.app.export.accepted, span.app.export.rejected, span.app.export.dropped, span.app.export.retried, span.app.export.age_ms, span.app.provenance)","limit":500,"spss":20,"tableType":"spans"}],"fieldConfig":{"defaults":{"noValue":"unknown"},"overrides":[{"matcher":{"id":"byName","options":"app.export.age_ms"},"properties":[{"id":"unit","value":"ms"}]}]},"options":{"showHeader":true,"cellHeight":"sm"},"description":"Client-observed cumulative counters. Queue limit 128; age unknown until an acknowledged non-empty batch. During a complete outage these reports cannot reach Tempo; absence is unknown. Technical export polling is excluded from action history."},
-    {"id":20,"title":"Как читать трейсы","type":"text","gridPos":{"h":3,"w":24,"x":0,"y":54},"options":{"mode":"markdown","content":"**Пользователь → сессия → действие.** Выберите пользователя или нажмите на сессию. Сводка объединяет трейсы одного входа; ID спана открывает детали. Старые и фоновые данные — в диагностике внизу.\n\nФильтр **Пользователь · имя и ID** ищется по отображаемому имени профиля BOOHTACORD. Значение фильтра — неизменный ID: совпадение имён и переименование не смешивают пользователей. Имя появляется после нового авторизованного запроса; старые трейсы остаются доступны по ID."}},
-    {"id":21,"title":"Сессии пользователей · сводка выборки","type":"table","gridPos":{"h":6,"w":24,"x":0,"y":57},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ resource.service.name = \"boohtacord-api\" && span.http.route != nil && span.user.id != nil && span.session.id != nil && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.http.route != \"GET /api/v1/realtime\" } | select(span.user.name, span.user.id, span.session.id, span.http.route, span.http.response.status_code)","limit":500,"spss":50,"tableType":"spans"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}}},"overrides":[{"matcher":{"id":"byName","options":"user.id"},"properties":[{"id":"displayName","value":"Пользователь"},{"id":"custom.width","value":160}]},{"matcher":{"id":"byName","options":"session.id"},"properties":[{"id":"links","value":[{"title":"Открыть историю сессии","url":"/d/boohtacord-traces/boohtacord-7c-traces?${__url_time_range}&var-user=${__data.fields[\"user.id\"]}&var-session=${__value.raw}","targetBlank":false}]},{"id":"displayName","value":"Сессия"},{"id":"custom.width","value":160}]},{"matcher":{"id":"byName","options":"Span ID (count)"},"properties":[{"id":"unit","value":"short"},{"id":"decimals","value":0},{"id":"displayName","value":"Запросов"},{"id":"custom.width","value":80}]},{"matcher":{"id":"byName","options":"Start time (max)"},"properties":[{"id":"unit","value":"time:MM-DD HH:mm:ss"},{"id":"displayName","value":"Последний запрос"},{"id":"custom.width","value":145}]},{"matcher":{"id":"byName","options":"Duration (mean)"},"properties":[{"id":"unit","value":"ns"},{"id":"displayName","value":"Среднее"},{"id":"custom.width","value":85}]},{"matcher":{"id":"byName","options":"Duration (max)"},"properties":[{"id":"unit","value":"ns"},{"id":"displayName","value":"Максимум"},{"id":"custom.width","value":90}]},{"matcher":{"id":"byName","options":"user.name (lastNotNull)"},"properties":[{"id":"displayName","value":"Имя пользователя"}]}]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"sortBy","options":{"sort":[{"field":"Start time","desc":false}]}},{"id":"groupBy","options":{"fields":{"user.id":{"operation":"groupby","aggregations":[]},"session.id":{"operation":"groupby","aggregations":[]},"Span ID":{"operation":"aggregate","aggregations":["count"]},"Start time":{"operation":"aggregate","aggregations":["max"]},"Duration":{"operation":"aggregate","aggregations":["mean","max"]},"user.name":{"operation":"aggregate","aggregations":["lastNotNull"]}}}},{"id":"sortBy","options":{"fields":{},"sort":[{"field":"Start time (max)","desc":true}]}},{"id":"organize","options":{"indexByName":{"user.id":1,"session.id":2,"Span ID (count)":3,"Start time (max)":4,"Duration (mean)":5,"Duration (max)":6,"user.name (lastNotNull)":0}}}],"description":"Одна строка на вход пользователя. Нажмите на сессию для её истории. Числа рассчитаны по выборке до 500 трейсов и 50 запросов на трейс; это не полные счётчики трафика. WebSocket исключён из длительности API."},
-    {"id":33,"title":"Медиа по пользователю — последние измерения","type":"table","gridPos":{"h":9,"w":24,"x":0,"y":63},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ resource.service.name = \"boohtacord-api\" && name = \"media.sample\" && span.user.id != nil && span.session.id != nil && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" } | select(span.user.name, span.user.id, span.session.id, span.media.platform, span.media.direction, span.media.state, span.media.rtt_ms, span.media.bitrate_kbps, span.media.encoded_fps, span.media.decoded_fps, span.media.presented_fps, span.media.packet_loss_percent, span.media.packet_loss_window_ms, span.media.target_resolution, span.media.target_fps, span.media.frame_width, span.media.frame_height, span.media.connection_quality, span.media.adaptation_reason, span.media.sample_age_ms, span.media.jitter_ms)","limit":500,"spss":1,"tableType":"spans"}],"fieldConfig":{"defaults":{"noValue":"—","custom":{"cellOptions":{"type":"auto"}}},"overrides":[{"matcher":{"id":"byName","options":"Start time (last)"},"properties":[{"id":"displayName","value":"Измерено"},{"id":"unit","value":"time:MM-DD HH:mm:ss"},{"id":"custom.width","value":145}]},{"matcher":{"id":"byName","options":"user.id"},"properties":[{"id":"displayName","value":"Пользователь"},{"id":"unit","value":"string"},{"id":"custom.width","value":150}]},{"matcher":{"id":"byName","options":"session.id"},"properties":[{"id":"displayName","value":"Сессия"},{"id":"unit","value":"string"},{"id":"custom.width","value":130},{"id":"links","value":[{"title":"Выбрать сессию","url":"/d/boohtacord-traces/boohtacord-7c-traces?${__url_time_range}&var-user=${__data.fields[\"user.id\"]}&var-session=${__value.raw}","targetBlank":false}]}]},{"matcher":{"id":"byName","options":"media.platform"},"properties":[{"id":"displayName","value":"Клиент"},{"id":"unit","value":"string"},{"id":"custom.width","value":130}]},{"matcher":{"id":"byName","options":"media.direction"},"properties":[{"id":"displayName","value":"Направление"},{"id":"unit","value":"string"},{"id":"custom.width","value":115},{"id":"mappings","value":[{"type":"value","options":{"sender":{"text":"Отправитель"},"receiver":{"text":"Зритель"},"connection":{"text":"Голос / RTT"}}}]}]},{"matcher":{"id":"byName","options":"media.state (last)"},"properties":[{"id":"displayName","value":"Состояние"},{"id":"unit","value":"string"},{"id":"custom.width","value":120}]},{"matcher":{"id":"byName","options":"media.rtt_ms (last)"},"properties":[{"id":"displayName","value":"RTT"},{"id":"unit","value":"ms"},{"id":"custom.width","value":80}]},{"matcher":{"id":"byName","options":"media.bitrate_kbps (last)"},"properties":[{"id":"displayName","value":"Битрейт"},{"id":"unit","value":"suffix:кбит/с"},{"id":"custom.width","value":100}]},{"matcher":{"id":"byName","options":"media.encoded_fps (last)"},"properties":[{"id":"displayName","value":"FPS отправки"},{"id":"unit","value":"suffix:FPS"},{"id":"custom.width","value":95}]},{"matcher":{"id":"byName","options":"media.decoded_fps (last)"},"properties":[{"id":"displayName","value":"FPS декод."},{"id":"unit","value":"suffix:FPS"},{"id":"custom.width","value":95}]},{"matcher":{"id":"byName","options":"media.presented_fps (last)"},"properties":[{"id":"displayName","value":"FPS показа"},{"id":"unit","value":"suffix:FPS"},{"id":"custom.width","value":95}]},{"matcher":{"id":"byName","options":"packet_loss_display"},"properties":[{"id":"displayName","value":"Потери ≈10 с"},{"id":"unit","value":"percent"},{"id":"custom.width","value":100},{"id":"mappings","value":[{"type":"special","options":{"match":"null+nan","result":{"text":"нет данных","color":"#808080"}}}]}]},{"matcher":{"id":"byName","options":"media.packet_loss_window_ms (last)"},"properties":[{"id":"displayName","value":"Окно потерь"},{"id":"unit","value":"ms"},{"id":"custom.width","value":100}]},{"matcher":{"id":"byName","options":"media.frame_width (last)"},"properties":[{"id":"displayName","value":"Ширина"},{"id":"unit","value":"suffix:px"},{"id":"custom.width","value":80}]},{"matcher":{"id":"byName","options":"media.frame_height (last)"},"properties":[{"id":"displayName","value":"Высота"},{"id":"unit","value":"suffix:px"},{"id":"custom.width","value":80}]},{"matcher":{"id":"byName","options":"media.target_resolution (last)"},"properties":[{"id":"displayName","value":"Цель"},{"id":"unit","value":"suffix:p"},{"id":"custom.width","value":80}]},{"matcher":{"id":"byName","options":"media.target_fps (last)"},"properties":[{"id":"displayName","value":"Цель FPS"},{"id":"unit","value":"suffix:FPS"},{"id":"custom.width","value":90}]},{"matcher":{"id":"byName","options":"media.connection_quality (last)"},"properties":[{"id":"displayName","value":"Связь"},{"id":"unit","value":"string"},{"id":"custom.width","value":100}]},{"matcher":{"id":"byName","options":"media.adaptation_reason (last)"},"properties":[{"id":"displayName","value":"Адаптация"},{"id":"unit","value":"string"},{"id":"custom.width","value":110}]},{"matcher":{"id":"byName","options":"media.sample_age_ms (last)"},"properties":[{"id":"displayName","value":"Возраст при отправке"},{"id":"unit","value":"ms"},{"id":"custom.width","value":130}]},{"matcher":{"id":"byName","options":"media.jitter_ms (last)"},"properties":[{"id":"displayName","value":"Jitter"},{"id":"unit","value":"ms"},{"id":"custom.width","value":85}]},{"matcher":{"id":"byName","options":"user.name (lastNotNull)"},"properties":[{"id":"displayName","value":"Имя пользователя"}]},{"matcher":{"id":"byName","options":"fps_target_ratio"},"properties":[{"id":"displayName","value":"FPS от цели"},{"id":"unit","value":"percentunit"},{"id":"custom.width","value":110},{"id":"custom.cellOptions","value":{"type":"color-background"}},{"id":"color","value":{"mode":"thresholds"}},{"id":"thresholds","value":{"mode":"absolute","steps":[{"color":"red","value":null},{"color":"orange","value":0.5},{"color":"green","value":0.8}]}},{"id":"mappings","value":[{"type":"special","options":{"match":"null+nan","result":{"text":"—","color":"#808080"}}}]}]}]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"sortBy","options":{"sort":[{"field":"Start time","desc":false}]}},{"id":"groupBy","options":{"fields":{"user.id":{"operation":"groupby","aggregations":[]},"session.id":{"operation":"groupby","aggregations":[]},"media.platform":{"operation":"groupby","aggregations":[]},"media.direction":{"operation":"groupby","aggregations":[]},"media.state":{"operation":"aggregate","aggregations":["last"]},"media.rtt_ms":{"operation":"aggregate","aggregations":["last"]},"media.bitrate_kbps":{"operation":"aggregate","aggregations":["last"]},"media.encoded_fps":{"operation":"aggregate","aggregations":["last"]},"media.decoded_fps":{"operation":"aggregate","aggregations":["last"]},"media.presented_fps":{"operation":"aggregate","aggregations":["last"]},"media.packet_loss_percent":{"operation":"aggregate","aggregations":["last"]},"media.packet_loss_window_ms":{"operation":"aggregate","aggregations":["last"]},"media.target_resolution":{"operation":"aggregate","aggregations":["last"]},"media.target_fps":{"operation":"aggregate","aggregations":["last"]},"media.frame_width":{"operation":"aggregate","aggregations":["last"]},"media.frame_height":{"operation":"aggregate","aggregations":["last"]},"media.connection_quality":{"operation":"aggregate","aggregations":["last"]},"media.adaptation_reason":{"operation":"aggregate","aggregations":["last"]},"media.sample_age_ms":{"operation":"aggregate","aggregations":["last"]},"media.jitter_ms":{"operation":"aggregate","aggregations":["last"]},"Start time":{"operation":"aggregate","aggregations":["last"]},"user.name":{"operation":"aggregate","aggregations":["lastNotNull"]}}}},{"id":"sortBy","options":{"sort":[{"field":"Start time (last)","desc":true}]}},{"id":"calculateField","options":{"mode":"binary","binary":{"left":"media.encoded_fps (last)","operator":"/","right":"media.target_fps (last)"},"alias":"fps_target_ratio","replaceFields":false}},{"id":"calculateField","options":{"mode":"binary","binary":{"left":"media.packet_loss_percent (last)","operator":"+","right":"0"},"alias":"packet_loss_display","replaceFields":false}},{"id":"organize","options":{"indexByName":{"Start time (last)":0,"user.id":2,"media.direction":3,"media.rtt_ms (last)":4,"media.bitrate_kbps (last)":5,"media.encoded_fps (last)":6,"media.decoded_fps (last)":9,"media.packet_loss_percent (last)":10,"media.frame_width (last)":11,"media.frame_height (last)":12,"media.target_resolution (last)":13,"media.target_fps (last)":14,"media.connection_quality (last)":15,"media.platform":16,"session.id":17,"media.packet_loss_window_ms (last)":18,"media.presented_fps (last)":19,"media.adaptation_reason (last)":20,"media.state (last)":21,"media.sample_age_ms (last)":22,"media.jitter_ms (last)":23,"user.name (lastNotNull)":1,"fps_target_ratio":7,"packet_loss_display":8},"excludeByName":{"media.packet_loss_percent (last)":true}}}],"description":"Последний замер в выборке до 500 media.sample за выбранный период, по пользователю/сессии/клиенту/направлению. Смотрите время: старый замер не означает активную сессию. RTT — до SFU; sender — потеря Δlost/Δsent на старшем видеослое по RTCP, receiver — Δlost/(Δreceived+Δlost). Окно 9–12 с. Битрейт отправителя суммирует слои. Прочерк означает отсутствие данных. Цель и фактические параметры различаются. Дополнительные колонки доступны горизонтальной прокруткой. FPS от цели — диагностическое отношение фактической отправки к профилю: красный <50%, оранжевый 50–79%, зелёный ≥80%; низкое значение само по себе не доказывает неисправность (статичная сцена может не генерировать новые кадры). Отсутствие потерь — «нет данных», не 0%."},
-    {"id":22,"title":"Действия выбранного пользователя / сессии","type":"table","gridPos":{"h":7,"w":24,"x":0,"y":72},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ span.user.id != nil && span.session.id != nil && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" } && ({ resource.service.name =~ \"boohtacord-(web|android|ios|windows|macos)\" && name != \"api.request\" } || { resource.service.name = \"boohtacord-api\" && span.http.route != nil && span.http.request.method != \"GET\" && span.http.request.method != \"HEAD\" })","limit":500,"spss":50,"tableType":"traces"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}}},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"organize","options":{"excludeByName":{"nested":true}}}],"description":"Один трейс на действие; внутри доступны клиентские и серверные спаны. Связь с пользователем подтверждает API, а не присланные клиентом атрибуты."},
-    {"id":23,"title":"Ошибки выбранной сессии","type":"table","gridPos":{"h":7,"w":12,"x":0,"y":79},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ span.user.id != nil && span.session.id != nil && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" } && { status = error }","limit":500,"spss":50,"tableType":"traces"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}}},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"organize","options":{"excludeByName":{"nested":true}}}]},
-    {"id":24,"title":"Медленные API-запросы (>1 с)","type":"table","gridPos":{"h":7,"w":12,"x":12,"y":79},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ resource.service.name = \"boohtacord-api\" && span.http.route != nil && span.user.id != nil && span.session.id != nil && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.http.route != \"GET /api/v1/realtime\" && duration > 1s } | select(span.user.name, span.user.id, span.session.id, span.http.route, span.http.response.status_code)","limit":500,"spss":50,"tableType":"spans"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}}},"overrides":[{"matcher":{"id":"byName","options":"user.id"},"properties":[{"id":"displayName","value":"Пользователь · ID"}]},{"matcher":{"id":"byName","options":"session.id"},"properties":[{"id":"displayName","value":"Сессия"}]},{"matcher":{"id":"byName","options":"http.route"},"properties":[{"id":"displayName","value":"Запрос"}]},{"matcher":{"id":"byName","options":"http.response.status_code"},"properties":[{"id":"displayName","value":"HTTP"}]},{"matcher":{"id":"byName","options":"spanID"},"properties":[{"id":"displayName","value":"Открыть трейс"}]},{"matcher":{"id":"byName","options":"time"},"properties":[{"id":"displayName","value":"Время"}]},{"matcher":{"id":"byName","options":"user.name"},"properties":[{"id":"displayName","value":"Имя пользователя"}]}]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"organize","options":{"excludeByName":{"Trace Service":true,"Trace Name":true,"service.name":true,"Name":true},"indexByName":{"Start time":0,"user.id":2,"session.id":3,"http.route":4,"http.response.status_code":5,"Duration":6,"Span ID":7,"user.name":1}}}]},
-    {"id":25,"title":"История запросов · выбранный пользователь / сессия","type":"table","gridPos":{"h":10,"w":24,"x":0,"y":86},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ resource.service.name = \"boohtacord-api\" && span.http.route != nil && span.user.id != nil && span.session.id != nil && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" && span.http.route != \"GET /api/v1/realtime\" } | select(span.user.name, span.user.id, span.session.id, span.http.route, span.http.response.status_code)","limit":500,"spss":50,"tableType":"spans"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}}},"overrides":[{"matcher":{"id":"byName","options":"user.id"},"properties":[{"id":"displayName","value":"Пользователь · ID"}]},{"matcher":{"id":"byName","options":"session.id"},"properties":[{"id":"displayName","value":"Сессия"}]},{"matcher":{"id":"byName","options":"http.route"},"properties":[{"id":"displayName","value":"Запрос"}]},{"matcher":{"id":"byName","options":"http.response.status_code"},"properties":[{"id":"displayName","value":"HTTP"}]},{"matcher":{"id":"byName","options":"spanID"},"properties":[{"id":"displayName","value":"Открыть трейс"}]},{"matcher":{"id":"byName","options":"time"},"properties":[{"id":"displayName","value":"Время"}]},{"matcher":{"id":"byName","options":"user.name"},"properties":[{"id":"displayName","value":"Имя пользователя"}]}]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"organize","options":{"excludeByName":{"Trace Service":true,"Trace Name":true,"service.name":true,"Name":true},"indexByName":{"Start time":0,"user.id":2,"session.id":3,"http.route":4,"http.response.status_code":5,"Duration":6,"Span ID":7,"user.name":1}}}],"description":"Выберите сессию в сводке или фильтрах сверху. Нажмите на ID спана, чтобы открыть полный трейс. Данные до установки корреляции доступны в диагностике ниже."},
-    {"id":26,"title":"Голосовые действия","type":"table","gridPos":{"h":7,"w":12,"x":0,"y":96},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ span.user.id != nil && span.session.id != nil && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" } && ({ name =~ \"voice[.](join|leave|reconnect)\" } || { event:name =~ \"app[.]voice[.].*\" })","limit":500,"spss":50,"tableType":"traces"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}}},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"organize","options":{"excludeByName":{"nested":true}}}]},
-    {"id":27,"title":"Демонстрация экрана","type":"table","gridPos":{"h":7,"w":12,"x":12,"y":96},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ span.user.id != nil && span.session.id != nil && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" } && { name =~ \"screen[.].*\" }","limit":500,"spss":50,"tableType":"traces"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}}},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"organize","options":{"excludeByName":{"nested":true}}}]},
-    {"id":28,"title":"WebSocket · длительность соединения","type":"table","gridPos":{"h":7,"w":24,"x":0,"y":103},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ span.user.id != nil && span.session.id != nil && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" } && { name =~ \"realtime[.].*\" || span.http.route = \"GET /api/v1/realtime\" }","limit":500,"spss":50,"tableType":"traces"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}}},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"organize","options":{"excludeByName":{"nested":true}}}],"description":"Длительный трейс API здесь означает открытое WebSocket-соединение. Он не участвует в статистике задержек HTTP на этой панели."},
-    {"id":35,"title":"Registration and welcome (no session required)","description":"New registrations have server-confirmed user correlation before login. Session filter is intentionally not applied. db.committed=true plus failed/realtime means history persisted but hint publication failed.","type":"table","gridPos":{"h":9,"w":24,"x":0,"y":110},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ resource.service.name = \"boohtacord-api\" && (name = \"registration.welcome\" || span.http.route = \"POST /api/v1/auth/register\") && span.user.id != nil && span.user.id =~ \"${user:regex}\" } | select(span.user.name, span.user.id, span.welcome.outcome, span.channel.id, span.message.id, span.welcome.phrase_id, span.db.committed, span.operation.failure_stage)","limit":500,"spss":50,"tableType":"spans"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}},"noValue":"-"},"overrides":[{"matcher":{"id":"byName","options":"Trace ID"},"properties":[{"id":"links","value":[{"title":"Open trace","url":"/explore?left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%7D","targetBlank":true}]}]},{"matcher":{"id":"byName","options":"traceID"},"properties":[{"id":"links","value":[{"title":"Open trace","url":"/explore?left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%7D","targetBlank":true}]}]}]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}}},
-    {"id":29,"title":"Диагностика · фоновые, гостевые и старые трейсы","type":"row","collapsed":true,"gridPos":{"h":1,"w":24,"x":0,"y":119},"panels":[{"id":34,"title":"История измерений медиа","type":"table","gridPos":{"h":10,"w":24,"x":0,"y":120},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ resource.service.name = \"boohtacord-api\" && name = \"media.sample\" && span.user.id != nil && span.session.id != nil && span.user.id =~ \"${user:regex}\" && span.session.id =~ \"${session:regex}\" } | select(span.user.name, span.user.id, span.session.id, span.media.platform, span.media.direction, span.media.state, span.media.rtt_ms, span.media.bitrate_kbps, span.media.encoded_fps, span.media.decoded_fps, span.media.presented_fps, span.media.packet_loss_percent, span.media.packet_loss_window_ms, span.media.target_resolution, span.media.target_fps, span.media.frame_width, span.media.frame_height, span.media.connection_quality, span.media.adaptation_reason, span.media.sample_age_ms, span.media.jitter_ms)","limit":500,"spss":1,"tableType":"spans"}],"fieldConfig":{"defaults":{"noValue":"—","custom":{"cellOptions":{"type":"auto"}}},"overrides":[{"matcher":{"id":"byName","options":"Start time"},"properties":[{"id":"displayName","value":"Измерено"},{"id":"unit","value":"time:MM-DD HH:mm:ss"},{"id":"custom.width","value":145}]},{"matcher":{"id":"byName","options":"user.id"},"properties":[{"id":"displayName","value":"Пользователь"},{"id":"unit","value":"string"},{"id":"custom.width","value":150}]},{"matcher":{"id":"byName","options":"session.id"},"properties":[{"id":"displayName","value":"Сессия"},{"id":"unit","value":"string"},{"id":"custom.width","value":130},{"id":"links","value":[{"title":"Выбрать сессию","url":"/d/boohtacord-traces/boohtacord-7c-traces?${__url_time_range}&var-user=${__data.fields[\"user.id\"]}&var-session=${__value.raw}","targetBlank":false}]}]},{"matcher":{"id":"byName","options":"media.platform"},"properties":[{"id":"displayName","value":"Клиент"},{"id":"unit","value":"string"},{"id":"custom.width","value":130}]},{"matcher":{"id":"byName","options":"media.direction"},"properties":[{"id":"displayName","value":"Направление"},{"id":"unit","value":"string"},{"id":"custom.width","value":115},{"id":"mappings","value":[{"type":"value","options":{"sender":{"text":"Отправитель"},"receiver":{"text":"Зритель"},"connection":{"text":"Голос / RTT"}}}]}]},{"matcher":{"id":"byName","options":"media.state"},"properties":[{"id":"displayName","value":"Состояние"},{"id":"unit","value":"string"},{"id":"custom.width","value":120}]},{"matcher":{"id":"byName","options":"media.rtt_ms"},"properties":[{"id":"displayName","value":"RTT"},{"id":"unit","value":"ms"},{"id":"custom.width","value":80}]},{"matcher":{"id":"byName","options":"media.bitrate_kbps"},"properties":[{"id":"displayName","value":"Битрейт"},{"id":"unit","value":"suffix:кбит/с"},{"id":"custom.width","value":100}]},{"matcher":{"id":"byName","options":"media.encoded_fps"},"properties":[{"id":"displayName","value":"FPS отправки"},{"id":"unit","value":"suffix:FPS"},{"id":"custom.width","value":95}]},{"matcher":{"id":"byName","options":"media.decoded_fps"},"properties":[{"id":"displayName","value":"FPS декод."},{"id":"unit","value":"suffix:FPS"},{"id":"custom.width","value":95}]},{"matcher":{"id":"byName","options":"media.presented_fps"},"properties":[{"id":"displayName","value":"FPS показа"},{"id":"unit","value":"suffix:FPS"},{"id":"custom.width","value":95}]},{"matcher":{"id":"byName","options":"media.packet_loss_percent"},"properties":[{"id":"displayName","value":"Потери ≈10 с"},{"id":"unit","value":"percent"},{"id":"custom.width","value":100}]},{"matcher":{"id":"byName","options":"media.packet_loss_window_ms"},"properties":[{"id":"displayName","value":"Окно потерь"},{"id":"unit","value":"ms"},{"id":"custom.width","value":100}]},{"matcher":{"id":"byName","options":"media.frame_width"},"properties":[{"id":"displayName","value":"Ширина"},{"id":"unit","value":"suffix:px"},{"id":"custom.width","value":80}]},{"matcher":{"id":"byName","options":"media.frame_height"},"properties":[{"id":"displayName","value":"Высота"},{"id":"unit","value":"suffix:px"},{"id":"custom.width","value":80}]},{"matcher":{"id":"byName","options":"media.target_resolution"},"properties":[{"id":"displayName","value":"Цель"},{"id":"unit","value":"suffix:p"},{"id":"custom.width","value":80}]},{"matcher":{"id":"byName","options":"media.target_fps"},"properties":[{"id":"displayName","value":"Цель FPS"},{"id":"unit","value":"suffix:FPS"},{"id":"custom.width","value":90}]},{"matcher":{"id":"byName","options":"media.connection_quality"},"properties":[{"id":"displayName","value":"Связь"},{"id":"unit","value":"string"},{"id":"custom.width","value":100}]},{"matcher":{"id":"byName","options":"media.adaptation_reason"},"properties":[{"id":"displayName","value":"Адаптация"},{"id":"unit","value":"string"},{"id":"custom.width","value":110}]},{"matcher":{"id":"byName","options":"media.sample_age_ms"},"properties":[{"id":"displayName","value":"Возраст при отправке"},{"id":"unit","value":"ms"},{"id":"custom.width","value":130}]},{"matcher":{"id":"byName","options":"media.jitter_ms"},"properties":[{"id":"displayName","value":"Jitter"},{"id":"unit","value":"ms"},{"id":"custom.width","value":85}]},{"matcher":{"id":"byName","options":"user.name"},"properties":[{"id":"displayName","value":"Имя пользователя"}]}]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"sortBy","options":{"sort":[{"field":"Start time","desc":true}]}},{"id":"organize","options":{"excludeByName":{"Trace Service":true,"Trace Name":true,"service.name":true,"Name":true,"Duration":true},"indexByName":{"Start time":0,"user.id":2,"media.direction":3,"media.rtt_ms":4,"media.bitrate_kbps":5,"media.encoded_fps":6,"media.decoded_fps":7,"media.packet_loss_percent":8,"media.frame_width":9,"media.frame_height":10,"media.target_resolution":11,"media.target_fps":12,"media.connection_quality":13,"media.platform":14,"session.id":15,"media.packet_loss_window_ms":16,"media.presented_fps":17,"media.adaptation_reason":18,"media.state":19,"media.sample_age_ms":20,"media.jitter_ms":21,"user.name":1}}}],"description":"Отдельные замеры с метками времени и переходом в полный трейс; значения сообщает клиент, это диагностические данные."},{"id":30,"title":"Без корреляции · фоновые / старые / гостевые","type":"table","gridPos":{"h":9,"w":24,"x":0,"y":129},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ resource.service.name =~ \"boohtacord-.*\" && span.user.id = nil }","limit":500,"spss":50,"tableType":"traces"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}}},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"organize","options":{"excludeByName":{"nested":true}}}]},{"id":31,"title":"Ошибки фоновых операций","type":"table","gridPos":{"h":8,"w":24,"x":0,"y":138},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ resource.service.name = \"boohtacord-api\" && span.user.id = nil && status = error }","limit":500,"spss":50,"tableType":"traces"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}}},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"organize","options":{"excludeByName":{"nested":true}}}]},{"id":32,"title":"Все трейсы · полная диагностика","type":"table","gridPos":{"h":10,"w":24,"x":0,"y":146},"datasource":{"type":"tempo","uid":"boohtacord_tempo"},"targets":[{"refId":"A","queryType":"traceql","query":"{ resource.service.name =~ \"boohtacord-.*\" }","limit":500,"spss":50,"tableType":"traces"}],"fieldConfig":{"defaults":{"custom":{"cellOptions":{"type":"auto"}}},"overrides":[]},"options":{"cellHeight":"sm","showHeader":true,"footer":{"show":false}},"transformations":[{"id":"organize","options":{"excludeByName":{"nested":true}}}]}]}
+    {
+      "id": 40,
+      "title": "Действия и причины",
+      "type": "text",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "Одна строка — **наблюдаемый результат одной попытки**: пользователь → session → visit → flow → attempt / stage / outcome / reason. Щёлкните flow для попыток, traceID для реального трейса и Span Links. Retry сохраняет flow, но имеет отдельный trace. Отказы и отмены отделены от failed/timeout. **Нет terminal в поисковой выборке — неполное наблюдение, не сбой; полный trace может содержать поздний root.** Ни short/single-span, ни guest error не считаются пустыми. Технические HTTP/polling/heartbeat, media и health находятся в свёрнутых разделах ниже.\n\nПоиск: **до 500 traces, до 20 spans/trace в новых таблицах (legacy до 50)**, выбранное время; sampling, retention, late ingestion, query limit и недоступность datasource ограничивают полноту. Это **не полный аудит и не точные SLO/counters**. Пустая история при исправном источнике может означать отсутствие активности; No data не равен 0/healthy; ошибка datasource — отдельная ошибка запроса. Глобальные health-панели не фильтруются по пользователю. Client platform и Producer service независимы. Legacy без visit/flow/media/platform доступен с All; технический API version применяется только к API HTTP. Фильтры не являются ACL.\n\n**Зависимый выбор:** ссылка «Выбрать session / visit» → нажмите session → выберите visit → нажмите flow в действии → при необходимости media session. Каждая ссылка сохраняет время/org и сбрасывает вложенные фильтры. Списки Tempo сверху — глобальные подсказки: Grafana 13 LabelValues не умеет scoped query; после ручной смены пользователя сбросьте visit/flow/media или используйте scoped-переход. Никаких фиктивных chained queries.\n\nSource retention: Tempo 168 h / Prometheus 7 d; сверяйте runtime с runbook. Выборка за пределами retention не доказывает отсутствие события. GLOBAL API errors отдельно сохраняют ошибки до входа; отсутствие user.id не заменяется фиктивным пользователем."
+      }
+    },
+    {
+      "id": 41,
+      "title": "Действия · результат каждой попытки",
+      "type": "table",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "datasource": {
+        "type": "tempo",
+        "uid": "boohtacord_tempo"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "query": "{ resource.service.name =~ `${producer:regex}` && .app.schema.version = 1 && .user.id =~ `${user:regex}` && .session.id =~ `${session:regex}` && .app.visit.id =~ `${visit:regex}` && .app.flow.id =~ `${flow:regex}` && .app.flow.name =~ `${operation:regex}` && .app.provenance = \"client_observed\" && .app.flow.record = \"terminal\" && .app.flow.outcome =~ `${outcome:regex}` } | ({ `${media:regex}` = \".*\" } || { .app.media.session.id =~ `${media:regex}` }) | ({ `${client_version:regex}` = \".*\" } || { .app.client.version =~ `${client_version:regex}` }) | ({ `${platform:regex}` = \".*\" } || { .client.platform =~ `${platform:regex}` || .service.name =~ `boohtacord-${platform:regex}` }) | select(.user.id,.session.id,.app.visit.id,.app.flow.id,.app.flow.name,.app.flow.attempt,.app.flow.stage,.app.flow.outcome,.app.flow.reason,.app.provenance,.client.platform,.app.client.version,.app.media.session.id,.service.name)",
+          "limit": 500,
+          "spss": 20,
+          "tableType": "spans"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "unknown"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "app.flow.id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Этапы и попытки этого flow",
+                    "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&${visit:queryparam}&${platform:queryparam}&${producer:queryparam}&${client_version:queryparam}&${operation:queryparam}&var-outcome=$__all&var-media=$__all&var-flow=${__value.raw}&viewPanel=48",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Trace ID"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "traceID: открыть настоящий трейс и Span Links",
+                    "url": "/explore?orgId=1&${__url_time_range}&left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22${__from}%22%2C%22to%22%3A%22${__to}%22%7D%7D",
+                    "targetBlank": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "description": "One row per client terminal/attempt, including valid instantaneous single-span actions. Duration is this attempt, not the whole login session. HTTP acknowledgment, client render and physical media are different milestones; never a receiver read receipt. Scope: user/session/visit/flow/media/client platform/producer/client version/operation/outcome; API version is technical-only. Bounded sampled history, not exact counts.",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "sort": [
+              {
+                "field": "Start time",
+                "desc": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "Start time": 0,
+              "user.name": 1,
+              "user.id": 2,
+              "client.platform": 3,
+              "app.client.version": 4,
+              "app.visit.id": 5,
+              "app.flow.name": 6,
+              "app.flow.attempt": 7,
+              "app.flow.outcome": 8,
+              "Duration": 9,
+              "app.flow.stage": 10,
+              "app.flow.reason": 11,
+              "app.flow.id": 12,
+              "session.id": 13,
+              "app.media.session.id": 14,
+              "app.provenance": 15,
+              "Trace ID": 16,
+              "Span ID": 17,
+              "service.name": 18,
+              "service.version": 19
+            },
+            "excludeByName": {
+              "Trace Service": true,
+              "Trace Name": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "title": "Проблемы · failed / timeout",
+      "type": "table",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "datasource": {
+        "type": "tempo",
+        "uid": "boohtacord_tempo"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "query": "{ resource.service.name =~ `${producer:regex}` && .app.schema.version = 1 && .user.id =~ `${user:regex}` && .session.id =~ `${session:regex}` && .app.visit.id =~ `${visit:regex}` && .app.flow.id =~ `${flow:regex}` && .app.flow.name =~ `${operation:regex}` && .app.provenance = \"client_observed\" && .app.flow.record = \"terminal\" && .app.flow.outcome =~ \"failed|timeout\" && .app.flow.outcome =~ `${outcome:regex}` } | ({ `${media:regex}` = \".*\" } || { .app.media.session.id =~ `${media:regex}` }) | ({ `${client_version:regex}` = \".*\" } || { .app.client.version =~ `${client_version:regex}` }) | ({ `${platform:regex}` = \".*\" } || { .client.platform =~ `${platform:regex}` || .service.name =~ `boohtacord-${platform:regex}` }) | select(.user.id,.session.id,.app.visit.id,.app.flow.id,.app.flow.name,.app.flow.attempt,.app.flow.stage,.app.flow.outcome,.app.flow.reason,.app.provenance,.client.platform,.app.client.version,.app.media.session.id,.service.name)",
+          "limit": 500,
+          "spss": 20,
+          "tableType": "spans"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "unknown"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "app.flow.id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Этапы и попытки этого flow",
+                    "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&${visit:queryparam}&${platform:queryparam}&${producer:queryparam}&${client_version:queryparam}&${operation:queryparam}&var-outcome=$__all&var-media=$__all&var-flow=${__value.raw}&viewPanel=48",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Trace ID"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "traceID: открыть настоящий трейс и Span Links",
+                    "url": "/explore?orgId=1&${__url_time_range}&left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22${__from}%22%2C%22to%22%3A%22${__to}%22%7D%7D",
+                    "targetBlank": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "description": "Observed client failures/timeouts, not user cancellation or server policy denial. Inspect stage/reason and actual trace; missing terminal is shown separately. Same action filters as history.",
+      "transformations": []
+    },
+    {
+      "id": 50,
+      "title": "Отказы и отмены · rejected / cancelled / superseded",
+      "type": "table",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "datasource": {
+        "type": "tempo",
+        "uid": "boohtacord_tempo"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "query": "{ resource.service.name =~ `${producer:regex}` && .app.schema.version = 1 && .user.id =~ `${user:regex}` && .session.id =~ `${session:regex}` && .app.visit.id =~ `${visit:regex}` && .app.flow.id =~ `${flow:regex}` && .app.flow.name =~ `${operation:regex}` && .app.provenance = \"client_observed\" && .app.flow.record = \"terminal\" && .app.flow.outcome =~ \"rejected|cancelled|superseded\" && .app.flow.outcome =~ `${outcome:regex}` } | ({ `${media:regex}` = \".*\" } || { .app.media.session.id =~ `${media:regex}` }) | ({ `${client_version:regex}` = \".*\" } || { .app.client.version =~ `${client_version:regex}` }) | ({ `${platform:regex}` = \".*\" } || { .client.platform =~ `${platform:regex}` || .service.name =~ `boohtacord-${platform:regex}` }) | select(.user.id,.session.id,.app.visit.id,.app.flow.id,.app.flow.name,.app.flow.attempt,.app.flow.stage,.app.flow.outcome,.app.flow.reason,.app.provenance,.client.platform,.app.client.version,.app.media.session.id,.service.name)",
+          "limit": 500,
+          "spss": 20,
+          "tableType": "spans"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "unknown"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "app.flow.id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Этапы и попытки этого flow",
+                    "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&${visit:queryparam}&${platform:queryparam}&${producer:queryparam}&${client_version:queryparam}&${operation:queryparam}&var-outcome=$__all&var-media=$__all&var-flow=${__value.raw}&viewPanel=48",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Trace ID"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "traceID: открыть настоящий трейс и Span Links",
+                    "url": "/explore?orgId=1&${__url_time_range}&left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22${__from}%22%2C%22to%22%3A%22${__to}%22%7D%7D",
+                    "targetBlank": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "description": "Policy denial, user cancellation and generation supersession remain distinct outcomes; they are not automatically a product malfunction. Same action filters as history.",
+      "transformations": []
+    },
+    {
+      "id": 42,
+      "title": "Кандидаты неполноты · start без parent в поисковой выборке",
+      "type": "table",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "datasource": {
+        "type": "tempo",
+        "uid": "boohtacord_tempo"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "query": "(({ .app.flow.record = \"terminal\" } !> { .app.flow.record = \"start\" }) || { .app.flow.record = \"start\" && trace:rootName = \"\" }) | { resource.service.name =~ `${producer:regex}` && .app.schema.version = 1 && .user.id =~ `${user:regex}` && .session.id =~ `${session:regex}` && .app.visit.id =~ `${visit:regex}` && .app.flow.id =~ `${flow:regex}` && .app.flow.name =~ `${operation:regex}` && .app.provenance = \"client_observed\" && (\"unknown\" =~ `${outcome:regex}` || `${outcome:regex}` = \".*\") } | ({ `${media:regex}` = \".*\" } || { .app.media.session.id =~ `${media:regex}` }) | ({ `${client_version:regex}` = \".*\" } || { .app.client.version =~ `${client_version:regex}` }) | ({ `${platform:regex}` = \".*\" } || { .client.platform =~ `${platform:regex}` || .service.name =~ `boohtacord-${platform:regex}` }) | select(.user.id,.session.id,.app.visit.id,.app.flow.id,.app.flow.name,.app.flow.attempt,.app.flow.record,.app.flow.outcome)",
+          "limit": 500,
+          "spss": 20,
+          "tableType": "spans"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "unknown"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "app.flow.id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Этапы и попытки этого flow",
+                    "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&${visit:queryparam}&${platform:queryparam}&${producer:queryparam}&${client_version:queryparam}&${operation:queryparam}&var-outcome=$__all&var-media=$__all&var-flow=${__value.raw}&viewPanel=48",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Trace ID"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "traceID: открыть настоящий трейс и Span Links",
+                    "url": "/explore?orgId=1&${__url_time_range}&left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22${__from}%22%2C%22to%22%3A%22${__to}%22%7D%7D",
+                    "targetBlank": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "description": "ActionScope emits start/checkpoints as direct children of its terminal root. Anti-child query returns observed starts with no matching parent terminal in the searched storage block/window; it is not a cross-trace or cross-block flow join. This is a candidate for incomplete observation, not proof of missing terminal or product failure. A late root in another block can leave this candidate even when terminal is stored: open the full trace and compare the action result. Sampling, time range and missing root also affect this view. Only outcome All/unknown applies; result scope is on starts, any actual terminal parent excludes its own start regardless of outcome. Empty root metadata is included separately: Tempo structural anti-child alone can miss an orphan-only storage block. This is still a partial-search quality candidate, not a globally absent root.",
+      "transformations": []
+    },
+    {
+      "id": 51,
+      "title": "GLOBAL · ошибки и отказы API, включая вход",
+      "type": "table",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "datasource": {
+        "type": "tempo",
+        "uid": "boohtacord_tempo"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "query": "{ resource.service.name = \"boohtacord-api\" && resource.service.name =~ `${producer:regex}` && (status = error || .http.response.status_code >= 400) } | ({ `${platform:regex}` = \".*\" } || { .client.platform =~ `${platform:regex}` }) | select(.user.id,.http.route,.http.response.status_code,.operation.failure_stage)",
+          "limit": 500,
+          "spss": 20,
+          "tableType": "spans"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "unknown"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "app.flow.id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Этапы и попытки этого flow",
+                    "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&${visit:queryparam}&${platform:queryparam}&${producer:queryparam}&${client_version:queryparam}&${operation:queryparam}&var-outcome=$__all&var-media=$__all&var-flow=${__value.raw}",
+                    "targetBlank": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Trace ID"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "traceID: открыть настоящий трейс и Span Links",
+                    "url": "/explore?orgId=1&${__url_time_range}&left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22${__from}%22%2C%22to%22%3A%22${__to}%22%7D%7D",
+                    "targetBlank": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm"
+      },
+      "description": "GLOBAL API errors and HTTP denials (>=400), including pre-auth 401/403 with unset span status: no fabricated user identity. Authenticated rows show the server-derived user.id; absent identity stays unknown. HTTP denials retain their response code and are not all classified as failed actions. This is separate from client action outcomes, not a private history filtered by the selected user. user/session/visit/flow/media/operation/outcome/client version filters intentionally do not apply; producer and known client platform apply (All includes unknown platform). Missing-attribute nil queries are not used to hide pre-login failures across Tempo head/completed blocks.",
+      "transformations": []
+    },
+    {
+      "id": 52,
+      "title": "Детали выбранного flow · этапы / attempts / workers",
+      "type": "row",
+      "collapsed": true,
+      "panels": [
+        {
+          "id": 60,
+          "title": "Выбор session · только выбранный пользователь",
+          "type": "table",
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "description": "Supported dependent selection from stored matching spans: selected user → session. Click session to reset visit/flow/media and select its visits. Bounded sampled selection, not a complete directory. Other filters intentionally do not hide selectable sessions.",
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ span.user.id =~ `${user:regex}` && span.session.id != nil } | select(span.user.id, span.session.id)",
+              "limit": 500,
+              "spss": 20,
+              "tableType": "spans"
+            }
+          ],
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unknown"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "session.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Выбрать session и сбросить visit / flow / media",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${platform:queryparam}&${producer:queryparam}&var-outcome=$__all&var-media=$__all&var-session=${__value.raw}&var-visit=$__all&var-flow=$__all&viewPanel=61",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "transformations": [
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "user.id": {
+                    "operation": "groupby",
+                    "aggregations": []
+                  },
+                  "session.id": {
+                    "operation": "groupby",
+                    "aggregations": []
+                  }
+                }
+              }
+            }
+          ],
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 40
+          }
+        },
+        {
+          "id": 61,
+          "title": "Выбор visit · только выбранная session",
+          "type": "table",
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "description": "Supported dependent selection: selected user/session → actual client visit, not an entire login. Click visit to reset flow/media and show actions. Legacy spans lacking visit remain available with All; no synthetic visit is assigned.",
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ span.user.id =~ `${user:regex}` && span.session.id =~ `${session:regex}` && span.app.visit.id != nil } | select(span.user.id, span.session.id, span.app.visit.id, resource.client.platform)",
+              "limit": 500,
+              "spss": 20,
+              "tableType": "spans"
+            }
+          ],
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unknown"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.visit.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Выбрать visit и сбросить flow / media",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${platform:queryparam}&${producer:queryparam}&var-outcome=$__all&var-media=$__all&${session:queryparam}&var-visit=${__value.raw}&var-flow=$__all&viewPanel=41",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "transformations": [
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "user.id": {
+                    "operation": "groupby",
+                    "aggregations": []
+                  },
+                  "session.id": {
+                    "operation": "groupby",
+                    "aggregations": []
+                  },
+                  "app.visit.id": {
+                    "operation": "groupby",
+                    "aggregations": []
+                  },
+                  "client.platform": {
+                    "operation": "groupby",
+                    "aggregations": []
+                  }
+                }
+              }
+            }
+          ],
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 48
+          }
+        },
+        {
+          "id": 48,
+          "title": "Flow · реальные этапы и попытки",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 56
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name =~ `${producer:regex}` && .app.schema.version = 1 && .user.id =~ `${user:regex}` && .session.id =~ `${session:regex}` && .app.visit.id =~ `${visit:regex}` && .app.flow.id =~ `${flow:regex}` && .app.flow.name =~ `${operation:regex}` && name != \"telemetry.export.health\" && name != \"media.sample\" && .app.flow.outcome =~ `${outcome:regex}` } | ({ `${media:regex}` = \".*\" } || { .app.media.session.id =~ `${media:regex}` }) | ({ `${client_version:regex}` = \".*\" } || { .app.client.version =~ `${client_version:regex}` }) | ({ `${platform:regex}` = \".*\" } || { .client.platform =~ `${platform:regex}` || .service.name =~ `boohtacord-${platform:regex}` }) | select(.user.id,.session.id,.app.visit.id,.app.flow.id,.app.flow.name,.app.flow.attempt,.app.flow.stage,.app.flow.outcome,.app.flow.reason,.app.provenance,.client.platform,.app.client.version,.app.media.session.id,.service.name,.app.flow.record)",
+              "limit": 500,
+              "spss": 20,
+              "tableType": "spans"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unknown"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.flow.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Этапы и попытки этого flow",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&${visit:queryparam}&${platform:queryparam}&${producer:queryparam}&${client_version:queryparam}&${operation:queryparam}&var-outcome=$__all&var-media=$__all&var-flow=${__value.raw}&viewPanel=48",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Trace ID"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "traceID: открыть настоящий трейс и Span Links",
+                        "url": "/explore?orgId=1&${__url_time_range}&left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22${__from}%22%2C%22to%22%3A%22${__to}%22%7D%7D",
+                        "targetBlank": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm"
+          },
+          "description": "Each row is an observed stage/attempt, not a fabricated cross-trace waterfall. Open actual Tempo trace and Span Links for server/worker causes. Same scope as action history; unknown checkpoints require outcome All/unknown. Cross-host clock differences are not measured latency. API stages with unknown client platform are available with platform All or in the full linked trace; backend service name never invents client platform. Client version and platform filters require an actually observed client value; use All or the full trace to inspect API stages lacking those values.",
+          "transformations": []
+        },
+        {
+          "id": 44,
+          "title": "Workers · подтверждения и повторы, legacy без identity только в All",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 64
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name =~ `${producer:regex}` && name = \"voice.sfu_revocation.attempt\" && `${user:regex}` = \".*\" && `${session:regex}` = \".*\" && `${visit:regex}` = \".*\" && `${media:regex}` = \".*\" } | ({ `${flow:regex}` = \".*\" } || { .app.flow.id =~ `${flow:regex}` }) | select(.app.flow.id,.app.worker.attempt,.app.worker.queue_wait_ms,.app.worker.result,.app.flow.outcome,.app.provenance)",
+              "limit": 500,
+              "spss": 20,
+              "tableType": "spans"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unknown"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.flow.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Этапы и попытки этого flow",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&${visit:queryparam}&${platform:queryparam}&${producer:queryparam}&${client_version:queryparam}&${operation:queryparam}&var-outcome=$__all&var-media=$__all&var-flow=${__value.raw}",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Trace ID"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "traceID: открыть настоящий трейс и Span Links",
+                        "url": "/explore?orgId=1&${__url_time_range}&left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22${__from}%22%2C%22to%22%3A%22${__to}%22%7D%7D",
+                        "targetBlank": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm"
+          },
+          "description": "GLOBAL worker roots have no user/session/visit identity: these filters must be All. Selecting an action flow after resetting identity finds persisted causal worker roots; TraceQL performs no cross-trace identity join. A selected identity never shows unrelated workers. Platform/client version/operation/outcome are not attributed to workers. SFU API acknowledgment/absence is not acoustic silence.",
+          "transformations": []
+        }
+      ],
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 39
+      }
+    },
+    {
+      "id": 53,
+      "title": "Медиа · samples, viewer/session scope и legacy",
+      "type": "row",
+      "collapsed": true,
+      "panels": [
+        {
+          "id": 45,
+          "title": "Медиа v1 · capture / encode / decode / presentation FPS",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 41
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name =~ `${producer:regex}` && .app.schema.version = 1 && .user.id =~ `${user:regex}` && .session.id =~ `${session:regex}` && .app.visit.id =~ `${visit:regex}` && .app.flow.id =~ `${flow:regex}` && .app.flow.name =~ `${operation:regex}` && name = \"media.sample\" } | ({ `${media:regex}` = \".*\" } || { .app.media.session.id =~ `${media:regex}` }) | ({ `${client_version:regex}` = \".*\" } || { .app.client.version =~ `${client_version:regex}` }) | ({ `${platform:regex}` = \".*\" } || { .client.platform =~ `${platform:regex}` || .service.name =~ `boohtacord-${platform:regex}` }) | select(.user.id,.session.id,.app.visit.id,.app.media.session.id,.app.media.direction,.app.media.source,.app.media.sample_state,.app.sample.age_ms,.app.sample.window_ms,.app.media.capture_fps,.app.media.encoded_fps,.app.media.decoded_fps,.app.media.presented_fps,.app.media.target_fps)",
+              "limit": 500,
+              "spss": 20,
+              "tableType": "spans"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unknown"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.flow.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Этапы и попытки этого flow",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&${visit:queryparam}&${platform:queryparam}&${producer:queryparam}&${client_version:queryparam}&${operation:queryparam}&var-outcome=$__all&var-media=$__all&var-flow=${__value.raw}",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Trace ID"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "traceID: открыть настоящий трейс и Span Links",
+                        "url": "/explore?orgId=1&${__url_time_range}&left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22${__from}%22%2C%22to%22%3A%22${__to}%22%7D%7D",
+                        "targetBlank": true
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.bitrate_bps"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "bps"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.rtt_ms"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.jitter_ms"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.sample.age_ms"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.sample.window_ms"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.loss_percent"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.session.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Выбрать media session; отсутствующая visit не выдумывается",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${platform:queryparam}&${producer:queryparam}&var-outcome=$__all&${session:queryparam}&${visit:queryparam}&var-flow=$__all&var-media=${__value.raw}&viewPanel=45",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm"
+          },
+          "description": "Historical samples per user/session/visit/media session, not a merged latest admin snapshot. Scope: identity/visit/flow/media/platform/producer/client version/operation, not terminal outcome. Check sample age/window and timestamp: absent values never mean zero; stale/unknown values are unavailable. Capture settings and target FPS are not measured FPS; provenance distinguishes client-observed and server-confirmed. A missing media ID cannot identify a publisher/viewer; legacy is below.",
+          "transformations": []
+        },
+        {
+          "id": 59,
+          "title": "Медиа v1 · bitrate / RTT / loss / jitter с тем же scope",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 49
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name =~ `${producer:regex}` && .app.schema.version = 1 && .user.id =~ `${user:regex}` && .session.id =~ `${session:regex}` && .app.visit.id =~ `${visit:regex}` && .app.flow.id =~ `${flow:regex}` && .app.flow.name =~ `${operation:regex}` && name = \"media.sample\" } | ({ `${media:regex}` = \".*\" } || { .app.media.session.id =~ `${media:regex}` }) | ({ `${client_version:regex}` = \".*\" } || { .app.client.version =~ `${client_version:regex}` }) | ({ `${platform:regex}` = \".*\" } || { .client.platform =~ `${platform:regex}` || .service.name =~ `boohtacord-${platform:regex}` }) | select(.user.id,.session.id,.app.visit.id,.app.media.session.id,.app.media.direction,.app.media.source,.app.media.sample_state,.app.sample.age_ms,.app.sample.window_ms,.app.media.bitrate_bps,.app.media.rtt_ms,.app.media.jitter_ms,.app.media.loss_percent)",
+              "limit": 500,
+              "spss": 20,
+              "tableType": "spans"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unknown"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.flow.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Этапы и попытки этого flow",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&${visit:queryparam}&${platform:queryparam}&${producer:queryparam}&${client_version:queryparam}&${operation:queryparam}&var-outcome=$__all&var-media=$__all&var-flow=${__value.raw}",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Trace ID"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "traceID: открыть настоящий трейс и Span Links",
+                        "url": "/explore?orgId=1&${__url_time_range}&left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22${__from}%22%2C%22to%22%3A%22${__to}%22%7D%7D",
+                        "targetBlank": true
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.bitrate_bps"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "bps"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.rtt_ms"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.jitter_ms"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.sample.age_ms"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.sample.window_ms"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.loss_percent"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.session.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Выбрать media session; отсутствующая visit не выдумывается",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${platform:queryparam}&${producer:queryparam}&var-outcome=$__all&${session:queryparam}&${visit:queryparam}&var-flow=$__all&var-media=${__value.raw}&viewPanel=45",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm"
+          },
+          "description": "Historical samples per user/session/visit/media session, not a merged latest admin snapshot. Scope: identity/visit/flow/media/platform/producer/client version/operation, not terminal outcome. Check sample age/window and timestamp: absent values never mean zero; stale/unknown values are unavailable. Capture settings and target FPS are not measured FPS; provenance distinguishes client-observed and server-confirmed. A missing media ID cannot identify a publisher/viewer; legacy is below.",
+          "transformations": []
+        },
+        {
+          "id": 33,
+          "title": "Legacy media · каждый замер, не сводная активность",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 57
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ name = \"media.sample\" && .media.platform != nil && .user.id =~ `${user:regex}` && .session.id =~ `${session:regex}` && `${visit:regex}` = \".*\" && `${flow:regex}` = \".*\" && resource.service.name =~ `${producer:regex}` } | ({ `${media:regex}` = \".*\" } || { .app.media.session.id =~ `${media:regex}` }) | ({ `${platform:regex}` = \".*\" } || { .client.platform =~ `${platform:regex}` || span.media.platform =~ `${platform:regex}_native` || (span.media.platform =~ \"(desktop|android|ios)_web\" && \"web\" =~ `${platform:regex}`) }) | select(.user.name,.user.id,.session.id,.media.platform,.media.direction,.media.state,.media.rtt_ms,.media.bitrate_kbps,.media.encoded_fps,.media.decoded_fps,.media.presented_fps,.media.packet_loss_percent,.media.packet_loss_window_ms,.media.target_resolution,.media.target_fps,.media.frame_width,.media.frame_height,.media.connection_quality,.media.adaptation_reason,.media.sample_age_ms,.media.jitter_ms,.app.visit.id,.app.media.session.id,.client.platform,.media.measurement_source)",
+              "limit": 500,
+              "spss": 20,
+              "tableType": "spans"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "—",
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Start time"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Измерено"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "time:MM-DD HH:mm:ss"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 145
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user.id"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Пользователь"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "session.id"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Сессия"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 130
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Выбрать сессию",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?${__url_time_range}&var-user=${__data.fields[\"user.id\"]}&var-session=${__value.raw}",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.platform"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Клиент"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 130
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.direction"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Направление"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 115
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "type": "value",
+                        "options": {
+                          "sender": {
+                            "text": "Отправитель"
+                          },
+                          "receiver": {
+                            "text": "Зритель"
+                          },
+                          "connection": {
+                            "text": "Голос / RTT"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.state"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Состояние"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.rtt_ms"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "RTT"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.bitrate_kbps"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Битрейт"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:кбит/с"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.encoded_fps"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "FPS отправки"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:FPS"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 95
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.decoded_fps"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "FPS декод."
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:FPS"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 95
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.presented_fps"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "FPS показа"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:FPS"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 95
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.packet_loss_percent"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Потери ≈10 с"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "type": "special",
+                        "options": {
+                          "match": "null+nan",
+                          "result": {
+                            "text": "нет данных",
+                            "color": "#808080"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.packet_loss_window_ms"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Окно потерь"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.frame_width"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Ширина"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:px"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.frame_height"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Высота"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:px"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.target_resolution"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Цель"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:p"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.target_fps"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Цель FPS"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:FPS"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 90
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.connection_quality"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Связь"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.adaptation_reason"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Адаптация"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 110
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.sample_age_ms"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Возраст при отправке"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 130
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.jitter_ms"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Jitter"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 85
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user.name"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Имя пользователя"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "unused_legacy_ratio"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "FPS от цели"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 110
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "type": "special",
+                        "options": {
+                          "match": "null+nan",
+                          "result": {
+                            "text": "—",
+                            "color": "#808080"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.flow.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Этапы и попытки этого flow",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&${visit:queryparam}&${platform:queryparam}&${producer:queryparam}&${client_version:queryparam}&${operation:queryparam}&var-outcome=$__all&var-media=$__all&var-flow=${__value.raw}",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Trace ID"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "traceID: открыть настоящий трейс и Span Links",
+                        "url": "/explore?orgId=1&${__url_time_range}&left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22${__from}%22%2C%22to%22%3A%22${__to}%22%7D%7D",
+                        "targetBlank": true
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.session.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Выбрать media session; отсутствующая visit не выдумывается",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${platform:queryparam}&${producer:queryparam}&var-outcome=$__all&${session:queryparam}&${visit:queryparam}&var-flow=$__all&var-media=${__value.raw}&viewPanel=33",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "sortBy",
+              "options": {
+                "sort": [
+                  {
+                    "field": "Start time",
+                    "desc": true
+                  }
+                ]
+              }
+            }
+          ],
+          "description": "Historical client-reported samples; bitrate_kbps uses kbps, RTT/jitter/sample age uses ms. Each sample retains its trace and timestamp; no cross-publisher/visit/generation aggregation. If visit/media session/generation is missing, correlation is uncorrelated/unknown, never inferred from user/session/direction. All includes legacy missing fields; a selected visit/flow/media deliberately excludes records that cannot prove that scope. Capture/target settings are not measured FPS. Old timestamp is not current activity. Client platform is separate from API producer; terminal outcome/client version are unavailable in this legacy schema. API legacy reports carry no visit/flow, so those filters must be All; media session is applied only when selected. All uses an attribute-free spanset branch, not a nil/regex scalar OR."
+        },
+        {
+          "id": 34,
+          "title": "Legacy media · история с units kbps / ms",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 65
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ name = \"media.sample\" && .media.platform != nil && .user.id =~ `${user:regex}` && .session.id =~ `${session:regex}` && `${visit:regex}` = \".*\" && `${flow:regex}` = \".*\" && resource.service.name =~ `${producer:regex}` } | ({ `${media:regex}` = \".*\" } || { .app.media.session.id =~ `${media:regex}` }) | ({ `${platform:regex}` = \".*\" } || { .client.platform =~ `${platform:regex}` || span.media.platform =~ `${platform:regex}_native` || (span.media.platform =~ \"(desktop|android|ios)_web\" && \"web\" =~ `${platform:regex}`) }) | select(.user.name,.user.id,.session.id,.media.platform,.media.direction,.media.state,.media.rtt_ms,.media.bitrate_kbps,.media.encoded_fps,.media.decoded_fps,.media.presented_fps,.media.packet_loss_percent,.media.packet_loss_window_ms,.media.target_resolution,.media.target_fps,.media.frame_width,.media.frame_height,.media.connection_quality,.media.adaptation_reason,.media.sample_age_ms,.media.jitter_ms,.app.visit.id,.app.media.session.id,.client.platform,.media.measurement_source)",
+              "limit": 500,
+              "spss": 20,
+              "tableType": "spans"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "—",
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Start time"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Измерено"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "time:MM-DD HH:mm:ss"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 145
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user.id"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Пользователь"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "session.id"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Сессия"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 130
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Выбрать сессию",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?${__url_time_range}&var-user=${__data.fields[\"user.id\"]}&var-session=${__value.raw}",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.platform"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Клиент"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 130
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.direction"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Направление"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 115
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "type": "value",
+                        "options": {
+                          "sender": {
+                            "text": "Отправитель"
+                          },
+                          "receiver": {
+                            "text": "Зритель"
+                          },
+                          "connection": {
+                            "text": "Голос / RTT"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.state"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Состояние"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.rtt_ms"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "RTT"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.bitrate_kbps"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Битрейт"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:кбит/с"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.encoded_fps"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "FPS отправки"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:FPS"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 95
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.decoded_fps"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "FPS декод."
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:FPS"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 95
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.presented_fps"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "FPS показа"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:FPS"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 95
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.packet_loss_percent"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Потери ≈10 с"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.packet_loss_window_ms"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Окно потерь"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.frame_width"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Ширина"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:px"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.frame_height"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Высота"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:px"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.target_resolution"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Цель"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:p"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.target_fps"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Цель FPS"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "suffix:FPS"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 90
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.connection_quality"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Связь"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.adaptation_reason"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Адаптация"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "string"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 110
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.sample_age_ms"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Возраст при отправке"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 130
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "media.jitter_ms"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Jitter"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 85
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user.name"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Имя пользователя"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.flow.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Этапы и попытки этого flow",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&${visit:queryparam}&${platform:queryparam}&${producer:queryparam}&${client_version:queryparam}&${operation:queryparam}&var-outcome=$__all&var-media=$__all&var-flow=${__value.raw}",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Trace ID"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "traceID: открыть настоящий трейс и Span Links",
+                        "url": "/explore?orgId=1&${__url_time_range}&left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22${__from}%22%2C%22to%22%3A%22${__to}%22%7D%7D",
+                        "targetBlank": true
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.media.session.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Выбрать media session; отсутствующая visit не выдумывается",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${platform:queryparam}&${producer:queryparam}&var-outcome=$__all&${session:queryparam}&${visit:queryparam}&var-flow=$__all&var-media=${__value.raw}&viewPanel=34",
+                        "targetBlank": false
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "sortBy",
+              "options": {
+                "sort": [
+                  {
+                    "field": "Start time",
+                    "desc": true
+                  }
+                ]
+              }
+            }
+          ],
+          "description": "Historical client-reported samples; bitrate_kbps uses kbps, RTT/jitter/sample age uses ms. Each sample retains its trace and timestamp; no cross-publisher/visit/generation aggregation. If visit/media session/generation is missing, correlation is uncorrelated/unknown, never inferred from user/session/direction. All includes legacy missing fields; a selected visit/flow/media deliberately excludes records that cannot prove that scope. Capture/target settings are not measured FPS. Old timestamp is not current activity. Client platform is separate from API producer; terminal outcome/client version are unavailable in this legacy schema. API legacy reports carry no visit/flow, so those filters must be All; media session is applied only when selected. All uses an attribute-free spanset branch, not a nil/regex scalar OR."
+        }
+      ],
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 40
+      }
+    },
+    {
+      "id": 54,
+      "title": "Качество доставки telemetry · GLOBAL health и client queues",
+      "type": "row",
+      "collapsed": true,
+      "panels": [
+        {
+          "id": 46,
+          "title": "GLOBAL · relay accepted / rejected records by source",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 42
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "boohtacord_metrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "sum by (job, instance, service_instance_id, platform, outcome, reason) (rate(boohtacord_telemetry_relay_records_total[5m]))",
+              "legendFormat": "{{job}} / {{instance}} / {{service_instance_id}} / {{platform}} / {{outcome}} / {{reason}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unknown"
+            },
+            "overrides": []
+          },
+          "description": "Global aggregate relay records by process/source/outcome/reason; identity filters do not apply. Accepted means relay receipt, not stored/queryable Tempo. Missing series is unavailable, never healthy zero."
+        },
+        {
+          "id": 47,
+          "title": "GLOBAL · relay batch receipt age per source (not stored)",
+          "type": "stat",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 50
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "boohtacord_metrics"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "time() - boohtacord_telemetry_relay_last_accept_seconds",
+              "instant": true,
+              "legendFormat": "{{job}} / {{instance}} / {{service_instance_id}} / {{platform}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "noValue": "unavailable"
+            },
+            "overrides": []
+          },
+          "description": "Global age since last accepted non-empty batch for each exported process/source; not stored/queryable confirmation in Tempo. One healthy source cannot hide another behind max(last_accept). Silence/sampling/no series is unknown. Identity filters do not apply."
+        },
+        {
+          "id": 55,
+          "title": "GLOBAL · private scrape availability by source",
+          "type": "timeseries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "boohtacord_metrics"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unavailable",
+              "min": 0,
+              "max": 1
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "up{job=~\"boohtacord-.*\"}",
+              "legendFormat": "{{job}} / {{instance}}"
+            }
+          ],
+          "description": "Global Prometheus scrape health, not end-to-end trace storage. 0 means a known scrape failed; absent target/series is unavailable, not 0 or healthy. Tempo query errors and Collector exporter errors must be checked separately. No user filters apply.",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 58
+          }
+        },
+        {
+          "id": 49,
+          "title": "Client exporter: observed queue / drops / retry",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 66
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name =~ `${producer:regex}` && name = \"telemetry.export.health\" && .user.id =~ `${user:regex}` && .session.id =~ `${session:regex}` && .app.visit.id =~ `${visit:regex}` } | ({ `${client_version:regex}` = \".*\" } || { .app.client.version =~ `${client_version:regex}` }) | ({ `${platform:regex}` = \".*\" } || { .client.platform =~ `${platform:regex}` || .service.name =~ `boohtacord-${platform:regex}` }) | select(.user.id,.session.id,.app.visit.id,.client.platform,.app.export.queued,.app.export.accepted,.app.export.rejected,.app.export.dropped,.app.export.retried,.app.export.age_ms,.app.provenance)",
+              "limit": 500,
+              "spss": 20,
+              "tableType": "spans"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unknown"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "app.export.age_ms"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm"
+          },
+          "description": "Client-observed cumulative queue/drop/retry counters per user/session/visit/platform/producer/client version; flow/media/operation/outcome intentionally do not scope process health. Queue limit 128; acknowledged batch age is unknown until first receipt. During complete outage these reports cannot reach Tempo; absence is unknown, not proof of no loss."
+        },
+        {
+          "id": 56,
+          "title": "GLOBAL · Collector receiver accepted / failed / refused",
+          "type": "timeseries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "boohtacord_metrics"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unavailable",
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "rate(otelcol_receiver_accepted_spans[5m])",
+              "legendFormat": "accepted {{job}} / {{instance}} / {{receiver}}"
+            },
+            {
+              "refId": "B",
+              "expr": "rate(otelcol_receiver_failed_spans[5m])",
+              "legendFormat": "failed {{job}} / {{instance}} / {{receiver}}"
+            },
+            {
+              "refId": "C",
+              "expr": "rate(otelcol_receiver_refused_spans[5m])",
+              "legendFormat": "refused {{job}} / {{instance}} / {{receiver}}"
+            }
+          ],
+          "description": "Actual Collector 0.161 internal counters (no _total suffix), spans/second per process/receiver. Not user-scoped and not confirmed storage. Lazy absent failure series is unavailable, not a zero or guaranteed health. No activity can leave series absent; compare scrape availability and queue/export counters.",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 74
+          }
+        },
+        {
+          "id": 57,
+          "title": "GLOBAL · Collector Tempo exporter sent / failed",
+          "type": "timeseries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "boohtacord_metrics"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unavailable",
+              "unit": "ops"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "rate(otelcol_exporter_sent_spans{exporter=\"otlphttp/tempo\"}[5m])",
+              "legendFormat": "sent {{job}} / {{instance}} / {{exporter}}"
+            },
+            {
+              "refId": "B",
+              "expr": "rate(otelcol_exporter_send_failed_spans{exporter=\"otlphttp/tempo\"}[5m])",
+              "legendFormat": "failed {{job}} / {{instance}} / {{exporter}}"
+            }
+          ],
+          "description": "Collector delivery attempts to Tempo, not a guarantee of queryability or loss-free export. Retry attempts can count the same span again; do not sum receiver and exporter counters as product traffic. Missing series unavailable; inspect datasource query errors separately. GLOBAL: identity filters do not apply.",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 82
+          }
+        },
+        {
+          "id": 58,
+          "title": "GLOBAL · Collector exporter bounded queue occupancy",
+          "type": "timeseries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "boohtacord_metrics"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "noValue": "unavailable",
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "100 * otelcol_exporter_queue_size{exporter=\"otlphttp/tempo\"} / otelcol_exporter_queue_capacity{exporter=\"otlphttp/tempo\"}",
+              "legendFormat": "queue % {{job}} / {{instance}} / {{exporter}}"
+            }
+          ],
+          "description": "Percent of configured queue capacity in batches; actual queue_size/queue_capacity gauges from Collector 0.161. Not spans or bytes. Zero is only a real measured empty queue; absent source is unavailable. A healthy process cannot mask another behind a global max. GLOBAL: identity filters do not apply.",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 90
+          }
+        }
+      ],
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      }
+    },
+    {
+      "id": 29,
+      "title": "Показать технические события · HTTP / heartbeat / legacy",
+      "type": "row",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "panels": [
+        {
+          "id": 20,
+          "title": "Как читать трейсы",
+          "type": "text",
+          "gridPos": {
+            "h": 3,
+            "w": 24,
+            "x": 0,
+            "y": 43
+          },
+          "options": {
+            "mode": "markdown",
+            "content": "**Пользователь → сессия → действие.** Выберите пользователя или нажмите на сессию. Сводка объединяет трейсы одного входа; ID спана открывает детали. Старые и фоновые данные — в диагностике внизу.\n\nФильтр **Пользователь · имя и ID** ищется по отображаемому имени профиля BOOHTACORD. Значение фильтра — неизменный ID: совпадение имён и переименование не смешивают пользователей. Имя появляется после нового авторизованного запроса; старые трейсы остаются доступны по ID."
+          }
+        },
+        {
+          "id": 21,
+          "title": "Сессии пользователей · сводка выборки",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 46
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name = \"boohtacord-api\" && span.http.route != nil && span.user.id != nil && span.session.id != nil && span.user.id =~ `${user:regex}` && span.session.id =~ `${session:regex}` && span.http.route != \"GET /api/v1/realtime\" && resource.service.name =~ `${producer:regex}` }  | ({ `${api_version:regex}` = \".*\" } || { `${api_version:regex}` != \".*\" && resource.service.version =~ `${api_version:regex}` }) | select(span.user.name, span.user.id, span.session.id, span.http.route, span.http.response.status_code)",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "spans"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user.id"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Пользователь"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "session.id"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Открыть историю сессии",
+                        "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&var-user=${__data.fields[\"user.id\"]}&var-session=${__value.raw}&var-visit=$__all&var-flow=$__all&var-media=$__all",
+                        "targetBlank": false
+                      }
+                    ]
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Сессия"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Span ID (count)"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "short"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 0
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Запросов"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Start time (max)"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "time:MM-DD HH:mm:ss"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Последний запрос"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 145
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Duration (mean)"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "ns"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Среднее"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 85
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Duration (max)"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "ns"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Максимум"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 90
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user.name (lastNotNull)"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Имя пользователя"
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "sortBy",
+              "options": {
+                "sort": [
+                  {
+                    "field": "Start time",
+                    "desc": false
+                  }
+                ]
+              }
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "user.id": {
+                    "operation": "groupby",
+                    "aggregations": []
+                  },
+                  "session.id": {
+                    "operation": "groupby",
+                    "aggregations": []
+                  },
+                  "Span ID": {
+                    "operation": "aggregate",
+                    "aggregations": [
+                      "count"
+                    ]
+                  },
+                  "Start time": {
+                    "operation": "aggregate",
+                    "aggregations": [
+                      "max"
+                    ]
+                  },
+                  "Duration": {
+                    "operation": "aggregate",
+                    "aggregations": [
+                      "mean",
+                      "max"
+                    ]
+                  },
+                  "user.name": {
+                    "operation": "aggregate",
+                    "aggregations": [
+                      "lastNotNull"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "Start time (max)",
+                    "desc": true
+                  }
+                ]
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "indexByName": {
+                  "user.id": 1,
+                  "session.id": 2,
+                  "Span ID (count)": 3,
+                  "Start time (max)": 4,
+                  "Duration (mean)": 5,
+                  "Duration (max)": 6,
+                  "user.name (lastNotNull)": 0
+                }
+              }
+            }
+          ],
+          "description": "Одна строка на вход пользователя. Нажмите на сессию для её истории. Числа рассчитаны по выборке до 500 трейсов и 50 запросов на трейс; это не полные счётчики трафика. WebSocket исключён из длительности API. Legacy technical scope: user/session only unless explicitly noted; visit/flow/media/platform/client version/outcome are unavailable and are not silently inferred. Producer and API version apply only to API HTTP views."
+        },
+        {
+          "id": 22,
+          "title": "Действия выбранного пользователя / сессии",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 54
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ span.user.id != nil && span.session.id != nil && span.user.id =~ `${user:regex}` && span.session.id =~ `${session:regex}` } && ({ resource.service.name =~ \"boohtacord-(web|android|ios|windows|macos)\" && name != \"api.request\" } || { resource.service.name = \"boohtacord-api\" && span.http.route != nil && span.http.request.method != \"GET\" && span.http.request.method != \"HEAD\" })",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "traces"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "nested": true
+                }
+              }
+            }
+          ],
+          "description": "Один трейс на действие; внутри доступны клиентские и серверные спаны. Связь с пользователем подтверждает API, а не присланные клиентом атрибуты. Legacy technical scope: user/session only unless explicitly noted; visit/flow/media/platform/client version/outcome are unavailable and are not silently inferred. Producer and API version apply only to API HTTP views."
+        },
+        {
+          "id": 23,
+          "title": "Ошибки выбранной сессии",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 62
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ span.user.id != nil && span.session.id != nil && span.user.id =~ `${user:regex}` && span.session.id =~ `${session:regex}` } && { status = error }",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "traces"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "nested": true
+                }
+              }
+            }
+          ],
+          "description": " Legacy technical scope: user/session only unless explicitly noted; visit/flow/media/platform/client version/outcome are unavailable and are not silently inferred. Producer and API version apply only to API HTTP views."
+        },
+        {
+          "id": 24,
+          "title": "Медленные API-запросы (>1 с)",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 70
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name = \"boohtacord-api\" && span.http.route != nil && span.user.id != nil && span.session.id != nil && span.user.id =~ `${user:regex}` && span.session.id =~ `${session:regex}` && span.http.route != \"GET /api/v1/realtime\" && duration > 1s && resource.service.name =~ `${producer:regex}` }  | ({ `${api_version:regex}` = \".*\" } || { `${api_version:regex}` != \".*\" && resource.service.version =~ `${api_version:regex}` }) | select(span.user.name, span.user.id, span.session.id, span.http.route, span.http.response.status_code)",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "spans"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user.id"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Пользователь · ID"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "session.id"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Сессия"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "http.route"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Запрос"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "http.response.status_code"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "spanID"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Открыть трейс"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "time"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Время"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user.name"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Имя пользователя"
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Trace Service": true,
+                  "Trace Name": true,
+                  "service.name": true,
+                  "Name": true
+                },
+                "indexByName": {
+                  "Start time": 0,
+                  "user.id": 2,
+                  "session.id": 3,
+                  "http.route": 4,
+                  "http.response.status_code": 5,
+                  "Duration": 6,
+                  "Span ID": 7,
+                  "user.name": 1
+                }
+              }
+            }
+          ],
+          "description": " Legacy technical scope: user/session only unless explicitly noted; visit/flow/media/platform/client version/outcome are unavailable and are not silently inferred. Producer and API version apply only to API HTTP views."
+        },
+        {
+          "id": 25,
+          "title": "История запросов · выбранный пользователь / сессия",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 78
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name = \"boohtacord-api\" && span.http.route != nil && span.user.id != nil && span.session.id != nil && span.user.id =~ `${user:regex}` && span.session.id =~ `${session:regex}` && span.http.route != \"GET /api/v1/realtime\" && resource.service.name =~ `${producer:regex}` }  | ({ `${api_version:regex}` = \".*\" } || { `${api_version:regex}` != \".*\" && resource.service.version =~ `${api_version:regex}` }) | select(span.user.name, span.user.id, span.session.id, span.http.route, span.http.response.status_code)",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "spans"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user.id"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Пользователь · ID"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "session.id"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Сессия"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "http.route"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Запрос"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "http.response.status_code"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "HTTP"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "spanID"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Открыть трейс"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "time"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Время"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user.name"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Имя пользователя"
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Trace Service": true,
+                  "Trace Name": true,
+                  "service.name": true,
+                  "Name": true
+                },
+                "indexByName": {
+                  "Start time": 0,
+                  "user.id": 2,
+                  "session.id": 3,
+                  "http.route": 4,
+                  "http.response.status_code": 5,
+                  "Duration": 6,
+                  "Span ID": 7,
+                  "user.name": 1
+                }
+              }
+            }
+          ],
+          "description": "Выберите сессию в сводке или фильтрах сверху. Нажмите на ID спана, чтобы открыть полный трейс. Данные до установки корреляции доступны в диагностике ниже. Legacy technical scope: user/session only unless explicitly noted; visit/flow/media/platform/client version/outcome are unavailable and are not silently inferred. Producer and API version apply only to API HTTP views."
+        },
+        {
+          "id": 26,
+          "title": "Голосовые действия",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 86
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ span.user.id != nil && span.session.id != nil && span.user.id =~ `${user:regex}` && span.session.id =~ `${session:regex}` } && ({ name =~ \"voice[.](join|leave|reconnect)\" } || { event:name =~ \"app[.]voice[.].*\" })",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "traces"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "nested": true
+                }
+              }
+            }
+          ],
+          "description": " Legacy technical scope: user/session only unless explicitly noted; visit/flow/media/platform/client version/outcome are unavailable and are not silently inferred. Producer and API version apply only to API HTTP views."
+        },
+        {
+          "id": 27,
+          "title": "Демонстрация экрана",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 94
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ span.user.id != nil && span.session.id != nil && span.user.id =~ `${user:regex}` && span.session.id =~ `${session:regex}` } && { name =~ \"screen[.].*\" }",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "traces"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "nested": true
+                }
+              }
+            }
+          ],
+          "description": " Legacy technical scope: user/session only unless explicitly noted; visit/flow/media/platform/client version/outcome are unavailable and are not silently inferred. Producer and API version apply only to API HTTP views."
+        },
+        {
+          "id": 28,
+          "title": "WebSocket · длительность соединения",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 102
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ span.user.id != nil && span.session.id != nil && span.user.id =~ `${user:regex}` && span.session.id =~ `${session:regex}` } && { name =~ \"realtime[.].*\" || span.http.route = \"GET /api/v1/realtime\" }",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "traces"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "nested": true
+                }
+              }
+            }
+          ],
+          "description": "Длительный трейс API здесь означает открытое WebSocket-соединение. Он не участвует в статистике задержек HTTP на этой панели. Legacy technical scope: user/session only unless explicitly noted; visit/flow/media/platform/client version/outcome are unavailable and are not silently inferred. Producer and API version apply only to API HTTP views."
+        },
+        {
+          "id": 35,
+          "title": "Registration and welcome (no session required)",
+          "description": "New registrations have server-confirmed user correlation before login. Session filter is intentionally not applied. db.committed=true plus failed/realtime means history persisted but hint publication failed. Legacy technical scope: user/session only unless explicitly noted; visit/flow/media/platform/client version/outcome are unavailable and are not silently inferred. Producer and API version apply only to API HTTP views.",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 110
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name = \"boohtacord-api\" && (name = \"registration.welcome\" || span.http.route = \"POST /api/v1/auth/register\") && span.user.id != nil && span.user.id =~ `${user:regex}` } | select(span.user.name, span.user.id, span.welcome.outcome, span.channel.id, span.message.id, span.welcome.phrase_id, span.db.committed, span.operation.failure_stage)",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "spans"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              },
+              "noValue": "-"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Trace ID"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Open trace",
+                        "url": "/explore?left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%7D&var-visit=$__all&var-flow=$__all&var-media=$__all",
+                        "targetBlank": true
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "traceID"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Open trace",
+                        "url": "/explore?left=%7B%22datasource%22%3A%22boohtacord_tempo%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22queryType%22%3A%22traceql%22%2C%22query%22%3A%22${__value.raw}%22%7D%5D%7D&var-visit=$__all&var-flow=$__all&var-media=$__all",
+                        "targetBlank": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          }
+        },
+        {
+          "id": 30,
+          "title": "Без корреляции · фоновые / старые / гостевые",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 118
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name =~ \"boohtacord-.*\" && span.user.id = nil }",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "traces"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "nested": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": 31,
+          "title": "Ошибки фоновых операций",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 126
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name = \"boohtacord-api\" && span.user.id = nil && status = error }",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "traces"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "nested": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": 32,
+          "title": "Все категории · техническая выборка до 500 traces",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 134
+          },
+          "datasource": {
+            "type": "tempo",
+            "uid": "boohtacord_tempo"
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "queryType": "traceql",
+              "query": "{ resource.service.name =~ \"boohtacord-.*\" }",
+              "limit": 500,
+              "spss": 50,
+              "tableType": "traces"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "cellOptions": {
+                  "type": "auto"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "footer": {
+              "show": false
+            }
+          },
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "nested": true
+                }
+              }
+            }
+          ],
+          "description": "Bounded sampled technical search, not a complete audit journal. No user/session scope unless explicitly selected in another panel; narrow time and inspect actual trace."
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "type": "link",
+      "title": "Выбрать session / visit",
+      "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&var-session=$__all&var-visit=$__all&var-flow=$__all&var-media=$__all&viewPanel=60",
+      "targetBlank": false
+    },
+    {
+      "type": "link",
+      "title": "Сбросить visit / flow / media",
+      "url": "/d/boohtacord-traces/boohtacord-7c-traces?orgId=1&${__url_time_range}&${user:queryparam}&${session:queryparam}&var-visit=$__all&var-flow=$__all&var-media=$__all",
+      "targetBlank": false
+    }
   ]
 }
