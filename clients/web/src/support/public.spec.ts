@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest'
-import {parseSupportContact,isSupportPeer,supportPrivacyNotice} from './contact'
+import {parseSupportContact,isSupportPeer,isCurrentSupportPeer,supportPrivacyNotice} from './contact'
 const peer='22222222-2222-4222-8222-222222222222'
 describe('public product support consent',()=>{
  it('requires consent unless the server confirms the current notice',()=>{
@@ -16,5 +16,6 @@ describe('public product support consent',()=>{
  it('keeps old product history marked public after a local override',()=>{
   const contact=parseSupportContact({state:'available',revision:3,account_id:'33333333-3333-4333-8333-333333333333',product_account_id:peer,mode:'local',notice_version:1,repository_public:true,consent_required:false})
   expect(isSupportPeer(peer,contact)).toBe(true);expect(supportPrivacyNotice(contact,peer)).toContain('доступны всем')
+  expect(isCurrentSupportPeer(peer,contact)).toBe(false)
  })
 })

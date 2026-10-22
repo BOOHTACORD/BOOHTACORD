@@ -17,6 +17,7 @@ export function parseSupportContact(value: unknown): SupportContact {
  return {state:'unavailable', revision}
 }
 export function isProductSupportPeer(peer:string,contact:SupportContact):boolean {return contact.productAccountId===peer||contact.mode==='product'&&contact.accountId===peer}
+export function isCurrentSupportPeer(peer:string,contact:SupportContact):boolean {return contact.state==='available'&&contact.accountId===peer}
 export function isSupportPeer(peer: string, contact: SupportContact): boolean { return isProductSupportPeer(peer,contact)||(contact.state === 'available' && contact.accountId === peer) }
 export function supportPresentation(item: {otherParticipantId: string; otherParticipantDisplayName: string}, contact: SupportContact): string {
  return isSupportPeer(item.otherParticipantId, contact) ? 'Поддержка' : item.otherParticipantDisplayName

@@ -7,7 +7,11 @@ class SupportContactRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final existing = state.directMessages
-        .where(state.isSupportConversation)
+        .where(
+          (value) =>
+              state.supportAvailable &&
+              value.participantId == state.supportAccountId,
+        )
         .firstOrNull;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

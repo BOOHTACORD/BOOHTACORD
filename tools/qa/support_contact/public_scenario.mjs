@@ -36,6 +36,7 @@ try{
   const upload=page.waitForResponse(r=>r.url().includes('/attachments')&&r.request().method()==='POST')
   await page.locator('#dm-attachments').setInputFiles({name:'synthetic-public-support.txt',mimeType:'text/plain',buffer:Buffer.from('Synthetic public support QA file\n')})
   assert.equal((await upload).status(),201)
+  await page.screenshot({path:input.directory+'/public-file-before-text.png',fullPage:true})
   await page.locator('#direct-message-body').fill(marker)
   const sending=page.waitForResponse(r=>r.url().endsWith('/messages')&&r.request().method()==='POST')
   await page.getByRole('button',{name:'Отправить сообщение',exact:true}).click();assert.equal((await sending).status(),201)
