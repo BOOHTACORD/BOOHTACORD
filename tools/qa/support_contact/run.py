@@ -19,6 +19,7 @@ def main():
         run('npm','run','build',cwd=ROOT/'clients/web',env=dict(os.environ,VITE_PUBLIC_ORIGIN='https://localhost:4810'),stdout=subprocess.DEVNULL)
         with tempfile.TemporaryDirectory(prefix='support516-',dir=ROOT/'.out') as temporary:
             work=Path(temporary);stack=Stack(ROOT,work)
+            if os.environ.get('BOOHTACORD_SUPPORT_QA_OPERATOR'):stack.environment.pop('PRODUCT_SUPPORT_ENDPOINT',None)
             try:
                 stack.start()
                 # Synthetic ordinary accounts share the synthetic fixture hash;
@@ -30,6 +31,9 @@ def main():
                 run('docker','exec',stack.owner+'-db','psql','-U','qa','-d','qa','-v','ON_ERROR_STOP=1','-c',sql,stdout=subprocess.DEVNULL)
                 private=work/'input.json';private.write_text(json.dumps({'password':stack.password,'directory':str(folder)}));private.chmod(0o600)
                 env=dict(os.environ,QA_ORIGIN='https://localhost:4810',QA_INPUT=str(private),QA_DB_OWNER=stack.owner)
+                run('node',str(ROOT/'tools/qa/support_contact/public_scenario.mjs'),env=env,timeout=120)
+                report['product_public_consent']=json.loads((folder/'public-browser.json').read_text())
+                run('docker','exec',stack.owner+'-api','/support-contact','clear',stdout=subprocess.DEVNULL)
                 run('node',str(ROOT/'tools/qa/support_contact/scenario.mjs'),env=env,timeout=300)
                 report.update(json.loads((folder/'browser.json').read_text()))
                 report['source_revision']=output('git','-C',str(ROOT),'rev-parse','HEAD')
@@ -38,6 +42,19 @@ def main():
                 for name in sorted(subprocess.check_output(['git','ls-files','--others','--exclude-standard'],cwd=ROOT,text=True).splitlines()):
                     digest.update(name.encode());digest.update((ROOT/name).read_bytes())
                 report['working_changes_sha256']=digest.hexdigest()
+            except Exception:
+                # Fixed diagnostics only: never retain API log lines or support payloads.
+                sql="""SELECT json_build_object('outbox',(SELECT count(*) FROM support_public_outbox),
+                  'accepted_by_gateway',(SELECT count(*) FROM support_public_outbox WHERE delivered_at IS NOT NULL),
+                  'return_routes',(SELECT count(*) FROM support_public_routes))"""
+                try:
+                    report['bridge_diagnostics']=json.loads(output('docker','exec',stack.owner+'-db','psql','-U','qa','-d','qa','-At','-c',sql))
+                    logs=subprocess.check_output(['docker','logs',stack.owner+'-api'],stderr=subprocess.STDOUT,text=True)
+                    report['bridge_diagnostics']['worker_unavailable']='product support worker unavailable' in logs
+                    report['bridge_diagnostics']['retry_count']=logs.count('product support delivery will retry')
+                    print(json.dumps(report['bridge_diagnostics']),flush=True)
+                except Exception:report['bridge_diagnostics']='unavailable'
+                raise
             finally:
                 stack.close()
                 report['owned_resources_removed']=True

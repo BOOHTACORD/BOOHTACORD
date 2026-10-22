@@ -42,3 +42,5 @@
 
 /* Keep the privacy explanation readable without displacing the composer at large text. */
 .support-privacy {margin:0;padding:8px 16px;color:var(--gc-text-secondary);font-size:0.8125rem;overflow-wrap:anywhere;max-height:96px;flex-shrink:0;overflow:auto;}
+/* A full-width upload row must follow the editor: a zero-basis textarea can otherwise join that row with zero width. */
+.direct-message-conversation .message-composer .attachment-list, .direct-message-conversation .message-composer .attachment-state {order:5;}

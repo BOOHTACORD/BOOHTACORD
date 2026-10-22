@@ -1,0 +1,281 @@
+{
+  "task": "SP-002",
+  "scope": "Owned functional support/public consent, public warning copy, file publication, operator return and local operator compatibility. This is not a physical-device, media-capacity or production-release gate receipt.",
+  "status": "PASS",
+  "head": "fe9ed3a21fe0bae824794ecd35db26424d4bb1e8",
+  "platforms": {
+    "web": {
+      "report": ".out/support-contact/20261022-142843/report.json",
+      "sha256": "4c28b0711addcf92be1a069b1884e9d26ce692451c58bb9e876b6822a51ddb12",
+      "result": {
+        "status": "PASS",
+        "mocks": false,
+        "physical_acceptance": "NOT_RUN",
+        "owned_resources_removed": true,
+        "product_public_consent": {
+          "status": "PASS",
+          "default_product": true,
+          "explicit_consent": true,
+          "server_denies_without_consent": true,
+          "legacy_client_cannot_publish_after_other_device_consent": true,
+          "notice_persists": true,
+          "github_publication": "PASS",
+          "live_issue": "https://github.com/Egkurilov/BOOHTACORD/issues/531",
+          "public_file_verified": true,
+          "issue_reply_visible": true,
+          "followup_same_issue": true
+        },
+        "unassigned_no_dead_contact": true,
+        "voice_transport_retained_on_support": true,
+        "support_accessibility": true,
+        "ordinary_pair_messages_files_realtime": true,
+        "pair_only_history_and_file_acl": true,
+        "draft_reuse_history_reload": true,
+        "operator_self_no_dm": true,
+        "mobile_footer_target_and_layout": true,
+        "replacement_keeps_old_pair_private": true,
+        "blocked_contact_and_mobile_quiet_status": true,
+        "external_requests": 0,
+        "physical_screen_runtime": "NOT_RUN",
+        "source_revision": "fe9ed3a21fe0bae824794ecd35db26424d4bb1e8",
+        "working_tree_dirty": false,
+        "working_changes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "android": {
+      "report": ".out/support-public/native-support-android-4/runtime.json",
+      "sha256": "54162f70a7c6de844f8859b196481f212b825f6e5c23382c21a7f5e92875e20f",
+      "result": {
+        "status": "PASS",
+        "platform": "android",
+        "mocks": false,
+        "owned_resources_removed": true,
+        "physical": false,
+        "picker": "NOT_RUN",
+        "file_path": "existing native API",
+        "operator": "ordinary HTTP API",
+        "source": "9ccc7103dbbc4b84e189fc7a3e6caf478596c968",
+        "working_diff_sha256": "1ae44b029f19f808ad1fb1d8a9656fa95674295e184153fbacfcc805ad5fbaf5",
+        "scenario_sha256": "9c3f7bff9b171e5a6fdbda0bb0dd27d4cf80e061f4f43c1f64afe4e6a2639735",
+        "public_issue": {
+          "issue": 529,
+          "public_file_verified": true
+        },
+        "public_consent_runtime": "PASS",
+        "local_operator_runtime": "PASS"
+      }
+    },
+    "ios": {
+      "report": ".out/support-public/native-support-ios-1/runtime.json",
+      "sha256": "5800d6def9f3251b6408e40c1158b9889fc0a6617b154fe4f6d852f7e1a3418d",
+      "result": {
+        "status": "PASS",
+        "platform": "ios",
+        "mocks": false,
+        "owned_resources_removed": true,
+        "physical": false,
+        "picker": "NOT_RUN",
+        "file_path": "existing native API",
+        "operator": "ordinary HTTP API",
+        "source": "fe9ed3a21fe0bae824794ecd35db26424d4bb1e8",
+        "working_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "scenario_sha256": "9c3f7bff9b171e5a6fdbda0bb0dd27d4cf80e061f4f43c1f64afe4e6a2639735",
+        "public_issue": {
+          "issue": 530,
+          "public_file_verified": true
+        },
+        "public_consent_runtime": "PASS",
+        "local_operator_runtime": "PASS"
+      }
+    }
+  },
+  "checks": {
+    "go_linux_1_26_4_postgres_17_6": "PASS",
+    "web_focused_tests": 15,
+    "flutter_focused_tests": 25,
+    "gateway_tests": 15,
+    "load_fixture_unit_tests": 22,
+    "contracts_117_public_operations": "PASS",
+    "traceability": "PASS: committed index only, approved brief unavailable on this host"
+  },
+  "visual_review": {
+    "captures": [
+      {
+        "path": ".out/support-contact/20261022-142843/01-unassigned-desktop.png",
+        "sha256": "ad7a3463056c51fbd744b484042a07c1c7f5b1c7d16e5a269d4bea932f6df1f1",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/02-support-empty-desktop.png",
+        "sha256": "78782794bfd4ba76f6bdc4d2bf9391b8cbbfd53308896e833e64e4ca39b9c55a",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/03-drawer-320.png",
+        "sha256": "96ac23c225143d7c0f50e43755188572ed0e9e5e74e530544661d9a09b7a0b60",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/03-drawer-393.png",
+        "sha256": "a28366c9d44ed93498db583704f8432f51e29ab7a54209da57e43c55a2be4a13",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/04-conversation-320.png",
+        "sha256": "b3aff0917be608cf2ca4c958cc461730f3a737e3040528f5b63a31f210484e68",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/04-conversation-393.png",
+        "sha256": "574734d95bf708c401c3b79d5c4ba5360a60630d55bd8ab59d1786f7dd9d10dc",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/05-large-text-drawer.png",
+        "sha256": "95e1e2e39321a9cf2806a976dea83b5b0c4818848d20754c898069390eed7fd9",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/06-large-text-conversation.png",
+        "sha256": "32bfa364f415a33d6aa88a0e79446836609fa8a1dcd2fd03de3c946b96267ffe",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/07-operator-replaced.png",
+        "sha256": "80686b4494271f734dccac1ba762cdd6c569b7d9283a8f196730c9f788b7be8d",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/public-01-consent-desktop.png",
+        "sha256": "38b3bdb7a5b20c33f89d407f5a5819719644251b1b65caa2a7e620374f602265",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/public-02-consent-mobile.png",
+        "sha256": "08a93677671f16a698cc789c363a683aa930e94283860c2f23b7c55fdfcd7d06",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/public-03-consented-mobile.png",
+        "sha256": "7b74214b550a54b6702c1bac5827104720391743f42c31676747ed6de0df6eba",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/public-04-github-reply-mobile.png",
+        "sha256": "58084708b4f04c68519052ba84cfc61f424e62042a7193160337de28904c4cc8",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-contact/20261022-142843/public-file-before-text.png",
+        "sha256": "4a46b726d8f5b11d9f744596ba34ca6e108d1c5f625885d1f3ebdaf34ebe8408",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-android-4/native-public-support-consent.png",
+        "sha256": "cb409514d49433c9dd1cb2ce719a2bb88e5f2ea234adb783fdc4a59ff395ef37",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-android-4/native-public-support-consented.png",
+        "sha256": "93397d0f0d78ec4c69d3a997733c68816ac9e237a0aff5a63d793facf20429b6",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-android-4/native-public-support-replied.png",
+        "sha256": "b68a2a2a76f383edcabf34a063335e6671b3f14436ae4cdd127456c8e22275be",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-android-4/native-public-support-sent.png",
+        "sha256": "b05088738d01e7d27e13f0e1e0071a074dce397b8ec663e6a60ef127df1d64fb",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-android-4/native-support-pair-empty.png",
+        "sha256": "c0252e845400a02e3c5cea277e6b782a5644779fa3134a741b3a7eadf86781cb",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-android-4/native-support-pair-pinned.png",
+        "sha256": "14fc4115654b36f788f47f9e6ef7cab29858a85cf485e58cf858e71ec1929673",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-android-4/native-support-pair-replied.png",
+        "sha256": "fc3cf80d1edb3bdeeba4dc0babd361a05aa1853f2d583e501ad140fd9260b586",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-android-4/native-support-pair-sent.png",
+        "sha256": "0e273acbf427b75cec68b3b974941e8aa58e94e77048486d66a385d1c5161acc",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-ios-1/native-public-support-consent.png",
+        "sha256": "6afa59bd1f25427ecf46f368d4b4d8112265f734cfc069a90021c1d034f45aac",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-ios-1/native-public-support-consented.png",
+        "sha256": "3528d53edf001740f97f375deabe9d22ac8434262bc17a22938372ad0138493d",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-ios-1/native-public-support-replied.png",
+        "sha256": "146629df3e6c6cc2074fc71ddb98514f288293e1d49e4cd1f850a9305b0e92c6",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-ios-1/native-public-support-sent.png",
+        "sha256": "611f893e6bca11c49478df8cdd343049a99fdc91ef0ac6bbaafeaf51515c9e3f",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-ios-1/native-support-pair-empty.png",
+        "sha256": "4c2938829c585053b59b730a84fea263a7105c71ddacb1704a03eb93f23d2b42",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-ios-1/native-support-pair-pinned.png",
+        "sha256": "b02c164c153d97d320df82bd8cff17e7717bbc54e189c788403b839ea5238298",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-ios-1/native-support-pair-replied.png",
+        "sha256": "3c42119544033d2542f119cb18dcea74e15d74b4a197697d67023c34ce0bc04a",
+        "reviewed_at_source_resolution": true
+      },
+      {
+        "path": ".out/support-public/native-support-ios-1/native-support-pair-sent.png",
+        "sha256": "e6e1feb35afa43d0b49d721337b5ebd24dbc1b3a2ef1e280b403540498bb9282",
+        "reviewed_at_source_resolution": true
+      }
+    ],
+    "baseline_approval": "NOT_REQUESTED",
+    "observations": [
+      "Public consent and returned-reply screens on all three clients show the complete generic warning without provider name or repository URL.",
+      "Web 393px consented and file-queue captures retain a visible editor; 320/393px navigation keeps the support entry and footer target reachable.",
+      "Stable native consent, replied and pinned captures demonstrate the warning, file, reply, composer and preserved old support history.",
+      "Some intermediate native empty/consented/sent captures show an incomplete frame or a reactions loading state. They were inspected but are excluded from visual approval and are not new baselines.",
+      "At Web 320px with 2x text, long local-operator notice uses its bounded scroll area; the guild title approaches the close control. No broad shell visual acceptance is claimed."
+    ]
+  },
+  "earlier_attempts": {
+    "native_android_3": "FAIL: operator reply not observed before former 40s deadline; superseded by bounded 120s provider wait and successful native_android_4. Synthetic issue 527 closed."
+  },
+  "synthetic_issues_closed": [
+    529,
+    530,
+    531
+  ],
+  "not_run": [
+    "physical devices",
+    "system file pickers",
+    "screen capture permissions",
+    "audio quality",
+    "background media",
+    "capacity",
+    "TestFlight upload"
+  ],
+  "production_deployment": "Separate protected production delivery receipt required"
+}

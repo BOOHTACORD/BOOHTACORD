@@ -66,6 +66,7 @@ import (
 )
 
 func ConfigureChatRoutes(mux *http.ServeMux, database *pgxpool.Pool, sessions authenticatesession.Service, events *eventhub.Hub) {
+	mux.Handle("POST /api/v1/support/consent", sessionapi.Require(sessions)(support.ConsentHandler(support.New(database))))
 	configureDeliveryRoutes(mux, database, sessions)
 	service := createtextmessage.New(messagepostgres.New(messagepostgres.NewPoolDatabase(database)))
 	editService := edittextmessage.New(editpostgres.New(editpostgres.NewPoolDatabase(database)))
@@ -93,7 +94,7 @@ func ConfigureChatRoutes(mux *http.ServeMux, database *pgxpool.Pool, sessions au
 	mux.Handle("POST /api/v1/direct-messages", sessionapi.Require(sessions)(directmessageapi.NewHandler(directMessageService)))
 	mux.Handle("GET /api/v1/direct-message-candidates", sessionapi.Require(sessions)(listdirectmessagecandidatesapi.NewHandler(directMessageCandidates)))
 	mux.Handle("GET /api/v1/direct-messages", sessionapi.Require(sessions)(listdirectmessagesapi.NewHandler(directMessages, support.New(database))))
-	mux.Handle("POST /api/v1/direct-messages/{directMessageID}/messages", sessionapi.Require(sessions)(senddirectmessageapi.NewHandler(senddirectmessagerealtime.New(directMessageSender, directMessageRecipients, events))))
+	mux.Handle("POST /api/v1/direct-messages/{directMessageID}/messages", sessionapi.Require(sessions)(senddirectmessageapi.NewHandler(senddirectmessagerealtime.New(directMessageSender, directMessageRecipients, events), support.New(database))))
 	mux.Handle("GET /api/v1/direct-messages/{directMessageID}/messages", sessionapi.Require(sessions)(listdirectmessagehistoryapi.NewHandler(directMessageHistory)))
 	mux.Handle("GET /api/v1/direct-messages/{directMessageID}/search", sessionapi.Require(sessions)(searchdirectmessagehistoryapi.NewHandler(directMessageSearch)))
 	mux.Handle("GET /api/v1/search/messages", sessionapi.Require(sessions)(searchmessagesapi.NewHandler(messageSearch)))

@@ -5,6 +5,9 @@ import 'candidate_page.dart';
 
 mixin DirectConversationsFacade on ApiFacadeBase {
   late final _directConversations = DirectConversationsApi(transport);
+  Future<void> acceptSupportPublication(int version) => transport.run(
+    () => _directConversations.acceptSupportPublication(version),
+  );
 
   Future<List<DirectConversation>> directMessages() =>
       transport.run(() => _directConversations.directMessages());

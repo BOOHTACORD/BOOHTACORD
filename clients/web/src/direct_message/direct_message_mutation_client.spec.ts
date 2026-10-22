@@ -14,6 +14,7 @@ describe('direct-message mutation client', () => {
       .resolves.toMatchObject({ body: '', attachments: [{ id: 'attachment-image' }] })
     await expect(createDirectMessage('dm-1', 'client-empty', '', request)).rejects.toThrow('некорректное')
     expect(request).toHaveBeenCalledOnce()
+    expect(request.mock.calls[0]?.[1].headers).toMatchObject({'X-Boohtacord-Support-Publication':'v1'})
     expect(JSON.parse(String(request.mock.calls[0]?.[1].body))).toMatchObject({ body: '', attachment_ids: ['attachment-image'] })
   })
 

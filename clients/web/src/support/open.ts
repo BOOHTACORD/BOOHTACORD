@@ -16,6 +16,11 @@ export function createSupportOpener(ports: Ports) {
   try {
    await ports.refresh(request)
    if (!current()) return null
+   // A concurrent startup refresh can supersede the first navigation response.
+   if(ports.contact().revision===0&&ports.contact().state==='not_configured'){
+    await ports.refresh(request)
+    if(!current())return null
+   }
    const contact=ports.contact()
    if (contact.state!=='available' || !contact.accountId) {supportNotice.value=unavailableSupport(contact);return null}
    const opened=await openDirectMessage(contact.accountId,request)

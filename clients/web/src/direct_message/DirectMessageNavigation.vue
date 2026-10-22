@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { noSupport, isSupportPeer, type SupportContact } from '../support/contact'
+import { noSupport, isCurrentSupportPeer, type SupportContact } from '../support/contact'
 import SupportRow from '../support/SupportRow.vue'
 import { vActionHint } from '../shared/action_hint/directive'
 import { computed, onMounted } from 'vue'
@@ -21,7 +21,7 @@ const props = defineProps<{
 const emit = defineEmits<{ select: [directMessageId: string]; open: [directMessageId: string]; support: [] }>()
 const memberDirectory = useMemberDirectory()
 const contact = computed(()=>props.supportContact??noSupport)
-const ordinary = computed(()=>props.directMessages.filter(item=>!isSupportPeer(item.otherParticipantId,contact.value)))
+const ordinary = computed(()=>props.directMessages.filter(item=>!isCurrentSupportPeer(item.otherParticipantId,contact.value)))
 const members = computed(() => memberDirectory.byId)
 onMounted(() => { void memberDirectory.refresh() })
 

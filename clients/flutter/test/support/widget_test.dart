@@ -3,6 +3,7 @@ import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/features/direct/conversations/support_contact.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/direct_conversation/component.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/support_contact/component.dart';
+import 'package:boohtacord_desktop/src/screens/workspace_ui/direct_message_navigation/component.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/user_footer/component.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/services/composer_draft_memory.dart';
@@ -26,6 +27,64 @@ const other = DirectConversation(
   unreadCount: 0,
 );
 void main() {
+  testWidgets(
+    'old product history remains in the list after a local override',
+    (tester) async {
+      final state = AppState(ApiClient());
+      state.user = const SessionUser(accountId: 'qa-account', role: 'MEMBER');
+      addTearDown(state.dispose);
+      state.workspace.supportContact = const SupportContact(
+        state: 'available',
+        revision: 3,
+        accountId: 'other-peer',
+        productAccountId: peer,
+      );
+      state.directMessages = [support, other];
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: guildTheme(),
+          home: Scaffold(body: WorkspaceDirectMessageNavigation(state: state)),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Local operator'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox());
+    },
+  );
+  testWidgets('public support hides the composer until explicit consent', (
+    tester,
+  ) async {
+    final state = AppState(ApiClient());
+    state.user = const SessionUser(accountId: 'qa-account', role: 'MEMBER');
+    addTearDown(state.dispose);
+    state.workspace.supportContact = const SupportContact(
+      state: 'available',
+      revision: 2,
+      accountId: peer,
+      mode: 'product',
+      noticeVersion: 1,
+      consentRequired: true,
+      repositoryPublic: true,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: guildTheme(),
+        home: Scaffold(
+          body: WorkspaceDirectConversation(
+            state: state,
+            conversation: support,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(TextField), findsNothing);
+    expect(find.text('Согласен на публикацию'), findsOneWidget);
+    expect(find.textContaining('общедоступны'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+  });
   testWidgets(
     'support uses ordinary composer and retains other conversation draft',
     (tester) async {

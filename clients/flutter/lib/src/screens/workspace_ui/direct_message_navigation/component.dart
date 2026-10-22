@@ -49,7 +49,9 @@ class WorkspaceDirectMessageNavigation extends StatelessWidget {
       ),
       SupportContactRow(state: state, onSelected: onSelected),
       for (final conversation in state.directMessages.where(
-        (value) => !state.isSupportConversation(value),
+        (value) =>
+            !(state.supportAvailable &&
+                value.participantId == state.supportAccountId),
       ))
         Material(
           color: Colors.transparent,

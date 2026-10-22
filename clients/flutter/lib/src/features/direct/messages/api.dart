@@ -18,7 +18,10 @@ class DirectMessagesApi {
     final data = await transport.checked(
       await transport.client.post(
         transport.uri('/direct-messages/$id/messages'),
-        headers: await transport.headers(jsonBody: true),
+        headers: {
+          ...await transport.headers(jsonBody: true),
+          'X-Boohtacord-Support-Publication': 'v1',
+        },
         body: jsonEncode({
           'client_message_id': clientMessageId,
           'body': body,

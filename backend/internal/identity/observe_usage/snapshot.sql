@@ -7,3 +7,4 @@ SELECT count(*),
         WHERE activity_day = ($2::timestamptz AT TIME ZONE 'Europe/Moscow')::date),
        (SELECT started_at FROM user_activity_collection WHERE singleton)
 FROM users
+WHERE NOT EXISTS(SELECT 1 FROM support_product_identity WHERE account_id=users.id)

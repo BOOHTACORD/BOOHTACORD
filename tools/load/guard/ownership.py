@@ -2,6 +2,7 @@
 import re
 import subprocess
 from tools.qa.client_lifecycle.services import LABEL, output
+HUMAN_USERS="FROM users WHERE NOT EXISTS(SELECT 1 FROM support_product_identity WHERE account_id=users.id)"
 
 
 def validate_identity(owner, database, origin):
@@ -34,6 +35,6 @@ def verify_marker(stack, nonce, count):
     rows = query(stack, "SELECT current_database(), owner, nonce, account_count FROM qa_load_fixture;")
     if rows != f'qa|{stack.owner}|{nonce}|{count}':
         raise ValueError('Disposable database marker mismatch')
-    users = query(stack, "SELECT count(*), count(*) FILTER (WHERE login='qa_admin' OR login LIKE 'qa_load_%') FROM users;")
+    users = query(stack, "SELECT count(*), count(*) FILTER (WHERE login='qa_admin' OR login LIKE 'qa_load_%') "+HUMAN_USERS)
     if users != f'{count+1}|{count+1}':
         raise ValueError('Foreign account in disposable dataset')

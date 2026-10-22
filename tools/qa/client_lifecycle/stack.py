@@ -35,6 +35,7 @@ class Stack:
         self.image = self.owner+'-api'
         self.password = secrets.token_urlsafe(24)
         self.environment = {
+            'PRODUCT_SUPPORT_ENDPOINT':'http://127.0.0.1:9/support/v1',
             'DATABASE_URL': f'postgres://qa:qa-disposable-only@{self.owner}-db:5432/qa?sslmode=disable',
             'API_ADDR': '0.0.0.0:8080',
             'PUBLIC_ORIGIN': 'https://localhost:4810',

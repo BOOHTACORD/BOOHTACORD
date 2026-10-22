@@ -28,7 +28,7 @@ func run(args []string) error {
 	if err := flags.Parse(args[1:]); err != nil {
 		return err
 	}
-	if flags.NArg() != 0 || (command != "status" && command != "set" && command != "clear") || (command == "set" && *account == "") || (command != "set" && *account != "") {
+	if flags.NArg() != 0 || (command != "status" && command != "set" && command != "clear" && command != "product") || (command == "set" && *account == "") || (command != "set" && *account != "") {
 		return contact.ErrInvalid
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -46,9 +46,14 @@ func run(args []string) error {
 		}
 		return json.NewEncoder(os.Stdout).Encode(value)
 	}
-	revision, err := store.Assign(ctx, *account)
+	var revision int64
+	if command == "product" {
+		revision, err = store.UseProduct(ctx)
+	} else {
+		revision, err = store.Assign(ctx, *account)
+	}
 	if err != nil {
 		return err
 	}
-	return json.NewEncoder(os.Stdout).Encode(map[string]any{"revision": revision, "configured": *account != "", "prior_conversations": "unchanged"})
+	return json.NewEncoder(os.Stdout).Encode(map[string]any{"revision": revision, "configured": *account != "" || command == "product", "prior_conversations": "unchanged"})
 }

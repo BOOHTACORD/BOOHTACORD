@@ -14,6 +14,8 @@ type fakeDB struct {
 	account string
 	active  bool
 	err     error
+	mode    string
+	consent bool
 }
 
 func (d fakeDB) QueryRow(context.Context, string, ...any) pgx.Row { return d }
@@ -24,7 +26,22 @@ func (d fakeDB) Scan(values ...any) error {
 	*values[0].(*int64) = 3
 	*values[1].(*string) = d.account
 	*values[2].(*bool) = d.active
+	*values[3].(*string) = d.mode
+	*values[4].(*int) = 1
+	*values[5].(*bool) = true
+	*values[6].(*bool) = d.consent
+	*values[7].(*string) = peer
 	return nil
+}
+func TestProductSupportCarriesPublicNoticeAndPerUserConsent(t *testing.T) {
+	got, err := New(fakeDB{account: peer, active: true, mode: "product"}).Resolve(context.Background(), actor)
+	if err != nil || got.Mode != "product" || !got.RepositoryPublic || !got.ConsentRequired || got.NoticeVersion != 1 {
+		t.Fatal("missing public consent metadata", err)
+	}
+	got, err = New(fakeDB{account: peer, active: true, mode: "product", consent: true}).Resolve(context.Background(), actor)
+	if err != nil || got.ConsentRequired {
+		t.Fatal("current consent was not recognized", err)
+	}
 }
 func TestOnlyActiveServerAssignedOtherAccountCanBeSupport(t *testing.T) {
 	for _, row := range []struct {

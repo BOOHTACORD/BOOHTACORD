@@ -19,7 +19,7 @@ def checked_source():
 
 
 def load_smoke():
-    run(sys.executable,'-m','unittest','tools.load.screen_share_matrix.test_planner')
+    run(sys.executable,'-m','unittest','tools.load.screen_share_matrix.test_planner','tools.load.guard.test_service_peer')
     for name,accounts,seconds in (('normal',2,20),('reconnect',2,20),('uploads',2,20),('nat_auth',1,20),('faults',2,40)):
         command=[sys.executable,'-m','tools.load.controller.run','--accounts',str(accounts),
                  '--seconds',str(seconds),'--profile',name]

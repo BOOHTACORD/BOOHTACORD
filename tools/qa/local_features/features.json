@@ -88,12 +88,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "connection_status": {
@@ -175,12 +176,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "voice": {
@@ -300,12 +302,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "screen": {
@@ -651,12 +654,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "screen_metrics": {
@@ -1158,12 +1162,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "shell": {
@@ -1382,13 +1387,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "Windows package follow-up: shared Flutter 1.0.47/82/r61 defaults stay synchronized. Web/iOS/Android behavior is unchanged; client-identity/profile version regressions apply to both runners. Shipped 1.0.45 artifacts retain their recorded source. The public package validator now checks the exact measured Velopack stable filename, application identity and version; the pinned producer and SDK inputs are unchanged."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. Windows package follow-up: shared Flutter 1.0.47/82/r61 defaults stay synchronized. Web/iOS/Android behavior is unchanged; client-identity/profile version regressions apply to both runners. Shipped 1.0.45 artifacts retain their recorded source. The public package validator now checks the exact measured Velopack stable filename, application identity and version; the pinned producer and SDK inputs are unchanged."
     }
   },
   "screen_track_name": {
@@ -1535,6 +1540,9 @@
   },
   "support": {
     "paths": [
+      "support_gateway/**",
+      "tests/support_gateway/**",
+      "docs/adr/ADR-029-product-support-github-bridge.md",
       "backend/cmd/support_contact/**",
       "backend/internal/support/**",
       "backend/internal/chat/list_direct_messages/**",
@@ -1550,6 +1558,7 @@
       "clients/web/src/workspace/WorkspaceApp.vue",
       "clients/web/src/workspace/WorkspaceUserFooter.vue",
       "clients/flutter/lib/src/features/direct/conversations/**",
+      "clients/flutter/lib/src/features/direct/messages/api.dart",
       "clients/flutter/lib/src/features/workspace/**",
       "clients/flutter/lib/src/app/workspace_access/direct_navigation.dart",
       "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/**",
@@ -1580,7 +1589,7 @@
     "acceptance": {
       "issue516": {
         "browser": "tools/qa/support_contact/run.py",
-        "scope": "Owned real API ordinary A/B/S support DM text/files/replies, pair-only ACL, replacement and responsive captures. Flutter widget tests are not physical acceptance; unavailable platforms/media stay NOT_RUN.",
+        "scope": "ADR-029 default product peer, explicit current publication consent, server denial without consent, persistent public warning and composer gating on Web/Android/iOS. Repeatable QA does not publish GitHub issues; controlled live issue/comment/reply/file proof is a separate release record. Also preserves ordinary local A/B/S support DM text/files/replies, pair-only ACL, replacement and responsive captures. Component captures do not prove native/media acceptance.",
         "native": "tools/qa/support_contact/native.py",
         "target": "integration_test/support_qa_test.dart"
       }
@@ -1627,15 +1636,62 @@
             "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
           }
         }
+      },
+      {
+        "id": "product-support-public-github",
+        "status": "NOT_VERIFIED",
+        "expected": "Default product support opens from ?, requires current explicit consent, publishes a new issue and file, appends follow-ups, and returns a repository writer reply to the same pair; legacy clients cannot publish. The visible warning uses generic public-data disclosure without a provider name or repository link.",
+        "source": "SP-002 / ADR-029 owner decision 2026-10-22",
+        "shipped": "Owned runtime proof recorded; client distribution and protected production receipt remain separate.",
+        "issue": 522,
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/support/SupportPublicationConsent.vue",
+            "tests": [
+              "clients/web/src/support/public.spec.ts",
+              "tools/qa/support_contact/public_scenario.mjs"
+            ],
+            "conditions": "Owned real API and intentional synthetic public provider proof. Native OS picker and physical device/media acceptance remain NOT_RUN.",
+            "runtime": "PASS",
+            "evidence": "evidence/qa/sp002-public-support-acceptance-2026-10-22.json",
+            "source_sha": "fe9ed3a21fe0bae824794ecd35db26424d4bb1e8",
+            "build": "Owned production Vue / Go / PostgreSQL fixture"
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/workspace/support/consent.dart",
+            "tests": [
+              "clients/flutter/integration_test/support_qa_test.dart",
+              "clients/flutter/integration_test/public_support_fixture.dart"
+            ],
+            "conditions": "Owned real API and intentional synthetic public provider proof. Native OS picker and physical device/media acceptance remain NOT_RUN.",
+            "runtime": "PASS",
+            "evidence": "evidence/qa/sp002-public-support-acceptance-2026-10-22.json",
+            "source_sha": "fe9ed3a21fe0bae824794ecd35db26424d4bb1e8",
+            "build": "Dedicated iOS 27 Simulator, Flutter 1.0.46/81"
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/workspace/support/consent.dart",
+            "tests": [
+              "clients/flutter/integration_test/support_qa_test.dart",
+              "clients/flutter/integration_test/public_support_fixture.dart"
+            ],
+            "conditions": "Owned real API and intentional synthetic public provider proof. Native OS picker and physical device/media acceptance remain NOT_RUN.",
+            "runtime": "PASS",
+            "evidence": "evidence/qa/sp002-public-support-acceptance-2026-10-22.json",
+            "source_sha": "9ccc7103dbbc4b84e189fc7a3e6caf478596c968",
+            "build": "Dedicated Android API 35 emulator; pre-commit working diff recorded"
+          }
+        }
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   }
 }

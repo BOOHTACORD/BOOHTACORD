@@ -12,9 +12,9 @@ import (
 const listMembers = `
 SELECT id::text, login, display_name, role, avatar_key IS NOT NULL, profile_revision
 FROM users
-WHERE blocked_at IS NULL AND ($1::uuid IS NULL OR id > $1::uuid)
+WHERE blocked_at IS NULL AND NOT EXISTS(SELECT 1 FROM support_product_identity WHERE account_id=users.id) AND ($1::uuid IS NULL OR id > $1::uuid)
 ORDER BY id ASC LIMIT $2`
-const findMember = `SELECT id::text, login, display_name, role, avatar_key IS NOT NULL, profile_revision FROM users WHERE id = $1 AND blocked_at IS NULL`
+const findMember = `SELECT id::text, login, display_name, role, avatar_key IS NOT NULL, profile_revision FROM users WHERE id = $1 AND blocked_at IS NULL AND NOT EXISTS(SELECT 1 FROM support_product_identity WHERE account_id=users.id)`
 
 type Rows interface {
 	Next() bool

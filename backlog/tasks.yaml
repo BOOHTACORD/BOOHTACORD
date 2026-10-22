@@ -818,3 +818,8 @@ tasks:
     requirements: [REQ-PLATFORM-01, REQ-UI-01, REQ-UI-02, REQ-SECURITY-01, REQ-QUALITY-01]
     depends_on: [RP-010, IT-001, SP-001]
     evidence: [clients/flutter/test/realtime_scope/delivery_test.dart, clients/flutter/test/admin_telemetry/api_test.dart, clients/flutter/test/parity518/viewer_commands_test.dart, clients/web/src/realtime/realtime_delivery_parity.spec.ts, evidence/qa/issue518-client-parity.md]
+  - id: SP-002
+    title: Opt-in public product support DM to GitHub issue and reply bridge
+    requirements: [REQ-DM-01, REQ-UI-01, REQ-UI-02, REQ-SECURITY-02, REQ-STORAGE-01]
+    depends_on: [SP-001, T-052, T-054]
+    evidence: [docs/adr/ADR-029-product-support-github-bridge.md, tests/support_gateway, evidence/qa/sp002-public-gateway-2026-10-22.json, evidence/qa/sp002-public-support-acceptance-2026-10-22.json]

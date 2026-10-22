@@ -57,7 +57,7 @@ export const useDirectMessageStore = defineStore('direct-messages', () => {
        directMessages.value = loaded.items;supportContact.value=loaded.supportContact
       }
     } catch (cause) {
-      if (sequence === navigationSequence) { supportContact.value={state:'unavailable',revision:0};error.value = requestFailureMessage(cause, 'Не удалось загрузить список личных сообщений.') }
+      if (sequence === navigationSequence) { supportContact.value=supportContact.value.mode==='product'?{...supportContact.value,state:'unavailable'}:{state:'unavailable',revision:0};error.value = requestFailureMessage(cause, 'Не удалось загрузить список личных сообщений.') }
     } finally {
       if (sequence === navigationSequence) loadingNavigation.value = false
     }

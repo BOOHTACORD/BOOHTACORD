@@ -26,6 +26,7 @@ import (
 	ratelimit "voice-platform/backend/internal/security/rate_limit"
 	writerlock "voice-platform/backend/internal/storage/acquire_writer_lock"
 	reserve "voice-platform/backend/internal/storage/reserve_upload_space"
+	supportbridge "voice-platform/backend/internal/support/bridge"
 )
 
 func Run(ctx context.Context) (result error) {
@@ -102,6 +103,13 @@ func Run(ctx context.Context) (result error) {
 	handler, err := routes(database, configuration, events, metrics, updates, usage, previews, screenViewers)
 	if err != nil {
 		return err
+	}
+	// Storage route composition has now created the same private file directory used by downloads.
+	supportWorker, supportErr := supportbridge.NewWorker(ctx, database, configuration.AttachmentRoot, os.Getenv("PRODUCT_SUPPORT_ENDPOINT"), events)
+	if supportErr != nil {
+		slog.Warn("product support worker unavailable")
+	} else {
+		resources.Add(supportWorker.Start(ctx))
 	}
 	space, err := reserve.NewFilesystem(configuration.AttachmentRoot)
 	if err != nil {
