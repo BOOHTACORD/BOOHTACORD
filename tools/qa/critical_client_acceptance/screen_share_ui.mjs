@@ -1,7 +1,7 @@
 import { miniPlayerInterface } from './mini_player_ui.mjs'
 import assert from 'node:assert/strict'
 import { expect } from '../client_lifecycle/request.mjs'
-import { selectVisibleStream } from './select_stream.mjs'
+import { openViewerPanel, selectVisibleStream } from './select_stream.mjs'
 
 // Only the OS-picker boundary is synthetic. Admission, publication, subscription,
 // decoding and stop use the owned Go API/SFU and the production Web application.
@@ -72,6 +72,8 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     await expect(sender.getByRole('status', { name: 'Зрители трансляции: 0' })).toBeVisible()
     await selectVisibleStream(receiver)
     await expect.poll(() => receiver.locator('video.screen-player').evaluate(video => video.videoWidth > 0 && video.getVideoPlaybackQuality().totalVideoFrames > 0), { timeout: 30000 }).toBe(true)
+    await openViewerPanel(receiver, 'participants')
+    await openViewerPanel(sender, 'participants')
     const receiverParticipants = receiver.getByTestId('viewer-participants')
     await expect(receiverParticipants.getByRole('status', { name: 'Зрители трансляции: 1' })).toBeVisible({ timeout: 15000 })
     await expect(receiverParticipants.getByRole('img', { name: 'Смотрит эту трансляцию' })).toHaveCount(1)
