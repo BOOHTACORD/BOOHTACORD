@@ -36,7 +36,13 @@ func exportRelay(client *http.Client, outbound *http.Request, accepted int) (rej
 	if proto.Unmarshal(body, &reply) != nil {
 		return 0, errors.New("collector response invalid")
 	}
-	if partial := reply.PartialSuccess; partial != nil && partial.RejectedSpans > 0 {
+	if partial := reply.PartialSuccess; partial != nil {
+		if partial.RejectedSpans < 0 {
+			return 0, errors.New("collector count invalid")
+		}
+		if partial.RejectedSpans == 0 {
+			return 0, nil
+		}
 		if partial.RejectedSpans > int64(accepted) {
 			return 0, errors.New("collector count invalid")
 		}

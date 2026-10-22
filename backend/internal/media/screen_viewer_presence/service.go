@@ -6,6 +6,7 @@ import (
 	"regexp"
 
 	"github.com/google/uuid"
+	"go.opentelemetry.io/otel/trace"
 )
 
 const maxTrackSIDLength = 128
@@ -51,6 +52,7 @@ func (service Service) Watch(ctx context.Context, principal Principal, viewerLea
 		return ErrUnavailable
 	}
 	if changed {
+		trace.SpanFromContext(ctx).AddEvent("app.screen.viewer.started")
 		service.changed(ownerAccountID)
 	}
 	return nil
@@ -65,6 +67,7 @@ func (service Service) StopWatching(ctx context.Context, principal Principal, vi
 		return authorizationError(err)
 	}
 	if service.store.Unwatch(ownerLeaseID, viewerLeaseID, trackSID) {
+		trace.SpanFromContext(ctx).AddEvent("app.screen.viewer.stopped")
 		service.changed(ownerAccountID)
 	}
 	return nil
@@ -111,6 +114,7 @@ func (service Service) currentTrack(ctx context.Context, channelID, ownerAccount
 	trackSID, err := service.publications.CurrentTrack(ctx, channelID, ownerLeaseID)
 	if errors.Is(err, ErrNoPublication) {
 		if service.store.Clear(ownerLeaseID, "") {
+			trace.SpanFromContext(ctx).AddEvent("app.screen.audience.cleared")
 			service.changed(ownerAccountID)
 		}
 		return "", false, nil
@@ -130,6 +134,7 @@ func (service Service) ClearOwner(ctx context.Context, principal Principal, owne
 		return authorizationError(err)
 	}
 	if service.store.Clear(ownerLeaseID, trackSID) {
+		trace.SpanFromContext(ctx).AddEvent("app.screen.audience.cleared")
 		service.changed(ownerAccountID)
 	}
 	return nil

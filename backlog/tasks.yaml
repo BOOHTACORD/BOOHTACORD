@@ -808,6 +808,11 @@ tasks:
     requirements: [REQ-ISOLATION-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-OPS-01]
     depends_on: [T-052]
     evidence: [backend/internal/observability/installation/identity_test.go, backend/internal/observability/central_projection/traces_test.go, backend/internal/observability/central_gateway/gateway_test.go, backend/internal/observability/central_export/runtime_test.go, evidence/observability/issue336-installations.md]
+  - id: OBS-001
+    title: Action-oriented Traces dashboard and verified telemetry delivery (GitHub #513)
+    requirements: [REQ-OPS-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-QUALITY-02]
+    depends_on: [T-052, IT-001]
+    evidence: [tools/verify/trace_dashboard/test_action_history.py, tools/qa/trace_queries/test_runtime.py, tools/verify/telemetry_delivery/test_config.py, tools/observability/signal_catalog/test_build.py, backend/internal/observability/start_tracing/presence_measurement_runtime_test.go, evidence/observability/issue513-action-traces.md]
   - id: SP-001
     title: Server-assigned support contact through existing pair-only DM (GitHub #516)
     requirements: [REQ-DM-01, REQ-UI-01, REQ-UI-02, REQ-SECURITY-02, REQ-STORAGE-01]

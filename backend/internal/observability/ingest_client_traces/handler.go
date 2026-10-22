@@ -113,8 +113,13 @@ func NewHandler(endpoint, authorization string, client *http.Client, options ...
 			return
 		}
 		result.Accepted -= rejected
-		result.Rejected += rejected
+		// Keep producer validation and Collector rejection distinct even when
+		// both occur in one batch. Response totals still include both kinds.
+		if rejected > 0 {
+			observeBatch(request.Context(), batchResult{Rejected: rejected, Reason: "collector_rejected"})
+		}
 		observeBatch(request.Context(), result)
+		result.Rejected += rejected
 		accepted(writer, result)
 	}))
 }

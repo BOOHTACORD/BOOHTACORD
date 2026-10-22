@@ -1,129 +1,141 @@
-# Трейсы: пользователь, сессия и действие
+# Разбор пользовательской проблемы в Traces
 
-## User-flow schema v1
+Откройте [BOOHTACORD | Traces](https://grafana.fa.shaneque.ru/d/boohtacord-traces/boohtacord-7c-traces?orgId=1).
+UID остаётся `boohtacord-traces`, org=1. Фильтры помогают искать, но не заменяют
+ACL Grafana/Tempo. Не публикуйте snapshots, имена или диагностические ID.
 
-Контракт: [telemetry-flow-v1.json](../../contracts/telemetry-flow-v1.json),
-[ADR-018](../adr/ADR-018-user-flow-tracing.md). Поставка дашборда следует после
-приёмки данных #154; подготовленный JSON сохраняет UID `boohtacord-traces`.
+## Найти действие и причину
 
-1. Откройте существующий дашборд в orgId=1. Выберите пользователя, сессию и visit.
-2. Найдите terminal действия: flow, attempt, stage, outcome и reason. Отмена,
-   отказ, timeout и superseded различаются. Нет финала — unknown/incomplete.
-3. Выберите flow и откройте Tempo trace. Start/checkpoints и терминал одной
-   попытки — короткие записи; retry имеет тот же flow и следующий attempt.
-   Связанные worker/receiver traces открываются через Span Links. Один flow ID
-   сам по себе не доказывает причинность и не создаёт общий waterfall.
-4. Для screen.view проверьте first_frame и связанный retry. Connect/subscribe
-   не доказывает предъявление кадра. Sender render и receiver render различаются;
-   это диагностика компонента, а не read receipt.
-5. В media проверьте direction/source/provenance, sample_state и age. Отсутствие
-   измерения не равно 0; capture setting не является измеренным capture FPS.
-6. Проверьте relay accepted/rejected и клиентские queue/dropped/retried/age.
-   Клиентская очередь ограничена 128; при полном outage теряется и её диагностика.
+1. Выберите время, пользователя, затем session → visit → flow/media. Старые ссылки
+   `var-user`/`var-session` сохраняются. После изменения родительского фильтра
+   проверьте зависимые значения; сбросьте недоступное значение в All. All включает
+   legacy-записи без новых атрибутов; конкретный visit не может восстановить
+   отсутствовавшую историческую корреляцию.
+2. Начните с истории действий: operation, flow, attempt, stage, outcome, reason.
+   Платформа клиента и producer service — разные фильтры: API может экспортировать
+   измерение Web/Flutter. Client version и API service version также различаются.
+3. Откройте trace выбранной попытки. Start/checkpoints — дочерние spans root-terminal
+   этой попытки. Retry сохраняет flow ID, увеличивает attempt и имеет другой trace.
+   Связанные traces/worker attempts открываются отдельно по links/flow. Совпадение
+   flow ID не создаёт cross-trace waterfall и не доказывает причинность само по себе.
+4. `failed`, `timeout`, `rejected`, `cancelled`, `superseded` — разные результаты.
+   Отсутствие terminal/root — **неполное наблюдение**, а не доказанный сбой/успех:
+   учитывайте окно поиска, поздний span, sampling, retention и лимит выборки.
+5. Для HTTP возьмите серверный `X-Request-ID` и найдите `span.request_id` в Tempo
+   или локальный безопасный access event. Cookie/токен/URL/query/body не нужны.
+   Ошибка до login ищется в отдельной технической истории без фиктивного user.id.
 
-Графана применяет regex-экранирование multi/All. Не используйте фильтр пользователя
-как ACL. Legacy views сохранены отдельно. Ограничения таблиц — 500 traces / 20 spans
-для новых views; sampling, границы времени, retention и поздние spans ограничивают
-полноту. Структурный поиск incomplete в Tempo экспериментальный: результат требует
-проверки самого trace и не является счётчиком продуктовых отказов. Длительности
-между разными клиентами не вычисляются вычитанием несинхронизированных часов.
+История — ограниченная sampled-выборка (лимиты указаны на панели), не полный
+аудитный журнал и не источник точных counters/SLO. Короткое действие с одним span
+валидно. Для частоты/ошибок/p95 используйте aggregate metrics; WebSocket/SSE
+request duration — время соединения, а не задержка handshake.
 
-### Rollout / rollback
+## Техническая история и media
 
-Порядок: nullable migration 0047 + backend/relay → клиенты → dashboard после #154.
-Новые клиенты ждут X-Telemetry-Schema=1 и verified X-Telemetry-Session. Это не
-credentials. Anonymous/postlogout записи остаются локальными; старые партии
-не принадлежат новому аккаунту или origin. Metadata failure не отменяет бизнес-коммит.
+Служебные HTTP, heartbeat/polling, raw media и legacy находятся в свёрнутых
+технических разделах. Успешный unscoped presence GET/PUT не экспортируется как
+клиентское действие. Серверные count/latency остаются; ошибки, stop и реальные
+переходы состояния сохраняются. Native успешный auth/session poll также исключён
+из spans; operational aggregates и его ошибки остаются.
 
-Web: VITE_TELEMETRY_ENABLED=false; VITE_TRACE_SAMPLE_RATIO=0…1.
-Flutter compile defines: TELEMETRY_ENABLED=false; TRACE_SAMPLE_RATIO=0…1.
-Server: OTEL_TRACES_SAMPLER / OTEL_TRACES_SAMPLER_ARG; bounded synthetic pilot=1.
-Нет новой tail-sampling политики. При откате клиентов оставьте nullable metadata;
-старые записи выполняются без cause. Не удаляйте колонки при активном новом worker.
+Для просмотра экрана выберите viewer/session/visit/media, проверьте stage
+`subscribe` → `track`/`decoded` → **first presented frame**. HTTP ack, connected
+и подписка не доказывают предъявление кадра или слышимость. Message send success
+после sender render не является receiver read receipt. Переключение fullscreen/mini
+не означает новую media session. При неподдерживаемом сопоставлении нескольких
+публикаций используйте конкретный trace и ограничение корреляции на панели.
 
-Перед dashboard update прочитайте актуальную resourceVersion/version, JSON и ACL;
-сохраните конфигурацию локально для возврата. Не перезаписывайте конкурирующие
-изменения. В production read 2026-10-07 подтверждены generation=13,
-resourceVersion=1790842200468009, export schema dashboard.grafana.app/v2,
-Tempo UID boohtacord_tempo и Metrics UID boohtacord_metrics. Это read observation,
-а не deployed SHA или утверждение об актуальности версии в следующую поставку.
-Сохраняйте приватный доступ; не публикуйте снимки с реальными user/session IDs.
+`app.media.*` — flow schema, `media.*` — legacy API report; не складывайте их.
+`app.media.bitrate_bps` имеет bit/s; legacy `media.bitrate_kbps` — kbit/s.
+RTT/jitter/first-frame — ms; metric freshness в seconds. Проверяйте direction,
+provenance, source, sample age/window/generation и время самой записи. Requested
+profile, capture settings, encoded/decoded/presented FPS — разные слои. Target FPS
+не заменяет измеренный FPS; неподвижный экран может давать меньше новых кадров.
+Отсутствующее/stale/unknown не является нулём или healthy. Историческая последняя
+строка не доказывает, что пользователь сейчас подключён. Показатели клиента не
+являются измерением мощности оборудования или end-to-end latency.
 
-[Изолированный runtime и fault-профиль](../../tools/qa/tracing_flow/README.md).
-Проверяйте queries на установленном Tempo; локальный JSON lint не заменяет
-production Grafana smoke, permissions и проверку rollback.
+## Отличить отсутствие telemetry от продуктового сбоя
 
-Панель `boohtacord-traces` начинается со сводки сессий. Фильтр «Пользователь · имя и ID» показывает отображаемое имя профиля BOOHTACORD и ID аккаунта; список можно искать по имени. Фактическое значение фильтра — UUID, поэтому старые ссылки и история сохраняются при переименовании. Нажатие на ID сессии показывает её действия и запросы; ID спана открывает полный трейс в Explore.
+Проверьте последовательно producer queue/dropped/retried → relay accepted/rejected
+и receipt age **по источнику** → Collector refused/failed/queue/send → Tempo
+доступность и query конкретного synthetic trace. Relay 202/last_accept доказывает
+приём batch, а не хранение в Tempo. Исправный другой источник не должен скрывать
+отказ выбранного. `up` означает только доступность scrape target; отсутствие
+серии/активности и ошибка datasource — разные состояния. Не подставляйте zero.
 
-## Модель корреляции
+Клиентская очередь 128, batch16, timeout3s, retry≤2; server SDK queue128/batch16,
+export timeout3s; Collector queue128,2 consumers,retry horizon30s. Фактические
+версии/конфиги и runtime результаты фиксируются отдельно в evidence. При outage
+сама клиентская диагностика может теряться; продукт не ждёт её экспорта.
+Head sampling может исключить всё действие вместе с ошибкой: обещания «все ошибки
+сохраняются» нет. Web `VITE_TRACE_SAMPLE_RATIO`, Flutter `TRACE_SAMPLE_RATIO`,
+server `OTEL_TRACES_SAMPLER`/`OTEL_TRACES_SAMPLER_ARG`; для изолированного pilot=1.
 
-- `trace_id` описывает одно действие и связанные вызовы. W3C `traceparent` связывает клиентский спан с API.
-- `user.id` добавляет сервер после успешной проверки cookie. Это постоянный ID аккаунта.
-- `user.name` — отображаемое имя из `users.display_name`, прочитанное сервером при проверке сессии. `user.label` содержит «Имя · ID» для списка Grafana; именованные группы `text`/`value` оставляют UUID значением фильтра. Имена доступны только в приватных трейсах по явному запросу владельца, не в labels метрик или access logs. Одинаковые имена различаются по ID.
-- `session.id` — первые 16 байт SHA-256 от namespace `boohtacord/otel/session/v1`, ID аккаунта и внутреннего digest сессии. Исходный digest и cookie не экспортируются. ID стабилен для одного входа, различается для разных входов и не принимается как credential.
-- Эти поля добавляются только к спанам. Они не становятся labels метрик и не помещаются в resource.
-- Неавторизованные запросы и фоновые задачи не получают фиктивную общую сессию.
+[Каталог сигналов](../observability/signal-catalog.json) связывает producer/hash,
+сценарий, имя до/после экспорта, type/unit/labels, частоту, store, consumers и
+решение. Native `voice_platform_*` private collectors не становятся OTLP сами.
+Не суммируйте native scrape и mirror одного наблюдения. Каталог — source contract;
+факт доставки после relay/Collector и final SHA подтверждает отдельное evidence.
 
-Клиентские OTLP batch по-прежнему очищаются от произвольных атрибутов. Панели действий находят их через API-спан того же трейса. Мы не приписываем старые отложенные клиентские batch пользователю, который вошёл позже. Клиентское действие без связанного API-спана остаётся в полной диагностике.
+## Проверка и безопасная поставка
 
-## Чтение панели
-
-Сводка группирует серверные запросы по `user.id` и `session.id` и показывает число найденных запросов, последнюю активность, среднюю и максимальную длительность. Это выборка поиска Tempo: до 500 трейсов, до 50 совпавших спанов каждого трейса. Для точных суммарных HTTP counters используйте метрики, а для детализации сужайте время и выбирайте сессию.
-
-Долгоживущий `GET /api/v1/realtime` показан отдельно: его длительность — время соединения WebSocket, поэтому он исключён из средней задержки API и панели медленных HTTP-запросов. Фоновые операции и данные до установки корреляции остаются в свёрнутой диагностике. Корреляция старых трейсов задним числом невозможна. Имена появятся после следующего авторизованного запроса. Старые записи без имени остаются доступны через All или ссылку с ID; сводки группируются по ID, а имя показывают из последнего доступного спана. После переименования поиск может содержать оба имени в выбранном интервале — оба выбирают один и тот же аккаунт.
-
-Фильтр клиентов учитывает реальные имена сервисов: `boohtacord-web`, `boohtacord-android`, `boohtacord-ios`, `boohtacord-windows`, `boohtacord-macos`.
-
-## Проверка и доставка
-
-```text
-go test ./internal/observability/... ./internal/identity/authenticate_session/...
-python -m unittest tools.verify.trace_dashboard.test_traces_dashboard
-python tools/qa/trace_queries/check_trace_queries.py http://127.0.0.1:3200 docker/observability/dashboards/traces.json
+```sh
+python -m tools.observability.signal_catalog.build --check
+python -m unittest tools.observability.signal_catalog.test_build tools.verify.trace_dashboard.test_traces_dashboard tools.verify.trace_dashboard.test_flow_dashboard
+python tools/qa/trace_queries/check_trace_queries.py http://127.0.0.1:13200 docker/observability/dashboards/traces.json
 ```
 
-Первая команда выполняется из `backend`; последняя — на узле с приватным доступом к Tempo. Тест dashboard включён в CI contracts и production release guards. Production workflow доставляет API; JSON панели нужно импортировать в существующую Grafana с тем же UID. После сохранения проверить сводку и ссылку на сессию на свежем авторизованном запросе.
+[Изолированный runtime/fault harness](../../tools/qa/tracing_flow/README.md)
+проверяет реальный SDK → sanitizing relay → Collector → Tempo. Его synthetic
+principal и Flutter test engine не доказывают production cookie/native device
+или физическую media-приёмку. Для клиентских изменений используйте также
+`tools/qa/local_features/check.sh --feature telemetry --base <base> --real-stack`.
 
-Именованные группы фильтра: [Grafana variable text/value](https://grafana.com/docs/grafana/latest/visualizations/dashboards/variables/advanced-variables/).
+Перед поставкой прочитайте **действующий** JSON/version/resourceVersion/generation,
+org, datasource UID и provisioning source; сохраните исходный JSON в закрытом
+рабочем каталоге для возврата. Сверьте с Git и свежим чтением перед записью;
+при конкурентном изменении остановите перезапись и согласуйте diff. Доставляйте
+version-controlled source через существующий provisioning, тот же UID/org и
+приватные `boohtacord_tempo`/`boohtacord_metrics`. ACL не меняются.
 
-Основание: [OTel trace structure](https://opentelemetry.io/docs/concepts/signals/traces/), [TraceQL](https://grafana.com/docs/tempo/latest/traceql/construct-traceql-queries/). Одна сессия может включать много независимых трейсов; общий ID пользователя не превращается в бесконечный trace.
+После записи перечитайте действующий UID/org, сравните содержимое с Git; проверьте
+15m/6h/24h, All/конкретный user/session/visit, старую ссылку, пустую выборку,
+multiselect/escaping, refresh, trace drill-down и технические разделы. Зафиксируйте
+query latency/limits, версии и очищенный screenshot. JSON lint не заменяет smoke.
 
-## Медиа по пользователю
+Rollback: проверьте отсутствие нового конкурентного изменения, верните сохранённый
+предыдущий JSON тем же provisioning/API с текущим optimistic version token,
+перечитайте тот же UID/org и проверьте прежние queries. Затем повторно доставьте
+кандидат и выполните readback/smoke. Не удаляйте данные Tempo или схемы БД.
+Production publish/readback/rollback получают отдельные PASS/FAIL/NOT_RUN; без
+доступа к окружению задача не считается полностью выполненной.
 
-Панель «Медиа по пользователю — последние измерения» показывает `media.sample` отдельно по пользователю, сессии, платформе и направлению. Данные отправляются каждые 5–6 секунд во время подключения/показа/просмотра; приёмник сообщает статистику видимого просмотра. API проверяет cookie, принимает только ограниченные числа и перечисления, затем присоединяет проверенные `user.id` и `session.id`. Идентификаторы не берутся из тела клиента и не добавляются к labels Prometheus. Обычные запросы и действия сохраняют прежнюю трассировку.
+### Отдельный monitor host
 
-| Поле спана | Значение |
-| --- | --- |
-| `media.direction` | `sender` — отправитель экрана, `receiver` — зритель, `connection` — голосовое соединение |
-| `media.rtt_ms` | RTT до SFU в миллисекундах по RTCP/выбранной ICE-паре; не сквозная задержка до зрителя |
-| `media.bitrate_kbps` | Измеренные кбит/с; у отправителя сумма слоёв, у зрителя принятый поток |
-| `media.encoded_fps`, `media.decoded_fps`, `media.presented_fps` | Отправляемые, декодированные и показанные кадры/с; доступны по возможностям WebRTC |
-| `media.packet_loss_percent` | Процент потерь за скользящее окно около 10 секунд |
-| `media.packet_loss_window_ms` | Реальная длина окна 9000–12000 мс |
-| `media.target_resolution`, `media.target_fps` | Выбранный отправителем профиль, обновляется при смене качества |
-| `media.frame_width`, `media.frame_height` | Измеренные размеры кадра; целевой профиль не подставляется |
-| `media.connection_quality`, `media.adaptation_reason` | Оценка LiveKit и причина ограничения энкодера: none/cpu/bandwidth/other |
-| `media.sample_age_ms` | Возраст измерения при отправке; замеры старше 15 с отбрасываются |
-| `media.profile_check_status` | Проверка профиля отправителя: checking/matched/adapted/inactive/drift/repairing/failed |
-| `media.profile_check_reason` | none/capture/configuration/resolution/unavailable; причина расхождения или отсутствия измерения |
-| `media.profile_repair_attempts` | 0 или 1; число автоматических восстановлений для текущего профиля и дорожки |
-| `media.capture_width`, `media.capture_height`, `media.capture_fps` | Настройки реального захвата отдельно от размеров кодированного кадра; capture_fps — getSettings().frameRate, не измеренная частота новых кадров |
+Если Collector/Tempo/Prometheus работают отдельно от API/LiveKit, используйте
+версионный overlay, а не host-local SFU network из основного Compose:
 
-«FPS от цели» — `encoded_fps / target_fps`: красный фон ниже 50%, оранжевый от 50% до 80%, зелёный от 80%. Это индикатор расхождения, а не доказательство сбоя: целевой FPS задаёт верхний предел профиля, а неподвижный экран может давать меньше новых кадров. Сопоставляйте его с состоянием отправителя, причиной адаптации, битрейтом и историей соседних замеров. Для `connection` и `receiver` без двух чисел ячейка остаётся пустой. Колонка «Потери ≈10 с» показывает «нет данных» для строк без счётчиков, если в выборке есть хотя бы одно измерение потерь. Если таких измерений нет вообще, Tempo не создаёт поле и Grafana скрывает колонку до первого нового отчёта. Отсутствие данных не означает нулевые потери.
+```sh
+docker compose -f docker/observability/compose.yaml -f docker/observability/compose.remote.yaml config
+```
 
-Потери зрителя: `100 * Δlost / (Δreceived + Δlost)`. Потери отправителя: `100 * Δlost / Δsent` для старшего видеослоя, с потерями по RTCP-отчёту SFU. Это оценка исходящего участка, зависящая от частоты обратной связи. При первом измерении, отсутствии счётчиков, смене слоя/трека, сбросе счётчиков или большом перерыве процент отсутствует до нового окна. Реальный ноль сохраняется.
+Compose ≥2.24.4 нужен для `!override`. При доставке сохраните текущие project name
+и data-volume names; overlay сохраняет image pins, loopback-only ports, limits и
+retention базового файла. Он заменяет только Prometheus mounts/network и удаляет
+требование внешней Docker network приложения. Используйте ту же пару файлов при
+применении; перед запуском сравните rendered config с read-only baseline.
 
-Нативный Flutter WebRTC отдаёт timestamp статистики в микросекундах. Нативный отправитель переводит его в миллисекунды перед расчётом битрейта и окна потерь. Замеры до этого исправления имели заниженный примерно в 1000 раз битрейт и не содержали рассчитанный процент потерь; восстановить эти поля в уже сохранённых трейcах нельзя.
+`prometheus.remote.yaml` опрашивает только application OTLP exporter `collector:8889`,
+Collector self `collector:8888`, Tempo и Prometheus. Arbitrary OTLP resource metadata
+не переносится через `target_info`/`otel_scope_info`. API `/metrics` и LiveKit на
+другом хосте **не опрашиваются**; неподдерживаемые SFU/API alert rules не монтируются.
+Частные native collectors остаются частными; их отсутствие в этом Prometheus не
+заменяется OTLP автоматически или нулевыми рядами. Базовые alert files для других
+поддержанных топологий не удаляются.
 
-Сводка показывает последнюю строку в поисковой выборке до 500 media.sample, а не активность пользователя в реальном времени без ограничений. Проверяйте колонку времени; старый замер не доказывает, что пользователь ещё подключён. Пустые поля показаны прочерком. Колонки справа доступны горизонтальной прокруткой. Подробная история с переходом к трейсам находится в разделе диагностики. Данные сообщает клиент; это не доказательство аппаратной производительности или измерение сервера. Для новых полей нужны обновлённые web/Flutter-клиенты. iOS входит в разрешённые платформы; физическая проверка зависит от устройства.
-
-Семантика исходных счётчиков: [WebRTC Statistics API](https://www.w3.org/TR/webrtc-stats/).
-
-Браузер проверяет профиль при опросе диагностики раз в 5 секунд. Три последовательных
-расхождения параметров/превышения разрешения вызывают одну попытку восстановления.
-Следующие замеры проверяют результат; повторное устойчивое расхождение или ошибка
-восстановления дают `failed` и предупреждение отправителю. Новое ручное качество или
-новая дорожка обновляют эталон и бюджет восстановления. Скрытая вкладка может задержать
-таймер браузера. Меньшее разрешение/FPS при адаптации и неактивные слои не форсируются.
-Поля доступны в полном `media.sample`; для поиска используйте, например,
-`{ name = "media.sample" && span.media.profile_check_status = "failed" }`.
+Эта поставка не включает новую central installation/gateway consent из #336 и
+не меняет режим `local_only`. Если fresh spans отсутствовали в baseline или API
+не отправляет OTLP в этот monitor, новая конфигурация не создаёт исторические
+данные задним числом. Fresh synthetic stored trace, старые retained series,
+no-activity, disabled exporter и datasource failure фиксируются отдельно.

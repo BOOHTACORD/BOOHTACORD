@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'client_telemetry.dart';
 import '../features/telemetry/action_scope/session.dart';
 import '../features/telemetry/action_scope/action.dart';
+import '../features/telemetry/routine_request/trace.dart';
 
 class TracingHttpClient extends http.BaseClient {
   TracingHttpClient(this.inner, [this.session]);
@@ -22,6 +23,8 @@ class TracingHttpClient extends http.BaseClient {
         request.url.path.endsWith('/screen-metrics')) {
       return inner.send(request);
     }
+    final routine =
+        ActionScope.current == null && routinePresenceRequest(request);
     final span = OTel.tracer().startSpan('api.request', kind: SpanKind.client);
     final method = request.method.toUpperCase();
     span.setStringAttribute(
@@ -56,8 +59,12 @@ class TracingHttpClient extends http.BaseClient {
               : 'dependency',
         );
       }
+      if (routine && response.statusCode < 400) omitSuccessfulPolling(span);
       span.setIntAttribute('http.response.status_code', response.statusCode);
-      if (response.statusCode >= 500) span.setStatus(SpanStatusCode.Error);
+      if (response.statusCode >= 500 ||
+          (routine && response.statusCode >= 400)) {
+        span.setStatus(SpanStatusCode.Error);
+      }
       return response;
     } catch (_) {
       if (action?.name == 'realtime.process') {

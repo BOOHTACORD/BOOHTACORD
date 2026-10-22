@@ -28,7 +28,7 @@ var labelValues = map[string]map[string]bool{
 	"source":       {"UNKNOWN": true, "CAMERA": true, "MICROPHONE": true, "SCREEN_SHARE": true, "SCREEN_SHARE_AUDIO": true},
 	"type":         {"AUDIO": true, "VIDEO": true, "DATA": true, "out": true, "dropped": true},
 	"period":       {"today": true, "yesterday": true},
-	"platform":     {"web": true, "ios_web": true, "android_web": true, "desktop_web": true, "android_native": true, "ios_native": true, "windows_native": true, "macos_native": true, "desktop_native": true, "macos": true, "windows": true, "android": true, "ios": true},
+	"platform":     {"unknown": true, "web": true, "ios_web": true, "android_web": true, "desktop_web": true, "android_native": true, "ios_native": true, "windows_native": true, "macos_native": true, "desktop_native": true, "macos": true, "windows": true, "android": true, "ios": true},
 	"method":       {"GET": true, "POST": true, "PATCH": true, "PUT": true, "DELETE": true, "OPTIONS": true, "HEAD": true},
 	"codec":        {"vp8": true, "h264": true, "vp9": true, "av1": true, "unknown": true},
 	"direction":    {"incoming": true, "outgoing": true, "sender": true, "receiver": true, "send": true, "receive": true},

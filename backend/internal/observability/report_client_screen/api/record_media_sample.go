@@ -8,6 +8,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	sessionapi "voice-platform/backend/internal/identity/authenticate_session/api"
+	bindflow "voice-platform/backend/internal/observability/bind_flow"
 	correlation "voice-platform/backend/internal/observability/correlate_session"
 	httpmetrics "voice-platform/backend/internal/observability/http_metrics"
 )
@@ -20,6 +21,20 @@ func recordMediaSample(ctx context.Context, report httpmetrics.ClientScreenRepor
 		return
 	}
 	attrs := correlation.NamedAttributes(principal.AccountID, principal.SessionDigest, principal.DisplayName)
+	// Flow context is accepted only by the authenticated session guard. Preserve
+	// its visit/attempt, while the active lease lookup remains authoritative for
+	// media session identity. Reported measurements are client observations.
+	if flow, ok := bindflow.From(ctx); ok {
+		for _, attr := range flow.Attributes() {
+			if attr.Key != "app.media.session.id" && attr.Key != "app.provenance" {
+				attrs = append(attrs, attr)
+			}
+		}
+	}
+	attrs = append(attrs, attribute.String("app.provenance", "client_observed"))
+	if platform := sampleClientPlatform(report.Platform); platform != "" {
+		attrs = append(attrs, attribute.String("client.platform", platform))
+	}
 	if mediaSessionID != "" {
 		attrs = append(attrs, attribute.String("app.media.session.id", mediaSessionID))
 	}

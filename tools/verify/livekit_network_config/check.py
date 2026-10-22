@@ -34,12 +34,13 @@ def main():
     evidence_path = root / "evidence/media/livekit-network-config-2026-10-07.json"
     evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
     # Historical deployment evidence stays immutable; later source-only revalidation
-    # records intentional alert wiring changes without claiming a new physical probe.
+    # records intentional monitoring wiring changes without claiming a physical probe.
     current = root / "evidence/media/livekit-network-config-2026-10-08-roster-alerts.json"
     revalidation = json.loads(current.read_text(encoding="utf-8"))
     telemetry = read(root, "evidence/media/livekit-network-config-2026-10-21-telemetry.json")
+    observability = read(root, "evidence/media/livekit-network-config-2026-10-22-observability.json")
     expected_artifacts = (evidence["repository_artifacts"] | revalidation["repository_artifacts"]
-                          | telemetry["repository_artifacts"])
+                          | telemetry["repository_artifacts"] | observability["repository_artifacts"])
     for path, expected in expected_artifacts.items():
         content = (root / path).read_bytes().replace(b"\r\n", b"\n")
         actual = hashlib.sha256(content).hexdigest()

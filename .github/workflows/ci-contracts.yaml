@@ -99,7 +99,10 @@ jobs:
         shell: pwsh
         run: ./tools/verify/otel_egress/verify-otel-egress.ps1
       - name: Verify trace dashboard correlation
-        run: python3 -m unittest tools.verify.trace_dashboard.test_traces_dashboard tools.verify.trace_dashboard.test_flow_dashboard
+        run: |
+          python3 -m unittest tools.verify.trace_dashboard.test_traces_dashboard tools.verify.trace_dashboard.test_flow_dashboard tools.verify.trace_dashboard.test_action_history tools.qa.trace_queries.test_query_checks
+          python3 -m unittest tools.verify.telemetry_delivery.test_config tools.verify.telemetry_delivery.test_remote tools.qa.telemetry_delivery.test_probe_metrics tools.observability.dashboard_delivery.test_publish tools.observability.private_link.test_render tools.observability.private_link.test_verify_binding tools.observability.signal_catalog.test_build
+          python3 -m tools.observability.signal_catalog.build --check
       - name: Verify media QoE dashboard and rule semantics
         run: |
           python3 -m unittest tools.verify.media_qoe.test_dashboard

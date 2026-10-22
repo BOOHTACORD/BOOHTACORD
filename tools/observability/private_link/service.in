@@ -1,0 +1,36 @@
+[Unit]
+Description=Private owner-local BOOHTACORD OTLP transport
+Wants=network-online.target
+After=network-online.target docker.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=exec
+DynamicUser=yes
+User=boohtacord-otel-link
+LoadCredential=id_ed25519:/etc/boohtacord/telemetry-private-link/id_ed25519
+LoadCredential=ssh_config:/etc/boohtacord/telemetry-private-link/ssh_config
+LoadCredential=known_hosts:/etc/boohtacord/telemetry-private-link/known_hosts
+ExecStartPre=/usr/bin/python3 /usr/local/libexec/boohtacord-telemetry-private-link/check_binding.py --interface $bridge_interface --address $bridge_ip
+ExecStart=/usr/bin/ssh -F %d/ssh_config -i %d/id_ed25519 -o UserKnownHostsFile=%d/known_hosts -NTn boohtacord-otel-monitor
+Restart=always
+RestartSec=5s
+TimeoutStopSec=10s
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+RestrictAddressFamilies=AF_INET AF_UNIX AF_NETLINK
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+CapabilityBoundingSet=
+UMask=0077
+MemoryMax=64M
+TasksMax=16
+StandardOutput=null
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

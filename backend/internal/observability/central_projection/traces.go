@@ -50,7 +50,7 @@ func Correlation(i identity.Identity, key, raw string) string {
 	return raw
 }
 func Resource(in *resource.Resource, i identity.Identity) (*resource.Resource, error) {
-	name, version, instance := "boohtacord-api", "", ""
+	name, version, instance, platform := "boohtacord-api", "", "", ""
 	if in != nil {
 		for _, a := range in.Attributes {
 			if a == nil || a.Value == nil {
@@ -69,6 +69,10 @@ func Resource(in *resource.Resource, i identity.Identity) (*resource.Resource, e
 				default:
 					return nil, ErrPolicy
 				}
+			case "client.platform":
+				if validClientPlatform(s) {
+					platform = s
+				}
 			case "service.version":
 				if flow.Valid("app.client.version", s) {
 					version = s
@@ -81,6 +85,9 @@ func Resource(in *resource.Resource, i identity.Identity) (*resource.Resource, e
 		}
 	}
 	attrs := []*common.KeyValue{String("service.namespace", "boohtacord"), String("service.name", name), String("boohtacord.installation.id", i.ID)}
+	if platform != "" {
+		attrs = append(attrs, String("client.platform", platform))
+	}
 	if version != "" {
 		attrs = append(attrs, String("service.version", version))
 	}
@@ -102,6 +109,9 @@ func attributes(in []*common.KeyValue, i identity.Identity) []*common.KeyValue {
 				out = append(out, String(a.Key, s))
 			}
 			continue
+		}
+		if a.Key == "client.platform" && validClientPlatform(a.Value.GetStringValue()) || a.Key == "app.client.version" && ValidMetricVersion(a.Value.GetStringValue()) {
+			out = append(out, a)
 		}
 		if f, ok := flow.Fields[a.Key]; ok && f.Kind != "version" && f.Kind != "id" && flow.Valid(a.Key, value(a.Value)) {
 			out = append(out, a)

@@ -16,7 +16,7 @@ describe('LiveKit screen viewer adapter', () => {
     const video = { ...publication('screen-video'), trackSid: 'TR_owner' }
     const local = { identity: `voice-lease:${viewerLeaseId}`, metadata: `account:${viewerAccountId}`, name: 'Зритель', getTrackPublication: () => undefined }
     const owner = { identity: `voice-lease:${ownerLeaseId}`, metadata: `account:${ownerAccountId}`, name: 'Ведущий', getTrackPublication: (source: string) => source === 'screen-video' ? video : undefined }
-    const request = vi.fn(async () => ({ ok: true, json: async () => ({ viewer_account_ids: [viewerAccountId] }) }) as Response)
+    const request = vi.fn(async () => Response.json({ viewer_account_ids: [viewerAccountId] }))
     vi.stubGlobal('fetch', request)
     const room: LiveKitScreenViewerRoom = {
       localParticipant: local,

@@ -53,12 +53,23 @@ class ActionScope {
   void Function()? _unsubscribe;
   static final Object _key = Object();
   static ActionScope? get current => Zone.current[_key] as ActionScope?;
-  Future<T> run<T>(Future<T> Function() call) => runZoned(
-    () => enabled && span != null
-        ? OTel.context(spanContext: span!.spanContext).run(call)
-        : call(),
-    zoneValues: {_key: this},
-  );
+  Future<T> run<T>(Future<T> Function() call) {
+    if (_ended || !session.current(snapshot)) {
+      final ambient = current;
+      if (ambient == null ||
+          (!ambient.complete && ambient.session.current(ambient.snapshot))) {
+        return call();
+      }
+      return runZoned(() => Context.root.run(call), zoneValues: {_key: null});
+    }
+    return runZoned(
+      () => enabled && span != null
+          ? OTel.context(spanContext: span!.spanContext).run(call)
+          : call(),
+      zoneValues: {_key: this},
+    );
+  }
+
   void step(String value) {
     if (_ended ||
         !session.current(snapshot) ||

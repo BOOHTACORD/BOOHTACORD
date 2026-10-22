@@ -1,6 +1,7 @@
 package ingestclienttraces
 
 import (
+	"context"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
@@ -32,19 +33,45 @@ func (w *healthWriter) Write(body []byte) (int, error) {
 func withRelayHealth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		started := time.Now()
+		source := requestPlatform(r)
+		r = r.WithContext(context.WithValue(r.Context(), relaySourceKey{}, source))
 		captured := &healthWriter{ResponseWriter: w}
 		defer func() {
+			panicValue := recover()
 			code := captured.status
-			if code == 0 {
+			if panicValue != nil {
+				code = 500
+			} else if code == 0 {
 				code = 200
 			}
-			labels := metric.WithAttributes(attribute.Int("http.response.status_code", code))
+			labels := metric.WithAttributes(attribute.Int("http.response.status_code", code), attribute.String("platform", source))
 			relayRequests.Add(r.Context(), 1, labels)
 			relayLatency.Record(r.Context(), time.Since(started).Seconds(), labels)
 			if code == 202 && captured.Header().Get("X-Telemetry-Accepted") != "0" {
-				relayFreshness.Record(r.Context(), time.Now().Unix())
+				relayFreshness.Record(r.Context(), time.Now().Unix(), metric.WithAttributes(attribute.String("platform", source)))
+			}
+			if panicValue != nil {
+				panic(panicValue)
 			}
 		}()
 		next.ServeHTTP(captured, r)
 	})
+}
+
+// The source label is an enum from the existing relay protocol, never an identity.
+type relaySourceKey struct{}
+
+func requestPlatform(request *http.Request) string {
+	platform := request.Header.Get("X-Client-Platform")
+	if platforms[platform] {
+		return platform
+	}
+	return "unknown"
+}
+func sourcePlatform(ctx context.Context) attribute.KeyValue {
+	source, _ := ctx.Value(relaySourceKey{}).(string)
+	if !platforms[source] {
+		source = "unknown"
+	}
+	return attribute.String("platform", source)
 }
