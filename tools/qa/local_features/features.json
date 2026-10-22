@@ -302,13 +302,13 @@
       }
     ],
     "parity_review": {
-      "issue": 513,
+      "issue": 538,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "Instrumentation-only review: presence transport, flow ownership and timeout/cancelled diagnostics preserve existing voice/screen behavior. Focused Web/shared Dart and actual presence/relay/SDK runtime evidence in #513; physical media and mobile-device acceptance remain separate."
+      "scope": "This PR only changes the Web screen-stage fullscreen action. Voice controls, leases, reconnect behavior and server ACL are unchanged across Web/iOS/Android; existing voice regression coverage remains applicable."
     }
   },
   "screen": {
@@ -572,6 +572,7 @@
           "web": {
             "entrypoint": "clients/web/src/workspace/WorkspaceApp.vue",
             "tests": [
+              "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts",
               "clients/web/src/voice/screen_viewer_design_icons.spec.ts",
               "clients/web/src/voice/screen_viewer_controller.spec.ts",
               "clients/web/src/voice/screen_receiver_reader.spec.ts"
@@ -655,13 +656,13 @@
       }
     ],
     "parity_review": {
-      "issue": 513,
+      "issue": 538,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "Instrumentation-only review: presence transport, flow ownership and timeout/cancelled diagnostics preserve existing voice/screen behavior. Focused Web/shared Dart and actual presence/relay/SDK runtime evidence in #513; physical media and mobile-device acceptance remain separate."
+      "scope": "Web viewer overlay enters/exits browser fullscreen without enabling app-area expansion; fullscreen exit preserves watching and stop still clears the remote viewer. iOS/Android native fullscreen actions and renderer ownership are unchanged; no platform media-runtime claim is made."
     }
   },
   "screen_metrics": {
