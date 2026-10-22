@@ -1,5 +1,6 @@
 """Remote monitor has no dependency on the application host's Docker networks."""
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -32,7 +33,10 @@ class RemoteMonitorTest(unittest.TestCase):
 
     @unittest.skipUnless(shutil.which('docker'), 'Docker Compose is required for actual merge rendering')
     def test_actual_compose_merge_preserves_pins_bindings_data_and_retention(self):
-        result = subprocess.run(['docker', 'compose', '-f', 'docker/observability/compose.yaml', '-f', 'docker/observability/compose.remote.yaml', 'config', '--format', 'json'], cwd=ROOT, text=True, capture_output=True, timeout=20)
+        # Prior QA tests may leave a host-specific context in the environment.
+        # This is a daemonless render, so deliberately exercise an absent one.
+        env = dict(os.environ, DOCKER_CONTEXT='boohtacord-missing-render-context-regression')
+        result = subprocess.run(['docker', '--context', 'default', 'compose', '-f', 'docker/observability/compose.yaml', '-f', 'docker/observability/compose.remote.yaml', 'config', '--format', 'json'], cwd=ROOT, env=env, text=True, capture_output=True, timeout=20)
         self.assertEqual(result.returncode, 0, result.stderr)
         rendered = json.loads(result.stdout)
         services = rendered['services']

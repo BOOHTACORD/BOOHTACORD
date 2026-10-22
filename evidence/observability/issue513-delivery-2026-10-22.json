@@ -200,6 +200,17 @@
     "rollback_readback_version": 15,
     "permissions_unchanged": true,
     "permissions_sha256": "dcb32fb28f059097a4843f957e8cf78855b4436ffaee9ebc714865d0c2ce0c4f",
-    "ui": "PASS: session selector, flow attempts and real Explore trace; synthetic controlled action only"
+    "ui": "PASS: session selector, flow attempts and real Explore trace; synthetic controlled action only",
+    "generation": 18,
+    "resourceVersion": "1792680484235988"
+  },
+  "final_sdk_runtime": {
+    "status": "PASS",
+    "source_sha": "b073559964a98d6a7c978f8de31d6e4669656938",
+    "duration_seconds": 127.376,
+    "web": "actual browser components/SDK \u2192 sanitizing relay \u2192 Collector \u2192 Tempo",
+    "native": "actual Flutter macOS test engine mounted-frame terminal \u2192 relay \u2192 Tempo",
+    "log_sha256": "375138e0a0daf096086ffa97133e256c2c432d9442d02382cd191a29f4ac8bdd",
+    "packaged_mobile_or_physical_media": false
   }
 }
