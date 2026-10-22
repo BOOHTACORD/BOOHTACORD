@@ -28,7 +28,6 @@ const fullscreenFeedback = ref('')
 const playbackFeedback = ref('')
 const videoPaused = ref(false)
 const stageControlsVisible = ref(false)
-const viewerSizeExpanded = computed(() => props.expanded || fullscreenActive.value)
 const videoPlaybackBlocked=ref(false),audioPlaybackBlocked=ref(false)
 const playbackBlocked = computed(() => videoPlaybackBlocked.value || audioPlaybackBlocked.value)
 let playbackRequestGeneration=0,requestedSelectionId:string|null=null
@@ -82,19 +81,6 @@ async function stopWatching(): Promise<void> {
   }
   emit('clear')
 }
-async function toggleViewerSize(): Promise<void> {
-  if (!viewerSizeExpanded.value) { emit('update:expanded', true); return }
-  if (fullscreenActive.value) {
-    try {
-      const available = await fullscreenControls?.toggle()
-      if (!available) { fullscreenFeedback.value = 'Полноэкранный режим недоступен в этом браузере.'; return }
-    } catch {
-      fullscreenFeedback.value = 'Не удалось свернуть демонстрацию.'
-      return
-    }
-  }
-  emit('update:expanded', false)
-}
 function selectStream(id: string): void { select(id) }
 defineExpose({ selectStream })
 function stageVisible():boolean {const box=stage.value?.getBoundingClientRect();return Boolean(document.visibilityState==='visible'&&box&&box.width>0&&box.height>0&&box.bottom>0&&box.right>0&&box.top<innerHeight&&box.left<innerWidth)}
@@ -134,7 +120,7 @@ async function toggleFullscreen(): Promise<void> {
     if (!available) fullscreenFeedback.value = 'Полноэкранный режим недоступен в этом браузере.'
     else revealStageControls()
   } catch {
-    fullscreenFeedback.value = 'Не удалось развернуть демонстрацию на весь экран.'
+    fullscreenFeedback.value = 'Не удалось изменить режим полноэкранного просмотра.'
   }
 }
 </script>
@@ -155,8 +141,7 @@ async function toggleFullscreen(): Promise<void> {
           <span class="screen-stage-label"><span class="screen-stage-avatar" :style="{ backgroundColor: avatarBackground(selectedStream.accountId ?? selectedStream.participantId), color: avatarForeground(selectedStream.accountId ?? selectedStream.participantId) }" aria-hidden="true">{{ selectedStream.participantName.slice(0, 2).toLocaleUpperCase('ru-RU') }}</span>{{ selectedStream.isLocal ? 'Ваш экран' : `Экран ${selectedStream.participantName || 'участника'}` }}<b>ЭФИР</b></span>
         </div>
         <div v-if="!mini" class="screen-stage-actions" :class="{ 'screen-stage-actions--visible': stageControlsVisible }" role="group" aria-label="Управление просмотром" @focusin="revealStageControls">
-          <button class="screen-stage-action screen-stage-action--size" type="button" :aria-label="viewerSizeExpanded ? 'Свернуть просмотр' : 'Развернуть просмотр'" :title="viewerSizeExpanded ? 'Свернуть просмотр' : 'Развернуть просмотр'" @click="toggleViewerSize"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="viewerSizeExpanded" d="M8 3v5H3M16 3v5h5M3 16h5v5M21 16h-5v5"/><path v-else d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg><span>{{ viewerSizeExpanded ? 'Свернуть' : 'Развернуть' }}</span></button>
-          <button v-if="fullscreenActive" class="screen-stage-action" type="button" aria-label="Выйти из полноэкранного режима" title="Выйти из полноэкранного режима" @click="toggleFullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v6H3M15 3v6h6M3 15h6v6M21 15h-6v6"/></svg><span>Оконный режим</span></button>
+          <button class="screen-stage-action screen-stage-action--size" type="button" :aria-label="fullscreenActive ? 'Свернуть просмотр' : 'Развернуть на весь экран'" :title="fullscreenActive ? 'Свернуть просмотр' : 'Развернуть на весь экран'" @click="toggleFullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="fullscreenActive" d="M8 3v5H3M16 3v5h5M3 16h5v5M21 16h-5v5"/><path v-else d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg><span>{{ fullscreenActive ? 'Свернуть' : 'Развернуть' }}</span></button>
           <button v-if="!selectedStream.isLocal" class="screen-stage-action screen-stage-action--stop" type="button" aria-label="Прекратить просмотр" title="Прекратить просмотр этой трансляции" @click="stopWatching"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg><span>Прекратить просмотр</span></button>
         </div>
       </template>

@@ -152,7 +152,7 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
   await page.screenshot({ path: info.outputPath('viewer-participants-1440.png') })
 })
 
-test('screen viewing controls expand and collapse the viewer, exit browser fullscreen, and stop watching', async ({ page }, info) => {
+test('screen viewing controls enter and exit browser fullscreen without enabling app expansion, and stop watching', async ({ page }, info) => {
   await open(page, 'viewer-controls&watching-remote', 1280, 100, 800)
   const stage = page.locator('.screen-stage')
   const stageActions = page.getByRole('group', { name: 'Управление просмотром' })
@@ -171,16 +171,17 @@ test('screen viewing controls expand and collapse the viewer, exit browser fulls
   await page.mouse.move(stageBounds!.x + stageBounds!.width / 2, stageBounds!.y + stageBounds!.height / 2)
   await expect(stageActions).toHaveCSS('opacity', '1')
 
-  await page.getByRole('button', { name: 'Развернуть просмотр', exact: true }).click()
-  await expect(page.locator('.voice-room')).toHaveClass(/voice-room--screen-expanded/)
-  await page.screenshot({ path: info.outputPath('viewer-controls-expanded.png') })
-  await page.getByRole('button', { name: 'Свернуть просмотр', exact: true }).click()
+  await page.getByRole('button', { name: 'Развернуть на весь экран', exact: true }).click()
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(true)
   await expect(page.locator('.voice-room')).not.toHaveClass(/voice-room--screen-expanded/)
+  await page.screenshot({ path: info.outputPath('viewer-controls-expanded.png') })
+  await stageActions.getByRole('button', { name: 'Свернуть просмотр', exact: true }).click()
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(false)
 
   await page.getByRole('button', { name: 'Развернуть демонстрацию на весь экран', exact: true }).click()
   await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(true)
   await page.screenshot({ path: info.outputPath('viewer-controls-browser-fullscreen.png') })
-  await stageActions.getByRole('button', { name: 'Выйти из полноэкранного режима', exact: true }).click()
+  await stageActions.getByRole('button', { name: 'Свернуть просмотр', exact: true }).click()
   await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(false)
 
   await page.getByRole('button', { name: 'Развернуть демонстрацию на весь экран', exact: true }).click()
@@ -194,7 +195,7 @@ test('screen viewing controls expand and collapse the viewer, exit browser fulls
 test('screen viewing overlay stays inside a narrow viewport at 200% text', async ({ page }, info) => {
   await open(page, 'viewer-controls&watching-remote', 390, 200, 844)
   const actions = page.getByRole('group', { name: 'Управление просмотром' })
-  await expect(actions.getByRole('button', { name: 'Развернуть просмотр', exact: true })).toBeVisible()
+  await expect(actions.getByRole('button', { name: 'Развернуть на весь экран', exact: true })).toBeVisible()
   await expect(actions.getByRole('button', { name: 'Прекратить просмотр', exact: true })).toBeVisible()
   await expect(actions).toHaveCSS('opacity', '1')
   await clean(page)
