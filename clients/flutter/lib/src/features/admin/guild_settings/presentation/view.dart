@@ -15,7 +15,9 @@ class GuildSettingsPresentation extends StatelessWidget {
     required this.onWelcomeChanged,
     required this.onCancel,
     required this.onNameChanged,
+    this.telemetry,
   });
+  final Widget? telemetry;
   final GuildSettingsController state;
   final TextEditingController name;
   final List<GuildChannel> channels;
@@ -108,6 +110,7 @@ class GuildSettingsPresentation extends StatelessWidget {
                       onPressed: onLoad,
                       child: const Text('Загрузить настройки'),
                     ),
+                  if (telemetry != null) telemetry!,
                 ],
               ),
             ),

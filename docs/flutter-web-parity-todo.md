@@ -1,3 +1,13 @@
+# Current follow-up status (#518)
+
+Confirmed realtime/admin/viewer source gaps from #518 are handled by PAR-001.
+The existing feature registry is the authoritative scenario matrix; see
+[parity contract](flutter-web-parity.md) and [run/build report](../evidence/qa/issue518-client-parity.md).
+Earlier TODOs below are historical unless their current matrix row still has
+GAP/PLANNED status. Do not reimplement #499–502/#516 or infer missing behavior
+from old TODO text. Physical capture/audio/background acceptance (#62/#132/#303)
+remains separate from implementation and simulator/emulator UI/API evidence.
+
 # Flutter ↔ web parity — только открытые задачи
 
 Source of truth: [parity map](flutter-web-parity.md). Реализованные admin, conversation и release APK leaves перенесены в [DONE_AUDIT_2026-09-27.md](history/status/DONE_AUDIT-2026-09-27.md). Этот checklist входит в QA-13; local widget/source checks не закрывают device acceptance.

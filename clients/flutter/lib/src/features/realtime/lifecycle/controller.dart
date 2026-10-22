@@ -1,5 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
+
+import 'delivery.dart';
+import '../social_hints/hints.dart';
+import 'events.dart';
+import 'recovery.dart';
 
 import 'package:flutter/foundation.dart';
 
@@ -22,13 +28,34 @@ class RealtimeController extends ChangeNotifier {
     required this.expire,
     required this.invalidatePresence,
     required this.dispatch,
-  });
+    this.recover,
+    double Function()? jitter,
+  }) : jitter = jitter ?? Random().nextDouble;
+  final double Function() jitter;
+
   final ApiClient api;
   final SessionScope scope;
   final bool Function() isReady;
   final Future<void> Function() expire;
   final void Function() invalidatePresence;
-  final void Function(RealtimeEvent) dispatch;
+  final FutureOr<void> Function(RealtimeEvent) dispatch;
+  final FutureOr<void> Function()? recover;
+  late final delivery = RealtimeDelivery(applyEvent, () async {
+    if (recover != null) {
+      await recover!();
+    } else {
+      await dispatch(
+        const RealtimeEvent('recovery', 'connection.resync_required', {}),
+      );
+    }
+    await SocialHints.forTransport(api.transport).receiveAsync(
+      const RealtimeEvent('recovery', 'connection.resync_required', {}),
+    );
+  }, handleClosed);
+  SessionTicket? deliveryTicket;
+  int? deliveryServer;
+  String? deliveryInstallation;
+  Timer? readyTimeout;
   WebSocket? socket;
   StreamSubscription<dynamic>? subscription;
   Timer? retry;
@@ -38,15 +65,22 @@ class RealtimeController extends ChangeNotifier {
   bool connected = false;
   bool checkingSession = false;
   bool disposed = false;
-  final Set<String> eventIds = {};
+
   ActionScope? handshake;
   bool hadConnection = false;
 
   bool Function() admission() {
     final ticket = scope.capture();
     final current = generation;
+    final server = api.transport.session.serverRevision;
+    final installation = api.transport.session.telemetry.installation;
     return () =>
-        !disposed && ticket.isActive && current == generation && isReady();
+        !disposed &&
+        ticket.isActive &&
+        current == generation &&
+        server == api.transport.session.serverRevision &&
+        installation == api.transport.session.telemetry.installation &&
+        isReady();
   }
 
   void changed() {

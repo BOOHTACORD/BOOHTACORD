@@ -2,7 +2,7 @@ import '../../../models.dart';
 import '../lifecycle/controller.dart';
 
 extension WorkspaceTopology on WorkspaceController {
-  Future<void> refreshTopology() async {
+  Future<void> refreshTopology({bool strict = false}) async {
     final ticket = scope.capture();
     if (!accepts(ticket)) return;
     try {
@@ -16,13 +16,17 @@ extension WorkspaceTopology on WorkspaceController {
         selectedChannel = null;
         effects.clearText();
       }
-      selectedChannel ??= all
-          .where((channel) => channel.kind == ChannelKind.text)
-          .firstOrNull;
-      if (selectedChannel?.kind == ChannelKind.text) {
+      final previous = selectedChannel;
+      selectedChannel = all.where((c) => c.id == previous?.id).firstOrNull;
+      if (navigationSection == NavigationSection.channels)
+        selectedChannel ??= all
+            .where((channel) => channel.kind == ChannelKind.text)
+            .firstOrNull;
+      if (previous == null && selectedChannel?.kind == ChannelKind.text) {
         await selectChannel(selectedChannel!);
       }
     } catch (cause) {
+      if (strict) rethrow;
       if (accepts(ticket)) effects.error(effects.message(cause));
     }
     if (accepts(ticket)) changed();

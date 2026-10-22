@@ -4,6 +4,7 @@ import '../../screen_fullscreen_route.dart';
 Future<void> openPinnedScreenFullscreen({
   required BuildContext context,
   required AppState state,
+  required VoidCallback onStopWatching,
   required String identity,
   required String name,
   required String publicationSid,
@@ -23,6 +24,10 @@ Future<void> openPinnedScreenFullscreen({
     content: (lease, target) => ScreenFullscreenOverlay(
       publisherName: name,
       onClose: () => Navigator.of(target).pop(),
+      onStopWatching: () {
+        Navigator.of(target).pop();
+        onStopWatching();
+      },
       video: ScreenFullscreenRendererGate(
         lease: lease,
         child: ScreenFrameGate(

@@ -3,7 +3,7 @@ import '../../direct/conversations/support_contact.dart';
 import '../lifecycle/controller.dart';
 
 extension WorkspaceDirects on WorkspaceController {
-  Future<void> refreshDirectMessages() async {
+  Future<void> refreshDirectMessages({bool strict = false}) async {
     final sequence = ++directNavigationSequence;
     final owner = api.transport.session.telemetry.snapshot();
     final ticket = scope.capture();
@@ -32,6 +32,7 @@ extension WorkspaceDirects on WorkspaceController {
         directMessageCandidates = candidates;
       }
     } catch (cause) {
+      if (strict) rethrow;
       if (accepts(ticket) && sequence == directNavigationSequence) {
         supportContact = supportContact.unavailable;
         effects.error(effects.message(cause));

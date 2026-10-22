@@ -48,8 +48,7 @@ describe('realtime recovery', () => {
     expect(onRecovery).toHaveBeenCalledOnce()
     expect(onEvent).not.toHaveBeenCalled()
     finishRecovery()
-    await Promise.resolve()
-    expect(onEvent).toHaveBeenCalledOnce()
+    await vi.waitFor(() => expect(onEvent).toHaveBeenCalledOnce())
   })
 
   it('clears an invalid cursor and performs full resync before reconnect', async () => {

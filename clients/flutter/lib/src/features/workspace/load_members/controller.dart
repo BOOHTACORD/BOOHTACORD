@@ -5,7 +5,7 @@ import '../lifecycle/controller.dart';
 import 'direct_names.dart';
 
 extension WorkspaceMembers on WorkspaceController {
-  Future<void> refreshMembers() async {
+  Future<void> refreshMembers({bool strict = false}) async {
     final ticket = scope.capture();
     if (!accepts(ticket)) return;
     membersLoading = true;
@@ -28,6 +28,7 @@ extension WorkspaceMembers on WorkspaceController {
         }
       }
     } catch (cause) {
+      if (strict) rethrow;
       if (accepts(ticket)) membersError = effects.message(cause);
     } finally {
       if (accepts(ticket)) {
@@ -68,7 +69,9 @@ extension WorkspaceMembers on WorkspaceController {
       if (!accepts(ticket)) return;
       if ((memberProfileRevisions.memberRevision(result) ?? 0) <
           minimumRevision) {
-        final latest = members.where((member) => member.id == userId).firstOrNull;
+        final latest = members
+            .where((member) => member.id == userId)
+            .firstOrNull;
         final latestRevision = latest == null
             ? null
             : memberProfileRevisions.memberRevision(latest);
