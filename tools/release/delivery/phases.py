@@ -3,7 +3,7 @@ import re
 import time
 from .commands import execute, ExecutionFailed
 
-LIMITS = {'current_revision': 45, 'history': 10, 'transfer_bundle': 300,
+LIMITS = {'current_revision': 45, 'history': 10, 'transfer_bundle': 900,
           'transfer_driver': 60, 'remote_install': 600, 'readback': 45}
 
 
