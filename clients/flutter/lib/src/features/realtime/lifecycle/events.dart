@@ -1,38 +1,70 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'controller.dart';
 import '../social_hints/hints.dart';
 
 extension RealtimeEvents on RealtimeController {
+  void synchronizeDeliveryScope() {
+    final server = api.transport.session.serverRevision;
+    if (deliveryTicket?.isActive != true || deliveryServer != server) {
+      delivery.reset();
+      deliveryTicket = scope.capture();
+      deliveryServer = server;
+    }
+  }
+
+  Future<void> applyEvent(RealtimeEvent event) async {
+    if (deliveryTicket?.isActive != true ||
+        deliveryServer != api.transport.session.serverRevision)
+      return;
+    if (await SocialHints.forTransport(api.transport).receiveAsync(event))
+      return;
+    await dispatch(event);
+    changed();
+  }
+
   void receive(dynamic raw) {
     if (!admission()() || raw is! String) return;
+    synchronizeDeliveryScope();
     try {
-      final event = jsonDecode(raw) as Map<String, dynamic>;
-      final eventId = event['event_id'] as String?;
-      final kind = event['kind'] as String?;
-      final payload = event['payload'] as Map<String, dynamic>? ?? const {};
-      if (eventId == null || !eventIds.add(eventId)) return;
-      if (eventIds.length > 1000) eventIds.clear();
+      final source = jsonDecode(raw);
+      if (source is! Map<String, dynamic>) return;
+      final id = source['event_id'],
+          kind = source['kind'],
+          payload = source['payload'];
+      if (id is! String ||
+          id.isEmpty ||
+          id.length > 512 ||
+          kind is! String ||
+          payload is! Map<String, dynamic>)
+        return;
+      if (kind == 'screen_viewers.changed' && payload.isNotEmpty) return;
+      if (kind == 'connection.ready' || kind == 'connection.resync_required') {
+        if (payload.isNotEmpty) return;
+      }
       if (kind == 'connection.ready') {
+        if (connected) return;
         connected = true;
         hadConnection = true;
+        attempt = 0;
+        readyTimeout?.cancel();
+        readyTimeout = null;
         handshake?.step('ready');
         handshake?.finish('success');
         handshake = null;
+        changed();
       }
-      final socialEvent = RealtimeEvent(eventId, kind, payload);
-      if (SocialHints.forTransport(api.transport).receive(socialEvent)) return;
-      dispatch(
+      delivery.accept(
         RealtimeEvent(
-          eventId,
+          id,
           kind,
           payload,
-          telemetry: RealtimeTelemetry.parse(event['telemetry']),
+          telemetry: RealtimeTelemetry.parse(source['telemetry']),
         ),
       );
-      changed();
     } catch (_) {
-      // Unknown/malformed events confer no authority.
+      // Malformed envelopes confer no authority and cannot become cursors.
     }
   }
 }

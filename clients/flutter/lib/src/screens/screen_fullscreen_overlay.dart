@@ -79,11 +79,13 @@ class ScreenFullscreenOverlay extends StatefulWidget {
     required this.publisherName,
     required this.video,
     required this.onClose,
+    this.onStopWatching,
   });
 
   final String publisherName;
   final Widget video;
   final VoidCallback onClose;
+  final VoidCallback? onStopWatching;
 
   @override
   State<ScreenFullscreenOverlay> createState() =>
@@ -119,7 +121,8 @@ class _ScreenFullscreenOverlayState extends State<ScreenFullscreenOverlay>
   Future<void> _dismissBySwipe() async {
     if (_closing || _dismissing) return;
     _dismissing = true;
-    await _dismissController.forward();
+    if (!MediaQuery.disableAnimationsOf(context))
+      await _dismissController.forward();
     if (mounted) _close();
   }
 
@@ -166,7 +169,8 @@ class _ScreenFullscreenOverlayState extends State<ScreenFullscreenOverlay>
                 child: ColoredBox(color: Colors.black, child: widget.video),
               ),
               Positioned(
-                left: 20,
+                left: 16,
+                right: 76,
                 top: 16,
                 child: SafeArea(
                   child: Semantics(
@@ -188,11 +192,15 @@ class _ScreenFullscreenOverlayState extends State<ScreenFullscreenOverlay>
                           children: [
                             const Icon(Icons.monitor_outlined, size: 17),
                             const SizedBox(width: 8),
-                            Text(
-                              'Экран ${widget.publisherName}',
-                              style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
+                            Flexible(
+                              child: Text(
+                                'Экран ${widget.publisherName}',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
@@ -202,6 +210,29 @@ class _ScreenFullscreenOverlayState extends State<ScreenFullscreenOverlay>
                   ),
                 ),
               ),
+              if (widget.onStopWatching != null)
+                Positioned(
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                  child: SafeArea(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Tooltip(
+                        message: 'Остановить просмотр',
+                        child: FilledButton.icon(
+                          onPressed: () {
+                            if (_closing) return;
+                            _closing = true;
+                            widget.onStopWatching!();
+                          },
+                          icon: const Icon(Icons.stop_circle_outlined),
+                          label: const Text('Остановить просмотр'),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               Positioned(
                 right: 20,
                 top: 16,

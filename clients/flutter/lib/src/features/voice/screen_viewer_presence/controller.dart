@@ -58,6 +58,26 @@ class ScreenViewerPresenceController {
   final ScreenViewerAudienceChanged onOwnerAudienceChanged;
   final Duration heartbeatInterval;
 
+  Future<void>? _hintRefresh;
+  bool _hintAgain = false;
+  int _hintGeneration = 0;
+
+  Future<void> refreshFromHint() {
+    _hintAgain = true;
+    return _hintRefresh ??= _drainHints(_hintGeneration);
+  }
+
+  Future<void> _drainHints(int generation) async {
+    try {
+      do {
+        _hintAgain = false;
+        await Future.wait([refreshSelectedAudience(), refreshOwnerAudience()]);
+      } while (_hintAgain && generation == _hintGeneration);
+    } finally {
+      if (generation == _hintGeneration) _hintRefresh = null;
+    }
+  }
+
   final Map<String, _Subscription> _subscriptions = {};
   String? _selectedViewerLeaseId;
   String? _selectedOwnerLeaseId;
@@ -65,6 +85,7 @@ class ScreenViewerPresenceController {
   String? _localOwnerTrackSid;
   Timer? _selectedAudienceTimer;
   Timer? _ownerAudienceTimer;
+  int _selectedRead = 0, _ownerRead = 0;
   int _selectionRevision = 0;
   int _ownerRevision = 0;
   List<String> _viewerAccountIds = const [];
@@ -136,7 +157,10 @@ class ScreenViewerPresenceController {
     if (subscription == null) return Future<void>.value();
     subscription.timer?.cancel();
     subscription.timer = null;
-    if (_selectedOwnerLeaseId == owner) _publishViewerAudience(const []);
+    if (_selectedOwnerLeaseId == owner) {
+      _selectionRevision++;
+      _publishViewerAudience(const []);
+    }
     return _send(subscription, false);
   }
 
@@ -151,7 +175,10 @@ class ScreenViewerPresenceController {
       entry.value.timer?.cancel();
       entry.value.timer = null;
     }
-    if (_selectedOwnerLeaseId == owner) _publishViewerAudience(const []);
+    if (_selectedOwnerLeaseId == owner) {
+      _selectionRevision++;
+      _publishViewerAudience(const []);
+    }
     await Future.wait(matches.map((entry) => _send(entry.value, false)));
   }
 
@@ -204,10 +231,11 @@ class ScreenViewerPresenceController {
     final owner = _localOwnerLeaseId;
     final track = _localOwnerTrackSid;
     if (owner == null || track == null) return;
-    final revision = _ownerRevision;
+    final revision = _ownerRevision, read = ++_ownerRead;
     try {
       final accounts = _normalizeAccountIds(await readOwnerAudience(owner));
-      if (revision != _ownerRevision ||
+      if (read != _ownerRead ||
+          revision != _ownerRevision ||
           owner != _localOwnerLeaseId ||
           track != _localOwnerTrackSid) {
         return;
@@ -222,13 +250,14 @@ class ScreenViewerPresenceController {
     final viewer = _selectedViewerLeaseId;
     final owner = _selectedOwnerLeaseId;
     if (viewer == null || owner == null) return;
-    final revision = _selectionRevision;
+    final revision = _selectionRevision, read = ++_selectedRead;
     if (!_hasReportedSubscription(viewer, owner)) return;
     try {
       final accounts = _normalizeAccountIds(
         await readViewerAudience(viewer, owner),
       );
-      if (revision != _selectionRevision ||
+      if (read != _selectedRead ||
+          revision != _selectionRevision ||
           viewer != _selectedViewerLeaseId ||
           owner != _selectedOwnerLeaseId ||
           !_hasReportedSubscription(viewer, owner)) {
@@ -241,6 +270,9 @@ class ScreenViewerPresenceController {
   }
 
   Future<void> clear() async {
+    _hintGeneration++;
+    _hintAgain = false;
+    _hintRefresh = null;
     _selectionRevision++;
     _ownerRevision++;
     _selectedAudienceTimer?.cancel();

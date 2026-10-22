@@ -1,4 +1,5 @@
 import '../layout_policy/derive.dart';
+import '../../../../features/realtime/lifecycle/status.dart';
 import 'back_guard/handler.dart';
 import 'search_overlay/handler.dart';
 import 'pinned_layer/handler.dart';
@@ -81,7 +82,7 @@ extension WorkspaceScreenStateBuildAction on WorkspaceScreenStateContext {
                   fullScreenSearch,
                   constraints,
                 );
-          final shellContent = compact && widget.state.voiceChannel != null
+          final primaryContent = compact && widget.state.voiceChannel != null
               ? Column(
                   children: [
                     Expanded(child: content),
@@ -89,6 +90,12 @@ extension WorkspaceScreenStateBuildAction on WorkspaceScreenStateContext {
                   ],
                 )
               : content;
+          final shellContent = Column(
+            children: [
+              RealtimeRecoveryStatus(controller: widget.state.realtime),
+              Expanded(child: primaryContent),
+            ],
+          );
           final mobileGestures =
               compact &&
               (defaultTargetPlatform == TargetPlatform.iOS ||

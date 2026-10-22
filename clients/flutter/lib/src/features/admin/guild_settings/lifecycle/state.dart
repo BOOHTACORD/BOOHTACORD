@@ -4,6 +4,7 @@ import '../../../../models.dart';
 import '../panel.dart';
 import '../controller.dart';
 import '../presentation/view.dart';
+import '../../telemetry/panel.dart';
 
 class AdminGuildSettingsState extends State<AdminGuildSettings> {
   late final state = GuildSettingsController(
@@ -57,6 +58,7 @@ class AdminGuildSettingsState extends State<AdminGuildSettings> {
   @override
   Widget build(BuildContext context) => GuildSettingsPresentation(
     state: state,
+    telemetry: AdminTelemetryPanel(api: widget.api),
     name: name,
     channels: _channels,
     onSave: _save,

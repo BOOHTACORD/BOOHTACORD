@@ -8,13 +8,14 @@ class RealtimeConnectApi {
   RealtimeConnectApi(this.transport);
   final ApiTransport transport;
 
-  Future<WebSocket> openRealtime() async {
+  Future<WebSocket> openRealtime({String? after}) async {
     final httpUri = Uri.parse(transport.session.baseUrl);
     final realtimeUri = httpUri.replace(
-      scheme: 'wss',
+      scheme: httpUri.scheme == 'http' ? 'ws' : 'wss',
       path: '${httpUri.path}/realtime',
-      queryParameters: const {
-        'capabilities': 'role_permissions_v1,flow_tracing_v1,screen_previews_v1,message_social_v1',
+      queryParameters: {
+        'capabilities': 'role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1',
+        if (after != null) 'after': after,
       },
     );
     final headers = await transport.headers();

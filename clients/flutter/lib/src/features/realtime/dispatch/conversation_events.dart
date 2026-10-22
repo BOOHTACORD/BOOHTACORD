@@ -7,19 +7,19 @@ import '../../telemetry/realtime/process.dart';
 import 'direct_message.dart';
 import 'text_message.dart';
 
-bool dispatchConversationEvent(
+Future<bool> dispatchConversationEvent(
   RealtimeEvent event,
   WorkspaceController workspace,
   ConversationController conversation,
   void Function(RealtimeEvent) notifyMessage,
-) {
+) async {
   final payload = event.payload;
   switch (event.kind) {
     case 'message.created':
     case 'message.updated':
     case 'message.deleted':
       if (workspace.selectedChannel?.id == payload['channel_id']) {
-        unawaited(refreshReceived(
+        await refreshReceived(
           event,
           conversation.api.transport.session.telemetry,
           () => refreshTextEvent(
@@ -30,8 +30,9 @@ bool dispatchConversationEvent(
           () => conversation.messages
               .map((message) => (id: message.id, value: message as Object))
               .toList(),
-        ));
+        );
       }
+      await workspace.refreshTopology(strict: true);
       if (event.kind == 'message.created') notifyMessage(event);
       return true;
     case 'direct_message.message_created':
@@ -39,7 +40,7 @@ bool dispatchConversationEvent(
     case 'direct_message.message_deleted':
       if (conversation.selectedDirectMessage?.id ==
           payload['direct_message_id']) {
-        unawaited(refreshReceived(
+        await refreshReceived(
           event,
           conversation.api.transport.session.telemetry,
           () => refreshDirectEvent(
@@ -49,8 +50,9 @@ bool dispatchConversationEvent(
           () => conversation.directMessageHistory
               .map((message) => (id: message.id, value: message as Object))
               .toList(),
-        ));
+        );
       }
+      await workspace.refreshDirectMessages(strict: true);
       if (event.kind == 'direct_message.message_created') notifyMessage(event);
       return true;
     default:

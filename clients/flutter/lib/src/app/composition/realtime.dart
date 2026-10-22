@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import '../../features/session/lifecycle/controller.dart';
 import '../../features/realtime/lifecycle/controller.dart';
 import '../../features/realtime/dispatch/workspace.dart';
@@ -37,9 +35,10 @@ void configureRealtime(AppOwners app) {
       app.workspace,
       app.conversation,
       voiceRevoked: app.voice.dispatchVoiceRevocation,
-      permissionsChanged: app.permissions.refresh,
+      permissionsChanged: app.permissions.refreshStrict,
       notifyMessage: notifications.call,
-      guildChanged: (revision) => unawaited(app.guildProfile.refresh(revision)),
+      guildChanged: app.guildProfile.refresh,
+      screenViewersChanged: app.voice.screenViewerPresence.refreshFromHint,
       profileChanged: (userId, revision) async {
         if (app.session.user?.accountId == userId) {
           await app.profileOwner.refreshProfileIfNewer(revision);

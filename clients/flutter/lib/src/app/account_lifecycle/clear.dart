@@ -43,7 +43,7 @@ extension AppAccountCleanup on AppOwners {
     clearPrivateCaches();
     error = null;
     session.logoutError = null;
-    realtime.eventIds.clear();
+    realtime.delivery.reset();
     notifyListeners();
     await Future.wait([
       leaving,

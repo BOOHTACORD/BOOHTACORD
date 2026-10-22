@@ -19,7 +19,7 @@ class MessageSocialController extends ChangeNotifier {
           hint.direct == direct &&
               hint.conversation == conversation &&
               hint.message == message) {
-        load();
+        return load(strict: true);
       }
     });
   }
@@ -44,7 +44,7 @@ class MessageSocialController extends ChangeNotifier {
     if (!disposed) notifyListeners();
   }
 
-  Future<void> load() async {
+  Future<void> load({bool strict = false}) async {
     if (!active) return;
     final own = ++sequence;
     loading = true;
@@ -57,6 +57,7 @@ class MessageSocialController extends ChangeNotifier {
       rows = page.rows;
       canPin = page.canPin;
     } catch (cause) {
+      if (strict) rethrow;
       if (active && own == sequence) {
         rows = [];
         canPin = false;

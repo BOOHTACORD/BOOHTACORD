@@ -13,6 +13,7 @@ const durableKinds = new Set<RealtimeEvent['kind']>([
 export function createRealtimeDelivery(onEvent: EventHandler, onRecovery: RecoveryHandler | undefined, onFailure: (cause: unknown) => void) {
   let cursor: string | null = null
   let fullResyncNeeded = true
+  let epoch = 0
   let busy = false
   let active = true
   const queue: RealtimeEvent[] = []
@@ -30,6 +31,7 @@ export function createRealtimeDelivery(onEvent: EventHandler, onRecovery: Recove
       const event = queue.shift()!
       const durable = durableKinds.has(event.kind)
       if (durable && seen.has(event.eventId)) continue
+      const generation = epoch
       let work: void | Promise<void>
       try {
         if (event.kind === 'connection.resync_required') {
@@ -46,14 +48,14 @@ export function createRealtimeDelivery(onEvent: EventHandler, onRecovery: Recove
         }
       } catch (cause) { fail(cause); return }
       const complete = () => {
-        if (!active) return
+        if (!active || generation !== epoch) return
         if (durable) remember(event.eventId)
         if (event.kind === 'connection.ready' || event.kind === 'connection.resync_required') fullResyncNeeded = false
         if (event.kind === 'connection.ready' || event.kind === 'connection.resync_required') notifySocialRecovery()
       }
       if (work && typeof work.then === 'function') {
         busy = true
-        void Promise.resolve(work).then(() => { complete(); busy = false; pump() }, fail)
+        void Promise.resolve(work).then(() => { if (generation !== epoch) return; complete(); busy = false; pump() }, (cause) => { if (generation === epoch) fail(cause) })
         return
       }
       complete()
@@ -61,6 +63,7 @@ export function createRealtimeDelivery(onEvent: EventHandler, onRecovery: Recove
   }
 
   function fail(cause: unknown): void {
+    epoch++
     busy = false
     queue.length = 0
     cursor = null
@@ -70,7 +73,7 @@ export function createRealtimeDelivery(onEvent: EventHandler, onRecovery: Recove
   }
 
   return {
-    accept(event: RealtimeEvent): void { queue.push(event); pump() },
+    accept(event: RealtimeEvent): void { if (!active) return; if (queue.length >= 256) { fail(new Error('Realtime delivery overflow')); return }; queue.push(event); pump() },
     cursor(): string | null { return cursor },
     disconnected(): void { if (!cursor) fullResyncNeeded = true },
     reset(): void { active = false; queue.length = 0; cursor = null; seen.clear() },

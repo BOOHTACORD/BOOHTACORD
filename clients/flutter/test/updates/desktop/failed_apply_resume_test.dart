@@ -14,7 +14,7 @@ import '../../realtime_scope/fakes.dart';
 class ResumeApi extends ApiClient {
   int connections = 0;
   @override
-  Future<WebSocket> openRealtime() async {
+  Future<WebSocket> openRealtime({String? after}) async {
     connections++;
     return SocketFake();
   }

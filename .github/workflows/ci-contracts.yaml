@@ -52,6 +52,12 @@ jobs:
           python3 -m unittest tools.ci.toolchains.test_cache_inputs tools.ci.toolchains.test_workflows tools.ci.flutter_setup.test_metadata tools.ci.flutter_setup.test_run tools.ci.flutter_setup.test_workflow
           python3 -m tools.ci.toolchains.workflows
           python3 -m tools.ci.toolchains.auxiliary
+      - name: Verify shared-client parity scenarios and platform regression decisions
+        env:
+          PARITY_BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python -m unittest tools.verify.client_parity.test_policy
+          python -m tools.verify.client_parity.run --base "$PARITY_BASE"
       - name: Verify generated tracing contract bindings
         run: node tools/observability/flow_contract/generate.mjs --check
       - name: Verify publisher signatures and desktop promotion guards
