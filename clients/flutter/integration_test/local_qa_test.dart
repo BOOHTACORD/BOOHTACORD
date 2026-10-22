@@ -91,22 +91,20 @@ void main() {
       await tester.pumpAndSettle();
     }
     await binding.takeScreenshot('native-navigation');
-    // Real API, no configured support: the footer opens existing DM navigation
-    // and quietly explains availability; no dead support row or self DM.
+    // ADR-029: a fresh installation defaults to the product support peer.
+    // Opening the chat cannot publish anything before explicit consent.
     await tester.tap(find.byTooltip('Помощь и обратная связь'));
     for (var attempt = 0; attempt < 120 && state.supportOpening; attempt++) {
       await tester.pump(const Duration(milliseconds: 250));
     }
     await tester.pumpAndSettle();
-    expect(state.supportAvailable, isFalse);
-    expect(
-      find.text('Поддержка этого сервера пока не назначена.'),
-      findsOneWidget,
-    );
-    expect(state.selectedDirectMessage, isNull);
-    await binding.takeScreenshot('native-support-unassigned');
-
-    await tester.tap(find.byTooltip('Закрыть навигацию'));
+    expect(state.supportAvailable, isTrue);
+    expect(state.supportContact.product, isTrue);
+    expect(state.supportContact.consentRequired, isTrue);
+    expect(find.text('Согласен на публикацию'), findsOneWidget);
+    expect(state.selectedDirectMessage, isNotNull);
+    expect(find.textContaining('доступны всем'), findsOneWidget);
+    await binding.takeScreenshot('native-public-support-default');
     await tester.pumpAndSettle();
     expect(find.byTooltip('Закрыть навигацию').hitTestable(), findsNothing);
     await binding.takeScreenshot('native-workspace');
