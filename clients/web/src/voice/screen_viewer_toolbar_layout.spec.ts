@@ -11,7 +11,7 @@ describe('selected-stream toolbar layout', () => {
     expect(viewer).toContain('class="stream-quality-row"')
     expect(viewer).toContain('ScreenViewerAudioControl')
     expect(viewer).toContain('ScreenReceiverDiagnosticsPanel')
-    expect(viewer).toContain('class="screen-fullscreen-button stream-tool-button"')
+    expect(viewer).toContain('class="screen-stage-action screen-stage-action--size"')
     expect(viewer).not.toContain('Закрепить просмотр')
     expect(viewer).toContain('<ScreenViewerRail')
     expect(rail).not.toContain("emit('returnVoice')")
@@ -21,7 +21,7 @@ describe('selected-stream toolbar layout', () => {
     expect(css).toContain('min-height: 44px;')
   })
 
-  it('matches Flutter with a real participant strip below the stream selector', () => {
+  it('retains participant status in the collapsible viewer panel', () => {
     const viewer = source('./ScreenViewer.vue')
     const rail = source('./ScreenViewerRail.vue')
     const pane = source('../conversation/ConversationPane.vue')

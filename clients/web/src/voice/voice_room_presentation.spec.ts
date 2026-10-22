@@ -87,8 +87,8 @@ describe('voice-room visual status and screen presentation', () => {
 
   it('exposes a fullscreen action and visible feedback on the stage', () => {
     const viewer = source('./ScreenViewer.vue')
-    expect(viewer).toContain('Развернуть демонстрацию на весь экран')
-    expect(viewer).toContain('Выйти из полноэкранного режима')
+    expect(viewer).toContain('Развернуть на весь экран')
+    expect(viewer).toContain('Свернуть просмотр')
     expect(viewer).toContain('aria-live="polite"')
     expect(viewer).toContain('Развернуть на всю область')
     expect(viewer).toContain('Вернуть в окно канала')
