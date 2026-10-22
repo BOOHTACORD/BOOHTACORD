@@ -54,6 +54,7 @@ class RealtimeController extends ChangeNotifier {
   }, handleClosed);
   SessionTicket? deliveryTicket;
   int? deliveryServer;
+  String? deliveryInstallation;
   Timer? readyTimeout;
   WebSocket? socket;
   StreamSubscription<dynamic>? subscription;
@@ -72,11 +73,13 @@ class RealtimeController extends ChangeNotifier {
     final ticket = scope.capture();
     final current = generation;
     final server = api.transport.session.serverRevision;
+    final installation = api.transport.session.telemetry.installation;
     return () =>
         !disposed &&
         ticket.isActive &&
         current == generation &&
         server == api.transport.session.serverRevision &&
+        installation == api.transport.session.telemetry.installation &&
         isReady();
   }
 

@@ -7,16 +7,21 @@ import '../social_hints/hints.dart';
 extension RealtimeEvents on RealtimeController {
   void synchronizeDeliveryScope() {
     final server = api.transport.session.serverRevision;
-    if (deliveryTicket?.isActive != true || deliveryServer != server) {
+    final installation = api.transport.session.telemetry.installation;
+    if (deliveryTicket?.isActive != true ||
+        deliveryServer != server ||
+        deliveryInstallation != installation) {
       delivery.reset();
       deliveryTicket = scope.capture();
       deliveryServer = server;
+      deliveryInstallation = installation;
     }
   }
 
   Future<void> applyEvent(RealtimeEvent event) async {
     if (deliveryTicket?.isActive != true ||
-        deliveryServer != api.transport.session.serverRevision)
+        deliveryServer != api.transport.session.serverRevision ||
+        deliveryInstallation != api.transport.session.telemetry.installation)
       return;
     if (await SocialHints.forTransport(api.transport).receiveAsync(event))
       return;

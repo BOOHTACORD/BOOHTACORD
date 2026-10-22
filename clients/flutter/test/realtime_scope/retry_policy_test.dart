@@ -87,31 +87,43 @@ void main() {
       expect(api.after, 'cursor');
     },
   );
-  test('new account and server cannot reuse previous replay cursor', () async {
-    final api = RealtimeApiFake(), scope = SessionScope();
-    final owner = RealtimeController(
-      api,
-      scope,
-      isReady: () => true,
-      expire: () async {},
-      invalidatePresence: () {},
-      dispatch: (_) {},
-    );
-    addTearDown(owner.dispose);
-    owner.synchronizeDeliveryScope();
-    owner.delivery.accept(
-      const RealtimeEvent('applied', 'message.created', {}),
-    );
-    await Future<void>.delayed(Duration.zero);
-    expect(owner.delivery.cursor, 'applied');
-    scope.close();
-    scope.begin();
-    owner.synchronizeDeliveryScope();
-    expect(owner.delivery.cursor, isNull);
-    owner.delivery.accept(const RealtimeEvent('new', 'message.created', {}));
-    await Future<void>.delayed(Duration.zero);
-    api.transport.session.baseUrl = 'https://another.example/api/v1';
-    owner.synchronizeDeliveryScope();
-    expect(owner.delivery.cursor, isNull);
-  });
+  test(
+    'new account, server or installation cannot reuse replay cursor',
+    () async {
+      final api = RealtimeApiFake(), scope = SessionScope();
+      final owner = RealtimeController(
+        api,
+        scope,
+        isReady: () => true,
+        expire: () async {},
+        invalidatePresence: () {},
+        dispatch: (_) {},
+      );
+      addTearDown(owner.dispose);
+      owner.synchronizeDeliveryScope();
+      owner.delivery.accept(
+        const RealtimeEvent('applied', 'message.created', {}),
+      );
+      await Future<void>.delayed(Duration.zero);
+      expect(owner.delivery.cursor, 'applied');
+      scope.close();
+      scope.begin();
+      owner.synchronizeDeliveryScope();
+      expect(owner.delivery.cursor, isNull);
+      owner.delivery.accept(
+        const RealtimeEvent('server', 'message.created', {}),
+      );
+      await Future<void>.delayed(Duration.zero);
+      api.transport.session.telemetry.bindInstallation(
+        '11111111-1111-4111-8111-111111111111',
+      );
+      owner.synchronizeDeliveryScope();
+      expect(owner.delivery.cursor, isNull);
+      owner.delivery.accept(const RealtimeEvent('new', 'message.created', {}));
+      await Future<void>.delayed(Duration.zero);
+      api.transport.session.baseUrl = 'https://another.example/api/v1';
+      owner.synchronizeDeliveryScope();
+      expect(owner.delivery.cursor, isNull);
+    },
+  );
 }

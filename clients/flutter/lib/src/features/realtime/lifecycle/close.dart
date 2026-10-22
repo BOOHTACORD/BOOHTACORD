@@ -20,6 +20,7 @@ extension RealtimeCleanup on RealtimeController {
     delivery.reset();
     deliveryTicket = null;
     deliveryServer = null;
+    deliveryInstallation = null;
     if (!disposed) {
       invalidatePresence();
       changed();

@@ -8,6 +8,8 @@ extension RealtimeConnection on RealtimeController {
   Future<void> connect() async {
     if (deliveryServer != null &&
         (deliveryServer != api.transport.session.serverRevision ||
+            deliveryInstallation !=
+                api.transport.session.telemetry.installation ||
             deliveryTicket?.isActive != true)) {
       await close();
     }

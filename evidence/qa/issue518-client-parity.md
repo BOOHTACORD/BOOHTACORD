@@ -97,3 +97,5 @@ was approved and no physical-media gate is claimed.
 Ordinary macOS candidate at d3e94cb5: build PASS; universal arm64/x86_64,
 ad-hoc signature verified, ZIP 47,507,925 bytes, manifest/checksums generated.
 The public immutable native releases and portal are published after merge.
+
+Final scope regression: installation changes also reset the Flutter replay cursor and fence late socket callbacks. The focused account/server/installation test failed before this fix and all 13 realtime tests pass afterward (`.out/issue518/installation-green.log`). Capabilities remain a fixed protocol set per running binary; a rebuilt binary starts with an empty in-memory cursor.
