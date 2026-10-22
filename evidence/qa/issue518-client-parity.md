@@ -108,3 +108,49 @@ A protected manual canonical-tag preparation job supplies the missing local
 push operation for release publication; tests reject forks, non-master events,
 stale master, unknown platforms and replacement tags. Existing release source,
 signing and immutable publication checks are unchanged.
+
+## Final master and distribution receipts
+
+PR #519 merged as `9c221897fdefec8098f707d61ca5b6e8b28bb0bd` after all 26
+jobs of CI 39755415602 passed (head 7309547c). Final master client source trees
+are unchanged from the tested 7bf0f220 product trees; the intervening changes
+updated master ancestry and the protected release-tag procedure.
+
+Final-master signed iOS IPA: 1.0.45 (80), 34,603,157 bytes, SHA256
+`c4bd3684e745b8dd046ebc38be43740d31b3b6d6c3fc13d424fc633d8e07906c`.
+Both ru.boohtacord.app.test and its ScreenShareExtension verify at 1.0.45 (80);
+codesign verification passed. The disposable signing keychain was removed and
+the original search list restored. This is a built signed IPA, not a claim of
+TestFlight distribution. The delivery file is retained under the task's ignored
+`.out/testflight/2026-10-22/` in the primary checkout.
+
+Canonical android/windows/macos-v1.0.45 tags were prepared on this exact master
+by production-guarded jobs. macOS initially failed before any build steps
+because production allowed only the master branch. The owner explicitly approved
+adding only the exact tag macos-v1.0.45; readback shows master plus that one tag.
+Other protection settings were preserved and the same macOS run was retried.
+Android and Windows publish through their existing manual-master path.
+
+Public distribution evidence is kept separately by each immutable publisher:
+
+- Android: https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.45
+- Windows: https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.45
+- macOS: https://github.com/Egkurilov/BOOHTACORD/releases/tag/macos-v1.0.45
+
+Each completed publisher retains source-bound contract/publication.json and
+verifies all public asset hashes; artifact-manifest.json and SHA256SUMS identify
+the actual version/build, architectures, source and measured signing state.
+These links are release destinations, not a PASS claim while jobs are pending.
+The final public readback and resulting PASS/failure are recorded on #518 before
+closing it. A successful candidate build alone does not satisfy publication.
+
+The portal has explicit stable 1.0.45 fallback URLs plus the existing online
+release discovery. Its regression rejects a stale API response downgrading those
+fallbacks, and keeps release pages separate from permanent direct-file URLs.
+Publication of the portal PR waits for the actual distribution readback.
+
+An optional additional master-native smoke attempt stopped before client launch:
+a pre-existing SSH listener occupied QA port 4812. That listener was left intact;
+the attempt supplies no product PASS. Earlier separate Android/iOS actual-stack
+smokes retain their recorded source/diff identities above, and final-head CI
+passed the common Flutter/native and actual Windows GUI/SFU gates.
