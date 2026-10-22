@@ -7,6 +7,7 @@ import stat
 import zipfile
 from tools.ci.native.process import ROOT, VERSIONS
 from tools.build.android.signature import CERTIFICATE, APPLICATION
+from tools.build.windows.installer import full_package_name
 from .source import require
 
 COMMON={'artifact-manifest.json','SHA256SUMS'}
@@ -97,7 +98,7 @@ def validate(directory,context):
         setups={k for k in files if k.endswith('Setup.exe')}
         packages={k for k in files if k.endswith('-full.nupkg')}
         require(len(setups)==len(packages)==1 and set(files)==COMMON|{name,'releases.stable.json'}|setups|packages)
-        require(next(iter(packages)).endswith('-'+context['identity']['version']+'-full.nupkg'))
+        require(next(iter(packages))==full_package_name(context['identity']['version']))
         windows_archive(directory/name,manifest,raw)
     if platform!='windows':require(manifest['files']=={k:v for k,v in files.items() if k not in COMMON})
     return {'schema_version':1,**context,'status':'PASS','signing':signing,'assets':files,

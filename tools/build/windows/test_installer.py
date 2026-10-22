@@ -27,8 +27,8 @@ class InstallerTests(unittest.TestCase):
         def pack(command, **options):
             self.assertEqual(command[:2], [str(self.tools / 'vpk.exe'), 'pack'])
             destination = self.root / '.out/releases/windows'
-            (destination / 'boohtacord_desktop-1.0.43-full.nupkg').touch()
-            (destination / 'boohtacord_desktop-win-Setup.exe').touch()
+            (destination / 'boohtacord_desktop-1.0.43-stable-full.nupkg').touch()
+            (destination / 'boohtacord_desktop-stable-Setup.exe').touch()
 
         with patch('tools.build.windows.installer.load', return_value=self.identity), \
              patch('tools.build.windows.installer.subprocess.check_output', side_effect=measure), \
@@ -42,3 +42,20 @@ class InstallerTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'pinned version'):
                 package(self.root / 'Release')
             pack.assert_not_called()
+
+    def test_packager_output_must_have_exact_identity_version_and_channel(self):
+        for filename in ('boohtacord_desktop-9.9.9-stable-full.nupkg',
+                         'boohtacord_desktop-1.0.43-preview-full.nupkg',
+                         'foreign-1.0.43-stable-full.nupkg'):
+            with self.subTest(filename=filename),tempfile.TemporaryDirectory() as temp:
+                root=Path(temp)
+                def pack(command, **options):
+                    destination=root/'.out/releases/windows'
+                    (destination/filename).touch()
+                    (destination/'boohtacord_desktop-stable-Setup.exe').touch()
+                with patch('tools.build.windows.installer.ROOT',root), \
+                     patch('tools.build.windows.installer.load',return_value=self.identity), \
+                     patch('tools.build.windows.installer.prepare_packager',return_value=self.tools/'vpk.exe'), \
+                     patch('tools.build.windows.installer.subprocess.run',side_effect=pack):
+                    with self.assertRaisesRegex(ValueError,'identity, version or channel'):
+                        package(root/'Release')

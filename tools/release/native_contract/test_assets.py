@@ -44,13 +44,25 @@ def fixture(root,platform):
             for p in native.iterdir():archive.write(p,p.name)
         (directory/'artifact-manifest.json').write_bytes((native/'artifact-manifest.json').read_bytes())
         (directory/'fixtureSetup.exe').write_bytes(b'synthetic Setup; never executed')
-        (directory/('fixture-'+identity['version']+'-full.nupkg')).write_bytes(b'synthetic package')
+        (directory/('boohtacord_desktop-'+identity['version']+'-stable-full.nupkg')).write_bytes(b'synthetic package')
         (directory/'releases.stable.json').write_text('{}')
         rewrite_sums(directory)
     return directory,context
 
 
 class AssetTests(unittest.TestCase):
+    def test_windows_package_name_requires_actual_version_stable_channel_and_identity(self):
+        for change in ('version','channel','identity'):
+            with tempfile.TemporaryDirectory() as name:
+                directory,context=fixture(Path(name),'windows')
+                package=next(directory.glob('*-full.nupkg'))
+                replacement=package.name
+                if change=='version':replacement=replacement.replace(context['identity']['version'],'9.9.9')
+                if change=='channel':replacement=replacement.replace('-stable-','-preview-')
+                if change=='identity':replacement=replacement.replace('boohtacord_desktop','foreign')
+                package.rename(directory/replacement);rewrite_sums(directory)
+                with self.subTest(change=change),self.assertRaises(ValueError):assets.validate(directory,context)
+
     def test_all_platform_asset_sets_and_signing_contracts(self):
         for platform in ('android','windows','macos'):
             with self.subTest(platform=platform),tempfile.TemporaryDirectory() as name:
