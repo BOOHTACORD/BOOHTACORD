@@ -160,3 +160,28 @@ production 39758958966 succeeded. Public /release-receipt.json readback confirms
 version 1.0.45, release_id web-browser-stable-r59 and source revision
 9c221897fdefec8098f707d61ca5b6e8b28bb0bd. The receipt is retained in ignored
 `.out/issue518/web-public-receipt.json`.
+
+Windows publication follow-up: the actual 1.0.45 release job stopped before
+application compilation on Windows fixture file-URL handling. The corrected
+fixtures and native CI coverage are tracked in PR #525 and
+`evidence/qa/issue518-windows-release.md`. The original unpublished Windows tag
+is preserved; its replacement is windows-v1.0.46 / build 81 / r60. Public
+macOS/Android and the signed iOS IPA remain 1.0.45 (80), with their original
+source receipts. The portal uses actual per-platform published versions, not
+the next global Flutter build defaults. Final publication readbacks on #518
+remain required before closure.
+
+Android Release 39758328262 attempt 2 and macOS Release 39757918654 attempt 2
+completed successfully. Public release, manifest and SHA256SUMS readbacks PASS:
+both are 1.0.45 (80), exact source 9c221897, release order 59. Android's three
+ABIs verify the existing signing certificate; macOS verifies arm64+x86_64 and
+ad-hoc signing (not Apple notarization). Android arm64 APK SHA256 is
+7091a98c326e3bea9ecff1f4a10192d3ce8545a298690b17c90d0453ddde8e70;
+universal macOS ZIP SHA256 is
+51228053715c0854ed6e91439bba1f405c99dfd917b790dcfa91e176cdbefd39.
+
+Windows follow-up PR #525 merged as 24936e68585f4aba9733d8f39ed74a15c50483d3
+after all 26 jobs of CI 39764639901 passed at e3084b53. Local 1210 Python
+tests passed, and the complete publisher suite passed on actual Windows.
+Windows 1.0.46 publication is based on that master, separate from the already
+delivered 1.0.45 source. Its final public receipt follows on #518.
