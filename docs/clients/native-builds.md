@@ -47,9 +47,11 @@ can be dispatched from `master` in the existing `production` environment. Choose
 one platform; the job reads its canonical version from `contracts/client-build.json`
 and requires the checkout, trigger SHA and current fetched master to match. It
 creates only that version tag, or accepts an already matching tag; a different
-existing target is rejected without force updates. Then dispatch the existing
-platform release workflow from the verified tag. Tags created with GITHUB_TOKEN
-do not trigger push workflows. Prepare/dispatch macOS first, then Android, then
+existing target is rejected without force updates. Then dispatch Android or Windows Release from `master` while its SHA still
+matches the prepared tag. macOS Release runs from the matching tag; production
+must separately allow that exact tag with owner approval, without broadening
+other environment rules. Tags created with GITHUB_TOKEN do not trigger push
+workflows. Prepare/dispatch macOS first, then Android, then
 Windows as the shared signing queue becomes available: GitHub keeps only one
 running and one pending job in a concurrency group. Existing exact-tag, ancestry,
 quality, signing and immutable asset publication checks remain required.
