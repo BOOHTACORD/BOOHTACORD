@@ -40,6 +40,23 @@ for (const width of [390, 1440]) {
   })
 }
 
+test('compact viewer keeps the stream stage visible in a wide 208px viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 208 })
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&single-stream')
+  const geometry = await page.locator('.screen-stage').evaluate(stage => {
+    const rect = stage.getBoundingClientRect()
+    const dock = document.querySelector('.mobile-voice-dock')
+    const dockStyle = dock ? getComputedStyle(dock) : null
+    const dockRect = dock && dockStyle?.display !== 'none' ? dock.getBoundingClientRect() : null
+    const dockCoversStage = Boolean(dockRect && rect.right > dockRect.left && rect.left < dockRect.right)
+    const top = Math.max(0, rect.top)
+    const bottom = Math.min(innerHeight, rect.bottom, dockCoversStage ? dockRect.top : innerHeight)
+    return { height: rect.height, visibleHeight: Math.max(0, bottom - top) }
+  })
+  expect(geometry.height, JSON.stringify(geometry)).toBeGreaterThanOrEqual(160)
+  expect(geometry.visibleHeight, JSON.stringify(geometry)).toBeGreaterThanOrEqual(80)
+})
+
 test('stream switcher remains available without taking video height', async ({ page }) => {
   await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls')
   const stage = page.locator('.screen-stage')

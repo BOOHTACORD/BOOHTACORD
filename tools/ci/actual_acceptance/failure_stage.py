@@ -1,4 +1,6 @@
 """Finite QA stage names safe to retain from a private controller log."""
+import json
+import math
 import re
 from pathlib import Path
 
@@ -43,3 +45,31 @@ def last_failure_stage(log):
         return None
     stages = [match.group(1) for match in MARKER.finditer(text) if match.group(1) in STAGES]
     return stages[-1] if stages else None
+
+
+def last_short_stage_geometry(log):
+    if log is None:
+        return None
+    try:
+        lines = Path(log).read_text(encoding='utf-8', errors='replace').splitlines()
+    except OSError:
+        return None
+    geometry = None
+    marker = 'stage=screen-share-short-height:'
+    for line in lines:
+        if marker not in line:
+            continue
+        try:
+            value = json.loads(line.split(marker, 1)[1])
+        except (ValueError, TypeError):
+            continue
+        if not isinstance(value, dict):
+            continue
+        dimensions = {key: value.get(key) for key in ('height', 'visibleHeight', 'dockHeight')}
+        if not all(isinstance(item, (int, float)) and not isinstance(item, bool)
+                   and math.isfinite(item) and 0 <= item <= 10000 for item in dimensions.values()):
+            continue
+        if type(value.get('dockCoversStage')) is not bool:
+            continue
+        geometry = {**dimensions, 'dockCoversStage': value['dockCoversStage']}
+    return geometry

@@ -13,7 +13,7 @@ from tools.qa.local_features.process import stop_group
 from . import catalog,session
 from .plan import PROFILES,require,document
 from .evidence import collect,collect_failure
-from .failure_stage import last_failure_stage
+from .failure_stage import last_failure_stage,last_short_stage_geometry
 
 
 def execute(profile,baseline):
@@ -53,6 +53,9 @@ def execute(profile,baseline):
         report.update(status='BLOCKED' if owner is None else 'FAIL',failure_type=type(error).__name__)
         stage=last_failure_stage(log)
         if stage:report['failure_stage']=stage
+        if stage=='screen-share-short-height':
+            geometry=last_short_stage_geometry(log)
+            if geometry:report['failure_geometry']=geometry
         if owner:
             try:
                 report['diagnostics'] = collect_failure(ROOT,profile,public)
