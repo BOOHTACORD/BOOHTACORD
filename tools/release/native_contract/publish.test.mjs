@@ -62,7 +62,7 @@ function server(asset,{lostCreate=false,lostUpload=false,lostPublish=false,forei
 
 test('draft uploads verify before publishing; identical retry is read-only',async()=>fixture(async(asset,contract)=>{
   const remote=server(asset)
-  const args={contract,directory:new URL('.', 'file://'+asset.path).pathname,context,token:'fixture',apiRoot,...remote,sleep:async()=>{}}
+  const args={contract,directory:path.dirname(asset.path),context,token:'fixture',apiRoot,...remote,sleep:async()=>{}}
   const result=await publishContract(args)
   assert.equal(result.release.draft,false)
   const previous=remote.calls.length
@@ -73,7 +73,7 @@ test('draft uploads verify before publishing; identical retry is read-only',asyn
 test('lost create/upload/publish responses resume without overwriting assets',async()=>{
   for(const kind of ['lostCreate','lostUpload','lostPublish'])await fixture(async(asset,contract)=>{
     const remote=server(asset,{[kind]:true})
-    const result=await publishContract({contract,directory:new URL('.', 'file://'+asset.path).pathname,context,token:'fixture',apiRoot,...remote,sleep:async()=>{}})
+    const result=await publishContract({contract,directory:path.dirname(asset.path),context,token:'fixture',apiRoot,...remote,sleep:async()=>{}})
     assert.equal(result.release.draft,false)
     assert.equal(remote.calls.filter(([m,p])=>m==='POST'&&p.endsWith('/73/assets')).length,3)
   })
@@ -82,8 +82,9 @@ test('lost create/upload/publish responses resume without overwriting assets',as
 test('foreign remote asset and moving tag cannot finalize a release',async()=>{
   for(const kind of ['foreign','moveTag'])await fixture(async(asset,contract)=>{
     const remote=server(asset,{[kind]:true})
-    await assert.rejects(publishContract({contract,directory:new URL('.', 'file://'+asset.path).pathname,context,token:'fixture',apiRoot,...remote,sleep:async()=>{}}))
+    await assert.rejects(publishContract({contract,directory:path.dirname(asset.path),context,token:'fixture',apiRoot,...remote,sleep:async()=>{}}))
     assert.equal(remote.calls.some(([method])=>method==='PATCH'),false)
+    assert.equal(remote.calls.some(([,url])=>url.includes('/git/ref/tags/')),true)
   })
 })
 
