@@ -54,6 +54,10 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     await sender.screenshot({ path: input.directory + '/screen-share-owner-preview.png' })
     const ownerViewport = sender.viewportSize()
     assert.ok(ownerViewport)
+    // The receiver is the active tab after selecting it for the SFU checks.
+    // Chromium may throttle decoded frames in a background page, so keep the
+    // owner's preview active while validating playback through a short resize.
+    await sender.bringToFront()
     const framesBeforeShortViewport = await sender.locator('video.screen-player').evaluate(video => video.getVideoPlaybackQuality().totalVideoFrames)
     await sender.setViewportSize({ width: ownerViewport.width, height: 208 })
     const shortStage = await sender.locator('.screen-stage').evaluate(stage => {
