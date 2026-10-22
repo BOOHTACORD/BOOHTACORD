@@ -67,3 +67,11 @@ Physical iPhone/Android capture with/without audio, OS stop, background and
 rotation, VoiceOver/TalkBack and paired physical media remain NOT_RUN, tracked
 by #62/#132/#303. This report does not close those acceptance gates.
 Generated screenshots, logs, secrets and artifacts remain outside Git.
+
+Release-version follow-up: the registered Flutter suite caught the existing
+profile-version synchronization regression after the 1.0.45/80 manifest bump.
+The unconfigured development defaults in app_version.dart were still 1.0.43/78;
+release builds already pass the shared explicit Dart identity defines. Defaults
+are now synchronized to 1.0.45/80/r59. The focused profile regression passes;
+the final Flutter/native run and CI verify the corrected source. The original
+red report is retained, not relabeled as a green run.
