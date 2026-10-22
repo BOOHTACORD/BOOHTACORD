@@ -25,6 +25,23 @@ class DeliveryPhaseTests(unittest.TestCase):
         self.assertEqual(list(ORDER), [r['phase'] for r in result['phases']])
         self.assertTrue(all(r['elapsed_seconds'] == 1 and r['status'] == 'PASS' for r in result['phases']))
 
+    def test_slow_bundle_transfer_has_a_finite_budget_with_room_for_install_and_readback(self):
+        def measured_transfer(argv, timeout, **kwargs):
+            # The failed 85 MB delivery copied 35 MB in 300s: allow 12 minutes.
+            if argv[0]=='scp' and timeout < 720:
+                raise ExecutionFailed('timeout')
+            return b'controlled'
+        value=self.phase(measured_transfer)
+        value.run('current_revision',['controlled'])
+        value.run('history',['controlled'])
+        value.run('transfer_bundle',['scp','controlled-bundle'])
+        row=value.rows[-1]
+        self.assertEqual('PASS',row['status'])
+        self.assertEqual(900,row['limit_seconds'])
+        from .phases import LIMITS
+        self.assertTrue(all(0 < limit <= 900 for limit in LIMITS.values()))
+        self.assertLess(sum(LIMITS.values())+120,30*60)
+
     def test_timeout_records_safe_phase_and_does_not_allow_later_steps(self):
         def failed(*args, **kwargs): raise ExecutionFailed('timeout')
         value = self.phase(failed)

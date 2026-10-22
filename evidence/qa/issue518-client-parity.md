@@ -99,3 +99,12 @@ ad-hoc signature verified, ZIP 47,507,925 bytes, manifest/checksums generated.
 The public immutable native releases and portal are published after merge.
 
 Final scope regression: installation changes also reset the Flutter replay cursor and fence late socket callbacks. The focused account/server/installation test failed before this fix and all 13 realtime tests pass afterward (`.out/issue518/installation-green.log`). Capabilities remain a fixed protocol set per running binary; a rebuilt binary starts with an empty in-memory cursor.
+
+Final-head CI run 39752221171 passed all 26 jobs, including Windows GUI/SFU,
+1611 Web tests and Flutter/native gates. Strict master protection then required
+merging the concurrently delivered #520 base into the branch; the product merge
+tree was already tested, but the updated head receives its own normal CI.
+A protected manual canonical-tag preparation job supplies the missing local
+push operation for release publication; tests reject forks, non-master events,
+stale master, unknown platforms and replacement tags. Existing release source,
+signing and immutable publication checks are unchanged.
