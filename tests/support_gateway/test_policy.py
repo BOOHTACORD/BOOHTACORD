@@ -13,8 +13,19 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual('Synthetic support message',publication(self.message(),1)['body'])
 
     def test_no_private_metadata_or_unknown_fields_in_publication(self):
-        for name in ('session_token','user_id','dm_id','hostname','installation_id','author','history'):
+        for name in ('session_token','dm_id','hostname','installation_id','author','history'):
             with self.subTest(field=name),self.assertRaises(ValueError):publication(self.message(**{name:'private-canary'}),1)
+
+    def test_author_id_is_a_canonical_nonzero_uuid_only(self):
+        user_id='10000000-0000-4000-8000-000000000001'
+        self.assertEqual(user_id,publication(self.message(user_id=user_id),1)['user_id'])
+        for value in (None,False,'','private-canary','0'*32,'00000000-0000-0000-0000-000000000000',user_id+'\nmalicious title'):
+            with self.subTest(value=value),self.assertRaises(ValueError):publication(self.message(user_id=value),1)
+
+    def test_issue_lookup_is_repository_scoped_and_bounded(self):
+        self.assertEqual(17,broker_request(dict(operation='issue',issue=17))['issue'])
+        for value in (0,-1,True,'17'):
+            with self.subTest(value=value),self.assertRaises(ValueError):broker_request(dict(operation='issue',issue=value))
 
     def test_message_and_file_bounds_are_enforced_before_storage(self):
         for changes in ({'body':'x'*8001},{'body':'bad\x00'},{'files':[{}]*11},{'operation_id':'../../credentials'}):

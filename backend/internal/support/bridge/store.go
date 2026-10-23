@@ -15,6 +15,7 @@ type file struct {
 type publication struct {
 	Operation    string `json:"operation_id"`
 	Conversation string `json:"conversation"`
+	UserID       string `json:"user_id"`
 	Body         string `json:"body"`
 	Consent      int    `json:"consent_version"`
 	Files        []file `json:"files"`
@@ -26,14 +27,14 @@ type queued struct {
 
 func next(ctx context.Context, db *pgxpool.Pool) (queued, error) {
 	var job queued
-	err := db.QueryRow(ctx, `SELECT o.id::text,m.direct_message_id::text,o.body,o.notice_version
+	err := db.QueryRow(ctx, `SELECT o.id::text,m.direct_message_id::text,m.author_id::text,o.body,o.notice_version
  FROM support_public_outbox o JOIN direct_message_messages m ON m.id=o.message_id
  JOIN support_product_identity p ON true JOIN support_contact_configuration c ON c.mode='product' AND c.support_account_id=p.account_id
  JOIN support_public_consents consent ON consent.user_id=m.author_id AND consent.notice_version=o.notice_version
  JOIN direct_messages dm ON dm.id=m.direct_message_id AND p.account_id IN(dm.participant_one_id,dm.participant_two_id)
  JOIN users u ON u.id=m.author_id AND u.blocked_at IS NULL
  WHERE o.delivered_at IS NULL AND o.cancelled_at IS NULL AND m.deleted_at IS NULL AND o.notice_version=p.notice_version
- ORDER BY o.created_at,o.id LIMIT 1`).Scan(&job.id, &job.dm, &job.Body, &job.Consent)
+ ORDER BY o.created_at,o.id LIMIT 1`).Scan(&job.id, &job.dm, &job.UserID, &job.Body, &job.Consent)
 	if err != nil {
 		return queued{}, err
 	}

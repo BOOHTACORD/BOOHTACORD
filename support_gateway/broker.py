@@ -2,6 +2,7 @@
 import hashlib
 import json
 import os
+import re
 import socket
 import socketserver
 import subprocess
@@ -9,13 +10,23 @@ from pathlib import Path
 from urllib.parse import urlencode
 from .policy import REPOSITORY,ASSET_TAG,broker_request,require
 
+class GitHubError(RuntimeError):
+    def __init__(self,status=None):
+        super().__init__('GitHub operation failed');self.status=status
+
+class IssueMissing(RuntimeError):
+    def __init__(self):super().__init__('Support issue is unavailable')
+
 def api(path,method='GET',data=None,*,fd=None):
-    command=['gh','api',path,'--method',method,'-H','X-GitHub-Api-Version: 2026-03-10']
+    command=['gh','api',path,'--include','--method',method,'-H','X-GitHub-Api-Version: 2026-03-10']
     if fd is not None:command+=['-H','Content-Type: application/octet-stream','--input',f'/proc/self/fd/{fd}']
     elif data is not None:command+=['--input','-']
     result=subprocess.run(command,input=json.dumps(data).encode() if data is not None else None,capture_output=True,timeout=90,pass_fds=(fd,) if fd is not None else ())
-    if result.returncode:raise RuntimeError('GitHub operation failed')
-    return json.loads(result.stdout)
+    status=re.search(rb'^HTTP/\S+\s+(\d{3})\b',result.stdout,re.M)
+    if result.returncode:raise GitHubError(int(status[1]) if status else None)
+    headers,separator,body=result.stdout.partition(b'\r\n\r\n')
+    if not separator:headers,separator,body=result.stdout.partition(b'\n\n')
+    require(bool(separator));return json.loads(body)
 
 def execute(request,root):
     r=broker_request(request);op=r['operation'];repo=f'repos/{REPOSITORY}'
@@ -23,7 +34,19 @@ def execute(request,root):
     if op=='create_issue':
         row=api(repo+'/issues','POST',dict(title=r['title'],body=r['body']));return {'issue':row['number']}
     if op=='create_comment':
-        row=api(f"{repo}/issues/{r['issue']}/comments",'POST',dict(body=r['body']));return {'issue':r['issue'],'id':row['id']}
+        try:row=api(f"{repo}/issues/{r['issue']}/comments",'POST',dict(body=r['body']))
+        except GitHubError as error:
+            if error.status in (404,410):raise IssueMissing() from None
+            raise
+        return {'issue':r['issue'],'id':row['id']}
+    if op=='issue':
+        try:api(f"{repo}/issues/{r['issue']}")
+        except GitHubError as error:
+            if error.status not in (404,410):raise
+            # Repository access failures also produce 404. Never treat those,
+            # auth/rate limits or provider outages as a deleted user ticket.
+            api(repo);return {'exists':False}
+        return {'exists':True}
     if op=='permission':return {'permission':api(f"{repo}/collaborators/{r['login']}/permission")['permission']}
     if op=='comments':
         rows=api(repo+'/issues/comments?'+urlencode(dict(since=r['since'],sort='created',direction='asc',per_page=100,page=r['page'])))
@@ -72,7 +95,9 @@ def call(socket_path,operation,**data):
         connection.settimeout(100);connection.connect(str(socket_path))
         connection.sendall(json.dumps(dict(operation=operation,**data)).encode()+b'\n')
         response=connection.makefile('rb').readline(2_000_001);require(len(response)<=2_000_000)
-        value=json.loads(response);require(value['ok']);return value['value']
+        value=json.loads(response)
+        if not value['ok'] and value.get('error')=='issue_missing' and operation=='create_comment':raise IssueMissing()
+        require(value['ok']);return value['value']
 
 def serve(socket_path,root,group):
     class Handler(socketserver.StreamRequestHandler):
@@ -81,6 +106,7 @@ def serve(socket_path,root,group):
             try:
                 raw=self.rfile.readline(100_001);require(len(raw)<=100_000)
                 value=execute(json.loads(raw),root);reply={'ok':True,'value':value}
+            except IssueMissing:reply={'ok':False,'error':'issue_missing'}
             except Exception:reply={'ok':False}
             self.wfile.write(json.dumps(reply).encode()+b'\n')
     path=Path(socket_path);path.unlink(missing_ok=True)

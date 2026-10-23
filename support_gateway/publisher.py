@@ -4,6 +4,7 @@ import re
 import time
 from datetime import datetime,timezone,timedelta
 from .policy import REPOSITORY,reply_allowed,require
+from .broker import IssueMissing
 
 class Publisher:
     def __init__(self,store,broker):self.store=store;self.broker=broker;self.permissions={}
@@ -13,10 +14,15 @@ class Publisher:
         for job in self.store.pending():
             payload=json.loads(job['payload'])
             if job['state']=='uncertain':
+                target=job['issue'] or job['existing_issue']
+                if target and not self.broker('issue',issue=target)['exists']:
+                    self.store.missing(job['id'],target);return
                 found=self.broker('find_operation',marker=job['marker'])
                 if found:self.store.published(job['id'],found['issue'],found.get('id'))
                 continue
             if payload['consent_version']!=self.store.notice():continue
+            if job['existing_issue'] and not self.broker('issue',issue=job['existing_issue'])['exists']:
+                self.store.missing(job['id'],job['existing_issue']);job['existing_issue']=None
             body=payload['body']
             for index,item in enumerate(payload['files']):
                 release=self.broker('asset_release')
@@ -27,11 +33,17 @@ class Publisher:
                 body+=f"\n\n[{label}]({asset['url']})"
             body+=f"\n\n<!-- boohtacord-support:{job['marker']} -->"
             # State is durable before the network write. A lost response cannot duplicate a ticket.
-            self.store.publishing(job['id'])
+            self.store.publishing(job['id'],job['existing_issue'])
             if job['existing_issue']:
-                result=self.broker('create_comment',issue=job['existing_issue'],body=body)
+                try:result=self.broker('create_comment',issue=job['existing_issue'],body=body)
+                except IssueMissing:
+                    if not self.broker('issue',issue=job['existing_issue'])['exists']:
+                        self.store.missing(job['id'],job['existing_issue']);return
+                    raise
             else:
-                result=self.broker('create_issue',title='Обращение из публичной поддержки BOOHTACORD',body=body)
+                author=payload.get('user_id') or self.store.author(job['tenant'],job['conversation'])
+                title=f'Обращение BOOHTACORD — user_id: {author}' if author else 'Обращение из публичной поддержки BOOHTACORD'
+                result=self.broker('create_issue',title=title,body=body)
             self.store.published(job['id'],result['issue'],result.get('id'))
             for index in range(len(payload['files'])):
                 self.store.blob(job['tenant'],job['operation'],index).unlink(missing_ok=True)
