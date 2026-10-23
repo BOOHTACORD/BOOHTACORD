@@ -1,7 +1,7 @@
 {
   "task": "SP-002 follow-up to #516 / PR #517 and #522",
   "date": "2026-10-23",
-  "status": "FOCUSED_PASS_RUNTIME_PENDING",
+  "status": "PASS_SCOPED",
   "base_revision": "28fc0a32776e15622ef38ce6c983d8f5a58ae5ee",
   "changes": [
     "Issue title contains database author user_id, canonical UUID only",
@@ -30,11 +30,49 @@
     "web_unit": "PASS; 1622 tests / 487 files",
     "web_build": "PASS",
     "web_component_profiles": "PASS; 10 browser profiles",
-    "generic_real_stack": "FAIL before API/browser startup: disposable Tempo readiness timeout, both widths",
-    "focused_support_real_stack": "RUNNING with bounded startup readiness wait increased to 90 seconds; assertions unchanged",
+    "generic_real_stack": "Initial generic gate FAIL before API startup: loopback readiness was routed through system HTTP proxy. The unmodified focused support runtime passed with task-scoped NO_PROXY; broader voice/media lifecycle gate not claimed.",
+    "focused_support_real_stack": {
+      "status": "PASS",
+      "report": ".out/support-contact/20261023-102402/report.json",
+      "mocks": false,
+      "external_requests": 0,
+      "resource_cleanup": true,
+      "environment": "NO_PROXY/no_proxy for owned loopback addresses; canonical scenario and readiness assertions unchanged",
+      "scope": [
+        "current explicit consent and legacy-client denial",
+        "ordinary support text/files/realtime",
+        "pair-only history/file ACL",
+        "routing/operator replacement and voice transport preservation",
+        "320/393/1440 browser layouts"
+      ]
+    },
     "native_runtime": "NOT_RUN; Go/gateway-only fix, client code unchanged",
     "public_issue_deletion_write": "NOT_RUN; deletion/race replay tested with controlled provider status fixtures, no user issue was deleted"
   },
   "deployment": "NOT_RUN",
-  "source_notes": "Main user checkout and prior iOS evidence preserved; no production journal/DM/attachment content read."
+  "source_notes": "Main user checkout and prior iOS evidence preserved; no production journal/DM/attachment content read.",
+  "implementation_revision": "f043ca9552dcb7f6d3f4f6775b806cbf59a35196",
+  "visual_review": {
+    "status": "REVIEWED_WITH_LIMITATIONS",
+    "screenshots_reviewed": 12,
+    "resolution": "original/source",
+    "observations": [
+      "Public consent and persistent notice fit desktop/mobile; composer shown after consent",
+      "Support pin, unread indicator and ordinary text/file/reply visible at 320/393",
+      "Existing local-operator 320 notice and enlarged-text views have clipping/overlap; client source unchanged, no baseline approved or UI acceptance gate closed"
+    ],
+    "broader_component_screenshots": "156 generated; not individually reviewed, no blanket visual PASS"
+  },
+  "limitations": [
+    "Provider deletion/reply-remap races use controlled synthetic status fixtures; no real GitHub issue was deleted",
+    "Physical/native runtimes NOT_RUN for this shared server fix",
+    "Production and support gateway deployment NOT_RUN"
+  ],
+  "source_hashes": {
+    "backend/internal/support/bridge/store.go": "ab92a319f2fca583599ce7c69d2afac8ff96e38b6faed00f07d1d04bcc87c127",
+    "support_gateway/broker.py": "1fb02f170d5b2ef8684aeab7a0b2159063a55cd4f2c6d1f9cfe120e9d4141cc8",
+    "support_gateway/policy.py": "da0fad31d7bbf132f5bd5a2aea684674efdcec55c817af560e9a04aa2766585f",
+    "support_gateway/publisher.py": "ce03a61357f1eb5d8ce3c35b645d1e897f58671c8ea47afcd03e731c8137fd64",
+    "support_gateway/store.py": "a7abaf56f79b76f3f7b7bc599a34149aea8ac8a5584474dd3ef3f0bc5cc16b83"
+  }
 }
