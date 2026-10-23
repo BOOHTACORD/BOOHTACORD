@@ -40,11 +40,14 @@ func (service Service) Change(ctx context.Context, input Input) error {
 	if err != nil {
 		return fmt.Errorf("find password hash: %w", err)
 	}
-	valid, err := password.Verify(input.CurrentPassword, currentHash)
-	if err != nil || !valid {
+	valid, err := password.Verify(ctx, input.CurrentPassword, currentHash)
+	if err != nil {
+		return fmt.Errorf("verify current password: %w", err)
+	}
+	if !valid {
 		return ErrCurrentPasswordInvalid
 	}
-	newHash, err := password.Hash(input.NewPassword)
+	newHash, err := password.Hash(ctx, input.NewPassword)
 	if err != nil {
 		return fmt.Errorf("hash new password: %w", err)
 	}

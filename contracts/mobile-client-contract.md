@@ -137,6 +137,7 @@ Mobile client может публиковать microphone и screen-share media
 - `403`/`404`: удалите или обновите недоступный resource; не различайте скрытые ACL-условия для пользователя подробнее безопасного server message.
 - `409`: следуйте resource-specific flow выше (`ACTIVE_VOICE_LEASE`, stale revision или topology revision) и обновите состояние перед retry.
 - `429`: соблюдайте `Retry-After`, когда он есть; не разветвляйте retries.
+- `503 AUTH_BUSY` на login/register/reset/change password: все четыре Argon2-слота процесса заняты, очередь ожидания отсутствует. Ответ содержит `Retry-After: 1`; сохраните редактируемую форму и текущую сессию, покажите задержку до ручного повтора. Не повторяйте password mutation автоматически и не считайте перегрузку неверным паролем. Временные значения пароля остаются только в форме до завершения/закрытия; в постоянное хранилище они не записываются.
 - `5xx` или transport loss: повторяйте только idempotent reads и запросы с исходным message idempotency key; применяйте exponential backoff с отменой при logout/background.
 
 ## Неподдерживаемые или намеренно отсутствующие контракты

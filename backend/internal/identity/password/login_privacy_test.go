@@ -17,7 +17,7 @@ import (
 )
 
 func TestSecurity20261022UnknownVersusKnownWork(t *testing.T) {
-	encoded, err := password.Hash("synthetic correct password")
+	encoded, err := password.Hash(context.Background(), "synthetic correct password")
 	if err != nil {
 		t.Fatal("cannot prepare synthetic account")
 	}
@@ -66,7 +66,7 @@ func TestSecurity20261022UnknownVersusKnownWork(t *testing.T) {
 }
 
 func TestSecurity20261022IPAdmissionRejectsWithoutKDF(t *testing.T) {
-	encoded, err := password.Hash("synthetic correct password")
+	encoded, err := password.Hash(context.Background(), "synthetic correct password")
 	if err != nil {
 		t.Fatal("cannot prepare synthetic account")
 	}

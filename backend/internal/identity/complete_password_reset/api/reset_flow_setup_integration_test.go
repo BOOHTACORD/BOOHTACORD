@@ -39,7 +39,7 @@ func newResetFlowFixture(t *testing.T) resetFlowFixture {
 	pool := newResetHTTPPool(t)
 	ctx := context.Background()
 	adminID, memberID := uuid.NewString(), uuid.NewString()
-	oldHash, err := password.Hash(oldResetPassword)
+	oldHash, err := password.Hash(context.Background(), oldResetPassword)
 	if err != nil {
 		t.Fatal(err)
 	}

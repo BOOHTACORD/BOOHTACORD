@@ -28,3 +28,20 @@ test('one control reveals and hides the new password and confirmation together',
   await expect(password).toHaveAttribute('type', 'password')
   await expect(confirmation).toHaveAttribute('type', 'password')
 })
+
+test('busy reset keeps the form and retry delay without consuming the link', async ({ page }) => {
+  let calls = 0
+  await page.route('**/api/v1/auth/password-reset/complete', async route => {
+    calls++
+    await route.fulfill({ status: 503, headers: { 'retry-after': '7' }, contentType: 'application/json',
+      body: JSON.stringify({ error: { code: 'AUTH_BUSY' } }) })
+  })
+  await page.getByRole('textbox', { name: 'Новый пароль', exact: true }).fill('SyntheticPassword123!')
+  await page.getByRole('textbox', { name: 'Повторите пароль', exact: true }).fill('SyntheticPassword123!')
+  await page.getByRole('button', { name: 'Изменить пароль' }).click()
+  await expect(page.getByRole('alert')).toContainText('вручную через 7 с.')
+  await expect(page.getByRole('textbox', { name: 'Новый пароль', exact: true })).toHaveValue('SyntheticPassword123!')
+  await expect(page.getByRole('textbox', { name: 'Новый пароль', exact: true })).toBeEditable()
+  expect(calls).toBe(1)
+  await page.screenshot({ path: test.info().outputPath('reset-capacity.png'), fullPage: true })
+})

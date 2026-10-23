@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+	passwordapi "voice-platform/backend/internal/identity/password/api"
 
 	"voice-platform/backend/internal/identity/login_user"
 	"voice-platform/backend/internal/identity/registration"
@@ -43,6 +44,9 @@ func NewHandlerWithFailureLimiter(loginer Loginer, failureLimiter *ratelimit.Lim
 		}
 
 		result, err := loginer.Login(request.Context(), loginuser.Input{Login: body.Login, Password: body.Password})
+		if passwordapi.WriteBusy(writer, request, err) {
+			return
+		}
 		if errors.Is(err, loginuser.ErrInvalidCredentials) {
 			if failureLimiter != nil {
 				if normalized, normalizeErr := registration.NormalizeLogin(body.Login); normalizeErr == nil {

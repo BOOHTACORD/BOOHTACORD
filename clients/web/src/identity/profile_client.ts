@@ -1,6 +1,7 @@
 import { tracedFetch } from '../telemetry/client_tracing'
 import { apiBaseUrl } from '../config/runtime'
 import { normalizeAvatarImage } from './avatar_image'
+import { capacityError } from './authentication_flow/retry_after'
 
 export interface OwnProfile { account_id: string; login: string; display_name: string; role: 'MEMBER' | 'ADMINISTRATOR'; avatar_url?: string; profile_revision?: number }
 export type MemberPresence = 'online' | 'offline' | 'unknown'
@@ -24,6 +25,8 @@ async function error(response: Response): Promise<Error> {
 }
 async function call(path: string, init: RequestInit, request: ProfileRequest): Promise<Response> {
   const response = await request(`${apiBaseUrl}${path}`, { ...init, credentials: 'same-origin', headers: { accept: 'application/json', ...init.headers } })
+  const busy = await capacityError(response)
+  if (busy) throw busy
   if (!response.ok) throw await error(response)
   return response
 }

@@ -49,7 +49,7 @@ func (service Service) Bootstrap(context context.Context, input Input) (Account,
 	if err != nil {
 		return Account{}, err
 	}
-	passwordHash, err := password.Hash(validated.Password)
+	passwordHash, err := password.Hash(context, validated.Password)
 	if err != nil {
 		return Account{}, fmt.Errorf("hash bootstrap password: %w", err)
 	}

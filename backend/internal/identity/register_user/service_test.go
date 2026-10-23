@@ -28,7 +28,7 @@ func TestRegisterCreatesNormalizedMemberWithPasswordHash(t *testing.T) {
 	if account.PasswordHash == "correct horse battery staple" {
 		t.Fatal("Register() persisted a plaintext password")
 	}
-	if matches, err := password.Verify("correct horse battery staple", account.PasswordHash); err != nil || !matches {
+	if matches, err := password.Verify(context.Background(), "correct horse battery staple", account.PasswordHash); err != nil || !matches {
 		t.Fatalf("stored password hash did not verify: %v, %v", matches, err)
 	}
 	if repository.account != account {

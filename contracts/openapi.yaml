@@ -4918,7 +4918,7 @@
             }
           },
           "503": {
-            "description": "MAINTENANCE or MAINTENANCE_UNAVAILABLE; new admission blocked or admission state unavailable",
+            "description": "REGISTRATION_NOT_READY; MAINTENANCE or MAINTENANCE_UNAVAILABLE; new admission blocked or admission state unavailable; AUTH_BUSY when all four process-local Argon2 slots are reserved. Zero waiting queue; no credential verdict or mutation. Retry manually after Retry-After; never log out or automatically repeat password mutations.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4927,6 +4927,15 @@
               }
             },
             "headers": {
+              "Retry-After": {
+                "description": "Present for AUTH_BUSY; retry delay in whole seconds.",
+                "schema": {
+                  "type": "integer",
+                  "enum": [
+                    1
+                  ]
+                }
+              },
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestID"
               }
@@ -5015,7 +5024,7 @@
             }
           },
           "503": {
-            "description": "MAINTENANCE or MAINTENANCE_UNAVAILABLE; new admission blocked or admission state unavailable",
+            "description": "MAINTENANCE or MAINTENANCE_UNAVAILABLE; new admission blocked or admission state unavailable; AUTH_BUSY when all four process-local Argon2 slots are reserved. Zero waiting queue; no credential verdict or mutation. Retry manually after Retry-After; never log out or automatically repeat password mutations.",
             "content": {
               "application/json": {
                 "schema": {
@@ -5024,6 +5033,15 @@
               }
             },
             "headers": {
+              "Retry-After": {
+                "description": "Present for AUTH_BUSY; retry delay in whole seconds.",
+                "schema": {
+                  "type": "integer",
+                  "enum": [
+                    1
+                  ]
+                }
+              },
               "X-Request-ID": {
                 "$ref": "#/components/headers/RequestID"
               }
@@ -5206,6 +5224,30 @@
           "content": { "application/json": { "schema": { "$ref": "#/components/schemas/OwnPasswordChangeRequest" } } }
         },
         "responses": {
+          "503": {
+            "description": "AUTH_BUSY when all four process-local Argon2 slots are reserved. Zero waiting queue; no credential verdict or mutation. Retry manually after Retry-After; never log out or automatically repeat password mutations.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Present for AUTH_BUSY; retry delay in whole seconds.",
+                "schema": {
+                  "type": "integer",
+                  "enum": [
+                    1
+                  ]
+                }
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/RequestID"
+              }
+            }
+          },
           "204": { "description": "Password changed; only the current session remains active",
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
           "400": { "description": "Invalid current or new password; response does not disclose which credential failed", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
@@ -5594,6 +5636,30 @@
           }
         },
         "responses": {
+          "503": {
+            "description": "AUTH_BUSY when all four process-local Argon2 slots are reserved. Zero waiting queue; no credential verdict or mutation. Retry manually after Retry-After; never log out or automatically repeat password mutations.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Present for AUTH_BUSY; retry delay in whole seconds.",
+                "schema": {
+                  "type": "integer",
+                  "enum": [
+                    1
+                  ]
+                }
+              },
+              "X-Request-ID": {
+                "$ref": "#/components/headers/RequestID"
+              }
+            }
+          },
           "204": { "description": "Password changed and all existing sessions revoked",
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
           "400": { "description": "Malformed, unavailable, expired or already-used reset", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },

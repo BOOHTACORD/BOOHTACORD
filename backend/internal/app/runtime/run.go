@@ -17,6 +17,7 @@ import (
 	runtimeconfig "voice-platform/backend/internal/config/runtime"
 	"voice-platform/backend/internal/database/pool"
 	observeusage "voice-platform/backend/internal/identity/observe_usage"
+	"voice-platform/backend/internal/identity/password"
 	previewmemory "voice-platform/backend/internal/media/screen_preview/memory"
 	presencememory "voice-platform/backend/internal/media/screen_viewer_presence/memory"
 	centralexport "voice-platform/backend/internal/observability/central_export"
@@ -55,6 +56,9 @@ func Run(ctx context.Context) (result error) {
 		return err
 	}
 	poolMetrics := pool.NewMetrics()
+	if err := metrics.RegisterCollector(password.NewCollector()); err != nil {
+		return err
+	}
 	if err := metrics.RegisterCollector(poolMetrics); err != nil {
 		return err
 	}

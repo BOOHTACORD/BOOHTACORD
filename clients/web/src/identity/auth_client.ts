@@ -1,7 +1,7 @@
 import { tracedFetch } from '../telemetry/client_tracing'
 import { apiBaseUrl } from '../config/runtime'
 import { validCodePointLength } from '../validation/unicode_limits/unicode_limits'
-import { rateLimitError } from './authentication_flow/retry_after'
+import { capacityError, rateLimitError } from './authentication_flow/retry_after'
 
 export interface AuthenticationInput {
   login: string
@@ -34,6 +34,8 @@ async function send(path: string, input: AuthenticationInput, request: Authentic
     body: JSON.stringify(input),
   })
   if (response.status === 429) throw rateLimitError(response)
+  const busy = await capacityError(response)
+  if (busy) throw busy
   if (!response.ok) throw new Error(await errorMessage(response))
 }
 

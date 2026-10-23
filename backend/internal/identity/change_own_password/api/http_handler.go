@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	passwordapi "voice-platform/backend/internal/identity/password/api"
 
 	sessionapi "voice-platform/backend/internal/identity/authenticate_session/api"
 	changeownpassword "voice-platform/backend/internal/identity/change_own_password"
@@ -34,6 +35,9 @@ func NewHandler(changer Changer) http.Handler {
 			return
 		}
 		err := changer.Change(r.Context(), changeownpassword.Input{AccountID: principal.AccountID, CurrentPassword: body.CurrentPassword, NewPassword: body.NewPassword, CurrentSessionDigest: principal.SessionDigest})
+		if passwordapi.WriteBusy(w, r, err) {
+			return
+		}
 		switch {
 		case err == nil:
 			w.WriteHeader(http.StatusNoContent)

@@ -36,6 +36,13 @@ class PasswordResetApi {
         status: 429,
       );
     }
+    if (response.statusCode == 503) {
+      try {
+        await transport.checked(response, reportUnauthorized: false);
+      } on ApiFailure catch (error) {
+        if (error.code == 'AUTH_BUSY') rethrow;
+      }
+    }
     throw ApiFailure(
       'Не удалось изменить пароль (${response.statusCode}). Повторите попытку.',
       status: response.statusCode,
