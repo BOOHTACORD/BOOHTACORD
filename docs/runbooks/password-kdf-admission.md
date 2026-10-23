@@ -26,7 +26,8 @@ KDF и после фактического вычисления. Увиденн�
 имеют собственные пределы, общей deployment-wide квоты этот механизм не даёт.
 Новых Redis, глобальной map ключей и секретов в очереди нет. Сетевые IP-лимиты,
 Origin/CSRF, лимит тела, session cookie и серверные ACL сохранены. Account
-admission (#533) и reset preflight (#535) остаются отдельными задачами.
+admission (#533) описан в `login-account-admission.md` и резервирует бюджет до
+account lookup/verifier; reset preflight (#535) остаётся отдельной задачей.
 
 Login, register, reset complete и смена пароля отвечают при `ErrBusy` одинаковым
 503 `AUTH_BUSY`, `Cache-Control: no-store`, `Retry-After: 1`, без cookie и

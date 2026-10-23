@@ -26,7 +26,8 @@
 работу, поэтому её стоимость выше дефектной прежней ветки. SEC-004 (#532)
 добавляет context-aware допуск без очереди и 503 `AUTH_BUSY` при занятости всех
 слотов; политика и метрики описаны в `password-kdf-admission.md`. Исправление
-порядка account admission (#533) остаётся отдельной задачей. Process-local
+порядка account admission (#533) описано в `login-account-admission.md`: атомарная
+reservation предшествует account lookup/verifier. Process-local
 допуск не доказывает защиту всего deployment от перегрузки. Метрик и логов с
 идентификаторами нет.
 
