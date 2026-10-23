@@ -50,6 +50,21 @@ class FailureDiagnosticTests(unittest.TestCase):
             root=Path(temporary).resolve()
             self.assertEqual(evidence.collect_failure(root, 'next', root/'public'), [])
 
+    def test_failure_stage_keeps_only_allowlisted_stage_names(self):
+        from .failure_stage import last_failure_stage, last_short_stage_geometry
+        with tempfile.TemporaryDirectory() as temporary:
+            log=Path(temporary)/'lifecycle.log'
+            log.write_text('stage=screen-share-short-height:{"height":160,"visibleHeight":82,"dockHeight":112,'
+                           '"dockCoversStage":true,"dockPosition":"fixed","dockGridColumns":"private"}\n'
+                           'stage=private-token-value\n'
+                           'stage=screen-configuration-status:configuration\n')
+            self.assertEqual(last_failure_stage(log), 'screen-configuration-status')
+            self.assertEqual(last_short_stage_geometry(log), {
+                'height': 160, 'visibleHeight': 82, 'dockHeight': 112, 'dockCoversStage': True,
+            })
+            log.write_text('stage=chat-recovery-navigation-open\n')
+            self.assertEqual(last_failure_stage(log), 'chat-recovery-navigation-open')
+
     def test_unknown_fields_stages_or_links_are_rejected(self):
         for case in ('extra', 'stage', 'large', 'link', 'duplicate'):
             with tempfile.TemporaryDirectory() as temporary, self.subTest(case=case):

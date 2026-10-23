@@ -5,7 +5,7 @@ PY=sys.executable
 OPERATIONS={
     'lifecycle':[
         [PY,'-m','unittest','tools.qa.client_lifecycle.test_services','tools.qa.client_lifecycle.test_telemetry','tools.qa.critical_client_acceptance.test_stack','tools.qa.refresh_baseline.test_archive','tools.qa.upload_reservations.test_measure','tools.qa.upload_reservations.test_scenario','tools.qa.upload_reservations.test_client'],
-        ['node','--test','tools/qa/critical_client_acceptance/requests.test.mjs','tools/qa/critical_client_acceptance/roster_observer.test.mjs','tools/qa/critical_client_acceptance/roster_diagnostics.test.mjs','tools/qa/critical_client_acceptance/sfu_control.test.mjs','tools/qa/critical_client_acceptance/roster_network.test.mjs','tools/qa/client_lifecycle/login_diagnostics.test.mjs'],
+        ['node','--test','tools/qa/critical_client_acceptance/requests.test.mjs','tools/qa/critical_client_acceptance/roster_observer.test.mjs','tools/qa/critical_client_acceptance/roster_diagnostics.test.mjs','tools/qa/critical_client_acceptance/sfu_control.test.mjs','tools/qa/critical_client_acceptance/roster_network.test.mjs','tools/qa/critical_client_acceptance/select_stream.test.mjs','tools/qa/client_lifecycle/login_diagnostics.test.mjs'],
         [PY,'-m','tools.qa.refresh_baseline.run','--revision','BASELINE'],
         [PY,'-m','tools.qa.client_lifecycle.run','--critical','--width','1440','--output-root','.out/client-lifecycle'],
         [PY,'-m','tools.qa.client_lifecycle.run','--critical','--width','1024','--output-root','.out/client-lifecycle'],

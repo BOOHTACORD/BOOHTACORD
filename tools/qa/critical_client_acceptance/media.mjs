@@ -62,24 +62,33 @@ export async function media(a, b, member, channelId, report, input) {
   await voiceMemberProfile(a, member, input, report)
   await voiceInterface(a, input, report)
   await screenShareInterface(a, member, input, report, miniSubscriptions)
+  console.log('stage=screen-share-lifecycle-returned')
   blocked = true
   for (const { socket, server } of chat) { server.close(); socket.close() }
+  console.log('stage=chat-recovery-fault-injected')
   const banner = a.getByTestId('connection-status')
   await openNavigation(a)
+  console.log('stage=chat-recovery-navigation-open')
   await expect(banner).toBeVisible()
+  console.log('stage=chat-recovery-banner-visible')
   await expect(banner).toContainText('Чат обновляется')
   await expect(banner).toContainText('Голос подключён')
+  console.log('stage=chat-recovery-status-visible')
   await connected(a)
+  console.log('stage=voice-retained-during-chat-recovery')
   await a.screenshot({ path: directory+'/chat-failed-media-connected.png' })
   blocked = false
   await openNavigation(a)
+  console.log('stage=chat-recovery-navigation-reopened')
   const retry = banner.getByRole('button', { name: 'Повторить связь чата' })
   const manualRetryAvailable = await retry.isVisible()
   if (manualRetryAvailable) await retry.click()
   await expect(banner).toBeHidden()
+  console.log('stage=chat-recovery-retried')
   // Chat recovery replaces the roster source asynchronously. Fault injection
   // must start with a live SSE stream, rather than an initial/retry HTTP fetch.
   await expect.poll(() => a.evaluate(() => window.__qaRosterTransportSource?.readyState), { timeout: 15000 }).toBe(1)
+  console.log('stage=roster-transport-restored')
   // Both listeners have real WebRTC transports. Suspend only the owned SFU;
   // retain its network interface so this tests an SFU outage, not a host change.
   const rosterFailuresBefore = await a.evaluate(() => window.__qaRosterUnavailableCount)

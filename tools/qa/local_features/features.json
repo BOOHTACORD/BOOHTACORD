@@ -302,13 +302,13 @@
       }
     ],
     "parity_review": {
-      "issue": 538,
+      "issue": 542,
       "decisions": {
         "web": "implementation_and_regression",
-        "ios": "implementation_and_regression",
-        "android": "implementation_and_regression"
+        "ios": "platform_exception",
+        "android": "platform_exception"
       },
-      "scope": "This PR only changes the Web screen-stage fullscreen action. Voice controls, leases, reconnect behavior and server ACL are unchanged across Web/iOS/Android; existing voice regression coverage remains applicable."
+      "scope": "Compact Web stream viewing uses overlay controls and collapsible participant/stream/diagnostic panels. Native clients retain their existing presentation; no native runtime acceptance is claimed."
     }
   },
   "screen": {
@@ -558,6 +558,13 @@
           "clients/flutter/test/web_parity/mini_surface_test.dart"
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+      },
+      "compact_viewer": {
+        "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
+        "focused": [
+          "clients/web/tests/screen_share_ui/compact.browser.spec.ts"
+        ],
+        "scope": "Web video fills the available height. Controls overlay the video; participant and multi-stream panels expand on demand; a single selected stream has no duplicate thumbnail. Diagnostics remain mounted for recovery and open on demand."
       }
     },
     "parity": [
@@ -656,13 +663,13 @@
       }
     ],
     "parity_review": {
-      "issue": 539,
+      "issue": 542,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "Web viewer actions fade after pointer inactivity, including after browser fullscreen entry and at narrow hover-capable widths; keyboard focus remains visible and touch-only Web layouts keep actions available. iOS/Android retain their native fullscreen and stop-viewing controls because this pointer-driven overlay behavior is Web-specific; no native runtime claim is made."
+      "scope": "Compact Web stream viewing uses overlay controls and collapsible participant/stream/diagnostic panels. Native clients retain their existing presentation; no native runtime acceptance is claimed."
     }
   },
   "screen_metrics": {
@@ -1396,13 +1403,13 @@
       }
     ],
     "parity_review": {
-      "issue": 540,
+      "issue": 542,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "This Web change makes category context menus dismissible by outside pointer interaction or Escape while preserving outside actions and keyboard focus. Native navigation remains unchanged; no iOS/Android runtime behavior change is claimed."
+      "scope": "Compact Web stream viewing uses overlay controls and collapsible participant/stream/diagnostic panels. Native clients retain their existing presentation; no native runtime acceptance is claimed."
     }
   },
   "screen_track_name": {

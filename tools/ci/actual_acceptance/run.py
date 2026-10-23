@@ -13,6 +13,7 @@ from tools.qa.local_features.process import stop_group
 from . import catalog,session
 from .plan import PROFILES,require,document
 from .evidence import collect,collect_failure
+from .failure_stage import last_failure_stage,last_short_stage_geometry
 
 
 def execute(profile,baseline):
@@ -20,7 +21,7 @@ def execute(profile,baseline):
     public.mkdir(parents=True,exist_ok=False)
     report={'schema_version':1,'status':'FAIL','scope':'automatic-PR-real-runtime','profile':profile,
             'physical_acceptance':'NOT_RUN','release_acceptance':'NOT_RUN','owned_resources_removed':False,'operations':[]}
-    child=None;owner=None;lease=None;old_signal=None;started=time.monotonic()
+    child=None;owner=None;lease=None;log=None;old_signal=None;started=time.monotonic()
     try:
         session.hosted()
         source=output('git','rev-parse','HEAD');require(source==os.environ.get('GITHUB_SHA') and re.fullmatch('[0-9a-f]{40}',baseline))
@@ -50,6 +51,11 @@ def execute(profile,baseline):
         report.update(collect(ROOT,profile,source,public),status='PASS')
     except BaseException as error:
         report.update(status='BLOCKED' if owner is None else 'FAIL',failure_type=type(error).__name__)
+        stage=last_failure_stage(log)
+        if stage:report['failure_stage']=stage
+        if stage=='screen-share-short-height':
+            geometry=last_short_stage_geometry(log)
+            if geometry:report['failure_geometry']=geometry
         if owner:
             try:
                 report['diagnostics'] = collect_failure(ROOT,profile,public)

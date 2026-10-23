@@ -112,3 +112,50 @@
   .sidebar.is-open .mobile-voice-dock .voice-actions { width: auto; flex: 0 0 auto; gap: 4px; margin: 0; }
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button { width: 40px; min-width: 40px; height: 40px; min-height: 40px; flex: 0 0 40px; margin: 0; }
 }
+
+/* Video owns the available height; auxiliary panels never resize it. */
+.voice-room .screen-viewer.screen-viewer--compact.stream-wrap { grid-template-rows: minmax(0, 1fr); gap: 0; padding: 12px; overflow: hidden; }
+.screen-viewer--compact .screen-stage { min-height: 0; }
+.screen-viewer--compact .screen-stage-actions { left: 12px; right: 12px; bottom: 12px; width: max-content; margin-left: auto; max-width: calc(100% - 24px); }
+.voice-room .screen-viewer--compact .stream-quality-row { display: contents; }
+.screen-viewer--compact .stream-toolbar-actions { display: contents; }
+.stream-diagnosis-menu-action { display: none; }
+.screen-viewer--compact .stream-more-actions .stream-voice-return { top: auto; bottom: calc(100% + 12px); }
+.screen-viewer--compact .screen-stage-label { max-width: 100%; height: auto; min-height: 32px; flex-wrap: wrap; }
+.screen-viewer--compact .screen-stage-label small { font-size: 0.6875rem; font-weight: 400; color: var(--gc-text-secondary); }
+.screen-viewer--compact .screen-stage-top { inset: 12px 12px auto; flex-wrap: wrap; align-items: flex-start; z-index: 4; }
+.screen-viewer-panels { position: relative; margin-left: auto; max-width: 100%; pointer-events: auto; }
+.screen-viewer-panel-toggles { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 6px; }
+.screen-viewer-panel-toggles button, .screen-viewer-panel-close { min-height: 36px; border: 1px solid var(--gc-border-subtle); border-radius: 8px; padding: 6px 10px; background: rgba(8, 10, 15, .85); color: var(--gc-text-primary); font: inherit; font-size: 0.75rem; cursor: pointer; }
+.screen-viewer-panel-toggles button[aria-expanded=true] { border-color: var(--gc-accent); }
+.screen-viewer-panel-content { position: absolute; top: calc(100% + 8px); right: 0; box-sizing: border-box; width: min(560px, calc(100vw - 52px)); max-height: min(320px, 50dvh); overflow: auto; border: 1px solid var(--gc-border-subtle); border-radius: 12px; padding: 12px; background: var(--gc-sidebar); box-shadow: var(--gc-shadow-popup); }
+.screen-viewer-panel-close { display: block; margin-left: auto; margin-bottom: 4px; font-size: 1.25rem; line-height: 1; }
+.voice-room .screen-viewer-panel-content .voice-viewer-participant-strip { display: flex; height: auto; min-height: 0; padding: 0; flex-direction: column; align-items: stretch; border: 0; }
+.screen-viewer-panel-content .voice-viewer-participant-summary { width: auto; flex-basis: auto; }
+.screen-viewer-panel-content .voice-viewer-participant-strip ul { height: 64px; flex: 0 0 64px; }
+.screen-viewer-panel-content .screen-rail-section { min-height: 0; }
+.screen-diagnosis--compact { position: absolute; z-index: 2; inset: 64px 12px 100px; pointer-events: none; font-size: 0.8125rem; }
+.screen-diagnosis--compact > p:not(.gc-sr-only), .screen-diagnosis--compact > button { width: fit-content; max-width: 100%; margin: 0 0 6px; padding: 6px 10px; border-radius: 8px; background: rgba(8, 10, 15, .9); color: var(--gc-text-primary); pointer-events: auto; }
+.screen-diagnosis--compact > details { position: absolute; inset: 0 0 auto auto; box-sizing: border-box; width: min(420px, 100%); max-height: 100%; overflow: auto; border: 1px solid var(--gc-border-subtle); border-radius: 12px; padding: 12px; background: var(--gc-sidebar); box-shadow: var(--gc-shadow-popup); pointer-events: auto; }
+.screen-diagnosis--compact input { max-width: 100%; }
+.screen-viewer--compact .screen-stage > .state-error { position: absolute; top: 56px; z-index: 2; background: var(--gc-sidebar); padding: 8px; }
+@media (max-width: 720px) {
+  .screen-viewer--compact .screen-stage-top { top: 8px; left: 8px; right: 8px; }
+  .screen-viewer--compact .screen-stage-top { inset: 8px 8px auto; flex-direction: column; }
+  .screen-viewer-panels { margin-left: 0; width: 100%; max-width: 100%; }
+  .screen-viewer-panel-toggles { justify-content: flex-start; }
+  .screen-viewer-panel-toggles button { min-height: 44px; }
+  .screen-viewer-panel-toggles button span { display: none; }
+  .screen-viewer-panel-content { width: 100%; }
+  .screen-viewer--compact .screen-stage-actions { left: 8px; right: 8px; bottom: 8px; max-width: calc(100% - 16px); justify-content: flex-start; }
+  .screen-viewer--compact .screen-stage-action { min-height: 44px; }
+  .screen-viewer--compact .screen-stage-actions { gap: 2px; }
+  .screen-viewer--compact .screen-stage-action { width: 44px; min-width: 44px; padding: 0; }
+  .screen-viewer--compact .screen-stage-action > span, .screen-viewer--compact .screen-diagnosis-toggle { display: none; }
+  .screen-viewer--compact .stream-diagnostics > summary { width: 44px; height: 44px; min-height: 44px; border: 0; padding: 0; }
+  .stream-diagnosis-menu-action { display: block; }
+  .screen-diagnosis--compact { top: 112px; bottom: 140px; }
+}
+
+@media (max-width: 360px) { .screen-viewer--compact .screen-stage-actions { gap: 0; } }
+@media (max-height: 220px) { .screen-viewer--compact .screen-stage > .screen-loading-state { transform: translateY(12px); } }

@@ -15,7 +15,7 @@ const params = new URLSearchParams(location.search)
 document.documentElement.style.fontSize = params.get('scale') === '200' ? '200%' : '100%'
 if (params.has('unsupported')) Object.defineProperty(navigator, 'mediaDevices', { value: {}, configurable: true })
 const events: unknown[] = []
-const state = reactive({ open: true, expanded: false, selectedId: (params.has('watching-remote') || params.has('remote-audio') ? 'remote-screen' : 'local-screen') as string | null, profile: params.get('profile') ?? 'P1080_60', source: 'ACTIVE', fps: 1, sampledAt: null as number | null, hasAudio: false, audioMuted: false })
+const state = reactive({ open: true, expanded: false, selectedId: params.has('unselected') ? null : (params.has('watching-remote') || params.has('remote-audio') ? 'remote-screen' : 'local-screen') as string | null, profile: params.get('profile') ?? 'P1080_60', source: 'ACTIVE', fps: 1, sampledAt: null as number | null, hasAudio: false, audioMuted: false })
 Object.assign(window, { __screenUI: { events, patch: (value: object) => Object.assign(state, value) } })
 const diagnostics = (): ScreenDiagnostics => ({ source: state.source as ScreenDiagnostics['source'], audioTrack: 'ABSENT', connectionQuality: 'GOOD', measured: { width: 1920, height: 654, framesPerSecond: state.fps }, roundTripTimeMs: 42 })
 const viewerParticipants: VoiceVolumeParticipant[] = [
@@ -52,10 +52,10 @@ const IntermittentDiagnosis = defineComponent({
 const viewerStrip = () => h('section', { class: ['voice-room', state.expanded && 'voice-room--screen-expanded'], style: `height:${params.get('height') ?? '760'}px` }, [
   h(ScreenViewer, {
     audioMuted: state.audioMuted,
-    cards: viewerScreens,
+    cards: params.has('single-stream') ? viewerScreens.filter(card => card.id === state.selectedId) : viewerScreens,
     deafened: false,
     ended: false,
-    error: null,
+    error: params.has('subscription-error') ? 'Не удалось подписаться на демонстрацию.' : null,
     expanded: state.expanded,
     mini: false,
     ownScreenSharing: !params.has('watching-remote'),

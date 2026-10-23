@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { api, channel, expect, openNavigation, security, login } from '../client_lifecycle/request.mjs'
+import { selectVisibleStream } from './select_stream.mjs'
 const require = createRequire(new URL('../../../clients/web/package.json', import.meta.url))
 const { SignalRequest } = require('@livekit/protocol')
 
@@ -109,7 +110,7 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
   await openNavigation(receiver)
   await receiver.getByRole('button', { name: 'Каналы', exact: true }).click()
   await channel(receiver, 'VoiceLab')
-  await receiver.locator('[data-testid=stream-select]:visible').first().click()
+  await selectVisibleStream(receiver)
   await expect.poll(() => receiver.locator('video.screen-player').evaluate(v => v.videoWidth > 0)).toBe(true)
   await expect(receiver.getByRole('button', { name: /закрепить просмотр|открепить просмотр/i })).toHaveCount(0)
   await channel(receiver, 'Text')
@@ -132,7 +133,7 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
   await channel(receiver, 'VoiceLab')
   await receiver.getByRole('button', { name: 'Без микрофона', exact: true }).click()
   await expect(receiver.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 30000 })
-  await receiver.locator('[data-testid=stream-select]:visible').first().click()
+  await selectVisibleStream(receiver)
   await expect.poll(() => receiver.locator('video.screen-player').evaluate(v => v.videoWidth > 0)).toBe(true)
   console.log('stage=mini-player-controls-and-cleanup-accepted')
   report.mini_player_interface = { actual_api_sfu: true, source: 'synthetic canvas and quiet oscillator', text_and_dm_send: true,
