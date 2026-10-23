@@ -63,6 +63,7 @@ deployment quota, production load profile, physical media or release gate.
 | Spec traceability: 39 approved IDs using the committed index; Windows brief unavailable | PASS |
 | Signal catalog: 9 tests, seven aggregate KDF families added, existing producer fingerprints refreshed | PASS |
 | Client parity policy, including `--base 0d6712eff067a570b41911f6d10a3b647606f064` and its two policy tests | PASS |
+| Finite capture inventory/publication/integrity regression suites (32 tests) | PASS |
 | Full Web unit suite (1623 tests / 487 files) and production build | PASS |
 | Local QA Web browser profiles, including forced capacity on mobile/desktop login/reset | PASS |
 | Real Go/PostgreSQL/Web critical lifecycle at widths 1440 and 393 | PASS |
@@ -80,6 +81,12 @@ base for auth and telemetry (the latter owns the common Flutter HTTP transport).
 Both decisions now cite the completed source-bound Web/Android/iOS regressions.
 The base-aware verifier passed locally; only registry/evidence metadata changed
 after local runtime acceptance, with no implementation or screenshot baseline change.
+The next CI attempt passed Flutter tests/analysis but rejected its new capacity
+capture during publication because the mandatory capture inventory still
+contained 133 images. The reviewed synthetic `auth-capacity-mobile.png` is now
+explicitly required as image 134. Focused inventory/publication tests verify
+that missing this image or adding arbitrary auth/user images still fails;
+no wildcard or privacy/integrity check was relaxed.
 
 Local run: `.out/local-features/20261023-161039/`. Forced-capacity browser
 responses are controlled HTTP fixtures; native smoke uses a real local API.

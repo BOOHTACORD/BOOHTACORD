@@ -9,7 +9,7 @@ from . import artifacts
 
 class ArtifactTests(unittest.TestCase):
     def test_mandatory_visual_inventory_keeps_all_uiux_capture_scenarios(self):
-        self.assertEqual(133, len(artifacts.VISUALS))
+        self.assertEqual(134, len(artifacts.VISUALS))
         self.assertEqual(len(artifacts.VISUALS), len(set(artifacts.VISUALS)))
         parity = [name for name in artifacts.VISUALS if name.startswith('parity-')]
         self.assertEqual(90, len(parity))
@@ -31,6 +31,15 @@ class ArtifactTests(unittest.TestCase):
         complete('flutter', dict.fromkeys(artifacts.VISUALS))
         with self.assertRaises(ValueError):
             complete('flutter', dict.fromkeys((*artifacts.VISUALS, 'support-user-upload.png')))
+
+    def test_auth_capacity_capture_is_required_without_allowing_arbitrary_auth_images(self):
+        from tools.ci.artifact_policy.capture_inventory import complete
+        self.assertIn('auth-capacity-mobile.png', artifacts.VISUALS)
+        with self.assertRaises(ValueError):
+            complete('flutter', dict.fromkeys(name for name in artifacts.VISUALS
+                                            if name != 'auth-capacity-mobile.png'))
+        with self.assertRaises(ValueError):
+            complete('flutter', dict.fromkeys((*artifacts.VISUALS, 'auth-private-upload.png')))
 
     def test_all_current_visual_captures_are_mandatory_valid_nonempty_pngs(self):
         with tempfile.TemporaryDirectory() as temporary:
