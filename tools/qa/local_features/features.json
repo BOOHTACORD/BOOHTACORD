@@ -19,7 +19,8 @@
       "clients/flutter/lib/src/core/http/transport.dart",
       "clients/flutter/lib/src/core/http/api_failure.dart",
       "clients/flutter/lib/src/features/session/password_reset/**",
-      "backend/internal/identity/admit_login/**"
+      "backend/internal/identity/admit_login/**",
+      "backend/internal/identity/complete_password_reset/**"
     ],
     "web": [
       "tests/password_generation/playwright.config.ts",
@@ -31,7 +32,8 @@
       "test/password_reset_screen_test.dart",
       "test/auth_capacity_test.dart",
       "test/auth_screen_test.dart",
-      "test/auth_rate_limit_test.dart"
+      "test/auth_rate_limit_test.dart",
+      "test/reset_preflight_contract_test.dart"
     ],
     "acceptance": {
       "session_retention": {
@@ -80,6 +82,18 @@
           "clients/web/tests/password_generation/capacity.browser.spec.ts"
         ],
         "scope": "Atomic normalized-account reservation precedes lookup/verifier. Eight attempts per short 30-second process-local window; bounded storage, no persistent lock, no denial extension, no refund for ambiguous started work. Shared KDF admission unchanged. Web/shared Flutter retain masked editable form/session and display Retry-After for explicit manual retry; forced-429 fixtures and normal native API smoke remain separate evidence."
+      },
+      "reset_capability_preflight": {
+        "issue": 535,
+        "focused": [
+          "backend/internal/identity/password/reset_preflight_test.go",
+          "backend/internal/identity/password/reset_preflight_database_test.go",
+          "backend/internal/identity/password/reset_preflight_race_database_test.go",
+          "backend/internal/identity/complete_password_reset/postgres/preflight_test.go",
+          "clients/flutter/test/reset_preflight_contract_test.dart",
+          "clients/web/tests/password_reset_visibility/visibility.browser.spec.ts"
+        ],
+        "scope": "Read-only digest eligibility check with <=2s query deadline before shared KDF admission. Invalid/expired/used capabilities and observed cancellation do no unnecessary KDF or mutation. Final unchanged atomic Consume rechecks eligibility; real PostgreSQL verifies expiry race, concurrent services, rollback and session/lease revocation outbox/audit. Existing Web/shared Flutter generic 400, safe 500, AUTH_BUSY and success semantics retained; no automatic retries/logout. Native smoke and fixture error cases are separate evidence."
       }
     },
     "parity": [
