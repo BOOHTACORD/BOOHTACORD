@@ -55,6 +55,12 @@ stores. They do not query production accounts.
   PowerShell 7.6.7: 39 IDs referenced using the committed requirement index;
   approved Windows brief unavailable on this host.
 - **PASS:** `git diff --check`.
+- **PASS:** `.out/delivery-timeout-venv/bin/python -m unittest
+  tools.observability.signal_catalog.test_build` (9 tests). The first PR CI
+  attempt found a stale source fingerprint for `auth.login.server` after the
+  login-service edit. Regeneration changed only that SHA-256 in
+  `docs/observability/signal-catalog.json`; no signal or label changed. The
+  superseded CI attempt was cancelled and a new exact-source CI requested.
 
 Local logs (not release artifacts), under `.out/security-sec02/`:
 
