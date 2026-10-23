@@ -302,13 +302,13 @@
       }
     ],
     "parity_review": {
-      "issue": 542,
+      "issue": 544,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "Compact Web stream viewing uses overlay controls and collapsible participant/stream/diagnostic panels. Native clients retain their existing presentation; no native runtime acceptance is claimed."
+      "scope": "Follow-up to #544: the Web stream participant overlay now sizes to the roster and keeps its close control beside the summary. iOS and Android layouts are unchanged; this Web-only regression has no native runtime claim."
     }
   },
   "screen": {
@@ -564,7 +564,7 @@
         "focused": [
           "clients/web/tests/screen_share_ui/compact.browser.spec.ts"
         ],
-        "scope": "Web video fills the available height. Controls overlay the video; participant and multi-stream panels expand on demand; a single selected stream has no duplicate thumbnail. Diagnostics remain mounted for recovery and open on demand."
+        "scope": "Web video fills the available height. Controls overlay the video; participant and multi-stream panels expand on demand. The participant panel stays compact around its roster instead of covering the stream with unused width or a separate close-button row. A single selected stream has no duplicate thumbnail. Diagnostics remain mounted for recovery and open on demand."
       }
     },
     "parity": [
@@ -663,13 +663,13 @@
       }
     ],
     "parity_review": {
-      "issue": 542,
+      "issue": 544,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "Compact Web stream viewing uses overlay controls and collapsible participant/stream/diagnostic panels. Native clients retain their existing presentation; no native runtime acceptance is claimed."
+      "scope": "Follow-up to #544: the Web stream participant overlay now sizes to the roster and keeps its close control beside the summary. iOS and Android layouts are unchanged; this Web-only regression has no native runtime claim."
     }
   },
   "screen_metrics": {
@@ -1403,13 +1403,13 @@
       }
     ],
     "parity_review": {
-      "issue": 542,
+      "issue": 544,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "Compact Web stream viewing uses overlay controls and collapsible participant/stream/diagnostic panels. Native clients retain their existing presentation; no native runtime acceptance is claimed."
+      "scope": "Follow-up to #544: the Web stream participant overlay now sizes to the roster and keeps its close control beside the summary. iOS and Android layouts are unchanged; this Web-only regression has no native runtime claim."
     }
   },
   "screen_track_name": {

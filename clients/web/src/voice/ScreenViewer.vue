@@ -172,7 +172,7 @@ async function toggleFullscreen(): Promise<void> {
             <button v-if="cards.length > 1 || !selectedStream && cards.length" type="button" :aria-expanded="auxiliaryPanel === 'streams'" @click="togglePanel('streams', $event)">Трансляции · {{ cards.length }}</button>
             <button type="button" :aria-expanded="auxiliaryPanel === 'participants'" @click="togglePanel('participants', $event)">Участники · {{ participants.length + 1 }}<span> · Зрители · {{ screenWatcherIds.length }}</span></button>
           </div>
-          <div v-if="auxiliaryPanel" class="screen-viewer-panel-content">
+          <div v-if="auxiliaryPanel" class="screen-viewer-panel-content" :class="{ 'screen-viewer-panel-content--participants': auxiliaryPanel === 'participants' }">
             <button class="screen-viewer-panel-close" type="button" aria-label="Закрыть панель просмотра" @click="auxiliaryPanel = null; auxiliaryTrigger?.focus()">×</button>
             <ScreenViewerRail v-if="auxiliaryPanel === 'streams'" :cards="cards" :selected-id="selectedId" :show-return-to-voice="false" @select="select" />
             <ScreenViewerParticipantStrip v-if="auxiliaryPanel === 'participants'" :participants="participants" :screens="cards" :selected-id="selectedId" :screen-watcher-ids="screenWatcherIds" :self-account-id="selfAccountId" :self-deafened="deafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-name="selfName" :self-speaking="selfSpeaking" :own-screen-sharing="Boolean(ownScreenSharing)" />
