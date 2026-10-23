@@ -1,4 +1,4 @@
-"""Private routing journal. No local account or DM identifier is published."""
+"""Private routing journal; only the explicitly approved author ID is public."""
 import hashlib
 import json
 import secrets
@@ -53,7 +53,12 @@ class Store:
         with self.lock,self.db:
             existing=self.db.execute('SELECT id,payload FROM jobs WHERE tenant=? AND operation=?',(tenant,value['operation_id'])).fetchone()
             if existing:
-                require(existing['payload']==payload);return existing['id']
+                old=json.loads(existing['payload']);new=dict(value)
+                previous_author=old.pop('user_id',None);author=new.pop('user_id',None)
+                require(old==new and (not previous_author or not author or previous_author==author))
+                if author and not previous_author:
+                    self.db.execute('UPDATE jobs SET payload=? WHERE id=?',(payload,existing['id']))
+                return existing['id']
             now=int(time.time())
             # Public contact endpoint: finite global and per-installation publication budget.
             require(self.db.execute('SELECT count(*) FROM jobs WHERE created>?',(now-86400,)).fetchone()[0]<200)
@@ -68,8 +73,24 @@ class Store:
     def pending(self):
         with self.lock:
             return [dict(r) for r in self.db.execute("SELECT j.*,c.issue AS existing_issue FROM jobs j LEFT JOIN conversations c USING(tenant,conversation) WHERE j.state IN ('pending','uncertain') AND NOT EXISTS(SELECT 1 FROM jobs earlier WHERE earlier.tenant=j.tenant AND earlier.conversation=j.conversation AND earlier.id<j.id AND earlier.state IN ('pending','uncertain')) ORDER BY j.id LIMIT 20")]
-    def publishing(self,job):
-        with self.lock,self.db:self.db.execute("UPDATE jobs SET state='uncertain' WHERE id=?",(job,))
+    def author(self,tenant,conversation):
+        # An old queued payload may lack the ID. A newly signed message in this
+        # same installation/conversation supplies it without rewriting the job.
+        with self.lock:
+            rows=self.db.execute('SELECT payload FROM jobs WHERE tenant=? AND conversation=? ORDER BY id DESC',(tenant,conversation))
+            for row in rows:
+                author=json.loads(row['payload']).get('user_id')
+                if author:return author
+        return None
+    def publishing(self,job,issue=None):
+        with self.lock,self.db:self.db.execute("UPDATE jobs SET state='uncertain',issue=? WHERE id=?",(issue,job))
+    def missing(self,job,issue):
+        # Only reset a known POST target after the broker proves it is gone.
+        # Keep historical publications and blobs; the next attempt owns cleanup.
+        with self.lock,self.db:
+            row=self.db.execute('SELECT tenant,conversation FROM jobs WHERE id=?',(job,)).fetchone()
+            self.db.execute('DELETE FROM conversations WHERE tenant=? AND conversation=? AND issue=?',(row['tenant'],row['conversation'],issue))
+            self.db.execute("UPDATE jobs SET state='pending',issue=NULL WHERE id=?",(job,))
     def published(self,job,issue,comment=None):
         with self.lock,self.db:
             row=self.db.execute('SELECT tenant,conversation FROM jobs WHERE id=?',(job,)).fetchone()

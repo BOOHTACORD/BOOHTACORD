@@ -1667,7 +1667,7 @@
     "acceptance": {
       "issue516": {
         "browser": "tools/qa/support_contact/run.py",
-        "scope": "ADR-029 default product peer, explicit current publication consent, server denial without consent, persistent public warning and composer gating on Web/Android/iOS. Repeatable QA does not publish GitHub issues; controlled live issue/comment/reply/file proof is a separate release record. Also preserves ordinary local A/B/S support DM text/files/replies, pair-only ACL, replacement and responsive captures. Component captures do not prove native/media acceptance.",
+        "scope": "ADR-029 default product peer, explicit current publication consent, server denial without consent, persistent public warning and composer gating on Web/Android/iOS. Repeatable QA does not publish GitHub issues; controlled live issue/comment/reply/file proof is a separate release record. Also preserves ordinary local A/B/S support DM text/files/replies, pair-only ACL, replacement and responsive captures. Component captures do not prove native/media acceptance. Server-only regressions: database author UUID in issue title, deleted-issue replacement including uncertain legacy jobs and preserved attachments, isolated reply remap, and no duplicate on closed issue/provider outage. Focused coverage: tests/support_gateway and backend/internal/support/bridge; no client UI change.",
         "native": "tools/qa/support_contact/native.py",
         "target": "integration_test/support_qa_test.dart"
       }
@@ -1766,10 +1766,10 @@
       "issue": 522,
       "decisions": {
         "web": "implementation_and_regression",
-        "ios": "implementation_and_regression",
-        "android": "implementation_and_regression"
+        "ios": "platform_exception",
+        "android": "platform_exception"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above."
     }
   }
 }
