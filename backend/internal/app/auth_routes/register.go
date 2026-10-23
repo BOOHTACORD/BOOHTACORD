@@ -58,7 +58,7 @@ func Register(mux *http.ServeMux, database *pgxpool.Pool, configuration runtimec
 	maintenanceService := maintenanceadmission.New(maintenancepostgres.New(maintenancepostgres.NewPoolDatabase(database)))
 
 	mux.Handle("POST /api/v1/auth/register", maintenanceadmission.Middleware(maintenanceService)(configuration.RegistrationLimiter.Middleware(registerapi.NewHandler(registerService))))
-	mux.Handle("POST /api/v1/auth/login", maintenanceadmission.Middleware(maintenanceService)(configuration.LoginLimiter.Middleware(loginapi.NewHandlerWithFailureLimiter(loginService, configuration.LoginFailureLimiter))))
+	mux.Handle("POST /api/v1/auth/login", maintenanceadmission.Middleware(maintenanceService)(configuration.LoginLimiter.Middleware(loginapi.NewHandlerWithAdmission(loginService, configuration.LoginAdmission))))
 	mux.Handle("POST /api/v1/auth/logout", logoutapi.NewHandler(logoutService))
 	mux.Handle("GET /api/v1/auth/session", sessionapi.Optional(sessionService)(sessionapi.CurrentHandler()))
 	mux.Handle("POST /api/v1/auth/password-reset/complete", configuration.PasswordResetLimiter.Middleware(completeresetapi.NewHandler(passwordResetService)))

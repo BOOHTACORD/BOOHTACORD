@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	admitlogin "voice-platform/backend/internal/identity/admit_login"
 	centralexport "voice-platform/backend/internal/observability/central_export"
 
 	livekitcredential "voice-platform/backend/internal/media/livekit_credential"
@@ -26,7 +27,7 @@ type Config struct {
 	MediaSnapshot                                                                snapshotlivekitpresence.Client
 	RegistrationLimiter                                                          *ratelimit.Limiter
 	LoginLimiter                                                                 *ratelimit.Limiter
-	LoginFailureLimiter                                                          *ratelimit.Limiter
+	LoginAdmission                                                               *admitlogin.Budget
 	PasswordResetLimiter                                                         *ratelimit.Limiter
 	UploadLimiter                                                                *ratelimit.Limiter
 	UploadAccountLimiter                                                         *ratelimit.Limiter

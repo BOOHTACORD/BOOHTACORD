@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'admission_response.dart';
+
 import '../../../models.dart';
 import '../../../core/http/transport.dart';
 
@@ -28,22 +30,22 @@ class AuthSessionApi {
   }) async {
     final body = jsonEncode({'login': login, 'password': password});
     if (register) {
-      await transport.checked(
+      await checkAuthenticationResponse(
+        transport,
         await transport.client.post(
           transport.uri('/auth/register'),
           headers: await transport.headers(jsonBody: true),
           body: body,
         ),
-        reportUnauthorized: false,
       );
     }
-    await transport.checked(
+    await checkAuthenticationResponse(
+      transport,
       await transport.client.post(
         transport.uri('/auth/login'),
         headers: await transport.headers(jsonBody: true),
         body: body,
       ),
-      reportUnauthorized: false,
     );
   }
 

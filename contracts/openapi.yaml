@@ -5002,7 +5002,7 @@
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
             "x-empty-body-possible": true },
           "429": {
-            "description": "Rate limit exceeded",
+            "description": "RATE_LIMITED before account lookup or password verification. Source limit remains 10 / 5 minutes / IP. Atomic normalized-login admission permits 8 attempts / 30 seconds per process (including success); denials do not extend the window. Bounded account-budget storage fails closed without evicting active entries. No session or credential verdict on denial. Retry manually after Retry-After; retain the editable form and current session. No automatic password retry.",
             "content": {
               "application/json": {
                 "schema": {

@@ -16,6 +16,7 @@ import (
 	clientupdates "voice-platform/backend/internal/client_updates/catalog"
 	runtimeconfig "voice-platform/backend/internal/config/runtime"
 	"voice-platform/backend/internal/database/pool"
+	admitlogin "voice-platform/backend/internal/identity/admit_login"
 	observeusage "voice-platform/backend/internal/identity/observe_usage"
 	"voice-platform/backend/internal/identity/password"
 	previewmemory "voice-platform/backend/internal/media/screen_preview/memory"
@@ -49,13 +50,16 @@ func Run(ctx context.Context) (result error) {
 	metrics := httpmetrics.New()
 	if err := metrics.RegisterCollector(ratelimit.NewCollector(map[string]*ratelimit.Limiter{
 		"registration": configuration.RegistrationLimiter, "login_source": configuration.LoginLimiter,
-		"login_account_failure": configuration.LoginFailureLimiter, "password_reset": configuration.PasswordResetLimiter,
-		"upload_source": configuration.UploadLimiter, "upload_account": configuration.UploadAccountLimiter,
+		"password_reset": configuration.PasswordResetLimiter,
+		"upload_source":  configuration.UploadLimiter, "upload_account": configuration.UploadAccountLimiter,
 		"upload_deployment": configuration.UploadDeploymentLimiter, "telemetry": configuration.TelemetryLimiter,
 	})); err != nil {
 		return err
 	}
 	poolMetrics := pool.NewMetrics()
+	if err := metrics.RegisterCollector(admitlogin.NewCollector(configuration.LoginAdmission)); err != nil {
+		return err
+	}
 	if err := metrics.RegisterCollector(password.NewCollector()); err != nil {
 		return err
 	}

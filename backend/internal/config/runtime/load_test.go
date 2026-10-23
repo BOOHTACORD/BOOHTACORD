@@ -29,7 +29,7 @@ func TestDefaultsAndExplicitTraceEndpointPreservePrecedence(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if configuration.RegistrationLimiter == nil || configuration.LoginLimiter == nil || configuration.LoginFailureLimiter == nil || configuration.PasswordResetLimiter == nil || configuration.UploadLimiter == nil || configuration.UploadAccountLimiter == nil || configuration.UploadDeploymentLimiter == nil || configuration.TelemetryLimiter == nil || configuration.RealtimeConnectionLimiter == nil || configuration.UploadAdmissionLimiter == nil {
+	if configuration.RegistrationLimiter == nil || configuration.LoginLimiter == nil || configuration.LoginAdmission == nil || configuration.PasswordResetLimiter == nil || configuration.UploadLimiter == nil || configuration.UploadAccountLimiter == nil || configuration.UploadDeploymentLimiter == nil || configuration.TelemetryLimiter == nil || configuration.RealtimeConnectionLimiter == nil || configuration.UploadAdmissionLimiter == nil {
 		t.Fatal("admission limiters were not configured")
 	}
 	if configuration.Address != ":8080" || configuration.TelemetryEndpoint != "http://collector:4318/v1/traces" {
