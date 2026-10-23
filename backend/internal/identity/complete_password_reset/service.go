@@ -41,7 +41,7 @@ func (service Service) Complete(context context.Context, input Input) error {
 	if err := registration.ValidatePassword(input.Password); err != nil {
 		return ErrInvalidOrExpired
 	}
-	passwordHash, err := password.Hash(input.Password)
+	passwordHash, err := password.Hash(context, input.Password)
 	if err != nil {
 		return fmt.Errorf("hash reset password: %w", err)
 	}

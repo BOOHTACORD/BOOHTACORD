@@ -106,10 +106,21 @@ class ApiTransport {
       code = error['code'] as String?;
       message = error['message'] as String?;
     }
+    Duration? retryAfter;
+    if (response.statusCode == 503 && code == 'AUTH_BUSY') {
+      final seconds = int.tryParse(response.headers['retry-after'] ?? '');
+      if (seconds != null && seconds >= 0 && seconds <= 86400) {
+        retryAfter = Duration(seconds: seconds);
+      }
+      message = retryAfter == null
+          ? 'Сервер занят. Подождите и повторите вручную.'
+          : 'Сервер занят. Повторите вручную через ${retryAfter.inSeconds} с.';
+    }
     throw ApiFailure(
       message ?? 'Запрос отклонён сервером (${response.statusCode}).',
       status: response.statusCode,
       code: code,
+      retryAfter: retryAfter,
     );
   }
 }

@@ -21,3 +21,25 @@ export function rateLimitError(response: Response): AuthenticationRateLimitError
   return new AuthenticationRateLimitError(retryAfterSeconds(response.headers.get('retry-after'),
     Number.isFinite(date) ? date : Date.now()))
 }
+
+export class AuthenticationCapacityError extends Error {
+  constructor(readonly retryAfter: number | null) {
+    super(retryAfter === null ? 'Сервер занят. Подождите и повторите вручную.'
+      : `Сервер занят. Повторите вручную через ${retryAfter} с.`)
+  }
+}
+
+export async function capacityError(response: Response): Promise<AuthenticationCapacityError | null> {
+  if (response.status !== 503) return null
+  try {
+    const body: unknown = await response.clone().json()
+    if (typeof body !== 'object' || body === null || !('error' in body)) return null
+    const error = body.error
+    if (typeof error !== 'object' || error === null || !('code' in error) || error.code !== 'AUTH_BUSY') return null
+    const date = Date.parse(response.headers.get('date') ?? '')
+    return new AuthenticationCapacityError(retryAfterSeconds(response.headers.get('retry-after'),
+      Number.isFinite(date) ? date : Date.now()))
+  } catch {
+    return null
+  }
+}

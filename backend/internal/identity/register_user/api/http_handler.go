@@ -7,6 +7,7 @@ import (
 	"errors"
 	"go.opentelemetry.io/otel/trace"
 	"net/http"
+	passwordapi "voice-platform/backend/internal/identity/password/api"
 	correlatesession "voice-platform/backend/internal/observability/correlate_session"
 
 	"voice-platform/backend/internal/identity/register_user"
@@ -37,6 +38,9 @@ func NewHandler(registerer Registerer) http.Handler {
 		}
 
 		account, err := registerer.Register(request.Context(), registeruser.Input{Login: body.Login, Password: body.Password})
+		if passwordapi.WriteBusy(writer, request, err) {
+			return
+		}
 		if errors.Is(err, registration.ErrInvalidLogin) || errors.Is(err, registration.ErrInvalidPassword) {
 			writeError(writer, request, http.StatusBadRequest, "VALIDATION_FAILED", "Некорректные данные регистрации")
 			return

@@ -25,7 +25,7 @@ func TestCompleteHashesNewPasswordAndConsumesReset(t *testing.T) {
 	if !session.Verify(issued.Token, store.digest) {
 		t.Fatal("store did not receive reset digest")
 	}
-	if valid, err := password.Verify("new correct horse battery staple", store.passwordHash); err != nil || !valid {
+	if valid, err := password.Verify(context.Background(), "new correct horse battery staple", store.passwordHash); err != nil || !valid {
 		t.Fatalf("stored password hash valid = %v, error = %v", valid, err)
 	}
 }

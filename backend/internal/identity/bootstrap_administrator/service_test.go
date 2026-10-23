@@ -20,7 +20,7 @@ func TestBootstrapCreatesAdministratorWithoutReusingRegistrationRole(t *testing.
 	if account.ID != "77b14148-7723-4c14-8e69-20a5d9b77972" || account.Login != "owner" || account.Role != RoleAdministrator {
 		t.Fatalf("account = %#v", account)
 	}
-	if valid, err := password.Verify("correct horse battery staple", accounts.account.PasswordHash); err != nil || !valid {
+	if valid, err := password.Verify(context.Background(), "correct horse battery staple", accounts.account.PasswordHash); err != nil || !valid {
 		t.Fatalf("stored password valid = %v, error = %v", valid, err)
 	}
 }

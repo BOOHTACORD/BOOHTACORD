@@ -16,7 +16,7 @@ func TestRecoverNormalizesLoginAndHashesReplacementPassword(t *testing.T) {
 	if accounts.login != "owner" {
 		t.Fatalf("login = %q", accounts.login)
 	}
-	valid, err := password.Verify("new correct horse battery staple", accounts.passwordHash)
+	valid, err := password.Verify(context.Background(), "new correct horse battery staple", accounts.passwordHash)
 	if err != nil || !valid {
 		t.Fatalf("replacement password valid = %v, error = %v", valid, err)
 	}

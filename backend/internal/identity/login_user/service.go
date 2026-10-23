@@ -65,7 +65,7 @@ func (service Service) Login(context context.Context, input Input) (result Resul
 	}
 	account, err := service.accounts.FindByLogin(context, login)
 	if errors.Is(err, ErrAccountNotFound) {
-		if err := password.VerifyUnknown(input.Password); err != nil {
+		if err := password.VerifyUnknown(context, input.Password); err != nil {
 			return Result{}, fmt.Errorf("verify unknown password: %w", err)
 		}
 		return Result{}, ErrInvalidCredentials
@@ -73,7 +73,7 @@ func (service Service) Login(context context.Context, input Input) (result Resul
 	if err != nil {
 		return Result{}, fmt.Errorf("find account: %w", err)
 	}
-	valid, err := password.Verify(input.Password, account.PasswordHash)
+	valid, err := password.Verify(context, input.Password, account.PasswordHash)
 	if err != nil {
 		return Result{}, fmt.Errorf("verify password hash: %w", err)
 	}

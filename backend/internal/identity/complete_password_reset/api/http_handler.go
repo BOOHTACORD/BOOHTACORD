@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	passwordapi "voice-platform/backend/internal/identity/password/api"
 
 	"voice-platform/backend/internal/identity/complete_password_reset"
 	"voice-platform/backend/internal/security/request_id"
@@ -31,6 +32,9 @@ func NewHandler(completer Completer) http.Handler {
 			return
 		}
 		if err := completer.Complete(request.Context(), completepasswordreset.Input{Token: body.Token, Password: body.Password}); err != nil {
+			if passwordapi.WriteBusy(writer, request, err) {
+				return
+			}
 			if errors.Is(err, completepasswordreset.ErrInvalidOrExpired) {
 				writeError(writer, request, http.StatusBadRequest, "VALIDATION_FAILED", "Некорректные данные сброса пароля")
 				return

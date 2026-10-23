@@ -58,6 +58,11 @@ tasks:
     requirements: [REQ-AUTH-01, REQ-SECURITY-01]
     depends_on: [T-010]
     evidence: [backend/internal/identity/password/dummy_test.go, backend/internal/identity/password/login_privacy_test.go, backend/internal/identity/password/password_test.go, evidence/security/sec02-dummy-hash-2026-10-23.md]
+  - id: SEC-004
+    title: Context-aware fail-fast shared Argon2 admission (GitHub #532)
+    requirements: [REQ-AUTH-01, REQ-AUTH-03, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [T-010, T-012, SEC-002]
+    evidence: [backend/internal/identity/password/admission_test.go, backend/internal/identity/password/reset_admission_test.go, backend/internal/identity/password/saturation_test.go, clients/flutter/test/auth_capacity_test.dart, clients/web/src/identity/authentication_flow/retry_after.spec.ts, evidence/security/sec04-kdf-admission-2026-10-23.md]
   - id: T-013
     title: Immutable bootstrap and audited administrator recovery
     requirements: [REQ-AUTH-04]

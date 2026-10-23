@@ -14,7 +14,11 @@
       "docs/adr/ADR-002-opaque-session-tokens.md",
       "evidence/qa/web-session-retention-2026-10-21.md",
       "clients/web/tests/auth_session_retention/**",
-      "tools/qa/local_features/features.json"
+      "tools/qa/local_features/features.json",
+      "backend/internal/identity/password/**",
+      "clients/flutter/lib/src/core/http/transport.dart",
+      "clients/flutter/lib/src/core/http/api_failure.dart",
+      "clients/flutter/lib/src/features/session/password_reset/**"
     ],
     "web": [
       "tests/password_generation/playwright.config.ts",
@@ -23,7 +27,9 @@
     ],
     "flutter": [
       "test/password_generation/visual_test.dart",
-      "test/password_reset_screen_test.dart"
+      "test/password_reset_screen_test.dart",
+      "test/auth_capacity_test.dart",
+      "test/auth_screen_test.dart"
     ],
     "acceptance": {
       "session_retention": {
@@ -45,6 +51,20 @@
           "clients/flutter/test/password_reset_screen_test.dart"
         ],
         "scope": "On reset completion, independently show or hide the new password and confirmation; both are masked by default."
+      },
+      "bounded_password_admission": {
+        "issue": 532,
+        "focused": [
+          "backend/internal/identity/password/admission_test.go",
+          "backend/internal/identity/password/saturation_test.go",
+          "backend/internal/identity/password/reset_admission_test.go",
+          "clients/web/src/identity/authentication_flow/retry_after.spec.ts",
+          "clients/web/tests/password_generation/capacity.browser.spec.ts",
+          "clients/web/tests/password_reset_visibility/visibility.browser.spec.ts",
+          "clients/flutter/test/auth_capacity_test.dart",
+          "clients/flutter/test/auth_screen_test.dart"
+        ],
+        "scope": "Four process-local active Argon2 slots, zero waiting queue, context cancellation and 503 AUTH_BUSY with Retry-After. Web and shared Flutter preserve editable auth/reset forms, cookie and explicit manual retry; no password persistence or automatic request loop. Native smoke and forced-capacity unit/browser scenarios are separate evidence."
       }
     },
     "parity": [
@@ -88,13 +108,13 @@
       }
     ],
     "parity_review": {
-      "issue": 522,
+      "issue": 532,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
+      "scope": "SEC-004: context-aware KDF admission and AUTH_BUSY manual retry. Shared Flutter HTTP transport and Web auth/reset/profile paths keep sessions and editable forms; no automatic password retry. Source 70fd162def412a3b7e22be4630675213f9f5f8ba: 1623 Web and 1606 Flutter tests passed; owned real API browser/Android emulator/iOS simulator smoke passed. Forced-capacity fixtures and normal native smoke are distinct; no physical/media/release claim. Evidence: evidence/security/sec04-kdf-admission-2026-10-23.md. Existing telemetry bind, unauthorized handling, schema and privacy remain unchanged."
     }
   },
   "connection_status": {
@@ -1608,12 +1628,13 @@
       }
     ],
     "parity_review": {
-      "issue": 513,
+      "issue": 532,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SEC-004: context-aware KDF admission and AUTH_BUSY manual retry. Shared Flutter HTTP transport and Web auth/reset/profile paths keep sessions and editable forms; no automatic password retry. Source 70fd162def412a3b7e22be4630675213f9f5f8ba: 1623 Web and 1606 Flutter tests passed; owned real API browser/Android emulator/iOS simulator smoke passed. Forced-capacity fixtures and normal native smoke are distinct; no physical/media/release claim. Evidence: evidence/security/sec04-kdf-admission-2026-10-23.md. Existing telemetry bind, unauthorized handling, schema and privacy remain unchanged."
     }
   },
   "support": {

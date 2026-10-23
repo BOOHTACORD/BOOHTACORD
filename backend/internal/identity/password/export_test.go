@@ -1,6 +1,7 @@
 package password
 
 import (
+	"context"
 	"sync/atomic"
 	"testing"
 )
@@ -17,6 +18,17 @@ func CountDerivationsForTest(t testing.TB) func() int64 {
 	}
 	t.Cleanup(func() { deriveKey = original })
 	return count.Load
+}
+
+func SaturateForTest(t testing.TB) {
+	t.Helper()
+	for range activeLimit {
+		permit, err := kdfAdmission.acquire(context.Background())
+		if err != nil {
+			t.Fatal("test cannot reserve KDF capacity")
+		}
+		t.Cleanup(permit.release)
+	}
 }
 
 func CorruptDummyForTest(t testing.TB) {

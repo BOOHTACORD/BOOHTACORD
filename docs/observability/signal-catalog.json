@@ -23,7 +23,14 @@
         "app.auth.signed_out",
         "auth.login",
         "auth.login.server",
-        "session.restore"
+        "session.restore",
+        "voice_platform_auth_kdf_active",
+        "voice_platform_auth_kdf_admission_seconds",
+        "voice_platform_auth_kdf_cancelled_total",
+        "voice_platform_auth_kdf_capacity",
+        "voice_platform_auth_kdf_rejected_total",
+        "voice_platform_auth_kdf_waiting",
+        "voice_platform_auth_kdf_work_seconds"
       ]
     },
     {
@@ -386,6 +393,66 @@
         "route",
         "status"
       ],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "auth",
+      "producer": [
+        {
+          "path": "backend/internal/identity/password/admission.go",
+          "line": 31,
+          "sha256": "dc758ad3cec8f363fb3a1885f3296af5c931f5e6a5976534a04542d56461a14b"
+        }
+      ],
+      "source_name": "voice_platform_auth_kdf_cancelled_total",
+      "exported_name": "voice_platform_auth_kdf_cancelled_total",
+      "type": "Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "auth",
+      "producer": [
+        {
+          "path": "backend/internal/identity/password/admission.go",
+          "line": 30,
+          "sha256": "dc758ad3cec8f363fb3a1885f3296af5c931f5e6a5976534a04542d56461a14b"
+        }
+      ],
+      "source_name": "voice_platform_auth_kdf_rejected_total",
+      "exported_name": "voice_platform_auth_kdf_rejected_total",
+      "type": "Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
       "label_scope": "declared constructor labels",
       "buckets": "prometheus defaults",
       "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
@@ -3288,6 +3355,96 @@
       }
     },
     {
+      "scenario": "auth",
+      "producer": [
+        {
+          "path": "backend/internal/identity/password/metrics.go",
+          "line": 16,
+          "sha256": "a09f0ba76af66f8338937c4f0b7708556fad136493d4602f11ba1d1b5df2605f"
+        }
+      ],
+      "source_name": "voice_platform_auth_kdf_active",
+      "exported_name": "voice_platform_auth_kdf_active",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "auth",
+      "producer": [
+        {
+          "path": "backend/internal/identity/password/metrics.go",
+          "line": 18,
+          "sha256": "a09f0ba76af66f8338937c4f0b7708556fad136493d4602f11ba1d1b5df2605f"
+        }
+      ],
+      "source_name": "voice_platform_auth_kdf_capacity",
+      "exported_name": "voice_platform_auth_kdf_capacity",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "auth",
+      "producer": [
+        {
+          "path": "backend/internal/identity/password/metrics.go",
+          "line": 17,
+          "sha256": "a09f0ba76af66f8338937c4f0b7708556fad136493d4602f11ba1d1b5df2605f"
+        }
+      ],
+      "source_name": "voice_platform_auth_kdf_waiting",
+      "exported_name": "voice_platform_auth_kdf_waiting",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
       "scenario": "desktop_update",
       "producer": [
         {
@@ -4277,6 +4434,66 @@
       ],
       "label_scope": "declared constructor labels",
       "buckets": "prometheus.DefBuckets",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "auth",
+      "producer": [
+        {
+          "path": "backend/internal/identity/password/admission.go",
+          "line": 32,
+          "sha256": "dc758ad3cec8f363fb3a1885f3296af5c931f5e6a5976534a04542d56461a14b"
+        }
+      ],
+      "source_name": "voice_platform_auth_kdf_admission_seconds",
+      "exported_name": "voice_platform_auth_kdf_admission_seconds",
+      "type": "Histogram",
+      "unit": "s",
+      "declared_unit": "s",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "declared constructor labels",
+      "buckets": "[]float64{.000001, .00001, .0001, .001, .01",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "auth",
+      "producer": [
+        {
+          "path": "backend/internal/identity/password/admission.go",
+          "line": 33,
+          "sha256": "dc758ad3cec8f363fb3a1885f3296af5c931f5e6a5976534a04542d56461a14b"
+        }
+      ],
+      "source_name": "voice_platform_auth_kdf_work_seconds",
+      "exported_name": "voice_platform_auth_kdf_work_seconds",
+      "type": "Histogram",
+      "unit": "s",
+      "declared_unit": "s",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "declared constructor labels",
+      "buckets": "[]float64{.01, .025, .05, .1, .25, .5, 1",
       "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
       "storage": "private Prometheus when the declared delivery target is configured",
       "consumers": [],
@@ -8921,7 +9138,7 @@
         {
           "path": "backend/internal/identity/login_user/service.go",
           "line": 58,
-          "sha256": "0aa434c43259fd0b216c120a8fff7cc31269afd1d2a5f51b1ec42260dfcf9f46"
+          "sha256": "4e75b8f552a8033f9c6296849e53e67ebf0a5dde2bb48732053cc02d06f4dffd"
         }
       ],
       "source_name": "auth.login.server",
