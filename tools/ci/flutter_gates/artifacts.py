@@ -15,6 +15,7 @@ VISUALS = (
     'password-reset-visibility-mobile.png',
     # #532: synthetic AUTH_BUSY response, masked password and manual retry.
     'auth-capacity-mobile.png',
+    'auth-rate-limit-mobile.png',
 ) + tuple(f'flutter-admin-{section}-{profile}-{size}.png'
           for section in ('guild', 'members', 'roles', 'channels', 'audit', 'media', 'readiness')
           for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900'))) + tuple(

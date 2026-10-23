@@ -53,6 +53,11 @@ tasks:
     requirements: [REQ-AUTH-03]
     depends_on: [T-010]
     evidence: [backend-reset-tests]
+  - id: SEC-001
+    title: Atomic normalized-account login admission before verifier (GitHub #533)
+    requirements: [REQ-AUTH-01, REQ-AUTH-03, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [T-010, T-012, SEC-002, SEC-004]
+    evidence: [backend/internal/identity/admit_login/budget_test.go, backend/internal/identity/login_user/api/admission_test.go, backend/internal/identity/login_user/api/admission_database_test.go, backend/internal/identity/password/account_budget_test.go, clients/flutter/test/auth_rate_limit_test.dart, evidence/security/sec01-login-admission-2026-10-23.md]
   - id: SEC-002
     title: Valid process dummy hash and equivalent negative login KDF work (GitHub #534)
     requirements: [REQ-AUTH-01, REQ-SECURITY-01]
