@@ -108,13 +108,13 @@
       }
     ],
     "parity_review": {
-      "issue": 522,
+      "issue": 532,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
+      "scope": "SEC-004: context-aware KDF admission and AUTH_BUSY manual retry. Shared Flutter HTTP transport and Web auth/reset/profile paths keep sessions and editable forms; no automatic password retry. Source 70fd162def412a3b7e22be4630675213f9f5f8ba: 1623 Web and 1606 Flutter tests passed; owned real API browser/Android emulator/iOS simulator smoke passed. Forced-capacity fixtures and normal native smoke are distinct; no physical/media/release claim. Evidence: evidence/security/sec04-kdf-admission-2026-10-23.md. Existing telemetry bind, unauthorized handling, schema and privacy remain unchanged."
     }
   },
   "connection_status": {
@@ -1628,12 +1628,13 @@
       }
     ],
     "parity_review": {
-      "issue": 513,
+      "issue": 532,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": "SEC-004: context-aware KDF admission and AUTH_BUSY manual retry. Shared Flutter HTTP transport and Web auth/reset/profile paths keep sessions and editable forms; no automatic password retry. Source 70fd162def412a3b7e22be4630675213f9f5f8ba: 1623 Web and 1606 Flutter tests passed; owned real API browser/Android emulator/iOS simulator smoke passed. Forced-capacity fixtures and normal native smoke are distinct; no physical/media/release claim. Evidence: evidence/security/sec04-kdf-admission-2026-10-23.md. Existing telemetry bind, unauthorized handling, schema and privacy remain unchanged."
     }
   },
   "support": {

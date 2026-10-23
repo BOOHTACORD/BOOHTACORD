@@ -62,7 +62,7 @@ deployment quota, production load profile, physical media or release gate.
 | Contract verifier: 19 tests, OpenAPI lint and 117 public operations / 4 private exclusions | PASS |
 | Spec traceability: 39 approved IDs using the committed index; Windows brief unavailable | PASS |
 | Signal catalog: 9 tests, seven aggregate KDF families added, existing producer fingerprints refreshed | PASS |
-| Client parity policy | PASS |
+| Client parity policy, including `--base 0d6712eff067a570b41911f6d10a3b647606f064` and its two policy tests | PASS |
 | Full Web unit suite (1623 tests / 487 files) and production build | PASS |
 | Local QA Web browser profiles, including forced capacity on mobile/desktop login/reset | PASS |
 | Real Go/PostgreSQL/Web critical lifecycle at widths 1440 and 393 | PASS |
@@ -74,6 +74,12 @@ Local identity race suites were run without a disposable PostgreSQL DSN; their
 database-dependent cases skipped. Real-stack browser/native smoke is recorded
 separately and does not prove the new saturation path against PostgreSQL.
 The issue changes no SQL or transaction and does not require SQL ACL acceptance.
+
+The first PR CI attempt required fresh parity review decisions relative to the
+base for auth and telemetry (the latter owns the common Flutter HTTP transport).
+Both decisions now cite the completed source-bound Web/Android/iOS regressions.
+The base-aware verifier passed locally; only registry/evidence metadata changed
+after local runtime acceptance, with no implementation or screenshot baseline change.
 
 Local run: `.out/local-features/20261023-161039/`. Forced-capacity browser
 responses are controlled HTTP fixtures; native smoke uses a real local API.
