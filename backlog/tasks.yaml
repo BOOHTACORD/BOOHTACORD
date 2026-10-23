@@ -53,6 +53,11 @@ tasks:
     requirements: [REQ-AUTH-03]
     depends_on: [T-010]
     evidence: [backend-reset-tests]
+  - id: SEC-002
+    title: Valid process dummy hash and equivalent negative login KDF work (GitHub #534)
+    requirements: [REQ-AUTH-01, REQ-SECURITY-01]
+    depends_on: [T-010]
+    evidence: [backend/internal/identity/password/dummy_test.go, backend/internal/identity/password/login_privacy_test.go, backend/internal/identity/password/password_test.go, evidence/security/sec02-dummy-hash-2026-10-23.md]
   - id: T-013
     title: Immutable bootstrap and audited administrator recovery
     requirements: [REQ-AUTH-04]
