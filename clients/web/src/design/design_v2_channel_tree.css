@@ -78,4 +78,6 @@
   .channel-navigation .channel-category-disclosure, .channel-navigation .channel-category h2 { min-height: 44px; }
   .sidebar .sidebar-tabs { height: 52px; flex-basis: 52px; }
   .sidebar .sidebar-tabs button { height: 44px; min-height: 44px; }
+  .sidebar.is-open .sidebar-tabs { height: 44px; flex-basis: 44px; padding-block: 0; }
+  .sidebar.is-open .sidebar-tabs button { margin-block: 0; }
 }

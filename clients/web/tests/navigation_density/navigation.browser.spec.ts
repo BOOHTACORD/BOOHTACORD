@@ -85,6 +85,20 @@ test('one scroll surface, compact desktop rhythm and reachable final row above d
 })
 test.describe('touch', () => {
   test.use({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 768 } })
+  test('keeps a compact bottom gutter below the mobile section tabs without shrinking touch targets', async ({ page }, testInfo) => {
+    await open(page)
+    const geometry = await page.locator('.sidebar-tabs').evaluate(nav => {
+      const button = nav.querySelector<HTMLButtonElement>('button[aria-pressed="true"]')!
+      const navRect = nav.getBoundingClientRect()
+      const buttonRect = button.getBoundingClientRect()
+      const pseudoBottom = Number.parseFloat(getComputedStyle(button, '::before').bottom) || 0
+      return { navHeight: navRect.height, buttonHeight: buttonRect.height, visualBottomGap: navRect.bottom - buttonRect.bottom + pseudoBottom }
+    })
+    expect(geometry.navHeight).toBe(44)
+    expect(geometry.buttonHeight).toBe(44)
+    expect(geometry.visualBottomGap).toBe(6)
+    await page.screenshot({ path: testInfo.outputPath('mobile-sidebar-tabs-tight-bottom.png') })
+  })
   test('category and channel actions remain painted and hit-testable without hover', async ({ page }) => {
     await open(page)
     const action = page.locator('.channel-actions-button').first()
