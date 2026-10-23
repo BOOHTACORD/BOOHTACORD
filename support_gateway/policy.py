@@ -1,6 +1,7 @@
 """Finite, repository-scoped capabilities for public product support."""
 import re
 from datetime import datetime
+from uuid import UUID
 
 REPOSITORY='Egkurilov/BOOHTACORD'
 ASSET_TAG='boohtacord-support-attachments'
@@ -25,8 +26,13 @@ def integer(value,maximum=2**53-1):
 
 
 def publication(value,version):
-    require(isinstance(value,dict) and set(value)=={'operation_id','conversation','body','consent_version','files'})
+    fields={'operation_id','conversation','body','consent_version','files'}
+    # Old installations and already accepted jobs remain readable during rollout.
+    require(isinstance(value,dict) and set(value) in (fields,fields|{'user_id'}))
     require(hex_value(value['operation_id'],32) and hex_value(value['conversation'],32))
+    if 'user_id' in value:
+        require(isinstance(value['user_id'],str))
+        author=UUID(value['user_id']);require(author.int!=0 and str(author)==value['user_id'])
     require(type(value['consent_version']) is int and value['consent_version']==integer(version))
     text(value['body'],8000,empty=True)
     files=value['files'];require(isinstance(files,list) and len(files)<=10)
@@ -49,12 +55,13 @@ def broker_request(value):
         'repository':set(), 'asset_release':set(),
         'create_issue':{'title','body'},'create_comment':{'issue','body'},
         'comments':{'since','page'},'issue_comments':{'issue','page'},
-        'permission':{'login'},'find_operation':{'marker'},
+        'permission':{'login'},'find_operation':{'marker'},'issue':{'issue'},
         'upload_asset':{'release','blob','name','size','sha256'},
     }
     require(operation in fields and set(value)==fields[operation]|{'operation'})
     if operation=='create_issue':text(value['title'],120);text(value['body'],64000)
     if operation=='create_comment':integer(value['issue']);text(value['body'],64000)
+    if operation=='issue':integer(value['issue'])
     if operation=='issue_comments':integer(value['issue']);integer(value['page'],100)
     if operation=='comments':
         text(value['since'],40);stamp=datetime.fromisoformat(value['since'].replace('Z','+00:00'))

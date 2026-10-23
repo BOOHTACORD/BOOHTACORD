@@ -1,0 +1,40 @@
+{
+  "task": "SP-002 follow-up to #516 / PR #517 and #522",
+  "date": "2026-10-23",
+  "status": "FOCUSED_PASS_RUNTIME_PENDING",
+  "base_revision": "28fc0a32776e15622ef38ce6c983d8f5a58ae5ee",
+  "changes": [
+    "Issue title contains database author user_id, canonical UUID only",
+    "Definitive missing known issue requeues unpublished operation and replaces route; preserved attachments and history",
+    "Legacy uncertain comment recovery and additive user_id idempotency upgrade",
+    "Closed issues and ambiguous/auth/rate-limit/provider failures never trigger blind duplicate creation"
+  ],
+  "tests": {
+    "gateway": {
+      "status": "PASS",
+      "count": 34,
+      "red": "new policy, title and recovery tests failed before implementation"
+    },
+    "go_postgresql": {
+      "status": "PASS",
+      "race": true,
+      "packages": [
+        "internal/support/bridge",
+        "internal/support/contact"
+      ],
+      "red": "old SQL sender failed new author assertion against actual disposable PostgreSQL"
+    },
+    "contracts": "PASS; 19 tests, 117 public operations, 4 exclusions",
+    "traceability": "PASS; 39 committed requirement IDs; approved brief unavailable on this host",
+    "github_provider_readonly": "PASS; actual gh include-header response parsing, repository, retained synthetic issue and absent issue; no GitHub write/delete",
+    "web_unit": "PASS; 1622 tests / 487 files",
+    "web_build": "PASS",
+    "web_component_profiles": "PASS; 10 browser profiles",
+    "generic_real_stack": "FAIL before API/browser startup: disposable Tempo readiness timeout, both widths",
+    "focused_support_real_stack": "RUNNING with bounded startup readiness wait increased to 90 seconds; assertions unchanged",
+    "native_runtime": "NOT_RUN; Go/gateway-only fix, client code unchanged",
+    "public_issue_deletion_write": "NOT_RUN; deletion/race replay tested with controlled provider status fixtures, no user issue was deleted"
+  },
+  "deployment": "NOT_RUN",
+  "source_notes": "Main user checkout and prior iOS evidence preserved; no production journal/DM/attachment content read."
+}

@@ -64,13 +64,16 @@ func TestWorkerOnlyExportsNewConsentedSupportAndImportsReplyExactlyOnce(t *testi
 		case "/support/v1/status":
 			json.NewEncoder(w).Encode(map[string]any{"notice_version": 1, "public": true, "repository": "Egkurilov/BOOHTACORD"})
 		case "/support/v1/messages":
-			var payload publication
+			var payload struct {
+				publication
+				UserID string `json:"user_id"`
+			}
 			if json.NewDecoder(r.Body).Decode(&payload) != nil {
 				invalid = true
 			}
 			exports++
 			conversation = payload.Conversation
-			if payload.Body != "Synthetic public test" || payload.Consent != 1 || conversation == supportDM || payload.Operation == "" || len(payload.Files) != 1 {
+			if payload.UserID != actor || payload.Body != "Synthetic public test" || payload.Consent != 1 || conversation == supportDM || payload.Operation == "" || len(payload.Files) != 1 {
 				invalid = true
 			}
 			w.WriteHeader(202)
