@@ -137,13 +137,13 @@
       }
     ],
     "parity_review": {
-      "issue": 533,
+      "issue": 535,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SEC-001: Web existing 429 handling and shared Flutter authentication manual Retry-After preserve masked editable forms/session without automatic retry or password persistence. Server admission is common to clients. Source 2d8968b11ca6a77f83304d05d6ad9bde5d8ade2c: all 18 automated local stages PASS, 1623 Web and 1613 Flutter tests passed (1 Flutter skip), owned real API browser/Android emulator/iOS simulator smoke PASS. Relevant original-resolution auth/rate-limit/native auth/workspace/logout images reviewed; aggregate unrelated gallery remains REVIEW_REQUIRED. Forced-429 fixtures differ from normal native smoke; no physical/media/deployment claim. Evidence: evidence/security/sec01-login-admission-2026-10-23.md."
+      "scope": "SEC-003: shared backend read-only reset capability preflight; existing Web/shared Flutter error and success implementation retained and regression-tested without auto retry/logout. Source 16e6a49a151bbc32c1c18a3a3479e1e0ca4c1768: 1623 Web and 1617 Flutter tests PASS (1 Flutter skip), desktop real API and Android/iOS native smoke PASS. Original local report retains 17 PASS / mobile burst-50 FAIL before reset; unchanged same-source exact mobile lifecycle rerun PASS including reset completion and used-link rejection. Relevant original-resolution result/form/native auth-workspace images reviewed; no baseline approval or physical/media/deployment claim. Evidence: evidence/security/sec03-reset-preflight-2026-10-23.md."
     }
   },
   "connection_status": {
