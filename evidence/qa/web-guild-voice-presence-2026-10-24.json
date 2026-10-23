@@ -1,0 +1,85 @@
+{
+  "feature": "DW-011",
+  "issue": 350,
+  "date": "2026-10-24",
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "scope": "Web guild roster voice channel labels and screen share state",
+  "candidate_base": "7b22023965f4071959e2eb455d31f7354ca440bf",
+  "candidate_diff_sha256": "2f3ea3092eb35ed64fdf45907c3e56943bc1fa81ed4b20d38ca4ac293a5c1840",
+  "source_manifest": {
+    "clients/web/src/design/design_v2_member_roster.css": "7a422a1be13accdd8082e8fb889915cbb6420a11f24c1f2d3db57daa4b9a67f3",
+    "clients/web/src/workspace/GuildPresenceGroup.vue": "55538f622ee9ef22d8ac71c06b63fa9d16ecbc3b162388f45254c79333da7b7b",
+    "clients/web/src/workspace/WorkspaceApp.vue": "1fa7f9fe53e6036307a548d3ed2e14c9f1ee8e84c6125a02f174a9c06f806502",
+    "clients/web/src/workspace/WorkspaceMembersPanel.vue": "d373bc88fa3b3bdfcfa7d40338571fe622efd172a244ddb947b355ed80f422c0",
+    "clients/web/src/workspace/guild_voice_presence.ts": "6390dd146d766509340e702ef6d328706a9fe2599b95019804ca53c0a2e2b511",
+    "clients/web/src/workspace/guild_voice_presence.spec.ts": "9544bec92685b92e6cbe1f1ca0e5c6680c767895e19ee9a241ca8485e0beab33",
+    "clients/web/tests/member_roster/fixture.ts": "ee7f587d8d710966559dcdc70dcf6682e7e0e614dccd21fda02772b037e88d7d",
+    "clients/web/tests/member_roster/roster.browser.spec.ts": "9cac8c073e734015f5a4230b33f05e4d050cfbf09d14837fe7f32f98d32f30c3",
+    "tools/qa/local_features/features.json": "9c7468494352a9bbb29f4c79a6a43d84f16c6563af34d96e6569be1bad42d4ce"
+  },
+  "verification": {
+    "local_feature_command": "./tools/qa/local_features/check.sh --feature shell --feature auth --feature connection_status --feature screen --feature support --feature voice --platform web --base origin/master --real-stack",
+    "run": ".out/local-features/20261024-004923",
+    "report_status": "REVIEW_REQUIRED",
+    "visual_review_in_report": "NOT_RUN",
+    "stages": {
+      "web-unit": "PASS",
+      "web-build": "PASS",
+      "web-accessibility": "PASS",
+      "web-auth_session_retention": "PASS",
+      "web-connection_status": "PASS",
+      "web-control_consistency": "PASS",
+      "web-conversation_action_disclosure": "PASS",
+      "web-header_actions": "PASS",
+      "web-member_popover": "PASS",
+      "web-member_roster": "PASS",
+      "web-mentions_inbox": "PASS",
+      "web-microcopy": "PASS",
+      "web-mini_player": "PASS",
+      "web-navigation_density": "PASS",
+      "web-password_generation": "PASS",
+      "web-password_reset_visibility": "PASS",
+      "web-readonly_archive": "PASS",
+      "web-responsive_shell": "PASS",
+      "web-screen_profile": "PASS",
+      "web-screen_share_ui": "PASS",
+      "web-voice_disconnect_notice": "PASS",
+      "web-voice_interface": "PASS",
+      "web-real-stack-1440": "PASS",
+      "web-real-stack-393": "PASS"
+    },
+    "unit_summary": "488 test files, 1625 tests passed",
+    "member_roster_browser_summary": "23 passed"
+  },
+  "visual_review": {
+    "status": "PASS_SCOPED",
+    "screenshots_inspected_at_source_resolution": 1,
+    "screenshots": [
+      {
+        "path": "images/web-member_roster/roster.browser-guild-roste-34737-reen-icon-while-they-stream/guild-roster-voice-stream.png",
+        "sha256": "f98f2f8f40bf105958ff54098d371a0b5706043e3be651e07514e6044ced5fbe",
+        "raster": "1440x900"
+      }
+    ],
+    "notes": [
+      "Участник с активной голосовой комнатой получает подпись под именем; при screenSharing значок динамика заменён значком экрана.",
+      "Длинное имя участника и название комнаты обрезаются внутри строки, горизонтального переполнения на снимке нет.",
+      "Текстовая подпись остаётся видимой и читаемой, aria-label сообщает голосовую комнату и состояние трансляции."
+    ],
+    "limits": [
+      "Остальные скриншоты полной галереи не проходили визуальную проверку; общий отчёт остаётся REVIEW_REQUIRED.",
+      "Мобильный браузерный сценарий принят автоматическими проверками, но снимок нового состояния снят только при ширине 1440 px.",
+      "Baseline не утверждался."
+    ]
+  },
+  "superseded_attempts": [
+    {
+      "run": ".out/local-features/20261024-004038",
+      "status": "FAIL",
+      "cause": "Checkout under /private/tmp was outside Colima shared mounts; Tempo config bind mount became a directory and the service never became ready. Confirmed with an isolated reproduction.",
+      "resolution": "Moved the checkout beneath the workspace .out directory and reran the complete selected Web acceptance; all 24 stages passed."
+    }
+  ],
+  "native_runtime": "NOT_RUN_OUT_OF_SCOPE_WEB_ONLY"
+}

@@ -6,9 +6,14 @@
 .members-panel .member-card { min-height: 44px; gap: 10px; border-radius: 6px; padding: 4px 6px; }
 .members-panel .member-card:hover { background: var(--gc-surface-raised); }
 .members-panel .member-copy { flex: 1; min-width: 0; }
+.members-guild-roster .member-copy { display: grid; gap: 2px; }
 .members-panel .member-avatar { width: 32px; height: 32px; flex-basis: 32px; border-radius: 50%; font-size: .8125rem; font-weight: 600; }
 .members-panel .member-avatar-wrap { width: 32px; height: 32px; flex-basis: 32px; }
 .members-panel .member-name { font-weight: 500; }
+.members-panel .member-voice-presence { display: flex; min-width: 0; align-items: center; gap: 4px; overflow: hidden; color: var(--gc-text-muted); font-size: .6875rem; line-height: 12px; white-space: nowrap; }
+.members-panel .member-voice-presence.is-streaming { color: var(--gc-accent-text); }
+.members-panel .member-voice-presence svg { width: 12px; height: 12px; flex: 0 0 12px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.75; }
+.members-panel .member-voice-presence > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .members-guild-roster .member-presence-dot--online { box-sizing: content-box; bottom: 0; }
 .members-guild-roster .member-presence-dot--offline { display: block; border-radius: 50%; background: var(--gc-aside); box-shadow: inset 0 0 0 2px #9ca3b2; }
 .members-guild-roster .member-presence-dot--unknown { border-radius: 2px; }
