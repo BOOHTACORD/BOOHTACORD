@@ -129,6 +129,8 @@
 .screen-viewer-panel-toggles button, .screen-viewer-panel-close { min-height: 36px; border: 1px solid var(--gc-border-subtle); border-radius: 8px; padding: 6px 10px; background: rgba(8, 10, 15, .85); color: var(--gc-text-primary); font: inherit; font-size: 0.75rem; cursor: pointer; }
 .screen-viewer-panel-toggles button[aria-expanded=true] { border-color: var(--gc-accent); }
 .screen-viewer-panel-content { position: absolute; top: calc(100% + 8px); right: 0; box-sizing: border-box; width: min(560px, calc(100vw - 52px)); max-height: min(320px, 50dvh); overflow: auto; border: 1px solid var(--gc-border-subtle); border-radius: 12px; padding: 12px; background: var(--gc-sidebar); box-shadow: var(--gc-shadow-popup); }
+.screen-viewer-panel-content--participants { width: fit-content; min-width: min(216px, calc(100vw - 52px)); max-width: min(560px, calc(100vw - 52px)); }
+.screen-viewer-panel-content--participants .screen-viewer-panel-close { position: absolute; top: 12px; right: 12px; margin: 0; }
 .screen-viewer-panel-close { display: block; margin-left: auto; margin-bottom: 4px; font-size: 1.25rem; line-height: 1; }
 .voice-room .screen-viewer-panel-content .voice-viewer-participant-strip { display: flex; height: auto; min-height: 0; padding: 0; flex-direction: column; align-items: stretch; border: 0; }
 .screen-viewer-panel-content .voice-viewer-participant-summary { width: auto; flex-basis: auto; }
@@ -147,6 +149,7 @@
   .screen-viewer-panel-toggles button { min-height: 44px; }
   .screen-viewer-panel-toggles button span { display: none; }
   .screen-viewer-panel-content { width: 100%; }
+  .screen-viewer-panel-content--participants { width: fit-content; min-width: min(216px, calc(100vw - 24px)); max-width: min(320px, calc(100vw - 24px)); }
   .screen-viewer--compact .screen-stage-actions { left: 8px; right: 8px; bottom: 8px; max-width: calc(100% - 16px); justify-content: flex-start; }
   .screen-viewer--compact .screen-stage-action { min-height: 44px; }
   .screen-viewer--compact .screen-stage-actions { gap: 2px; }

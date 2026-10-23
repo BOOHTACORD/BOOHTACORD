@@ -75,3 +75,27 @@ observations cover the changed viewer and stream lifecycle captures. Generated
 screenshots and logs remain outside Git. The full browser and real-stack test
 stages pass, but this record does not claim native runtime or physical-media
 acceptance.
+
+## Follow-up: compact participant panel
+
+Base: `28fc0a32776e15622ef38ce6c983d8f5a58ae5ee` (`origin/master`).
+Branch: `codex/compact-participant-panel`.
+
+The participant popup now sizes to its roster up to a responsive 320 px cap on
+small screens. Its close control sits at the top edge, alongside the summary,
+instead of adding a separate full-width row above the roster. The one-participant
+fixture confirms a 216 px popup in a 653 × 366 px viewport; before the CSS change
+the same popup measured 611 px. The 176 px participant card and horizontal roster
+scrolling remain intact.
+
+- PASS: focused Playwright scenario for the one-participant 653 × 366 px layout.
+- PASS: full registered Web acceptance report
+  `.out/local-features/20261023-103959/index.html`: 24/24 stages, including the
+  screen-share browser suite and authenticated API/SFU lifecycle at 1440 and
+  393 px.
+- REVIEW_REQUIRED: the report contains 501 screenshots. At original resolution,
+  reviewed the changed 653 px participant popup, participant panels at 320 px,
+  390 px with 200% text and 1440 px, the selected-stream audience panel, and the
+  1440/393 px real-stack previews. The wider gallery remains unreviewed.
+- NOT_RUN: native runtime and physical-media acceptance; this follow-up only
+  changes Web presentation.

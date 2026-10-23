@@ -22,6 +22,7 @@ const viewerParticipants: VoiceVolumeParticipant[] = [
   { accountId: 'member-speaking', id: 'member-speaking', microphoneMuted: false, name: 'Участник говорит', speaking: true, volume: 100 },
   { accountId: 'member-sharing', id: 'member-sharing', microphoneMuted: true, name: 'Участник показывает экран', speaking: false, volume: 100 },
 ]
+const fixtureViewerParticipants = params.has('single-participant') ? [] : viewerParticipants
 const viewerScreens: ScreenViewerCard[] = [
   { accountId: 'local-user', hasAudio: false, id: 'local-screen', isLocal: true, participantId: 'local-user', participantName: 'Локальная трансляция' },
   { accountId: 'member-sharing', hasAudio: true, id: 'remote-screen', isLocal: false, participantId: 'member-sharing', participantName: 'Участник показывает экран' },
@@ -60,8 +61,8 @@ const viewerStrip = () => h('section', { class: ['voice-room', state.expanded &&
     mini: false,
     ownScreenSharing: !params.has('watching-remote'),
     pinned: false,
-    participants: viewerParticipants,
-    screenWatcherIds: params.has('watching-remote') ? ['local-user', 'member-speaking'] : ['member-speaking'],
+    participants: fixtureViewerParticipants,
+    screenWatcherIds: params.has('single-participant') ? [] : params.has('watching-remote') ? ['local-user', 'member-speaking'] : ['member-speaking'],
     selfAccountId: 'local-user',
     selfMicrophoneMuted: true,
     selfMicrophoneUnavailable: false,

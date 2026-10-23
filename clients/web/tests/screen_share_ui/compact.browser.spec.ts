@@ -68,6 +68,30 @@ test('stream switcher remains available without taking video height', async ({ p
   expect((await stage.boundingBox())!.height).toBe(height)
 })
 
+test('participant panel uses the open video space without a full-width blank area', async ({ page }, info) => {
+  await page.route(/\/api\/v1\/members\/[^/]+\/avatar(?:\?.*)?$/, route => route.fulfill({
+    status: 200,
+    contentType: 'image/svg+xml',
+    body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>',
+  }))
+  await page.setViewportSize({ width: 653, height: 366 })
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-strip&single-stream&single-participant&height=366')
+  await page.getByRole('button', { name: /Участники · 1/ }).click()
+
+  const panel = page.locator('.screen-viewer-panel-content')
+  const strip = page.getByTestId('viewer-participants')
+  const bounds = await panel.evaluate(element => {
+    const panelRect = element.getBoundingClientRect()
+    const stripRect = element.querySelector('.voice-viewer-participant-strip')!.getBoundingClientRect()
+    return { width: panelRect.width, stripTop: stripRect.top, panelTop: panelRect.top }
+  })
+
+  expect(bounds.width).toBeLessThanOrEqual(260)
+  expect(bounds.stripTop - bounds.panelTop).toBeLessThanOrEqual(28)
+  await expect(strip.locator('.voice-viewer-participant')).toHaveCount(1)
+  await page.screenshot({ path: info.outputPath('compact-participant-panel-653.png') })
+})
+
 test('statistics stay usable inside browser fullscreen', async ({ page }) => {
   await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&watching-remote&single-stream')
   const stage = page.locator('.screen-stage')
