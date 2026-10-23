@@ -32,3 +32,8 @@ func (store *cancelledResetStore) Consume(ctx context.Context, _ [sha256.Size]by
 	store.calls++
 	return ctx.Err()
 }
+
+func (store *cancelledResetStore) Preflight(ctx context.Context, _ [sha256.Size]byte) error {
+	store.calls++
+	return ctx.Err()
+}

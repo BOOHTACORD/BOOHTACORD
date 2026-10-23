@@ -22,6 +22,8 @@ type Input struct {
 }
 
 type Store interface {
+	// Preflight only checks current eligibility; Consume must recheck atomically.
+	Preflight(context.Context, [sha256.Size]byte) error
 	Consume(context.Context, [sha256.Size]byte, string) error
 }
 
@@ -33,7 +35,10 @@ func New(store Store) Service {
 	return Service{store: store}
 }
 
-func (service Service) Complete(context context.Context, input Input) error {
+func (service Service) Complete(ctx context.Context, input Input) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
 	digest, err := session.Digest(input.Token)
 	if err != nil {
 		return ErrInvalidOrExpired
@@ -41,11 +46,23 @@ func (service Service) Complete(context context.Context, input Input) error {
 	if err := registration.ValidatePassword(input.Password); err != nil {
 		return ErrInvalidOrExpired
 	}
-	passwordHash, err := password.Hash(context, input.Password)
+	if err := service.store.Preflight(ctx, digest); err != nil {
+		if errors.Is(err, ErrResetNotFound) {
+			return ErrInvalidOrExpired
+		}
+		return fmt.Errorf("preflight password reset: %w", err)
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	passwordHash, err := password.Hash(ctx, input.Password)
 	if err != nil {
 		return fmt.Errorf("hash reset password: %w", err)
 	}
-	if err := service.store.Consume(context, digest, passwordHash); err != nil {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if err := service.store.Consume(ctx, digest, passwordHash); err != nil {
 		if errors.Is(err, ErrResetNotFound) {
 			return ErrInvalidOrExpired
 		}

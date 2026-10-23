@@ -19,7 +19,8 @@
       "clients/flutter/lib/src/core/http/transport.dart",
       "clients/flutter/lib/src/core/http/api_failure.dart",
       "clients/flutter/lib/src/features/session/password_reset/**",
-      "backend/internal/identity/admit_login/**"
+      "backend/internal/identity/admit_login/**",
+      "backend/internal/identity/complete_password_reset/**"
     ],
     "web": [
       "tests/password_generation/playwright.config.ts",
@@ -31,7 +32,8 @@
       "test/password_reset_screen_test.dart",
       "test/auth_capacity_test.dart",
       "test/auth_screen_test.dart",
-      "test/auth_rate_limit_test.dart"
+      "test/auth_rate_limit_test.dart",
+      "test/reset_preflight_contract_test.dart"
     ],
     "acceptance": {
       "session_retention": {
@@ -80,6 +82,18 @@
           "clients/web/tests/password_generation/capacity.browser.spec.ts"
         ],
         "scope": "Atomic normalized-account reservation precedes lookup/verifier. Eight attempts per short 30-second process-local window; bounded storage, no persistent lock, no denial extension, no refund for ambiguous started work. Shared KDF admission unchanged. Web/shared Flutter retain masked editable form/session and display Retry-After for explicit manual retry; forced-429 fixtures and normal native API smoke remain separate evidence."
+      },
+      "reset_capability_preflight": {
+        "issue": 535,
+        "focused": [
+          "backend/internal/identity/password/reset_preflight_test.go",
+          "backend/internal/identity/password/reset_preflight_database_test.go",
+          "backend/internal/identity/password/reset_preflight_race_database_test.go",
+          "backend/internal/identity/complete_password_reset/postgres/preflight_test.go",
+          "clients/flutter/test/reset_preflight_contract_test.dart",
+          "clients/web/tests/password_reset_visibility/visibility.browser.spec.ts"
+        ],
+        "scope": "Read-only digest eligibility check with <=2s query deadline before shared KDF admission. Invalid/expired/used capabilities and observed cancellation do no unnecessary KDF or mutation. Final unchanged atomic Consume rechecks eligibility; real PostgreSQL verifies expiry race, concurrent services, rollback and session/lease revocation outbox/audit. Existing Web/shared Flutter generic 400, safe 500, AUTH_BUSY and success semantics retained; no automatic retries/logout. Native smoke and fixture error cases are separate evidence."
       }
     },
     "parity": [
@@ -123,13 +137,13 @@
       }
     ],
     "parity_review": {
-      "issue": 533,
+      "issue": 535,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SEC-001: Web existing 429 handling and shared Flutter authentication manual Retry-After preserve masked editable forms/session without automatic retry or password persistence. Server admission is common to clients. Source 2d8968b11ca6a77f83304d05d6ad9bde5d8ade2c: all 18 automated local stages PASS, 1623 Web and 1613 Flutter tests passed (1 Flutter skip), owned real API browser/Android emulator/iOS simulator smoke PASS. Relevant original-resolution auth/rate-limit/native auth/workspace/logout images reviewed; aggregate unrelated gallery remains REVIEW_REQUIRED. Forced-429 fixtures differ from normal native smoke; no physical/media/deployment claim. Evidence: evidence/security/sec01-login-admission-2026-10-23.md."
+      "scope": "SEC-003: shared backend read-only reset capability preflight; existing Web/shared Flutter error and success implementation retained and regression-tested without auto retry/logout. Source 16e6a49a151bbc32c1c18a3a3479e1e0ca4c1768: 1623 Web and 1617 Flutter tests PASS (1 Flutter skip), desktop real API and Android/iOS native smoke PASS. Original local report retains 17 PASS / mobile burst-50 FAIL before reset; unchanged same-source exact mobile lifecycle rerun PASS including reset completion and used-link rejection. Relevant original-resolution result/form/native auth-workspace images reviewed; no baseline approval or physical/media/deployment claim. Evidence: evidence/security/sec03-reset-preflight-2026-10-23.md."
     }
   },
   "connection_status": {

@@ -68,3 +68,8 @@ func (store *fakeStore) Consume(_ context.Context, digest [sha256.Size]byte, pas
 	store.called = true
 	return store.err
 }
+
+func (store *fakeStore) Preflight(_ context.Context, digest [sha256.Size]byte) error {
+	store.digest = digest
+	return store.err
+}

@@ -98,3 +98,5 @@ func (s saturationChangeStore) ChangePassword(context.Context, string, string, s
 	*s.mutations++
 	return nil
 }
+
+func (s saturationResetStore) Preflight(context.Context, [sha256.Size]byte) error { return nil }
