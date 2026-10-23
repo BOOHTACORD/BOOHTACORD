@@ -1,0 +1,29 @@
+* {
+  scrollbar-color: var(--gc-border-subtle) transparent;
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background-color: var(--gc-border-subtle);
+  background-clip: content-box;
+}
+
+*:hover {
+  scrollbar-color: var(--gc-border-control) transparent;
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  background-color: var(--gc-border-control);
+}
