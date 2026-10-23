@@ -20,6 +20,7 @@ type fixture struct {
 	events                                       []map[string]any
 	wrongOwner, corrupt, forceResync, enforceNAT bool
 	natAttempts                                  int
+	natAccounts                                  map[string]int
 	attachment                                   []byte
 }
 
@@ -52,6 +53,29 @@ func (f *fixture) serve(w http.ResponseWriter, r *http.Request) {
 				json.NewEncoder(w).Encode(map[string]any{"error": map[string]string{"code": "RATE_LIMITED"}})
 				return
 			}
+			var body struct {
+				Login string `json:"login"`
+			}
+			if json.NewDecoder(r.Body).Decode(&body) != nil {
+				w.WriteHeader(400)
+				return
+			}
+			if f.natAccounts == nil {
+				f.natAccounts = map[string]int{}
+			}
+			f.natAccounts[body.Login]++
+			if f.natAccounts[body.Login] > 8 {
+				w.Header().Set("Retry-After", "30")
+				w.WriteHeader(429)
+				json.NewEncoder(w).Encode(map[string]any{"error": map[string]string{"code": "RATE_LIMITED"}})
+				return
+			}
+			if body.Login != f.manifest.Accounts[0].Login {
+				w.WriteHeader(401)
+				json.NewEncoder(w).Encode(map[string]any{"error": map[string]string{"code": "UNAUTHENTICATED"}})
+				return
+			}
+
 		}
 		http.SetCookie(w, &http.Cookie{Name: "vp_session", Value: "synthetic", Path: "/", Secure: true})
 		w.WriteHeader(204)

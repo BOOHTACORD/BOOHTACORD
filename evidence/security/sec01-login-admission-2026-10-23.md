@@ -85,3 +85,34 @@ Flutter transport/widget fixtures are distinct from ordinary native real-API
 smoke. Physical devices, forced-429 native runtime, production load, external
 metric storage, deployment-wide budgets and release publication remain NOT_RUN.
 Exact-head GitHub CI is pending; the PR records its final run and status.
+
+## CI-discovered NAT fixture correction
+
+First PR CI run `39986064681` on head `5b3af4a7fd48e11d9c52e134ec3e8919749f1e8e`
+FAILED `backend / load` (and consequently backend fan-in). The actual disposable
+`nat_auth` report observed 204x8 followed by 429 at attempt 9; its old driver
+incorrectly expected ten successful checks in one account before the IP limit.
+This is a real expected policy change, not an infrastructure failure or green CI.
+Other gate results are superseded by final-head CI.
+
+The NAT profile still requires ten admitted source requests and the eleventh
+`429 RATE_LIMITED` with Retry-After. It now performs eight successful logins with
+logout each time, then two generic `401 UNAUTHENTICATED` on fresh synthetic
+unknown logins. The eleventh uses another fresh unknown login so an exhausted
+account cannot mask a broken outer IP limit. No increased production limit,
+skipped profile, allowed early-429, changed error accounting, new operation or
+load capacity claim. All five original load profiles remain mandatory.
+
+Test-first fixture now enforces both budgets and asserts 204x8 / 401x2 before
+429x1, ten admitted source operations, zero unexpected errors. RED: old driver
+fails on premature account-limit response. GREEN: native Go 1.26.4 Linux
+`go test -race ./internal/load/exercise_actor ./internal/load/run_profile -count=1`
+in the owned cached Go container, with no network and read-only source/module
+mounts. Mac direct execution of this Linux-oriented load fixture could not bind
+its distinct loopback source; it is not counted as a successful native Mac run.
+Logs: `.out/security-sec01/red-nat-linux.log`, `green-nat-linux.log`.
+
+This follow-up changes the load driver/fixture and documentation only. The
+application behavior and client source used by the completed 18-stage local
+acceptance remain exactly as recorded above. Final GitHub CI must rerun all
+mandatory gates and the actual Linux five-profile load suite.

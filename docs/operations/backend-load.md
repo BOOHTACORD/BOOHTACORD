@@ -100,3 +100,15 @@ Protocol regression checks:
 cd backend && go test ./internal/load/... && go vet ./internal/load/... ./cmd/backend-load
 cd .. && python3 -m unittest tools.load.guard.test_guard tools.load.provision.test_provision
 ```
+
+
+## Authentication quota composition (SEC-001)
+
+`nat_auth` retains one source, ten admitted auth attempts and an eleventh
+`429 RATE_LIMITED` / positive Retry-After. It uses eight successful logins with
+logout, then two fresh synthetic unknown logins expecting generic 401, and a
+third fresh login for the denied eleventh request. This prevents the independent
+8-attempt / 30-second account budget from hiding the 10-attempt / 5-minute IP
+budget. Expected statuses stay in the report (204x8, 401x2, 429x1), and any earlier
+429 or other unexpected response fails the gate. Account-budget concurrency,
+cancellation and rejection-before-verifier have their separate SEC-001 tests.
