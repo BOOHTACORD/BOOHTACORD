@@ -838,6 +838,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
     depends_on: [FV2-006, DW-014]
     evidence: [clients/flutter/test/features/workspace/channel_favorites_preferences_test.dart, clients/flutter/test/workspace_channel_favorites_test.dart, clients/flutter/integration_test/local_qa_test.dart, tools/qa/local_features/features.json, tools/ci/flutter_gates/artifacts.py, evidence/qa/flutter-channel-favorites-2026-10-24.md]
+  - id: FV2-059
+    title: Flutter workspace connection recovery panel parity with Web
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [FV2-003, FV2-017, FV2-056]
+    evidence: [evidence/qa/flutter-web-parity-audit-2026-10-14-to-24.md, clients/flutter/test/workspace_connection_status_test.dart, clients/flutter/test/voice_roster_state/app_composition_test.dart, clients/flutter/lib/src/screens/workspace_ui/connection_status/component.dart, tools/qa/local_features/features.json, tools/ci/flutter_gates/artifacts.py, tools/ci/flutter_gates/test_artifacts.py, evidence/qa/flutter-connection-status-2026-10-24.md]
   - id: IT-001
     title: Installation-scoped opt-in telemetry gateway and fleet visibility (GitHub #336)
     requirements: [REQ-ISOLATION-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-OPS-01]

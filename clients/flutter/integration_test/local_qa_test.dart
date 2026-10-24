@@ -248,6 +248,15 @@ void main() {
       contains(channelForFavorites.id),
     );
     await binding.takeScreenshot('native-channel-favorites');
+    state.voicePhase = VoicePhase.error;
+    state.notifyListeners();
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const ValueKey('connection-status-card')),
+      findsOneWidget,
+    );
+    expect(find.text('Голос не подключён'), findsOneWidget);
+    await binding.takeScreenshot('native-connection-status');
     await tester.runAsync(state.logout);
     await tester.pumpAndSettle();
     expect(state.phase, AppPhase.signedOut);

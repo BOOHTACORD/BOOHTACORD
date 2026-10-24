@@ -21,6 +21,7 @@ extension VoiceRosterEvents on VoiceRosterController {
       staleTimer?.cancel();
       staleTimer = null;
       voiceRosters = rooms;
+      lastUpdatedAt = DateTime.now();
       voiceRosterError = null;
       retryAttempt = 0;
       phase = VoiceRosterPhase.fresh;

@@ -2841,18 +2841,22 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Голос подключён'), findsOneWidget);
+    final dock = find.byKey(const ValueKey('voice-dock'));
+    final connectedLabel = find.descendant(
+      of: dock,
+      matching: find.text('Голос подключён'),
+    );
+    expect(connectedLabel, findsOneWidget);
     expect(find.text('Подключено'), findsNothing);
     expect(find.byIcon(Icons.headphones_outlined), findsOneWidget);
     expect(
-      tester.widget<Text>(find.text('Голос подключён')).style?.fontWeight,
+      tester.widget<Text>(connectedLabel).style?.fontWeight,
       FontWeight.w500,
     );
     expect(
       find.text('${state.voiceChannel!.name} · 1 участник'),
       findsOneWidget,
     );
-    final dock = find.byKey(const ValueKey('voice-dock'));
     expect(
       find.descendant(
         of: dock,
@@ -5727,10 +5731,12 @@ void main() {
             (call) async {
               if (call.method == 'create' ||
                   call.method == 'dispose' ||
-                  call.method == 'stop')
+                  call.method == 'stop') {
                 return null;
-              if (call.method == 'isRecording' || call.method == 'isPaused')
+              }
+              if (call.method == 'isRecording' || call.method == 'isPaused') {
                 return false;
+              }
               throw UnsupportedError(
                 'Unexpected recorder call in presentation matrix',
               );

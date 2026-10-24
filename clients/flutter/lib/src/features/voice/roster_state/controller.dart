@@ -40,6 +40,7 @@ class VoiceRosterController extends ChangeNotifier {
   final Duration staleTimeout;
   List<VoiceRoomRoster>? voiceRosters;
   String? voiceRosterError;
+  DateTime? lastUpdatedAt;
   StreamSubscription<String>? subscription;
   Completer<void>? streamDone;
   Timer? retryTimer;
