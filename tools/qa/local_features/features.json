@@ -102,7 +102,7 @@
         "expected": "Login/logout/reset and session restore use the same ACL; temporary network failure does not expire the account.",
         "issue": 518,
         "status": "PARITY",
-        "source": "current checkout; release receipt binds exact SHA",
+        "source": "Web PR #452 / issue #349; Flutter PR #572; release receipt binds exact SHA",
         "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
         "platforms": {
           "web": {
@@ -662,15 +662,17 @@
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
         "focused": [
           "clients/web/tests/screen_share_ui/compact.browser.spec.ts",
-          "clients/flutter/test/voice_viewer_participants_panel_test.dart"
+          "clients/flutter/test/voice_viewer_participants_panel_test.dart",
+          "clients/flutter/test/pinned_screen_mini_player_policy_test.dart",
+          "clients/flutter/test/workspace_screen_test.dart"
         ],
-        "scope": "Web and Flutter video fill the available height. Controls overlay the video; participant and multi-stream panels expand on demand. The participant panel stays compact around its roster instead of covering the stream with unused width or a separate close-button row. Flutter keeps its active roster in an on-demand overlay during room and fullscreen viewing, while the ended-view participant footer remains unchanged. A single selected stream has no duplicate thumbnail. Diagnostics remain mounted for recovery and open on demand. The registered native runtime smoke does not exercise a live stream; stream-specific native/media acceptance stays NOT_VERIFIED until the paired receiver scenario runs."
+        "scope": "Web and Flutter video fill the available height. Controls overlay the video; participant and multi-stream panels expand on demand. The participant panel stays compact around its roster instead of covering the stream with unused width or a separate close-button row. Flutter keeps its active roster in an on-demand overlay during room and fullscreen viewing, while the ended-view participant footer remains unchanged. Selecting a stream automatically retains it in the mini-player while navigating to text, a DM or workspace settings in the same active voice lease; a manual pin is not required. A single selected stream has no duplicate thumbnail. Diagnostics remain mounted for recovery and open on demand. The registered native runtime smoke does not exercise a live stream; stream-specific native/media acceptance stays NOT_VERIFIED until the paired receiver scenario runs."
       }
     },
     "parity": [
       {
         "id": "screen.viewer.commands",
-        "expected": "Pin, mini and fullscreen share one renderer; fullscreen exit preserves viewing while stop unsubscribes remote video/audio without leaving voice.",
+        "expected": "A selected stream stays mounted across text, DM and workspace navigation within the active voice lease and opens in the mini-player automatically; returning to voice hands the renderer back, fullscreen exit preserves viewing, and stop unsubscribes remote video/audio without leaving voice.",
         "issue": 518,
         "status": "PARITY",
         "source": "current checkout; release receipt binds exact SHA",
@@ -680,6 +682,8 @@
             "entrypoint": "clients/web/src/workspace/WorkspaceApp.vue",
             "tests": [
               "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts",
+              "clients/web/tests/mini_player/mini.browser.spec.ts",
+              "clients/web/src/voice/mini_player_policy.spec.ts",
               "clients/web/src/voice/screen_viewer_design_icons.spec.ts",
               "clients/web/src/voice/screen_viewer_controller.spec.ts",
               "clients/web/src/voice/screen_receiver_reader.spec.ts"
@@ -695,6 +699,7 @@
               "clients/flutter/test/screen_setup/surface_test.dart",
               "clients/flutter/test/pinned_screen_mini_player_layout_test.dart",
               "clients/flutter/test/pinned_screen_mini_player_policy_test.dart",
+              "clients/flutter/test/workspace_screen_test.dart",
               "clients/flutter/test/screen_setup/content_mode_test.dart",
               "clients/flutter/test/features/screen/sender_metadata/api_test.dart",
               "clients/flutter/test/features/screen/sender_metadata/latest_writer_test.dart",
@@ -731,6 +736,7 @@
               "clients/flutter/test/screen_setup/surface_test.dart",
               "clients/flutter/test/pinned_screen_mini_player_layout_test.dart",
               "clients/flutter/test/pinned_screen_mini_player_policy_test.dart",
+              "clients/flutter/test/workspace_screen_test.dart",
               "clients/flutter/test/screen_setup/content_mode_test.dart",
               "clients/flutter/test/features/screen/sender_metadata/api_test.dart",
               "clients/flutter/test/features/screen/sender_metadata/latest_writer_test.dart",
@@ -803,7 +809,7 @@
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior; iOS and Android intentionally keep them visible because touch has no hover state. 2026-10-24 (#518 Web-to-Flutter parity): the Flutter connection recovery card is shared across desktop, Android and iOS. 2026-10-24 (window audio preference): this change applies only to the Web getDisplayMedia browser capture; native iOS/Android capture APIs are unchanged. Physical Chrome/OS picker audio isolation remains NOT_RUN. Widget tests and desktop/mobile source captures cover presentation; native runtime acceptance remains unverified because no QA devices are configured. 2026-10-24 (Web commit 88dc8f49): Flutter now presents the active screen-viewer roster in a compact on-demand overlay, including fullscreen, and no longer reserves the 92 dp participant footer while the stream is active. The existing ended-view footer remains. Focused widget coverage is registered; paired native stream acceptance remains NOT_VERIFIED."
+      "scope": "2026-10-24 (Web PR #452 / issue #349): Flutter retains the selected screen subscription while navigating to text, DM or workspace settings under the same active voice lease, shows the mini-player automatically without manual pinning, and hands the renderer back on return to voice. Leaving or switching the voice lease still clears the selection. 2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior; iOS and Android intentionally keep them visible because touch has no hover state. 2026-10-24 (#518 Web-to-Flutter parity): the Flutter connection recovery card is shared across desktop, Android and iOS. 2026-10-24 (window audio preference): this change applies only to the Web getDisplayMedia browser capture; native iOS/Android capture APIs are unchanged. Physical Chrome/OS picker audio isolation remains NOT_RUN. Widget tests and desktop/mobile source captures cover presentation; native runtime acceptance remains unverified because no QA devices are configured. 2026-10-24 (Web commit 88dc8f49): Flutter now presents the active screen-viewer roster in a compact on-demand overlay, including fullscreen, and no longer reserves the 92 dp participant footer while the stream is active. The existing ended-view footer remains. Focused widget coverage is registered; paired native stream acceptance remains NOT_VERIFIED."
     }
   },
   "screen_metrics": {

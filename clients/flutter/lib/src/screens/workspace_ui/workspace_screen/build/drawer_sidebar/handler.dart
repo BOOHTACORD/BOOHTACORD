@@ -25,7 +25,6 @@ extension WorkspaceScreenDrawerSidebarRenderer on WorkspaceScreenStateContext {
             fullscreenSelection: workspaceFullscreenScreenSelection,
             onFullscreenSelectionChanged: workspaceSetFullscreenScreenSelection,
             pinnedScreenIdentity: workspaceVisiblePinnedScreenIdentity,
-            onToggleScreenPin: workspaceToggleVoiceScreenPin,
             onToggleNavigation: workspaceToggleNavigation,
             onOpenMembers: showMemberToggle ? workspaceToggleMembers : null,
             onCapturePttKey: workspaceBeginPttKeyCapture,

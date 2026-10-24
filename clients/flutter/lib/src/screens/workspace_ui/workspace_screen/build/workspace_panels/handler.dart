@@ -55,7 +55,6 @@ extension WorkspaceScreenWorkspacePanelsRenderer
                   onFullscreenSelectionChanged:
                       workspaceSetFullscreenScreenSelection,
                   pinnedScreenIdentity: workspaceVisiblePinnedScreenIdentity,
-                  onToggleScreenPin: workspaceToggleVoiceScreenPin,
                   onOpenMembers: showMemberToggle
                       ? workspaceToggleMembers
                       : null,

@@ -45,8 +45,8 @@ extension WorkspaceScreenStateBuildAction on WorkspaceScreenStateContext {
           final showPermanentMembers = layout.showPermanentMembers;
           final showMemberToggle = layout.showMemberToggle;
           final activeVoiceChannel = widget.state.voiceChannel;
-          final pinnedMiniVisible = pinnedScreenMiniPlayerVisible(
-            pinnedScreenIdentity: workspacePinnedScreenIdentity,
+          final pinnedMiniVisible = screenViewerMiniPlayerVisible(
+            selectedScreenIdentity: workspaceMiniScreenIdentity,
             activeVoiceChannelId: activeVoiceChannel?.id,
             selectedChannelId: widget.state.selectedChannel?.id,
             directMessageOpen: widget.state.selectedDirectMessage != null,

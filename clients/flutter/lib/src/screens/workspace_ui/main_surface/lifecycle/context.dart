@@ -10,7 +10,6 @@ abstract class WorkspaceMainSurfaceContext extends StatelessWidget {
     required this.fullscreenSelection,
     required this.onFullscreenSelectionChanged,
     required this.pinnedScreenIdentity,
-    required this.onToggleScreenPin,
     this.onToggleNavigation,
     this.onOpenMembers,
     this.onCapturePttKey,
@@ -26,7 +25,6 @@ abstract class WorkspaceMainSurfaceContext extends StatelessWidget {
   final ScreenFullscreenSelection? fullscreenSelection;
   final ValueChanged<ScreenFullscreenSelection?> onFullscreenSelectionChanged;
   final String? pinnedScreenIdentity;
-  final ValueChanged<String?> onToggleScreenPin;
   final VoidCallback? onToggleNavigation;
   final VoidCallback? onOpenMembers;
   final VoidCallback? onCapturePttKey;

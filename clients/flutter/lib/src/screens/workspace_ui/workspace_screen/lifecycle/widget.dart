@@ -27,7 +27,6 @@ class WorkspaceScreenState extends WorkspaceScreenStateContext
         WorkspaceScreenStateDisposeBinding,
         WorkspaceScreenStateWorkspaceWorkspaceChangedBinding,
         WorkspaceScreenStateWorkspaceSelectVoiceScreenBinding,
-        WorkspaceScreenStateWorkspaceToggleVoiceScreenPinBinding,
         WorkspaceScreenStateWorkspaceStopWatchingPinnedScreenBinding,
         WorkspaceScreenStateWorkspaceSetFullscreenScreenSelectionBinding,
         WorkspaceScreenStateWorkspaceHandleHardwareKeyBinding,

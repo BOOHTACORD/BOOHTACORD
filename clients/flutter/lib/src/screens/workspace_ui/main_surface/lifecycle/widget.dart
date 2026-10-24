@@ -12,7 +12,6 @@ class WorkspaceMainSurface extends WorkspaceMainSurfaceContext
     required super.fullscreenSelection,
     required super.onFullscreenSelectionChanged,
     required super.pinnedScreenIdentity,
-    required super.onToggleScreenPin,
     super.onToggleNavigation,
     super.onOpenMembers,
     super.onCapturePttKey,

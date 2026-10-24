@@ -22,8 +22,8 @@ extension RenderWorkspaceScreenPinnedLayerAction
           excluding: workspaceShowMobileSidebar || modalOverlayActive,
           child: WorkspacePinnedScreenMiniPlayer(
             state: widget.state,
-            identity: workspacePinnedScreenIdentity!,
-            selectedIdentity: workspaceVisibleVoiceScreenIdentity,
+            identity: workspaceMiniScreenIdentity!,
+            selectedIdentity: workspaceMiniScreenIdentity,
             pinnedMiniVisible: pinnedMiniVisible,
             fullscreenSelection: workspaceFullscreenScreenSelection,
             onReturnToVoice: () =>

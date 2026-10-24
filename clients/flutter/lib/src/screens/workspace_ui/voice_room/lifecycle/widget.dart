@@ -14,7 +14,6 @@ class WorkspaceVoiceRoom extends StatefulWidget {
     required this.fullscreenSelection,
     required this.onFullscreenSelectionChanged,
     required this.pinnedScreenIdentity,
-    required this.onToggleScreenPin,
     this.onToggleNavigation,
     this.onOpenMembers,
   });
@@ -26,7 +25,6 @@ class WorkspaceVoiceRoom extends StatefulWidget {
   final ScreenFullscreenSelection? fullscreenSelection;
   final ValueChanged<ScreenFullscreenSelection?> onFullscreenSelectionChanged;
   final String? pinnedScreenIdentity;
-  final ValueChanged<String?> onToggleScreenPin;
   final VoidCallback? onToggleNavigation;
   final VoidCallback? onOpenMembers;
 
