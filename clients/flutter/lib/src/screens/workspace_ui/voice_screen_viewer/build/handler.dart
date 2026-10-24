@@ -20,7 +20,7 @@ extension WorkspaceVoiceScreenViewerBuildAction
   Widget executeWorkspaceVoiceScreenViewerBuild(
     BuildContext context,
   ) => VoiceViewerLayout(
-    stage: renderVoiceScreenViewerScreenStage(),
+    stage: renderVoiceScreenViewerScreenStage(context),
     diagnostics: Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
       child: ScreenReceiverDiagnostics(
@@ -76,7 +76,7 @@ extension WorkspaceVoiceScreenViewerBuildAction
         expectedRoomId: state.room?.name,
       ),
     ),
-    audioControls: workspaceAudioControls,
+    audioControls: null,
     streamRail: workspaceStreamRail,
     participants: const SizedBox.shrink(),
     participantsOverlay: VoiceViewerParticipantsMenu(
