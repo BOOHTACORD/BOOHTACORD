@@ -722,13 +722,13 @@
       }
     ],
     "parity_review": {
-      "issue": 544,
+      "issue": 566,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "Follow-up to #544: the Web stream participant overlay now sizes to the roster and keeps its close control beside the summary. iOS and Android layouts are unchanged; this Web-only regression has no native runtime claim."
+      "scope": "2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior, and keyboard focus keeps them available. iOS and Android intentionally keep the controls visible because touch has no hover state. Widget tests cover these platform modes; native runtime acceptance remains unverified because no devices are configured."
     }
   },
   "screen_metrics": {
