@@ -1,5 +1,6 @@
 import '../../participant_name/component.dart';
 import '../../voice_participant_account_id/component.dart';
+import '../../voice_viewer_streams_menu.dart';
 import '../../native_bindings.dart';
 
 import '../lifecycle/context.dart';
@@ -42,26 +43,10 @@ extension WorkspaceVoiceScreenViewerWorkspaceStreamRailAction
           hasAudio: screenShareAudioPublication(participant) != null,
         ),
     ];
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Text(
-            'Демонстрации в канале',
-            style: TextStyle(
-              color: GcColors.textSecondary,
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 8),
-          VoiceScreenSelectionRail(
-            choices: choices,
-            onSelected: onScreenSelected,
-          ),
-        ],
-      ),
+    if (choices.length < 2) return null;
+    return VoiceViewerStreamsMenu(
+      choices: choices,
+      onSelected: onScreenSelected,
     );
   }
 }

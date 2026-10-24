@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../features/screen/capabilities/local_track_status.dart';
 import '../features/screen/stage/label.dart';
+import '../theme.dart';
 import '../widgets/screen_viewer_action_layer.dart';
 
 class VoiceScreenStage extends StatelessWidget {
@@ -13,6 +14,7 @@ class VoiceScreenStage extends StatelessWidget {
     this.isLocal = false,
     this.reservedTrailingWidth = 0,
     this.overlays = const [],
+    this.bottomActions,
   });
 
   final Widget video;
@@ -21,6 +23,7 @@ class VoiceScreenStage extends StatelessWidget {
   final bool isLocal;
   final double reservedTrailingWidth;
   final List<Widget> overlays;
+  final Widget? bottomActions;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -62,9 +65,58 @@ class VoiceScreenStage extends StatelessWidget {
                   bottom: inset,
                   child: const LocalScreenTrackStatus(),
                 ),
-              if (overlays.isNotEmpty)
+              if (overlays.isNotEmpty || bottomActions != null)
                 Positioned.fill(
-                  child: ScreenViewerActionLayer(actions: overlays),
+                  child: ScreenViewerActionLayer(
+                    actions: [
+                      if (bottomActions != null)
+                        Positioned(
+                          left: inset,
+                          right: inset,
+                          bottom: inset,
+                          child: SafeArea(
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: (constraints.maxWidth - inset * 2)
+                                      .clamp(0.0, double.infinity)
+                                      .toDouble(),
+                                ),
+                                child: DecoratedBox(
+                                  key: const ValueKey(
+                                    'voice-screen-stage-toolbar',
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: GcColors.sidebar.withValues(
+                                      alpha: .92,
+                                    ),
+                                    border: Border.all(
+                                      color: GcColors.border.withValues(
+                                        alpha: .75,
+                                      ),
+                                    ),
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0x33000000),
+                                        blurRadius: 16,
+                                        offset: Offset(0, 6),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6),
+                                    child: bottomActions,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ...overlays,
+                    ],
+                  ),
                 ),
             ],
           ),
