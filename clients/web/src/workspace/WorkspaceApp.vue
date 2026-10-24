@@ -36,6 +36,7 @@ import ConnectionStatus from './connection_status/Status.vue'
 import { navigateWithSettingsGuard } from './settings_exit_guard'
 import type { ActionScope } from '../telemetry/action_scope/scope'
 import { bindWorkspaceReady } from './ready_lifecycle/bind'
+import { buildGuildVoicePresence } from './guild_voice_presence'
 const props = defineProps<{ role: 'MEMBER' | 'ADMINISTRATOR'; accountId: string;readiness?:ActionScope }>()
 const emit = defineEmits<{ sessionExpired: []; loggedOut: [] }>()
 const adminSection = ref<AdminSection>('members')
@@ -48,6 +49,10 @@ const messageStore = useMessageStore()
 const realtimeStore = useRealtimeStore()
 const expireSession = () => expireWorkspaceSession(voiceConnection, () => emit('sessionExpired'))
 const voiceRoster = createVoiceRosterRealtime(undefined, expireSession)
+const guildVoicePresence = computed(() => buildGuildVoicePresence(
+  voiceRoster.error.value ? null : voiceRoster.channels.value,
+  topologyStore.topology?.categories.flatMap(({ channels }) => channels) ?? [],
+))
 const shouldReconnectVoiceRoster = createVoiceRosterReconnectGate(realtimeStore.state === 'CONNECTED')
 const { busy: logoutBusy, error: logoutError, signOut } = bindWorkspaceLogout(voiceConnection, leaveVoice, realtimeStore, () => emit('loggedOut'))
 const guildPresence = useGuildPresence()
@@ -132,7 +137,7 @@ bindWorkspaceReady({ readiness: props.readiness,
           </template>
         </WorkspaceMain>
       </main>
-      <WorkspaceMembersPanel v-if="!selectedDirectMessage && activePanel === 'none'" :open="membersOpen" :active-voice-channel="voiceConnection.state === 'LEAVING' ? null : activeVoiceChannel" :selected-voice-channel="selectedChannel?.kind === 'VOICE' ? selectedChannel : null" :participants="voiceConnection.voiceVolumeParticipants" :presence-resolver="guildPresence.resolve" :role="props.role" :account-i-d="profile?.account_id" :self-name="profile?.display_name ?? null" :self-microphone-muted="voiceConnection.microphoneMuted" :self-microphone-unavailable="voiceConnection.microphonePermissionDenied" :modal="modalDrawer === 'members'" @member-count="guildMemberCount = $event" @open-d-m="requestOpenDirectMessageFromMember" @set-volume="voiceConnection.setParticipantVolume" />
+      <WorkspaceMembersPanel v-if="!selectedDirectMessage && activePanel === 'none'" :open="membersOpen" :active-voice-channel="voiceConnection.state === 'LEAVING' ? null : activeVoiceChannel" :selected-voice-channel="selectedChannel?.kind === 'VOICE' ? selectedChannel : null" :participants="voiceConnection.voiceVolumeParticipants" :voice-presence="guildVoicePresence" :presence-resolver="guildPresence.resolve" :role="props.role" :account-i-d="profile?.account_id" :self-name="profile?.display_name ?? null" :self-microphone-muted="voiceConnection.microphoneMuted" :self-microphone-unavailable="voiceConnection.microphonePermissionDenied" :modal="modalDrawer === 'members'" @member-count="guildMemberCount = $event" @open-d-m="requestOpenDirectMessageFromMember" @set-volume="voiceConnection.setParticipantVolume" />
       <aside v-else-if="activePanel === 'search'" id="search-aside-panel" class="members search-aside" :class="{ 'is-open': activePanel === 'search' }" :role="modalDrawer === 'search' ? 'dialog' : undefined" :aria-modal="modalDrawer === 'search' ? 'true' : undefined" aria-label="Поиск сообщений" tabindex="-1" data-testid="search-aside-panel"><WorkspaceSearchPanel @open-channel="selectChannel" @open-direct-message="selectDirectMessage" @close="activePanel = 'none'" /></aside>
       <button v-if="navOpen || membersOpen || activePanel === 'search'" class="drawer-scrim" type="button" aria-label="Закрыть навигацию и участников" @click="requestWorkspaceScrimClose" />
     </div>

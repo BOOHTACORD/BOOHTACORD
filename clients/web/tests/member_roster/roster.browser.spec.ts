@@ -1,8 +1,27 @@
 import { expect, test, chromium } from '@playwright/test'
-import { mount, openProfile, geometry, fullName, routes } from './helpers'
+import { mount, openProfile, geometry, fullName, members, routes } from './helpers'
 import { expectAxeClear } from '../accessibility/axe'
 import { withBrowserZoom, captureZoomedPage } from '../control_consistency/browser_zoom'
 const profileAction=(page:import('@playwright/test').Page)=>page.getByTestId('member-popover').getByRole('button',{name:'Написать сообщение',exact:true})
+test('guild roster labels voice members and uses a screen icon while they stream',async({page},info)=>{
+ await mount(page)
+ const member=page.locator('.members-guild-roster .member-card').filter({hasText:fullName})
+ const voiceStatus=member.getByTestId('member-voice-presence')
+ await expect(voiceStatus).toHaveCount(0)
+ const accountId=members[0]!.user_id
+ await page.evaluate(({accountId})=>(window as any).__membersFixture.patch({voicePresence:[[accountId,{channelName:'Голосовая комната',screenSharing:true}]]}),{accountId})
+ await expect(voiceStatus).toContainText('Голосовой канал · Голосовая комната')
+ await expect(voiceStatus.getByTestId('member-voice-icon')).toHaveAttribute('data-kind','stream')
+ await expect(member).toHaveAttribute('aria-label',/Транслирует экран/)
+ await page.screenshot({path:info.outputPath('guild-roster-voice-stream.png')})
+
+ await page.evaluate(({accountId})=>(window as any).__membersFixture.patch({voicePresence:[[accountId,{channelName:'Голосовая комната',screenSharing:false}]]}),{accountId})
+ await expect(voiceStatus.getByTestId('member-voice-icon')).toHaveAttribute('data-kind','voice')
+ await expect(member).toHaveAttribute('aria-label',/В голосовом канале «Голосовая комната»/)
+
+ await page.evaluate(()=>(window as any).__membersFixture.patch({voicePresence:[]}))
+ await expect(voiceStatus).toHaveCount(0)
+})
 for(const width of [320,390,1024,1440])for(const scale of [100,200])test(`roster and profile ${width} text ${scale}`,async({page},info)=>{
  await mount(page,width,scale)
  await page.screenshot({path:info.outputPath('roster.png')})

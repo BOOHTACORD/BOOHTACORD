@@ -10,8 +10,9 @@ import VoiceParticipantStatus from '../voice/VoiceParticipantStatus.vue'
 import GuildPresenceGroup from './GuildPresenceGroup.vue'
 import MemberPopover from './MemberPopover.vue'
 import { groupMembersByPresence } from './member_presence'
+import type { GuildVoicePresence } from './guild_voice_presence'
 
-const props = defineProps<{ activeVoiceChannel: TopologyChannel | null; selectedVoiceChannel: TopologyChannel | null; participants: VoiceVolumeParticipant[]; presenceResolver: (userID: string, fallback: MemberPresence) => MemberPresence; role: 'MEMBER' | 'ADMINISTRATOR'; accountID?: string; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfName: string | null; open: boolean; modal: boolean }>()
+const props = defineProps<{ activeVoiceChannel: TopologyChannel | null; selectedVoiceChannel: TopologyChannel | null; participants: VoiceVolumeParticipant[]; voicePresence?: ReadonlyMap<string, GuildVoicePresence>; presenceResolver: (userID: string, fallback: MemberPresence) => MemberPresence; role: 'MEMBER' | 'ADMINISTRATOR'; accountID?: string; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfName: string | null; open: boolean; modal: boolean }>()
 const emit = defineEmits<{ openDM: [userID: string]; setVolume: [participantID: string, volume: number]; memberCount: [count: number] }>()
 const directory = useMemberDirectory()
 const guildMembers = computed(() => directory.members)
@@ -75,9 +76,9 @@ onMounted(() => { if (!props.selectedVoiceChannel) void loadRoster() })
       <p v-else-if="membersLoading && !guildMembers.length" class="members-empty" aria-live="polite">Загружаем участников…</p>
       <p v-else-if="!guildMembers.length" class="members-empty">В гильдии пока нет участников.</p>
       <div v-else class="members-presence-groups">
-        <GuildPresenceGroup title="В сети" :members="presenceGroups.online" @open="openProfile" />
-        <GuildPresenceGroup title="Не в сети" :members="presenceGroups.offline" @open="openProfile" />
-        <GuildPresenceGroup title="Статус неизвестен" :members="presenceGroups.unknown" @open="openProfile" />
+        <GuildPresenceGroup title="В сети" :members="presenceGroups.online" :voice-presence="props.voicePresence" @open="openProfile" />
+        <GuildPresenceGroup title="Не в сети" :members="presenceGroups.offline" :voice-presence="props.voicePresence" @open="openProfile" />
+        <GuildPresenceGroup title="Статус неизвестен" :members="presenceGroups.unknown" :voice-presence="props.voicePresence" @open="openProfile" />
       </div>
       <button v-if="memberCursor && !membersError" class="members-more" type="button" :disabled="membersLoading" @click="loadRoster(memberCursor)">{{ membersLoading ? 'Загружаем…' : 'Показать ещё' }}</button>
     </section>
