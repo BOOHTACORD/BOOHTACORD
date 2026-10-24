@@ -977,7 +977,7 @@
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": " 2026-10-24 (#553 Flutter follow-up): the shared members-panel path adds the current voice-channel caption and screen-share icon; audio and settings controls are unchanged. The widget behavior is shared by Android and iOS."
+      "scope": "2026-10-24 (#553 Flutter follow-up): the shared members-panel path adds the current voice-channel caption and screen-share icon; audio and settings controls are unchanged. The widget behavior is shared by Android and iOS. 2026-10-24 (#570): compact Flutter member rows show the channel name without a redundant prefix and wrap it to two lines; Web and settings controls are unchanged."
     }
   },
   "admin": {
@@ -1559,7 +1559,7 @@
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "2026-10-24 (#518 Web-to-Flutter parity): Flutter channel favorites match Web's account/deployment scoped behavior, ordered shortcuts, topology pruning, mobile touch control, desktop hover/focus affordance, and persistence. Flutter connection status now presents independent chat/voice/roster state and recovery actions while retaining existing retry policies. Focused widget coverage, source-resolution desktop/mobile captures, and the authenticated native local-stack smoke are registered; physical screen-reader and media acceptance remain separate."
+      "scope": "2026-10-24 (#518 Web-to-Flutter parity): Flutter channel favorites match Web's account/deployment scoped behavior, ordered shortcuts, topology pruning, mobile touch control, desktop hover/focus affordance, and persistence. Flutter connection status now presents independent chat/voice/roster state and recovery actions while retaining existing retry policies. Focused widget coverage, source-resolution desktop/mobile captures, and the authenticated native local-stack smoke are registered; physical screen-reader and media acceptance remain separate. 2026-10-24 (#570): Flutter member voice captions show the channel name without a redundant prefix and wrap within compact rows; Android and iOS share this behavior, while Web is unchanged."
     }
   },
   "screen_track_name": {
