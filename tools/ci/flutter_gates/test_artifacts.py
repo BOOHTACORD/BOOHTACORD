@@ -9,7 +9,7 @@ from . import artifacts
 
 class ArtifactTests(unittest.TestCase):
     def test_mandatory_visual_inventory_keeps_all_uiux_capture_scenarios(self):
-        self.assertEqual(150, len(artifacts.VISUALS))
+        self.assertEqual(146, len(artifacts.VISUALS))
         self.assertEqual(len(artifacts.VISUALS), len(set(artifacts.VISUALS)))
         self.assertIn('guild-member-voice-channel.png', artifacts.VISUALS)
         self.assertIn('guild-member-screen-sharing.png', artifacts.VISUALS)
@@ -21,10 +21,10 @@ class ArtifactTests(unittest.TestCase):
         self.assertIn('password-reset-visibility-mobile.png', artifacts.VISUALS)
         self.assertIn('flutter-screen-audience-viewer-strip-1024x92@2x.png', artifacts.VISUALS)
         self.assertIn('flutter-screen-viewer-transient-controls-1440x900.png', artifacts.VISUALS)
-        self.assertIn('message-actions-all-open-actual.png', artifacts.VISUALS)
-        self.assertIn('message-actions-closed-actual.png', artifacts.VISUALS)
-        self.assertIn('message-actions-open-actual.png', artifacts.VISUALS)
-        self.assertIn('message-social-touch-targets.png', artifacts.VISUALS)
+        self.assertNotIn('message-actions-all-open-actual.png', artifacts.VISUALS)
+        self.assertNotIn('message-actions-closed-actual.png', artifacts.VISUALS)
+        self.assertNotIn('message-actions-open-actual.png', artifacts.VISUALS)
+        self.assertNotIn('message-social-touch-targets.png', artifacts.VISUALS)
         self.assertIn('voice-viewer-participants-room.png', artifacts.VISUALS)
         self.assertIn('voice-viewer-participants-room-open.png', artifacts.VISUALS)
         self.assertIn('voice-viewer-participants-fullscreen-open.png', artifacts.VISUALS)

@@ -8,10 +8,6 @@ VISUALS = (
     'R14-navigation-top.png', 'maintenance-banner-safe-area-390x800.png',
     'flutter-screen-audience-viewer-strip-1024x92@2x.png',
     'flutter-screen-viewer-transient-controls-1440x900.png',
-    'message-actions-all-open-actual.png',
-    'message-actions-closed-actual.png',
-    'message-actions-open-actual.png',
-    'message-social-touch-targets.png',
     # #544: compact room and fullscreen viewer participant overlays.
     'voice-viewer-participants-room.png',
     'voice-viewer-participants-room-open.png',

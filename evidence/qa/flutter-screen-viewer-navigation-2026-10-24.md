@@ -11,7 +11,7 @@ When a user selects a remote stream and changes from its voice channel to text, 
 
 - Flutter full unit suite: **PASS** (1,636 passed, 1 skipped).
 - Focused navigation regression, including text, DM, settings, return to voice, and ended-stream behavior: **PASS**.
-- Flutter component captures: **PASS** (338 tests); the mini-player capture inventory matches all 150 registered files.
+- Flutter component captures: **PASS** (338 tests); the CI synthetic-capture inventory includes the room, fullscreen, and mobile mini-player scenarios.
 - CI artifact-policy tests: **PASS** (21 tests); client-parity validator and feature JSON validation: **PASS**.
 - Dart analyzer on changed Flutter files: **PASS** (no issues found).
 - Web unit, production build, accessibility, and registered browser suites: **PASS** in `.out/local-features/20261024-220405`.
