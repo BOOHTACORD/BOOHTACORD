@@ -936,12 +936,13 @@
       }
     ],
     "parity_review": {
-      "issue": 518,
+      "issue": 553,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
-      }
+      },
+      "scope": " 2026-10-24 (#553 Flutter follow-up): the shared members-panel path adds the current voice-channel caption and screen-share icon; audio and settings controls are unchanged. The widget behavior is shared by Android and iOS."
     }
   },
   "admin": {
@@ -1268,7 +1269,8 @@
       "test/features/workspace/quick_jump/workspace_navigation_test.dart",
       "test/workspace_navigation_text_scale_test.dart",
       "test/workspace_navigation_top_test.dart",
-      "test/web_parity/presentation_test.dart"
+      "test/web_parity/presentation_test.dart",
+      "test/member_voice_presence_panel_test.dart"
     ],
     "acceptance": {
       "issue292": {
@@ -1331,6 +1333,12 @@
           "clients/flutter/test/workspace_screen_test.dart"
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+      },
+      "flutter_member_voice_presence": {
+        "focused": [
+          "clients/flutter/test/member_voice_presence_panel_test.dart"
+        ],
+        "scope": "Flutter guild-wide members panel maps the current voice roster to the channel name, changes the voice icon to a screen icon when screen_sharing is true, and hides the indicator for stale, unavailable, ambiguous, or empty roster state. Includes source-resolution widget captures; does not infer speaking or claim media quality."
       }
     },
     "parity": [
@@ -1455,10 +1463,10 @@
       "issue": 553,
       "decisions": {
         "web": "implementation_and_regression",
-        "ios": "platform_exception",
-        "android": "platform_exception"
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
       },
-      "scope": "Follow-up to #544: the Web stream participant overlay now sizes to the roster and keeps its close control beside the summary. The mobile Web navigation follow-up removes the excess dark gutter below the section tabs while retaining 44px touch targets. 2026-10-24 (#552): Web scrollbars across the app use the themed thin rounded treatment. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to the members panel. General shell/navigation behavior and Flutter code are unchanged; these are Web-only regressions with no native runtime claim."
+      "scope": "Follow-up to #544: the Web stream participant overlay sizes to the roster and keeps its close control beside the summary. The mobile Web navigation follow-up removes the excess dark gutter below the section tabs while retaining 44px touch targets. 2026-10-24 (#552): Web scrollbars across the app use the themed thin rounded treatment. 2026-10-24 (#553 Web): WorkspaceApp passes guild-wide voice-presence data to the Web members panel. 2026-10-24 (#553 Flutter follow-up): the shared Flutter guild members panel labels the current voice channel and switches to a screen icon when screen_sharing is true; stale, unavailable, ambiguous, and empty rosters do not show an indicator. Focused widget coverage is registered for the shared Android/iOS Flutter client; no speaking or media-quality claim."
     }
   },
   "screen_track_name": {
