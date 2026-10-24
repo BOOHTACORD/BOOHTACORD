@@ -8,8 +8,9 @@ extension ChannelRowChannelContentsRenderer on WorkspaceChannelRowStateContext {
     GuildChannel channel,
     bool selected,
     int? voiceParticipantCount,
-    AppState state,
-  ) => Row(
+    AppState state, {
+    required bool showFavoriteButton,
+  }) => Row(
     children: [
       if (voiceConnected)
         Container(
@@ -80,11 +81,36 @@ extension ChannelRowChannelContentsRenderer on WorkspaceChannelRowStateContext {
             ),
           ),
         ),
-      TopologyObjectMenu(
-        state: state,
-        target: channel,
-        visible: workspaceShowObjectMenu,
-      ),
+      if (showFavoriteButton)
+        IconButton(
+          key: ValueKey('workspace-channel-favorite:${channel.id}'),
+          tooltip:
+              '${widget.favorite ? 'Убрать из избранного' : 'Добавить в избранное'}: ${channel.name}',
+          onPressed: () => widget.onFavoriteChanged?.call(!widget.favorite),
+          visualDensity: _isTouchPlatform(context)
+              ? VisualDensity.standard
+              : VisualDensity.compact,
+          padding: EdgeInsets.zero,
+          constraints: BoxConstraints.tightFor(
+            width: _isTouchPlatform(context) ? 44 : 32,
+            height: _isTouchPlatform(context) ? 44 : 32,
+          ),
+          icon: Icon(
+            widget.favorite ? Icons.star_rounded : Icons.star_outline_rounded,
+            size: 18,
+            color: widget.favorite ? GcColors.accent : GcColors.muted,
+          ),
+        ),
+      if (widget.showObjectMenu)
+        TopologyObjectMenu(
+          state: state,
+          target: channel,
+          visible: workspaceShowObjectMenu,
+        ),
     ],
   );
+
+  bool _isTouchPlatform(BuildContext context) =>
+      Theme.of(context).platform == TargetPlatform.android ||
+      Theme.of(context).platform == TargetPlatform.iOS;
 }

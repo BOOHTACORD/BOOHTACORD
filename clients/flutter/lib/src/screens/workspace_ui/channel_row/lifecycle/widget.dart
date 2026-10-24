@@ -11,6 +11,10 @@ class WorkspaceChannelRow extends StatefulWidget {
     required this.selected,
     required this.voiceConnected,
     this.voiceParticipantCount,
+    this.favorite = false,
+    this.onFavoriteChanged,
+    this.favoriteShortcut = false,
+    this.showObjectMenu = true,
     required this.onTap,
   });
   final AppState state;
@@ -18,6 +22,10 @@ class WorkspaceChannelRow extends StatefulWidget {
   final bool selected;
   final bool voiceConnected;
   final int? voiceParticipantCount;
+  final bool favorite;
+  final ValueChanged<bool>? onFavoriteChanged;
+  final bool favoriteShortcut;
+  final bool showObjectMenu;
   final VoidCallback onTap;
 
   @override
