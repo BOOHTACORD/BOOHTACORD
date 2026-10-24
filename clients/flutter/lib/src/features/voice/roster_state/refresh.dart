@@ -20,6 +20,7 @@ extension VoiceRosterRefresh on VoiceRosterController {
       staleTimer?.cancel();
       staleTimer = null;
       voiceRosters = rosters;
+      lastUpdatedAt = DateTime.now();
       voiceRosterError = null;
       phase = VoiceRosterPhase.fresh;
     } catch (cause) {

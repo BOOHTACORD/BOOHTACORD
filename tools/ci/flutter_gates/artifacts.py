@@ -11,6 +11,9 @@ VISUALS = (
     # #518 Flutter channel favorites navigation capture.
     'flutter-channel-favorites-1440x900.png',
     'flutter-channel-favorites-mobile-393x852.png',
+    # #518 Flutter connection recovery panel parity.
+    'flutter-connection-status-desktop-320x380.png',
+    'flutter-connection-status-mobile-320x380.png',
     # #553 Flutter guild member voice and screen-sharing presence states.
     'guild-member-voice-channel.png',
     'guild-member-screen-sharing.png',

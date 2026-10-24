@@ -25,6 +25,7 @@ extension VoiceRosterStop on VoiceRosterController {
     retryAttempt = 0;
     voiceRosters = null;
     voiceRosterError = null;
+    lastUpdatedAt = null;
     phase = VoiceRosterPhase.initialLoading;
   }
 

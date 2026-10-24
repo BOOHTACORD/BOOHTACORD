@@ -156,6 +156,10 @@
       "clients/web/src/request_feedback.ts",
       "tools/qa/local_features/features.json",
       "clients/flutter/lib/src/features/realtime/**",
+      "clients/flutter/lib/src/features/voice/roster_state/**",
+      "clients/flutter/lib/src/screens/workspace_ui/connection_status/**",
+      "clients/flutter/lib/src/screens/workspace_ui/sidebar/component.dart",
+      "clients/flutter/integration_test/local_qa_test.dart",
       "clients/web/src/realtime/**"
     ],
     "web": [
@@ -163,7 +167,9 @@
     ],
     "flutter": [
       "test/realtime_scope/delivery_test.dart",
-      "test/realtime_scope/retry_policy_test.dart"
+      "test/realtime_scope/retry_policy_test.dart",
+      "test/workspace_connection_status_test.dart",
+      "test/voice_roster_state/app_composition_test.dart"
     ],
     "acceptance": {
       "recovery_panel": {
@@ -174,6 +180,14 @@
           "clients/web/tests/connection_status/status.browser.spec.ts"
         ],
         "scope": "Web connection recovery panel preserves independent chat, voice and roster status; retry actions remain separately accessible and operable. Network failures use localized retry guidance instead of raw browser errors or an incorrect login prompt. The panel wraps within a narrow sidebar and uses visible focus and status indicators. No native or media-quality claim."
+      },
+      "flutter_recovery_panel": {
+        "native": "integration_test/local_qa_test.dart",
+        "focused": [
+          "clients/flutter/test/workspace_connection_status_test.dart",
+          "clients/flutter/test/voice_roster_state/app_composition_test.dart"
+        ],
+        "scope": "Flutter workspace sidebar presents independent chat, voice and roster recovery states with localized retry actions, retained-roster age, compact wrapping, and healthy-state dismissal. Existing bounded realtime and roster retry policies are unchanged. Desktop/mobile widget captures are paired with an authenticated native smoke that drives the production card through a voice-error state; no media-quality claim."
       },
       "client_parity_518": {
         "focused": [
@@ -231,7 +245,7 @@
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; reconnect and retry behavior are unchanged. Existing platform decisions remain in force; no connection-status code or native runtime claim changed."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; reconnect and retry policies remain unchanged. 2026-10-24 (#518): Flutter adds the Web-style independent connection recovery card, driven by existing chat/voice/roster state; Android/iOS share the widget and the native workspace smoke is recorded separately."
     }
   },
   "voice": {
@@ -351,13 +365,13 @@
       }
     ],
     "parity_review": {
-      "issue": 544,
+      "issue": 518,
       "decisions": {
         "web": "implementation_and_regression",
-        "ios": "platform_exception",
-        "android": "platform_exception"
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
       },
-      "scope": "Follow-up to #544: the Web stream participant overlay now sizes to the roster and keeps its close control beside the summary. iOS and Android layouts are unchanged; this Web-only regression has no native runtime claim."
+      "scope": "The Web stream participant overlay layout remains Web-specific. 2026-10-24 (#518 Web-to-Flutter parity): Flutter adds the shared sidebar recovery card for independent chat/voice/roster status and localized retry actions; Android and iOS use the same Flutter presentation while existing retry policies stay unchanged. Widget captures and authenticated native workspace acceptance are tracked separately; no media-quality or physical-accessibility claim."
     }
   },
   "screen": {
@@ -722,13 +736,13 @@
       }
     ],
     "parity_review": {
-      "issue": 566,
+      "issue": 518,
       "decisions": {
         "web": "implementation_and_regression",
-        "ios": "platform_exception",
-        "android": "platform_exception"
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
       },
-      "scope": "2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior, and keyboard focus keeps them available. iOS and Android intentionally keep the controls visible because touch has no hover state. Widget tests cover these platform modes; native runtime acceptance remains unverified because no devices are configured."
+      "scope": "2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior; iOS and Android intentionally keep them visible because touch has no hover state. 2026-10-24 (#518 Web-to-Flutter parity): the Flutter connection recovery card is shared across desktop, Android and iOS. Widget tests and desktop/mobile source captures cover presentation; native runtime acceptance remains unverified because no QA devices are configured."
     }
   },
   "screen_metrics": {
@@ -1361,6 +1375,13 @@
         ],
         "native": "integration_test/local_qa_test.dart",
         "scope": "Web-parity acceptance for favorite channel actions, account and deployment scoped persistence, topology ordering, removal pruning, mobile touch action, desktop hover/focus visibility, and desktop/mobile Flutter production widget captures. Native smoke exercises a real authenticated workspace and persists a favorite against the owned API stack. Runtime coverage does not imply physical accessibility or media acceptance."
+      },
+      "flutter_connection_status": {
+        "focused": [
+          "clients/flutter/test/workspace_connection_status_test.dart",
+          "clients/flutter/test/voice_roster_state/app_composition_test.dart"
+        ],
+        "scope": "Independent recovery card for chat, voice and roster in Flutter navigation, with localized actions and truthful retained-roster age. Desktop/mobile production widget captures cover the narrow sidebar layout."
       }
     },
     "parity": [
@@ -1527,7 +1548,7 @@
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "2026-10-24 (#518 Web-to-Flutter parity): Flutter channel favorites match Web's account/deployment scoped behavior, ordered shortcuts, topology pruning, mobile touch control, desktop hover/focus affordance, and persistence. Focused widget coverage, a Flutter visual capture, and an authenticated native local-stack smoke are registered; physical screen-reader and media acceptance remain separate."
+      "scope": "2026-10-24 (#518 Web-to-Flutter parity): Flutter channel favorites match Web's account/deployment scoped behavior, ordered shortcuts, topology pruning, mobile touch control, desktop hover/focus affordance, and persistence. Flutter connection status now presents independent chat/voice/roster state and recovery actions while retaining existing retry policies. Focused widget coverage, source-resolution desktop/mobile captures, and the authenticated native local-stack smoke are registered; physical screen-reader and media acceptance remain separate."
     }
   },
   "screen_track_name": {
@@ -1888,7 +1909,7 @@
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; support publication and DM flows are unchanged. Existing Web/iOS/Android support decisions remain in force; no native support change or runtime claim. 2026-10-24 (#518): the shared workspace sidebar adds account-scoped channel favorites; support consent, publication and DM behavior is untouched. The native local-QA scenario continues to exercise support navigation; the broad shared-workspace path match was reviewed."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; support publication and DM flows are unchanged. 2026-10-24 (#518): the shared workspace sidebar adds account-scoped channel favorites and independent connection recovery presentation; support consent, publication and DM behavior is untouched. The native local-QA scenario continues to exercise support navigation and recovery status; the broad shared-workspace path match was reviewed."
     }
   }
 }

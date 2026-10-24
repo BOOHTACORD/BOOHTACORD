@@ -1,7 +1,9 @@
 import '../channel_navigation/component.dart';
+import '../connection_status/component.dart';
 import '../direct_message_navigation/component.dart';
 import '../user_footer/component.dart';
 import '../voice_dock/component.dart';
+import '../../../features/realtime/lifecycle/controller.dart';
 import '../native_bindings.dart';
 
 class WorkspaceSidebar extends StatelessWidget {
@@ -45,6 +47,29 @@ class WorkspaceSidebar extends StatelessWidget {
                   onDirectMessages: state.showDirectMessages,
                   onClose: onClose,
                   searchFocusNode: searchFocusNode,
+                ),
+                AnimatedBuilder(
+                  animation: Listenable.merge([
+                    state,
+                    state.realtime,
+                    state.voiceRoster,
+                  ]),
+                  builder: (context, _) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: WorkspaceConnectionStatus(
+                      chatConnected: state.realtime.connected,
+                      chatConnecting:
+                          state.realtime.connecting ||
+                          state.realtime.socket != null,
+                      voicePhase: state.voicePhase,
+                      rosterPhase: state.voiceRoster.phase,
+                      rosterRetained: state.voiceRoster.voiceRosters != null,
+                      lastUpdatedAt: state.voiceRoster.lastUpdatedAt,
+                      rosterCanRetry: state.voiceRoster.canRetry,
+                      onRetryChat: state.realtime.retryNow,
+                      onRetryRoster: () => state.refreshVoiceRosters(),
+                    ),
+                  ),
                 ),
                 if (state.topology == null)
                   const SizedBox(
