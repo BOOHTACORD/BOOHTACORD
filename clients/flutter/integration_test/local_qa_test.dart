@@ -10,6 +10,7 @@ import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/show_screen_share_setup/component.dart';
+import 'package:boohtacord_desktop/src/features/workspace/navigation/favorites/preferences.dart';
 
 class QaTls extends HttpOverrides {
   QaTls(this.pin);
@@ -224,6 +225,29 @@ void main() {
     }
     state.showChannels();
     await tester.pumpAndSettle();
+    final channelForFavorites = state.topology!.categories
+        .expand((category) => category.channels)
+        .firstWhere((channel) => channel.name == 'Native QA Text');
+    final addFavorite = find.byTooltip(
+      'Добавить в избранное: ${channelForFavorites.name}',
+    );
+    await tester.ensureVisible(addFavorite);
+    await tester.tap(addFavorite);
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(
+        ValueKey('workspace-favorite-shortcut:${channelForFavorites.id}'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      await ChannelFavoritesPreferences(
+        accountId: state.profile!.accountId,
+        baseUrl: origin,
+      ).read(),
+      contains(channelForFavorites.id),
+    );
+    await binding.takeScreenshot('native-channel-favorites');
     await tester.runAsync(state.logout);
     await tester.pumpAndSettle();
     expect(state.phase, AppPhase.signedOut);

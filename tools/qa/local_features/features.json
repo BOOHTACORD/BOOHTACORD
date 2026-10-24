@@ -1253,10 +1253,12 @@
       "clients/flutter/lib/src/screens/workspace_ui/*",
       "clients/flutter/lib/src/screens/guild_quick_jump/*",
       "clients/flutter/lib/src/features/workspace/*",
+      "clients/flutter/lib/src/features/workspace/navigation/favorites/**",
       "clients/web/src/shared/action_hint/*",
       "clients/web/src/shared/workspace_header/*",
       "clients/flutter/lib/src/screens/workspace_ui/header/**",
       "clients/flutter/lib/src/screens/workspace_ui/channel_row/**",
+      "clients/flutter/lib/src/screens/workspace_ui/channel_navigation/**",
       "clients/flutter/lib/src/screens/workspace_ui/direct_message_navigation/**",
       "clients/flutter/lib/src/features/workspace/search/**"
     ],
@@ -1280,7 +1282,9 @@
       "test/workspace_navigation_text_scale_test.dart",
       "test/workspace_navigation_top_test.dart",
       "test/web_parity/presentation_test.dart",
-      "test/member_voice_presence_panel_test.dart"
+      "test/member_voice_presence_panel_test.dart",
+      "test/features/workspace/channel_favorites_preferences_test.dart",
+      "test/workspace_channel_favorites_test.dart"
     ],
     "acceptance": {
       "issue292": {
@@ -1349,6 +1353,14 @@
           "clients/flutter/test/member_voice_presence_panel_test.dart"
         ],
         "scope": "Flutter guild-wide members panel maps the current voice roster to the channel name, changes the voice icon to a screen icon when screen_sharing is true, and hides the indicator for stale, unavailable, ambiguous, or empty roster state. Includes source-resolution widget captures; does not infer speaking or claim media quality."
+      },
+      "flutter_channel_favorites": {
+        "focused": [
+          "clients/flutter/test/features/workspace/channel_favorites_preferences_test.dart",
+          "clients/flutter/test/workspace_channel_favorites_test.dart"
+        ],
+        "native": "integration_test/local_qa_test.dart",
+        "scope": "Web-parity acceptance for favorite channel actions, account and deployment scoped persistence, topology ordering, removal pruning, mobile touch action, desktop hover/focus visibility, and desktop/mobile Flutter production widget captures. Native smoke exercises a real authenticated workspace and persists a favorite against the owned API stack. Runtime coverage does not imply physical accessibility or media acceptance."
       }
     },
     "parity": [
@@ -1393,6 +1405,45 @@
             ],
             "runtime": "NOT_VERIFIED",
             "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      },
+      {
+        "id": "navigation.channel-favorites",
+        "expected": "Channel favorites are scoped to the account and deployment, appear above categories in topology order, persist across restarts, and are pruned when channels disappear.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/channel/ChannelNavigation.vue",
+            "tests": [
+              "clients/web/src/channel/category_disclosure/preferences.spec.ts",
+              "clients/web/tests/navigation_density/navigation.browser.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Browser-local navigation preference; server ACL and channel visibility remain authoritative."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/screens/workspace_ui/channel_navigation/component.dart",
+            "tests": [
+              "clients/flutter/test/features/workspace/channel_favorites_preferences_test.dart",
+              "clients/flutter/test/workspace_channel_favorites_test.dart",
+              "clients/flutter/integration_test/local_qa_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground navigation preference scoped to account and deployment. Native integration uses the disposable local API; physical screen-reader acceptance remains separate."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/screens/workspace_ui/channel_navigation/component.dart",
+            "tests": [
+              "clients/flutter/test/features/workspace/channel_favorites_preferences_test.dart",
+              "clients/flutter/test/workspace_channel_favorites_test.dart",
+              "clients/flutter/integration_test/local_qa_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground navigation preference scoped to account and deployment. Native integration uses the disposable local API; physical screen-reader acceptance remains separate."
           }
         }
       },
@@ -1470,13 +1521,13 @@
       }
     ],
     "parity_review": {
-      "issue": 553,
+      "issue": 518,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "Follow-up to #544: the Web stream participant overlay sizes to the roster and keeps its close control beside the summary. The mobile Web navigation follow-up removes the excess dark gutter below the section tabs while retaining 44px touch targets. 2026-10-24 (#552): Web scrollbars across the app use the themed thin rounded treatment. 2026-10-24 (#553 Web): WorkspaceApp passes guild-wide voice-presence data to the Web members panel. 2026-10-24 (#553 Flutter follow-up): the shared Flutter guild members panel labels the current voice channel and switches to a screen icon when screen_sharing is true; stale, unavailable, ambiguous, and empty rosters do not show an indicator. Focused widget coverage is registered for the shared Android/iOS Flutter client; no speaking or media-quality claim."
+      "scope": "2026-10-24 (#518 Web-to-Flutter parity): Flutter channel favorites match Web's account/deployment scoped behavior, ordered shortcuts, topology pruning, mobile touch control, desktop hover/focus affordance, and persistence. Focused widget coverage, a Flutter visual capture, and an authenticated native local-stack smoke are registered; physical screen-reader and media acceptance remain separate."
     }
   },
   "screen_track_name": {
@@ -1837,7 +1888,7 @@
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; support publication and DM flows are unchanged. Existing Web/iOS/Android support decisions remain in force; no native support change or runtime claim."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; support publication and DM flows are unchanged. Existing Web/iOS/Android support decisions remain in force; no native support change or runtime claim. 2026-10-24 (#518): the shared workspace sidebar adds account-scoped channel favorites; support consent, publication and DM behavior is untouched. The native local-QA scenario continues to exercise support navigation; the broad shared-workspace path match was reviewed."
     }
   }
 }

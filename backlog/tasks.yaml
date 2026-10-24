@@ -833,6 +833,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-SCREEN-01]
     depends_on: [FV2-003, FV2-056]
     evidence: [clients/flutter/test/screen_viewer_transient_controls_test.dart, clients/flutter/lib/src/widgets/screen_viewer_action_layer.dart, tools/qa/local_features/features.json, tools/ci/flutter_gates/artifacts.py, tools/ci/flutter_gates/test_artifacts.py, evidence/qa/flutter-transient-screen-viewer-controls-2026-10-24.md]
+  - id: FV2-058
+    title: Flutter channel favorites parity with Web navigation
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [FV2-006, DW-014]
+    evidence: [clients/flutter/test/features/workspace/channel_favorites_preferences_test.dart, clients/flutter/test/workspace_channel_favorites_test.dart, clients/flutter/integration_test/local_qa_test.dart, tools/qa/local_features/features.json, tools/ci/flutter_gates/artifacts.py, evidence/qa/flutter-channel-favorites-2026-10-24.md]
   - id: IT-001
     title: Installation-scoped opt-in telemetry gateway and fleet visibility (GitHub #336)
     requirements: [REQ-ISOLATION-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-OPS-01]
