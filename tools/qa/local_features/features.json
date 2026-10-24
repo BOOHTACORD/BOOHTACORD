@@ -368,10 +368,10 @@
       "issue": 518,
       "decisions": {
         "web": "implementation_and_regression",
-        "ios": "implementation_and_regression",
-        "android": "implementation_and_regression"
+        "ios": "platform_exception",
+        "android": "platform_exception"
       },
-      "scope": "The Web stream participant overlay layout remains Web-specific. 2026-10-24 (#518 Web-to-Flutter parity): Flutter adds the shared sidebar recovery card for independent chat/voice/roster status and localized retry actions; Android and iOS use the same Flutter presentation while existing retry policies stay unchanged. Widget captures and authenticated native workspace acceptance are tracked separately; no media-quality or physical-accessibility claim."
+      "scope": "The Web stream participant overlay layout remains Web-specific. 2026-10-24 (#518 Web-to-Flutter parity): Flutter adds the shared sidebar recovery card for independent chat/voice/roster status and localized retry actions; Android and iOS use the same Flutter presentation while existing retry policies stay unchanged. 2026-10-24 (window audio preference): Web screen-share startup asks the browser to prefer selected-window audio; iOS and Android use native capture APIs and are unchanged. Physical browser picker isolation remains NOT_RUN. Widget captures and authenticated native workspace acceptance are tracked separately; no media-quality or physical-accessibility claim."
     }
   },
   "screen": {
@@ -390,6 +390,10 @@
       "contracts/realtime.schema.json",
       "clients/web/src/voice/connection_state/media.ts",
       "clients/web/src/voice/connection_state/store.ts",
+      "clients/web/src/voice/screen_publisher/livekit_port.ts",
+      "clients/web/src/voice/screen_publisher/window_audio_capture.ts",
+      "clients/web/src/voice/screen_publisher/window_audio_capture.spec.ts",
+      "clients/web/src/voice/livekit_screen_publishing.spec.ts",
       "clients/web/src/voice/screen_viewer_controller.ts",
       "clients/web/src/voice/screen_viewer_types.ts",
       "clients/web/src/voice/livekit_screen_registry.ts",
@@ -520,6 +524,13 @@
       "test/screen_viewer_transient_controls_test.dart"
     ],
     "acceptance": {
+      "window_audio_preference": {
+        "focused": [
+          "clients/web/src/voice/screen_publisher/window_audio_capture.spec.ts",
+          "clients/web/src/voice/livekit_screen_publishing.spec.ts"
+        ],
+        "scope": "When Web screen sharing requests audio, the next getDisplayMedia call prefers audio from the selected window and restores the original browser method before the picker continues or fails. Unit tests verify the request only; physical Chrome/OS picker audio isolation and game-audio playback remain NOT_RUN until tested on supported Windows/macOS hardware."
+      },
       "issue325_audio": {
         "runtime": "tools/qa/macos_sender/candidate.py",
         "native": "tools/build/webrtc_sdk/build_macos.py",
@@ -739,10 +750,10 @@
       "issue": 518,
       "decisions": {
         "web": "implementation_and_regression",
-        "ios": "implementation_and_regression",
-        "android": "implementation_and_regression"
+        "ios": "platform_exception",
+        "android": "platform_exception"
       },
-      "scope": "2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior; iOS and Android intentionally keep them visible because touch has no hover state. 2026-10-24 (#518 Web-to-Flutter parity): the Flutter connection recovery card is shared across desktop, Android and iOS. Widget tests and desktop/mobile source captures cover presentation; native runtime acceptance remains unverified because no QA devices are configured."
+      "scope": "2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior; iOS and Android intentionally keep them visible because touch has no hover state. 2026-10-24 (#518 Web-to-Flutter parity): the Flutter connection recovery card is shared across desktop, Android and iOS. 2026-10-24 (window audio preference): this change applies only to the Web getDisplayMedia browser capture; native iOS/Android capture APIs are unchanged. Physical Chrome/OS picker audio isolation remains NOT_RUN. Widget tests and desktop/mobile source captures cover presentation; native runtime acceptance remains unverified because no QA devices are configured."
     }
   },
   "screen_metrics": {
