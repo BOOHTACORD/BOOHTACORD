@@ -1,0 +1,97 @@
+{
+  "id": "flutter-voice-audio-ducking-2026-10-24",
+  "task": "T-022",
+  "kind": "flutter-voice-background-audio-ducking",
+  "status": "BLOCKED",
+  "observed_at": "2026-10-24T15:44:25Z",
+  "source_base_commit": "995ac3d7ddd72c5284c9a2489729a0e9c5eabbdf",
+  "scenario": {
+    "objective": "Keep other applications audible when joining a Flutter voice channel on Android and macOS.",
+    "expected": "Android keeps communication routing but does not request system audio focus for the voice session. macOS 14+ retains WebRTC voice processing and applies its minimum other-audio ducking level.",
+    "scope_limits": "Physical audio behavior, older macOS versions, and platform-specific audio quality are not established by widget tests or builds."
+  },
+  "checks": [
+    {
+      "name": "regression_test_before_fix",
+      "result": "FAIL_EXPECTED",
+      "command": "flutter test test/audio/audio_session_test.dart",
+      "observation": "The new communication-preset and native-map assertions failed because Android manageAudioFocus was still true."
+    },
+    {
+      "name": "focused_audio_session_tests",
+      "result": "PASS",
+      "command": "flutter test --no-pub test/audio/audio_session_test.dart",
+      "observation": "51 audio-session tests passed, including communication focus configuration and serialization."
+    },
+    {
+      "name": "targeted_dart_analysis",
+      "result": "PASS",
+      "command": "dart analyze lib/src/audio/audio_session.dart test/audio/audio_session_test.dart",
+      "observation": "No issues found."
+    },
+    {
+      "name": "full_flutter_suite",
+      "result": "PASS",
+      "command": "tools/qa/local_features/check.sh --feature auth --feature connection_status --feature screen --feature voice --base origin/master --real-stack",
+      "observation": "1,638 tests passed and one test was skipped."
+    },
+    {
+      "name": "flutter_component_captures",
+      "result": "PASS",
+      "observation": "142 captures generated. The voice and audio-settings captures listed below were inspected at source resolution; no UI code changed. The global gallery review remains NOT_RUN."
+    },
+    {
+      "name": "macos_debug_build",
+      "result": "PASS",
+      "command": "flutter build macos --debug --no-pub",
+      "observation": "The modified macOS WebRTC plugin compiled. Third-party C/Swift deprecation and compiler warnings were emitted."
+    },
+    {
+      "name": "android_debug_build",
+      "result": "PASS",
+      "command": "flutter build apk --debug --no-pub",
+      "observation": "The Flutter APK built successfully. Gradle emitted SDK XML version and deprecated API warnings."
+    },
+    {
+      "name": "android_runtime_audio_acceptance",
+      "result": "BLOCKED",
+      "observation": "The local-feature runner classified the Android runtime as BLOCKED because no owned QA Android device was available. No physical audio comparison was made."
+    },
+    {
+      "name": "ios_runtime",
+      "result": "BLOCKED",
+      "observation": "The local-feature runner classified the iOS runtime as BLOCKED because no owned QA simulator/device was available."
+    },
+    {
+      "name": "local_feature_run_overall",
+      "result": "FAIL",
+      "command": "tools/qa/local_features/check.sh --feature auth --feature connection_status --feature screen --feature voice --base origin/master --real-stack",
+      "observation": "Flutter unit tests and component captures passed. Web stages failed because local dependencies are absent (vitest and vue-tsc commands were not found); Android and iOS runtime stages were BLOCKED. Report: .out/local-features/20261024-183124/report.json."
+    },
+    {
+      "name": "local_feature_policy_tests",
+      "result": "PASS",
+      "command": "python3 -m unittest tools.qa.local_features.test_policy",
+      "observation": "Four coverage-policy tests passed."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": ".out/local-features/20261024-183124/images/flutter-captures/parity-voice-1440x480-scale1.png",
+      "sha256": "8413fa8a27c8f78d59c6afb55e103fc28e66cedeb26cae1c7e51193dc5af8841",
+      "resolution_px": [1440, 480],
+      "visual_observation": "Voice room and dock fit within the capture; no UI code changed."
+    },
+    {
+      "path": ".out/local-features/20261024-183124/images/flutter-captures/parity-audio-1440x480-scale1.png",
+      "sha256": "81b6431ae1597a8604b7e75620f63cd1dfdf3099fd18e2e9b42e218a7b9f0908",
+      "resolution_px": [1440, 480],
+      "visual_observation": "The fixture shows the audio settings empty-device state without clipping; this task changes runtime audio policy only."
+    }
+  ],
+  "limitations": [
+    "Minimum macOS ducking is not disabled ducking and is supported here only on macOS 14+.",
+    "Android, macOS, and iOS real voice audio behavior remains NOT_VERIFIED until device-based acceptance runs.",
+    "The complete local feature run is FAIL due to missing Web tooling and BLOCKED native runtime stages; CI results remain separate."
+  ]
+}
