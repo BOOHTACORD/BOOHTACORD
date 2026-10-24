@@ -78,9 +78,9 @@ extension WorkspaceMembersPanelStateWorkspaceMemberTileAction
         subtitle: voiceStatus == null
             ? null
             : Text(
-                'Голосовой канал · ${voiceStatus.channelName}',
+                voiceStatus.channelName,
                 key: ValueKey('member-voice-presence:${member.id}'),
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   color: GcColors.textSecondary,

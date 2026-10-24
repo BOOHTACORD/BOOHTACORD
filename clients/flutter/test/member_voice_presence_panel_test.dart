@@ -5,6 +5,7 @@ import 'package:boohtacord_desktop/src/screens/workspace_ui/members_panel/compon
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'uiux_2026/capture_support.dart';
@@ -71,7 +72,7 @@ void main() {
               child: RepaintBoundary(
                 key: const ValueKey('member-voice-presence-capture'),
                 child: SizedBox(
-                  width: 360,
+                  width: 232,
                   height: 600,
                   child: WorkspaceMembersPanel(state: state),
                 ),
@@ -82,7 +83,19 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Голосовой канал · Комната Секрет'), findsOneWidget);
+      expect(find.text('Комната Секрет'), findsOneWidget);
+      final voiceCaptionFinder = find.byKey(
+        const ValueKey('member-voice-presence:account-2'),
+      );
+      expect(tester.widget<Text>(voiceCaptionFinder).maxLines, 2);
+      final voiceCaption = tester.renderObject<RenderParagraph>(
+        voiceCaptionFinder,
+      );
+      expect(
+        voiceCaption.didExceedMaxLines,
+        isFalse,
+        reason: 'the voice channel caption should wrap instead of clipping',
+      );
       expect(find.byIcon(Icons.volume_up_outlined), findsOneWidget);
       expect(
         find.byTooltip('В голосовом канале «Комната Секрет»'),
@@ -115,7 +128,7 @@ void main() {
       state.voiceRoster.changed();
       await tester.pumpAndSettle();
 
-      expect(find.text('Голосовой канал · Комната Секрет'), findsOneWidget);
+      expect(find.text('Комната Секрет'), findsOneWidget);
       expect(find.byIcon(Icons.volume_up_outlined), findsNothing);
       expect(find.byIcon(Icons.desktop_windows_outlined), findsOneWidget);
       expect(
@@ -160,7 +173,7 @@ void main() {
       state.voiceRoster.changed();
       await tester.pumpAndSettle();
 
-      expect(find.text('Голосовой канал · Комната Секрет'), findsNothing);
+      expect(find.text('Комната Секрет'), findsNothing);
       expect(find.byIcon(Icons.desktop_windows_outlined), findsNothing);
       expect(find.byIcon(Icons.volume_up_outlined), findsNothing);
 
@@ -184,13 +197,13 @@ void main() {
       state.voiceRoster.changed();
       await tester.pumpAndSettle();
 
-      expect(find.text('Голосовой канал · Комната Секрет'), findsNothing);
+      expect(find.text('Комната Секрет'), findsNothing);
       expect(find.byIcon(Icons.desktop_windows_outlined), findsNothing);
 
       state.voiceRoster.phase = VoiceRosterPhase.unavailable;
       state.voiceRoster.changed();
       await tester.pumpAndSettle();
-      expect(find.text('Голосовой канал · Комната Секрет'), findsNothing);
+      expect(find.text('Комната Секрет'), findsNothing);
 
       state
         ..voiceRosters = const [
@@ -200,7 +213,7 @@ void main() {
       state.voiceRoster.changed();
       await tester.pumpAndSettle();
 
-      expect(find.text('Голосовой канал · Комната Секрет'), findsNothing);
+      expect(find.text('Комната Секрет'), findsNothing);
       expect(find.byIcon(Icons.volume_up_outlined), findsNothing);
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox.shrink());
