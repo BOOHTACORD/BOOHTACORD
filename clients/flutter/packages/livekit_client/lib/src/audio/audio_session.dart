@@ -256,7 +256,11 @@ class AndroidAudioSessionConfiguration {
   /// Android AudioManager mode.
   final AndroidAudioMode? audioMode;
 
-  /// Whether LiveKit should manage Android audio focus.
+  /// Whether LiveKit should request Android audio focus.
+  ///
+  /// The communication preset leaves this disabled so joining a voice room
+  /// does not cause Android to fade audio from other apps. Communication mode
+  /// and device routing remain enabled.
   final bool? manageAudioFocus;
 
   /// Requested Android audio focus gain type.
@@ -286,7 +290,7 @@ class AndroidAudioSessionConfiguration {
 
   static const communication = AndroidAudioSessionConfiguration(
     audioMode: AndroidAudioMode.inCommunication,
-    manageAudioFocus: true,
+    manageAudioFocus: false,
     focusMode: AndroidAudioFocusMode.gain,
     streamType: AndroidAudioStreamType.voiceCall,
     usageType: AndroidAudioAttributesUsageType.voiceCommunication,

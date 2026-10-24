@@ -114,6 +114,7 @@ void main() {
       );
       expect(options.apple.mode, AppleAudioMode.videoChat);
       expect(options.android.audioMode, AndroidAudioMode.inCommunication);
+      expect(options.android.manageAudioFocus, isFalse);
       expect(options.android.streamType, AndroidAudioStreamType.voiceCall);
     });
 
@@ -547,7 +548,7 @@ void main() {
     test('communication preset uses voice communication values', () {
       final config = AndroidAudioSessionConfiguration.communication;
 
-      expect(config.manageAudioFocus, isTrue);
+      expect(config.manageAudioFocus, isFalse);
       expect(config.audioMode, AndroidAudioMode.inCommunication);
       expect(config.focusMode, AndroidAudioFocusMode.gain);
       expect(config.streamType, AndroidAudioStreamType.voiceCall);
@@ -831,7 +832,7 @@ void main() {
       expect(
         androidAudioSessionConfigurationToMap(AndroidAudioSessionConfiguration.communication),
         {
-          'manageAudioFocus': true,
+          'manageAudioFocus': false,
           'androidAudioMode': 'inCommunication',
           'androidAudioFocusMode': 'gain',
           'androidAudioStreamType': 'voiceCall',

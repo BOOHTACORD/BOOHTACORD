@@ -263,6 +263,12 @@
       "clients/web/src/voice/TouchPttButton.vue",
       "clients/web/src/design/design_v2_audio_presentation.css",
       "clients/flutter/lib/src/features/voice/*",
+      "clients/flutter/packages/livekit_client/lib/src/audio/*",
+      "clients/flutter/packages/livekit_client/test/audio/*",
+      "clients/flutter/packages/livekit_client/shared_swift/LiveKitPlugin.swift",
+      "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/FlutterWebRTCPlugin.m",
+      "clients/flutter/packages/livekit_client/.changes/voice-call-background-audio.md",
+      "evidence/qa/flutter-voice-audio-ducking-2026-10-24.json",
       "clients/flutter/lib/src/widgets/voice*",
       "clients/flutter/lib/src/services/voice*",
       "clients/web/tests/voice_interface/fixture.ts",
@@ -281,7 +287,8 @@
     ],
     "flutter": [
       "test/voice_disconnect/visual_capture_test.dart",
-      "test/web_parity/voice_geometry_test.dart"
+      "test/web_parity/voice_geometry_test.dart",
+      "packages/livekit_client/test/audio/audio_session_test.dart"
     ],
     "acceptance": {
       "issue59": {
@@ -322,6 +329,12 @@
           "clients/flutter/test/workspace_screen_test.dart"
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+      },
+      "voice_audio_ducking": {
+        "focused": [
+          "clients/flutter/packages/livekit_client/test/audio/audio_session_test.dart"
+        ],
+        "scope": "Joining a Flutter voice channel avoids Android's system fade by not requesting audio focus while retaining communication routing; on macOS 14+ WebRTC voice processing uses its minimum other-audio ducking level. Verify native audio on physical Android and macOS targets; unit tests and debug builds are not physical audio acceptance."
       }
     },
     "parity": [

@@ -423,6 +423,16 @@ static void FlutterWebRTCApplyFieldTrials(void) {
                                                              decoderFactory:decoderFactory
                                                       audioProcessingModule:_audioManager.audioProcessingModule];
 
+#if TARGET_OS_OSX
+        // Voice Processing I/O ducks audio from other apps during a call.
+        // Keep voice processing enabled, but use its least aggressive ducking
+        // level so background audio remains audible alongside the conversation.
+        if (@available(macOS 14.0, *)) {
+            _peerConnectionFactory.audioDeviceModule.advancedDuckingEnabled = NO;
+            _peerConnectionFactory.audioDeviceModule.duckingLevel = RTCAudioDuckingLevelMin;
+        }
+#endif
+
         // Allow an embedding plugin (e.g. livekit_client) to own the audio
         // device module's engine-lifecycle delegate. Only override the observer
         // when one is registered, leaving default behavior unchanged otherwise.
