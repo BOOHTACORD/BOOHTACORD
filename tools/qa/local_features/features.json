@@ -460,8 +460,11 @@
       "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/**",
       "clients/flutter/lib/src/screens/voice_screen_ended.dart",
       "clients/flutter/lib/src/screens/voice_viewer_layout.dart",
+      "clients/flutter/lib/src/screens/voice_screen_stage.dart",
       "clients/flutter/lib/src/screens/workspace_ui/voice_participant_strip/**",
-      "clients/flutter/lib/src/screens/screen_fullscreen_overlay.dart"
+      "clients/flutter/lib/src/screens/screen_fullscreen_overlay.dart",
+      "clients/flutter/lib/src/widgets/screen_viewer_action_layer.dart",
+      "clients/flutter/test/screen_viewer_transient_controls_test.dart"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -499,7 +502,8 @@
       "test/web_parity/fullscreen_handoff_test.dart",
       "test/web_parity/mini_surface_test.dart",
       "test/parity518/viewer_commands_test.dart",
-      "test/parity518/audience_hints_test.dart"
+      "test/parity518/audience_hints_test.dart",
+      "test/screen_viewer_transient_controls_test.dart"
     ],
     "acceptance": {
       "issue325_audio": {
@@ -527,6 +531,12 @@
           "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
         ],
         "scope": "Mouse movement reveals overlay actions that fade and slide down after inactivity; keyboard focus and touch remain accessible. The primary overlay action enters/exits browser fullscreen without enabling app-area expansion; the separate menu action expands to the app area. Viewer controls also stop viewing a remote screen share."
+      },
+      "flutter_transient_controls": {
+        "focused": [
+          "clients/flutter/test/screen_viewer_transient_controls_test.dart"
+        ],
+        "scope": "On desktop, mouse activity reveals stage and fullscreen screen-viewer actions; they fade and slide down after inactivity. Keyboard focus keeps actions reachable, and touch platforms keep the controls visible. Visual capture covers the fullscreen viewer action tray; no stream-quality or physical-media claim."
       },
       "issue328": {
         "runtime": "tools/qa/macos_sender/run.py",

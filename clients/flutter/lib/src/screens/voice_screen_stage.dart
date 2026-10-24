@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../features/screen/capabilities/local_track_status.dart';
 import '../features/screen/stage/label.dart';
+import '../widgets/screen_viewer_action_layer.dart';
 
 class VoiceScreenStage extends StatelessWidget {
   const VoiceScreenStage({
@@ -61,7 +62,10 @@ class VoiceScreenStage extends StatelessWidget {
                   bottom: inset,
                   child: const LocalScreenTrackStatus(),
                 ),
-              ...overlays,
+              if (overlays.isNotEmpty)
+                Positioned.fill(
+                  child: ScreenViewerActionLayer(actions: overlays),
+                ),
             ],
           ),
         ),

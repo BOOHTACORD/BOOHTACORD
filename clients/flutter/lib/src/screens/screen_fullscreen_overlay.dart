@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../widgets/screen_viewer_action_layer.dart';
+
 class ScreenFullscreenPresentation {
   const ScreenFullscreenPresentation._({
     required this.platform,
@@ -121,8 +123,9 @@ class _ScreenFullscreenOverlayState extends State<ScreenFullscreenOverlay>
   Future<void> _dismissBySwipe() async {
     if (_closing || _dismissing) return;
     _dismissing = true;
-    if (!MediaQuery.disableAnimationsOf(context))
+    if (!MediaQuery.disableAnimationsOf(context)) {
       await _dismissController.forward();
+    }
     if (mounted) _close();
   }
 
@@ -210,38 +213,44 @@ class _ScreenFullscreenOverlayState extends State<ScreenFullscreenOverlay>
                   ),
                 ),
               ),
-              if (widget.onStopWatching != null)
-                Positioned(
-                  left: 16,
-                  right: 16,
-                  bottom: 16,
-                  child: SafeArea(
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Tooltip(
-                        message: 'Остановить просмотр',
-                        child: FilledButton.icon(
-                          onPressed: () {
-                            if (_closing) return;
-                            _closing = true;
-                            widget.onStopWatching!();
-                          },
-                          icon: const Icon(Icons.stop_circle_outlined),
-                          label: const Text('Остановить просмотр'),
+              Positioned.fill(
+                child: ScreenViewerActionLayer(
+                  actions: [
+                    if (widget.onStopWatching != null)
+                      Positioned(
+                        left: 16,
+                        right: 16,
+                        bottom: 16,
+                        child: SafeArea(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Tooltip(
+                              message: 'Остановить просмотр',
+                              child: FilledButton.icon(
+                                onPressed: () {
+                                  if (_closing) return;
+                                  _closing = true;
+                                  widget.onStopWatching!();
+                                },
+                                icon: const Icon(Icons.stop_circle_outlined),
+                                label: const Text('Остановить просмотр'),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    Positioned(
+                      right: 20,
+                      top: 16,
+                      child: SafeArea(
+                        child: IconButton.filledTonal(
+                          tooltip: 'Выйти из полноэкранного режима',
+                          onPressed: _close,
+                          icon: const Icon(Icons.fullscreen_exit_outlined),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              Positioned(
-                right: 20,
-                top: 16,
-                child: SafeArea(
-                  child: IconButton.filledTonal(
-                    tooltip: 'Выйти из полноэкранного режима',
-                    onPressed: _close,
-                    icon: const Icon(Icons.fullscreen_exit_outlined),
-                  ),
+                  ],
                 ),
               ),
             ],
