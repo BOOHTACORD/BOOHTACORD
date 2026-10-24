@@ -1258,6 +1258,13 @@ both deployed web and Flutter viewers.
   Mini-player layering also matches the web stack: above content but beneath
   scrims/drawers/search, excluded from hidden-overlay focus/semantics, and
   positioned just above the compact voice dock [QA-96](../evidence/flutter/qa96-pinned-screen-overlay-layering-2026-09-29-001.json).
+  After Web commit `88dc8f49` compacted the stream participant panel, Flutter
+  now puts active voice participants and watcher counts in a dismissible menu
+  over the stage, including fullscreen. Active viewing no longer reserves the
+  fixed 92 dp participant strip; the ended-view footer is preserved. The
+  focused widget test covers the full-height stage and both room/fullscreen
+  menus [local QA](../evidence/qa/flutter-screen-viewer-compact-participants-2026-10-24.md).
+  A paired native stream run remains NOT_VERIFIED.
   Verify actual playback/gain and matched viewer screenshots on each target
   platform. For the previously reported Android receiver crop, explicitly
   compare portrait and landscape captures in web and Flutter, confirming all

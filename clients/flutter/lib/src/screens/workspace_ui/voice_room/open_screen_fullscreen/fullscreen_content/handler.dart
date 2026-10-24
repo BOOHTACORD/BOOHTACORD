@@ -1,4 +1,5 @@
 import '../../../native_bindings.dart';
+import '../../../voice_viewer_participants_menu.dart';
 import '../../lifecycle/context.dart';
 
 extension VoiceRoomFullscreenContentRenderer on WorkspaceVoiceRoomStateContext {
@@ -12,6 +13,10 @@ extension VoiceRoomFullscreenContentRenderer on WorkspaceVoiceRoomStateContext {
     BuildContext dialogContext,
   ) => ScreenFullscreenOverlay(
     publisherName: publisherName,
+    participantsOverlay: VoiceViewerParticipantsMenu(
+      state: widget.state,
+      showingLocalScreen: showingLocalScreen,
+    ),
     video: ScreenVideoRendererSlot(
       surface: ScreenVideoRendererSurface.fullscreen,
       owner: ScreenVideoRendererOwner.fullscreen,

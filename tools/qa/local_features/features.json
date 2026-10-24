@@ -495,7 +495,8 @@
       "clients/flutter/lib/src/screens/workspace_ui/voice_participant_strip/**",
       "clients/flutter/lib/src/screens/screen_fullscreen_overlay.dart",
       "clients/flutter/lib/src/widgets/screen_viewer_action_layer.dart",
-      "clients/flutter/test/screen_viewer_transient_controls_test.dart"
+      "clients/flutter/test/screen_viewer_transient_controls_test.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_viewer_participants_menu.dart"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -534,7 +535,8 @@
       "test/web_parity/mini_surface_test.dart",
       "test/parity518/viewer_commands_test.dart",
       "test/parity518/audience_hints_test.dart",
-      "test/screen_viewer_transient_controls_test.dart"
+      "test/screen_viewer_transient_controls_test.dart",
+      "test/voice_viewer_participants_panel_test.dart"
     ],
     "acceptance": {
       "window_audio_preference": {
@@ -659,9 +661,10 @@
       "compact_viewer": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
         "focused": [
-          "clients/web/tests/screen_share_ui/compact.browser.spec.ts"
+          "clients/web/tests/screen_share_ui/compact.browser.spec.ts",
+          "clients/flutter/test/voice_viewer_participants_panel_test.dart"
         ],
-        "scope": "Web video fills the available height. Controls overlay the video; participant and multi-stream panels expand on demand. The participant panel stays compact around its roster instead of covering the stream with unused width or a separate close-button row. A single selected stream has no duplicate thumbnail. Diagnostics remain mounted for recovery and open on demand."
+        "scope": "Web and Flutter video fill the available height. Controls overlay the video; participant and multi-stream panels expand on demand. The participant panel stays compact around its roster instead of covering the stream with unused width or a separate close-button row. Flutter keeps its active roster in an on-demand overlay during room and fullscreen viewing, while the ended-view participant footer remains unchanged. A single selected stream has no duplicate thumbnail. Diagnostics remain mounted for recovery and open on demand. The registered native runtime smoke does not exercise a live stream; stream-specific native/media acceptance stays NOT_VERIFIED until the paired receiver scenario runs."
       }
     },
     "parity": [
@@ -757,6 +760,39 @@
             "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
           }
         }
+      },
+      {
+        "id": "screen.viewer.compact_participants",
+        "expected": "Active stream video uses the available stage height. Participant and watcher details open in a compact, dismissible panel over the video, including in fullscreen; ending the stream preserves the existing participant footer.",
+        "status": "PARITY",
+        "source": "Web commit 88dc8f49; current Flutter checkout",
+        "shipped": "Web browser coverage and Flutter widget coverage are registered separately; native live-stream acceptance is tracked as NOT_VERIFIED.",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/voice/ScreenViewerParticipantStrip.vue",
+            "tests": [
+              "clients/web/tests/screen_share_ui/compact.browser.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Browser acceptance checks compact sizing and on-demand visibility; release receipt binds exact SHA."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/screens/workspace_ui/voice_viewer_participants_menu.dart",
+            "tests": [
+              "clients/flutter/test/voice_viewer_participants_panel_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Widget coverage checks room and fullscreen overlays; an actual native receiver session is required for media acceptance."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/screens/workspace_ui/voice_viewer_participants_menu.dart",
+            "tests": [
+              "clients/flutter/test/voice_viewer_participants_panel_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Widget coverage checks room and fullscreen overlays; an actual native receiver session is required for media acceptance."
+          }
+        }
       }
     ],
     "parity_review": {
@@ -766,7 +802,7 @@
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior; iOS and Android intentionally keep them visible because touch has no hover state. 2026-10-24 (#518 Web-to-Flutter parity): the Flutter connection recovery card is shared across desktop, Android and iOS. 2026-10-24 (window audio preference): this change applies only to the Web getDisplayMedia browser capture; native iOS/Android capture APIs are unchanged. Physical Chrome/OS picker audio isolation remains NOT_RUN. Widget tests and desktop/mobile source captures cover presentation; native runtime acceptance remains unverified because no QA devices are configured."
+      "scope": "2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior; iOS and Android intentionally keep them visible because touch has no hover state. 2026-10-24 (#518 Web-to-Flutter parity): the Flutter connection recovery card is shared across desktop, Android and iOS. 2026-10-24 (window audio preference): this change applies only to the Web getDisplayMedia browser capture; native iOS/Android capture APIs are unchanged. Physical Chrome/OS picker audio isolation remains NOT_RUN. Widget tests and desktop/mobile source captures cover presentation; native runtime acceptance remains unverified because no QA devices are configured. 2026-10-24 (Web commit 88dc8f49): Flutter now presents the active screen-viewer roster in a compact on-demand overlay, including fullscreen, and no longer reserves the 92 dp participant footer while the stream is active. The existing ended-view footer remains. Focused widget coverage is registered; paired native stream acceptance remains NOT_VERIFIED."
     }
   },
   "screen_metrics": {
