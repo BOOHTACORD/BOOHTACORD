@@ -6,6 +6,7 @@ class VoiceViewerLayout extends StatelessWidget {
     required this.stage,
     required this.diagnostics,
     required this.participants,
+    this.participantsOverlay,
     this.audioControls,
     this.streamRail,
     this.bottomActions,
@@ -17,6 +18,7 @@ class VoiceViewerLayout extends StatelessWidget {
   final Widget? streamRail;
   final Widget? bottomActions;
   final Widget participants;
+  final Widget? participantsOverlay;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -30,25 +32,33 @@ class VoiceViewerLayout extends StatelessWidget {
         ?audioControls,
         ?streamRail,
         ?bottomActions,
-        participants,
+        if (participantsOverlay == null) participants,
       ];
-      if (short) {
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: (constraints.maxHeight * .5).clamp(80.0, 240.0),
-                child: stage,
+      final content = short
+          ? SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: (constraints.maxHeight * .5).clamp(80.0, 240.0),
+                    child: stage,
+                  ),
+                  ...details,
+                ],
               ),
-              ...details,
-            ],
-          ),
-        );
-      }
-      return Column(
+            )
+          : Column(
+              children: [
+                Expanded(child: stage),
+                ...details,
+              ],
+            );
+      if (participantsOverlay == null) return content;
+      return Stack(
+        fit: StackFit.expand,
+        clipBehavior: Clip.none,
         children: [
-          Expanded(child: stage),
-          ...details,
+          content,
+          Positioned(top: 60, right: 12, child: participantsOverlay!),
         ],
       );
     },

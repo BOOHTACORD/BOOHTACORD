@@ -34,9 +34,6 @@ extension VoiceRoomScreenViewerRenderer on WorkspaceVoiceRoomStateContext {
             selectedScreen.identity,
             selectedScreenPublication.sid,
           ),
-    pinned:
-        widget.pinnedScreenIdentity != null &&
-        widget.pinnedScreenIdentity == widget.selectedScreenIdentity,
     localScreenAvailable: localScreenTrack != null,
     showingLocalScreen: showingLocalScreen,
     receiverTrack: selectedTrack is RemoteVideoTrack ? selectedTrack : null,
@@ -60,7 +57,6 @@ extension VoiceRoomScreenViewerRenderer on WorkspaceVoiceRoomStateContext {
     screenAudioMuted:
         selectedScreen != null && state.screenShareAudioMuted(selectedScreen),
     deafened: state.deafened,
-    onTogglePin: () => widget.onToggleScreenPin(widget.selectedScreenIdentity),
     onToggleScreenAudio: selectedScreen == null
         ? null
         : () => unawaited(state.toggleScreenShareAudio(selectedScreen)),

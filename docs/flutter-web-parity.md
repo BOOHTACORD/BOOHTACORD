@@ -1248,16 +1248,26 @@ both deployed web and Flutter viewers.
   Viewer selection state is keyed to its voice-channel ID, preventing a stream
   identity or ended-state from leaking into another room
   [QA-39](../evidence/flutter/qa39-voice-channel-viewer-scope-2026-09-28-001.json).
-  Remote streams can now be pinned into a workspace mini-player that remains
-  visible over another channel, a DM, or workspace panels; return-to-viewer,
-  transient screen-audio mute, and stop-watching controls match the web
-  conversation mini-player policy [QA-94](../evidence/flutter/qa94-pinned-screen-mini-player-web-parity-2026-09-29-001.json).
-  When the selected screen publication is removed, Flutter now closes the
-  pinned mini-player but preserves the ended state in the visible voice room;
+  A selected remote stream now stays mounted when the user leaves its voice
+  channel for text, a DM, or workspace settings, and the mini-player appears
+  automatically without a manual pin. Returning to voice hands the same
+  renderer back to the room; stopping the mini-player clears the subscription.
+  This matches Web PR #452 / issue #349 while retaining the existing Flutter
+  return-to-viewer, transient screen-audio mute, and stop-watching controls
+  [local QA](../evidence/qa/flutter-screen-viewer-navigation-2026-10-24.md).
+  When the selected screen publication is removed, Flutter closes the
+  mini-player but preserves the ended state in the visible voice room;
   a temporarily missing frame remains a waiting state [QA-95](../evidence/flutter/qa95-pinned-screen-ended-lifecycle-2026-09-29-001.json).
   Mini-player layering also matches the web stack: above content but beneath
   scrims/drawers/search, excluded from hidden-overlay focus/semantics, and
   positioned just above the compact voice dock [QA-96](../evidence/flutter/qa96-pinned-screen-overlay-layering-2026-09-29-001.json).
+  After Web commit `88dc8f49` compacted the stream participant panel, Flutter
+  now puts active voice participants and watcher counts in a dismissible menu
+  over the stage, including fullscreen. Active viewing no longer reserves the
+  fixed 92 dp participant strip; the ended-view footer is preserved. The
+  focused widget test covers the full-height stage and both room/fullscreen
+  menus [local QA](../evidence/qa/flutter-screen-viewer-compact-participants-2026-10-24.md).
+  A paired native stream run remains NOT_VERIFIED.
   Verify actual playback/gain and matched viewer screenshots on each target
   platform. For the previously reported Android receiver crop, explicitly
   compare portrait and landscape captures in web and Flutter, confirming all

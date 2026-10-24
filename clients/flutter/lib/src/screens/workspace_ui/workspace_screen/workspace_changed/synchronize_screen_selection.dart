@@ -44,22 +44,6 @@ extension SynchronizeScreenSelectionAction on WorkspaceScreenStateContext {
       });
       unawaited(widget.state.selectRemoteScreenForViewing(null));
     }
-    if (unpinnedScreenSelectionShouldStop(
-      selectedScreenIdentity: workspaceSelectedScreenIdentity,
-      waitingScreenIdentity: workspaceScreenWaitingToRestart,
-      pinnedScreenIdentity: workspacePinnedScreenIdentity,
-      activeVoiceChannelId: activeVoiceChannelId,
-      selectedChannelId: widget.state.selectedChannel?.id,
-      directMessageOpen: widget.state.selectedDirectMessage != null,
-      workspacePanelOpen: widget.state.workspacePanel != WorkspacePanel.none,
-    )) {
-      workspaceMutateView(() {
-        workspaceSelectedScreenIdentity = '';
-        workspaceScreenWaitingToRestart = null;
-        workspaceScreenSelectionVoiceChannelId = activeVoiceChannelId;
-      });
-      unawaited(widget.state.selectRemoteScreenForViewing(null));
-    }
     final roomForSelection = widget.state.room;
     final selectedIdentity = workspaceSelectedScreenIdentity;
     if (selectedIdentity != null &&

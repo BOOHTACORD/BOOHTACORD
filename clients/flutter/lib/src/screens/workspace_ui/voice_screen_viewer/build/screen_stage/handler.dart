@@ -54,21 +54,6 @@ extension VoiceScreenViewerScreenStageRenderer
           icon: const Icon(Icons.fullscreen_outlined),
         ),
       ),
-      if (selectedIdentity != null)
-        Positioned(
-          right: 124,
-          top: 28,
-          child: IconButton.filledTonal(
-            tooltip: pinned
-                ? 'Открепить демонстрацию'
-                : 'Закрепить демонстрацию',
-            onPressed: onTogglePin,
-            icon: Icon(
-              pinned ? Icons.push_pin : Icons.push_pin_outlined,
-              size: 20,
-            ),
-          ),
-        ),
       Positioned(
         right: 28,
         top: 28,

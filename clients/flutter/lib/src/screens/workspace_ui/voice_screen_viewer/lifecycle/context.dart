@@ -11,7 +11,6 @@ abstract class WorkspaceVoiceScreenViewerContext extends StatelessWidget {
     required this.selectedIdentity,
     required this.viewerGeneration,
     required this.onFirstFrameRendered,
-    required this.pinned,
     required this.localScreenAvailable,
     required this.showingLocalScreen,
     required this.receiverTrack,
@@ -24,7 +23,6 @@ abstract class WorkspaceVoiceScreenViewerContext extends StatelessWidget {
     required this.screenAudioVolume,
     required this.screenAudioMuted,
     required this.deafened,
-    required this.onTogglePin,
     required this.onToggleScreenAudio,
     required this.onScreenAudioVolumeChanged,
     required this.onFullscreen,
@@ -39,7 +37,6 @@ abstract class WorkspaceVoiceScreenViewerContext extends StatelessWidget {
   final String? selectedIdentity;
   final Object viewerGeneration;
   final VoidCallback? onFirstFrameRendered;
-  final bool pinned;
   final bool localScreenAvailable;
   final bool showingLocalScreen;
   final RemoteVideoTrack? receiverTrack;
@@ -52,7 +49,6 @@ abstract class WorkspaceVoiceScreenViewerContext extends StatelessWidget {
   final int? screenAudioVolume;
   final bool screenAudioMuted;
   final bool deafened;
-  final VoidCallback onTogglePin;
   final VoidCallback? onToggleScreenAudio;
   final ValueChanged<int>? onScreenAudioVolumeChanged;
   final VoidCallback onFullscreen;

@@ -1,5 +1,6 @@
 import '../native_bindings.dart';
 import '../../screen_fullscreen_route.dart';
+import '../voice_viewer_participants_menu.dart';
 
 Future<void> openPinnedScreenFullscreen({
   required BuildContext context,
@@ -23,6 +24,7 @@ Future<void> openPinnedScreenFullscreen({
     onSelectionChanged: onSelectionChanged,
     content: (lease, target) => ScreenFullscreenOverlay(
       publisherName: name,
+      participantsOverlay: VoiceViewerParticipantsMenu(state: state),
       onClose: () => Navigator.of(target).pop(),
       onStopWatching: () {
         Navigator.of(target).pop();

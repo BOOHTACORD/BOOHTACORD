@@ -82,12 +82,14 @@ class ScreenFullscreenOverlay extends StatefulWidget {
     required this.video,
     required this.onClose,
     this.onStopWatching,
+    this.participantsOverlay,
   });
 
   final String publisherName;
   final Widget video;
   final VoidCallback onClose;
   final VoidCallback? onStopWatching;
+  final Widget? participantsOverlay;
 
   @override
   State<ScreenFullscreenOverlay> createState() =>
@@ -213,6 +215,12 @@ class _ScreenFullscreenOverlayState extends State<ScreenFullscreenOverlay>
                   ),
                 ),
               ),
+              if (widget.participantsOverlay != null)
+                Positioned(
+                  top: 68,
+                  right: 16,
+                  child: SafeArea(child: widget.participantsOverlay!),
+                ),
               Positioned.fill(
                 child: ScreenViewerActionLayer(
                   actions: [

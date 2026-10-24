@@ -2,15 +2,15 @@ import 'package:boohtacord_desktop/src/services/pinned_screen_mini_player_policy
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('pinned screen mini-player visibility', () {
+  group('screen mini-player visibility', () {
     bool visible({
-      String? pinned = 'participant-1',
+      String? selectedScreen = 'participant-1',
       String? activeVoice = 'voice-1',
       String? selected = 'text-1',
       bool directMessageOpen = false,
       bool workspacePanelOpen = false,
-    }) => pinnedScreenMiniPlayerVisible(
-      pinnedScreenIdentity: pinned,
+    }) => screenViewerMiniPlayerVisible(
+      selectedScreenIdentity: selectedScreen,
       activeVoiceChannelId: activeVoice,
       selectedChannelId: selected,
       directMessageOpen: directMessageOpen,
@@ -18,9 +18,9 @@ void main() {
     );
 
     test(
-      'stays hidden without a pinned remote stream or active voice room',
+      'stays hidden without a selected remote stream or active voice room',
       () {
-        expect(visible(pinned: null), isFalse);
+        expect(visible(selectedScreen: null), isFalse);
         expect(visible(activeVoice: null), isFalse);
       },
     );
@@ -103,48 +103,6 @@ void main() {
         ),
         isTrue,
       );
-    });
-  });
-  group('unpinned remote viewer navigation lifecycle', () {
-    bool stop({
-      String? selected = 'remote',
-      String? waiting,
-      String? pinned,
-      String? active = 'voice-1',
-      String? channel = 'voice-1',
-      bool dm = false,
-      bool panel = false,
-    }) => unpinnedScreenSelectionShouldStop(
-      selectedScreenIdentity: selected,
-      waitingScreenIdentity: waiting,
-      pinnedScreenIdentity: pinned,
-      activeVoiceChannelId: active,
-      selectedChannelId: channel,
-      directMessageOpen: dm,
-      workspacePanelOpen: panel,
-    );
-    test('stops hidden selection on text or another voice channel', () {
-      expect(stop(channel: 'text-1'), isTrue);
-      expect(stop(channel: 'voice-2'), isTrue);
-    });
-    test(
-      'stops DM and settings even when underlying channel is active voice',
-      () {
-        expect(stop(dm: true), isTrue);
-        expect(stop(panel: true), isTrue);
-      },
-    );
-    test('clears pending restart outside voice before source republish', () {
-      expect(stop(selected: '', waiting: 'remote', channel: 'text-1'), isTrue);
-      expect(stop(selected: null, waiting: 'remote', dm: true), isTrue);
-      expect(stop(selected: '', waiting: 'remote'), isFalse);
-    });
-    test('preserves pin, visible voice, stopped selection and channel-close ownership', () {
-      expect(stop(pinned: 'remote', channel: 'text-1'), isFalse);
-      expect(stop(), isFalse);
-      expect(stop(selected: '', channel: 'text-1'), isFalse);
-      expect(stop(selected: null, channel: 'text-1'), isFalse);
-      expect(stop(active: null, channel: 'text-1'), isFalse);
     });
   });
 }
