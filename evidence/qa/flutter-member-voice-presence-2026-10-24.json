@@ -60,6 +60,17 @@
       "result": "PASS",
       "command": "python3 -m tools.verify.client_parity.run --base origin/master",
       "observation": "Unique parity scenarios, client paths, platform decisions, and evidence states validated."
+    },
+    {
+      "name": "initial_pull_request_ci",
+      "result": "FAIL",
+      "observation": "PR #565 run 40086407127 passed Flutter tests and analysis but failed while packaging the screenshot review set; its downstream flutter fan-in also failed because the two new captures were absent from the finite Flutter artifact inventory. The failure was reproduced as an inventory test expecting the new capture names."
+    },
+    {
+      "name": "flutter_capture_inventory_regression",
+      "result": "PASS",
+      "command": "python3 -m unittest tools.ci.flutter_gates.test_artifacts tools.ci.flutter_gates.test_results tools.ci.artifact_policy.test_captures tools.ci.artifact_policy.test_publication",
+      "observation": "Added both member-presence screenshots to the finite CI inventory; 30 artifact and publication tests passed."
     }
   ],
   "artifacts": [

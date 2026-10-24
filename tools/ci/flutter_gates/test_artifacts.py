@@ -9,8 +9,10 @@ from . import artifacts
 
 class ArtifactTests(unittest.TestCase):
     def test_mandatory_visual_inventory_keeps_all_uiux_capture_scenarios(self):
-        self.assertEqual(135, len(artifacts.VISUALS))
+        self.assertEqual(137, len(artifacts.VISUALS))
         self.assertEqual(len(artifacts.VISUALS), len(set(artifacts.VISUALS)))
+        self.assertIn('guild-member-voice-channel.png', artifacts.VISUALS)
+        self.assertIn('guild-member-screen-sharing.png', artifacts.VISUALS)
         parity = [name for name in artifacts.VISUALS if name.startswith('parity-')]
         self.assertEqual(90, len(parity))
         self.assertIn('parity-pinned-workspace-320x480-ime180-scale2.png', parity)

@@ -7,6 +7,9 @@ from tools.build.android.signature import APPLICATION
 VISUALS = (
     'R14-navigation-top.png', 'maintenance-banner-safe-area-390x800.png',
     'flutter-screen-audience-viewer-strip-1024x92@2x.png',
+    # #553 Flutter guild member voice and screen-sharing presence states.
+    'guild-member-voice-channel.png',
+    'guild-member-screen-sharing.png',
     'flutter-topology-create-desktop-1440x900@2x.png',
     'flutter-topology-destructive-desktop-1440x900@2x.png',
     'flutter-screen-share-mobile-ime-2x-393x852.png',
