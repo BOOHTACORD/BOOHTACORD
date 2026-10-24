@@ -823,6 +823,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-SCREEN-01]
     depends_on: [FV2-003, DW-010, T-061]
     evidence: [tools/qa/mini_player/test_environment.py, tools/qa/mini_player/test_native.py, clients/flutter/integration_test/mini_player_qa_test.dart, evidence/qa/issue247-mini-player-acceptance-2026-10-18.md]
+  - id: FV2-056
+    title: Flutter guild member panel voice-channel and screen-share presence parity
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [FV2-003, FV2-017, T-022, DW-011]
+    evidence: [clients/flutter/test/member_voice_presence_panel_test.dart, tools/qa/local_features/features.json, evidence/qa/flutter-member-voice-presence-2026-10-24.json]
   - id: IT-001
     title: Installation-scoped opt-in telemetry gateway and fleet visibility (GitHub #336)
     requirements: [REQ-ISOLATION-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-OPS-01]
