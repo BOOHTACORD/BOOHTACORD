@@ -16,7 +16,7 @@
     "clients/web/src/workspace/guild_voice_presence.spec.ts": "9544bec92685b92e6cbe1f1ca0e5c6680c767895e19ee9a241ca8485e0beab33",
     "clients/web/tests/member_roster/fixture.ts": "ee7f587d8d710966559dcdc70dcf6682e7e0e614dccd21fda02772b037e88d7d",
     "clients/web/tests/member_roster/roster.browser.spec.ts": "9cac8c073e734015f5a4230b33f05e4d050cfbf09d14837fe7f32f98d32f30c3",
-    "tools/qa/local_features/features.json": "9c7468494352a9bbb29f4c79a6a43d84f16c6563af34d96e6569be1bad42d4ce"
+    "tools/qa/local_features/features.json": "29aae1849df9a02006fed90d2609013a464ab96cb8199617b6414073012e98b1"
   },
   "verification": {
     "local_feature_command": "./tools/qa/local_features/check.sh --feature shell --feature auth --feature connection_status --feature screen --feature support --feature voice --platform web --base origin/master --real-stack",
@@ -81,5 +81,13 @@
       "resolution": "Moved the checkout beneath the workspace .out directory and reran the complete selected Web acceptance; all 24 stages passed."
     }
   ],
-  "native_runtime": "NOT_RUN_OUT_OF_SCOPE_WEB_ONLY"
+  "native_runtime": "NOT_RUN_OUT_OF_SCOPE_WEB_ONLY",
+  "post_acceptance_registry_update": {
+    "reason": "GitHub CI contracts required fresh cross-platform regression decisions for the shared WorkspaceApp.vue path mapped to support, shell and connection_status.",
+    "scope": "Updated only parity_review metadata; Web implementation and behavior tests are unchanged.",
+    "verification": [
+      "python -m unittest tools.verify.client_parity.test_policy tools.release.ios_artifact.test_verify",
+      "python -m tools.verify.client_parity.run --base origin/master"
+    ]
+  }
 }

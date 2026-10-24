@@ -225,13 +225,13 @@
       }
     ],
     "parity_review": {
-      "issue": 522,
+      "issue": 553,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; reconnect and retry behavior are unchanged. Existing platform decisions remain in force; no connection-status code or native runtime claim changed."
     }
   },
   "voice": {
@@ -1452,13 +1452,13 @@
       }
     ],
     "parity_review": {
-      "issue": 544,
+      "issue": 553,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "Follow-up to #544: the Web stream participant overlay now sizes to the roster and keeps its close control beside the summary. The mobile Web navigation follow-up removes the excess dark gutter below the section tabs while retaining 44px touch targets. iOS and Android layouts are unchanged; this Web-only regression has no native runtime claim."
+      "scope": "Follow-up to #544: the Web stream participant overlay now sizes to the roster and keeps its close control beside the summary. The mobile Web navigation follow-up removes the excess dark gutter below the section tabs while retaining 44px touch targets. iOS and Android layouts are unchanged; this Web-only regression has no native runtime claim. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to the members panel. General shell/navigation behavior and Flutter code are unchanged; this is a Web-only roster regression with no native runtime claim."
     }
   },
   "screen_track_name": {
@@ -1813,13 +1813,13 @@
       }
     ],
     "parity_review": {
-      "issue": 522,
+      "issue": 553,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; support publication and DM flows are unchanged. Existing Web/iOS/Android support decisions remain in force; no native support change or runtime claim."
     }
   }
 }
