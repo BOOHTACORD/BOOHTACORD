@@ -5,9 +5,9 @@ import { screenPublisherEventHandlers } from './screen_publisher/events'
 import { ScreenProfileGuard } from './screen_profile/guard'
 import { adaptiveMediaRoomOptions } from './media_publishing'
 
-afterEach(() => vi.unstubAllEnvs())
+afterEach(() => { vi.unstubAllEnvs(); vi.unstubAllGlobals() })
 
-function setup() {
+function setup(captureScreen?: () => Promise<unknown>) {
   const media = { readyState: 'live', contentHint: '', getSettings: () => ({ width: 2560, height: 1440, frameRate: 60 }), applyConstraints: vi.fn(async () => {}) }
   const video = { mediaStreamTrack: media, sender: { getParameters: () => ({ encodings: [] }), setParameters: vi.fn(), getStats: vi.fn() }, stop: vi.fn() } as unknown as LocalVideoTrack
   const audio = { stop: vi.fn() } as unknown as LocalAudioTrack, microphone = {} as LocalAudioTrack
@@ -22,6 +22,7 @@ function setup() {
     getTrackPublication: (source: Track.Source) => publications.get(source) as LocalTrackPublication | undefined,
     setScreenShareEnabled: vi.fn(async (enabled: boolean) => {
       if (!enabled) return undefined
+      await captureScreen?.()
       publications.set(Track.Source.ScreenShare, { videoTrack: video }); publications.set(Track.Source.ScreenShareAudio, { audioTrack: audio })
       return { videoTrack: video } as LocalTrackPublication
     }),
@@ -44,6 +45,18 @@ function setup() {
 }
 
 describe('LiveKit screen publisher port', () => {
+  it('prefers audio from the selected window for the browser capture', async () => {
+    const getDisplayMedia = vi.fn(async () => ({} as MediaStream))
+    const mediaDevices = { getDisplayMedia } as unknown as MediaDevices
+    vi.stubGlobal('navigator', { mediaDevices })
+    const f = setup(() => mediaDevices.getDisplayMedia({ audio: true, video: true }))
+
+    await f.port.start('P1080_30')
+
+    expect(getDisplayMedia).toHaveBeenCalledWith(expect.objectContaining({ audio: true, video: true, windowAudio: 'window' }))
+    expect(mediaDevices.getDisplayMedia).toBe(getDisplayMedia)
+  })
+
   it('uses managed video republish, keeping screen audio and microphone published', async () => {
     const f = setup(); await f.port.start('P1080_30'); f.port.adopt?.('P1080_30')
     await f.port.capture(f.video, 'P720_30'); await f.port.unpublish(f.video, false); await f.port.publish(f.video, 'P720_30')

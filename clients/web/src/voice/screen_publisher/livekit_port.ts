@@ -5,6 +5,7 @@ import { screenCapturePlan, screenPublishPlan } from './plan'
 import type { ScreenProfile } from '../screen_profile/policy'
 import type { ScreenPublisherPort } from './types'
 import { screenMediaRollout } from '../screen_rollout/policy'
+import { withWindowAudioPreference } from './window_audio_capture'
 
 export function bindLiveKitScreenPublisher(participant: LocalParticipant, diagnostics: () => Promise<ScreenDiagnostics>, adopt: (profile: ScreenProfile) => void, repair: (profile: ScreenProfile, action: () => Promise<void>, current: () => boolean) => Promise<boolean>) {
   const rollout = screenMediaRollout()
@@ -23,7 +24,8 @@ export function bindLiveKitScreenPublisher(participant: LocalParticipant, diagno
     generation: () => generation,
     isLive: track => track.mediaStreamTrack.readyState === 'live',
     currentTrack,
-    start: async profile => (await participant.setScreenShareEnabled(true, screenCapturePlan(profile), publicationPlan(profile)))?.videoTrack ?? currentTrack(),
+    start: async profile => withWindowAudioPreference(async () =>
+      (await participant.setScreenShareEnabled(true, screenCapturePlan(profile), publicationPlan(profile)))?.videoTrack ?? currentTrack()),
     capture: (track, profile) => applyScreenProfile(track, profile),
     unpublish,
     publish: async (track, profile) => { await participant.publishTrack(track, { ...publicationPlan(profile), source: Track.Source.ScreenShare }) },

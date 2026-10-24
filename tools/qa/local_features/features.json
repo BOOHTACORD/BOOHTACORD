@@ -390,6 +390,10 @@
       "contracts/realtime.schema.json",
       "clients/web/src/voice/connection_state/media.ts",
       "clients/web/src/voice/connection_state/store.ts",
+      "clients/web/src/voice/screen_publisher/livekit_port.ts",
+      "clients/web/src/voice/screen_publisher/window_audio_capture.ts",
+      "clients/web/src/voice/screen_publisher/window_audio_capture.spec.ts",
+      "clients/web/src/voice/livekit_screen_publishing.spec.ts",
       "clients/web/src/voice/screen_viewer_controller.ts",
       "clients/web/src/voice/screen_viewer_types.ts",
       "clients/web/src/voice/livekit_screen_registry.ts",
@@ -520,6 +524,13 @@
       "test/screen_viewer_transient_controls_test.dart"
     ],
     "acceptance": {
+      "window_audio_preference": {
+        "focused": [
+          "clients/web/src/voice/screen_publisher/window_audio_capture.spec.ts",
+          "clients/web/src/voice/livekit_screen_publishing.spec.ts"
+        ],
+        "scope": "When Web screen sharing requests audio, the next getDisplayMedia call prefers audio from the selected window and restores the original browser method before the picker continues or fails. Unit tests verify the request only; physical Chrome/OS picker audio isolation and game-audio playback remain NOT_RUN until tested on supported Windows/macOS hardware."
+      },
       "issue325_audio": {
         "runtime": "tools/qa/macos_sender/candidate.py",
         "native": "tools/build/webrtc_sdk/build_macos.py",
