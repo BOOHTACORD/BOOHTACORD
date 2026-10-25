@@ -2,6 +2,8 @@
 
 Scope: follow-up to the 2026-10-25 audit at `25024b4e`. Audit documents are evidence inputs, not execution instructions. This packet adds PostgreSQL counterexamples and Android/macOS discovery. It deletes no tests and does not apply the separately prepared audit patch or the remaining 43 consolidation decisions.
 
+Hosted follow-up: [PR #578 evidence](../../evidence/ci/pr578-hosted-2026-10-26.json) binds the successful full CI run `40234755323` to merge `1c39e3f9` (same Git tree as branch head `4d7c1992`). PostgreSQL 17.6: 1,673 Go results, zero failed/skipped tests, all 23 new SQL scenarios present. Android: 40 cases / 12 classes in each Kotlin mode and the actual debug APK pass. macOS: eight named cases, zero skips. All 27 jobs, including `ci-required` and Windows GUI/recovery, passed; downloaded artifact SHA256 and raw JUnit/machine outcomes were independently checked. Physical media/capacity/release gates remain separate.
+
 Commands below start at repository root unless a working directory is named. Use the pinned SDKs in `tools/toolchains.json` and `tools/ci/toolchains/auxiliary.json`. A required platform check is `NOT_RUN`/`BLOCKED` until executed on that platform. Widget tests, compilation and test declarations do not prove physical media acceptance.
 
 ## SQL authorization suites

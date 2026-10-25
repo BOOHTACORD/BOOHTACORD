@@ -7,8 +7,9 @@ Ubuntu jobs are `dart`, `android-kotlin` and `android`, alongside an Apple
 waits for all four. `ci-required` still validates the reusable workflow's complete
 result, including the aggregate. No child is optional. Android release
 signing retains its dependency on the same complete reusable gate.
-The 2026-10-25 SQL/native follow-up is locally verified but awaits hosted Android
-and Apple execution. Its [suite protection map](test-protection.md) records commands,
+The SQL/native follow-up passed hosted Android and Apple execution in PR #578,
+run `40234755323`; [source-bound evidence](../../evidence/ci/pr578-hosted-2026-10-26.json)
+retains all 27 successful jobs and per-suite outcomes. Its [suite protection map](test-protection.md) records commands,
 per-class discovery, mandatory triggers, artifacts and open audit gaps.
 
 The versioned component map is unchanged. Flutter/app/vendor/native builder,
