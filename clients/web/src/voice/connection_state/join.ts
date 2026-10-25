@@ -13,7 +13,10 @@ interface JoinContext {
  active:Ref<ActiveVoiceSession|null>;state:Ref<VoiceConnectionState>;error:Ref<string|null>;deafened:Ref<boolean>
  microphoneMuted:Ref<boolean>;microphonePermissionDenied:Ref<boolean>;canJoin:Ref<boolean>;transferRequired:Ref<boolean>
  screenViewer:{start():void};volume:{start():Promise<void>};refreshAudioProcessingDiagnostics():void
- ownership:ReturnType<typeof createControllerOwnership>;transferChannelId:Ref<string|null>;transferJoinMode:Ref<VoiceJoinMode>
+ ownership:ReturnType<typeof createControllerOwnership>
+}
+function requiresTransfer(cause:unknown):cause is VoiceRequestError {
+ return cause instanceof VoiceRequestError && cause.status===409 && ['ACTIVE_VOICE_LEASE','ORIGIN_MEDIA_BUSY'].includes(cause.code ?? '')
 }
 export function createConnectionJoin(context:JoinContext) {
  const {session,terminal,revocation,active,state,error,deafened,microphoneMuted,microphonePermissionDenied,canJoin,transferRequired,screenViewer,volume,refreshAudioProcessingDiagnostics}=context
@@ -21,16 +24,29 @@ export function createConnectionJoin(context:JoinContext) {
   async function performJoin(channelId: string, transfer = false, joinMode: VoiceJoinMode = 'with-microphone'): Promise<void> {
     if (!canJoin.value) return
 
+    let transferForJoin=transfer
     terminal.reset(); revocation.resetPending()
     const generation = terminal.generation
     state.value = 'JOINING'
     error.value = null
-    transferRequired.value = false
-    context.transferChannelId.value=null;context.transferJoinMode.value=joinMode
+    transferRequired.value = transferForJoin
     try {
-      if(!await context.ownership.claim(channelId,transfer)) throw new VoiceRequestError(409,'ORIGIN_MEDIA_BUSY',context.ownership.otherChannelId.value ?? undefined)
+      if(!await context.ownership.claim(channelId,transferForJoin)) {
+        if(transferForJoin || !await context.ownership.claim(channelId,true)) throw new VoiceRequestError(409,'ORIGIN_MEDIA_BUSY',context.ownership.otherChannelId.value ?? undefined)
+        transferForJoin=true
+        transferRequired.value=true
+      }
       if(generation!==terminal.generation) return
-      const joined = await session.join(channelId, transfer, joinMode)
+      let joined:ActiveVoiceSession
+      try {
+        joined=await session.join(channelId,transferForJoin,joinMode)
+      } catch(cause) {
+        if(transferForJoin || !requiresTransfer(cause)) throw cause
+        transferForJoin=true
+        transferRequired.value=true
+        joined=await session.join(channelId,true,joinMode)
+      }
+      transferRequired.value=false
       if (generation !== terminal.generation) {await session.revoke(joined.leaseId);return}
       active.value = joined
       terminal.bind(active.value.leaseId, active.value.channelId)
@@ -52,8 +68,7 @@ export function createConnectionJoin(context:JoinContext) {
       microphoneMuted.value = false
       microphonePermissionDenied.value = false
       state.value = 'ERROR'
-      transferRequired.value = cause instanceof VoiceRequestError && cause.status===409 && ['ACTIVE_VOICE_LEASE','ORIGIN_MEDIA_BUSY'].includes(cause.code ?? '')
-      context.transferChannelId.value=transferRequired.value && cause instanceof VoiceRequestError ? cause.activeChannelId ?? null : null
+      transferRequired.value = false
       if (cancelledReason && terminal.leaseID) terminal.server(terminal.leaseID, cancelledReason)
       error.value = terminal.notice.value?.message ?? (cancelledReason ? voiceLeaseRevocationMessage(cancelledReason) : voiceJoinErrorMessage(cause))
     } finally {if(generation===terminal.generation&&!active.value) await context.ownership.release()}
