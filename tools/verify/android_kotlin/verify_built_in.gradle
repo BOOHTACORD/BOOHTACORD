@@ -1,0 +1,11 @@
+// Flutter scans conditional build-script text for warnings. Verify actual state.
+gradle.projectsEvaluated {
+    def legacy = gradle.rootProject.allprojects.findAll {
+        it.pluginManager.hasPlugin('org.jetbrains.kotlin.android') ||
+            it.pluginManager.hasPlugin('kotlin-android')
+    }.collect { it.path }.sort()
+    if (!legacy.isEmpty()) {
+        throw new GradleException("Built-in Kotlin still applies legacy KGP: ${legacy}")
+    }
+    println('Verified actual built-in Kotlin: no project applies legacy KGP.')
+}

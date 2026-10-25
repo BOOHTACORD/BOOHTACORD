@@ -63,7 +63,8 @@ VISUALS += tuple(
 VISUALS += tuple(
     f'support-{width}-text{scale}.png'
     for width in (320, 393, 1440) for scale in (1.0, 2.0)
-) + ('support-320-text2-ime.png',)
+) + ('support-320-text2-ime.png',) + tuple(f'notification-settings-{width}-{scale}-{position}.png'
+    for width, scale in ((393, 1), (393, 2), (1440, 1)) for position in ('top', 'bottom'))
 
 
 def regular(path, maximum):
