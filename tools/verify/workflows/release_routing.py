@@ -27,8 +27,8 @@ def check(build, deploy, gates):
     require(route.get('permissions') == {'contents': 'read', 'actions': 'read'}, 'Route needs only metadata read permission')
     require(route.get('runs-on') == GITHUB_LINUX, 'Route must run on a GitHub-hosted Linux runner')
     steps = route.get('steps', [])
-    require(len(steps) == 4 and steps[0] == {'uses': 'actions/checkout@v4', 'with': {'persist-credentials': 'false'}}, 'Route checkout/actions must remain bounded')
-    require(steps[1] == {'uses': 'actions/setup-python@v5', 'with': {'python-version': python_input(ROOT)}}
+    require(len(steps) == 4 and steps[0] == {'uses': 'actions/checkout@v7', 'with': {'persist-credentials': 'false'}}, 'Route checkout/actions must remain bounded')
+    require(steps[1] == {'uses': 'actions/setup-python@v7', 'with': {'python-version': python_input(ROOT)}}
             and steps[2] == {'name': 'Verify selected Python interpreter',
                              'run': 'python -m tools.ci.toolchains.runtime python'},
             'Route may only add the exact reviewed read-only Python bootstrap')
