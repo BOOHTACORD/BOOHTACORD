@@ -117,9 +117,9 @@ class MasterWorkflowTests(unittest.TestCase):
         steps = self.workflows['build-server.yaml']['jobs']['bundle']['steps']
         downloads = [s for s in steps if s.get('uses') == 'actions/download-artifact@v8']
         execution = '${{ github.sha }}-${{ github.run_id }}-*'
-        self.assertEqual([{'pattern': 'check-' + gate + '-' + execution, 'path': '.out/gate-artifacts',
-                           'merge-multiple': 'false'}
-                          for gate in ('backend', 'web', 'contracts')], [s['with'] for s in downloads])
+        self.assertEqual([{'pattern': 'check-{backend,web,contracts}-' + execution,
+                           'path': '.out/gate-artifacts', 'merge-multiple': 'false'}],
+                         [s['with'] for s in downloads])
         self.assertTrue(all(not s.get('if') for s in downloads))
         collector = next(step for step in steps if step.get('run', '').startswith('python3 -m tools.build.server.gate_receipts'))
         self.assertEqual('python3 -m tools.build.server.gate_receipts --collect .out/gate-artifacts .out/checks', collector['run'])

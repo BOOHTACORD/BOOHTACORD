@@ -96,9 +96,8 @@ def validate(workflows):
         require(all(not build['jobs'][name].get('concurrency') for name in ('changes', 'server-quality')))
         uploads = [s for s in bundle['steps'] if s.get('uses') == 'actions/upload-artifact@v7']
         require([s.get('with') for s in downloads] == [
-            {'pattern': f"check-{gate}-${{{{ github.sha }}}}-${{{{ github.run_id }}}}-*",
-             'path': '.out/gate-artifacts', 'merge-multiple': 'false'}
-            for gate in ('backend', 'web', 'contracts')]
+            {'pattern': f"check-{{backend,web,contracts}}-${{{{ github.sha }}}}-${{{{ github.run_id }}}}-*",
+             'path': '.out/gate-artifacts', 'merge-multiple': 'false'}]
             and all(not s.get('if') for s in downloads))
         require(len(collectors) == 1 and collectors[0].get('env') == {
             'GATE_SOURCE_REVISION': '${{ github.sha }}', 'GATE_RUN_ID': '${{ github.run_id }}',
