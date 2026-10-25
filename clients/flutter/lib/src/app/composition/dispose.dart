@@ -13,6 +13,7 @@ void disposeOwners(AppOwners app) {
   app.workspace.dispose();
   app.conversation.dispose();
   app.nativeNotifications.dispose();
+  app.remoteNotifications.dispose();
   app.maintenance.dispose();
   app.reset.dispose();
   unawaited(app.voiceOverlayWindowsClient?.dispose() ?? Future<void>.value());

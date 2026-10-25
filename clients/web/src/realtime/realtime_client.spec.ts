@@ -4,7 +4,7 @@ import { parseRealtimeEvent, realtimeURL, realtimeTraceURL } from './realtime_cl
 
 describe('realtime client contract', () => {
   it('uses the same host and no credential in its websocket URL', () => {
-    expect(realtimeURL({ protocol: 'https:', host: 'voice.example.test' })).toBe('wss://voice.example.test/api/v1/realtime?capabilities=role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1')
+    expect(realtimeURL({ protocol: 'https:', host: 'voice.example.test' })).toBe('wss://voice.example.test/api/v1/realtime?capabilities=role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1,notifications_v1')
   })
 
   it('carries a W3C traceparent through the browser WebSocket handshake', () => {

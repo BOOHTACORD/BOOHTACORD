@@ -11,6 +11,7 @@ import (
 	"time"
 	"voice-platform/backend/internal/app/lifecycle"
 	screenviewerpresenceapp "voice-platform/backend/internal/app/media_routes/screen_viewer_presence"
+	notificationroutes "voice-platform/backend/internal/app/notification_routes"
 	"voice-platform/backend/internal/app/telemetry"
 	workerruntime "voice-platform/backend/internal/app/worker_runtime"
 	clientupdates "voice-platform/backend/internal/client_updates/catalog"
@@ -23,6 +24,7 @@ import (
 	presencememory "voice-platform/backend/internal/media/screen_viewer_presence/memory"
 	centralexport "voice-platform/backend/internal/observability/central_export"
 	httpmetrics "voice-platform/backend/internal/observability/http_metrics"
+ notificationmetrics "voice-platform/backend/internal/notifications/observe_delivery"
 	installation "voice-platform/backend/internal/observability/installation"
 	dependencies "voice-platform/backend/internal/observability/observe_dependencies"
 	ratelimit "voice-platform/backend/internal/security/rate_limit"
@@ -125,6 +127,14 @@ func Run(ctx context.Context) (result error) {
 	}
 	resources.Add(dependencies.Start(ctx, configuration.MediaSnapshot, space).Stop)
 	resources.Add(workerruntime.StartVoice(ctx, database, configuration, metrics, events))
+	notificationTelemetry := notificationmetrics.NewRuntime()
+ if err := metrics.RegisterCollector(notificationmetrics.NewCollector(database));err!=nil{return err}
+ if err := metrics.RegisterCollector(notificationTelemetry);err!=nil{return err}
+ stopNotifications, err := notificationroutes.StartDelivery(ctx, database, configuration, events, notificationTelemetry)
+	if err != nil {
+		return err
+	}
+	resources.Add(stopNotifications)
 	server := &http.Server{Addr: configuration.Address, Handler: handler, ReadHeaderTimeout: 5 * time.Second}
 	slog.Info("api listening", "address", configuration.Address)
 	return lifecycle.Serve(ctx, server)

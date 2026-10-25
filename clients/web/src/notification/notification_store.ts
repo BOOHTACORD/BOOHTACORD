@@ -9,8 +9,10 @@ import { addressedUnread, notificationCandidate, notificationTitle, unreadTotal 
 import { createConversationNotificationController, defaultConversationPreference } from './conversation_preferences/controller'
 import type { ConversationKind, Preference } from './conversation_preferences/policy'
 import { guildProfile } from '../guild/profile/state'
+import { useServerNotifications } from './server_preferences/state'
 
 export const useNotificationStore = defineStore('notifications', () => {
+  const remote = useServerNotifications()
   const topology = useTopologyStore()
   const directMessages = useDirectMessageStore()
   const available = ref(false)
@@ -22,14 +24,14 @@ export const useNotificationStore = defineStore('notifications', () => {
   let originalTitle = ''
   let conversations:ReturnType<typeof createConversationNotificationController>|null=null
   const preferencesRevision=ref(0)
-  const conversationPreference=(kind:ConversationKind,id:string):Preference=>{preferencesRevision.value;return conversations?.get(kind,id) ?? defaultConversationPreference()}
+  const conversationPreference=(kind:ConversationKind,id:string):Preference=>{preferencesRevision.value;return remote.snapshot ? remote.preference(kind,id) : conversations?.get(kind,id) ?? defaultConversationPreference()}
   async function setConversationPreference(kind:ConversationKind,id:string,value:Preference):Promise<void> {
     error.value=null
-    try {await conversations?.set(kind,id,value)} catch(cause) {error.value=cause instanceof Error ? cause.message : 'Не удалось сохранить уведомления.'}
+    try {if(remote.snapshot) await remote.setPreference(kind,id,value);else await conversations?.set(kind,id,value)} catch(cause) {error.value=cause instanceof Error ? cause.message : 'Не удалось сохранить уведомления.'}
   }
   async function resetConversationPreferences():Promise<void> {
     error.value=null
-    try {await conversations?.reset()} catch {error.value='Не удалось сбросить настройки уведомлений.'}
+    try {if(remote.snapshot) await remote.save(s=>{s.overrides=[]});else await conversations?.reset()} catch {error.value='Не удалось сбросить настройки уведомлений.'}
   }
 
   function refreshStatus(): void {
@@ -46,6 +48,7 @@ export const useNotificationStore = defineStore('notifications', () => {
 
   function start(accountID: string, runtime?: NotificationRuntime): void {
     stop()
+    if (!runtime && typeof window !== 'undefined') void remote.start(accountID)
     const port=runtime ?? browserNotificationRuntime()
     delivery = createNotificationDelivery(accountID, port, () => guildProfile.name.value)
     conversations=createConversationNotificationController(accountID,port,()=>{preferencesRevision.value++})
@@ -61,6 +64,7 @@ export const useNotificationStore = defineStore('notifications', () => {
   }
 
   function stop(): void {
+    remote.stop()
     if (stopTitleWatch) { stopTitleWatch(); stopTitleWatch = null; document.title = originalTitle }
     delivery?.cancel()
     conversations?.cancel();conversations=null;preferencesRevision.value++
@@ -89,6 +93,7 @@ export const useNotificationStore = defineStore('notifications', () => {
   }
 
   async function deliver(event: RealtimeEvent, previousUnread: number | null): Promise<void> {
+    if (remote.currentBinding) return
     if (!delivery || previousUnread === null || typeof document === 'undefined' || document.visibilityState !== 'hidden') return
     let body = notificationCandidate(event, topology.topology, directMessages.directMessages, previousUnread)
     if (!body || !enabled.value) return

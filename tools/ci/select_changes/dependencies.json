@@ -2,8 +2,37 @@
   "version": 1,
   "rules": [
     {
-      "paths": ["support_gateway/**", "tests/support_gateway/**"],
-      "gates": ["contracts"],
+      "paths": [
+        "backend/internal/notifications/**",
+        "backend/internal/pushrelay/**",
+        "backend/internal/app/notification_routes/**",
+        "backend/internal/config/runtime/notification*",
+        "backend/internal/chat/**",
+        "backend/internal/identity/**",
+        "backend/internal/realtime/**",
+        "backend/internal/guild/update_settings/**",
+        "clients/web/src/notification/**",
+        "clients/web/public/notification-*",
+        "clients/flutter/lib/src/features/notifications/**"
+      ],
+      "gates": [
+        "contracts",
+        "backend",
+        "web",
+        "flutter",
+        "windows"
+      ],
+      "server": true,
+      "native": true
+    },
+    {
+      "paths": [
+        "support_gateway/**",
+        "tests/support_gateway/**"
+      ],
+      "gates": [
+        "contracts"
+      ],
       "server": false,
       "native": false
     },

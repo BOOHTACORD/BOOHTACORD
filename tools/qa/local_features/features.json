@@ -1979,5 +1979,49 @@
       },
       "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; support publication and DM flows are unchanged. 2026-10-24 (#518): the shared workspace sidebar adds account-scoped channel favorites and independent connection recovery presentation; support consent, publication and DM behavior is untouched. The native local-QA scenario continues to exercise support navigation and recovery status; the broad shared-workspace path match was reviewed."
     }
+  },
+  "notifications": {
+    "paths": [
+      "clients/web/src/notification/*",
+      "clients/web/public/notification-*",
+      "clients/web/public/manifest.webmanifest",
+      "clients/web/tests/remote_notifications/*",
+      "clients/flutter/lib/src/features/notifications/*",
+      "clients/flutter/lib/src/app/notification_access/*",
+      "clients/flutter/test/notifications/*",
+      "clients/flutter/android/app/src/main/kotlin/ru/boohtacord/app/notifications/*",
+      "clients/flutter/ios/Runner/notifications/*",
+      "backend/internal/notifications/*",
+      "backend/internal/pushrelay/*"
+    ],
+    "web": [
+      "tests/remote_notifications/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/notifications/settings_widget_test.dart",
+      "test/notifications/settings_visual_test.dart",
+      "test/notifications/mobile_enrollment_test.dart"
+    ],
+    "acceptance": {
+      "addressed_background_v1": {
+        "issue": 564,
+        "browser": "clients/web/tests/remote_notifications/playwright.config.ts",
+        "focused": [
+          "clients/flutter/test/notifications/mobile_enrollment_test.dart",
+          "backend/internal/notifications/dispatch_delivery/dispatch_test.go",
+          "backend/internal/pushrelay/dispatch_job/dispatch_test.go"
+        ],
+        "scope": "Account/device separation, transactional scoped dedup and bounded metadata pipeline with synthetic providers. No physical delivery claim."
+      }
+    },
+    "parity_review": {
+      "issue": 564,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "android": "implementation_and_regression",
+        "ios": "implementation_and_regression"
+      },
+      "scope": "Local tests only as requested. Native physical/provider gates remain NOT_RUN; Windows host has no Apple toolchain or physical GMS/iPhone devices."
+    }
   }
 }

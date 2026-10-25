@@ -38,6 +38,7 @@ class NotificationController extends ChangeNotifier {
   String? error;
   final Set<String> deliveriesInFlight = {};
   bool appIsForeground = true;
+  bool remoteActive = false;
   bool get supported =>
       supportedOverride ??
       (!kIsWeb &&

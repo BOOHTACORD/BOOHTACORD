@@ -45,6 +45,7 @@ services:
       - ./livekit-network-alerts.yaml:/etc/prometheus/livekit-network-alerts.yaml:ro
       - ./media-qoe-alerts.yaml:/etc/prometheus/media-qoe-alerts.yaml:ro
       - ./voice-roster-alerts.yaml:/etc/prometheus/voice-roster-alerts.yaml:ro
+      - ./notification-alerts.yaml:/etc/prometheus/notification-alerts.yaml:ro
       - prometheus-data:/prometheus
     ports:
       - "127.0.0.1:9091:9090"

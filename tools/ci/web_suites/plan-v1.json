@@ -31,7 +31,8 @@
       "npm:test:delivery",
       "npm:test:guild-lifecycle",
       "npm:test:mentions-inbox",
-      "npm:test:readonly-archive"
+      "npm:test:readonly-archive",
+      "npm:test:notifications"
     ],
     "browser-voice": [
       "npm:test:screen-profile",
@@ -453,6 +454,16 @@
       "cwd": "web",
       "sfu": false,
       "smoke_env": false
+    },
+    "npm:test:notifications": {
+      "command": [
+        "npm",
+        "run",
+        "test:notifications"
+      ],
+      "cwd": "web",
+      "sfu": false,
+      "smoke_env": false
     }
   },
   "script_inventory": {
@@ -492,6 +503,7 @@
     "test:mini-player": "playwright test -c tests/mini_player/playwright.config.ts",
     "test:member-roster": "playwright test -c tests/member_roster/playwright.config.ts",
     "test:settings-hierarchy": "playwright test -c tests/settings_hierarchy/playwright.config.ts",
-    "test:header-actions": "playwright test -c tests/header_actions/playwright.config.ts"
+    "test:header-actions": "playwright test -c tests/header_actions/playwright.config.ts",
+    "test:notifications": "playwright test -c tests/remote_notifications/playwright.config.ts"
   }
 }

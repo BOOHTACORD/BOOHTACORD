@@ -14,7 +14,7 @@ class RealtimeConnectApi {
       scheme: httpUri.scheme == 'http' ? 'ws' : 'wss',
       path: '${httpUri.path}/realtime',
       queryParameters: {
-        'capabilities': 'role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1',
+        'capabilities': 'role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1,notifications_v1',
         if (after != null) 'after': after,
       },
     );

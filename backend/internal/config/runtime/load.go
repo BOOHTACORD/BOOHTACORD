@@ -17,6 +17,8 @@ import (
 )
 
 type Config struct {
+	Notifications                                                                NotificationOptions
+	NotificationsAvailable                                                       bool
 	Address, DatabaseURL, LiveKitAPIKey, LiveKitAPISecret, LiveKitPrivateHTTPURL string
 	PublicOrigin                                                                 string
 	ClientUpdateCatalogPath                                                      string
@@ -46,6 +48,14 @@ type Config struct {
 func Load(getenv func(string) string) (Config, error) {
 	configuration := Config{PublicOrigin: getenv("PUBLIC_ORIGIN"), AttachmentRoot: getenv("ATTACHMENTS_DIRECTORY"), TrustedProxyCIDRs: splitHosts(getenv("TRUSTED_PROXY_CIDRS"))}
 	var err error
+	if _, err := notificationAvailability(getenv("NOTIFICATION_WEB_ENABLED")); err != nil {
+		return Config{}, fmt.Errorf("NOTIFICATION_WEB_ENABLED must be true or false")
+	}
+	configuration.Notifications = notificationOptions(getenv)
+	configuration.NotificationsAvailable, err = notificationAvailability(getenv("NOTIFICATIONS_AVAILABLE"))
+	if err != nil {
+		return Config{}, err
+	}
 	configuration.OriginMiddleware, err = origincheck.New(configuration.PublicOrigin)
 	if err != nil {
 		return Config{}, fmt.Errorf("configure origin check: %w", err)

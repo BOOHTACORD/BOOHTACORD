@@ -1,4 +1,5 @@
 import '../../services/native_notifications.dart';
+import '../../features/notifications/remote_lifecycle/controller.dart';
 import '../composition/owners.dart';
 
 mixin AppNotificationsAccess on AppOwners {
@@ -22,5 +23,6 @@ mixin AppNotificationsAccess on AppOwners {
 
   void setNotificationAppForeground(bool foreground) {
     nativeNotifications.appIsForeground = foreground;
+    remoteNotifications.setForeground(foreground);
   }
 }

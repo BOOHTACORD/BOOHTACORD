@@ -8,7 +8,7 @@ import '../features/admin/confirmation/dialog.dart';
 import '../features/session/own_sessions/panel.dart';
 import '../features/updates/status_card.dart';
 import '../models.dart';
-import '../services/native_notifications.dart';
+import '../features/notifications/settings/panel.dart';
 import '../theme.dart';
 import '../widgets/authenticated_avatar.dart';
 import 'workspace_ui/profile_panel_toolbar/component.dart';
@@ -563,64 +563,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ),
   );
 
-  Widget _notificationsSection() => _panel(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Text(
-          'Уведомления',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-        ),
-        const SizedBox(height: 8),
-        const Text(
-          'Показываем общий текст нового сообщения, пока приложение неактивно. Содержимое личных сообщений не отображается.',
-          style: TextStyle(color: GcColors.textSecondary),
-        ),
-        const SizedBox(height: 8),
-        Semantics(
-          liveRegion: true,
-          child: Text(switch (widget.state.notificationPermission) {
-            NativeNotificationPermission.unavailable =>
-              'Системные уведомления недоступны.',
-            NativeNotificationPermission.denied =>
-              'Уведомления запрещены в настройках системы.',
-            NativeNotificationPermission.granted =>
-              widget.state.notificationsEnabled
-                  ? 'Уведомления включены.'
-                  : 'Уведомления выключены.',
-          }),
-        ),
-        if (widget.state.notificationError != null) ...[
-          const SizedBox(height: 8),
-          Semantics(
-            liveRegion: true,
-            child: Text(
-              widget.state.notificationError!,
-              style: const TextStyle(color: GcColors.danger),
-            ),
-          ),
-        ],
-        const SizedBox(height: 8),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: OutlinedButton(
-            onPressed:
-                widget.state.notificationPermission ==
-                    NativeNotificationPermission.unavailable
-                ? null
-                : widget.state.notificationsEnabled
-                ? widget.state.disableNotifications
-                : widget.state.enableNotifications,
-            child: Text(
-              widget.state.notificationsEnabled
-                  ? 'Отключить уведомления'
-                  : 'Включить уведомления',
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
+  Widget _notificationsSection() => _panel(child: NotificationSettingsPanel(state:widget.state));
 
   Widget _aboutSection() => _panel(child: const ClientUpdateStatusCard());
 

@@ -37,6 +37,10 @@ import { navigateWithSettingsGuard } from './settings_exit_guard'
 import type { ActionScope } from '../telemetry/action_scope/scope'
 import { bindWorkspaceReady } from './ready_lifecycle/bind'
 import { buildGuildVoicePresence } from './guild_voice_presence'
+import { useSearchTargetStore } from '../search/search_target_store'
+import { useNotificationTap } from '../notification/remote_push/tap'
+import { useServerNotifications } from '../notification/server_preferences/state'
+import { latestNotificationHint } from '../notification/remote_push/hints'
 const props = defineProps<{ role: 'MEMBER' | 'ADMINISTRATOR'; accountId: string;readiness?:ActionScope }>()
 const emit = defineEmits<{ sessionExpired: []; loggedOut: [] }>()
 const adminSection = ref<AdminSection>('members')
@@ -72,6 +76,21 @@ function requestPanel(panel: 'admin' | 'audio' | 'profile' | 'search'): Promise<
 function requestGuildPanel(): Promise<void> { return props.role === 'ADMINISTRATOR' ? requestPanel('admin') : Promise.resolve() }
 function requestSelectChannel(channel: TopologyChannel): Promise<void> { return beforeWorkspaceNavigation(() => selectChannel(channel)) }
 function requestSelectDirectMessage(id: string): Promise<void> { return beforeWorkspaceNavigation(() => selectDirectMessage(id)) }
+const remoteNotifications=useServerNotifications()
+const notificationTap=useNotificationTap({account:props.accountId,ready:()=>!!topologyStore.topology,navigate:target=>beforeWorkspaceNavigation(async()=>{
+  if(target.kind==='DM'){
+    await directMessageStore.refreshNavigation()
+    if(!directMessageStore.directMessages.some(d=>d.id===target.conversation_id))throw new Error('Диалог больше недоступен.')
+    useSearchTargetStore().open({kind:'DIRECT_MESSAGE',conversationId:target.conversation_id,messageId:target.message_id})
+    await selectDirectMessage(target.conversation_id)
+  }else{
+    await topologyStore.refresh()
+    const channel=topologyStore.topology?.categories.flatMap(c=>c.channels).find(c=>c.id===target.conversation_id&&c.kind==='TEXT')
+    if(!channel)throw new Error('Канал больше недоступен.')
+    useSearchTargetStore().open({kind:'CHANNEL',conversationId:target.conversation_id,messageId:target.message_id})
+    await selectChannel(channel)
+  }
+})})
 function requestOpenDirectMessage(id: string): Promise<void> { return beforeWorkspaceNavigation(() => selectOpenedDirectMessage(id)) }
 function requestReturnToVoice(channelId: string): Promise<void> { return beforeWorkspaceNavigation(() => returnToVoice(channelId)) }
 function requestOpenDirectMessageFromMember(userId: string): Promise<void> { return beforeWorkspaceNavigation(() => openDirectMessageFromMember(userId)) }
@@ -86,6 +105,8 @@ bindWorkspaceReady({ readiness: props.readiness,
 </script>
 <template>
   <div class="app-frame">
+    <div v-if="remoteNotifications.hint" role="status" class="state notification-hint">{{ remoteNotifications.hint }} <button type="button" @click="notificationTap.accept(latestNotificationHint());remoteNotifications.hint=''">Открыть</button><button type="button" aria-label="Скрыть уведомление" @click="remoteNotifications.hint=''">Закрыть</button></div>
+    <p v-if="notificationTap.error.value" role="status" class="state">{{ notificationTap.error.value }}</p>
     <a class="gc-sr-only" href="#main-region">Перейти к содержимому</a>
     <ShortcutStatus :message="voiceActivation.shortcutStatus" />
       <div class="gc-shell" :class="{ 'no-aside': (activePanel === 'search' && voiceStageWide) || (activePanel !== 'search' && (voiceStageWide || selectedDirectMessage || activePanel !== 'none')), 'search-active': activePanel === 'search', 'voice-stage-wide': voiceStageWide, 'members-collapsed': membersOpen && !voiceStageWide && !selectedDirectMessage && activePanel === 'none' }" data-testid="app-shell">

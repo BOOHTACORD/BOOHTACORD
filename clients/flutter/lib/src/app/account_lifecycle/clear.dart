@@ -1,4 +1,5 @@
 import '../../services/native_notifications.dart';
+import '../../features/notifications/remote_lifecycle/controller.dart';
 import '../../features/conversation/lifecycle/controller.dart';
 import '../../features/realtime/lifecycle/controller.dart';
 import '../../features/voice/lifecycle/controller.dart';
@@ -29,6 +30,7 @@ extension AppAccountCleanup on AppOwners {
 
   Future<void> clearSignedOutAccount() async {
     clearPrivateCaches();
+    await remoteNotifications.stop();
     await nativeNotifications.useAccount(null);
   }
 
@@ -49,6 +51,7 @@ extension AppAccountCleanup on AppOwners {
       leaving,
       realtime.close(),
       nativeNotifications.useAccount(null),
+      remoteNotifications.stop(),
     ]);
     if (!ticket.isCurrent) return;
     error = null;
