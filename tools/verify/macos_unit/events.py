@@ -1,4 +1,6 @@
 """Require all eight real capture-option tests, including both Apple-only cases."""
+import json
+
 EXPECTED = (
     'default screen options preserve baseline constraints without engine',
     'macOS capture engine preserves exact source and frame rate',
@@ -9,6 +11,19 @@ EXPECTED = (
     'diagnostics copyWith preserves explicit false and independent audio policy',
     'from constructor forwards explicit diagnostics without inventing one',
 )
+
+
+def parse(text):
+    rows=[]
+    for line in text.splitlines():
+        if not line.strip(): continue
+        row=json.loads(line)
+        if isinstance(row, list):
+            if row != [{'event':'test.startedProcess','params':{'vmServiceUri':None}}]:
+                raise ValueError('Unexpected Flutter process notification')
+        elif isinstance(row, dict) and isinstance(row.get('type'),str): rows.append(row)
+        else: raise ValueError('Unexpected Flutter machine record')
+    return rows
 
 
 def validate(events):

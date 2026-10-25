@@ -4,7 +4,7 @@ import subprocess
 import sys
 from tools.ci.native.process import ROOT
 from tools.ci.flutter_setup.vendor_locks import prepare
-from .events import validate
+from .events import validate, parse
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
         with log.open('w', encoding='utf-8') as stream:
             subprocess.run(['flutter', 'test', '--no-pub', '--machine', 'test/options/screen_capture_engine_test.dart'],
                            cwd=package, stdout=stream, check=True)
-        count = validate([json.loads(line) for line in log.read_text(encoding='utf-8').splitlines()])
+        count = validate(parse(log.read_text(encoding='utf-8')))
         report.update(status='PASS', tests=count, skipped=0)
     finally:
         path.write_text(json.dumps(report, indent=2) + '\n')
