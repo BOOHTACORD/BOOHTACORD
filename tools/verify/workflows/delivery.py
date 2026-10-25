@@ -62,7 +62,7 @@ def check(workflows):
     require(builder.get('concurrency') == {
         'group': 'trusted-server-bundle-${{ github.repository }}', 'cancel-in-progress': 'false'},
         'Only release-qualified bundles enter the shared non-cancellable signer queue')
-    uploads = [step['with'] for step in builder['steps'] if step.get('uses') == 'actions/upload-artifact@v4']
+    uploads = [step['with'] for step in builder['steps'] if step.get('uses') == 'actions/upload-artifact@v7']
     require(len(uploads) == 2 and uploads[0]['name'] == 'server-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
             and uploads[0]['if-no-files-found'] == 'error'
             and uploads[1] == {'name':'build-metrics-server-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}',

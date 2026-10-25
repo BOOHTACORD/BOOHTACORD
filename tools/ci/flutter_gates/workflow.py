@@ -16,7 +16,7 @@ def command(job, value):
 
 
 def upload(job, path, name, always=False):
-    steps = [s for s in job.get('steps', []) if s.get('uses') == 'actions/upload-artifact@v4'
+    steps = [s for s in job.get('steps', []) if s.get('uses') == 'actions/upload-artifact@v7'
              and s.get('with', {}).get('path') == path]
     require(len(steps) == 1)
     step = steps[0]
@@ -46,7 +46,7 @@ def validate(document):
     require(aggregate.get('if') == 'always()' and set(aggregate.get('needs', [])) == {'dart', 'android', 'android-kotlin'}
             and aggregate.get('runs-on') == GITHUB_LINUX and aggregate.get('timeout-minutes') == '5'
             and not aggregate.get('continue-on-error'))
-    downloads = [s for s in aggregate.get('steps', []) if s.get('uses') == 'actions/download-artifact@v4']
+    downloads = [s for s in aggregate.get('steps', []) if s.get('uses') == 'actions/download-artifact@v8']
     require(len(downloads) == 1 and not downloads[0].get('if') and downloads[0].get('with') == {
         'pattern': 'flutter-part-' + CONTEXT + '-*', 'path': '.out/ci/flutter-parts', 'merge-multiple': 'true'})
     step = command(aggregate, 'python3 -m tools.ci.flutter_gates.aggregate')

@@ -18,7 +18,7 @@ class ArtifactWorkflowAdoptionTests(unittest.TestCase):
                                               ('ci-flutter.yaml', 'dart', 'flutter', 'dart')]:
             job = workflow(name)['jobs'][key]
             output = '.out/ci/capture-packages/' + component + '-' + profile + '/'
-            uploads = [s for s in job['steps'] if s.get('uses') == 'actions/upload-artifact@v4'
+            uploads = [s for s in job['steps'] if s.get('uses') == 'actions/upload-artifact@v7'
                        and s['with']['path'] == output]
             with self.subTest(workflow=name):
                 self.assertEqual(1, len(uploads))
@@ -31,7 +31,7 @@ class ArtifactWorkflowAdoptionTests(unittest.TestCase):
     def test_windows_artifacts_have_finite_full_execution_identity_and_durable_retention(self):
         document = workflow('flutter-windows.yaml')
         names = {s['with']['name'] for job in document['jobs'].values() for s in job['steps']
-                 if s.get('uses') == 'actions/upload-artifact@v4'
+                 if s.get('uses') == 'actions/upload-artifact@v7'
                  and s['with']['name'].startswith(('desktop-recovery-windows-', 'BOOHTACORD-windows-', 'screen-setup-windows-'))}
         suffix = '-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
         self.assertEqual({prefix + suffix for prefix in ('desktop-recovery-windows', 'BOOHTACORD-windows-x64',
@@ -48,7 +48,7 @@ class ArtifactWorkflowAdoptionTests(unittest.TestCase):
         for name in ('ci-flutter.yaml', 'ci-frontend.yaml'):
             for job in workflow(name)['jobs'].values():
                 for step in job.get('steps', []):
-                    if step.get('uses') != 'actions/upload-artifact@v4': continue
+                    if step.get('uses') != 'actions/upload-artifact@v7': continue
                     config = step['with']
                     if config['name'].startswith(('web-part-', 'flutter-part-', 'check-', 'boohtacord-android-debug-apk-')):
                         self.assertEqual(('error', '30'), (config['if-no-files-found'], config['retention-days']))

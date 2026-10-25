@@ -42,7 +42,7 @@ if ($generated.Count -gt 0) {
 }
 
 $windows = Get-Content -LiteralPath (Join-Path $policyView 'flutter-windows.yaml') -Raw
-if ($windows -notmatch 'uses:\s*actions/upload-artifact@v4' -or
+if ($windows -notmatch 'uses:\s*actions/upload-artifact@v7' -or
     $windows -notmatch 'path:\s*clients/flutter/build/windows/x64/runner/Release/' -or
     $windows -notmatch 'if-no-files-found:\s*error' -or
     $windows -notmatch 'retention-days:\s*30') {
@@ -59,7 +59,7 @@ foreach ($required in @('workflow_call:', 'runs-on: windows-2022',
 }
 $macos = Get-Content -LiteralPath (Join-Path $policyView 'flutter-macos.yaml') -Raw
 if ($macos -notmatch 'bash tools/build/macos/package.sh' -or
-    $macos -notmatch 'uses:\s*actions/upload-artifact@v4' -or
+    $macos -notmatch 'uses:\s*actions/upload-artifact@v7' -or
     $macos -notmatch 'if-no-files-found:\s*error' -or
     $macos -notmatch 'retention-days:\s*30') {
     throw 'macOS CI must package and retain its ZIP and checksum as a workflow artifact.'
@@ -79,7 +79,7 @@ foreach ($required in @(
         throw "Flutter CI gate is missing: $required"
     }
 }
-if ($flutterCi -notmatch 'uses:\s*actions/upload-artifact@v4' -or
+if ($flutterCi -notmatch 'uses:\s*actions/upload-artifact@v7' -or
     $flutterCi -notmatch 'path:\s*\.out/native/android-debug/' -or
     $flutterCi -notmatch 'if-no-files-found:\s*error' -or
     $flutterCi -notmatch 'retention-days:\s*30') {
