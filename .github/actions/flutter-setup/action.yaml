@@ -32,7 +32,7 @@ runs:
         REQUESTED_CHANNEL: ${{ inputs.channel }}
       run: '"$BOOHTACORD_CI_PYTHON" -m tools.ci.flutter_setup.run prepare'
     - name: Checkout the immutable installer source without executing its composite action
-      uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         repository: subosito/flutter-action
         ref: 1a449444c387b1966244ae4d4f8c696479add0b2

@@ -4,7 +4,7 @@ from pathlib import Path
 import unittest
 from unittest.mock import patch
 import yaml
-from tools.verify.action_pins.policy import normalized
+from tools.verify.action_pins.policy import load_pins, normalized
 from . import shadow_workflow
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -31,3 +31,13 @@ class ShadowWorkflowTests(unittest.TestCase):
     def test_control_template_must_match_the_immutable_original_workflow_hash(self):
         with patch.object(shadow_workflow, 'read_baseline_source', return_value='changed original workflow'), self.assertRaises(ValueError):
             shadow_workflow.definition()
+
+    def test_generated_control_uses_currently_reviewed_external_action_commits(self):
+        pins = load_pins()
+        document = shadow_workflow.definition()
+        for name in ('legacy', 'compare'):
+            for step in document['jobs'][name]['steps']:
+                action, separator, _ = step.get('uses', '').partition('@')
+                if separator and action in pins:
+                    with self.subTest(job=name, action=action):
+                        self.assertEqual(action + '@' + pins[action]['commit'], step['uses'])

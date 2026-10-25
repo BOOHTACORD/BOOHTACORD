@@ -53,7 +53,7 @@ class WorkflowTests(unittest.TestCase):
         for profile in ('dart', 'android', 'android-kotlin', 'macos'):
             for path in ('proof', 'artifacts'):
                 document = self.document(); job = document['jobs'][profile]
-                upload = next(s for s in job['steps'] if s.get('uses') == 'actions/upload-artifact@v4'
+                upload = next(s for s in job['steps'] if s.get('uses') == 'actions/upload-artifact@v7'
                               and (('.out/ci/flutter-parts/' in s['with']['path']) == (path == 'proof')))
                 upload['with']['if-no-files-found'] = 'ignore'
                 with self.subTest(profile=profile, path=path), self.assertRaises(ValueError):
@@ -65,7 +65,7 @@ class WorkflowTests(unittest.TestCase):
             if mutation == 'needs': job['needs'] = ['dart']
             elif mutation == 'if': job['if'] = 'success()'
             elif mutation == 'download':
-                step = next(s for s in job['steps'] if s.get('uses') == 'actions/download-artifact@v4')
+                step = next(s for s in job['steps'] if s.get('uses') == 'actions/download-artifact@v8')
                 step['with']['pattern'] = 'flutter-part-*'
             else:
                 step = next(s for s in job['steps'] if s.get('run') == 'python3 -m tools.ci.flutter_gates.aggregate')
