@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import DisconnectNotice from './disconnect_notice/Notice.vue'
-import TransferConfirmation from './controller_ownership/TransferConfirmation.vue'
 import type { VoiceDisconnectNotice } from './disconnect_notice/model'
 import type { VoiceConnectionState } from './connection_store'
 import type { VoiceJoinMode } from './livekit_gateway'
@@ -24,7 +23,7 @@ const emit = defineEmits<{ join: [channelId: string, transfer?: boolean, joinMod
       <button v-if="rosterError" class="gc-button gc-button--secondary" type="button" aria-label="Повторить загрузку состава голосовой комнаты" @click="retryVoiceRoster()">Повторить попытку</button>
       <DisconnectNotice v-if="notice" :notice="notice" />
       <p v-else-if="voiceError" class="state state-error" role="alert">{{ voiceError }}</p>
-      <TransferConfirmation v-if="voiceTransferRequired" @confirm="emit('join', channelId, true, $event)" />
+      <p v-if="voiceTransferRequired" class="state" role="status">Переносим голосовое подключение…</p>
       <div v-else class="voice-prejoin-actions">
         <button class="gc-button gc-button--primary" type="button" :disabled="voiceState === 'JOINING' || voiceState === 'LEAVING' || notice?.reconnectAllowed === false" @click="emit('join', channelId)">{{ voiceState === 'JOINING' ? 'Подключаемся…' : 'Войти' }}</button>
         <button class="gc-button gc-button--secondary" type="button" :disabled="voiceState === 'JOINING' || voiceState === 'LEAVING' || notice?.reconnectAllowed === false" @click="emit('join', channelId, false, 'listener')">Без микрофона</button>
