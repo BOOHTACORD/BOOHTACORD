@@ -6,6 +6,7 @@ import 'package:livekit_client/livekit_client.dart';
 
 import '../../services/api_client.dart';
 import '../../services/native_notifications.dart';
+import '../../features/notifications/remote_lifecycle/controller.dart';
 import '../../features/session/lifecycle/controller.dart';
 import '../../features/session/reset_state/controller.dart';
 import '../../features/session/maintenance_state/controller.dart';
@@ -45,6 +46,7 @@ abstract class AppOwners extends ChangeNotifier {
   final Future<void> Function()? audioDeviceBootstrap;
   final Room Function(RoomOptions)? voiceRoomFactory;
   final NativeNotificationService nativeNotifications;
+  late final RemoteNotificationController remoteNotifications;
   late final SessionController session;
   late final GuildProfileController guildProfile;
   late final PasswordResetController reset;

@@ -1,5 +1,6 @@
 import '../layout_policy/derive.dart';
 import '../../../../features/realtime/lifecycle/status.dart';
+import '../../../../features/notifications/settings/notice.dart';
 import 'back_guard/handler.dart';
 import 'search_overlay/handler.dart';
 import 'pinned_layer/handler.dart';
@@ -93,6 +94,7 @@ extension WorkspaceScreenStateBuildAction on WorkspaceScreenStateContext {
           final shellContent = Column(
             children: [
               RealtimeRecoveryStatus(controller: widget.state.realtime),
+              RemoteNotificationNotice(controller:widget.state.remoteNotifications),
               Expanded(child: primaryContent),
             ],
           );

@@ -1,0 +1,35 @@
+name: boohtacord-publisher-relay
+# Separate publisher deployment. Never included by the guild compose file.
+services:
+  push-relay:
+    profiles: [publisher-push]
+    image: ${PUSH_RELAY_IMAGE:?set immutable publisher relay image digest}
+    read_only: true
+    user: "65532:65532"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    environment:
+      RELAY_ADDRESS: :8093
+      RELAY_METRICS_ADDRESS: :9097
+      RELAY_DATABASE_URL: ${RELAY_DATABASE_URL:?set private dedicated relay database}
+      RELAY_NAMESPACE: ${RELAY_NAMESPACE:?staging or production with separate database}
+      RELAY_ENABLED: ${RELAY_ENABLED:-false}
+      RELAY_ANDROID_ENABLED: ${RELAY_ANDROID_ENABLED:-false}
+      RELAY_IOS_ENABLED: ${RELAY_IOS_ENABLED:-false}
+      RELAY_SECRET_KEY_FILE: /run/secrets/push_cipher
+      RELAY_SIGNING_KEY_FILE: /run/secrets/push_signing
+      RELAY_FCM_SERVICE_ACCOUNT_FILE: /run/secrets/push_fcm
+      RELAY_FCM_PROJECT: ${RELAY_FCM_PROJECT:-}
+    secrets: [push_cipher, push_signing, push_fcm]
+    ports: ["127.0.0.1:8093:8093", "127.0.0.1:9097:9097"]
+    mem_limit: 256m
+    cpus: 1.0
+    pids_limit: 128
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
+secrets:
+  push_cipher: {file: "${RELAY_SECRET_KEY_FILE:?outside checkout}"}
+  push_signing: {file: "${RELAY_SIGNING_KEY_FILE:?outside checkout}"}
+  push_fcm: {file: "${RELAY_FCM_SERVICE_ACCOUNT_FILE:?outside checkout}"}

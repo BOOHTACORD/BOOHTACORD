@@ -7703,7 +7703,2031 @@
           }
         }
       }
-    }
+    },
+      "/api/v1/notification-devices/capabilities": {
+        "get": {
+          "operationId": "getNotificationDeviceCapabilities",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Expected authenticated account; mismatch 409 fences profile switches."
+            }
+          ],
+          "description": "Version 1. Own authenticated account and current ACL only. Separate account/operator/device consent. No read cursor or media action.",
+          "responses": {
+            "200": {
+              "description": "Versioned result",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationDeviceCapabilities"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/notification-devices": {
+        "get": {
+          "operationId": "listNotificationDevices",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Expected authenticated account; mismatch 409 fences profile switches."
+            }
+          ],
+          "description": "Version 1. Own authenticated account and current ACL only. Separate account/operator/device consent. No read cursor or media action.",
+          "responses": {
+            "200": {
+              "description": "Versioned result",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationDeviceList"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "operationId": "registerNotificationDevice",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Expected authenticated account; mismatch 409 fences profile switches."
+            },
+            {
+              "name": "Origin",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Version 1. Own authenticated account and current ACL only. Separate account/operator/device consent. No read cursor or media action.",
+          "responses": {
+            "200": {
+              "description": "Versioned result",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationDeviceEnrollment"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationDeviceRegistration"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/notification-devices/{deviceID}": {
+        "put": {
+          "operationId": "rotateNotificationDevice",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Expected authenticated account; mismatch 409 fences profile switches."
+            },
+            {
+              "name": "Origin",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "deviceID",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "description": "Version 1. Own authenticated account and current ACL only. Separate account/operator/device consent. No read cursor or media action.",
+          "responses": {
+            "200": {
+              "description": "Versioned result",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationDeviceEnrollment"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationDeviceRegistration"
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "operationId": "revokeNotificationDevice",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Expected authenticated account; mismatch 409 fences profile switches."
+            },
+            {
+              "name": "Origin",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "deviceID",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "description": "Version 1. Own authenticated account and current ACL only. Separate account/operator/device consent. No read cursor or media action.",
+          "responses": {
+            "204": {
+              "description": "No content",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationDeviceGeneration"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/notification-devices/{deviceID}/activate": {
+        "post": {
+          "operationId": "activateNotificationDevice",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Expected authenticated account; mismatch 409 fences profile switches."
+            },
+            {
+              "name": "Origin",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "deviceID",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "description": "Version 1. Own authenticated account and current ACL only. Separate account/operator/device consent. No read cursor or media action.",
+          "responses": {
+            "200": {
+              "description": "Versioned result",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationActivatedDevice"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationDeviceActivation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/notification-references/resolve": {
+        "post": {
+          "operationId": "resolveNotificationReference",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Expected authenticated account; mismatch 409 fences profile switches."
+            },
+            {
+              "name": "Origin",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Version 1. Own authenticated account and current ACL only. Separate account/operator/device consent. No read cursor or media action.",
+          "responses": {
+            "200": {
+              "description": "Versioned result",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationResolvedTarget"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationReference"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/notification-references/presented": {
+        "post": {
+          "operationId": "presentNotificationReference",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Expected authenticated account; mismatch 409 fences profile switches."
+            },
+            {
+              "name": "Origin",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Version 1. Own authenticated account and current ACL only. Separate account/operator/device consent. No read cursor or media action.",
+          "responses": {
+            "204": {
+              "description": "No content",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationReference"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/notification-attention": {
+        "put": {
+          "operationId": "updateNotificationAttention",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Expected authenticated account; mismatch 409 fences profile switches."
+            },
+            {
+              "name": "Origin",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "Version 1. Own authenticated account and current ACL only. Separate account/operator/device consent. No read cursor or media action.",
+          "responses": {
+            "204": {
+              "description": "No content",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no capability disclosure",
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              }
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationAttention"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/notification-preferences": {
+        "get": {
+          "operationId": "getNotificationPreferences",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "description": "Version 1. Actor is the current session only. Explicit consent and optimistic revision required; provider availability does not imply device registration.",
+          "responses": {
+            "200": {
+              "description": "Preferences snapshot",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationPreferencesSnapshot"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "put": {
+          "operationId": "updateNotificationPreferences",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "description": "Version 1. Actor is the current session only. Explicit consent and optimistic revision required; provider availability does not imply device registration.",
+          "responses": {
+            "200": {
+              "description": "Preferences snapshot",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationPreferencesSnapshot"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+              "name": "Origin",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Exact configured PUBLIC_ORIGIN; CSRF boundary."
+            },
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationPreferencesUpdate"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/notification-preferences/import": {
+        "post": {
+          "operationId": "importNotificationPreferences",
+          "security": [
+            {
+              "SessionCookie": []
+            }
+          ],
+          "description": "Version 1. Actor is the current session only. Explicit consent and optimistic revision required; provider availability does not imply device registration.",
+          "responses": {
+            "200": {
+              "description": "Preferences snapshot",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationPreferencesSnapshot"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "400": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "401": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "403": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "404": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "409": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "500": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            },
+            "503": {
+              "description": "Safe failure; no settings write on validation/access/conflict failure",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NotificationError"
+                  }
+                }
+              },
+              "headers": {
+                "X-Request-ID": {
+                  "$ref": "#/components/headers/RequestID"
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+              "name": "Origin",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Exact configured PUBLIC_ORIGIN; CSRF boundary."
+            },
+            {
+              "name": "X-Notification-Account",
+              "in": "header",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationPreferencesImport"
+                }
+              }
+            }
+          }
+        }
+      }
   },
   "components": {
     "schemas": {
@@ -9366,7 +11390,638 @@
           }
         },
         "description": "Exact JSON shape accepted by screen-profile handler, bounded to 4096 bytes. Server validates cookie owner, Origin, room, active lease, publication generation and revision. motion is required for _60 profiles; text for _15/_30. simulcast must match more than one layer."
-      }
+      },
+        "NotificationDevice": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "instance_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "transport": {
+              "enum": [
+                "web_push",
+                "mobile_relay"
+              ]
+            },
+            "namespace": {
+              "enum": [
+                "staging",
+                "production"
+              ]
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000000
+            },
+            "state": {
+              "enum": [
+                "registering",
+                "active",
+                "revoked",
+                "invalid",
+                "stale"
+              ]
+            },
+            "permission": {
+              "enum": [
+                "granted",
+                "provisional"
+              ]
+            },
+            "expires_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "origin": {
+              "type": "string"
+            },
+            "installation_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "session_ref": {
+              "type": "string"
+            },
+            "consent_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "created_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "id",
+            "instance_id",
+            "transport",
+            "namespace",
+            "generation",
+            "state",
+            "permission",
+            "expires_at",
+            "origin",
+            "installation_id",
+            "session_ref",
+            "consent_at",
+            "created_at"
+          ]
+        },
+        "NotificationDeviceCapabilities": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": {
+              "const": 1
+            },
+            "account_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "session_ref": {
+              "type": "string"
+            },
+            "operator_enabled": {
+              "type": "boolean"
+            },
+            "registration_available": {
+              "type": "boolean"
+            },
+            "web_push_available": {
+              "type": "boolean"
+            },
+            "mobile_relay_available": {
+              "type": "boolean"
+            },
+            "relay_origin": {
+              "type": "string"
+            },
+            "relay_public_key": {
+              "type": "string"
+            },
+            "installation_id": {
+              "type": "string"
+            },
+            "origin": {
+              "type": "string"
+            },
+            "installation_signing_public_key": {
+              "type": "string"
+            },
+            "vapid_public_key": {
+              "type": "string"
+            },
+            "namespace": {
+              "type": "string"
+            },
+            "device_limit": {
+              "const": 10
+            }
+          },
+          "required": [
+            "version",
+            "account_id",
+            "session_ref",
+            "operator_enabled",
+            "registration_available",
+            "web_push_available",
+            "mobile_relay_available",
+            "relay_origin",
+            "relay_public_key",
+            "installation_id",
+            "origin",
+            "installation_signing_public_key",
+            "vapid_public_key",
+            "namespace",
+            "device_limit"
+          ]
+        },
+        "NotificationDeviceRegistration": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "instance_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "expected_generation": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000000
+            },
+            "transport": {
+              "enum": [
+                "web_push",
+                "mobile_relay"
+              ]
+            },
+            "namespace": {
+              "enum": [
+                "staging",
+                "production"
+              ]
+            },
+            "permission": {
+              "enum": [
+                "granted",
+                "provisional"
+              ]
+            },
+            "consent_version": {
+              "const": 1
+            },
+            "subscription": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "endpoint": {
+                  "type": "string",
+                  "format": "uri",
+                  "maxLength": 4096
+                },
+                "keys": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "p256dh": {
+                      "type": "string"
+                    },
+                    "auth": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "p256dh",
+                    "auth"
+                  ]
+                }
+              },
+              "required": [
+                "endpoint",
+                "keys"
+              ]
+            }
+          },
+          "required": [
+            "instance_id",
+            "expected_generation",
+            "transport",
+            "namespace",
+            "permission",
+            "consent_version"
+          ]
+        },
+        "NotificationDeviceEnrollment": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": {
+              "const": 1
+            },
+            "account_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "device": {
+              "$ref": "#/components/schemas/NotificationDevice"
+            },
+            "nonce": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "version",
+            "account_id",
+            "device",
+            "nonce"
+          ]
+        },
+        "NotificationDeviceList": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": {
+              "const": 1
+            },
+            "devices": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "$ref": "#/components/schemas/NotificationDevice"
+              }
+            }
+          },
+          "required": [
+            "version",
+            "devices"
+          ]
+        },
+        "NotificationDeviceGeneration": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "expected_generation": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000000
+            }
+          },
+          "required": [
+            "expected_generation"
+          ]
+        },
+        "NotificationRelayReceipt": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "payload": {
+              "type": "string",
+              "maxLength": 8192
+            },
+            "signature": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{86}$"
+            }
+          },
+          "required": [
+            "payload",
+            "signature"
+          ]
+        },
+        "NotificationDeviceActivation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "expected_generation": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000000
+            },
+            "receipt": {
+              "$ref": "#/components/schemas/NotificationRelayReceipt"
+            }
+          },
+          "required": [
+            "expected_generation",
+            "receipt"
+          ]
+        },
+        "NotificationActivatedDevice": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": {
+              "const": 1
+            },
+            "account_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "device": {
+              "$ref": "#/components/schemas/NotificationDevice"
+            }
+          },
+          "required": [
+            "version",
+            "account_id",
+            "device"
+          ]
+        },
+        "NotificationReference": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ref": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000000
+            }
+          },
+          "required": [
+            "ref",
+            "generation"
+          ]
+        },
+        "NotificationResolvedTarget": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": {
+              "const": 1
+            },
+            "kind": {
+              "enum": [
+                "TEXT",
+                "DM"
+              ]
+            },
+            "conversation_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "message_id": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "required": [
+            "version",
+            "kind",
+            "conversation_id",
+            "message_id"
+          ]
+        },
+        "NotificationAttention": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "view_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "kind": {
+              "enum": [
+                "CHANNEL",
+                "DIRECT_MESSAGE"
+              ]
+            },
+            "conversation_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "visible": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "view_id",
+            "kind",
+            "conversation_id",
+            "visible"
+          ]
+        },
+        "NotificationPreference": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "enum": [
+                "all",
+                "mentions",
+                "none"
+              ]
+            },
+            "paused_until": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date-time",
+              "pattern": "(Z|[+]00:00)$"
+            }
+          },
+          "required": [
+            "mode"
+          ]
+        },
+        "NotificationOverride": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "CHANNEL",
+                "DIRECT_MESSAGE"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "mode": {
+              "enum": [
+                "all",
+                "mentions",
+                "none"
+              ]
+            },
+            "paused_until": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date-time",
+              "pattern": "(Z|[+]00:00)$"
+            }
+          },
+          "required": [
+            "kind",
+            "id",
+            "mode"
+          ]
+        },
+        "NotificationSettings": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": {
+              "const": 1
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "dm": {
+              "$ref": "#/components/schemas/NotificationPreference"
+            },
+            "text": {
+              "$ref": "#/components/schemas/NotificationPreference"
+            },
+            "overrides": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "$ref": "#/components/schemas/NotificationOverride"
+              }
+            },
+            "imported": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "version",
+            "revision",
+            "enabled",
+            "dm",
+            "text",
+            "overrides",
+            "imported"
+          ]
+        },
+        "NotificationCapability": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": {
+              "const": 1
+            },
+            "available": {
+              "type": "boolean"
+            },
+            "device_transport": {
+              "enum": [
+                "unavailable",
+                "web_push",
+                "mobile_relay"
+              ]
+            }
+          },
+          "required": [
+            "version",
+            "available",
+            "device_transport"
+          ]
+        },
+        "NotificationPreferencesSnapshot": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "capability": {
+              "$ref": "#/components/schemas/NotificationCapability"
+            },
+            "settings": {
+              "$ref": "#/components/schemas/NotificationSettings"
+            }
+          },
+          "required": [
+            "capability",
+            "settings"
+          ]
+        },
+        "NotificationPreferencesUpdate": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "expected_revision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "settings": {
+              "$ref": "#/components/schemas/NotificationSettings"
+            }
+          },
+          "required": [
+            "expected_revision",
+            "settings"
+          ]
+        },
+        "NotificationPreferencesImport": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "expected_revision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "overrides": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "$ref": "#/components/schemas/NotificationOverride"
+              }
+            },
+            "local_disabled": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "expected_revision",
+            "overrides",
+            "local_disabled"
+          ]
+        },
+        "NotificationError": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "error": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            }
+          },
+          "required": [
+            "error"
+          ]
+        }
     },
     "securitySchemes": {
       "SessionCookie": {

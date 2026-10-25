@@ -2,9 +2,12 @@
 import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { useNotificationStore } from './notification_store'
 import ConversationNotificationSettings from './conversation_preferences/Settings.vue'
+import ServerSettings from './server_preferences/Settings.vue'
+import { useServerNotifications } from './server_preferences/state'
 import { streamStartChime } from '../voice/stream_start_runtime'
 
 const notifications = useNotificationStore()
+const remote = useServerNotifications()
 function changeStreamSound(event:Event):void {const enabled=(event.target as HTMLInputElement).checked;streamStartChime.setEnabled(enabled);if(enabled) streamStartChime.activate()}
 onMounted(() => { notifications.refreshStatus(); window.addEventListener('focus', notifications.refreshStatus) })
 onBeforeUnmount(() => window.removeEventListener('focus', notifications.refreshStatus))
@@ -19,11 +22,15 @@ const status = computed(() => {
   <section class="profile-logout" aria-labelledby="profile-notifications-title">
     <h2 id="profile-notifications-title">Уведомления</h2>
     <p>Текст личных сообщений в уведомлениях не показывается.</p>
+    <ServerSettings />
+    <template v-if="!remote.currentBinding">
+    <p v-if="remote.snapshot">Локальные уведомления открытого браузера настраиваются отдельно и не разрешают фоновую доставку.</p>
     <details class="copy-help"><summary>Когда приходят уведомления</summary><p>При скрытой вкладке, пока браузер открыт.</p></details>
     <p aria-live="polite">{{ status }}</p>
     <button v-if="notifications.enabled" class="profile-secondary-button" type="button" @click="notifications.disable()">Отключить уведомления</button>
     <button v-else class="profile-secondary-button" type="button" :disabled="!notifications.available || notifications.permission === 'denied'" @click="notifications.enable()">Включить уведомления</button>
     <p v-if="notifications.error" class="profile-error" role="alert">{{ notifications.error }}</p>
+    </template>
     <ConversationNotificationSettings />
     <label><input type="checkbox" :checked="streamStartChime.enabled.value" @change="changeStreamSound"> Отдельный звук начала демонстрации</label>
   </section>

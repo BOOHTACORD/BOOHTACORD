@@ -1,0 +1,50 @@
+rule_files: [../../../docker/observability/notification-alerts.yaml]
+evaluation_interval: 1m
+tests:
+  - name: absence is unknown and cannot imply successful delivery
+    interval: 1m
+    input_series: []
+    alert_rule_test:
+      - eval_time: 3m
+        alertname: NotificationObservationMissing
+        exp_alerts:
+          - exp_labels: {severity: warning}
+            exp_annotations: {summary: "Notification observation absent; delivery state is unknown"}
+    promql_expr_test:
+      - expr: sum(boohtacord_notification_queue{stage="delivery"})
+        eval_time: 3m
+        exp_samples: []
+  - name: suppression is not provider error and low volume is not a ratio alert
+    interval: 1m
+    input_series:
+      - series: boohtacord_notification_observer_up{instance="synthetic"}
+        values: '1+0x10'
+      - series: boohtacord_notification_results_total{instance="synthetic",stage="attempt",reason="none",transport="web_push"}
+        values: '0+1x10'
+      - series: boohtacord_notification_results_total{instance="synthetic",stage="suppressed",reason="muted",transport="web_push"}
+        values: '0+100x10'
+      - series: boohtacord_notification_results_total{instance="synthetic",stage="retry",reason="provider_error",transport="web_push"}
+        values: '0+1x10'
+    alert_rule_test:
+      - eval_time: 8m
+        alertname: NotificationProviderErrors
+        exp_alerts: []
+    promql_expr_test:
+      - expr: sum(increase(boohtacord_notification_results_total{stage="suppressed"}[5m]))
+        eval_time: 5m
+        exp_samples: [{labels: '{}', value: 500}]
+  - name: sustained credential errors at volume are actionable
+    interval: 1m
+    input_series:
+      - series: boohtacord_notification_observer_up{instance="synthetic"}
+        values: '1+0x10'
+      - series: boohtacord_notification_results_total{instance="synthetic",stage="attempt",reason="none",transport="mobile_relay"}
+        values: '0+10x10'
+      - series: boohtacord_notification_results_total{instance="synthetic",stage="retry",reason="configuration_error",transport="mobile_relay"}
+        values: '0+3x10'
+    alert_rule_test:
+      - eval_time: 8m
+        alertname: NotificationProviderErrors
+        exp_alerts:
+          - exp_labels: {severity: warning, instance: synthetic}
+            exp_annotations: {summary: "Provider/credential failures exceed initial threshold at sufficient volume"}

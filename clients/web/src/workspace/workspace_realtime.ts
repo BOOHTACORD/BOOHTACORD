@@ -22,6 +22,7 @@ import { LatestScreenPreviewReader } from '../voice/screen_preview/reader'
 import { parseScreenPreviewHint } from '../voice/screen_preview/client'
 import { screenPreviewCardVisibility } from '../voice/screen_preview/visibility'
 import { createMemberProfileRefresh } from './member_profile_realtime'
+import { acceptNotificationHint } from '../notification/remote_push/hints'
 
 interface Refreshable { error: string | null; refresh(): Promise<void> }
 interface TextHistory extends Refreshable { channelId: string | null; applyDeletedHint?(channelId: string, messageId: string): void; refreshMessages?(ids: string[]): Promise<unknown> }
@@ -70,6 +71,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
   function onEvent(event: RealtimeEvent, notify = true): void | Promise<void> {
     if (!active) return
     const eventLifecycle = lifecycle
+    if (event.kind === 'notification.queued' || event.kind === 'notification.preferences_changed') return acceptNotificationHint(event,accountID).then(()=>undefined)
     if (presence.acceptRealtimeEvent(event)) return
     applyDeletedMessageHint(event, stores)
     if (event.kind === 'member.profile.updated') return refreshMemberProfile(event, stores.directMessages).then(() => undefined)

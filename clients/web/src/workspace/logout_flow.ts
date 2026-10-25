@@ -2,6 +2,7 @@ import { ref } from 'vue'
 
 import { clearAuthenticatedState } from '../identity/clear_authenticated_state'
 import { logout } from '../identity/logout_client'
+import { useServerNotifications } from '../notification/server_preferences/state'
 
 export interface LogoutPorts {
   stopMedia(): Promise<void>
@@ -46,7 +47,7 @@ export function bindWorkspaceLogout(
   return useWorkspaceLogout({
     stopMedia: async () => { await voice.stopScreen(); await leaveVoice() },
     mediaActive: () => Boolean(voice.active),
-    revoke: logout,
+    revoke: async () => { try { await logout() } finally { await useServerNotifications().clearDevice() } },
     disconnectRealtime: () => realtime.disconnect(),
     clearState: clearAuthenticatedState,
     showGuest,

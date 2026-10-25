@@ -1,0 +1,16 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "$id":"https://voice-platform.invalid/contracts/notification-payload-v1.schema.json",
+ "title":"Neutral notification data v1",
+ "type":"object","additionalProperties":false,
+ "required":["version","generation","binding_ref","notification_ref","template","expires_at","group_ref"],
+ "properties":{
+  "version":{"const":1},
+  "generation":{"type":"integer","minimum":1,"maximum":1000000000},
+  "binding_ref":{"type":"string","pattern":"^[A-Za-z0-9_-]{16,128}$"},
+  "notification_ref":{"type":"string","pattern":"^[A-Za-z0-9_-]{16,128}$"},
+  "group_ref":{"type":"string","pattern":"^[A-Za-z0-9_-]{16,128}$"},
+  "template":{"enum":["direct_message","mention","activity"]},
+  "expires_at":{"type":"string","format":"date-time","pattern":"(Z|[+]00:00)$"}
+ }
+}

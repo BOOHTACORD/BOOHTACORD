@@ -22,10 +22,12 @@ class WorkspaceRealtimeDispatch {
     this.screenPreviewUpdated,
     this.screenPreviewInvalidated,
     this.screenViewersChanged,
+    this.notificationHint,
   });
   final WorkspaceController workspace;
   final ConversationController conversation;
   final void Function(RealtimeEvent) notifyMessage;
+  final FutureOr<void> Function(String?,Map<String,dynamic>)? notificationHint;
   final FutureOr<void> Function(Map<String, dynamic>) voiceRevoked;
   final FutureOr<void> Function() permissionsChanged;
   final FutureOr<void> Function(int)? guildChanged;
@@ -34,6 +36,7 @@ class WorkspaceRealtimeDispatch {
   final void Function(Map<String, dynamic>)? screenPreviewUpdated;
   final void Function(Map<String, dynamic>)? screenPreviewInvalidated;
   Future<void> call(RealtimeEvent event) async {
+    if(event.kind=='notification.queued'||event.kind=='notification.preferences_changed'){await notificationHint?.call(event.kind,event.payload);return;}
     if (await dispatchMemberProfileUpdated(event, workspace, profileChanged))
       return;
     if (await dispatchConversationEvent(

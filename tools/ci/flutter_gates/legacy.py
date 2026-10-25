@@ -7,6 +7,7 @@ import sys
 from tools.ci.native.process import ROOT, run
 from tools.build.client_identity import dart_defines, flutter_version_args
 from .profiles import test_command
+from .kotlin_control import execute as execute_kotlin_control
 
 PATHS = ('tools/ci/native/flutter.py', 'tools/verify/android_kotlin/verify_android_kotlin_modes.sh',
          'tools/build/android/run.py', '.github/workflows/ci-flutter.yaml')
@@ -85,11 +86,7 @@ def dart():
 
 
 def kotlin():
-    path = PATHS[1]
-    if (ROOT / path).read_bytes().replace(b'\r\n', b'\n') != original(path):
-        raise ValueError('Kotlin control differs from its unchanged original two-mode script')
-    run('bash', path)
-    return ['kotlin-modes']
+    return execute_kotlin_control(original(PATHS[1]), run, ROOT)
 
 
 def apk():

@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "epic": 554,
+  "issues": [
+    555,
+    556,
+    557,
+    558,
+    559,
+    560,
+    561,
+    562,
+    563,
+    564
+  ],
+  "status": "LOCAL_IMPLEMENTATION_PASS_PHYSICAL_GATE_NOT_RUN",
+  "branch": "codex/local-qwen-notify-554",
+  "checkout": "C:\\AI\\benchmarks\\BOOHTACORD-notify-555",
+  "base_revision": "c27f7e89779c4f3dca4b3cce73859cd1064ffcda",
+  "source_snapshot_sha256": "88a032ad67e05d14e404eed3f069699c80ddbe81b7ea540d9608498dcc74a077",
+  "source_files": 6658,
+  "started_at": "2026-10-25T11:45:22+03:00",
+  "recorded_at": "2026-10-25T18:27:08.206897+03:00",
+  "wall_seconds_since_branch_creation": 24106.206897,
+  "checks": {
+    "backend": {
+      "base_revision": "c27f7e89779c4f3dca4b3cce73859cd1064ffcda",
+      "source_snapshot_sha256": "88a032ad67e05d14e404eed3f069699c80ddbe81b7ea540d9608498dcc74a077",
+      "source_files": 6658,
+      "status": "PASS",
+      "host": "Windows-11-10.0.26300-SP0",
+      "started_at": "2026-10-25T15:14:28.877134+00:00",
+      "evidence_level": "local_only",
+      "physical_provider_delivery": "NOT_RUN",
+      "seconds": 263.7810000000027
+    },
+    "contracts": {
+      "base_revision": "c27f7e89779c4f3dca4b3cce73859cd1064ffcda",
+      "source_snapshot_sha256": "88a032ad67e05d14e404eed3f069699c80ddbe81b7ea540d9608498dcc74a077",
+      "source_files": 6658,
+      "status": "PASS",
+      "host": "Windows-11-10.0.26300-SP0",
+      "started_at": "2026-10-25T15:14:28.876637+00:00",
+      "evidence_level": "local_only",
+      "physical_provider_delivery": "NOT_RUN",
+      "seconds": 26.0
+    },
+    "flutter-vendor": {
+      "base_revision": "c27f7e89779c4f3dca4b3cce73859cd1064ffcda",
+      "source_snapshot_sha256": "88a032ad67e05d14e404eed3f069699c80ddbe81b7ea540d9608498dcc74a077",
+      "source_files": 6658,
+      "status": "PASS",
+      "host": "Windows-11-10.0.26300-SP0",
+      "started_at": "2026-10-25T15:18:01.108710+00:00",
+      "evidence_level": "local_only",
+      "physical_provider_delivery": "NOT_RUN",
+      "seconds": 36.625
+    },
+    "flutter": {
+      "base_revision": "c27f7e89779c4f3dca4b3cce73859cd1064ffcda",
+      "source_snapshot_sha256": "88a032ad67e05d14e404eed3f069699c80ddbe81b7ea540d9608498dcc74a077",
+      "source_files": 6658,
+      "status": "PASS",
+      "host": "Windows-11-10.0.26300-SP0",
+      "started_at": "2026-10-25T15:14:28.876127+00:00",
+      "evidence_level": "local_only",
+      "physical_provider_delivery": "NOT_RUN",
+      "seconds": 211.07800000000861
+    },
+    "queries": {
+      "base_revision": "c27f7e89779c4f3dca4b3cce73859cd1064ffcda",
+      "source_snapshot_sha256": "88a032ad67e05d14e404eed3f069699c80ddbe81b7ea540d9608498dcc74a077",
+      "source_files": 6658,
+      "status": "PASS",
+      "host": "Windows-11-10.0.26300-SP0",
+      "started_at": "2026-10-25T15:14:57.437984+00:00",
+      "evidence_level": "local_only",
+      "physical_provider_delivery": "NOT_RUN",
+      "seconds": 3.0469999999913853
+    },
+    "web": {
+      "base_revision": "c27f7e89779c4f3dca4b3cce73859cd1064ffcda",
+      "source_snapshot_sha256": "88a032ad67e05d14e404eed3f069699c80ddbe81b7ea540d9608498dcc74a077",
+      "source_files": 6658,
+      "status": "PASS",
+      "host": "Windows-11-10.0.26300-SP0",
+      "started_at": "2026-10-25T15:14:28.875123+00:00",
+      "evidence_level": "local_only",
+      "physical_provider_delivery": "NOT_RUN",
+      "seconds": 205.28100000000268
+    }
+  },
+  "counts": {
+    "go_passed": 1571,
+    "go_skipped": 0,
+    "web_passed": 1681,
+    "web_browser_passed": 4,
+    "flutter_app_passed": 1646,
+    "flutter_app_skipped": 3,
+    "livekit_passed": 449,
+    "livekit_skipped": 3,
+    "webrtc_passed": 34,
+    "policy_cases": 36
+  },
+  "builds": {
+    "android_debug": {
+      "path": "C:\\AI\\benchmarks\\BOOHTACORD-notify-555\\clients\\flutter\\build\\app\\outputs\\flutter-apk\\app-debug.apk",
+      "bytes": 126310351,
+      "sha256": "dd5e0be2977277f449a8facf36067c16472c0499bd510e485df7dacea011da32",
+      "status": "PASS",
+      "level": "debug_compile_only"
+    },
+    "windows_debug": {
+      "path": "C:\\AI\\benchmarks\\BOOHTACORD-notify-555\\clients\\flutter\\build\\windows\\x64\\runner\\Debug\\boohtacord_desktop.exe",
+      "bytes": 4064256,
+      "sha256": "8324c7b665d1a02028d3e8339895e3835920f8c13716ed6fbe0a0cdf15c2ca6b",
+      "status": "PASS",
+      "level": "debug_compile_only"
+    }
+  },
+  "model": {
+    "model": "Qwen3.8-27B UD-Q3_K_XL",
+    "engine": "llama.cpp b11857 CUDA, MTP3, warm loaded model",
+    "completed_requests": 180,
+    "generated_tokens": 76208,
+    "decode_seconds": 802.394316,
+    "weighted_decode_tokens_per_second": 94.9757475600064,
+    "agent_api_run_seconds": 1241.8284278999854,
+    "helper_api_packets": 13,
+    "pilot_verdict": "FAILED_NOT_ACCEPTED",
+    "method": "Combined saved native engine counters and API timings; prefill/tool time excluded from decode TPS; unsuccessful candidates included. API-run wall time is separate from total integration/check time.",
+    "authorship": "Local Qwen generated candidates. Codex performed integration, substantive repairs, security review and native validation. This is not an autonomous local-model completion benchmark."
+  },
+  "limitations": [
+    {
+      "check": "real-stack local_features",
+      "status": "BLOCKED",
+      "reason": "Mac/Colima harness; Windows Git worktree absolute pointer cannot be used directly by WSL Git; no running Docker engine or owned native QA devices."
+    },
+    {
+      "check": "Go race",
+      "status": "BLOCKED",
+      "reason": "CGO compiler gcc is absent; race command failed before tests."
+    },
+    {
+      "check": "strict native release toolchain",
+      "status": "NOT_RUN",
+      "reason": "Installed Flutter3.47.5/Dart3.13.4 versus repository3.47.7/3.13.5; debug compilation and local tests succeeded; no signed release claim."
+    },
+    {
+      "check": "iOS signed build, physical Android/iPhone, FCM/APNs/Web provider delivery, Firefox/Safari/iOS Home Screen",
+      "status": "NOT_RUN",
+      "reason": "Owner explicitly requested local checks without external providers; no Apple toolchain/physical device gate on this host."
+    },
+    {
+      "check": "Flutter analysis",
+      "status": "PASS_WITH_EXISTING_INFOS",
+      "reason": "Native --no-fatal-infos check passed with110 informational findings; notification source/test scope independently reports no issues."
+    }
+  ],
+  "published": false,
+  "external_provider_requests": false,
+  "release_gate_564": "NOT_RUN; not closed by source/mocks/builds"
+}

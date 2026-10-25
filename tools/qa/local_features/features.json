@@ -245,7 +245,7 @@
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; reconnect and retry policies remain unchanged. 2026-10-24 (#518): Flutter adds the Web-style independent connection recovery card, driven by existing chat/voice/roster state; Android/iOS share the widget and the native workspace smoke is recorded separately."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; reconnect and retry policies remain unchanged. 2026-10-24 (#518): Flutter adds the Web-style independent connection recovery card, driven by existing chat/voice/roster state; Android/iOS share the widget and the native workspace smoke is recorded separately. 2026-10-25 (#554): Notification delivery capability uses existing realtime composition; chat/voice/roster retry and recovery policies are preserved. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN."
     }
   },
   "voice": {
@@ -818,7 +818,7 @@
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "2026-10-24 (Web PR #452 / issue #349): Flutter retains the selected screen subscription while navigating to text, DM or workspace settings under the same active voice lease, shows the mini-player automatically without manual pinning, and hands the renderer back on return to voice. Leaving or switching the voice lease still clears the selection. 2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior; iOS and Android intentionally keep them visible because touch has no hover state. 2026-10-24 (#518 Web-to-Flutter parity): the Flutter connection recovery card is shared across desktop, Android and iOS. 2026-10-24 (window audio preference): this change applies only to the Web getDisplayMedia browser capture; native iOS/Android capture APIs are unchanged. Physical Chrome/OS picker audio isolation remains NOT_RUN. Widget tests and desktop/mobile source captures cover presentation; native runtime acceptance remains unverified because no QA devices are configured. 2026-10-24 (Web commit 88dc8f49): Flutter now presents the active screen-viewer roster in a compact on-demand overlay, including fullscreen, and no longer reserves the 92 dp participant footer while the stream is active. The existing ended-view footer remains. Focused widget coverage is registered; paired native stream acceptance remains NOT_VERIFIED. 2026-10-24 (Flutter stream-viewer layout parity, PR #573): the active Flutter stage fills available height; diagnostics, participant and stream selectors, and audio/stop/fullscreen actions overlay it; stream choices open on demand only when multiple streams exist. Focused Flutter widget tests pass and 900x640 source captures were reviewed; the black fixture proves layout only. Web rendering is unchanged, with browser checks retained in PR CI. Android/iOS native runtime is BLOCKED because this host has no registered QA devices; live-stream/media acceptance remains NOT_VERIFIED. 2026-10-25 (Web voice handoff): the shared connection store now automatically transfers only after an explicit target-channel join and retries once; screen-viewer behavior and media contracts are unchanged. Flutter screen-viewer behavior and its existing platform exceptions are unchanged; the registered Web screen-share UI regression remains in CI."
+      "scope": "2026-10-24 (Web PR #452 / issue #349): Flutter retains the selected screen subscription while navigating to text, DM or workspace settings under the same active voice lease, shows the mini-player automatically without manual pinning, and hands the renderer back on return to voice. Leaving or switching the voice lease still clears the selection. 2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior; iOS and Android intentionally keep them visible because touch has no hover state. 2026-10-24 (#518 Web-to-Flutter parity): the Flutter connection recovery card is shared across desktop, Android and iOS. 2026-10-24 (window audio preference): this change applies only to the Web getDisplayMedia browser capture; native iOS/Android capture APIs are unchanged. Physical Chrome/OS picker audio isolation remains NOT_RUN. Widget tests and desktop/mobile source captures cover presentation; native runtime acceptance remains unverified because no QA devices are configured. 2026-10-24 (Web commit 88dc8f49): Flutter now presents the active screen-viewer roster in a compact on-demand overlay, including fullscreen, and no longer reserves the 92 dp participant footer while the stream is active. The existing ended-view footer remains. Focused widget coverage is registered; paired native stream acceptance remains NOT_VERIFIED. 2026-10-24 (Flutter stream-viewer layout parity, PR #573): the active Flutter stage fills available height; diagnostics, participant and stream selectors, and audio/stop/fullscreen actions overlay it; stream choices open on demand only when multiple streams exist. Focused Flutter widget tests pass and 900x640 source captures were reviewed; the black fixture proves layout only. Web rendering is unchanged, with browser checks retained in PR CI. Android/iOS native runtime is BLOCKED because this host has no registered QA devices; live-stream/media acceptance remains NOT_VERIFIED. 2026-10-25 (Web voice handoff): the shared connection store now automatically transfers only after an explicit target-channel join and retries once; screen-viewer behavior and media contracts are unchanged. Flutter screen-viewer behavior and its existing platform exceptions are unchanged; the registered Web screen-share UI regression remains in CI. 2026-10-25 (#554): Notification taps resolve only a permitted message; they never initiate voice or screen sharing. Existing screen-viewer behavior and platform exceptions are preserved. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN."
     }
   },
   "screen_metrics": {
@@ -1042,7 +1042,7 @@
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "2026-10-24 (#553 Flutter follow-up): the shared members-panel path adds the current voice-channel caption and screen-share icon; audio and settings controls are unchanged. The widget behavior is shared by Android and iOS. 2026-10-24 (#570): compact Flutter member rows show the channel name without a redundant prefix and wrap it to two lines; Web and settings controls are unchanged."
+      "scope": "2026-10-24 (#553 Flutter follow-up): the shared members-panel path adds the current voice-channel caption and screen-share icon; audio and settings controls are unchanged. The widget behavior is shared by Android and iOS. 2026-10-24 (#570): compact Flutter member rows show the channel name without a redundant prefix and wrap it to two lines; Web and settings controls are unchanged. 2026-10-25 (#554): Account notification preferences and explicit device consent are wired into Web and shared Flutter settings; focused settings tests and local visual captures passed. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN."
     }
   },
   "admin": {
@@ -1624,7 +1624,7 @@
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "2026-10-24 (#518 Web-to-Flutter parity): Flutter channel favorites match Web's account/deployment scoped behavior, ordered shortcuts, topology pruning, mobile touch control, desktop hover/focus affordance, and persistence. Flutter connection status now presents independent chat/voice/roster state and recovery actions while retaining existing retry policies. Focused widget coverage, source-resolution desktop/mobile captures, and the authenticated native local-stack smoke are registered; physical screen-reader and media acceptance remain separate. 2026-10-24 (#570): Flutter member voice captions show the channel name without a redundant prefix and wrap within compact rows; Android and iOS share this behavior, while Web is unchanged. 2026-10-24 (Web PR #544): Flutter active screen viewing now uses a compact on-demand participant overlay and preserves the available video stage height; paired native stream acceptance remains NOT_VERIFIED. 2026-10-24 (Flutter stream-viewer layout parity, PR #573): shared Flutter workspace widgets place active stream viewing over the available room stage, with participant/stream panels and viewer actions overlaid on demand. Web presentation is unchanged; browser checks remain in PR CI. Focused Flutter widget tests pass and 900x640 source captures were reviewed; the black fixture proves layout only. Android/iOS native runtime is BLOCKED because this host has no registered QA devices; live-stream/media acceptance remains NOT_VERIFIED."
+      "scope": "2026-10-24 (#518 Web-to-Flutter parity): Flutter channel favorites match Web's account/deployment scoped behavior, ordered shortcuts, topology pruning, mobile touch control, desktop hover/focus affordance, and persistence. Flutter connection status now presents independent chat/voice/roster state and recovery actions while retaining existing retry policies. Focused widget coverage, source-resolution desktop/mobile captures, and the authenticated native local-stack smoke are registered; physical screen-reader and media acceptance remain separate. 2026-10-24 (#570): Flutter member voice captions show the channel name without a redundant prefix and wrap within compact rows; Android and iOS share this behavior, while Web is unchanged. 2026-10-24 (Web PR #544): Flutter active screen viewing now uses a compact on-demand participant overlay and preserves the available video stage height; paired native stream acceptance remains NOT_VERIFIED. 2026-10-24 (Flutter stream-viewer layout parity, PR #573): shared Flutter workspace widgets place active stream viewing over the available room stage, with participant/stream panels and viewer actions overlaid on demand. Web presentation is unchanged; browser checks remain in PR CI. Focused Flutter widget tests pass and 900x640 source captures were reviewed; the black fixture proves layout only. Android/iOS native runtime is BLOCKED because this host has no registered QA devices; live-stream/media acceptance remains NOT_VERIFIED. 2026-10-25 (#554): Web/Flutter composition owns notification lifecycle and logout fencing; taps navigate to a permitted exact message without marking it read or joining voice. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN."
     }
   },
   "screen_track_name": {
@@ -1985,7 +1985,91 @@
         "ios": "platform_exception",
         "android": "platform_exception"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; support publication and DM flows are unchanged. 2026-10-24 (#518): the shared workspace sidebar adds account-scoped channel favorites and independent connection recovery presentation; support consent, publication and DM behavior is untouched. The native local-QA scenario continues to exercise support navigation and recovery status; the broad shared-workspace path match was reviewed."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; support publication and DM flows are unchanged. 2026-10-24 (#518): the shared workspace sidebar adds account-scoped channel favorites and independent connection recovery presentation; support consent, publication and DM behavior is untouched. The native local-QA scenario continues to exercise support navigation and recovery status; the broad shared-workspace path match was reviewed. 2026-10-25 (#554): Shared workspace composition changed for notification lifecycle; support consent, publication and DM ACL behavior are preserved, with existing regression suites retained. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN."
     }
+  },
+  "notifications": {
+    "paths": [
+      "clients/web/src/notification/*",
+      "clients/web/public/notification-*",
+      "clients/web/public/manifest.webmanifest",
+      "clients/web/tests/remote_notifications/*",
+      "clients/flutter/lib/src/features/notifications/*",
+      "clients/flutter/lib/src/app/notification_access/*",
+      "clients/flutter/lib/src/app/notification_settings/*",
+      "clients/flutter/test/notifications/*",
+      "clients/flutter/android/app/src/main/kotlin/ru/boohtacord/app/notifications/*",
+      "clients/flutter/ios/Runner/notifications/*",
+      "backend/internal/notifications/*",
+      "backend/internal/pushrelay/*"
+    ],
+    "web": [
+      "tests/remote_notifications/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/notifications/settings_widget_test.dart",
+      "test/notifications/settings_visual_test.dart",
+      "test/notifications/mobile_enrollment_test.dart"
+    ],
+    "acceptance": {
+      "addressed_background_v1": {
+        "issue": 564,
+        "browser": "clients/web/tests/remote_notifications/playwright.config.ts",
+        "focused": [
+          "clients/flutter/test/notifications/mobile_enrollment_test.dart",
+          "backend/internal/notifications/dispatch_delivery/dispatch_test.go",
+          "backend/internal/pushrelay/dispatch_job/dispatch_test.go"
+        ],
+        "scope": "Account/device separation, transactional scoped dedup and bounded metadata pipeline with synthetic providers. No physical delivery claim."
+      }
+    },
+    "parity_review": {
+      "issue": 564,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "android": "implementation_and_regression",
+        "ios": "implementation_and_regression"
+      },
+      "scope": "Local tests only as requested. Native physical/provider gates remain NOT_RUN; Windows host has no Apple toolchain or physical GMS/iPhone devices."
+    },
+    "parity": [
+      {
+        "id": "notifications.addressed_background_v1",
+        "expected": "Account consent and per-device opt-in stay separate; resolve an addressed message with current ACL, suppress duplicates, and never auto-read or join voice.",
+        "issue": 564,
+        "status": "NOT_VERIFIED",
+        "source": "Current checkout; local synthetic checks in evidence/notifications/local-2026-10-25.json bind the implementation snapshot.",
+        "shipped": "NOT_VERIFIED; real provider delivery and physical Android/iPhone acceptance remain open in #564.",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/notification/NotificationSettings.vue",
+            "tests": [
+              "clients/web/tests/remote_notifications/state.browser.spec.ts",
+              "clients/web/src/notification/remote_push/worker.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Synthetic Chromium settings/dedup checks passed; actual Web Push provider/browser delivery remains NOT_RUN."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/notifications/mobile_driver/firebase_driver.dart",
+            "tests": [
+              "clients/flutter/test/notifications/mobile_enrollment_test.dart",
+              "clients/flutter/test/notifications/tap_target_test.dart"
+            ],
+            "runtime": "NOT_RUN",
+            "conditions": "Shared Dart/widget checks and Android debug build passed; physical GMS, permission/channel behavior and FCM delivery remain NOT_RUN."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/ios/Runner/notifications/PushSupport.swift",
+            "tests": [
+              "clients/flutter/test/notifications/mobile_enrollment_test.dart",
+              "clients/flutter/test/notifications/tap_target_test.dart"
+            ],
+            "runtime": "NOT_RUN",
+            "conditions": "Shared Dart/widget checks passed; signed Apple build, physical iPhone, APNs/provisional permission and delivery remain NOT_RUN."
+          }
+        }
+      }
+    ]
   }
 }

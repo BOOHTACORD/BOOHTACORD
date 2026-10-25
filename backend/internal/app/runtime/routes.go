@@ -15,6 +15,7 @@ import (
 	identityroutes "voice-platform/backend/internal/app/identity_routes"
 	mediaroutes "voice-platform/backend/internal/app/media_routes"
 	messagesocialroutes "voice-platform/backend/internal/app/message_social_routes"
+	notificationroutes "voice-platform/backend/internal/app/notification_routes"
 	observabilityroutes "voice-platform/backend/internal/app/observability_routes"
 	storageroutes "voice-platform/backend/internal/app/storage_routes"
 	clientupdates "voice-platform/backend/internal/client_updates/catalog"
@@ -45,6 +46,10 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	lifecycle := guildlifecycle.New(otel.Tracer("boohtacord/guild"), otel.Meter("boohtacord/guild"), metrics)
 	auth := authroutes.Register(mux, database, configuration, events, usage, lifecycle)
 	sessionService, maintenanceService := auth.Sessions, auth.Maintenance
+	notificationroutes.Register(mux, database, sessionService, configuration.NotificationsAvailable, events)
+	notificationroutes.RegisterDevices(mux, database, sessionService, configuration)
+	notificationroutes.RegisterActivation(mux, database, sessionService, configuration)
+	notificationroutes.RegisterReferences(mux, database, sessionService, configuration)
 	guildroutes.Register(mux, database, sessionService, events, lifecycle)
 	authorizationroutes.ConfigureRolePermissionRoutes(mux, database, sessionService, events)
 	if err := mediaroutes.ConfigureMediaRevocationRoutes(mux, database, authorizelivekitsignal.Config{APIKey: configuration.LiveKitAPIKey, APISecret: configuration.LiveKitAPISecret}, maintenanceService); err != nil {

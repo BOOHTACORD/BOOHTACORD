@@ -9,6 +9,7 @@ extension NotificationDelivery on NotificationController {
     final account = accountId;
     final active = admission();
     if (account == null ||
+        remoteActive ||
         !initialized ||
         !active() ||
         !enabled ||

@@ -1,0 +1,17 @@
+{
+  "kind": "source-only-livekit-network-revalidation",
+  "observed_at": "2026-10-25",
+  "status": "PASS",
+  "source_base": "1f8f027adc2b4014216051d6163f2455a405f77b",
+  "historical_evidence": "evidence/media/livekit-network-config-2026-10-07.json",
+  "change": "Epic #554 mounts notification-alerts.yaml into the existing private Prometheus service and references that rule file. The LiveKit scrape, image pin, metric allowlist, listeners, published media ports and network peers are unchanged. Historical deployment evidence remains immutable.",
+  "physical_acceptance": "NOT_RUN; source-only topology validation does not prove physical delivery, production network or media behavior.",
+  "checks": [
+    "Native network model, current artifact hashes and focused topology regressions PASS."
+  ],
+  "repository_artifacts": {
+    "docker/observability/compose.yaml": "sha256:b3865a9b6068e195a10aedd4d4220b207a0937146664faead53ce956465aab36",
+    "docker/observability/prometheus.yaml": "sha256:878bac94dfac6afdbc3814c51f7fba8d04521379d54825000dd0687e505406b4",
+    "tools/verify/livekit_network_config/check.py": "sha256:d3e479f14ca5810022e508053f5106daf10b4a71da64b4c79d0a1a6fee8c45ed"
+  }
+}

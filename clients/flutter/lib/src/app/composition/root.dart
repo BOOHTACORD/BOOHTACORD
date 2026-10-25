@@ -8,6 +8,7 @@ import '../media_access/voice_navigation.dart';
 import '../media_access/voice_volumes.dart';
 import '../media_access/voice_roster.dart';
 import '../notification_access/notifications.dart';
+import '../notification_access/bind.dart';
 import '../profile_access/profile.dart';
 import '../session_access/errors.dart';
 import '../session_access/maintenance.dart';
@@ -63,6 +64,7 @@ class AppState extends AppOwners
     configureSession(this);
     configureWorkspace(this);
     configureMedia(this);
+    configureNotifications(this);
     configureRealtime(this);
   }
   @override

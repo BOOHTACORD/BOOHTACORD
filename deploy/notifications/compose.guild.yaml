@@ -1,0 +1,20 @@
+# Explicit overlay: docker compose -f deploy/compose.yaml -f deploy/notifications/compose.guild.yaml ...
+# No publisher credentials or trusted relay service in a guild image.
+services:
+  api:
+    environment:
+      NOTIFICATIONS_AVAILABLE: ${NOTIFICATIONS_AVAILABLE:-false}
+      NOTIFICATION_WEB_ENABLED: ${NOTIFICATION_WEB_ENABLED:-false}
+      NOTIFICATION_NAMESPACE: ${NOTIFICATION_NAMESPACE:-production}
+      NOTIFICATION_SECRET_KEY_FILE: /run/secrets/notification_cipher
+      NOTIFICATION_SIGNING_KEY_FILE: /run/secrets/notification_signing
+      NOTIFICATION_VAPID_PRIVATE_KEY_FILE: /run/secrets/notification_vapid
+      NOTIFICATION_VAPID_PUBLIC_KEY: ${NOTIFICATION_VAPID_PUBLIC_KEY:-}
+      NOTIFICATION_VAPID_CONTACT: ${NOTIFICATION_VAPID_CONTACT:-}
+      NOTIFICATION_RELAY_ORIGIN: ${NOTIFICATION_RELAY_ORIGIN:-}
+      NOTIFICATION_RELAY_PUBLIC_KEY: ${NOTIFICATION_RELAY_PUBLIC_KEY:-}
+    secrets: [notification_cipher, notification_signing, notification_vapid]
+secrets:
+  notification_cipher: {file: "${NOTIFICATION_SECRET_KEY_FILE:?outside checkout}"}
+  notification_signing: {file: "${NOTIFICATION_SIGNING_KEY_FILE:?outside checkout}"}
+  notification_vapid: {file: "${NOTIFICATION_VAPID_PRIVATE_KEY_FILE:?outside checkout}"}

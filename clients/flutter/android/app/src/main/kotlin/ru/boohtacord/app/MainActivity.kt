@@ -53,6 +53,7 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        ru.boohtacord.app.notifications.PushSupport.register(this, flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, systemGesturesChannelName)
             .setMethodCallHandler { call, result ->
                 if (call.method != "setEdges") {

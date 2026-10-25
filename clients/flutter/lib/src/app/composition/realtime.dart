@@ -4,6 +4,7 @@ import '../../features/realtime/dispatch/workspace.dart';
 import '../../features/profile/state/refresh.dart';
 import '../../features/voice/lifecycle/controller.dart';
 import '../../features/notifications/message_events/controller.dart';
+import '../../features/notifications/remote_lifecycle/controller.dart';
 import 'owners.dart';
 
 void configureRealtime(AppOwners app) {
@@ -37,6 +38,7 @@ void configureRealtime(AppOwners app) {
       voiceRevoked: app.voice.dispatchVoiceRevocation,
       permissionsChanged: app.permissions.refreshStrict,
       notifyMessage: notifications.call,
+      notificationHint: app.remoteNotifications.realtime,
       guildChanged: app.guildProfile.refresh,
       screenViewersChanged: app.voice.screenViewerPresence.refreshFromHint,
       profileChanged: (userId, revision) async {

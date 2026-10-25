@@ -46,6 +46,8 @@ def handler_source(route):
         definitions = functions(directory)
         # Names in the resolved registration select constructors and receiver methods.
         pending = [name for name in definitions if re.search(r"\." + name + r"\b", expression)]
+        if re.search(r'\bHandler\s*\{', expression) and 'ServeHTTP' in definitions:
+            pending.append('ServeHTTP')
         visited = set()
         while pending:
             name = pending.pop()
@@ -57,7 +59,7 @@ def handler_source(route):
             for candidate in definitions:
                 if re.search(r"\b" + candidate + r"\s*\(", text) and candidate not in visited:
                     pending.append(candidate)
-            if "Handler{" in text and "ServeHTTP" in definitions:
+            if re.search(r"\b[Hh]andler\s*\{", text) and "ServeHTTP" in definitions:
                 pending.append("ServeHTTP")
     return "\n".join(result)
 

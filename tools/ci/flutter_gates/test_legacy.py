@@ -49,9 +49,14 @@ class LegacyTests(unittest.TestCase):
             ('flutter', 'test', '--no-pub')))
 
     def test_kotlin_control_invokes_the_unchanged_real_two_mode_script(self):
-        with patch.object(legacy, 'original', side_effect=legacy.frozen), patch.object(legacy, 'run') as run:
+        from pathlib import Path
+        def check(shell, path):
+            self.assertEqual('bash', shell)
+            self.assertEqual(legacy.frozen(legacy.PATHS[1]), Path(path).read_bytes())
+        with patch.object(legacy, 'original', side_effect=legacy.frozen), patch.object(legacy, 'run', side_effect=check) as run:
             self.assertEqual(['kotlin-modes'], legacy.kotlin())
-        run.assert_called_once_with('bash', 'tools/verify/android_kotlin/verify_android_kotlin_modes.sh')
+        self.assertEqual(1, run.call_count)
+        self.assertFalse(Path(run.call_args.args[1]).exists())
 
     def test_native_command_failure_is_not_retried(self):
         with patch.object(legacy, 'original', side_effect=legacy.frozen), patch.object(legacy, 'run', side_effect=RuntimeError('intentional')) as run:

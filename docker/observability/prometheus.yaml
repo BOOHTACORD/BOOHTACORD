@@ -2,6 +2,7 @@ global:
   scrape_interval: 15s
 
 rule_files:
+  - /etc/prometheus/notification-alerts.yaml
   - /etc/prometheus/guild-lifecycle-alerts.yaml
   - /etc/prometheus/livekit-network-alerts.yaml
   - /etc/prometheus/media-qoe-alerts.yaml
