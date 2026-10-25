@@ -127,17 +127,7 @@ jobs:
         run: python -m tools.ci.toolchains.runtime python
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          pattern: check-backend-${{ github.sha }}-${{ github.run_id }}-*
-          path: .out/gate-artifacts
-          merge-multiple: false
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          pattern: check-web-${{ github.sha }}-${{ github.run_id }}-*
-          path: .out/gate-artifacts
-          merge-multiple: false
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          pattern: check-contracts-${{ github.sha }}-${{ github.run_id }}-*
+          pattern: check-{backend,web,contracts}-${{ github.sha }}-${{ github.run_id }}-*
           path: .out/gate-artifacts
           merge-multiple: false
       - name: Select latest passed gate receipts from this workflow run
