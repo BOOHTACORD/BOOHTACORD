@@ -58,10 +58,23 @@
         "boohtacord.incident.http.requests",
         "boohtacord.incident.operational.duration",
         "boohtacord.incident.operational.requests",
+        "boohtacord_notification_active_subscriptions",
+        "boohtacord_notification_observer_up",
+        "boohtacord_notification_oldest_due_seconds",
+        "boohtacord_notification_processing_seconds",
+        "boohtacord_notification_queue",
+        "boohtacord_notification_results_total",
+        "boohtacord_notification_sending_enabled",
+        "boohtacord_push_relay_observer_up",
+        "boohtacord_push_relay_queue_oldest_seconds",
+        "boohtacord_push_relay_queue_pending",
+        "boohtacord_push_relay_results_total",
+        "boohtacord_push_relay_sending_enabled",
         "message.render",
         "message.send",
         "message.send.server",
         "message.store",
+        "notification.attempt",
         "startup"
       ]
     },
@@ -343,6 +356,8 @@
       "scenario": "Connection readiness, replay/reconnect and workers",
       "coverage_and_limits": "Separate WebSocket lifetime from readiness/event delivery. Worker links preserve causality and attempts; no per-message/DM payload logging.",
       "signals": [
+        "boohtacord_notification_worker_health",
+        "boohtacord_notification_worker_tick_timestamp_seconds",
         "realtime.connect",
         "realtime.connect.ready",
         "realtime.process",
@@ -379,6 +394,89 @@
     }
   ],
   "signals": [
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/notifications/observe_delivery/collector.go",
+          "line": 26,
+          "sha256": "0cff21e71583a85911cc5867bd60f7a4bf2dfbc27917a5e8e435409966712627"
+        }
+      ],
+      "source_name": "boohtacord_notification_results_total",
+      "exported_name": "boohtacord_notification_results_total",
+      "type": "Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "stage",
+        "reason",
+        "transport"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/notifications.json",
+          "dashboard_uid": "addressed-notifications-v1",
+          "panel": 2
+        },
+        {
+          "path": "docker/observability/notification-alerts.yaml",
+          "kind": "alert-rule"
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/pushrelay/observe_queue/collector.go",
+          "line": 26,
+          "sha256": "0a767d83b460ad5e120dfc1d4c92228656ac96254e2fc46195503ef1929e721b"
+        }
+      ],
+      "source_name": "boohtacord_push_relay_results_total",
+      "exported_name": "boohtacord_push_relay_results_total",
+      "type": "Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "outcome",
+        "namespace"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/notifications.json",
+          "dashboard_uid": "addressed-notifications-v1",
+          "panel": 8
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
     {
       "scenario": "telemetry",
       "producer": [
@@ -3305,6 +3403,426 @@
       }
     },
     {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/notifications/observe_delivery/collector.go",
+          "line": 25,
+          "sha256": "0cff21e71583a85911cc5867bd60f7a4bf2dfbc27917a5e8e435409966712627"
+        }
+      ],
+      "source_name": "boohtacord_notification_active_subscriptions",
+      "exported_name": "boohtacord_notification_active_subscriptions",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "transport"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/notifications.json",
+          "dashboard_uid": "addressed-notifications-v1",
+          "panel": 6
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/notifications/observe_delivery/collector.go",
+          "line": 21,
+          "sha256": "0cff21e71583a85911cc5867bd60f7a4bf2dfbc27917a5e8e435409966712627"
+        }
+      ],
+      "source_name": "boohtacord_notification_observer_up",
+      "exported_name": "boohtacord_notification_observer_up",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/notifications.json",
+          "dashboard_uid": "addressed-notifications-v1",
+          "panel": 1
+        },
+        {
+          "path": "docker/observability/notification-alerts.yaml",
+          "kind": "alert-rule"
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/notifications/observe_delivery/collector.go",
+          "line": 23,
+          "sha256": "0cff21e71583a85911cc5867bd60f7a4bf2dfbc27917a5e8e435409966712627"
+        }
+      ],
+      "source_name": "boohtacord_notification_oldest_due_seconds",
+      "exported_name": "boohtacord_notification_oldest_due_seconds",
+      "type": "Gauge",
+      "unit": "s",
+      "declared_unit": "s",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/notifications.json",
+          "dashboard_uid": "addressed-notifications-v1",
+          "panel": 4
+        },
+        {
+          "path": "docker/observability/notification-alerts.yaml",
+          "kind": "alert-rule"
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/notifications/observe_delivery/collector.go",
+          "line": 22,
+          "sha256": "0cff21e71583a85911cc5867bd60f7a4bf2dfbc27917a5e8e435409966712627"
+        }
+      ],
+      "source_name": "boohtacord_notification_queue",
+      "exported_name": "boohtacord_notification_queue",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "stage"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/notifications.json",
+          "dashboard_uid": "addressed-notifications-v1",
+          "panel": 3
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/notifications/observe_delivery/collector.go",
+          "line": 24,
+          "sha256": "0cff21e71583a85911cc5867bd60f7a4bf2dfbc27917a5e8e435409966712627"
+        }
+      ],
+      "source_name": "boohtacord_notification_sending_enabled",
+      "exported_name": "boohtacord_notification_sending_enabled",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/notifications.json",
+          "dashboard_uid": "addressed-notifications-v1",
+          "panel": 10
+        },
+        {
+          "path": "docker/observability/notification-alerts.yaml",
+          "kind": "alert-rule"
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "realtime",
+      "producer": [
+        {
+          "path": "backend/internal/notifications/observe_delivery/runtime.go",
+          "line": 19,
+          "sha256": "73ec484d05e4cb1dc26cbf1b1e833fd9942600a05957daa955bb49725e187df2"
+        }
+      ],
+      "source_name": "boohtacord_notification_worker_health",
+      "exported_name": "boohtacord_notification_worker_health",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "worker"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/notifications.json",
+          "dashboard_uid": "addressed-notifications-v1",
+          "panel": 5
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "realtime",
+      "producer": [
+        {
+          "path": "backend/internal/notifications/observe_delivery/runtime.go",
+          "line": 18,
+          "sha256": "73ec484d05e4cb1dc26cbf1b1e833fd9942600a05957daa955bb49725e187df2"
+        }
+      ],
+      "source_name": "boohtacord_notification_worker_tick_timestamp_seconds",
+      "exported_name": "boohtacord_notification_worker_tick_timestamp_seconds",
+      "type": "Gauge",
+      "unit": "s",
+      "declared_unit": "s",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "worker"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/notification-alerts.yaml",
+          "kind": "alert-rule"
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/pushrelay/observe_queue/collector.go",
+          "line": 22,
+          "sha256": "0a767d83b460ad5e120dfc1d4c92228656ac96254e2fc46195503ef1929e721b"
+        }
+      ],
+      "source_name": "boohtacord_push_relay_observer_up",
+      "exported_name": "boohtacord_push_relay_observer_up",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "namespace"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/notification-alerts.yaml",
+          "kind": "alert-rule"
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/pushrelay/observe_queue/collector.go",
+          "line": 24,
+          "sha256": "0a767d83b460ad5e120dfc1d4c92228656ac96254e2fc46195503ef1929e721b"
+        }
+      ],
+      "source_name": "boohtacord_push_relay_queue_oldest_seconds",
+      "exported_name": "boohtacord_push_relay_queue_oldest_seconds",
+      "type": "Gauge",
+      "unit": "s",
+      "declared_unit": "s",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "namespace"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/notification-alerts.yaml",
+          "kind": "alert-rule"
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/pushrelay/observe_queue/collector.go",
+          "line": 23,
+          "sha256": "0a767d83b460ad5e120dfc1d4c92228656ac96254e2fc46195503ef1929e721b"
+        }
+      ],
+      "source_name": "boohtacord_push_relay_queue_pending",
+      "exported_name": "boohtacord_push_relay_queue_pending",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "namespace"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/notifications.json",
+          "dashboard_uid": "addressed-notifications-v1",
+          "panel": 9
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/pushrelay/observe_queue/collector.go",
+          "line": 25,
+          "sha256": "0a767d83b460ad5e120dfc1d4c92228656ac96254e2fc46195503ef1929e721b"
+        }
+      ],
+      "source_name": "boohtacord_push_relay_sending_enabled",
+      "exported_name": "boohtacord_push_relay_sending_enabled",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "namespace"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/notification-alerts.yaml",
+          "kind": "alert-rule"
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
       "scenario": "storage",
       "producer": [
         {
@@ -4563,6 +5081,44 @@
       "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
       "storage": "private Prometheus when the declared delivery target is configured",
       "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/notifications/observe_delivery/runtime.go",
+          "line": 20,
+          "sha256": "73ec484d05e4cb1dc26cbf1b1e833fd9942600a05957daa955bb49725e187df2"
+        }
+      ],
+      "source_name": "boohtacord_notification_processing_seconds",
+      "exported_name": "boohtacord_notification_processing_seconds",
+      "type": "Histogram",
+      "unit": "s",
+      "declared_unit": "s",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "stage"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "[]float64{.01, .05, .1, .25, .5, 1, 2, 5, 15, 30, 60",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/notifications.json",
+          "dashboard_uid": "addressed-notifications-v1",
+          "panel": 7
+        }
+      ],
       "decision": "keep",
       "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
       "delivery": {
@@ -9769,6 +10325,38 @@
       "unit": "duration/timestamp ns",
       "record_kind": "span",
       "attributes_or_labels": [],
+      "attribute_scope": "Literal attribute keys in producer; flow/session metadata may additionally come from shared binding helpers. No metric labels.",
+      "frequency": "per actual stage/attempt/state transition; no event per frame or regular heartbeat",
+      "storage": "private Tempo",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Keep actual transition/worker outcome and causal links separate from polling and HTTP acknowledgement.",
+      "delivery": {
+        "transport": "OTLP-trace",
+        "runtime_status": "NOT_RUN",
+        "boundary": "Server OTel -> bounded exporter -> Collector -> private Tempo",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "messages",
+      "producer": [
+        {
+          "path": "backend/internal/notifications/observe_delivery/attempt.go",
+          "line": 14,
+          "sha256": "b71d179840815597a57d251a72c2a9660da25a93cd8ff4b19995adb854239324"
+        }
+      ],
+      "source_name": "notification.attempt",
+      "exported_name": "notification.attempt",
+      "type": "span/event",
+      "unit": "duration/timestamp ns",
+      "record_kind": "span",
+      "attributes_or_labels": [
+        "notification.outcome",
+        "notification.reason",
+        "notification.transport"
+      ],
       "attribute_scope": "Literal attribute keys in producer; flow/session metadata may additionally come from shared binding helpers. No metric labels.",
       "frequency": "per actual stage/attempt/state transition; no event per frame or regular heartbeat",
       "storage": "private Tempo",
