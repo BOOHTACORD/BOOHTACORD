@@ -16,6 +16,15 @@ tasks:
     cmds: ['{{.PYTHON}} -m tools.ci.native.web']
   test:flutter:
     cmds: ['{{.PYTHON}} -m tools.ci.native.flutter']
+  test:sql-authorization:
+    cmds: ['{{.PYTHON}} -m tools.verify.sql_authorization.run']
+  test:android-unit:
+    cmds:
+      - cmd: flutter pub get --enforce-lockfile
+        dir: clients/flutter
+      - bash tools/verify/android_kotlin/verify_android_kotlin_modes.sh
+  test:macos-unit:
+    cmds: ['{{.PYTHON}} -m tools.verify.macos_unit.run']
   build:server:
     cmds: ['{{.PYTHON}} -m tools.build.server.run {{.CLI_ARGS}}']
   build:android:

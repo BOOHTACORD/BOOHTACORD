@@ -1,0 +1,21 @@
+{"Action": "run", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization"}
+{"Action": "run", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/author"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/author", "Elapsed": 0.12}
+{"Action": "run", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/foreign_author"}
+{"Action": "fail", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/foreign_author", "Elapsed": 0.11}
+{"Action": "run", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/stale_revision"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/stale_revision", "Elapsed": 0.11}
+{"Action": "run", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/archived_channel"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/archived_channel", "Elapsed": 0.11}
+{"Action": "run", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/wrong_channel"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/wrong_channel", "Elapsed": 0.11}
+{"Action": "run", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/voice_channel"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/voice_channel", "Elapsed": 0.11}
+{"Action": "run", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/deleted_message"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization/deleted_message", "Elapsed": 0.11}
+{"Action": "fail", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestPostgresEditAuthorization", "Elapsed": 0.79}
+{"Action": "run", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestRepositoryGuardsAuthorChannelAndRevision"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestRepositoryGuardsAuthorChannelAndRevision", "Elapsed": 0}
+{"Action": "run", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestRepositoryMapsNoUpdatedMessageToConflict"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Test": "TestRepositoryMapsNoUpdatedMessageToConflict", "Elapsed": 0}
+{"Action": "fail", "Package": "voice-platform/backend/internal/chat/edit_text_message/postgres", "Elapsed": 1.986}

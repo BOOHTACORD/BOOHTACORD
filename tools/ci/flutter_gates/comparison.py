@@ -53,10 +53,15 @@ def _compare(run, jobs, needs, old, new):
                 and j['run_id'] == run_id and j['run_attempt'] == attempt
 
                 for j in jobs['jobs']))
-    pool = measurement_pool(jobs['jobs'])
+    apple = [j for j in jobs['jobs'] if j['name'].endswith(' / macos')]
+    require(len(apple) == 3 and all(j.get('labels') == ['macos-26']
+            and j.get('runner_group_name') == 'GitHub Actions' for j in apple))
+    pool = measurement_pool([j for j in jobs['jobs'] if j not in apple])
+    require(pool == 'github-hosted')
+    pool = 'github-hosted-linux-and-macos'
     by_name = {j['name']: j for j in jobs['jobs']}
     require(len(old) == len(new) == 3)
-    arms = {'legacy': [], 'profiles': [], 'dart': [], 'android': [], 'android-kotlin': []}
+    arms = {name: [] for name in ('legacy', 'profiles', *profiles.OPERATIONS)}
 
     def measured(sample, selected, driver):
         times = [interval(j) for j in selected]

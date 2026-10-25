@@ -38,7 +38,7 @@ class WorkflowTests(unittest.TestCase):
         workflow.validate(self.document())
 
     def test_conditional_ignored_or_missing_native_commands_are_rejected(self):
-        for profile in ('dart', 'android', 'android-kotlin'):
+        for profile in ('dart', 'android', 'android-kotlin', 'macos'):
             for field in ('if', 'continue-on-error', 'remove-command', 'job-if', 'serial-dependency'):
                 document = self.document(); job = document['jobs'][profile]
                 step = next(s for s in job['steps'] if s.get('run') == 'python3 -m tools.ci.flutter_gates.run ' + profile)
@@ -50,8 +50,8 @@ class WorkflowTests(unittest.TestCase):
                     workflow.validate(document)
 
     def test_profile_failures_uploads_or_proofs_cannot_be_optional(self):
-        for profile in ('dart', 'android', 'android-kotlin'):
-            for path in (('proof',) if profile == 'android-kotlin' else ('proof', 'artifacts')):
+        for profile in ('dart', 'android', 'android-kotlin', 'macos'):
+            for path in ('proof', 'artifacts'):
                 document = self.document(); job = document['jobs'][profile]
                 upload = next(s for s in job['steps'] if s.get('uses') == 'actions/upload-artifact@v4'
                               and (('.out/ci/flutter-parts/' in s['with']['path']) == (path == 'proof')))

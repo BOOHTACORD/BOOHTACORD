@@ -88,3 +88,11 @@ class ProfileTests(unittest.TestCase):
         self.assertIn('flutter build apk --debug --no-pub', script)
         self.assertIn('./gradlew :app:assembleDebug -Pandroid.builtInKotlin=true --no-daemon', script)
         self.assertIn('Unexpected Flutter KGP compatibility warning.', script)
+        for mode in ('legacy', 'builtin'):
+            self.assertIn('python3 -m tools.verify.android_unit.run ' + mode, script)
+
+    def test_macos_profile_executes_platform_vendor_suite(self):
+        commands, completed, prepare = self.exercise('macos')
+        self.assertEqual(['app-dependencies', 'macos-platform-unit'], completed)
+        self.assertEqual(('python3', '-m', 'tools.verify.macos_unit.run'), commands[-1][0])
+        prepare.assert_not_called()

@@ -73,7 +73,7 @@ def main():
    def call(command):subprocess.run(command,cwd=flutter,stdout=log,stderr=subprocess.STDOUT,check=True)
    call(['flutter','pub','get','--offline'])
    call(['flutter','analyze','--no-pub','--no-fatal-infos','integration_test/qa98325_native_app.dart'])
-   call(['flutter','test','--no-pub','test/qa98325_stage_scene_test.dart','test/qa98325_capture_observer_test.dart','test/qa98325_descriptor_observer_test.dart','test/qa98325_source_policy_test.dart','test/qa98325_http_observer_test.dart','--reporter','expanded'])
+   call(['flutter','test','--no-pub','test/qa98325_stage_scene_test.dart','test/qa98325_capture_observer_test.dart','test/qa98325_descriptor_observer_test.dart','test/qa98325_source_policy_test.dart','test/qa98325_http_observer_test.dart','test/qa98325_lifecycle_acceptance_test.dart','test/qa98325_receiver_observer_test.dart','test/qa98325_namespace_storage_test.dart','test/qa98325_real_http_deadline_test.dart','--reporter','expanded'])
    call(['flutter','build','macos','--debug','--no-pub','-t','integration_test/qa98325_native_app.dart','--dart-define-from-file',str(work/'debug-private-defines.json'),'--dart-define=BOOHTACORD_MACOS_CAPTURE_ENGINE=screen_capture_kit'])
   if expected!=manifest(flutter/'lib'):raise ValueError('Private candidate source drift during compilation')
   artifact=flutter/'build/macos/Build/Products/Debug/BOOHTACORD.app'

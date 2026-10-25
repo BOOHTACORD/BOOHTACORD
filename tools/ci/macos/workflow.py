@@ -27,6 +27,14 @@ def validate(workflows):
         and publish.get('environment')=='production' and publish.get('needs')=='assemble'
         and publish.get('permissions')=={'contents':'write'} and 'python -m tools.build.webrtc_macos.assets' in commands(publish))
     require('python -m tools.ci.macos.host --arch arm64' in commands(workflows['macos-release.yaml']['jobs']['macos-release']))
+    for job in (native, workflows['macos-release.yaml']['jobs']['macos-release']):
+        steps = job['steps']
+        tests = [s for s in steps if s.get('run') == 'python3 -m tools.verify.macos_unit.run']
+        require(len(tests) == 1 and not tests[0].get('if') and not tests[0].get('continue-on-error'))
+        require(steps.index(tests[0]) < next(i for i,s in enumerate(steps) if s.get('run') == 'python3 -m tools.build.macos.run'))
+        uploads = [s for s in steps if s.get('with', {}).get('path') == '.out/checks/macos-unit/']
+        require(len(uploads) == 1 and uploads[0].get('if') == 'always()'
+                and uploads[0]['with'].get('if-no-files-found') == 'error')
     for job in sdk['jobs'].values():
         for step in job.get('steps',[]):
             require(not step.get('continue-on-error'))

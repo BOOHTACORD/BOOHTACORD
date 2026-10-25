@@ -7,7 +7,7 @@ from .artifacts import VISUALS
 
 
 def record(profile):
-    names = (VISUALS if profile == 'dart' else () if profile == 'android-kotlin'
+    names = (VISUALS if profile == 'dart' else () if profile in ('android-kotlin', 'macos')
              else ('app-debug.apk', 'artifact-manifest.json', 'SHA256SUMS'))
     return {'schema_version': 1, 'source_revision': 'a' * 40, 'profile': profile,
             'run_id': '123', 'run_attempt': '1', 'namespace': 'flutter', 'status': 'PASS',
@@ -17,9 +17,17 @@ def record(profile):
 
 
 class ResultTests(unittest.TestCase):
+    def test_missing_or_skipped_apple_profile_cannot_pass_linux_results(self):
+        needs = {p: {'result': 'success'} for p in OPERATIONS}
+        with self.assertRaises(ValueError):
+            results.validate([record(p) for p in OPERATIONS if p != 'macos'], needs, 'a' * 40, '123', '1')
+        needs['macos']['result'] = 'skipped'
+        with self.assertRaises(ValueError):
+            results.validate([record(p) for p in OPERATIONS], needs, 'a' * 40, '123', '1')
+
     def test_all_three_parts_required_and_kotlin_has_no_distribution_artifacts(self):
-        parts = [record(p) for p in ('dart', 'android', 'android-kotlin')]
-        needs = {p: {'result': 'success'} for p in ('dart', 'android', 'android-kotlin')}
+        parts = [record(p) for p in OPERATIONS]
+        needs = {p: {'result': 'success'} for p in OPERATIONS}
         self.assertEqual(set(needs), set(results.validate(parts, needs, 'a' * 40, '123', '1')))
         for status in ('failure', 'cancelled', 'skipped', None):
             needs['android-kotlin']['result'] = status

@@ -1,0 +1,344 @@
+{
+  "schema_version": 1,
+  "packet_date": "2026-10-25",
+  "completed_at_utc": "2026-10-25T21:01:01Z",
+  "completed_local_date": "2026-10-26",
+  "timezone": "Europe/Moscow",
+  "status": "LOCAL_CHECKS_PASS_NATIVE_RUNTIME_NOT_RUN",
+  "base_revision": "25024b4e3d61a9b6df0468525461c0cd4d650bfa",
+  "branch": "codex/test-sql-native-gates",
+  "working_tree_dirty": true,
+  "committed": false,
+  "published": false,
+  "suite_map": "docs/ci/test-protection.md",
+  "sql": {
+    "status": "PASS",
+    "source_revision": "25024b4e3d61a9b6df0468525461c0cd4d650bfa",
+    "mutations": [
+      {
+        "file": "internal/chat/edit_text_message/postgres/repository.go",
+        "original_sha256": "0645160b829a5a62f22426645d0da772307fc06ff85f123f3115921887aace0a",
+        "old": "AND message.author_id = $3",
+        "new": "AND (message.author_id = $3 OR TRUE)",
+        "witness": "TestPostgresEditAuthorization/foreign_author",
+        "failed_tests": [
+          "TestPostgresEditAuthorization",
+          "TestPostgresEditAuthorization/foreign_author"
+        ],
+        "exit_code": 1,
+        "status": "KILLED"
+      },
+      {
+        "file": "internal/storage/authorize_direct_message_attachment/postgres/repository.go",
+        "original_sha256": "ffaa51507cf71f6c07fb90d30b79abe175725446b72a21c49fccb64a9db16b5b",
+        "old": "AND $1::uuid IN (dm.participant_one_id, dm.participant_two_id)",
+        "new": "AND ($1::uuid IN (dm.participant_one_id, dm.participant_two_id) OR TRUE)",
+        "witness": "TestPostgresAttachmentPairAuthorization/outsider_administrator",
+        "failed_tests": [
+          "TestPostgresAttachmentPairAuthorization",
+          "TestPostgresAttachmentPairAuthorization/outsider",
+          "TestPostgresAttachmentPairAuthorization/outsider_administrator"
+        ],
+        "exit_code": 1,
+        "status": "KILLED"
+      },
+      {
+        "file": "internal/media/publish_screen_descriptor/postgres/statements.go",
+        "original_sha256": "de0656f86244f9788a3986b0e319948b508bbcbcad2f1f85b3d5838ce163224f",
+        "old": "session.revoked_at IS NULL",
+        "new": "(session.revoked_at IS NULL OR TRUE)",
+        "witness": "TestPostgresDescriptorAdmission/revoked_session",
+        "failed_tests": [
+          "TestPostgresDescriptorAdmission",
+          "TestPostgresDescriptorAdmission/revoked_session"
+        ],
+        "exit_code": 1,
+        "status": "KILLED"
+      }
+    ],
+    "source_dirty": true,
+    "test_source_sha256": {
+      "backend/internal/chat/edit_text_message/postgres/integration_authorization_test.go": "bd7ddbb31d03fee07ac61e9e9f45802cff795a73add047fd9a67d6234ba0162a",
+      "backend/internal/chat/edit_text_message/postgres/integration_fixture_test.go": "55c252e72e4ef64a241f939eb6b38ea209e2374029f5bf2efac75ccb32346361",
+      "backend/internal/chat/edit_text_message/postgres/repository_test.go": "4cc2692d85ab3af98c7eb30c44298164e44738fff9fb8a8f9b735156f8d6cad7",
+      "backend/internal/storage/authorize_direct_message_attachment/postgres/integration_authorization_test.go": "41e406d45c4cdb519c4409ba0877fe1bba663fdb478ed6374c662d1775181c5f",
+      "backend/internal/storage/authorize_direct_message_attachment/postgres/integration_fixture_test.go": "c4d6e0762e13c3ee123bd45dfd20663f9a45271974921ef75182e1b16e1c10d0",
+      "backend/internal/storage/authorize_direct_message_attachment/postgres/repository_test.go": "3760108d9fd4874a7f3778cc4472625ad4d853ffa60984158a643aa6fe698a03",
+      "backend/internal/media/publish_screen_descriptor/postgres/integration_authorization_test.go": "6639ed13a034437806142abe535b9df48998d57d8b4795998f95391daa1eca02",
+      "backend/internal/media/publish_screen_descriptor/postgres/integration_fixture_test.go": "197eeecae17d0258f8b45aaf29b6f723d38c76c7ea2e9ee3fe70255059156147",
+      "backend/internal/media/publish_screen_descriptor/postgres/repository_revision_test.go": "fffa7b2bf45ae690f29d8fd779cee5ac5bc42d8ebd3264f2efc650585641cf61",
+      "backend/internal/media/publish_screen_descriptor/postgres/repository_scope_test.go": "6b604c41def36ec35eee7e13de4b2ba9447306dc26e5fad14caad2793fb4c4dc",
+      "backend/internal/media/publish_screen_descriptor/postgres/repository_test_support_test.go": "2b8f4464e09bb745b918b28c001ad4466b6dbcff353ea4cb8268aea59d675c5c",
+      "backend/internal/media/publish_screen_descriptor/postgres/statements_test.go": "c7ca7c50b3e5ca4ccd45fcb59cf8f56c16474a2391bb499ad49fac52fa873249"
+    },
+    "baseline_passed": 34,
+    "required_scenarios": [
+      "TestPostgresAttachmentPairAuthorization/blocked_first",
+      "TestPostgresAttachmentPairAuthorization/blocked_second",
+      "TestPostgresAttachmentPairAuthorization/first",
+      "TestPostgresAttachmentPairAuthorization/missing_pair",
+      "TestPostgresAttachmentPairAuthorization/outsider",
+      "TestPostgresAttachmentPairAuthorization/outsider_administrator",
+      "TestPostgresAttachmentPairAuthorization/second",
+      "TestPostgresDescriptorAdmission/active",
+      "TestPostgresDescriptorAdmission/archived_channel",
+      "TestPostgresDescriptorAdmission/blocked_account",
+      "TestPostgresDescriptorAdmission/closed_channel",
+      "TestPostgresDescriptorAdmission/foreign_account",
+      "TestPostgresDescriptorAdmission/foreign_session",
+      "TestPostgresDescriptorAdmission/revoked_lease",
+      "TestPostgresDescriptorAdmission/revoked_session",
+      "TestPostgresDescriptorAdmission/text_channel",
+      "TestPostgresEditAuthorization/archived_channel",
+      "TestPostgresEditAuthorization/author",
+      "TestPostgresEditAuthorization/deleted_message",
+      "TestPostgresEditAuthorization/foreign_author",
+      "TestPostgresEditAuthorization/stale_revision",
+      "TestPostgresEditAuthorization/voice_channel",
+      "TestPostgresEditAuthorization/wrong_channel"
+    ],
+    "restored_passed": 34,
+    "skipped": 0
+  },
+  "preserved_production_sql_sha256": {
+    "backend/internal/chat/edit_text_message/postgres/repository.go": "be3cf31776a9364fc54cf4d61d2380af1ff3764da56278ab082b07620c4cc350",
+    "backend/internal/storage/authorize_direct_message_attachment/postgres/repository.go": "a0d4cfc555be02cb0d97853141cc3b1b926ab60e79d3f49def785dcfe23837a3",
+    "backend/internal/media/publish_screen_descriptor/postgres/statements.go": "4ee88dc18a4925ed0b9dbc26cbf391754b4c51c30e9fcc1f84968764b9298adc"
+  },
+  "python": {
+    "windows": {
+      "platform": "Windows",
+      "tests_run": 209,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "posix_runs": [
+        "tools.qa.macos_sender.test_candidate",
+        "tools.ci.toolchains.test_auxiliary.AuxiliaryTests.test_native_input_drift_missing_or_symlink_is_rejected"
+      ]
+    },
+    "posix": {
+      "platform": "WSL Ubuntu, POSIX temporary directories",
+      "fixture": "Reviewed public SDK inputs copied with LF line endings; existing CRLF normalization and symlink rejection assertions preserved",
+      "tests_run": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true
+    },
+    "backend_policy_tests": 8,
+    "total_tests_run_across_targeted_invocations": 222,
+    "full_tools_suite_executed": false
+  },
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "tools.verify.action_pins.run"
+      ],
+      "exit_code": 0,
+      "output": "Reviewed full action commits: OK (37 workflows, 2 local actions)\n"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "tools.ci.toolchains.workflows"
+      ],
+      "exit_code": 0,
+      "output": "PASS: exact Go/Node/Flutter SDKs and public cache inputs; unconditional locked installs\n"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "tools.ci.toolchains.auxiliary"
+      ],
+      "exit_code": 0,
+      "output": "PASS: auxiliary SDK declarations and reviewed native build inputs\n"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "tools.verify.workflows.selection"
+      ],
+      "exit_code": 0,
+      "output": "CI component selection and dependency edges: OK\n"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "go",
+        "vet",
+        "./internal/chat/edit_text_message/postgres",
+        "./internal/storage/authorize_direct_message_attachment/postgres",
+        "./internal/media/publish_screen_descriptor/postgres"
+      ],
+      "cwd": "backend",
+      "exit_code": 0,
+      "observed": "completed successfully in this session"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "tools.ci.backend_gates.test_workflow",
+        "tools.ci.backend_gates.test_run"
+      ],
+      "exit_code": 0,
+      "tests_run": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "artifacts": {
+    "evidence/ci/sql-authorization-2026-10-25/baseline.events.jsonl": {
+      "sha256": "7b9c3f0a097bb08cb38de91b6708d5262b02a7b22b984fa60042177b603b26dd",
+      "bytes": 12136
+    },
+    "evidence/ci/sql-authorization-2026-10-25/mutation-1.events.jsonl": {
+      "sha256": "e52db332155c46dc7d433a0018ece0dc23d2365f38ed645aed841483cf804d2a",
+      "bytes": 3306
+    },
+    "evidence/ci/sql-authorization-2026-10-25/mutation-2.events.jsonl": {
+      "sha256": "da9e20cef5d8dc57ed8023e5dbbc7e2b540592192acb02573a3b8d1c5954b42b",
+      "bytes": 3527
+    },
+    "evidence/ci/sql-authorization-2026-10-25/mutation-3.events.jsonl": {
+      "sha256": "2960bdb1a7f790281bc506f45ca1c8eb59689af5dd359084792946f7a59f1be5",
+      "bytes": 5301
+    },
+    "evidence/ci/sql-authorization-2026-10-25/restored.events.jsonl": {
+      "sha256": "7ca1f0f16d4ae3dfd0a8dc571784eebaf97c76865cda1b3a6ca8c52a1a39a004",
+      "bytes": 12134
+    },
+    "evidence/ci/sql-authorization-2026-10-25/python-windows.json": {
+      "sha256": "56b5bc8baa4ee184c11adf397cc5453f52d52d84c7686328a15c450d61b65476",
+      "bytes": 304
+    },
+    "evidence/ci/sql-authorization-2026-10-25/python-posix.json": {
+      "sha256": "b99874534fa08c5992aadcce78601ec37d765b52aff69305516cea187d4f1803",
+      "bytes": 287
+    },
+    "evidence/ci/sql-authorization-2026-10-25/python-windows.log": {
+      "sha256": "ba9c715935531251307e9e767ca3281cefa6848122affe1b5cca3693fe8cbd1d",
+      "bytes": 39092
+    },
+    "evidence/ci/sql-authorization-2026-10-25/python-posix.log": {
+      "sha256": "e397c5ae44188b448779f976f1f1c0eee16a28dc4676da2e643278a3bb24d192",
+      "bytes": 1069
+    }
+  },
+  "changed_runtime_source_sha256": {
+    ".github/workflows/ci-backend.yaml": "d6a1bc2c9fa6e37fa57d7624eeedc4cab503fc8539aa1734368b560917493b1a",
+    ".github/workflows/ci-flutter.yaml": "157ce6ff4bf4b321bfd79d4f10e95af809c2b670d0c5b49991d9a3d2594686b5",
+    ".github/workflows/flutter-macos.yaml": "b70d832dd0356e63c2b2c39e3af22e073b7aa6f3d38a800df80223a9881554be",
+    ".github/workflows/macos-release.yaml": "1f59d99da6acb575cea61cac9dc17f6c6cac752c040a70114554c1f492f000ae",
+    "Taskfile.yml": "0b7ac67a57c625270870ea324118b8512b316193d6780f7a1c7d1cad547c51e9",
+    "backend/internal/chat/edit_text_message/postgres/integration_authorization_test.go": "bd7ddbb31d03fee07ac61e9e9f45802cff795a73add047fd9a67d6234ba0162a",
+    "backend/internal/chat/edit_text_message/postgres/integration_fixture_test.go": "55c252e72e4ef64a241f939eb6b38ea209e2374029f5bf2efac75ccb32346361",
+    "backend/internal/media/publish_screen_descriptor/postgres/integration_authorization_test.go": "6639ed13a034437806142abe535b9df48998d57d8b4795998f95391daa1eca02",
+    "backend/internal/media/publish_screen_descriptor/postgres/integration_fixture_test.go": "197eeecae17d0258f8b45aaf29b6f723d38c76c7ea2e9ee3fe70255059156147",
+    "backend/internal/storage/authorize_direct_message_attachment/postgres/integration_authorization_test.go": "41e406d45c4cdb519c4409ba0877fe1bba663fdb478ed6374c662d1775181c5f",
+    "backend/internal/storage/authorize_direct_message_attachment/postgres/integration_fixture_test.go": "c4d6e0762e13c3ee123bd45dfd20663f9a45271974921ef75182e1b16e1c10d0",
+    "clients/flutter/packages/livekit_client/android/build.gradle": "425b4830f07247c4a7b9f6747d967863959080925eb0ecfdbc76a710f8cbdce3",
+    "tools/ci/backend_gates/test_workflow.py": "7c84d036a3347dd43bbcd888b4339c17963cab6acba5a2c86dd9490e40694df7",
+    "tools/ci/backend_gates/workflow.py": "1bb37162eed3d56a7eeacce1cf50b993dd8d93d6a6d14a6ded505e321dbb49d1",
+    "tools/ci/flutter_gates/aggregate.py": "87716cfc82c20128a94ad1be2a543e4cc21670b7afbf381ebc879df2e8ba0bb3",
+    "tools/ci/flutter_gates/comparison.py": "b8e1e061998d140e35798c1c2f765bce6ba71719a2a3e6e1aa186d0ebe31f4fc",
+    "tools/ci/flutter_gates/measure.py": "8f0d47adf99f425cf9c2a653a12cf627eca7042bbb9aebff580d1a3141795562",
+    "tools/ci/flutter_gates/profiles.py": "cdf8975c99a92a08a560fa09747aba5f6b4954be2af93c5e19eee42144475f43",
+    "tools/ci/flutter_gates/results.py": "5de7e64665c078804f853d5d33e3cecc2bb3831fc842a3aaba9b834776d72a2d",
+    "tools/ci/flutter_gates/test_comparison.py": "6ca5207d9d18b3be51c00eda63e036f6e96b33a861462bd6f6f32d2358004ee0",
+    "tools/ci/flutter_gates/test_profiles.py": "44b3918b0763bb4d6a4c7bb26108320f77fea04921a2ba9712da652716306ae1",
+    "tools/ci/flutter_gates/test_results.py": "14a71895bade05622024c8a96a3f57537d10d84ccaaa868ec7eddfeaac9da8db",
+    "tools/ci/flutter_gates/test_workflow.py": "ec658d410276c7f0b91b6a6fa6d6c0817e5e385855d298a64e53d2e8c5b38739",
+    "tools/ci/flutter_gates/workflow.py": "112392ead621cdd58acec41a6f763b5189df1dcbb0bd53c93d0ffa3c42972fdc",
+    "tools/ci/macos/test_workflow.py": "16250b5711e7f97a3654fb7002d54ddbbbb0aaa82a37f22f08d479148de13f1a",
+    "tools/ci/macos/workflow.py": "1bab50f85fbbcf5b0e8bb5f47b6a3504852104424861b952fc79e18d8bed372c",
+    "tools/ci/toolchains/native-inputs.json": "cbae92ce201a0b5f157f0dadb3ddecc9a9495962c3e90d8cf5e92511484ee925",
+    "tools/qa/macos_sender/candidate.py": "99f3130f91a7e8e130bc67aafb4e05c1d483c4ca1f830c5586f12b70bcb19d1d",
+    "tools/qa/macos_sender/run.py": "35d02c742ab20901b9e4bf1b9763d89f7a096fe1bb62d07de6b0017fc5e3139b",
+    "tools/qa/macos_sender/test_unit_selection.py": "bcd251846bf53045ca8480847efc5fd2189b0ed2f59b72eea91683bd56aa6dbd",
+    "tools/verify/android_kotlin/verify_android_kotlin_modes.sh": "4220242ccb94594a93987cd9357eacba0a0285b22376733079608e478acff4f7",
+    "tools/verify/android_unit/inventory.py": "c369a103d75e60bd5525c1f5b92092649614572384da3c2873c381c4c49f3641",
+    "tools/verify/android_unit/reports.gradle": "6c601f1f24aed6d130371670cf8888080de91367dbb5a6d3653d857f46870e93",
+    "tools/verify/android_unit/results.py": "53e2199bd1a19b2d098b522a92ab7eec44ff731efea62501a5f18564c24f7d1f",
+    "tools/verify/android_unit/run.py": "31d1244302de9034ecda32ffbe32f0ede1a7c33bc4a9c362c3c0345c4e2c727c",
+    "tools/verify/android_unit/test_results.py": "9b2cc7ace828ae7f2138cd7cf67279a81d3b856ab6b891fdf29cca98ff9d194c",
+    "tools/verify/android_unit/test_run.py": "5ae3e7847ccec8181aa7f912519d8eca972b52feec775f1a718b91712ba9df72",
+    "tools/verify/macos_unit/events.py": "caa425d79357dcfb28c2c354949c621c06e66320c6245d74fadc235139fdbaff",
+    "tools/verify/macos_unit/run.py": "ed099a80bca63582ae9e71bbd42555702acc4ca1a21dbfbbe96176b97d850dd7",
+    "tools/verify/macos_unit/test_events.py": "791010cb48524ea90fc6bd7032d28d354534751317092e4ea561bd65a0e65165",
+    "tools/verify/macos_unit/test_run.py": "9cbcf81d8df64785d17f4c0f2c40430695b61b0c695b263371406b89f5bd70cb",
+    "tools/verify/sql_authorization/run.py": "e20b8a83cefa867e47c04386c427b726f55e7cabdb3989181fb594964533bd7c"
+  },
+  "platforms": {
+    "go": "go1.26.4 windows/amd64",
+    "python": "3.12.10 Windows; WSL POSIX checks",
+    "database_actual": "PostgreSQL 16.14 Ubuntu on isolated WSL loopback port 55439",
+    "database_ci_required": "PostgreSQL 17.6",
+    "postgres17_6": "NOT_RUN",
+    "android_junit_runtime": "NOT_RUN: Flutter/Android SDK runtime unavailable in this session",
+    "android_configured_inventory": {
+      "plugins": 3,
+      "classes": 12,
+      "cases_per_mode": 40,
+      "modes": [
+        "legacy",
+        "builtin"
+      ]
+    },
+    "macos_flutter_runtime": "NOT_RUN: this host is Windows",
+    "non_apple_route_actual_result": {
+      "status": "BLOCKED",
+      "platform": "win32",
+      "tests": 0,
+      "physical_media": "NOT_RUN"
+    },
+    "macos_configured_cases": 8,
+    "macos_only_cases": 2,
+    "physical_media": "NOT_RUN",
+    "hosted_ci": "NOT_RUN"
+  },
+  "deletion": {
+    "removed_tests": 0,
+    "removed_assertions": 0,
+    "remaining_consolidation_decisions_applied": 0
+  },
+  "open_audit_items": [
+    "Earlier prepared audit patch is absent at base and was not applied",
+    "Web stage and voice_timeout automatic routes remain open",
+    "Notification queries automatic route remains open",
+    "tracing_runtime remains on the documented manual runtime/outage route"
+  ],
+  "limits": [
+    "Go passed totals include parent tests: 23 database scenarios, 8 existing unit tests and 3 parent tests = 34 pass events",
+    "Local dirty-source evidence is not a clean-commit CI receipt",
+    "No Android, Apple, physical media, capacity or release gate is closed",
+    "Previous Windows CRLF fixture and POSIX permission checks were executed in an isolated LF/POSIX fixture; assertions were preserved",
+    "New Mac job adds hosted Apple work; historical three-profile timing samples do not establish its cost or duration"
+  ],
+  "cleanup": {
+    "isolated_wsl_postgres_cluster": "STOPPED",
+    "directory": "/tmp/boohta-sql-native-20261025/data",
+    "existing_postgres16_main": "untouched"
+  },
+  "ratchet": {
+    "new_runtime_source_files": "all below 120 physical lines",
+    "existing_workflow_yaml": "Native job boundaries retained; existing large YAML files were extended, no SG-CONVERT claim"
+  }
+}

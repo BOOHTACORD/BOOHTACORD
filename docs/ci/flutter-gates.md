@@ -1,15 +1,19 @@
 # Dart and Android gates (#390, CICD-06)
 
 The existing `flutter` selector invokes `ci-flutter.yaml`. Its independent hosted
-Ubuntu jobs are `dart`, `android-kotlin` and `android`; the stable
+Ubuntu jobs are `dart`, `android-kotlin` and `android`, alongside an Apple
+`macos` unit job on `macos-26`; the stable
 `flutter / flutter` check always
-waits for all three. `ci-required` still validates the reusable workflow's complete
+waits for all four. `ci-required` still validates the reusable workflow's complete
 result, including the aggregate. No child is optional. Android release
 signing retains its dependency on the same complete reusable gate.
+The 2026-10-25 SQL/native follow-up is locally verified but awaits hosted Android
+and Apple execution. Its [suite protection map](test-protection.md) records commands,
+per-class discovery, mandatory triggers, artifacts and open audit gaps.
 
 The versioned component map is unchanged. Flutter/app/vendor/native builder,
-shared RNNoise, contracts, CI/verification and toolchain changes require all three
-children. Unknown ownership or unavailable diffs conservatively require all three.
+shared RNNoise, contracts, CI/verification and toolchain changes require all four
+children. Unknown ownership or unavailable diffs conservatively require all four.
 Proven backend-only, Web-only and documentation-only diffs skip the entire
 Flutter workflow, including Android packaging. No second path filter can
 contradict the shared selector.
@@ -19,7 +23,10 @@ application tests, both vendor lock preparations and test suites, recursively
 analyzed LiveKit example lock, and the existing full application analysis flags.
 The local `python3 -m tools.ci.native.flutter` uses the same implementation.
 `android-kotlin` resolves the app lock in its own fresh workspace and runs the
-unchanged legacy-KGP and AGP built-in Kotlin checks. In parallel, `android`
+legacy-KGP and AGP built-in Kotlin checks, now including all 40 plugin JUnit cases
+per mode with mandatory per-class XML evidence. The Apple job executes eight
+named capture-option vendor cases without skipping the two macOS-only cases.
+In parallel, `android`
 resolves the same lock independently and builds the actual inspected debug APK.
 `--debug --no-pub` reuses that job's preparation. Release builds cannot use
 this option: their existing plugin regeneration and signing behavior is retained.
@@ -41,7 +48,7 @@ failed command, failed upload or cancelled child cannot pass the aggregate.
 Small execution parts bind the exact tracked source, run, attempt, namespace,
 Flutter/Dart/framework identity, ordered completed operations, elapsed driver time
 and measured artifact inventory. Artifact names repeat the same execution identity.
-The aggregate downloads exactly three parts and rejects extra, partial, duplicate,
+The aggregate downloads exactly four parts and rejects extra, partial, duplicate,
 foreign, stale or unsuccessful evidence. A full workflow rerun is required; a new
 attempt cannot borrow results from an older attempt. Artifacts retain the existing
 30-day policy. Failure is written before native execution so a stale PASS cannot

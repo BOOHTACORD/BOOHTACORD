@@ -25,8 +25,10 @@ check_build() {
 cd "$desktop_dir"
 check_build "Checking legacy-KGP compatibility mode from android/gradle.properties" legacy \
   flutter build apk --debug --no-pub
+(cd "$repo_dir" && python3 -m tools.verify.android_unit.run legacy)
 
 cd "$desktop_dir/android"
 check_build "Checking AGP built-in Kotlin mode without a connected device" builtin \
   ./gradlew :app:assembleDebug -Pandroid.builtInKotlin=true --no-daemon \
   -I "$repo_dir/tools/verify/android_kotlin/verify_built_in.gradle"
+(cd "$repo_dir" && python3 -m tools.verify.android_unit.run builtin)
