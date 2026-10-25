@@ -8,7 +8,7 @@ import '../features/admin/confirmation/dialog.dart';
 import '../features/session/own_sessions/panel.dart';
 import '../features/updates/status_card.dart';
 import '../models.dart';
-import '../features/notifications/settings/panel.dart';
+import '../app/notification_settings/panel.dart';
 import '../theme.dart';
 import '../widgets/authenticated_avatar.dart';
 import 'workspace_ui/profile_panel_toolbar/component.dart';

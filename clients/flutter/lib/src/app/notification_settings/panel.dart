@@ -3,10 +3,10 @@ import 'package:crypto/crypto.dart';
 
 import 'dart:convert';
 
-import '../../../app_state.dart';
-import '../remote_lifecycle/controller.dart';
-import 'account_controls.dart';
-import 'device_controls.dart';
+import '../../app_state.dart';
+import '../../features/notifications/remote_lifecycle/controller.dart';
+import '../../features/notifications/settings/account_controls.dart';
+import '../../features/notifications/settings/device_controls.dart';
 import 'local_panel.dart';
 import 'conversation_rules.dart';
 

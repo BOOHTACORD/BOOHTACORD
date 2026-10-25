@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'mode_items.dart';
-import 'rule_changes.dart';
+import '../../features/notifications/settings/mode_items.dart';
+import '../../features/notifications/settings/rule_changes.dart';
 
-import '../../../app_state.dart';
+import '../../app_state.dart';
 import 'conversation_choices.dart';
 
 class ConversationNotificationRules extends StatefulWidget {

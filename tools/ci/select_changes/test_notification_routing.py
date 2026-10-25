@@ -11,6 +11,7 @@ class NotificationRoutingTests(unittest.TestCase):
                      'backend/internal/guild/update_settings/service.go',
                      'clients/web/src/notification/remote_push/devices.ts',
                      'clients/flutter/lib/src/features/notifications/mobile_driver/firebase_driver.dart',
+                     'clients/flutter/lib/src/app/notification_settings/panel.dart',
                      'contracts/notification-payload-v1.schema.json'):
             with self.subTest(path=path):
                 self.assertEqual(set(ALL), select([path]))

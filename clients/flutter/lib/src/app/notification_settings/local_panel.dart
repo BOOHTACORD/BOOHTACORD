@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../app_state.dart';
-import '../../../services/native_notifications.dart';
-import '../../../theme.dart';
+import '../../app_state.dart';
+import '../../services/native_notifications.dart';
+import '../../theme.dart';
 
 class LocalNotificationPanel extends StatelessWidget {
   const LocalNotificationPanel({

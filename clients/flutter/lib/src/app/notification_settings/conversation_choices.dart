@@ -1,5 +1,5 @@
-import '../../../app_state.dart';
-import '../../../models.dart';
+import '../../app_state.dart';
+import '../../models.dart';
 
 List<Map<String, String>> notificationConversationChoices(AppState state) =>
     <Map<String, String>>[
