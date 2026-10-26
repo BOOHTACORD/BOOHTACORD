@@ -15,22 +15,18 @@ PUBLIC_KEY=Path('/etc/voice-platform/release-signing.pub.pem')
 VOLUME='voice-platform_attachments-data'
 FORMAT='{"id":{{json .Id}},"image":{{json .Image}},"started":{{json .State.StartedAt}},"status":{{json .State.Status}},"revision":{{json (index .Config.Labels "org.opencontainers.image.revision")}},"directory":{{json (index .Config.Labels "com.docker.compose.project.working_dir")}},"service":{{json (index .Config.Labels "com.docker.compose.service")}},"project":{{json (index .Config.Labels "com.docker.compose.project")}},"mounts":{{json .Mounts}}}'
 
-
 def command(*args):
     result=subprocess.run(args,capture_output=True,text=True,timeout=180)
     require(result.returncode==0,'Maintenance command failed; no command output is published')
     return result.stdout.strip()
 
-
 def docker(*args):return command('docker',*args)
-
 
 def containers():
     ids=docker('ps','-aq').splitlines();require(bool(ids),'Container inventory is empty')
     items=[json.loads(line) for line in docker('inspect','--format',FORMAT,*ids).splitlines()]
     for item in items:item['mounts']=sorted(item['mounts'],key=lambda mount:json.dumps(mount,sort_keys=True))
     return sorted(items,key=lambda item:item['id'])
-
 
 def image_inventory():
     images={}
@@ -39,7 +35,6 @@ def image_inventory():
         if row['Repository'] in ('voice-platform-api','voice-platform-web') and re.fullmatch('sha256:[a-f0-9]{64}',row['Digest']):
             images[row['Repository']+'@'+row['Digest']]=row['ID']
     return images
-
 
 def linked_releases(items):
     protected=set()
