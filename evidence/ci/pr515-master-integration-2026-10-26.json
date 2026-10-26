@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "pull_request": 515,
+  "packet": "branch_sync and native verification",
+  "base_revision": "ae56d375a08f75281dca3ae41de9def2e6b4eb46",
+  "source_before_sync": "06b39f8b45a9f6aa05036b4771547edaff655ce0",
+  "status": "LOCAL_PASS_HOSTED_PENDING",
+  "checks": [
+    {
+      "command": "python3 -m unittest tools.ops.release_rotation.test_rotation -v",
+      "platform": "WSL Ubuntu / POSIX temporary fixtures",
+      "tests": 13,
+      "status": "PASS"
+    },
+    {
+      "command": "bash -n tools/ops/release_rotation/install-host.sh",
+      "input": "canonical LF bytes",
+      "status": "PASS"
+    },
+    {
+      "command": "python -m tools.verify.action_pins.run",
+      "status": "PASS"
+    },
+    {
+      "check": "run.py AST preserved; whitespace reduced to meet 120-line hard limit",
+      "status": "PASS"
+    }
+  ],
+  "production_operations_executed": false,
+  "historical_production_evidence": "evidence/capacity/production-release-rotation-2026-10-21.json"
+}

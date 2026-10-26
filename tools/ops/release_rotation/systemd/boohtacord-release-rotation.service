@@ -1,0 +1,25 @@
+[Unit]
+Description=Rotate obsolete signed Boohtacord release artifacts
+After=docker.service
+Requires=docker.service
+ConditionPathExists=/opt/voice-platform-releases/.install.lock
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/usr/local/lib/boohtacord-release-rotation/current
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 -m tools.ops.release_rotation.run --apply
+TimeoutStartSec=15min
+Nice=10
+IOSchedulingClass=idle
+MemoryMax=512M
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+ReadWritePaths=/opt/voice-platform-releases
+UMask=0077

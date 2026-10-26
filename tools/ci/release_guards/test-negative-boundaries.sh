@@ -26,3 +26,4 @@ bash tools/release/legacy_resume/resume.test.sh
 bash tools/ops/docker_storage/reclaim_old_images.test.sh
 bash tools/ops/docker_storage/prune_build_cache.test.sh
 bash tools/ops/docker_storage/reclaim_deploy_headroom.test.sh
+python3 -m unittest tools.ops.release_rotation.test_rotation
