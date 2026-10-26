@@ -77,6 +77,14 @@ jobs:
           cache-dependency-path: .out/ci/cache-inputs/go.json
       - name: Run complete database backend profile
         run: python3 -m tools.ci.backend_gates.run --profile database
+      - name: Retain per-test database outcomes
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: backend-events-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/checks/backend.jsonl
+          if-no-files-found: error
+          retention-days: 30
       - name: Retain mandatory source-bound profile result
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

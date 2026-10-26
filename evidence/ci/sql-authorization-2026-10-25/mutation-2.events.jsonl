@@ -1,0 +1,19 @@
+{"Action": "run", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization"}
+{"Action": "run", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/first"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/first", "Elapsed": 0.11}
+{"Action": "run", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/second"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/second", "Elapsed": 0.11}
+{"Action": "run", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/outsider"}
+{"Action": "fail", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/outsider", "Elapsed": 0.12}
+{"Action": "run", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/outsider_administrator"}
+{"Action": "fail", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/outsider_administrator", "Elapsed": 0.11}
+{"Action": "run", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/blocked_first"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/blocked_first", "Elapsed": 0.11}
+{"Action": "run", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/blocked_second"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/blocked_second", "Elapsed": 0.11}
+{"Action": "run", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/missing_pair"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization/missing_pair", "Elapsed": 0.11}
+{"Action": "fail", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestPostgresAttachmentPairAuthorization", "Elapsed": 0.78}
+{"Action": "run", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestAuthorizationRequiresExactPairAndBothActive"}
+{"Action": "pass", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Test": "TestAuthorizationRequiresExactPairAndBothActive", "Elapsed": 0}
+{"Action": "fail", "Package": "voice-platform/backend/internal/storage/authorize_direct_message_attachment/postgres", "Elapsed": 1.94}

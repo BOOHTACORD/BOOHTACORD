@@ -1,0 +1,9 @@
+// Fresh per-mode output prevents cached or stale JUnit files from proving discovery.
+gradle.projectsEvaluated {
+    gradle.rootProject.allprojects { project ->
+        project.tasks.withType(org.gradle.api.tasks.testing.Test).configureEach {
+            reports.junitXml.required = true
+            reports.junitXml.outputLocation = new File(System.getenv('BOOHTACORD_JUNIT_DIR'), project.name)
+        }
+    }
+}

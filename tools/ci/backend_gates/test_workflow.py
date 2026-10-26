@@ -14,6 +14,16 @@ class WorkflowTests(unittest.TestCase):
 
     def test_actual_parallel_gate(self): validate(self.document())
 
+    def test_database_events_cannot_be_missing_optional_or_foreign(self):
+        for mutation in ('missing', 'optional', 'ignored', 'foreign'):
+            value=self.document(); steps=value['jobs']['database']['steps']
+            step=next(s for s in steps if s.get('with',{}).get('path') == '.out/checks/backend.jsonl')
+            if mutation == 'missing': steps.remove(step)
+            elif mutation == 'optional': step['if']='success()'
+            elif mutation == 'ignored': step['with']['if-no-files-found']='ignore'
+            else: step['with']['name']='backend-events-another-source'
+            with self.subTest(mutation=mutation),self.assertRaises(ValueError): validate(value)
+
     def test_skips_optional_jobs_database_loss_foreign_artifacts_and_receipt_bypass_fail(self):
         for change in ('skip','ignore','database','shared-database','needs','foreign','receipt','status','matrix'):
             value=copy.deepcopy(self.document()); jobs=value['jobs']

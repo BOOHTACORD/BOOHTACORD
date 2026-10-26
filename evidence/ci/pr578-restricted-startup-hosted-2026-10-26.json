@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Corrected restricted-network fixture startup and unchanged actual transport matrix",
+  "source_revision": "08dae87ade0aecb2d0ab2100e59f0c0eb97f0c87",
+  "run_id": 40385672225,
+  "job_id": 121793250823,
+  "job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40385672225/job/121793250823",
+  "observations": [
+    "2026-10-26T19:25:49.0066991Z {\"profile\":\"baseline\",\"measurementGate\":\"PASS\",\"connectivity\":\"PASS\"}",
+    "2026-10-26T19:25:53.8975668Z {\"profile\":\"udp-blocked\",\"measurementGate\":\"PASS\",\"connectivity\":\"PASS\"}",
+    "2026-10-26T19:26:09.7904939Z {\"profile\":\"signal-only\",\"measurementGate\":\"PASS\",\"connectivity\":\"FAIL\"}",
+    "2026-10-26T19:26:13.5360337Z {\"profile\":\"signal-blocked\",\"measurementGate\":\"PASS\",\"connectivity\":\"FAIL\"}",
+    "2026-10-26T19:26:18.6556124Z {\"profile\":\"recovery\",\"measurementGate\":\"PASS\",\"connectivity\":\"PASS\"}",
+    "2026-10-26T19:26:18.9522930Z Restricted-network matrix measured; physical home/hotspot remain NOT_RUN"
+  ],
+  "assertion_retries": 0,
+  "expected_connectivity": {
+    "baseline": true,
+    "udp-blocked": true,
+    "signal-only": false,
+    "signal-blocked": false,
+    "recovery": true
+  },
+  "source_sha256": {
+    "tools/network/restricted/startup.mjs": "ad0d061da15d3d9e3f4095175936313e08c984293e7ac428a298e5896066de34",
+    "tools/network/restricted/browser.mjs": "1dc19ba903e80612237fefef5c65ff55d7806291e13ec1930049c59df095ce08",
+    "tools/network/restricted/measurement.test.mjs": "f3708e7d9f80c461f57730ffa881062ebd48bb9ad564d2bb3e4c38646722145a",
+    "clients/web/tests/restricted_networks/matrix.browser.spec.ts": "2309f5a14ca094505ab24802994300404a7570e408c8dfc46d80082152002b16"
+  },
+  "physical_home_hotspot": "NOT_RUN",
+  "capacity": "NOT_RUN",
+  "broader_required_ci": "Must still pass for the final master integration revision",
+  "failed_prior_attempt": "evidence/ci/pr578-restricted-startup-diagnostic-2026-10-26.json"
+}

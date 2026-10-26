@@ -137,9 +137,56 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      - name: Retain per-class Android unit results for both Kotlin modes
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: android-unit-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/checks/android-unit/
+          if-no-files-found: error
+          retention-days: 30
+
+  macos:
+    runs-on: macos-26
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - uses: ./.github/actions/flutter-setup
+        with:
+          channel: stable
+          flutter-version: 3.47.7
+          cache: true
+      - name: Execute Apple-only vendor tests with no skips
+        env:
+          FLUTTER_EVIDENCE_NAMESPACE: ${{ inputs.evidence_namespace }}
+        run: python3 -m tools.ci.flutter_gates.run macos
+      - name: Retain mandatory macOS profile evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: flutter-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-macos
+          path: .out/ci/flutter-parts/macos.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain named macOS test outcomes
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: macos-unit-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/checks/macos-unit/
+          if-no-files-found: error
+          retention-days: 30
+
   flutter:
     if: always()
-    needs: [dart, android, android-kotlin]
+    needs: [dart, android, android-kotlin, macos]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

@@ -39,6 +39,10 @@ def validate(document):
                 'name':PREFIX+name,'path':'.out/ci/backend-parts/'+name+'.json',
                 'if-no-files-found':'error','retention-days':'30'})
         load=jobs['load']
+        events=[s for s in jobs['database']['steps'] if s.get('with',{}).get('path') == '.out/checks/backend.jsonl']
+        require(len(events)==1 and events[0].get('if') == 'always()' and not events[0].get('continue-on-error')
+                and events[0]['with'] == {'name':'backend-events-'+EXECUTION,'path':'.out/checks/backend.jsonl',
+                    'if-no-files-found':'error','retention-days':'30'})
         evidence=[s for s in load['steps'] if s.get('with',{}).get('name') == 'backend-load-smoke-'+EXECUTION]
         require(len(evidence)==1 and evidence[0].get('if') == 'always()' and evidence[0]['with'] == {
             'name':'backend-load-smoke-'+EXECUTION,'path':'.out/backend-load/**/report.json\n.out/backend-load/**/routes.csv\n.out/backend-load/**/report.html\n',

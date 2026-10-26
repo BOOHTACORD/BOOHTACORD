@@ -11,6 +11,7 @@ OPERATIONS = {
              'webrtc-dependencies', 'webrtc-tests', 'app-analysis'),
     'android': ('app-dependencies', 'debug-apk'),
     'android-kotlin': ('app-dependencies', 'kotlin-modes'),
+    'macos': ('app-dependencies', 'macos-platform-unit'),
 }
 
 
@@ -38,7 +39,9 @@ def execute(profile):
     if profile == 'dart':
         command('public-headers', 'python3', '-m', 'unittest', 'tools.verify.test_flutter_webrtc_public_headers')
     command('app-dependencies', 'flutter', 'pub', 'get', '--enforce-lockfile', cwd=app)
-    if profile == 'android-kotlin':
+    if profile == 'macos':
+        command('macos-platform-unit', 'python3', '-m', 'tools.verify.macos_unit.run')
+    elif profile == 'android-kotlin':
         # The existing script exercises legacy KGP and AGP built-in Kotlin.
         command('kotlin-modes', 'bash', 'tools/verify/android_kotlin/verify_android_kotlin_modes.sh')
     elif profile == 'android':

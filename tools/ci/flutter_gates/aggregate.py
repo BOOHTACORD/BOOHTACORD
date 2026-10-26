@@ -13,7 +13,7 @@ def main():
         raise ValueError('Native profile results are missing or indirect')
     paths = list(directory.iterdir())
     if {p.name for p in paths} != {name + '.json' for name in profiles.OPERATIONS}:
-        raise ValueError('Exactly the three current native profile results are mandatory')
+        raise ValueError('Every current native profile result is mandatory')
     parts = []
     for path in sorted(paths):
         if path.is_symlink() or not path.is_file() or not 0 < path.stat().st_size <= 64 * 1024:
@@ -23,7 +23,7 @@ def main():
             raise ValueError('Native result profile and filename differ')
         parts.append(value)
     results.validate(parts, json.loads(os.environ['FLUTTER_NEEDS']), revision, run_id, attempt, namespace)
-    print('PASS: Dart/vendor/analyze/visual and Android Kotlin/APK gates on this source and run attempt')
+    print('PASS: Dart/vendor/analyze/visual, Android Kotlin/APK and macOS unit gates on this source and run attempt')
 
 
 if __name__ == '__main__':

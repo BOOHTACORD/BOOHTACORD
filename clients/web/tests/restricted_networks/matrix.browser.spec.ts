@@ -11,7 +11,18 @@ test('measures isolated transport restriction using real LiveKit RTP', async ({ 
   let measurementGate = 'FAIL'
   const observations: unknown[] = []
   try {
-    for (const page of pages) { await page.goto('/tests/restricted_networks/fixture.html'); await page.waitForFunction(() => 'restrictedNetwork' in window) }
+    for (const page of pages) {
+      let scriptErrors = 0, failedRequests = 0
+      page.on('pageerror', () => { scriptErrors++ })
+      page.on('requestfailed', () => { failedRequests++ })
+      const response = await page.goto('/tests/restricted_networks/fixture.html')
+      expect(response?.headers()['x-restricted-fixture-ready']).toBe('modules-warmed')
+      try { await page.waitForFunction(() => 'restrictedNetwork' in window) }
+      catch (error) {
+        console.log(JSON.stringify({gate:'restricted-fixture-startup',httpStatus:response?.status(),scriptErrors,failedRequests}))
+        throw error
+      }
+    }
     connected = await receiver!.evaluate(() => (window as any).restrictedNetwork.connect('receiver'))
     const expected = profile !== 'signal-only' && profile !== 'signal-blocked'
     expect(connected).toBe(expected)

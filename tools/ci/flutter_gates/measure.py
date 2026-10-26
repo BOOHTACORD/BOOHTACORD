@@ -6,7 +6,7 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 from tools.ci.native.process import ROOT
-from . import comparison, source
+from . import comparison, source, profiles
 
 
 def read_inputs(root, sha, run_id, attempt):
@@ -16,7 +16,7 @@ def read_inputs(root, sha, run_id, attempt):
     for sample in (1, 2, 3):
         suffix = sha + '-' + run_id + '-' + attempt
         expected[f'flutter-legacy-shadow-old-{sample}-{suffix}'] = ('legacy', sample, 'flutter-legacy.json')
-        for profile in ('dart', 'android', 'android-kotlin'):
+        for profile in profiles.OPERATIONS:
             expected[f'flutter-part-shadow-new-{sample}-{suffix}-{profile}'] = (profile, sample, profile + '.json')
     comparison.require({p.name for p in root.iterdir()} == set(expected))
     old, new = {}, {n: [] for n in (1, 2, 3)}
