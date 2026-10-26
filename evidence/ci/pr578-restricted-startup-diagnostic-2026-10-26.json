@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "pull_request": 578,
+  "run_id": 40236442357,
+  "job_id": 121298986644,
+  "source_revision": "d6f19a6cdebaf700d0eb7ee236e011394efe70f8",
+  "tested_merge_revision": "c0af964c0c9f569230e8c83fc82c8759e04e43f5",
+  "status": "FAIL_RETAINED",
+  "failure": {
+    "profile": "baseline",
+    "phase": "restricted-network fixture module registration before transport connection",
+    "measurement_gate": "FAIL",
+    "connectivity": "NOT_RUN",
+    "timeout_ms": 60000
+  },
+  "confirmed": [
+    "Browser waited for window.restrictedNetwork and never reached transport connection",
+    "The custom fixture server advertised HTTP readiness before transforming and draining its module import graph",
+    "Local baseline initialization succeeded; the exact original browser module error was not retained"
+  ],
+  "correction": [
+    "Require fixture transform and Vite import-graph idle before HTTP 200 readiness",
+    "Reject missing or failed module transforms with HTTP 503 readiness",
+    "Assert warmed header and retain bounded startup error/request counts",
+    "Keep all five network profiles, RTP/transport assertions, 60000 ms timeout and retries=0 unchanged"
+  ],
+  "checks": [
+    {
+      "command": "node --test tools/network/restricted/measurement.test.mjs",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "python -m unittest tools.network.restricted.test_sfu tools.network.restricted.test_restrict",
+      "passed": 8,
+      "failed": 0
+    },
+    {
+      "check": "actual local Chromium 153 fixture startup in two isolated contexts",
+      "status": "PASS",
+      "http_status": 200,
+      "ready_header": "modules-warmed",
+      "registered_global": true,
+      "page_errors": 0
+    }
+  ],
+  "hosted_corrected_result": "PENDING",
+  "consolidation_decisions_applied": 0
+}
