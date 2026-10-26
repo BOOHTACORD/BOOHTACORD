@@ -1,0 +1,132 @@
+{
+  "status": "FAIL_RESTORATION",
+  "device": "physical Samsung SM-A576B Android16",
+  "candidate": "signed1.0.45+2080/source9c221897",
+  "original_permission": {
+    "granted": true,
+    "flags": [
+      "USER_SET",
+      "USER_SENSITIVE_WHEN_GRANTED",
+      "USER_SENSITIVE_WHEN_DENIED"
+    ]
+  },
+  "observations": [
+    {
+      "at_utc": "2026-10-26T23:12:46.926726+00:00",
+      "permission": {
+        "granted": false,
+        "flags": [
+          "USER_SET",
+          "USER_FIXED",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": false,
+      "voice_connected": true,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false
+    },
+    {
+      "at_utc": "2026-10-26T23:12:50.709821+00:00",
+      "permission": {
+        "granted": false,
+        "flags": [
+          "USER_SET",
+          "USER_FIXED",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": false,
+      "voice_connected": true,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false
+    },
+    {
+      "at_utc": "2026-10-26T23:12:54.695072+00:00",
+      "permission": {
+        "granted": false,
+        "flags": [
+          "USER_SET",
+          "USER_FIXED",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": false,
+      "voice_connected": true,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false
+    }
+  ],
+  "mutation_scope": "Only own SHARE_TEST membership and original RECORD_AUDIO runtime permission",
+  "before": {
+    "at_utc": "2026-10-26T23:12:19.076169+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": true,
+    "voice_connected": true,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "after_leave": {
+    "at_utc": "2026-10-26T23:12:24.764896+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "prompt_on_launch": false,
+  "prompt_after_join_trigger": true,
+  "actual_system_deny_selected": true,
+  "restored": {
+    "at_utc": "2026-10-26T23:13:38.401912+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": true,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "permission_restored_exact": true,
+  "voice_microphone_restored": false
+}

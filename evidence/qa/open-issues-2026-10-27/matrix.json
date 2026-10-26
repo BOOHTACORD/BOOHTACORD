@@ -582,11 +582,13 @@
       "execution_cases": [
         "ANDROID-DM-receive",
         "AUDIO-audibility",
-        "ANDROID-DM-input-actions"
+        "ANDROID-DM-input-actions",
+        "ANDROID-OS-microphone-denial"
       ],
       "evidence": [
         "native-realtime-result.json",
-        "native-chat/summary.json"
+        "native-chat/summary.json",
+        "voice-permission/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -852,12 +854,14 @@
         "DM-actual_image_upload_and_protected_download",
         "ANDROID-DM-receive",
         "AUDIO-audibility",
-        "ANDROID-DM-input-actions"
+        "ANDROID-DM-input-actions",
+        "ANDROID-OS-microphone-denial"
       ],
       "evidence": [
         "native-realtime-result.json",
         "privacy-result.json",
-        "native-chat/summary.json"
+        "native-chat/summary.json",
+        "voice-permission/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -953,11 +957,13 @@
       "execution_cases": [
         "ANDROID-muted-background",
         "ANDROID-stop-with-mic",
-        "AUDIO-audibility"
+        "AUDIO-audibility",
+        "ANDROID-OS-microphone-denial"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
-        "second-cycle-stop.json"
+        "second-cycle-stop.json",
+        "voice-permission/summary.json"
       ],
       "defects": [
         579
@@ -3757,10 +3763,12 @@
         }
       ],
       "execution_cases": [
-        "ROSTER-populated-prejoin"
+        "ROSTER-populated-prejoin",
+        "ANDROID-OS-microphone-denial"
       ],
       "evidence": [
-        "web-result.json"
+        "web-result.json",
+        "voice-permission/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -5217,7 +5225,8 @@
         "WINDOWS-dialog",
         "AUDIO-audibility",
         "ANDROID-DM-two-x-text-and-IME",
-        "ANDROID-DM-input-actions"
+        "ANDROID-DM-input-actions",
+        "ANDROID-OS-microphone-denial"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -5228,7 +5237,8 @@
         "web-result.json",
         "windows-dialog.json",
         "android-text-scale-review.json",
-        "native-chat/summary.json"
+        "native-chat/summary.json",
+        "voice-permission/summary.json"
       ],
       "defects": [
         579,

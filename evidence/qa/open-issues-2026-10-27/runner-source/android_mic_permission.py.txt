@@ -1,0 +1,57 @@
+"""Physical microphone denial, with original permission and voice restoration."""
+import json
+import time
+from android_permission_ui import APP,PERMISSION,ROOT,call,nodes,prompt,permission,state,tap_named,select_room,observer
+
+original=permission()
+if not original['granted']:raise RuntimeError('Requires original microphone permission granted')
+devices=[s for s in call('devices').splitlines() if s.endswith('\tdevice')]
+if len(devices)!=1:raise RuntimeError('Exactly one authorized device required')
+report={'status':'RUNNING','device':'physical Samsung SM-A576B Android16','candidate':'signed1.0.45+2080/source9c221897',
+        'original_permission':original,'observations':[],'mutation_scope':'Only own SHARE_TEST membership and original RECORD_AUDIO runtime permission'}
+changed=False
+try:
+    observer(11,'before_microphone_permission_denial')
+    report['before']=state()
+    if report['before']['voice_connected']:tap_named('Выйти из голосового канала')
+    report['after_leave']=state()
+    if report['after_leave']['microphone_fgs']:raise RuntimeError('Leave did not release microphone service')
+    call('shell','pm','revoke',APP,PERMISSION);changed=True
+    call('shell','am','start','-n',APP+'/.MainActivity')
+    rows=nodes();report['prompt_on_launch']=prompt(rows)
+    if not prompt(rows):select_room()
+    rows=nodes();report['prompt_after_join_trigger']=prompt(rows)
+    denied=False
+    for text in ['Не разрешать','Запретить',"Don't allow"]:
+        if tap_named(text,system=True,required=False):denied=True;break
+    report['actual_system_deny_selected']=denied
+    for _ in range(3):
+        report['observations'].append(state());time.sleep(1)
+    observer(12,'after_actual_system_microphone_denial')
+    if not denied:report['status']='BLOCKED';report['reason']='No actual OS deny control was observed'
+    elif all(not s['permission']['granted'] and not s['microphone_fgs'] and not s['system_permission_prompt'] and s['app_hierarchy_present'] for s in report['observations']):
+        report['status']='PASS_SCOPED'
+    else:report['status']='FAIL'
+except Exception as e:
+    report['status']='BLOCKED';report['error_type']=type(e).__name__
+finally:
+    if changed:
+        if prompt(nodes()):call('shell','input','keyevent','KEYCODE_BACK')
+        call('shell','pm','grant',APP,PERMISSION)
+        for flag,cli in [('USER_FIXED','user-fixed'),('USER_SET','user-set')]:
+            current=permission()
+            if flag not in original['flags'] and flag in current['flags']:
+                call('shell','pm','clear-permission-flags',APP,PERMISSION,cli)
+        call('shell','am','start','-n',APP+'/.MainActivity')
+        if not state()['voice_connected']:select_room()
+        for _ in range(10):
+            current=state()
+            if current['voice_connected'] and current['microphone_fgs']:break
+            time.sleep(1)
+        report['restored']=current
+        report['permission_restored_exact']=current['permission']==original
+        report['voice_microphone_restored']=current['voice_connected'] and current['microphone_fgs']
+        if not report['permission_restored_exact'] or not report['voice_microphone_restored']:report['status']='FAIL_RESTORATION'
+        observer(13,'after_permission_and_physical_voice_restoration')
+    (ROOT/'android-mic-permission-result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+print(json.dumps(report,ensure_ascii=True))

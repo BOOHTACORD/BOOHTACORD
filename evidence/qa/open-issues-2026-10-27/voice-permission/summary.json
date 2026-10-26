@@ -1,0 +1,69 @@
+{
+  "status": "PASS_SCOPED",
+  "device": "physical Samsung SM-A576B Android16",
+  "android_candidate": "signed1.0.45+2080/source9c221897",
+  "checks": {
+    "actual_OS_deny_control": "PASS",
+    "permission_false_and_no_mic_FGS": "PASS",
+    "no_OS_prompt_in_three_followup_samples": "PASS_SCOPED",
+    "authenticated_navigation_present": "PASS_SCOPED",
+    "exact_original_permission_flags_restored": "PASS",
+    "explicit_rejoin_restores_original_voice_mic": "PASS"
+  },
+  "observed_prompt_free_sample_window_seconds": 7.77,
+  "original_permission": {
+    "granted": true,
+    "flags": [
+      "USER_SET",
+      "USER_SENSITIVE_WHEN_GRANTED",
+      "USER_SENSITIVE_WHEN_DENIED"
+    ]
+  },
+  "final": {
+    "at_utc": "2026-10-26T23:16:56.025624+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": true,
+    "voice_connected": true,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "receiver_cohort": {
+    "before": [
+      3,
+      1
+    ],
+    "after_leave": [
+      2,
+      1
+    ],
+    "after_denial_listener": [
+      3,
+      2
+    ],
+    "after_explicit_restore": [
+      3,
+      1
+    ]
+  },
+  "cohort_fields": [
+    "total_participants",
+    "muted_count"
+  ],
+  "limits": [
+    "No human audibility, Android14 device or Pixel acceptance; this is Samsung Android16",
+    "The initial controller restored permission but stayed in listener mode and reported FAIL_RESTORATION; this raw attempt is retained",
+    "An explicit leave, HOME/resume and SHARE_TEST pointer join restored mic80 and original receiver mute count; no automatic listener promotion is required or claimed",
+    "Navigation hierarchy and real roster prove only their observed scope, not every core chat scenario under denied permission",
+    "No process-ID transition was measured, so process-eviction acceptance is not claimed"
+  ]
+}

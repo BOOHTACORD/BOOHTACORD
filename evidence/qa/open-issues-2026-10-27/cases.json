@@ -275,6 +275,23 @@
       ],
       "result": "native-chat/summary.json",
       "limits": "Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim"
+    },
+    {
+      "id": "ANDROID-OS-microphone-denial",
+      "status": "PASS_SCOPED",
+      "protects": "Actual OS microphone denial prevents microphone FGS, allows listener continuity and restores exact original permission/mic state after explicit rejoin",
+      "command": "python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback",
+      "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer",
+      "mandatory_when": "Before accepting the relevant microphone permission/FGS/runtime rows",
+      "issues": [
+        62,
+        131,
+        132,
+        272,
+        303
+      ],
+      "result": "voice-permission/summary.json",
+      "limits": "Original attempt restoration was incomplete; retained raw, followed by verified explicit restoration. No audibility or all-device acceptance."
     }
   ]
 }

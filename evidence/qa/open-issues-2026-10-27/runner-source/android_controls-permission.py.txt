@@ -1,0 +1,76 @@
+"""Bounded physical Android checks; no raw UI, identities or content output."""
+import json
+import re
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+ADB = r'C:\Users\egkur\AppData\Local\Android\Sdk\platform-tools\adb.exe'
+ROOT = Path(__file__).parent
+
+
+def call(*args):
+    return subprocess.check_output([ADB, *args], timeout=35).decode('utf-8', 'replace')
+
+
+def rows():
+    raw = call('exec-out', 'uiautomator', 'dump', '/dev/tty')
+    return list(ET.fromstring(raw[raw.find('<hierarchy'):raw.find('</hierarchy>')+12]).iter('node'))
+
+
+def label(n):
+    return n.get('content-desc') or n.get('text') or ''
+
+
+def bounds(n):
+    return list(map(int, re.findall(r'\d+', n.get('bounds'))))
+
+
+def tap(text, top=False):
+    matches = [n for n in rows() if text in label(n) and n.get('clickable') == 'true'
+               and n.get('enabled') == 'true' and (not top or bounds(n)[1] < 1000)]
+    if len(matches) != 1:
+        raise RuntimeError('Expected one named control')
+    b = bounds(matches[0])
+    call('shell', 'input', 'tap', str((b[0]+b[2])//2), str((b[1]+b[3])//2))
+
+
+def state():
+    nodes = rows()
+    labels = [label(n) for n in nodes]
+    services = call('shell', 'dumpsys', 'activity', 'services', 'ru.boohtacord.app')
+    types = re.findall(r'isForeground=true[^\n]*types=(0x[0-9a-f]+)', services)
+    projection = call('shell', 'dumpsys', 'media_projection')
+    return {'at_utc': __import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),
+            'connected_label': any('Голос подключён' in x for x in labels),
+            'muted': 'Включить микрофон' in labels,
+            'screen_stop_controls': sum('Остановить демонстрацию' in x for x in labels),
+            'screen_start_controls': sum('Начать демонстрацию' in x for x in labels),
+            'foreground_types': types,
+            'owns_projection': 'ru.boohtacord.app' in projection,
+            'font_scale': call('shell', 'settings', 'get', 'system', 'font_scale').strip()}
+
+
+action = sys.argv[1]
+if action == 'resume':
+    call('shell', 'am', 'start', '-n', 'ru.boohtacord.app/.MainActivity')
+elif action == 'home':
+    call('shell', 'input', 'keyevent', 'KEYCODE_HOME')
+elif action == 'mute':
+    tap('Выключить микрофон')
+elif action == 'unmute':
+    tap('Включить микрофон')
+elif action == 'stop':
+    tap('Остановить демонстрацию', top=True)
+elif action == 'leave':
+    tap('Выйти из голосового канала')
+elif action != 'inspect':
+    raise ValueError('Unknown action')
+result = state()
+if len(sys.argv) > 2:
+    name = sys.argv[2]
+    if not re.fullmatch(r'[a-z0-9-]+', name):
+        raise ValueError('Unsafe evidence name')
+    (ROOT/(name+'.json')).write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
+print(json.dumps(result))

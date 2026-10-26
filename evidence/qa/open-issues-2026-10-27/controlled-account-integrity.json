@@ -1,0 +1,27 @@
+{
+  "distinct_controlled_accounts": true,
+  "rows": [
+    {
+      "alias": "a",
+      "http": 200,
+      "authenticated": true,
+      "id_matches_private_input": true,
+      "role": "MEMBER"
+    },
+    {
+      "alias": "b",
+      "http": 200,
+      "authenticated": true,
+      "id_matches_private_input": true,
+      "role": "MEMBER"
+    },
+    {
+      "alias": "c",
+      "http": 200,
+      "authenticated": true,
+      "id_matches_private_input": true,
+      "role": "MEMBER"
+    }
+  ],
+  "method": "Readonly actual HTTPS GET /api/v1/auth/session using the three existing protected private session profiles; no new login or mutations"
+}

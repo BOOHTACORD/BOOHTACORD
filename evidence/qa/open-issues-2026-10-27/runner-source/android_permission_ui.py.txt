@@ -1,0 +1,78 @@
+"""Static-control helpers for the single approved physical Android app."""
+import json
+import re
+import subprocess
+import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT=Path(__file__).parent
+ADB=r'C:\Users\egkur\AppData\Local\Android\Sdk\platform-tools\adb.exe'
+APP='ru.boohtacord.app'
+PERMISSION='android.permission.RECORD_AUDIO'
+
+
+def call(*args):
+    return subprocess.check_output([ADB,*args],timeout=35).decode('utf-8','replace')
+
+
+def nodes():
+    raw=call('exec-out','uiautomator','dump','/dev/tty')
+    return list(ET.fromstring(raw[raw.find('<hierarchy'):raw.find('</hierarchy>')+12]).iter('node'))
+
+
+def label(n):
+    return n.get('content-desc') or n.get('text') or ''
+
+
+def tap_named(text,contains=False,system=False,required=True):
+    matches=[]
+    for n in nodes():
+        if n.get('clickable')!='true' or n.get('enabled')!='true':continue
+        if system and not (n.get('package') or '').endswith('permissioncontroller'):continue
+        if not system and n.get('package')!=APP:continue
+        if not (text in label(n) if contains else text==label(n)):continue
+        b=list(map(int,re.findall(r'\d+',n.get('bounds'))))
+        if b[3]-b[1]<=250:matches.append((n,b))
+    if len(matches)!=1:
+        if required:raise RuntimeError('Expected unique bounded named control')
+        return False
+    _,b=matches[0];call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2));return True
+
+
+def permission():
+    raw=call('shell','dumpsys','package',APP)
+    match=re.search(r'android.permission.RECORD_AUDIO: granted=(true|false), flags=\[([^\]]*)\]',raw)
+    if not match:raise RuntimeError('Runtime permission state unavailable')
+    return {'granted':match[1]=='true','flags':[s.strip() for s in match[2].split('|') if s.strip()]}
+
+
+def prompt(rows):
+    return any((n.get('package') or '').endswith('permissioncontroller') for n in rows)
+
+
+def state():
+    rows=nodes();labels=[label(n) for n in rows]
+    services=call('shell','dumpsys','activity','services',APP)
+    return {'at_utc':datetime.now(timezone.utc).isoformat(),'permission':permission(),
+            'microphone_fgs':'types=0x00000080' in services,
+            'voice_connected':any('Голос подключён' in s for s in labels),
+            'muted_control':any('Включить микрофон'==s for s in labels),
+            'app_hierarchy_present':any(n.get('package')==APP for n in rows),
+            'system_permission_prompt':prompt(rows),'navigation_available':any('Открыть навигацию'==s for s in labels),
+            'login_fields':any(s in ('Логин','Пароль') for s in labels)}
+
+
+def select_room():
+    rows=nodes()
+    if prompt(rows):return
+    if not any('Закрыть навигацию' in label(n) for n in rows):tap_named('Открыть навигацию')
+    tap_named('SHARE_TEST',contains=True)
+    rows=nodes()
+    if prompt(rows) or any('Голос подключён' in label(n) for n in rows):return
+    for text in ['Войти','Подключиться','С микрофоном','Войти с микрофоном']:
+        if tap_named(text,required=False):break
+
+
+def observer(sequence,label_text):
+    (ROOT/'web-command.json').write_text(json.dumps({'sequence':sequence,'action':'roster','label':label_text}),encoding='utf-8')

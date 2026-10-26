@@ -1,0 +1,83 @@
+{
+  "browser": "155.0.8059.85",
+  "cases": [
+    {
+      "action": "roster",
+      "label": "before_native_permission_packet",
+      "at_utc": "2026-10-26T23:09:10.152Z",
+      "status": "PASS",
+      "result": {
+        "status": 200,
+        "rooms": 6,
+        "total_participants": 3,
+        "muted": 1,
+        "screen_watch_controls": 0
+      }
+    },
+    {
+      "action": "roster",
+      "label": "after_physical_android_leave",
+      "at_utc": "2026-10-26T23:09:16.392Z",
+      "status": "PASS",
+      "result": {
+        "status": 200,
+        "rooms": 6,
+        "total_participants": 2,
+        "muted": 1,
+        "screen_watch_controls": 0
+      }
+    },
+    {
+      "action": "roster",
+      "label": "before_microphone_permission_denial",
+      "at_utc": "2026-10-26T23:12:16.260Z",
+      "status": "PASS",
+      "result": {
+        "status": 200,
+        "rooms": 6,
+        "total_participants": 3,
+        "muted": 1,
+        "screen_watch_controls": 0
+      }
+    },
+    {
+      "action": "roster",
+      "label": "after_actual_system_microphone_denial",
+      "at_utc": "2026-10-26T23:12:55.790Z",
+      "status": "PASS",
+      "result": {
+        "status": 200,
+        "rooms": 6,
+        "total_participants": 3,
+        "muted": 2,
+        "screen_watch_controls": 0
+      }
+    },
+    {
+      "action": "roster",
+      "label": "after_permission_and_physical_voice_restoration",
+      "at_utc": "2026-10-26T23:13:39.709Z",
+      "status": "PASS",
+      "result": {
+        "status": 200,
+        "rooms": 6,
+        "total_participants": 3,
+        "muted": 2,
+        "screen_watch_controls": 0
+      }
+    },
+    {
+      "action": "roster",
+      "label": "after_explicit_permission_restoration_rejoin",
+      "at_utc": "2026-10-26T23:17:10.093Z",
+      "status": "PASS",
+      "result": {
+        "status": 200,
+        "rooms": 6,
+        "total_participants": 3,
+        "muted": 1,
+        "screen_watch_controls": 0
+      }
+    }
+  ]
+}

@@ -59,6 +59,12 @@ Android and Windows releases in the current first page, not a new master build.
   deletion observed by the authorized peer. Only the owned fixture was changed;
   voice/microphone remained active and the message was cleaned up. Explicit
   message actions were used; body long-press acceptance is not claimed.
+- [Actual OS microphone denial](voice-permission/summary.json) kept the phone
+  connected as a listener without microphone FGS and without a repeated prompt
+  in three follow-up samples. Original permission flags were restored exactly.
+  The initial controller left listener mode active and its incomplete restoration
+  is retained; explicit leave/HOME/resume/rejoin restored mic80 and the actual
+  peer roster from3/muted2 to the original3/muted1. Audibility is still NOT_RUN.
 
 ## Reproduction and privacy
 
