@@ -1,0 +1,45 @@
+{
+  "status": "PASS_SCOPED",
+  "android_candidate": "signed1.0.45+2080/source9c221897; unchanged APK in parent evidence",
+  "receiver": "headed installed Chrome155 / production Web source072426d6",
+  "checks": {
+    "actual_Gboard_Cyrillic_input": "PASS",
+    "Back_hides_IME_preserves_draft": "PASS",
+    "send_clears_composer_and_peer_renders": "PASS",
+    "native_edit_updates_revision2": "PASS",
+    "cancel_delete_preserves_revision2": "PASS",
+    "native_reaction_toggle_server_count1_then0": "PASS",
+    "DM_cannot_pin": "PASS: can_pin=false at actual protected read",
+    "confirm_delete_peer_tombstone": "PASS",
+    "test_message_cleanup": "PASS"
+  },
+  "final_state": {
+    "draft_empty": true,
+    "voice_label_connected": true,
+    "microphone_fgs": true
+  },
+  "limits": [
+    "Input through actual Gboard on physical phone was controlled by ADB touches, not a human tester",
+    "No native auth/login/password-reset IME, multi-tab/native platform or long-press-menu acceptance",
+    "Body long-press did not open action menu; explicit observed message-actions button was used",
+    "Modal AX trees hide underlying voice label; false visibility there is not a disconnect observation",
+    "Controller guards/logging evolved during this packet. Final reproduction sources retained; per-action hashes are present where measured. Shipping app source did not change.",
+    "No message content/account/DM identity is retained; only fixture-match booleans and numeric revision/counts"
+  ],
+  "keyboard_capture": {
+    "source_sha256": "9e8e0522fcb95af7d338b19c87a87e9169733a25e64258bcd1c3d310b4607e8e",
+    "source_dimensions": [
+      1080,
+      2340
+    ],
+    "crop_pixels": [
+      0,
+      1480,
+      1080,
+      2300
+    ],
+    "resampled": false,
+    "file": "keyboard-layout.png",
+    "sha256": "2242b728e363245906d5feb61e766be67579d25bae91b79c06c6c0d5e11f6f0f"
+  }
+}

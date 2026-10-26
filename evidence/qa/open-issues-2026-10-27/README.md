@@ -53,6 +53,12 @@ Android and Windows releases in the current first page, not a new master build.
   exclude the synthetic peer header/message area; no approved golden is claimed.
   [Review and limits](android-text-scale-review.json) distinguish visual IME proof
   from the runner's incomplete active-app hierarchy heuristic.
+- [Physical native message actions](native-chat/summary.json) now pass scoped
+  Gboard Cyrillic input, Back/draft retention, send with browser rendering,
+  edit revision2, reaction count1→0, cancel-delete preservation and confirmed
+  deletion observed by the authorized peer. Only the owned fixture was changed;
+  voice/microphone remained active and the message was cleaned up. Explicit
+  message actions were used; body long-press acceptance is not claimed.
 
 ## Reproduction and privacy
 

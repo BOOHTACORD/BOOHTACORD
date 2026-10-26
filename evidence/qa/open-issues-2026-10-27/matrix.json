@@ -229,12 +229,14 @@
         "DM-actual_message_actions",
         "DM-actual_image_upload_and_protected_download",
         "ROSTER-populated-prejoin",
-        "ANDROID-DM-receive"
+        "ANDROID-DM-receive",
+        "ANDROID-DM-input-actions"
       ],
       "evidence": [
         "native-realtime-result.json",
         "privacy-result.json",
-        "web-result.json"
+        "web-result.json",
+        "native-chat/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -579,10 +581,12 @@
       ],
       "execution_cases": [
         "ANDROID-DM-receive",
-        "AUDIO-audibility"
+        "AUDIO-audibility",
+        "ANDROID-DM-input-actions"
       ],
       "evidence": [
-        "native-realtime-result.json"
+        "native-realtime-result.json",
+        "native-chat/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -847,11 +851,13 @@
         "DM-actual_message_actions",
         "DM-actual_image_upload_and_protected_download",
         "ANDROID-DM-receive",
-        "AUDIO-audibility"
+        "AUDIO-audibility",
+        "ANDROID-DM-input-actions"
       ],
       "evidence": [
         "native-realtime-result.json",
-        "privacy-result.json"
+        "privacy-result.json",
+        "native-chat/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -4217,11 +4223,13 @@
         "DM-actual_send_receive_and_peer_display",
         "DM-actual_message_actions",
         "DM-actual_image_upload_and_protected_download",
-        "ROSTER-populated-prejoin"
+        "ROSTER-populated-prejoin",
+        "ANDROID-DM-input-actions"
       ],
       "evidence": [
         "privacy-result.json",
-        "web-result.json"
+        "web-result.json",
+        "native-chat/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -5208,7 +5216,8 @@
         "ANDROID-muted-background",
         "WINDOWS-dialog",
         "AUDIO-audibility",
-        "ANDROID-DM-two-x-text-and-IME"
+        "ANDROID-DM-two-x-text-and-IME",
+        "ANDROID-DM-input-actions"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -5218,7 +5227,8 @@
         "web-first-attempt.json",
         "web-result.json",
         "windows-dialog.json",
-        "android-text-scale-review.json"
+        "android-text-scale-review.json",
+        "native-chat/summary.json"
       ],
       "defects": [
         579,

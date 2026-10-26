@@ -258,6 +258,23 @@
       ],
       "result": "android-text-scale-review.json",
       "limits": "Only DM composer/voice dock and three48dp controls; no TalkBack, text-entry, full catalog or approved baseline claim. System1.0 restored."
+    },
+    {
+      "id": "ANDROID-DM-input-actions",
+      "status": "PASS_SCOPED",
+      "protects": "Physical native Cyrillic input, draft Back retention, send/edit/react/cancel-delete/delete match actual authorized peer state",
+      "command": "node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed",
+      "platform": "Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155",
+      "mandatory_when": "Before claiming the corresponding native message/IME/action acceptance",
+      "issues": [
+        54,
+        62,
+        131,
+        287,
+        303
+      ],
+      "result": "native-chat/summary.json",
+      "limits": "Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim"
     }
   ]
 }

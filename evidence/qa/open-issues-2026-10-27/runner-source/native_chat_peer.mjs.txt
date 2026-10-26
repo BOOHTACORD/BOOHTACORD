@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile} from 'node:fs/promises'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,expect,root,origin} from './privacy_fixture.mjs'
+const browser=await chromium.launch({channel:'chrome',headless:false})
+const report={status:'RUNNING',origin,checks:[],body_logged:false};let f,message
+const save=()=>writeFile(new URL('native-chat-peer-result.json',root),JSON.stringify(report,null,2)+'\n')
+try{
+ f=await fixture(browser);const b=await f.client('b'),nav=await api(b.page,'/direct-messages')
+ const candidates=nav.body.direct_messages.filter(d=>![f.private.a.id,f.private.c.id].includes(d.other_participant_id));assert.equal(candidates.length,1)
+ const dm=candidates[0],prefix='/direct-messages/'+dm.id
+ await b.page.getByRole('button',{name:'Личные',exact:true}).click();await b.page.locator('.direct-message-navigation .channel-button').filter({hasText:dm.other_participant_display_name}).click()
+ const before=await api(b.page,prefix+'/messages'),baseline=new Set(before.body.messages.map(m=>m.id))
+ report.status='READY';await save();let seq=0
+ while(browser.isConnected()&&!b.page.isClosed()){
+  let c;try{c=JSON.parse(await readFile(new URL('native-chat-command.json',root),'utf8'))}catch{}
+  if(c?.sequence>seq){
+   seq=c.sequence;if(c.action==='stop')break
+   const row={action:c.action,status:'RUNNING',at_utc:new Date().toISOString()}
+   try{
+    for(let i=0;i<8;i++){
+     const history=await api(b.page,prefix+'/messages');assert.equal(history.status,200)
+     if(c.action==='receive')message=history.body.messages.find(m=>!baseline.has(m.id)&&m.body==='тест'&&!m.deleted)
+     const current=message&&history.body.messages.find(m=>m.id===message.id)
+     if(c.action==='receive'&&current){row.server_received=true;await expect(b.page.locator('.message-row').filter({has:b.page.getByText('тест',{exact:true})})).toBeVisible();row.browser_rendered=true;break}
+     if(c.action==='edited'&&current?.body==='тестт'&&current.revision>=2){row.edited_revision=current.revision;row.server_edited=true;break}
+     if(c.action==='deleted'&&current?.deleted){row.server_deleted=true;break}
+     await delay(750)
+    }
+    assert.ok(row.server_received||row.server_edited||row.server_deleted);row.status='PASS'
+   }catch(e){row.status='FAIL';row.error_type=e.name}
+   report.checks.push(row);report.completed_sequence=seq;await save()
+  }
+  await delay(300)
+ }
+ report.status='COMPLETE'
+}catch(e){report.status='BLOCKED';report.error_type=e.name}
+finally{for(const c of f?.contexts??[])await c.close();await browser.close();await save()}

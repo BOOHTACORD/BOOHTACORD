@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict'
+import {writeFile} from 'node:fs/promises'
+import {chromium,fixture,api,root,origin} from './privacy_fixture.mjs'
+const phase=process.argv[2];assert.ok(['added','removed'].includes(phase))
+const browser=await chromium.launch({channel:'chrome',headless:false});let f
+const report={phase,status:'RUNNING',origin,observer_role:'authorized second DM participant',mutations:false}
+try{
+ f=await fixture(browser);const b=await f.client('b'),nav=await api(b.page,'/direct-messages')
+ const rows=nav.body.direct_messages.filter(d=>![f.private.a.id,f.private.c.id].includes(d.other_participant_id));assert.equal(rows.length,1)
+ const prefix='/direct-messages/'+rows[0].id,history=await api(b.page,prefix+'/messages')
+ const messages=history.body.messages.filter(m=>!m.deleted&&m.body==='тестт');assert.equal(messages.length,1)
+ const result=await api(b.page,prefix+'/message-reactions?message_ids='+messages[0].id);report.http=result.status;assert.equal(result.status,200)
+ report.count=result.body.reactions.filter(r=>r.emoji==='👍').reduce((n,r)=>n+r.count,0)
+ report.can_pin=result.body.can_pin;assert.equal(report.can_pin,false);assert.equal(report.count,phase==='added'?1:0)
+ report.status='PASS'
+}catch(e){report.status='FAIL';report.error_type=e.name}
+finally{for(const c of f?.contexts??[])await c.close();await browser.close();await writeFile(new URL('native-reaction-'+phase+'.json',root),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report))}
