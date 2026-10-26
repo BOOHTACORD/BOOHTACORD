@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict'
+import {writeFile} from 'node:fs/promises'
+import {chromium,expect,fixture,api,root,origin} from './privacy_fixture.mjs'
+const report={status:'RUNNING',origin,physical_windows:true,headless:false,physical_mobile:false,cases:[],no_api_mocks:true}
+const browser=await chromium.launch({channel:'chrome',headless:false});let f,phase='setup'
+const save=()=>writeFile(new URL('quickjump-result.json',root),JSON.stringify(report,null,2)+'\n')
+try{
+ f=await fixture(browser);const a=await f.client('a');const page=a.page
+ let mutations=0;page.on('request',r=>{if(r.request===null)return;if(r.method()!=='GET'&&/\/voice\//.test(new URL(r.url()).pathname))mutations++})
+ await page.evaluate(()=>{window.__mic=0;const f=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);navigator.mediaDevices.getUserMedia=(...a)=>{window.__mic++;return f(...a)}})
+ await page.evaluate(()=>window.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='k'&&(e.ctrlKey||e.metaKey))window.__shortcutObserved={key:'k',ctrl:e.ctrlKey,meta:e.metaKey,repeat:e.repeat,isComposing:e.isComposing,tag:e.target?.tagName,dialogAncestor:Boolean(e.target?.closest?.('[role="dialog"]'))}},true))
+ for(const width of[1440,800,390]){
+  const row={width,status:'RUNNING'};report.cases.push(row)
+  try{
+   phase='open_shortcut';await page.keyboard.press('Escape');await page.setViewportSize({width,height:900});await page.bringToFront()
+   phase='mobile_navigation';if(width<1024&&!await page.locator('.sidebar').evaluate(n=>n.classList.contains('is-open'))){await page.getByRole('button',{name:'Открыть навигацию',exact:true}).click();await expect(page.locator('.sidebar')).toHaveClass(/is-open/)}
+   phase='launcher_focus';const launcher=page.locator('.guild-search-button');await launcher.focus();await expect(launcher).toBeFocused();phase='shortcut_dispatch';await page.keyboard.press('Control+k')
+   phase='shortcut_panel_visible';const panel=page.getByTestId('search-aside-panel');await expect(panel).toBeVisible();row.initial_mode=await page.getByTestId('quick-jump-panel').isVisible()?'navigation':'messages'
+   await page.getByRole('button',{name:'Каналы и люди',exact:true}).click();const quick=page.getByTestId('quick-jump-panel');await expect(quick).toBeVisible()
+   phase='owned_DM_dedup';const query=quick.getByRole('searchbox');await query.fill(f.private.b.login)
+   await expect(quick.locator('[data-kind="DIRECT_MESSAGE"]')).toHaveCount(1);await expect(quick.locator('[data-kind="MEMBER"]')).toHaveCount(0)
+   row.existing_DM_dedup=true;phase='Escape_focus';await page.keyboard.press('Escape');await expect(panel).toBeHidden()
+   row.focus_restored=await launcher.evaluate(n=>document.activeElement===n)||width<1024&&await page.getByRole('button',{name:'Открыть навигацию',exact:true}).evaluate(n=>document.activeElement===n)
+   assert.equal(row.focus_restored,true)
+   phase='reopen_and_select_DM';if(!await launcher.isVisible())await page.getByRole('button',{name:'Открыть навигацию',exact:true}).click();await launcher.click();await page.getByRole('button',{name:'Каналы и люди',exact:true}).click();await quick.getByRole('searchbox').fill(f.private.b.login);await quick.locator('[data-kind="DIRECT_MESSAGE"]').click();await expect(panel).toBeHidden();await expect(page.getByRole('textbox',{name:'Сообщение',exact:true})).toBeVisible()
+   assert.equal(mutations,0);assert.equal(await page.evaluate(()=>window.__mic),0);row.no_voice_mutation=true;row.no_mic_capture=true;row.status='PASS'
+  }catch(e){row.status='FAIL';row.failed_at=phase;row.error_type=e.name;row.timeout=/timeout/i.test(e.message);row.shortcut_event=await page.evaluate(()=>window.__shortcutObserved??null);row.launcher_focused=await page.locator('.guild-search-button').evaluate(n=>document.activeElement===n);if(phase==='shortcut_panel_visible'){await page.locator('.guild-search-button').click();row.pointer_fallback_opens=await page.getByTestId('search-aside-panel').isVisible()}}await save()
+ }
+ report.status=report.cases.every(r=>r.status==='PASS')?'PASS':'PARTIAL';report.browser=browser.version()
+}catch(e){report.status='BLOCKED';report.failed_at=phase;report.error_type=e.name}
+finally{report.login_diagnostics=f?.diagnostics;for(const c of f?.contexts??[])await c.close();await browser.close();await save();console.log(JSON.stringify(report))}

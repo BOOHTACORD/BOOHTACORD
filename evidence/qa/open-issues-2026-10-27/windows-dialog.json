@@ -1,0 +1,52 @@
+{
+  "at_utc": "2026-10-26T22:19:44.540Z",
+  "platform": "Windows native 1.0.47+82",
+  "method": "actual Windows UI keyboard input; AX review",
+  "dialog_opened": true,
+  "cancel_present": true,
+  "tab_samples": [
+    {
+      "tab": 1,
+      "named": true,
+      "known_label": "other_dialog_control"
+    },
+    {
+      "tab": 2,
+      "named": true,
+      "known_label": "other_dialog_control"
+    },
+    {
+      "tab": 3,
+      "named": true,
+      "known_label": "other_dialog_control"
+    },
+    {
+      "tab": 4,
+      "named": true,
+      "known_label": "other_dialog_control"
+    },
+    {
+      "tab": 5,
+      "named": true,
+      "known_label": "other_dialog_control"
+    },
+    {
+      "tab": 6,
+      "named": true,
+      "known_label": "other_dialog_control"
+    }
+  ],
+  "escape_closed_cancel": false,
+  "focus_returned_to_start": false,
+  "start_control_available": false,
+  "screen_pending": false,
+  "visual_review": "NOT_RUN for this capture; no screenshot retained",
+  "status": "PARTIAL",
+  "settled_observation": {
+    "escape_closed": true,
+    "start_controls_available": true,
+    "focus_return": "NOT_PROVEN",
+    "note": "Initial immediate AX read remained in dialog; a further Escape and 350ms settle returned to workspace. Nested dropdown versus timing was not resolved."
+  },
+  "tab_traversal": "NOT_PROVEN: focused-element strings did not establish each actual control"
+}

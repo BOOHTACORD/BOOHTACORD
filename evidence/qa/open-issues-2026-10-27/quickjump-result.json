@@ -1,0 +1,57 @@
+{
+  "status": "PARTIAL",
+  "origin": "https://v.bootybay.ru",
+  "physical_windows": true,
+  "headless": false,
+  "physical_mobile": false,
+  "cases": [
+    {
+      "width": 1440,
+      "status": "PASS",
+      "initial_mode": "messages",
+      "existing_DM_dedup": true,
+      "focus_restored": true,
+      "no_voice_mutation": true,
+      "no_mic_capture": true
+    },
+    {
+      "width": 800,
+      "status": "FAIL",
+      "failed_at": "shortcut_panel_visible",
+      "error_type": "Error",
+      "timeout": true,
+      "shortcut_event": {
+        "key": "k",
+        "ctrl": true,
+        "meta": false,
+        "repeat": false,
+        "isComposing": false,
+        "tag": "BUTTON",
+        "dialogAncestor": true
+      },
+      "launcher_focused": true,
+      "pointer_fallback_opens": true
+    },
+    {
+      "width": 390,
+      "status": "FAIL",
+      "failed_at": "shortcut_panel_visible",
+      "error_type": "Error",
+      "timeout": true,
+      "shortcut_event": {
+        "key": "k",
+        "ctrl": true,
+        "meta": false,
+        "repeat": false,
+        "isComposing": false,
+        "tag": "BUTTON",
+        "dialogAncestor": true
+      },
+      "launcher_focused": true,
+      "pointer_fallback_opens": true
+    }
+  ],
+  "no_api_mocks": true,
+  "browser": "155.0.8059.85",
+  "login_diagnostics": []
+}

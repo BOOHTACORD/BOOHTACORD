@@ -1,0 +1,64 @@
+"""Use observed static controls and one owned synthetic peer on the real phone."""
+import json
+import re
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+from pathlib import Path
+from datetime import datetime, timezone
+
+ROOT=Path(__file__).parent
+ADB=r'C:\Users\egkur\AppData\Local\Android\Sdk\platform-tools\adb.exe'
+
+
+def call(*args):
+    return subprocess.check_output([ADB,*args],timeout=30).decode('utf-8','replace')
+
+
+def nodes():
+    raw=call('exec-out','uiautomator','dump','/dev/tty')
+    return list(ET.fromstring(raw[raw.find('<hierarchy'):raw.find('</hierarchy>')+12]).iter('node'))
+
+
+def label(n):
+    return n.get('content-desc') or n.get('text') or ''
+
+
+def tap(matches):
+    if len(matches)!=1:raise RuntimeError('Expected one observed small control')
+    b=list(map(int,re.findall(r'\d+',matches[0].get('bounds'))))
+    if b[3]-b[1]>250:raise RuntimeError('Refusing broad container')
+    call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2))
+
+
+report={'at_utc':datetime.now(timezone.utc).isoformat(),'device':'physical Samsung SM-A576B Android16','input':'ADB controlled touches and keyboard events, not human IME evidence'}
+action=sys.argv[1]
+if action=='query_peer':
+    peer=json.loads((ROOT/'private-fixture.json').read_text(encoding='utf-8'))['b']['login']
+    if not re.fullmatch(r'qa_acc_1027_b_[a-f0-9]{6}',peer):raise ValueError('Not an owned peer')
+    fields=[n for n in nodes() if n.get('class')=='android.widget.EditText']
+    if len(fields)!=1:raise RuntimeError('Expected one visible query field')
+    tap(fields)
+    length=len(fields[0].get('text') or '')
+    if length>200:raise RuntimeError('Unexpected query length')
+    call('shell','input','keyevent','KEYCODE_MOVE_END',*(['67']*length))
+    call('shell','input','text',peer)
+    rows=nodes()
+    report['query_equals_owned']=any(n.get('class')=='android.widget.EditText' and n.get('text')==peer for n in rows)
+    matches=[n for n in rows if n.get('class')=='android.widget.Button' and n.get('clickable')=='true' and peer in label(n)
+             and (lambda b:b[3]-b[1]<=250)(list(map(int,re.findall(r'\d+',n.get('bounds')))))]
+    report.update(query_length=len(peer),owned_peer_matches=len(matches))
+    if len(matches)==1:
+        tap(matches)
+        destination=nodes();labels=[label(n) for n in destination]
+        composer=any('Сообщение' in label(n) and n.get('class')=='android.widget.EditText' for n in destination)
+        report.update(peer_selection='PASS' if composer else 'NOT_PROVEN',composer_label_present=composer,composer_editable_fields=sum(n.get('class')=='android.widget.EditText' for n in destination),quick_jump_remaining=any(x=='Каналы и люди' for x in labels))
+    else:report['peer_selection']='NOT_RUN: owned peer not uniquely visible'
+elif action=='back':
+    call('shell','input','keyevent','KEYCODE_BACK')
+    rows=nodes();report.update(editable_fields=sum(n.get('class')=='android.widget.EditText' for n in rows),connected=any('Голос подключён' in label(n) for n in rows))
+else:raise ValueError('Unknown bounded action')
+services=call('shell','dumpsys','activity','services','ru.boohtacord.app')
+report['foreground_types']=re.findall(r'isForeground=true[^\n]*types=(0x[0-9a-f]+)',services)
+(ROOT/('android-'+action+'.json')).write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+print(json.dumps(report))

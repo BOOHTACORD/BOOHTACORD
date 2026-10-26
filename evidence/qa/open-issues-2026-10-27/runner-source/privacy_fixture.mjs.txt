@@ -1,0 +1,49 @@
+import {createRequire} from 'node:module'
+import {readFile,writeFile} from 'node:fs/promises'
+import {randomBytes} from 'node:crypto'
+import {execFileSync} from 'node:child_process'
+import {fileURLToPath} from 'node:url'
+export const root=new URL('./',import.meta.url),origin='https://v.bootybay.ru'
+const require=createRequire('C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/clients/web/package.json')
+export const {chromium,expect}=require('@playwright/test')
+export const api=(page,path,method='GET',body)=>page.evaluate(async a=>{
+ const r=await fetch('/api/v1'+a.path,{method:a.method,credentials:'same-origin',headers:{'Content-Type':'application/json'},...(a.body===undefined?{}:{body:JSON.stringify(a.body)})})
+ return {status:r.status,body:r.status===204?null:await r.json()}
+},{path,method,body})
+export async function fixture(browser){
+ const contexts=[],diagnostics=[];let data
+ const file=new URL('private-fixture.json',root)
+ try{data=JSON.parse(await readFile(file,'utf8'))}catch{
+  const a=JSON.parse(await readFile('C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/.out/physical-android/production-20261026/peer-private.json','utf8'))
+  data={a,b:{login:'qa_acc_1027_b_'+randomBytes(3).toString('hex'),password:randomBytes(25).toString('base64url')},c:{login:'qa_acc_1027_c_'+randomBytes(3).toString('hex'),password:randomBytes(25).toString('base64url')}}
+  await writeFile(file,JSON.stringify(data),{mode:0o600})
+ }
+ execFileSync('icacls',[fileURLToPath(file),'/inheritance:r','/grant:r',process.env.USERNAME+':F'],{stdio:'ignore',windowsHide:true})
+ const save=()=>writeFile(file,JSON.stringify(data))
+ async function client(role){
+  const stateFile=new URL('private-session-'+role+'.json',root);let storageState
+  try{storageState=JSON.parse(await readFile(stateFile,'utf8'))}catch{}
+  const context=await browser.newContext({viewport:{width:1440,height:1000},storageState});contexts.push(context)
+  const page=await context.newPage();page.setDefaultTimeout(12000);await page.goto(origin)
+  const credential=data[role]
+  if(role!=='a'&&!credential.registered){
+   const r=await api(page,'/auth/register','POST',credential)
+   if(r.status!==201)throw Error('Controlled registration status '+r.status)
+   credential.registered=true;await save();await page.reload()
+  }
+  if(!await page.getByTestId('app-shell').isVisible()){
+  await page.getByLabel('Логин',{exact:true}).fill(credential.login)
+  await page.getByLabel('Пароль',{exact:true}).fill(credential.password)
+  const pending=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/v1/auth/login'&&r.request().method()==='POST')
+  await page.getByRole('button',{name:'Войти',exact:true}).click();const response=await pending
+  diagnostics.push({role,http:response.status(),retry_after:response.headers()['retry-after']??null})
+  if(![200,204].includes(response.status()))throw Error('CONTROLLED_LOGIN_'+response.status())
+  await expect(page.getByTestId('app-shell')).toBeVisible()
+  }
+  await context.storageState({path:fileURLToPath(stateFile)});execFileSync('icacls',[fileURLToPath(stateFile),'/inheritance:r','/grant:r',process.env.USERNAME+':F'],{stdio:'ignore',windowsHide:true})
+  const session=await api(page,'/auth/session');if(session.status!==200)throw Error('No controlled session')
+  credential.id=session.body.account_id;await save()
+  return {page,context,credential}
+ }
+ return {client,contexts,private:data,diagnostics}
+}

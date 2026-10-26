@@ -1,0 +1,246 @@
+{
+  "status": "IN_PROGRESS",
+  "cases": [
+    {
+      "id": "DM-two_participants_and_third_member_acl",
+      "status": "PASS",
+      "protects": "two_participants_and_third_member_acl",
+      "command": "node .out/qa-goal/privacy_run.mjs",
+      "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        53,
+        54,
+        131,
+        287,
+        303
+      ],
+      "result": "privacy-result.json#/checks/two_participants_and_third_member_acl",
+      "limits": "No third ADMIN, native touch/IME, OS notification or 507/outage claim"
+    },
+    {
+      "id": "DM-owned_empty_DM_composer",
+      "status": "PASS",
+      "protects": "owned_empty_DM_composer",
+      "command": "node .out/qa-goal/privacy_run.mjs",
+      "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        53,
+        54,
+        131,
+        287,
+        303
+      ],
+      "result": "privacy-result.json#/checks/owned_empty_DM_composer",
+      "limits": "No third ADMIN, native touch/IME, OS notification or 507/outage claim"
+    },
+    {
+      "id": "DM-draft_navigation_and_reload",
+      "status": "PASS",
+      "protects": "draft_navigation_and_reload",
+      "command": "node .out/qa-goal/privacy_run.mjs",
+      "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        53,
+        54,
+        131,
+        287,
+        303
+      ],
+      "result": "privacy-result.json#/checks/draft_navigation_and_reload",
+      "limits": "No third ADMIN, native touch/IME, OS notification or 507/outage claim"
+    },
+    {
+      "id": "DM-actual_send_receive_and_peer_display",
+      "status": "PASS",
+      "protects": "actual_send_receive_and_peer_display",
+      "command": "node .out/qa-goal/privacy_run.mjs",
+      "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        53,
+        54,
+        131,
+        287,
+        303
+      ],
+      "result": "privacy-result.json#/checks/actual_send_receive_and_peer_display",
+      "limits": "No third ADMIN, native touch/IME, OS notification or 507/outage claim"
+    },
+    {
+      "id": "DM-actual_message_actions",
+      "status": "PASS",
+      "protects": "actual_message_actions",
+      "command": "node .out/qa-goal/privacy_run.mjs",
+      "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        53,
+        54,
+        131,
+        287,
+        303
+      ],
+      "result": "privacy-result.json#/checks/actual_message_actions",
+      "limits": "No third ADMIN, native touch/IME, OS notification or 507/outage claim"
+    },
+    {
+      "id": "DM-actual_image_upload_and_protected_download",
+      "status": "PASS",
+      "protects": "actual_image_upload_and_protected_download",
+      "command": "node .out/qa-goal/privacy_run.mjs",
+      "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        53,
+        54,
+        131,
+        287,
+        303
+      ],
+      "result": "privacy-result.json#/checks/actual_image_upload_and_protected_download",
+      "limits": "No third ADMIN, native touch/IME, OS notification or 507/outage claim"
+    },
+    {
+      "id": "NAV-Web-shortcut",
+      "status": "FAIL",
+      "protects": "Advertised Ctrl+K opens search from its focused navigation launcher",
+      "command": "node .out/qa-goal/quickjump_run.mjs",
+      "platform": "Physical Windows PC, headed Chrome; 1440, 800 and 390 CSS px",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        283,
+        301,
+        303
+      ],
+      "result": "quickjump-result.json",
+      "limits": "1440 PASS; 800/390 FAIL with actual Ctrl+K target BUTTON inside role=dialog; pointer opens. Not a physical mobile browser."
+    },
+    {
+      "id": "ROSTER-populated-prejoin",
+      "status": "PASS",
+      "protects": "A real populated SHARE_TEST prejoin is shown without microphone capture or Voice Join",
+      "command": "node .out/qa-goal/web_runtime.mjs; control action prejoin",
+      "platform": "Physical Windows PC, headed Chrome and actual Android/Windows participants",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        54,
+        272,
+        287,
+        303
+      ],
+      "result": "web-result.json#/cases/0",
+      "limits": "Two real prejoin rows, REST200, no fake empty state; outages/ACL/native platform matrix remain open."
+    },
+    {
+      "id": "WEB-shell-six-widths",
+      "status": "PASS",
+      "protects": "Current SHARE_TEST/search shell has no document horizontal overflow at the sampled widths",
+      "command": "node .out/qa-goal/web_runtime.mjs; control action layout",
+      "platform": "Physical Windows PC; Chrome 320/390/768/1024/1440/1920 CSS px",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        302,
+        303
+      ],
+      "result": "web-first-attempt.json#/cases/2",
+      "limits": "Geometry witness for this state only; no approved pixel baseline, all-screen or physical mobile claim."
+    },
+    {
+      "id": "ANDROID-DM-receive",
+      "status": "PASS",
+      "protects": "An authorized peer message appears in the selected native two-person DM while voice remains connected",
+      "command": "node .out/qa-goal/native_realtime_run.mjs",
+      "platform": "Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        54,
+        62,
+        131,
+        283,
+        303
+      ],
+      "result": "native-realtime-result.json",
+      "limits": "One observed upper bound 2450ms includes ADB UI polling; not p95 or proof of the underlying transport. Owned message deleted204."
+    },
+    {
+      "id": "ANDROID-muted-background",
+      "status": "PASS",
+      "protects": "Mute removes microphone FGS while screen capture survives; stop releases projection without leaving voice",
+      "command": "python .out/qa-goal/android_controls.py resume; python .out/qa-goal/android_controls.py stop",
+      "platform": "Physical Samsung Android16, app-only projection",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        132,
+        173,
+        227,
+        303
+      ],
+      "result": "muted-background-resume.json; muted-stop.json; restored-microphone.json",
+      "limits": "Controls/service ownership only; no audibility or frame-rate SLO claim. Original microphone state restored."
+    },
+    {
+      "id": "ANDROID-stop-with-mic",
+      "status": "PASS",
+      "protects": "Stopping screen leaves microphone-only service and no projection",
+      "command": "python .out/qa-goal/android_controls.py stop",
+      "platform": "Physical Samsung Android16",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        132,
+        227
+      ],
+      "result": "second-cycle-stop.json",
+      "limits": "Scope: foreground service and MediaProjection ownership; full viewer renderer cleanup not proven."
+    },
+    {
+      "id": "WINDOWS-dialog",
+      "status": "PARTIAL",
+      "protects": "Native screen setup can be opened and cancelled with keyboard Escape",
+      "command": "Windows Computer Use; header Start -> Tab traversal -> Escape; subsequent settled Escape",
+      "platform": "Installed Windows native 1.0.47+82",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        301,
+        303,
+        227
+      ],
+      "result": "windows-dialog.json",
+      "limits": "Focus restoration, every tab target and visual layout remain NOT_PROVEN; initial immediate AX state was unsettled."
+    },
+    {
+      "id": "PUBLIC-update-catalog",
+      "status": "FAIL",
+      "protects": "A production Windows update catalog is available with no-store and immutable release identity",
+      "command": "python .out/qa-goal/public_readback.py",
+      "platform": "Production public HTTPS from Windows",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        249
+      ],
+      "result": "public-readback.json#/rows/windows_catalog",
+      "limits": "503 no-store on Windows and Android selectors; health200. No deploy/restart/promotion performed."
+    },
+    {
+      "id": "AUDIO-audibility",
+      "status": "NOT_RUN",
+      "protects": "Peer actually hears microphone/system audio and mute removes audible output",
+      "command": "Physical listening at PC and phone",
+      "platform": "Physical Windows + Samsung",
+      "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+      "issues": [
+        55,
+        62,
+        131,
+        132,
+        173,
+        227,
+        303
+      ],
+      "result": null,
+      "limits": "User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening."
+    }
+  ]
+}

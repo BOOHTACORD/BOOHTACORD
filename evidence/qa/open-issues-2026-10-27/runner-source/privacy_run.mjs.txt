@@ -1,0 +1,43 @@
+import assert from 'node:assert/strict'
+import {writeFile} from 'node:fs/promises'
+import {randomUUID} from 'node:crypto'
+import {chromium,expect,fixture,api,root,origin} from './privacy_fixture.mjs'
+import {messageActions,attachmentJourney} from './privacy_actions.mjs'
+const report={status:'RUNNING',origin,physical_windows:true,headless:false,api_mocks:false,roles:['MEMBER','MEMBER','MEMBER'],checks:{},cleanup:[]}
+const save=()=>writeFile(new URL('privacy-result.json',root),JSON.stringify(report,null,2)+'\n')
+const browser=await chromium.launch({channel:'chrome',headless:false})
+let f,phase='setup',stage='setup',a,b,c,dm,message,messageIds=[]
+async function step(name,fn){phase=name;stage='start';await save();const start=Date.now();try{const result=await fn();report.checks[name]={status:'PASS',elapsed_ms:Date.now()-start,...result}}catch(e){report.checks[name]={status:'FAIL',stage,error_type:e.name,timeout:/timeout/i.test(e.message),elapsed_ms:Date.now()-start}}await save()}
+try{
+ report.browser=browser.version();await save();f=await fixture(browser)
+ a=await f.client('a');b=await f.client('b');c=await f.client('c')
+ phase='create_owned_two_person_DM';const created=await api(a.page,'/direct-messages','POST',{participant_id:b.credential.id});assert.ok([200,201].includes(created.status));dm=created.body.id
+ const prefix='/direct-messages/'+dm
+ await step('two_participants_and_third_member_acl',async()=>{
+  const statuses=[];for(const p of[a,b,c])statuses.push((await api(p.page,prefix+'/messages')).status)
+  assert.deepEqual(statuses,[200,200,404]);const anon=await browser.newContext();const r=await anon.request.get(origin+'/api/v1'+prefix+'/messages');await anon.close();assert.equal(r.status(),401)
+  return {participant_http:statuses.slice(0,2),third_member_http:statuses[2],anonymous_http:r.status(),third_admin:'NOT_RUN: no controlled ADMIN session'}
+ })
+ const open=async(p,peer)=>{await p.reload();await p.getByRole('button',{name:'Личные',exact:true}).click();await p.locator('.direct-message-navigation .channel-button').filter({hasText:peer}).click();await expect(p.getByRole('textbox',{name:'Сообщение',exact:true})).toBeVisible()}
+ await step('owned_empty_DM_composer',async()=>{await open(a.page,b.credential.login);await open(b.page,a.credential.login);return {both_composers:true}})
+ const composer=a.page.getByRole('textbox',{name:'Сообщение',exact:true})
+ await step('draft_navigation_and_reload',async()=>{
+  const second=await api(a.page,'/direct-messages','POST',{participant_id:c.credential.id});assert.ok([200,201].includes(second.status));await open(a.page,b.credential.login)
+  const draft='QA draft '+randomUUID();stage='fill';await composer.fill(draft);stage='different_DM_and_return';await a.page.locator('.direct-message-navigation .channel-button').filter({hasText:c.credential.login}).click();await expect(composer).toHaveValue('');await a.page.locator('.direct-message-navigation .channel-button').filter({hasText:b.credential.login}).click();await expect(composer).toHaveValue(draft)
+  stage='reload_open_DM';await open(a.page,b.credential.login);stage='reload_value';report.draft_observation={after_reload_length:(await composer.inputValue()).length};await expect(composer).toHaveValue('');return {navigation_draft_preserved:true,reload_discards_as_required_by_issue_131:true}
+ })
+ await step('actual_send_receive_and_peer_display',async()=>{
+  await open(a.page,b.credential.login);const body='QA controlled '+randomUUID();await composer.fill(body)
+  const response=a.page.waitForResponse(r=>r.request().method()==='POST'&&new URL(r.url()).pathname==='/api/v1'+prefix+'/messages')
+  await a.page.getByRole('button',{name:'Отправить сообщение',exact:true}).click();const r=await response;assert.equal(r.status(),201);const m=await r.json();messageIds.push(m.id)
+  await expect(b.page.locator('.message-row').filter({has:b.page.getByText(body,{exact:true})})).toBeVisible();await expect(composer).toHaveValue('');message={...m,body};report.send_ack_fields=Object.keys(m)
+  return {send_http:201,peer_visible:true,composer_cleared:true}
+ })
+ if(message)await step('actual_message_actions',()=>messageActions(a.page,b.page,prefix,message,report))
+ await step('actual_image_upload_and_protected_download',()=>attachmentJourney({a,b,c,browser,prefix,root,messageIds,report}))
+ report.status=Object.values(report.checks).every(c=>c.status==='PASS')?'PASS':'PARTIAL'
+}catch(e){delete report.actual_message;report.status='FAIL';report.failed_at=phase;report.error_type=e.name;report.login_http=/CONTROLLED_LOGIN_(\d+)/.exec(e.message)?.[1];report.error_flags={timeout:/timeout/i.test(e.message),assertion:/Assertion/.test(e.name)}}
+finally{
+ if(a&&dm)for(const id of messageIds){try{const r=await api(a.page,'/direct-messages/'+dm+'/messages/'+id,'DELETE');report.cleanup.push({owned_message_delete_http:r.status})}catch{report.cleanup.push({status:'UNKNOWN'})}}
+ report.login_diagnostics=f?.diagnostics;for(const ctx of f?.contexts??[])await ctx.close().catch(()=>{});await browser.close();await save();console.log(JSON.stringify({status:report.status,failed_at:report.failed_at,checks:Object.keys(report.checks)}))
+}

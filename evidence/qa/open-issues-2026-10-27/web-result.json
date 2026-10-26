@@ -1,0 +1,160 @@
+{
+  "status": "READY",
+  "origin": "https://v.bootybay.ru",
+  "role": "MEMBER",
+  "physical_windows": true,
+  "synthetic_accounts": true,
+  "cases": [
+    {
+      "action": "prejoin",
+      "label": "revalidated_populated_roster",
+      "at_utc": "2026-10-26T22:05:20.369Z",
+      "status": "PASS",
+      "result": {
+        "populated_ui_rows": 2,
+        "rest_status": 200,
+        "no_mic_capture": true,
+        "no_voice_mutation": true,
+        "roster_not_fake_empty": true
+      }
+    },
+    {
+      "action": "quickjump",
+      "label": "keyboard_navigation_with_stage_diagnostics",
+      "at_utc": "2026-10-26T22:05:36.297Z",
+      "status": "FAIL",
+      "failed_at": "query",
+      "error_type": "Error",
+      "error_class": {
+        "timeout": true,
+        "strict": false,
+        "assertion": false
+      }
+    },
+    {
+      "action": "join",
+      "label": "listener_for_physical_roster_and_screen",
+      "at_utc": "2026-10-26T22:07:10.363Z",
+      "status": "PASS"
+    },
+    {
+      "action": "watch",
+      "label": "screen_viewer_with_search_dismissed",
+      "at_utc": "2026-10-26T22:07:37.992Z",
+      "status": "FAIL",
+      "failed_at": "first_decoded_frame",
+      "error_type": "Error",
+      "error_class": {
+        "timeout": true,
+        "strict": false,
+        "assertion": false
+      }
+    },
+    {
+      "action": "sample",
+      "label": "foreground_selected_Display_source",
+      "at_utc": "2026-10-26T22:08:48.523Z",
+      "status": "PASS",
+      "stats": {
+        "inbound": [
+          {
+            "kind": "audio",
+            "bytesReceived": 1376,
+            "packetsReceived": 459,
+            "packetsLost": 1,
+            "jitter": 0.011
+          },
+          {
+            "kind": "audio",
+            "bytesReceived": 36570,
+            "packetsReceived": 460,
+            "packetsLost": 0,
+            "jitter": 0.007
+          }
+        ],
+        "connectedPeers": 1,
+        "micCalls": 0,
+        "video": [
+          {
+            "width": 0,
+            "height": 0,
+            "readyState": 0
+          }
+        ]
+      }
+    },
+    {
+      "action": "roster",
+      "label": "screen_publication_flag_with_no_video_yet",
+      "at_utc": "2026-10-26T22:09:14.334Z",
+      "status": "PASS",
+      "result": {
+        "status": 200,
+        "rooms": 6,
+        "total_participants": 3,
+        "muted": 1,
+        "screen_watch_controls": 0
+      }
+    },
+    {
+      "action": "watch",
+      "label": "fresh_projection_while_selected_app_visible",
+      "at_utc": "2026-10-26T22:10:40.164Z",
+      "status": "FAIL",
+      "failed_at": "first_decoded_frame",
+      "error_type": "Error",
+      "error_class": {
+        "timeout": true,
+        "strict": false,
+        "assertion": false
+      }
+    },
+    {
+      "action": "sample",
+      "label": "selected_app_motion_after_fresh_projection",
+      "at_utc": "2026-10-26T22:11:15.217Z",
+      "status": "PASS",
+      "stats": {
+        "inbound": [
+          {
+            "kind": "audio",
+            "bytesReceived": 3476,
+            "packetsReceived": 1159,
+            "packetsLost": 1,
+            "jitter": 0.005
+          },
+          {
+            "kind": "audio",
+            "bytesReceived": 92061,
+            "packetsReceived": 1158,
+            "packetsLost": 0,
+            "jitter": 0.006
+          },
+          {
+            "kind": "video",
+            "bytesReceived": 91915,
+            "packetsReceived": 83,
+            "packetsLost": 0,
+            "framesDecoded": 10,
+            "framesPerSecond": 16,
+            "frameWidth": 590,
+            "frameHeight": 1280,
+            "jitter": 0.009,
+            "freezeCount": 0
+          }
+        ],
+        "connectedPeers": 1,
+        "micCalls": 0,
+        "video": [
+          {
+            "width": 590,
+            "height": 1280,
+            "readyState": 4
+          }
+        ]
+      }
+    }
+  ],
+  "browser": "155.0.8059.85",
+  "completed_sequence": 8
+}

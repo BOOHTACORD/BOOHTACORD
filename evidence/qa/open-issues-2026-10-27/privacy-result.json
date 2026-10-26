@@ -1,0 +1,120 @@
+{
+  "status": "PASS",
+  "origin": "https://v.bootybay.ru",
+  "physical_windows": true,
+  "headless": false,
+  "api_mocks": false,
+  "roles": [
+    "MEMBER",
+    "MEMBER",
+    "MEMBER"
+  ],
+  "checks": {
+    "two_participants_and_third_member_acl": {
+      "status": "PASS",
+      "elapsed_ms": 163,
+      "participant_http": [
+        200,
+        200
+      ],
+      "third_member_http": 404,
+      "anonymous_http": 401,
+      "third_admin": "NOT_RUN: no controlled ADMIN session"
+    },
+    "owned_empty_DM_composer": {
+      "status": "PASS",
+      "elapsed_ms": 586,
+      "both_composers": true
+    },
+    "draft_navigation_and_reload": {
+      "status": "PASS",
+      "elapsed_ms": 574,
+      "navigation_draft_preserved": true,
+      "reload_discards_as_required_by_issue_131": true
+    },
+    "actual_send_receive_and_peer_display": {
+      "status": "PASS",
+      "elapsed_ms": 623,
+      "send_http": 201,
+      "peer_visible": true,
+      "composer_cleared": true
+    },
+    "actual_message_actions": {
+      "status": "PASS",
+      "elapsed_ms": 756,
+      "reply_cancel": true,
+      "edit_http": 200,
+      "peer_edit_visible": true,
+      "reaction_toggle": true,
+      "cancel_delete_preserved": true,
+      "confirm_delete_http": 204
+    },
+    "actual_image_upload_and_protected_download": {
+      "status": "PASS",
+      "elapsed_ms": 466,
+      "upload_send_http": 201,
+      "participant_file_statuses": [
+        [
+          200,
+          200
+        ],
+        [
+          200,
+          200
+        ]
+      ],
+      "third_member_statuses": [
+        404,
+        404
+      ],
+      "anonymous_http": 401,
+      "after_delete_statuses": [
+        [
+          404,
+          404
+        ],
+        [
+          404,
+          404
+        ],
+        [
+          404,
+          404
+        ]
+      ],
+      "image_viewer_decoded": true,
+      "image_viewer_escape_focus": true,
+      "fixture_bytes": 70
+    }
+  },
+  "cleanup": [
+    {
+      "owned_message_delete_http": 404
+    },
+    {
+      "owned_message_delete_http": 404
+    }
+  ],
+  "browser": "155.0.8059.85",
+  "draft_observation": {
+    "after_reload_length": 0
+  },
+  "send_ack_fields": [
+    "id",
+    "direct_message_id",
+    "author_id",
+    "client_message_id",
+    "body",
+    "revision",
+    "created_at",
+    "mention_user_ids"
+  ],
+  "message_action_checks": {
+    "reply_cancel": "PASS",
+    "edit_and_peer_update": "PASS",
+    "reaction_toggle": "PASS"
+  },
+  "message_action_stage": "confirm_delete",
+  "attachment_stage": "protected_downloads",
+  "login_diagnostics": []
+}

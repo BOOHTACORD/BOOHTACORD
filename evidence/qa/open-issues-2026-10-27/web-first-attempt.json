@@ -1,0 +1,123 @@
+{
+  "status": "COMPLETE",
+  "origin": "https://v.bootybay.ru",
+  "role": "MEMBER",
+  "physical_windows": true,
+  "synthetic_accounts": true,
+  "cases": [
+    {
+      "action": "prejoin",
+      "label": "populated_SHARE_TEST_before_join",
+      "at_utc": "2026-10-26T21:59:47.794Z",
+      "status": "PASS",
+      "result": {
+        "populated_ui_rows": 2,
+        "rest_status": 200,
+        "no_mic_capture": true,
+        "no_voice_mutation": true,
+        "roster_not_fake_empty": true
+      }
+    },
+    {
+      "action": "quickjump",
+      "label": "disconnected_keyboard_navigation",
+      "at_utc": "2026-10-26T21:59:56.899Z",
+      "status": "FAIL",
+      "error_type": "Error",
+      "error_class": {
+        "timeout": true,
+        "strict": false,
+        "assertion": false
+      }
+    },
+    {
+      "action": "layout",
+      "label": "six_viewport_geometry",
+      "at_utc": "2026-10-26T22:00:21.884Z",
+      "status": "PASS",
+      "result": {
+        "viewport_rows": [
+          {
+            "width": 320,
+            "document_width": 320,
+            "horizontal_overflow": false
+          },
+          {
+            "width": 390,
+            "document_width": 390,
+            "horizontal_overflow": false
+          },
+          {
+            "width": 768,
+            "document_width": 768,
+            "horizontal_overflow": false
+          },
+          {
+            "width": 1024,
+            "document_width": 1024,
+            "horizontal_overflow": false
+          },
+          {
+            "width": 1440,
+            "document_width": 1440,
+            "horizontal_overflow": false
+          },
+          {
+            "width": 1920,
+            "document_width": 1920,
+            "horizontal_overflow": false
+          }
+        ],
+        "physical_mobile": false
+      }
+    },
+    {
+      "action": "inventory",
+      "label": "post_keyboard_state",
+      "at_utc": "2026-10-26T22:00:35.048Z",
+      "status": "PASS",
+      "result": {
+        "controls": [
+          "Поиск сообщенийCtrl K",
+          "Личные",
+          "Голос",
+          "Открыть настройки профиля",
+          "Настройки аудио",
+          "Войти",
+          "Без микрофона",
+          "Каналы и люди"
+        ],
+        "testids": [
+          "app-shell",
+          "nav-sidebar",
+          "voice-dock",
+          "main-region",
+          "search-aside-panel",
+          "search-panel",
+          "quick-jump-panel"
+        ],
+        "overflow": false
+      }
+    },
+    {
+      "action": "join",
+      "label": "listener_no_microphone",
+      "at_utc": "2026-10-26T22:00:53.408Z",
+      "status": "PASS"
+    },
+    {
+      "action": "watch",
+      "label": "physical_android_to_chrome_after_muted_restart",
+      "at_utc": "2026-10-26T22:02:02.433Z",
+      "status": "FAIL",
+      "error_type": "Error",
+      "error_class": {
+        "timeout": true,
+        "strict": false,
+        "assertion": false
+      }
+    }
+  ],
+  "browser": "155.0.8059.85",
+  "completed_sequence": 6
+}

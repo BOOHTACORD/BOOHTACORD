@@ -1,0 +1,68 @@
+import {createRequire} from 'node:module'
+import {readFile,writeFile} from 'node:fs/promises'
+import {setTimeout as delay} from 'node:timers/promises'
+import {navigation} from './web_navigation.mjs'
+const dependency='C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/clients/web/package.json'
+const {chromium,expect}=createRequire(dependency)('@playwright/test')
+const dir=new URL('./',import.meta.url), origin='https://v.bootybay.ru'
+const credentialPath='C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/.out/physical-android/production-20261026/peer-private.json'
+const credentials=JSON.parse(await readFile(credentialPath,'utf8'))
+const report={status:'RUNNING',origin,role:'MEMBER',physical_windows:true,synthetic_accounts:true,cases:[]}
+const save=()=>writeFile(new URL('web-result.json',dir),JSON.stringify(report,null,2)+'\n')
+const browser=await chromium.launch({channel:'chrome',headless:false,args:['--autoplay-policy=no-user-gesture-required']})
+const context=await browser.newContext({viewport:{width:1440,height:1000}})
+let page,phase='login'
+try {
+ context.setDefaultTimeout(10000)
+ await context.addInitScript(()=>{
+  const Native=window.RTCPeerConnection;window.__qaPeers=[];window.__qaMicCalls=0
+  window.RTCPeerConnection=class extends Native {constructor(...a){super(...a);window.__qaPeers.push(this)}}
+  const gum=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices)
+  navigator.mediaDevices.getUserMedia=(...a)=>{window.__qaMicCalls++;return gum(...a)}
+ })
+ page=await context.newPage();let voiceMutations=0
+ page.on('request',r=>{if(r.method()!=='GET'&&/\/voice\//.test(new URL(r.url()).pathname))voiceMutations++})
+ await page.goto(origin);await page.getByLabel('Логин',{exact:true}).fill(credentials.login)
+ await page.getByLabel('Пароль',{exact:true}).fill(credentials.password)
+ await page.getByRole('button',{name:'Войти',exact:true}).click()
+ await expect(page.getByTestId('app-shell')).toBeVisible()
+ report.browser=browser.version();report.status='READY';await save()
+ const api=async(path,method='GET',body)=>page.evaluate(async a=>{
+  const r=await fetch('/api/v1'+a.path,{method:a.method,credentials:'same-origin',headers:{'Content-Type':'application/json'},...(a.body===undefined?{}:{body:JSON.stringify(a.body)})})
+  return {status:r.status,body:r.status===204?null:await r.json()}
+ },{path,method,body})
+ const sample=()=>page.evaluate(async()=>{
+  const inbound=[]
+  for(const p of window.__qaPeers)if(p.connectionState==='connected')for(const v of(await p.getStats()).values()){
+   if(v.type!=='inbound-rtp'||v.isRemote)continue
+   const r={kind:v.kind??v.mediaType};for(const k of['bytesReceived','packetsReceived','packetsLost','framesDecoded','framesPerSecond','frameWidth','frameHeight','jitter','freezeCount'])if(typeof v[k]==='number')r[k]=v[k];inbound.push(r)
+  }
+  return {inbound,connectedPeers:window.__qaPeers.filter(p=>p.connectionState==='connected').length,micCalls:window.__qaMicCalls,video:[...document.querySelectorAll('video')].map(v=>({width:v.videoWidth,height:v.videoHeight,readyState:v.readyState}))}
+ })
+ let sequence=0
+ while(browser.isConnected()&&!page.isClosed()){
+  let command;try{command=JSON.parse(await readFile(new URL('web-command.json',dir),'utf8'))}catch{}
+  if(command?.sequence>sequence){
+   sequence=command.sequence;phase=command.action
+   if(phase==='stop')break
+   const row={action:phase,label:command.label,at_utc:new Date().toISOString(),status:'RUNNING'}
+   let stage='start';const step=s=>{stage=s}
+   try{
+    const dock=page.getByTestId('voice-dock')
+    if(phase==='join'){await page.getByRole('button',{name:'Без микрофона',exact:true}).click();await expect(dock.locator('.voice-status')).toHaveText('Голос подключён',{timeout:30000})}
+    else if(phase==='leave'){await dock.getByRole('button',{name:'Выйти из голосового канала',exact:true}).click();await expect(dock.locator('.voice-status')).not.toHaveText('Голос подключён')}
+    else if(phase==='watch'){await page.keyboard.press('Escape');step('participants');const back=page.getByRole('button',{name:'К участникам',exact:true});if(await back.isVisible())await back.click();step('single_watch_action');await expect(page.locator('.participant-watch:visible')).toHaveCount(1);await page.locator('.participant-watch:visible').click();step('first_decoded_frame');await expect.poll(async()=> (await sample()).video.some(v=>v.width>0),{timeout:25000}).toBe(true);row.stats=await sample()}
+    else if(phase==='sample')row.stats=await sample()
+    else row.result=await navigation(phase,{page,expect,api,sample,dir,step,voiceMutations:()=>voiceMutations})
+    row.status='PASS'
+   }catch(e){row.status='FAIL';row.failed_at=stage;row.error_type=e.name;row.error_class={timeout:/timeout/i.test(e.message),strict:/strict mode/i.test(e.message),assertion:/Assertion/.test(e.name)}}
+   report.cases.push(row);report.completed_sequence=sequence;await save()
+  }
+  await delay(300)
+ }
+ report.status='COMPLETE'
+}catch(e){report.status='BLOCKED';report.phase=phase;report.error_type=e.name}
+finally{
+ if(page){try{await page.getByTestId('voice-dock').getByRole('button',{name:'Выйти из голосового канала',exact:true}).click({timeout:2000})}catch{}}
+ await context.close();await browser.close();await save()
+}

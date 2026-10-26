@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "origin": "https://v.bootybay.ru",
+  "android": "physical SM-A576B 1.0.45+2080",
+  "observations": [
+    {
+      "elapsed_ms": 2450,
+      "reconnecting_banner": false,
+      "retry_available": false,
+      "voice_connected": true,
+      "DM_visible": true,
+      "owned_peer_header": true,
+      "message_matches": 1,
+      "static_composer_hint": false
+    }
+  ],
+  "scope": "owned synthetic DM; no app/network/server reconfiguration",
+  "before": {
+    "reconnecting_banner": false,
+    "retry_available": false,
+    "voice_connected": true,
+    "DM_visible": true,
+    "owned_peer_header": true,
+    "message_matches": 0,
+    "static_composer_hint": false
+  },
+  "after_retry": {
+    "reconnecting_banner": false,
+    "retry_available": false,
+    "voice_connected": true,
+    "DM_visible": true,
+    "owned_peer_header": true,
+    "message_matches": 0,
+    "static_composer_hint": false
+  },
+  "send_http": 201,
+  "interpretation": "Actual owned message appeared on physical Android",
+  "cleanup_http": 204
+}

@@ -1,0 +1,42 @@
+"""Observe only fixed UI states and an ephemeral synthetic-message hash."""
+import hashlib
+import json
+import os
+import re
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+ADB=r'C:\Users\egkur\AppData\Local\Android\Sdk\platform-tools\adb.exe'
+
+
+def call(*args):
+    return subprocess.check_output([ADB,*args],timeout=30).decode('utf-8','replace')
+
+
+def nodes():
+    raw=call('exec-out','uiautomator','dump','/dev/tty')
+    return list(ET.fromstring(raw[raw.find('<hierarchy'):raw.find('</hierarchy>')+12]).iter('node'))
+
+
+def label(n):
+    return n.get('content-desc') or n.get('text') or ''
+
+
+action=sys.argv[1]
+if action=='retry':
+    matches=[n for n in nodes() if 'Повторить подключение' in label(n) and n.get('clickable')=='true']
+    if len(matches)!=1:raise RuntimeError('No unique retry control')
+    b=list(map(int,re.findall(r'\d+',matches[0].get('bounds'))))
+    call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2))
+rows=nodes();labels=[label(n) for n in rows]
+expected=os.environ.get('EXPECTED_MSG_HASH')
+matching=sum(expected is not None and any(hashlib.sha256(m.group(0).encode()).hexdigest()==expected for m in re.finditer(r'QA realtime witness [a-f0-9-]{36}',text)) for text in labels)
+peer=json.loads(Path(__file__).with_name('private-fixture.json').read_text(encoding='utf-8'))['b']['login']
+print(json.dumps({'reconnecting_banner':any('Восстанавливаем подключение' in s for s in labels),
+                  'retry_available':any('Повторить подключение' in s for s in labels),
+                  'voice_connected':any('Голос подключён' in s for s in labels),
+                  'DM_visible':any('Личный диалог' in s for s in labels),
+                  'owned_peer_header':any(peer in label(n) and list(map(int,re.findall(r'\d+',n.get('bounds'))))[1]<600 and n.get('class')!='android.widget.EditText' for n in rows),
+                  'message_matches':matching,'static_composer_hint':any('Написать сообщение' in s for s in labels)}))

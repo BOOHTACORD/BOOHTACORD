@@ -1,0 +1,46 @@
+"""Bounded public production reads, with no raw failure page or credentials."""
+import hashlib
+import json
+import urllib.error
+import urllib.request
+from datetime import datetime, timezone
+from pathlib import Path
+
+origin = 'https://v.bootybay.ru'
+paths = {
+    'health': '/api/v1/health',
+    'web_receipt': '/release-receipt.json',
+    'windows_catalog': '/api/v1/client-updates?platform=windows&distribution=direct&channel=stable&arch=x64',
+    'android_catalog': '/api/v1/client-updates?platform=android&distribution=direct&channel=stable&arch=arm64',
+    'protected_session': '/api/v1/auth/session',
+    'protected_roster': '/api/v1/voice/participants',
+}
+report = {'at_utc': datetime.now(timezone.utc).isoformat(), 'origin': origin, 'authenticated': False, 'rows': {}}
+for name, path in paths.items():
+    try:
+        request = urllib.request.Request(origin+path, headers={'User-Agent': 'BOOHTACORD-QA-acceptance/1', 'Origin': origin})
+        try:
+            response = urllib.request.urlopen(request, timeout=15)
+        except urllib.error.HTTPError as e:
+            response = e
+        raw = response.read(131073)
+        row = {'http': response.code, 'content_type': response.headers.get('Content-Type'),
+               'cache_control': response.headers.get('Cache-Control'), 'retry_after': response.headers.get('Retry-After'),
+               'header_names': sorted(k.lower() for k in response.headers), 'body_sha256': hashlib.sha256(raw).hexdigest(),
+               'bounded': len(raw) <= 131072}
+        try:
+            data = json.loads(raw)
+            row['json_keys'] = sorted(data) if isinstance(data, dict) else []
+            if isinstance(data, dict):
+                if isinstance(data.get('error'), dict):
+                    row['error_code'] = data['error'].get('code')
+                for key in ('version', 'source_revision', 'source_commit', 'source_sha', 'commit', 'catalog_revision', 'release_id', 'native_build'):
+                    if key in data:
+                        row[key] = data[key]
+        except (ValueError, TypeError):
+            row['non_json'] = True
+        report['rows'][name] = row
+    except Exception as e:
+        report['rows'][name] = {'status': 'BLOCKED', 'error_type': type(e).__name__}
+Path(__file__).with_name('public-readback.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
+print(json.dumps(report, indent=2))

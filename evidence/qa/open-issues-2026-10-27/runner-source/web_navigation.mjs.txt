@@ -1,0 +1,48 @@
+import assert from 'node:assert/strict'
+export async function navigation(action,{page,expect,api,sample,dir,step,voiceMutations}){
+ const channel=page.locator('.channel-button').filter({hasText:'SHARE_TEST'})
+ if(action==='prejoin'){
+  await expect(channel).toHaveCount(1);const before=voiceMutations();await channel.click()
+  await expect(page.locator('.voice-prejoin')).toBeVisible()
+  const rows=await page.locator('.voice-prejoin .voice-roster-member').count()
+  assert.ok(rows>=2);assert.equal((await sample()).micCalls,0);assert.equal(voiceMutations(),before)
+  const rest=await api('/voice/participants');assert.equal(rest.status,200)
+  return {populated_ui_rows:rows,rest_status:rest.status,no_mic_capture:true,no_voice_mutation:true,roster_not_fake_empty:await page.getByText('Пока никого нет.',{exact:true}).count()===0}
+ }
+ if(action==='roster'){
+  const r=await api('/voice/participants');assert.equal(r.status,200)
+  return {status:r.status,rooms:r.body.channels?.length,total_participants:r.body.channels?.reduce((a,c)=>a+c.participants.length,0),muted:r.body.channels?.reduce((a,c)=>a+c.participants.filter(p=>p.microphone_muted).length,0),screen_watch_controls:await page.locator('.participant-watch').count()}
+ }
+ if(action==='quickjump'){
+  await page.keyboard.press('Escape');step('launcher_focus')
+  const before=voiceMutations(),mic=(await sample()).micCalls
+  const launcher=page.locator('.guild-search-button');await launcher.focus();await page.keyboard.press('Control+k')
+  step('shortcut_panel');const panel=page.getByTestId('search-aside-panel');await expect(panel).toBeVisible()
+  const initial=await page.getByTestId('quick-jump-panel').isVisible()?'navigation':'messages'
+  step('navigation_tab');await page.getByRole('button',{name:'Каналы и люди',exact:true}).click()
+  const quick=page.getByTestId('quick-jump-panel');await expect(quick).toBeVisible()
+  step('query');const search=quick.getByRole('searchbox');await search.fill('SHARE_TEST')
+  await expect(quick.locator('[data-kind="CHANNEL"]')).toHaveCount(1)
+  step('channel_result');await expect(quick.locator('[data-kind="CHANNEL"]')).toHaveCount(1)
+  step('escape_focus');await search.press('Escape');await expect(panel).toBeHidden();await expect(launcher).toBeFocused()
+  step('reopen_navigation');await page.keyboard.press('Control+k');await page.getByRole('button',{name:'Каналы и люди',exact:true}).click()
+  await quick.getByRole('searchbox').fill('SHARE_TEST');await quick.locator('[data-kind="CHANNEL"]').click()
+  await expect(panel).toBeHidden();assert.equal(voiceMutations(),before);assert.equal((await sample()).micCalls,mic)
+  return {initial_mode:initial,Ctrl_K:true,Escape_focus_return:true,authorized_channel_navigation:true,no_auto_join:true,no_mic_capture:true}
+ }
+ if(action==='layout'){
+  const result=[]
+  for(const width of[320,390,768,1024,1440,1920]){
+   await page.setViewportSize({width,height:900});await page.waitForTimeout(150)
+   result.push(await page.evaluate(()=>({width:innerWidth,document_width:document.documentElement.scrollWidth,horizontal_overflow:document.documentElement.scrollWidth>innerWidth})))
+  }
+  await page.setViewportSize({width:1440,height:1000})
+  assert.ok(result.every(r=>!r.horizontal_overflow));return {viewport_rows:result,physical_mobile:false}
+ }
+ if(action==='inventory')return page.evaluate(()=>({
+  controls:[...document.querySelectorAll('button')].filter(b=>b.getClientRects().length).map(b=>b.getAttribute('aria-label')??b.textContent?.trim()).filter(s=>/^(Поиск|К участникам|Без микрофона|Подключиться|Войти|Настройки|Начать|Демонстрация|Показать|Открыть|Личные|Участники|Профиль|Гильдия|Каналы и люди|Голос)/.test(s??'')).map(s=>s.slice(0,70)),
+  testids:[...new Set([...document.querySelectorAll('[data-testid]')].map(n=>n.dataset.testid))].filter(s=>/^[a-z-]+$/.test(s)),
+  overflow:document.documentElement.scrollWidth>innerWidth
+ }))
+ throw Error('Unknown bounded action')
+}

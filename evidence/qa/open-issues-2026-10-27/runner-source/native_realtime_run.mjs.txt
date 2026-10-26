@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict'
+import {execFileSync} from 'node:child_process'
+import {createHash,randomUUID} from 'node:crypto'
+import {writeFile} from 'node:fs/promises'
+import {fileURLToPath} from 'node:url'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,root,origin} from './privacy_fixture.mjs'
+const browser=await chromium.launch({channel:'chrome',headless:false})
+const report={status:'RUNNING',origin,android:'physical SM-A576B 1.0.45+2080',observations:[],scope:'owned synthetic DM; no app/network/server reconfiguration'}
+let f,b,dm,message
+const observe=(action='inspect',hash)=>JSON.parse(execFileSync('python',[fileURLToPath(new URL('android_realtime.py',root)),action],{encoding:'utf8',windowsHide:true,env:{...process.env,...(hash?{EXPECTED_MSG_HASH:hash}:{})}}))
+try{
+ report.before=observe();report.after_retry=report.before.retry_available?observe('retry'):report.before;await delay(1000)
+ if(!report.after_retry.owned_peer_header)throw Error('OWNED_DM_NOT_ACTIVE')
+ f=await fixture(browser);b=await f.client('b')
+ const nav=await api(b.page,'/direct-messages');assert.equal(nav.status,200)
+ const candidates=nav.body.direct_messages.filter(d=>![f.private.a.id,f.private.c.id].includes(d.other_participant_id))
+ assert.equal(candidates.length,1);dm=candidates[0].id
+ const body='QA realtime witness '+randomUUID(),hash=createHash('sha256').update(body).digest('hex')
+ const start=Date.now(),sent=await api(b.page,'/direct-messages/'+dm+'/messages','POST',{client_message_id:randomUUID(),body})
+ report.send_http=sent.status;assert.equal(sent.status,201);message=sent.body.id
+ for(let i=0;i<4;i++){const r=observe('inspect',hash);report.observations.push({elapsed_ms:Date.now()-start,...r});if(r.message_matches>0)break;await delay(1000)}
+ report.status=report.observations.some(r=>r.message_matches>0)?'PASS':'FAIL'
+ report.interpretation=report.status==='PASS'?'Actual owned message appeared on physical Android':'Message not observed within bounded UI polling; cause not established'
+}catch(e){report.status='BLOCKED';report.error_type=e.name}
+finally{
+ if(b&&message){const r=await api(b.page,'/direct-messages/'+dm+'/messages/'+message,'DELETE');report.cleanup_http=r.status}
+ for(const c of f?.contexts??[])await c.close();await browser.close()
+ await writeFile(new URL('native-realtime-result.json',root),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report))
+}
