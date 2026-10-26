@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "status": "PARTIAL",
+  "local_date": "2026-10-27",
+  "updated_utc": "2026-10-26T21:41:07.542617+00:00",
+  "phone": {
+    "model": "SM-A576B",
+    "android": "16",
+    "api": 36,
+    "abi": "arm64-v8a",
+    "physical_size": [
+      1080,
+      2340
+    ],
+    "density": 450,
+    "font_scale": 1.0
+  },
+  "android_release": {
+    "version": "1.0.45",
+    "version_code": 2080,
+    "source_revision": "9c221897fdefec8098f707d61ca5b6e8b28bb0bd",
+    "apk_sha256": "7091a98c326e3bea9ecff1f4a10192d3ce8545a298690b17c90d0453ddde8e70",
+    "signature_verified": true,
+    "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b"
+  },
+  "windows_release": {
+    "version": "1.0.47+82",
+    "source_revision": "f5cd783518349e2f79a78910a91908882ba87cc1",
+    "release_id": "windows-direct-stable-r61",
+    "source_dirty": false
+  },
+  "production": {
+    "origin": "https://v.bootybay.ru",
+    "api_health": 200,
+    "web_version": "1.0.47",
+    "web_source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "api_source_revision": "UNKNOWN",
+    "web_source_revision_at_end": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "web_receipt_source_unchanged": true
+  },
+  "room": "SHARE_TEST",
+  "source": "Android Settings app-only capture; display settings; no setting values changed",
+  "chrome": {
+    "version": "155.0.8059.85",
+    "headless": false,
+    "basic_delivery": "PASS",
+    "width": 590,
+    "height": 1280,
+    "frames_decoded_samples": [
+      30,
+      54
+    ],
+    "visual_review": "Two distinct portrait frames inspected at original resolution; readable text, expected scroll movement and no obvious geometry corruption; not a 60-FPS acceptance",
+    "fresh_viewer_after_publisher_restart": "PASS: 31 frames decoded at 590x1280",
+    "continuous_dynamic_FPS_gate": "NOT_RUN"
+  },
+  "windows_native": {
+    "result": "FAIL_IN_OBSERVED_ATTEMPTS",
+    "observation": "Publication was discovered but no image was displayed in observed attempts; the native window was recreated during the session. Cause is unresolved.",
+    "final_voice_connected": true,
+    "final_connecting_to_screen": true,
+    "final_first_frame_wait_label": false,
+    "statistics_available": false,
+    "frames_decoded": "UNKNOWN"
+  },
+  "router": {
+    "Xkeen_change": "operator reported exclusion, then withdrew certainty about success",
+    "controlled_AB_comparison": false,
+    "causal_conclusion": "UNPROVEN"
+  },
+  "stop_observations": {
+    "fgs_types": [
+      "0x00000080"
+    ],
+    "web": {
+      "watchButtons": 0,
+      "participants": 3,
+      "videoCount": 1
+    },
+    "projection_active_for_boohtacord": false,
+    "renderer_cleanup": "NOT_PROVEN: one video element was still present at the short inspection point"
+  },
+  "captures": {
+    "decoded-display-a.png": {
+      "sha256": "d5b36daf49ace47b4bf4ce21e6d58c65c98aa8be6dd9d8d28b91c4c52e85984d",
+      "bytes": 355328
+    },
+    "decoded-display-b.png": {
+      "sha256": "31a354d6841e95db0af4e638696c6b0ce31f044813d88e148e3933b98b8850db",
+      "bytes": 289617
+    },
+    "decoded-restarted.png": {
+      "sha256": "bacc281d68341c53f75f2936b31de1073f9f028174a4410b307e6fd85dcbbbad",
+      "bytes": 364168
+    }
+  },
+  "privacy": {
+    "dm_bodies_saved": false,
+    "credentials_saved_in_evidence": false,
+    "participant_identifiers_saved": false,
+    "first_source_root_capture_discarded": true,
+    "continuous_media_recording": false,
+    "still_frame_captures": 3
+  },
+  "limitations": [
+    "No macOS receiver or Pixel device run",
+    "Physical audibility NOT_RUN",
+    "No 720p/1080p x 30/60 FPS quality or capacity acceptance",
+    "Selected static/scroll source does not establish steady dynamic FPS",
+    "Initial headless browser and unsuccessful observer setup results retained separately in local artifacts"
+  ],
+  "issues_closed": [],
+  "evidence_source_commit": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "restart_observations": {
+    "publication_restarted": true,
+    "own_media_projection_active": true,
+    "foreground_service_types": [
+      "0x00000080",
+      "0x00000020"
+    ],
+    "fresh_viewer_frames_decoded": 31,
+    "same_subscriber_auto_recovery": "NOT_RUN"
+  },
+  "operational_state": {
+    "phone_screen_share": "left running at user request",
+    "phone_voice": "preserved",
+    "visible_Chrome": "left in SHARE_TEST with the controlled listener",
+    "native_Windows_viewer": "still connecting in final observation",
+    "phone_settings_changed": false,
+    "phone_release_replaced": false,
+    "local_QA_containers": "removed; production used"
+  },
+  "gate_disposition": {
+    "132": "NOT_CLOSED: Mac/Pixel/emulator, muted/permission denial, preview and full cleanup criteria not complete",
+    "173": "NOT_CLOSED: broad paired quality/platform/repeat/threshold matrix not complete",
+    "windows_native_first_frame": "FAIL in observed release/runtime; investigate before Windows acceptance"
+  },
+  "validated_utc": "2026-10-26T21:42:15.479545+00:00"
+}

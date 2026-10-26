@@ -1,0 +1,57 @@
+{
+  "source_restarted": true,
+  "projection_active_for_boohtacord": true,
+  "fgs_types": [
+    "0x00000080",
+    "0x00000020"
+  ],
+  "browser_observation": {
+    "label": "republished_app_only_after_scroll",
+    "at": 1793050585059,
+    "connectedPeers": 1,
+    "inbound": [
+      {
+        "kind": "audio",
+        "bytesReceived": 23850,
+        "packetsReceived": 300,
+        "packetsLost": 0,
+        "jitter": 0.01,
+        "totalAudioEnergy": 6.27470315682926e-08,
+        "totalSamplesReceived": 3022080
+      },
+      {
+        "kind": "audio",
+        "bytesReceived": 900,
+        "packetsReceived": 300,
+        "packetsLost": 0,
+        "jitter": 0.015,
+        "totalAudioEnergy": 0,
+        "totalSamplesReceived": 3015840
+      },
+      {
+        "kind": "video",
+        "bytesReceived": 327649,
+        "packetsReceived": 299,
+        "packetsLost": 0,
+        "jitter": 0.015,
+        "framesReceived": 31,
+        "framesDecoded": 31,
+        "frameWidth": 590,
+        "frameHeight": 1280,
+        "totalDecodeTime": 0.045049,
+        "freezeCount": 2,
+        "totalFreezesDuration": 1.164
+      }
+    ],
+    "videoElements": [
+      {
+        "width": 590,
+        "height": 1280,
+        "paused": false,
+        "currentTime": 4.711295,
+        "readyState": 4
+      }
+    ]
+  },
+  "viewer_session": "fresh controlled Chrome observer after stop/republish; same-subscriber auto-recovery not claimed"
+}

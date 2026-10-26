@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "scope": "Physical Android 16 microphone-enabled background delivery to the actual production Web/SFU receiver; audibility is separate",
+  "foreground": {
+    "label": "phone_foreground_microphone_enabled",
+    "at": 1793047836363,
+    "connectedPeers": 1,
+    "inbound": [
+      {
+        "kind": "audio",
+        "bytesReceived": 517536,
+        "packetsReceived": 1318,
+        "packetsLost": 7,
+        "jitter": 0.004,
+        "totalAudioEnergy": 0.9211325750250187,
+        "totalSamplesReceived": 5177760
+      }
+    ],
+    "videoElements": []
+  },
+  "background": {
+    "label": "phone_background_microphone_enabled_15s",
+    "at": 1793047851733,
+    "connectedPeers": 1,
+    "inbound": [
+      {
+        "kind": "audio",
+        "bytesReceived": 588113,
+        "packetsReceived": 1502,
+        "packetsLost": 9,
+        "jitter": 0.007,
+        "totalAudioEnergy": 1.231507068644826,
+        "totalSamplesReceived": 5915520
+      }
+    ],
+    "videoElements": []
+  },
+  "android_background": {
+    "fgs_types": [
+      "0x00000080"
+    ],
+    "foreground": true,
+    "record_audio_running": true
+  },
+  "audio_packets_delta": 184,
+  "physical_audibility": "NOT_RUN"
+}
