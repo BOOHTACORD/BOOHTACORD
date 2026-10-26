@@ -1,0 +1,79 @@
+"""Physical owned-DM dynamic text/IME review; always restore system font scale."""
+import hashlib
+import json
+import re
+import struct
+import subprocess
+import time
+import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT=Path(__file__).parent
+ADB=r'C:\Users\egkur\AppData\Local\Android\Sdk\platform-tools\adb.exe'
+peer=json.loads((ROOT/'private-fixture.json').read_text(encoding='utf-8'))['b']['login']
+
+
+def call(*args):
+    return subprocess.check_output([ADB,*args],timeout=30).decode('utf-8','replace')
+
+
+def nodes():
+    raw=call('exec-out','uiautomator','dump','/dev/tty')
+    return list(ET.fromstring(raw[raw.find('<hierarchy'):raw.find('</hierarchy>')+12]).iter('node'))
+
+
+def label(n):
+    return n.get('content-desc') or n.get('text') or ''
+
+
+def bounds(n):
+    return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+
+
+def snapshot(name):
+    rows=nodes()
+    raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20)
+    file=ROOT/('native-font-'+name+'.png');file.write_bytes(raw)
+    labels=[label(n) for n in rows]
+    controls=[]
+    for key in ['Выключить микрофон','Начать демонстрацию','Открыть навигацию']:
+        for n in rows:
+            if key in label(n) and n.get('clickable')=='true':
+                b=bounds(n);controls.append({'control':key,'bounds':b,'width_dp':round((b[2]-b[0])*160/density,2),'height_dp':round((b[3]-b[1])*160/density,2)})
+    return {'font_scale':call('shell','settings','get','system','font_scale').strip(),
+            'owned_peer_header':any(peer in label(n) and bounds(n)[1]<800 and n.get('class')!='android.widget.EditText' for n in rows),
+            'voice_connected':any('Голос подключён' in s for s in labels),
+            'keyboard_visible':any('inputmethod' in (n.get('package') or '') for n in rows),
+            'editable_bounds':[bounds(n) for n in rows if n.get('class')=='android.widget.EditText'],
+            'sampled_controls':controls,'capture':file.name,'capture_sha256':hashlib.sha256(raw).hexdigest(),
+            'capture_size':list(struct.unpack('>II',raw[16:24]))}
+
+
+devices=[s for s in call('devices').splitlines() if re.search(r'\tdevice$',s)]
+if len(devices)!=1:raise RuntimeError('Exactly one authorized device required')
+density=int(re.findall(r'\d+',call('shell','wm','density'))[-1])
+original=call('shell','settings','get','system','font_scale').strip()
+if not 0.5<=float(original)<=3:raise RuntimeError('Unexpected original font scale')
+report={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'REVIEW_REQUIRED','device':'physical Samsung SM-A576B Android16','installed':'1.0.45+2080','density_dpi':density,'input':'actual system dynamic text and Samsung IME opening; no text entered','original_font_scale':original,'snapshots':{}}
+try:
+    report['snapshots']['before']=snapshot('before')
+    if not report['snapshots']['before']['owned_peer_header']:raise RuntimeError('Owned DM must be active')
+    call('shell','settings','put','system','font_scale','2.0')
+    call('shell','am','start','-n','ru.boohtacord.app/.MainActivity');time.sleep(1)
+    report['snapshots']['two_x']=snapshot('two-x')
+    rows=nodes();fields=[n for n in rows if n.get('class')=='android.widget.EditText']
+    if len(fields)!=1:raise RuntimeError('Expected one owned composer')
+    b=bounds(fields[0]);call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2))
+    report['snapshots']['two_x_ime']=snapshot('two-x-ime')
+    call('shell','input','keyevent','KEYCODE_BACK')
+except Exception as e:
+    report['status']='BLOCKED';report['error_type']=type(e).__name__
+finally:
+    call('shell','settings','put','system','font_scale',original)
+    call('shell','am','start','-n','ru.boohtacord.app/.MainActivity');time.sleep(1)
+    report['snapshots']['restored']=snapshot('restored')
+    report['font_scale_restored']=report['snapshots']['restored']['font_scale']==original
+    if not report['font_scale_restored']:report['status']='FAIL'
+    (ROOT/'android-text-scale-result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+print(json.dumps(report,ensure_ascii=False))

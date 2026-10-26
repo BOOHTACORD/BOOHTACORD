@@ -116,7 +116,10 @@
         303
       ],
       "result": "quickjump-result.json",
-      "limits": "1440 PASS; 800/390 FAIL with actual Ctrl+K target BUTTON inside role=dialog; pointer opens. Not a physical mobile browser."
+      "limits": "1440 PASS; 800/390 FAIL with actual Ctrl+K target BUTTON inside role=dialog; pointer opens. Not a physical mobile browser.",
+      "defects": [
+        580
+      ]
     },
     {
       "id": "ROSTER-populated-prejoin",
@@ -241,6 +244,20 @@
       ],
       "result": null,
       "limits": "User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening."
+    },
+    {
+      "id": "ANDROID-DM-two-x-text-and-IME",
+      "status": "PASS_SCOPED",
+      "protects": "Owned-DM composer and voice controls remain visible at actual system2x text with Gboard opening",
+      "command": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures",
+      "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; Gboard18.5.4",
+      "mandatory_when": "Before claiming the corresponding native dynamic-text/IME/target-size acceptance",
+      "issues": [
+        301,
+        303
+      ],
+      "result": "android-text-scale-review.json",
+      "limits": "Only DM composer/voice dock and three48dp controls; no TalkBack, text-entry, full catalog or approved baseline claim. System1.0 restored."
     }
   ]
 }

@@ -41,12 +41,18 @@ Android and Windows releases in the current first page, not a new master build.
   first-frame timing remain unresolved; no FPS/capacity/automatic recovery PASS.
 - Web Ctrl+K: 1440px PASS. At800/390px the focused launcher receives actual Ctrl+K,
   but its ancestor is role=dialog and search stays hidden; clicking the same
-  launcher opens it. This is independent of the accepted initial Messages mode.
+  launcher opens it. Filed as #580; independent of the accepted Messages mode.
 - Native Windows setup opened and Escape eventually returned to workspace.
   Exact focus restoration, complete traversal and visual layout are NOT_PROVEN.
 - Public health200; anonymous voice roster401. Windows and Android update
   selectors return503/no-store; existing deployment acceptance #249 remains open.
 - Human audibility is NOT_RUN: the user cannot listen now. No PCM was captured.
+- Samsung physical 2× system text review: the owned-DM composer and five voice
+  actions remained visible above Gboard; three sampled controls measured48×48dp.
+  Original1× font and voice connection were restored. Source-sized control crops
+  exclude the synthetic peer header/message area; no approved golden is claimed.
+  [Review and limits](android-text-scale-review.json) distinguish visual IME proof
+  from the runner's incomplete active-app hierarchy heuristic.
 
 ## Reproduction and privacy
 

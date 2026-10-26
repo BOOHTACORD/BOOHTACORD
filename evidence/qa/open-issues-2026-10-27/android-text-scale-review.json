@@ -1,0 +1,292 @@
+{
+  "at_utc": "2026-10-26T22:42:00.148776+00:00",
+  "status": "PASS_SCOPED",
+  "device": "physical Samsung SM-A576B Android16",
+  "installed": "1.0.45+2080",
+  "density_dpi": 450,
+  "input": "Actual system dynamic text and default Gboard IME opening; no text entered",
+  "original_font_scale": "1.0",
+  "snapshots": {
+    "before": {
+      "font_scale": "1.0",
+      "owned_peer_header": true,
+      "voice_connected": true,
+      "keyboard_visible": false,
+      "editable_bounds": [
+        [
+          23,
+          1820,
+          1058,
+          1972
+        ]
+      ],
+      "sampled_controls": [
+        {
+          "control": "Выключить микрофон",
+          "bounds": [
+            34,
+            2141,
+            169,
+            2276
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        },
+        {
+          "control": "Начать демонстрацию",
+          "bounds": [
+            473,
+            2141,
+            608,
+            2276
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        },
+        {
+          "control": "Открыть навигацию",
+          "bounds": [
+            34,
+            108,
+            169,
+            243
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        }
+      ],
+      "capture": "native-font-before.png",
+      "capture_sha256": "b891b9972c7e7e3ab6e6ed857da498981852aa322ab769490f7cf6cb0abca31d",
+      "capture_size": [
+        1080,
+        2340
+      ]
+    },
+    "two_x": {
+      "font_scale": "2.0",
+      "owned_peer_header": true,
+      "voice_connected": true,
+      "keyboard_visible": false,
+      "editable_bounds": [
+        [
+          23,
+          1657,
+          1058,
+          1882
+        ]
+      ],
+      "sampled_controls": [
+        {
+          "control": "Выключить микрофон",
+          "bounds": [
+            34,
+            2141,
+            169,
+            2276
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        },
+        {
+          "control": "Начать демонстрацию",
+          "bounds": [
+            473,
+            2141,
+            608,
+            2276
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        },
+        {
+          "control": "Открыть навигацию",
+          "bounds": [
+            34,
+            143,
+            169,
+            278
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        }
+      ],
+      "capture": "native-font-two-x.png",
+      "capture_sha256": "0e8cc6cf8cec3c864a9c520c3da6c8c0f15163cf97b013fada37e9aea8553f0f",
+      "capture_size": [
+        1080,
+        2340
+      ]
+    },
+    "two_x_ime": {
+      "font_scale": "2.0",
+      "owned_peer_header": true,
+      "voice_connected": true,
+      "keyboard_visible": false,
+      "editable_bounds": [
+        [
+          23,
+          847,
+          1058,
+          1072
+        ]
+      ],
+      "sampled_controls": [
+        {
+          "control": "Выключить микрофон",
+          "bounds": [
+            34,
+            1331,
+            169,
+            1466
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        },
+        {
+          "control": "Начать демонстрацию",
+          "bounds": [
+            473,
+            1331,
+            608,
+            1466
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        },
+        {
+          "control": "Открыть навигацию",
+          "bounds": [
+            34,
+            143,
+            169,
+            278
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        }
+      ],
+      "capture": "native-font-two-x-ime.png",
+      "capture_sha256": "b976a143926f11bc7866f58fa50fdc339f49fd0482788fcfadea5dd4a6f667b8",
+      "capture_size": [
+        1080,
+        2340
+      ]
+    },
+    "restored": {
+      "font_scale": "1.0",
+      "owned_peer_header": true,
+      "voice_connected": true,
+      "keyboard_visible": false,
+      "editable_bounds": [
+        [
+          23,
+          1820,
+          1058,
+          1972
+        ]
+      ],
+      "sampled_controls": [
+        {
+          "control": "Выключить микрофон",
+          "bounds": [
+            34,
+            2141,
+            169,
+            2276
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        },
+        {
+          "control": "Начать демонстрацию",
+          "bounds": [
+            473,
+            2141,
+            608,
+            2276
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        },
+        {
+          "control": "Открыть навигацию",
+          "bounds": [
+            34,
+            108,
+            169,
+            243
+          ],
+          "width_dp": 48.0,
+          "height_dp": 48.0
+        }
+      ],
+      "capture": "native-font-restored.png",
+      "capture_sha256": "d36cb0ebe221c055528040b82740eb52fcc61a0f2ab2239c617cd9e34017a183",
+      "capture_size": [
+        1080,
+        2340
+      ]
+    }
+  },
+  "font_scale_restored": true,
+  "review": {
+    "original_resolution_reviewed": true,
+    "observations": [
+      "Actual 2x font visibly applied; composer and voice dock actions remained on-screen",
+      "Default Gboard keyboard opening moved composer and voice dock above IME",
+      "Long synthetic peer name ellipsized in header but remained in accessibility hierarchy",
+      "Three sampled controls measured48dp by48dp at450dpi",
+      "Original1.0 system font scale and visible voice connection restored"
+    ],
+    "limits": [
+      "No TalkBack speech or human listening",
+      "No full app/catalog or all-control target-size acceptance",
+      "No new screenshot golden baseline approved",
+      "keyboard_visible=false in the active-app UI hierarchy does not prove absence; original screenshot visibly shows IME",
+      "Executed runner hardcoded a Samsung IME label; subsequent OS readback identifies default Gboard. Review metadata corrects that label without changing measured outcomes"
+    ]
+  },
+  "public_captures": [
+    {
+      "file": "android-font-before-controls.png",
+      "source_file": "native-font-before.png",
+      "source_sha256": "b891b9972c7e7e3ab6e6ed857da498981852aa322ab769490f7cf6cb0abca31d",
+      "crop_pixels": [
+        0,
+        1810,
+        1080,
+        2310
+      ],
+      "resampled": false,
+      "sha256": "b799fac57f6ddd9f807660030598921bbef7ee40344bfc5a84bd90f818cfc1b8"
+    },
+    {
+      "file": "android-font-two-x-controls.png",
+      "source_file": "native-font-two-x.png",
+      "source_sha256": "0e8cc6cf8cec3c864a9c520c3da6c8c0f15163cf97b013fada37e9aea8553f0f",
+      "crop_pixels": [
+        0,
+        1650,
+        1080,
+        2310
+      ],
+      "resampled": false,
+      "sha256": "60edfb323d6c6a4ec9f8fdf046f1c8bee63285ec00df110f0e83f3c8c93f1db1"
+    },
+    {
+      "file": "android-font-two-x-ime-controls.png",
+      "source_file": "native-font-two-x-ime.png",
+      "source_sha256": "b976a143926f11bc7866f58fa50fdc339f49fd0482788fcfadea5dd4a6f667b8",
+      "crop_pixels": [
+        0,
+        847,
+        1080,
+        1585
+      ],
+      "resampled": false,
+      "sha256": "a4480b17ccd0f6579f556104a70a274bfd3ad8a42cb9e04a41e644eeacc870e0"
+    }
+  ],
+  "default_ime_component": "com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME",
+  "default_ime_version": "18.5.4.993608717-release-arm64-v8a"
+}

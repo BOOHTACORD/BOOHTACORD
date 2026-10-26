@@ -3987,7 +3987,9 @@
         "native-realtime-result.json",
         "quickjump-result.json"
       ],
-      "defects": [],
+      "defects": [
+        580
+      ],
       "blockers": [],
       "source_body_sha256": "427bb71ed8ea5fa02d04934dfc08b9b8c9585d266af76d524b3eb75f4a8ab40d",
       "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
@@ -4691,7 +4693,9 @@
       ],
       "execution_cases": [],
       "evidence": [],
-      "defects": [],
+      "defects": [
+        580
+      ],
       "blockers": [],
       "source_body_sha256": "199c75bdc325d7a1ae153ee27a7f9f65c796b2fac32f6982b9e6fd991d85b32a",
       "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
@@ -4888,13 +4892,17 @@
       ],
       "execution_cases": [
         "NAV-Web-shortcut",
-        "WINDOWS-dialog"
+        "WINDOWS-dialog",
+        "ANDROID-DM-two-x-text-and-IME"
       ],
       "evidence": [
         "quickjump-result.json",
-        "windows-dialog.json"
+        "windows-dialog.json",
+        "android-text-scale-review.json"
       ],
-      "defects": [],
+      "defects": [
+        580
+      ],
       "blockers": [],
       "source_body_sha256": "aaa044c343dc440b945d0ff645f4f1cef853f7ec91ce684c0319ac7a28520ce7",
       "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
@@ -5199,7 +5207,8 @@
         "ANDROID-DM-receive",
         "ANDROID-muted-background",
         "WINDOWS-dialog",
-        "AUDIO-audibility"
+        "AUDIO-audibility",
+        "ANDROID-DM-two-x-text-and-IME"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -5208,10 +5217,12 @@
         "quickjump-result.json",
         "web-first-attempt.json",
         "web-result.json",
-        "windows-dialog.json"
+        "windows-dialog.json",
+        "android-text-scale-review.json"
       ],
       "defects": [
-        579
+        579,
+        580
       ],
       "blockers": [],
       "source_body_sha256": "5a826c0f9652d9535cbc049e9462da7c8fc9984b7114b9c7797bcdafc33aa8fc",
@@ -7124,6 +7135,7 @@
   "scope_note": "Historical checkbox claims are preserved as input only. PENDING remains unexecuted; blocked criteria are not PASS. Partial witnesses do not satisfy an aggregate criterion.",
   "updated_utc": "2026-10-26T22:36:02.730092+00:00",
   "known_defect_issues": [
-    579
+    579,
+    580
   ]
 }
