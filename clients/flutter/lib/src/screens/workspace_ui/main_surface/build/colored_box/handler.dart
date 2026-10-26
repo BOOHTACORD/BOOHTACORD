@@ -23,7 +23,6 @@ extension MainSurfaceColoredBoxRenderer on WorkspaceMainSurfaceContext {
             fullscreenSelection: fullscreenSelection,
             onFullscreenSelectionChanged: onFullscreenSelectionChanged,
             pinnedScreenIdentity: pinnedScreenIdentity,
-            onToggleScreenPin: onToggleScreenPin,
             onToggleNavigation: onToggleNavigation,
             onOpenMembers: onOpenMembers,
           ),

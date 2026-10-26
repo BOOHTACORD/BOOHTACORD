@@ -1,0 +1,37 @@
+rule_files: []
+evaluation_interval: 1m
+tests:
+- name: Every dashboard query preserves missing data
+  interval: 1m
+  input_series: []
+  promql_expr_test:
+  - expr: boohtacord_notification_observer_up{instance=~"synthetic"}
+    eval_time: 5m
+    exp_samples: []
+  - expr: sum by(stage,reason,transport)(increase(boohtacord_notification_results_total{instance=~"synthetic",transport=~".*"}[5m]))
+    eval_time: 5m
+    exp_samples: []
+  - expr: boohtacord_notification_queue{instance=~"synthetic"}
+    eval_time: 5m
+    exp_samples: []
+  - expr: boohtacord_notification_oldest_due_seconds{instance=~"synthetic"}
+    eval_time: 5m
+    exp_samples: []
+  - expr: boohtacord_notification_worker_health{instance=~"synthetic"}
+    eval_time: 5m
+    exp_samples: []
+  - expr: boohtacord_notification_active_subscriptions{instance=~"synthetic",transport=~".*"}
+    eval_time: 5m
+    exp_samples: []
+  - expr: histogram_quantile(0.95,sum by(le,stage)(rate(boohtacord_notification_processing_seconds_bucket{instance=~"synthetic"}[1m])))
+    eval_time: 5m
+    exp_samples: []
+  - expr: sum by(outcome,namespace)(increase(boohtacord_push_relay_results_total[5m]))
+    eval_time: 5m
+    exp_samples: []
+  - expr: boohtacord_push_relay_queue_pending
+    eval_time: 5m
+    exp_samples: []
+  - expr: boohtacord_notification_sending_enabled{instance=~"synthetic"}
+    eval_time: 5m
+    exp_samples: []

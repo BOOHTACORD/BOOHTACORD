@@ -1,3 +1,4 @@
+import { parseSupportContact, type SupportContact } from '../support/contact'
 import { tracedFetch } from '../telemetry/client_tracing'
 import { apiBaseUrl } from '../config/runtime'
 import type { DirectMessageRequest } from './direct_message_client'
@@ -29,10 +30,12 @@ function item(value: unknown): DirectMessageListItem {
   }
 }
 
-export async function loadDirectMessages(request: DirectMessageRequest = tracedFetch): Promise<DirectMessageListItem[]> {
+export async function loadDirectNavigation(request: DirectMessageRequest = tracedFetch): Promise<{items: DirectMessageListItem[]; supportContact: SupportContact}> {
   const response = await request(`${apiBaseUrl}/direct-messages`, { method: 'GET', credentials: 'same-origin', headers: { accept: 'application/json' } })
   if (!response.ok) throw new Error(`Не удалось загрузить личные сообщения (${response.status}).`)
   const source = record(await response.json())
   if (!Array.isArray(source.direct_messages)) invalid()
-  return source.direct_messages.map(item)
+  return {items:source.direct_messages.map(item),supportContact:parseSupportContact(source.support_contact)}
 }
+
+export async function loadDirectMessages(request: DirectMessageRequest = tracedFetch): Promise<DirectMessageListItem[]> { return (await loadDirectNavigation(request)).items }

@@ -12,6 +12,7 @@ SELECT id::text, display_name
 FROM users
 WHERE id <> $1::uuid
   AND blocked_at IS NULL
+  AND NOT EXISTS(SELECT 1 FROM support_product_identity WHERE account_id=users.id)
   AND ($2::uuid IS NULL OR id > $2::uuid)
 ORDER BY id ASC
 LIMIT ($3::int + 1)`

@@ -14,7 +14,13 @@
       "docs/adr/ADR-002-opaque-session-tokens.md",
       "evidence/qa/web-session-retention-2026-10-21.md",
       "clients/web/tests/auth_session_retention/**",
-      "tools/qa/local_features/features.json"
+      "tools/qa/local_features/features.json",
+      "backend/internal/identity/password/**",
+      "clients/flutter/lib/src/core/http/transport.dart",
+      "clients/flutter/lib/src/core/http/api_failure.dart",
+      "clients/flutter/lib/src/features/session/password_reset/**",
+      "backend/internal/identity/admit_login/**",
+      "backend/internal/identity/complete_password_reset/**"
     ],
     "web": [
       "tests/password_generation/playwright.config.ts",
@@ -23,7 +29,11 @@
     ],
     "flutter": [
       "test/password_generation/visual_test.dart",
-      "test/password_reset_screen_test.dart"
+      "test/password_reset_screen_test.dart",
+      "test/auth_capacity_test.dart",
+      "test/auth_screen_test.dart",
+      "test/auth_rate_limit_test.dart",
+      "test/reset_preflight_contract_test.dart"
     ],
     "acceptance": {
       "session_retention": {
@@ -45,7 +55,95 @@
           "clients/flutter/test/password_reset_screen_test.dart"
         ],
         "scope": "On reset completion, independently show or hide the new password and confirmation; both are masked by default."
+      },
+      "bounded_password_admission": {
+        "issue": 532,
+        "focused": [
+          "backend/internal/identity/password/admission_test.go",
+          "backend/internal/identity/password/saturation_test.go",
+          "backend/internal/identity/password/reset_admission_test.go",
+          "clients/web/src/identity/authentication_flow/retry_after.spec.ts",
+          "clients/web/tests/password_generation/capacity.browser.spec.ts",
+          "clients/web/tests/password_reset_visibility/visibility.browser.spec.ts",
+          "clients/flutter/test/auth_capacity_test.dart",
+          "clients/flutter/test/auth_screen_test.dart"
+        ],
+        "scope": "Four process-local active Argon2 slots, zero waiting queue, context cancellation and 503 AUTH_BUSY with Retry-After. Web and shared Flutter preserve editable auth/reset forms, cookie and explicit manual retry; no password persistence or automatic request loop. Native smoke and forced-capacity unit/browser scenarios are separate evidence."
+      },
+      "account_login_admission": {
+        "issue": 533,
+        "focused": [
+          "backend/internal/identity/admit_login/budget_test.go",
+          "backend/internal/identity/login_user/api/admission_test.go",
+          "backend/internal/identity/login_user/api/admission_database_test.go",
+          "backend/internal/identity/password/account_budget_test.go",
+          "clients/flutter/test/auth_rate_limit_test.dart",
+          "clients/flutter/test/auth_screen_test.dart",
+          "clients/web/tests/password_generation/capacity.browser.spec.ts"
+        ],
+        "scope": "Atomic normalized-account reservation precedes lookup/verifier. Eight attempts per short 30-second process-local window; bounded storage, no persistent lock, no denial extension, no refund for ambiguous started work. Shared KDF admission unchanged. Web/shared Flutter retain masked editable form/session and display Retry-After for explicit manual retry; forced-429 fixtures and normal native API smoke remain separate evidence."
+      },
+      "reset_capability_preflight": {
+        "issue": 535,
+        "focused": [
+          "backend/internal/identity/password/reset_preflight_test.go",
+          "backend/internal/identity/password/reset_preflight_database_test.go",
+          "backend/internal/identity/password/reset_preflight_race_database_test.go",
+          "backend/internal/identity/complete_password_reset/postgres/preflight_test.go",
+          "clients/flutter/test/reset_preflight_contract_test.dart",
+          "clients/web/tests/password_reset_visibility/visibility.browser.spec.ts"
+        ],
+        "scope": "Read-only digest eligibility check with <=2s query deadline before shared KDF admission. Invalid/expired/used capabilities and observed cancellation do no unnecessary KDF or mutation. Final unchanged atomic Consume rechecks eligibility; real PostgreSQL verifies expiry race, concurrent services, rollback and session/lease revocation outbox/audit. Existing Web/shared Flutter generic 400, safe 500, AUTH_BUSY and success semantics retained; no automatic retries/logout. Native smoke and fixture error cases are separate evidence."
       }
+    },
+    "parity": [
+      {
+        "id": "auth.session",
+        "expected": "Login/logout/reset and session restore use the same ACL; temporary network failure does not expire the account.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "Web PR #452 / issue #349; Flutter PR #572; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/workspace/WorkspaceApp.vue",
+            "tests": [
+              "clients/web/src/design/authentication_v2.spec.ts",
+              "clients/web/src/identity/author_directory.spec.ts",
+              "clients/web/src/identity/authentication_v2_presentation.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/session/lifecycle/controller.dart",
+            "tests": [
+              "clients/flutter/test/password_generation/visual_test.dart",
+              "clients/flutter/test/password_reset_screen_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/session/lifecycle/controller.dart",
+            "tests": [
+              "clients/flutter/test/password_generation/visual_test.dart",
+              "clients/flutter/test/password_reset_screen_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 535,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
+      },
+      "scope": "SEC-003: shared backend read-only reset capability preflight; existing Web/shared Flutter error and success implementation retained and regression-tested without auto retry/logout. Source 16e6a49a151bbc32c1c18a3a3479e1e0ca4c1768: 1623 Web and 1617 Flutter tests PASS (1 Flutter skip), desktop real API and Android/iOS native smoke PASS. Original local report retains 17 PASS / mobile burst-50 FAIL before reset; unchanged same-source exact mobile lifecycle rerun PASS including reset completion and used-link rejection. Relevant original-resolution result/form/native auth-workspace images reviewed; no baseline approval or physical/media/deployment claim. Evidence: evidence/security/sec03-reset-preflight-2026-10-23.md."
     }
   },
   "connection_status": {
@@ -56,12 +154,23 @@
       "clients/web/src/channel/topology_store.spec.ts",
       "clients/web/src/workspace/WorkspaceApp.vue",
       "clients/web/src/request_feedback.ts",
-      "tools/qa/local_features/features.json"
+      "tools/qa/local_features/features.json",
+      "clients/flutter/lib/src/features/realtime/**",
+      "clients/flutter/lib/src/features/voice/roster_state/**",
+      "clients/flutter/lib/src/screens/workspace_ui/connection_status/**",
+      "clients/flutter/lib/src/screens/workspace_ui/sidebar/component.dart",
+      "clients/flutter/integration_test/local_qa_test.dart",
+      "clients/web/src/realtime/**"
     ],
     "web": [
       "tests/connection_status/playwright.config.ts"
     ],
-    "flutter": [],
+    "flutter": [
+      "test/realtime_scope/delivery_test.dart",
+      "test/realtime_scope/retry_policy_test.dart",
+      "test/workspace_connection_status_test.dart",
+      "test/voice_roster_state/app_composition_test.dart"
+    ],
     "acceptance": {
       "recovery_panel": {
         "browser": "clients/web/tests/connection_status/playwright.config.ts",
@@ -71,7 +180,72 @@
           "clients/web/tests/connection_status/status.browser.spec.ts"
         ],
         "scope": "Web connection recovery panel preserves independent chat, voice and roster status; retry actions remain separately accessible and operable. Network failures use localized retry guidance instead of raw browser errors or an incorrect login prompt. The panel wraps within a narrow sidebar and uses visible focus and status indicators. No native or media-quality claim."
+      },
+      "flutter_recovery_panel": {
+        "native": "integration_test/local_qa_test.dart",
+        "focused": [
+          "clients/flutter/test/workspace_connection_status_test.dart",
+          "clients/flutter/test/voice_roster_state/app_composition_test.dart"
+        ],
+        "scope": "Flutter workspace sidebar presents independent chat, voice and roster recovery states with localized retry actions, retained-roster age, compact wrapping, and healthy-state dismissal. Existing bounded realtime and roster retry policies are unchanged. Desktop/mobile widget captures are paired with an authenticated native smoke that drives the production card through a voice-error state; no media-quality claim."
+      },
+      "client_parity_518": {
+        "focused": [
+          "clients/flutter/integration_test/client_parity_qa_test.dart",
+          "tools/qa/client_parity/native.py",
+          "clients/flutter/test/realtime_scope/delivery_test.dart",
+          "clients/flutter/test/admin_telemetry/api_test.dart"
+        ],
+        "scope": "Owned real Go/PostgreSQL/TLS runtime: durable TEXT/DM replay after socket closure, edits/deletes/social state, ordinary second account, reachable administrator telemetry; Android and iOS have separate runs. Physical media remains NOT_RUN."
       }
+    },
+    "parity": [
+      {
+        "id": "realtime.recovery",
+        "expected": "Apply durable hints in order before cursor acknowledgement; expire cursor into full snapshots; ready alone resets bounded jitter retry.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/realtime/realtime_store.ts",
+            "tests": [
+              "clients/web/src/realtime/realtime_delivery_parity.spec.ts",
+              "clients/web/src/realtime/realtime_reconnect.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/realtime/lifecycle/controller.dart",
+            "tests": [
+              "clients/flutter/test/realtime_scope/delivery_test.dart",
+              "clients/flutter/test/realtime_scope/retry_policy_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/realtime/lifecycle/controller.dart",
+            "tests": [
+              "clients/flutter/test/realtime_scope/delivery_test.dart",
+              "clients/flutter/test/realtime_scope/retry_policy_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 553,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; reconnect and retry policies remain unchanged. 2026-10-24 (#518): Flutter adds the Web-style independent connection recovery card, driven by existing chat/voice/roster state; Android/iOS share the widget and the native workspace smoke is recorded separately. 2026-10-25 (#554): Notification delivery capability uses existing realtime composition; chat/voice/roster retry and recovery policies are preserved. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN."
     }
   },
   "voice": {
@@ -89,6 +263,12 @@
       "clients/web/src/voice/TouchPttButton.vue",
       "clients/web/src/design/design_v2_audio_presentation.css",
       "clients/flutter/lib/src/features/voice/*",
+      "clients/flutter/packages/livekit_client/lib/src/audio/*",
+      "clients/flutter/packages/livekit_client/test/audio/*",
+      "clients/flutter/packages/livekit_client/shared_swift/LiveKitPlugin.swift",
+      "clients/flutter/packages/flutter_webrtc/macos/flutter_webrtc/Sources/flutter_webrtc/FlutterWebRTCPlugin.m",
+      "clients/flutter/packages/livekit_client/.changes/voice-call-background-audio.md",
+      "evidence/qa/flutter-voice-audio-ducking-2026-10-24.json",
       "clients/flutter/lib/src/widgets/voice*",
       "clients/flutter/lib/src/services/voice*",
       "clients/web/tests/voice_interface/fixture.ts",
@@ -107,7 +287,8 @@
     ],
     "flutter": [
       "test/voice_disconnect/visual_capture_test.dart",
-      "test/web_parity/voice_geometry_test.dart"
+      "test/web_parity/voice_geometry_test.dart",
+      "packages/livekit_client/test/audio/audio_session_test.dart"
     ],
     "acceptance": {
       "issue59": {
@@ -148,7 +329,70 @@
           "clients/flutter/test/workspace_screen_test.dart"
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+      },
+      "voice_audio_ducking": {
+        "focused": [
+          "clients/flutter/packages/livekit_client/test/audio/audio_session_test.dart"
+        ],
+        "scope": "Joining a Flutter voice channel avoids Android's system fade by not requesting audio focus while retaining communication routing; on macOS 14+ WebRTC voice processing uses its minimum other-audio ducking level. Verify native audio on physical Android and macOS targets; unit tests and debug builds are not physical audio acceptance."
+      },
+      "automatic_voice_handoff": {
+        "focused": [
+          "clients/web/src/voice/connection_state/join_transfer.spec.ts",
+          "clients/web/tests/voice_interface/controls.browser.spec.ts"
+        ],
+        "scope": "After the user explicitly chooses a voice channel, Web automatically yields an existing same-account browser controller or retries one ACTIVE_VOICE_LEASE conflict with transfer=true. Preserve the requested microphone/listener mode, avoid a confirmation dialog and never loop if the transfer fails. The production prejoin progress state is captured at 1440x900 and has no dialog or confirm action.",
+        "browser": "clients/web/tests/voice_interface/playwright.config.ts"
       }
+    },
+    "parity": [
+      {
+        "id": "voice.controls",
+        "expected": "Join, mute/deafen, PTT, volume, lease revocation and reconnect retain the same user intent and server ACL.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/voice/VoiceDock.vue",
+            "tests": [
+              "clients/web/src/workspace/workspace_drawer_voice_controls.spec.ts",
+              "clients/web/src/workspace/voice_controls.spec.ts",
+              "clients/web/src/workspace/voice_lease_realtime.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/voice/lifecycle/controller.dart",
+            "tests": [
+              "clients/flutter/test/voice_disconnect/visual_capture_test.dart",
+              "clients/flutter/test/web_parity/voice_geometry_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/voice/lifecycle/controller.dart",
+            "tests": [
+              "clients/flutter/test/voice_disconnect/visual_capture_test.dart",
+              "clients/flutter/test/web_parity/voice_geometry_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 518,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "platform_exception",
+        "android": "platform_exception"
+      },
+      "scope": "2026-10-24 (Web PR #544): Flutter now matches the compact participant overlay during active stream viewing, including fullscreen; the ended-stream footer remains. Paired native stream acceptance is NOT_VERIFIED. 2026-10-24 (#518 Web-to-Flutter parity): Flutter adds the shared sidebar recovery card for independent chat/voice/roster status and localized retry actions; Android and iOS use the same Flutter presentation while existing retry policies stay unchanged. 2026-10-24 (window audio preference): Web screen-share startup asks the browser to prefer selected-window audio; iOS and Android use native capture APIs and are unchanged. Physical browser picker isolation remains NOT_RUN. Widget captures and authenticated native workspace acceptance are tracked separately; no media-quality or physical-accessibility claim. 2026-10-25 (Web voice handoff): after the user explicitly selects a target voice channel, Web automatically yields an existing same-account browser controller or retries one ACTIVE_VOICE_LEASE conflict with transfer=true. The selected listener/microphone mode is preserved; retries are bounded to one, and a failed transfer remains an error. Flutter/iOS/Android behavior is unchanged; Android and iOS retain their existing platform exceptions."
     }
   },
   "screen": {
@@ -167,6 +411,10 @@
       "contracts/realtime.schema.json",
       "clients/web/src/voice/connection_state/media.ts",
       "clients/web/src/voice/connection_state/store.ts",
+      "clients/web/src/voice/screen_publisher/livekit_port.ts",
+      "clients/web/src/voice/screen_publisher/window_audio_capture.ts",
+      "clients/web/src/voice/screen_publisher/window_audio_capture.spec.ts",
+      "clients/web/src/voice/livekit_screen_publishing.spec.ts",
       "clients/web/src/voice/screen_viewer_controller.ts",
       "clients/web/src/voice/screen_viewer_types.ts",
       "clients/web/src/voice/livekit_screen_registry.ts",
@@ -200,6 +448,8 @@
       "clients/flutter/lib/src/screens/workspace_ui/voice_screen_viewer/**",
       "clients/flutter/lib/src/widgets/screen*",
       "evidence/qa/flutter-screen-audience-2026-10-21.md",
+      "evidence/qa/web-screen-viewer-controls-2026-10-21.md",
+      "evidence/qa/web-screen-viewer-fullscreen-2026-10-22.md",
       "clients/flutter/packages/livekit_client/lib/src/widgets/video_track_renderer*",
       "clients/flutter/ios/ScreenShareExtension/*",
       "clients/flutter/lib/src/services/pinned_screen_mini_player_policy.dart",
@@ -249,7 +499,13 @@
       "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/**",
       "clients/flutter/lib/src/screens/voice_screen_ended.dart",
       "clients/flutter/lib/src/screens/voice_viewer_layout.dart",
-      "clients/flutter/lib/src/screens/workspace_ui/voice_participant_strip/**"
+      "clients/flutter/lib/src/screens/voice_screen_stage.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_participant_strip/**",
+      "clients/flutter/lib/src/screens/screen_fullscreen_overlay.dart",
+      "clients/flutter/lib/src/widgets/screen_viewer_action_layer.dart",
+      "clients/flutter/test/screen_viewer_transient_controls_test.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_viewer_participants_menu.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_viewer_streams_menu.dart"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -285,9 +541,20 @@
       "test/screen_video_renderer_ownership_test.dart",
       "test/screen_fullscreen_renderer_gate_test.dart",
       "test/web_parity/fullscreen_handoff_test.dart",
-      "test/web_parity/mini_surface_test.dart"
+      "test/web_parity/mini_surface_test.dart",
+      "test/parity518/viewer_commands_test.dart",
+      "test/parity518/audience_hints_test.dart",
+      "test/screen_viewer_transient_controls_test.dart",
+      "test/voice_viewer_participants_panel_test.dart"
     ],
     "acceptance": {
+      "window_audio_preference": {
+        "focused": [
+          "clients/web/src/voice/screen_publisher/window_audio_capture.spec.ts",
+          "clients/web/src/voice/livekit_screen_publishing.spec.ts"
+        ],
+        "scope": "When Web screen sharing requests audio, the next getDisplayMedia call prefers audio from the selected window and restores the original browser method before the picker continues or fails. Unit tests verify the request only; physical Chrome/OS picker audio isolation and game-audio playback remain NOT_RUN until tested on supported Windows/macOS hardware."
+      },
       "issue325_audio": {
         "runtime": "tools/qa/macos_sender/candidate.py",
         "native": "tools/build/webrtc_sdk/build_macos.py",
@@ -306,6 +573,19 @@
       "participant_names": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
         "scope": "Voice viewer participant cards are widened to 176px for longer names while horizontal scrolling and narrow/200% text layouts remain within the viewport."
+      },
+      "viewer_controls": {
+        "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
+        "focused": [
+          "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
+        ],
+        "scope": "Mouse movement reveals overlay actions that fade and slide down after inactivity; keyboard focus and touch remain accessible. The primary overlay action enters/exits browser fullscreen without enabling app-area expansion; the separate menu action expands to the app area. Viewer controls also stop viewing a remote screen share."
+      },
+      "flutter_transient_controls": {
+        "focused": [
+          "clients/flutter/test/screen_viewer_transient_controls_test.dart"
+        ],
+        "scope": "On desktop, mouse activity reveals stage and fullscreen screen-viewer actions; they fade and slide down after inactivity. Keyboard focus keeps actions reachable, and touch platforms keep the controls visible. Visual capture covers the fullscreen viewer action tray; no stream-quality or physical-media claim."
       },
       "issue328": {
         "runtime": "tools/qa/macos_sender/run.py",
@@ -386,7 +666,159 @@
           "clients/flutter/test/web_parity/mini_surface_test.dart"
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+      },
+      "compact_viewer": {
+        "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
+        "focused": [
+          "clients/web/tests/screen_share_ui/compact.browser.spec.ts",
+          "clients/flutter/test/voice_viewer_participants_panel_test.dart",
+          "clients/flutter/test/pinned_screen_mini_player_policy_test.dart",
+          "clients/flutter/test/workspace_screen_test.dart"
+        ],
+        "scope": "Web and Flutter video fill the available height. Controls overlay the video; participant and multi-stream panels expand on demand. The participant panel stays compact around its roster instead of covering the stream with unused width or a separate close-button row. Flutter keeps its active roster in an on-demand overlay during room and fullscreen viewing, while the ended-view participant footer remains unchanged. Selecting a stream automatically retains it in the mini-player while navigating to text, a DM or workspace settings in the same active voice lease; a manual pin is not required. A single selected stream has no duplicate thumbnail. Diagnostics remain mounted for recovery and open on demand. The registered native runtime smoke does not exercise a live stream; stream-specific native/media acceptance stays NOT_VERIFIED until the paired receiver scenario runs."
       }
+    },
+    "parity": [
+      {
+        "id": "screen.viewer.commands",
+        "expected": "A selected stream stays mounted across text, DM and workspace navigation within the active voice lease and opens in the mini-player automatically; returning to voice hands the renderer back, fullscreen exit preserves viewing, and stop unsubscribes remote video/audio without leaving voice.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/workspace/WorkspaceApp.vue",
+            "tests": [
+              "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts",
+              "clients/web/tests/mini_player/mini.browser.spec.ts",
+              "clients/web/src/voice/mini_player_policy.spec.ts",
+              "clients/web/src/voice/screen_viewer_design_icons.spec.ts",
+              "clients/web/src/voice/screen_viewer_controller.spec.ts",
+              "clients/web/src/voice/screen_receiver_reader.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/screens/screen_fullscreen_overlay.dart",
+            "tests": [
+              "clients/flutter/test/uiux_2026/dialog_visual_capture_test.dart",
+              "clients/flutter/test/video_track_renderer_stream_lifecycle_test.dart",
+              "clients/flutter/test/screen_setup/surface_test.dart",
+              "clients/flutter/test/pinned_screen_mini_player_layout_test.dart",
+              "clients/flutter/test/pinned_screen_mini_player_policy_test.dart",
+              "clients/flutter/test/workspace_screen_test.dart",
+              "clients/flutter/test/screen_setup/content_mode_test.dart",
+              "clients/flutter/test/features/screen/sender_metadata/api_test.dart",
+              "clients/flutter/test/features/screen/sender_metadata/latest_writer_test.dart",
+              "clients/flutter/test/features/screen/sender_metadata/confirmed_profile_test.dart",
+              "clients/flutter/test/features/screen/sender_metadata/native_readback_test.dart",
+              "clients/flutter/test/features/screen/sender_metadata/runtime_test.dart",
+              "clients/flutter/test/features/screen_rollout/native_codec_contract_test.dart",
+              "clients/flutter/test/features/screen_rollout/native_codec_policy_test.dart",
+              "clients/flutter/test/features/screen/capture/confirmed_dimensions_test.dart",
+              "clients/flutter/test/features/screen/capture/dimension_publish_test.dart",
+              "clients/flutter/test/screen_setup/keyboard_test.dart",
+              "clients/flutter/test/screen_setup/footer_layout_test.dart",
+              "clients/flutter/test/screen_setup/action_scope_test.dart",
+              "clients/flutter/test/screen_viewer_presence_api_test.dart",
+              "clients/flutter/test/screen_viewer_presence_controller_test.dart",
+              "clients/flutter/test/voice_lease_identity_test.dart",
+              "clients/flutter/test/voice_participant_strip_audience_test.dart",
+              "clients/flutter/test/web_parity/mini_video_test.dart",
+              "clients/flutter/test/web_parity/pinned_dock_test.dart",
+              "clients/flutter/test/screen_video_renderer_ownership_test.dart",
+              "clients/flutter/test/screen_fullscreen_renderer_gate_test.dart",
+              "clients/flutter/test/web_parity/fullscreen_handoff_test.dart",
+              "clients/flutter/test/web_parity/mini_surface_test.dart",
+              "clients/flutter/test/parity518/viewer_commands_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/screens/screen_fullscreen_overlay.dart",
+            "tests": [
+              "clients/flutter/test/uiux_2026/dialog_visual_capture_test.dart",
+              "clients/flutter/test/video_track_renderer_stream_lifecycle_test.dart",
+              "clients/flutter/test/screen_setup/surface_test.dart",
+              "clients/flutter/test/pinned_screen_mini_player_layout_test.dart",
+              "clients/flutter/test/pinned_screen_mini_player_policy_test.dart",
+              "clients/flutter/test/workspace_screen_test.dart",
+              "clients/flutter/test/screen_setup/content_mode_test.dart",
+              "clients/flutter/test/features/screen/sender_metadata/api_test.dart",
+              "clients/flutter/test/features/screen/sender_metadata/latest_writer_test.dart",
+              "clients/flutter/test/features/screen/sender_metadata/confirmed_profile_test.dart",
+              "clients/flutter/test/features/screen/sender_metadata/native_readback_test.dart",
+              "clients/flutter/test/features/screen/sender_metadata/runtime_test.dart",
+              "clients/flutter/test/features/screen_rollout/native_codec_contract_test.dart",
+              "clients/flutter/test/features/screen_rollout/native_codec_policy_test.dart",
+              "clients/flutter/test/features/screen/capture/confirmed_dimensions_test.dart",
+              "clients/flutter/test/features/screen/capture/dimension_publish_test.dart",
+              "clients/flutter/test/screen_setup/keyboard_test.dart",
+              "clients/flutter/test/screen_setup/footer_layout_test.dart",
+              "clients/flutter/test/screen_setup/action_scope_test.dart",
+              "clients/flutter/test/screen_viewer_presence_api_test.dart",
+              "clients/flutter/test/screen_viewer_presence_controller_test.dart",
+              "clients/flutter/test/voice_lease_identity_test.dart",
+              "clients/flutter/test/voice_participant_strip_audience_test.dart",
+              "clients/flutter/test/web_parity/mini_video_test.dart",
+              "clients/flutter/test/web_parity/pinned_dock_test.dart",
+              "clients/flutter/test/screen_video_renderer_ownership_test.dart",
+              "clients/flutter/test/screen_fullscreen_renderer_gate_test.dart",
+              "clients/flutter/test/web_parity/fullscreen_handoff_test.dart",
+              "clients/flutter/test/web_parity/mini_surface_test.dart",
+              "clients/flutter/test/parity518/viewer_commands_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      },
+      {
+        "id": "screen.viewer.compact_participants",
+        "expected": "Active stream video uses the available stage height. Participant and watcher details open in a compact, dismissible panel over the video, including in fullscreen; ending the stream preserves the existing participant footer.",
+        "issue": 544,
+        "status": "PARITY",
+        "source": "Web commit 88dc8f49; current Flutter checkout",
+        "shipped": "Web browser coverage and Flutter widget coverage are registered separately; native live-stream acceptance is tracked as NOT_VERIFIED.",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/voice/ScreenViewerParticipantStrip.vue",
+            "tests": [
+              "clients/web/tests/screen_share_ui/compact.browser.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Browser acceptance checks compact sizing and on-demand visibility; release receipt binds exact SHA."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/screens/workspace_ui/voice_viewer_participants_menu.dart",
+            "tests": [
+              "clients/flutter/test/voice_viewer_participants_panel_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Widget coverage checks room and fullscreen overlays; an actual native receiver session is required for media acceptance."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/screens/workspace_ui/voice_viewer_participants_menu.dart",
+            "tests": [
+              "clients/flutter/test/voice_viewer_participants_panel_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Widget coverage checks room and fullscreen overlays; an actual native receiver session is required for media acceptance."
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 518,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "platform_exception",
+        "android": "platform_exception"
+      },
+      "scope": "2026-10-24 (Web PR #452 / issue #349): Flutter retains the selected screen subscription while navigating to text, DM or workspace settings under the same active voice lease, shows the mini-player automatically without manual pinning, and hands the renderer back on return to voice. Leaving or switching the voice lease still clears the selection. 2026-10-24 (#566): Flutter desktop screen-viewer actions follow the Web pointer-idle fade/slide behavior; iOS and Android intentionally keep them visible because touch has no hover state. 2026-10-24 (#518 Web-to-Flutter parity): the Flutter connection recovery card is shared across desktop, Android and iOS. 2026-10-24 (window audio preference): this change applies only to the Web getDisplayMedia browser capture; native iOS/Android capture APIs are unchanged. Physical Chrome/OS picker audio isolation remains NOT_RUN. Widget tests and desktop/mobile source captures cover presentation; native runtime acceptance remains unverified because no QA devices are configured. 2026-10-24 (Web commit 88dc8f49): Flutter now presents the active screen-viewer roster in a compact on-demand overlay, including fullscreen, and no longer reserves the 92 dp participant footer while the stream is active. The existing ended-view footer remains. Focused widget coverage is registered; paired native stream acceptance remains NOT_VERIFIED. 2026-10-24 (Flutter stream-viewer layout parity, PR #573): the active Flutter stage fills available height; diagnostics, participant and stream selectors, and audio/stop/fullscreen actions overlay it; stream choices open on demand only when multiple streams exist. Focused Flutter widget tests pass and 900x640 source captures were reviewed; the black fixture proves layout only. Web rendering is unchanged, with browser checks retained in PR CI. Android/iOS native runtime is BLOCKED because this host has no registered QA devices; live-stream/media acceptance remains NOT_VERIFIED. 2026-10-25 (Web voice handoff): the shared connection store now automatically transfers only after an explicit target-channel join and retries once; screen-viewer behavior and media contracts are unchanged. Flutter screen-viewer behavior and its existing platform exceptions are unchanged; the registered Web screen-share UI regression remains in CI. 2026-10-25 (#554): Notification taps resolve only a permitted message; they never initiate voice or screen sharing. Existing screen-viewer behavior and platform exceptions are preserved. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN."
     }
   },
   "screen_metrics": {
@@ -429,6 +861,74 @@
           "tools/qa/macos_sender/test_process_resources.py",
           "tools/qa/macos_sender/capture_observer_test.dart"
         ]
+      }
+    },
+    "parity": [
+      {
+        "id": "screen.diagnostics",
+        "expected": "Distinguish send/receive/decode/present and unknown measurements; no invented capture or performance PASS.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/voice/VoiceDock.vue",
+            "tests": [
+              "clients/web/src/realtime/realtime_store.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/screen/lifecycle/controller.dart",
+            "tests": [
+              "clients/flutter/test/screen_share_layer_sampling_test.dart",
+              "clients/flutter/test/screen_share_livekit_layers_test.dart",
+              "clients/flutter/test/screen_share_metrics_generation_gate_test.dart",
+              "clients/flutter/test/screen_share_metrics_test.dart",
+              "clients/flutter/test/screen_share_stats_poller_test.dart",
+              "clients/flutter/test/screen_share_sender_report_test.dart",
+              "clients/flutter/test/screen_share_report_cadence_test.dart",
+              "clients/flutter/test/screen_share_report_payload_test.dart",
+              "clients/flutter/test/screen_share_report_isolation_test.dart",
+              "clients/flutter/test/screen_share_sender_stalled_test.dart",
+              "clients/flutter/test/screen_share_diagnostics_test.dart",
+              "clients/flutter/test/screen_metrics_report_api_test.dart",
+              "clients/flutter/test/screen_share_report_error_class_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/screen/lifecycle/controller.dart",
+            "tests": [
+              "clients/flutter/test/screen_share_layer_sampling_test.dart",
+              "clients/flutter/test/screen_share_livekit_layers_test.dart",
+              "clients/flutter/test/screen_share_metrics_generation_gate_test.dart",
+              "clients/flutter/test/screen_share_metrics_test.dart",
+              "clients/flutter/test/screen_share_stats_poller_test.dart",
+              "clients/flutter/test/screen_share_sender_report_test.dart",
+              "clients/flutter/test/screen_share_report_cadence_test.dart",
+              "clients/flutter/test/screen_share_report_payload_test.dart",
+              "clients/flutter/test/screen_share_report_isolation_test.dart",
+              "clients/flutter/test/screen_share_sender_stalled_test.dart",
+              "clients/flutter/test/screen_share_diagnostics_test.dart",
+              "clients/flutter/test/screen_metrics_report_api_test.dart",
+              "clients/flutter/test/screen_share_report_error_class_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 518,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
       }
     }
   },
@@ -488,6 +988,61 @@
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
       }
+    },
+    "parity": [
+      {
+        "id": "settings.profile",
+        "expected": "Account profile, avatar, sessions and audio settings have equivalent validation, conflict and stale response behavior.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/workspace/WorkspaceApp.vue",
+            "tests": [
+              "clients/web/src/identity/profile_settings_v2_layout.spec.ts",
+              "clients/web/src/workspace/settings_panel_focus.spec.ts",
+              "clients/web/src/workspace/settings_exit_guard.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/screens/profile_screen.dart",
+            "tests": [
+              "clients/flutter/test/uiux_2026/personal_settings_visual_capture_test.dart",
+              "clients/flutter/test/profile_screen_test.dart",
+              "clients/flutter/test/web_parity/audio_hierarchy_test.dart",
+              "clients/flutter/test/web_parity/popover_layout_test.dart",
+              "clients/flutter/test/web_parity/profile_overlay_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/screens/profile_screen.dart",
+            "tests": [
+              "clients/flutter/test/uiux_2026/personal_settings_visual_capture_test.dart",
+              "clients/flutter/test/profile_screen_test.dart",
+              "clients/flutter/test/web_parity/audio_hierarchy_test.dart",
+              "clients/flutter/test/web_parity/popover_layout_test.dart",
+              "clients/flutter/test/web_parity/profile_overlay_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 553,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
+      },
+      "scope": "2026-10-24 (#553 Flutter follow-up): the shared members-panel path adds the current voice-channel caption and screen-share icon; audio and settings controls are unchanged. The widget behavior is shared by Android and iOS. 2026-10-24 (#570): compact Flutter member rows show the channel name without a redundant prefix and wrap it to two lines; Web and settings controls are unchanged. 2026-10-25 (#554): Account notification preferences and explicit device consent are wired into Web and shared Flutter settings; focused settings tests and local visual captures passed. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN."
     }
   },
   "admin": {
@@ -496,7 +1051,8 @@
       "clients/web/src/guild/*",
       "clients/flutter/lib/src/features/admin/*",
       "clients/flutter/lib/src/features/guild/*",
-      "clients/flutter/lib/src/features/admin/guild_settings/**"
+      "clients/flutter/lib/src/features/admin/guild_settings/**",
+      "clients/flutter/lib/src/features/authorization/permissions/**"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts"
@@ -507,7 +1063,10 @@
       "test/admin_accessibility/create_error_readability_test.dart",
       "test/web_parity/guild_settings_test.dart",
       "test/admin_guild_settings_test.dart",
-      "test/guild_settings_widgets_test.dart"
+      "test/guild_settings_widgets_test.dart",
+      "test/admin_telemetry/api_test.dart",
+      "test/admin_telemetry/controller_test.dart",
+      "test/admin_telemetry/panel_test.dart"
     ],
     "acceptance": {
       "issue295": {
@@ -530,6 +1089,70 @@
           "clients/flutter/test/workspace_screen_test.dart"
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+      },
+      "installation_telemetry_336": {
+        "focused": [
+          "clients/web/src/admin/telemetry/client.spec.ts",
+          "backend/internal/observability/installation/api/handler_test.go"
+        ],
+        "scope": "Explicit opt-in installation telemetry settings, secret-free state, disabled queue flush and same-origin administrator boundaries; no media changes."
+      },
+      "client_parity_518": {
+        "focused": [
+          "clients/flutter/integration_test/client_parity_qa_test.dart",
+          "tools/qa/client_parity/native.py",
+          "clients/flutter/test/realtime_scope/delivery_test.dart",
+          "clients/flutter/test/admin_telemetry/api_test.dart"
+        ],
+        "scope": "Owned real Go/PostgreSQL/TLS runtime: durable TEXT/DM replay after socket closure, edits/deletes/social state, ordinary second account, reachable administrator telemetry; Android and iOS have separate runs. Physical media remains NOT_RUN."
+      }
+    },
+    "parity": [
+      {
+        "id": "admin.telemetry",
+        "expected": "Administrator can read installation state and opt into central diagnostics only with explicit consent and HTTPS; 403/old endpoint/network are not successful delivery.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/admin/telemetry/AdminTelemetrySettings.vue",
+            "tests": [
+              "clients/web/src/admin/telemetry/client.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/admin/telemetry/panel.dart",
+            "tests": [
+              "clients/flutter/test/admin_telemetry/api_test.dart",
+              "clients/flutter/test/admin_telemetry/controller_test.dart",
+              "clients/flutter/test/admin_telemetry/panel_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/admin/telemetry/panel.dart",
+            "tests": [
+              "clients/flutter/test/admin_telemetry/api_test.dart",
+              "clients/flutter/test/admin_telemetry/controller_test.dart",
+              "clients/flutter/test/admin_telemetry/panel_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 518,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
       }
     }
   },
@@ -556,7 +1179,8 @@
       "clients/flutter/lib/src/screens/workspace_ui/message_row/**",
       "clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/**",
       "clients/flutter/lib/src/widgets/message_timestamp.dart",
-      "clients/flutter/lib/src/services/message_presentation.dart"
+      "clients/flutter/lib/src/services/message_presentation.dart",
+      "clients/flutter/lib/src/features/text/history_state/**"
     ],
     "web": [
       "tests/conversation_action_disclosure/playwright.config.ts",
@@ -646,6 +1270,64 @@
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
       }
+    },
+    "parity": [
+      {
+        "id": "chat.text-dm",
+        "expected": "Pair-only DM and TEXT support history, protected files, reply/edit/delete, unread, reactions and pins; retry never duplicates a user command.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/workspace/WorkspaceApp.vue",
+            "tests": [
+              "clients/web/src/design/design_v2_chat_geometry.spec.ts",
+              "clients/web/src/conversation/chat_geometry.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/conversation/lifecycle/controller.dart",
+            "tests": [
+              "clients/flutter/test/uiux_2026/dialog_visual_capture_test.dart",
+              "clients/flutter/test/message_action_menu_test.dart",
+              "clients/flutter/test/features/workspace/dm_drafts/widget_test.dart",
+              "clients/flutter/test/clipboard_paste_edit_generation_test.dart",
+              "clients/flutter/test/message_attachment_composer_test.dart",
+              "clients/flutter/test/workspace_screen_test.dart",
+              "clients/flutter/test/web_parity/message_policy_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/conversation/lifecycle/controller.dart",
+            "tests": [
+              "clients/flutter/test/uiux_2026/dialog_visual_capture_test.dart",
+              "clients/flutter/test/message_action_menu_test.dart",
+              "clients/flutter/test/features/workspace/dm_drafts/widget_test.dart",
+              "clients/flutter/test/clipboard_paste_edit_generation_test.dart",
+              "clients/flutter/test/message_attachment_composer_test.dart",
+              "clients/flutter/test/workspace_screen_test.dart",
+              "clients/flutter/test/web_parity/message_policy_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 522,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed."
     }
   },
   "shell": {
@@ -661,10 +1343,12 @@
       "clients/flutter/lib/src/screens/workspace_ui/*",
       "clients/flutter/lib/src/screens/guild_quick_jump/*",
       "clients/flutter/lib/src/features/workspace/*",
+      "clients/flutter/lib/src/features/workspace/navigation/favorites/**",
       "clients/web/src/shared/action_hint/*",
       "clients/web/src/shared/workspace_header/*",
       "clients/flutter/lib/src/screens/workspace_ui/header/**",
       "clients/flutter/lib/src/screens/workspace_ui/channel_row/**",
+      "clients/flutter/lib/src/screens/workspace_ui/channel_navigation/**",
       "clients/flutter/lib/src/screens/workspace_ui/direct_message_navigation/**",
       "clients/flutter/lib/src/features/workspace/search/**"
     ],
@@ -687,7 +1371,10 @@
       "test/features/workspace/quick_jump/workspace_navigation_test.dart",
       "test/workspace_navigation_text_scale_test.dart",
       "test/workspace_navigation_top_test.dart",
-      "test/web_parity/presentation_test.dart"
+      "test/web_parity/presentation_test.dart",
+      "test/member_voice_presence_panel_test.dart",
+      "test/features/workspace/channel_favorites_preferences_test.dart",
+      "test/workspace_channel_favorites_test.dart"
     ],
     "acceptance": {
       "issue292": {
@@ -718,12 +1405,12 @@
       },
       "issue344": {
         "browser": "clients/web/tests/navigation_density/playwright.config.ts",
-        "scope": "Actual production navigation components with 36 channels/three categories, accent-colored selected markers for Channels/Personal/channel/DM (no white strokes), keyboard focus, touch, single scroll surface, persisted favorites/collapse and 320–1920px/actual 200% browser zoom. Channel names remain accessible without redundant hover/focus tooltips in normal and favorite lists. Destructive channel confirmation is initiated only from the explicit ellipsis action, never by right-click. Real-stack workspace journeys are separate; no native/media acceptance claim."
+        "scope": "Actual production navigation components with 36 channels/three categories, accent-colored selected markers for Channels/Personal/channel/DM (no white strokes), keyboard focus, touch, single scroll surface, persisted favorites/collapse and 320–1920px/actual 200% browser zoom. Channel names remain accessible without redundant hover/focus tooltips in normal and favorite lists. Destructive channel confirmation is initiated only from the explicit ellipsis action, never by right-click. Real-stack workspace journeys are separate; no native/media acceptance claim. The open mobile drawer also measures the dark gutter below the selected Channels/Personal tab while preserving 44px touch targets. A cross-app regression checks thin neutral scrollbars on the navigation rail and an independent scroll surface."
       },
       "issue350": {
         "browser": "clients/web/tests/member_roster/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/member_profile.mjs",
-        "scope": "Production roster/profile with 30 synthetic members; long guild and voice participant names stay inside the panel width without horizontal overflow, three presence groups, voice status/volume/admin visibility, pagination, empty/loading/retry/denied, keyboard/touch and focus, 320/390/1024/1440, root text and actual browser zoom 200%. Real Go API member-to-DM opening and actual SFU voice volume with MEMBER kick denial. No physical screen reader, native or media quality claim."
+        "scope": "Production roster/profile with 30 synthetic members; long guild and voice participant names stay inside the panel width without horizontal overflow, three presence groups, voice status/volume/admin visibility, live guild-wide voice-channel captions with a speaker-to-screen-share icon switch, pagination, empty/loading/retry/denied, keyboard/touch and focus, 320/390/1024/1440, root text and actual browser zoom 200%. Real Go API member-to-DM opening and actual SFU voice volume with MEMBER kick denial. No physical screen reader, native or media quality claim."
       },
       "mobile_account_footer": {
         "browser": "clients/web/tests/responsive_shell/playwright.config.ts",
@@ -731,6 +1418,13 @@
           "clients/web/tests/responsive_shell/responsive_shell.browser.spec.ts"
         ],
         "scope": "At 320x640, an open mobile navigation drawer with an update banner and connection warning keeps the account profile fully visible above the voice dock."
+      },
+      "category_context_menu_dismissal": {
+        "browser": "clients/web/tests/accessibility/playwright.config.ts",
+        "focused": [
+          "clients/web/tests/accessibility/category_context_menu_dismissal.browser.spec.ts"
+        ],
+        "scope": "The Web category context menu closes on outside pointer interaction or Escape while preserving the outside action and returning keyboard focus to the category."
       },
       "issue352": {
         "browser": "clients/web/tests/header_actions/playwright.config.ts",
@@ -743,7 +1437,194 @@
           "clients/flutter/test/workspace_screen_test.dart"
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+      },
+      "flutter_member_voice_presence": {
+        "focused": [
+          "clients/flutter/test/member_voice_presence_panel_test.dart"
+        ],
+        "scope": "Flutter guild-wide members panel maps the current voice roster to the channel name, changes the voice icon to a screen icon when screen_sharing is true, and hides the indicator for stale, unavailable, ambiguous, or empty roster state. At a 232 dp compact width, the channel caption omits the redundant voice prefix, uses up to two lines, and remains visible without overflow. Includes source-resolution widget captures; does not infer speaking or claim media quality."
+      },
+      "flutter_channel_favorites": {
+        "focused": [
+          "clients/flutter/test/features/workspace/channel_favorites_preferences_test.dart",
+          "clients/flutter/test/workspace_channel_favorites_test.dart"
+        ],
+        "native": "integration_test/local_qa_test.dart",
+        "scope": "Web-parity acceptance for favorite channel actions, account and deployment scoped persistence, topology ordering, removal pruning, mobile touch action, desktop hover/focus visibility, and desktop/mobile Flutter production widget captures. Native smoke exercises a real authenticated workspace and persists a favorite against the owned API stack. Runtime coverage does not imply physical accessibility or media acceptance."
+      },
+      "flutter_connection_status": {
+        "focused": [
+          "clients/flutter/test/workspace_connection_status_test.dart",
+          "clients/flutter/test/voice_roster_state/app_composition_test.dart"
+        ],
+        "scope": "Independent recovery card for chat, voice and roster in Flutter navigation, with localized actions and truthful retained-roster age. Desktop/mobile production widget captures cover the narrow sidebar layout."
       }
+    },
+    "parity": [
+      {
+        "id": "navigation.search",
+        "expected": "Search scope, context navigation, history and drafts survive compact layout and client transitions.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/workspace/WorkspaceApp.vue",
+            "tests": [
+              "clients/web/src/design/shell_reference_geometry.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/handler.dart",
+            "tests": [
+              "clients/flutter/test/mobile_navigation_visual_capture_test.dart",
+              "clients/flutter/test/features/workspace/quick_jump/widget_test.dart",
+              "clients/flutter/test/features/workspace/quick_jump/workspace_navigation_test.dart",
+              "clients/flutter/test/workspace_navigation_text_scale_test.dart",
+              "clients/flutter/test/workspace_navigation_top_test.dart",
+              "clients/flutter/test/web_parity/presentation_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/handler.dart",
+            "tests": [
+              "clients/flutter/test/mobile_navigation_visual_capture_test.dart",
+              "clients/flutter/test/features/workspace/quick_jump/widget_test.dart",
+              "clients/flutter/test/features/workspace/quick_jump/workspace_navigation_test.dart",
+              "clients/flutter/test/workspace_navigation_text_scale_test.dart",
+              "clients/flutter/test/workspace_navigation_top_test.dart",
+              "clients/flutter/test/web_parity/presentation_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      },
+      {
+        "id": "navigation.channel-favorites",
+        "expected": "Channel favorites are scoped to the account and deployment, appear above categories in topology order, persist across restarts, and are pruned when channels disappear.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/channel/ChannelNavigation.vue",
+            "tests": [
+              "clients/web/src/channel/category_disclosure/preferences.spec.ts",
+              "clients/web/tests/navigation_density/navigation.browser.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Browser-local navigation preference; server ACL and channel visibility remain authoritative."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/screens/workspace_ui/channel_navigation/component.dart",
+            "tests": [
+              "clients/flutter/test/features/workspace/channel_favorites_preferences_test.dart",
+              "clients/flutter/test/workspace_channel_favorites_test.dart",
+              "clients/flutter/integration_test/local_qa_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground navigation preference scoped to account and deployment. Native integration uses the disposable local API; physical screen-reader acceptance remains separate."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/screens/workspace_ui/channel_navigation/component.dart",
+            "tests": [
+              "clients/flutter/test/features/workspace/channel_favorites_preferences_test.dart",
+              "clients/flutter/test/workspace_channel_favorites_test.dart",
+              "clients/flutter/integration_test/local_qa_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground navigation preference scoped to account and deployment. Native integration uses the disposable local API; physical screen-reader acceptance remains separate."
+          }
+        }
+      },
+      {
+        "id": "notifications.foreground",
+        "expected": "Foreground TEXT/DM notification respects account scope and user permissions. Terminated/background delivery is OS-specific and is not promised.",
+        "issue": 518,
+        "status": "PLATFORM_EXCEPTION",
+        "reason": "Web/native notification permissions and suspended/terminated lifecycle differ; foreground in-app feedback remains available.",
+        "tracking_issue": 303,
+        "source": "current checkout",
+        "shipped": "NOT_VERIFIED",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/workspace/WorkspaceApp.vue",
+            "tests": [
+              "clients/web/src/realtime/realtime_store.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground notifications; native permission required; no promise of closed-app push."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/services/native_notifications.dart",
+            "tests": [
+              "clients/flutter/test/realtime_scope/controller_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground notifications; native permission required; no promise of closed-app push."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/services/native_notifications.dart",
+            "tests": [
+              "clients/flutter/test/realtime_scope/controller_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground notifications; native permission required; no promise of closed-app push."
+          }
+        }
+      },
+      {
+        "id": "client.update-awareness",
+        "expected": "Detect an available version without discarding drafts; use reload on Web, approved installer on Android and signed distribution on iOS.",
+        "issue": 518,
+        "status": "PLATFORM_EXCEPTION",
+        "reason": "Executable replacement is desktop-only; mobile uses its OS distribution channel and Web reload.",
+        "tracking_issue": 337,
+        "source": "current checkout",
+        "shipped": "NOT_VERIFIED",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/workspace/WorkspaceApp.vue",
+            "tests": [
+              "clients/web/src/realtime/realtime_store.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Supported distribution channel; no desktop executable substitution on iOS."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/updates/controller.dart",
+            "tests": [
+              "clients/flutter/test/updates/controller_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Supported distribution channel; no desktop executable substitution on iOS."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/updates/controller.dart",
+            "tests": [
+              "clients/flutter/test/updates/controller_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Supported distribution channel; no desktop executable substitution on iOS."
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 518,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
+      },
+      "scope": "2026-10-24 (#518 Web-to-Flutter parity): Flutter channel favorites match Web's account/deployment scoped behavior, ordered shortcuts, topology pruning, mobile touch control, desktop hover/focus affordance, and persistence. Flutter connection status now presents independent chat/voice/roster state and recovery actions while retaining existing retry policies. Focused widget coverage, source-resolution desktop/mobile captures, and the authenticated native local-stack smoke are registered; physical screen-reader and media acceptance remain separate. 2026-10-24 (#570): Flutter member voice captions show the channel name without a redundant prefix and wrap within compact rows; Android and iOS share this behavior, while Web is unchanged. 2026-10-24 (Web PR #544): Flutter active screen viewing now uses a compact on-demand participant overlay and preserves the available video stage height; paired native stream acceptance remains NOT_VERIFIED. 2026-10-24 (Flutter stream-viewer layout parity, PR #573): shared Flutter workspace widgets place active stream viewing over the available room stage, with participant/stream panels and viewer actions overlaid on demand. Web presentation is unchanged; browser checks remain in PR CI. Focused Flutter widget tests pass and 900x640 source captures were reviewed; the black fixture proves layout only. Android/iOS native runtime is BLOCKED because this host has no registered QA devices; live-stream/media acceptance remains NOT_VERIFIED. 2026-10-25 (#554): Web/Flutter composition owns notification lifecycle and logout fencing; taps navigate to a permitted exact message without marking it read or joining voice. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN."
     }
   },
   "screen_track_name": {
@@ -761,12 +1642,434 @@
     "web": [
       "tests/track_name/playwright.config.ts"
     ],
-    "flutter": [],
+    "flutter": [
+      "test/parity518/audience_hints_test.dart"
+    ],
     "acceptance": {
       "issue327": {
         "browser": "tools/qa/track_name/run.py",
         "scope": "Actual pinned SDK publish peer via Go voice lease and SFU; synthetic target fallback correctness only, physical Mac/quality gate remains separate"
       }
+    },
+    "parity": [
+      {
+        "id": "screen.audience",
+        "expected": "Scoped empty viewer hints refresh existing owner/viewer audience, preserving lease renewal and old-server fallback.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/realtime/realtime_client.ts",
+            "tests": [
+              "clients/web/src/realtime/realtime_store.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/voice/screen_viewer_presence/controller.dart",
+            "tests": [
+              "clients/flutter/test/screen_viewer_presence_controller_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/voice/screen_viewer_presence/controller.dart",
+            "tests": [
+              "clients/flutter/test/screen_viewer_presence_controller_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 518,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
+      }
     }
+  },
+  "telemetry": {
+    "paths": [
+      "clients/web/src/telemetry/**",
+      "clients/web/src/admin/telemetry/**",
+      "clients/flutter/lib/src/core/http/transport.dart",
+      "clients/flutter/lib/src/features/telemetry/**",
+      "clients/web/src/voice/screen_viewer_presence.ts",
+      "clients/flutter/lib/src/services/tracing_http_client.dart",
+      "clients/flutter/lib/src/services/client_telemetry.dart",
+      "backend/internal/observability/**",
+      "docker/observability/**",
+      "docs/observability/signal-catalog.json",
+      "tools/observability/signal_catalog/**"
+    ],
+    "web": [
+      "tests/accessibility/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/features/telemetry/session_processor_test.dart",
+      "test/features/telemetry/action_scope_test.dart",
+      "test/features/telemetry/runtime_export_test.dart",
+      "test/admin_telemetry/api_test.dart",
+      "test/admin_telemetry/controller_test.dart",
+      "test/client_telemetry_polling_test.dart",
+      "test/client_telemetry_relay_test.dart",
+      "test/features/telemetry/stale_context_test.dart"
+    ],
+    "acceptance": {
+      "installation_336": {
+        "focused": [
+          "backend/internal/observability/installation_acceptance/acceptance_test.go",
+          "tools/qa/installation_telemetry/run.py"
+        ],
+        "scope": "Origin/account/session/installation queue ownership, explicit opt-in administration and real two-database tenant isolation."
+      },
+      "traces_513": {
+        "focused": [
+          "clients/web/src/telemetry/client_tracing.spec.ts",
+          "clients/web/src/telemetry/action_scope/failure.spec.ts",
+          "clients/web/src/voice/screen_viewer_telemetry.spec.ts",
+          "clients/flutter/test/client_telemetry_polling_test.dart",
+          "clients/flutter/test/features/telemetry/action_scope_test.dart",
+          "tools/observability/signal_catalog/test_build.py",
+          "tools/verify/trace_dashboard/test_flow_dashboard.py",
+          "clients/web/src/telemetry/action_scope/stale_context.spec.ts",
+          "clients/flutter/test/features/telemetry/stale_context_test.dart"
+        ],
+        "runtime": "tools/qa/tracing_flow/README.md",
+        "scope": "Successful unscoped presence polling is omitted without losing errors, stops, flow attempts or server aggregate metrics; cancellation/timeout and account-generation ownership remain truthful. Real SDK -> authenticated sanitizer -> Collector -> Tempo proof and deployed Grafana UID/org readback/rollback are separate required evidence; component screenshots do not imply native/media acceptance."
+      }
+    },
+    "parity": [
+      {
+        "id": "telemetry.privacy",
+        "expected": "Opt-in diagnostic delivery has scoped installation identity; secrets and message/media contents are excluded.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/admin/telemetry/client.ts",
+            "tests": [
+              "clients/web/src/admin/telemetry/client.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/admin/telemetry/api.dart",
+            "tests": [
+              "clients/flutter/test/admin_telemetry/api_test.dart",
+              "clients/flutter/test/admin_telemetry/controller_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/admin/telemetry/api.dart",
+            "tests": [
+              "clients/flutter/test/admin_telemetry/api_test.dart",
+              "clients/flutter/test/admin_telemetry/controller_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      },
+      {
+        "id": "telemetry.action.outcomes",
+        "expected": "Successful unscoped presence polling is quiet; errors, real transitions, timeout/cancelled outcomes and account-generation ownership remain observable without message/media contents.",
+        "issue": 513,
+        "status": "PARITY",
+        "source": "Reviewed Web and shared native implementations; source-hashed signal catalog and #513 evidence bind verification.",
+        "shipped": "Publication and exact build/source are recorded separately in evidence/observability/issue513-action-traces.md; no release inferred.",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/telemetry/client_tracing.ts",
+            "tests": [
+              "clients/web/src/voice/screen_viewer_telemetry.spec.ts",
+              "clients/web/src/telemetry/action_scope/failure.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Real browser SDK/component -> relay -> Collector -> Tempo is separately verified; deployed client build and Grafana publication require final source-bound readback."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/services/tracing_http_client.dart",
+            "tests": [
+              "clients/flutter/test/client_telemetry_polling_test.dart",
+              "clients/flutter/test/features/telemetry/action_scope_test.dart"
+            ],
+            "runtime": "NOT_RUN",
+            "conditions": "Shared Dart logic and real macOS Flutter engine -> relay -> Tempo verified separately. No iOS/Android device or physical media PASS is inferred; source platform header/enum boundaries retain existing behavior."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/services/tracing_http_client.dart",
+            "tests": [
+              "clients/flutter/test/client_telemetry_polling_test.dart",
+              "clients/flutter/test/features/telemetry/action_scope_test.dart"
+            ],
+            "runtime": "NOT_RUN",
+            "conditions": "Shared Dart logic and real macOS Flutter engine -> relay -> Tempo verified separately. No iOS/Android device or physical media PASS is inferred; source platform header/enum boundaries retain existing behavior."
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 532,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
+      },
+      "scope": "SEC-004: context-aware KDF admission and AUTH_BUSY manual retry. Shared Flutter HTTP transport and Web auth/reset/profile paths keep sessions and editable forms; no automatic password retry. Source 70fd162def412a3b7e22be4630675213f9f5f8ba: 1623 Web and 1606 Flutter tests passed; owned real API browser/Android emulator/iOS simulator smoke passed. Forced-capacity fixtures and normal native smoke are distinct; no physical/media/release claim. Evidence: evidence/security/sec04-kdf-admission-2026-10-23.md. Existing telemetry bind, unauthorized handling, schema and privacy remain unchanged."
+    }
+  },
+  "support": {
+    "paths": [
+      "support_gateway/**",
+      "tests/support_gateway/**",
+      "docs/adr/ADR-029-product-support-github-bridge.md",
+      "backend/cmd/support_contact/**",
+      "backend/internal/support/**",
+      "backend/internal/chat/list_direct_messages/**",
+      "backend/internal/chat/send_direct_message/postgres/support_contact_integration_test.go",
+      "backend/internal/app/chat_routes/chat_routes.go",
+      "backend/internal/database/migrate/**",
+      "backend/Dockerfile",
+      "backlog/tasks.yaml",
+      "contracts/openapi.yaml",
+      "clients/web/src/support/**",
+      "clients/web/src/direct_message/**",
+      "clients/web/src/workspace/workspace_navigation.ts",
+      "clients/web/src/workspace/WorkspaceApp.vue",
+      "clients/web/src/workspace/WorkspaceUserFooter.vue",
+      "clients/flutter/lib/src/features/direct/conversations/**",
+      "clients/flutter/lib/src/features/direct/messages/api.dart",
+      "clients/flutter/lib/src/features/workspace/**",
+      "clients/flutter/lib/src/app/workspace_access/direct_navigation.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/**",
+      "clients/flutter/lib/src/screens/workspace_ui/direct_message_navigation/**",
+      "clients/flutter/lib/src/screens/workspace_ui/user_footer/**",
+      "clients/flutter/lib/src/screens/workspace_ui/support_contact/**",
+      "clients/flutter/test/support/**",
+      "tools/qa/support_contact/**",
+      "docs/runbooks/support-contact.md",
+      "evidence/qa/issue516-support-dm.md",
+      "clients/web/src/design/design_v2_direct_messages.css",
+      "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+      "clients/flutter/integration_test/local_qa_test.dart",
+      "tools/qa/critical_client_acceptance/mini_player_ui.mjs",
+      "clients/flutter/integration_test/support_qa_test.dart",
+      "tools/ci/flutter_gates/artifacts.py",
+      "tools/ci/flutter_gates/test_artifacts.py"
+    ],
+    "web": [
+      "tests/accessibility/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/support/contact_test.dart",
+      "test/support/open_test.dart",
+      "test/support/widget_test.dart",
+      "test/features/workspace/dm_drafts/widget_test.dart"
+    ],
+    "acceptance": {
+      "issue516": {
+        "browser": "tools/qa/support_contact/run.py",
+        "scope": "ADR-029 default product peer, explicit current publication consent, server denial without consent, persistent public warning and composer gating on Web/Android/iOS. Repeatable QA does not publish GitHub issues; controlled live issue/comment/reply/file proof is a separate release record. Also preserves ordinary local A/B/S support DM text/files/replies, pair-only ACL, replacement and responsive captures. Component captures do not prove native/media acceptance. Server-only regressions: database author UUID in issue title, deleted-issue replacement including uncertain legacy jobs and preserved attachments, isolated reply remap, and no duplicate on closed issue/provider outage. Focused coverage: tests/support_gateway and backend/internal/support/bridge; no client UI change.",
+        "native": "tools/qa/support_contact/native.py",
+        "target": "integration_test/support_qa_test.dart"
+      }
+    },
+    "parity": [
+      {
+        "id": "support.pair-dm",
+        "expected": "Help opens the server-assigned support pair DM; it never grants administrators access to other pairs.",
+        "issue": 518,
+        "status": "PARITY",
+        "source": "current checkout; release receipt binds exact SHA",
+        "shipped": "Release status is recorded separately in evidence/qa/issue518-client-parity.md and GitHub #518; source alone is not shipped",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/support/contact.ts",
+            "tests": [
+              "clients/web/src/support/navigation.spec.ts",
+              "clients/web/src/support/open.spec.ts",
+              "clients/web/src/support/contact.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/workspace/support/open.dart",
+            "tests": [
+              "clients/flutter/test/support/contact_test.dart",
+              "clients/flutter/test/support/open_test.dart",
+              "clients/flutter/test/support/widget_test.dart",
+              "clients/flutter/test/features/workspace/dm_drafts/widget_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/workspace/support/open.dart",
+            "tests": [
+              "clients/flutter/test/support/contact_test.dart",
+              "clients/flutter/test/support/open_test.dart",
+              "clients/flutter/test/support/widget_test.dart",
+              "clients/flutter/test/features/workspace/dm_drafts/widget_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Foreground; existing server ACL, supported OS permissions. Physical capture/background/audio remain separately tracked in #62/#132/#303."
+          }
+        }
+      },
+      {
+        "id": "product-support-public-github",
+        "status": "NOT_VERIFIED",
+        "expected": "Default product support opens from ?, requires current explicit consent, publishes a new issue and file, appends follow-ups, and returns a repository writer reply to the same pair; legacy clients cannot publish. The visible warning uses generic public-data disclosure without a provider name or repository link.",
+        "source": "SP-002 / ADR-029 owner decision 2026-10-22",
+        "shipped": "Owned runtime proof recorded; client distribution and protected production receipt remain separate.",
+        "issue": 522,
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/support/SupportPublicationConsent.vue",
+            "tests": [
+              "clients/web/src/support/public.spec.ts",
+              "tools/qa/support_contact/public_scenario.mjs"
+            ],
+            "conditions": "Owned real API and intentional synthetic public provider proof. Native OS picker and physical device/media acceptance remain NOT_RUN.",
+            "runtime": "PASS",
+            "evidence": "evidence/qa/sp002-public-support-acceptance-2026-10-22.json",
+            "source_sha": "fe9ed3a21fe0bae824794ecd35db26424d4bb1e8",
+            "build": "Owned production Vue / Go / PostgreSQL fixture"
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/workspace/support/consent.dart",
+            "tests": [
+              "clients/flutter/integration_test/support_qa_test.dart",
+              "clients/flutter/integration_test/public_support_fixture.dart"
+            ],
+            "conditions": "Owned real API and intentional synthetic public provider proof. Native OS picker and physical device/media acceptance remain NOT_RUN.",
+            "runtime": "PASS",
+            "evidence": "evidence/qa/sp002-public-support-acceptance-2026-10-22.json",
+            "source_sha": "fe9ed3a21fe0bae824794ecd35db26424d4bb1e8",
+            "build": "Dedicated iOS 27 Simulator, Flutter 1.0.46/81"
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/workspace/support/consent.dart",
+            "tests": [
+              "clients/flutter/integration_test/support_qa_test.dart",
+              "clients/flutter/integration_test/public_support_fixture.dart"
+            ],
+            "conditions": "Owned real API and intentional synthetic public provider proof. Native OS picker and physical device/media acceptance remain NOT_RUN.",
+            "runtime": "PASS",
+            "evidence": "evidence/qa/sp002-public-support-acceptance-2026-10-22.json",
+            "source_sha": "9ccc7103dbbc4b84e189fc7a3e6caf478596c968",
+            "build": "Dedicated Android API 35 emulator; pre-commit working diff recorded"
+          }
+        }
+      }
+    ],
+    "parity_review": {
+      "issue": 553,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "platform_exception",
+        "android": "platform_exception"
+      },
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; support publication and DM flows are unchanged. 2026-10-24 (#518): the shared workspace sidebar adds account-scoped channel favorites and independent connection recovery presentation; support consent, publication and DM behavior is untouched. The native local-QA scenario continues to exercise support navigation and recovery status; the broad shared-workspace path match was reviewed. 2026-10-25 (#554): Shared workspace composition changed for notification lifecycle; support consent, publication and DM ACL behavior are preserved, with existing regression suites retained. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN."
+    }
+  },
+  "notifications": {
+    "paths": [
+      "clients/web/src/notification/*",
+      "clients/web/public/notification-*",
+      "clients/web/public/manifest.webmanifest",
+      "clients/web/tests/remote_notifications/*",
+      "clients/flutter/lib/src/features/notifications/*",
+      "clients/flutter/lib/src/app/notification_access/*",
+      "clients/flutter/lib/src/app/notification_settings/*",
+      "clients/flutter/test/notifications/*",
+      "clients/flutter/android/app/src/main/kotlin/ru/boohtacord/app/notifications/*",
+      "clients/flutter/ios/Runner/notifications/*",
+      "backend/internal/notifications/*",
+      "backend/internal/pushrelay/*"
+    ],
+    "web": [
+      "tests/remote_notifications/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/notifications/settings_widget_test.dart",
+      "test/notifications/settings_visual_test.dart",
+      "test/notifications/mobile_enrollment_test.dart"
+    ],
+    "acceptance": {
+      "addressed_background_v1": {
+        "issue": 564,
+        "browser": "clients/web/tests/remote_notifications/playwright.config.ts",
+        "focused": [
+          "clients/flutter/test/notifications/mobile_enrollment_test.dart",
+          "backend/internal/notifications/dispatch_delivery/dispatch_test.go",
+          "backend/internal/pushrelay/dispatch_job/dispatch_test.go"
+        ],
+        "scope": "Account/device separation, transactional scoped dedup and bounded metadata pipeline with synthetic providers. No physical delivery claim."
+      }
+    },
+    "parity_review": {
+      "issue": 564,
+      "decisions": {
+        "web": "implementation_and_regression",
+        "android": "implementation_and_regression",
+        "ios": "implementation_and_regression"
+      },
+      "scope": "Local tests only as requested. Native physical/provider gates remain NOT_RUN; Windows host has no Apple toolchain or physical GMS/iPhone devices."
+    },
+    "parity": [
+      {
+        "id": "notifications.addressed_background_v1",
+        "expected": "Account consent and per-device opt-in stay separate; resolve an addressed message with current ACL, suppress duplicates, and never auto-read or join voice.",
+        "issue": 564,
+        "status": "NOT_VERIFIED",
+        "source": "Current checkout; local synthetic checks in evidence/notifications/local-2026-10-25.json bind the implementation snapshot.",
+        "shipped": "NOT_VERIFIED; real provider delivery and physical Android/iPhone acceptance remain open in #564.",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/notification/NotificationSettings.vue",
+            "tests": [
+              "clients/web/tests/remote_notifications/state.browser.spec.ts",
+              "clients/web/src/notification/remote_push/worker.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Synthetic Chromium settings/dedup checks passed; actual Web Push provider/browser delivery remains NOT_RUN."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/notifications/mobile_driver/firebase_driver.dart",
+            "tests": [
+              "clients/flutter/test/notifications/mobile_enrollment_test.dart",
+              "clients/flutter/test/notifications/tap_target_test.dart"
+            ],
+            "runtime": "NOT_RUN",
+            "conditions": "Shared Dart/widget checks and Android debug build passed; physical GMS, permission/channel behavior and FCM delivery remain NOT_RUN."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/ios/Runner/notifications/PushSupport.swift",
+            "tests": [
+              "clients/flutter/test/notifications/mobile_enrollment_test.dart",
+              "clients/flutter/test/notifications/tap_target_test.dart"
+            ],
+            "runtime": "NOT_RUN",
+            "conditions": "Shared Dart/widget checks passed; signed Apple build, physical iPhone, APNs/provisional permission and delivery remain NOT_RUN."
+          }
+        }
+      }
+    ]
   }
 }

@@ -11,7 +11,7 @@ import (
 )
 
 func TestLoginNormalizesLoginAndCreatesServerSideSession(t *testing.T) {
-	hash, err := password.Hash("correct horse battery staple")
+	hash, err := password.Hash(context.Background(), "correct horse battery staple")
 	if err != nil {
 		t.Fatalf("Hash() error = %v", err)
 	}
@@ -38,7 +38,7 @@ func TestLoginNormalizesLoginAndCreatesServerSideSession(t *testing.T) {
 }
 
 func TestLoginRejectsWrongOrUnknownCredentialsWithoutSession(t *testing.T) {
-	hash, err := password.Hash("correct horse battery staple")
+	hash, err := password.Hash(context.Background(), "correct horse battery staple")
 	if err != nil {
 		t.Fatalf("Hash() error = %v", err)
 	}
@@ -63,7 +63,7 @@ func TestLoginRejectsWrongOrUnknownCredentialsWithoutSession(t *testing.T) {
 }
 
 func TestLoginRejectsBlockedAccount(t *testing.T) {
-	hash, err := password.Hash("correct horse battery staple")
+	hash, err := password.Hash(context.Background(), "correct horse battery staple")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -20,36 +20,63 @@ extension WorkspaceChannelRowStateBuildAction
     final voiceConnected = widget.voiceConnected;
     final voiceParticipantCount = widget.voiceParticipantCount;
     final canManage = canDeleteChannel(state, channel);
-    return FocusableActionDetector(
-      key: ValueKey('workspace-channel-focus:${channel.id}'),
-      enabled: canManage,
-      onShowHoverHighlight: (value) =>
-          workspaceMutateView(() => workspaceHovered = value),
-      onShowFocusHighlight: (value) =>
-          workspaceMutateView(() => workspaceFocused = value),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 2),
-        child: Material(
-          color: selected ? GcColors.selected : Colors.transparent,
-          borderRadius: BorderRadius.circular(7),
-          child: InkWell(
-            onTap: widget.onTap,
-            onSecondaryTap: canManage
-                ? () => deleteTopologyTarget(context, state, channel)
-                : null,
-            borderRadius: BorderRadius.circular(7),
-            child: SizedBox(
-              key: ValueKey('workspace-channel-row:${channel.id}'),
-              height:
-                  MediaQuery.sizeOf(context).width < GcLayout.mobileBreakpoint
-                  ? GcLayout.touchTargetSize
-                  : GcLayout.channelRowHeight,
-              child: renderChannelRowChannelContents(
-                voiceConnected,
-                channel,
-                selected,
-                voiceParticipantCount,
-                state,
+    return MouseRegion(
+      onEnter: (_) => workspaceMutateView(() => workspaceHovered = true),
+      onExit: (_) => workspaceMutateView(() => workspaceHovered = false),
+      child: FocusableActionDetector(
+        key: ValueKey(
+          widget.favoriteShortcut
+              ? 'workspace-channel-focus:${channel.id}:favorite'
+              : 'workspace-channel-focus:${channel.id}',
+        ),
+        enabled: canManage,
+        onShowHoverHighlight: (value) =>
+            workspaceMutateView(() => workspaceHovered = value),
+        onShowFocusHighlight: (value) =>
+            workspaceMutateView(() => workspaceFocused = value),
+        child: Focus(
+          canRequestFocus: false,
+          skipTraversal: true,
+          onFocusChange: (value) =>
+              workspaceMutateView(() => workspaceFocused = value),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 2),
+            child: Material(
+              color: selected ? GcColors.selected : Colors.transparent,
+              borderRadius: BorderRadius.circular(7),
+              child: InkWell(
+                onTap: widget.onTap,
+                onSecondaryTap: canManage
+                    ? () => deleteTopologyTarget(context, state, channel)
+                    : null,
+                borderRadius: BorderRadius.circular(7),
+                child: SizedBox(
+                  key: ValueKey(
+                    widget.favoriteShortcut
+                        ? 'workspace-channel-row:${channel.id}:favorite'
+                        : 'workspace-channel-row:${channel.id}',
+                  ),
+                  height:
+                      MediaQuery.sizeOf(context).width <
+                          GcLayout.mobileBreakpoint
+                      ? GcLayout.touchTargetSize
+                      : GcLayout.channelRowHeight,
+                  child: renderChannelRowChannelContents(
+                    voiceConnected,
+                    channel,
+                    selected,
+                    voiceParticipantCount,
+                    state,
+                    showFavoriteButton:
+                        widget.onFavoriteChanged != null &&
+                        (widget.favorite ||
+                            workspaceHovered ||
+                            workspaceFocused ||
+                            Theme.of(context).platform ==
+                                TargetPlatform.android ||
+                            Theme.of(context).platform == TargetPlatform.iOS),
+                  ),
+                ),
               ),
             ),
           ),

@@ -1,0 +1,201 @@
+# #518 — shared-client parity implementation and release
+
+Task PAR-001; dependencies RP-010, IT-001, SP-001. Base master
+`d537e067f7b2278e230e8488c72fb44a19379eb6`.
+
+Implementation: awaited durable delivery with server cursor after successful
+application, bounded FIFO/dedup and controlled resync on errors/overflow;
+server/auth-scoped memory cursor, ready-only retry reset, jitter and manual UI
+retry; scoped/coalesced audience invalidation preserving lease heartbeat and
+polling fallback; existing-admin telemetry GET/PATCH panel with consent/HTTPS;
+separate fullscreen exit vs stop viewing and existing renderer handoff; current
+iOS app-only/broadcast documentation. Support #516 and #499–502 are reused.
+
+The authoritative scenario matrix is the existing feature registry. CI validates
+IDs, implementation/test paths and Web/iOS/Android decisions. Runtime PASS
+requires separate build/source evidence. No physical media PASS is inferred
+from source, component tests or an emulator/simulator.
+
+Verification in progress:
+
+- Initial focused tests failed on missing delivery and telemetry classes (RED).
+- Full Flutter tests: PASS, 1586 tests / 1 existing skip before final additions.
+- Focused delivery/retry/audience/viewer/telemetry: PASS, 23 tests.
+- Web suite: PASS, 1609 tests / 483 files, including 2 bounded-delivery regressions.
+- Contract verifier: PASS, 19 tests; OpenAPI 116 public / 4 private operations.
+- Spec traceability: PASS, 39 indexed requirements; approved Windows brief
+  unavailable on this Mac, so this is committed-index validation only.
+- Android actual Go/PostgreSQL replay TEXT/edit/delete/react/pin + reachable
+  telemetry: passed in `.out/issue518/android-parity2`; a refresh tap missed its
+  hit target, so the strengthened scenario makes missed taps fatal and is rerun.
+- Strengthened actual-stack smoke: PASS separately on Android API35 emulator
+  and iOS27 QA Simulator, version 1.0.45 (80), missed taps made fatal. Both
+  exercised real Go/PostgreSQL/TLS, TEXT edit/delete/react/pin replay, a second
+  account DM edit replay, no duplicates, preserved selection, reachable Guild
+  telemetry GET/refresh, default local-only mode and logout cursor cleanup.
+  The peer fixture explicitly selects the signed-in peer instead of an unrelated
+  seeded member; server correctly denied the unrelated pair during test setup.
+  Android: `.out/issue518/android-parity-final`, source `5fbbc9f2`, working diff
+  `511797acce4784c7f95ffea829cb0cb5b3bf5c503fa18782f51546297e8c81ab`.
+  iOS: `.out/issue518/ios-parity3`, source `5fbbc9f2`, working diff
+  `710d3da76aeb8e452eb9b953c0cb4eaaa500aca86be88b3db7720acd5181b4a8`.
+  Generated images were inspected: ID wraps, consent stays readable, enabling
+  remains disabled without consent, refresh is reachable by scrolling, and DM
+  displays the peer's updated message. Screenshots are synthetic private QA data.
+- Flutter analyzer: PASS with existing informational lints; no errors/warnings.
+- CI action-pin/source policy: PASS (36 workflows / 2 local actions), 8 tests.
+- Compact telemetry widget at 320×568 / text scale 2: PASS; opening performs
+  no writes, refresh clears consent, HTTP blocks enrollment, HTTPS + explicit
+  consent permits exactly the intended update.
+- iOS release metadata defect reproduced in the first exported IPA: Runner 80,
+  extension 1 / missing marketing version. Fixed all extension configurations to
+  read Flutter Generated.xcconfig through Version.xcconfig; effective native
+  build settings now report CURRENT_PROJECT_VERSION=80 / MARKETING_VERSION=1.0.45.
+  Three IPA artifact regressions PASS. The corrected actual signed IPA verifies
+  both approved bundle IDs at 1.0.45 (80), SHA-256
+  `a7861517184762b7d7fb712d497ed29f8ebe6010c76796569f938a0226d3e99d`;
+  codesign --verify --deep --strict PASS. Distribution uses the owner's existing
+  ru.boohtacord.app.test variant, two supplied profiles and existing App Group.
+  Signing used a disposable private keychain, which was deleted after export;
+  the original user keychain search list was restored. No credential is in Git.
+- Registered Web viewport suites and actual Go/SFU stack at 1440 and 393: PASS.
+  Registered full Flutter, component captures and general native smoke are
+  finishing; final release/portal publication receipts follow after merge.
+- Release candidates: 1.0.45 (80), release order 59; release receipts pending.
+
+Physical iPhone/Android capture with/without audio, OS stop, background and
+rotation, VoiceOver/TalkBack and paired physical media remain NOT_RUN, tracked
+by #62/#132/#303. This report does not close those acceptance gates.
+Generated screenshots, logs, secrets and artifacts remain outside Git.
+
+Release-version follow-up: the registered Flutter suite caught the existing
+profile-version synchronization regression after the 1.0.45/80 manifest bump.
+The unconfigured development defaults in app_version.dart were still 1.0.43/78;
+release builds already pass the shared explicit Dart identity defines. Defaults
+are now synchronized to 1.0.45/80/r59. The focused profile regression passes;
+the final Flutter/native run and CI verify the corrected source. The original
+red report is retained, not relabeled as a green run.
+
+Final Web parity follow-up: async reaction/pin observers now return their refresh
+work to durable delivery; cursor advancement waits for that work, failures force
+resync, and a late observer after account reset cannot dispatch into the next
+scope. Local UI notifications retain best-effort error presentation. The focused
+regression reproduced the premature cursor (RED); Web full suite then passed
+1610 tests, with a further late-reset regression passing in the focused suite.
+Production Web build passes with the explicit owned QA public origin. A fresh
+actual Go/SFU compact journey is recorded separately, preserving the earlier
+1440/393 acceptance rather than rewriting its source identity.
+
+The final registered Flutter/native run at d3e94cb5 has empty working diff:
+1592 tests plus the existing skip, component captures, Android and iOS smoke all
+PASS. `.out/local-features/20261022-113300/report.json` keeps REVIEW_REQUIRED for
+its broad 157-image gallery. Focused changed-screen review inspected production
+fullscreen and telemetry widgets at portrait/landscape text2, native telemetry,
+DM replay, Guild loading-state captures and profile. No wholesale new baseline
+was approved and no physical-media gate is claimed.
+
+Ordinary macOS candidate at d3e94cb5: build PASS; universal arm64/x86_64,
+ad-hoc signature verified, ZIP 47,507,925 bytes, manifest/checksums generated.
+The public immutable native releases and portal are published after merge.
+
+Final scope regression: installation changes also reset the Flutter replay cursor and fence late socket callbacks. The focused account/server/installation test failed before this fix and all 13 realtime tests pass afterward (`.out/issue518/installation-green.log`). Capabilities remain a fixed protocol set per running binary; a rebuilt binary starts with an empty in-memory cursor.
+
+Final-head CI run 39752221171 passed all 26 jobs, including Windows GUI/SFU,
+1611 Web tests and Flutter/native gates. Strict master protection then required
+merging the concurrently delivered #520 base into the branch; the product merge
+tree was already tested, but the updated head receives its own normal CI.
+A protected manual canonical-tag preparation job supplies the missing local
+push operation for release publication; tests reject forks, non-master events,
+stale master, unknown platforms and replacement tags. Existing release source,
+signing and immutable publication checks are unchanged.
+
+## Final master and distribution receipts
+
+PR #519 merged as `9c221897fdefec8098f707d61ca5b6e8b28bb0bd` after all 26
+jobs of CI 39755415602 passed (head 7309547c). Final master client source trees
+are unchanged from the tested 7bf0f220 product trees; the intervening changes
+updated master ancestry and the protected release-tag procedure.
+
+Final-master signed iOS IPA: 1.0.45 (80), 34,603,157 bytes, SHA256
+`c4bd3684e745b8dd046ebc38be43740d31b3b6d6c3fc13d424fc633d8e07906c`.
+Both ru.boohtacord.app.test and its ScreenShareExtension verify at 1.0.45 (80);
+codesign verification passed. The disposable signing keychain was removed and
+the original search list restored. This is a built signed IPA, not a claim of
+TestFlight distribution. The delivery file is retained under the task's ignored
+`.out/testflight/2026-10-22/` in the primary checkout.
+
+Canonical android/windows/macos-v1.0.45 tags were prepared on this exact master
+by production-guarded jobs. macOS initially failed before any build steps
+because production allowed only the master branch. The owner explicitly approved
+adding only the exact tag macos-v1.0.45; readback shows master plus that one tag.
+Other protection settings were preserved and the same macOS run was retried.
+Android and Windows publish through their existing manual-master path.
+
+Public distribution evidence is kept separately by each immutable publisher:
+
+- Android: https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.45
+- Windows: https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.47
+- macOS: https://github.com/Egkurilov/BOOHTACORD/releases/tag/macos-v1.0.45
+
+Each completed publisher retains source-bound contract/publication.json and
+verifies all public asset hashes; artifact-manifest.json and SHA256SUMS identify
+the actual version/build, architectures, source and measured signing state.
+These links are release destinations, not a PASS claim while jobs are pending.
+The final public readback and resulting PASS/failure are recorded on #518 before
+closing it. A successful candidate build alone does not satisfy publication.
+
+The portal has explicit stable 1.0.45 fallback URLs plus the existing online
+release discovery. Its regression rejects a stale API response downgrading those
+fallbacks, and keeps release pages separate from permanent direct-file URLs.
+Publication of the portal PR waits for the actual distribution readback.
+
+An optional additional master-native smoke attempt stopped before client launch:
+a pre-existing SSH listener occupied QA port 4812. That listener was left intact;
+the attempt supplies no product PASS. Earlier separate Android/iOS actual-stack
+smokes retain their recorded source/diff identities above, and final-head CI
+passed the common Flutter/native and actual Windows GUI/SFU gates.
+
+Production server/Web delivery completed: Build server 39757666419 and Deploy
+production 39758958966 succeeded. Public /release-receipt.json readback confirms
+version 1.0.45, release_id web-browser-stable-r59 and source revision
+9c221897fdefec8098f707d61ca5b6e8b28bb0bd. The receipt is retained in ignored
+`.out/issue518/web-public-receipt.json`.
+
+Windows publication follow-up: the actual 1.0.45 release job stopped before
+application compilation on Windows fixture file-URL handling. The corrected
+fixtures and native CI coverage are tracked in PR #525 and
+`evidence/qa/issue518-windows-release.md`. The original unpublished Windows tag
+is preserved; its replacement advances through the separately recorded Windows packaging
+follow-ups below. Public
+macOS/Android and the signed iOS IPA remain 1.0.45 (80), with their original
+source receipts. The portal uses actual per-platform published versions, not
+the next global Flutter build defaults. Final publication readbacks on #518
+remain required before closure.
+
+Android Release 39758328262 attempt 2 and macOS Release 39757918654 attempt 2
+completed successfully. Public release, manifest and SHA256SUMS readbacks PASS:
+both are 1.0.45 (80), exact source 9c221897, release order 59. Android's three
+ABIs verify the existing signing certificate; macOS verifies arm64+x86_64 and
+ad-hoc signing (not Apple notarization). Android arm64 APK SHA256 is
+7091a98c326e3bea9ecff1f4a10192d3ce8545a298690b17c90d0453ddde8e70;
+universal macOS ZIP SHA256 is
+51228053715c0854ed6e91439bba1f405c99dfd917b790dcfa91e176cdbefd39.
+
+Windows follow-up PR #525 merged as 24936e68585f4aba9733d8f39ed74a15c50483d3
+after all 26 jobs of CI 39764639901 passed at e3084b53. Local 1210 Python
+tests passed, and the complete publisher suite passed on actual Windows.
+Windows Release 39767005427 compiled and packaged 1.0.46 from that master,
+then correctly stopped before publication on a pinned Velopack filename-format
+mismatch. Follow-up #528 matches the measured stable suffix while retaining
+exact application/version/channel, checksum, source and QA-purpose checks.
+Windows uses the next canonical 1.0.47 (82), r61; earlier tags are preserved.
+Its final source and public receipt follow on #518.
+
+PR #528 merged as f5cd783518349e2f79a78910a91908882ba87cc1 after all 26
+jobs of CI 39769767549 passed at f7a51655, including actual Windows build and
+GUI/SFU. The final fix matches the measured pinned Velopack stable package name;
+the producer/SDK inventory is unchanged. Windows 1.0.47 (82), r61 publication
+is bound to that master. The earlier unpublished Windows tags are not moved.
+The portal's final Windows fallback targets that replacement release, while
+macOS/Android retain the verified 1.0.45 assets and signed iOS retains its
+original IPA receipt. Final public readback is recorded on #518 before closure.

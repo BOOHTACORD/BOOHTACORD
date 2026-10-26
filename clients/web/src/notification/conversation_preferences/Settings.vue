@@ -4,6 +4,8 @@ import { useNotificationStore } from '../notification_store'
 import { useTopologyStore } from '../../channel/topology_store'
 import { useDirectMessageStore } from '../../direct_message/direct_message_store'
 import type { ConversationKind,NotificationMode } from './policy'
+import { useServerNotifications } from '../server_preferences/state'
+const remote=useServerNotifications()
 const notifications=useNotificationStore(),topology=useTopologyStore(),direct=useDirectMessageStore()
 const choices=computed(()=>[
   ...(topology.topology?.categories.flatMap(category=>category.channels).filter(channel=>channel.kind==='TEXT') ?? [])
@@ -43,7 +45,7 @@ function pause(event:Event):void {
       <label>Пауза<select :value="0" :disabled="busy" @change="pause"><option value="0">Без паузы / возобновить</option><option value="15">15 минут</option><option value="60">1 час</option><option value="480">8 часов</option></select></label>
       <p v-if="preference && preference.pausedUntil>now" role="status">Пауза до {{ new Date(preference.pausedUntil).toLocaleString('ru-RU') }}. После неё выбранный режим возобновится автоматически.</p>
     </template>
-    <button type="button" class="profile-secondary-button" :disabled="busy" @click="notifications.resetConversationPreferences()">Сбросить настройки всех бесед: все сообщения, без паузы</button>
+    <button type="button" class="profile-secondary-button" :disabled="busy" @click="notifications.resetConversationPreferences()">{{ remote.snapshot ? 'Убрать исключения бесед: использовать общие настройки' : 'Сбросить настройки всех бесед: все сообщения, без паузы' }}</button>
   </section>
 </template>
 <style scoped>

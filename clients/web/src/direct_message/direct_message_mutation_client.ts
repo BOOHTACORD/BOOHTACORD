@@ -44,7 +44,7 @@ function requestInit(method: 'POST' | 'PATCH' | 'DELETE', payload?: unknown): Re
   return {
     method,
     credentials: 'same-origin',
-    headers: { accept: 'application/json', ...(payload === undefined ? {} : { 'content-type': 'application/json' }) },
+    headers: { accept: 'application/json', ...(method==='POST'?{'X-Boohtacord-Support-Publication':'v1'}:{}), ...(payload === undefined ? {} : { 'content-type': 'application/json' }) },
     ...(payload === undefined ? {} : { body: JSON.stringify(payload) }),
   }
 }

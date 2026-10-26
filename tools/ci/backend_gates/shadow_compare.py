@@ -5,7 +5,7 @@ import re
 from .results import PROFILES, OPERATIONS, require
 from tools.ci.runner_pool.routing import measurement_pool
 
-LEGACY_OPERATIONS=('go:database-preflight','go:test:all:uncached','go:no-skip','go:vet:all','go:build:all',
+LEGACY_OPERATIONS=('go:database-preflight','go:test:all:uncached','go:no-skip','telemetry:two-installation-runtime','go:vet:all','go:build:all',
                    'screen-share:matrix','api:normal:2:20','api:reconnect:2:20','api:uploads:2:20:1024',
                    'api:nat_auth:1:20','api:faults:2:40')
 REFERENCE_REVISION='d552352482187b9822768161f8507d59cbf2e19e'

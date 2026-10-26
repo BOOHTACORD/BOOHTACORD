@@ -47,6 +47,8 @@ func (hub *Hub) deliverLocked(subscription *Subscription, event Event) {
 
 func requiredCapability(kind string) string {
 	switch kind {
+	case "notification.queued", "notification.preferences_changed":
+		return "notifications_v1"
 	case "message.reactions_updated", "message.pins_updated", "direct_message.reactions_updated":
 		return "message_social_v1"
 	case "role.permissions.updated", "auth.permissions.invalidated":

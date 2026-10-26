@@ -15,14 +15,14 @@ var relayRecords, _ = otel.Meter("boohtacord/relay").Int64Counter("boohtacord.te
 
 func observeBatch(ctx context.Context, result batchResult) {
 	if result.Accepted > 0 {
-		relayRecords.Add(ctx, int64(result.Accepted), metric.WithAttributes(attribute.String("outcome", "accepted"), attribute.String("reason", "none")))
+		relayRecords.Add(ctx, int64(result.Accepted), metric.WithAttributes(attribute.String("outcome", "accepted"), attribute.String("reason", "none"), sourcePlatform(ctx)))
 	}
 	if result.Rejected > 0 || result.Fatal {
 		count := result.Rejected
 		if count == 0 {
 			count = 1
 		}
-		relayRecords.Add(ctx, int64(count), metric.WithAttributes(attribute.String("outcome", "rejected"), attribute.String("reason", result.Reason)))
+		relayRecords.Add(ctx, int64(count), metric.WithAttributes(attribute.String("outcome", "rejected"), attribute.String("reason", result.Reason), sourcePlatform(ctx)))
 	}
 }
 func accepted(writer http.ResponseWriter, result batchResult) {

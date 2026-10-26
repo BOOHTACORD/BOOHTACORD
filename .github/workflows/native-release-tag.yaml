@@ -1,0 +1,40 @@
+name: Prepare native release tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Platform whose canonical version tag should point to this master revision
+        required: true
+        type: choice
+        options: [macos, android, windows]
+
+permissions:
+  contents: read
+
+jobs:
+  prepare-tag:
+    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'
+    environment: production
+    permissions:
+      contents: write
+    concurrency:
+      group: boohtacord-native-tags
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Prepare only the canonical exact-master tag without replacing existing refs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_PLATFORM: ${{ inputs.platform }}
+        run: python -m tools.release.native_contract.tags "$RELEASE_PLATFORM"

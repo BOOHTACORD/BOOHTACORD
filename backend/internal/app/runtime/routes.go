@@ -15,6 +15,7 @@ import (
 	identityroutes "voice-platform/backend/internal/app/identity_routes"
 	mediaroutes "voice-platform/backend/internal/app/media_routes"
 	messagesocialroutes "voice-platform/backend/internal/app/message_social_routes"
+	notificationroutes "voice-platform/backend/internal/app/notification_routes"
 	observabilityroutes "voice-platform/backend/internal/app/observability_routes"
 	storageroutes "voice-platform/backend/internal/app/storage_routes"
 	clientupdates "voice-platform/backend/internal/client_updates/catalog"
@@ -25,6 +26,7 @@ import (
 	presencememory "voice-platform/backend/internal/media/screen_viewer_presence/memory"
 	guildlifecycle "voice-platform/backend/internal/observability/guild_lifecycle"
 	httpmetrics "voice-platform/backend/internal/observability/http_metrics"
+	installationapi "voice-platform/backend/internal/observability/installation/api"
 	tracehttp "voice-platform/backend/internal/observability/trace_http"
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
 	"voice-platform/backend/internal/security/request_id"
@@ -33,13 +35,21 @@ import (
 
 func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store) (http.Handler, error) {
 	if events != nil {
-		events.SetTelemetryKey(configuration.TelemetryAuth)
+		key := configuration.CausalKey
+		if configuration.CentralTelemetry == nil {
+			key = configuration.TelemetryAuth
+		}
+		events.SetTelemetryKey(key)
 	}
 	mux := http.NewServeMux()
 	mux.Handle("/api/v1/client-updates", clientupdates.Handler(updates, metrics))
 	lifecycle := guildlifecycle.New(otel.Tracer("boohtacord/guild"), otel.Meter("boohtacord/guild"), metrics)
 	auth := authroutes.Register(mux, database, configuration, events, usage, lifecycle)
 	sessionService, maintenanceService := auth.Sessions, auth.Maintenance
+	notificationroutes.Register(mux, database, sessionService, configuration.NotificationsAvailable, events)
+	notificationroutes.RegisterDevices(mux, database, sessionService, configuration)
+	notificationroutes.RegisterActivation(mux, database, sessionService, configuration)
+	notificationroutes.RegisterReferences(mux, database, sessionService, configuration)
 	guildroutes.Register(mux, database, sessionService, events, lifecycle)
 	authorizationroutes.ConfigureRolePermissionRoutes(mux, database, sessionService, events)
 	if err := mediaroutes.ConfigureMediaRevocationRoutes(mux, database, authorizelivekitsignal.Config{APIKey: configuration.LiveKitAPIKey, APISecret: configuration.LiveKitAPISecret}, maintenanceService); err != nil {
@@ -68,6 +78,7 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	mediaroutes.ConfigureVoiceParticipantRoutes(mux, database, sessionService, configuration.MediaSnapshot, metrics, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret)
 	observabilityroutes.ConfigureClientScreenRoutes(mux, database, sessionService, metrics)
 	observabilityroutes.ConfigureClientTelemetryRoutes(mux, sessionService, configuration)
+	observabilityroutes.ConfigureInstallationRoutes(mux, sessionService, configuration)
 	mediaroutes.ConfigureAdminVoiceRoutes(mux, database, sessionService)
 	mediaroutes.ConfigureMediaCredentialRoutes(mux, database, sessionService, configuration.CredentialSigner)
 	if err := mediaroutes.ConfigureScreenPreviewRoutes(mux, database, sessionService, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret, previews, events); err != nil {
@@ -79,5 +90,5 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	if err := mediaroutes.ConfigureScreenDescriptorRoutes(mux, database, sessionService, configuration.PublicOrigin, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret); err != nil {
 		return nil, fmt.Errorf("configure screen profile descriptor updates: %w", err)
 	}
-	return requestid.Middleware(httpmetrics.LoggingMiddleware(slog.Default(), metrics.Middleware(tracehttp.Middleware(otel.Tracer("boohtacord/api"), mux, configuration.OriginMiddleware(mux)), mux))), nil
+	return installationapi.Headers(requestid.Middleware(httpmetrics.LoggingMiddleware(slog.Default(), metrics.Middleware(tracehttp.Middleware(otel.Tracer("boohtacord/api"), mux, configuration.OriginMiddleware(mux)), mux))), configuration.CentralTelemetry), nil
 }

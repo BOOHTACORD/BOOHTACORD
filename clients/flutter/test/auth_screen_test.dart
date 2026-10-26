@@ -5,6 +5,7 @@ import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/app_version.dart';
 import 'package:boohtacord_desktop/src/screens/auth_screen.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
+import 'package:boohtacord_desktop/src/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,7 +13,125 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
+import 'uiux_2026/capture_support.dart';
+
 void main() {
+  setUpAll(loadUiuxVisualCaptureFonts);
+  testWidgets(
+    'busy login preserves masked editable form with a manual retry delay',
+    (tester) async {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = const Size(390, 844);
+      addTearDown(tester.view.reset);
+      FlutterSecureStorage.setMockInitialValues({});
+      var calls = 0;
+      final state = AppState(
+        ApiClient(
+          client: MockClient((_) async {
+            calls++;
+            return http.Response(
+              jsonEncode({
+                'error': {'code': 'AUTH_BUSY'},
+              }),
+              503,
+              headers: {'content-type': 'application/json', 'retry-after': '7'},
+            );
+          }),
+        ),
+      )..phase = AppPhase.signedOut;
+      addTearDown(state.dispose);
+      final captureKey = GlobalKey();
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: guildTheme(),
+          home: RepaintBoundary(
+            key: captureKey,
+            child: AuthScreen(state: state),
+          ),
+        ),
+      );
+      final login = find.byKey(const ValueKey('auth-login-field'));
+      final password = find.byKey(const ValueKey('auth-password-field'));
+      await tester.enterText(login, 'synthetic-user');
+      await tester.enterText(password, 'synthetic password');
+      await tester.tap(find.widgetWithText(FilledButton, 'Войти'));
+      await tester.pumpAndSettle();
+      final input = tester.widget<EditableText>(
+        find.descendant(of: password, matching: find.byType(EditableText)),
+      );
+      expect(input.controller.text, 'synthetic password');
+      expect(input.obscureText, isTrue);
+      expect(input.readOnly, isFalse);
+      expect(find.textContaining('вручную через 7 с.'), findsOneWidget);
+      expect(calls, 1);
+      expect(state.phase, AppPhase.signedOut);
+      await captureUiuxBoundary(
+        tester,
+        find.byKey(captureKey),
+        fileName: 'auth-capacity-mobile.png',
+        pixelRatio: 1,
+      );
+    },
+  );
+  testWidgets(
+    'rate limited login preserves masked editable form with a manual retry delay',
+    (tester) async {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = const Size(390, 844);
+      addTearDown(tester.view.reset);
+      FlutterSecureStorage.setMockInitialValues({});
+      var calls = 0;
+      final state = AppState(
+        ApiClient(
+          client: MockClient((_) async {
+            calls++;
+            return http.Response(
+              jsonEncode({
+                'error': {'code': 'RATE_LIMITED'},
+              }),
+              429,
+              headers: {
+                'content-type': 'application/json',
+                'retry-after': '30',
+              },
+            );
+          }),
+        ),
+      )..phase = AppPhase.signedOut;
+      addTearDown(state.dispose);
+      final captureKey = GlobalKey();
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: guildTheme(),
+          home: RepaintBoundary(
+            key: captureKey,
+            child: AuthScreen(state: state),
+          ),
+        ),
+      );
+      final login = find.byKey(const ValueKey('auth-login-field'));
+      final password = find.byKey(const ValueKey('auth-password-field'));
+      await tester.enterText(login, 'synthetic-user');
+      await tester.enterText(password, 'synthetic password');
+      await tester.tap(find.widgetWithText(FilledButton, 'Войти'));
+      await tester.pumpAndSettle();
+      final input = tester.widget<EditableText>(
+        find.descendant(of: password, matching: find.byType(EditableText)),
+      );
+      expect(input.controller.text, 'synthetic password');
+      expect(input.obscureText, isTrue);
+      expect(input.readOnly, isFalse);
+      expect(find.textContaining('вручную через 30 с.'), findsOneWidget);
+      expect(calls, 1);
+      expect(state.phase, AppPhase.signedOut);
+      await captureUiuxBoundary(
+        tester,
+        find.byKey(captureKey),
+        fileName: 'auth-rate-limit-mobile.png',
+        pixelRatio: 1,
+      );
+    },
+  );
   testWidgets('auth card follows web width on Android portrait viewport', (
     tester,
   ) async {
@@ -407,7 +526,6 @@ void main() {
       findsOneWidget,
     );
   });
-
 }
 
 class _FailingAuthenticationApi extends ApiClient {

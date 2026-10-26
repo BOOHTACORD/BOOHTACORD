@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import type { ChannelTopology, TopologyCategory } from './topology_client'
 import type { PermissionValues } from '../authorization/permission_keys'
 import { renameCategory } from './category_mutation_client'
@@ -13,12 +13,37 @@ const menuError = ref('')
 
 function open(event: MouseEvent, category: TopologyCategory): void {
   if (!props.permissions) return
-  trigger.value = event.currentTarget as HTMLElement
+  const categoryElement = event.currentTarget as HTMLElement
+  const eventTarget = event.target
+  trigger.value = eventTarget instanceof Element
+    ? eventTarget.closest<HTMLElement>('button') ?? categoryElement.querySelector<HTMLElement>('.channel-category-disclosure')
+    : categoryElement.querySelector<HTMLElement>('.channel-category-disclosure')
   categoryMenu.value = { x: Math.max(8, Math.min(event.clientX, innerWidth - 276)), y: Math.max(8, Math.min(event.clientY, innerHeight - 267)), category }
   menuError.value = ''
   void nextTick(() => menuElement.value?.querySelector<HTMLElement>('button:not(:disabled)')?.focus())
 }
-function close(): void { categoryMenu.value = null; void nextTick(() => trigger.value?.focus()) }
+function close(restoreFocus = true): void {
+  categoryMenu.value = null
+  if (restoreFocus) void nextTick(() => trigger.value?.focus())
+}
+function dismissOnOutsidePointer(event: PointerEvent): void {
+  if (!categoryMenu.value || !(event.target instanceof Node) || menuElement.value?.contains(event.target)) return
+  close(false)
+}
+function dismissOnEscape(event: KeyboardEvent): void {
+  if (event.key !== 'Escape' || !categoryMenu.value) return
+  event.preventDefault()
+  event.stopPropagation()
+  close()
+}
+onMounted(() => {
+  document.addEventListener('pointerdown', dismissOnOutsidePointer, true)
+  document.addEventListener('keydown', dismissOnEscape, true)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('pointerdown', dismissOnOutsidePointer, true)
+  document.removeEventListener('keydown', dismissOnEscape, true)
+})
 async function rename(): Promise<void> {
   const target = categoryMenu.value?.category
   if (!target || !props.permissions?.['category.create']) return
@@ -32,7 +57,7 @@ defineExpose({ open })
 </script>
 
 <template>
-  <div v-if="categoryMenu" ref="menuElement" class="category-context-menu" role="menu" :style="{ left: `${categoryMenu.x}px`, top: `${categoryMenu.y}px` }" @keydown.esc.stop.prevent="close">
+  <div v-if="categoryMenu" ref="menuElement" class="category-context-menu" role="menu" :style="{ left: `${categoryMenu.x}px`, top: `${categoryMenu.y}px` }">
     <span class="category-context-caption">Раздел «{{ categoryMenu.category.name }}»</span>
     <button v-if="canCreate()" type="button" role="menuitem" @click="emit('createInCategory', categoryMenu.category); close()"><span class="category-context-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14" /></svg></span>Создать канал...</button>
     <button v-if="props.permissions?.['category.create']" type="button" role="menuitem" @click="emit('createGlobal'); close()"><span class="category-context-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h6l2 2h10v13H3V5Z" /></svg></span>Создать раздел...</button>

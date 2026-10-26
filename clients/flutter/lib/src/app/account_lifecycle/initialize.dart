@@ -2,6 +2,7 @@ import 'dart:async';
 
 import '../../models.dart';
 import '../../services/native_notifications.dart';
+import '../../features/notifications/remote_lifecycle/controller.dart';
 import '../../features/session/lifecycle/controller.dart';
 import '../../features/workspace/lifecycle/controller.dart';
 import '../../features/profile/state/controller.dart';
@@ -61,6 +62,7 @@ extension AppAccountInitialization on AppOwners {
     ]);
     if (!ticket.isActive || session.phase != AppPhase.ready) return;
     voiceRoster.start();
+    unawaited(remoteNotifications.start(session.user!.accountId));
     unawaited(realtime.connect());
   }
 }

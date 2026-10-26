@@ -11,9 +11,9 @@ def check(workflows, action):
             ('install-retained-release.yaml','retained','${{ inputs.build_run_id }}','${{ inputs.revision }}')):
         job=workflows[name]['jobs']['install']; steps=job.get('steps',[])
         require(job.get('timeout-minutes')=='30' and len(steps)==4,'One bounded shared install path is required')
-        require(steps[0].get('uses')=='actions/checkout@v4' and steps[0].get('with')=={
+        require(steps[0].get('uses')=='actions/checkout@v7' and steps[0].get('with')=={
             'persist-credentials':'false','fetch-depth':'0'},'Only the current controller may be checked out')
-        require(steps[1].get('uses')=='actions/setup-python@v5' and steps[1].get('with')=={
+        require(steps[1].get('uses')=='actions/setup-python@v7' and steps[1].get('with')=={
             'python-version':"${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}"}
             and steps[2].get('run')=='python -m tools.ci.toolchains.runtime python', 'Pinned selected Python is required')
         expected={'mode':mode,'build-run-id':run_id,'github-token':'${{ secrets.GITHUB_TOKEN }}',
@@ -42,7 +42,7 @@ def check(workflows, action):
                 and step.get('run')==commands[index] and step.get('shell')=='bash'
                 and step.get('env')==environments[index] and step.get('if')==('always()' if index==6 else None),
                 'Shared install commands, credentials, outcomes or failure handling differ')
-    require(steps[-1].get('uses')=='actions/upload-artifact@v4' and steps[-1].get('if')=='always()'
+    require(steps[-1].get('uses')=='actions/upload-artifact@v7' and steps[-1].get('if')=='always()'
             and set(steps[-1])=={'id','name','if','uses','with'} and steps[-1]['with']=={
                 'name':'delivery-${{ github.run_id }}-${{ github.run_attempt }}','path':'.out/delivery/receipt.json',
                 'if-no-files-found':'error','retention-days':'30','compression-level':'9'},'A public deployment receipt must be retained for 30 days')

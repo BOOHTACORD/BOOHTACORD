@@ -56,6 +56,11 @@ extension WorkspaceCategoryStateBuildAction on WorkspaceCategoryStateContext {
                         selected: state.selectedChannel?.id == channel.id,
                         voiceConnected: state.voiceChannel?.id == channel.id,
                         voiceParticipantCount: memberCount,
+                        favorite: widget.favoriteIds.contains(channel.id),
+                        onFavoriteChanged: widget.onFavoriteChanged == null
+                            ? null
+                            : (favorite) =>
+                                  widget.onFavoriteChanged!(channel, favorite),
                         onTap: () {
                           if (widget.onChannelSelected != null &&
                               channel.kind == ChannelKind.voice) {

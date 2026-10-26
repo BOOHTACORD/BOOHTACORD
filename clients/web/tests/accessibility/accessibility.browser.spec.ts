@@ -729,7 +729,7 @@ test('voice dock and audio settings icons expose keyboard names, focus and activ
     const { default: VoiceDock } = await load('/src/voice/VoiceDock.vue')
     const { default: WorkspaceUserFooter } = await load('/src/workspace/WorkspaceUserFooter.vue')
     document.body.innerHTML = '<div id="mount"></div>'
-    Object.assign(window, { __uiuxSettingsActivated: false })
+    Object.assign(window, { __uiuxSettingsActivated: false, __supportActivated: false })
     const state = reactive({
       channel: { id: 'voice-1', name: 'Комната', kind: 'VOICE', position: 0, admissionClosed: false },
       activeSession: true,
@@ -747,6 +747,7 @@ test('voice dock and audio settings icons expose keyboard names, focus and activ
         h(WorkspaceUserFooter, {
           role: 'ADMINISTRATOR', displayName: 'Алексей',
           onOpenSettings: () => Object.assign(window, { __uiuxSettingsActivated: true }),
+          onOpenSupport: () => Object.assign(window, { __supportActivated: true }),
         }),
         h(VoiceDock, {
           ...state,
@@ -779,6 +780,13 @@ test('voice dock and audio settings icons expose keyboard names, focus and activ
   }
 
   await focusButton(profileButton)
+  const helpButton = page.getByRole('button', { name: 'Помощь и обратная связь', exact: true })
+  await focusButton(helpButton)
+  await expect(helpButton).toHaveCSS('outline-style', 'solid')
+  await page.keyboard.press('Enter')
+  expect(await page.evaluate(() => Boolean((window as typeof window & { __supportActivated?: boolean }).__supportActivated))).toBe(true)
+  await expect(muteButton).toBeVisible()
+  await expect(leaveButton).toBeEnabled()
   await focusButton(settingsButton)
   await expect(settingsButton).toHaveCSS('outline-style', 'solid')
   await expect(settingsButton).toHaveCSS('outline-width', '2px')

@@ -1,4 +1,5 @@
 import '../native_bindings.dart';
+import '../support_contact/component.dart';
 
 class WorkspaceDirectMessageNavigation extends StatelessWidget {
   const WorkspaceDirectMessageNavigation({
@@ -46,7 +47,12 @@ class WorkspaceDirectMessageNavigation extends StatelessWidget {
           ),
         ],
       ),
-      for (final conversation in state.directMessages)
+      SupportContactRow(state: state, onSelected: onSelected),
+      for (final conversation in state.directMessages.where(
+        (value) =>
+            !(state.supportAvailable &&
+                value.participantId == state.supportAccountId),
+      ))
         Material(
           color: Colors.transparent,
           child: ListTile(
@@ -123,7 +129,7 @@ class WorkspaceDirectMessageNavigation extends StatelessWidget {
             },
           ),
         ),
-      if (state.directMessages.isEmpty)
+      if (state.directMessages.isEmpty && !state.supportAvailable)
         const Padding(
           padding: EdgeInsets.all(16),
           child: Text(

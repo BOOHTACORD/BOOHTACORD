@@ -1,3 +1,43 @@
+# Current shared-client parity contract (#518)
+
+The machine-readable scenario matrix lives in the existing
+[`tools/qa/local_features/features.json`](../tools/qa/local_features/features.json),
+under each feature's `parity` records. Stable IDs cover auth/session/security,
+TEXT/DM/social/files, search/navigation, notifications, topology/admin,
+voice/reconnect/PTT/devices, publish/view/mini/fullscreen/audience,
+update awareness, telemetry and support (#516). This is the current source
+comparison; historical reports below keep their original build/date scope.
+
+`PARITY` means the sources implement the same expected user result. It does
+**not** assert physical runtime acceptance. `GAP` requires a tracking issue;
+`PLATFORM_EXCEPTION` needs a reason and an available alternative; `PLANNED`
+is shared future scope; `NOT_VERIFIED` does not become a pass because Dart is
+shared. Each client has its own runtime state, permissions/conditions and tests.
+The final [#518 report](../evidence/qa/issue518-client-parity.md) binds actual
+runs/builds to source and records outstanding physical gates.
+
+Every PR changing a common scenario updates `parity_review` for affected
+features: implementation and regression on Web/iOS/Android, an agreed platform
+exception, or a linked gap. CI rejects duplicate IDs, missing client paths/tests,
+missing platform decisions and unsupported runtime PASS claims. It also runs
+the existing Web/Flutter suites; metadata validation alone is not a behavior test.
+A shared Dart implementation is one code path with **two distinct native runs**.
+Never delay an urgent security fix for simultaneous releases: track the second
+client as an explicit priority gap. Coordinated noncritical features can use an
+agreed feature flag until applicable clients are ready.
+
+PAR-01/02: durable cursor advances only after awaited effects; bounded queue
+and dedup, overflow/handler error/expired cursor reset to server snapshots.
+Cursor is memory-only and bound to server/auth scope/capabilities. Socket-open
+is not protocol-ready: only `connection.ready` resets jittered retry; generation
+changes cancel old callbacks/timers. The UI exposes recovery and manual retry.
+PAR-03 preserves lease heartbeat and polling fallback while coalescing scoped
+empty viewer hints. PAR-04 is the existing Guild settings telemetry panel:
+admin-only API, explicit consent/HTTPS and honest delivery/error states.
+PAR-05 keeps fullscreen exit separate from stop viewing; stop changes only
+remote subscriptions and preserves voice/publisher state and renderer handoff.
+PAR-06 updates the actual iOS app-only/broadcast paths in its README.
+
 # Flutter ↔ web parity plan
 
 ## Flutter admin parity epic #188
@@ -1208,16 +1248,26 @@ both deployed web and Flutter viewers.
   Viewer selection state is keyed to its voice-channel ID, preventing a stream
   identity or ended-state from leaking into another room
   [QA-39](../evidence/flutter/qa39-voice-channel-viewer-scope-2026-09-28-001.json).
-  Remote streams can now be pinned into a workspace mini-player that remains
-  visible over another channel, a DM, or workspace panels; return-to-viewer,
-  transient screen-audio mute, and stop-watching controls match the web
-  conversation mini-player policy [QA-94](../evidence/flutter/qa94-pinned-screen-mini-player-web-parity-2026-09-29-001.json).
-  When the selected screen publication is removed, Flutter now closes the
-  pinned mini-player but preserves the ended state in the visible voice room;
+  A selected remote stream now stays mounted when the user leaves its voice
+  channel for text, a DM, or workspace settings, and the mini-player appears
+  automatically without a manual pin. Returning to voice hands the same
+  renderer back to the room; stopping the mini-player clears the subscription.
+  This matches Web PR #452 / issue #349 while retaining the existing Flutter
+  return-to-viewer, transient screen-audio mute, and stop-watching controls
+  [local QA](../evidence/qa/flutter-screen-viewer-navigation-2026-10-24.md).
+  When the selected screen publication is removed, Flutter closes the
+  mini-player but preserves the ended state in the visible voice room;
   a temporarily missing frame remains a waiting state [QA-95](../evidence/flutter/qa95-pinned-screen-ended-lifecycle-2026-09-29-001.json).
   Mini-player layering also matches the web stack: above content but beneath
   scrims/drawers/search, excluded from hidden-overlay focus/semantics, and
   positioned just above the compact voice dock [QA-96](../evidence/flutter/qa96-pinned-screen-overlay-layering-2026-09-29-001.json).
+  After Web commit `88dc8f49` compacted the stream participant panel, Flutter
+  now puts active voice participants and watcher counts in a dismissible menu
+  over the stage, including fullscreen. Active viewing no longer reserves the
+  fixed 92 dp participant strip; the ended-view footer is preserved. The
+  focused widget test covers the full-height stage and both room/fullscreen
+  menus [local QA](../evidence/qa/flutter-screen-viewer-compact-participants-2026-10-24.md).
+  A paired native stream run remains NOT_VERIFIED.
   Verify actual playback/gain and matched viewer screenshots on each target
   platform. For the previously reported Android receiver crop, explicitly
   compare portrait and landscape captures in web and Flutter, confirming all

@@ -4,6 +4,7 @@ import { ProtobufTraceSerializer } from '@opentelemetry/otlp-transformer'
 import { telemetrySession, type TelemetrySession, type SessionSnapshot } from '../action_scope/session'
 import { apiBaseUrl } from '../../config/runtime'
 import { recordExportHealth } from './health'
+import { actionKey, type ActionScope } from '../action_scope/scope'
 export interface ExportStatus {queued:number;accepted:number;rejected:number;dropped:number;retried:number;lastAcceptedAt:number|null}
 export class SessionProcessor implements SpanProcessor {
  readonly status:ExportStatus={queued:0,accepted:0,rejected:0,dropped:0,retried:0,lastAcceptedAt:null}
@@ -18,7 +19,11 @@ export class SessionProcessor implements SpanProcessor {
   this.unsubscribe=session.onReset(()=>{this.active?.abort();this.status.dropped+=this.queue.length;this.queue=[];this.status.queued=0})
   this.timer=setInterval(()=>{recordExportHealth(this.session,this.status);void this.forceFlush()},5000)
  }
- onStart(span:Span,_parent:Context):void {
+ onStart(span:Span,parent:Context):void {
+  // Do not adopt children born inside an old account's async context.
+  // Explicit new roots have no inherited action and remain independently valid.
+  const action=parent.getValue(actionKey) as ActionScope|undefined
+  if(action&&(action.complete||!this.session.current(action.snapshot)))return
   const owner=this.session.snapshot();this.owners.set(span,owner)
   if(owner.binding)span.setAttribute('session.id',owner.binding)
  }
@@ -44,7 +49,7 @@ export class SessionProcessor implements SpanProcessor {
    let response:Response|undefined
    const active=new AbortController();this.active=active
    try {response=await this.send(origin+apiBaseUrl+'/telemetry/traces',{method:'POST',credentials:'same-origin',
-    headers:{'Content-Type':'application/x-protobuf','X-Client-Platform':'web','X-Telemetry-Session':owner.binding},
+    headers:{...(owner.installation?{'X-Installation-ID':owner.installation}:{}),'Content-Type':'application/x-protobuf','X-Client-Platform':'web','X-Telemetry-Session':owner.binding},
     body:body as BodyInit,signal:AbortSignal.any([active.signal,AbortSignal.timeout(3000)])})}catch{}
    finally{if(this.active===active)this.active=null}
    if(!this.session.current(owner)||this.stopped){this.status.dropped+=spans.length;return}

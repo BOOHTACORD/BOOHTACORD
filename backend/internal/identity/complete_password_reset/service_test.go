@@ -25,7 +25,7 @@ func TestCompleteHashesNewPasswordAndConsumesReset(t *testing.T) {
 	if !session.Verify(issued.Token, store.digest) {
 		t.Fatal("store did not receive reset digest")
 	}
-	if valid, err := password.Verify("new correct horse battery staple", store.passwordHash); err != nil || !valid {
+	if valid, err := password.Verify(context.Background(), "new correct horse battery staple", store.passwordHash); err != nil || !valid {
 		t.Fatalf("stored password hash valid = %v, error = %v", valid, err)
 	}
 }
@@ -66,5 +66,10 @@ func (store *fakeStore) Consume(_ context.Context, digest [sha256.Size]byte, pas
 	store.digest = digest
 	store.passwordHash = passwordHash
 	store.called = true
+	return store.err
+}
+
+func (store *fakeStore) Preflight(_ context.Context, digest [sha256.Size]byte) error {
+	store.digest = digest
 	return store.err
 }

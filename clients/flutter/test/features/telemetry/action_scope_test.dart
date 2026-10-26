@@ -4,6 +4,28 @@ import 'package:boohtacord_desktop/src/features/telemetry/action_scope/session.d
 import 'package:boohtacord_desktop/src/features/telemetry/action_scope/action.dart';
 
 void main() {
+  test(
+    'a stale or finished action cannot become the context of later work',
+    () async {
+      final session = TelemetrySession(
+        SessionScope().capture,
+        () => 'https://synthetic.invalid',
+      );
+      session.bind('1' * 32, '1');
+      final action = ActionScope('message.send', session);
+      session.reset();
+      session.bind('2' * 32, '1');
+      await action.run(() async {
+        expect(ActionScope.current, isNull);
+      });
+      final finished = ActionScope('voice.join', session);
+      finished.finish('success');
+      await finished.run(() async {
+        expect(ActionScope.current, isNull);
+      });
+    },
+  );
+
   test('cleanup runs once and cannot interrupt the action terminal', () {
     final session = TelemetrySession(
       SessionScope().capture,
@@ -84,7 +106,10 @@ void main() {
     );
     session.beginMedia();
     session.mediaFlow = 'a' * 32;
-    expect(session.bindMediaLease('11111111-1111-4111-8111-111111111111'), isTrue);
+    expect(
+      session.bindMediaLease('11111111-1111-4111-8111-111111111111'),
+      isTrue,
+    );
     expect(session.snapshot().media, '11111111111141118111111111111111');
     expect(session.snapshot().mediaFlow, 'a' * 32);
     expect(session.snapshot().leaseId, '11111111-1111-4111-8111-111111111111');

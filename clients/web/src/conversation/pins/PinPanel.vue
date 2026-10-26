@@ -7,11 +7,11 @@ import type { SearchTarget } from '../../search/search_target_store'
 const props=defineProps<{channelId:string;embedded?:boolean}>(),emit=defineEmits<{open:[target:SearchTarget]}>()
 const authors=useAuthorDirectory(),pins=ref<Pin[]>([]),cursor=ref(''),canManage=ref(false),loading=ref(false),busy=ref(false),error=ref('')
 let sequence=0,alive=true
-async function load(more=false):Promise<void>{
+async function load(more=false,strict=false):Promise<void>{
   const ticket=++sequence;loading.value=true;error.value=''
   if(!more){pins.value=[];cursor.value='';canManage.value=false}
   try{const page=await readPins(props.channelId,more?cursor.value:undefined);if(!alive||ticket!==sequence)return;pins.value=more?[...pins.value,...page.pins]:page.pins;cursor.value=page.nextCursor??'';canManage.value=page.canManage;for(const pin of page.pins)void authors.ensure(pin.authorId)}
-  catch(reason){if(alive&&ticket===sequence){pins.value=[];cursor.value='';canManage.value=false;error.value=reason instanceof Error?reason.message:'Закрепления недоступны.'}}
+  catch(reason){if(alive&&ticket===sequence){pins.value=[];cursor.value='';canManage.value=false;error.value=reason instanceof Error?reason.message:'Закрепления недоступны.'}if(strict&&alive&&ticket===sequence)throw reason}
   finally{if(alive&&ticket===sequence)loading.value=false}
 }
 async function remove(id:string):Promise<void>{
@@ -21,7 +21,7 @@ async function remove(id:string):Promise<void>{
   finally{if(alive)busy.value=false}
 }
 watch(()=>props.channelId,()=>{void load()},{immediate:true})
-const stop=subscribeSocialHints(hint=>{if(!hint||hint.kind==='CHANNEL'&&hint.conversationId===props.channelId&&hint.action==='pins')void load()})
+const stop=subscribeSocialHints(hint=>{if(!hint||hint.kind==='CHANNEL'&&hint.conversationId===props.channelId&&hint.action==='pins')return load(false,true)})
 onBeforeUnmount(()=>{alive=false;sequence++;stop()})
 </script>
 <template>

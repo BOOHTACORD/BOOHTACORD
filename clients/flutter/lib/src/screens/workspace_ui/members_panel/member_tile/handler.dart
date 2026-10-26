@@ -2,6 +2,7 @@ import '../../native_bindings.dart';
 
 import '../lifecycle/context.dart';
 import '../handler_bindings.dart';
+import '../voice_presence.dart';
 
 mixin WorkspaceMembersPanelStateWorkspaceMemberTileBinding
     on WorkspaceMembersPanelStateContext {
@@ -26,6 +27,7 @@ extension WorkspaceMembersPanelStateWorkspaceMemberTileAction
     GuildMember member,
     MemberPresence memberPresence,
   ) {
+    final voiceStatus = guildMemberVoiceStatus(state, member.id);
     final presence = switch (memberPresence) {
       MemberPresence.online => ('В сети', GcColors.success),
       MemberPresence.offline => ('Не в сети', GcColors.muted),
@@ -36,7 +38,7 @@ extension WorkspaceMembersPanelStateWorkspaceMemberTileAction
       child: ListTile(
         contentPadding: EdgeInsets.zero,
         dense: true,
-        minTileHeight: 48,
+        minTileHeight: voiceStatus == null ? 48 : 64,
         onTap: () => workspaceShowMemberProfile(member),
         leading: Stack(
           children: [
@@ -66,11 +68,42 @@ extension WorkspaceMembersPanelStateWorkspaceMemberTileAction
           message: member.displayName,
           child: Text(
             member.displayName,
-            semanticsLabel: '${member.displayName}, ${presence.$1}',
+            semanticsLabel: voiceStatus == null
+                ? '${member.displayName}, ${presence.$1}'
+                : '${member.displayName}, ${presence.$1}, в голосовом канале «${voiceStatus.channelName}»${voiceStatus.screenSharing ? ', транслирует экран' : ''}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
         ),
+        subtitle: voiceStatus == null
+            ? null
+            : Text(
+                voiceStatus.channelName,
+                key: ValueKey('member-voice-presence:${member.id}'),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: GcColors.textSecondary,
+                  fontSize: 12,
+                ),
+              ),
+        trailing: voiceStatus == null
+            ? null
+            : Tooltip(
+                message: voiceStatus.screenSharing
+                    ? 'Транслирует экран в канале «${voiceStatus.channelName}»'
+                    : 'В голосовом канале «${voiceStatus.channelName}»',
+                child: Icon(
+                  voiceStatus.screenSharing
+                      ? Icons.desktop_windows_outlined
+                      : Icons.volume_up_outlined,
+                  key: ValueKey('member-voice-icon:${member.id}'),
+                  size: 18,
+                  color: voiceStatus.screenSharing
+                      ? GcColors.accentText
+                      : GcColors.muted,
+                ),
+              ),
       ),
     );
   }

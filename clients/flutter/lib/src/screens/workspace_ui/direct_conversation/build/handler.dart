@@ -1,3 +1,5 @@
+import '../../../../features/direct/conversations/support_contact.dart';
+import '../../support_contact/publication.dart';
 import 'history_list/handler.dart';
 import 'composer_region/handler.dart';
 import '../../error_banner/component.dart';
@@ -49,8 +51,10 @@ extension WorkspaceDirectConversationStateBuildAction
       children: [
         WorkspaceHeader(
           icon: Icons.person_outline,
-          title: widget.conversation.displayName,
-          subtitle: 'Личный диалог',
+          title: widget.state.directDisplayName(widget.conversation),
+          subtitle: widget.state.isSupportConversation(widget.conversation)
+              ? 'Поддержка этого сервера'
+              : 'Личный диалог',
           mobileConversationLayout: true,
           onToggleNavigation: widget.onToggleNavigation,
           trailing: ConversationHeaderActions(
@@ -61,6 +65,11 @@ extension WorkspaceDirectConversationStateBuildAction
                 widget.state.openDirectConversation(widget.conversation),
           ),
         ),
+        if (widget.state.isSupportConversation(widget.conversation))
+          SupportPublicationNotice(
+            state: widget.state,
+            conversation: widget.conversation,
+          ),
         if (widget.state.error != null)
           WorkspaceErrorBanner(message: widget.state.error!),
         Expanded(
@@ -77,7 +86,11 @@ extension WorkspaceDirectConversationStateBuildAction
                         height: MediaQuery.sizeOf(context).height * 0.45,
                         child: Center(
                           child: Text(
-                            'Начните диалог с ${widget.conversation.displayName}',
+                            widget.state.isSupportConversation(
+                                  widget.conversation,
+                                )
+                                ? supportPrompt
+                                : 'Начните диалог с ${widget.conversation.displayName}',
                             style: const TextStyle(color: GcColors.muted),
                           ),
                         ),
@@ -92,11 +105,12 @@ extension WorkspaceDirectConversationStateBuildAction
                   olderDirectHistoryError,
                 ),
         ),
-        renderDirectConversationComposerRegion(
-          compact,
-          composerBorderRadius,
-          compactComposerActions,
-        ),
+        if (!widget.state.supportPublicationBlocked(widget.conversation))
+          renderDirectConversationComposerRegion(
+            compact,
+            composerBorderRadius,
+            compactComposerActions,
+          ),
       ],
     );
   }

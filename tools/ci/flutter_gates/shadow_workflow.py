@@ -6,11 +6,11 @@ import hashlib
 import json
 import yaml
 from tools.ci.native.process import ROOT
-from tools.verify.action_pins.policy import normalized
+from tools.verify.action_pins.policy import load_pins, normalized
 from .legacy import reference, frozen
 
-UPLOAD = 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02'
-DOWNLOAD = 'actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093'
+UPLOAD = 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9'
+DOWNLOAD = 'actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333'
 IDENTITY = '${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
 
 
@@ -23,6 +23,13 @@ def definition():
     if hashlib.sha256(original.encode()).hexdigest() != reference()['files']['.github/workflows/ci-flutter.yaml']:
         raise ValueError('Native control template differs from its original workflow')
     old = yaml.load(original, Loader=yaml.BaseLoader)['jobs']['flutter']
+    # Keep the frozen control's bytes/hash intact while running both cohorts
+    # with the same currently reviewed external Actions commits.
+    pins = load_pins()
+    for step in old['steps']:
+        action, separator, _ = step.get('uses', '').partition('@')
+        if separator and action in pins:
+            step['uses'] = action + '@' + pins[action]['commit']
     legacy = copy.deepcopy(old)
     legacy['runs-on'] = GITHUB_LINUX
     legacy.update({'name': 'legacy-${{ matrix.sample }}', 'timeout-minutes': 40,

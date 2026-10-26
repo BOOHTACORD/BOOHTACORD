@@ -1,0 +1,10 @@
+services:
+  telemetry-agent:
+    image: otel/opentelemetry-collector-contrib:0.161.0
+    command: ["--config=/etc/otelcol/agent.yaml"]
+    volumes: ["${TELEMETRY_AGENT_CONFIG_FILE:?generate private agent config}:/etc/otelcol/agent.yaml:ro"]
+    networks: [private]
+    mem_limit: 128m
+    cpus: 0.25
+    restart: unless-stopped
+    logging: {driver: json-file, options: {max-size: 10m, max-file: "3"}}

@@ -4,6 +4,11 @@ services:
     ports: !override
       - "${TRACE_QA_HOST:-127.0.0.1}:14318:4318"
       - "${TRACE_QA_HOST:-127.0.0.1}:18889:8889"
+      - "${TRACE_QA_HOST:-127.0.0.1}:18888:8888"
+  prometheus:
+    ports: !override
+      - "${TRACE_QA_HOST:-127.0.0.1}:19091:9090"
+    networks: !override [default]
   tempo:
     ports: !override
       - "${TRACE_QA_HOST:-127.0.0.1}:13200:3200"

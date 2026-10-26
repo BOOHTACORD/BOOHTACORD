@@ -1,0 +1,38 @@
+{
+  "task": "SP-002",
+  "scope": "Publication warning copy only: remove provider/repository/link and implementation details from Web and Flutter notices",
+  "source_revision": "9ccc7103dbbc4b84e189fc7a3e6caf478596c968",
+  "working_tree_dirty": true,
+  "source_sha256": {
+    "clients/web/src/support/contact.ts": "8c67d5ed7d0a492d93a3393efa6fe2c2333fdda04008f8b70626b7dc88a4581a",
+    "clients/flutter/lib/src/features/direct/conversations/support_presentation.dart": "a54d8ba0e61d6d4f3cf9fc77967756064e08df5072d58aca9eddc9f316ff59e0",
+    "clients/flutter/lib/src/features/direct/conversations/support_contact.dart": "89890c06565576ae112aa2c8bff82a113633b6fa7f0beb766fc980b3d54899be"
+  },
+  "notice": "Сообщения и файлы могут быть общедоступны. Не отправляйте пароли и личные данные.",
+  "checks": {
+    "web_support_and_dm_mutation_unit": {
+      "status": "PASS",
+      "tests": 15
+    },
+    "flutter_support_and_history_api_unit": {
+      "status": "PASS",
+      "tests": 25
+    }
+  },
+  "visual_review": {
+    "status": "PASS",
+    "scope": "Warning rendering only on owned Android emulator; inspected source-resolution 1080x2400 capture",
+    "capture": ".out/support-public/android-copy-review.png",
+    "sha256": "d2f5c002e71732835b5df7654bc22d4934eb31c45907114fc34a678b1d29f7eb",
+    "observations": "Complete warning is visible in two lines without provider name or URL, clipping or overlap. Generic disclosure remains after consent."
+  },
+  "broader_support_acceptance": {
+    "status": "FAIL",
+    "scope": "Separate controlled native round-trip attempt did not observe operator reply before its deadline; this copy review does not close the feature/release gate.",
+    "report": ".out/support-public/native-support-android-3/runtime.json",
+    "synthetic_issue": 527,
+    "synthetic_issue_closed": true
+  },
+  "physical_device": "NOT_RUN",
+  "production_deployment": "NOT_RUN"
+}

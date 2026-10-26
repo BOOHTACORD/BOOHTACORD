@@ -2,10 +2,12 @@ package listdirectmessagesapi
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+	support "voice-platform/backend/internal/support/contact"
 
 	listdirectmessages "voice-platform/backend/internal/chat/list_direct_messages"
 	"voice-platform/backend/internal/identity/authenticate_session"
@@ -33,4 +35,29 @@ type listerFunc func(context.Context, listdirectmessages.Input) (listdirectmessa
 
 func (function listerFunc) List(context context.Context, input listdirectmessages.Input) (listdirectmessages.Result, error) {
 	return function(context, input)
+}
+
+type supportFunc func(context.Context, string) (support.Contact, error)
+
+func (f supportFunc) Resolve(ctx context.Context, actor string) (support.Contact, error) {
+	return f(ctx, actor)
+}
+func TestSupportMetadataUsesAuthenticatedActorAndIgnoresClientSelection(t *testing.T) {
+	const actor = "11111111-1111-4111-8111-111111111111"
+	handler := NewHandler(listerFunc(func(context.Context, listdirectmessages.Input) (listdirectmessages.Result, error) {
+		return listdirectmessages.Result{}, nil
+	}), supportFunc(func(_ context.Context, id string) (support.Contact, error) {
+		if id != actor {
+			t.Fatal("support actor came from client")
+		}
+		return support.Contact{State: "available", Revision: 2, AccountID: "22222222-2222-4222-8222-222222222222"}, nil
+	}))
+	req := httptest.NewRequest("GET", "/api/v1/direct-messages?support_account_id=attacker", nil)
+	req = req.WithContext(sessionapi.WithPrincipal(req.Context(), authenticatesession.Principal{AccountID: actor, Role: "MEMBER"}))
+	recorder := httptest.NewRecorder()
+	handler.ServeHTTP(recorder, req)
+	var result response
+	if err := json.Unmarshal(recorder.Body.Bytes(), &result); err != nil || recorder.Code != 200 || result.SupportContact == nil || result.SupportContact.AccountID != "22222222-2222-4222-8222-222222222222" {
+		t.Fatal("server support metadata missing")
+	}
 }

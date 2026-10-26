@@ -5,7 +5,6 @@ export 'did_change_dependencies/handler.dart';
 export 'dispose/handler.dart';
 export 'workspace_changed/handler.dart';
 export 'select_voice_screen/handler.dart';
-export 'toggle_voice_screen_pin/handler.dart';
 export 'stop_watching_pinned_screen/handler.dart';
 export 'set_fullscreen_screen_selection/handler.dart';
 export 'handle_hardware_key/handler.dart';

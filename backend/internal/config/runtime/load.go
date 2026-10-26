@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	admitlogin "voice-platform/backend/internal/identity/admit_login"
+	centralexport "voice-platform/backend/internal/observability/central_export"
 
 	livekitcredential "voice-platform/backend/internal/media/livekit_credential"
 	removelivekitparticipant "voice-platform/backend/internal/media/remove_livekit_participant"
@@ -15,6 +17,8 @@ import (
 )
 
 type Config struct {
+	Notifications                                                                NotificationOptions
+	NotificationsAvailable                                                       bool
 	Address, DatabaseURL, LiveKitAPIKey, LiveKitAPISecret, LiveKitPrivateHTTPURL string
 	PublicOrigin                                                                 string
 	ClientUpdateCatalogPath                                                      string
@@ -25,7 +29,7 @@ type Config struct {
 	MediaSnapshot                                                                snapshotlivekitpresence.Client
 	RegistrationLimiter                                                          *ratelimit.Limiter
 	LoginLimiter                                                                 *ratelimit.Limiter
-	LoginFailureLimiter                                                          *ratelimit.Limiter
+	LoginAdmission                                                               *admitlogin.Budget
 	PasswordResetLimiter                                                         *ratelimit.Limiter
 	UploadLimiter                                                                *ratelimit.Limiter
 	UploadAccountLimiter                                                         *ratelimit.Limiter
@@ -33,6 +37,8 @@ type Config struct {
 	TelemetryLimiter                                                             *ratelimit.Limiter
 	TelemetryEndpoint                                                            string
 	TelemetryAuth                                                                string
+	CausalKey                                                                    string
+	CentralTelemetry                                                             *centralexport.Runtime
 	AttachmentRoot                                                               string
 	TrustedProxyCIDRs                                                            []string
 	RealtimeConnectionLimiter                                                    *admitconnection.Limiter
@@ -42,6 +48,14 @@ type Config struct {
 func Load(getenv func(string) string) (Config, error) {
 	configuration := Config{PublicOrigin: getenv("PUBLIC_ORIGIN"), AttachmentRoot: getenv("ATTACHMENTS_DIRECTORY"), TrustedProxyCIDRs: splitHosts(getenv("TRUSTED_PROXY_CIDRS"))}
 	var err error
+	if _, err := notificationAvailability(getenv("NOTIFICATION_WEB_ENABLED")); err != nil {
+		return Config{}, fmt.Errorf("NOTIFICATION_WEB_ENABLED must be true or false")
+	}
+	configuration.Notifications = notificationOptions(getenv)
+	configuration.NotificationsAvailable, err = notificationAvailability(getenv("NOTIFICATIONS_AVAILABLE"))
+	if err != nil {
+		return Config{}, err
+	}
 	configuration.OriginMiddleware, err = origincheck.New(configuration.PublicOrigin)
 	if err != nil {
 		return Config{}, fmt.Errorf("configure origin check: %w", err)

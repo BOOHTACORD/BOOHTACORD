@@ -10,7 +10,7 @@ WEB_ROOTS = (
     'issue344/browser', 'qa294-search-session-browser', 'dw02-dm-starter',
     'issue346/browser', 'issue348/browser', 'issue347/browser', 'issue345/browser',
     'issue350/browser', 'issue349/browser', 'issue352/browser', 'issue351/browser',
-    'mentions-inbox-browser-results', 'readonly-archive-browser-results')
+    'mentions-inbox-browser-results', 'readonly-archive-browser-results', 'notify554/browser')
 
 
 def directories(component):

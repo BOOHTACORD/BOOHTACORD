@@ -7,12 +7,30 @@ from tools.build.android.signature import APPLICATION
 VISUALS = (
     'R14-navigation-top.png', 'maintenance-banner-safe-area-390x800.png',
     'flutter-screen-audience-viewer-strip-1024x92@2x.png',
+    'flutter-screen-viewer-transient-controls-1440x900.png',
+    # #544: compact room and fullscreen viewer participant overlays.
+    'voice-viewer-participants-room.png',
+    'voice-viewer-participants-room-open.png',
+    'voice-viewer-participants-fullscreen-open.png',
+    'flutter-screen-viewer-mini-player-mobile-393x852.png',
+    # #518 Flutter channel favorites navigation capture.
+    'flutter-channel-favorites-1440x900.png',
+    'flutter-channel-favorites-mobile-393x852.png',
+    # #518 Flutter connection recovery panel parity.
+    'flutter-connection-status-desktop-320x380.png',
+    'flutter-connection-status-mobile-320x380.png',
+    # #553 Flutter guild member voice and screen-sharing presence states.
+    'guild-member-voice-channel.png',
+    'guild-member-screen-sharing.png',
     'flutter-topology-create-desktop-1440x900@2x.png',
     'flutter-topology-destructive-desktop-1440x900@2x.png',
     'flutter-screen-share-mobile-ime-2x-393x852.png',
     'flutter-profile-logout-confirmation-mobile-393x852@3x.png',
     'flutter-settings-revoke-sessions-confirmation-mobile-393x852@3x.png',
     'password-reset-visibility-mobile.png',
+    # #532: synthetic AUTH_BUSY response, masked password and manual retry.
+    'auth-capacity-mobile.png',
+    'auth-rate-limit-mobile.png',
 ) + tuple(f'flutter-admin-{section}-{profile}-{size}.png'
           for section in ('guild', 'members', 'roles', 'channels', 'audit', 'media', 'readiness')
           for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900'))) + tuple(
@@ -39,6 +57,14 @@ VISUALS += tuple(
     f'parity-pinned-workspace-{width}x{height}-ime{ime}-scale2.png'
     for width, height in ((1440, 900), (390, 480), (320, 480)) for ime in (0, 180)
 )
+
+
+# #516: reviewed synthetic support widgets only; retain the exact inventory.
+VISUALS += tuple(
+    f'support-{width}-text{scale}.png'
+    for width in (320, 393, 1440) for scale in (1.0, 2.0)
+) + ('support-320-text2-ime.png',) + tuple(f'notification-settings-{width}-{scale}-{position}.png'
+    for width, scale in ((393, 1), (393, 2), (1440, 1)) for position in ('top', 'bottom'))
 
 
 def regular(path, maximum):

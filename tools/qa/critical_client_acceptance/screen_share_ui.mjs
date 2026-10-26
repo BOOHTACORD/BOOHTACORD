@@ -1,6 +1,7 @@
 import { miniPlayerInterface } from './mini_player_ui.mjs'
 import assert from 'node:assert/strict'
 import { expect } from '../client_lifecycle/request.mjs'
+import { openViewerPanel, selectVisibleStream } from './select_stream.mjs'
 
 // Only the OS-picker boundary is synthetic. Admission, publication, subscription,
 // decoding and stop use the owned Go API/SFU and the production Web application.
@@ -53,6 +54,8 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     await sender.screenshot({ path: input.directory + '/screen-share-owner-preview.png' })
     const ownerViewport = sender.viewportSize()
     assert.ok(ownerViewport)
+    // Keep the owner's preview active while validating playback through a short resize.
+    await sender.bringToFront()
     const framesBeforeShortViewport = await sender.locator('video.screen-player').evaluate(video => video.getVideoPlaybackQuality().totalVideoFrames)
     await sender.setViewportSize({ width: ownerViewport.width, height: 208 })
     const shortStage = await sender.locator('.screen-stage').evaluate(stage => {
@@ -68,9 +71,11 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     await expect.poll(() => sender.locator('video.screen-player').evaluate(video => video.getVideoPlaybackQuality().totalVideoFrames), { timeout: 5000 }).toBeGreaterThan(framesBeforeShortViewport)
     await sender.screenshot({ path: input.directory + '/screen-share-owner-preview-short-height.png' })
     await sender.setViewportSize(ownerViewport)
+    await openViewerPanel(sender, 'participants')
     await expect(sender.getByRole('status', { name: 'Зрители трансляции: 0' })).toBeVisible()
-    await receiver.locator('[data-testid=stream-select]:visible').first().click({ timeout: 30000 })
+    await selectVisibleStream(receiver)
     await expect.poll(() => receiver.locator('video.screen-player').evaluate(video => video.videoWidth > 0 && video.getVideoPlaybackQuality().totalVideoFrames > 0), { timeout: 30000 }).toBe(true)
+    await openViewerPanel(receiver, 'participants')
     const receiverParticipants = receiver.getByTestId('viewer-participants')
     await expect(receiverParticipants.getByRole('status', { name: 'Зрители трансляции: 1' })).toBeVisible({ timeout: 15000 })
     await expect(receiverParticipants.getByRole('img', { name: 'Смотрит эту трансляцию' })).toHaveCount(1)
@@ -91,10 +96,17 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     await receiver.keyboard.press('Escape')
     await expect(stats).toHaveCount(0)
     await miniPlayerInterface(sender, receiver, input, report, subscriptions)
+    console.log('stage=screen-share-mini-player-returned')
+    await sender.bringToFront()
+    await sender.locator('.screen-stage').hover()
+    console.log('stage=screen-share-owner-controls-revealed')
     await sender.getByRole('button', { name: 'Остановить свою трансляцию', exact: true }).click()
+    console.log('stage=screen-share-owner-stop-accepted')
     await expect(dock.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true })).toBeEnabled()
     await expect(receiver.getByTestId('stream-select')).toHaveCount(0, { timeout: 15000 })
+    console.log('stage=screen-share-view-removed')
     await expect.poll(() => sender.evaluate(() => window.__qaShareUI.track.readyState)).toBe('ended')
+    console.log('stage=screen-share-owner-track-ended')
     const observation = await sender.evaluate(() => ({ captures: window.__qaShareUI.captures, activated: window.__qaShareUI.activated }))
     assert.equal(observation.captures, 3); assert.deepEqual(observation.activated, [true, true, true])
     for (const page of [sender, receiver]) await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён')

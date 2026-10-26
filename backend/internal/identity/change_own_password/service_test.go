@@ -10,7 +10,7 @@ import (
 )
 
 func TestChangeVerifiesCurrentPasswordAndKeepsSessionDigest(t *testing.T) {
-	oldHash, err := password.Hash("old secure password")
+	oldHash, err := password.Hash(context.Background(), "old secure password")
 	if err != nil {
 		t.Fatal("could not create test hash")
 	}
@@ -19,7 +19,7 @@ func TestChangeVerifiesCurrentPasswordAndKeepsSessionDigest(t *testing.T) {
 	if err := New(store).Change(context.Background(), input); err != nil {
 		t.Fatalf("Change() error = %v", err)
 	}
-	if valid, err := password.Verify(input.NewPassword, store.newPasswordHash); err != nil || !valid {
+	if valid, err := password.Verify(context.Background(), input.NewPassword, store.newPasswordHash); err != nil || !valid {
 		t.Fatalf("new password hash valid = %v, error = %v", valid, err)
 	}
 	if store.accountID != input.AccountID || store.currentHash != oldHash || store.currentSessionDigest != input.CurrentSessionDigest {
@@ -28,7 +28,7 @@ func TestChangeVerifiesCurrentPasswordAndKeepsSessionDigest(t *testing.T) {
 }
 
 func TestChangeRejectsWrongCurrentPasswordBeforeUpdate(t *testing.T) {
-	hash, err := password.Hash("old secure password")
+	hash, err := password.Hash(context.Background(), "old secure password")
 	if err != nil {
 		t.Fatal("could not create test hash")
 	}

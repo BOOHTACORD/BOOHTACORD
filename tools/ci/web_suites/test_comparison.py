@@ -48,7 +48,7 @@ class ComparisonTests(unittest.TestCase):
         self.assertEqual(result['summary']['legacy']['critical_seconds'],{'p50':620,'p95':630})
         self.assertEqual(result['summary']['profiles']['critical_seconds'],{'p50':235,'p95':245})
         self.assertGreater(result['summary']['profiles']['runner_minutes']['p50'],result['summary']['legacy']['runner_minutes']['p50'])
-        self.assertEqual(result['coverage'],{'legacy_operations':38,'profile_operations':40,'original_coverage_preserved':True})
+        self.assertEqual(result['coverage'],{'legacy_operations':38,'profile_operations':41,'original_coverage_preserved':True})
 
     def test_failed_cancelled_missing_or_foreign_data_cannot_become_a_timing_pass(self):
         for change in ('needs','missing','duplicate','source','attempt','namespace','plan','operations','failed-job',

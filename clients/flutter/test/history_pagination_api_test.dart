@@ -12,7 +12,8 @@ void main() {
 
   setUp(() {
     FlutterSecureStorage.setMockInitialValues({
-      'boohtacord_session_cookie:https://v.bootybay.ru:443': 'session=test-session',
+      'boohtacord_session_cookie:https://v.bootybay.ru:443':
+          'session=test-session',
     });
   });
 
@@ -177,6 +178,7 @@ void main() {
       );
 
       expect(requests, hasLength(2));
+      expect(requests.last.headers['x-boohtacord-support-publication'], 'v1');
       for (final request in requests) {
         final body = jsonDecode(request.body) as Map<String, dynamic>;
         expect(body['reply_to_id'], contains('parent'));

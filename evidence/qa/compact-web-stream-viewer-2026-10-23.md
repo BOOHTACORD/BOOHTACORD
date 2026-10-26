@@ -1,0 +1,101 @@
+# Compact Web stream viewer
+
+Task: DW-009; dependencies T-022, T-050, DW-003, DW-004, DW-008.
+Base: `bd2c5f656abb6b027f7f67900247f833dafefc29` (`origin/master`).
+Branch: `codex/compact-stream-viewer`.
+
+## Changes
+
+The video uses the available viewer height with 12 px outer padding. Playback,
+fullscreen and stop controls share an overlay. Participants, multiple streams
+and diagnostic tools open on demand without resizing the video. A single
+selected stream has no duplicate thumbnail. Recovery diagnostics stay mounted;
+errors and recovery actions remain visible independently of the idle toolbar.
+Statistics render inside the browser fullscreen element when applicable.
+
+At mobile widths, fullscreen and stop-viewing use labelled icons in the same
+row as the remaining controls. Diagnostic tools are available through the
+additional-actions menu. Existing keyboard focus visibility, touch controls,
+reduced-motion handling and the pointer idle animation are preserved.
+
+## Verification
+
+- PASS: Web unit suite, 1622 tests / 487 files.
+- PASS: production Web build with `VITE_PUBLIC_ORIGIN=https://localhost:4810`.
+- PASS: registered Web browser suites in
+  `.out/local-features/20261022-235159/index.html`, including all 36
+  screen-share UI tests, accessibility, mini-player and responsive shell suites.
+- PASS: final focused compact-viewer rerun, 10 tests. Includes outside-click
+  and Escape dismissal, selection, idle recovery, fullscreen statistics and
+  toolbar geometry at 320/390 px for local and remote streams.
+- PASS: the 208 px short-height browser case now asserts that the loading label
+  starts below the panel toggles. Before the CSS adjustment it overlapped them
+  by 10 px; the focused browser test passes with a 12 px offset applied only
+  below 220 px viewport height.
+- PASS: `python3 -m tools.verify.client_parity.run --base origin/master`.
+- PASS: full registered Web acceptance, report
+  `.out/local-features/20261023-023737/index.html`: 24/24 automated stages,
+  including Web unit/build, accessibility, 18 browser suites and authenticated
+  real-stack lifecycles at 1440 and 393 px. The report has 500 screenshots
+  because the shared registry selects six related Web feature groups; its
+  machine visual status remains `REVIEW_REQUIRED` until the entire broad gallery
+  is inspected.
+- NOT_RUN: Android/iOS runtime and physical-media acceptance. This change is
+  limited to Web presentation; native clients retain their existing layout.
+
+Command for the registered run:
+
+```sh
+./tools/qa/local_features/check.sh --feature shell --feature auth \
+  --feature connection_status --feature screen --feature support --feature voice \
+  --platform web --base origin/master --real-stack
+```
+
+## Focused visual review
+
+Reviewed all 38 screen-share UI captures and the 10 stream/mini-player real-stack
+captures in `.out/local-features/20261023-023737` at their original raster
+resolution. In the 390/1440 compact-viewer fixtures the stage occupies 736 px
+of a 760 px room; the synthetic 1280x720 source keeps its aspect ratio, with
+expected letterboxing. The active controls form a single row and no permanent
+diagnostic, thumbnail or participant row consumes video height. At 320 px,
+remote fullscreen, stop-viewing, audio, pause, statistics and additional actions
+fit inside the stage; active touch targets are 44 px. The short-height loading
+label now clears the top disclosure controls. Loading captures deliberately have
+no media frames and are not evidence of playback.
+
+The 390 px / 200% participant capture keeps the panel inside the viewport,
+provides horizontal scrolling for participant cards and ellipsizes long names.
+The close action remains visible. Escape returns focus to the panel trigger.
+Original user captures explain the previous wrapping/layout problem; no new
+screenshot baseline was approved.
+
+The broader registry gallery's machine `visual_review` remains NOT_RUN; these
+observations cover the changed viewer and stream lifecycle captures. Generated
+screenshots and logs remain outside Git. The full browser and real-stack test
+stages pass, but this record does not claim native runtime or physical-media
+acceptance.
+
+## Follow-up: compact participant panel
+
+Base: `28fc0a32776e15622ef38ce6c983d8f5a58ae5ee` (`origin/master`).
+Branch: `codex/compact-participant-panel`.
+
+The participant popup now sizes to its roster up to a responsive 320 px cap on
+small screens. Its close control sits at the top edge, alongside the summary,
+instead of adding a separate full-width row above the roster. The one-participant
+fixture confirms a 216 px popup in a 653 × 366 px viewport; before the CSS change
+the same popup measured 611 px. The 176 px participant card and horizontal roster
+scrolling remain intact.
+
+- PASS: focused Playwright scenario for the one-participant 653 × 366 px layout.
+- PASS: full registered Web acceptance report
+  `.out/local-features/20261023-103959/index.html`: 24/24 stages, including the
+  screen-share browser suite and authenticated API/SFU lifecycle at 1440 and
+  393 px.
+- REVIEW_REQUIRED: the report contains 501 screenshots. At original resolution,
+  reviewed the changed 653 px participant popup, participant panels at 320 px,
+  390 px with 200% text and 1440 px, the selected-stream audience panel, and the
+  1440/393 px real-stack previews. The wider gallery remains unreviewed.
+- NOT_RUN: native runtime and physical-media acceptance; this follow-up only
+  changes Web presentation.

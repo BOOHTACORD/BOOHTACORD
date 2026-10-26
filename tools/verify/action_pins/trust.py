@@ -13,6 +13,7 @@ def release_guard(prefix):
 
 
 GUARDS = {
+    ('native-release-tag.yaml', 'prepare-tag'): MASTER + " && github.event_name == 'workflow_dispatch'",
     ('deploy-production.yaml', 'install'): UPSTREAM + " && needs.route.outputs.has_bundle == 'true' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'master' && github.event.workflow_run.head_repository.full_name == github.repository",
     ('build-server.yaml', 'bundle'): MASTER + " && needs.changes.outputs.server_release_impact == 'true'",
     ('android-release.yaml', 'android-release'): release_guard('android-v'),
@@ -34,6 +35,7 @@ GUARDS = {
 DIAGNOSTICS = {('audit-attachment-volume.yaml','audit'),('qa08-active-upload.yaml','sample'),('qa11-preflight.yaml','inspect')}
 
 WRITERS = {('android-release.yaml', 'android-release'), ('windows-release.yaml', 'windows-release'),
+           ('native-release-tag.yaml', 'prepare-tag'),
            ('macos-release.yaml', 'macos-release'), ('webrtc-macos-sdk.yaml', 'publish'),
            ('promote-windows-client-update.yaml', 'prepare-catalog-pr'),
            ('desktop-updater-acceptance.yaml', 'macos-beta-package'),

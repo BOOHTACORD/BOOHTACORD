@@ -23,7 +23,7 @@ class TrustedDeliveryWorkflowTests(unittest.TestCase):
         self.assertNotIn('continue-on-error', actual)
         self.assertEqual({'GITHUB_TOKEN': '${{ github.token }}', 'BUILD_RUN_ID': '39268498370',
                           'REQUESTED_REVISION': 'fe482078a2fa4e4964b6758770980d4b1a0b2fa6'}, actual['env'])
-        uploads = [s for s in steps if s.get('uses') == 'actions/upload-artifact@v4']
+        uploads = [s for s in steps if s.get('uses') == 'actions/upload-artifact@v7']
         self.assertEqual(1, len(uploads))
         self.assertEqual('always()', uploads[0]['if'])
         self.assertEqual({'name': 'qa395-network-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}',

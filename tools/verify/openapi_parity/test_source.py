@@ -9,6 +9,15 @@ from . import source
 
 
 class SourceTest(unittest.TestCase):
+    def test_literal_handler_follows_serve_http(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'handler').mkdir()
+            (root / 'handler/handler.go').write_text('package api\nfunc (h Handler) ServeHTTP(w http.ResponseWriter,r *http.Request){r.Header.Get("X-Notification-Account")}')
+            route = {'path': '/api/v1/test', 'expression': 'auth.Require(sessions)(api.Handler{})', 'packages': ['handler']}
+            with patch.object(source, 'ROOT', root):
+                self.assertEqual((set(), {'X-Notification-Account'}), source.request_parameters(route))
+
     def extract(self, code):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

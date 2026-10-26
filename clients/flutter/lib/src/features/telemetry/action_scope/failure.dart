@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import '../../../core/http/api_failure.dart';
 
 import 'package:flutter/services.dart';
 
 ({String outcome, String reason}) failureOutcome(Object? error) {
+  if (error is TimeoutException) {
+    return (outcome: 'timeout', reason: 'deadline');
+  }
   if (error is PlatformException) {
     if ({
       'CANCELLED',

@@ -60,7 +60,7 @@ func (service Service) Register(context context.Context, input Input) (Account, 
 	if err != nil {
 		return Account{}, err
 	}
-	hash, err := password.Hash(validated.Password)
+	hash, err := password.Hash(context, validated.Password)
 	if err != nil {
 		return Account{}, fmt.Errorf("hash password: %w", err)
 	}

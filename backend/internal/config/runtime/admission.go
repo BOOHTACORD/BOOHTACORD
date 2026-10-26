@@ -3,6 +3,7 @@ package runtimeconfig
 import (
 	"fmt"
 	"time"
+	admitlogin "voice-platform/backend/internal/identity/admit_login"
 
 	admitconnection "voice-platform/backend/internal/realtime/admit_connection"
 	"voice-platform/backend/internal/security/rate_limit"
@@ -20,7 +21,7 @@ func configureAdmission(configuration *Config) error {
 		configuration.LoginLimiter, err = makeLimiter(10, 5*time.Minute, 10_000)
 	}
 	if err == nil {
-		configuration.LoginFailureLimiter, err = makeLimiter(8, 5*time.Minute, 50_000)
+		configuration.LoginAdmission, err = admitlogin.New(admitlogin.Config{Limit: 8, Window: 30 * time.Second, MaxAccounts: 50_000})
 	}
 	if err == nil {
 		configuration.PasswordResetLimiter, err = makeLimiter(5, 15*time.Minute, 10_000)

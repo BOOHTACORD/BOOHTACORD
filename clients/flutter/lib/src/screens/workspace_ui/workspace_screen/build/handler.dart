@@ -1,4 +1,6 @@
 import '../layout_policy/derive.dart';
+import '../../../../features/realtime/lifecycle/status.dart';
+import '../../../../features/notifications/settings/notice.dart';
 import 'back_guard/handler.dart';
 import 'search_overlay/handler.dart';
 import 'pinned_layer/handler.dart';
@@ -44,8 +46,8 @@ extension WorkspaceScreenStateBuildAction on WorkspaceScreenStateContext {
           final showPermanentMembers = layout.showPermanentMembers;
           final showMemberToggle = layout.showMemberToggle;
           final activeVoiceChannel = widget.state.voiceChannel;
-          final pinnedMiniVisible = pinnedScreenMiniPlayerVisible(
-            pinnedScreenIdentity: workspacePinnedScreenIdentity,
+          final pinnedMiniVisible = screenViewerMiniPlayerVisible(
+            selectedScreenIdentity: workspaceMiniScreenIdentity,
             activeVoiceChannelId: activeVoiceChannel?.id,
             selectedChannelId: widget.state.selectedChannel?.id,
             directMessageOpen: widget.state.selectedDirectMessage != null,
@@ -81,7 +83,7 @@ extension WorkspaceScreenStateBuildAction on WorkspaceScreenStateContext {
                   fullScreenSearch,
                   constraints,
                 );
-          final shellContent = compact && widget.state.voiceChannel != null
+          final primaryContent = compact && widget.state.voiceChannel != null
               ? Column(
                   children: [
                     Expanded(child: content),
@@ -89,6 +91,13 @@ extension WorkspaceScreenStateBuildAction on WorkspaceScreenStateContext {
                   ],
                 )
               : content;
+          final shellContent = Column(
+            children: [
+              RealtimeRecoveryStatus(controller: widget.state.realtime),
+              RemoteNotificationNotice(controller:widget.state.remoteNotifications),
+              Expanded(child: primaryContent),
+            ],
+          );
           final mobileGestures =
               compact &&
               (defaultTargetPlatform == TargetPlatform.iOS ||

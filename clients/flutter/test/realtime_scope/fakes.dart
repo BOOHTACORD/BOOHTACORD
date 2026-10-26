@@ -8,8 +8,15 @@ class RealtimeApiFake extends ApiClient {
   final opening = Completer<WebSocket>();
   final restored = Completer<SessionUser?>();
   final checking = Completer<void>();
+  int opens = 0;
+  String? after;
   @override
-  Future<WebSocket> openRealtime() => opening.future;
+  Future<WebSocket> openRealtime({String? after}) {
+    opens++;
+    this.after = after;
+    return opening.future;
+  }
+
   @override
   Future<SessionUser?> currentSession() {
     checking.complete();

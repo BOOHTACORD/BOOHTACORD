@@ -1,0 +1,95 @@
+{
+  "id": "flutter-member-voice-presence-2026-10-24",
+  "task": "FV2-056",
+  "kind": "flutter-member-voice-presence-parity",
+  "status": "BLOCKED",
+  "observed_at": "2026-10-24T10:31:49Z",
+  "source_base_commit": "90218f7734ae55fe856d557f6407c013f90a7104",
+  "scenario": {
+    "objective": "Show a guild member's current voice channel in the Flutter members panel and use a screen icon while that member is sharing their screen.",
+    "expected": "Fresh, unambiguous voice roster data shows the channel caption and voice icon; screen_sharing switches the icon and accessible description. Stale, unavailable, empty, or ambiguous data shows no voice status.",
+    "existing_behavior_audit": "Voice roster API/state and per-channel voice member stream icons were already present in Flutter. The guild-wide members panel did not consume roster or screen-sharing state. Only this missing panel behavior was added."
+  },
+  "checks": [
+    {
+      "name": "focused_widget_regression",
+      "result": "PASS",
+      "command": "flutter test --no-pub test/member_voice_presence_panel_test.dart",
+      "observation": "Verified voice channel caption, voice icon, tooltip and semantics; reactive switch to screen icon; and suppression for ambiguous, stale, unavailable, and empty roster state."
+    },
+    {
+      "name": "changed_dart_files_analysis",
+      "result": "PASS",
+      "command": "dart analyze lib/src/screens/workspace_ui/members_panel/member_tile/handler.dart lib/src/screens/workspace_ui/members_panel/voice_presence.dart test/member_voice_presence_panel_test.dart",
+      "observation": "No issues found."
+    },
+    {
+      "name": "flutter_unit_suite",
+      "result": "PASS",
+      "command": "tools/qa/local_features/check.sh --feature auth --feature connection_status --feature screen --feature voice --feature settings --feature shell --feature support --platform android --platform ios --base origin/master --real-stack",
+      "observation": "The complete Flutter unit suite passed: 1,618 passed, 1 skipped."
+    },
+    {
+      "name": "flutter_component_captures",
+      "result": "PASS",
+      "observation": "137 component captures generated. The two feature-specific captures listed below were visually inspected at their 360x600 source resolution. The overall gallery visual-review status remains NOT_RUN because the other selected feature captures were not reviewed."
+    },
+    {
+      "name": "android_runtime",
+      "result": "BLOCKED",
+      "observation": "No owned QA Android device was available. The QA doctor reported docker_runtime=false and qa_devices={}."
+    },
+    {
+      "name": "ios_runtime",
+      "result": "BLOCKED",
+      "observation": "No owned QA iOS device was available. The QA doctor reported docker_runtime=false and qa_devices={}."
+    },
+    {
+      "name": "repository_flutter_analyzer",
+      "result": "FAIL",
+      "command": "flutter analyze --no-pub",
+      "observation": "The repository-wide analyzer reports 116 existing info-level lint issues across unrelated files. The changed Dart files pass targeted analysis."
+    },
+    {
+      "name": "spec_traceability",
+      "result": "PASS",
+      "observation": "39 requirements referenced; approved product brief was unavailable on this host."
+    },
+    {
+      "name": "client_parity_policy",
+      "result": "PASS",
+      "command": "python3 -m tools.verify.client_parity.run --base origin/master",
+      "observation": "Unique parity scenarios, client paths, platform decisions, and evidence states validated."
+    },
+    {
+      "name": "initial_pull_request_ci",
+      "result": "FAIL",
+      "observation": "PR #565 run 40086407127 passed Flutter tests and analysis but failed while packaging the screenshot review set; its downstream flutter fan-in also failed because the two new captures were absent from the finite Flutter artifact inventory. The failure was reproduced as an inventory test expecting the new capture names."
+    },
+    {
+      "name": "flutter_capture_inventory_regression",
+      "result": "PASS",
+      "command": "python3 -m unittest tools.ci.flutter_gates.test_artifacts tools.ci.flutter_gates.test_results tools.ci.artifact_policy.test_captures tools.ci.artifact_policy.test_publication",
+      "observation": "Added both member-presence screenshots to the finite CI inventory; 30 artifact and publication tests passed."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": ".out/local-features/20261024-132526/images/flutter-captures/guild-member-voice-channel.png",
+      "sha256": "5eb4ff6d08c8ce8ed23021700ef5451cef0268e689e6a92db8988eae50d7729b",
+      "resolution_px": [360, 600],
+      "visual_observation": "The member row remains readable and shows the voice-channel caption with the voice icon aligned at the trailing edge."
+    },
+    {
+      "path": ".out/local-features/20261024-132526/images/flutter-captures/guild-member-screen-sharing.png",
+      "sha256": "bbbabeaea7c94155a144fd915031c902b1fb054c8f1f71212ed2f2289a6fd45e",
+      "resolution_px": [360, 600],
+      "visual_observation": "The caption remains stable and the trailing voice icon switches to the accent-colored screen icon."
+    },
+    {
+      "path": ".out/local-features/20261024-132526/report.json",
+      "observation": "Overall acceptance status BLOCKED; flutter-unit and flutter-component-captures PASS; Android and iOS runtime BLOCKED; visual_review NOT_RUN."
+    }
+  ],
+  "limitations": "The implementation uses the shared Flutter client for Android and iOS. Widget and component captures do not prove runtime behavior on either native target. No speaking state or media-quality claim is made."
+}

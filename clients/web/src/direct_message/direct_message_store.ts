@@ -1,9 +1,12 @@
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
+import { onScopeDispose, ref, watch } from 'vue'
+import { createSupportOpener } from '../support/open'
+import { noSupport, type SupportContact } from '../support/contact'
+import { loadDirectNavigation } from './direct_message_navigation_client'
+import { telemetrySession } from '../telemetry/action_scope/session'
 import { requestFailureMessage } from '../request_feedback'
 
 import {
-  loadDirectMessages,
   type DirectMessageListItem,
   type DirectMessageRequest,
 } from './direct_message_client'
@@ -13,6 +16,8 @@ import { type PendingDirectMessageSend } from './direct_message_pending'
 
 export const useDirectMessageStore = defineStore('direct-messages', () => {
   const directMessages = ref<DirectMessageListItem[]>([])
+  const supportContact=ref<SupportContact>({...noSupport})
+  const supportChanged=ref(false)
   const pending = new Map<string, PendingDirectMessageSend>()
   const retries = new Map<string, string>()
   function acknowledge(id: string): void {
@@ -46,16 +51,22 @@ export const useDirectMessageStore = defineStore('direct-messages', () => {
     loadingNavigation.value = true
     error.value = null
     try {
-      const loaded = await loadDirectMessages(request)
-      if (sequence === navigationSequence) directMessages.value = loaded
+      const loaded = await loadDirectNavigation(request)
+      if (sequence === navigationSequence) {
+       if(supportContact.value.accountId && loaded.supportContact.state==='available' && supportContact.value.accountId!==loaded.supportContact.accountId) supportChanged.value=true
+       directMessages.value = loaded.items;supportContact.value=loaded.supportContact
+      }
     } catch (cause) {
-      if (sequence === navigationSequence) error.value = requestFailureMessage(cause, 'Не удалось загрузить список личных сообщений.')
+      if (sequence === navigationSequence) { supportContact.value=supportContact.value.mode==='product'?{...supportContact.value,state:'unavailable'}:{state:'unavailable',revision:0};error.value = requestFailureMessage(cause, 'Не удалось загрузить список личных сообщений.') }
     } finally {
       if (sequence === navigationSequence) loadingNavigation.value = false
     }
   }
 
+  const support=createSupportOpener({refresh:refreshNavigation,contact:()=>supportContact.value,has:(id)=>directMessages.value.some(item=>item.id===id)})
+  onScopeDispose(telemetrySession.onReset(()=>{navigationSequence++;supportContact.value={...noSupport};supportChanged.value=false;directMessages.value=[];support.invalidate()}))
   return {
+    supportContact,supportChanged,supportOpening:support.supportOpening,supportNotice:support.supportNotice,openSupport:support.openSupport,
     close,
     applyDeletedHint,
     directMessageId,

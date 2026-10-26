@@ -83,8 +83,73 @@ test('one scroll surface, compact desktop rhythm and reachable final row above d
   const last = await page.locator('.channel-row').last().boundingBox(), dock = await page.locator('.voice-dock').boundingBox()
   expect(last!.y + last!.height).toBeLessThanOrEqual(dock!.y + 1)
 })
+test('applies themed scrollbars to app scroll surfaces', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 1440, height: 768 }); await open(page)
+  await page.evaluate(() => {
+    const probe = document.createElement('div')
+    probe.className = 'scrollbar-theme-probe'
+    probe.style.cssText = 'position:fixed;left:0;top:0;width:40px;height:40px;overflow:auto'
+    const content = document.createElement('div')
+    content.style.cssText = 'width:80px;height:80px'
+    probe.append(content); document.body.append(probe)
+  })
+  const style = await page.evaluate(() => {
+    const token = (name: string) => {
+      const sample = document.createElement('span')
+      sample.style.color = `var(${name})`; document.body.append(sample)
+      const color = getComputedStyle(sample).color; sample.remove()
+      return color
+    }
+    const surfaces = [document.querySelector<HTMLElement>('.nav-content')!, document.querySelector<HTMLElement>('.scrollbar-theme-probe')!]
+    return {
+      thumbToken: token('--gc-border-subtle'), hoverToken: token('--gc-border-control'),
+      surfaces: surfaces.map(surface => ({
+        color: getComputedStyle(surface).scrollbarColor,
+        width: getComputedStyle(surface, '::-webkit-scrollbar').width,
+        thumbColor: getComputedStyle(surface, '::-webkit-scrollbar-thumb').backgroundColor,
+        thumbRadius: getComputedStyle(surface, '::-webkit-scrollbar-thumb').borderRadius,
+        trackColor: getComputedStyle(surface, '::-webkit-scrollbar-track').backgroundColor,
+      })),
+    }
+  })
+  for (const surface of style.surfaces) {
+    expect(surface.color).toContain(style.thumbToken)
+    expect(surface.width).toBe('6px')
+    expect(surface.thumbColor).toBe(style.thumbToken)
+    expect(surface.thumbRadius).toBe('999px')
+    expect(surface.trackColor).toBe('rgba(0, 0, 0, 0)')
+  }
+  await page.locator('.scrollbar-theme-probe').hover()
+  const hover = await page.locator('.scrollbar-theme-probe').evaluate(surface => ({
+    color: getComputedStyle(surface).scrollbarColor,
+    thumbColor: getComputedStyle(surface, '::-webkit-scrollbar-thumb').backgroundColor,
+  }))
+  expect(hover.color).toContain(style.hoverToken)
+  expect(hover.thumbColor).toBe(style.hoverToken)
+  await page.locator('.scrollbar-theme-probe').evaluate(surface => surface.remove())
+  const nav = page.locator('.nav-content')
+  await nav.evaluate(surface => { surface.scrollTop = 160 })
+  await page.screenshot({ path: testInfo.outputPath('web-scrollbar-themed.png') })
+  const navBox = await nav.boundingBox()
+  await nav.hover({ position: { x: navBox!.width - 4, y: navBox!.height / 2 } })
+  await page.screenshot({ path: testInfo.outputPath('web-scrollbar-hover.png') })
+})
 test.describe('touch', () => {
   test.use({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 768 } })
+  test('keeps a compact bottom gutter below the mobile section tabs without shrinking touch targets', async ({ page }, testInfo) => {
+    await open(page)
+    const geometry = await page.locator('.sidebar-tabs').evaluate(nav => {
+      const button = nav.querySelector<HTMLButtonElement>('button[aria-pressed="true"]')!
+      const navRect = nav.getBoundingClientRect()
+      const buttonRect = button.getBoundingClientRect()
+      const pseudoBottom = Number.parseFloat(getComputedStyle(button, '::before').bottom) || 0
+      return { navHeight: navRect.height, buttonHeight: buttonRect.height, visualBottomGap: navRect.bottom - buttonRect.bottom + pseudoBottom }
+    })
+    expect(geometry.navHeight).toBe(44)
+    expect(geometry.buttonHeight).toBe(44)
+    expect(geometry.visualBottomGap).toBe(6)
+    await page.screenshot({ path: testInfo.outputPath('mobile-sidebar-tabs-tight-bottom.png') })
+  })
   test('category and channel actions remain painted and hit-testable without hover', async ({ page }) => {
     await open(page)
     const action = page.locator('.channel-actions-button').first()

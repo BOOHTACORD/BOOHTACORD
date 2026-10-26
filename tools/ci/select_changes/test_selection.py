@@ -3,6 +3,8 @@ from .selection import select
 
 
 class SelectionTests(unittest.TestCase):
+    def test_gateway_is_verified_without_spurious_native_release(self):
+        self.assertEqual(select(['support_gateway/policy.py','tests/support_gateway/test_policy.py']),{'contracts'})
     def test_docs_do_not_build_clients(self):
         self.assertEqual(select(['docs/operations.md', 'evidence/run.json']), {'contracts'})
 

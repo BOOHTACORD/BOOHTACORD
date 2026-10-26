@@ -1,4 +1,5 @@
 import { apiBaseUrl } from '../config/runtime'
+import { tracedFetch } from '../telemetry/client_tracing'
 import { accountIdFromMetadata } from './participant_identity'
 import type { ScreenViewerPublication, ScreenViewerWatcher } from './screen_viewer_types'
 
@@ -51,7 +52,7 @@ function init(method: string, body?: unknown): RequestInit {
   }
 }
 
-export async function setScreenViewerPresence(viewerLeaseId: string, ownerLeaseId: string, currentTrackSID: string, watching: boolean, request: ScreenViewerPresenceRequest = fetch): Promise<void> {
+export async function setScreenViewerPresence(viewerLeaseId: string, ownerLeaseId: string, currentTrackSID: string, watching: boolean, request: ScreenViewerPresenceRequest = tracedFetch): Promise<void> {
   if (!uuid.test(viewerLeaseId) || !uuid.test(ownerLeaseId) || !trackSID.test(currentTrackSID)) return
   const path = `${apiBaseUrl}/voice/leases/${encodeURIComponent(viewerLeaseId)}/screen-viewers/${encodeURIComponent(ownerLeaseId)}`
   const target = watching ? path : `${path}?track_sid=${encodeURIComponent(currentTrackSID)}`
@@ -59,20 +60,20 @@ export async function setScreenViewerPresence(viewerLeaseId: string, ownerLeaseI
   if (!response.ok) throw new Error('Не удалось обновить список зрителей трансляции.')
 }
 
-export async function clearScreenViewerAudience(ownerLeaseId: string, request: ScreenViewerPresenceRequest = fetch, currentTrackSID?: string): Promise<void> {
+export async function clearScreenViewerAudience(ownerLeaseId: string, request: ScreenViewerPresenceRequest = tracedFetch, currentTrackSID?: string): Promise<void> {
   if (!uuid.test(ownerLeaseId)) return
   const query = currentTrackSID && trackSID.test(currentTrackSID) ? `?track_sid=${encodeURIComponent(currentTrackSID)}` : ''
   const response = await request(`${apiBaseUrl}/voice/leases/${encodeURIComponent(ownerLeaseId)}/screen-viewers${query}`, init('DELETE'))
   if (!response.ok) throw new Error('Не удалось очистить список зрителей трансляции.')
 }
 
-export async function readScreenViewerAccounts(ownerLeaseId: string, request: ScreenViewerPresenceRequest = fetch): Promise<string[]> {
+export async function readScreenViewerAccounts(ownerLeaseId: string, request: ScreenViewerPresenceRequest = tracedFetch): Promise<string[]> {
   if (!uuid.test(ownerLeaseId)) return []
   const response = await request(`${apiBaseUrl}/voice/leases/${encodeURIComponent(ownerLeaseId)}/screen-viewers`, init('GET'))
   return parseScreenViewerAccounts(response)
 }
 
-export async function readScreenViewerAccountsForViewer(viewerLeaseId: string, ownerLeaseId: string, request: ScreenViewerPresenceRequest = fetch): Promise<string[]> {
+export async function readScreenViewerAccountsForViewer(viewerLeaseId: string, ownerLeaseId: string, request: ScreenViewerPresenceRequest = tracedFetch): Promise<string[]> {
   if (!uuid.test(viewerLeaseId) || !uuid.test(ownerLeaseId)) return []
   const path = `${apiBaseUrl}/voice/leases/${encodeURIComponent(viewerLeaseId)}/screen-viewers/${encodeURIComponent(ownerLeaseId)}`
   return parseScreenViewerAccounts(await request(path, init('GET')))
@@ -104,7 +105,7 @@ export class ScreenViewerPresenceController {
     private readonly events: ScreenViewerPresenceEvents,
     private readonly screenVideoSource: unknown,
     private readonly setWatchers: (watchers: ScreenViewerWatcher[]) => void,
-    private readonly request: ScreenViewerPresenceRequest = fetch,
+    private readonly request: ScreenViewerPresenceRequest = tracedFetch,
     private readonly heartbeatMs = screenViewerHeartbeatMs,
     private readonly setOwnerWatchers: (watchers: ScreenViewerWatcher[]) => void = () => undefined,
   ) {

@@ -67,6 +67,17 @@ func TestRunExecutesEmbeddedMigrations(t *testing.T) {
 		{"CREATE TABLE IF NOT EXISTS voice_timeouts", "enforce_voice_timeout_on_lease", "voice_timeout_lease_guard", "ERRCODE='42501'"},
 		{"CREATE TABLE IF NOT EXISTS text_message_reactions", "CREATE TABLE IF NOT EXISTS direct_message_reactions", "CREATE TABLE IF NOT EXISTS text_message_pins", "clear_text_message_social", "clear_direct_message_social"},
 		{"ADD COLUMN IF NOT EXISTS expires_at", "180 days", "ALTER COLUMN expires_at SET NOT NULL"},
+		{"installation_identity", "pg_advisory_xact_lock", "pseudonym_key", "enrollment_seed", "local_only"},
+		{"CREATE TABLE IF NOT EXISTS support_contact_configuration", "support_account_id UUID REFERENCES users(id)", "revision BIGINT", "CHECK (singleton)", "ON CONFLICT (singleton) DO NOTHING"},
+		{"support_product_identity", "support_public_consents", "support_public_outbox", "consent_product_support_message", "support_service_session_guard"},
+		{"CREATE TABLE IF NOT EXISTS notification_preferences"},
+		{"CREATE TABLE IF NOT EXISTS notification_devices"},
+		{"CREATE TABLE IF NOT EXISTS notification_outbox"},
+		{"CREATE OR REPLACE FUNCTION create_notification_intent", "CREATE OR REPLACE TRIGGER message_notification_intent"},
+		{"CREATE TABLE IF NOT EXISTS notification_deliveries"},
+		{"CREATE TABLE IF NOT EXISTS notification_attention"},
+		{"CREATE TABLE IF NOT EXISTS notification_preference_fences", "fence_notification_preference_changes"},
+		{"reclaim_deleted_notification_budget", "notification_deleted_delivery", "notification_deleted_intent"},
 	}
 	if len(executor.statements) != len(expected) {
 		t.Fatalf("migration count = %d", len(executor.statements))

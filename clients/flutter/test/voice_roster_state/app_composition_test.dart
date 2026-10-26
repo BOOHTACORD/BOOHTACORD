@@ -28,7 +28,9 @@ void main() {
       expect(state.voiceRosterError, isNull);
       expect(state.voiceRosters, isEmpty);
       expect(state.voiceRoster.phase, VoiceRosterPhase.fresh);
+      expect(state.voiceRoster.lastUpdatedAt, isNotNull);
       state.voiceRoster.stop();
+      expect(state.voiceRoster.lastUpdatedAt, isNull);
       await stream.close();
     },
   );

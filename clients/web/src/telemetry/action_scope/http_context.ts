@@ -13,6 +13,6 @@ export function actionHeaders(span:Span,headers:Headers):void {
 export function acceptSessionResponse(response:Response,snapshot:SessionSnapshot):void {
  if(!telemetrySession.current(snapshot))return
  if(response.status===401)telemetrySession.reset()
- else if(response.ok)telemetrySession.bind(response.headers.get('X-Telemetry-Session'),response.headers.get('X-Telemetry-Schema'))
+ else if(response.ok){telemetrySession.bindInstallation(response.headers.get('X-Installation-ID'));telemetrySession.bind(response.headers.get('X-Telemetry-Session'),response.headers.get('X-Telemetry-Schema'))}
 }
 

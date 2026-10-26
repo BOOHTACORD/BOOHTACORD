@@ -9,8 +9,10 @@ from . import artifacts
 
 class ArtifactTests(unittest.TestCase):
     def test_mandatory_visual_inventory_keeps_all_uiux_capture_scenarios(self):
-        self.assertEqual(126, len(artifacts.VISUALS))
+        self.assertEqual(152, len(artifacts.VISUALS))
         self.assertEqual(len(artifacts.VISUALS), len(set(artifacts.VISUALS)))
+        self.assertIn('guild-member-voice-channel.png', artifacts.VISUALS)
+        self.assertIn('guild-member-screen-sharing.png', artifacts.VISUALS)
         parity = [name for name in artifacts.VISUALS if name.startswith('parity-')]
         self.assertEqual(90, len(parity))
         self.assertIn('parity-pinned-workspace-320x480-ime180-scale2.png', parity)
@@ -18,9 +20,48 @@ class ArtifactTests(unittest.TestCase):
         self.assertIn('parity-search-1440x480-scale2.png', parity)
         self.assertIn('password-reset-visibility-mobile.png', artifacts.VISUALS)
         self.assertIn('flutter-screen-audience-viewer-strip-1024x92@2x.png', artifacts.VISUALS)
+        self.assertIn('flutter-screen-viewer-transient-controls-1440x900.png', artifacts.VISUALS)
+        self.assertNotIn('message-actions-all-open-actual.png', artifacts.VISUALS)
+        self.assertNotIn('message-actions-closed-actual.png', artifacts.VISUALS)
+        self.assertNotIn('message-actions-open-actual.png', artifacts.VISUALS)
+        self.assertNotIn('message-social-touch-targets.png', artifacts.VISUALS)
+        self.assertIn('voice-viewer-participants-room.png', artifacts.VISUALS)
+        self.assertIn('voice-viewer-participants-room-open.png', artifacts.VISUALS)
+        self.assertIn('voice-viewer-participants-fullscreen-open.png', artifacts.VISUALS)
+        self.assertIn('flutter-screen-viewer-mini-player-mobile-393x852.png', artifacts.VISUALS)
+        self.assertIn('flutter-channel-favorites-1440x900.png', artifacts.VISUALS)
+        self.assertIn('flutter-channel-favorites-mobile-393x852.png', artifacts.VISUALS)
+        self.assertIn('flutter-connection-status-desktop-320x380.png', artifacts.VISUALS)
+        self.assertIn('flutter-connection-status-mobile-320x380.png', artifacts.VISUALS)
         for channel in ('text-channel', 'dm-conversation'):
             for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900')):
                 self.assertIn(f'flutter-{channel}-{profile}-{size}.png', artifacts.VISUALS)
+
+    def test_support_capture_names_are_finite_and_unknown_images_remain_rejected(self):
+        from tools.ci.artifact_policy.capture_inventory import complete
+        support = {f'support-{width}-text{scale}.png'
+                   for width in (320, 393, 1440) for scale in (1.0, 2.0)}
+        support.add('support-320-text2-ime.png')
+        self.assertEqual(support, {name for name in artifacts.VISUALS if name.startswith('support-')})
+        complete('flutter', dict.fromkeys(artifacts.VISUALS))
+        with self.assertRaises(ValueError):
+            complete('flutter', dict.fromkeys((*artifacts.VISUALS, 'support-user-upload.png')))
+
+    def test_auth_capacity_capture_is_required_without_allowing_arbitrary_auth_images(self):
+        from tools.ci.artifact_policy.capture_inventory import complete
+        self.assertIn('auth-capacity-mobile.png', artifacts.VISUALS)
+        with self.assertRaises(ValueError):
+            complete('flutter', dict.fromkeys(name for name in artifacts.VISUALS
+                                            if name != 'auth-capacity-mobile.png'))
+        with self.assertRaises(ValueError):
+            complete('flutter', dict.fromkeys((*artifacts.VISUALS, 'auth-private-upload.png')))
+
+    def test_login_admission_capture_is_mandatory(self):
+        from tools.ci.artifact_policy.capture_inventory import complete
+        self.assertIn('auth-rate-limit-mobile.png', artifacts.VISUALS)
+        with self.assertRaises(ValueError):
+            complete('flutter', dict.fromkeys(name for name in artifacts.VISUALS
+                                            if name != 'auth-rate-limit-mobile.png'))
 
     def test_all_current_visual_captures_are_mandatory_valid_nonempty_pngs(self):
         with tempfile.TemporaryDirectory() as temporary:

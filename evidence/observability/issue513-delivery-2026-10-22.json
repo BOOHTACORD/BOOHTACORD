@@ -1,0 +1,216 @@
+{
+  "issue": 513,
+  "date": "2026-10-22",
+  "baseline_source": "bb51c0d28c0ccc70823a78a7c534fc898aecc845",
+  "versions": {
+    "grafana": "13.0.2",
+    "tempo": "2.10.3",
+    "collector": "0.161.0",
+    "prometheus": "3.11.2"
+  },
+  "restored_private_delivery": {
+    "status": "PASS",
+    "mode": "local_only",
+    "central_export_enabled": false,
+    "config_revision": "1337e0e02f84de0541c1",
+    "stored_application_metric_families": [
+      "boohtacord_incident_api_collection_timestamp_seconds",
+      "boohtacord_incident_database_acquire_duration_seconds_bucket",
+      "boohtacord_incident_database_acquire_duration_seconds_sum",
+      "boohtacord_incident_database_acquire_duration_seconds_count",
+      "boohtacord_incident_database_acquires_pending",
+      "boohtacord_incident_database_acquires_total",
+      "boohtacord_incident_database_pool",
+      "boohtacord_incident_database_pool_empty_acquire_wait_seconds_total",
+      "boohtacord_incident_database_pool_events_total",
+      "boohtacord_incident_enabled",
+      "boohtacord_incident_last_attempt_timestamp_seconds",
+      "boohtacord_incident_last_success_timestamp_seconds",
+      "boohtacord_incident_last_successful",
+      "boohtacord_incident_operation_duration_seconds_bucket",
+      "boohtacord_incident_operation_duration_seconds_sum",
+      "boohtacord_incident_operation_duration_seconds_count",
+      "boohtacord_incident_operations_total",
+      "boohtacord_incident_stale",
+      "boohtacord_telemetry_dropped_batches_total",
+      "boohtacord_telemetry_queue_batches",
+      "boohtacord_users_activity_write_failures",
+      "boohtacord_users_collected_at_seconds",
+      "boohtacord_users_collection_started_seconds",
+      "boohtacord_users_collection_success",
+      "boohtacord_users_daily_active",
+      "boohtacord_users_previous_day_complete",
+      "boohtacord_users_registered",
+      "boohtacord_users_registrations"
+    ],
+    "api_collection_age_seconds": [
+      19.594000101089478
+    ],
+    "healthy_jobs": [
+      "boohtacord-prometheus",
+      "boohtacord-tempo",
+      "boohtacord-otel-metrics",
+      "boohtacord-collector"
+    ],
+    "fresh_trace_sample_count": 5,
+    "trace_sample_limit": 5,
+    "scope": "Actual private monitor query, not complete traffic inventory"
+  },
+  "outage_retry_expiry": {
+    "status": "PASS",
+    "collector_accept_http": 200,
+    "export_failure_metric": "otelcol_exporter_send_failed_spans",
+    "failed_spans": 16.0,
+    "observed_seconds": 28.27,
+    "scope": "owned isolated Tempo outage; acceptance is not persistence"
+  },
+  "outage_recovery": {
+    "status": "PASS",
+    "after_recovery_trace_http": 404,
+    "acceptance_is_not_persistence": true
+  },
+  "limits": {
+    "native_engine_runtime": "macOS Flutter",
+    "physical_mobile_windows_media": "NOT_RUN",
+    "production_cost_reduction": "NOT_MEASURED",
+    "synthetic_presence_before_after": "policy-only, same current HTTP service; separate evidence"
+  },
+  "source_binding": "Producer hashes in docs/observability/signal-catalog.json; final commit/deployment receipt attached to #513.",
+  "anonymous_dashboard_http": 401,
+  "stored_relay_metrics": {
+    "status": "PASS",
+    "observed_at": "2026-10-22T14:45:16.072908+00:00",
+    "scope": "isolated Collector to actual Prometheus 19091 after focused relay source health runtime",
+    "count_semantics": "number of stored series for this family/platform/status, not sum of counter or histogram values",
+    "required_metric_families": [
+      "boohtacord_telemetry_relay_duration_seconds_bucket",
+      "boohtacord_telemetry_relay_duration_seconds_count",
+      "boohtacord_telemetry_relay_duration_seconds_sum",
+      "boohtacord_telemetry_relay_last_accept_seconds",
+      "boohtacord_telemetry_relay_records_total",
+      "boohtacord_telemetry_relay_requests_total"
+    ],
+    "series": [
+      {
+        "name": "boohtacord_telemetry_relay_duration_seconds_bucket",
+        "platform": "ios",
+        "http_status": "503",
+        "count": 16
+      },
+      {
+        "name": "boohtacord_telemetry_relay_duration_seconds_bucket",
+        "platform": "web",
+        "http_status": "202",
+        "count": 16
+      },
+      {
+        "name": "boohtacord_telemetry_relay_duration_seconds_count",
+        "platform": "ios",
+        "http_status": "503",
+        "count": 1
+      },
+      {
+        "name": "boohtacord_telemetry_relay_duration_seconds_count",
+        "platform": "web",
+        "http_status": "202",
+        "count": 1
+      },
+      {
+        "name": "boohtacord_telemetry_relay_duration_seconds_sum",
+        "platform": "ios",
+        "http_status": "503",
+        "count": 1
+      },
+      {
+        "name": "boohtacord_telemetry_relay_duration_seconds_sum",
+        "platform": "web",
+        "http_status": "202",
+        "count": 1
+      },
+      {
+        "name": "boohtacord_telemetry_relay_last_accept_seconds",
+        "platform": "web",
+        "http_status": null,
+        "count": 1
+      },
+      {
+        "name": "boohtacord_telemetry_relay_records_total",
+        "platform": "ios",
+        "http_status": null,
+        "count": 1
+      },
+      {
+        "name": "boohtacord_telemetry_relay_records_total",
+        "platform": "web",
+        "http_status": null,
+        "count": 1
+      },
+      {
+        "name": "boohtacord_telemetry_relay_requests_total",
+        "platform": "ios",
+        "http_status": "503",
+        "count": 1
+      },
+      {
+        "name": "boohtacord_telemetry_relay_requests_total",
+        "platform": "web",
+        "http_status": "202",
+        "count": 1
+      }
+    ]
+  },
+  "dashboard_queries": {
+    "all": {
+      "status": "PASS",
+      "executions": 105,
+      "windows_seconds": [
+        900,
+        21600,
+        86400
+      ],
+      "max_latency_ms": 1581.88
+    },
+    "scoped": {
+      "status": "PASS",
+      "executions": 105,
+      "windows_seconds": [
+        900,
+        21600,
+        86400
+      ],
+      "max_latency_ms": 580.46
+    },
+    "long-fixed": {
+      "status": "PASS",
+      "executions": 105,
+      "windows_seconds": [
+        900,
+        21600,
+        86400
+      ],
+      "max_latency_ms": 700.84
+    }
+  },
+  "dashboard": {
+    "uid": "boohtacord-traces",
+    "org": 1,
+    "source_file_sha256": "f91d2af732ff2d416d51473cbc15c337aa3fdaa72f93cc919a2c7cc886a0f474",
+    "readback": "PASS",
+    "published_version": 18,
+    "rollback_readback_version": 15,
+    "permissions_unchanged": true,
+    "permissions_sha256": "dcb32fb28f059097a4843f957e8cf78855b4436ffaee9ebc714865d0c2ce0c4f",
+    "ui": "PASS: session selector, flow attempts and real Explore trace; synthetic controlled action only",
+    "generation": 18,
+    "resourceVersion": "1792680484235988"
+  },
+  "final_sdk_runtime": {
+    "status": "PASS",
+    "source_sha": "b073559964a98d6a7c978f8de31d6e4669656938",
+    "duration_seconds": 127.376,
+    "web": "actual browser components/SDK \u2192 sanitizing relay \u2192 Collector \u2192 Tempo",
+    "native": "actual Flutter macOS test engine mounted-frame terminal \u2192 relay \u2192 Tempo",
+    "log_sha256": "375138e0a0daf096086ffa97133e256c2c432d9442d02382cd191a29f4ac8bdd",
+    "packaged_mobile_or_physical_media": false
+  }
+}

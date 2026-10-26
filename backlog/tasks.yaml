@@ -53,6 +53,26 @@ tasks:
     requirements: [REQ-AUTH-03]
     depends_on: [T-010]
     evidence: [backend-reset-tests]
+  - id: SEC-001
+    title: Atomic normalized-account login admission before verifier (GitHub #533)
+    requirements: [REQ-AUTH-01, REQ-AUTH-03, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [T-010, T-012, SEC-002, SEC-004]
+    evidence: [backend/internal/identity/admit_login/budget_test.go, backend/internal/identity/login_user/api/admission_test.go, backend/internal/identity/login_user/api/admission_database_test.go, backend/internal/identity/password/account_budget_test.go, clients/flutter/test/auth_rate_limit_test.dart, evidence/security/sec01-login-admission-2026-10-23.md]
+  - id: SEC-002
+    title: Valid process dummy hash and equivalent negative login KDF work (GitHub #534)
+    requirements: [REQ-AUTH-01, REQ-SECURITY-01]
+    depends_on: [T-010]
+    evidence: [backend/internal/identity/password/dummy_test.go, backend/internal/identity/password/login_privacy_test.go, backend/internal/identity/password/password_test.go, evidence/security/sec02-dummy-hash-2026-10-23.md]
+  - id: SEC-003
+    title: Read-only reset capability preflight before Argon2 with atomic final Consume (GitHub #535)
+    requirements: [REQ-AUTH-03, REQ-SECURITY-01]
+    depends_on: [T-012, SEC-004]
+    evidence: [backend/internal/identity/password/reset_preflight_test.go, backend/internal/identity/password/reset_preflight_database_test.go, backend/internal/identity/password/reset_preflight_race_database_test.go, backend/internal/identity/complete_password_reset/postgres/preflight_test.go, clients/flutter/test/reset_preflight_contract_test.dart, evidence/security/sec03-reset-preflight-2026-10-23.md]
+  - id: SEC-004
+    title: Context-aware fail-fast shared Argon2 admission (GitHub #532)
+    requirements: [REQ-AUTH-01, REQ-AUTH-03, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [T-010, T-012, SEC-002]
+    evidence: [backend/internal/identity/password/admission_test.go, backend/internal/identity/password/reset_admission_test.go, backend/internal/identity/password/saturation_test.go, clients/flutter/test/auth_capacity_test.dart, clients/web/src/identity/authentication_flow/retry_after.spec.ts, evidence/security/sec04-kdf-admission-2026-10-23.md]
   - id: T-013
     title: Immutable bootstrap and audited administrator recovery
     requirements: [REQ-AUTH-04]
@@ -803,3 +823,48 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-SCREEN-01]
     depends_on: [FV2-003, DW-010, T-061]
     evidence: [tools/qa/mini_player/test_environment.py, tools/qa/mini_player/test_native.py, clients/flutter/integration_test/mini_player_qa_test.dart, evidence/qa/issue247-mini-player-acceptance-2026-10-18.md]
+  - id: FV2-056
+    title: Flutter guild member panel voice-channel and screen-share presence parity
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [FV2-003, FV2-017, T-022, DW-011]
+    evidence: [clients/flutter/test/member_voice_presence_panel_test.dart, tools/ci/flutter_gates/artifacts.py, tools/ci/flutter_gates/test_artifacts.py, tools/qa/local_features/features.json, evidence/qa/flutter-member-voice-presence-2026-10-24.json]
+  - id: FV2-057
+    title: Flutter transient screen-viewer controls parity with Web
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-SCREEN-01]
+    depends_on: [FV2-003, FV2-056]
+    evidence: [clients/flutter/test/screen_viewer_transient_controls_test.dart, clients/flutter/lib/src/widgets/screen_viewer_action_layer.dart, tools/qa/local_features/features.json, tools/ci/flutter_gates/artifacts.py, tools/ci/flutter_gates/test_artifacts.py, evidence/qa/flutter-transient-screen-viewer-controls-2026-10-24.md]
+  - id: FV2-058
+    title: Flutter channel favorites parity with Web navigation
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [FV2-006, DW-014]
+    evidence: [clients/flutter/test/features/workspace/channel_favorites_preferences_test.dart, clients/flutter/test/workspace_channel_favorites_test.dart, clients/flutter/integration_test/local_qa_test.dart, tools/qa/local_features/features.json, tools/ci/flutter_gates/artifacts.py, evidence/qa/flutter-channel-favorites-2026-10-24.md]
+  - id: FV2-059
+    title: Flutter workspace connection recovery panel parity with Web
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [FV2-003, FV2-017, FV2-056]
+    evidence: [evidence/qa/flutter-web-parity-audit-2026-10-14-to-24.md, clients/flutter/test/workspace_connection_status_test.dart, clients/flutter/test/voice_roster_state/app_composition_test.dart, clients/flutter/lib/src/screens/workspace_ui/connection_status/component.dart, tools/qa/local_features/features.json, tools/ci/flutter_gates/artifacts.py, tools/ci/flutter_gates/test_artifacts.py, evidence/qa/flutter-connection-status-2026-10-24.md]
+  - id: IT-001
+    title: Installation-scoped opt-in telemetry gateway and fleet visibility (GitHub #336)
+    requirements: [REQ-ISOLATION-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-OPS-01]
+    depends_on: [T-052]
+    evidence: [backend/internal/observability/installation/identity_test.go, backend/internal/observability/central_projection/traces_test.go, backend/internal/observability/central_gateway/gateway_test.go, backend/internal/observability/central_export/runtime_test.go, evidence/observability/issue336-installations.md]
+  - id: OBS-001
+    title: Action-oriented Traces dashboard and verified telemetry delivery (GitHub #513)
+    requirements: [REQ-OPS-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-QUALITY-02]
+    depends_on: [T-052, IT-001]
+    evidence: [tools/verify/trace_dashboard/test_action_history.py, tools/qa/trace_queries/test_runtime.py, tools/verify/telemetry_delivery/test_config.py, tools/observability/signal_catalog/test_build.py, backend/internal/observability/start_tracing/presence_measurement_runtime_test.go, evidence/observability/issue513-action-traces.md]
+  - id: SP-001
+    title: Server-assigned support contact through existing pair-only DM (GitHub #516)
+    requirements: [REQ-DM-01, REQ-UI-01, REQ-UI-02, REQ-SECURITY-02, REQ-STORAGE-01]
+    depends_on: [T-010, T-041, T-044]
+    evidence: [backend/internal/support/contact/contact_test.go, clients/web/src/support/contact.spec.ts, clients/flutter/test/support/contact_test.dart, evidence/qa/issue516-support-dm.md]
+  - id: PAR-001
+    title: Durable realtime recovery, mobile telemetry, scoped audience hints and viewer commands parity (GitHub #518)
+    requirements: [REQ-PLATFORM-01, REQ-UI-01, REQ-UI-02, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RP-010, IT-001, SP-001]
+    evidence: [clients/flutter/test/realtime_scope/delivery_test.dart, clients/flutter/test/admin_telemetry/api_test.dart, clients/flutter/test/parity518/viewer_commands_test.dart, clients/web/src/realtime/realtime_delivery_parity.spec.ts, evidence/qa/issue518-client-parity.md]
+  - id: SP-002
+    title: Opt-in public product support DM to GitHub issue and reply bridge
+    requirements: [REQ-DM-01, REQ-UI-01, REQ-UI-02, REQ-SECURITY-02, REQ-STORAGE-01]
+    depends_on: [SP-001, T-052, T-054]
+    evidence: [docs/adr/ADR-029-product-support-github-bridge.md, tests/support_gateway, evidence/qa/sp002-public-gateway-2026-10-22.json, evidence/qa/sp002-public-support-acceptance-2026-10-22.json]

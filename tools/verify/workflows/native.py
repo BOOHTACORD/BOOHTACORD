@@ -36,7 +36,7 @@ def check(workflows):
                 'flutter-windows.yaml': 'clients/flutter/build/windows/x64/runner/Release/'}
     for workflow, path in expected.items():
         retained = [step.get('with', {}) for job in workflows[workflow]['jobs'].values()
-                    for step in job.get('steps', []) if step.get('uses') == 'actions/upload-artifact@v4']
+                    for step in job.get('steps', []) if step.get('uses') == 'actions/upload-artifact@v7']
         require(any(item.get('path') == path and item.get('retention-days') == '30'
                     and item.get('if-no-files-found') == 'error' for item in retained),
                 'Native distributions and metadata must be retained together: ' + workflow)

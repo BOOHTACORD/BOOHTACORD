@@ -2,15 +2,15 @@ package loginapi
 
 import (
 	"context"
-	"crypto/sha256"
 	"encoding/json"
 	"errors"
-	"fmt"
+	"io"
 	"net/http"
 	"time"
+	admitlogin "voice-platform/backend/internal/identity/admit_login"
+	passwordapi "voice-platform/backend/internal/identity/password/api"
 
 	"voice-platform/backend/internal/identity/login_user"
-	"voice-platform/backend/internal/identity/registration"
 	"voice-platform/backend/internal/identity/session"
 	ratelimit "voice-platform/backend/internal/security/rate_limit"
 	"voice-platform/backend/internal/security/request_id"
@@ -21,10 +21,10 @@ type Loginer interface {
 }
 
 func NewHandler(loginer Loginer) http.Handler {
-	return NewHandlerWithFailureLimiter(loginer, nil)
+	return NewHandlerWithAdmission(loginer, nil)
 }
 
-func NewHandlerWithFailureLimiter(loginer Loginer, failureLimiter *ratelimit.Limiter) http.Handler {
+func NewHandlerWithAdmission(loginer Loginer, budget *admitlogin.Budget) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		if request.Method != http.MethodPost {
 			writer.WriteHeader(http.StatusMethodNotAllowed)
@@ -42,17 +42,20 @@ func NewHandlerWithFailureLimiter(loginer Loginer, failureLimiter *ratelimit.Lim
 			return
 		}
 
-		result, err := loginer.Login(request.Context(), loginuser.Input{Login: body.Login, Password: body.Password})
+		if err := decoder.Decode(&struct{}{}); err != io.EOF {
+			writeError(writer, request, http.StatusBadRequest, "VALIDATION_FAILED", "Некорректные данные входа")
+			return
+		}
+		result, retry, err := admittedLogin(request.Context(), loginuser.Input{Login: body.Login, Password: body.Password}, loginer, budget)
+		if errors.Is(err, admitlogin.ErrLimited) || errors.Is(err, admitlogin.ErrSaturated) {
+			writer.Header().Set("Cache-Control", "no-store")
+			ratelimit.WriteLimited(writer, request, retry)
+			return
+		}
+		if passwordapi.WriteBusy(writer, request, err) {
+			return
+		}
 		if errors.Is(err, loginuser.ErrInvalidCredentials) {
-			if failureLimiter != nil {
-				if normalized, normalizeErr := registration.NormalizeLogin(body.Login); normalizeErr == nil {
-					key := fmt.Sprintf("login:%x", sha256.Sum256([]byte(normalized)))
-					if retry, allowed := failureLimiter.Allow(key); !allowed {
-						ratelimit.WriteLimited(writer, request, retry)
-						return
-					}
-				}
-			}
 			writeError(writer, request, http.StatusUnauthorized, "UNAUTHENTICATED", "Неверный логин или пароль")
 			return
 		}

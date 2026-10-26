@@ -16,7 +16,11 @@ type Sender interface {
 	Send(context.Context, senddirectmessage.Input) (senddirectmessage.Result, error)
 }
 
-func NewHandler(sender Sender) http.Handler {
+type PublicationGuard interface {
+	ProductPair(context.Context, string, string) (bool, error)
+}
+
+func NewHandler(sender Sender, guards ...PublicationGuard) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		principal, ok := sessionapi.PrincipalFrom(request.Context())
 		if !ok {
@@ -35,6 +39,17 @@ func NewHandler(sender Sender) http.Handler {
 		if err := decoder.Decode(&body); err != nil {
 			writeError(writer, request, http.StatusBadRequest, "VALIDATION_FAILED", "Некорректные данные личного сообщения")
 			return
+		}
+		if request.Header.Get("X-Boohtacord-Support-Publication") != "v1" && len(guards) > 0 {
+			product, err := guards[0].ProductPair(request.Context(), principal.AccountID, request.PathValue("directMessageID"))
+			if err != nil {
+				writeError(writer, request, 500, "INTERNAL", "Не удалось отправить личное сообщение")
+				return
+			}
+			if product {
+				writeError(writer, request, 409, "SUPPORT_CLIENT_UPDATE_REQUIRED", "Обновите приложение, чтобы отправлять сообщения в публичную поддержку.")
+				return
+			}
 		}
 		result, err := sender.Send(request.Context(), senddirectmessage.Input{ActorID: principal.AccountID, DirectMessageID: request.PathValue("directMessageID"), ClientMessageID: body.ClientMessageID, ReplyToID: body.ReplyToID, Body: body.Body, AttachmentIDs: body.AttachmentIDs, MentionUserIDs: body.MentionUserIDs})
 		if errors.Is(err, senddirectmessage.ErrInvalidInput) {

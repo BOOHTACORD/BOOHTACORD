@@ -29,9 +29,15 @@ abstract class WorkspaceScreenStateContext extends State<WorkspaceScreen>
   WorkspacePanel? workspaceLastWorkspacePanel;
   String? get workspaceVisibleVoiceScreenIdentity;
   String? get workspaceVisiblePinnedScreenIdentity;
+  String? get workspaceMiniScreenIdentity {
+    final selected = workspaceSelectedScreenIdentity;
+    return selected != null && selected.isNotEmpty
+        ? selected
+        : workspaceScreenWaitingToRestart;
+  }
+
   void workspaceWorkspaceChanged();
   void workspaceSelectVoiceScreen(String? identity);
-  void workspaceToggleVoiceScreenPin(String? identity);
   void workspaceStopWatchingPinnedScreen();
   void workspaceSetFullscreenScreenSelection(
     ScreenFullscreenSelection? selection,

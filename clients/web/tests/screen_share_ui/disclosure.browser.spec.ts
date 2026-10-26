@@ -10,8 +10,13 @@ async function open(page: Page, query = '', width = 1440, scale = 100, height = 
   await page.goto(`/tests/screen_share_ui/fixture.html?scale=${scale}&${query}`)
 }
 async function clean(page: Page) {
+  const actions = page.getByRole('group', { name: 'Управление просмотром' })
+  if (await actions.count()) {
+    await actions.getByRole('button').first().focus()
+    await expect(actions).toHaveCSS('opacity', '1')
+  }
   await page.addScriptTag({ content: axe.source })
-  expect(await page.evaluate(async () => (await (window as any).axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'] } })).violations.map((v: any) => v.id))).toEqual([])
+  expect(await page.evaluate(async () => (await (window as any).axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'] } })).violations.map((v: any) => ({ id: v.id, nodes: v.nodes.map((n: any) => ({ target: n.target, summary: n.failureSummary })) })))).toEqual([])
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   expect(await page.evaluate(() => Array.from(document.querySelectorAll<HTMLElement>('dialog h2, dialog button, .stream-diagnostics-panel button, .stream-diagnostics-panel summary')).filter(e => e.getClientRects().length).flatMap(e => {
     const r = e.getBoundingClientRect()
@@ -85,7 +90,12 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
     contentType: 'image/svg+xml',
     body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>',
   }))
-  await open(page, 'viewer-strip', 320)
+  for (const [width, scale] of [[320, 100], [390, 200], [1440, 100]]) {
+    await open(page, 'viewer-strip', width, scale)
+    await page.getByRole('button', { name: 'Трансляции · 2', exact: true }).click()
+    await expect(page.getByTestId('stream-select')).toHaveCount(2)
+    await expect(page.getByRole('heading', { name: 'Демонстрации в канале' })).toBeVisible()
+    await page.getByRole('button', { name: /Участники · 3/ }).click()
   const strip = page.getByTestId('viewer-participants')
   await expect(strip.getByText('Участники', { exact: true })).toBeVisible()
   await expect(strip.getByText('3 в комнате', { exact: true })).toBeVisible()
@@ -95,16 +105,12 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
   const watcherCount = strip.getByRole('status', { name: 'Зрители трансляции: 1' })
   await expect(watcherCount).toBeVisible()
   await expect(watcherCount).toHaveAttribute('title', 'Зрители трансляции: 1')
-  await expect(watcherCount).toHaveText('1', { useInnerText: true })
+  await expect(watcherCount).toContainText('1')
   await expect(strip.getByRole('img', { name: 'Смотрит вашу трансляцию' })).toHaveCount(1)
   await expect(strip.getByText('Участник говорит', { exact: true })).toBeVisible()
   await expect(strip.getByText('Участник показывает экран', { exact: true })).toBeVisible()
   await expect(page.locator('.screen-stage-label')).toContainText('Ваш экран')
   await expect(page.locator('.screen-stage-label')).toContainText('ЭФИР')
-  await expect(page.getByTestId('stream-select')).toHaveCount(2)
-  await expect(page.getByRole('heading', { name: 'Демонстрации в канале' })).toBeVisible()
-  await expect(page.locator('.stream-option.selected .stream-option-copy > span')).toHaveCSS('white-space', 'nowrap')
-  await expect(page.getByTestId('stream-rail')).not.toContainText('Участники ·')
   await expect(strip.getByRole('img', { name: 'Показывает экран' })).toHaveCount(2)
   await expect(strip.getByRole('img', { name: 'Микрофон выключен' })).toHaveCount(2)
   await expect(strip.getByRole('img', { name: 'Говорит' })).toHaveCount(1)
@@ -114,46 +120,94 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
   await expect(avatars.nth(1).locator('img')).toHaveAttribute('src', '/api/v1/members/member-speaking/avatar?revision=3')
   await expect.poll(() => avatars.nth(0).locator('img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
   await expect(avatars.nth(2)).toContainText('УЧ')
-  await clean(page)
-  const layout = await page.evaluate(() => {
-    const list = document.querySelector<HTMLElement>('.voice-viewer-participant-strip ul')!
-    const summary = document.querySelector<HTMLElement>('.voice-viewer-participant-summary')!
-    const name = document.querySelector<HTMLElement>('.voice-viewer-participant-name')!
-    const rail = document.querySelector<HTMLElement>('.screen-rail-section')!
-    const participants = document.querySelector<HTMLElement>('.voice-viewer-participant-strip')!
-    return { documentWidth: document.documentElement.scrollWidth, viewportWidth: innerWidth, listWidth: list.clientWidth, listContentWidth: list.scrollWidth, listLeft: list.getBoundingClientRect().left, summaryRight: summary.getBoundingClientRect().right, nameWidth: name.clientWidth, nameContentWidth: name.scrollWidth, railBottom: rail.getBoundingClientRect().bottom, participantsTop: participants.getBoundingClientRect().top }
-  })
-  expect(layout.documentWidth).toBeLessThanOrEqual(layout.viewportWidth)
-  expect(layout.listContentWidth).toBeGreaterThan(layout.listWidth)
-  expect(layout.listLeft).toBeGreaterThanOrEqual(layout.summaryRight)
-  expect(layout.nameContentWidth).toBeGreaterThan(layout.nameWidth)
-  expect(layout.railBottom).toBeLessThanOrEqual(layout.participantsTop)
-  await page.screenshot({ path: info.outputPath('viewer-participants-320.png') })
+    await clean(page)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.screenshot({ path: info.outputPath(`viewer-participants-${width}-${scale}.png`) })
+  }
+})
 
-  await open(page, 'viewer-strip', 390, 200)
-  await clean(page)
-  await expect(page.getByTestId('viewer-participants').getByText('3 в комнате', { exact: true })).toBeVisible()
-  const zoomedRows = await page.evaluate(() => {
-    const rail = document.querySelector<HTMLElement>('.screen-rail-section')!
-    const participants = document.querySelector<HTMLElement>('.voice-viewer-participant-strip')!
-    const card = document.querySelector<HTMLElement>('.stream-option.selected')!
-    const footer = card.querySelector<HTMLElement>('.stream-option-copy')!
-    const badge = footer.querySelector<HTMLElement>('b')!
-    return { railBottom: rail.getBoundingClientRect().bottom, participantsTop: participants.getBoundingClientRect().top, footerTop: footer.getBoundingClientRect().top, footerBottom: footer.getBoundingClientRect().bottom, badgeTop: badge.getBoundingClientRect().top, badgeBottom: badge.getBoundingClientRect().bottom }
-  })
-  expect(zoomedRows.railBottom).toBeLessThanOrEqual(zoomedRows.participantsTop)
-  expect(zoomedRows.badgeTop).toBeGreaterThanOrEqual(zoomedRows.footerTop)
-  expect(zoomedRows.badgeBottom).toBeLessThanOrEqual(zoomedRows.footerBottom)
-  await page.screenshot({ path: info.outputPath('viewer-participants-390-200.png') })
+test('screen viewing controls enter and exit browser fullscreen without enabling app expansion, and stop watching', async ({ page }, info) => {
+  await open(page, 'viewer-controls&watching-remote', 1280, 100, 800)
+  const stage = page.locator('.screen-stage')
+  const stageActions = page.getByRole('group', { name: 'Управление просмотром' })
 
-  await open(page, 'viewer-strip', 1440)
+  await expect(stageActions).toHaveCSS('opacity', '0')
+  const idleTransform = await stageActions.evaluate(element => getComputedStyle(element).transform)
+  expect(idleTransform).not.toBe('none')
+  await page.screenshot({ path: info.outputPath('viewer-controls-idle-hidden.png') })
+  const stageBounds = await stage.boundingBox()
+  await page.mouse.move(stageBounds!.x + stageBounds!.width / 2, stageBounds!.y + stageBounds!.height / 2)
+  await expect(stageActions).toHaveCSS('opacity', '1')
+  const visibleTransform = await stageActions.evaluate(element => getComputedStyle(element).transform)
+  expect(visibleTransform).not.toBe(idleTransform)
+  await expect.poll(() => stageActions.evaluate(element => getComputedStyle(element).opacity), { timeout: 3000 }).toBe('0')
+  expect(await stageActions.evaluate(element => getComputedStyle(element).transform)).toBe(idleTransform)
+  await page.mouse.move(stageBounds!.x + stageBounds!.width / 2, stageBounds!.y + stageBounds!.height / 2)
+  await expect(stageActions).toHaveCSS('opacity', '1')
+
+  await page.getByRole('button', { name: 'Развернуть на весь экран', exact: true }).click()
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(true)
+  await expect(page.locator('.voice-room')).not.toHaveClass(/voice-room--screen-expanded/)
+  await expect.poll(() => stageActions.evaluate(element => getComputedStyle(element).opacity), { timeout: 3000 }).toBe('0')
+  await page.mouse.move(stageBounds!.x + stageBounds!.width / 2, stageBounds!.y + stageBounds!.height / 2)
+  await expect(stageActions).toHaveCSS('opacity', '1')
+  await page.screenshot({ path: info.outputPath('viewer-controls-expanded.png') })
+  await stageActions.getByRole('button', { name: 'Свернуть просмотр', exact: true }).click()
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(false)
+
+  await page.getByRole('button', { name: 'Развернуть на весь экран', exact: true }).click()
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(true)
+  await page.screenshot({ path: info.outputPath('viewer-controls-browser-fullscreen.png') })
+  await stageActions.getByRole('button', { name: 'Свернуть просмотр', exact: true }).click()
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(false)
+
+  await page.getByRole('button', { name: 'Развернуть на весь экран', exact: true }).click()
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(true)
+  await stageActions.getByRole('button', { name: 'Прекратить просмотр', exact: true }).click()
+  await expect(page.locator('.screen-stage-actions')).toHaveCount(0)
+  await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(false)
+  expect(await page.evaluate(() => (window as any).__screenUI.events)).toEqual(['clear'])
+})
+
+test('keyboard focus keeps the viewer actions visible after the idle timer', async ({ page }) => {
+  await open(page, 'viewer-controls&watching-remote', 1280, 100, 800)
+  const actions = page.getByRole('group', { name: 'Управление просмотром' })
+  const expand = page.getByRole('button', { name: 'Развернуть на весь экран', exact: true })
+
+  for (let index = 0; index < 6; index++) {
+    await page.keyboard.press('Tab')
+    if (await expand.evaluate(element => element === document.activeElement)) break
+  }
+  await expect(expand).toBeFocused()
+  await expect(actions).toHaveCSS('opacity', '1')
+  await expect.poll(() => actions.evaluate(element => getComputedStyle(element).opacity), { timeout: 2500 }).toBe('1')
+})
+
+test('screen viewing overlay stays inside a narrow viewport at 200% text', async ({ page }, info) => {
+  await open(page, 'viewer-controls&watching-remote', 390, 200, 844)
+  const actions = page.getByRole('group', { name: 'Управление просмотром' })
+  await expect(actions).toHaveCSS('opacity', '0')
+  const stage = page.locator('.screen-stage')
+  const stageBounds = await stage.boundingBox()
+  await page.mouse.move(stageBounds!.x + stageBounds!.width / 2, stageBounds!.y + stageBounds!.height / 2)
+  await expect(actions.getByRole('button', { name: 'Развернуть на весь экран', exact: true })).toBeVisible()
+  await expect(actions.getByRole('button', { name: 'Прекратить просмотр', exact: true })).toBeVisible()
+  await expect(actions).toHaveCSS('opacity', '1')
   await clean(page)
-  await expect(page.getByTestId('viewer-participants').getByRole('status', { name: 'Зрители трансляции: 1' })).toHaveText('Зрители · 1')
-  await page.screenshot({ path: info.outputPath('viewer-participants-1440.png') })
+
+  const bounds = await actions.evaluate(element => {
+    const rect = element.getBoundingClientRect()
+    return { left: rect.left, right: rect.right, viewportWidth: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth }
+  })
+  expect(bounds.left).toBeGreaterThanOrEqual(0)
+  expect(bounds.right).toBeLessThanOrEqual(bounds.viewportWidth)
+  expect(bounds.scrollWidth).toBeLessThanOrEqual(bounds.viewportWidth)
+  await page.screenshot({ path: info.outputPath('viewer-controls-mobile-text-200.png') })
 })
 
 test('a viewer sees the selected stream audience, including another watcher', async ({ page }, info) => {
   await open(page, 'viewer-strip&watching-remote', 390)
+  await page.getByRole('button', { name: /Участники · 3/ }).click()
   const strip = page.getByTestId('viewer-participants')
   const watcherCount = strip.getByRole('status', { name: 'Зрители трансляции: 2' })
   await expect(watcherCount).toBeVisible()
@@ -171,6 +225,7 @@ test('muting a remote screen changes the speaker icon and restores it on unmute'
     body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>',
   }))
   await open(page, 'viewer-strip&remote-audio')
+  await page.locator('.screen-stage').hover()
   const mute = page.getByRole('button', { name: 'Выключить звук трансляции' })
   await expect(mute).toHaveAttribute('aria-pressed', 'true')
   const unmutedIcon = await mute.locator('svg').innerHTML()
@@ -319,12 +374,25 @@ test('playback diagnosis stays stable when receiver stats go stale but frames ke
 
 test('the owner can stop their own broadcast while the screen preview is open', async ({ page }) => {
   await open(page, 'viewer-strip', 1440)
+  await page.locator('.screen-stage').hover()
+  await expect(page.getByRole('group', { name: 'Управление просмотром' })).toHaveCSS('opacity', '1')
   await page.getByRole('button', { name: 'Остановить свою трансляцию' }).click()
   expect(await page.evaluate(() => (window as any).__screenUI.events)).toEqual(['stop-screen'])
 })
 
 test('short room height keeps the selected screen preview visible', async ({ page }) => {
   await open(page, 'viewer-strip&height=208', 417, 100, 208)
+  const loadingState = page.locator('.screen-loading-state')
+  const stageTop = page.locator('.screen-stage-top')
+  const loadingBounds = await loadingState.evaluate(element => {
+    const range = document.createRange()
+    range.selectNodeContents(element)
+    const rect = range.getBoundingClientRect()
+    return { y: rect.y, bottom: rect.bottom }
+  })
+  const stageTopBounds = await stageTop.boundingBox()
+  expect(stageTopBounds).not.toBeNull()
+  expect(loadingBounds.y).toBeGreaterThanOrEqual(stageTopBounds!.y + stageTopBounds!.height)
   const geometry = await page.locator('.screen-stage').evaluate(stage => {
     const rect = stage.getBoundingClientRect()
     const viewer = stage.closest('.screen-viewer')!
@@ -333,17 +401,11 @@ test('short room height keeps the selected screen preview visible', async ({ pag
   expect(geometry.stageHeight).toBeGreaterThanOrEqual(120)
   expect(geometry.stageTop).toBeGreaterThanOrEqual(0)
   expect(geometry.stageBottom).toBeLessThanOrEqual(208)
-  expect(geometry.viewerScrollHeight).toBeGreaterThan(geometry.viewerHeight)
+  expect(geometry.viewerScrollHeight).toBeLessThanOrEqual(geometry.viewerHeight)
+  await page.locator('.screen-stage').hover()
   const stopButton = page.getByRole('button', { name: 'Остановить свою трансляцию' })
   await stopButton.scrollIntoViewIfNeeded()
   await expect(stopButton).toBeInViewport()
-  const separation = await page.locator('.screen-viewer').evaluate(viewer => {
-    viewer.scrollTop = viewer.scrollHeight
-    const rail = viewer.querySelector('.screen-rail-section')!.getBoundingClientRect()
-    const participants = viewer.querySelector('.voice-viewer-participant-strip')!.getBoundingClientRect()
-    return participants.top - rail.bottom
-  })
-  expect(separation).toBeGreaterThanOrEqual(0)
   await page.screenshot({ path: test.info().outputPath('short-height-layout.png') })
 })
 

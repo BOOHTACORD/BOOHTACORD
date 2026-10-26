@@ -42,7 +42,8 @@
     "test:mini-player": "playwright test -c tests/mini_player/playwright.config.ts",
     "test:member-roster": "playwright test -c tests/member_roster/playwright.config.ts",
     "test:settings-hierarchy": "playwright test -c tests/settings_hierarchy/playwright.config.ts",
-    "test:header-actions": "playwright test -c tests/header_actions/playwright.config.ts"
+    "test:header-actions": "playwright test -c tests/header_actions/playwright.config.ts",
+    "test:notifications": "playwright test -c tests/remote_notifications/playwright.config.ts"
   },
   "dependencies": {
     "@opentelemetry/api": "1.9.1",

@@ -5,8 +5,8 @@ import { buildBundle,parseBundle,type Sample } from './bundle'
 import { createDiagnosisSeries } from './series'
 import type { ScreenReceiverMetrics } from '../screen_receiver_diagnostics'
 import type { ScreenDiagnostics } from '../screen_diagnostics'
-const props=defineProps<{selectedId:string|null;ended:boolean;hasAudio:boolean;local:boolean;publisherPaused?:boolean;autoplayBlocked?:boolean;subscriptionFailed?:boolean;stageVisible?:()=>boolean;videoReady:boolean;presentedFps:number|null;presentedFrames?:number|null;sampledAt:number|null;metrics:ScreenReceiverMetrics|null;source?:ScreenDiagnostics}>()
-const emit=defineEmits<{retry:[];autoRetry:[];refresh:[];choose:[]}>()
+const props=defineProps<{selectedId:string|null;ended:boolean;hasAudio:boolean;local:boolean;publisherPaused?:boolean;autoplayBlocked?:boolean;subscriptionFailed?:boolean;stageVisible?:()=>boolean;videoReady:boolean;presentedFps:number|null;presentedFrames?:number|null;sampledAt:number|null;metrics:ScreenReceiverMetrics|null;source?:ScreenDiagnostics;compact?:boolean;toolsOpen?:boolean}>()
+const emit=defineEmits<{retry:[];autoRetry:[];refresh:[];choose:[];closeTools:[]}>()
 const now=ref(Date.now()),selectedAt=ref(Date.now()),visible=ref(true),error=ref(''),help=ref(false),second=ref<Sample[]|null>(null),automaticRecoveryUsed=ref(false),recoverySuppressed=ref(false)
 const stableHasAudio=ref(props.hasAudio)
 let audioPresenceTimer:ReturnType<typeof setTimeout>|null=null
@@ -47,11 +47,11 @@ onMounted(()=>{updateVisibility();document.addEventListener('visibilitychange',u
 onBeforeUnmount(()=>{if(timer) clearInterval(timer);if(audioPresenceTimer)clearTimeout(audioPresenceTimer);document.removeEventListener('visibilitychange',updateVisibility);series.stop()})
 </script>
 <template>
-  <section class="screen-diagnosis" aria-label="Диагностика просмотра">
-    <p role="status" aria-live="polite">{{ diagnosis.message }}</p>
+  <section class="screen-diagnosis" :class="{ 'screen-diagnosis--compact': compact }" aria-label="Диагностика просмотра">
+    <p :class="{ 'gc-sr-only': compact && ['playing', 'connecting', 'background'].includes(diagnosis.state) }" role="status" aria-live="polite">{{ diagnosis.message }}</p>
     <button v-if="diagnosis.action !== 'none'" type="button" :aria-expanded="diagnosis.action === 'publisher' ? help : undefined" :aria-controls="diagnosis.action === 'publisher' ? 'screen-audio-help' : undefined" @click="action">{{ diagnosis.action === 'publisher' && help ? 'Скрыть инструкцию' : diagnosis.label }}</button>
     <p v-show="help" id="screen-audio-help">Попросите ведущего заново выбрать источник и включить передачу звука. Звук должен поддерживаться выбранным источником и браузером.</p>
-    <details><summary>Локальный диагностический прогон</summary>
+    <details v-show="!compact || toolsOpen" :open="compact ? toolsOpen : undefined"><summary v-show="!compact">Локальный диагностический прогон</summary><button v-if="compact" type="button" aria-label="Закрыть диагностику" @click="emit('closeTools')">Закрыть диагностику</button>
       <p>До 60 секунд и 30 измерений. Capture/encoded доступны только у источника, decoded/presented — у приёмника. Неизвестные значения, включая RTT, остаются неизвестными.</p>
       <p>Captured/encoded/decoded/presented frames — наблюдаемые счётчики; capture FPS — текущий параметр захвата, не измеренная частота кадров.</p>
       <p>Файл содержит только состояния и числовые измерения. Он не отправляется на сервер. Для сравнения выберите файл второго приёмника того же прогона.</p>

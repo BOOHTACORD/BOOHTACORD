@@ -3,10 +3,20 @@ import 'dart:convert';
 import '../../../models.dart';
 import '../../../core/http/transport.dart';
 import 'candidate_page.dart';
+import 'support_contact.dart';
 
 class DirectConversationsApi {
   DirectConversationsApi(this.transport);
   final ApiTransport transport;
+  Future<void> acceptSupportPublication(int version) async {
+    await transport.checked(
+      await transport.client.post(
+        transport.uri('/support/consent'),
+        headers: await transport.headers(jsonBody: true),
+        body: jsonEncode({'notice_version': version}),
+      ),
+    );
+  }
 
   Future<List<DirectConversation>> directMessages() async {
     final data = await transport.checked(
@@ -15,11 +25,15 @@ class DirectConversationsApi {
         headers: await transport.headers(),
       ),
     ) as Map<String, dynamic>;
-    return (data['direct_messages'] as List<dynamic>)
-        .map(
-          (value) => DirectConversation.fromJson(value as Map<String, dynamic>),
-        )
-        .toList(growable: false);
+    return DirectNavigation(
+      (data['direct_messages'] as List<dynamic>)
+          .map(
+            (value) =>
+                DirectConversation.fromJson(value as Map<String, dynamic>),
+          )
+          .toList(growable: false),
+      support: SupportContact.fromJson(data['support_contact']),
+    );
   }
 
   Future<List<DirectCandidate>> directMessageCandidates() async {

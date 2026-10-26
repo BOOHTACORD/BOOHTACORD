@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
+	admitlogin "voice-platform/backend/internal/identity/admit_login"
 	"voice-platform/backend/internal/identity/login_user"
 	"voice-platform/backend/internal/identity/session"
-	"voice-platform/backend/internal/security/rate_limit"
 )
 
 func TestHandlerSetsSecureOpaqueSessionCookie(t *testing.T) {
@@ -75,12 +75,14 @@ func TestHandlerHidesBlockedAccountUntilPasswordIsVerified(t *testing.T) {
 	}
 }
 
-func TestFailedLoginBudgetIsPerNormalizedAccountAndDoesNotBlockValidPassword(t *testing.T) {
-	limiter, err := ratelimit.New(ratelimit.Config{Limit: 1, Window: time.Minute, MaxSources: 16})
+func TestAccountBudgetPrecedesEveryVerifierIncludingCorrectPassword(t *testing.T) {
+	limiter, err := admitlogin.New(admitlogin.Config{Limit: 1, Window: time.Minute, MaxAccounts: 16})
 	if err != nil {
 		t.Fatal(err)
 	}
-	handler := NewHandlerWithFailureLimiter(loginerFunc(func(_ context.Context, input loginuser.Input) (loginuser.Result, error) {
+	calls := 0
+	handler := NewHandlerWithAdmission(loginerFunc(func(_ context.Context, input loginuser.Input) (loginuser.Result, error) {
+		calls++
 		if input.Password == "correct" {
 			return loginuser.Result{Token: "synthetic", ExpiresAt: time.Now().Add(session.AbsoluteLifetime)}, nil
 		}
@@ -99,8 +101,8 @@ func TestFailedLoginBudgetIsPerNormalizedAccountAndDoesNotBlockValidPassword(t *
 	if got := request("egor", "wrong", "192.0.2.2:1"); got.Code != http.StatusTooManyRequests || got.Header().Get("Retry-After") != "60" {
 		t.Fatalf("second failure status = %d, retry = %q", got.Code, got.Header().Get("Retry-After"))
 	}
-	if got := request("egor", "correct", "192.0.2.2:1"); got.Code != http.StatusNoContent {
-		t.Fatalf("valid password status = %d", got.Code)
+	if got := request("egor", "correct", "192.0.2.2:1"); got.Code != http.StatusTooManyRequests || calls != 1 || len(got.Result().Cookies()) != 0 {
+		t.Fatalf("exhausted budget: status=%d verifier calls=%d cookies=%d; want 429/1/0", got.Code, calls, len(got.Result().Cookies()))
 	}
 }
 

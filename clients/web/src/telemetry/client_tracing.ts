@@ -4,6 +4,7 @@ import { ActionScope, activeAction } from './action_scope/scope'
 import { telemetrySession } from './action_scope/session'
 import { actionHeaders, acceptSessionResponse } from './action_scope/http_context'
 import { failureOutcome } from './action_scope/failure'
+import { routinePresenceRequest, traceRoutineRequest } from './routine_request'
 
 export type OperationName = 'voice.join' | 'voice.leave' | 'voice.reconnect' | 'realtime.connect' | 'realtime.reconnect' | 'screen.share.start' | 'screen.share.stop' | 'screen.view'
 
@@ -27,7 +28,13 @@ export function createTracedFetch(tracer: Tracer, transport: typeof fetch): type
       if (String(input) === `${apiBaseUrl}/auth/session`) acceptSessionResponse(response, snapshot)
       return response
     }
+    const owner = telemetrySession.snapshot()
     const method = safeMethod(init?.method ?? (input instanceof Request ? input.method : 'GET'))
+    if (!activeAction() && routinePresenceRequest(input, method)) {
+      const response = await traceRoutineRequest(tracer, () => transport(input, init), method)
+      acceptSessionResponse(response, owner)
+      return response
+    }
     const span = tracer.startSpan('api.request', { kind: SpanKind.CLIENT })
     span.setAttribute('http.request.method', method)
     const headers = new Headers(init?.headers ?? (input instanceof Request ? input.headers : undefined))
@@ -39,6 +46,7 @@ export function createTracedFetch(tracer: Tracer, transport: typeof fetch): type
     }
     try {
       const response = await transport(input, { ...init, headers })
+      acceptSessionResponse(response, owner)
       span.setAttribute('http.response.status_code', response.status)
       if (response.status >= 500) span.setStatus({ code: SpanStatusCode.ERROR })
       return response
@@ -62,7 +70,6 @@ export async function traceOperation<T>(tracer: Tracer, name: OperationName, act
     actionScope.finish('success')
     return result
   } catch (cause) {
-    span.setStatus({ code: SpanStatusCode.ERROR })
     span.addEvent(`app.client.${name}.failed`)
     const failure=failureOutcome(cause)
     actionScope.finish(failure.outcome,failure.reason)

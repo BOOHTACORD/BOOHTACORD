@@ -1,0 +1,16 @@
+{
+  "kind": "source-only-livekit-network-revalidation",
+  "observed_at": "2026-10-22",
+  "status": "PASS",
+  "source_base": "bb51c0d28c0ccc70823a78a7c534fc898aecc845",
+  "historical_evidence": "evidence/media/livekit-network-config-2026-10-07.json",
+  "change": "GitHub #513 adds a private Collector internal-metrics scrape at collector:8888 and drops target_info/otel_scope_info from the OTLP exporter scrape. The LiveKit scrape job, image pin, metric allowlist, labels, listeners, published media ports and network peer boundary are unchanged. The source checker includes this explicit supplement; historical evidence stays immutable.",
+  "physical_acceptance": "NOT_RUN; this receipt validates source configuration and does not promote historical or production network/media evidence",
+  "checks": [
+    "Native network model, checked-in artifact hashes and all 15 focused topology regressions PASS"
+  ],
+  "repository_artifacts": {
+    "docker/observability/prometheus.yaml": "sha256:89584c4562c5269955f1fc3928e395f9bacff4c03cc01c25df38b24649041d60",
+    "tools/verify/livekit_network_config/check.py": "sha256:eb1e62584ebd9af8c2893a1e8191b4fbc33d7d428cb8245947d3915b212be96c"
+  }
+}

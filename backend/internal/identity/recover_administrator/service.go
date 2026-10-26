@@ -36,7 +36,7 @@ func (service Service) Recover(context context.Context, input Input) error {
 	if err := registration.ValidatePassword(input.Password); err != nil {
 		return ErrRecoveryUnavailable
 	}
-	passwordHash, err := password.Hash(input.Password)
+	passwordHash, err := password.Hash(context, input.Password)
 	if err != nil {
 		return fmt.Errorf("hash recovery password: %w", err)
 	}

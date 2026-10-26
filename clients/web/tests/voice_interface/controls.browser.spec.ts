@@ -35,6 +35,20 @@ test('prejoin has two short explicit actions, retains listener mode and blocks d
   expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toEqual(['join', 'listener'])
 })
 
+test('voice lease handoff proceeds without a confirmation dialog', async ({ page }, info) => {
+  await open(page)
+  await patch(page, { active: false, state: 'JOINING', transferRequired: true })
+
+  const transferStatus = page.getByRole('status').filter({ hasText: 'Переносим голосовое подключение…' })
+  await expect(transferStatus).toBeVisible()
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await expect(page.locator('.voice-prejoin-actions')).toHaveCount(0)
+  await page.screenshot({ path: info.outputPath('voice-transfer-progress.png') })
+
+  await patch(page, { state: 'IDLE', transferRequired: false })
+  await expect(page.locator('.voice-prejoin-actions').getByRole('button', { name: 'Войти', exact: true })).toBeVisible()
+})
+
 test('empty voice roster centers its message and the dock hides voluntary-leave copy', async ({ page }, info) => {
   await open(page, 390)
   await patch(page, { active: false, state: 'IDLE' })

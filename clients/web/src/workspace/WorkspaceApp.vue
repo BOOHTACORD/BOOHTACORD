@@ -36,18 +36,27 @@ import ConnectionStatus from './connection_status/Status.vue'
 import { navigateWithSettingsGuard } from './settings_exit_guard'
 import type { ActionScope } from '../telemetry/action_scope/scope'
 import { bindWorkspaceReady } from './ready_lifecycle/bind'
+import { buildGuildVoicePresence } from './guild_voice_presence'
+import { useSearchTargetStore } from '../search/search_target_store'
+import { useNotificationTap } from '../notification/remote_push/tap'
+import { useServerNotifications } from '../notification/server_preferences/state'
+import { latestNotificationHint } from '../notification/remote_push/hints'
 const props = defineProps<{ role: 'MEMBER' | 'ADMINISTRATOR'; accountId: string;readiness?:ActionScope }>()
 const emit = defineEmits<{ sessionExpired: []; loggedOut: [] }>()
 const adminSection = ref<AdminSection>('members')
 const { activeVoiceChannel, audioSettings, loadAudioDevices, joinVoice, leaveVoice, selectAudioDevice, selectedChannel, selectedChannelId, selectChannel: selectWorkspaceChannel, selectDirectMessage: selectWorkspaceDirectMessage, startScreen, topologyStore, voiceActivation, voiceConnection } = useWorkspaceVoiceControls(props.accountId)
 const { confirmScreenShare, openScreenShareSetup, screenShareSetupOpen, selectedScreenProfile, selectedScreenMode } = useScreenShareSetup(() => voiceConnection.screenState, startScreen, props.accountId)
-const { activePanel, closeDrawers, directMessageStore, memberHeaderExpandedState, membersOpen, modalDrawer, navOpen, openDirectMessageFromMember, returnToVoice, selectedDirectMessage, selectChannel, selectDirectMessage, selectOpenedDirectMessage, sidebarSection, toggleMembers, toggleNavigation, togglePanel, voiceStageWide } = useWorkspaceNavigation(props.role, selectedChannel, topologyStore, selectWorkspaceChannel, selectWorkspaceDirectMessage)
+const { openSupport, activePanel, closeDrawers, directMessageStore, memberHeaderExpandedState, membersOpen, modalDrawer, navOpen, openDirectMessageFromMember, returnToVoice, selectedDirectMessage, selectChannel, selectDirectMessage, selectOpenedDirectMessage, sidebarSection, toggleMembers, toggleNavigation, togglePanel, voiceStageWide } = useWorkspaceNavigation(props.role, selectedChannel, topologyStore, selectWorkspaceChannel, selectWorkspaceDirectMessage)
 const profileSettings = ref<{ hasUnsavedChanges: boolean } | null>(null)
 const profileExitConfirmation = ref<{ ask: (message: string) => Promise<boolean> } | null>(null)
 const messageStore = useMessageStore()
 const realtimeStore = useRealtimeStore()
 const expireSession = () => expireWorkspaceSession(voiceConnection, () => emit('sessionExpired'))
 const voiceRoster = createVoiceRosterRealtime(undefined, expireSession)
+const guildVoicePresence = computed(() => buildGuildVoicePresence(
+  voiceRoster.error.value ? null : voiceRoster.channels.value,
+  topologyStore.topology?.categories.flatMap(({ channels }) => channels) ?? [],
+))
 const shouldReconnectVoiceRoster = createVoiceRosterReconnectGate(realtimeStore.state === 'CONNECTED')
 const { busy: logoutBusy, error: logoutError, signOut } = bindWorkspaceLogout(voiceConnection, leaveVoice, realtimeStore, () => emit('loggedOut'))
 const guildPresence = useGuildPresence()
@@ -62,10 +71,26 @@ async function beforeWorkspaceNavigation(action: () => void | Promise<unknown>):
   const hasUnsavedProfileChanges = activePanel.value === 'profile' && Boolean(profileSettings.value?.hasUnsavedChanges)
   await navigateWithSettingsGuard(hasUnsavedProfileChanges, async () => Boolean(await profileExitConfirmation.value?.ask('Введённое имя или пароль ещё не сохранены. Если уйти, эти данные будут потеряны. Продолжить?')), action)
 }
+function requestSupport(): Promise<void> { return beforeWorkspaceNavigation(openSupport) }
 function requestPanel(panel: 'admin' | 'audio' | 'profile' | 'search'): Promise<void> { return beforeWorkspaceNavigation(() => togglePanel(panel)) }
 function requestGuildPanel(): Promise<void> { return props.role === 'ADMINISTRATOR' ? requestPanel('admin') : Promise.resolve() }
 function requestSelectChannel(channel: TopologyChannel): Promise<void> { return beforeWorkspaceNavigation(() => selectChannel(channel)) }
 function requestSelectDirectMessage(id: string): Promise<void> { return beforeWorkspaceNavigation(() => selectDirectMessage(id)) }
+const remoteNotifications=useServerNotifications()
+const notificationTap=useNotificationTap({account:props.accountId,ready:()=>!!topologyStore.topology,navigate:target=>beforeWorkspaceNavigation(async()=>{
+  if(target.kind==='DM'){
+    await directMessageStore.refreshNavigation()
+    if(!directMessageStore.directMessages.some(d=>d.id===target.conversation_id))throw new Error('Диалог больше недоступен.')
+    useSearchTargetStore().open({kind:'DIRECT_MESSAGE',conversationId:target.conversation_id,messageId:target.message_id})
+    await selectDirectMessage(target.conversation_id)
+  }else{
+    await topologyStore.refresh()
+    const channel=topologyStore.topology?.categories.flatMap(c=>c.channels).find(c=>c.id===target.conversation_id&&c.kind==='TEXT')
+    if(!channel)throw new Error('Канал больше недоступен.')
+    useSearchTargetStore().open({kind:'CHANNEL',conversationId:target.conversation_id,messageId:target.message_id})
+    await selectChannel(channel)
+  }
+})})
 function requestOpenDirectMessage(id: string): Promise<void> { return beforeWorkspaceNavigation(() => selectOpenedDirectMessage(id)) }
 function requestReturnToVoice(channelId: string): Promise<void> { return beforeWorkspaceNavigation(() => returnToVoice(channelId)) }
 function requestOpenDirectMessageFromMember(userId: string): Promise<void> { return beforeWorkspaceNavigation(() => openDirectMessageFromMember(userId)) }
@@ -80,6 +105,8 @@ bindWorkspaceReady({ readiness: props.readiness,
 </script>
 <template>
   <div class="app-frame">
+    <div v-if="remoteNotifications.hint" role="status" class="state notification-hint">{{ remoteNotifications.hint }} <button type="button" @click="notificationTap.accept(latestNotificationHint());remoteNotifications.hint=''">Открыть</button><button type="button" aria-label="Скрыть уведомление" @click="remoteNotifications.hint=''">Закрыть</button></div>
+    <p v-if="notificationTap.error.value" role="status" class="state">{{ notificationTap.error.value }}</p>
     <a class="gc-sr-only" href="#main-region">Перейти к содержимому</a>
     <ShortcutStatus :message="voiceActivation.shortcutStatus" />
       <div class="gc-shell" :class="{ 'no-aside': (activePanel === 'search' && voiceStageWide) || (activePanel !== 'search' && (voiceStageWide || selectedDirectMessage || activePanel !== 'none')), 'search-active': activePanel === 'search', 'voice-stage-wide': voiceStageWide, 'members-collapsed': membersOpen && !voiceStageWide && !selectedDirectMessage && activePanel === 'none' }" data-testid="app-shell">
@@ -102,6 +129,7 @@ bindWorkspaceReady({ readiness: props.readiness,
           <DirectMessageNavigation
             v-else
             :direct-messages="directMessageStore.directMessages"
+            :support-contact="directMessageStore.supportContact" :support-opening="directMessageStore.supportOpening" :support-notice="directMessageStore.supportNotice" :support-changed="directMessageStore.supportChanged" @support="requestSupport"
             :error="directMessageStore.error"
             :loading="directMessageStore.loadingNavigation"
             :selected-direct-message-id="directMessageStore.directMessageId ?? undefined"
@@ -113,7 +141,7 @@ bindWorkspaceReady({ readiness: props.readiness,
         <VoiceDock :notice="voiceConnection.disconnectNotice" class="mobile-voice-dock" :activation-mode="voiceActivation.mode" :touch-ptt-enabled="voiceActivation.touchPttEnabled" :set-touch-ptt-pressed="voiceActivation.setTouchPttPressed" :channel="activeVoiceChannel" :participant-count="voiceConnection.voiceVolumeParticipants.length + 1" :active-session="voiceConnection.active !== null" :error="voiceConnection.error" :deafen-changing="voiceConnection.deafenChanging" :deafened="voiceConnection.deafened"
           :microphone-muted="voiceConnection.microphoneMuted" :microphone-permission-denied="voiceConnection.microphonePermissionDenied" :screen-share-state="voiceConnection.screenState" :connection-quality="voiceConnection.connectionQuality" :ping-ms="voiceConnection.pingMs" :state="voiceConnection.state" @leave="leaveVoice" @start-screen="openScreenShareSetup" @stop-screen="voiceConnection.stopScreen"
           @toggle-deafen="voiceConnection.toggleDeafen" @toggle-microphone="voiceConnection.toggleMicrophone" />
-        <WorkspaceUserFooter :online="realtimeStore.state === 'CONNECTED'" :role="props.role" :display-name="profile?.display_name" :avatar-u-r-l="profile?.avatar_url" :account-i-d="profile?.account_id" @open-profile="requestPanel('profile')" @open-settings="requestPanel('audio')" />
+        <WorkspaceUserFooter :online="realtimeStore.state === 'CONNECTED'" :role="props.role" :display-name="profile?.display_name" :avatar-u-r-l="profile?.avatar_url" :account-i-d="profile?.account_id" @open-support="requestSupport" :support-opening="directMessageStore.supportOpening" @open-profile="requestPanel('profile')" @open-settings="requestPanel('audio')" />
       </aside>
       <main id="main-region" class="main" data-testid="main-region">
         <WorkspaceMain :account-id="props.accountId" :active-voice-channel="activeVoiceChannel" :panel="activePanel === 'search' ? 'none' : activePanel" :channel="selectedChannel" :direct-message="selectedDirectMessage" :join-voice="joinVoice" :leave-voice="leaveVoice" :activation-mode="voiceActivation.mode" :start-screen="openScreenShareSetup" :selected-screen-profile="selectedScreenProfile"
@@ -130,7 +158,7 @@ bindWorkspaceReady({ readiness: props.readiness,
           </template>
         </WorkspaceMain>
       </main>
-      <WorkspaceMembersPanel v-if="!selectedDirectMessage && activePanel === 'none'" :open="membersOpen" :active-voice-channel="voiceConnection.state === 'LEAVING' ? null : activeVoiceChannel" :selected-voice-channel="selectedChannel?.kind === 'VOICE' ? selectedChannel : null" :participants="voiceConnection.voiceVolumeParticipants" :presence-resolver="guildPresence.resolve" :role="props.role" :account-i-d="profile?.account_id" :self-name="profile?.display_name ?? null" :self-microphone-muted="voiceConnection.microphoneMuted" :self-microphone-unavailable="voiceConnection.microphonePermissionDenied" :modal="modalDrawer === 'members'" @member-count="guildMemberCount = $event" @open-d-m="requestOpenDirectMessageFromMember" @set-volume="voiceConnection.setParticipantVolume" />
+      <WorkspaceMembersPanel v-if="!selectedDirectMessage && activePanel === 'none'" :open="membersOpen" :active-voice-channel="voiceConnection.state === 'LEAVING' ? null : activeVoiceChannel" :selected-voice-channel="selectedChannel?.kind === 'VOICE' ? selectedChannel : null" :participants="voiceConnection.voiceVolumeParticipants" :voice-presence="guildVoicePresence" :presence-resolver="guildPresence.resolve" :role="props.role" :account-i-d="profile?.account_id" :self-name="profile?.display_name ?? null" :self-microphone-muted="voiceConnection.microphoneMuted" :self-microphone-unavailable="voiceConnection.microphonePermissionDenied" :modal="modalDrawer === 'members'" @member-count="guildMemberCount = $event" @open-d-m="requestOpenDirectMessageFromMember" @set-volume="voiceConnection.setParticipantVolume" />
       <aside v-else-if="activePanel === 'search'" id="search-aside-panel" class="members search-aside" :class="{ 'is-open': activePanel === 'search' }" :role="modalDrawer === 'search' ? 'dialog' : undefined" :aria-modal="modalDrawer === 'search' ? 'true' : undefined" aria-label="Поиск сообщений" tabindex="-1" data-testid="search-aside-panel"><WorkspaceSearchPanel @open-channel="selectChannel" @open-direct-message="selectDirectMessage" @close="activePanel = 'none'" /></aside>
       <button v-if="navOpen || membersOpen || activePanel === 'search'" class="drawer-scrim" type="button" aria-label="Закрыть навигацию и участников" @click="requestWorkspaceScrimClose" />
     </div>

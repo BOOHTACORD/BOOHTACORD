@@ -3,6 +3,7 @@
 <script type="module">
 import { createApp, h } from 'vue'
 import PasswordResetCompletion from '/src/identity/PasswordResetCompletion.vue'
+import { completePasswordReset } from '/src/identity/password_reset_client'
 import '/src/style.css'
-createApp({ render: () => h(PasswordResetCompletion, { validLink: true, complete: async () => {} }) }).mount('#app')
+createApp({ render: () => h(PasswordResetCompletion, { validLink: true, complete: (password) => completePasswordReset('synthetic-token', password) }) }).mount('#app')
 </script></html>

@@ -1,7 +1,7 @@
 import 'screen_stage/handler.dart';
 import '../../selected_voice_screen_sender/component.dart';
 import '../../voice_participant_account_id/component.dart';
-import '../../voice_participant_strip/component.dart';
+import '../../voice_viewer_participants_menu.dart';
 import '../../native_bindings.dart';
 
 import '../lifecycle/context.dart';
@@ -20,7 +20,7 @@ extension WorkspaceVoiceScreenViewerBuildAction
   Widget executeWorkspaceVoiceScreenViewerBuild(
     BuildContext context,
   ) => VoiceViewerLayout(
-    stage: renderVoiceScreenViewerScreenStage(),
+    stage: renderVoiceScreenViewerScreenStage(context),
     diagnostics: Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
       child: ScreenReceiverDiagnostics(
@@ -76,25 +76,12 @@ extension WorkspaceVoiceScreenViewerBuildAction
         expectedRoomId: state.room?.name,
       ),
     ),
-    audioControls: workspaceAudioControls,
+    audioControls: null,
     streamRail: workspaceStreamRail,
-    participants: WorkspaceVoiceParticipantStrip(
+    participants: const SizedBox.shrink(),
+    participantsOverlay: VoiceViewerParticipantsMenu(
       state: state,
-      localName: localName,
-      localAvatarUrl: state.profile?.avatarUrl,
-      localMuted: localMuted,
-      localSpeaking: localSpeaking,
-      participants: participants,
-      showAudience:
-          showingLocalScreen ||
-          workspaceSelectedVoiceScreenSender(screens, selectedIdentity) !=
-              null,
-      watcherAccountIds: showingLocalScreen
-          ? state.voice.ownerScreenViewerAccountIds
-          : state.voice.screenViewerAccountIds,
-      watcherLabel: showingLocalScreen
-          ? 'Смотрит вашу трансляцию'
-          : 'Смотрит эту трансляцию',
+      showingLocalScreen: showingLocalScreen,
     ),
   );
 }

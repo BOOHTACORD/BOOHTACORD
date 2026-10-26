@@ -15,8 +15,17 @@ RUN --mount=type=cache,id=boohtacord-${BOOHTACORD_CACHE_SCOPE}-gomod,target=/go/
 RUN --mount=type=cache,id=boohtacord-${BOOHTACORD_CACHE_SCOPE}-gomod,target=/go/pkg/mod,sharing=locked --mount=type=cache,id=boohtacord-${BOOHTACORD_CACHE_SCOPE}-gobuild,target=/root/.cache/go-build,sharing=locked CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/cleanup-unattached-attachments ./cmd/cleanup_unattached_attachments
 RUN --mount=type=cache,id=boohtacord-${BOOHTACORD_CACHE_SCOPE}-gomod,target=/go/pkg/mod,sharing=locked --mount=type=cache,id=boohtacord-${BOOHTACORD_CACHE_SCOPE}-gobuild,target=/root/.cache/go-build,sharing=locked CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/cleanup-hidden-attachments ./cmd/cleanup_hidden_attachments
 
+RUN --mount=type=cache,id=boohtacord-${BOOHTACORD_CACHE_SCOPE}-gomod,target=/go/pkg/mod,sharing=locked --mount=type=cache,id=boohtacord-${BOOHTACORD_CACHE_SCOPE}-gobuild,target=/root/.cache/go-build,sharing=locked CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/installation ./cmd/installation
+
+RUN --mount=type=cache,id=boohtacord-${BOOHTACORD_CACHE_SCOPE}-gomod,target=/go/pkg/mod,sharing=locked --mount=type=cache,id=boohtacord-${BOOHTACORD_CACHE_SCOPE}-gobuild,target=/root/.cache/go-build,sharing=locked CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/support-contact ./cmd/support_contact
+
+RUN --mount=type=cache,id=boohtacord-${BOOHTACORD_CACHE_SCOPE}-gomod,target=/go/pkg/mod,sharing=locked --mount=type=cache,id=boohtacord-${BOOHTACORD_CACHE_SCOPE}-gobuild,target=/root/.cache/go-build,sharing=locked CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/notification-control ./cmd/notification-control
+
 FROM gcr.io/distroless/static-debian12:nonroot
 COPY --from=build /out/api /api
+COPY --from=build /out/notification-control /notification-control
+COPY --from=build /out/support-contact /support-contact
+COPY --from=build /out/installation /installation
 COPY --from=build /out/migrate /migrate
 COPY --from=build /out/bootstrap-admin /bootstrap-admin
 COPY --from=build /out/recover-admin /recover-admin

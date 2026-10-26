@@ -48,6 +48,7 @@ const encoding = computed(() => screenEncodingLabel(props.descriptor))
 const bitrate = computed(() => props.metrics?.bitrateKbps == null ? 'Нет данных' : `${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 }).format(props.metrics.bitrateKbps / 1000)} Мбит/с`)
 const diagnostics = ref<HTMLDetailsElement | null>(null)
 const isOpen = ref(false)
+const teleportTarget = ref<string | Element>('body')
 const copyFeedback = ref('')
 async function copyStatistics(): Promise<void> {
   // Explicit, content-free export: no participant name, source title, IDs or addresses.
@@ -103,6 +104,7 @@ function close(): void {
   diagnostics.value?.querySelector('summary')?.focus()
 }
 function handleToggle(): void {
+  teleportTarget.value = document.fullscreenElement ?? 'body'
   isOpen.value = Boolean(diagnostics.value?.open)
   clearInterval(ageTimer); ageTimer = undefined
   if (isOpen.value) {
@@ -141,7 +143,7 @@ onBeforeUnmount(() => {
 <template>
   <details ref="diagnostics" class="stream-diagnostics" @toggle="handleToggle">
     <summary :title="status" aria-label="Статистика" class="stream-tool-button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V4M4 20h17M8 16v-5M13 16V7M18 16v-9"/></svg><span class="gc-sr-only">Статистика</span></summary>
-    <Teleport v-if="isOpen" to="body">
+    <Teleport v-if="isOpen" :to="teleportTarget">
     <button type="button" class="stream-diagnostics-backdrop" aria-label="Закрыть статистику" @click="close" />
     <div ref="panel" class="stream-diagnostics-panel" role="dialog" aria-label="Статистика трансляции" :aria-modal="mobile ? 'true' : undefined"><header><h2>Статистика</h2><button type="button" aria-label="Закрыть статистику" @click="close">×</button></header><p>{{ participantName ? `Экран ${participantName}` : 'Трансляция' }} · {{ status }}</p><dl>
       <div><dt>Выбрано отправителем</dt><dd>{{ profile }}</dd></div>

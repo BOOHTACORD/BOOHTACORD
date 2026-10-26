@@ -8,10 +8,14 @@ class WorkspaceCategory extends StatefulWidget {
     super.key,
     required this.state,
     required this.category,
+    this.favoriteIds = const <String>{},
+    this.onFavoriteChanged,
     this.onChannelSelected,
   });
   final AppState state;
   final ChannelCategory category;
+  final Set<String> favoriteIds;
+  final void Function(GuildChannel channel, bool favorite)? onFavoriteChanged;
   final VoidCallback? onChannelSelected;
 
   @override

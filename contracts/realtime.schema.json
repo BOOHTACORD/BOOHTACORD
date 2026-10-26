@@ -9,7 +9,7 @@
     "event_id": { "type": "string", "format": "uuid" },
     "kind": {
       "type": "string",
-      "enum": ["connection.ready", "connection.resync_required", "voice.lease_revoked", "channel.updated", "guild.profile.updated", "member.profile.updated", "presence.snapshot", "presence.changed", "message.created", "message.updated", "message.deleted", "direct_message.message_created", "direct_message.message_updated", "direct_message.message_deleted", "role.permissions.updated", "auth.permissions.invalidated", "session.state_changed", "screen_preview.updated", "screen_preview.invalidated", "screen_viewers.changed", "message.reactions_updated", "message.pins_updated", "direct_message.reactions_updated"]
+      "enum": ["notification.queued", "notification.preferences_changed", "connection.ready", "connection.resync_required", "voice.lease_revoked", "channel.updated", "guild.profile.updated", "member.profile.updated", "presence.snapshot", "presence.changed", "message.created", "message.updated", "message.deleted", "direct_message.message_created", "direct_message.message_updated", "direct_message.message_deleted", "role.permissions.updated", "auth.permissions.invalidated", "session.state_changed", "screen_preview.updated", "screen_preview.invalidated", "screen_viewers.changed", "message.reactions_updated", "message.pins_updated", "direct_message.reactions_updated"]
     },
     "occurred_at": { "type": "string", "format": "date-time" },
     "payload": { "type": "object" },
@@ -24,6 +24,8 @@
     }
   },
   "allOf": [
+    {"if":{"properties":{"kind":{"const":"notification.queued"}},"required":["kind"]},"then":{"properties":{"payload":{"type":"object","additionalProperties":false,"properties":{"version":{"const":1},"ref":{"type":"string","format":"uuid"},"binding_ref":{"type":"string","format":"uuid"},"generation":{"type":"integer","minimum":1,"maximum":1000000000},"kind":{"enum":["DM","TEXT"]},"conversation_id":{"type":"string","format":"uuid"},"message_id":{"type":"string","format":"uuid"}},"required":["version","ref","binding_ref","generation","kind","conversation_id","message_id"]}}}},
+    {"if":{"properties":{"kind":{"const":"notification.preferences_changed"}},"required":["kind"]},"then":{"properties":{"payload":{"type":"object","additionalProperties":false,"properties":{"version":{"const":1},"revision":{"type":"integer","minimum":1}},"required":["version","revision"]}}}},
     {"if": {"properties": {"kind": {"const": "session.state_changed"}}, "required": ["kind"]}, "then": {"properties": {"payload": {"type": "object", "additionalProperties": false, "maxProperties": 0}}}},
     {"if": {"properties": {"kind": {"const": "guild.profile.updated"}}, "required": ["kind"]}, "then": {"properties": {"payload": {"type": "object", "additionalProperties": false, "required": ["revision"], "properties": {"revision": {"type": "integer", "minimum": 1}}}}}},
     {"if": {"properties": {"kind": {"const": "member.profile.updated"}}, "required": ["kind"]}, "then": {"properties": {"payload": {"type": "object", "additionalProperties": false, "required": ["user_id", "revision"], "properties": {"user_id": {"type": "string", "format": "uuid"}, "revision": {"type": "integer", "minimum": 1}}}}}},

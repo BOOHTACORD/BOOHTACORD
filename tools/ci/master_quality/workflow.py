@@ -20,7 +20,7 @@ def selector(job):
     steps = job.get('steps', [])
     commands = [s for s in steps if s.get('run') == 'python3 -m tools.ci.select_changes.run']
     require(len(commands) == 1 and commands[0].get('id') == 'select' and not commands[0].get('if'))
-    require(any(s.get('uses') == 'actions/checkout@v4' and s.get('with') == {
+    require(any(s.get('uses') == 'actions/checkout@v7' and s.get('with') == {
         'persist-credentials': 'false', 'fetch-depth': '0'} for s in steps))
 
 
@@ -30,19 +30,19 @@ def quality(job, scope, roles):
             and not any(key in job for key in ('environment', 'secrets', 'continue-on-error', 'env')))
     steps = job.get('steps', [])
     require(len(steps) == 7 and all(not s.get('continue-on-error') for s in steps))
-    require(steps[0] == {'uses': 'actions/checkout@v4', 'with': {'persist-credentials': 'false'}})
-    require(steps[1] == {'uses': 'actions/setup-python@v5', 'with': {'python-version': python_input(ROOT)}})
+    require(steps[0] == {'uses': 'actions/checkout@v7', 'with': {'persist-credentials': 'false'}})
+    require(steps[1] == {'uses': 'actions/setup-python@v7', 'with': {'python-version': python_input(ROOT)}})
     require(steps[2].get('run') == 'python -m tools.ci.toolchains.runtime python' and not steps[2].get('if'))
     require(steps[3].get('run') == f'python3 -m tools.ci.master_quality.run {scope}'
             and steps[3].get('env') == {'MASTER_NEEDS': '${{ toJSON(needs) }}'} and not steps[3].get('if'))
-    require(steps[4].get('uses') == 'actions/upload-artifact@v4' and steps[4].get('if') == 'always()'
+    require(steps[4].get('uses') == 'actions/upload-artifact@v7' and steps[4].get('if') == 'always()'
             and steps[4].get('with') == {'name': f'quality-master-{scope}-' + EXECUTION,
                                        'path': f'.out/ci/master-{scope}.json',
                                        'if-no-files-found': 'error', 'retention-days': '30'})
     require(steps[5].get('run') == 'python -m tools.ci.observability.summary --scope ' + scope
             and steps[5].get('if') == 'always()'
             and steps[5].get('env') == {'GITHUB_TOKEN':'${{ github.token }}','TRIAGE_NEEDS':'${{ toJSON(needs) }}','CI_GATE_OUTCOME':'${{ job.status }}'})
-    require(steps[6].get('uses') == 'actions/upload-artifact@v4' and steps[6].get('if') == 'always()'
+    require(steps[6].get('uses') == 'actions/upload-artifact@v7' and steps[6].get('if') == 'always()'
             and steps[6].get('with') == {'name':'triage-'+scope+'-'+EXECUTION,'path':'.out/ci/triage/'+scope+'.json',
                 'if-no-files-found':'error','retention-days':'30'})
     require(job.get('permissions') == {'contents':'read','actions':'read'})
@@ -74,16 +74,16 @@ def validate(workflows):
             job = build['jobs'][gate]
             require(job.get('uses') == './.github/workflows/' + filename and job.get('with') == {'release_receipt': 'true'})
             receipts = [s for child in workflows[filename]['jobs'].values() for s in child.get('steps', [])
-                        if s.get('uses') == 'actions/upload-artifact@v4'
+                        if s.get('uses') == 'actions/upload-artifact@v7'
                         and s.get('with', {}).get('path') == f'.out/checks/{gate}.json']
             require(len(receipts) == 1 and receipts[0].get('if') == 'inputs.release_receipt'
                     and receipts[0]['with']['name'] == f'check-{gate}-' + EXECUTION
                     and receipts[0]['with']['if-no-files-found'] == 'error')
         bundle = build['jobs']['bundle']
-        downloads = [s for s in bundle['steps'] if s.get('uses') == 'actions/download-artifact@v4']
+        downloads = [s for s in bundle['steps'] if s.get('uses') == 'actions/download-artifact@v8']
         collectors = [s for s in bundle['steps']
                       if s.get('run') == 'python3 -m tools.build.server.gate_receipts --collect .out/gate-artifacts .out/checks']
-        setup_python = [step for step in bundle['steps'] if step.get('uses') == 'actions/setup-python@v5']
+        setup_python = [step for step in bundle['steps'] if step.get('uses') == 'actions/setup-python@v7']
         verify_python = [step for step in bundle['steps']
                          if step.get('run') == 'python -m tools.ci.toolchains.runtime python']
         require(len(setup_python) == 1 and setup_python[0].get('with') == {
@@ -94,11 +94,10 @@ def validate(workflows):
             'group': 'trusted-server-bundle-${{ github.repository }}', 'cancel-in-progress': 'false'})
         require(bundle.get('if') == MASTER + " && needs.changes.outputs.server_release_impact == 'true'")
         require(all(not build['jobs'][name].get('concurrency') for name in ('changes', 'server-quality')))
-        uploads = [s for s in bundle['steps'] if s.get('uses') == 'actions/upload-artifact@v4']
+        uploads = [s for s in bundle['steps'] if s.get('uses') == 'actions/upload-artifact@v7']
         require([s.get('with') for s in downloads] == [
-            {'pattern': f"check-{gate}-${{{{ github.sha }}}}-${{{{ github.run_id }}}}-*",
-             'path': '.out/gate-artifacts', 'merge-multiple': 'false'}
-            for gate in ('backend', 'web', 'contracts')]
+            {'pattern': f"check-{{backend,web,contracts}}-${{{{ github.sha }}}}-${{{{ github.run_id }}}}-*",
+             'path': '.out/gate-artifacts', 'merge-multiple': 'false'}]
             and all(not s.get('if') for s in downloads))
         require(len(collectors) == 1 and collectors[0].get('env') == {
             'GATE_SOURCE_REVISION': '${{ github.sha }}', 'GATE_RUN_ID': '${{ github.run_id }}',
@@ -119,7 +118,7 @@ def validate(workflows):
         for name in ('build-server.yaml', 'ci-backend.yaml', 'ci-frontend.yaml', 'ci-contracts.yaml'):
             for job in workflows[name]['jobs'].values():
                 for step in job.get('steps', []):
-                    if step.get('uses') == 'actions/upload-artifact@v4':
+                    if step.get('uses') == 'actions/upload-artifact@v7':
                         require(all('${{ github.' + field + ' }}' in step.get('with', {}).get('name', '')
                                     for field in ('sha', 'run_id', 'run_attempt')))
     except (KeyError, TypeError, AttributeError, IndexError):

@@ -7,6 +7,14 @@
 .voice-room .screen-player { width: 100%; height: 100%; max-height: 100%; object-fit: contain; background: #050608; }
 .voice-room .screen-stage-top { inset: 16px auto auto 16px; }
 .voice-room .screen-stage-label { display: flex; height: 40px; align-items: center; gap: 10px; border-radius: 8px; padding: 6px 10px; color: var(--gc-text-primary); background: rgba(8, 10, 15, .85); font-size: 0.75rem; font-weight: 700; }
+.screen-stage-actions { position: absolute; z-index: 3; inset: auto 16px 16px auto; display: flex; max-width: calc(100% - 32px); align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; border: 1px solid rgba(255, 255, 255, .12); border-radius: 12px; padding: 6px; background: rgba(8, 10, 15, .82); backdrop-filter: blur(14px); opacity: 0; pointer-events: none; transform: translateY(14px); transition: opacity 180ms ease, transform 180ms ease; }
+.screen-stage-actions--visible, .screen-stage-actions:has(:focus-visible) { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.screen-stage-action { display: inline-flex; width: auto; min-width: 40px; height: 40px; min-height: 40px; flex: 0 1 auto; align-items: center; justify-content: center; gap: 8px; border: 1px solid rgba(255, 255, 255, .1); border-radius: 8px; padding: 0 12px; color: var(--gc-text-primary); background: rgba(31, 35, 45, .88); cursor: pointer; font: inherit; font-size: 0.8125rem; font-weight: 600; white-space: nowrap; }
+.screen-stage-action:hover, .screen-stage-action:focus-visible { border-color: var(--gc-border-control); background: var(--gc-surface-hover); }
+.screen-stage-action:focus-visible { outline: 2px solid var(--gc-accent); outline-offset: 2px; }
+.screen-stage-action svg { width: 18px; height: 18px; flex: 0 0 18px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+.screen-stage-action--stop { color: var(--gc-danger); }
+.screen-stage-action--stop:hover, .screen-stage-action--stop:focus-visible { border-color: var(--gc-danger); color: var(--gc-on-danger); background: var(--gc-danger-solid); }
 .screen-stage-avatar { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; font-size: 0.6875rem; font-weight: 600; }
 .screen-stage-label b, .stream-option-copy b { flex: none; border-radius: 6px; padding: 2px 6px; color: #FF9AD5; background: #3D1831; font-size: 0.75rem; line-height: 1rem; font-weight: 600; }
 .voice-room .stream-quality-row { display: flex; width: 100%; height: 48px; min-height: 48px; align-items: center; gap: 8px; border: 1px solid var(--gc-border-subtle); border-radius: 10px; padding: 4px 8px; background: var(--gc-sidebar); }
@@ -67,6 +75,9 @@
   .voice-room .screen-stage-top { inset: 8px auto auto 8px; }
   .voice-room .screen-stage { border-radius: 10px; }
   .voice-room .screen-stage-label { height: 28px; gap: 6px; padding: 4px 8px; font-size: 0.6875rem; }
+  .screen-stage-actions { inset: auto 8px 8px; gap: 4px; border-radius: 10px; padding: 4px; }
+  .screen-stage-action { height: 36px; min-height: 36px; gap: 5px; padding: 0 8px; font-size: 0.75rem; }
+  .screen-stage-action svg { width: 16px; height: 16px; flex-basis: 16px; }
   .voice-room .screen-stage-avatar { display: none; }
   .voice-room .stream-quality-row { height: 56px; min-height: 56px; gap: 2px; padding: 4px; }
   .voice-room .stream-quality-row .volume-control { display: none; }
@@ -85,6 +96,8 @@
   .voice-room .voice-viewer-participant-strip { gap: 8px; padding: 8px 12px 10px; }
   .voice-viewer-participant-summary { width: 130px; flex-basis: 130px; }
 }
+@media (hover: none) { .screen-stage-actions { opacity: 1; pointer-events: auto; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .screen-stage-actions { transition: none; } }
 @media (max-height: 640px) {
   .voice-room:not(.voice-room--mini) .screen-viewer.stream-wrap { overflow-y: auto; grid-template-rows: minmax(160px, 1fr) auto auto auto 92px; }
   .voice-room:not(.voice-room--mini) .screen-stage { min-height: 160px; }
@@ -99,3 +112,53 @@
   .sidebar.is-open .mobile-voice-dock .voice-actions { width: auto; flex: 0 0 auto; gap: 4px; margin: 0; }
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button { width: 40px; min-width: 40px; height: 40px; min-height: 40px; flex: 0 0 40px; margin: 0; }
 }
+
+/* Video owns the available height; auxiliary panels never resize it. */
+.voice-room .screen-viewer.screen-viewer--compact.stream-wrap { grid-template-rows: minmax(0, 1fr); gap: 0; padding: 12px; overflow: hidden; }
+.screen-viewer--compact .screen-stage { min-height: 0; }
+.screen-viewer--compact .screen-stage-actions { left: 12px; right: 12px; bottom: 12px; width: max-content; margin-left: auto; max-width: calc(100% - 24px); }
+.voice-room .screen-viewer--compact .stream-quality-row { display: contents; }
+.screen-viewer--compact .stream-toolbar-actions { display: contents; }
+.stream-diagnosis-menu-action { display: none; }
+.screen-viewer--compact .stream-more-actions .stream-voice-return { top: auto; bottom: calc(100% + 12px); }
+.screen-viewer--compact .screen-stage-label { max-width: 100%; height: auto; min-height: 32px; flex-wrap: wrap; }
+.screen-viewer--compact .screen-stage-label small { font-size: 0.6875rem; font-weight: 400; color: var(--gc-text-secondary); }
+.screen-viewer--compact .screen-stage-top { inset: 12px 12px auto; flex-wrap: wrap; align-items: flex-start; z-index: 4; }
+.screen-viewer-panels { position: relative; margin-left: auto; max-width: 100%; pointer-events: auto; }
+.screen-viewer-panel-toggles { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 6px; }
+.screen-viewer-panel-toggles button, .screen-viewer-panel-close { min-height: 36px; border: 1px solid var(--gc-border-subtle); border-radius: 8px; padding: 6px 10px; background: rgba(8, 10, 15, .85); color: var(--gc-text-primary); font: inherit; font-size: 0.75rem; cursor: pointer; }
+.screen-viewer-panel-toggles button[aria-expanded=true] { border-color: var(--gc-accent); }
+.screen-viewer-panel-content { position: absolute; top: calc(100% + 8px); right: 0; box-sizing: border-box; width: min(560px, calc(100vw - 52px)); max-height: min(320px, 50dvh); overflow: auto; border: 1px solid var(--gc-border-subtle); border-radius: 12px; padding: 12px; background: var(--gc-sidebar); box-shadow: var(--gc-shadow-popup); }
+.screen-viewer-panel-content--participants { width: fit-content; min-width: min(216px, calc(100vw - 52px)); max-width: min(560px, calc(100vw - 52px)); }
+.screen-viewer-panel-content--participants .screen-viewer-panel-close { position: absolute; top: 12px; right: 12px; margin: 0; }
+.screen-viewer-panel-close { display: block; margin-left: auto; margin-bottom: 4px; font-size: 1.25rem; line-height: 1; }
+.voice-room .screen-viewer-panel-content .voice-viewer-participant-strip { display: flex; height: auto; min-height: 0; padding: 0; flex-direction: column; align-items: stretch; border: 0; }
+.screen-viewer-panel-content .voice-viewer-participant-summary { width: auto; flex-basis: auto; }
+.screen-viewer-panel-content .voice-viewer-participant-strip ul { height: 64px; flex: 0 0 64px; }
+.screen-viewer-panel-content .screen-rail-section { min-height: 0; }
+.screen-diagnosis--compact { position: absolute; z-index: 2; inset: 64px 12px 100px; pointer-events: none; font-size: 0.8125rem; }
+.screen-diagnosis--compact > p:not(.gc-sr-only), .screen-diagnosis--compact > button { width: fit-content; max-width: 100%; margin: 0 0 6px; padding: 6px 10px; border-radius: 8px; background: rgba(8, 10, 15, .9); color: var(--gc-text-primary); pointer-events: auto; }
+.screen-diagnosis--compact > details { position: absolute; inset: 0 0 auto auto; box-sizing: border-box; width: min(420px, 100%); max-height: 100%; overflow: auto; border: 1px solid var(--gc-border-subtle); border-radius: 12px; padding: 12px; background: var(--gc-sidebar); box-shadow: var(--gc-shadow-popup); pointer-events: auto; }
+.screen-diagnosis--compact input { max-width: 100%; }
+.screen-viewer--compact .screen-stage > .state-error { position: absolute; top: 56px; z-index: 2; background: var(--gc-sidebar); padding: 8px; }
+@media (max-width: 720px) {
+  .screen-viewer--compact .screen-stage-top { top: 8px; left: 8px; right: 8px; }
+  .screen-viewer--compact .screen-stage-top { inset: 8px 8px auto; flex-direction: column; }
+  .screen-viewer-panels { margin-left: 0; width: 100%; max-width: 100%; }
+  .screen-viewer-panel-toggles { justify-content: flex-start; }
+  .screen-viewer-panel-toggles button { min-height: 44px; }
+  .screen-viewer-panel-toggles button span { display: none; }
+  .screen-viewer-panel-content { width: 100%; }
+  .screen-viewer-panel-content--participants { width: fit-content; min-width: min(216px, calc(100vw - 24px)); max-width: min(320px, calc(100vw - 24px)); }
+  .screen-viewer--compact .screen-stage-actions { left: 8px; right: 8px; bottom: 8px; max-width: calc(100% - 16px); justify-content: flex-start; }
+  .screen-viewer--compact .screen-stage-action { min-height: 44px; }
+  .screen-viewer--compact .screen-stage-actions { gap: 2px; }
+  .screen-viewer--compact .screen-stage-action { width: 44px; min-width: 44px; padding: 0; }
+  .screen-viewer--compact .screen-stage-action > span, .screen-viewer--compact .screen-diagnosis-toggle { display: none; }
+  .screen-viewer--compact .stream-diagnostics > summary { width: 44px; height: 44px; min-height: 44px; border: 0; padding: 0; }
+  .stream-diagnosis-menu-action { display: block; }
+  .screen-diagnosis--compact { top: 112px; bottom: 140px; }
+}
+
+@media (max-width: 360px) { .screen-viewer--compact .screen-stage-actions { gap: 0; } }
+@media (max-height: 220px) { .screen-viewer--compact .screen-stage > .screen-loading-state { transform: translateY(12px); } }

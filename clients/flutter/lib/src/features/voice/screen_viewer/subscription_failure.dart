@@ -3,7 +3,6 @@ import 'package:livekit_client/livekit_client.dart'
 
 import '../lifecycle/controller.dart';
 import 'publication_generation.dart';
-import 'subscription_recovery.dart';
 
 bool matchesRemoteScreenViewerSubscriptionFailure(
   ScreenViewerPublicationGeneration generation,

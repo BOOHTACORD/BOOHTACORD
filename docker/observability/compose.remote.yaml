@@ -1,0 +1,13 @@
+# Remote monitor: Collector/Tempo/Prometheus are on a different Docker host
+# from the API and LiveKit. Compose >=2.24.4 is required for !override.
+# Keep base image pins, loopback ports, data volumes and retention unchanged.
+services:
+  prometheus:
+    networks: !override [default]
+    volumes: !override
+      - ./prometheus.remote.yaml:/etc/prometheus/prometheus.yaml:ro
+      - prometheus-data:/prometheus
+
+# Do not require the application's host-local external SFU metrics network.
+networks: !override
+  default: {}

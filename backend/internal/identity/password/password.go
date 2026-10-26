@@ -1,6 +1,7 @@
 package password
 
 import (
+	"context"
 	"crypto/rand"
 	"crypto/subtle"
 	"encoding/base64"
@@ -21,25 +22,39 @@ const (
 )
 
 var ErrInvalidHash = errors.New("invalid password hash")
-var dummyHash string
-var argonSlots = make(chan struct{}, 4)
 
-func init() {
-	salt := []byte("boohtacord-login-dummy-salt")
-	key := argon2.IDKey([]byte("unmatchable-dummy-password"), salt, iterations, memoryKiB, parallelism, keyLength)
-	dummyHash = fmt.Sprintf("$argon2id$v=19$m=%d,t=%d,p=%d$%s$%s", memoryKiB, iterations, parallelism,
-		base64.RawStdEncoding.EncodeToString(salt), base64.RawStdEncoding.EncodeToString(key))
+// The private seam allows tests to count real KDF executions across the login
+// service. Production always uses the supported Go Argon2id implementation.
+var deriveKey = argon2.IDKey
+var dummyHash = initializeDummyHash(Hash)
+
+func initializeDummyHash(generate func(context.Context, string) (string, error)) string {
+	encoded, err := generate(context.Background(), "unmatchable-dummy-password")
+	if err == nil {
+		_, _, err = decode(encoded)
+	}
+	if err != nil {
+		// Stop before serving authentication with an invalid dummy. Do not put
+		// the underlying cause, salt or hash into the startup diagnostic.
+		panic("password dummy initialization failed")
+	}
+	return encoded
 }
 
-func Hash(plainText string) (string, error) {
-	argonSlots <- struct{}{}
-	defer func() { <-argonSlots }()
+func Hash(ctx context.Context, plainText string) (string, error) {
+	if err := ctx.Err(); err != nil {
+		kdfAdmission.cancelled.Inc()
+		return "", err
+	}
 	salt := make([]byte, saltLength)
 	if _, err := io.ReadFull(rand.Reader, salt); err != nil {
 		return "", fmt.Errorf("generate password salt: %w", err)
 	}
 
-	derivedKey := argon2.IDKey([]byte(plainText), salt, iterations, memoryKiB, parallelism, keyLength)
+	derivedKey, err := derive(ctx, plainText, salt)
+	if err != nil {
+		return "", err
+	}
 	return fmt.Sprintf(
 		"$argon2id$v=19$m=%d,t=%d,p=%d$%s$%s",
 		memoryKiB,
@@ -50,22 +65,29 @@ func Hash(plainText string) (string, error) {
 	), nil
 }
 
-func Verify(plainText, encoded string) (bool, error) {
-	argonSlots <- struct{}{}
-	defer func() { <-argonSlots }()
+func Verify(ctx context.Context, plainText, encoded string) (bool, error) {
+	if err := ctx.Err(); err != nil {
+		kdfAdmission.cancelled.Inc()
+		return false, err
+	}
 	salt, storedKey, err := decode(encoded)
 	if err != nil {
 		return false, err
 	}
 
-	candidate := argon2.IDKey([]byte(plainText), salt, iterations, memoryKiB, parallelism, keyLength)
+	candidate, err := derive(ctx, plainText, salt)
+	if err != nil {
+		return false, err
+	}
 	return subtle.ConstantTimeCompare(candidate, storedKey) == 1, nil
 }
 
 // VerifyUnknown performs the same Argon2id work as a normal verification for
-// an account that does not exist. The result is intentionally discarded.
-func VerifyUnknown(plainText string) {
-	_, _ = Verify(plainText, dummyHash)
+// an account that does not exist. A match can never authorize an account; only
+// errors propagate so a broken dummy cannot silently disable the check.
+func VerifyUnknown(ctx context.Context, plainText string) error {
+	_, err := Verify(ctx, plainText, dummyHash)
+	return err
 }
 
 func decode(encoded string) ([]byte, []byte, error) {

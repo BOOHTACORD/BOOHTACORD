@@ -1,0 +1,50 @@
+groups:
+  - name: addressed-notifications-v1
+    rules:
+      - alert: NotificationObservationMissing
+        expr: absent(boohtacord_notification_observer_up) or boohtacord_notification_observer_up == 0
+        for: 2m
+        labels: {severity: warning}
+        annotations: {summary: "Notification observation absent; delivery state is unknown"}
+      - alert: NotificationWorkerStopped
+        expr: (time() - boohtacord_notification_worker_tick_timestamp_seconds > 60) and on(instance) (boohtacord_notification_sending_enabled == 1)
+        for: 1m
+        labels: {severity: warning}
+        annotations: {summary: "Notification worker has not completed a bounded iteration"}
+      - alert: NotificationBacklogLate
+        expr: (boohtacord_notification_oldest_due_seconds > 120) and on(instance) (boohtacord_notification_sending_enabled == 1)
+        for: 2m
+        labels: {severity: warning}
+        annotations: {summary: "Notification work is late after intentional grace/attention"}
+      - alert: NotificationProviderErrors
+        expr: |
+          (sum by(instance)(increase(boohtacord_notification_results_total{stage=~"retry|permanent_failure|ambiguous",reason=~"provider_error|configuration_error|transport_unknown"}[5m]))
+          / sum by(instance)(increase(boohtacord_notification_results_total{stage="attempt"}[5m])) > 0.2)
+          and on(instance) (sum by(instance)(increase(boohtacord_notification_results_total{stage="attempt"}[5m])) >= 20)
+        for: 2m
+        labels: {severity: warning}
+        annotations: {summary: "Provider/credential failures exceed initial threshold at sufficient volume"}
+      - alert: NotificationInvalidRoutes
+        expr: |
+          (sum by(instance)(increase(boohtacord_notification_results_total{stage="invalid_binding"}[5m])) >= 5)
+          and on(instance) (sum by(instance)(increase(boohtacord_notification_results_total{stage="attempt"}[5m])) >= 20)
+        for: 2m
+        labels: {severity: warning}
+        annotations: {summary: "Invalid notification routes increased; inspect namespace and registration"}
+      - alert: NotificationQueueAdmissionDropped
+        expr: |
+          (sum by(instance)(increase(boohtacord_notification_results_total{stage="queue_drop"}[5m])) >= 5)
+          and on(instance) (sum by(instance)(increase(boohtacord_notification_results_total{stage="intent_created"}[5m])) >= 20)
+        for: 2m
+        labels: {severity: warning}
+        annotations: {summary: "Finite notification queue or quota is applying backpressure"}
+      - alert: NotificationRelayObservationMissing
+        expr: up{job="boohtacord-push-relay"} == 0 or boohtacord_push_relay_observer_up == 0
+        for: 2m
+        labels: {severity: warning}
+        annotations: {summary: "Configured publisher relay has no trustworthy observation"}
+      - alert: NotificationRelayBacklogLate
+        expr: (boohtacord_push_relay_queue_oldest_seconds > 120) and on(namespace,instance) (boohtacord_push_relay_sending_enabled == 1)
+        for: 2m
+        labels: {severity: warning}
+        annotations: {summary: "Publisher relay backlog is ageing"}

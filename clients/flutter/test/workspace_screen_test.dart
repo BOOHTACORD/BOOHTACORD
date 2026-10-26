@@ -2841,18 +2841,22 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Голос подключён'), findsOneWidget);
+    final dock = find.byKey(const ValueKey('voice-dock'));
+    final connectedLabel = find.descendant(
+      of: dock,
+      matching: find.text('Голос подключён'),
+    );
+    expect(connectedLabel, findsOneWidget);
     expect(find.text('Подключено'), findsNothing);
     expect(find.byIcon(Icons.headphones_outlined), findsOneWidget);
     expect(
-      tester.widget<Text>(find.text('Голос подключён')).style?.fontWeight,
+      tester.widget<Text>(connectedLabel).style?.fontWeight,
       FontWeight.w500,
     );
     expect(
       find.text('${state.voiceChannel!.name} · 1 участник'),
       findsOneWidget,
     );
-    final dock = find.byKey(const ValueKey('voice-dock'));
     expect(
       find.descendant(
         of: dock,
@@ -5727,10 +5731,12 @@ void main() {
             (call) async {
               if (call.method == 'create' ||
                   call.method == 'dispose' ||
-                  call.method == 'stop')
+                  call.method == 'stop') {
                 return null;
-              if (call.method == 'isRecording' || call.method == 'isPaused')
+              }
+              if (call.method == 'isRecording' || call.method == 'isPaused') {
                 return false;
+              }
               throw UnsupportedError(
                 'Unexpected recorder call in presentation matrix',
               );
@@ -5880,7 +5886,7 @@ void main() {
       );
     }
   }
-  testWidgets('pinned production workspace survives TEXT DM short IME and end', (
+  testWidgets('selected stream survives TEXT DM settings and end without pinning', (
     t,
   ) async {
     const rtcEvents = MethodChannel('FlutterWebRTC.Event');
@@ -5943,8 +5949,9 @@ void main() {
     );
     await t.pumpAndSettle();
     (t.state(find.byType(WorkspaceScreen)) as dynamic)
-        .workspaceToggleVoiceScreenPin('remote');
+        .workspaceSelectVoiceScreen('remote');
     await t.pump();
+    expect(find.byTooltip('Закрепить демонстрацию'), findsNothing);
     await state.selectChannel(_PortraitApi.channel);
     await t.pump(const Duration(milliseconds: 200));
     expect(find.byTooltip('Приостановить видео'), findsOneWidget);
@@ -5980,7 +5987,7 @@ void main() {
       }
     }
     t.view.viewInsets = const FakeViewPadding();
-    t.view.physicalSize = const Size(390, 844);
+    t.view.physicalSize = const Size(393, 852);
     await state.openDirectConversation(
       const DirectConversation(
         id: 'dm-1',
@@ -5991,6 +5998,12 @@ void main() {
     );
     await t.pump();
     expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+    await captureUiuxBoundary(
+      t,
+      find.byKey(root),
+      fileName: 'flutter-screen-viewer-mini-player-mobile-393x852.png',
+      pixelRatio: 1,
+    );
     state.toggleWorkspacePanel(WorkspacePanel.profile);
     await t.pump();
     expect(find.byTooltip('Приостановить видео'), findsOneWidget);
@@ -6003,7 +6016,8 @@ void main() {
     room.members.clear();
     state.notifyListeners();
     await t.pump();
-    expect(find.byTooltip('Приостановить видео'), findsNothing);
+    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+    expect(find.text('Демонстрация завершена'), findsOneWidget);
     await t.pumpWidget(const SizedBox.shrink());
     state.dispose();
     await t.runAsync(room.dispose);

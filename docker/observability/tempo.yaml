@@ -1,6 +1,11 @@
 server:
   http_listen_port: 3200
 
+query_frontend:
+  # Optional legacy fields require explicit spanset branches on Tempo 2.10.3.
+  # Keep the expanded, scoped expressions bounded instead of truncating at 2 KiB.
+  max_query_expression_size_bytes: 8192
+
 distributor:
   receivers:
     otlp:

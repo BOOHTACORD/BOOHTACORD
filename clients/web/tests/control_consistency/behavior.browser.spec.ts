@@ -31,7 +31,7 @@ test('native guild select, save pending/disabled and failure preserve the form',
   expect(payload).toEqual({ name: 'Гильдия после правки', welcome_channel_id: id, expected_revision: 1 })
   release(); await expect(page.locator('.guild-settings').getByRole('status')).toContainText('сохранены')
   fail = true; await name.fill('Несохранённая правка'); await save.click()
-  await expect(page.getByRole('alert')).toContainText('503')
+  await expect(page.locator('.guild-settings').getByRole('alert')).toContainText('503')
   await expect(name).toHaveValue('Несохранённая правка')
   await expect(select).toHaveValue(id)
 })
