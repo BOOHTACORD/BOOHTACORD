@@ -146,7 +146,7 @@ controller limits remain explicit. No full QA gate is closed.
 
 [Two actual rotation runs](android-orientation/summary.json) preserved the owned
 draft and voice membership, but landscape with Gboard failed visual acceptance:
-the voice Leave control covers Send, with123×81px overlap. Android Back exposes
+the voice Leave control covers Send, with123×81px overlap; filed as[#582](https://github.com/Egkurilov/BOOHTACORD/issues/582). Android Back exposes
 Send again. Original rotation settings, empty draft, permission and voice were
 restored after each run. Published source-sized control crops mask the draft.
 No tap in the overlapping region or accidental-disconnect claim is made.

@@ -36,5 +36,14 @@
     "Original empty text/settings/voice restored; exact focus/selection restoration was not asserted.",
     "Current master APK was not installed/retested; source-specific candidate observation only."
   ],
-  "goal_status": "IN_PROGRESS; mandatory gates and43 consolidation decisions remain open"
+  "goal_status": "IN_PROGRESS; mandatory gates and43 consolidation decisions remain open",
+  "defect_issue": {
+    "number": 582,
+    "title": "[BUG][Android] Landscape + Gboard: voice dock перекрывает кнопку отправки DM",
+    "state": "open",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/issues/582",
+    "evidence_commit": "3b19a5c7e391b0bfea28c4ebdd2631ba015f8535",
+    "observed_candidate_source": "9c221897fdefec8098f707d61ca5b6e8b28bb0bd",
+    "scope": "Two repeated physical visual/control-bounds failures. No hit-test or accidental-leave outcome claimed."
+  }
 }
