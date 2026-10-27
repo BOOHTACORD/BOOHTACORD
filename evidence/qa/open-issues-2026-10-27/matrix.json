@@ -10962,7 +10962,10 @@
               "ANDROID-search-scope-48dp-touch-target"
             ]
           },
-          "reason": "Physical active search scope target32dp;4 inside/center activations and4 immediate outside misses. Required48dp check FAIL/exit1. Other existing failures and remaining platform/AT/inventory requirements retained."
+          "reason": "Physical active search scope target32dp;4 inside/center activations and4 immediate outside misses. Required48dp check FAIL/exit1. Other existing failures and remaining platform/AT/inventory requirements retained.",
+          "defects": [
+            586
+          ]
         },
         {
           "section": "Подзадачи",
@@ -11250,7 +11253,8 @@
       ],
       "defects": [
         580,
-        585
+        585,
+        586
       ],
       "blockers": [
         "Windows native admin input: supported Computer Use helper sees account Settings but twice rejects element33780 as unavailable in cached app state; reobserve/activate did not recover. Actual admin traversal NOT_RUN."
@@ -11788,7 +11792,8 @@
           "reason": "Physical active search scope target32dp;4 inside/center activations and4 immediate outside misses. Required48dp check FAIL/exit1. Other existing failures and remaining platform/AT/inventory requirements retained.",
           "defects": [
             582,
-            585
+            585,
+            586
           ]
         },
         {
@@ -12095,7 +12100,8 @@
         580,
         581,
         582,
-        585
+        585,
+        586
       ],
       "blockers": [
         "Windows native admin input: supported Computer Use helper sees account Settings but twice rejects element33780 as unavailable in cached app state; reobserve/activate did not recover. Actual admin traversal NOT_RUN."
@@ -16064,7 +16070,8 @@
     581,
     582,
     584,
-    585
+    585,
+    586
   ],
   "criterion_witness_note": "Exact row links are scoped. PARTIAL/FAIL/BLOCKED never satisfy the complete multi-platform requirement; unlinked PENDING rows still need routing/execution.",
   "acceptance_method_catalog": "acceptance-methods.json",

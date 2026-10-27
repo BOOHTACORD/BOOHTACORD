@@ -67,3 +67,5 @@ server/TLS/router changes или Windows UI. Полный hit map, все ост
 font1.3/2.0, TalkBack, другие платформы и акустика не приняты. Исторические scoped
 44dp passes не переписаны. Product/tests не менялись, hosted CI NOT_RUN,
 43 решения консолидации не затронуты; полные QA-gates открыты.
+
+Physical Android search target defect: [#586](https://github.com/Egkurilov/BOOHTACORD/issues/586). Exact bug/QA readbacks: `github-updates.json`.

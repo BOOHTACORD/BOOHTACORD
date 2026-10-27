@@ -243,3 +243,5 @@ scope; observed popup Back and final native DM/font/voice cleanup pass. Redacted
 source-sized control strip reviewed. I301.C6 now FAIL; historical44dp witnesses and
 other existing failures stay intact. Whole target inventory/other platforms/AT
 remain unaccepted. All480 original requirements retained; no product/test edits.
+
+Physical Android search target defect: [#586](https://github.com/Egkurilov/BOOHTACORD/issues/586). Exact bug/QA readbacks: `native-search-touch-targets/github-updates.json`.
