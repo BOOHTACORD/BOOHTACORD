@@ -97,13 +97,29 @@
           "requirement": "На trusted candidate проверить browser notification при granted/denied permission, generic preview без тела DM, dedup и logout/account switch; повторить приватность create/edit/delete hints, unread, download/preview после удаления/блокировки для двух участников и стороннего admin. Серверная [PostgreSQL ACL-матрица](../evidence/qa/qa03-dm-read-matrix-2026-09-25-001.json) и [локальный третий socket](../evidence/qa/qa03-third-browser-private-hints-2026-09-25-001.json) уже подтверждены, но OS notification и полный trusted browser сценарий ещё открыты.",
           "source_checkbox": null,
           "id": "I53.C1",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "DM-two_participants_and_third_member_acl",
+            "DM-actual_image_upload_and_protected_download",
+            "NOTIFY-deployment-readiness-consent",
+            "WEB-session-revocation-draft-isolation"
+          ],
+          "evidence": [
+            "privacy-result.json#/checks/two_participants_and_third_member_acl",
+            "privacy-result.json#/checks/actual_image_upload_and_protected_download",
+            "notification-readiness/summary.json",
+            "web-session-contract/logout.json"
+          ],
+          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs; node .out/qa-goal/web_logout_run.mjs",
+          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "privacy-result.json#/checks/two_participants_and_third_member_acl; privacy-result.json#/checks/actual_image_upload_and_protected_download; notification-readiness/summary.json; web-session-contract/logout.json",
+          "witness_limits": [
+            "DM-two_participants_and_third_member_acl: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
+            "DM-actual_image_upload_and_protected_download: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
+            "NOTIFY-deployment-readiness-consent: Provider delivery and real OS alert/tap BLOCKED: operator disabled, no Web Push/VAPID readiness. No global configuration changed.",
+            "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance"
+          ]
         },
         {
           "section": "Готово, когда",
@@ -152,11 +168,13 @@
         "DM-actual_send_receive_and_peer_display",
         "DM-actual_message_actions",
         "DM-actual_image_upload_and_protected_download",
-        "NOTIFY-deployment-readiness-consent"
+        "NOTIFY-deployment-readiness-consent",
+        "WEB-session-revocation-draft-isolation"
       ],
       "evidence": [
         "privacy-result.json",
-        "notification-readiness/summary.json"
+        "notification-readiness/summary.json",
+        "web-session-contract/logout.json"
       ],
       "defects": [],
       "blockers": [],
@@ -175,13 +193,32 @@
           "requirement": "На trusted candidate с двумя пользователями пройти auth/reset, TEXT/DM, search, admin, focus/screen reader, нативный OS file chooser, voice navigation/reconnect, zoom 125/150% и сохранённое screenshot comparison. Дополнительно после BE-19/20 и FE-53…55 проверить просмотр PNG/JPEG/GIF внутри TEXT/DM без download, отдельное скачивание, вставку изображения из clipboard с текстом и без него, лимиты/retry, keyboard/mobile и отказ третьему участнику DM. **Актуальная находка (30.09.2026):** в авторизованном production web prejoin `SHARE_TEST` сначала показал «состав недоступен»/повторяющуюся ошибку, а последующее автоматическое обновление восстановилось до состояния пустой комнаты; пользователь ранее приложил такой же экран Flutter, но live retry на Flutter не проверен. Сопоставить ошибку с серверными/LiveKit логами и проверить восстановление и populated roster на обоих клиентах до подключения микрофона — [QA-148](../evidence/flutter/qa148-production-prejoin-roster-recovery-2026-09-30-001.json). Причина пока не установлена; недоступный snapshot нельзя трактовать как пустую комнату. Изолированный [507→201](../evidence/qa/qa05-browser-real-507-wire-retry-2026-09-26-001.json) не заменяет этот полный прогон.",
           "source_checkbox": null,
           "id": "I54.C1",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "DM-actual_send_receive_and_peer_display",
+            "DM-actual_message_actions",
+            "DM-actual_image_upload_and_protected_download",
+            "ROSTER-populated-prejoin",
+            "WEB-session-revocation-draft-isolation"
+          ],
+          "evidence": [
+            "privacy-result.json#/checks/actual_send_receive_and_peer_display",
+            "privacy-result.json#/checks/actual_message_actions",
+            "privacy-result.json#/checks/actual_image_upload_and_protected_download",
+            "web-result.json#/cases/0",
+            "web-session-contract/logout.json"
+          ],
+          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/web_runtime.mjs; control action prejoin; node .out/qa-goal/web_logout_run.mjs",
+          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Physical Windows PC, headed Chrome and actual Android/Windows participants; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "privacy-result.json#/checks/actual_send_receive_and_peer_display; privacy-result.json#/checks/actual_message_actions; privacy-result.json#/checks/actual_image_upload_and_protected_download; web-result.json#/cases/0; web-session-contract/logout.json",
+          "witness_limits": [
+            "DM-actual_send_receive_and_peer_display: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
+            "DM-actual_message_actions: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
+            "DM-actual_image_upload_and_protected_download: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
+            "ROSTER-populated-prejoin: Two real prejoin rows, REST200, no fake empty state; outages/ACL/native platform matrix remain open.",
+            "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance"
+          ]
         },
         {
           "section": "Готово, когда",
@@ -233,14 +270,18 @@
         "ROSTER-populated-prejoin",
         "ANDROID-DM-receive",
         "ANDROID-DM-input-actions",
-        "NOTIFY-deployment-readiness-consent"
+        "NOTIFY-deployment-readiness-consent",
+        "WEB-session-revocation-draft-isolation",
+        "WEB-current-public-Swagger-viewer"
       ],
       "evidence": [
         "native-realtime-result.json",
         "privacy-result.json",
         "web-result.json",
         "native-chat/summary.json",
-        "notification-readiness/summary.json"
+        "notification-readiness/summary.json",
+        "web-session-contract/logout.json",
+        "web-session-contract/swagger.json"
       ],
       "defects": [],
       "blockers": [],
@@ -259,13 +300,18 @@
           "requirement": "По [операторскому сценарию](../docs/runbooks/game-capture.md) на физических Windows и Apple Silicon macOS presenters с отдельными observers проверить игру, её звук, разговор без петли, 0/175/200% отдельного голоса, mute/share-audio и замену трека. Сохранить версии, устройства, слышимость и два полных evidence record.",
           "source_checkbox": null,
           "id": "I55.C1",
-          "status": "PENDING",
-          "execution_cases": [],
+          "status": "NOT_RUN",
+          "execution_cases": [
+            "AUDIO-audibility"
+          ],
           "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "execution": "Physical listening at PC and phone",
+          "platform": "Physical Windows + Samsung",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": null,
+          "witness_limits": [
+            "AUDIO-audibility: User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening."
+          ]
         },
         {
           "section": "Готово, когда",
@@ -535,13 +581,34 @@
           "requirement": "Закрыть [открытые Flutter parity leaves](../docs/flutter-web-parity-todo.md) на macOS/Windows/Android; отдельно сохранить upload key/credentials вне host, установить/обновить два release APK на физическом Android и пройти auth/Origin/secure-cookie, permissions, reconnect, voice/viewer. На двух аккаунтах с одного IP проверить, что активная аренда аккаунта A не вызывает `ACTIVE_VOICE_LEASE` и автоперенос у аккаунта B; при конфликте сверить серверный `AccountID` авторизованной сессии с владельцем аренды и зафиксировать результат без cookies, токенов и персональных данных. Подписанный arm64 APK 1.0.15+20 установлен на Pixel 7 без очистки данных, но это пока одна установка, а post-fix screen-thumbnail/device acceptance и полный QA-13 остаются открыты — [QA-13 signing](../evidence/android/qa13-release-signing-2026-09-26-002.json), [QA-159](../evidence/flutter/qa159-android-screen-thumbnail-buffer-2026-09-30-001.json). Проверку аудиоустройств по T-061 отслеживать отдельным leaf, без повторного зачёта в QA-13.",
           "source_checkbox": null,
           "id": "I62.C1",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-DM-receive",
+            "ANDROID-DM-input-actions",
+            "ANDROID-OS-microphone-denial",
+            "ANDROID-populated-prejoin-no-permission",
+            "ANDROID-real-filechooser-cancel",
+            "AUDIO-audibility"
+          ],
+          "evidence": [
+            "native-realtime-result.json",
+            "native-chat/summary.json",
+            "voice-permission/summary.json",
+            "native-prejoin/summary.json",
+            "web-session-contract/android-filechooser.json"
+          ],
+          "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone",
+          "platform": "Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Physical Windows + Samsung",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "native-realtime-result.json; native-chat/summary.json; voice-permission/summary.json; native-prejoin/summary.json; web-session-contract/android-filechooser.json",
+          "witness_limits": [
+            "ANDROID-DM-receive: One observed upper bound 2450ms includes ADB UI polling; not p95 or proof of the underlying transport. Owned message deleted204.",
+            "ANDROID-DM-input-actions: Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim",
+            "ANDROID-OS-microphone-denial: Original attempt restoration was incomplete; retained raw, followed by verified explicit restoration. No audibility or all-device acceptance.",
+            "ANDROID-populated-prejoin-no-permission: No injected503/recovery, all ACL roles, other native platforms, capacity or audibility. Original state restored.",
+            "ANDROID-real-filechooser-cancel: No file was selected or uploaded, no personal file listings/captures retained; not browser file chooser or image-viewer acceptance",
+            "AUDIO-audibility: User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening."
+          ]
         },
         {
           "section": "Готово, когда",
@@ -588,13 +655,15 @@
         "AUDIO-audibility",
         "ANDROID-DM-input-actions",
         "ANDROID-OS-microphone-denial",
-        "ANDROID-populated-prejoin-no-permission"
+        "ANDROID-populated-prejoin-no-permission",
+        "ANDROID-real-filechooser-cancel"
       ],
       "evidence": [
         "native-realtime-result.json",
         "native-chat/summary.json",
         "voice-permission/summary.json",
-        "native-prejoin/summary.json"
+        "native-prejoin/summary.json",
+        "web-session-contract/android-filechooser.json"
       ],
       "defects": [],
       "blockers": [],
@@ -738,13 +807,20 @@
           "requirement": "[#44 — просмотр изображений](https://github.com/Egkurilov/BOOHTACORD/issues/44): в настоящем браузере TEXT и DM проверить Escape, возврат фокуса, narrow viewport, удалённое/недоступное вложение, protected preview/download и ACL обоих участников.",
           "source_checkbox": " ",
           "id": "I131.C5",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "DM-actual_image_upload_and_protected_download"
+          ],
+          "evidence": [
+            "privacy-result.json#/checks/actual_image_upload_and_protected_download"
+          ],
+          "execution": "node .out/qa-goal/privacy_run.mjs",
+          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "privacy-result.json#/checks/actual_image_upload_and_protected_download",
+          "witness_limits": [
+            "DM-actual_image_upload_and_protected_download: No third ADMIN, native touch/IME, OS notification or 507/outage claim"
+          ]
         },
         {
           "section": "Проверки",
@@ -803,26 +879,41 @@
           "requirement": "[#52 — звук выбранной демонстрации](https://github.com/Egkurilov/BOOHTACORD/issues/52): независимый слушатель подтвердит слышимый эффект mute и gain (0/50/100%), включая позднее появление/смену audio track; playback должен использовать одну подписку, а исходная публикация не должна останавливаться.",
           "source_checkbox": " ",
           "id": "I131.C10",
-          "status": "PENDING",
-          "execution_cases": [],
+          "status": "NOT_RUN",
+          "execution_cases": [
+            "AUDIO-audibility"
+          ],
           "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "execution": "Physical listening at PC and phone",
+          "platform": "Physical Windows + Samsung",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": null,
+          "witness_limits": [
+            "AUDIO-audibility: User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening."
+          ]
         },
         {
           "section": "Проверки",
           "requirement": "[#69 — drafts](https://github.com/Egkurilov/BOOHTACORD/issues/69): в двух настоящих вкладках проверить TEXT/DM A→B→A, generation guard для позднего ответа, pending upload и 507/retry; успешная отправка очищает отправленную версию, logout/account switch очищает drafts, перезапуск браузера их не восстанавливает.",
           "source_checkbox": " ",
           "id": "I131.C11",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "DM-draft_navigation_and_reload",
+            "WEB-session-revocation-draft-isolation"
+          ],
+          "evidence": [
+            "privacy-result.json#/checks/draft_navigation_and_reload",
+            "web-session-contract/logout.json"
+          ],
+          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/web_logout_run.mjs",
+          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "privacy-result.json#/checks/draft_navigation_and_reload; web-session-contract/logout.json",
+          "witness_limits": [
+            "DM-draft_navigation_and_reload: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
+            "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance"
+          ]
         },
         {
           "section": "Проверки",
@@ -862,14 +953,16 @@
         "AUDIO-audibility",
         "ANDROID-DM-input-actions",
         "ANDROID-OS-microphone-denial",
-        "ANDROID-populated-prejoin-no-permission"
+        "ANDROID-populated-prejoin-no-permission",
+        "WEB-session-revocation-draft-isolation"
       ],
       "evidence": [
         "native-realtime-result.json",
         "privacy-result.json",
         "native-chat/summary.json",
         "voice-permission/summary.json",
-        "native-prejoin/summary.json"
+        "native-prejoin/summary.json",
+        "web-session-contract/logout.json"
       ],
       "defects": [],
       "blockers": [],
@@ -927,26 +1020,50 @@
           "requirement": "[#49 — Публикация голоса и экрана в фоне](https://github.com/Egkurilov/BOOHTACORD/issues/49): с парным получателем проверить muted и microphone-enabled режимы отдельно; подтвердить сохранение room membership и публикаций, receiver playback/counters в фоне, возврат в foreground и корректную очистку после остановки.",
           "source_checkbox": " ",
           "id": "I132.C4",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-muted-background",
+            "ANDROID-stop-with-mic",
+            "AUDIO-audibility"
+          ],
+          "evidence": [
+            "muted-background-resume.json; muted-stop.json; restored-microphone.json",
+            "second-cycle-stop.json"
+          ],
+          "execution": "python .out/qa-goal/android_controls.py resume; python .out/qa-goal/android_controls.py stop; python .out/qa-goal/android_controls.py stop; Physical listening at PC and phone",
+          "platform": "Physical Samsung Android16, app-only projection; Physical Samsung Android16; Physical Windows + Samsung",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "muted-background-resume.json; muted-stop.json; restored-microphone.json; second-cycle-stop.json",
+          "witness_limits": [
+            "ANDROID-muted-background: Controls/service ownership only; no audibility or frame-rate SLO claim. Original microphone state restored.",
+            "ANDROID-stop-with-mic: Scope: foreground service and MediaProjection ownership; full viewer renderer cleanup not proven.",
+            "AUDIO-audibility: User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening."
+          ]
         },
         {
           "section": "Приёмка",
           "requirement": "[#51 — Микрофон в фоне](https://github.com/Egkurilov/BOOHTACORD/issues/51): после попадания Android FGS исправления в проверяемую сборку проверить Android 14+, разрешения и запуск сервиса при видимой Activity; проверить mute/unmute и слышимость на peer в фоне, смену FGS типов mic-only/screen-only/both, а также отказ в разрешении.",
           "source_checkbox": " ",
           "id": "I132.C5",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-muted-background",
+            "ANDROID-OS-microphone-denial",
+            "AUDIO-audibility"
+          ],
+          "evidence": [
+            "muted-background-resume.json; muted-stop.json; restored-microphone.json",
+            "voice-permission/summary.json"
+          ],
+          "execution": "python .out/qa-goal/android_controls.py resume; python .out/qa-goal/android_controls.py stop; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; Physical listening at PC and phone",
+          "platform": "Physical Samsung Android16, app-only projection; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Windows + Samsung",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "muted-background-resume.json; muted-stop.json; restored-microphone.json; voice-permission/summary.json",
+          "witness_limits": [
+            "ANDROID-muted-background: Controls/service ownership only; no audibility or frame-rate SLO claim. Original microphone state restored.",
+            "ANDROID-OS-microphone-denial: Original attempt restoration was incomplete; retained raw, followed by verified explicit restoration. No audibility or all-device acceptance.",
+            "AUDIO-audibility: User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening."
+          ]
         },
         {
           "section": "Приёмка",
@@ -2532,10 +2649,14 @@
         }
       ],
       "execution_cases": [
-        "NOTIFY-deployment-readiness-consent"
+        "NOTIFY-deployment-readiness-consent",
+        "WEB-session-revocation-draft-isolation",
+        "WEB-current-public-Swagger-viewer"
       ],
       "evidence": [
-        "notification-readiness/summary.json"
+        "notification-readiness/summary.json",
+        "web-session-contract/logout.json",
+        "web-session-contract/swagger.json"
       ],
       "defects": [],
       "blockers": [],
@@ -2547,46 +2668,73 @@
       "title": "[QA] Acceptance for OpenAPI, observability, media QoE, chat history, accessibility, social preview and on-call map",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/241",
       "packet": "cross_domain_runtime",
-      "status": "PENDING",
+      "status": "PARTIAL",
       "criteria": [
         {
           "section": "4 — OpenAPI / Swagger",
           "requirement": "Открыть Swagger viewer в поддерживаемом браузере и проверить загруженную спецификацию, security indicators и отсутствие 3 private operational routes.",
           "source_checkbox": null,
           "id": "I241.C1",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PASS",
+          "execution_cases": [
+            "WEB-current-public-Swagger-viewer"
+          ],
+          "evidence": [
+            "web-session-contract/swagger.json"
+          ],
+          "execution": "node .out/qa-goal/swagger_viewer_run.mjs",
+          "platform": "Windows headed Chrome155; project loopback Swagger5.31.0; separate real production HTTPS anonymous requests",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "web-session-contract/swagger.json",
+          "witness_limits": [
+            "WEB-current-public-Swagger-viewer: API source UNKNOWN; no trusted QA deployment fault, OpenAPI lint/complete parity rerun, dashboards or browser screen reader"
+          ]
         },
         {
           "section": "4 — OpenAPI / Swagger",
           "requirement": "На QA deployment проверить anonymous login/logout, отказ защищённого запроса без session cookie и отказ mutation с неверным Origin.",
           "source_checkbox": null,
           "id": "I241.C2",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "WEB-current-public-Swagger-viewer",
+            "WEB-session-revocation-draft-isolation",
+            "NOTIFY-deployment-readiness-consent"
+          ],
+          "evidence": [
+            "web-session-contract/swagger.json",
+            "web-session-contract/logout.json",
+            "notification-readiness/summary.json"
+          ],
+          "execution": "node .out/qa-goal/swagger_viewer_run.mjs; node .out/qa-goal/web_logout_run.mjs; node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs",
+          "platform": "Windows headed Chrome155; project loopback Swagger5.31.0; separate real production HTTPS anonymous requests; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "web-session-contract/swagger.json; web-session-contract/logout.json; notification-readiness/summary.json",
+          "witness_limits": [
+            "WEB-current-public-Swagger-viewer: API source UNKNOWN; no trusted QA deployment fault, OpenAPI lint/complete parity rerun, dashboards or browser screen reader",
+            "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance",
+            "NOTIFY-deployment-readiness-consent: Provider delivery and real OS alert/tap BLOCKED: operator disabled, no Web Push/VAPID readiness. No global configuration changed."
+          ]
         },
         {
           "section": "4 — OpenAPI / Swagger",
           "requirement": "Evidence: master SHA, браузер/ОС, скрин/запись viewer; для каждого API сценария method/path, expected/actual status, имена response headers и X-Request-ID. Cookies, их значения, tokens и user data редактировать.",
           "source_checkbox": null,
           "id": "I241.C3",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "WEB-current-public-Swagger-viewer"
+          ],
+          "evidence": [
+            "web-session-contract/swagger.json"
+          ],
+          "execution": "node .out/qa-goal/swagger_viewer_run.mjs",
+          "platform": "Windows headed Chrome155; project loopback Swagger5.31.0; separate real production HTTPS anonymous requests",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "web-session-contract/swagger.json",
+          "witness_limits": [
+            "WEB-current-public-Swagger-viewer: API source UNKNOWN; no trusted QA deployment fault, OpenAPI lint/complete parity rerun, dashboards or browser screen reader"
+          ]
         },
         {
           "section": "4 — OpenAPI / Swagger",
@@ -3070,8 +3218,12 @@
           "result": null
         }
       ],
-      "execution_cases": [],
-      "evidence": [],
+      "execution_cases": [
+        "WEB-current-public-Swagger-viewer"
+      ],
+      "evidence": [
+        "web-session-contract/swagger.json"
+      ],
       "defects": [],
       "blockers": [],
       "source_body_sha256": "c7015703e8c3646b54715e7fa253e04637f73666844cd5ab58d90aca55487f92",
@@ -3622,13 +3774,23 @@
           "requirement": "**Web (real browser):** prejoin без media permission, initial 503 → recovering → populated; peer join/leave, mute, screen-share; обычный background/tab sleep/wake; 401/logout/revocation; отсутствие двойного EventSource/polling.",
           "source_checkbox": " ",
           "id": "I272.C7",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ROSTER-populated-prejoin",
+            "WEB-session-revocation-draft-isolation"
+          ],
+          "evidence": [
+            "web-result.json#/cases/0",
+            "web-session-contract/logout.json"
+          ],
+          "execution": "node .out/qa-goal/web_runtime.mjs; control action prejoin; node .out/qa-goal/web_logout_run.mjs",
+          "platform": "Physical Windows PC, headed Chrome and actual Android/Windows participants; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "web-result.json#/cases/0; web-session-contract/logout.json",
+          "witness_limits": [
+            "ROSTER-populated-prejoin: Two real prejoin rows, REST200, no fake empty state; outages/ACL/native platform matrix remain open.",
+            "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance"
+          ]
         },
         {
           "section": "План тестирования",
@@ -3648,13 +3810,23 @@
           "requirement": "**Flutter Android + iOS:** как минимум ручная/автоматизированная матрица на поддерживаемых устройстве/эмуляторе с background/foreground, rejoin, сетевым разрывом и сменой активного аккаунта. Помечать неподтверждённые платформы `NOT_RUN`, не заявлять общий PASS.",
           "source_checkbox": " ",
           "id": "I272.C9",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-populated-prejoin-no-permission",
+            "ANDROID-OS-microphone-denial"
+          ],
+          "evidence": [
+            "native-prejoin/summary.json",
+            "voice-permission/summary.json"
+          ],
+          "execution": "node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback",
+          "platform": "Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "native-prejoin/summary.json; voice-permission/summary.json",
+          "witness_limits": [
+            "ANDROID-populated-prejoin-no-permission: No injected503/recovery, all ACL roles, other native platforms, capacity or audibility. Original state restored.",
+            "ANDROID-OS-microphone-denial: Original attempt restoration was incomplete; retained raw, followed by verified explicit restoration. No audibility or all-device acceptance."
+          ]
         },
         {
           "section": "План тестирования",
@@ -3726,13 +3898,23 @@
           "requirement": "Есть тест с **непустым** roster двух accounts и проверкой ACL; тест «канал пуст» **не** заменяет его.",
           "source_checkbox": " ",
           "id": "I272.C15",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ROSTER-populated-prejoin",
+            "ANDROID-populated-prejoin-no-permission"
+          ],
+          "evidence": [
+            "web-result.json#/cases/0",
+            "native-prejoin/summary.json"
+          ],
+          "execution": "node .out/qa-goal/web_runtime.mjs; control action prejoin; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py",
+          "platform": "Physical Windows PC, headed Chrome and actual Android/Windows participants; Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "web-result.json#/cases/0; native-prejoin/summary.json",
+          "witness_limits": [
+            "ROSTER-populated-prejoin: Two real prejoin rows, REST200, no fake empty state; outages/ACL/native platform matrix remain open.",
+            "ANDROID-populated-prejoin-no-permission: No injected503/recovery, all ACL roles, other native platforms, capacity or audibility. Original state restored."
+          ]
         },
         {
           "section": "Definition of Done",
@@ -3777,12 +3959,14 @@
       "execution_cases": [
         "ROSTER-populated-prejoin",
         "ANDROID-OS-microphone-denial",
-        "ANDROID-populated-prejoin-no-permission"
+        "ANDROID-populated-prejoin-no-permission",
+        "WEB-session-revocation-draft-isolation"
       ],
       "evidence": [
         "web-result.json",
         "voice-permission/summary.json",
-        "native-prejoin/summary.json"
+        "native-prejoin/summary.json",
+        "web-session-contract/logout.json"
       ],
       "defects": [],
       "blockers": [],
@@ -3920,65 +4104,103 @@
           "requirement": "Ctrl+K/Cmd+K opens Channels and people separately from message search. Verify typing in fields and IME composition does not accidentally select a result.",
           "source_checkbox": " ",
           "id": "I283.C3",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "FAIL",
+          "execution_cases": [
+            "NAV-Web-shortcut"
+          ],
+          "evidence": [
+            "quickjump-result.json"
+          ],
+          "execution": "node .out/qa-goal/quickjump_run.mjs",
+          "platform": "Physical Windows PC, headed Chrome; 1440, 800 and 390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "quickjump-result.json",
+          "witness_limits": [
+            "NAV-Web-shortcut: 1440 PASS; 800/390 FAIL with actual Ctrl+K target BUTTON inside role=dialog; pointer opens. Not a physical mobile browser."
+          ]
         },
         {
           "section": "Checks",
           "requirement": "Existing DM peers deduplicate against guild candidates; candidate pagination/error/retry remains usable. Selecting a new person creates/loads an authorized two-person DM and rechecks navigation before opening.",
           "source_checkbox": " ",
           "id": "I283.C4",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "NAV-desktop-DM-no-voice-mutation",
+            "ANDROID-DM-receive"
+          ],
+          "evidence": [
+            "quickjump-result.json#/cases/0",
+            "native-realtime-result.json"
+          ],
+          "execution": "node .out/qa-goal/quickjump_run.mjs; node .out/qa-goal/native_realtime_run.mjs",
+          "platform": "Installed headed Windows Chrome155; production Web072426d6;1440px only; Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "quickjump-result.json#/cases/0; native-realtime-result.json",
+          "witness_limits": [
+            "NAV-desktop-DM-no-voice-mutation: 800/390 shortcut entry fails under580; no native lease-ID, membership revoke, origin-generation or IME-composition acceptance",
+            "ANDROID-DM-receive: One observed upper bound 2450ms includes ADB UI polling; not p95 or proof of the underlying transport. Owned message deleted204."
+          ]
         },
         {
           "section": "Checks",
           "requirement": "Revoked membership/channel/DM access and stale account/origin responses fail closed. Logout/disposal removes people state and handlers.",
           "source_checkbox": " ",
           "id": "I283.C5",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "WEB-session-revocation-draft-isolation"
+          ],
+          "evidence": [
+            "web-session-contract/logout.json"
+          ],
+          "execution": "node .out/qa-goal/web_logout_run.mjs",
+          "platform": "Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "web-session-contract/logout.json",
+          "witness_limits": [
+            "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance"
+          ]
         },
         {
           "section": "Checks",
           "requirement": "TEXT/DM navigation while disconnected or already in voice does not call Voice Join, capture microphone or transfer the current lease.",
           "source_checkbox": " ",
           "id": "I283.C6",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "NAV-desktop-DM-no-voice-mutation"
+          ],
+          "evidence": [
+            "quickjump-result.json#/cases/0"
+          ],
+          "execution": "node .out/qa-goal/quickjump_run.mjs",
+          "platform": "Installed headed Windows Chrome155; production Web072426d6;1440px only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "quickjump-result.json#/cases/0",
+          "witness_limits": [
+            "NAV-desktop-DM-no-voice-mutation: 800/390 shortcut entry fails under580; no native lease-ID, membership revoke, origin-generation or IME-composition acceptance"
+          ]
         },
         {
           "section": "Checks",
           "requirement": "Verify keyboard traversal, Escape and focus return on Web and Flutter at phone/desktop widths with long Unicode names.",
           "source_checkbox": " ",
           "id": "I283.C7",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "FAIL",
+          "execution_cases": [
+            "NAV-Web-shortcut"
+          ],
+          "evidence": [
+            "quickjump-result.json"
+          ],
+          "execution": "node .out/qa-goal/quickjump_run.mjs",
+          "platform": "Physical Windows PC, headed Chrome; 1440, 800 and 390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "quickjump-result.json",
+          "witness_limits": [
+            "NAV-Web-shortcut: 1440 PASS; 800/390 FAIL with actual Ctrl+K target BUTTON inside role=dialog; pointer opens. Not a physical mobile browser."
+          ]
         },
         {
           "section": "Checks",
@@ -3998,24 +4220,34 @@
           "requirement": "Test OS notifications with allowed/denied permission, guild rename, logout/account switch and generic private previews (no DM body).",
           "source_checkbox": " ",
           "id": "I283.C9",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "BLOCKED",
+          "execution_cases": [
+            "NOTIFY-deployment-readiness-consent"
+          ],
+          "evidence": [
+            "notification-readiness/summary.json"
+          ],
+          "execution": "node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs",
+          "platform": "Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "notification-readiness/summary.json",
+          "witness_limits": [
+            "NOTIFY-deployment-readiness-consent: Provider delivery and real OS alert/tap BLOCKED: operator disabled, no Web Push/VAPID readiness. No global configuration changed."
+          ]
         }
       ],
       "execution_cases": [
         "NAV-Web-shortcut",
         "ANDROID-DM-receive",
-        "ANDROID-populated-prejoin-no-permission"
+        "ANDROID-populated-prejoin-no-permission",
+        "WEB-session-revocation-draft-isolation",
+        "NAV-desktop-DM-no-voice-mutation"
       ],
       "evidence": [
         "native-realtime-result.json",
         "quickjump-result.json",
-        "native-prejoin/summary.json"
+        "native-prejoin/summary.json",
+        "web-session-contract/logout.json"
       ],
       "defects": [
         580
@@ -4049,13 +4281,23 @@
           "requirement": "#268/#269/#270/#271: populated prejoin roster, unavailable versus empty, 503/reconnect/background recovery, session revoke, ACL, bounded watcher/SFU cost; deployed metrics/no-data/freshness/private alerts. Detailed gate #272; authenticated production plus Web/Flutter supported-platform matrix.",
           "source_checkbox": " ",
           "id": "I287.C2",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-populated-prejoin-no-permission",
+            "ROSTER-populated-prejoin"
+          ],
+          "evidence": [
+            "native-prejoin/summary.json",
+            "web-result.json#/cases/0"
+          ],
+          "execution": "node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; node .out/qa-goal/web_runtime.mjs; control action prejoin",
+          "platform": "Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Windows PC, headed Chrome and actual Android/Windows participants",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "native-prejoin/summary.json; web-result.json#/cases/0",
+          "witness_limits": [
+            "ANDROID-populated-prejoin-no-permission: No injected503/recovery, all ACL roles, other native platforms, capacity or audibility. Original state restored.",
+            "ROSTER-populated-prejoin: Two real prejoin rows, REST200, no fake empty state; outages/ACL/native platform matrix remain open."
+          ]
         },
         {
           "section": "Matrix",
@@ -4127,13 +4369,23 @@
           "requirement": "#96: six desired-state reactions in TEXT/DM, simultaneous clients and retry/idempotency; only two DM participants see private hints/metadata, including replay after revoke; administrator-only common TEXT pins, pagination, original-message jump, soft-delete cleanup, logout/reconnect. Test Web and each released native target.",
           "source_checkbox": " ",
           "id": "I287.C8",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "DM-actual_message_actions",
+            "ANDROID-DM-input-actions"
+          ],
+          "evidence": [
+            "privacy-result.json#/checks/actual_message_actions",
+            "native-chat/summary.json"
+          ],
+          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed",
+          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "privacy-result.json#/checks/actual_message_actions; native-chat/summary.json",
+          "witness_limits": [
+            "DM-actual_message_actions: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
+            "ANDROID-DM-input-actions: Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim"
+          ]
         },
         {
           "section": "Matrix",
@@ -4166,13 +4418,23 @@
           "requirement": "#51: Android14+ microphone FGS in visible Activity, permission denial/late grant/service failure, listener-only versus enabled mic background/lock/screen share, receiver-observed audio continuity, mute/leave/logout teardown. Detailed #132/#62; actual physical Android required.",
           "source_checkbox": " ",
           "id": "I287.C11",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-OS-microphone-denial",
+            "ANDROID-muted-background"
+          ],
+          "evidence": [
+            "voice-permission/summary.json",
+            "muted-background-resume.json; muted-stop.json; restored-microphone.json"
+          ],
+          "execution": "python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; python .out/qa-goal/android_controls.py resume; python .out/qa-goal/android_controls.py stop",
+          "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung Android16, app-only projection",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "voice-permission/summary.json; muted-background-resume.json; muted-stop.json; restored-microphone.json",
+          "witness_limits": [
+            "ANDROID-OS-microphone-denial: Original attempt restoration was incomplete; retained raw, followed by verified explicit restoration. No audibility or all-device acceptance.",
+            "ANDROID-muted-background: Controls/service ownership only; no audibility or frame-rate SLO claim. Original microphone state restored."
+          ]
         },
         {
           "section": "Matrix",
@@ -4248,12 +4510,17 @@
         "DM-actual_message_actions",
         "DM-actual_image_upload_and_protected_download",
         "ROSTER-populated-prejoin",
-        "ANDROID-DM-input-actions"
+        "ANDROID-DM-input-actions",
+        "WEB-session-revocation-draft-isolation",
+        "ANDROID-real-filechooser-cancel",
+        "NAV-desktop-DM-no-voice-mutation"
       ],
       "evidence": [
         "privacy-result.json",
         "web-result.json",
-        "native-chat/summary.json"
+        "native-chat/summary.json",
+        "web-session-contract/logout.json",
+        "web-session-contract/android-filechooser.json"
       ],
       "defects": [],
       "blockers": [],
@@ -4757,13 +5024,23 @@
           "requirement": "Web (scoped automated suite): проверить accessible names/roles/states, tab order, `:focus-visible`, contrast, tooltip vs aria labels, keyboard dialogs, announcements, reduced motion; manual screen-reader acceptance остаётся отдельным пунктом.",
           "source_checkbox": "x",
           "id": "I301.C2",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "FAIL",
+          "execution_cases": [
+            "NAV-Web-shortcut",
+            "WEB-session-revocation-draft-isolation"
+          ],
+          "evidence": [
+            "quickjump-result.json",
+            "web-session-contract/logout.json"
+          ],
+          "execution": "node .out/qa-goal/quickjump_run.mjs; node .out/qa-goal/web_logout_run.mjs",
+          "platform": "Physical Windows PC, headed Chrome; 1440, 800 and 390 CSS px; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "quickjump-result.json; web-session-contract/logout.json",
+          "witness_limits": [
+            "NAV-Web-shortcut: 1440 PASS; 800/390 FAIL with actual Ctrl+K target BUTTON inside role=dialog; pointer opens. Not a physical mobile browser.",
+            "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance"
+          ]
         },
         {
           "section": "Подзадачи",
@@ -4783,13 +5060,20 @@
           "requirement": "Physical TalkBack/VoiceOver traversal, native 2× text review, and Windows/macOS keyboard traversal remain `NOT_RUN`; see #303.",
           "source_checkbox": " ",
           "id": "I301.C4",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-DM-two-x-text-and-IME"
+          ],
+          "evidence": [
+            "android-text-scale-review.json"
+          ],
+          "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures",
+          "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; Gboard18.5.4",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "android-text-scale-review.json",
+          "witness_limits": [
+            "ANDROID-DM-two-x-text-and-IME: Only DM composer/voice dock and three48dp controls; no TalkBack, text-entry, full catalog or approved baseline claim. System1.0 restored."
+          ]
         },
         {
           "section": "Подзадачи",
@@ -4809,13 +5093,20 @@
           "requirement": "Complete measurement of all actionable controls and physical 44pt iOS / 48dp Android target checks remains under #303.",
           "source_checkbox": " ",
           "id": "I301.C6",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-DM-two-x-text-and-IME"
+          ],
+          "evidence": [
+            "android-text-scale-review.json"
+          ],
+          "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures",
+          "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; Gboard18.5.4",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "android-text-scale-review.json",
+          "witness_limits": [
+            "ANDROID-DM-two-x-text-and-IME: Only DM composer/voice dock and three48dp controls; no TalkBack, text-entry, full catalog or approved baseline claim. System1.0 restored."
+          ]
         },
         {
           "section": "Подзадачи",
@@ -4848,13 +5139,20 @@
           "requirement": "Perform and record actual manual keyboard/screen-reader smoke on Web and Flutter.",
           "source_checkbox": " ",
           "id": "I301.C9",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "WEB-session-revocation-draft-isolation"
+          ],
+          "evidence": [
+            "web-session-contract/logout.json"
+          ],
+          "execution": "node .out/qa-goal/web_logout_run.mjs",
+          "platform": "Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "web-session-contract/logout.json",
+          "witness_limits": [
+            "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance"
+          ]
         },
         {
           "section": "Критерии готовности",
@@ -4887,26 +5185,43 @@
           "requirement": "Все значимые icon-only controls имеют accessible name; видимый фокус и клавиатурный путь без ловушек.",
           "source_checkbox": " ",
           "id": "I301.C12",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "FAIL",
+          "execution_cases": [
+            "NAV-Web-shortcut",
+            "WEB-session-revocation-draft-isolation"
+          ],
+          "evidence": [
+            "quickjump-result.json",
+            "web-session-contract/logout.json"
+          ],
+          "execution": "node .out/qa-goal/quickjump_run.mjs; node .out/qa-goal/web_logout_run.mjs",
+          "platform": "Physical Windows PC, headed Chrome; 1440, 800 and 390 CSS px; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "quickjump-result.json; web-session-contract/logout.json",
+          "witness_limits": [
+            "NAV-Web-shortcut: 1440 PASS; 800/390 FAIL with actual Ctrl+K target BUTTON inside role=dialog; pointer opens. Not a physical mobile browser.",
+            "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance"
+          ]
         },
         {
           "section": "Критерии готовности",
           "requirement": "TalkBack/VoiceOver корректно называют кнопки, статусы и типы полей, x2 text не обрезает действия.",
           "source_checkbox": " ",
           "id": "I301.C13",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-DM-two-x-text-and-IME"
+          ],
+          "evidence": [
+            "android-text-scale-review.json"
+          ],
+          "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures",
+          "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; Gboard18.5.4",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "android-text-scale-review.json",
+          "witness_limits": [
+            "ANDROID-DM-two-x-text-and-IME: Only DM composer/voice dock and three48dp controls; no TalkBack, text-entry, full catalog or approved baseline claim. System1.0 restored."
+          ]
         },
         {
           "section": "Критерии готовности",
@@ -4925,12 +5240,14 @@
       "execution_cases": [
         "NAV-Web-shortcut",
         "WINDOWS-dialog",
-        "ANDROID-DM-two-x-text-and-IME"
+        "ANDROID-DM-two-x-text-and-IME",
+        "WEB-session-revocation-draft-isolation"
       ],
       "evidence": [
         "quickjump-result.json",
         "windows-dialog.json",
-        "android-text-scale-review.json"
+        "android-text-scale-review.json",
+        "web-session-contract/logout.json"
       ],
       "defects": [
         580
@@ -5113,39 +5430,66 @@
           "requirement": "Пройти task scripts: channel/DM search, send/edit/react, voice join, screen setup, admin members/roles/channels, settings save, destructive cancel, reconnect.",
           "source_checkbox": " ",
           "id": "I303.C2",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-DM-input-actions",
+            "WEB-session-revocation-draft-isolation"
+          ],
+          "evidence": [
+            "native-chat/summary.json",
+            "web-session-contract/logout.json"
+          ],
+          "execution": "node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; node .out/qa-goal/web_logout_run.mjs",
+          "platform": "Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "native-chat/summary.json; web-session-contract/logout.json",
+          "witness_limits": [
+            "ANDROID-DM-input-actions: Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim",
+            "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance"
+          ]
         },
         {
           "section": "Подзадачи",
           "requirement": "На iOS/Android проверить системный Back/swipe, keyboard overlays, dynamic text, SafeArea, TalkBack/VoiceOver и system sharing picker.",
           "source_checkbox": " ",
           "id": "I303.C3",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-DM-two-x-text-and-IME",
+            "ANDROID-real-filechooser-cancel"
+          ],
+          "evidence": [
+            "android-text-scale-review.json",
+            "web-session-contract/android-filechooser.json"
+          ],
+          "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures; python .out/qa-goal/android_filechooser.py",
+          "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; Gboard18.5.4; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "android-text-scale-review.json; web-session-contract/android-filechooser.json",
+          "witness_limits": [
+            "ANDROID-DM-two-x-text-and-IME: Only DM composer/voice dock and three48dp controls; no TalkBack, text-entry, full catalog or approved baseline claim. System1.0 restored.",
+            "ANDROID-real-filechooser-cancel: No file was selected or uploaded, no personal file listings/captures retained; not browser file chooser or image-viewer acceptance"
+          ]
         },
         {
           "section": "Подзадачи",
           "requirement": "На macOS/Windows проверить окно 800–1920 px, keyboard/mouse/touchpad, focus, window resize и нативное окно выбора захвата.",
           "source_checkbox": " ",
           "id": "I303.C4",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "WINDOWS-dialog"
+          ],
+          "evidence": [
+            "windows-dialog.json"
+          ],
+          "execution": "Windows Computer Use; header Start -> Tab traversal -> Escape; subsequent settled Escape",
+          "platform": "Installed Windows native 1.0.47+82",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "windows-dialog.json",
+          "witness_limits": [
+            "WINDOWS-dialog: Focus restoration, every tab target and visual layout remain NOT_PROVEN; initial immediate AX state was unsettled."
+          ]
         },
         {
           "section": "Подзадачи",
@@ -5191,13 +5535,20 @@
           "requirement": "Критические сценарии P1 не имеют незакрытых user-blocking багов на заявленных поддерживаемых платформах.",
           "source_checkbox": " ",
           "id": "I303.C8",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "FAIL",
+          "execution_cases": [
+            "NAV-Web-shortcut"
+          ],
+          "evidence": [
+            "quickjump-result.json"
+          ],
+          "execution": "node .out/qa-goal/quickjump_run.mjs",
+          "platform": "Physical Windows PC, headed Chrome; 1440, 800 and 390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "quickjump-result.json",
+          "witness_limits": [
+            "NAV-Web-shortcut: 1440 PASS; 800/390 FAIL with actual Ctrl+K target BUTTON inside role=dialog; pointer opens. Not a physical mobile browser."
+          ]
         },
         {
           "section": "Критерии приёмки",
@@ -5243,7 +5594,10 @@
         "ANDROID-DM-two-x-text-and-IME",
         "ANDROID-DM-input-actions",
         "ANDROID-OS-microphone-denial",
-        "ANDROID-populated-prejoin-no-permission"
+        "ANDROID-populated-prejoin-no-permission",
+        "WEB-session-revocation-draft-isolation",
+        "ANDROID-real-filechooser-cancel",
+        "NAV-desktop-DM-no-voice-mutation"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -5256,7 +5610,9 @@
         "android-text-scale-review.json",
         "native-chat/summary.json",
         "voice-permission/summary.json",
-        "native-prejoin/summary.json"
+        "native-prejoin/summary.json",
+        "web-session-contract/logout.json",
+        "web-session-contract/android-filechooser.json"
       ],
       "defects": [
         579,
@@ -6834,13 +7190,20 @@
           "requirement": "Настоящий end-to-end alert + tap пройден для Web, подписанного iOS на iPhone и Android с GMS; iOS PWA отдельно. Точные версии/условия записаны, emulator не подменяет physical PASS.",
           "source_checkbox": " ",
           "id": "I554.C14",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "BLOCKED",
+          "execution_cases": [
+            "NOTIFY-deployment-readiness-consent"
+          ],
+          "evidence": [
+            "notification-readiness/summary.json"
+          ],
+          "execution": "node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs",
+          "platform": "Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "notification-readiness/summary.json",
+          "witness_limits": [
+            "NOTIFY-deployment-readiness-consent: Provider delivery and real OS alert/tap BLOCKED: operator disabled, no Web Push/VAPID readiness. No global configuration changed."
+          ]
         },
         {
           "section": "13. Definition of Done / приёмка",
@@ -6947,13 +7310,20 @@
           "requirement": "Permission allow/deny/dismiss, OS toggle/channel off, выключение в приложении; при отказе нет prompt-loop и core функции доступны.",
           "source_checkbox": " ",
           "id": "I564.C1",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "NOTIFY-deployment-readiness-consent"
+          ],
+          "evidence": [
+            "notification-readiness/summary.json"
+          ],
+          "execution": "node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs",
+          "platform": "Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "notification-readiness/summary.json",
+          "witness_limits": [
+            "NOTIFY-deployment-readiness-consent: Provider delivery and real OS alert/tap BLOCKED: operator disabled, no Web Push/VAPID readiness. No global configuration changed."
+          ]
         },
         {
           "section": "Устройство и жизненный цикл",
@@ -6973,13 +7343,20 @@
           "requirement": "Смена account A→B/server origin, logout, revoke current/all sessions, ban/reset, offline logout, token rotation, старый callback: никакого content leak/перепривязки к B. In-flight нейтральный alert отдельно допустим как ограничение внешней доставки, но resolve остаётся закрытым.",
           "source_checkbox": " ",
           "id": "I564.C3",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "WEB-session-revocation-draft-isolation"
+          ],
+          "evidence": [
+            "web-session-contract/logout.json"
+          ],
+          "execution": "node .out/qa-goal/web_logout_run.mjs",
+          "platform": "Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "web-session-contract/logout.json",
+          "witness_limits": [
+            "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance"
+          ]
         },
         {
           "section": "Устройство и жизненный цикл",
@@ -7116,13 +7493,20 @@
           "requirement": "Минимум один реальный end-to-end DM и mention + tap для Web, iOS, Android; критические отрицательные security/ACL, revoke и duplicate-path сценарии пройдены на релевантном уровне.",
           "source_checkbox": " ",
           "id": "I564.C14",
-          "status": "PENDING",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Issue-specific native/runtime scenario; execution still PENDING unless linked in cases.json",
-          "platform": "Issue-specified platforms; hardware availability is recorded at matrix root",
+          "status": "BLOCKED",
+          "execution_cases": [
+            "NOTIFY-deployment-readiness-consent"
+          ],
+          "evidence": [
+            "notification-readiness/summary.json"
+          ],
+          "execution": "node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs",
+          "platform": "Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null
+          "result": "notification-readiness/summary.json",
+          "witness_limits": [
+            "NOTIFY-deployment-readiness-consent: Provider delivery and real OS alert/tap BLOCKED: operator disabled, no Web Push/VAPID readiness. No global configuration changed."
+          ]
         },
         {
           "section": "Результаты, пороги и release gate",
@@ -7165,10 +7549,12 @@
         }
       ],
       "execution_cases": [
-        "NOTIFY-deployment-readiness-consent"
+        "NOTIFY-deployment-readiness-consent",
+        "WEB-session-revocation-draft-isolation"
       ],
       "evidence": [
-        "notification-readiness/summary.json"
+        "notification-readiness/summary.json",
+        "web-session-contract/logout.json"
       ],
       "defects": [],
       "blockers": [
@@ -7185,5 +7571,6 @@
   "known_defect_issues": [
     579,
     580
-  ]
+  ],
+  "criterion_witness_note": "Exact row links are scoped. PARTIAL/FAIL/BLOCKED never satisfy the complete multi-platform requirement; unlinked PENDING rows still need routing/execution."
 }

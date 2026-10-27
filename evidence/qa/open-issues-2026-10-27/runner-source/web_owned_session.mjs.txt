@@ -1,0 +1,41 @@
+import assert from 'node:assert/strict'
+import {expect,origin} from './privacy_fixture.mjs'
+export async function login(page,credential){
+ await expect(page.getByLabel('Логин',{exact:true})).toBeVisible()
+ await page.getByLabel('Логин',{exact:true}).fill(credential.login)
+ await page.getByLabel('Пароль',{exact:true}).fill(credential.password)
+ const wait=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/v1/auth/login'&&r.request().method()==='POST')
+ await page.getByRole('button',{name:'Войти',exact:true}).click()
+ assert.ok([200,204].includes((await wait).status()))
+ await expect(page.getByTestId('app-shell')).toBeVisible()
+}
+export async function logout(page,checks=null){
+ await page.getByRole('button',{name:'Открыть настройки профиля',exact:true}).click()
+ await page.getByRole('tab',{name:'Безопасность',exact:true}).click()
+ await page.getByRole('button',{name:'Выйти из аккаунта',exact:true}).click()
+ const dialog=page.getByRole('dialog',{name:'Подтвердите выход из аккаунта',exact:true});await expect(dialog).toBeVisible()
+ if(checks){
+  const cancel=dialog.getByRole('button',{name:'Отмена',exact:true}),confirm=dialog.getByRole('button',{name:'Выйти',exact:true})
+  await expect(cancel).toBeFocused();await page.keyboard.press('Shift+Tab');await expect(confirm).toBeFocused()
+  await page.keyboard.press('Tab');await expect(cancel).toBeFocused();checks.logout_modal_tab_containment=true
+  await page.keyboard.press('Escape');await expect(dialog).toBeHidden();await expect(page.getByRole('button',{name:'Выйти из аккаунта',exact:true})).toBeFocused()
+  checks.logout_cancel_escape_focus_return=true
+  await page.getByRole('button',{name:'Выйти из аккаунта',exact:true}).click();await expect(dialog).toBeVisible()
+ }
+ const wait=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/v1/auth/logout'&&r.request().method()==='POST').then(response=>({response}),error=>({error}))
+ await dialog.getByRole('button',{name:'Выйти',exact:true}).click()
+ const outcome=await wait;if(outcome.error)throw outcome.error
+ const response=outcome.response;assert.equal(response.status(),204)
+ await expect(page.getByLabel('Логин',{exact:true})).toBeVisible()
+ await expect(page.getByTestId('app-shell')).toBeHidden()
+ return response.status()
+}
+export async function openDirect(page,peer){
+ await page.getByRole('button',{name:'Личные',exact:true}).click()
+ await page.locator('.direct-message-navigation .channel-button').filter({hasText:peer}).click()
+ await expect(page.getByRole('textbox',{name:'Сообщение',exact:true})).toBeVisible()
+ return page.getByRole('textbox',{name:'Сообщение',exact:true})
+}
+export async function session(context){
+ const r=await context.request.get(origin+'/api/v1/auth/session');assert.equal(r.status(),200);return r.json()
+}

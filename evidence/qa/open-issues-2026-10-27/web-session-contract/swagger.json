@@ -1,0 +1,94 @@
+{
+  "status": "PASS_SCOPED",
+  "browser": "155.0.8059.85",
+  "headless": false,
+  "viewer": "http://127.0.0.1:8087",
+  "production_origin": "https://v.bootybay.ru",
+  "source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "checks": {
+    "operation_count": 129,
+    "security_indicators": 118,
+    "try_it_out_buttons": 0,
+    "exclusions": [
+      {
+        "method": "GET",
+        "path": "/metrics",
+        "reason": "Private scrape endpoint; no application cookie/ACL. Restricted by deployment network/proxy."
+      },
+      {
+        "method": "GET",
+        "path": "/internal/media-admission",
+        "reason": "Private LiveKit signal admission hook; validates signed media credential and current lease, session and permission state. Not a browser cookie endpoint."
+      },
+      {
+        "method": "POST",
+        "path": "/internal/livekit/roster",
+        "reason": "Private LiveKit webhook; validates LiveKit signature. Exempt from Origin middleware so server-to-server delivery works."
+      }
+    ],
+    "private_excluded_paths_absent": true
+  },
+  "contract_sha256": "3c9895b2d9fc4df68948f6811435ac77a948686d62bed93730582ed174db39a1",
+  "openapi": "3.1.1",
+  "production": [
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/session",
+      "http": 200,
+      "header_names": [
+        "alt-svc",
+        "content-length",
+        "content-type",
+        "date",
+        "permissions-policy",
+        "referrer-policy",
+        "via",
+        "x-content-type-options",
+        "x-frame-options",
+        "x-installation-id",
+        "x-request-id"
+      ],
+      "request_id_present": true,
+      "content_type": "application/json; charset=utf-8"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/direct-messages",
+      "http": 401,
+      "header_names": [
+        "alt-svc",
+        "content-length",
+        "content-type",
+        "date",
+        "permissions-policy",
+        "referrer-policy",
+        "via",
+        "x-content-type-options",
+        "x-frame-options",
+        "x-installation-id",
+        "x-request-id"
+      ],
+      "request_id_present": true,
+      "content_type": "application/json; charset=utf-8"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "http": 204,
+      "header_names": [
+        "alt-svc",
+        "date",
+        "permissions-policy",
+        "referrer-policy",
+        "set-cookie",
+        "via",
+        "x-content-type-options",
+        "x-frame-options",
+        "x-installation-id",
+        "x-request-id"
+      ],
+      "request_id_present": true,
+      "content_type": null
+    }
+  ]
+}

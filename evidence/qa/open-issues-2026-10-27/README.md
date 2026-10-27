@@ -77,6 +77,15 @@ Android and Windows releases in the current first page, not a new master build.
   Both peer names were matched privately; public image masks names/avatars.
   The first harness used wrong button labels; corrected shipping labels passed.
   Exact original permission and connected microphone/roster state were restored.
+- [Actual browser logout/account switch and Swagger](web-session-contract/summary.json):
+  old cookie401, settled Back and second-tab reload show guest, B→C→B clears drafts,
+  C cannot read B's DM404; logout dialog passes Tab/ShiftTab/Escape/focus return.
+  BFcache was not observed and is not accepted. The exact current public contract
+  renders129 operations with118 security indicators and excludes3 private routes.
+  Separate anonymous production session200/protected401/logout204 checks passed.
+- Android opened the actual Google DocumentsUI file chooser from the owned DM;
+  Back/cancel returned to the empty composer with voice and mic80 still active.
+  No file was selected, and no personal file listings or picker images retained.
 
 ## Reproduction and privacy
 

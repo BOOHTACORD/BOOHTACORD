@@ -1,0 +1,81 @@
+"""Attach bounded runtime witnesses to exact intake rows without accepting whole gates."""
+import json
+import subprocess
+from pathlib import Path
+
+OUT=Path(__file__).resolve().parents[2]/'evidence/qa/open-issues-2026-10-27'
+cases={c['id']:c for c in json.loads((OUT/'cases.json').read_text(encoding='utf-8'))['cases']}
+file=OUT/'cases.json';case_data=json.loads(file.read_text(encoding='utf-8'))
+nav_result=json.loads((OUT/'quickjump-result.json').read_text(encoding='utf-8'))['cases'][0]
+assert nav_result['width']==1440 and nav_result['no_voice_mutation'] and nav_result['no_mic_capture']
+nav={'id':'NAV-desktop-DM-no-voice-mutation','status':'PASS_SCOPED','protects':'At1440px selecting an authorized DM does not request Voice Join or microphone capture; existing DM peer deduplicates',
+     'command':'node .out/qa-goal/quickjump_run.mjs','platform':'Installed headed Windows Chrome155; production Web072426d6;1440px only',
+     'mandatory_when':'Before accepting this desktop DM quick-jump no-media-side-effect scope','issues':[283,287,303],
+     'result':'quickjump-result.json#/cases/0','limits':'800/390 shortcut entry fails under580; no native lease-ID, membership revoke, origin-generation or IME-composition acceptance'}
+case_data['cases']=[c for c in case_data['cases'] if c['id']!=nav['id']]+[nav];cases[nav['id']]=nav
+file.write_text(json.dumps(case_data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+mapping={
+ 'I53.C1':['DM-two_participants_and_third_member_acl','DM-actual_image_upload_and_protected_download','NOTIFY-deployment-readiness-consent','WEB-session-revocation-draft-isolation'],
+ 'I54.C1':['DM-actual_send_receive_and_peer_display','DM-actual_message_actions','DM-actual_image_upload_and_protected_download','ROSTER-populated-prejoin','WEB-session-revocation-draft-isolation'],
+ 'I55.C1':['AUDIO-audibility'],
+ 'I62.C1':['ANDROID-DM-receive','ANDROID-DM-input-actions','ANDROID-OS-microphone-denial','ANDROID-populated-prejoin-no-permission','ANDROID-real-filechooser-cancel','AUDIO-audibility'],
+ 'I131.C5':['DM-actual_image_upload_and_protected_download'],
+ 'I131.C10':['AUDIO-audibility'],
+ 'I131.C11':['DM-draft_navigation_and_reload','WEB-session-revocation-draft-isolation'],
+ 'I132.C4':['ANDROID-muted-background','ANDROID-stop-with-mic','AUDIO-audibility'],
+ 'I132.C5':['ANDROID-muted-background','ANDROID-OS-microphone-denial','AUDIO-audibility'],
+ 'I241.C1':['WEB-current-public-Swagger-viewer'],
+ 'I241.C2':['WEB-current-public-Swagger-viewer','WEB-session-revocation-draft-isolation','NOTIFY-deployment-readiness-consent'],
+ 'I241.C3':['WEB-current-public-Swagger-viewer'],
+ 'I272.C7':['ROSTER-populated-prejoin','WEB-session-revocation-draft-isolation'],
+ 'I272.C9':['ANDROID-populated-prejoin-no-permission','ANDROID-OS-microphone-denial'],
+ 'I272.C15':['ROSTER-populated-prejoin','ANDROID-populated-prejoin-no-permission'],
+ 'I283.C3':['NAV-Web-shortcut'],
+ 'I283.C4':['NAV-desktop-DM-no-voice-mutation','ANDROID-DM-receive'],
+ 'I283.C5':['WEB-session-revocation-draft-isolation'],
+ 'I283.C6':['NAV-desktop-DM-no-voice-mutation'],
+ 'I283.C7':['NAV-Web-shortcut'],
+ 'I283.C9':['NOTIFY-deployment-readiness-consent'],
+ 'I287.C2':['ANDROID-populated-prejoin-no-permission','ROSTER-populated-prejoin'],
+ 'I287.C8':['DM-actual_message_actions','ANDROID-DM-input-actions'],
+ 'I287.C11':['ANDROID-OS-microphone-denial','ANDROID-muted-background'],
+ 'I301.C2':['NAV-Web-shortcut','WEB-session-revocation-draft-isolation'],
+ 'I301.C4':['ANDROID-DM-two-x-text-and-IME'],
+ 'I301.C6':['ANDROID-DM-two-x-text-and-IME'],
+ 'I301.C9':['WEB-session-revocation-draft-isolation'],
+ 'I301.C12':['NAV-Web-shortcut','WEB-session-revocation-draft-isolation'],
+ 'I301.C13':['ANDROID-DM-two-x-text-and-IME'],
+ 'I303.C2':['ANDROID-DM-input-actions','WEB-session-revocation-draft-isolation'],
+ 'I303.C3':['ANDROID-DM-two-x-text-and-IME','ANDROID-real-filechooser-cancel'],
+ 'I303.C4':['WINDOWS-dialog'],
+ 'I303.C8':['NAV-Web-shortcut'],
+ 'I554.C14':['NOTIFY-deployment-readiness-consent'],
+ 'I564.C1':['NOTIFY-deployment-readiness-consent'],
+ 'I564.C3':['WEB-session-revocation-draft-isolation'],
+ 'I564.C14':['NOTIFY-deployment-readiness-consent'],
+}
+matrix=json.loads((OUT/'matrix.json').read_text(encoding='utf-8'))
+baseline=json.loads(subprocess.check_output(['git','show','9cf117b131ba5f95b611d0530d2ff9fe4ab20dda:evidence/qa/open-issues-2026-10-27/matrix.json'],cwd=OUT.parents[2]))
+original_rows={i['number']:i['criteria'] for i in baseline['issues']}
+changed=0
+for issue in matrix['issues']:
+    issue['criteria']=original_rows[issue['number']]
+    if issue['number'] in nav['issues']:
+        issue['execution_cases']=list(dict.fromkeys(issue['execution_cases']+[nav['id']]))
+    for row in issue['criteria']:
+        ids=mapping.get(row['id'])
+        if not ids:continue
+        witnesses=[cases[c] for c in ids];changed+=1
+        row['execution_cases']=list(dict.fromkeys(row['execution_cases']+ids))
+        row['evidence']=list(dict.fromkeys(row['evidence']+[c['result'] for c in witnesses if c['result']]))
+        row['execution']='; '.join(dict.fromkeys(c['command'] for c in witnesses))
+        row['platform']='; '.join(dict.fromkeys(c['platform'] for c in witnesses))
+        row['result']='; '.join(row['evidence']) or None
+        row['witness_limits']=[c['id']+': '+c['limits'] for c in witnesses]
+        row['status']='PARTIAL' if any(c['status'].startswith('PASS') or c['status']=='PARTIAL' for c in witnesses) else 'NOT_RUN'
+        if any(c['status']=='FAIL' for c in witnesses):row['status']='FAIL'
+        if row['id']=='I241.C1':row['status']='PASS'
+        if row['id'] in ['I283.C9','I554.C14','I564.C14']:row['status']='BLOCKED'
+matrix['criterion_witness_note']='Exact row links are scoped. PARTIAL/FAIL/BLOCKED never satisfy the complete multi-platform requirement; unlinked PENDING rows still need routing/execution.'
+(OUT/'matrix.json').write_text(json.dumps(matrix,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps({'rows_with_explicit_witness_links':changed,'all_rows':sum(len(i['criteria']) for i in matrix['issues']),'goal':'IN_PROGRESS'}))

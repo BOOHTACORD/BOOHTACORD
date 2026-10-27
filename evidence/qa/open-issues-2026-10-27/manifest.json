@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-27T00:02:09.678699+00:00",
+  "at_utc": "2026-10-27T00:20:08.615991+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "android-font-before-controls.png": {
@@ -19,20 +19,24 @@
       "sha256": "6c8e9b21cf52f493a4e3a69256746f70f7a565d4fa3af8a97430c3133b1bf944"
     },
     "cases.json": {
-      "bytes": 14400,
-      "sha256": "291685de50d3ef978eda5de554b640fd9f9b535b6d9c04fc75715196a0667ea5"
+      "bytes": 17724,
+      "sha256": "5304ef56bc3a639608ea3405151b8dbd3e29b5ad17f68d0006e8a94ad74fc99f"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
       "sha256": "044860742a5770cf836660dd62322842ffeccedae68cf8e8531be365165c96b4"
+    },
+    "github-updates-permission-prejoin.json": {
+      "bytes": 2206,
+      "sha256": "1db829c87c9576af06fd3afe7ebb56446eb3cd929438dd3068b21326301014bd"
     },
     "github-updates.json": {
       "bytes": 1824,
       "sha256": "57bb3a875edf514ab507a6b1c1100e0d8c2cc3a0ef30520fe3d3497622b6a6f0"
     },
     "matrix.json": {
-      "bytes": 448862,
-      "sha256": "cbcca5f99d6d65ec149ec8771f7eb02fab3d2ea5458f65f0080876e144b48f1e"
+      "bytes": 475556,
+      "sha256": "1fbb523fe756e288091750e36f0691574745d22be597a90f86c55b6dd46508bc"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -163,8 +167,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 7260,
-      "sha256": "371c6e9504f0cbd55173d41b7a70ac543457b26f65955d14edfdfc990c747508"
+      "bytes": 8005,
+      "sha256": "057e2d18be2ef6fb09e314a2a27bde58ea93e0946ec7bf117e7280d5fd4a6c11"
     },
     "restored-microphone.json": {
       "bytes": 269,
@@ -181,6 +185,10 @@
     "runner-source/android_controls.py.txt": {
       "bytes": 2858,
       "sha256": "2c69ea0ea39954e153a4141650fe06b91bd3c46f56dab5ed3726cd6937315066"
+    },
+    "runner-source/android_filechooser.py.txt": {
+      "bytes": 3112,
+      "sha256": "532889b4e2e050cedf028be5dcb695b36d8db1e86ecda98f4a05e7f7f06cb9e7"
     },
     "runner-source/android_mic_permission.py.txt": {
       "bytes": 3488,
@@ -242,6 +250,10 @@
       "bytes": 3691,
       "sha256": "14174d423d2a85e76bfc4f96715da53481677a5fcb7c956789416baa96170798"
     },
+    "runner-source/privacy_fixture-web-session.mjs.txt": {
+      "bytes": 3691,
+      "sha256": "14174d423d2a85e76bfc4f96715da53481677a5fcb7c956789416baa96170798"
+    },
     "runner-source/privacy_fixture.mjs.txt": {
       "bytes": 3466,
       "sha256": "e79cc0fe019845c3541225a18152922e4ef992cf85766dab70fa2a70f5f0266f"
@@ -258,9 +270,25 @@
       "bytes": 4432,
       "sha256": "d2ebb4cb8282789b15907cf415af589130bd11474efbee96a99f4a034a510397"
     },
+    "runner-source/reconcile_criterion_witnesses.py.txt": {
+      "bytes": 6151,
+      "sha256": "809e687f54ef4978b4d0b4a05a94d24abe15cf466e91c3659e8ef9fac8a2c1f2"
+    },
+    "runner-source/swagger_viewer_run.mjs.txt": {
+      "bytes": 3605,
+      "sha256": "c5e8986592ecb0f6e519ce278c3dea27017aef01e9aaf33095c2450b5af40c54"
+    },
+    "runner-source/web_logout_run.mjs.txt": {
+      "bytes": 4714,
+      "sha256": "57f0c185edb680606bed7f8dcd6b9ed85d92888ed2bd4f7539315968d0cc67bd"
+    },
     "runner-source/web_navigation.mjs.txt": {
       "bytes": 4099,
       "sha256": "b0fc89738adc7fdc7064877aea27daa7cda46f164f264dae005ba823d2b46d4a"
+    },
+    "runner-source/web_owned_session.mjs.txt": {
+      "bytes": 2945,
+      "sha256": "2441e930cf0ea1e84ded290b19d71e50044044f53a85c1c08df26c5639624656"
     },
     "runner-source/web_runtime.mjs.txt": {
       "bytes": 5396,
@@ -293,6 +321,34 @@
     "web-result.json": {
       "bytes": 3957,
       "sha256": "2a6fbe9761c08f25471776fdbf2569c51b03adb04a677a707606a1a84d22d0c9"
+    },
+    "web-session-contract/android-filechooser.json": {
+      "bytes": 1882,
+      "sha256": "4377224ddde7502eb559371d7b0e247cf4644eb9be13e8ff3fb26ea5bc28d7bb"
+    },
+    "web-session-contract/logout.json": {
+      "bytes": 649,
+      "sha256": "a99fdb7ec5a6f10b7229cae2ce740eea60aba851811e9c6562fd4c71c539923c"
+    },
+    "web-session-contract/summary.json": {
+      "bytes": 2457,
+      "sha256": "188206c7c3e1c1b476394afc75d5a2e19e2d208503bae224d6ac1b44cbbdc0ec"
+    },
+    "web-session-contract/swagger-info.png": {
+      "bytes": 26043,
+      "sha256": "8367aea8817dbe35c7efc5ae6824373f215211fd2b3d31bb84ef67f879611af1"
+    },
+    "web-session-contract/swagger-secured-operation.png": {
+      "bytes": 4101,
+      "sha256": "11428a126cf50ac096f0da3002406bf1e59ae2234fb3ce9b5315a8afdb366afe"
+    },
+    "web-session-contract/swagger.json": {
+      "bytes": 2604,
+      "sha256": "dc49ca84873f76ba46426d2937dda0e05e66dec21c244e37796e4d4be4e9629c"
+    },
+    "web-session-contract/web-logout-guest.png": {
+      "bytes": 5257,
+      "sha256": "93a0ebaa2029ffa4c896ea29fb0e1e886f08aff25d737ad86bf9791b14855381"
     },
     "windows-dialog.json": {
       "bytes": 1400,

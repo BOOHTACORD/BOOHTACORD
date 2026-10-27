@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile} from 'node:fs/promises'
+import {createHash} from 'node:crypto'
+import {spawn} from 'node:child_process'
+import {fileURLToPath} from 'node:url'
+import {chromium,expect,root,origin} from './privacy_fixture.mjs'
+const repo=fileURLToPath(new URL('../../',root)),viewer='http://127.0.0.1:8087'
+const server=spawn('python',['-m','tools.contracts.swagger_view.serve','--port','8087'],{cwd:repo,windowsHide:true,stdio:'ignore'})
+const browser=await chromium.launch({channel:'chrome',headless:false}),context=await browser.newContext({viewport:{width:1440,height:1000}})
+const report={status:'RUNNING',browser:browser.version(),headless:false,viewer,production_origin:origin,source:'072426d60b1c0b1f7e5f66722a0da5faa00b50d7',checks:{}}
+let phase='viewer_ready'
+try{
+ await expect.poll(async()=>{try{return(await context.request.get(viewer)).status()}catch{return 0}}).toBe(200)
+ const page=await context.newPage();await page.goto(viewer);await expect(page.locator('.swagger-ui .info .title')).toBeVisible({timeout:30000})
+ const raw=await readFile(new URL('../../contracts/openapi.yaml',root)),spec=JSON.parse(raw)
+ const served=await context.request.get(viewer+'/openapi.json');assert.equal(served.status(),200);assert.equal(createHash('sha256').update(await served.body()).digest('hex'),createHash('sha256').update(raw).digest('hex'))
+ report.contract_sha256=createHash('sha256').update(raw).digest('hex');report.openapi=spec.openapi
+ const methods=['get','post','put','patch','delete','options','head','trace'];const ops=Object.values(spec.paths).flatMap(p=>Object.entries(p).filter(([m])=>methods.includes(m)).map(([,op])=>op))
+ report.checks.operation_count=ops.length;await expect(page.locator('.opblock')).toHaveCount(ops.length)
+ report.checks.security_indicators=await page.locator('.authorization__btn').count();assert.ok(report.checks.security_indicators>0)
+ report.checks.try_it_out_buttons=await page.getByRole('button',{name:'Try it out',exact:true}).count();assert.equal(report.checks.try_it_out_buttons,0)
+ report.checks.exclusions=spec['x-private-route-exclusions'];assert.equal(report.checks.exclusions.length,3)
+ const allPaths=Object.keys(spec.paths);report.checks.private_excluded_paths_absent=allPaths.every(p=>report.checks.exclusions.every(e=>p!==e.path&&'/api/v1'+p!==e.path&&p!=='/api/v1'+e.path));assert.ok(report.checks.private_excluded_paths_absent)
+ await page.locator('.info').screenshot({path:fileURLToPath(new URL('swagger-info.png',root))})
+ const secured=page.locator('.opblock').filter({has:page.locator('.authorization__btn')}).first();await secured.screenshot({path:fileURLToPath(new URL('swagger-secured-operation.png',root))})
+ phase='production_anonymous_contract';report.production=[]
+ for(const [method,path]of[['GET','/api/v1/auth/session'],['GET','/api/v1/direct-messages'],['POST','/api/v1/auth/logout']]){
+  const r=await context.request.fetch(origin+path,{method,headers:{Origin:origin}});const h=r.headers();report.production.push({method,path,http:r.status(),header_names:Object.keys(h).sort(),request_id_present:Boolean(h['x-request-id']),content_type:h['content-type']??null})
+ }
+ assert.deepEqual(report.production.map(r=>r.http),[200,401,204]);report.status='PASS_SCOPED'
+}catch(e){report.status='FAIL';report.failed_at=phase;report.error_type=e.name;report.timeout=/timeout/i.test(e.message)}
+finally{await context.close();await browser.close();server.kill();await writeFile(new URL('swagger-viewer-result.json',root),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report))}

@@ -1,0 +1,21 @@
+{
+  "status": "PASS_SCOPED",
+  "origin": "https://v.bootybay.ru",
+  "browser": "155.0.8059.85",
+  "api_mocks": false,
+  "headless": false,
+  "checks": {
+    "logout_modal_tab_containment": true,
+    "logout_cancel_escape_focus_return": true,
+    "logout_http": 204,
+    "revoked_cookie_protected_http": 401,
+    "back_does_not_reveal_private_workspace": true,
+    "back_pageshow_persisted": false,
+    "back_navigation_type": "navigate",
+    "second_tab_reload_is_guest": true,
+    "other_account_has_empty_draft": true,
+    "other_account_old_DM_http": 404,
+    "original_account_draft_cleared": true
+  },
+  "controlled_B_session_restored": true
+}

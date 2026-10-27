@@ -1,0 +1,44 @@
+{
+  "status": "PASS_SCOPED",
+  "Web_candidate": "production072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "API_source": "UNKNOWN",
+  "completion_times_from_receipt_mtimes_UTC": {
+    "web-logout-result.json": "2026-10-27T00:08:06.799336+00:00",
+    "swagger-viewer-result.json": "2026-10-27T00:08:47.151155+00:00"
+  },
+  "checks": {
+    "logout_and_old_cookie_revocation": true,
+    "second_tab_after_reload_guest": true,
+    "settled_back_navigation_guest": true,
+    "own_account_switch_drafts_cleared": true,
+    "other_account_old_private_DM_denied404": true,
+    "logout_modal_Tab_ShiftTab_Escape_focus": true,
+    "current_public_Swagger_rendered": true
+  },
+  "Swagger": {
+    "operations": 129,
+    "security_indicators": 118,
+    "private_exclusions": 3,
+    "exact_served_contract_SHA256": "3c9895b2d9fc4df68948f6811435ac77a948686d62bed93730582ed174db39a1",
+    "request_execution_disabled": true
+  },
+  "visual_observations": [
+    "Source-sized guest form has empty login/password and no private workspace",
+    "Swagger public description and secured operation lock render with readable, unclipped text in retained regions"
+  ],
+  "limits": [
+    "BFcache not observed: pageshow.persisted=false. This proves settled ordinary Back navigation only, not BFcache restore or transient-frame absence",
+    "Second-tab automatic immediate logout without reload was not asserted; only server cookie revocation and actual reload-to-guest were checked",
+    "No native logout/account switch, password reset, browser restart, delayed upload507 or stale callback/telemetry export claim",
+    "The first logout helper omitted the Security tab/confirmation and aborted on an unhandled wait; corrected helper passed. No product bug attributed to that harness error",
+    "Local loopback Swagger is the approved static reference; production API requests ran separately without a session. No local authenticated-production proxy used",
+    "No full AT speech, pixel-golden/contrast review, Grafana/Tempo/Collector or production fault injection acceptance"
+  ],
+  "Android_filechooser": {
+    "actual_system_package": "com.google.android.documentsui",
+    "open_cancel": "PASS_SCOPED",
+    "voice_microphone_retained": true,
+    "file_selection_upload_preview": "NOT_RUN",
+    "first_attempt": "Old navigation helper ignored the EditText hint and returned NOT_PROVEN despite the owned composer being present; corrected owned-header/empty-field guard passed"
+  }
+}

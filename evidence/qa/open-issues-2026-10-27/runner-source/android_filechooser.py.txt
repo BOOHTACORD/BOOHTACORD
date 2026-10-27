@@ -1,0 +1,45 @@
+"""Actual Android OS file chooser open/cancel in the owned DM; no file listing retained."""
+import json
+import subprocess
+import sys
+import re
+from datetime import datetime,timezone
+from android_permission_ui import ROOT,APP,call,nodes,label,state,tap_named
+
+PACKAGES={'com.google.android.documentsui','com.android.documentsui','com.google.android.providers.media.module',
+          'com.android.providers.media.module','com.sec.android.app.myfiles'}
+report={'status':'RUNNING','at_utc':datetime.now(timezone.utc).isoformat(),'scope':'Owned synthetic-peer DM; actual system chooser cancellation only',
+        'file_names_logged':False,'system_file_captures_saved':False}
+try:
+    report['before']=state();assert report['before']['voice_connected'] and report['before']['microphone_fgs']
+    peer=json.loads((ROOT/'private-fixture.json').read_text(encoding='utf-8'))['b']['login']
+    owned=lambda rows:any(peer in label(n) and int(re.findall(r'\d+',n.get('bounds'))[1])<600 for n in rows)
+    report['phase']='owned_DM_navigation'
+    if not owned(nodes()):
+        tap_named('Открыть навигацию');tap_named('Поиск',contains=True)
+        tap_named('Каналы и люди',contains=True,required=False)
+        nav=json.loads(subprocess.check_output(['python',str(ROOT/'android_navigation.py'),'query_peer'],timeout=60))
+        assert nav['query_equals_owned'] and nav['owned_peer_matches']==1
+    before=nodes();fields=[n for n in before if n.get('class')=='android.widget.EditText']
+    assert owned(before) and len(fields)==1 and not fields[0].get('text')
+    report['owned_composer_selected']=True
+    report['phase']='actual_OS_chooser';tap_named('Действия редактора');tap_named('Прикрепить файл')
+    picker=nodes();packages={n.get('package') for n in picker}
+    report['known_system_picker_packages']=sorted(packages&PACKAGES)
+    report['system_picker_active']=bool(packages&PACKAGES);assert report['system_picker_active']
+    report['mic_FGS_while_picker_active']='types=0x00000080' in call('shell','dumpsys','activity','services',APP)
+    call('shell','input','keyevent','KEYCODE_BACK')
+    after=nodes();fields=[n for n in after if n.get('class')=='android.widget.EditText']
+    report['composer_restored_empty']=len(fields)==1 and not fields[0].get('text')
+    report['system_picker_gone']=not any(n.get('package') in PACKAGES for n in after)
+    report['after']=state()
+    assert report['composer_restored_empty'] and report['system_picker_gone'] and report['mic_FGS_while_picker_active']
+    assert report['after']['voice_connected'] and report['after']['microphone_fgs']
+    report['status']='PASS_SCOPED'
+except Exception as error:
+    report['status']='NOT_PROVEN';report['error_type']=type(error).__name__
+finally:
+    if any(n.get('package') in PACKAGES for n in nodes()):call('shell','input','keyevent','KEYCODE_BACK')
+    report['final']=state()
+    (ROOT/'android-filechooser-result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+    print(json.dumps(report,ensure_ascii=True))

@@ -326,6 +326,73 @@
       ],
       "result": "native-prejoin/summary.json",
       "limits": "No injected503/recovery, all ACL roles, other native platforms, capacity or audibility. Original state restored."
+    },
+    {
+      "id": "WEB-session-revocation-draft-isolation",
+      "status": "PASS_SCOPED",
+      "protects": "Own logout revokes old cookie; settled Back and reloaded second tab are guest; account changes clear private drafts and preserve two-person DM ACL",
+      "command": "node .out/qa-goal/web_logout_run.mjs",
+      "platform": "Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only",
+      "mandatory_when": "Before accepting logout/account-switch drafts, browser session privacy and logout modal keyboard rows",
+      "issues": [
+        53,
+        54,
+        131,
+        240,
+        272,
+        283,
+        287,
+        301,
+        303,
+        564
+      ],
+      "result": "web-session-contract/logout.json",
+      "limits": "No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance"
+    },
+    {
+      "id": "WEB-current-public-Swagger-viewer",
+      "status": "PASS_SCOPED",
+      "protects": "Exact public contract renders with security indicators, hides three private operational routes and disables local execution; protected production API rejects anonymous cookie-less access",
+      "command": "node .out/qa-goal/swagger_viewer_run.mjs",
+      "platform": "Windows headed Chrome155; project loopback Swagger5.31.0; separate real production HTTPS anonymous requests",
+      "mandatory_when": "Before accepting issue241 public OpenAPI viewer and the enumerated anonymous runtime contract rows",
+      "issues": [
+        54,
+        240,
+        241
+      ],
+      "result": "web-session-contract/swagger.json",
+      "limits": "API source UNKNOWN; no trusted QA deployment fault, OpenAPI lint/complete parity rerun, dashboards or browser screen reader"
+    },
+    {
+      "id": "ANDROID-real-filechooser-cancel",
+      "status": "PASS_SCOPED",
+      "protects": "Owned native DM opens actual OS file chooser and cancellation restores empty composer while microphone service/voice stay active",
+      "command": "python .out/qa-goal/android_filechooser.py",
+      "platform": "Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI",
+      "mandatory_when": "Before accepting this physical native OS chooser cancellation/core continuity scope",
+      "issues": [
+        62,
+        287,
+        303
+      ],
+      "result": "web-session-contract/android-filechooser.json",
+      "limits": "No file was selected or uploaded, no personal file listings/captures retained; not browser file chooser or image-viewer acceptance"
+    },
+    {
+      "id": "NAV-desktop-DM-no-voice-mutation",
+      "status": "PASS_SCOPED",
+      "protects": "At1440px selecting an authorized DM does not request Voice Join or microphone capture; existing DM peer deduplicates",
+      "command": "node .out/qa-goal/quickjump_run.mjs",
+      "platform": "Installed headed Windows Chrome155; production Web072426d6;1440px only",
+      "mandatory_when": "Before accepting this desktop DM quick-jump no-media-side-effect scope",
+      "issues": [
+        283,
+        287,
+        303
+      ],
+      "result": "quickjump-result.json#/cases/0",
+      "limits": "800/390 shortcut entry fails under580; no native lease-ID, membership revoke, origin-generation or IME-composition acceptance"
     }
   ]
 }

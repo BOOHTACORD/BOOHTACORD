@@ -1,0 +1,44 @@
+import assert from 'node:assert/strict'
+import {writeFile} from 'node:fs/promises'
+import {fileURLToPath} from 'node:url'
+import {randomUUID} from 'node:crypto'
+import {execFileSync} from 'node:child_process'
+import {chromium,expect,fixture,api,root,origin} from './privacy_fixture.mjs'
+import {login,logout,openDirect,session} from './web_owned_session.mjs'
+const browser=await chromium.launch({channel:'chrome',headless:false,ignoreDefaultArgs:['--disable-back-forward-cache']})
+const f=await fixture(browser),report={status:'RUNNING',origin,browser:browser.version(),api_mocks:false,headless:false,checks:{}}
+let owner,peer,oldSession,phase='setup'
+try{
+ owner=await f.client('b');const {page,context,credential}=owner
+ const dm=await api(page,'/direct-messages','POST',{participant_id:f.private.a.id});assert.ok([200,201].includes(dm.status))
+ const protectedPath='/direct-messages/'+dm.body.id+'/messages'
+ await context.addInitScript(()=>{window.__qaPageShowPersisted=null;addEventListener('pageshow',e=>{window.__qaPageShowPersisted=e.persisted})})
+ phase='two_actual_tabs_with_private_drafts'
+ await page.reload();const marker='QA draft '+randomUUID();await (await openDirect(page,f.private.a.login)).fill(marker)
+ peer=await context.newPage();await peer.goto(origin);await expect(peer.getByTestId('app-shell')).toBeVisible()
+ await (await openDirect(peer,f.private.a.login)).fill('QA second draft '+randomUUID())
+ const old=await context.storageState();oldSession=await browser.newContext({storageState:old})
+ await page.goto(origin+'/?qa_history=logout');await expect(page.getByTestId('app-shell')).toBeVisible()
+ phase='actual_profile_logout';report.checks.logout_http=await logout(page,report.checks)
+ report.checks.revoked_cookie_protected_http=(await oldSession.request.get(origin+'/api/v1'+protectedPath)).status()
+ assert.equal(report.checks.revoked_cookie_protected_http,401)
+ phase='back_navigation_after_logout';await page.goBack();await expect(page.getByLabel('Логин',{exact:true})).toBeVisible()
+ await expect(page.getByTestId('app-shell')).toBeHidden();assert.equal(await page.getByText(marker,{exact:true}).count(),0)
+ report.checks.back_does_not_reveal_private_workspace=true
+ report.checks.back_pageshow_persisted=await page.evaluate(()=>window.__qaPageShowPersisted)
+ report.checks.back_navigation_type=await page.evaluate(()=>performance.getEntriesByType('navigation')[0]?.type??null)
+ await page.getByLabel('Логин',{exact:true}).fill('');await page.getByLabel('Пароль',{exact:true}).fill('')
+ await page.locator('form').first().screenshot({path:fileURLToPath(new URL('web-logout-guest.png',root))})
+ phase='second_tab_reload';await peer.reload();await expect(peer.getByLabel('Логин',{exact:true})).toBeVisible();await expect(peer.getByTestId('app-shell')).toBeHidden()
+ report.checks.second_tab_reload_is_guest=true
+ phase='account_C_isolated';await login(page,f.private.c);assert.equal((await session(context)).account_id,f.private.c.id)
+ assert.ok([200,201].includes((await api(page,'/direct-messages','POST',{participant_id:f.private.a.id})).status))
+ await page.reload();await expect(page.getByTestId('app-shell')).toBeVisible();await expect(await openDirect(page,f.private.a.login)).toHaveValue('')
+ report.checks.other_account_has_empty_draft=true;report.checks.other_account_old_DM_http=(await api(page,protectedPath)).status;assert.equal(report.checks.other_account_old_DM_http,404)
+ phase='return_account_B';await logout(page);await login(page,credential);await expect(await openDirect(page,f.private.a.login)).toHaveValue('')
+ report.checks.original_account_draft_cleared=true;report.status='PASS_SCOPED'
+}catch(e){report.status='FAIL';report.failed_at=phase;report.error_type=e.name;report.timeout=/timeout/i.test(e.message)}
+finally{
+ if(owner){try{const {page,context,credential}=owner;await page.goto(origin);const s=await session(context);if(s.authenticated&&s.account_id!==credential.id)await logout(page);if((await session(context)).account_id!==credential.id)await login(page,credential);assert.equal((await session(context)).account_id,credential.id);await context.storageState({path:fileURLToPath(new URL('private-session-b.json',root))});execFileSync('icacls',[fileURLToPath(new URL('private-session-b.json',root)),'/inheritance:r','/grant:r',process.env.USERNAME+':F'],{stdio:'ignore',windowsHide:true});report.controlled_B_session_restored=true}catch(e){report.status='FAIL_RESTORATION';report.restore_error_type=e.name}}
+ await oldSession?.close();for(const c of f.contexts)await c.close();await browser.close();await writeFile(new URL('web-logout-result.json',root),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report))
+}
