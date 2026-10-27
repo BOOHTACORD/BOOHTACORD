@@ -96,6 +96,11 @@ Android and Windows releases in the current first page, not a new master build.
   supported CUA twice rejected the observed account-menu element as unavailable
   in its cache; reobserve/activate did not recover. Admin navigation was not
   performed, exact focus restoration is unproven, and no app defect was inferred.
+- [Actual Web JPEG/GIF lifecycle/downloads](web-image-formats/summary.json):
+  preview decode, no auto-send, original card download, Escape/focus and both
+  protected file variants pass for two members/outsider/anonymous and deletion.
+  Viewer Download FAIL: PNG bytes receive original jpg/gif extension. Actual
+  download events prove the mismatch; all owned messages/temp downloads cleaned.
 
 ## Reproduction and privacy
 

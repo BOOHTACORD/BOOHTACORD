@@ -1,0 +1,52 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile,access} from 'node:fs/promises'
+import {chromium,expect,fixture,api,root,origin} from './privacy_fixture.mjs'
+import {openDirect} from './web_owned_session.mjs'
+import {digest,format,actualDownload,viewer,fileStatuses} from './web_image_format_checks.mjs'
+const fixtures=JSON.parse(await readFile(new URL('image-format-fixtures.json',root),'utf8'))
+const browser=await chromium.launch({channel:'chrome',headless:false}),paths=[],messages=[]
+const report={status:'RUNNING',at_utc:new Date().toISOString(),origin,browser:browser.version(),headless:false,api_mocks:false,
+              scope:'Owned MEMBER B/C DM; JPEG/GIF input pipeline, actual downloads and protected ACL; file input API, not OS picker',cases:[],cleanup:[]}
+let f,b,c,outsider,anon,prefix,phase='setup',posts=0
+const save=()=>writeFile(new URL('web-image-formats-result.json',root),JSON.stringify(report,null,2)+'\n')
+try{
+ const receipt=await(await fetch(origin+'/release-receipt.json')).json();report.web_source=receipt.source_revision;assert.equal(report.web_source,'072426d60b1c0b1f7e5f66722a0da5faa00b50d7')
+ f=await fixture(browser);b=await f.client('b');c=await f.client('c')
+ const dm=await api(b.page,'/direct-messages','POST',{participant_id:c.credential.id});assert.ok([200,201].includes(dm.status));prefix='/direct-messages/'+dm.body.id
+ await b.page.reload();await c.page.reload();await expect(b.page.getByTestId('app-shell')).toBeVisible();await expect(c.page.getByTestId('app-shell')).toBeVisible()
+ await openDirect(b.page,c.credential.login);await openDirect(c.page,b.credential.login)
+ outsider=await browser.newContext({storageState:JSON.parse(await readFile(new URL('private-session-a.json',root),'utf8'))});anon=await browser.newContext()
+ const auth=await outsider.request.get(origin+'/api/v1/auth/session'),identity=await auth.json();assert.equal(identity.role,'MEMBER');assert.equal(identity.account_id,f.private.a.id)
+ b.page.on('request',r=>{if(r.method()==='POST'&&new URL(r.url()).pathname==='/api/v1'+prefix+'/messages')posts++})
+ for(const [index,expected]of fixtures.entries()){
+  const row={format:expected.format,status:'RUNNING',viewport:index===0?1440:390};report.cases.push(row);phase=expected.format+'_prepare'
+  await b.page.setViewportSize({width:row.viewport,height:900});await b.page.bringToFront()
+  const bytes=await readFile(new URL(expected.filename,root));assert.equal(digest(bytes),expected.sha256);assert.equal(format(bytes),expected.format)
+  const before=posts;await b.page.locator('#dm-attachments').setInputFiles({name:expected.filename,mimeType:expected.mime,buffer:bytes})
+  await expect(b.page.locator('.attachment-picker [data-upload-status="done"]')).toHaveCount(1);assert.equal(posts,before);row.no_auto_send_after_upload=true
+  const wait=b.page.waitForResponse(r=>r.request().method()==='POST'&&new URL(r.url()).pathname==='/api/v1'+prefix+'/messages').then(response=>({response}),error=>({error}))
+  await b.page.getByRole('button',{name:'Отправить сообщение',exact:true}).click();const outcome=await wait;if(outcome.error)throw outcome.error
+  assert.equal(outcome.response.status(),201);const sent=await outcome.response.json();messages.push(sent.id);row.send_http=201
+  const h=await api(b.page,prefix+'/messages?at='+sent.id+'&limit=20'),message=h.body.messages.find(m=>m.id===sent.id);assert.equal(message.author_id,b.credential.id);assert.equal(message.attachments.length,1)
+  const attachment=prefix+'/attachments/'+message.attachments[0].id
+  await expect(c.page.getByRole('button',{name:'Открыть изображение '+expected.filename,exact:true})).toBeVisible();row.peer_attachment_visible=true
+  phase=expected.format+'_viewer';await viewer(b.page,expected.filename,expected.pixels,row,expected,paths)
+  phase=expected.format+'_original_card_download';row.card_download=await actualDownload(b.page,b.page.locator('.attachment-card__download').filter({hasText:''}).filter({has:b.page.locator('svg')}).and(b.page.getByRole('link',{name:new RegExp('^Скачать '+expected.filename.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+',')})),expected,paths)
+  assert.ok(row.card_download.matches_original_sha256&&row.card_download.extension_matches_encoding)
+  phase=expected.format+'_ACL';row.participant_file_statuses=[];for(const p of[b.context,c.context])row.participant_file_statuses.push(await fileStatuses(p,origin,attachment))
+  row.third_MEMBER_statuses=await fileStatuses(outsider,origin,attachment);row.anonymous_statuses=await fileStatuses(anon,origin,attachment)
+  assert.deepEqual(row.participant_file_statuses,[[200,200],[200,200]]);assert.deepEqual(row.third_MEMBER_statuses,[404,404]);assert.deepEqual(row.anonymous_statuses,[401,401])
+  phase=expected.format+'_delete';assert.equal((await api(b.page,prefix+'/messages/'+sent.id,'DELETE')).status,204)
+  row.after_delete=[];for(const p of[b.context,c.context,outsider,anon])row.after_delete.push(await fileStatuses(p,origin,attachment))
+  assert.deepEqual(row.after_delete,[[404,404],[404,404],[404,404],[401,401]])
+  row.viewer_download_preserves_original=row.viewer_download.matches_original_sha256&&row.viewer_download.extension_matches_encoding
+  row.status=row.viewer_download_preserves_original?'PASS_SCOPED':'FAIL_VIEWER_DOWNLOAD';await save()
+ }
+ report.status=report.cases.every(c=>c.status==='PASS_SCOPED')?'PASS_SCOPED':'FAIL_VIEWER_DOWNLOAD'
+}catch(e){report.status='FAIL';report.failed_at=phase;report.error_type=e.name;report.timeout=/timeout/i.test(e.message)}
+finally{
+ if(b&&prefix)for(const id of messages){try{const r=await api(b.page,prefix+'/messages/'+id,'DELETE');report.cleanup.push({owned_delete_http:r.status})}catch{report.cleanup.push({owned_delete_http:'UNKNOWN'})}}
+ await outsider?.close();await anon?.close();for(const ctx of f?.contexts??[])await ctx.close();await browser.close()
+ report.download_tempfiles_remaining=0;for(const p of paths){try{await access(p);report.download_tempfiles_remaining++}catch{}}
+ await save();console.log(JSON.stringify(report))
+}

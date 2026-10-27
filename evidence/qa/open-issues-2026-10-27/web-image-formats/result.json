@@ -1,0 +1,175 @@
+{
+  "status": "FAIL_VIEWER_DOWNLOAD",
+  "at_utc": "2026-10-27T01:04:20.026Z",
+  "origin": "https://v.bootybay.ru",
+  "browser": "155.0.8059.85",
+  "headless": false,
+  "api_mocks": false,
+  "scope": "Owned MEMBER B/C DM; JPEG/GIF input pipeline, actual downloads and protected ACL; file input API, not OS picker",
+  "cases": [
+    {
+      "format": "JPEG",
+      "status": "FAIL_VIEWER_DOWNLOAD",
+      "viewport": 1440,
+      "no_auto_send_after_upload": true,
+      "send_http": 201,
+      "peer_attachment_visible": true,
+      "actual_preview_decoded": true,
+      "viewer_rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "viewport_width": 1440,
+        "viewport_height": 900
+      },
+      "modal_keyboard": {
+        "initial_close_focused": true,
+        "Tab_download_focused": false,
+        "Tab_focus_inside_dialog": false,
+        "ShiftTab_close_focused": true
+      },
+      "viewer_download": {
+        "actual_download_event": true,
+        "bytes": 153,
+        "detected_format": "PNG",
+        "suggested_extension": "jpg",
+        "matches_original_sha256": false,
+        "extension_matches_encoding": false
+      },
+      "Escape_focus_return": true,
+      "card_download": {
+        "actual_download_event": true,
+        "bytes": 774,
+        "detected_format": "JPEG",
+        "suggested_extension": "jpg",
+        "matches_original_sha256": true,
+        "extension_matches_encoding": true
+      },
+      "participant_file_statuses": [
+        [
+          200,
+          200
+        ],
+        [
+          200,
+          200
+        ]
+      ],
+      "third_MEMBER_statuses": [
+        404,
+        404
+      ],
+      "anonymous_statuses": [
+        401,
+        401
+      ],
+      "after_delete": [
+        [
+          404,
+          404
+        ],
+        [
+          404,
+          404
+        ],
+        [
+          404,
+          404
+        ],
+        [
+          401,
+          401
+        ]
+      ],
+      "viewer_download_preserves_original": false
+    },
+    {
+      "format": "GIF",
+      "status": "FAIL_VIEWER_DOWNLOAD",
+      "viewport": 390,
+      "no_auto_send_after_upload": true,
+      "send_http": 201,
+      "peer_attachment_visible": true,
+      "actual_preview_decoded": true,
+      "viewer_rect": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 900,
+        "viewport_width": 390,
+        "viewport_height": 900
+      },
+      "modal_keyboard": {
+        "initial_close_focused": true,
+        "Tab_download_focused": false,
+        "Tab_focus_inside_dialog": false,
+        "ShiftTab_close_focused": true
+      },
+      "viewer_download": {
+        "actual_download_event": true,
+        "bytes": 107,
+        "detected_format": "PNG",
+        "suggested_extension": "gif",
+        "matches_original_sha256": false,
+        "extension_matches_encoding": false
+      },
+      "Escape_focus_return": true,
+      "card_download": {
+        "actual_download_event": true,
+        "bytes": 205,
+        "detected_format": "GIF",
+        "suggested_extension": "gif",
+        "matches_original_sha256": true,
+        "extension_matches_encoding": true
+      },
+      "participant_file_statuses": [
+        [
+          200,
+          200
+        ],
+        [
+          200,
+          200
+        ]
+      ],
+      "third_MEMBER_statuses": [
+        404,
+        404
+      ],
+      "anonymous_statuses": [
+        401,
+        401
+      ],
+      "after_delete": [
+        [
+          404,
+          404
+        ],
+        [
+          404,
+          404
+        ],
+        [
+          404,
+          404
+        ],
+        [
+          401,
+          401
+        ]
+      ],
+      "viewer_download_preserves_original": false
+    }
+  ],
+  "cleanup": [
+    {
+      "owned_delete_http": 404
+    },
+    {
+      "owned_delete_http": 404
+    }
+  ],
+  "web_source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "download_tempfiles_remaining": 0
+}

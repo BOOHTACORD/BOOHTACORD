@@ -441,6 +441,39 @@
       ],
       "result": "windows-admin-entry-attempt.json",
       "limits": "Two indexed clicks rejected by the helper cache. No admin panel entered, no data mutation or app defect established; keyboard focus name/restoration not proven."
+    },
+    {
+      "command": "python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
+      "platform": "Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
+      "mandatory_when": "Before accepting JPEG/GIF image viewing, separate original downloading and DM original/preview ACL rows",
+      "result": "web-image-formats/summary.json",
+      "limits": "DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
+      "id": "WEB-JPEG-GIF-private-image-lifecycle",
+      "status": "PASS_SCOPED",
+      "protects": "JPEG/GIF preview decode does not auto-send; original card downloads match uploaded bytes; only the two participants can fetch original/preview, including denial after delete",
+      "issues": [
+        53,
+        54,
+        131,
+        287,
+        303
+      ]
+    },
+    {
+      "command": "python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
+      "platform": "Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
+      "mandatory_when": "Before accepting JPEG/GIF image viewing, separate original downloading and DM original/preview ACL rows",
+      "result": "web-image-formats/summary.json",
+      "limits": "DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
+      "id": "WEB-viewer-download-format-mismatch",
+      "status": "FAIL",
+      "protects": "Viewer download retains the uploaded original format and a matching filename extension",
+      "issues": [
+        54,
+        131,
+        287,
+        303
+      ]
     }
   ]
 }

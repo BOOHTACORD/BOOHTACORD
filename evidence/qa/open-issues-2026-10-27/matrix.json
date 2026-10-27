@@ -103,25 +103,28 @@
             "DM-actual_image_upload_and_protected_download",
             "NOTIFY-deployment-readiness-consent",
             "WEB-session-revocation-draft-isolation",
-            "ANDROID-native-PNG-picker-send-view-delete"
+            "ANDROID-native-PNG-picker-send-view-delete",
+            "WEB-JPEG-GIF-private-image-lifecycle"
           ],
           "evidence": [
             "privacy-result.json#/checks/two_participants_and_third_member_acl",
             "privacy-result.json#/checks/actual_image_upload_and_protected_download",
             "notification-readiness/summary.json",
             "web-session-contract/logout.json",
-            "native-image/summary.json"
+            "native-image/summary.json",
+            "web-image-formats/summary.json"
           ],
-          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal",
-          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
+          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
+          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "privacy-result.json#/checks/two_participants_and_third_member_acl; privacy-result.json#/checks/actual_image_upload_and_protected_download; notification-readiness/summary.json; web-session-contract/logout.json; native-image/summary.json",
+          "result": "privacy-result.json#/checks/two_participants_and_third_member_acl; privacy-result.json#/checks/actual_image_upload_and_protected_download; notification-readiness/summary.json; web-session-contract/logout.json; native-image/summary.json; web-image-formats/summary.json",
           "witness_limits": [
             "DM-two_participants_and_third_member_acl: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
             "DM-actual_image_upload_and_protected_download: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
             "NOTIFY-deployment-readiness-consent: Provider delivery and real OS alert/tap BLOCKED: operator disabled, no Web Push/VAPID readiness. No global configuration changed.",
             "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance",
-            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim."
+            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
+            "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance"
           ]
         },
         {
@@ -173,13 +176,15 @@
         "DM-actual_image_upload_and_protected_download",
         "NOTIFY-deployment-readiness-consent",
         "WEB-session-revocation-draft-isolation",
-        "ANDROID-native-PNG-picker-send-view-delete"
+        "ANDROID-native-PNG-picker-send-view-delete",
+        "WEB-JPEG-GIF-private-image-lifecycle"
       ],
       "evidence": [
         "privacy-result.json",
         "notification-readiness/summary.json",
         "web-session-contract/logout.json",
-        "native-image/summary.json"
+        "native-image/summary.json",
+        "web-image-formats/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -198,14 +203,16 @@
           "requirement": "На trusted candidate с двумя пользователями пройти auth/reset, TEXT/DM, search, admin, focus/screen reader, нативный OS file chooser, voice navigation/reconnect, zoom 125/150% и сохранённое screenshot comparison. Дополнительно после BE-19/20 и FE-53…55 проверить просмотр PNG/JPEG/GIF внутри TEXT/DM без download, отдельное скачивание, вставку изображения из clipboard с текстом и без него, лимиты/retry, keyboard/mobile и отказ третьему участнику DM. **Актуальная находка (30.09.2026):** в авторизованном production web prejoin `SHARE_TEST` сначала показал «состав недоступен»/повторяющуюся ошибку, а последующее автоматическое обновление восстановилось до состояния пустой комнаты; пользователь ранее приложил такой же экран Flutter, но live retry на Flutter не проверен. Сопоставить ошибку с серверными/LiveKit логами и проверить восстановление и populated roster на обоих клиентах до подключения микрофона — [QA-148](../evidence/flutter/qa148-production-prejoin-roster-recovery-2026-09-30-001.json). Причина пока не установлена; недоступный snapshot нельзя трактовать как пустую комнату. Изолированный [507→201](../evidence/qa/qa05-browser-real-507-wire-retry-2026-09-26-001.json) не заменяет этот полный прогон.",
           "source_checkbox": null,
           "id": "I54.C1",
-          "status": "PARTIAL",
+          "status": "FAIL",
           "execution_cases": [
             "DM-actual_send_receive_and_peer_display",
             "DM-actual_message_actions",
             "DM-actual_image_upload_and_protected_download",
             "ROSTER-populated-prejoin",
             "WEB-session-revocation-draft-isolation",
-            "ANDROID-native-PNG-picker-send-view-delete"
+            "ANDROID-native-PNG-picker-send-view-delete",
+            "WEB-JPEG-GIF-private-image-lifecycle",
+            "WEB-viewer-download-format-mismatch"
           ],
           "evidence": [
             "privacy-result.json#/checks/actual_send_receive_and_peer_display",
@@ -213,19 +220,22 @@
             "privacy-result.json#/checks/actual_image_upload_and_protected_download",
             "web-result.json#/cases/0",
             "web-session-contract/logout.json",
-            "native-image/summary.json"
+            "native-image/summary.json",
+            "web-image-formats/summary.json"
           ],
-          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/web_runtime.mjs; control action prejoin; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal",
-          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Physical Windows PC, headed Chrome and actual Android/Windows participants; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
+          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/web_runtime.mjs; control action prejoin; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
+          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Physical Windows PC, headed Chrome and actual Android/Windows participants; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "privacy-result.json#/checks/actual_send_receive_and_peer_display; privacy-result.json#/checks/actual_message_actions; privacy-result.json#/checks/actual_image_upload_and_protected_download; web-result.json#/cases/0; web-session-contract/logout.json; native-image/summary.json",
+          "result": "privacy-result.json#/checks/actual_send_receive_and_peer_display; privacy-result.json#/checks/actual_message_actions; privacy-result.json#/checks/actual_image_upload_and_protected_download; web-result.json#/cases/0; web-session-contract/logout.json; native-image/summary.json; web-image-formats/summary.json",
           "witness_limits": [
             "DM-actual_send_receive_and_peer_display: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
             "DM-actual_message_actions: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
             "DM-actual_image_upload_and_protected_download: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
             "ROSTER-populated-prejoin: Two real prejoin rows, REST200, no fake empty state; outages/ACL/native platform matrix remain open.",
             "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance",
-            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim."
+            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
+            "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
+            "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance"
           ]
         },
         {
@@ -281,7 +291,9 @@
         "NOTIFY-deployment-readiness-consent",
         "WEB-session-revocation-draft-isolation",
         "WEB-current-public-Swagger-viewer",
-        "ANDROID-native-PNG-picker-send-view-delete"
+        "ANDROID-native-PNG-picker-send-view-delete",
+        "WEB-JPEG-GIF-private-image-lifecycle",
+        "WEB-viewer-download-format-mismatch"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -291,7 +303,8 @@
         "notification-readiness/summary.json",
         "web-session-contract/logout.json",
         "web-session-contract/swagger.json",
-        "native-image/summary.json"
+        "native-image/summary.json",
+        "web-image-formats/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -822,22 +835,27 @@
           "requirement": "[#44 — просмотр изображений](https://github.com/Egkurilov/BOOHTACORD/issues/44): в настоящем браузере TEXT и DM проверить Escape, возврат фокуса, narrow viewport, удалённое/недоступное вложение, protected preview/download и ACL обоих участников.",
           "source_checkbox": " ",
           "id": "I131.C5",
-          "status": "PARTIAL",
+          "status": "FAIL",
           "execution_cases": [
             "DM-actual_image_upload_and_protected_download",
-            "ANDROID-native-PNG-picker-send-view-delete"
+            "ANDROID-native-PNG-picker-send-view-delete",
+            "WEB-JPEG-GIF-private-image-lifecycle",
+            "WEB-viewer-download-format-mismatch"
           ],
           "evidence": [
             "privacy-result.json#/checks/actual_image_upload_and_protected_download",
-            "native-image/summary.json"
+            "native-image/summary.json",
+            "web-image-formats/summary.json"
           ],
-          "execution": "node .out/qa-goal/privacy_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal",
-          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
+          "execution": "node .out/qa-goal/privacy_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
+          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "privacy-result.json#/checks/actual_image_upload_and_protected_download; native-image/summary.json",
+          "result": "privacy-result.json#/checks/actual_image_upload_and_protected_download; native-image/summary.json; web-image-formats/summary.json",
           "witness_limits": [
             "DM-actual_image_upload_and_protected_download: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
-            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim."
+            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
+            "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
+            "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance"
           ]
         },
         {
@@ -973,7 +991,9 @@
         "ANDROID-OS-microphone-denial",
         "ANDROID-populated-prejoin-no-permission",
         "WEB-session-revocation-draft-isolation",
-        "ANDROID-native-PNG-picker-send-view-delete"
+        "ANDROID-native-PNG-picker-send-view-delete",
+        "WEB-JPEG-GIF-private-image-lifecycle",
+        "WEB-viewer-download-format-mismatch"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -982,7 +1002,8 @@
         "voice-permission/summary.json",
         "native-prejoin/summary.json",
         "web-session-contract/logout.json",
-        "native-image/summary.json"
+        "native-image/summary.json",
+        "web-image-formats/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -4507,19 +4528,24 @@
           "requirement": "#143: deployed runtime acceptance of implemented F01–F10 in #240/#131/#132; policy limits under NAT/trusted proxy, bounded uploads/WS, privacy, history resources and accessibility. Capacity #243/#58 is separate.",
           "source_checkbox": " ",
           "id": "I287.C15",
-          "status": "PARTIAL",
+          "status": "FAIL",
           "execution_cases": [
-            "ANDROID-native-PNG-picker-send-view-delete"
+            "ANDROID-native-PNG-picker-send-view-delete",
+            "WEB-JPEG-GIF-private-image-lifecycle",
+            "WEB-viewer-download-format-mismatch"
           ],
           "evidence": [
-            "native-image/summary.json"
+            "native-image/summary.json",
+            "web-image-formats/summary.json"
           ],
-          "execution": "Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal",
-          "platform": "Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
+          "execution": "Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
+          "platform": "Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "native-image/summary.json",
+          "result": "native-image/summary.json; web-image-formats/summary.json",
           "witness_limits": [
-            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim."
+            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
+            "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
+            "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance"
           ]
         },
         {
@@ -4549,7 +4575,9 @@
         "ANDROID-real-filechooser-cancel",
         "NAV-desktop-DM-no-voice-mutation",
         "ANDROID-native-PNG-picker-send-view-delete",
-        "WINDOWS-native-admin-entry"
+        "WINDOWS-native-admin-entry",
+        "WEB-JPEG-GIF-private-image-lifecycle",
+        "WEB-viewer-download-format-mismatch"
       ],
       "evidence": [
         "privacy-result.json",
@@ -4558,7 +4586,8 @@
         "web-session-contract/logout.json",
         "web-session-contract/android-filechooser.json",
         "native-image/summary.json",
-        "windows-admin-entry-attempt.json"
+        "windows-admin-entry-attempt.json",
+        "web-image-formats/summary.json"
       ],
       "defects": [],
       "blockers": [
@@ -5481,21 +5510,26 @@
           "execution_cases": [
             "ANDROID-DM-input-actions",
             "WEB-session-revocation-draft-isolation",
-            "ANDROID-native-PNG-picker-send-view-delete"
+            "ANDROID-native-PNG-picker-send-view-delete",
+            "WEB-JPEG-GIF-private-image-lifecycle",
+            "WEB-viewer-download-format-mismatch"
           ],
           "evidence": [
             "native-chat/summary.json",
             "web-session-contract/logout.json",
-            "native-image/summary.json"
+            "native-image/summary.json",
+            "web-image-formats/summary.json"
           ],
-          "execution": "node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal",
-          "platform": "Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
+          "execution": "node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
+          "platform": "Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "native-chat/summary.json; web-session-contract/logout.json; native-image/summary.json",
+          "result": "native-chat/summary.json; web-session-contract/logout.json; native-image/summary.json; web-image-formats/summary.json",
           "witness_limits": [
             "ANDROID-DM-input-actions: Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim",
             "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance",
-            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim."
+            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
+            "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
+            "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance"
           ]
         },
         {
@@ -5652,7 +5686,9 @@
         "ANDROID-real-filechooser-cancel",
         "NAV-desktop-DM-no-voice-mutation",
         "ANDROID-native-PNG-picker-send-view-delete",
-        "WINDOWS-native-admin-entry"
+        "WINDOWS-native-admin-entry",
+        "WEB-JPEG-GIF-private-image-lifecycle",
+        "WEB-viewer-download-format-mismatch"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -5669,7 +5705,8 @@
         "web-session-contract/logout.json",
         "web-session-contract/android-filechooser.json",
         "native-image/summary.json",
-        "windows-admin-entry-attempt.json"
+        "windows-admin-entry-attempt.json",
+        "web-image-formats/summary.json"
       ],
       "defects": [
         579,

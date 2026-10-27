@@ -1,0 +1,11 @@
+import {chromium,root} from './privacy_fixture.mjs'
+import {writeFile} from 'node:fs/promises'
+const browser=await chromium.launch({channel:'chrome',headless:false}),page=await browser.newPage()
+const report={at_utc:new Date().toISOString(),scope:'Isolated minimal native HTML dialog browser control; no app acceptance',browser:browser.version()}
+try{
+ await page.setContent('<dialog><a href="data:text/plain,fixture" download="fixture.txt">Download</a><button>Close</button></dialog>')
+ await page.evaluate(()=>{document.querySelector('dialog').showModal();document.querySelector('button').focus()})
+ report.initial_button_focused=await page.locator('button').evaluate(n=>document.activeElement===n)
+ await page.keyboard.press('Tab');report.Tab_link_focused=await page.locator('a').evaluate(n=>document.activeElement===n);report.Tab_focus_inside_dialog=await page.locator('dialog').evaluate(n=>n.contains(document.activeElement))
+ await page.keyboard.press('Shift+Tab');report.ShiftTab_button_focused=await page.locator('button').evaluate(n=>document.activeElement===n)
+}finally{await browser.close();await writeFile(new URL('native-dialog-control-result.json',root),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report))}

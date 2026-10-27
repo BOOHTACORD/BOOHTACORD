@@ -1,0 +1,70 @@
+{
+  "status": "FAIL_VIEWER_DOWNLOAD",
+  "web_source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "API_source": "UNKNOWN",
+  "runtime": {
+    "OS": "physical Windows",
+    "browser": "155.0.8059.85",
+    "headless": false,
+    "viewports_CSS_px": [
+      1440,
+      390
+    ],
+    "physical_mobile": false
+  },
+  "passed_scope": "Owned JPEG/GIF upload has no auto-send; real sender/peer viewer decode, separate original card download, Escape/focus, protected original/preview ACL and post-delete denial",
+  "failure_scope": "Viewer Download downloads normalized PNG blob while suggesting original .jpg/.gif extension; card download returns original bytes/format",
+  "actual_downloads": [
+    {
+      "input": "JPEG",
+      "viewer": {
+        "actual_download_event": true,
+        "bytes": 153,
+        "detected_format": "PNG",
+        "suggested_extension": "jpg",
+        "matches_original_sha256": false,
+        "extension_matches_encoding": false
+      },
+      "card": {
+        "actual_download_event": true,
+        "bytes": 774,
+        "detected_format": "JPEG",
+        "suggested_extension": "jpg",
+        "matches_original_sha256": true,
+        "extension_matches_encoding": true
+      }
+    },
+    {
+      "input": "GIF",
+      "viewer": {
+        "actual_download_event": true,
+        "bytes": 107,
+        "detected_format": "PNG",
+        "suggested_extension": "gif",
+        "matches_original_sha256": false,
+        "extension_matches_encoding": false
+      },
+      "card": {
+        "actual_download_event": true,
+        "bytes": 205,
+        "detected_format": "GIF",
+        "suggested_extension": "gif",
+        "matches_original_sha256": true,
+        "extension_matches_encoding": true
+      }
+    }
+  ],
+  "candidate_source_edge": "clients/web/src/conversation/ProtectedImageViewer.vue:74 links imageUrl (protected preview Blob) with download=props.name",
+  "cleanup": {
+    "owned_messages_deleted": true,
+    "post_delete_access_verified": true,
+    "download_tempfiles_remaining": 0
+  },
+  "harness_note": "First attempt incorrectly required Tab to wrap directly from last control to first. Minimal native HTML dialog in the same Chrome shows the same outside-dialog Tab and ShiftTab return; this is not filed as a product keyboard defect",
+  "limits": [
+    "DM only; no TEXT, clipboard, 507/retry, third ADMIN, physical mobile browser, OS picker or native JPEG/GIF acceptance",
+    "GIF preview decode is checked; GIF animation/render quality is not accepted by this test",
+    "No attachment/image bytes, actual private messages, usernames/IDs, tokens or raw browser storage published",
+    "First helper assertion was corrected; final helpers reproduce final download/lifecycle observations. Full manual keyboard/AT acceptance remains separate"
+  ]
+}

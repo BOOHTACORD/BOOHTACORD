@@ -1,0 +1,20 @@
+"""Create tiny deterministic owned test inputs; never copy user attachments."""
+import hashlib
+import json
+from pathlib import Path
+import PIL
+from PIL import Image,ImageDraw
+
+root=Path(__file__).parent
+before=json.loads((root/'image-format-fixtures.json').read_text(encoding='utf-8')) if (root/'image-format-fixtures.json').exists() else None
+a=Image.new('RGB',(64,48),'#2244cc');ImageDraw.Draw(a).rectangle((0,0,31,47),fill='#ee5522')
+a.save(root/'qa-format-fixture.jpg',quality=92,subsampling=0)
+b=Image.new('RGB',(32,32),'#ee4422');c=Image.new('RGB',(32,32),'#11cc66')
+b.save(root/'qa-format-fixture.gif',save_all=True,append_images=[c],duration=250,loop=0)
+rows=[{'filename':'qa-format-fixture.jpg','mime':'image/jpeg','format':'JPEG','pixels':[64,48]},
+      {'filename':'qa-format-fixture.gif','mime':'image/gif','format':'GIF','pixels':[32,32],'frames':2}]
+for row in rows:
+    raw=(root/row['filename']).read_bytes();row.update(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+if before:assert [r['sha256'] for r in rows]==[r['sha256'] for r in before],'Input bytes changed'
+(root/'image-format-fixtures.json').write_text(json.dumps(rows,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps({'fixture_formats':[r['format'] for r in rows],'Pillow':PIL.__version__,'byte_identical_to_executed_inputs':bool(before)}))

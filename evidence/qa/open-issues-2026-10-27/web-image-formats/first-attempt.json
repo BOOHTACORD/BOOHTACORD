@@ -1,0 +1,38 @@
+{
+  "status": "FAIL",
+  "at_utc": "2026-10-27T01:03:03.361Z",
+  "origin": "https://v.bootybay.ru",
+  "browser": "155.0.8059.85",
+  "headless": false,
+  "api_mocks": false,
+  "scope": "Owned MEMBER B/C DM; JPEG/GIF input pipeline, actual downloads and protected ACL; file input API, not OS picker",
+  "cases": [
+    {
+      "format": "JPEG",
+      "status": "RUNNING",
+      "viewport": 1440,
+      "no_auto_send_after_upload": true,
+      "send_http": 201,
+      "peer_attachment_visible": true,
+      "actual_preview_decoded": true,
+      "viewer_rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "viewport_width": 1440,
+        "viewport_height": 900
+      }
+    }
+  ],
+  "cleanup": [
+    {
+      "owned_delete_http": 204
+    }
+  ],
+  "web_source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "failed_at": "JPEG_viewer",
+  "error_type": "Error",
+  "timeout": true,
+  "download_tempfiles_remaining": 0
+}

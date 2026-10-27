@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-27T00:54:25.800014+00:00",
+  "at_utc": "2026-10-27T01:10:34.357873+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "android-font-before-controls.png": {
@@ -19,8 +19,8 @@
       "sha256": "6c8e9b21cf52f493a4e3a69256746f70f7a565d4fa3af8a97430c3133b1bf944"
     },
     "cases.json": {
-      "bytes": 20713,
-      "sha256": "b4eff02eb56d91d764cd0318a9f41d3712206ffbb32ecf74bef94fa0b22ef724"
+      "bytes": 22474,
+      "sha256": "8fd2ad49c5f1698dfacbdd42e18301005fcdb9664c25c5071079c4e6f1fc7ef6"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -39,8 +39,8 @@
       "sha256": "57bb3a875edf514ab507a6b1c1100e0d8c2cc3a0ef30520fe3d3497622b6a6f0"
     },
     "matrix.json": {
-      "bytes": 482811,
-      "sha256": "5c7041fa5c8224f19fa604298e11fe694aef94cc08af9412bb8e3cb6551ad6cc"
+      "bytes": 486803,
+      "sha256": "cb20a9fc87f6a405fb6129b6575a027efb8f585151819919c836b55f6b6fe52f"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -239,8 +239,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 8803,
-      "sha256": "d98ffe222b62de04d2e4057930c70952a2f5325e024a4757bd2c623d61a9335b"
+      "bytes": 9196,
+      "sha256": "29ada69f6d5adc9b9a0ed512674ca809b180fb96abb1b6ba7560db79a0a5f1e7"
     },
     "restored-microphone.json": {
       "bytes": 269,
@@ -302,6 +302,10 @@
       "bytes": 4563,
       "sha256": "53ca9dc38ac48cd5780308d7dc1927466ceb63bc9e2497963c9a4ccc301efb02"
     },
+    "runner-source/image_format_fixtures.py.txt": {
+      "bytes": 1340,
+      "sha256": "c75e50339318760b216790ab189af6aa4782df878bb19b8d6129276cc3194c0b"
+    },
     "runner-source/native_attachment_peer.mjs.txt": {
       "bytes": 5140,
       "sha256": "2d10f4d6dfbd941103de172ce40fe048643c725b84978a5b1e78c9554a6fb963"
@@ -309,6 +313,10 @@
     "runner-source/native_chat_peer.mjs.txt": {
       "bytes": 2650,
       "sha256": "f62285ba0bb72a7a24056de2bbfd00f532b5533964bb798bbb1f859418c2de37"
+    },
+    "runner-source/native_dialog_control.mjs.txt": {
+      "bytes": 1241,
+      "sha256": "535e44861f4e7858a1b4396a40c4e49489f54408a14ee4edd4adcdd8642824e5"
     },
     "runner-source/native_prejoin_run.mjs.txt": {
       "bytes": 3768,
@@ -366,6 +374,14 @@
       "bytes": 3605,
       "sha256": "c5e8986592ecb0f6e519ce278c3dea27017aef01e9aaf33095c2450b5af40c54"
     },
+    "runner-source/web_image_format_checks.mjs.txt": {
+      "bytes": 3101,
+      "sha256": "7f38598b2d460db1b70cdc4e9af9483592105a9a613356c445c70b1ca75b55ce"
+    },
+    "runner-source/web_image_formats_run.mjs.txt": {
+      "bytes": 6081,
+      "sha256": "fe709c7e680b896114bfd6ee0640bdc0fcef131efeaf2677b2f133444ed4cdf1"
+    },
     "runner-source/web_logout_run.mjs.txt": {
       "bytes": 4714,
       "sha256": "57f0c185edb680606bed7f8dcd6b9ed85d92888ed2bd4f7539315968d0cc67bd"
@@ -405,6 +421,30 @@
     "web-first-attempt.json": {
       "bytes": 3081,
       "sha256": "d129e600aa94b4c1665d0531a81d1086f9c19c28bd05050eaa8d886cda9cfd00"
+    },
+    "web-image-formats/browser-dialog-control.json": {
+      "bytes": 292,
+      "sha256": "ecaeff20f1bbb2e430d7f4639d36cc52775b08d29515420beb60860ed788a0c7"
+    },
+    "web-image-formats/duplicate-search.json": {
+      "bytes": 2558,
+      "sha256": "05d9117458d50ef04b04464cdac252e12d9445eb7182045de7a01067cc1f75b8"
+    },
+    "web-image-formats/first-attempt.json": {
+      "bytes": 952,
+      "sha256": "9c5be28c28676415848435fe20e6d3acc70e990ef040bf29057a122f75ffcedf"
+    },
+    "web-image-formats/fixture-metadata.json": {
+      "bytes": 496,
+      "sha256": "853badcce29fcd46aa4ccd2928272c51fce4562226169f2d763c9f1e139da181"
+    },
+    "web-image-formats/result.json": {
+      "bytes": 3951,
+      "sha256": "c58ac455e80579b78acfce9dc3a91161c58d41d9f483864f71a95ad2b20d1a27"
+    },
+    "web-image-formats/summary.json": {
+      "bytes": 2795,
+      "sha256": "7ea06e67850a8967f68791245c5f2e332c3cf9f3b6d889b22d36652e8f07e761"
     },
     "web-result.json": {
       "bytes": 3957,
