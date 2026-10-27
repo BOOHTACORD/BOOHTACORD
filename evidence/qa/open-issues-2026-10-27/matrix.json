@@ -151,10 +151,12 @@
         "DM-draft_navigation_and_reload",
         "DM-actual_send_receive_and_peer_display",
         "DM-actual_message_actions",
-        "DM-actual_image_upload_and_protected_download"
+        "DM-actual_image_upload_and_protected_download",
+        "NOTIFY-deployment-readiness-consent"
       ],
       "evidence": [
-        "privacy-result.json"
+        "privacy-result.json",
+        "notification-readiness/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -230,13 +232,15 @@
         "DM-actual_image_upload_and_protected_download",
         "ROSTER-populated-prejoin",
         "ANDROID-DM-receive",
-        "ANDROID-DM-input-actions"
+        "ANDROID-DM-input-actions",
+        "NOTIFY-deployment-readiness-consent"
       ],
       "evidence": [
         "native-realtime-result.json",
         "privacy-result.json",
         "web-result.json",
-        "native-chat/summary.json"
+        "native-chat/summary.json",
+        "notification-readiness/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -583,12 +587,14 @@
         "ANDROID-DM-receive",
         "AUDIO-audibility",
         "ANDROID-DM-input-actions",
-        "ANDROID-OS-microphone-denial"
+        "ANDROID-OS-microphone-denial",
+        "ANDROID-populated-prejoin-no-permission"
       ],
       "evidence": [
         "native-realtime-result.json",
         "native-chat/summary.json",
-        "voice-permission/summary.json"
+        "voice-permission/summary.json",
+        "native-prejoin/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -855,13 +861,15 @@
         "ANDROID-DM-receive",
         "AUDIO-audibility",
         "ANDROID-DM-input-actions",
-        "ANDROID-OS-microphone-denial"
+        "ANDROID-OS-microphone-denial",
+        "ANDROID-populated-prejoin-no-permission"
       ],
       "evidence": [
         "native-realtime-result.json",
         "privacy-result.json",
         "native-chat/summary.json",
-        "voice-permission/summary.json"
+        "voice-permission/summary.json",
+        "native-prejoin/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -2260,7 +2268,7 @@
       "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240",
       "packet": "backend_and_runtime",
-      "status": "PENDING",
+      "status": "PARTIAL",
       "criteria": [
         {
           "section": "Сессия, backend admission и security",
@@ -2523,8 +2531,12 @@
           "result": null
         }
       ],
-      "execution_cases": [],
-      "evidence": [],
+      "execution_cases": [
+        "NOTIFY-deployment-readiness-consent"
+      ],
+      "evidence": [
+        "notification-readiness/summary.json"
+      ],
       "defects": [],
       "blockers": [],
       "source_body_sha256": "7cca703010a69ef8a373315fc6e27adac88f81ff7c8be3a80976e06bfdaba9d3",
@@ -3764,11 +3776,13 @@
       ],
       "execution_cases": [
         "ROSTER-populated-prejoin",
-        "ANDROID-OS-microphone-denial"
+        "ANDROID-OS-microphone-denial",
+        "ANDROID-populated-prejoin-no-permission"
       ],
       "evidence": [
         "web-result.json",
-        "voice-permission/summary.json"
+        "voice-permission/summary.json",
+        "native-prejoin/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -3995,11 +4009,13 @@
       ],
       "execution_cases": [
         "NAV-Web-shortcut",
-        "ANDROID-DM-receive"
+        "ANDROID-DM-receive",
+        "ANDROID-populated-prejoin-no-permission"
       ],
       "evidence": [
         "native-realtime-result.json",
-        "quickjump-result.json"
+        "quickjump-result.json",
+        "native-prejoin/summary.json"
       ],
       "defects": [
         580
@@ -5226,7 +5242,8 @@
         "AUDIO-audibility",
         "ANDROID-DM-two-x-text-and-IME",
         "ANDROID-DM-input-actions",
-        "ANDROID-OS-microphone-denial"
+        "ANDROID-OS-microphone-denial",
+        "ANDROID-populated-prejoin-no-permission"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -5238,7 +5255,8 @@
         "windows-dialog.json",
         "android-text-scale-review.json",
         "native-chat/summary.json",
-        "voice-permission/summary.json"
+        "voice-permission/summary.json",
+        "native-prejoin/summary.json"
       ],
       "defects": [
         579,
@@ -6640,7 +6658,7 @@
       "title": "[Epic][NOTIFY][P1] Фоновые уведомления Web/iOS/Android: личные сообщения, упоминания и безопасный self-hosted push",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/554",
       "packet": "notification_epic",
-      "status": "PENDING",
+      "status": "PARTIAL",
       "criteria": [
         {
           "section": "2. Текущее состояние — что переиспользуем",
@@ -6903,11 +6921,16 @@
           "result": null
         }
       ],
-      "execution_cases": [],
-      "evidence": [],
+      "execution_cases": [
+        "NOTIFY-deployment-readiness-consent"
+      ],
+      "evidence": [
+        "notification-readiness/summary.json"
+      ],
       "defects": [],
       "blockers": [
-        "Installed latest public Android 1.0.45 source9c221897 does not contain notification implementation merge25024b4e (git ancestry exit1); Web source072426d6 does (exit0). Signed Android candidate with that implementation and real provider readiness still required."
+        "Installed latest public Android 1.0.45 source9c221897 does not contain notification implementation merge25024b4e (git ancestry exit1); Web source072426d6 does (exit0). Signed Android candidate with that implementation and real provider readiness still required.",
+        "Actual production capability: operator_enabled=false, web_push_available=false, no VAPID key; device count0. Real provider alert/tap cannot run until a configured approved transport is available."
       ],
       "source_body_sha256": "3c9e491604dd805e1886b7e6d135575e048bbb77839c08bb1e749f61d13699ae",
       "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
@@ -6917,7 +6940,7 @@
       "title": "[NOTIFY-10][P1] Сквозная приёмка уведомлений Web/iOS/Android: доставка, приватность, отказоустойчивость и release gate",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/564",
       "packet": "notification_acceptance",
-      "status": "PENDING",
+      "status": "PARTIAL",
       "criteria": [
         {
           "section": "Устройство и жизненный цикл",
@@ -7141,11 +7164,16 @@
           "result": null
         }
       ],
-      "execution_cases": [],
-      "evidence": [],
+      "execution_cases": [
+        "NOTIFY-deployment-readiness-consent"
+      ],
+      "evidence": [
+        "notification-readiness/summary.json"
+      ],
       "defects": [],
       "blockers": [
-        "Installed latest public Android 1.0.45 source9c221897 does not contain notification implementation merge25024b4e (git ancestry exit1); Web source072426d6 does (exit0). Signed Android candidate with that implementation and real provider readiness still required."
+        "Installed latest public Android 1.0.45 source9c221897 does not contain notification implementation merge25024b4e (git ancestry exit1); Web source072426d6 does (exit0). Signed Android candidate with that implementation and real provider readiness still required.",
+        "Actual production capability: operator_enabled=false, web_push_available=false, no VAPID key; device count0. Real provider alert/tap cannot run until a configured approved transport is available."
       ],
       "source_body_sha256": "097a7b8d654382cd99c5e280430e00885410f04c544c1c778eb3ac009ccff4f7",
       "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"

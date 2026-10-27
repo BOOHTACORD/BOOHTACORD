@@ -65,6 +65,18 @@ Android and Windows releases in the current first page, not a new master build.
   The initial controller left listener mode active and its incomplete restoration
   is retained; explicit leave/HOME/resume/rejoin restored mic80 and the actual
   peer roster from3/muted2 to the original3/muted1. Audibility is still NOT_RUN.
+- [Notification readiness/consent](notification-readiness/summary.json) verifies
+  actual operator-off/Web-Push-unavailable state, honest disabled device UI,
+  account consent keyboard toggling without permission/device registration,
+  invalid-Origin403, anonymous401 and wrong-account409. Logical owned preferences
+  were restored. Provider delivery/tap is BLOCKED by real deployed configuration;
+  no operator setting or provider credential was changed.
+- [Physical Android populated prejoin](native-prejoin/summary.json): quick-jump
+  VOICE selection shows the two actual peers before joining, with RECORD_AUDIO
+  denied, no permission prompt/microphone FGS, and both explicit join choices.
+  Both peer names were matched privately; public image masks names/avatars.
+  The first harness used wrong button labels; corrected shipping labels passed.
+  Exact original permission and connected microphone/roster state were restored.
 
 ## Reproduction and privacy
 

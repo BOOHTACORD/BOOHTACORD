@@ -1,0 +1,80 @@
+"""Physical prejoin via the shipping quick-jump UI; never output member names."""
+import json
+import os
+import re
+import sys
+import time
+from pathlib import Path
+from android_permission_ui import APP,PERMISSION,ROOT,call,nodes,label,state,permission,prompt,tap_named,select_room
+
+
+def b(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+
+
+def inspect():
+    rows=nodes();labels=[label(n) for n in rows];data=state()
+    names=json.loads(os.environ.get('QA_PREJOIN_NAMES','[]'))
+    own=os.environ.get('QA_PREJOIN_SELF','')
+    visible=[n for n in rows if 300<=b(n)[1]<1900 and 0<b(n)[3]-b(n)[1]<=250 and n.get('class')!='android.widget.EditText']
+    exact=lambda name,n:name==label(n) or name in [s.strip() for s in label(n).splitlines()]
+    data['expected_member_names_matched']=sum(any(exact(name,n) for n in visible) for name in names)
+    data['self_member_visible']=bool(own and any(exact(own,n) for n in visible))
+    data['search_heading_visible']=any(s=='Каналы и люди' for s in labels)
+    data['drawer_open']=any('Закрыть навигацию' in s for s in labels)
+    data['manual_join_controls']=[{'label':label(n),'bounds':b(n),'enabled':n.get('enabled')=='true'} for n in rows if label(n) in ['Подключиться к голосу','Подключиться без микрофона'] and n.get('clickable')=='true']
+    data['empty_roster_visible']=any('Пока никого нет' in s for s in labels)
+    if names and len(names)==2 and data['expected_member_names_matched']==2 and not data['search_heading_visible'] and not data['drawer_open'] and len(data['manual_join_controls'])>=2:
+        from PIL import Image,ImageDraw
+        import hashlib,subprocess
+        raw=subprocess.check_output([__import__('android_permission_ui').ADB,'exec-out','screencap','-p'],timeout=20)
+        file=ROOT/'native-prejoin-original.png';file.write_bytes(raw)
+        image=Image.open(file);draw=ImageDraw.Draw(image);rects=[]
+        for n in rows:
+            if 0<b(n)[3]-b(n)[1]<=350 and any(exact(name,n) for name in names+([own] if own else [])):
+                rect=b(n);draw.rectangle(rect,fill='#60646f');rects.append(rect)
+        target=ROOT/'native-prejoin-redacted.png';image.save(target)
+        data['capture']={'original_sha256':hashlib.sha256(raw).hexdigest(),'redacted_file':target.name,'sha256':hashlib.sha256(target.read_bytes()).hexdigest(),'name_rectangles':rects,'resampled':False}
+    return data
+
+
+action=sys.argv[1]
+if action=='select-denied':
+    original=state()
+    if not original['permission']['granted'] or not original['voice_connected'] or not original['microphone_fgs']:raise RuntimeError('Expected original connected microphone state')
+    (ROOT/'native-prejoin-original-state.json').write_text(json.dumps(original),encoding='utf-8')
+    tap_named('Выйти из голосового канала')
+    call('shell','pm','revoke',APP,PERMISSION)
+    call('shell','am','start','-n',APP+'/.MainActivity');nodes()
+    tap_named('Открыть навигацию');tap_named('Поиск',contains=True)
+    tap_named('Каналы и люди',contains=True,required=False)
+    rows=nodes();fields=[n for n in rows if n.get('class')=='android.widget.EditText']
+    if len(fields)!=1:raise RuntimeError('Expected one actual quick-jump query')
+    field=fields[0];box=b(field);call('shell','input','tap',str((box[0]+box[2])//2),str((box[1]+box[3])//2))
+    length=len(field.get('text') or '')
+    if length>200:raise RuntimeError('Unexpected query')
+    call('shell','input','keyevent','KEYCODE_MOVE_END',*(['67']*length));call('shell','input','text','SHARE_TEST')
+    rows=nodes();matches=[n for n in rows if n.get('class')=='android.widget.Button' and n.get('clickable')=='true' and 'SHARE_TEST' in label(n) and b(n)[3]-b(n)[1]<=250]
+    if len(matches)!=1:raise RuntimeError('Expected one authorized SHARE_TEST result')
+    box=b(matches[0]);call('shell','input','tap',str((box[0]+box[2])//2),str((box[1]+box[3])//2))
+elif action=='restore':
+    original=json.loads((ROOT/'native-prejoin-original-state.json').read_text(encoding='utf-8'))
+    if prompt(nodes()):call('shell','input','keyevent','KEYCODE_BACK')
+    if original['permission']['granted']:call('shell','pm','grant',APP,PERMISSION)
+    for flag,cli in [('USER_FIXED','user-fixed'),('USER_SET','user-set')]:
+        if flag not in original['permission']['flags'] and flag in permission()['flags']:call('shell','pm','clear-permission-flags',APP,PERMISSION,cli)
+    for _ in range(2):
+        current=state()
+        if current['voice_connected'] and current['microphone_fgs']:break
+        if current['voice_connected']:tap_named('Выйти из голосового канала')
+        call('shell','input','keyevent','KEYCODE_HOME');call('shell','am','start','-n',APP+'/.MainActivity')
+        for _ in range(2):
+            if state()['navigation_available']:break
+            call('shell','input','keyevent','KEYCODE_BACK')
+        joined=tap_named('Подключиться к голосу',required=False)
+        if not joined:select_room()
+        for _ in range(8):
+            if state()['voice_connected'] and state()['microphone_fgs']:break
+            time.sleep(1)
+elif action!='inspect':raise ValueError('Unknown action')
+data=inspect();(ROOT/('native-prejoin-'+action+'.json')).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+print(json.dumps(data,ensure_ascii=True))

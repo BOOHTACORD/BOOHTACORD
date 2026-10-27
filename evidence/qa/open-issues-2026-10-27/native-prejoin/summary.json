@@ -1,0 +1,48 @@
+{
+  "status": "PASS_SCOPED",
+  "route": "shipping quick-jump VOICE selection; direct channel affordance intentionally joins",
+  "device": "physical Samsung SM-A576B Android16",
+  "candidate": "signed1.0.45+2080/source9c221897",
+  "checks": {
+    "actual_populated_roster_names_matched_privately": 2,
+    "REST_participants_after_own_leave": 2,
+    "permission_denied": true,
+    "no_auto_join": true,
+    "no_microphone_FGS": true,
+    "no_OS_permission_prompt": true,
+    "manual_join_controls_enabled": true,
+    "not_false_empty": true,
+    "original_permission_restored_exact": true,
+    "final_actual_peer_participants": 3,
+    "final_actual_peer_muted_count": 1
+  },
+  "visual_review": {
+    "source_pixels": [
+      1080,
+      2340
+    ],
+    "resampled": false,
+    "identity_rows_masked": [
+      [
+        119,
+        1081,
+        906,
+        1177
+      ],
+      [
+        119,
+        1171,
+        906,
+        1267
+      ]
+    ],
+    "sha256": "9826f3d9cba42d9c1e99f8b32810d86963f1b1276bf05cc8bb9f847f2a32f0c2",
+    "observations": "Header/card both show2; disconnected state explicit; both manual join buttons fit with readable text; no visible overlap at system1x"
+  },
+  "limits": [
+    "Initial harness had wrong expected button labels and asserted FAIL; exact shipping labels corrected before second run",
+    "No injected503/retry, different ACL views, native Windows/iOS/macOS prejoin or human audibility acceptance",
+    "Original image stays private; public copy masks member names and their adjacent avatars without resizing",
+    "API source UNKNOWN; no dependency availability/capacity claim"
+  ]
+}

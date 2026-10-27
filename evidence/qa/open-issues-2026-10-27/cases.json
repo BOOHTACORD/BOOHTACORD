@@ -292,6 +292,40 @@
       ],
       "result": "voice-permission/summary.json",
       "limits": "Original attempt restoration was incomplete; retained raw, followed by verified explicit restoration. No audibility or all-device acceptance."
+    },
+    {
+      "id": "NOTIFY-deployment-readiness-consent",
+      "status": "PASS_SCOPED",
+      "protects": "Unavailable provider state is explicit; account consent is separate from device permission/registration and private settings reject bad Origin/account scope",
+      "command": "node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs",
+      "platform": "Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only",
+      "mandatory_when": "Before provider/device E2E and notification release acceptance",
+      "issues": [
+        53,
+        54,
+        240,
+        554,
+        564
+      ],
+      "result": "notification-readiness/summary.json",
+      "limits": "Provider delivery and real OS alert/tap BLOCKED: operator disabled, no Web Push/VAPID readiness. No global configuration changed."
+    },
+    {
+      "id": "ANDROID-populated-prejoin-no-permission",
+      "status": "PASS_SCOPED",
+      "protects": "VOICE quick-jump selection shows actual occupied room before explicit join without microphone permission/request/FGS or false-empty roster",
+      "command": "node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py",
+      "platform": "Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer",
+      "mandatory_when": "Before accepting Android populated prejoin/no-auto-join microphone-permission rows",
+      "issues": [
+        62,
+        131,
+        272,
+        283,
+        303
+      ],
+      "result": "native-prejoin/summary.json",
+      "limits": "No injected503/recovery, all ACL roles, other native platforms, capacity or audibility. Original state restored."
     }
   ]
 }

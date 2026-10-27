@@ -1,0 +1,47 @@
+{
+  "at_utc": "2026-10-26T23:31:12.486Z",
+  "origin": "https://v.bootybay.ru",
+  "method": "Read-only real HTTPS with existing controlled MEMBER session; no provider registration or preference mutations",
+  "rows": {
+    "preferences": {
+      "http": 200,
+      "content_type": "application/json; charset=utf-8",
+      "preferences": {
+        "version": 1,
+        "enabled": false,
+        "revision": 0,
+        "imported": false,
+        "override_count": 0,
+        "capability_available": false,
+        "device_transport": "unavailable"
+      }
+    },
+    "capabilities": {
+      "http": 200,
+      "content_type": "application/json; charset=utf-8",
+      "version": 1,
+      "account_matches": true,
+      "origin_matches": true,
+      "operator_enabled": false,
+      "web_push_available": false,
+      "vapid_public_key_present": false,
+      "session_binding_present": true
+    },
+    "devices": {
+      "http": 200,
+      "content_type": "application/json; charset=utf-8",
+      "device_count": 0
+    },
+    "wrong_account_header": {
+      "http": 409,
+      "content_type": "application/json; charset=utf-8"
+    },
+    "anonymous_notification-preferences": {
+      "http": 401
+    },
+    "anonymous_capabilities": {
+      "http": 401
+    }
+  },
+  "provider_E2E": "BLOCKED_NOT_PROVEN_AVAILABLE"
+}

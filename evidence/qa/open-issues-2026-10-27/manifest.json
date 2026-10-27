@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-26T22:36:02.730092+00:00",
+  "at_utc": "2026-10-27T00:02:09.678699+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "android-font-before-controls.png": {
@@ -19,8 +19,8 @@
       "sha256": "6c8e9b21cf52f493a4e3a69256746f70f7a565d4fa3af8a97430c3133b1bf944"
     },
     "cases.json": {
-      "bytes": 12658,
-      "sha256": "b0d5293ae90fb14f41b8ec7f61eee7e284ed49adb02b36558256b5a744567464"
+      "bytes": 14400,
+      "sha256": "291685de50d3ef978eda5de554b640fd9f9b535b6d9c04fc75715196a0667ea5"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -31,8 +31,8 @@
       "sha256": "57bb3a875edf514ab507a6b1c1100e0d8c2cc3a0ef30520fe3d3497622b6a6f0"
     },
     "matrix.json": {
-      "bytes": 447492,
-      "sha256": "63b8a858112ce4aef5754c78c5c082c10cc419fbe2dea00aca12847086aea9af"
+      "bytes": 448862,
+      "sha256": "cbcca5f99d6d65ec149ec8771f7eb02fab3d2ea5458f65f0080876e144b48f1e"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -114,9 +114,41 @@
       "bytes": 468,
       "sha256": "68de728e20d86bf56ebeb31910908b4d4be5a2634d6404f29091374a3c44b5d9"
     },
+    "native-prejoin/attempt1.json": {
+      "bytes": 2455,
+      "sha256": "b350420f91267adb81fa38d9ef65d04a8a7bcf322a45febdb19e41644cfa3e39"
+    },
+    "native-prejoin/attempt2.json": {
+      "bytes": 3707,
+      "sha256": "6a77a000cff234472e79e6c21205b9728ff0d6d9dd3ac86b7fa43893b9d481bc"
+    },
+    "native-prejoin/prejoin-private-rows-masked.png": {
+      "bytes": 131532,
+      "sha256": "9826f3d9cba42d9c1e99f8b32810d86963f1b1276bf05cc8bb9f847f2a32f0c2"
+    },
+    "native-prejoin/summary.json": {
+      "bytes": 1628,
+      "sha256": "bd548a9cbc702756f8ca40ba68e2712874b2bfc7e1190be0715cc11df0e1031d"
+    },
     "native-realtime-result.json": {
       "bytes": 1038,
       "sha256": "a2046aa2c717a26156ebaa76452a328292356b16fe8eb5c48b8922928de74b6b"
+    },
+    "notification-readiness/readiness.json": {
+      "bytes": 1310,
+      "sha256": "60f5227603cb73d2e982c6b72abaa79d311234977e3d509208ee1124d396044a"
+    },
+    "notification-readiness/settings-ui.json": {
+      "bytes": 614,
+      "sha256": "d2fc4d6027ceed4ee84d736d8ea29a57ff1dfe6e61ef6875a2266c2ca0aa42e0"
+    },
+    "notification-readiness/settings-unavailable.png": {
+      "bytes": 46880,
+      "sha256": "d4e48cfd6814fdf7d484177c91b3bfa9808aae053efa23a7714a80f07f703de5"
+    },
+    "notification-readiness/summary.json": {
+      "bytes": 3216,
+      "sha256": "8d76a88f955c916667355c912e7b2db3d22b1cc94af21cbcba084aeb20ea5ca2"
     },
     "privacy-result.json": {
       "bytes": 2567,
@@ -131,8 +163,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 6329,
-      "sha256": "e00b2803c3b76b32c98e49d57b7f0be3b282a72e931549da8b0e73c1c6e3d459"
+      "bytes": 7260,
+      "sha256": "371c6e9504f0cbd55173d41b7a70ac543457b26f65955d14edfdfc990c747508"
     },
     "restored-microphone.json": {
       "bytes": 269,
@@ -162,6 +194,10 @@
       "bytes": 3350,
       "sha256": "6efbab0584a9ed02cda2a72978604fd5fbfbed274cc825b57fc638b1797b114e"
     },
+    "runner-source/android_prejoin_ui.py.txt": {
+      "bytes": 5457,
+      "sha256": "02b1c8fb79962f2bb4afe4547e3541f963a66bd50c893582765a8b3e400c2e56"
+    },
     "runner-source/android_realtime.py.txt": {
       "bytes": 2114,
       "sha256": "90ba1b575452973fc1136cccb5c61bbcb9380c132e7d23f4f5104c142c11d670"
@@ -170,9 +206,17 @@
       "bytes": 4217,
       "sha256": "8cb9371b5cef4a2e40f6acf9e84275d3f0fdd3082f7ff22a035cbd1fd1c5a763"
     },
+    "runner-source/bundle_prejoin.py.txt": {
+      "bytes": 4563,
+      "sha256": "53ca9dc38ac48cd5780308d7dc1927466ceb63bc9e2497963c9a4ccc301efb02"
+    },
     "runner-source/native_chat_peer.mjs.txt": {
       "bytes": 2650,
       "sha256": "f62285ba0bb72a7a24056de2bbfd00f532b5533964bb798bbb1f859418c2de37"
+    },
+    "runner-source/native_prejoin_run.mjs.txt": {
+      "bytes": 3768,
+      "sha256": "ddab3b952ba20a5cbb211e83d52bc1c9c71a895fdf6c7562946bb53595e63953"
     },
     "runner-source/native_reaction_read.mjs.txt": {
       "bytes": 1510,
@@ -181,6 +225,14 @@
     "runner-source/native_realtime_run.mjs.txt": {
       "bytes": 2451,
       "sha256": "187dcade4358e2b225946fe23e4dc005d2ee436013ef1c1a9236cf80be1dad0b"
+    },
+    "runner-source/notification_readiness.mjs.txt": {
+      "bytes": 2791,
+      "sha256": "d7da03130bad5581b92cb2e7e1cdc4351f7c7d0dfcf8f7faad33c4e76434e2af"
+    },
+    "runner-source/notification_settings_ui.mjs.txt": {
+      "bytes": 5270,
+      "sha256": "4ba2fcd8d268c29a96ea73c542ada6d7c497e73d721f70e525e0f182f37738d3"
     },
     "runner-source/privacy_actions.mjs.txt": {
       "bytes": 5898,

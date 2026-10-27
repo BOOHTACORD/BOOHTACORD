@@ -1,0 +1,92 @@
+{
+  "status": "FAIL",
+  "origin": "https://v.bootybay.ru",
+  "route": "Physical native quick jump selects VOICE via shipping factory.selectChannel; not the direct channel join affordance",
+  "names_logged": false,
+  "before": {
+    "participants": 3,
+    "muted": 1
+  },
+  "selected": {
+    "at_utc": "2026-10-26T23:55:56.249600+00:00",
+    "permission": {
+      "granted": false,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false,
+    "expected_member_names_matched": 0,
+    "self_member_visible": false,
+    "search_heading_visible": false,
+    "drawer_open": false,
+    "manual_join_controls": [],
+    "empty_roster_visible": false
+  },
+  "prejoin": {
+    "at_utc": "2026-10-26T23:56:01.457064+00:00",
+    "permission": {
+      "granted": false,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false,
+    "expected_member_names_matched": 2,
+    "self_member_visible": false,
+    "search_heading_visible": false,
+    "drawer_open": false,
+    "manual_join_controls": [],
+    "empty_roster_visible": false
+  },
+  "after": {
+    "participants": 2,
+    "muted": 1
+  },
+  "error_type": "AssertionError",
+  "restored": {
+    "at_utc": "2026-10-26T23:56:46.227167+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": true,
+    "voice_connected": true,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false,
+    "expected_member_names_matched": 0,
+    "self_member_visible": false,
+    "search_heading_visible": false,
+    "drawer_open": false,
+    "manual_join_controls": [],
+    "empty_roster_visible": false
+  },
+  "permission_restored_exact": true,
+  "final": {
+    "participants": 3,
+    "muted": 1
+  }
+}

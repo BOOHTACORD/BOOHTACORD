@@ -1,0 +1,56 @@
+"""Retain actual native prejoin receipts and deterministically mask identity rows."""
+import hashlib
+import json
+import shutil
+from pathlib import Path
+from PIL import Image,ImageDraw
+
+ROOT=Path(__file__).resolve().parents[2]
+SRC=Path(__file__).parent
+OUT=ROOT/'evidence/qa/open-issues-2026-10-27'
+PACK=OUT/'native-prejoin'
+PACK.mkdir(exist_ok=True)
+result=json.loads((SRC/'native-prejoin-result.json').read_text(encoding='utf-8'))
+first=json.loads((SRC/'native-prejoin-first-attempt.json').read_text(encoding='utf-8'))
+assert result['status']=='PASS_SCOPED' and result['permission_restored_exact']
+prejoin=result['prejoin']
+assert prejoin['expected_member_names_matched']==2 and not prejoin['permission']['granted']
+assert all(c['enabled'] for c in prejoin['manual_join_controls'])
+image=Image.open(SRC/'native-prejoin-original.png');draw=ImageDraw.Draw(image);rects=[]
+for name_box in prejoin['capture']['name_rectangles']:
+    rect=[max(0,name_box[0]-100),max(0,name_box[1]-24),name_box[2],name_box[3]+24]
+    draw.rectangle(rect,fill='#60646f');rects.append(rect)
+image.save(PACK/'prejoin-private-rows-masked.png')
+summary={'status':'PASS_SCOPED','route':'shipping quick-jump VOICE selection; direct channel affordance intentionally joins',
+         'device':'physical Samsung SM-A576B Android16','candidate':'signed1.0.45+2080/source9c221897',
+         'checks':{'actual_populated_roster_names_matched_privately':2,'REST_participants_after_own_leave':2,
+                   'permission_denied':True,'no_auto_join':True,'no_microphone_FGS':True,'no_OS_permission_prompt':True,
+                   'manual_join_controls_enabled':True,'not_false_empty':True,'original_permission_restored_exact':True,
+                   'final_actual_peer_participants':3,'final_actual_peer_muted_count':1},
+         'visual_review':{'source_pixels':list(image.size),'resampled':False,'identity_rows_masked':rects,
+                          'sha256':hashlib.sha256((PACK/'prejoin-private-rows-masked.png').read_bytes()).hexdigest(),
+                          'observations':'Header/card both show2; disconnected state explicit; both manual join buttons fit with readable text; no visible overlap at system1x'},
+         'limits':['Initial harness had wrong expected button labels and asserted FAIL; exact shipping labels corrected before second run',
+                   'No injected503/retry, different ACL views, native Windows/iOS/macOS prejoin or human audibility acceptance',
+                   'Original image stays private; public copy masks member names and their adjacent avatars without resizing',
+                   'API source UNKNOWN; no dependency availability/capacity claim']}
+for name,data in [('attempt1.json',first),('attempt2.json',result),('summary.json',summary)]:
+    (PACK/name).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+for name in ['android_prejoin_ui.py','native_prejoin_run.mjs','bundle_prejoin.py']:
+    shutil.copyfile(SRC/name,OUT/'runner-source'/(name+'.txt'))
+case={'id':'ANDROID-populated-prejoin-no-permission','status':'PASS_SCOPED',
+      'protects':'VOICE quick-jump selection shows actual occupied room before explicit join without microphone permission/request/FGS or false-empty roster',
+      'command':'node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py',
+      'platform':'Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer',
+      'mandatory_when':'Before accepting Android populated prejoin/no-auto-join microphone-permission rows',
+      'issues':[62,131,272,283,303],'result':'native-prejoin/summary.json',
+      'limits':'No injected503/recovery, all ACL roles, other native platforms, capacity or audibility. Original state restored.'}
+file=OUT/'cases.json';data=json.loads(file.read_text(encoding='utf-8'));data['cases']=[c for c in data['cases'] if c['id']!=case['id']]+[case]
+file.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+file=OUT/'matrix.json';data=json.loads(file.read_text(encoding='utf-8'))
+for item in data['issues']:
+    if item['number'] in case['issues']:
+        item['execution_cases']=list(dict.fromkeys(item['execution_cases']+[case['id']]))
+        item['evidence']=list(dict.fromkeys(item['evidence']+[case['result']]))
+file.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps({'prejoin':'PASS_SCOPED','identity_rows_masked':len(rects),'original_state_restored':True}))

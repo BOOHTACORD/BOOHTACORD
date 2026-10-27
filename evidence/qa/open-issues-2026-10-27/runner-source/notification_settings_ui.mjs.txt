@@ -1,0 +1,43 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile} from 'node:fs/promises'
+import {fileURLToPath} from 'node:url'
+import {chromium,expect,root,origin} from './privacy_fixture.mjs'
+const input=JSON.parse(await readFile(new URL('private-fixture.json',root),'utf8'))
+const state=JSON.parse(await readFile(new URL('private-session-b.json',root),'utf8'))
+const browser=await chromium.launch({channel:'chrome',headless:false})
+const context=await browser.newContext({storageState:state,viewport:{width:1440,height:1000}})
+const report={status:'RUNNING',origin,headless:false,scope:'Only controlled MEMBER notification preferences; operator/provider configuration untouched'}
+let before,page,phase='setup',deviceMutations=0
+await context.addInitScript(()=>{window.__permissionCalls=0;const f=Notification.requestPermission.bind(Notification);Notification.requestPermission=(...a)=>{window.__permissionCalls++;return f(...a)}})
+context.on('request',r=>{if(r.method()!=='GET'&&new URL(r.url()).pathname.startsWith('/api/v1/notification-devices'))deviceMutations++})
+const headers={Origin:origin,'Content-Type':'application/json','X-Notification-Account':input.b.id}
+const prefs=async()=>{const r=await context.request.get(origin+'/api/v1/notification-preferences',{headers});assert.equal(r.status(),200);return r.json()}
+try{
+ page=await context.newPage();page.setDefaultTimeout(12000);await page.goto(origin);await expect(page.getByTestId('app-shell')).toBeVisible()
+ const auth=await context.request.get(origin+'/api/v1/auth/session'),identity=await auth.json();assert.equal(identity.account_id,input.b.id);assert.equal(identity.role,'MEMBER')
+ before=await prefs();assert.equal(before.settings.enabled,false);report.original_revision=before.settings.revision
+ phase='invalid_Origin_same_settings'
+ const bad=await context.request.put(origin+'/api/v1/notification-preferences',{headers:{...headers,Origin:'https://qa.invalid'},data:{settings:before.settings,expected_revision:before.settings.revision}})
+ report.invalid_origin_http=bad.status();assert.equal(bad.status(),403);assert.equal((await prefs()).settings.revision,before.settings.revision)
+ phase='actual_notification_settings'
+ const opener=page.getByRole('button',{name:'Открыть настройки профиля',exact:true});await opener.click()
+ await page.getByRole('tab',{name:'Уведомления',exact:true}).click()
+ const panel=page.locator('.remote-notifications');await expect(panel).toBeVisible()
+ await expect(panel.getByText('Оператор отключил доставку уведомлений.',{exact:true})).toBeVisible()
+ const enable=panel.getByRole('button',{name:'Включить на этом устройстве',exact:true});await expect(enable).toBeDisabled()
+ const consent=panel.getByLabel('Разрешить фоновые уведомления для аккаунта');await expect(consent).not.toBeChecked()
+ phase='keyboard_account_consent_without_device_prompt';await consent.focus();await page.keyboard.press('Space')
+ await expect.poll(async()=>(await prefs()).settings.enabled).toBe(true);await expect(consent).toBeChecked();await expect(enable).toBeDisabled()
+ assert.equal(await page.evaluate(()=>window.__permissionCalls),0);assert.equal(deviceMutations,0)
+ await consent.focus();await page.keyboard.press('Space');await expect.poll(async()=>(await prefs()).settings.enabled).toBe(false)
+ report.permission_request_calls=await page.evaluate(()=>window.__permissionCalls);report.device_mutation_requests=deviceMutations
+ report.account_consent_keyboard_toggle='PASS';report.operator_unavailable_status='PASS';report.device_enable_disabled='PASS'
+ await panel.screenshot({path:fileURLToPath(new URL('notification-settings-unavailable.png',root))})
+ phase='settings_close';report.is_modal=await panel.evaluate(n=>Boolean(n.closest('dialog,[role="dialog"]')))
+ const close=page.getByRole('button',{name:'Закрыть настройки',exact:true});await close.focus();await page.keyboard.press('Enter');await expect(panel).toBeHidden()
+ report.keyboard_close_via_header='PASS';report.focus_returned=await opener.evaluate(n=>document.activeElement===n);report.status='PASS_SCOPED';report.browser=browser.version()
+}catch(e){report.status='FAIL';report.failed_at=phase;report.error_type=e.name;report.timeout=/timeout/i.test(e.message)}
+finally{
+ if(before){try{let current=await prefs();if(current.settings.enabled!==before.settings.enabled){const restored={...current.settings,enabled:before.settings.enabled};const r=await context.request.put(origin+'/api/v1/notification-preferences',{headers,data:{settings:restored,expected_revision:current.settings.revision}});report.cleanup_put_http=r.status();current=await prefs()}report.logical_settings_restored=JSON.stringify({...current.settings,revision:0})===JSON.stringify({...before.settings,revision:0});report.final_revision=current.settings.revision;if(!report.logical_settings_restored)report.status='FAIL_RESTORATION'}catch(e){report.restoration_error_type=e.name;report.status='FAIL_RESTORATION'}}
+ await context.close();await browser.close();await writeFile(new URL('notification-settings-result.json',root),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report))
+}

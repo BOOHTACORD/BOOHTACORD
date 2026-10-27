@@ -1,0 +1,30 @@
+import {createRequire} from 'node:module'
+import {readFile,writeFile} from 'node:fs/promises'
+const {request}=createRequire('C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/clients/web/package.json')('@playwright/test')
+const root=new URL('./',import.meta.url),origin='https://v.bootybay.ru'
+const input=JSON.parse(await readFile(new URL('private-fixture.json',root),'utf8'))
+const context=await request.newContext({storageState:JSON.parse(await readFile(new URL('private-session-b.json',root),'utf8'))})
+const report={at_utc:new Date().toISOString(),origin,method:'Read-only real HTTPS with existing controlled MEMBER session; no provider registration or preference mutations',rows:{}}
+async function read(name,path,headers={}){
+ const r=await context.get(origin+'/api/v1'+path,{headers:{Origin:origin,...headers}})
+ let d;try{d=await r.json()}catch{}
+ const row={http:r.status(),content_type:r.headers()['content-type']??null}
+ if(name==='capabilities'&&r.ok()){
+  row.version=d.version;row.account_matches=d.account_id===input.b.id;row.origin_matches=d.origin===origin
+  for(const k of['operator_enabled','web_push_available'])row[k]=typeof d[k]==='boolean'?d[k]:'UNKNOWN'
+  row.vapid_public_key_present=typeof d.vapid_public_key==='string'&&d.vapid_public_key.length>0
+  row.session_binding_present=typeof d.session_ref==='string'&&d.session_ref.length>0
+ }
+ if(name==='preferences'&&r.ok())row.preferences={version:d.settings?.version,enabled:d.settings?.enabled,revision:d.settings?.revision,imported:d.settings?.imported,override_count:d.settings?.overrides?.length,capability_available:d.capability?.available,device_transport:d.capability?.device_transport}
+ if(name==='devices'&&r.ok())row.device_count=Array.isArray(d.devices)?d.devices.length:'UNKNOWN'
+ report.rows[name]=row
+}
+try{
+ await read('preferences','/notification-preferences',{'X-Notification-Account':input.b.id})
+ await read('capabilities','/notification-devices/capabilities')
+ await read('devices','/notification-devices')
+ await read('wrong_account_header','/notification-preferences',{'X-Notification-Account':input.c.id})
+ const anon=await request.newContext();for(const path of['/notification-preferences','/notification-devices/capabilities']){const r=await anon.get(origin+'/api/v1'+path);report.rows['anonymous_'+path.split('/').at(-1)]={http:r.status()}}await anon.dispose()
+ report.provider_E2E=report.rows.capabilities.http===200&&report.rows.capabilities.web_push_available===true?'READY_FOR_SEPARATE_DEVICE_CONSENT_CHECK':'BLOCKED_NOT_PROVEN_AVAILABLE'
+}catch(e){report.status='BLOCKED';report.error_type=e.name}
+finally{await context.dispose();await writeFile(new URL('notification-readiness-result.json',root),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report))}
