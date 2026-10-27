@@ -142,6 +142,15 @@ control crops were inspected. No audibility or receiving SDK/PCM claim is made;
 immediate FGS snapshots have asynchronous lag. The original UIAutomator/encoding
 controller limits remain explicit. No full QA gate is closed.
 
+## Physical Android orientation checkpoint
+
+[Two actual rotation runs](android-orientation/summary.json) preserved the owned
+draft and voice membership, but landscape with Gboard failed visual acceptance:
+the voice Leave control covers Send, with123×81px overlap. Android Back exposes
+Send again. Original rotation settings, empty draft, permission and voice were
+restored after each run. Published source-sized control crops mask the draft.
+No tap in the overlapping region or accidental-disconnect claim is made.
+
 ## Execution map
 
 `acceptance-methods.json` maps24 native/manual methods to the protected invariant,

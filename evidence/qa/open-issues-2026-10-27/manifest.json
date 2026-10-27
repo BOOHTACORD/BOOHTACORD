@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-27T02:40:29.826505+00:00",
+  "at_utc": "2026-10-27T03:01:29.359792+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -18,13 +18,89 @@
       "bytes": 71272,
       "sha256": "a4480b17ccd0f6579f556104a70a274bfd3ad8a42cb9e04a41e644eeacc870e0"
     },
+    "android-orientation/candidate.json": {
+      "bytes": 1001,
+      "sha256": "82d27e0172a364921d1b707f17747067bdd24ac2587ea757bbe783d4dd04f01a"
+    },
+    "android-orientation/duplicate-search.json": {
+      "bytes": 3942,
+      "sha256": "58c0c56f733bb943b5d35c00ecd74b77f7627e1cda2e57e2f6e462ff5db25151"
+    },
+    "android-orientation/initial-state.json": {
+      "bytes": 1900,
+      "sha256": "8212263470e8ba44554c0bc9ba315f0b55b7a1563fb95145a783f7462a8405cd"
+    },
+    "android-orientation/overlap-analysis.json": {
+      "bytes": 1399,
+      "sha256": "8ddb3457228a7744287e43a71607192163366e6f4e000d2a863b03db3ca60027"
+    },
+    "android-orientation/overlap.json": {
+      "bytes": 502,
+      "sha256": "6bb9b8c1f9f20c32d8030da61d1ec6eee4d66a0b5455963832e757f4c76ef92d"
+    },
+    "android-orientation/reproduce.md": {
+      "bytes": 3587,
+      "sha256": "b7640038e4bb34dbe23c38abc1612eb7478963fc9c6b0a1d803799746d96e187"
+    },
+    "android-orientation/run1/control-crops.json": {
+      "bytes": 2024,
+      "sha256": "15ee2f453d454095ff371decb26e66ad00e9da18d21f74484bbf4f202384ef69"
+    },
+    "android-orientation/run1/orientation-controls-landscape-back.png": {
+      "bytes": 18156,
+      "sha256": "9b36099033852307625d82a8ba89e8e38ef95f6cef51022cba2e9fe4341c1236"
+    },
+    "android-orientation/run1/orientation-controls-landscape-ime.png": {
+      "bytes": 7194,
+      "sha256": "8330d2975223a3bbf955c0bb876fc4aff82c3b60d22be10f5f7b482513f3395b"
+    },
+    "android-orientation/run1/orientation-controls-portrait-draft-ready.png": {
+      "bytes": 27585,
+      "sha256": "a731c9e3dc7b2e5879329fa519ca6e4c0acfa2522e122779fbe1e7cdc4e7e651"
+    },
+    "android-orientation/run1/orientation-controls-portrait-return-draft.png": {
+      "bytes": 27444,
+      "sha256": "2de963b99beb895e8c94263f3554255d79941fae4124829daabe47a67f5811d5"
+    },
+    "android-orientation/run1/result.json": {
+      "bytes": 16631,
+      "sha256": "bb349f22d08c3aaa5dac2baa83e727436bdae8ba88d39942e50469cb2726261e"
+    },
+    "android-orientation/run2/control-crops.json": {
+      "bytes": 2024,
+      "sha256": "772a4e9126f8f67b194a6afb93047251615473619fce372eb6956e2bfe253aea"
+    },
+    "android-orientation/run2/orientation-controls-landscape-back.png": {
+      "bytes": 18177,
+      "sha256": "cadc85820ddba6d84189e720e53ac784828e3dbb1fe396b5859ba2e0ce55c13a"
+    },
+    "android-orientation/run2/orientation-controls-landscape-ime.png": {
+      "bytes": 7194,
+      "sha256": "8330d2975223a3bbf955c0bb876fc4aff82c3b60d22be10f5f7b482513f3395b"
+    },
+    "android-orientation/run2/orientation-controls-portrait-draft-ready.png": {
+      "bytes": 27599,
+      "sha256": "0b20e1f6bc081f0eebefcaf48328275725a3f722c60882bf27659923b662a9b8"
+    },
+    "android-orientation/run2/orientation-controls-portrait-return-draft.png": {
+      "bytes": 27173,
+      "sha256": "0c03fd4ae3ad82c2c895e089e1def8971a68dc25723bd1c3b1ca613433abaee9"
+    },
+    "android-orientation/run2/result.json": {
+      "bytes": 16631,
+      "sha256": "a4cee48e543260fa85b6e3ac0c715d1962412749312d0c3a59d3c08599f067cc"
+    },
+    "android-orientation/summary.json": {
+      "bytes": 2968,
+      "sha256": "1d0cacd727ad4a7146e52e759c844f8866407b30184c0649f9bce4c1784a45bc"
+    },
     "android-text-scale-review.json": {
       "bytes": 7578,
       "sha256": "6c8e9b21cf52f493a4e3a69256746f70f7a565d4fa3af8a97430c3133b1bf944"
     },
     "cases.json": {
-      "bytes": 31756,
-      "sha256": "33c64b393cb3dcfdd203dff0c9a713fa77568df4be14dd9ec41f186b65d076df"
+      "bytes": 35361,
+      "sha256": "0ec7dd8eec281756c7c45150884c1d648dbaa005ee9c62cd7f6ebe803dede413"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -55,8 +131,8 @@
       "sha256": "57bb3a875edf514ab507a6b1c1100e0d8c2cc3a0ef30520fe3d3497622b6a6f0"
     },
     "matrix.json": {
-      "bytes": 1156079,
-      "sha256": "8142444fa6a71731903160ad65e6b0bbd70d52cc46dc45f874730caf05d80e42"
+      "bytes": 1158125,
+      "sha256": "ae66cd7e73a35e1460d31ec6f7acf954bb255067712ef7810ed13ed7881f34b2"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -343,8 +419,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 11356,
-      "sha256": "7b27f91572285c2b5bf4d73e0469de8ca9c4b09c35b5dbcfc0cbcb8a5f257228"
+      "bytes": 11873,
+      "sha256": "75229f878630c130479a7d8e967727c5c849381b85c08ea9fd574df42c00b0e1"
     },
     "restored-microphone.json": {
       "bytes": 269,
@@ -381,6 +457,14 @@
     "runner-source/android_navigation.py.txt": {
       "bytes": 3400,
       "sha256": "9e425880df2cddf64d82a1e8f28996ba53f54d22000ffdcbc245c31fedd31604"
+    },
+    "runner-source/android_orientation_run.py.txt": {
+      "bytes": 3954,
+      "sha256": "1616f2eb8d2566d871ae1852a01c106843b9174b4abdfa17a0d920c4287a0e9c"
+    },
+    "runner-source/android_orientation_state.py.txt": {
+      "bytes": 3941,
+      "sha256": "52ea71c881ee683d47e52cbe5127e92d091f0cd1d83e49d98f7cc8de60aff227"
     },
     "runner-source/android_permission_ui.py.txt": {
       "bytes": 3350,
@@ -474,6 +558,14 @@
       "bytes": 5270,
       "sha256": "4ba2fcd8d268c29a96ea73c542ada6d7c497e73d721f70e525e0f182f37738d3"
     },
+    "runner-source/orientation_candidate.py.txt": {
+      "bytes": 1625,
+      "sha256": "2141009fb3c8c3cc31ac3e83be5ccddc10d09ca445de32e8b369451ee357aeff"
+    },
+    "runner-source/orientation_control_crops.py.txt": {
+      "bytes": 1576,
+      "sha256": "0ab6a6196eec550e6cced1c07a48653b7c55c0853658f8dd31132151ac2541b7"
+    },
     "runner-source/package_unittest_log.py.txt": {
       "bytes": 2376,
       "sha256": "fdb0744d4c5fba6c9d429d1eeda8bad9fa72554cea453bc7c5a168fd12567dad"
@@ -509,6 +601,10 @@
     "runner-source/public_readback.py.txt": {
       "bytes": 2402,
       "sha256": "ea107670c4bc38456db4edcc75432aa3d79bd9d1c42b05d7c78f431a40f25f90"
+    },
+    "runner-source/publish_android_orientation.py.txt": {
+      "bytes": 8513,
+      "sha256": "a568f48794bbac31221915ac45c42842d247bc23212a08aac94d897281109e66"
     },
     "runner-source/publish_native_ptt.py.txt": {
       "bytes": 9020,

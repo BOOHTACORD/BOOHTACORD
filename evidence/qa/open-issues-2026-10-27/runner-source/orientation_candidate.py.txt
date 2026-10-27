@@ -1,0 +1,14 @@
+"""Fresh source-bound installed APK receipt and IME version, with no identifiers/content."""
+import json,re
+from datetime import datetime,timezone
+from android_permission_ui import APP,ROOT,call,state
+expected=json.loads((ROOT/'ptt-final-candidate.json').read_text(encoding='utf-8'))['candidate']
+paths=call('shell','pm','path',APP).splitlines();apk=[p.removeprefix('package:') for p in paths if p.endswith('/base.apk')];assert len(apk)==1
+digest=call('shell','sha256sum',apk[0]).split()[0];assert digest==expected['installed_apk_sha256']
+raw=call('shell','dumpsys','package',APP);version=re.search(r'versionName=([^\s]+)',raw)[1];code=int(re.search(r'versionCode=(\d+)',raw)[1])
+ime=call('shell','dumpsys','package','com.google.android.inputmethod.latin');gboard=re.search(r'versionName=([^\s]+)',ime)[1]
+result={'at_utc':datetime.now(timezone.utc).isoformat(),'version':version,'version_code':code,'installed_apk_sha256':digest,'source_commit':expected['source_commit'],
+ 'source_binding':'Fresh installed hash matches the prior verified signed candidate; current evidence worktree is a distinct source identity.',
+ 'model':call('shell','getprop','ro.product.model').strip(),'android_release':call('shell','getprop','ro.build.version.release').strip(),'android_api':int(call('shell','getprop','ro.build.version.sdk').strip()),'gboard_version':gboard,'final_native_state':state()}
+assert result['final_native_state']['microphone_fgs'] and result['final_native_state']['voice_connected']
+(ROOT/'orientation-candidate.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(result))

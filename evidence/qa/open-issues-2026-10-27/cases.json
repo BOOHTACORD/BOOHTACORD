@@ -616,6 +616,34 @@
         303
       ],
       "limits": "PC observer read actual server roster under an independent MEMBER session; no receiving SDK track flag, decoded audio or acoustic measurement.; Immediate FGS snapshots lag state changes: some DOWN samples show no FGS and some release samples still showmic80. Only settled resume/no-FGS and final restoredmic80 are established.; UI voice_connected is label presence: account-menu occlusion does not prove disconnect; actual roster membership stayed3.; Initial audio-settings UIAutomator observations returned no XML/ParseError. Source-sized screenshot proved screen present; one observed option tap was used. No duplicate audio-open or product bug inferred.; Subprocess stdout encoding corrupted only copied UI labels; corrected native UTF8 file is retained without rerunning cases.; No incoming phone call/system-call interruption, TalkBack, iOS, actual finger, long background/lock, audibility, audio-frame suppression, connected-peer SFU silence, network reconnect or two-APK upgrade acceptance."
+    },
+    {
+      "id": "ANDROID-orientation-draft-voice-retention",
+      "status": "PASS_SCOPED",
+      "protects": "Real Android display rotation preserves unsent owned draft, Back behavior, voice roster and original settings.",
+      "command": "python -X utf8 .out/qa-goal/android_orientation_state.py focus portrait-ime; python -X utf8 .out/qa-goal/android_orientation_state.py type portrait-draft; python -X utf8 .out/qa-goal/android_orientation_run.py; python -X utf8 .out/qa-goal/orientation_control_crops.py",
+      "platform": "Samsung SM-A576B; Android16/API36; density450; font1.0; actual signed native candidate and Gboard",
+      "mandatory_when": "Before accepting Android portrait/landscape keyboard layout and Flutter parity in QA303/62; add regression coverage under QA302.",
+      "result": "android-orientation/summary.json",
+      "issues": [
+        62,
+        303
+      ],
+      "limits": "Real Android system display rotation was forced temporarily; physical accelerometer/gravity response was not tested.; Only landscape90 was executed, not landscape270, another device/IME or iOS.; The overlap was not clicked: hit-test, actual Send failure and accidental disconnect are not claimed.; No server send/mutation was requested; no packet capture or audibility claim.; Text inserted through Android input text; Gboard window is real, but this is not a Gboard typing/selection acceptance.; Full-screen visuals/keyboard suggestion content are private; published controls are source-sized, redacted crops. IME mInputShown and actual component retained in native receipts.; Original empty text/settings/voice restored; exact focus/selection restoration was not asserted.; Current master APK was not installed/retested; source-specific candidate observation only."
+    },
+    {
+      "id": "ANDROID-landscape-ime-send-voice-dock-overlap",
+      "status": "FAIL",
+      "protects": "Real-device orientation/IME preserves the owned unsent draft and voice membership; Send must remain visible and separate from the voice leave control.",
+      "command": "python -X utf8 .out/qa-goal/android_orientation_state.py focus portrait-ime; python -X utf8 .out/qa-goal/android_orientation_state.py type portrait-draft; python -X utf8 .out/qa-goal/android_orientation_run.py; python -X utf8 .out/qa-goal/orientation_control_crops.py",
+      "platform": "Samsung SM-A576B; Android16/API36; density450; font1.0; actual signed native candidate and Gboard",
+      "mandatory_when": "Before accepting Android portrait/landscape keyboard layout and Flutter parity in QA303/62; add regression coverage under QA302.",
+      "result": "android-orientation/summary.json",
+      "issues": [
+        62,
+        303
+      ],
+      "limits": "Real Android system display rotation was forced temporarily; physical accelerometer/gravity response was not tested.; Only landscape90 was executed, not landscape270, another device/IME or iOS.; The overlap was not clicked: hit-test, actual Send failure and accidental disconnect are not claimed.; No server send/mutation was requested; no packet capture or audibility claim.; Text inserted through Android input text; Gboard window is real, but this is not a Gboard typing/selection acceptance.; Full-screen visuals/keyboard suggestion content are private; published controls are source-sized, redacted crops. IME mInputShown and actual component retained in native receipts.; Original empty text/settings/voice restored; exact focus/selection restoration was not asserted.; Current master APK was not installed/retested; source-specific candidate observation only."
     }
   ]
 }

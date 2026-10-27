@@ -1,0 +1,97 @@
+{
+  "at_utc": "2026-10-27T02:58:45.282Z",
+  "all_states": true,
+  "searches": [
+    {
+      "query": "is:issue \"landscape\" \"composer\"",
+      "topn": 30,
+      "results": [
+        {
+          "number": 303,
+          "title": "[UIUX-2026][UX-14][P1] Физическая UX-приёмка macOS/Windows/Android/iOS и мобильного Web",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/303"
+        },
+        {
+          "number": 289,
+          "title": "[UIUX-2026][EPIC] Единый UI/UX BOOHTACORD — Web + Flutter desktop/mobile",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/289"
+        }
+      ]
+    },
+    {
+      "query": "is:issue \"Android\" \"перекрывает\"",
+      "topn": 30,
+      "results": []
+    },
+    {
+      "query": "is:issue \"voice dock\" \"keyboard\"",
+      "topn": 30,
+      "results": [
+        {
+          "number": 301,
+          "title": "[UIUX-2026][UX-12][P1] Accessibility WCAG 2.2 AA + Flutter Semantics для ключевых сценариев",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/301"
+        },
+        {
+          "number": 347,
+          "title": "[DISCORD-WEB][DW-08][P1] Упростить голосовой интерфейс: prejoin, connected, mute/deafen и компактный dock",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/347"
+        },
+        {
+          "number": 344,
+          "title": "[DISCORD-WEB][DW-05][P1] Уплотнить дерево каналов и левую навигацию без изменения структуры гильдии",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/344"
+        },
+        {
+          "number": 302,
+          "title": "[UIUX-2026][UX-13][P1] Автотесты UI/UX: viewport matrix, visual snapshots и сценарии E2E",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/302"
+        },
+        {
+          "number": 289,
+          "title": "[UIUX-2026][EPIC] Единый UI/UX BOOHTACORD — Web + Flutter desktop/mobile",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/289"
+        },
+        {
+          "number": 501,
+          "title": "[Flutter][Web parity][P1] Voice и Screen: mini-player, управление и компактный UI",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/501"
+        },
+        {
+          "number": 339,
+          "title": "[DISCORD-WEB][EPIC] Уплотнить Web UX до Discord-like: меньше текста, единые controls, удобные чат и голос",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/339"
+        }
+      ]
+    },
+    {
+      "query": "is:issue \"Gboard\" \"landscape\"",
+      "topn": 30,
+      "results": [
+        {
+          "number": 303,
+          "title": "[UIUX-2026][UX-14][P1] Физическая UX-приёмка macOS/Windows/Android/iOS и мобильного Web",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/303"
+        }
+      ]
+    }
+  ],
+  "related_review": [
+    {
+      "number": 501,
+      "state": "closed",
+      "title": "[Flutter][Web parity][P1] Voice и Screen: mini-player, управление и компактный UI"
+    },
+    {
+      "number": 302,
+      "state": "open",
+      "title": "[UIUX-2026][UX-13][P1] Автотесты UI/UX: viewport matrix, visual snapshots и сценарии E2E"
+    },
+    {
+      "number": 347,
+      "state": "closed",
+      "title": "[DISCORD-WEB][DW-08][P1] Упростить голосовой интерфейс: prejoin, connected, mute/deafen и компактный dock"
+    }
+  ],
+  "conclusion": "No exact reported Gboard + physical Android landscape + connected voice Send/Leave overlap found. #501 describes broad short-viewport/dock parity, #302 regression coverage; both are related, not this concrete runtime defect."
+}

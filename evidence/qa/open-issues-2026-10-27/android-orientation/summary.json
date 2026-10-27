@@ -1,0 +1,40 @@
+{
+  "at_utc": "2026-10-27T03:00:29.522650+00:00",
+  "status": "FAIL_LAYOUT; PASS_SCOPED_DRAFT_AND_MEMBERSHIP",
+  "physical_device": "Samsung SM-A576B; Android16/API36; density450; font1.0",
+  "candidate": "signed1.0.45+2080/source9c221897fdefec8098f707d61ca5b6e8b28bb0bd; fresh installed APK hash in candidate.json",
+  "gboard_version": "18.5.4.993608717-release-arm64-v8a",
+  "actual_viewports": [
+    [
+      1080,
+      2340
+    ],
+    [
+      2340,
+      1080
+    ]
+  ],
+  "repeat_count": 2,
+  "command": "python -X utf8 .out/qa-goal/android_orientation_state.py focus portrait-ime; python -X utf8 .out/qa-goal/android_orientation_state.py type portrait-draft; python -X utf8 .out/qa-goal/android_orientation_run.py; python -X utf8 .out/qa-goal/orientation_control_crops.py",
+  "protects": "Real-device orientation/IME preserves the owned unsent draft and voice membership; Send must remain visible and separate from the voice leave control.",
+  "mandatory_when": "Before accepting Android portrait/landscape keyboard layout and Flutter parity in QA303/62; add regression coverage under QA302.",
+  "fail": "Connected voice dock visibly covers the DM Send control with Gboard open in landscape. Send [2183,264,2318,399] intersects Leave [2171,318,2306,453] by123x81px in2/2 runs.",
+  "pass_scopes": [
+    "Owned20-character unsent draft retained through portrait→landscape, Android Back, and portrait return.",
+    "Actual Back hid IME and exposed the Send icon again.",
+    "Three voice participants, phone unmuted roster and microphone FGS80 preserved.",
+    "Original accelerometer_rotation=1/user_rotation=0, exact permission flags and empty composer restored."
+  ],
+  "visual_review": "Source-sized composer/dock crops inspected: portrait Send icon visible; landscape with IME Send covered by red Leave control; landscape after Back Send icon visible. Draft/history/identity excluded or masked, no resampling, no approved golden.",
+  "limits": [
+    "Real Android system display rotation was forced temporarily; physical accelerometer/gravity response was not tested.",
+    "Only landscape90 was executed, not landscape270, another device/IME or iOS.",
+    "The overlap was not clicked: hit-test, actual Send failure and accidental disconnect are not claimed.",
+    "No server send/mutation was requested; no packet capture or audibility claim.",
+    "Text inserted through Android input text; Gboard window is real, but this is not a Gboard typing/selection acceptance.",
+    "Full-screen visuals/keyboard suggestion content are private; published controls are source-sized, redacted crops. IME mInputShown and actual component retained in native receipts.",
+    "Original empty text/settings/voice restored; exact focus/selection restoration was not asserted.",
+    "Current master APK was not installed/retested; source-specific candidate observation only."
+  ],
+  "goal_status": "IN_PROGRESS; mandatory gates and43 consolidation decisions remain open"
+}
