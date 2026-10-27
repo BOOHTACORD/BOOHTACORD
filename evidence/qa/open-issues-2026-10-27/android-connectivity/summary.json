@@ -1,0 +1,63 @@
+{
+  "at_utc": "2026-10-27T03:33:47.790206+00:00",
+  "status": "PASS_SCOPED_CLEAN_REPEAT; initial partial/controller failures retained",
+  "physical_device": "Samsung SM-A576B Android16/API36; signed1.0.45+2080/source9c221897fdefec8098f707d61ca5b6e8b28bb0bd; fresh hash candidate.json",
+  "pc_observer": "Actual headed Chrome155.0.8059.85 on Windows; controlled account B; normal authenticated UI, no API mocks; runtime Web source072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "protects": "Own Android secure-cookie message delivery remains functional during actual WiFi→CELLULAR handoff; original Wi-Fi/native UI/voice membership/permission and own test-data cleanup are restored.",
+  "command": "node .out/qa-goal/native_connectivity_run.mjs",
+  "mandatory_when": "Before accepting Android network-change/reconnect facets of QA62/272 and task scripts QA303; this does not replace full audio/SFU/SDK reconnect acceptance.",
+  "wifi_off_intervals_s": [
+    12.852,
+    12.455,
+    11.61
+  ],
+  "guard_deadline_s": 45,
+  "guard_triggered": [
+    false,
+    false,
+    false
+  ],
+  "actual_positive_observations": [
+    "Default network switched from WIFI to CELLULAR with Wi-Fi setting0.",
+    "Before native Send and after actual PC rendering, default remained CELLULAR with INTERNET/VALIDATED and Wi-Fi0.",
+    "Own fixture was received from the exact privately matched phone account and rendered in the actual PC browser.",
+    "After Wi-Fi enable, default returned to validated WIFI, global mobile_data remained1.",
+    "Independent final read found exactly one recent owned message, deleted; native fixture count0 and composer empty.",
+    "Native voice UI connected/unmuted, mic FGS80, exact permission flags and roster3/unmuted preserved at final check."
+  ],
+  "controller_history": [
+    "Run1 required Android VALIDATED and did not send; it stopped partial when the new mobile INTERNET network was not yet validated. Wi-Fi restored.",
+    "Run2 permitted CELLULAR+INTERNET and proved app delivery; in this run Android also became VALIDATED.",
+    "Run2 controller failed cleanup because a popup occluded the underlying DM header. The fixture-specific menu and server author were rechecked before correcting only that guard.",
+    "Two actual Delete/confirm actions were dispatched; immediate tombstone query returned false and the cleanup controller failed.",
+    "Later independent read-only probe found the same recent owned message deleted and no local fixture. Deletion was not repeated. Exact deletion latency/cause of the earlier observation was not measured.",
+    "Run3 used the corrected popup guard, bounded6s tombstone polling and actual PC text-removal assertion. Entire controller passed, fixture deleted and original state restored; runtime Chrome/Web source captured. No manual recovery required."
+  ],
+  "visual_review": "Source-sized1080x307 final native voice dock crop inspected: green connected label, SHARE_TEST3 participants, unmuted microphone control. No identity/message/keyboard suggestion data; no new golden/resampling.",
+  "limits": [
+    "No acoustic, RTP/frame continuity, SFU reconnection or RoomReconnecting/RoomReconnected callback assertion. Only sampled UI/server states; brief transitions could be missed.",
+    "Both radio intervals were about13s, not a long outage/soak/background/lock/revoke/account-switch matrix.",
+    "No VPN/router/Xkeen/provider configuration was changed; no causality attributed to them.",
+    "Watchdog was armed and released with exit0; fallback timeout branch was not exercised. Process inspection after the run found0 remaining guard helpers.",
+    "Native ASCII input injection and real Gboard window; no human/Gboard typing or selection acceptance.",
+    "New master native APK, iOS/macOS/Pixel and original Windows native receiver remain separate unaccepted gates.",
+    "Exact PC Web build was absent in initial runs; clean run3 captured Chrome155.0.8059.85 and runtime Web source072426d6. Android VALIDATED was false in its first mobile sample; app delivery is proven by actual PC receipt and verified CELLULAR/WiFi0 before/after, not inferred from that OS flag."
+  ],
+  "result": "clean-repeat.json",
+  "final_restoration": "clean-repeat.json",
+  "new_product_defect": null,
+  "goal_status": "IN_PROGRESS; mandatory gates and43 consolidation decisions remain open",
+  "clean_repeat_at_utc": "2026-10-27T03:36:02.723Z",
+  "earlier_final_restoration": "cleanup-and-restoration.json",
+  "clean_repeat_server_tombstone_and_PC_body_removed": true,
+  "source_versions": {
+    "run1": "native_connectivity_run.v1.mjs.txt + native_connectivity_ui.v1.py.txt + android_connectivity_state.v1.py.txt",
+    "run2": "native_connectivity_run.v2.mjs.txt + native_connectivity_ui.v2.py.txt + current state helper",
+    "historical_repair": "native_connectivity_repair.mjs.txt + current UI helper; later read-only connectivity_cleanup_probe.mjs.txt",
+    "clean_run3": "native_connectivity_run.mjs.txt + current UI/state/guard helpers"
+  },
+  "historical_recovery_commands": [
+    "node .out/qa-goal/native_connectivity_repair.mjs",
+    "node .out/qa-goal/connectivity_cleanup_probe.mjs"
+  ]
+}

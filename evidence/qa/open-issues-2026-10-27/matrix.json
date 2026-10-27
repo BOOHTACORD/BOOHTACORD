@@ -1074,7 +1074,8 @@
             "ANDROID-native-PNG-picker-send-view-delete",
             "ANDROID-physical-ptt-release-cancel-home",
             "ANDROID-orientation-draft-voice-retention",
-            "ANDROID-landscape-ime-send-voice-dock-overlap"
+            "ANDROID-landscape-ime-send-voice-dock-overlap",
+            "ANDROID-wifi-cellular-native-DM-and-restoration"
           ],
           "evidence": [
             "native-realtime-result.json",
@@ -1084,12 +1085,13 @@
             "web-session-contract/android-filechooser.json",
             "native-image/summary.json",
             "native-ptt/summary.json",
-            "android-orientation/summary.json"
+            "android-orientation/summary.json",
+            "android-connectivity/summary.json"
           ],
           "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal",
           "platform": "Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Physical Windows + Samsung; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "android-orientation/summary.json",
+          "result": "android-connectivity/summary.json",
           "witness_limits": [
             "ANDROID-DM-receive: One observed upper bound 2450ms includes ADB UI polling; not p95 or proof of the underlying transport. Owned message deleted204.",
             "ANDROID-DM-input-actions: Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim",
@@ -1131,10 +1133,11 @@
               "ANDROID-native-PNG-picker-send-view-delete",
               "ANDROID-physical-ptt-release-cancel-home",
               "ANDROID-orientation-draft-voice-retention",
-              "ANDROID-landscape-ime-send-voice-dock-overlap"
+              "ANDROID-landscape-ime-send-voice-dock-overlap",
+              "ANDROID-wifi-cellular-native-DM-and-restoration"
             ]
           },
-          "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted. Physical landscape90/IME preserved draft and voice but native voice dock covered Send in2/2 runs; other platform/AT/selection/send variants remain unaccepted.",
+          "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted. Physical landscape90/IME preserved draft and voice but native voice dock covered Send in2/2 runs; other platform/AT/selection/send variants remain unaccepted. Physical WiFi→cellular native DM/PC render and original-state restoration verified, with retained controller cleanup failures; full SDK/audio/background/platform/revoke matrix remains unaccepted.",
           "defects": [
             582
           ]
@@ -1238,7 +1241,8 @@
         "ANDROID-native-PNG-picker-send-view-delete",
         "ANDROID-physical-ptt-release-cancel-home",
         "ANDROID-orientation-draft-voice-retention",
-        "ANDROID-landscape-ime-send-voice-dock-overlap"
+        "ANDROID-landscape-ime-send-voice-dock-overlap",
+        "ANDROID-wifi-cellular-native-DM-and-restoration"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -1248,7 +1252,8 @@
         "web-session-contract/android-filechooser.json",
         "native-image/summary.json",
         "native-ptt/summary.json",
-        "android-orientation/summary.json"
+        "android-orientation/summary.json",
+        "android-connectivity/summary.json"
       ],
       "defects": [
         582
@@ -7996,16 +8001,18 @@
           "status": "PARTIAL",
           "execution_cases": [
             "ANDROID-populated-prejoin-no-permission",
-            "ANDROID-OS-microphone-denial"
+            "ANDROID-OS-microphone-denial",
+            "ANDROID-wifi-cellular-native-DM-and-restoration"
           ],
           "evidence": [
             "native-prejoin/summary.json",
-            "voice-permission/summary.json"
+            "voice-permission/summary.json",
+            "android-connectivity/summary.json"
           ],
           "execution": "node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback",
           "platform": "Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "native-prejoin/summary.json; voice-permission/summary.json",
+          "result": "android-connectivity/summary.json",
           "witness_limits": [
             "ANDROID-populated-prejoin-no-permission: No injected503/recovery, all ACL roles, other native platforms, capacity or audibility. Original state restored.",
             "ANDROID-OS-microphone-denial: Original attempt restoration was incomplete; retained raw, followed by verified explicit restoration. No audibility or all-device acceptance."
@@ -8027,9 +8034,11 @@
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": [
               "ANDROID-populated-prejoin-no-permission",
-              "ANDROID-OS-microphone-denial"
+              "ANDROID-OS-microphone-denial",
+              "ANDROID-wifi-cellular-native-DM-and-restoration"
             ]
-          }
+          },
+          "reason": " Physical WiFi→cellular native DM/PC render and original-state restoration verified, with retained controller cleanup failures; full SDK/audio/background/platform/revoke matrix remains unaccepted."
         },
         {
           "section": "План тестирования",
@@ -8307,13 +8316,15 @@
         "ROSTER-populated-prejoin",
         "ANDROID-OS-microphone-denial",
         "ANDROID-populated-prejoin-no-permission",
-        "WEB-session-revocation-draft-isolation"
+        "WEB-session-revocation-draft-isolation",
+        "ANDROID-wifi-cellular-native-DM-and-restoration"
       ],
       "evidence": [
         "web-result.json",
         "voice-permission/summary.json",
         "native-prejoin/summary.json",
-        "web-session-contract/logout.json"
+        "web-session-contract/logout.json",
+        "android-connectivity/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -8900,16 +8911,18 @@
           "status": "PARTIAL",
           "execution_cases": [
             "ANDROID-populated-prejoin-no-permission",
-            "ROSTER-populated-prejoin"
+            "ROSTER-populated-prejoin",
+            "ANDROID-wifi-cellular-native-DM-and-restoration"
           ],
           "evidence": [
             "native-prejoin/summary.json",
-            "web-result.json#/cases/0"
+            "web-result.json#/cases/0",
+            "android-connectivity/summary.json"
           ],
           "execution": "node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; node .out/qa-goal/web_runtime.mjs; control action prejoin",
           "platform": "Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Windows PC, headed Chrome and actual Android/Windows participants",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "native-prejoin/summary.json; web-result.json#/cases/0",
+          "result": "android-connectivity/summary.json",
           "witness_limits": [
             "ANDROID-populated-prejoin-no-permission: No injected503/recovery, all ACL roles, other native platforms, capacity or audibility. Original state restored.",
             "ROSTER-populated-prejoin: Two real prejoin rows, REST200, no fake empty state; outages/ACL/native platform matrix remain open."
@@ -8930,9 +8943,11 @@
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": [
               "ANDROID-populated-prejoin-no-permission",
-              "ROSTER-populated-prejoin"
+              "ROSTER-populated-prejoin",
+              "ANDROID-wifi-cellular-native-DM-and-restoration"
             ]
-          }
+          },
+          "reason": " Physical WiFi→cellular native DM/PC render and original-state restoration verified, with retained controller cleanup failures; full SDK/audio/background/platform/revoke matrix remains unaccepted."
         },
         {
           "section": "Matrix",
@@ -9475,7 +9490,8 @@
         "ISOLATED-relay-dependency-outages",
         "ISOLATED-traceql-semantic-fixtures",
         "ISOLATED-traceql-dashboard-queries",
-        "ANDROID-physical-ptt-release-cancel-home"
+        "ANDROID-physical-ptt-release-cancel-home",
+        "ANDROID-wifi-cellular-native-DM-and-restoration"
       ],
       "evidence": [
         "privacy-result.json",
@@ -9487,7 +9503,8 @@
         "windows-admin-entry-attempt.json",
         "web-image-formats/summary.json",
         "trace-runtime/summary.json",
-        "native-ptt/summary.json"
+        "native-ptt/summary.json",
+        "android-connectivity/summary.json"
       ],
       "defects": [
         581
@@ -11403,7 +11420,8 @@
             "WEB-viewer-download-format-mismatch",
             "ANDROID-physical-ptt-release-cancel-home",
             "ANDROID-orientation-draft-voice-retention",
-            "ANDROID-landscape-ime-send-voice-dock-overlap"
+            "ANDROID-landscape-ime-send-voice-dock-overlap",
+            "ANDROID-wifi-cellular-native-DM-and-restoration"
           ],
           "evidence": [
             "native-chat/summary.json",
@@ -11411,12 +11429,13 @@
             "native-image/summary.json",
             "web-image-formats/summary.json",
             "native-ptt/summary.json",
-            "android-orientation/summary.json"
+            "android-orientation/summary.json",
+            "android-connectivity/summary.json"
           ],
           "execution": "node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
           "platform": "Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "android-orientation/summary.json",
+          "result": "android-connectivity/summary.json",
           "witness_limits": [
             "ANDROID-DM-input-actions: Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim",
             "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance",
@@ -11446,10 +11465,11 @@
               "WEB-viewer-download-format-mismatch",
               "ANDROID-physical-ptt-release-cancel-home",
               "ANDROID-orientation-draft-voice-retention",
-              "ANDROID-landscape-ime-send-voice-dock-overlap"
+              "ANDROID-landscape-ime-send-voice-dock-overlap",
+              "ANDROID-wifi-cellular-native-DM-and-restoration"
             ]
           },
-          "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted. Physical landscape90/IME preserved draft and voice but native voice dock covered Send in2/2 runs; other platform/AT/selection/send variants remain unaccepted.",
+          "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted. Physical landscape90/IME preserved draft and voice but native voice dock covered Send in2/2 runs; other platform/AT/selection/send variants remain unaccepted. Physical WiFi→cellular native DM/PC render and original-state restoration verified, with retained controller cleanup failures; full SDK/audio/background/platform/revoke matrix remains unaccepted.",
           "defects": [
             582
           ]
@@ -11776,7 +11796,8 @@
         "WEB-viewer-download-format-mismatch",
         "ANDROID-physical-ptt-release-cancel-home",
         "ANDROID-orientation-draft-voice-retention",
-        "ANDROID-landscape-ime-send-voice-dock-overlap"
+        "ANDROID-landscape-ime-send-voice-dock-overlap",
+        "ANDROID-wifi-cellular-native-DM-and-restoration"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -11796,7 +11817,8 @@
         "windows-admin-entry-attempt.json",
         "web-image-formats/summary.json",
         "native-ptt/summary.json",
-        "android-orientation/summary.json"
+        "android-orientation/summary.json",
+        "android-connectivity/summary.json"
       ],
       "defects": [
         579,
@@ -15764,7 +15786,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-27T03:04:01.062559+00:00",
+  "updated_utc": "2026-10-27T03:33:47.796716+00:00",
   "known_defect_issues": [
     579,
     580,

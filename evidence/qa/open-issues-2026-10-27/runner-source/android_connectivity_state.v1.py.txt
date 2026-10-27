@@ -1,0 +1,26 @@
+"""Observe only current default transport and native voice state; never emit addresses/SSID/IDs."""
+import json,re
+from datetime import datetime,timezone
+from android_permission_ui import APP,ROOT,call,nodes,label,permission
+def network():
+ raw=call('shell','dumpsys','connectivity');default=re.search(r'Active default network:\s*(\d+)',raw)
+ rows=[]
+ for line in raw.splitlines():
+  if 'NetworkAgentInfo' not in line:continue
+  net=re.search(r'network\{(\d+)\}',line) or re.search(r'netId[=:]\s*(\d+)',line) or re.search(r'NetworkAgentInfo.*? - (\d+)\]',line)
+  transports=re.findall(r'Transports:\s*([A-Z_]+(?:\|[A-Z_]+)*)',line)
+  rows.append({'id_parsed':bool(net),'default':bool(net and default and net[1]==default[1]),'transports':transports,
+   'validated':'VALIDATED' in re.findall(r'\b[A-Z_]+\b',line),'internet':'INTERNET' in re.findall(r'\b[A-Z_]+\b',line)})
+ return {'at_utc':datetime.now(timezone.utc).isoformat(),'wifi_setting':call('shell','settings','get','global','wifi_on').strip(),
+  'mobile_data_setting':call('shell','settings','get','global','mobile_data').strip(),'default_network_id_present':bool(default),
+  'current_networks':rows,'default_transport':next((r['transports'] for r in rows if r['default']),[]),
+  'telephony_call_states':[int(x) for x in re.findall(r'mCallState=(\d+)',call('shell','dumpsys','telephony.registry'))]}
+def native():
+ rows=nodes();labels=[label(n) for n in rows];services=call('shell','dumpsys','activity','services',APP)
+ statuses=['Голос подключён','Переподключение','Подключение','Нет соединения','Восстанавливаем соединение','Соединение потеряно']
+ return {'at_utc':datetime.now(timezone.utc).isoformat(),'app_hierarchy_present':any(n.get('package')==APP for n in rows),
+  'known_voice_statuses':[s for s in statuses if any(s in text for text in labels)],
+  'muted_control':'Включить микрофон' in labels,'permission':permission(),
+  'foreground_types':re.findall(r'isForeground=true[^\n]*types=(0x[0-9a-f]+)',services),'system_permission_prompt':any((n.get('package') or '').endswith('permissioncontroller') for n in rows)}
+if __name__=='__main__':
+ data={'network':network(),'native':native()};(ROOT/'connectivity-before.json').write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(data))

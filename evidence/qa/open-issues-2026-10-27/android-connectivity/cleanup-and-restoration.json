@@ -1,0 +1,78 @@
+{
+  "at_utc": "2026-10-27T03:27:13.272Z",
+  "status": "PASS_VERIFIED_CLEANUP_AND_RESTORATION",
+  "read_only": true,
+  "deletion_not_repeated": true,
+  "live_fixture_count": 0,
+  "own_recent_message_count": 1,
+  "own_recent_messages_deleted": [
+    true
+  ],
+  "anchor_target_present": true,
+  "anchor_target_deleted": true,
+  "native_fixture_ui": {
+    "at_utc": "2026-10-27T03:27:16.377259+00:00",
+    "action": "inspect",
+    "body_or_identity_logged": false,
+    "composer_empty": true,
+    "fixture_display_nodes": 0
+  },
+  "native": {
+    "at_utc": "2026-10-27T03:27:18.996693+00:00",
+    "app_hierarchy_present": true,
+    "known_voice_statuses": [
+      "Голос подключён"
+    ],
+    "muted_control": false,
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "foreground_types": [
+      "0x00000080"
+    ],
+    "system_permission_prompt": false
+  },
+  "network": {
+    "at_utc": "2026-10-27T03:27:19.408844+00:00",
+    "wifi_setting": "1",
+    "mobile_data_setting": "1",
+    "default_network_id_present": true,
+    "current_networks": [
+      {
+        "id_parsed": true,
+        "default": false,
+        "transports": [
+          "CELLULAR"
+        ],
+        "validated": true,
+        "internet": false
+      },
+      {
+        "id_parsed": true,
+        "default": true,
+        "transports": [
+          "WIFI"
+        ],
+        "validated": true,
+        "internet": true
+      }
+    ],
+    "default_transport": [
+      "WIFI"
+    ],
+    "telephony_call_states": [
+      0,
+      0
+    ]
+  },
+  "roster": {
+    "phone_present": true,
+    "participants": 3,
+    "phone_microphone_muted": false
+  }
+}

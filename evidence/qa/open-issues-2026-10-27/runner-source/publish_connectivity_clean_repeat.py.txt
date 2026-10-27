@@ -1,0 +1,35 @@
+"""Add the complete corrected physical repeat without replacing earlier partial/failure receipts."""
+import hashlib,json
+from datetime import datetime,timezone
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];PRIVATE=ROOT/'.out/qa-goal';OUT=ROOT/'evidence/qa/open-issues-2026-10-27';TARGET=OUT/'android-connectivity'
+def load(path):return json.loads(path.read_text(encoding='utf-8'))
+def write(path,data):path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+result=load(PRIVATE/'native-connectivity-result.json');assert result['status']=='PASS_SCOPED_NETWORK_SWITCH_AND_DM'
+assert all(result[k] for k in ['actual_PC_message_rendered','actual_server_author_matches_phone','delivered_while_verified_cellular','fixture_server_tombstone','fixture_PC_body_removed','original_state_restored','permission_preserved_exact'])
+assert result['guard_exit']==0 and result['receiver_web_source']=='072426d60b1c0b1f7e5f66722a0da5faa00b50d7'
+old=TARGET/'post-repair';old.mkdir(exist_ok=True)
+for name in ['candidate.json','visual-proof.json','connectivity-restored-voice.png']:(old/name).write_bytes((TARGET/name).read_bytes())
+write(TARGET/'clean-repeat.json',result);write(TARGET/'clean-repeat-guard.json',load(PRIVATE/'wifi-guard-result.json'))
+write(TARGET/'candidate.json',load(PRIVATE/'orientation-candidate.json'));visual=load(PRIVATE/'connectivity-visual-proof.json');write(TARGET/'visual-proof.json',visual)
+image=PRIVATE/visual['crop'];assert hashlib.sha256(image.read_bytes()).hexdigest()==visual['crop_sha256'];(TARGET/image.name).write_bytes(image.read_bytes())
+summary=load(TARGET/'summary.json');summary['status']='PASS_SCOPED_CLEAN_REPEAT; initial partial/controller failures retained'
+summary['pc_observer']='Actual headed Chrome'+result['browser']+' on Windows; controlled account B; normal authenticated UI, no API mocks; runtime Web source'+result['receiver_web_source']
+summary['clean_repeat_at_utc']=result['at_utc'];summary['result']='clean-repeat.json';summary['earlier_final_restoration']='cleanup-and-restoration.json';summary['final_restoration']='clean-repeat.json'
+summary['clean_repeat_server_tombstone_and_PC_body_removed']=True
+summary['controller_history'].append('Run3 used the corrected popup guard, bounded6s tombstone polling and actual PC text-removal assertion. Entire controller passed, fixture deleted and original state restored; runtime Chrome/Web source captured. No manual recovery required.')
+interval=round((datetime.fromisoformat(result['wifi_enable_dispatched_at_utc'].replace('Z','+00:00'))-datetime.fromisoformat(result['wifi_off_started_at_utc'].replace('Z','+00:00'))).total_seconds(),3)
+summary['wifi_off_intervals_s'].append(interval);summary['guard_triggered'].append(load(PRIVATE/'wifi-guard-result.json')['triggered'])
+summary['limits']=[x for x in summary['limits'] if not x.startswith('Exact PC Web build')]
+summary['limits'].append('Exact PC Web build was absent in initial runs; clean run3 captured Chrome155.0.8059.85 and runtime Web source072426d6. Android VALIDATED was false in its first mobile sample; app delivery is proven by actual PC receipt and verified CELLULAR/WiFi0 before/after, not inferred from that OS flag.')
+summary['source_versions']={'run1':'native_connectivity_run.v1.mjs.txt + native_connectivity_ui.v1.py.txt + android_connectivity_state.v1.py.txt','run2':'native_connectivity_run.v2.mjs.txt + native_connectivity_ui.v2.py.txt + current state helper','historical_repair':'native_connectivity_repair.mjs.txt + current UI helper; later read-only connectivity_cleanup_probe.mjs.txt','clean_run3':'native_connectivity_run.mjs.txt + current UI/state/guard helpers'}
+write(TARGET/'summary.json',summary)
+file=OUT/'cases.json';cases=load(file)
+for case in cases['cases']:
+ if case['id']=='ANDROID-wifi-cellular-native-DM-and-restoration':
+  case['command']='node .out/qa-goal/native_connectivity_run.mjs';case['limits']='; '.join(summary['limits'])+' Earlier controller failures retained separately; clean run3 fully passed without manual recovery.'
+write(file,cases)
+for source,name in [('native_connectivity_run.v2.mjs.txt','native_connectivity_run.v2.mjs.txt'),('native_connectivity_run.mjs','native_connectivity_run.mjs.txt')]:
+ text=(PRIVATE/source).read_text(encoding='utf-8');assert len(text.splitlines())<=120;(OUT/'runner-source'/name).write_text(text,encoding='utf-8',newline='\n')
+source=Path(__file__).read_text(encoding='utf-8');assert len(source.splitlines())<=120;(OUT/'runner-source/publish_connectivity_clean_repeat.py.txt').write_text(source,encoding='utf-8',newline='\n')
+print(json.dumps({'clean_repeat':'PASS_SCOPED','cellular_PC_delivery':True,'server_and_UI_cleanup':True,'restored':True,'wifi_off_intervals_s':summary['wifi_off_intervals_s'],'earlier_failures_preserved':True}))

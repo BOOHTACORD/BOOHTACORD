@@ -151,6 +151,16 @@ Send again. Original rotation settings, empty draft, permission and voice were
 restored after each run. Published source-sized control crops mask the draft.
 No tap in the overlapping region or accidental-disconnect claim is made.
 
+## Physical Android connectivity checkpoint
+
+[Actual Wi-Fi→cellular delivery](android-connectivity/summary.json): own native
+DM reached and rendered on the PC while Wi-Fi was off and CELLULAR was the actual
+default before/after delivery. The final corrected repeat passed end-to-end
+server/PC/native fixture cleanup and restored Wi-Fi, permission, mic FGS and
+roster3/unmuted. It captured Android9c221897, Chrome155 and Web072426d6 identities.
+Earlier partial/controller-cleanup failures remain separate retained receipts.
+No acoustic, packet continuity or explicit SDK reconnect event claim is made.
+
 ## Execution map
 
 `acceptance-methods.json` maps24 native/manual methods to the protected invariant,

@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict'
+import {createRequire} from 'node:module'
+import {execFileSync} from 'node:child_process'
+import {readFile,writeFile} from 'node:fs/promises'
+import {fileURLToPath} from 'node:url'
+const {request}=createRequire('C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/clients/web/package.json')('@playwright/test')
+const root=new URL('./',import.meta.url),origin='https://v.bootybay.ru',folder=fileURLToPath(root)
+const cfg=JSON.parse(await readFile(new URL('private-connectivity-fixture.json',root),'utf8')),input=JSON.parse(await readFile(new URL('private-fixture.json',root),'utf8'))
+const original=JSON.parse(await readFile(new URL('connectivity-second-before-repair.json',root),'utf8'))
+const context=await request.newContext({storageState:JSON.parse(await readFile(new URL('private-session-b.json',root),'utf8'))})
+const read=async path=>{const r=await context.get(origin+'/api/v1'+path);assert.equal(r.status(),200);return r.json()}
+const result={at_utc:new Date().toISOString(),status:'RUNNING',read_only:true,deletion_not_repeated:true}
+try{
+ const directs=await read('/direct-messages'),peers=directs.direct_messages.filter(d=>![input.a.id,input.c.id].includes(d.other_participant_id));assert.equal(peers.length,1)
+ const phone=peers[0].other_participant_id,prefix='/direct-messages/'+peers[0].id,history=await read(prefix+'/messages')
+ const recent=history.messages.filter(m=>m.author_id===phone&&new Date(m.created_at)>=new Date(original.at_utc))
+ result.live_fixture_count=history.messages.filter(m=>!m.deleted&&m.body===cfg.text&&m.author_id===phone).length
+ result.own_recent_message_count=recent.length;result.own_recent_messages_deleted=recent.map(m=>Boolean(m.deleted))
+ if(recent.length===1){const around=await read(prefix+'/messages?at='+recent[0].id+'&limit=20');result.anchor_target_present=around.messages.some(m=>m.id===recent[0].id);result.anchor_target_deleted=around.messages.some(m=>m.id===recent[0].id&&m.deleted)}
+ const py=(code)=>JSON.parse(execFileSync('python',['-X','utf8','-c',code],{cwd:folder,encoding:'utf8',stdio:['ignore','pipe','pipe'],windowsHide:true,timeout:40000}))
+ result.native_fixture_ui=JSON.parse(execFileSync('python',['-X','utf8',fileURLToPath(new URL('native_connectivity_ui.py',root)),'inspect'],{cwd:folder,encoding:'utf8',stdio:['ignore','pipe','pipe'],windowsHide:true,timeout:40000}))
+ result.native=py('import json;from android_connectivity_state import native;print(json.dumps(native()))')
+ result.network=py('import json;from android_connectivity_state import network;print(json.dumps(network()))')
+ const roster=await read('/voice/participants'),room=roster.channels.find(c=>c.participants.some(p=>p.account_id===phone)),p=room?.participants.find(p=>p.account_id===phone)
+ result.roster={phone_present:Boolean(p),participants:room?.participants.length,phone_microphone_muted:p?.microphone_muted}
+ assert.equal(result.live_fixture_count,0);assert.equal(recent.length,1);assert.ok(recent[0].deleted)
+ assert.ok(result.native_fixture_ui.composer_empty&&result.native_fixture_ui.fixture_display_nodes===0)
+ assert.ok(result.network.wifi_setting==='1'&&result.network.mobile_data_setting==='1'&&result.network.default_transport.includes('WIFI'))
+ assert.ok(result.native.foreground_types.includes('0x00000080')&&result.native.known_voice_statuses.includes('Голос подключён'))
+ assert.deepEqual(result.native.permission,original.before_native.permission);assert.equal(room.participants.length,3);assert.equal(p.microphone_muted,false)
+ result.status='PASS_VERIFIED_CLEANUP_AND_RESTORATION'
+}catch(e){result.status='FAIL_OR_UNPROVEN';result.error_type=e.name}
+finally{await context.dispose();await writeFile(new URL('connectivity-cleanup-probe-result.json',root),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result))}

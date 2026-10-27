@@ -1,0 +1,52 @@
+"""Retain actual handoff/application delivery and every controller/restoration limit."""
+import hashlib,json
+from datetime import datetime,timezone
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];PRIVATE=ROOT/'.out/qa-goal';OUT=ROOT/'evidence/qa/open-issues-2026-10-27';TARGET=OUT/'android-connectivity';TARGET.mkdir(exist_ok=True)
+def load(name):return json.loads((PRIVATE/name).read_text(encoding='utf-8'))
+def write(path,value):path.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+first=load('connectivity-first/native-connectivity-result.json');core=load('connectivity-second-before-repair.json');repair=load('native-connectivity-repair-result.json');final=load('connectivity-cleanup-probe-result.json')
+assert first['status']=='PARTIAL_NO_VALIDATED_CELLULAR' and first['original_state_restored']
+assert core['status']=='FAIL_RESTORATION' and core['actual_PC_message_rendered'] and core['actual_server_author_matches_phone'] and core['delivered_while_verified_cellular']
+assert final['status']=='PASS_VERIFIED_CLEANUP_AND_RESTORATION' and final['deletion_not_repeated'] and final['own_recent_messages_deleted']==[True]
+for key in ['before_send_network','after_receive_network']:
+ sample=core[key];assert sample['wifi_setting']=='0' and sample['default_transport']==['CELLULAR']
+assert final['native_fixture_ui']['composer_empty'] and final['native_fixture_ui']['fixture_display_nodes']==0
+for source,target in [('connectivity-first/native-connectivity-result.json','initial-partial-run.json'),('connectivity-first/wifi-guard-result.json','initial-guard.json'),('connectivity-second-before-repair.json','handoff-original-controller-result.json'),('wifi-guard-result.json','handoff-guard.json'),('native-connectivity-repair-result.json','cleanup-first-attempt.json'),('connectivity-cleanup-probe-result.json','cleanup-and-restoration.json'),('orientation-candidate.json','candidate.json'),('connectivity-web-post-run.json','web-post-run-receipt.json'),('connectivity-visual-proof.json','visual-proof.json')]:write(TARGET/target,load(source))
+visual=load('connectivity-visual-proof.json');image=PRIVATE/visual['crop'];assert hashlib.sha256(image.read_bytes()).hexdigest()==visual['crop_sha256'];(TARGET/image.name).write_bytes(image.read_bytes())
+def elapsed(result):return round((datetime.fromisoformat(result['wifi_enable_dispatched_at_utc'].replace('Z','+00:00'))-datetime.fromisoformat(result['wifi_off_started_at_utc'].replace('Z','+00:00'))).total_seconds(),3)
+summary={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_SCOPED_APPLICATION_DELIVERY_AND_FINAL_RESTORATION; original controller failures retained',
+ 'physical_device':'Samsung SM-A576B Android16/API36; signed1.0.45+2080/source9c221897fdefec8098f707d61ca5b6e8b28bb0bd; fresh hash candidate.json',
+ 'pc_observer':'Actual headed Chrome on Windows, controlled account B, normal authenticated UI with no API mocks. Exact receiver Web source was not captured during the run; post-run public source072426d6 is timestamped separately.',
+ 'protects':'Own Android secure-cookie message delivery remains functional during actual WiFi→CELLULAR handoff; original Wi-Fi/native UI/voice membership/permission and own test-data cleanup are restored.',
+ 'command':'node .out/qa-goal/native_connectivity_run.mjs; after its controller cleanup failure: node .out/qa-goal/native_connectivity_repair.mjs; read-only final receipt: node .out/qa-goal/connectivity_cleanup_probe.mjs',
+ 'mandatory_when':'Before accepting Android network-change/reconnect facets of QA62/272 and task scripts QA303; this does not replace full audio/SFU/SDK reconnect acceptance.',
+ 'wifi_off_intervals_s':[elapsed(first),elapsed(core)],'guard_deadline_s':45,'guard_triggered':[load('connectivity-first/wifi-guard-result.json')['triggered'],load('wifi-guard-result.json')['triggered']],
+ 'actual_positive_observations':['Default network switched from WIFI to CELLULAR with Wi-Fi setting0.','Before native Send and after actual PC rendering, default remained CELLULAR with INTERNET/VALIDATED and Wi-Fi0.','Own fixture was received from the exact privately matched phone account and rendered in the actual PC browser.','After Wi-Fi enable, default returned to validated WIFI, global mobile_data remained1.','Independent final read found exactly one recent owned message, deleted; native fixture count0 and composer empty.','Native voice UI connected/unmuted, mic FGS80, exact permission flags and roster3/unmuted preserved at final check.'],
+ 'controller_history':['Run1 required Android VALIDATED and did not send; it stopped partial when the new mobile INTERNET network was not yet validated. Wi-Fi restored.','Run2 permitted CELLULAR+INTERNET and proved app delivery; in this run Android also became VALIDATED.','Run2 controller failed cleanup because a popup occluded the underlying DM header. The fixture-specific menu and server author were rechecked before correcting only that guard.','Two actual Delete/confirm actions were dispatched; immediate tombstone query returned false and the cleanup controller failed.','Later independent read-only probe found the same recent owned message deleted and no local fixture. Deletion was not repeated. Exact deletion latency/cause of the earlier observation was not measured.'],
+ 'visual_review':'Source-sized1080x307 final native voice dock crop inspected: green connected label, SHARE_TEST3 participants, unmuted microphone control. No identity/message/keyboard suggestion data; no new golden/resampling.',
+ 'limits':['No acoustic, RTP/frame continuity, SFU reconnection or RoomReconnecting/RoomReconnected callback assertion. Only sampled UI/server states; brief transitions could be missed.','Both radio intervals were about13s, not a long outage/soak/background/lock/revoke/account-switch matrix.','No VPN/router/Xkeen/provider configuration was changed; no causality attributed to them.','Watchdog was armed and released with exit0; fallback timeout branch was not exercised. Process inspection after the run found0 remaining guard helpers.','Native ASCII input injection and real Gboard window; no human/Gboard typing or selection acceptance.','New master native APK, iOS/macOS/Pixel and original Windows native receiver remain separate unaccepted gates.','Exact PC Web build at delivery time was not captured; post-run receipt is supporting observation only.'],
+ 'result':'handoff-original-controller-result.json','final_restoration':'cleanup-and-restoration.json','new_product_defect':None,'goal_status':'IN_PROGRESS; mandatory gates and43 consolidation decisions remain open'}
+write(TARGET/'summary.json',summary)
+file=OUT/'cases.json';cases=json.loads(file.read_text(encoding='utf-8'));ident='ANDROID-wifi-cellular-native-DM-and-restoration';assert all(c['id']!=ident for c in cases['cases'])
+cases['cases'].append({'id':ident,'status':'PASS_SCOPED','protects':summary['protects'],'command':summary['command'],'platform':summary['physical_device']+'; actual Windows Chrome receiver','mandatory_when':summary['mandatory_when'],'result':'android-connectivity/summary.json','issues':[62,272,287,303],'limits':'; '.join(summary['limits'])+' Original main/cleanup controllers failed; final cleanup was verified separately, not rewritten as an initial PASS.'});write(file,cases)
+file=OUT/'matrix.json';matrix=json.loads(file.read_text(encoding='utf-8'));before={r['id']:r['requirement'] for i in matrix['issues'] for r in i['criteria']}
+for issue in matrix['issues']:
+ touched=False
+ for row in issue['criteria']:
+  if row['id'] not in ['I62.C1','I272.C9','I287.C2','I303.C2']:continue
+  touched=True;row['execution_cases']=list(dict.fromkeys(row['execution_cases']+[ident]));row['evidence']=list(dict.fromkeys(row['evidence']+['android-connectivity/summary.json']));row['result']='android-connectivity/summary.json'
+  if row['status']=='NOT_RUN':row['status']='PARTIAL'
+  row['reason']=row.get('reason','')+' Physical WiFi→cellular native DM/PC render and original-state restoration verified, with retained controller cleanup failures; full SDK/audio/background/platform/revoke matrix remains unaccepted.'
+  row['execution_plan']['existing_scoped_witnesses']=list(row['execution_cases'])
+ if touched:issue['execution_cases']=list(dict.fromkeys(issue['execution_cases']+[ident]));issue['evidence']=list(dict.fromkeys(issue['evidence']+['android-connectivity/summary.json']))
+assert before=={r['id']:r['requirement'] for i in matrix['issues'] for r in i['criteria']};matrix['updated_utc']=datetime.now(timezone.utc).isoformat();write(file,matrix)
+for name in ['android_connectivity_state.py','android_wifi_guard.py','native_connectivity_ui.py','native_connectivity_run.mjs','native_connectivity_repair.mjs','connectivity_cleanup_probe.mjs','connectivity_voice_capture.py','publish_android_connectivity.py']:
+ source=(PRIVATE/name).read_text(encoding='utf-8');assert len(source.splitlines())<=120,name;(OUT/'runner-source'/f'{name}.txt').write_text(source,encoding='utf-8',newline='\n')
+for source,name in [('connectivity-first/native_connectivity_run.mjs','native_connectivity_run.v1.mjs.txt'),('connectivity-first/native_connectivity_ui.py','native_connectivity_ui.v1.py.txt'),('connectivity-first/android_connectivity_state.py','android_connectivity_state.v1.py.txt'),('native_connectivity_ui.v2.py.txt','native_connectivity_ui.v2.py.txt')]:
+ text=(PRIVATE/source).read_text(encoding='utf-8');assert len(text.splitlines())<=120;(OUT/'runner-source'/name).write_text(text,encoding='utf-8',newline='\n')
+cfg=load('private-connectivity-fixture.json')
+for file in OUT.rglob('*'):
+ if file.is_file() and file.suffix in ['.json','.md','.txt']:
+  text=file.read_text(encoding='utf-8');assert cfg['text'] not in text and cfg['peer'] not in text,file.name
+print(json.dumps({'native_cellular_delivery':True,'PC_actual_rendered':True,'own_fixture_deleted':True,'original_state_restored':True,'controller_failures_preserved':True,'source_rows_preserved':len(before),'new_product_defects':0}))

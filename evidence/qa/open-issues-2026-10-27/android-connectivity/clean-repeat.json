@@ -1,0 +1,512 @@
+{
+  "at_utc": "2026-10-27T03:36:02.723Z",
+  "status": "PASS_SCOPED_NETWORK_SWITCH_AND_DM",
+  "api_mocks": false,
+  "physical_android": true,
+  "network_samples": [
+    {
+      "at_utc": "2026-10-27T03:36:07.701320+00:00",
+      "wifi_setting": "0",
+      "mobile_data_setting": "1",
+      "default_network_id_present": false,
+      "current_networks": [
+        {
+          "id_parsed": true,
+          "default": false,
+          "transports": [
+            "CELLULAR"
+          ],
+          "validated": true,
+          "internet": false
+        }
+      ],
+      "default_transport": [],
+      "telephony_call_states": [
+        0,
+        0
+      ]
+    },
+    {
+      "at_utc": "2026-10-27T03:36:08.732969+00:00",
+      "wifi_setting": "0",
+      "mobile_data_setting": "1",
+      "default_network_id_present": true,
+      "current_networks": [
+        {
+          "id_parsed": true,
+          "default": false,
+          "transports": [
+            "CELLULAR"
+          ],
+          "validated": true,
+          "internet": false
+        },
+        {
+          "id_parsed": true,
+          "default": true,
+          "transports": [
+            "CELLULAR"
+          ],
+          "validated": false,
+          "internet": true
+        }
+      ],
+      "default_transport": [
+        "CELLULAR"
+      ],
+      "telephony_call_states": [
+        0,
+        0
+      ]
+    },
+    {
+      "at_utc": "2026-10-27T03:36:19.086646+00:00",
+      "wifi_setting": "1",
+      "mobile_data_setting": "1",
+      "default_network_id_present": true,
+      "current_networks": [
+        {
+          "id_parsed": true,
+          "default": false,
+          "transports": [
+            "CELLULAR"
+          ],
+          "validated": true,
+          "internet": false
+        },
+        {
+          "id_parsed": true,
+          "default": true,
+          "transports": [
+            "CELLULAR"
+          ],
+          "validated": true,
+          "internet": true
+        }
+      ],
+      "default_transport": [
+        "CELLULAR"
+      ],
+      "telephony_call_states": [
+        0,
+        0
+      ]
+    },
+    {
+      "at_utc": "2026-10-27T03:36:20.368160+00:00",
+      "wifi_setting": "1",
+      "mobile_data_setting": "1",
+      "default_network_id_present": true,
+      "current_networks": [
+        {
+          "id_parsed": true,
+          "default": false,
+          "transports": [
+            "CELLULAR"
+          ],
+          "validated": true,
+          "internet": false
+        },
+        {
+          "id_parsed": true,
+          "default": true,
+          "transports": [
+            "CELLULAR"
+          ],
+          "validated": true,
+          "internet": true
+        }
+      ],
+      "default_transport": [
+        "CELLULAR"
+      ],
+      "telephony_call_states": [
+        0,
+        0
+      ]
+    },
+    {
+      "at_utc": "2026-10-27T03:36:21.828519+00:00",
+      "wifi_setting": "1",
+      "mobile_data_setting": "1",
+      "default_network_id_present": true,
+      "current_networks": [
+        {
+          "id_parsed": true,
+          "default": false,
+          "transports": [
+            "CELLULAR"
+          ],
+          "validated": true,
+          "internet": false
+        },
+        {
+          "id_parsed": true,
+          "default": true,
+          "transports": [
+            "CELLULAR"
+          ],
+          "validated": true,
+          "internet": true
+        },
+        {
+          "id_parsed": true,
+          "default": false,
+          "transports": [
+            "WIFI"
+          ],
+          "validated": false,
+          "internet": true
+        }
+      ],
+      "default_transport": [
+        "CELLULAR"
+      ],
+      "telephony_call_states": [
+        0,
+        0
+      ]
+    },
+    {
+      "at_utc": "2026-10-27T03:36:23.088776+00:00",
+      "wifi_setting": "1",
+      "mobile_data_setting": "1",
+      "default_network_id_present": true,
+      "current_networks": [
+        {
+          "id_parsed": true,
+          "default": false,
+          "transports": [
+            "CELLULAR"
+          ],
+          "validated": true,
+          "internet": false
+        },
+        {
+          "id_parsed": true,
+          "default": false,
+          "transports": [
+            "CELLULAR"
+          ],
+          "validated": true,
+          "internet": true
+        },
+        {
+          "id_parsed": true,
+          "default": true,
+          "transports": [
+            "WIFI"
+          ],
+          "validated": true,
+          "internet": true
+        }
+      ],
+      "default_transport": [
+        "WIFI"
+      ],
+      "telephony_call_states": [
+        0,
+        0
+      ]
+    }
+  ],
+  "native_samples": [
+    {
+      "at_utc": "2026-10-27T03:36:11.405012+00:00",
+      "app_hierarchy_present": true,
+      "known_voice_statuses": [
+        "Восстанавливаем голосовое соединение"
+      ],
+      "muted_control": false,
+      "permission": {
+        "granted": true,
+        "flags": [
+          "USER_SET",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "foreground_types": [
+        "0x00000080"
+      ],
+      "system_permission_prompt": false
+    }
+  ],
+  "actions": [
+    {
+      "at_utc": "2026-10-27T03:36:14.275668+00:00",
+      "action": "send",
+      "body_or_identity_logged": false,
+      "send_bounds": [
+        923,
+        1010,
+        1058,
+        1145
+      ],
+      "leave_bounds": [
+        911,
+        1331,
+        1046,
+        1466
+      ],
+      "owned_fixture_send_control_activated": true
+    },
+    {
+      "at_utc": "2026-10-27T03:36:27.604660+00:00",
+      "action": "delete-menu",
+      "body_or_identity_logged": false,
+      "fixture_scoped_menu_activated": true
+    },
+    {
+      "at_utc": "2026-10-27T03:36:33.407208+00:00",
+      "action": "delete",
+      "body_or_identity_logged": false,
+      "observed_delete_control_activated": true
+    },
+    {
+      "at_utc": "2026-10-27T03:36:38.460705+00:00",
+      "action": "delete",
+      "body_or_identity_logged": false,
+      "observed_delete_control_activated": true
+    },
+    {
+      "at_utc": "2026-10-27T03:36:43.778189+00:00",
+      "action": "clear",
+      "body_or_identity_logged": false,
+      "own_draft_clear_dispatched": true
+    }
+  ],
+  "body_or_identity_logged": false,
+  "browser": "155.0.8059.85",
+  "receiver_web_source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "receiver_source_observed_at_utc": "2026-10-27T03:36:03.647Z",
+  "before_network": {
+    "at_utc": "2026-10-27T03:36:03.962469+00:00",
+    "wifi_setting": "1",
+    "mobile_data_setting": "1",
+    "default_network_id_present": true,
+    "current_networks": [
+      {
+        "id_parsed": true,
+        "default": false,
+        "transports": [
+          "CELLULAR"
+        ],
+        "validated": true,
+        "internet": false
+      },
+      {
+        "id_parsed": true,
+        "default": true,
+        "transports": [
+          "WIFI"
+        ],
+        "validated": true,
+        "internet": true
+      }
+    ],
+    "default_transport": [
+      "WIFI"
+    ],
+    "telephony_call_states": [
+      0,
+      0
+    ]
+  },
+  "before_native": {
+    "at_utc": "2026-10-27T03:36:07.023402+00:00",
+    "app_hierarchy_present": true,
+    "known_voice_statuses": [
+      "Голос подключён"
+    ],
+    "muted_control": false,
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "foreground_types": [
+      "0x00000080"
+    ],
+    "system_permission_prompt": false
+  },
+  "before_roster": {
+    "at_utc": "2026-10-27T03:36:07.207Z",
+    "label": "before",
+    "phone_present": true,
+    "participants": 3,
+    "phone_microphone_muted": false
+  },
+  "guard_pid": 572,
+  "wifi_off_started_at_utc": "2026-10-27T03:36:07.213Z",
+  "cellular_internet_transport_observed": true,
+  "os_validated_cellular_observed": false,
+  "during_roster": {
+    "at_utc": "2026-10-27T03:36:11.494Z",
+    "label": "wifi-off",
+    "phone_present": true,
+    "participants": 3,
+    "phone_microphone_muted": false
+  },
+  "before_send_network": {
+    "at_utc": "2026-10-27T03:36:11.672778+00:00",
+    "wifi_setting": "0",
+    "mobile_data_setting": "1",
+    "default_network_id_present": true,
+    "current_networks": [
+      {
+        "id_parsed": true,
+        "default": false,
+        "transports": [
+          "CELLULAR"
+        ],
+        "validated": true,
+        "internet": false
+      },
+      {
+        "id_parsed": true,
+        "default": true,
+        "transports": [
+          "CELLULAR"
+        ],
+        "validated": true,
+        "internet": true
+      }
+    ],
+    "default_transport": [
+      "CELLULAR"
+    ],
+    "telephony_call_states": [
+      0,
+      0
+    ]
+  },
+  "actual_PC_message_rendered": true,
+  "actual_server_author_matches_phone": true,
+  "after_receive_network": {
+    "at_utc": "2026-10-27T03:36:18.276730+00:00",
+    "wifi_setting": "0",
+    "mobile_data_setting": "1",
+    "default_network_id_present": true,
+    "current_networks": [
+      {
+        "id_parsed": true,
+        "default": false,
+        "transports": [
+          "CELLULAR"
+        ],
+        "validated": true,
+        "internet": false
+      },
+      {
+        "id_parsed": true,
+        "default": true,
+        "transports": [
+          "CELLULAR"
+        ],
+        "validated": true,
+        "internet": true
+      }
+    ],
+    "default_transport": [
+      "CELLULAR"
+    ],
+    "telephony_call_states": [
+      0,
+      0
+    ]
+  },
+  "delivered_while_verified_cellular": true,
+  "during_delivery_roster": {
+    "at_utc": "2026-10-27T03:36:18.687Z",
+    "label": "cellular-message-delivered",
+    "phone_present": true,
+    "participants": 3,
+    "phone_microphone_muted": false
+  },
+  "wifi_enable_dispatched_at_utc": "2026-10-27T03:36:18.823Z",
+  "guard_exit": 0,
+  "restored_network": {
+    "at_utc": "2026-10-27T03:36:23.088776+00:00",
+    "wifi_setting": "1",
+    "mobile_data_setting": "1",
+    "default_network_id_present": true,
+    "current_networks": [
+      {
+        "id_parsed": true,
+        "default": false,
+        "transports": [
+          "CELLULAR"
+        ],
+        "validated": true,
+        "internet": false
+      },
+      {
+        "id_parsed": true,
+        "default": false,
+        "transports": [
+          "CELLULAR"
+        ],
+        "validated": true,
+        "internet": true
+      },
+      {
+        "id_parsed": true,
+        "default": true,
+        "transports": [
+          "WIFI"
+        ],
+        "validated": true,
+        "internet": true
+      }
+    ],
+    "default_transport": [
+      "WIFI"
+    ],
+    "telephony_call_states": [
+      0,
+      0
+    ]
+  },
+  "fixture_server_tombstone": true,
+  "fixture_PC_body_removed": true,
+  "cleaned_native_fixture": {
+    "at_utc": "2026-10-27T03:36:47.611321+00:00",
+    "action": "inspect",
+    "body_or_identity_logged": false,
+    "composer_empty": true,
+    "fixture_display_nodes": 0
+  },
+  "final_native": {
+    "at_utc": "2026-10-27T03:36:51.476464+00:00",
+    "app_hierarchy_present": true,
+    "known_voice_statuses": [
+      "Голос подключён"
+    ],
+    "muted_control": false,
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "foreground_types": [
+      "0x00000080"
+    ],
+    "system_permission_prompt": false
+  },
+  "final_roster": {
+    "at_utc": "2026-10-27T03:36:51.656Z",
+    "label": "restored",
+    "phone_present": true,
+    "participants": 3,
+    "phone_microphone_muted": false
+  },
+  "permission_preserved_exact": true,
+  "original_state_restored": true
+}

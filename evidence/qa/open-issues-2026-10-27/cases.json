@@ -647,6 +647,22 @@
       "defects": [
         582
       ]
+    },
+    {
+      "id": "ANDROID-wifi-cellular-native-DM-and-restoration",
+      "status": "PASS_SCOPED",
+      "protects": "Own Android secure-cookie message delivery remains functional during actual WiFi→CELLULAR handoff; original Wi-Fi/native UI/voice membership/permission and own test-data cleanup are restored.",
+      "command": "node .out/qa-goal/native_connectivity_run.mjs",
+      "platform": "Samsung SM-A576B Android16/API36; signed1.0.45+2080/source9c221897fdefec8098f707d61ca5b6e8b28bb0bd; fresh hash candidate.json; actual Windows Chrome receiver",
+      "mandatory_when": "Before accepting Android network-change/reconnect facets of QA62/272 and task scripts QA303; this does not replace full audio/SFU/SDK reconnect acceptance.",
+      "result": "android-connectivity/summary.json",
+      "issues": [
+        62,
+        272,
+        287,
+        303
+      ],
+      "limits": "No acoustic, RTP/frame continuity, SFU reconnection or RoomReconnecting/RoomReconnected callback assertion. Only sampled UI/server states; brief transitions could be missed.; Both radio intervals were about13s, not a long outage/soak/background/lock/revoke/account-switch matrix.; No VPN/router/Xkeen/provider configuration was changed; no causality attributed to them.; Watchdog was armed and released with exit0; fallback timeout branch was not exercised. Process inspection after the run found0 remaining guard helpers.; Native ASCII input injection and real Gboard window; no human/Gboard typing or selection acceptance.; New master native APK, iOS/macOS/Pixel and original Windows native receiver remain separate unaccepted gates.; Exact PC Web build was absent in initial runs; clean run3 captured Chrome155.0.8059.85 and runtime Web source072426d6. Android VALIDATED was false in its first mobile sample; app delivery is proven by actual PC receipt and verified CELLULAR/WiFi0 before/after, not inferred from that OS flag. Earlier controller failures retained separately; clean run3 fully passed without manual recovery."
     }
   ]
 }

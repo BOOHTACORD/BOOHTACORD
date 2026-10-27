@@ -1,0 +1,23 @@
+{
+  "at_utc": "2026-10-27T03:25:05.812Z",
+  "status": "FAIL_RESTORATION",
+  "actions": [
+    {
+      "at_utc": "2026-10-27T03:25:08.399288+00:00",
+      "action": "delete",
+      "body_or_identity_logged": false,
+      "observed_delete_control_activated": true
+    },
+    {
+      "at_utc": "2026-10-27T03:25:13.489217+00:00",
+      "action": "delete",
+      "body_or_identity_logged": false,
+      "observed_delete_control_activated": true
+    }
+  ],
+  "same_completed_handoff_not_rerun": true,
+  "controller_repair": "Owned header is occluded by its own popup; deletion uses the previously fixture-scoped menu plus independently rechecked server author.",
+  "owned_fixture_rechecked_privately": true,
+  "server_tombstone": false,
+  "error_type": "AssertionError"
+}

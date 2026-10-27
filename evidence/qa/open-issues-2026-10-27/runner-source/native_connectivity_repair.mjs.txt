@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict'
+import {createRequire} from 'node:module'
+import {execFileSync} from 'node:child_process'
+import {readFile,writeFile} from 'node:fs/promises'
+import {fileURLToPath} from 'node:url'
+const {request}=createRequire('C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/clients/web/package.json')('@playwright/test')
+const root=new URL('./',import.meta.url),origin='https://v.bootybay.ru',folder=fileURLToPath(root)
+const input=JSON.parse(await readFile(new URL('private-fixture.json',root),'utf8')),cfg=JSON.parse(await readFile(new URL('private-connectivity-fixture.json',root),'utf8'))
+const ctx=await request.newContext({storageState:JSON.parse(await readFile(new URL('private-session-b.json',root),'utf8'))})
+const read=async path=>{const r=await ctx.get(origin+'/api/v1'+path);assert.equal(r.status(),200);return r.json()}
+const py=action=>JSON.parse(execFileSync('python',['-X','utf8',fileURLToPath(new URL('native_connectivity_ui.py',root)),action],{cwd:folder,encoding:'utf8',stdio:['ignore','pipe','pipe'],windowsHide:true,timeout:40000}))
+const probe=kind=>JSON.parse(execFileSync('python',['-X','utf8','-c',`import json;from android_connectivity_state import ${kind};print(json.dumps(${kind}()))`],{cwd:folder,encoding:'utf8',stdio:['ignore','pipe','pipe'],windowsHide:true,timeout:40000}))
+const result={at_utc:new Date().toISOString(),status:'RUNNING',actions:[],same_completed_handoff_not_rerun:true,controller_repair:'Owned header is occluded by its own popup; deletion uses the previously fixture-scoped menu plus independently rechecked server author.'}
+try{
+ const session=await read('/auth/session');assert.equal(session.account_id,input.b.id)
+ const ds=await read('/direct-messages'),peers=ds.direct_messages.filter(d=>![input.a.id,input.c.id].includes(d.other_participant_id));assert.equal(peers.length,1)
+ const prefix='/direct-messages/'+peers[0].id,phone=peers[0].other_participant_id
+ const history=await read(prefix+'/messages'),matches=history.messages.filter(m=>!m.deleted&&m.body===cfg.text&&m.author_id===phone);assert.equal(matches.length,1)
+ result.owned_fixture_rechecked_privately=true
+ result.actions.push(py('delete'));result.actions.push(py('delete'))
+ const after=await read(prefix+'/messages?at='+matches[0].id+'&limit=20');result.server_tombstone=after.messages.some(m=>m.id===matches[0].id&&m.deleted);assert.ok(result.server_tombstone)
+ result.actions.push(py('clear'));result.final_fixture_ui=py('inspect');assert.ok(result.final_fixture_ui.composer_empty&&result.final_fixture_ui.fixture_display_nodes===0)
+ result.final_network=probe('network');result.final_native=probe('native')
+ const roster=await read('/voice/participants'),rooms=roster.channels.filter(c=>c.participants.some(p=>p.account_id===phone));assert.equal(rooms.length,1)
+ const p=rooms[0].participants.find(p=>p.account_id===phone);result.final_roster={phone_present:true,participants:rooms[0].participants.length,phone_microphone_muted:p.microphone_muted}
+ assert.ok(result.final_network.default_transport.includes('WIFI')&&result.final_network.wifi_setting==='1'&&result.final_network.mobile_data_setting==='1')
+ const before=JSON.parse(await readFile(new URL('connectivity-second-before-repair.json',root),'utf8')).before_native
+ result.permission_restored_exact=JSON.stringify(before.permission)===JSON.stringify(result.final_native.permission)
+ assert.ok(result.permission_restored_exact&&result.final_native.foreground_types.includes('0x00000080')&&result.final_native.known_voice_statuses.includes('Голос подключён'))
+ assert.equal(result.final_roster.participants,3);assert.equal(p.microphone_muted,false)
+ result.status='PASS_CLEANUP_AND_RESTORATION'
+}catch(e){result.status='FAIL_RESTORATION';result.error_type=e.name}
+finally{await ctx.dispose();await writeFile(new URL('native-connectivity-repair-result.json',root),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result))}

@@ -1,0 +1,16 @@
+"""Independent bounded guard restores the single authorized phone's original Wi-Fi on timeout."""
+import json,subprocess,sys,time
+from datetime import datetime,timezone
+from pathlib import Path
+from android_permission_ui import ADB,ROOT
+deadline=float(sys.argv[1]);release=Path(sys.argv[2]).resolve();assert release.parent==ROOT.resolve()
+assert 0<deadline-time.time()<=60
+record={'started_at_utc':datetime.now(timezone.utc).isoformat(),'deadline_epoch':deadline,'triggered':False}
+while time.time()<deadline:
+ if release.exists():break
+ time.sleep(.15)
+else:
+ record['triggered']=True
+ result=subprocess.run([ADB,'shell','svc','wifi','enable'],capture_output=True,timeout=10);record['restore_exit']=result.returncode
+record['finished_at_utc']=datetime.now(timezone.utc).isoformat()
+(ROOT/'wifi-guard-result.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8',newline='\n')

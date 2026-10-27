@@ -1,0 +1,75 @@
+import assert from 'node:assert/strict'
+import {execFileSync,spawn} from 'node:child_process'
+import {once} from 'node:events'
+import {readFile,writeFile} from 'node:fs/promises'
+import {randomBytes} from 'node:crypto'
+import {fileURLToPath} from 'node:url'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,expect,root,origin} from './privacy_fixture.mjs'
+const adb='C:/Users/egkur/AppData/Local/Android/Sdk/platform-tools/adb.exe',folder=fileURLToPath(root)
+const py=(file,...args)=>JSON.parse(execFileSync('python',['-X','utf8',fileURLToPath(new URL(file,root)),...args],{cwd:folder,encoding:'utf8',stdio:['ignore','pipe','pipe'],windowsHide:true,timeout:40000}))
+const probe=kind=>JSON.parse(execFileSync('python',['-X','utf8','-c',`import json;from android_connectivity_state import ${kind};print(json.dumps(${kind}()))`],{cwd:folder,encoding:'utf8',stdio:['ignore','pipe','pipe'],windowsHide:true,timeout:40000}))
+const radio=action=>execFileSync(adb,['shell','svc','wifi',action],{stdio:'pipe',windowsHide:true,timeout:10000})
+const browser=await chromium.launch({channel:'chrome',headless:false})
+const report={at_utc:new Date().toISOString(),status:'RUNNING',api_mocks:false,physical_android:true,network_samples:[],native_samples:[],actions:[],body_or_identity_logged:false}
+const save=()=>writeFile(new URL('native-connectivity-result.json',root),JSON.stringify(report,null,2)+'\n')
+let f,b,prefix,phone,guard,release,message,cfg,wifiChanged=false
+const transport=n=>n.default_transport.join('|')
+const cell=n=>transport(n)==='CELLULAR'&&n.current_networks.some(r=>r.default&&r.internet)
+const wifi=n=>transport(n)==='WIFI'&&n.current_networks.some(r=>r.default&&r.validated&&r.internet)
+const roster=async label=>{
+ const r=await api(b.page,'/voice/participants');assert.equal(r.status,200)
+ const rooms=r.body.channels.filter(c=>c.participants.some(p=>p.account_id===phone)),room=rooms[0],p=room?.participants.find(p=>p.account_id===phone)
+ return {at_utc:new Date().toISOString(),label,phone_present:rooms.length===1,participants:room?.participants.length,phone_microphone_muted:p?.microphone_muted}
+}
+const find=async()=>{const r=await api(b.page,prefix+'/messages');assert.equal(r.status,200);return r.body.messages.find(m=>!m.deleted&&m.body===cfg.text&&m.author_id===phone)}
+try{
+ f=await fixture(browser);b=await f.client('b');const nav=await api(b.page,'/direct-messages')
+ const peers=nav.body.direct_messages.filter(d=>![f.private.a.id,f.private.c.id].includes(d.other_participant_id));assert.equal(peers.length,1)
+ phone=peers[0].other_participant_id;prefix='/direct-messages/'+peers[0].id
+ await b.page.getByRole('button',{name:'Личные',exact:true}).click();await b.page.locator('.direct-message-navigation .channel-button').filter({hasText:peers[0].other_participant_display_name}).click()
+ await expect(b.page.getByRole('textbox',{name:'Сообщение',exact:true})).toBeVisible()
+ try{cfg=JSON.parse(await readFile(new URL('private-connectivity-fixture.json',root),'utf8'))}catch{cfg={peer:f.private.b.login,text:'net_'+randomBytes(8).toString('hex')};await writeFile(new URL('private-connectivity-fixture.json',root),JSON.stringify(cfg))}
+ assert.match(cfg.text,/^net_[a-f0-9]{16}$/);assert.equal(cfg.peer,f.private.b.login);assert.equal(await find(),undefined)
+ report.before_network=probe('network');report.before_native=probe('native');report.before_roster=await roster('before')
+ assert.equal(report.before_network.wifi_setting,'1');assert.equal(report.before_network.mobile_data_setting,'1');assert.ok(wifi(report.before_network));assert.ok(report.before_network.telephony_call_states.every(x=>x===0))
+ assert.ok(report.before_native.known_voice_statuses.includes('Голос подключён'));assert.ok(report.before_native.foreground_types.includes('0x00000080'));assert.equal(report.before_roster.participants,3)
+ release=new URL('wifi-guard-'+randomBytes(4).toString('hex')+'.release',root)
+ guard=spawn('python',['-X','utf8',fileURLToPath(new URL('android_wifi_guard.py',root)),String(Date.now()/1000+45),fileURLToPath(release)],{cwd:folder,stdio:'ignore',windowsHide:true})
+ report.guard_pid=guard.pid;report.wifi_off_started_at_utc=new Date().toISOString();wifiChanged=true;radio('disable');await save()
+ const deadline=Date.now()+8000;let n
+ do{n=probe('network');report.network_samples.push(n);await save();if(cell(n))break;await delay(600)}while(Date.now()<deadline)
+ report.cellular_internet_transport_observed=cell(n);report.os_validated_cellular_observed=n.current_networks.some(r=>r.default&&r.validated&&cell(n));report.native_samples.push(probe('native'));report.during_roster=await roster('wifi-off');await save()
+ if(cell(n)){
+  assert.ok(n.telephony_call_states.every(x=>x===0));report.before_send_network=probe('network');assert.ok(cell(report.before_send_network))
+  report.actions.push(py('native_connectivity_ui.py','send'))
+  for(let i=0;i<12;i++){message=await find();if(message)break;await delay(500)}assert.ok(message)
+  await expect(b.page.getByText(cfg.text,{exact:true})).toBeVisible();report.actual_PC_message_rendered=true;report.actual_server_author_matches_phone=true
+  report.after_receive_network=probe('network');report.delivered_while_verified_cellular=cell(report.after_receive_network)&&report.after_receive_network.wifi_setting==='0';assert.ok(report.delivered_while_verified_cellular)
+  report.during_delivery_roster=await roster('cellular-message-delivered');report.status='PASS_SCOPED_NETWORK_SWITCH_AND_DM'
+ }else report.status='PARTIAL_NO_CELLULAR_INTERNET_TRANSPORT'
+}catch(e){report.status='FAIL_OR_CONTROLLER_ERROR';report.error_type=e.name}
+finally{
+ try{
+  if(wifiChanged){radio('enable');report.wifi_enable_dispatched_at_utc=new Date().toISOString()}
+  if(release)await writeFile(release,'released')
+  if(guard&&guard.exitCode===null)await Promise.race([once(guard,'exit'),delay(10000)])
+  report.guard_exit=guard?.exitCode??null
+  if(wifiChanged){
+   const until=Date.now()+30000;let n
+   do{n=probe('network');report.network_samples.push(n);if(wifi(n))break;await delay(800)}while(Date.now()<until)
+   report.restored_network=n;assert.ok(wifi(n)&&n.wifi_setting==='1'&&n.mobile_data_setting===report.before_network.mobile_data_setting)
+  }
+  if(b&&prefix&&cfg){
+   message=message??await find()
+   if(message){for(const action of ['delete-menu','delete','delete'])report.actions.push(py('native_connectivity_ui.py',action));const r=await api(b.page,prefix+'/messages?at='+message.id+'&limit=20');report.fixture_server_tombstone=r.body.messages.some(m=>m.id===message.id&&m.deleted);assert.ok(report.fixture_server_tombstone)}
+   report.actions.push(py('native_connectivity_ui.py','clear'));report.cleaned_native_fixture=py('native_connectivity_ui.py','inspect');assert.ok(report.cleaned_native_fixture.composer_empty&&report.cleaned_native_fixture.fixture_display_nodes===0)
+  }
+  report.final_native=probe('native');report.final_roster=await roster('restored')
+  report.permission_preserved_exact=JSON.stringify(report.final_native.permission)===JSON.stringify(report.before_native.permission)
+  report.original_state_restored=report.permission_preserved_exact&&report.final_native.foreground_types.includes('0x00000080')&&report.final_native.known_voice_statuses.includes('Голос подключён')&&report.final_roster.phone_present&&report.final_roster.participants===3&&!report.final_roster.phone_microphone_muted
+  assert.ok(report.original_state_restored)
+ }catch(e){report.status='FAIL_RESTORATION';report.restoration_error_type=e.name}
+ for(const context of f?.contexts??[])await context.close();await browser.close();await save()
+ console.log(JSON.stringify({status:report.status,cellular:report.cellular_internet_transport_observed,os_validated:report.os_validated_cellular_observed,PC_rendered:report.actual_PC_message_rendered,fixture_deleted:report.fixture_server_tombstone,restored:report.original_state_restored,guard_exit:report.guard_exit}))
+}
