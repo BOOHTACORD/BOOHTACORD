@@ -1,0 +1,83 @@
+{
+  "status": "PASS_SCOPED",
+  "candidates": {
+    "at_utc": "2026-10-27T00:40:23.544177+00:00",
+    "android_version": "1.0.45+2080",
+    "installed_APK_SHA256": "7091a98c326e3bea9ecff1f4a10192d3ce8545a298690b17c90d0453ddde8e70",
+    "matches_verified_release": true,
+    "web_receipt_http": 200,
+    "web_receipt": {
+      "version": "1.0.47",
+      "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7"
+    },
+    "API_source": "UNKNOWN"
+  },
+  "fixture": {
+    "class": "owned synthetic64x64 four-quadrant PNG",
+    "bytes": 202,
+    "sha256": "cff882654890f4efaa6600d3a9252ab585dd10d552f8fbd46222ecc7d8d76a28",
+    "original_or_preview_pixels_published": false
+  },
+  "checks": {
+    "actual_DocumentsUI_selection": true,
+    "native_send_and_browser_receive": true,
+    "actual_author_matches_phone": true,
+    "original_bytes_hash_matches_fixture": true,
+    "participant_original_preview_http": [
+      200,
+      200
+    ],
+    "third_MEMBER_http": 404,
+    "anonymous_http": 401,
+    "actual_native_rendered_pattern": {
+      "expected_fixture_pattern_rendered": true,
+      "matched_color_groups": 4,
+      "comparison": "Observed ImageView bounds; four interior quadrant patches; embedded screenshot ICC converted to sRGB; RGB tolerance12",
+      "capture_ICC_description": "Display P3 Gamut with sRGB Transfer",
+      "capture_ICC_bytes": 520,
+      "probe_self_check_wrong_quadrant_order_rejected": true,
+      "patch_max_channel_errors": [
+        0.0,
+        7.0,
+        1.0,
+        0.0
+      ],
+      "native_image_extent": [
+        180,
+        180
+      ],
+      "source_pixels": [
+        1080,
+        2340
+      ],
+      "private_capture_sha256": "2b84ef463e10a3d732f16483a8e6c3ce15baeab1b15f46b8998931b7b188b7b3",
+      "capture_retained": false
+    },
+    "actual_browser_decoded64x64": true,
+    "browser_Escape_focus_return": true,
+    "native_Back_closes_view": true,
+    "native_confirm_delete_and_peer_tombstone": true,
+    "after_delete_original_http": [
+      404,
+      404,
+      401
+    ],
+    "phone_fixture_file_removed": true,
+    "final_voice_microphone_restored": true
+  },
+  "diagnosis": [
+    "First exact-RGB and unmanaged-sRGB probes failed; retained raw numeric receipts, no screenshot pixels",
+    "ADB PNG contains Display P3 Gamut with sRGB Transfer ICC520 bytes. Respecting the embedded profile gives quadrant errors0/7/1/0 at unchanged tolerance12",
+    "Protected server preview64x64 independently matches original quadrant colors exactly; no server recoloring detected",
+    "Corrected probe reopened native viewer and found all four expected quadrants; wrong quadrant order is rejected by the probe self-check",
+    "This is a harness color-management correction, not a filed application defect; no phone color setting or shipping code changed"
+  ],
+  "limits": [
+    "PNG only; no JPEG/GIF, clipboard, TEXT, batch limits507/retry, native download/save or third ADMIN acceptance",
+    "Post-delete original access checked; post-delete preview URL was not separately checked in this packet",
+    "No human visual/color-quality/AT speech acceptance or approved pixel golden; native raster evidence is a bounded synthetic pattern probe",
+    "Raw UI, filenames from personal storage, original/preview attachment bytes, screenshot pixels and account/DM/session IDs are excluded",
+    "Helper diagnostics evolved during the packet; final sources reproduce the corrected flow. One unchanged runner hash for all earlier diagnostic steps is not claimed",
+    "API source UNKNOWN; no audibility/FPS/capacity claim"
+  ]
+}

@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile} from 'node:fs/promises'
+import {createRequire} from 'node:module'
+import {createHash} from 'node:crypto'
+const {request}=createRequire('C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/clients/web/package.json')('@playwright/test')
+const root=new URL('./',import.meta.url),origin='https://v.bootybay.ru'
+const fixture=JSON.parse(await readFile(new URL('android-attachment-fixture.json',root),'utf8')),input=JSON.parse(await readFile(new URL('private-fixture.json',root),'utf8'))
+const context=await request.newContext({storageState:JSON.parse(await readFile(new URL('private-session-b.json',root),'utf8'))})
+const get=async path=>{const r=await context.get(origin+'/api/v1'+path);assert.equal(r.status(),200);return r}
+try{
+ const nav=await(await get('/direct-messages')).json(),dm=nav.direct_messages.filter(d=>![input.a.id,input.c.id].includes(d.other_participant_id));assert.equal(dm.length,1)
+ const prefix='/direct-messages/'+dm[0].id,h=await(await get(prefix+'/messages')).json(),matches=h.messages.filter(m=>!m.deleted&&m.attachments?.some(a=>Object.values(a).includes(fixture.filename)));assert.equal(matches.length,1)
+ const message=matches[0];assert.equal(message.author_id,dm[0].other_participant_id)
+ const r=await get(prefix+'/attachments/'+message.attachments[0].id+'/preview'),bytes=await r.body();await writeFile(new URL('private-attachment-preview.png',root),bytes)
+ const receipt={at_utc:new Date().toISOString(),http:r.status(),bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex'),actual_author_matches_phone:true,body_logged:false,preview_retained_privately_only:true}
+ await writeFile(new URL('attachment-preview-read.json',root),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify(receipt))
+}finally{await context.dispose()}

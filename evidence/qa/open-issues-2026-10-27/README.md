@@ -86,6 +86,12 @@ Android and Windows releases in the current first page, not a new master build.
 - Android opened the actual Google DocumentsUI file chooser from the owned DM;
   Back/cancel returned to the empty composer with voice and mic80 still active.
   No file was selected, and no personal file listings or picker images retained.
+- [Physical Android PNG lifecycle](native-image/summary.json): actual DocumentsUI
+  selection/send, native ICC-aware raster probe, browser decode/Escape/focus,
+  participant200/outsider404/anonymous401, native delete and peer tombstone.
+  Original access after deletion404; own phone fixture removed; voice/mic preserved.
+  Initial numeric raster probes ignored the screenshot's Display P3 ICC profile;
+  corrected conversion passes. No product defect or broad color-quality claim.
 
 ## Reproduction and privacy
 

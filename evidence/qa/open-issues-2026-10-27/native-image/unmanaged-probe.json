@@ -1,0 +1,63 @@
+{
+  "action": "probe",
+  "at_utc": "2026-10-27T00:31:15.781215+00:00",
+  "attachment_contents_logged": false,
+  "render_probe": {
+    "expected_fixture_pattern_rendered": false,
+    "matched_color_groups": 0,
+    "comparison": "Observed ImageView bounds; four interior quadrant patches; RGB tolerance12 for actual capture color conversion",
+    "patch_max_channel_errors": [
+      51.0,
+      109.0,
+      16.0,
+      79.0
+    ],
+    "native_image_extent": [
+      180,
+      180
+    ],
+    "source_pixels": [
+      1080,
+      2340
+    ],
+    "private_capture_sha256": "1dce23fa8b6e8e41bfce97fb242cedfaff945abb47f8f1e7806f72066e721c51",
+    "capture_retained": false
+  },
+  "fixture_nodes": 3,
+  "exact_fixture_nodes": [
+    {
+      "class": "android.widget.ImageView",
+      "bounds": [
+        450,
+        1117,
+        630,
+        1297
+      ]
+    }
+  ],
+  "fixture_preview_control": false,
+  "viewer_close_control": true,
+  "loading_or_error": false,
+  "static_actions": [
+    {
+      "label": "Скачать",
+      "bounds": [
+        635,
+        114,
+        911,
+        238
+      ]
+    },
+    {
+      "label": "Закрыть просмотр изображения",
+      "bounds": [
+        923,
+        114,
+        1046,
+        238
+      ]
+    }
+  ],
+  "composer_lengths": [],
+  "microphone_fgs": true
+}

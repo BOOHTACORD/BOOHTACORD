@@ -393,6 +393,39 @@
       ],
       "result": "quickjump-result.json#/cases/0",
       "limits": "800/390 shortcut entry fails under580; no native lease-ID, membership revoke, origin-generation or IME-composition acceptance"
+    },
+    {
+      "id": "ANDROID-native-PNG-picker-send-view-delete",
+      "status": "PASS_SCOPED",
+      "protects": "Actual OS-picked native DM image reaches only authorized peer, renders on phone/browser, and native deletion revokes original access while voice/mic remain active",
+      "command": "Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal",
+      "commands": [
+        "python .out/qa-goal/android_attachment_picker.py prepare",
+        "python .out/qa-goal/android_attachment_picker.py open",
+        "python .out/qa-goal/android_attachment_picker.py roots",
+        "python .out/qa-goal/android_attachment_picker.py downloads",
+        "python .out/qa-goal/android_attachment_picker.py select",
+        "node .out/qa-goal/native_attachment_peer.mjs",
+        "python .out/qa-goal/android_attachment_actions.py send",
+        "python .out/qa-goal/android_attachment_actions.py view",
+        "python .out/qa-goal/android_attachment_actions.py close-view",
+        "python .out/qa-goal/android_attachment_actions.py delete-menu",
+        "python .out/qa-goal/android_attachment_actions.py delete",
+        "python .out/qa-goal/android_attachment_actions.py delete",
+        "python .out/qa-goal/android_attachment_picker.py cleanup-file"
+      ],
+      "platform": "Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
+      "mandatory_when": "Before accepting this native Android PNG/OS picker/DM image privacy lifecycle scope",
+      "issues": [
+        53,
+        54,
+        62,
+        131,
+        287,
+        303
+      ],
+      "result": "native-image/summary.json",
+      "limits": "PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim."
     }
   ]
 }

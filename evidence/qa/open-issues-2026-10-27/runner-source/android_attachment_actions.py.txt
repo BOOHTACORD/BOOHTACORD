@@ -1,0 +1,80 @@
+"""Act only on the owned fixture message and measure actual native rendered pixels privately."""
+import hashlib
+import io
+import json
+import re
+import sys
+import time
+import xml.etree.ElementTree as ET
+from datetime import datetime,timezone
+from PIL import Image,ImageStat,ImageCms
+from android_permission_ui import ROOT,APP,call,nodes,label,state,tap_named
+
+cfg=json.loads((ROOT/'android-attachment-fixture.json').read_text(encoding='utf-8'));name=cfg['filename']
+assert re.fullmatch(r'BOOHTACORD-QA-20261027-[a-f0-9]{6}\.png',name)
+def bounds(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+def tap(matches,limit=250):
+    if len(matches)!=1:raise RuntimeError('Expected one scoped fixture control')
+    b=bounds(matches[0]);assert 0<b[3]-b[1]<=limit
+    call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2))
+def image_probe():
+    import subprocess
+    from android_permission_ui import ADB
+    raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20)
+    source=Image.open(io.BytesIO(raw));icc=source.info.get('icc_profile');profile_name=None
+    if icc:
+        profile=ImageCms.ImageCmsProfile(io.BytesIO(icc));profile_name=ImageCms.getProfileDescription(profile).strip()
+        image=ImageCms.profileToProfile(source,profile,ImageCms.createProfile('sRGB'),outputMode='RGB')
+    else:image=source.convert('RGB')
+    colors=[(255,0,34),(0,238,68),(17,68,255),(255,238,0)]
+    images=[n for n in nodes() if label(n)==name and n.get('class')=='android.widget.ImageView'];assert len(images)==1
+    x0,y0,x1,y1=bounds(images[0]);width,height=x1-x0,y1-y0;errors=[];means=[]
+    for (x,y),color in zip([(0.25,0.25),(0.75,0.25),(0.25,0.75),(0.75,0.75)],colors):
+        patch=image.crop((int(x0+width*(x-0.05)),int(y0+height*(y-0.05)),int(x0+width*(x+0.05)),int(y0+height*(y+0.05))))
+        actual=ImageStat.Stat(patch).mean;means.append(actual);errors.append(round(max(abs(a-b) for a,b in zip(actual,color)),2))
+    valid=all(error<=12 for error in errors)
+    return {'expected_fixture_pattern_rendered':valid,'matched_color_groups':sum(error<=12 for error in errors),
+            'comparison':'Observed ImageView bounds; four interior quadrant patches; embedded screenshot ICC converted to sRGB; RGB tolerance12',
+            'capture_ICC_description':profile_name,'capture_ICC_bytes':len(icc or b''),
+            'probe_self_check_wrong_quadrant_order_rejected':not all(max(abs(a-b) for a,b in zip(actual,color))<=12 for actual,color in zip(means,colors[1:]+colors[:1])),
+            'patch_max_channel_errors':errors,'native_image_extent':[width,height],
+            'source_pixels':list(image.size),'private_capture_sha256':hashlib.sha256(raw).hexdigest(),'capture_retained':False}
+
+action=sys.argv[1];report={'action':action,'at_utc':datetime.now(timezone.utc).isoformat(),'attachment_contents_logged':False}
+if action=='send':
+    rows=nodes();assert any(name in label(n) for n in rows)
+    fields=[n for n in rows if n.get('class')=='android.widget.EditText'];assert len(fields)==1 and not fields[0].get('text')
+    tap([n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and n.get('enabled')=='true' and label(n).startswith('Отправить')])
+elif action=='view':
+    tap([n for n in nodes() if n.get('package')==APP and label(n)=='Открыть изображение '+name],limit=900)
+    for _ in range(4):
+        rows=nodes();report['render_probe']=image_probe()
+        if report['render_probe']['expected_fixture_pattern_rendered']:break
+        time.sleep(1)
+    assert report['render_probe']['expected_fixture_pattern_rendered']
+elif action=='probe':report['render_probe']=image_probe()
+elif action=='close-view':
+    assert any(label(n)=='Закрыть просмотр изображения' for n in nodes())
+    call('shell','input','keyevent','KEYCODE_BACK')
+elif action=='delete-menu':
+    raw=call('exec-out','uiautomator','dump','/dev/tty');tree=ET.fromstring(raw[raw.find('<hierarchy'):raw.find('</hierarchy>')+12])
+    parents={child:parent for parent in tree.iter() for child in parent};allrows=list(tree.iter('node'))
+    fixture=[n for n in allrows if label(n)=='Открыть изображение '+name];assert len(fixture)==1
+    menu=lambda scope:[n for n in scope if n.get('package')==APP and n.get('clickable')=='true' and 'Действия с сообщением' in label(n)]
+    ancestor=fixture[0];matches=[]
+    while ancestor in parents:
+        ancestor=parents[ancestor];matches=menu(ancestor.iter('node'))
+        if matches:break
+    report['scoped_message_action_controls']=len(matches);tap(matches)
+elif action=='delete':tap_named('Удалить')
+elif action!='inspect':raise ValueError('Unknown bounded fixture action')
+rows=nodes();report.update(fixture_nodes=sum(name in label(n) for n in rows),
+    exact_fixture_nodes=[{'class':n.get('class'),'bounds':bounds(n)} for n in rows if label(n)==name],
+    fixture_preview_control=any(label(n)=='Открыть изображение '+name for n in rows),
+    viewer_close_control=any(label(n)=='Закрыть просмотр изображения' for n in rows),
+    loading_or_error=any(label(n) in ['Загружаем изображение…','Не удалось загрузить изображение.','Вложение удалено или недоступно.'] for n in rows),
+    static_actions=[{'label':label(n),'bounds':bounds(n)} for n in rows if label(n) in ['Удалить','Отмена','Скачать','Закрыть просмотр изображения'] and n.get('clickable')=='true'],
+    composer_lengths=[len(n.get('text') or '') for n in rows if n.get('class')=='android.widget.EditText'],
+    microphone_fgs='types=0x00000080' in call('shell','dumpsys','activity','services',APP))
+(ROOT/('native-attachment-'+action+'.json')).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps(report,ensure_ascii=True))

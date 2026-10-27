@@ -1,0 +1,54 @@
+import assert from 'node:assert/strict'
+import {createHash} from 'node:crypto'
+import {readFile,writeFile} from 'node:fs/promises'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,expect,root,origin} from './privacy_fixture.mjs'
+const cfg=JSON.parse(await readFile(new URL('android-attachment-fixture.json',root),'utf8'))
+const browser=await chromium.launch({channel:'chrome',headless:false})
+const report={status:'RUNNING',origin,browser:browser.version(),at_utc:new Date().toISOString(),checks:[],api_mocks:false,body_logged:false}
+let f,b,third,anon,prefix,message
+const save=()=>writeFile(new URL('native-attachment-peer-result.json',root),JSON.stringify(report,null,2)+'\n')
+try{
+ f=await fixture(browser);b=await f.client('b');const nav=await api(b.page,'/direct-messages')
+ const candidates=nav.body.direct_messages.filter(d=>![f.private.a.id,f.private.c.id].includes(d.other_participant_id));assert.equal(candidates.length,1)
+ const dm=candidates[0];prefix='/direct-messages/'+dm.id
+ await b.page.getByRole('button',{name:'Личные',exact:true}).click();await b.page.locator('.direct-message-navigation .channel-button').filter({hasText:dm.other_participant_display_name}).click()
+ await expect(b.page.getByRole('textbox',{name:'Сообщение',exact:true})).toBeVisible()
+ third=await browser.newContext({storageState:JSON.parse(await readFile(new URL('private-session-c.json',root),'utf8'))});anon=await browser.newContext()
+ const session=await third.request.get(origin+'/api/v1/auth/session'),identity=await session.json();assert.equal(identity.account_id,f.private.c.id);assert.equal(identity.role,'MEMBER')
+ report.status='READY';await save();let sequence=0
+ while(browser.isConnected()&&!b.page.isClosed()){
+  let command;try{command=JSON.parse(await readFile(new URL('native-attachment-peer-command.json',root),'utf8'))}catch{}
+  if(command?.sequence>sequence){
+   sequence=command.sequence;if(command.action==='stop')break
+   const row={action:command.action,at_utc:new Date().toISOString(),status:'RUNNING'}
+   try{
+    if(command.action==='receive'){
+     for(let i=0;i<10;i++){const h=await api(b.page,prefix+'/messages');assert.equal(h.status,200);message=h.body.messages.find(m=>!m.deleted&&m.attachments?.some(a=>Object.values(a).includes(cfg.filename)));if(message)break;await delay(750)}
+     assert.ok(message);assert.equal(message.attachments.length,1);await expect(b.page.getByRole('button',{name:'Открыть изображение '+cfg.filename,exact:true})).toBeVisible()
+     row.server_received=true;row.browser_attachment_rendered=true;row.has_text=Boolean(message.body);row.attachment_count=1
+    }else if(command.action==='view-acl'){
+     assert.ok(message);const path=origin+'/api/v1'+prefix+'/attachments/'+message.attachments[0].id
+     row.file_statuses=[]
+     for(const suffix of['','/preview']){const r=await b.context.request.get(path+suffix);assert.equal(r.status(),200);const bytes=await r.body();row.file_statuses.push({http:r.status(),bytes:bytes.length,content_type:r.headers()['content-type']});if(!suffix)assert.equal(createHash('sha256').update(bytes).digest('hex'),cfg.sha256)}
+     const outsider=await third.request.get(path),anonymous=await anon.request.get(path);row.third_MEMBER_http=outsider.status();row.anonymous_http=anonymous.status();assert.equal(outsider.status(),404);assert.equal(anonymous.status(),401)
+     const opener=b.page.getByRole('button',{name:'Открыть изображение '+cfg.filename,exact:true});await opener.click()
+     const dialog=b.page.getByRole('dialog',{name:'Просмотр изображения '+cfg.filename,exact:true});await expect(dialog).toBeVisible()
+     await expect.poll(()=>dialog.locator('img').evaluate(i=>i.complete&&i.naturalWidth===64&&i.naturalHeight===64)).toBe(true)
+     row.actual_browser_image_decoded=true;await b.page.keyboard.press('Escape');await expect(dialog).toBeHidden();await expect(opener).toBeFocused();row.escape_focus_return=true
+    }else if(command.action==='deleted'){
+     assert.ok(message);await expect.poll(async()=>{const h=await api(b.page,prefix+'/messages?at='+message.id+'&limit=20');return h.body.messages.find(m=>m.id===message.id)?.deleted}).toBe(true)
+     row.peer_tombstone=true;row.after_delete_file_statuses=[]
+     const path=origin+'/api/v1'+prefix+'/attachments/'+message.attachments[0].id
+     for(const context of[b.context,third,anon]){const r=await context.request.get(path);row.after_delete_file_statuses.push(r.status())}
+     assert.deepEqual(row.after_delete_file_statuses,[404,404,401]);row.actual_message_cleanup_verified=true
+    }else throw Error('Unknown bounded command')
+    row.status='PASS_SCOPED'
+   }catch(e){row.status='FAIL';row.error_type=e.name;row.timeout=/timeout/i.test(e.message)}
+   report.checks.push(row);report.completed_sequence=sequence;await save()
+  }
+  await delay(300)
+ }
+ report.status='COMPLETE'
+}catch(e){report.status='BLOCKED';report.error_type=e.name}
+finally{await third?.close();await anon?.close();for(const c of f?.contexts??[])await c.close();await browser.close();await save()}

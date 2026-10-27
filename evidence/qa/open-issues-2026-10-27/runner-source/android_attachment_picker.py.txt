@@ -1,0 +1,67 @@
+"""Operate the actual Android DocumentsUI with one owned synthetic fixture only."""
+import hashlib
+import io
+import json
+import re
+import subprocess
+import sys
+import uuid
+from pathlib import Path
+from PIL import Image,ImageDraw
+from android_permission_ui import ROOT,APP,ADB,call,nodes,label,state,tap_named
+
+PACKAGES={'com.google.android.documentsui','com.android.documentsui'}
+CONFIG=ROOT/'android-attachment-fixture.json'
+STATIC=['Поиск','Search','Показать корневые папки','Show roots','Загрузки','Downloads','Скачанные','Скачанные файлы','Открыть','Open','Готово','Done','Другие места','Сортировка','Недавние']
+def bounds(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+def tap(nodes_to_tap):
+    if len(nodes_to_tap)!=1:raise RuntimeError('Expected one observed bounded fixture/control')
+    b=bounds(nodes_to_tap[0]);assert 0<b[3]-b[1]<=300
+    call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2))
+def named(text):return [n for n in nodes() if n.get('package') in PACKAGES and label(n)==text]
+
+action=sys.argv[1]
+if action=='prepare':
+    if CONFIG.exists():raise RuntimeError('Fixture already exists; inspect instead of overwriting')
+    name='BOOHTACORD-QA-20261027-'+uuid.uuid4().hex[:6]+'.png';local=ROOT/name;remote='/sdcard/Download/'+name
+    image=Image.new('RGB',(64,64));draw=ImageDraw.Draw(image)
+    for rect,color in [((0,0,31,31),'#ff0022'),((32,0,63,31),'#00ee44'),((0,32,31,63),'#1144ff'),((32,32,63,63),'#ffee00')]:draw.rectangle(rect,fill=color)
+    image.save(local);raw=local.read_bytes()
+    present=subprocess.run([ADB,'shell','test','-e',remote],capture_output=True,timeout=15);assert present.returncode==1
+    subprocess.check_output([ADB,'push',str(local),remote],timeout=30)
+    digest=call('shell','sha256sum',remote).split()[0];assert digest==hashlib.sha256(raw).hexdigest()
+    data={'filename':name,'remote':remote,'sha256':digest,'bytes':len(raw),'pixels':[64,64]}
+    CONFIG.write_text(json.dumps(data),encoding='utf-8',newline='\n')
+    print(json.dumps({'prepared':True,'bytes':len(raw),'sha256':digest}));sys.exit()
+data=json.loads(CONFIG.read_text(encoding='utf-8'));assert re.fullmatch(r'BOOHTACORD-QA-20261027-[a-f0-9]{6}\.png',data['filename'])
+if action=='open':
+    peer=json.loads((ROOT/'private-fixture.json').read_text(encoding='utf-8'))['b']['login']
+    rows=nodes();assert any(peer in label(n) and bounds(n)[1]<600 for n in rows)
+    fields=[n for n in rows if n.get('class')=='android.widget.EditText'];assert len(fields)==1 and not fields[0].get('text')
+    tap_named('Действия редактора');tap_named('Прикрепить файл')
+elif action=='roots':tap(named('Показать корневые папки'))
+elif action=='downloads':
+    matches=named('Скачанные') or named('Скачанные файлы') or named('Загрузки') or named('Downloads');tap(matches)
+elif action=='search':
+    matches=named('Поиск') or named('Search');tap(matches)
+    fields=[n for n in nodes() if n.get('package') in PACKAGES and n.get('class')=='android.widget.EditText'];assert len(fields)==1
+    tap(fields);call('shell','input','text',data['filename']);call('shell','input','keyevent','KEYCODE_ENTER')
+elif action=='select':
+    tap(named(data['filename']))
+elif action=='cancel':call('shell','input','keyevent','KEYCODE_BACK')
+elif action=='cleanup-file':
+    resolved=call('shell','readlink','-f',data['remote']).strip()
+    assert resolved=='/storage/emulated/0/Download/'+data['filename']
+    assert call('shell','sha256sum',resolved).split()[0]==data['sha256']
+    call('shell','rm','--',resolved)
+    assert subprocess.run([ADB,'shell','test','-e',resolved],capture_output=True,timeout=15).returncode==1
+elif action!='inspect':raise ValueError('Unknown bounded action')
+rows=nodes();packages={n.get('package') for n in rows}
+report={'action':action,'system_picker_active':bool(packages&PACKAGES),
+        'static_controls':[{'label':label(n),'bounds':bounds(n),'class':n.get('class'),'clickable':n.get('clickable')} for n in rows if n.get('package') in PACKAGES and label(n) in STATIC],
+        'fixture_nodes':sum(label(n)==data['filename'] for n in rows),
+        'fixture_chip_present':any(data['filename'] in label(n) and n.get('package')==APP for n in rows),
+        'edit_fields':[{'length':len(n.get('text') or ''),'resource':n.get('resource-id')} for n in rows if n.get('class')=='android.widget.EditText'],
+        'mic_FGS':'types=0x00000080' in call('shell','dumpsys','activity','services',APP),'personal_listing_retained':False}
+(ROOT/('attachment-picker-'+action+'.json')).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps(report,ensure_ascii=True))

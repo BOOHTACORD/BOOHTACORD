@@ -1,0 +1,53 @@
+{
+  "status": "COMPLETE",
+  "origin": "https://v.bootybay.ru",
+  "browser": "155.0.8059.85",
+  "at_utc": "2026-10-27T00:27:21.792Z",
+  "checks": [
+    {
+      "action": "receive",
+      "at_utc": "2026-10-27T00:29:06.934Z",
+      "status": "PASS_SCOPED",
+      "server_received": true,
+      "browser_attachment_rendered": true,
+      "has_text": false,
+      "attachment_count": 1
+    },
+    {
+      "action": "view-acl",
+      "at_utc": "2026-10-27T00:29:35.899Z",
+      "status": "PASS_SCOPED",
+      "file_statuses": [
+        {
+          "http": 200,
+          "bytes": 202,
+          "content_type": "application/octet-stream"
+        },
+        {
+          "http": 200,
+          "bytes": 183,
+          "content_type": "image/png"
+        }
+      ],
+      "third_MEMBER_http": 404,
+      "anonymous_http": 401,
+      "actual_browser_image_decoded": true,
+      "escape_focus_return": true
+    },
+    {
+      "action": "deleted",
+      "at_utc": "2026-10-27T00:38:35.730Z",
+      "status": "PASS_SCOPED",
+      "peer_tombstone": true,
+      "after_delete_file_statuses": [
+        404,
+        404,
+        401
+      ],
+      "actual_message_cleanup_verified": true
+    }
+  ],
+  "api_mocks": false,
+  "body_logged": false,
+  "completed_sequence": 3
+}

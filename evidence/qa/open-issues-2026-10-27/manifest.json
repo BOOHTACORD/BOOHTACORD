@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-27T00:20:08.615991+00:00",
+  "at_utc": "2026-10-27T00:45:12.102859+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "android-font-before-controls.png": {
@@ -19,8 +19,8 @@
       "sha256": "6c8e9b21cf52f493a4e3a69256746f70f7a565d4fa3af8a97430c3133b1bf944"
     },
     "cases.json": {
-      "bytes": 17724,
-      "sha256": "5304ef56bc3a639608ea3405151b8dbd3e29b5ad17f68d0006e8a94ad74fc99f"
+      "bytes": 19736,
+      "sha256": "daeed3de4a3148550bc139dca9af18845aa21cbaa32f33e43ebf48438c4fb007"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -35,8 +35,8 @@
       "sha256": "57bb3a875edf514ab507a6b1c1100e0d8c2cc3a0ef30520fe3d3497622b6a6f0"
     },
     "matrix.json": {
-      "bytes": 475556,
-      "sha256": "1fbb523fe756e288091750e36f0691574745d22be597a90f86c55b6dd46508bc"
+      "bytes": 480136,
+      "sha256": "dd6a6970e79c55ce0a375012ca375d08bf50f6e598513da05c81f69f326f22f3"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -118,6 +118,74 @@
       "bytes": 468,
       "sha256": "68de728e20d86bf56ebeb31910908b4d4be5a2634d6404f29091374a3c44b5d9"
     },
+    "native-image/delete-prompt.json": {
+      "bytes": 587,
+      "sha256": "1ffad9d4bcccf378f28a9d71b43ccbba225c4ab91cbcb1d748df17f1c0477b15"
+    },
+    "native-image/file-absent.json": {
+      "bytes": 138,
+      "sha256": "2aa6c70a77509e50781a06944b705ddf41b5c30b76596011ce3282b977a7f070"
+    },
+    "native-image/file-cleanup.json": {
+      "bytes": 277,
+      "sha256": "09cd6f1d012fa96ed25d56105dc22d008add020df817a7a7edab6825748c14fb"
+    },
+    "native-image/final-phone.json": {
+      "bytes": 252,
+      "sha256": "baadf975ed383ae3b676c190ca6f428f0d95260a25e215162f720e5df61fb507"
+    },
+    "native-image/final-roster.json": {
+      "bytes": 291,
+      "sha256": "f5676852c60f238e03a2be0ac1b70e49656ec60d94ea15c9674263e26ecc5dc1"
+    },
+    "native-image/first-exact-probe.json": {
+      "bytes": 1124,
+      "sha256": "0d2a7f2bf17743861e4796a76fbefe4af2cdaa07d96ed1d48409a814cac02803"
+    },
+    "native-image/native-close.json": {
+      "bytes": 349,
+      "sha256": "fb1f0a1f42ac3c90e81c3d771e07f123bf37310dea7eeb327bd3cb1194615981"
+    },
+    "native-image/native-delete.json": {
+      "bytes": 346,
+      "sha256": "fe7f3924860e4ed70bf5d0ae9e133128d762031bd24717e6343c1a043cf1cad9"
+    },
+    "native-image/native-send.json": {
+      "bytes": 314,
+      "sha256": "6043db79ec2fda11514a87097d7eaa9a1f2f83db06f83c372ff8b196e26bf12c"
+    },
+    "native-image/native-view.json": {
+      "bytes": 1484,
+      "sha256": "ebe73a19b3985d4b142a392c3660a60406eed670fc19c421dce89e47b8f46b29"
+    },
+    "native-image/peer.json": {
+      "bytes": 1258,
+      "sha256": "d558bc5fdb3e2a0faa2da0cf967ed8a76e7d954d76b463363d3b60234a5c0a30"
+    },
+    "native-image/picker-selected.json": {
+      "bytes": 270,
+      "sha256": "640e50395567b573c0939372f34f76c26d8d90fab15539aeef8dbb74ab413fa3"
+    },
+    "native-image/preview-original-comparison.json": {
+      "bytes": 129,
+      "sha256": "729c1f14a0a9f5f68134f9bee792f6ee25a1b10cec61c902975ee98fa33f7a8f"
+    },
+    "native-image/preview-read.json": {
+      "bytes": 260,
+      "sha256": "9d52a92c4b5eabb51ecc7cd3c77a126256be66ec87d3030d5cb1d0294b39923f"
+    },
+    "native-image/reproduce.md": {
+      "bytes": 4089,
+      "sha256": "883c75eda29f28b43573bb50da1977a8317e0af305c1a6ed51e006eb3f8f20a9"
+    },
+    "native-image/summary.json": {
+      "bytes": 3576,
+      "sha256": "4c0c9eec673db20bb8d0821f86f85d2b6e47dec743d2b6953c501fd29aa9119d"
+    },
+    "native-image/unmanaged-probe.json": {
+      "bytes": 1324,
+      "sha256": "82284abe5f72eae65d0a6cb0690ed1815ab64a3df383246cd34ed8f1cabe8d8f"
+    },
     "native-prejoin/attempt1.json": {
       "bytes": 2455,
       "sha256": "b350420f91267adb81fa38d9ef65d04a8a7bcf322a45febdb19e41644cfa3e39"
@@ -167,12 +235,20 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 8005,
-      "sha256": "057e2d18be2ef6fb09e314a2a27bde58ea93e0946ec7bf117e7280d5fd4a6c11"
+      "bytes": 8487,
+      "sha256": "3ab5c44eede95c7c5ae5d5165672b9b25e87edc4bace4c5ccdb6052428b9ebfb"
     },
     "restored-microphone.json": {
       "bytes": 269,
       "sha256": "5f51b45c468c2deae7f33b76b527c9455b7ed728334da1186e3ee44d8db1eb3f"
+    },
+    "runner-source/android_attachment_actions.py.txt": {
+      "bytes": 5988,
+      "sha256": "0e29751f4029677c5bd8693c1de1a4cb7ba727b5bebdaabd5127733a2aaf06a9"
+    },
+    "runner-source/android_attachment_picker.py.txt": {
+      "bytes": 4842,
+      "sha256": "5131ff0c77c379117a86e713aac2bab52e7f27020b07e2fd15c07f749e2ab206"
     },
     "runner-source/android_chat_actions.py.txt": {
       "bytes": 5061,
@@ -214,9 +290,17 @@
       "bytes": 4217,
       "sha256": "8cb9371b5cef4a2e40f6acf9e84275d3f0fdd3082f7ff22a035cbd1fd1c5a763"
     },
+    "runner-source/attachment_preview_read.mjs.txt": {
+      "bytes": 1865,
+      "sha256": "2fdaa7c45cd907ca5f04ea5b3b98ec01ff367f458bc50767d8476f7149d3f32b"
+    },
     "runner-source/bundle_prejoin.py.txt": {
       "bytes": 4563,
       "sha256": "53ca9dc38ac48cd5780308d7dc1927466ceb63bc9e2497963c9a4ccc301efb02"
+    },
+    "runner-source/native_attachment_peer.mjs.txt": {
+      "bytes": 5140,
+      "sha256": "2d10f4d6dfbd941103de172ce40fe048643c725b84978a5b1e78c9554a6fb963"
     },
     "runner-source/native_chat_peer.mjs.txt": {
       "bytes": 2650,
