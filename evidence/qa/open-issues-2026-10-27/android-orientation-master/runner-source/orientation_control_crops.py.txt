@@ -1,0 +1,21 @@
+"""Source-sized composer/dock crops exclude identity/history and mask the owned draft."""
+import hashlib,json
+from PIL import Image,ImageDraw
+from android_permission_ui import ROOT
+result=json.loads((ROOT/'android-orientation-result.json').read_text(encoding='utf-8'));proof=[]
+for name in ['portrait-draft-ready','landscape-ime','landscape-back','portrait-return-draft']:
+ snap=result['snapshots'][name];source=ROOT/snap['source_private_file'];image=Image.open(source)
+ assert hashlib.sha256(source.read_bytes()).hexdigest()==snap['source_sha256']
+ field=snap['composer'][0]['bounds'];controls=snap['controls'];bottom=max(c['bounds'][3] for c in controls)
+ right=min(image.width,max(c['bounds'][2] for c in controls)+12)
+ relevant=[c['bounds'][1] for c in controls if c['label'].startswith('Отправить') or c['label']=='Выйти из голосового канала']
+ rectangle=[max(0,field[0]-8),max(0,min([field[1]]+relevant)-8),right,min(image.height,bottom+8)]
+ original=image.copy();draw=ImageDraw.Draw(image)
+ draw.rectangle([0,0,image.width,field[1]-1],fill='#60646f')
+ draw.rectangle(field,fill='#60646f')
+ for control in controls:
+  if control['label'].startswith('Отправить'):
+   box=control['bounds'];image.paste(original.crop(box),(box[0],box[1]))
+ file=ROOT/f'orientation-controls-{name}.png';image.crop(rectangle).save(file)
+ proof.append({'label':name,'source_sha256':snap['source_sha256'],'source_size':snap['source_size'],'crop':file.name,'crop_rectangle':rectangle,'draft_rectangle_masked':field,'resampled':False,'sha256':hashlib.sha256(file.read_bytes()).hexdigest()})
+(ROOT/'orientation-control-crops.json').write_text(json.dumps(proof,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(proof))

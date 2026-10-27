@@ -1,0 +1,25 @@
+"""Check current-source observation provenance, privacy and source-sized masked crops."""
+import ast,hashlib,json,subprocess
+from pathlib import Path
+from PIL import Image
+ROOT=Path(__file__).resolve().parents[2];PRIVATE=ROOT/'.out/qa-goal';OUT=ROOT/'evidence/qa/open-issues-2026-10-27/android-orientation-master'
+fixture=json.loads((PRIVATE/'private-orientation-fixture.json').read_text(encoding='utf-8'));needles=[v for v in fixture.values() if isinstance(v,str) and len(v)>8]
+for path in OUT.rglob('*'):
+ if path.is_file() and path.suffix in ['.json','.md','.txt']:
+  text=path.read_text(encoding='utf-8');assert all(value not in text for value in needles),path.name
+for path in (OUT/'runner-source').glob('*.py.txt'):
+ text=path.read_text(encoding='utf-8');assert len(text.splitlines())<=120;ast.parse(text)
+proof=json.loads((OUT/'orientation-control-crops.json').read_text())
+for row in proof:
+ image=OUT/row['crop'];assert hashlib.sha256(image.read_bytes()).hexdigest()==row['sha256']
+ rect=row['crop_rectangle'];assert Image.open(image).size==(rect[2]-rect[0],rect[3]-rect[1]) and row['resampled'] is False
+ original=PRIVATE/('private-orientation-'+row['label']+'.png');assert hashlib.sha256(original.read_bytes()).hexdigest()==row['source_sha256']
+failed=json.loads((OUT/'invariant-result.json').read_text());assert failed['exit_code']==1 and failed['status']=='FAIL'
+assert hashlib.sha256((OUT/'android-orientation-result.json').read_bytes()).hexdigest()==failed['source_record_sha256']
+assert not subprocess.check_output(['git','diff','HEAD','--','backend','clients','tools'],cwd=ROOT)
+result={'status':'PASS_EVIDENCE_VALIDATION','physical_product_invariant':'FAIL','source_bound':True,
+ 'masked_source_resolution_crops_verified':len(proof),'private_fixture_scan':'PASS','native_source_unchanged':True,
+ 'command':'python -X utf8 .out/qa-goal/validate_master_orientation.py'}
+(OUT/'validation.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
+source=Path(__file__).read_text(encoding='utf-8');assert len(source.splitlines())<=120
+(OUT/'runner-source/validate_master_orientation.py.txt').write_text(source,encoding='utf-8',newline='\n');print(json.dumps(result))

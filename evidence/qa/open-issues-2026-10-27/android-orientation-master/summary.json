@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "status": "FAIL",
+  "issue": 582,
+  "observed_at_utc": "2026-10-27T04:36:22.114514+00:00",
+  "published_at_utc": "2026-10-27T04:40:55.828024+00:00",
+  "candidate": {
+    "installed_APK_sha256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+    "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "version_name": "1.0.47",
+    "version_code": 2082,
+    "native": {
+      "at_utc": "2026-10-27T04:34:30.827539+00:00",
+      "permission": {
+        "granted": true,
+        "flags": [
+          "USER_SET",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": true,
+      "voice_connected": true,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false
+    }
+  },
+  "actual_platform": "Samsung SM-A576B Android16/API36;1080x2340 portrait/2340x1080 landscape;density450;font1.0;Gboard18.5.4.993608717-release-arm64-v8a",
+  "invariant_result": "invariant-result.json",
+  "overlap_pixels": [
+    123,
+    81
+  ],
+  "overlap_area": 9963,
+  "run_count_this_source": 1,
+  "original_state_restored": true,
+  "existing_defect_reused": 582,
+  "new_duplicate_issue_created": false,
+  "visual_observations": [
+    "Portrait with IME: paper-plane Send visible and disjoint from red Leave.",
+    "Landscape with IME: red Leave covers the paper-plane Send icon; enabled accessibility rectangles overlap123x81.",
+    "Landscape after Back hides IME: paper-plane Send visible again, with clear separation from Leave.",
+    "Return to portrait: Send visible, connected SHARE_TEST dock and3 participants remain; owned draft retained before cleanup."
+  ],
+  "limits": [
+    "One fresh run on signed1.0.47/2082/source072426d6; prior two runs on1.0.45/2080/source9c221897 remain separate historical evidence.",
+    "Actual system display was forced to landscape90 temporarily; gravity sensor behavior, landscape270, other devices/keyboards and iOS were not tested.",
+    "Gboard was really visible; the20-character owned draft was inserted with Android input text. Human IME composition/selection is not claimed.",
+    "No overlap click, actual Send dispatch, accidental disconnect, media continuity, acoustic result or latency/SLO acceptance.",
+    "No message was sent. Original empty composer, system rotation preferences, microphone permission and sampled connected/unmuted voice state were restored.",
+    "Controller records REVIEW_REQUIRED after its retention/restoration protocol; the separate invariant checker fails with exit1 and visual inspection confirms icon occlusion. No screenshot baseline was approved.",
+    "Crops preserve original pixels/resolution, mask the owned draft and omit identity/history. Cropping includes the complete Send rectangle even when its touch area extends above the text field."
+  ]
+}

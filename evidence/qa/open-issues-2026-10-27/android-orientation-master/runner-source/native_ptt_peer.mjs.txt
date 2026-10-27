@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict'
+import {createRequire} from 'node:module'
+import {readFile,writeFile} from 'node:fs/promises'
+const {request}=createRequire('C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/clients/web/package.json')('@playwright/test')
+const root=new URL('./',import.meta.url),origin='https://v.bootybay.ru',label=process.argv[2]
+assert.match(label,/^[a-z0-9-]+$/)
+const input=JSON.parse(await readFile(new URL('private-fixture.json',root),'utf8'))
+const context=await request.newContext({storageState:JSON.parse(await readFile(new URL('private-session-b.json',root),'utf8'))})
+const read=async path=>{const r=await context.get(origin+'/api/v1'+path);assert.equal(r.status(),200);return r.json()}
+let result
+try{
+ const session=await read('/auth/session');assert.equal(session.account_id,input.b.id);assert.equal(session.role,'MEMBER')
+ const directs=await read('/direct-messages');const candidates=directs.direct_messages.filter(d=>![input.a.id,input.c.id].includes(d.other_participant_id));assert.equal(candidates.length,1)
+ const phone=candidates[0].other_participant_id,roster=await read('/voice/participants')
+ const rooms=roster.channels.filter(c=>c.participants.some(p=>p.account_id===phone));assert.equal(rooms.length,1)
+ const participant=rooms[0].participants.find(p=>p.account_id===phone)
+ result={at_utc:new Date().toISOString(),label,http:200,phone_identity_matched_privately:true,room_participants:rooms[0].participants.length,
+  room_muted:rooms[0].participants.filter(p=>p.microphone_muted).length,phone_microphone_muted:participant.microphone_muted,
+  scope:'Actual server roster read on PC under independent MEMBER session; not an acoustic or decoded audio observation',status:'PASS_READ'}
+}catch(e){result={at_utc:new Date().toISOString(),label,status:'BLOCKED_READ',error_type:e.name}}
+finally{await context.dispose();await writeFile(new URL('ptt-peer-'+label+'.json',root),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result))}

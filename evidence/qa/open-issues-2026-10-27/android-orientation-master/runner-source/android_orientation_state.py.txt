@@ -1,0 +1,47 @@
+"""Observe real Android orientation/IME and only one owned DM composer."""
+import hashlib,json,re,subprocess,sys
+from datetime import datetime,timezone
+from PIL import Image
+from android_permission_ui import APP,ROOT,ADB,call,nodes,label,permission
+def box(node):return list(map(int,re.findall(r'\d+',node.get('bounds'))))
+def fixture():return json.loads((ROOT/'private-orientation-fixture.json').read_text(encoding='utf-8'))
+def observe(name):
+ rows=nodes();raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20)
+ file=ROOT/f'private-orientation-{name}.png';file.write_bytes(raw);image=Image.open(file)
+ fields=[n for n in rows if n.get('class')=='android.widget.EditText' and n.get('package')==APP]
+ ime=call('shell','dumpsys','input_method');windows=call('shell','dumpsys','window','windows')
+ services=call('shell','dumpsys','activity','services',APP)
+ frames=[]
+ for line in windows.splitlines():
+  if 'ime' not in line.lower() or ('frame' not in line.lower()):continue
+  rect=re.findall(r'\[(-?\d+),\s*(-?\d+)\]\[(-?\d+),\s*(-?\d+)\]',line)
+  if rect:frames.extend([list(map(int,r)) for r in rect])
+ data={'at_utc':datetime.now(timezone.utc).isoformat(),'label':name,'source_size':list(image.size),'source_sha256':hashlib.sha256(raw).hexdigest(),
+  'source_private_file':file.name,'permission':permission(),'foreground_types':re.findall(r'isForeground=true[^\n]*types=(0x[0-9a-f]+)',services),
+  'owned_peer_header_matches_privately':any(fixture()['peer'] in label(n) and box(n)[1]<800 for n in rows),
+  'ime_input_shown_flags':re.findall(r'mInputShown=(true|false)',ime),'ime_component':re.findall(r'mCurId=([^\s]+)',ime),
+  'ime_frame_candidates':frames,'rotation_settings':{k:call('shell','settings','get','system',k).strip() for k in ['accelerometer_rotation','user_rotation']},
+  'font_scale':call('shell','settings','get','system','font_scale').strip(),
+  'composer':[{'length':len(n.get('text') or ''),'owned_fixture_matches':n.get('text')==fixture()['text'],'empty':not n.get('text'),'focused':n.get('focused'),'bounds':box(n)} for n in fields],
+  'controls':[{'label':label(n),'bounds':box(n),'enabled':n.get('enabled'),'clickable':n.get('clickable')} for n in rows if label(n) in ['Открыть навигацию','Выключить микрофон','Включить микрофон','Начать демонстрацию','Выйти из голосового канала'] or label(n).startswith('Отправить')],
+  'voice_connected_label_visible':any('Голос подключён' in label(n) for n in rows)}
+ (ROOT/f'orientation-{name}.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n');return data
+def change(action):
+ rows=nodes();fields=[n for n in rows if n.get('class')=='android.widget.EditText' and n.get('package')==APP]
+ assert len(fields)==1,'Expected one native composer';field=fields[0];bounds=box(field);assert 0<bounds[3]-bounds[1]<500
+ assert any(fixture()['peer'] in label(n) and box(n)[1]<800 for n in rows),'Owned DM not selected'
+ if action=='focus':
+  assert not field.get('text');call('shell','input','tap',str((bounds[0]+bounds[2])//2),str((bounds[1]+bounds[3])//2))
+ elif action=='type':
+  assert not field.get('text') and field.get('focused')=='true';call('shell','input','text',fixture()['text'])
+ elif action=='clear':
+  text=field.get('text') or '';assert not text or text==fixture()['text'],'Refusing to modify unknown draft'
+  if text:
+   call('shell','input','tap',str((bounds[0]+bounds[2])//2),str((bounds[1]+bounds[3])//2));call('shell','input','keyevent','KEYCODE_MOVE_END',*(['67']*len(text)))
+  call('shell','input','keyevent','KEYCODE_BACK')
+ else:raise ValueError('Unknown action')
+if __name__=='__main__':
+ action=sys.argv[1]
+ if action in ['focus','type','clear']:change(action)
+ elif action!='snapshot':raise ValueError('Unknown action')
+ print(json.dumps(observe(sys.argv[2]),ensure_ascii=True))

@@ -1,0 +1,43 @@
+"""Retain the new-source physical reproduction alongside, without replacing, old evidence."""
+import json,shutil
+from datetime import datetime,timezone
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];PRIVATE=ROOT/'.out/qa-goal';OUT=ROOT/'evidence/qa/open-issues-2026-10-27';DEST=OUT/'android-orientation-master'
+source=PRIVATE/'master-orientation-run1';DEST.mkdir(exist_ok=True)
+def load(path):return json.loads(path.read_text(encoding='utf-8'))
+def write(path,data):path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+run=load(source/'android-orientation-result.json');candidate=load(source/'orientation-master-candidate.json');failed=load(PRIVATE/'orientation-master-invariant-result.json')
+assert candidate['source_revision']=='072426d60b1c0b1f7e5f66722a0da5faa00b50d7' and candidate['version_code']==2082
+assert failed['status']=='FAIL' and failed['exit_code']==1 and failed['intersection_width']==123 and failed['intersection_height']==81
+assert run['status']=='REVIEW_REQUIRED' and all(run[k] for k in ['landscape_draft_retained_with_ime','back_hid_ime','portrait_return_draft_retained','original_rotation_restored','original_empty_composer_restored','original_permission_restored','voice_microphone_preserved'])
+assert run['final_peer']['status']=='PASS_READ' and run['final_peer']['room_participants']==3 and not run['final_peer']['phone_microphone_muted']
+for path in source.iterdir():shutil.copyfile(path,DEST/path.name)
+shutil.copyfile(PRIVATE/'orientation-master-invariant-result.json',DEST/'invariant-result.json')
+helpers=DEST/'runner-source';helpers.mkdir(exist_ok=True)
+for name in ['android_orientation_state.py','android_orientation_run.py','orientation_control_crops.py','orientation_master_geometry.py','native_ptt_peer.mjs']:
+ path=PRIVATE/name;assert len(path.read_text(encoding='utf-8').splitlines())<=120;shutil.copyfile(path,helpers/(name+'.txt'))
+limits=['One fresh run on signed1.0.47/2082/source072426d6; prior two runs on1.0.45/2080/source9c221897 remain separate historical evidence.',
+ 'Actual system display was forced to landscape90 temporarily; gravity sensor behavior, landscape270, other devices/keyboards and iOS were not tested.',
+ 'Gboard was really visible; the20-character owned draft was inserted with Android input text. Human IME composition/selection is not claimed.',
+ 'No overlap click, actual Send dispatch, accidental disconnect, media continuity, acoustic result or latency/SLO acceptance.',
+ 'No message was sent. Original empty composer, system rotation preferences, microphone permission and sampled connected/unmuted voice state were restored.',
+ 'Controller records REVIEW_REQUIRED after its retention/restoration protocol; the separate invariant checker fails with exit1 and visual inspection confirms icon occlusion. No screenshot baseline was approved.',
+ 'Crops preserve original pixels/resolution, mask the owned draft and omit identity/history. Cropping includes the complete Send rectangle even when its touch area extends above the text field.']
+summary={'schema_version':1,'status':'FAIL','issue':582,'observed_at_utc':run['snapshots']['landscape-ime']['at_utc'],'published_at_utc':datetime.now(timezone.utc).isoformat(),'candidate':candidate,'actual_platform':'Samsung SM-A576B Android16/API36;1080x2340 portrait/2340x1080 landscape;density450;font1.0;Gboard18.5.4.993608717-release-arm64-v8a','invariant_result':'invariant-result.json','overlap_pixels':[123,81],'overlap_area':9963,'run_count_this_source':1,'original_state_restored':True,'existing_defect_reused':582,'new_duplicate_issue_created':False,'visual_observations':['Portrait with IME: paper-plane Send visible and disjoint from red Leave.','Landscape with IME: red Leave covers the paper-plane Send icon; enabled accessibility rectangles overlap123x81.','Landscape after Back hides IME: paper-plane Send visible again, with clear separation from Leave.','Return to portrait: Send visible, connected SHARE_TEST dock and3 participants remain; owned draft retained before cleanup.'],'limits':limits}
+write(DEST/'summary.json',summary)
+old='ANDROID-landscape-ime-send-voice-dock-overlap';new='ANDROID-master-landscape-ime-send-voice-dock-overlap'
+cases=load(OUT/'cases.json');case={'id':new,'status':'FAIL','protects':'Current signed master Android keeps Send and Leave distinct during landscape with real Gboard, preserving the owned draft, voice membership and original settings.','command':'python -X utf8 .out/qa-goal/android_orientation_state.py snapshot before; python -X utf8 .out/qa-goal/android_orientation_state.py focus portrait-ime; python -X utf8 .out/qa-goal/android_orientation_state.py type portrait-draft; python -X utf8 .out/qa-goal/android_orientation_run.py; python -X utf8 .out/qa-goal/orientation_control_crops.py; python -X utf8 .out/qa-goal/orientation_master_geometry.py','platform':'Physical Samsung SM-A576B Android16/API36; signed1.0.47/2082/source072426d6; actual Gboard and paired PC roster','mandatory_when':'Before accepting current-master Android orientation/IME layout in QA62/303 and regression adequacy under QA302.','result':'android-orientation-master/summary.json','issues':[62,303],'limits':'; '.join(limits),'defects':[582]}
+cases['cases']=[c for c in cases['cases'] if c['id']!=new]+[case];write(OUT/'cases.json',cases)
+matrix=load(OUT/'matrix.json');matched=[]
+for issue in matrix['issues']:
+ for row in issue['criteria']:
+  if old not in row['execution_cases']:continue
+  if new not in row['execution_cases']:row['execution_cases'].append(new)
+  if case['result'] not in row['evidence']:row['evidence'].append(case['result'])
+  for item in [issue]:
+   if new not in item['execution_cases']:item['execution_cases'].append(new)
+   if case['result'] not in item['evidence']:item['evidence'].append(case['result'])
+  matched.append(row['id'])
+assert matched==['I62.C1','I303.C2','I303.C3'];matrix['updated_utc']=summary['published_at_utc'];write(OUT/'matrix.json',matrix)
+shutil.copyfile(Path(__file__),helpers/'publish_master_orientation.py.txt')
+print(json.dumps({'status':'FAIL','existing_bug':582,'current_source':candidate['source_revision'],'scoped_cases':len(cases['cases']),'rows_linked':matched,'source_changed':False}))

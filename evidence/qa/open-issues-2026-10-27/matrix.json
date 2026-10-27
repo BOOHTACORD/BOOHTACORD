@@ -1076,7 +1076,8 @@
             "ANDROID-orientation-draft-voice-retention",
             "ANDROID-landscape-ime-send-voice-dock-overlap",
             "ANDROID-wifi-cellular-native-DM-and-restoration",
-            "ANDROID-signed-master-candidate-in-place-upgrade"
+            "ANDROID-signed-master-candidate-in-place-upgrade",
+            "ANDROID-master-landscape-ime-send-voice-dock-overlap"
           ],
           "evidence": [
             "native-realtime-result.json",
@@ -1088,7 +1089,8 @@
             "native-ptt/summary.json",
             "android-orientation/summary.json",
             "android-connectivity/summary.json",
-            "android-upgrade/summary.json"
+            "android-upgrade/summary.json",
+            "android-orientation-master/summary.json"
           ],
           "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final",
           "platform": "Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Physical Windows + Samsung; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
@@ -1245,7 +1247,8 @@
         "ANDROID-orientation-draft-voice-retention",
         "ANDROID-landscape-ime-send-voice-dock-overlap",
         "ANDROID-wifi-cellular-native-DM-and-restoration",
-        "ANDROID-signed-master-candidate-in-place-upgrade"
+        "ANDROID-signed-master-candidate-in-place-upgrade",
+        "ANDROID-master-landscape-ime-send-voice-dock-overlap"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -1257,7 +1260,8 @@
         "native-ptt/summary.json",
         "android-orientation/summary.json",
         "android-connectivity/summary.json",
-        "android-upgrade/summary.json"
+        "android-upgrade/summary.json",
+        "android-orientation-master/summary.json"
       ],
       "defects": [
         582
@@ -11425,7 +11429,8 @@
             "ANDROID-physical-ptt-release-cancel-home",
             "ANDROID-orientation-draft-voice-retention",
             "ANDROID-landscape-ime-send-voice-dock-overlap",
-            "ANDROID-wifi-cellular-native-DM-and-restoration"
+            "ANDROID-wifi-cellular-native-DM-and-restoration",
+            "ANDROID-master-landscape-ime-send-voice-dock-overlap"
           ],
           "evidence": [
             "native-chat/summary.json",
@@ -11434,7 +11439,8 @@
             "web-image-formats/summary.json",
             "native-ptt/summary.json",
             "android-orientation/summary.json",
-            "android-connectivity/summary.json"
+            "android-connectivity/summary.json",
+            "android-orientation-master/summary.json"
           ],
           "execution": "node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
           "platform": "Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
@@ -11489,13 +11495,15 @@
             "ANDROID-real-filechooser-cancel",
             "ANDROID-physical-ptt-release-cancel-home",
             "ANDROID-orientation-draft-voice-retention",
-            "ANDROID-landscape-ime-send-voice-dock-overlap"
+            "ANDROID-landscape-ime-send-voice-dock-overlap",
+            "ANDROID-master-landscape-ime-send-voice-dock-overlap"
           ],
           "evidence": [
             "android-text-scale-review.json",
             "web-session-contract/android-filechooser.json",
             "native-ptt/summary.json",
-            "android-orientation/summary.json"
+            "android-orientation/summary.json",
+            "android-orientation-master/summary.json"
           ],
           "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures; python .out/qa-goal/android_filechooser.py",
           "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; Gboard18.5.4; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI",
@@ -11801,7 +11809,8 @@
         "ANDROID-physical-ptt-release-cancel-home",
         "ANDROID-orientation-draft-voice-retention",
         "ANDROID-landscape-ime-send-voice-dock-overlap",
-        "ANDROID-wifi-cellular-native-DM-and-restoration"
+        "ANDROID-wifi-cellular-native-DM-and-restoration",
+        "ANDROID-master-landscape-ime-send-voice-dock-overlap"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -11822,7 +11831,8 @@
         "web-image-formats/summary.json",
         "native-ptt/summary.json",
         "android-orientation/summary.json",
-        "android-connectivity/summary.json"
+        "android-connectivity/summary.json",
+        "android-orientation-master/summary.json"
       ],
       "defects": [
         579,
@@ -15790,7 +15800,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-27T04:28:19.277344+00:00",
+  "updated_utc": "2026-10-27T04:40:55.828024+00:00",
   "known_defect_issues": [
     579,
     580,

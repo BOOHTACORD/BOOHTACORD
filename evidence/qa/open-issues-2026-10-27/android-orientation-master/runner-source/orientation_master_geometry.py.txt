@@ -1,0 +1,17 @@
+"""Fail the physical observation when the enabled Send and Leave rectangles overlap."""
+import hashlib,json,sys
+from pathlib import Path
+root=Path(__file__).parent;record=root/'android-orientation-result.json';raw=record.read_bytes();run=json.loads(raw)
+snap=run['snapshots']['landscape-ime'];controls=snap['controls']
+send=[c for c in controls if c['label'].startswith('Отправить')];leave=[c for c in controls if c['label']=='Выйти из голосового канала'];assert len(send)==len(leave)==1
+a,b=send[0]['bounds'],leave[0]['bounds'];width=max(0,min(a[2],b[2])-max(a[0],b[0]));height=max(0,min(a[3],b[3])-max(a[1],b[1]))
+assert snap['ime_input_shown_flags']==['true'] and snap['source_size']==[2340,1080]
+assert send[0]['enabled']==leave[0]['enabled']=='true'
+result={'status':'FAIL' if width*height else 'PASS','invariant':'Enabled native Send and Leave controls stay geometrically disjoint with landscape IME',
+ 'command':'python -X utf8 .out/qa-goal/orientation_master_geometry.py','exit_code':1 if width*height else 0,
+ 'send_bounds':a,'leave_bounds':b,'intersection_width':width,'intersection_height':height,'intersection_area':width*height,
+ 'actual_landscape_display':snap['source_size'],'actual_IME_shown':True,'clicked_overlap':False,
+ 'measurement_at_utc':snap['at_utc'],'source_record_sha256':hashlib.sha256(raw).hexdigest(),
+ 'limitation':'Geometry and visual occlusion only; no hit-test dispatch, message send or accidental disconnect was attempted.'}
+(root/'orientation-master-invariant-result.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps(result));sys.exit(result['exit_code'])

@@ -676,6 +676,23 @@
         62
       ],
       "limits": "Signed release-mode QA candidate from protected master; not a published stable release. No tag/release publication, uninstall, data wipe, downgrade or app-private session extraction.; One actual old-to-new in-place transition; no claim of two distinct public stable releases, clean install, other architectures/devices, migration rollback or full QA-13 acceptance.; Microphone runtime permission/flags preserved exactly; other permission matrices and all notification delivery remain separate.; Voice explicitly left before installation and rejoined afterward. Actual UI/FGS/server roster prove sampled connection state, not media continuity, SDK callback ordering or audibility. Human listener unavailable; acoustic acceptance NOT_RUN.; Old physical results and defects #579/#582 retain their old APK source. They have not yet been retested on this candidate.; First local native contract verification failed because all20 Windows checkout contracts had CRLF bytes. Every hosted manifest hash matched the exact triggering Git blob. Second validation used those unchanged Git bytes; first failure and verifier v1 retained.; Restoration helper had conservative selector failures: first expected room on Personal tab; second matched both room/favorite controls; join-button-only guard found0; DM row View-only guard found0 because actual semantics used ImageView. No unsafe click or app defect inferred. Corrected observed room row and owned peer navigation succeeded."
+    },
+    {
+      "id": "ANDROID-master-landscape-ime-send-voice-dock-overlap",
+      "status": "FAIL",
+      "protects": "Current signed master Android keeps Send and Leave distinct during landscape with real Gboard, preserving the owned draft, voice membership and original settings.",
+      "command": "python -X utf8 .out/qa-goal/android_orientation_state.py snapshot before; python -X utf8 .out/qa-goal/android_orientation_state.py focus portrait-ime; python -X utf8 .out/qa-goal/android_orientation_state.py type portrait-draft; python -X utf8 .out/qa-goal/android_orientation_run.py; python -X utf8 .out/qa-goal/orientation_control_crops.py; python -X utf8 .out/qa-goal/orientation_master_geometry.py",
+      "platform": "Physical Samsung SM-A576B Android16/API36; signed1.0.47/2082/source072426d6; actual Gboard and paired PC roster",
+      "mandatory_when": "Before accepting current-master Android orientation/IME layout in QA62/303 and regression adequacy under QA302.",
+      "result": "android-orientation-master/summary.json",
+      "issues": [
+        62,
+        303
+      ],
+      "limits": "One fresh run on signed1.0.47/2082/source072426d6; prior two runs on1.0.45/2080/source9c221897 remain separate historical evidence.; Actual system display was forced to landscape90 temporarily; gravity sensor behavior, landscape270, other devices/keyboards and iOS were not tested.; Gboard was really visible; the20-character owned draft was inserted with Android input text. Human IME composition/selection is not claimed.; No overlap click, actual Send dispatch, accidental disconnect, media continuity, acoustic result or latency/SLO acceptance.; No message was sent. Original empty composer, system rotation preferences, microphone permission and sampled connected/unmuted voice state were restored.; Controller records REVIEW_REQUIRED after its retention/restoration protocol; the separate invariant checker fails with exit1 and visual inspection confirms icon occlusion. No screenshot baseline was approved.; Crops preserve original pixels/resolution, mask the owned draft and omit identity/history. Cropping includes the complete Send rectangle even when its touch area extends above the text field.",
+      "defects": [
+        582
+      ]
     }
   ]
 }

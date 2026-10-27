@@ -1,0 +1,52 @@
+"""Rotate the real Android display and always restore original settings and owned draft."""
+import json,subprocess,time
+from datetime import datetime,timezone
+from android_orientation_state import ROOT,APP,call,nodes,label,box,fixture,observe,change
+before=json.loads((ROOT/'orientation-before.json').read_text(encoding='utf-8'))
+original=before['rotation_settings'];assert original=={'accelerometer_rotation':'1','user_rotation':'0'}
+assert before['composer'][0]['empty'] and before['ime_input_shown_flags']==['false']
+report={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'RUNNING','original_rotation_settings':original,'snapshots':{},'peer_observations':[],'mutation_scope':'Only own system rotation preference and one unsent controlled DM draft'}
+def save():(ROOT/'android-orientation-result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+def peer(name):
+ result=subprocess.run(['node',str(ROOT/'native_ptt_peer.mjs'),name],capture_output=True,text=True,encoding='utf-8',timeout=20)
+ assert result.returncode==0;row=json.loads(result.stdout);report['peer_observations'].append(row);assert row['status']=='PASS_READ'
+ assert row['phone_microphone_muted'] is False and row['room_participants']==3;return row
+def snap(name):
+ data=observe(name);report['snapshots'][name]=data;save();return data
+def retained(data):
+ return len(data['composer'])==1 and data['composer'][0]['owned_fixture_matches']
+try:
+ start=snap('portrait-draft-ready');assert retained(start)
+ peer('orientation-portrait-before');save()
+ call('shell','settings','put','system','accelerometer_rotation','0')
+ call('shell','settings','put','system','user_rotation','1');time.sleep(.7)
+ land=snap('landscape-ime');assert land['source_size']==[2340,1080],'Actual display did not rotate to landscape'
+ report['landscape_draft_retained_with_ime']=retained(land)
+ peer('orientation-landscape-ime');save()
+ call('shell','input','keyevent','KEYCODE_BACK')
+ hidden=snap('landscape-back');assert retained(hidden),'Owned draft not retained after Back'
+ report['back_hid_ime']=hidden['ime_input_shown_flags']==['false']
+ peer('orientation-landscape-back');save()
+ call('shell','settings','put','system','user_rotation','0');time.sleep(.7)
+ portrait=snap('portrait-return-draft');assert portrait['source_size']==[1080,2340] and retained(portrait)
+ report['portrait_return_draft_retained']=True
+ report['status']='REVIEW_REQUIRED'
+except Exception as error:
+ report['status']='FAIL_OR_CONTROLLER_ERROR';report['error_type']=type(error).__name__
+finally:
+ try:
+  call('shell','settings','put','system','user_rotation',original['user_rotation'])
+  call('shell','settings','put','system','accelerometer_rotation',original['accelerometer_rotation']);time.sleep(.5)
+  current=snap('rotation-settings-restored')
+  if current['ime_input_shown_flags']==['true']:
+   call('shell','input','keyevent','KEYCODE_BACK');current=snap('restored-ime-hidden')
+  change('clear');final=snap('restored-empty')
+  report['original_rotation_restored']=final['rotation_settings']==original
+  report['original_empty_composer_restored']=len(final['composer'])==1 and final['composer'][0]['empty']
+  report['original_permission_restored']=final['permission']==before['permission']
+  report['voice_microphone_preserved']=final['voice_connected_label_visible'] and '0x00000080' in final['foreground_types']
+  report['final_peer']=peer('orientation-final-restored')
+  assert report['original_rotation_restored'] and report['original_empty_composer_restored'] and report['original_permission_restored'] and report['voice_microphone_preserved']
+ except Exception as error:
+  report['status']='FAIL_RESTORATION';report['restoration_error_type']=type(error).__name__
+ save();print(json.dumps({'status':report['status'],'snapshots':list(report['snapshots']),**{k:v for k,v in report.items() if k.endswith(('retained','restored','preserved','_ime'))}},ensure_ascii=True))
