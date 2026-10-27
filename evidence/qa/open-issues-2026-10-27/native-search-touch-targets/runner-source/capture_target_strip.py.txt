@@ -1,0 +1,11 @@
+"""Keep original-sized control geometry, masking the selected private peer value."""
+import io,subprocess,hashlib
+from PIL import Image,ImageDraw
+from target_common import *
+rows=nodes();assert search_present(rows) and not popup_open(rows) and not query_field(rows).get('text')
+b=box(scope_control(rows));buttons=[box(n) for n in rows if label(n)=='Найти' and 0<box(n)[3]-box(n)[1]<250];assert len(buttons)==1;other=buttons[0]
+crop=[0,min(b[1],other[1])-8,1080,max(b[3],other[3])+8];assert 0<crop[3]-crop[1]<250 and crop[1]>box(query_field(rows))[3]
+raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20);im=Image.open(io.BytesIO(raw)).convert('RGB');assert im.size==(1080,2340)
+mask=[b[0]+2,b[1]+2,b[2]-2,b[3]-2];ImageDraw.Draw(im).rectangle(tuple(mask),fill=(13,16,23));im.crop(tuple(crop)).save(P/'scope-target-strip-masked.png')
+r={'at_utc':now(),'file':'scope-target-strip-masked.png','source_size':list(im.size),'source_SHA256':hashlib.sha256(raw).hexdigest(),'crop':crop,'privacy_mask':mask,'mask_reason':'Entire dropdown interior masks selected peer value; outline/frame and Find button preserved','scope_bounds':b,'Find_bounds':other,'resampled':False,'body_query_author_or_popup_captured':False}
+save('target-strip-capture.json',r);print(json.dumps(r))

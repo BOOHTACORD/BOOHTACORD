@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-27T23:18:09.263Z",
+  "required_Android_target_dp": 48,
+  "product_requirement": {
+    "issue": 301,
+    "url": "https://github.com/Egkurilov/BOOHTACORD/issues/301",
+    "criterion": "I301.C6",
+    "text": "Complete measurement of all actionable controls and physical 44pt iOS / 48dp Android target checks remains under #303."
+  },
+  "official_guideline": {
+    "url": "https://developer.android.com/guide/topics/ui/accessibility/views/apps-views",
+    "scope": "Android recommends a minimum48dp touch/focus area; a smaller visual may use surrounding padding. This packet therefore measures actual activation at points around the visible/AX bounds."
+  },
+  "distinction": "QA301 product acceptance is the gate being checked. No OS-enforced system minimum or complete platform inventory is claimed."
+}

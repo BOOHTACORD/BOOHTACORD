@@ -1,0 +1,25 @@
+"""Static search-target helpers; never retain selected peer label or raw hierarchy."""
+import sys,json
+from pathlib import Path
+P=Path(__file__).resolve().parent;sys.path.insert(0,str(P.parent/'qa-android-admin'))
+from admin_common import nodes,label,box,tap,tap_named,call,APP,ADB,snapshot,read_font,now
+from admin_ime_retry import ime
+peer=json.loads((P.parent/'qa-prod-resume/dm-fixture.private.json').read_text(encoding='utf-8'))['peer']
+def save(name,data):(P/name).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+def search_present(rows):return any(label(n)=='Закрыть поиск' for n in rows)
+def query_field(rows):
+ choices=[n for n in rows if n.get('package')==APP and n.get('class')=='android.widget.EditText' and box(n)[1]<1200 and 0<box(n)[3]-box(n)[1]<300]
+ assert len(choices)==1;return choices[0]
+def scope_control(rows):
+ choices=[n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and 'Область поиска' in label(n) and 0<box(n)[3]-box(n)[1]<250]
+ assert len(choices)==1;return choices[0]
+def selected_scope(rows):
+ value=label(scope_control(rows))
+ if 'Везде' in value:return 'all'
+ if peer in value:return 'current'
+ return 'UNKNOWN'
+def popup_open(rows):
+ return any(label(n).strip()=='Везде' for n in rows) and any(label(n).strip()==peer for n in rows)
+def own_DM_visible(rows):return any(peer in label(n) and box(n)[1]<700 for n in rows)
+def safe_observation(rows):
+ return {'at_utc':now(),'search_present':search_present(rows),'popup_open':popup_open(rows),'query_empty':not query_field(rows).get('text'),'scope':selected_scope(rows),'scope_bounds':box(scope_control(rows))}

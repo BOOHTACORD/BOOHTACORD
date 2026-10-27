@@ -1,0 +1,14 @@
+from target_common import *
+r={'at_utc':now(),'status':'RUNNING','server_resource_mutation_issued':False}
+try:
+ rows=nodes();assert own_DM_visible(rows) and read_font()==1.0 and not search_present(rows)
+ if not any(label(n)=='Закрыть навигацию' for n in rows):tap_named('Открыть навигацию')
+ tap_named('Поиск сообщений');rows=nodes()
+ if any(label(n)=='Закрыть навигацию' for n in rows):tap_named('Закрыть навигацию');rows=nodes()
+ r.update(safe_observation(rows));assert r['query_empty'] and not r['popup_open'] and r['scope'] in ['current','all']
+ before=json.loads((P/'before.json').read_text(encoding='utf-8'));b=r['scope_bounds'];r['scope_size_dp']=[(b[2]-b[0])/before['dpr'],(b[3]-b[1])/before['dpr']]
+ r['find_button_bounds']=[box(n) for n in rows if label(n)=='Найти' and 0<box(n)[3]-box(n)[1]<250]
+ r['status']='READY_EMPTY_SEARCH_TARGETS'
+except Exception as e:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(e).__name__
+finally:r['finished_at_utc']=now();save('open-targets.json',r)
+print(json.dumps(r,ensure_ascii=False))

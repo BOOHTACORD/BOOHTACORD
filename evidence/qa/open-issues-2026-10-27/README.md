@@ -233,3 +233,13 @@ own DM/font/empty composer/permission and unmuted voice/mic restored. Windows us
 only APIRequestContext fixture controls; no browser/UI or native auth extraction.
 I287.C3 is now PARTIAL. Full browser/hints/unread/notification/file/revoke/search-filter
 acceptance remains open; all480 original requirements and known failures preserved.
+
+## Physical Android search target — 2026-10-28 Moscow
+
+[Actual scope-dropdown geometry and hit probes](native-search-touch-targets/summary.json)
+fail the Android48dp gate: observed scope frame32dp, center/inside edge points
+activate, but points2px/9px above and below do not. All8 probes preserve query and
+scope; observed popup Back and final native DM/font/voice cleanup pass. Redacted
+source-sized control strip reviewed. I301.C6 now FAIL; historical44dp witnesses and
+other existing failures stay intact. Whole target inventory/other platforms/AT
+remain unaccepted. All480 original requirements retained; no product/test edits.

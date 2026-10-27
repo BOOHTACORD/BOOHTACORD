@@ -1,0 +1,22 @@
+"""Observe actual dropdown activation inside/outside its current native bounds."""
+from target_common import *
+r={'at_utc':now(),'status':'RUNNING','server_resource_mutation_issued':False,'probes':[]}
+try:
+ original=json.loads((P/'open-targets.json').read_text(encoding='utf-8'));assert original['status']=='READY_EMPTY_SEARCH_TARGETS';scope_kind=original['scope']
+ tests=[('center_before','center',0),('inside_top','top',2),('inside_bottom','bottom',-2),('outside_top_2px','top',-2),('outside_bottom_2px','bottom',2),('outside_top_9px','top',-9),('outside_bottom_9px','bottom',9),('center_after','center',0)]
+ for name,edge,offset in tests:
+  rows=nodes();assert search_present(rows) and not popup_open(rows) and not query_field(rows).get('text') and selected_scope(rows)==scope_kind
+  target=scope_control(rows);b=box(target);x=(b[0]+b[2])//2;y=((b[1]+b[3])//2 if edge=='center' else b[1] if edge=='top' else b[3])+offset
+  others=[n for n in rows if n is not target and n.get('package')==APP and n.get('clickable')=='true' and 0<box(n)[3]-box(n)[1]<400 and box(n)[0]<=x<box(n)[2] and box(n)[1]<=y<box(n)[3]]
+  assert not others,'Probe must not hit another action'
+  call('shell','input','tap',str(x),str(y));after=nodes();opened=popup_open(after)
+  p={'name':name,'at_utc':now(),'target_bounds':b,'point':[x,y],'inside_semantic_bounds':b[0]<=x<b[2] and b[1]<=y<b[3],'popup_opened':opened,'other_action_overlap_count':len(others),'Back_issued':False}
+  if opened:
+   call('shell','input','keyevent','KEYCODE_BACK');p['Back_issued']=True;after=nodes();assert not popup_open(after)
+  p['query_empty_after']=not query_field(after).get('text');p['scope_unchanged_after']=selected_scope(after)==scope_kind;p['search_retained']=search_present(after)
+  assert p['query_empty_after'] and p['scope_unchanged_after'] and p['search_retained'];r['probes'].append(p);save('touch-probes.json',r)
+  if edge=='center':assert opened,'Positive center control must open the dropdown'
+ r['status']='COMPLETE_OBSERVED_TOUCH_PROBES'
+except Exception as e:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(e).__name__
+finally:r['finished_at_utc']=now();save('touch-probes.json',r)
+print(json.dumps(r,ensure_ascii=False))

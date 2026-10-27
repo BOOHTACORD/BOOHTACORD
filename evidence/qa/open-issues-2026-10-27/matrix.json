@@ -10926,19 +10926,22 @@
           "requirement": "Complete measurement of all actionable controls and physical 44pt iOS / 48dp Android target checks remains under #303.",
           "source_checkbox": " ",
           "id": "I301.C6",
-          "status": "PARTIAL",
+          "status": "FAIL",
           "execution_cases": [
-            "ANDROID-DM-two-x-text-and-IME"
+            "ANDROID-DM-two-x-text-and-IME",
+            "ANDROID-search-scope-48dp-touch-target"
           ],
           "evidence": [
-            "android-text-scale-review.json"
+            "android-text-scale-review.json",
+            "native-search-touch-targets/summary.json"
           ],
-          "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures",
+          "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures | native-search-touch-targets/README.md actual8-point dropdown activation and48dp assertion.",
           "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; Gboard18.5.4",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "android-text-scale-review.json",
+          "result": "native-search-touch-targets/summary.json",
           "witness_limits": [
-            "ANDROID-DM-two-x-text-and-IME: Only DM composer/voice dock and three48dp controls; no TalkBack, text-entry, full catalog or approved baseline claim. System1.0 restored."
+            "ANDROID-DM-two-x-text-and-IME: Only DM composer/voice dock and three48dp controls; no TalkBack, text-entry, full catalog or approved baseline claim. System1.0 restored.",
+            "One physical Android/font1.0/density450 profile,8 discrete points at one x; no complete touch map, whole control inventory, TalkBack/other-platform/large-text or acoustic acceptance. Disabled Find is a geometry reference only. Source/typed test presence is not physical acceptance."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -10955,9 +10958,11 @@
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": [
-              "ANDROID-DM-two-x-text-and-IME"
+              "ANDROID-DM-two-x-text-and-IME",
+              "ANDROID-search-scope-48dp-touch-target"
             ]
-          }
+          },
+          "reason": "Physical active search scope target32dp;4 inside/center activations and4 immediate outside misses. Required48dp check FAIL/exit1. Other existing failures and remaining platform/AT/inventory requirements retained."
         },
         {
           "section": "Подзадачи",
@@ -11231,7 +11236,8 @@
         "WEB-session-revocation-draft-isolation",
         "WINDOWS-native-admin-entry",
         "ANDROID-admin-2x-Gboard-keeps-focus",
-        "ANDROID-admin-1x-Gboard-query-Back"
+        "ANDROID-admin-1x-Gboard-query-Back",
+        "ANDROID-search-scope-48dp-touch-target"
       ],
       "evidence": [
         "quickjump-result.json",
@@ -11239,7 +11245,8 @@
         "android-text-scale-review.json",
         "web-session-contract/logout.json",
         "windows-admin-entry-attempt.json",
-        "native-admin-gboard/summary.json"
+        "native-admin-gboard/summary.json",
+        "native-search-touch-targets/summary.json"
       ],
       "defects": [
         580,
@@ -11720,7 +11727,8 @@
             "ANDROID-admin-role-popup-root-Back",
             "ANDROID-admin-2x-IME-Back-unaccepted",
             "ANDROID-admin-2x-Gboard-keeps-focus",
-            "ANDROID-admin-1x-Gboard-query-Back"
+            "ANDROID-admin-1x-Gboard-query-Back",
+            "ANDROID-search-scope-48dp-touch-target"
           ],
           "evidence": [
             "android-text-scale-review.json",
@@ -11729,17 +11737,19 @@
             "android-orientation/summary.json",
             "android-orientation-master/summary.json",
             "native-admin/summary.json",
-            "native-admin-gboard/summary.json"
+            "native-admin-gboard/summary.json",
+            "native-search-touch-targets/summary.json"
           ],
-          "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures; python .out/qa-goal/android_filechooser.py | Actual Gboard production procedure: native-admin-gboard/README.md; explicit physical observation assertion exits1 for both2x runs,0 for1x control.",
+          "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures; python .out/qa-goal/android_filechooser.py | Actual Gboard production procedure: native-admin-gboard/README.md; explicit physical observation assertion exits1 for both2x runs,0 for1x control. | native-search-touch-targets/README.md actual8-point dropdown activation and48dp assertion.",
           "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; Gboard18.5.4; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "native-admin-gboard/summary.json",
+          "result": "native-search-touch-targets/summary.json",
           "witness_limits": [
             "ANDROID-DM-two-x-text-and-IME: Only DM composer/voice dock and three48dp controls; no TalkBack, text-entry, full catalog or approved baseline claim. System1.0 restored.",
             "ANDROID-real-filechooser-cancel: No file was selected or uploaded, no personal file listings/captures retained; not browser file chooser or image-viewer acceptance",
             "Native admin: Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open.2x input acceptance unproven; controller failures retained.",
-            "Physical Samsung/source072426d6/Gboard18.5.4 only; no TalkBack/human/hardware-keyboard/other-platform/whole-admin or acoustic acceptance. No exact latency/capacity/causal patch claim. Original controller failures remain historical."
+            "Physical Samsung/source072426d6/Gboard18.5.4 only; no TalkBack/human/hardware-keyboard/other-platform/whole-admin or acoustic acceptance. No exact latency/capacity/causal patch claim. Original controller failures remain historical.",
+            "One physical Android/font1.0/density450 profile,8 discrete points at one x; no complete touch map, whole control inventory, TalkBack/other-platform/large-text or acoustic acceptance. Disabled Find is a geometry reference only. Source/typed test presence is not physical acceptance."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -11771,10 +11781,11 @@
               "ANDROID-admin-role-popup-root-Back",
               "ANDROID-admin-2x-IME-Back-unaccepted",
               "ANDROID-admin-2x-Gboard-keeps-focus",
-              "ANDROID-admin-1x-Gboard-query-Back"
+              "ANDROID-admin-1x-Gboard-query-Back",
+              "ANDROID-search-scope-48dp-touch-target"
             ]
           },
-          "reason": "Confirmed physical2x Gboard first-character focus/IME loss in2/2 attempts;1x four-key/Back control passed. All original missing platform/AT/body/CRUD requirements remain unaccepted; other existing failures retained.",
+          "reason": "Physical active search scope target32dp;4 inside/center activations and4 immediate outside misses. Required48dp check FAIL/exit1. Other existing failures and remaining platform/AT/inventory requirements retained.",
           "defects": [
             582,
             585
@@ -12051,7 +12062,8 @@
         "ANDROID-admin-role-popup-root-Back",
         "ANDROID-admin-2x-IME-Back-unaccepted",
         "ANDROID-admin-2x-Gboard-keeps-focus",
-        "ANDROID-admin-1x-Gboard-query-Back"
+        "ANDROID-admin-1x-Gboard-query-Back",
+        "ANDROID-search-scope-48dp-touch-target"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -12075,7 +12087,8 @@
         "android-connectivity/summary.json",
         "android-orientation-master/summary.json",
         "native-admin/summary.json",
-        "native-admin-gboard/summary.json"
+        "native-admin-gboard/summary.json",
+        "native-search-touch-targets/summary.json"
       ],
       "defects": [
         579,
@@ -16044,7 +16057,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-27T23:04:48.793391+00:00",
+  "updated_utc": "2026-10-27T23:18:09.833886+00:00",
   "known_defect_issues": [
     579,
     580,

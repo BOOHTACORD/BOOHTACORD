@@ -1,0 +1,13 @@
+"""Exit1 for an observed undersized active target, exit2 if expansion is unmeasured."""
+from target_common import *
+before=json.loads((P/'before.json').read_text(encoding='utf-8'));probes=json.loads((P/'touch-probes.json').read_text(encoding='utf-8'));opened=json.loads((P/'open-targets.json').read_text(encoding='utf-8'))
+assert probes['status']=='COMPLETE_OBSERVED_TOUCH_PROBES';by={p['name']:p for p in probes['probes']};assert len(by)==8
+positive=all(by[n]['popup_opened'] for n in ['center_before','inside_top','inside_bottom','center_after'])
+preserved=all(p['query_empty_after'] and p['scope_unchanged_after'] and p['search_retained'] and p['other_action_overlap_count']==0 for p in probes['probes'])
+height=opened['scope_size_dp'][1];outside_misses=all(not by[n]['popup_opened'] for n in ['outside_top_2px','outside_bottom_2px','outside_top_9px','outside_bottom_9px'])
+if not positive or not preserved:status='INVALID_OBSERVATION';code=2
+elif height<48 and outside_misses:status='FAIL';code=1
+elif height>=48:status='PASS_SCOPED';code=0
+else:status='NOT_PROVEN_EXPANDED_TARGET';code=2
+r={'at_utc':now(),'status':status,'exit_code':code,'protected_invariant':'Android active search scope control satisfies required48dp target; visual smaller targets require demonstrated expanded hit area','scope_height_dp':height,'required_height_dp':48,'density':before['effective_density'],'positive_inside_and_center_controls':positive,'sampled_immediate_outside_points_activate':not outside_misses,'query_scope_preserved':preserved,'source':'touch-probes.json','limits':'8 point samples at one x; no complete hit-map, full control inventory, TalkBack or other platforms'}
+save('target-invariant.json',r);print(json.dumps(r));sys.exit(code)

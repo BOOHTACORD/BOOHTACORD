@@ -1,0 +1,18 @@
+"""Cancel any observed popup, close empty search, verify original native state."""
+from target_common import *
+r={'at_utc':now(),'status':'RUNNING','server_resource_mutation_issued':False}
+try:
+ rows=nodes()
+ if popup_open(rows):call('shell','input','keyevent','KEYCODE_BACK');rows=nodes()
+ original=json.loads((P/'open-targets.json').read_text(encoding='utf-8'));before=json.loads((P/'before.json').read_text(encoding='utf-8'))
+ assert search_present(rows) and not query_field(rows).get('text') and selected_scope(rows)==original['scope']
+ r['original_scope_unchanged']=True;r['query_empty']=True;tap_named('Закрыть поиск');rows=nodes()
+ r['original_own_DM_returned']=own_DM_visible(rows);r['search_closed']=not search_present(rows);r['IME_hidden']=ime() is False;r['font_scale']=read_font();r['native']=snapshot();s=r['native']
+ r['exact_permission_preserved']=s['permission']==before['native_before']['permission']
+ assert r['original_own_DM_returned'] and r['search_closed'] and r['IME_hidden'] and r['font_scale']==before['font_scale'] and r['exact_permission_preserved']
+ assert s['voice_connected'] and s['mic_fgs'] and not s['muted_control'] and not s['unknown_draft'] and not s['screen_fgs'] and not s['projection_package_present'] and not s['login_fields'];r['status']='PASS_ORIGINAL_NATIVE_STATE_RESTORED'
+except Exception as e:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(e).__name__
+finally:
+ if search_present(nodes()):tap_named('Закрыть поиск')
+ r['finished_at_utc']=now();save('final-restoration.json',r)
+print(json.dumps(r))

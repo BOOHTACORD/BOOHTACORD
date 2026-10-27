@@ -1034,6 +1034,20 @@
       ],
       "result": "native-admin-search-privacy/summary.json#/facets/deleted_search_exclusion",
       "limits": "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim."
+    },
+    {
+      "id": "ANDROID-search-scope-48dp-touch-target",
+      "status": "FAIL",
+      "protects": "Active Android search scope selector satisfies48dp acceptance target; a smaller visual control must demonstrate expanded actual hit area",
+      "command": "Follow native-search-touch-targets/README.md: python -X utf8 .out/qa-native-search-targets/open_targets.py; probe_targets.py; capture_target_strip.py; assert_target.py (witnessed exit1); restore_targets.py",
+      "platform": "Physical SM-A576B Android16 signed1.0.47+2082/source072426d6;450dpi/dpr2.8125/font1.0; production native UI",
+      "mandatory_when": "Before physical Android target-size acceptance in I301.C6 and corresponding device UX in I303.C3",
+      "issues": [
+        301,
+        303
+      ],
+      "result": "native-search-touch-targets/summary.json#/facets/scope_target_minimum",
+      "limits": "One physical Android/font1.0/density450 profile,8 discrete points at one x; no complete touch map, whole control inventory, TalkBack/other-platform/large-text or acoustic acceptance. Disabled Find is a geometry reference only. Source/typed test presence is not physical acceptance."
     }
   ]
 }

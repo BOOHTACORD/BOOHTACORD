@@ -1,0 +1,42 @@
+{
+  "status": "FAIL",
+  "at_utc": "2026-10-27T23:18:09.827378+00:00",
+  "route": "T-041 message search -> scope_field native touch target",
+  "production_url": "https://v.bootybay.ru",
+  "candidate": {
+    "model": "SM-A576B",
+    "OS": "Android16/API36",
+    "version": "signed1.0.47+2082",
+    "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "installed_APK_SHA256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+    "wm_density": "Physical density: 450",
+    "effective_density": 450,
+    "dpr": 2.8125,
+    "font_scale": 1.0,
+    "size": "1080x2340"
+  },
+  "API_source": "UNKNOWN; no resource mutation or explicit search submission action issued by these probes; existing background traffic not measured",
+  "facets": {
+    "scope_target_minimum": {
+      "status": "FAIL",
+      "result": "target-invariant.json",
+      "observed": "AX scope bounds[45,468,746,558] =249.244x32dp; required Android48dp. Center before/after and inside top/bottom activate; points2px and9px above/below do not. No other action overlaps any probe."
+    },
+    "popup_cancel_preservation": {
+      "status": "PASS",
+      "result": "touch-probes.json",
+      "observed": "Every opened popup canceled by observed Back; original current scope and empty query retained throughout; search remains open until explicit cleanup"
+    }
+  },
+  "basis": "requirement-basis.json",
+  "visual_review": "visual-review.json",
+  "source_fingerprints": "source-fingerprints.json",
+  "reproduction": "README.md",
+  "assertion_exit_code": 1,
+  "restoration": "final-restoration.json",
+  "limits": "One physical Android/font1.0/density450 profile,8 discrete points at one x; no complete touch map, whole control inventory, TalkBack/other-platform/large-text or acoustic acceptance. Disabled Find is a geometry reference only. Source/typed test presence is not physical acceptance.",
+  "new_confirmed_defect": "Issue creation pending first immutable evidence publication",
+  "duplicate_check": "duplicate-check.json",
+  "original43_consolidation_decisions_touched": 0,
+  "full_QA_gate": "OPEN"
+}
