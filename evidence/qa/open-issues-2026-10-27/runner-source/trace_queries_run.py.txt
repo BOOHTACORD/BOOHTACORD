@@ -1,0 +1,15 @@
+"""Execute the existing TraceQL checker and retain sanitized query receipts."""
+import collections,json,subprocess,time
+from pathlib import Path
+from datetime import datetime,timezone
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.out/qa-goal'
+report=OUT/'trace-dashboard-query-results.json'
+args=['python','tools/qa/trace_queries/check_trace_queries.py','http://127.0.0.1:13200','docker/observability/dashboards/traces.json','--output',str(report)]
+started=time.monotonic();result=subprocess.run(args,cwd=ROOT,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=300)
+(OUT/'private-trace-query-run.log').write_text(result.stdout+result.stderr,encoding='utf-8')
+rows=json.loads(report.read_text(encoding='utf-8')) if report.exists() else []
+summary={'at_utc':datetime.now(timezone.utc).isoformat(),'command_argv':args[:-1]+['.out/qa-goal/trace-dashboard-query-results.json'],'exit':result.returncode,
+ 'duration_s':round(time.monotonic()-started,3),'query_rows':len(rows),'statuses':dict(collections.Counter(r['status'] for r in rows)),
+ 'scope':'Queries execute against isolated fixture only; a successful empty response is not healthy zero, a complete dataset or deployed Grafana acceptance.'}
+(OUT/'trace-query-summary.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(summary))
+raise SystemExit(result.returncode)

@@ -1,0 +1,63 @@
+{
+  "recovered_at_utc": "2026-10-27T02:04:01.953010+00:00",
+  "source_sha": "4cfafba325291cd673fe410578c73fe9d36c22c5",
+  "command_argv": [
+    "python",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "-v",
+    "tools.qa.trace_queries.test_runtime"
+  ],
+  "status": "PASS_SCOPED_FROM_COMPLETION_LOG",
+  "tests_run": 9,
+  "reported_suite_duration_s": 210.298,
+  "tests": [
+    {
+      "name": "test_01_terminal_parent_excludes_complete_start_but_not_missing_parent",
+      "status": "ok"
+    },
+    {
+      "name": "test_02_late_terminal_changes_quality_without_fabricating_failure",
+      "status": "ok"
+    },
+    {
+      "name": "test_03_short_single_span_and_distinct_outcomes_survive",
+      "status": "ok"
+    },
+    {
+      "name": "test_04_visits_and_accounts_do_not_mix",
+      "status": "ok"
+    },
+    {
+      "name": "test_05_api_observed_media_keeps_windows_platform_and_session",
+      "status": "ok"
+    },
+    {
+      "name": "test_06_preauth_errors_need_no_fake_identity",
+      "status": "ok"
+    },
+    {
+      "name": "test_07_identityless_workers_only_appear_under_all_identity",
+      "status": "ok"
+    },
+    {
+      "name": "test_08_legacy_client_needs_no_new_platform_or_version_attribute",
+      "status": "ok"
+    },
+    {
+      "name": "test_09_preauth_http_denials_are_visible_without_error_status",
+      "status": "ok"
+    }
+  ],
+  "skips": [],
+  "test_process_exit": null,
+  "controller_exit": 1,
+  "controller_failure": "CRLF prevented the status regex from matching lines before $. Actual unittest completed9/9 ok and OK.",
+  "recovery": "Normalize retained CRLF only; parse the same completed log without rerunning any test or changing source/native query expectations.",
+  "raw_log_sha256": "0e8543118517e420eea119d3aaf713c2c346088178813649e34041647b64f91e",
+  "scope": "Synthetic direct OTLP fixtures in real Collector/Tempo prove dashboard query semantics only; no production identity trust, deployed Grafana or physical media acceptance.",
+  "original_output_bytes": "dashboard-unittest-original.json raw_utf8 encoded UTF8",
+  "normalized_text_view": "dashboard-unittest.txt"
+}

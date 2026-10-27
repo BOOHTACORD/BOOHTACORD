@@ -1,0 +1,20 @@
+{
+  "at_utc": "2026-10-27T02:05:01.480404+00:00",
+  "project": "bcqa-trace-20261027-0150",
+  "command": "python .out/qa-goal/trace_fixture.py down",
+  "guarded_owned_containers": 4,
+  "guarded_networks": 1,
+  "guarded_named_volumes": 1,
+  "guarded_attached_volumes": 2,
+  "no_foreign_container_shared_owned_volume_or_network": true,
+  "remaining_owned_resources": {
+    "container": 0,
+    "network": 0,
+    "volume": 0
+  },
+  "owned_attached_volumes_absent": true,
+  "unrelated_container_states_equal_before_after": true,
+  "unrelated_container_snapshot_sha256": "1ed70cf26bd2ba2ceda624e82b6a96094ad9b54db82ec7ffae9ef3e7d8227d1b",
+  "engine_and_unrelated_resources_not_stopped": true,
+  "status": "PASS_SCOPED"
+}

@@ -1,0 +1,100 @@
+{
+  "profile": "relay",
+  "source_sha": "4cfafba325291cd673fe410578c73fe9d36c22c5",
+  "command": "go test -json -count=1 -timeout=8m -tags tracing_runtime ./internal/observability/ingest_client_traces -run TestRuntimeRelay|TestRelayHealth|TestRelaySourceFailure",
+  "cwd": "backend",
+  "at_utc": "2026-10-27T01:58:45.137508+00:00",
+  "scope": "isolated components, not packaged physical clients",
+  "events": [
+    {
+      "Time": "2026-10-27T04:58:48.9598427+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRelayHealthStoredByActualCollector"
+    },
+    {
+      "Time": "2026-10-27T04:58:49.216071+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRelayHealthStoredByActualCollector",
+      "Elapsed": 0.26
+    },
+    {
+      "Time": "2026-10-27T04:58:49.216071+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRelaySourceFailureRemainsDistinctAfterActualCollector"
+    },
+    {
+      "Time": "2026-10-27T04:58:50.2273194+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRelaySourceFailureRemainsDistinctAfterActualCollector",
+      "Elapsed": 1.01
+    },
+    {
+      "Time": "2026-10-27T04:58:50.2273194+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRelayHealthKeepsSourceFailureSeparateFromOtherAcceptance"
+    },
+    {
+      "Time": "2026-10-27T04:58:50.2273194+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRelayHealthKeepsSourceFailureSeparateFromOtherAcceptance",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:58:50.2273194+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRelayHealthRecordsPanicAsFailureAndRepanics"
+    },
+    {
+      "Time": "2026-10-27T04:58:50.2273194+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRelayHealthRecordsPanicAsFailureAndRepanics",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:58:50.2273194+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRuntimeRelayStoresSanitizedFlowInTempo"
+    },
+    {
+      "Time": "2026-10-27T04:58:51.2411221+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRuntimeRelayStoresSanitizedFlowInTempo",
+      "Elapsed": 1.01
+    },
+    {
+      "Time": "2026-10-27T04:58:51.2473169+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Elapsed": 4.408
+    }
+  ],
+  "exit": 0,
+  "duration_s": 6.219,
+  "service_controls": [],
+  "skips": [],
+  "raw_log_sha256": "eb0f39d4481166c7db3d88bfae357c88a6bfdbd5a8335fc139b2b34161f18069",
+  "status": "PASS_SCOPED",
+  "command_argv": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=8m",
+    "-tags",
+    "tracing_runtime",
+    "./internal/observability/ingest_client_traces",
+    "-run",
+    "TestRuntimeRelay|TestRelayHealth|TestRelaySourceFailure"
+  ],
+  "command_shell_note": "Executed as argv without a shell. Use retained Python profile helper from PowerShell; the displayed regex contains literal pipe characters."
+}

@@ -1,0 +1,47 @@
+{
+  "at_utc": "2026-10-27T01:52:00.364204+00:00",
+  "endpoint_codes": {
+    "tempo": 200,
+    "collector": 405,
+    "livekit": 200
+  },
+  "postgres_server_version": "17.6",
+  "images": [
+    {
+      "service": "collector",
+      "image_ref": "otel/opentelemetry-collector:0.161.0",
+      "image_id": "sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913",
+      "repo_digests": [
+        "otel/opentelemetry-collector@sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913"
+      ],
+      "state": "running"
+    },
+    {
+      "service": "tempo",
+      "image_ref": "grafana/tempo:2.10.3",
+      "image_id": "sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703",
+      "repo_digests": [
+        "grafana/tempo@sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703"
+      ],
+      "state": "running"
+    },
+    {
+      "service": "postgres",
+      "image_ref": "postgres:17.6-alpine",
+      "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94",
+      "repo_digests": [
+        "postgres@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94"
+      ],
+      "state": "running"
+    },
+    {
+      "service": "livekit",
+      "image_ref": "livekit/livekit-server:v1.13.7",
+      "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+      "repo_digests": [
+        "livekit/livekit-server@sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3"
+      ],
+      "state": "running"
+    }
+  ]
+}

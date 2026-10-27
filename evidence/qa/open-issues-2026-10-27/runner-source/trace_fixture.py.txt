@@ -1,0 +1,49 @@
+"""Bounded local tracing fixture; inspect before starting only owned services."""
+import json,subprocess,socket,sys
+from pathlib import Path
+from datetime import datetime,timezone
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.out/qa-goal'
+PROJECT='bcqa-trace-20261027-0150'
+SERVICES=['collector','tempo','postgres','livekit']
+overlay=OUT/'trace-owned.compose.json'
+extra={name:{'restart':'no','logging':{'driver':'json-file','options':{'max-size':'10m','max-file':'2'}}} for name in SERVICES}
+overlay.write_text(json.dumps({'services':extra}),encoding='utf-8')
+BASE=['docker','compose','-p',PROJECT,'-f',str(ROOT/'docker/observability/compose.yaml'),'-f',str(ROOT/'tools/qa/tracing_flow/compose.qa.yaml'),'-f',str(overlay)]
+def run(args):return subprocess.run(args,cwd=ROOT,capture_output=True,text=True,encoding='utf-8',errors='replace')
+def dump(name,data):
+ (OUT/name).write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n')
+mode=sys.argv[1]
+if mode=='inspect':
+ context=run(['docker','context','inspect']);assert context.returncode==0
+ host=json.loads(context.stdout)[0]['Endpoints']['docker']['Host']
+ assert host.startswith(('npipe:','unix:')),'Remote engine forbidden'
+ assert not run(['docker','ps','-aq','--filter',f'label=com.docker.compose.project={PROJECT}']).stdout.strip(),'Project already exists'
+ assert not run(['docker','volume','ls','-q','--filter',f'label=com.docker.compose.project={PROJECT}']).stdout.strip(),'Project volume already exists'
+ config=run(BASE+['config','--format','json']);assert config.returncode==0,'Compose configuration invalid'
+ private=json.loads(config.stdout);dump('private-trace-compose-config.json',private)
+ summary={'at_utc':datetime.now(timezone.utc).isoformat(),'project':PROJECT,'engine_local':True,'services':{},'unused_external_network_not_selected':True}
+ usednets=set()
+ for name in SERVICES:
+  service=private['services'][name];assert service.get('restart')=='no'
+  assert service.get('mem_limit') and service.get('cpus')
+  assert service['logging']['options']=={'max-file':'2','max-size':'10m'}
+  usednets.update(service.get('networks',{}))
+  for port in service.get('ports',[]):
+   assert port['host_ip']=='127.0.0.1'
+   with socket.socket() as probe:
+    probe.bind(('127.0.0.1',int(port['published'])))
+  for volume in service.get('volumes',[]):
+   if volume['type']=='volume':assert not private['volumes'][volume['source']].get('external')
+   elif volume['type']=='bind':assert volume['read_only'] and Path(volume['source']).is_relative_to(ROOT)
+  summary['services'][name]={k:service.get(k) for k in ['image','ports','cpus','mem_limit','logging','restart','depends_on']}
+  summary['services'][name]['environment_keys']=list(service.get('environment',{}))
+ assert all(not private['networks'][n].get('external') for n in usednets)
+ summary['ports_free']=True;summary['no_preexisting_owned_resources']=True
+ dump('trace-fixture-preflight.json',summary);print(json.dumps(summary))
+elif mode in ['pull','up','stop','down']:
+ assert (OUT/'trace-fixture-preflight.json').exists()
+ args={'pull':['pull',*SERVICES],'up':['up','-d','--no-build',*SERVICES],'stop':['stop',*SERVICES],'down':['down','--volumes']}[mode]
+ result=run(BASE+args);(OUT/f'private-trace-compose-{mode}.log').write_text(result.stdout+result.stderr,encoding='utf-8')
+ dump(f'trace-fixture-{mode}.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'project':PROJECT,'mode':mode,'exit':result.returncode})
+ print(json.dumps({'project':PROJECT,'mode':mode,'exit':result.returncode}));sys.exit(result.returncode)
+else:raise ValueError('Unknown operation')

@@ -1,0 +1,19 @@
+"""Recover actual completed unittest statuses after the controller's CRLF parser failure."""
+import hashlib,json,re
+from pathlib import Path
+from datetime import datetime,timezone
+OUT=Path(__file__).resolve().parent
+file=OUT/'private-trace-dashboard-runtime.log';raw=file.read_bytes()
+text=raw.decode('utf-8').replace('\r\n','\n')
+tests=[{'name':name,'status':status} for name,status in re.findall(r'^(test_\w+) \([^\n]*\) \.\.\. (ok|FAIL|ERROR|skipped[^\n]*)$',text,re.M)]
+run=re.search(r'Ran (\d+) tests? in ([0-9.]+)s',text);assert run
+assert len(tests)==int(run[1])==9 and all(t['status']=='ok' for t in tests)
+assert re.search(r'^OK$',text,re.M) and not re.search(r'^(FAILED|FAIL:|ERROR:)',text,re.M)
+record={'recovered_at_utc':datetime.now(timezone.utc).isoformat(),'source_sha':'4cfafba325291cd673fe410578c73fe9d36c22c5',
+ 'command_argv':['python','-X','utf8','-m','unittest','-v','tools.qa.trace_queries.test_runtime'],
+ 'status':'PASS_SCOPED_FROM_COMPLETION_LOG','tests_run':int(run[1]),'reported_suite_duration_s':float(run[2]),'tests':tests,'skips':[],
+ 'test_process_exit':None,'controller_exit':1,'controller_failure':'CRLF prevented the status regex from matching lines before $. Actual unittest completed9/9 ok and OK.',
+ 'recovery':'Normalize retained CRLF only; parse the same completed log without rerunning any test or changing source/native query expectations.',
+ 'raw_log_sha256':hashlib.sha256(raw).hexdigest(),
+ 'scope':'Synthetic direct OTLP fixtures in real Collector/Tempo prove dashboard query semantics only; no production identity trust, deployed Grafana or physical media acceptance.'}
+(OUT/'trace-dashboard-runtime-result.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(record))

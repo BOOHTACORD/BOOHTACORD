@@ -1,0 +1,18 @@
+{
+  "at_utc": "2026-10-27T02:04:02.819171+00:00",
+  "command_argv": [
+    "python",
+    "tools/qa/trace_queries/check_trace_queries.py",
+    "http://127.0.0.1:13200",
+    "docker/observability/dashboards/traces.json",
+    "--output",
+    ".out/qa-goal/trace-dashboard-query-results.json"
+  ],
+  "exit": 0,
+  "duration_s": 0.797,
+  "query_rows": 78,
+  "statuses": {
+    "PASS": 78
+  },
+  "scope": "Queries execute against isolated fixture only; a successful empty response is not healthy zero, a complete dataset or deployed Grafana acceptance."
+}

@@ -1,0 +1,87 @@
+"""Run source-owned tests against only the local disposable tracing fixture."""
+import hashlib,json,os,subprocess,sys,time,urllib.request,urllib.error
+from pathlib import Path
+from datetime import datetime,timezone
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.out/qa-goal'
+PROJECT='bcqa-trace-20261027-0150'
+BASE=['docker','compose','-p',PROJECT,'-f',str(ROOT/'docker/observability/compose.yaml'),'-f',str(ROOT/'tools/qa/tracing_flow/compose.qa.yaml'),'-f',str(OUT/'trace-owned.compose.json')]
+def dump(name,value):(OUT/name).write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8',newline='\n')
+def command(args):return subprocess.run(args,capture_output=True,text=True,encoding='utf-8',errors='replace')
+def control(action,service):
+ assert service in ['collector','tempo'];assert action in ['stop','start']
+ ids=command(BASE+['ps','-aq',service]);assert ids.returncode==0 and ids.stdout.strip()
+ data=json.loads(command(['docker','inspect',ids.stdout.strip()]).stdout)[0]
+ assert data['Config']['Labels']['com.docker.compose.project']==PROJECT
+ result=command(BASE+[action,service]);assert result.returncode==0,'Owned service control failed'
+ return {'service':service,'action':action,'at_utc':datetime.now(timezone.utc).isoformat()}
+def probe(url):
+ try:
+  with urllib.request.build_opener(urllib.request.ProxyHandler({})).open(url,timeout=2) as response:return response.status
+ except urllib.error.HTTPError as error:return error.code
+ except OSError:return None
+mode=sys.argv[1]
+if mode=='ready':
+ deadline=time.monotonic()+60
+ while time.monotonic()<deadline:
+  codes={k:probe(u) for k,u in {'tempo':'http://127.0.0.1:13200/ready','collector':'http://127.0.0.1:14318/v1/traces','livekit':'http://127.0.0.1:17880/'}.items()}
+  db=command(BASE+['exec','-T','postgres','psql','-U','trace_qa','-d','trace_qa','-Atc','SHOW server_version'])
+  if codes['tempo']==200 and codes['collector'] in [400,405] and codes['livekit']==200 and db.returncode==0:break
+  time.sleep(1)
+ else:raise RuntimeError('Fixture not ready; inspect private container diagnostics')
+ images=[]
+ for name in ['collector','tempo','postgres','livekit']:
+  data=json.loads(command(['docker','inspect',command(BASE+['ps','-q',name]).stdout.strip()]).stdout)[0]
+  assert data['Config']['Labels']['com.docker.compose.project']==PROJECT
+  image=json.loads(command(['docker','image','inspect',data['Image']]).stdout)[0]
+  images.append({'service':name,'image_ref':data['Config']['Image'],'image_id':data['Image'],'repo_digests':image['RepoDigests'],'state':data['State']['Status']})
+ result={'at_utc':datetime.now(timezone.utc).isoformat(),'endpoint_codes':codes,'postgres_server_version':db.stdout.strip(),'images':images}
+ dump('trace-fixture-ready.json',result);print(json.dumps(result));sys.exit(0)
+profiles={
+ 'relay':(['./internal/observability/ingest_client_traces'],'TestRuntimeRelay|TestRelayHealth|TestRelaySourceFailure'),
+ 'browser':(['./internal/observability/ingest_client_traces'],'TestBrowserComponents'),
+ 'native':(['./internal/observability/ingest_client_traces'],'TestNativeSDK'),
+ 'worker':(['./internal/voice/kick_voice_participant/postgres'],'TestCommittedCause|TestFailedTransaction|TestDurableWorkerRetry'),
+ 'replay':(['./internal/realtime/connect_session','./internal/realtime/replay_event/postgres'],'.'),
+ 'collector_outage':(['./internal/observability/ingest_client_traces'],'TestActualCollectorOutageReturnsBoundedUnavailable'),
+ 'tempo_outage':(['./internal/observability/ingest_client_traces'],'TestRuntimeRelay')}
+packages,pattern=profiles[mode]
+env={k:v for k,v in os.environ.items() if not k.startswith(('TRACE_QA_','OTEL_','VOICE_PLATFORM_TEST_DATABASE_URL','TEST_DATABASE_URL'))}
+env.update({'TRACE_QA_COLLECTOR_URL':'http://127.0.0.1:14318','TRACE_QA_COLLECTOR_METRICS_URL':'http://127.0.0.1:18889','TRACE_QA_TEMPO_URL':'http://127.0.0.1:13200','TRACE_QA_SFU_URL':'http://127.0.0.1:17880',
+ 'VOICE_PLATFORM_TEST_DATABASE_URL':'postgres://trace_qa:synthetic-qa-only@127.0.0.1:15432/trace_qa?sslmode=disable','TEST_DATABASE_URL':'postgres://trace_qa:synthetic-qa-only@127.0.0.1:15432/trace_qa?sslmode=disable',
+ 'TRACE_QA_SOURCE_SHA':command(['git','-C',str(ROOT),'rev-parse','HEAD']).stdout.strip(),'CHROMIUM_EXECUTABLE_PATH':r'C:\Program Files\Google\Chrome\Application\chrome.exe'})
+if mode=='browser':env['TRACE_QA_BROWSER']='1'
+if mode=='native':
+ env['TRACE_QA_NATIVE']='1';env['TRACE_QA_FLUTTER_BIN']=json.loads((OUT/'private-toolchain-paths.json').read_text(encoding='utf-8'))['flutter_bin']
+if mode=='collector_outage':env['TRACE_QA_EXPECT_COLLECTOR_OUTAGE']='1'
+if mode=='tempo_outage':env['TRACE_QA_EXPECT_TEMPO_OUTAGE']='1'
+args=['go','test','-json','-count=1','-timeout=8m','-tags','tracing_runtime',*packages,'-run',pattern]
+record={'profile':mode,'source_sha':env['TRACE_QA_SOURCE_SHA'],'command':subprocess.list2cmdline(args),'cwd':'backend','at_utc':datetime.now(timezone.utc).isoformat(),'scope':'isolated components, not packaged physical clients','events':[]}
+history=[];restore=None;started=time.monotonic();file=OUT/f'private-trace-{mode}.jsonl'
+try:
+ if mode in ['collector_outage','tempo_outage']:
+  restore='collector' if mode=='collector_outage' else 'tempo';history.append(control('stop',restore))
+ with file.open('wb') as log:
+  process=subprocess.Popen(args,cwd=ROOT/'backend',env=env,stdout=log,stderr=subprocess.STDOUT)
+  dump('trace-active-process.json',{'profile':mode,'pid':process.pid,'at_utc':record['at_utc']})
+  recovered=False
+  while process.poll() is None:
+   elapsed=time.monotonic()-started
+   if mode=='tempo_outage' and not recovered and file.exists() and 'waiting for bounded recovery' in file.read_text(encoding='utf-8',errors='replace'):
+    history.append(control('start','tempo'));recovered=True
+   if elapsed>500:
+    subprocess.run(['taskkill','/PID',str(process.pid),'/T','/F'],capture_output=True);raise TimeoutError('Owned test deadline')
+   time.sleep(.2)
+  record['exit']=process.returncode
+finally:
+ if restore:history.append(control('start',restore))
+ record['duration_s']=round(time.monotonic()-started,3);record['service_controls']=history
+ for line in file.read_text(encoding='utf-8',errors='replace').splitlines() if file.exists() else []:
+  try:item=json.loads(line)
+  except ValueError:continue
+  if item.get('Action') in ['run','pass','fail','skip']:
+   record['events'].append({k:item[k] for k in ['Time','Action','Package','Test','Elapsed'] if k in item})
+ record['skips']=[x.get('Test') for x in record['events'] if x['Action']=='skip']
+ record['raw_log_sha256']=hashlib.sha256(file.read_bytes()).hexdigest() if file.exists() else None
+ record['status']='PASS_SCOPED' if record.get('exit')==0 and not record['skips'] else 'FAIL_OR_SKIP'
+ dump(f'trace-{mode}-result.json',record);print(json.dumps(record))
+sys.exit(record.get('exit',1))

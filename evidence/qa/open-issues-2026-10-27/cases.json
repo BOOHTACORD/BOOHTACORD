@@ -477,6 +477,128 @@
       "defects": [
         581
       ]
+    },
+    {
+      "id": "ISOLATED-relay-sanitization-health",
+      "status": "PASS_SCOPED",
+      "protects": "Mixed telemetry preserves valid records, rejects unknown records and keeps source-specific failures distinct from success.",
+      "command": "python .out/qa-goal/trace_runtime.py relay",
+      "platform": "Windows amd64; local pinned PostgreSQL17.6/Collector0.161.0/Tempo2.10.3/LiveKit1.13.7 fixture; exact per-phase limits below",
+      "mandatory_when": "Before accepting the corresponding telemetry/realtime/worker/query clauses in QA154/240/241/287; execute all other source-row clauses separately.",
+      "result": "trace-runtime/relay-initial-result.json",
+      "limits": "Synthetic principal and direct handler; not production secure-cookie authentication.",
+      "issues": [
+        154,
+        240,
+        287
+      ]
+    },
+    {
+      "id": "ISOLATED-two-browser-sdk-flow",
+      "status": "PASS_SCOPED",
+      "protects": "Two SDK contexts preserve separate visits, visible message render, timeout/retry outcomes and stale-batch dropping through real relay/Tempo.",
+      "command": "python .out/qa-goal/trace_runtime.py browser",
+      "platform": "Windows amd64; local pinned PostgreSQL17.6/Collector0.161.0/Tempo2.10.3/LiveKit1.13.7 fixture; exact per-phase limits below",
+      "mandatory_when": "Before accepting the corresponding telemetry/realtime/worker/query clauses in QA154/240/241/287; execute all other source-row clauses separately.",
+      "result": "trace-runtime/browser-result.json",
+      "limits": "Business API and canvas video are synthetic; no packaged client, physical media or account-switch authentication proof.",
+      "issues": [
+        154,
+        240,
+        287
+      ]
+    },
+    {
+      "id": "ISOLATED-windows-flutter-sdk-flow",
+      "status": "PASS_SCOPED",
+      "protects": "Actual Flutter SDK exports only after mounted-frame observation, and message contents do not enter stored traces.",
+      "command": "python .out/qa-goal/trace_runtime.py native",
+      "platform": "Windows amd64; local pinned PostgreSQL17.6/Collector0.161.0/Tempo2.10.3/LiveKit1.13.7 fixture; exact per-phase limits below",
+      "mandatory_when": "Before accepting the corresponding telemetry/realtime/worker/query clauses in QA154/240/241/287; execute all other source-row clauses separately.",
+      "result": "trace-runtime/native-result.json",
+      "limits": "Windows Flutter test engine; not the installed Windows executable or physical Android APK.",
+      "issues": [
+        154,
+        240,
+        287
+      ]
+    },
+    {
+      "id": "ISOLATED-worker-durable-cause-sfu",
+      "status": "PASS_SCOPED",
+      "protects": "Committed outbox cause survives reclaim/restart/retry; rollback leaks no durable revoke; stored worker links survive an actual SFU call.",
+      "command": "python .out/qa-goal/trace_runtime.py worker",
+      "platform": "Windows amd64; local pinned PostgreSQL17.6/Collector0.161.0/Tempo2.10.3/LiveKit1.13.7 fixture; exact per-phase limits below",
+      "mandatory_when": "Before accepting the corresponding telemetry/realtime/worker/query clauses in QA154/240/241/287; execute all other source-row clauses separately.",
+      "result": "trace-runtime/worker-result.json",
+      "limits": "First dependency503 is simulated; actual SFU confirms participant absence, not a connected physical-speaker disconnect.",
+      "issues": [
+        154,
+        240,
+        287
+      ]
+    },
+    {
+      "id": "ISOLATED-websocket-replay-acl",
+      "status": "PASS_SCOPED",
+      "protects": "Realtime replay preserves commit order, bounded deduplication and current account/session ACL, with handshake span ending before socket close.",
+      "command": "python .out/qa-goal/trace_runtime.py replay",
+      "platform": "Windows amd64; local pinned PostgreSQL17.6/Collector0.161.0/Tempo2.10.3/LiveKit1.13.7 fixture; exact per-phase limits below",
+      "mandatory_when": "Before accepting the corresponding telemetry/realtime/worker/query clauses in QA154/240/241/287; execute all other source-row clauses separately.",
+      "result": "trace-runtime/replay-result.json",
+      "limits": "Source-owned Go handler/database tests; not a packaged client reconnect or deployed trace export proof.",
+      "issues": [
+        154,
+        240,
+        287
+      ]
+    },
+    {
+      "id": "ISOLATED-relay-dependency-outages",
+      "status": "PASS_SCOPED",
+      "protects": "Actual stopped Collector returns bounded503 without accepted receipt; accepted data survives an actual Tempo outage and bounded recovery.",
+      "command": "python .out/qa-goal/trace_runtime.py collector_outage; python .out/qa-goal/trace_runtime.py tempo_outage; python .out/qa-goal/trace_runtime.py relay",
+      "platform": "Windows amd64; local pinned PostgreSQL17.6/Collector0.161.0/Tempo2.10.3/LiveKit1.13.7 fixture; exact per-phase limits below",
+      "mandatory_when": "Before accepting the corresponding telemetry/realtime/worker/query clauses in QA154/240/241/287; execute all other source-row clauses separately.",
+      "result": "trace-runtime/observations.json",
+      "limits": "Only owned localhost containers stopped. Queue saturation/429/sampling/product nonblocking are not fully exercised.",
+      "issues": [
+        154,
+        240,
+        287
+      ]
+    },
+    {
+      "id": "ISOLATED-traceql-semantic-fixtures",
+      "status": "PASS_SCOPED",
+      "protects": "Stored query semantics distinguish complete/missing/late terminal, outcomes, visits/accounts, Windows media, preauth denials, legacy and identityless workers.",
+      "command": "python .out/qa-goal/trace_dashboard_runtime.py; python .out/qa-goal/recover_trace_dashboard_receipt.py (same-log recovery after controller failure)",
+      "platform": "Windows amd64; local pinned PostgreSQL17.6/Collector0.161.0/Tempo2.10.3/LiveKit1.13.7 fixture; exact per-phase limits below",
+      "mandatory_when": "Before accepting the corresponding telemetry/realtime/worker/query clauses in QA154/240/241/287; execute all other source-row clauses separately.",
+      "result": "trace-runtime/dashboard-runtime-result.json",
+      "limits": "Synthetic direct OTLP fixtures bypass relay identity. Controller CRLF parsing failed; same completed9/9 OK log was recovered, original child exit unavailable.",
+      "issues": [
+        154,
+        240,
+        241,
+        287
+      ]
+    },
+    {
+      "id": "ISOLATED-traceql-dashboard-queries",
+      "status": "PASS_SCOPED",
+      "protects": "Every selected dashboard TraceQL query executes over15m/6h/24h windows without query error.",
+      "command": "python .out/qa-goal/trace_queries_run.py",
+      "platform": "Windows amd64; local pinned PostgreSQL17.6/Collector0.161.0/Tempo2.10.3/LiveKit1.13.7 fixture; exact per-phase limits below",
+      "mandatory_when": "Before accepting the corresponding telemetry/realtime/worker/query clauses in QA154/240/241/287; execute all other source-row clauses separately.",
+      "result": "trace-runtime/query-summary.json",
+      "limits": "78 successful query executions on isolated stores; empty results are not healthy zero or deployed Grafana UID/RBAC acceptance.",
+      "issues": [
+        154,
+        240,
+        241,
+        287
+      ]
     }
   ]
 }

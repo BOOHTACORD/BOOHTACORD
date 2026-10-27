@@ -1,0 +1,419 @@
+{
+  "profile": "replay",
+  "source_sha": "4cfafba325291cd673fe410578c73fe9d36c22c5",
+  "command": "go test -json -count=1 -timeout=8m -tags tracing_runtime ./internal/realtime/connect_session ./internal/realtime/replay_event/postgres -run .",
+  "cwd": "backend",
+  "at_utc": "2026-10-27T01:57:14.781350+00:00",
+  "scope": "isolated components, not packaged physical clients",
+  "events": [
+    {
+      "Time": "2026-10-27T04:57:19.0347915+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestMemberProfileReplayRechecksViewerAndTargetMembership"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.0352918+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestMemberProfileReplayRechecksViewerAndTargetMembership",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.0352918+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestGuildProfileHintHasOnlyPositiveRevision"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.0352918+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestGuildProfileHintHasOnlyPositiveRevision",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.0352918+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestJournalMigrationReplayAndCurrentACL"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.1069471+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestJournalMigrationReplayAndCurrentACL",
+      "Elapsed": 0.07
+    },
+    {
+      "Time": "2026-10-27T04:57:19.1069471+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestConcurrentAppendAllocatesSequenceInCommitOrder"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.2720402+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestConcurrentAppendAllocatesSequenceInCommitOrder",
+      "Elapsed": 0.17
+    },
+    {
+      "Time": "2026-10-27T04:57:19.2720402+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestValidatePersistedHintRejectsContentAndInvalidIdentifiers"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.2725377+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestValidatePersistedHintRejectsContentAndInvalidIdentifiers",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.2725377+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestValidateMemberProfileHintAllowsOnlyMemberIDAndRevision"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.2725377+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestValidateMemberProfileHintAllowsOnlyMemberIDAndRevision",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.2725377+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestSocialHintsAreExactlyIDsAndDMHintsNeedPrivateRecipients"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.2725377+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Test": "TestSocialHintsAreExactlyIDsAndDMHintsNeedPrivateRecipients",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.2745356+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/replay_event/postgres",
+      "Elapsed": 1.713
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8262211+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerStreamsPublishedMessageHintWithoutContent"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.828221+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerStreamsPublishedMessageHintWithoutContent",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.828221+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerTracksAuthenticatedPresenceUntilConnectionCloses"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8292209+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerTracksAuthenticatedPresenceUntilConnectionCloses",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8292209+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandshakeTraceEndsWhileSocketStillOpen"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8302213+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandshakeTraceEndsWhileSocketStillOpen",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8302213+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerSendsReadyEventForVerifiedSession"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8307209+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerSendsReadyEventForVerifiedSession",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8307209+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerRequestsResyncInsteadOfUnverifiedReplay"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8312221+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerRequestsResyncInsteadOfUnverifiedReplay",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8312221+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerClosesSocketWhenSessionIsRevoked"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8332202+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerClosesSocketWhenSessionIsRevoked",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8332202+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerRejectsOverQuotaBeforeUpgradeAndReleasesOnClose"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8352202+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerRejectsOverQuotaBeforeUpgradeAndReleasesOnClose",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8352202+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerObservesRealtimeLifecycle"
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8357208+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerObservesRealtimeLifecycle",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:19.8357208+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestOwnSessionRevocationClosesOnlyOldSocketBeforePeriodicRevalidation"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2612543+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestOwnSessionRevocationClosesOnlyOldSocketBeforePeriodicRevalidation",
+      "Elapsed": 0.43
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2612543+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestCurrentSessionReceivesPrivateDirectMessageHint"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2908517+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestCurrentSessionReceivesPrivateDirectMessageHint",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2908517+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestRevokedSessionDoesNotReceiveQueuedDirectMessageEvent"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2913517+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestRevokedSessionDoesNotReceiveQueuedDirectMessageEvent",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2913517+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestPrivateDirectMessageEventRechecksAuthenticatedAccount"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.292352+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestPrivateDirectMessageEventRechecksAuthenticatedAccount",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:20.292352+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayCursorFailuresDemandFullResync"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.292352+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayCursorFailuresDemandFullResync/expired"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2928518+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayCursorFailuresDemandFullResync/expired",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2928518+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayCursorFailuresDemandFullResync/restart"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2938518+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayCursorFailuresDemandFullResync/restart",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2938518+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayCursorFailuresDemandFullResync/overflow"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2943517+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayCursorFailuresDemandFullResync/overflow",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2943517+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayCursorFailuresDemandFullResync/unknown"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2948517+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayCursorFailuresDemandFullResync/unknown",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2948517+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayCursorFailuresDemandFullResync",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2948517+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplaySuppressesLiveCopyQueuedDuringHistoryQuery"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2953519+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplaySuppressesLiveCopyQueuedDuringHistoryQuery",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2953519+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplaySkipsRevokedDMAndDoesNotRevealItsID"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2958517+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplaySkipsRevokedDMAndDoesNotRevealItsID",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2958517+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayUnknownCursorRequiresResync"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2968519+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayUnknownCursorRequiresResync",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:20.2968519+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayRejectsRevokedSessionBeforePrivateHint"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.297352+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestReplayRejectsRevokedSessionBeforePrivateHint",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:20.297352+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestBlockRevokesLiveWebSocketWithRealSessionStore"
+    },
+    {
+      "Time": "2026-10-27T04:57:20.7071525+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestBlockRevokesLiveWebSocketWithRealSessionStore",
+      "Elapsed": 0.41
+    },
+    {
+      "Time": "2026-10-27T04:57:20.7131523+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Elapsed": 3.151
+    }
+  ],
+  "exit": 0,
+  "duration_s": 6.015,
+  "service_controls": [],
+  "skips": [],
+  "raw_log_sha256": "bf8c17778138677191e5b1a5a9f14d3075154d66869c3ea5c3c481750df74d6b",
+  "status": "PASS_SCOPED",
+  "command_argv": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=8m",
+    "-tags",
+    "tracing_runtime",
+    "./internal/realtime/connect_session",
+    "./internal/realtime/replay_event/postgres",
+    "-run",
+    "."
+  ],
+  "command_shell_note": "Executed as argv without a shell. Use retained Python profile helper from PowerShell; the displayed regex contains literal pipe characters."
+}

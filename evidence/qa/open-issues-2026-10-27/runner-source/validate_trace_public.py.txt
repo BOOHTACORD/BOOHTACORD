@@ -1,0 +1,49 @@
+"""Check source attribution, row/case links and public bytes before staging."""
+import ast,collections,hashlib,json,shlex,subprocess
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'evidence/qa/open-issues-2026-10-27';PRIVATE=ROOT/'.out/qa-goal'
+matrix=json.loads((OUT/'matrix.json').read_text(encoding='utf-8'));cases=json.loads((OUT/'cases.json').read_text(encoding='utf-8'))
+old=json.loads(subprocess.check_output(['git','show','HEAD:evidence/qa/open-issues-2026-10-27/matrix.json'],cwd=ROOT))
+rows={r['id']:r for i in matrix['issues'] for r in i['criteria']};assert len(rows)==480
+assert {k:r['requirement'] for k,r in rows.items()}=={r['id']:r['requirement'] for i in old['issues'] for r in i['criteria']}
+for case in cases['cases']:
+ if not case['id'].startswith('ISOLATED-'):continue
+ case['issues']=sorted({i['number'] for i in matrix['issues'] if any(case['id'] in r['execution_cases'] for r in i['criteria'])})
+ assert case['issues'] and (OUT/case['result']).is_file()
+(OUT/'cases.json').write_text(json.dumps(cases,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+case_ids={c['id'] for c in cases['cases']}
+def valid_reference(reference):
+ for part in reference.split(';'):
+  path,separator,pointer=part.strip().partition('#');file=OUT/path
+  assert file.is_file(),path
+  if separator:
+   value=json.loads(file.read_text(encoding='utf-8'));assert pointer.startswith('/')
+   for key in pointer[1:].split('/'):
+    key=key.replace('~1','/').replace('~0','~');value=value[int(key)] if isinstance(value,list) else value[key]
+ return True
+for row in rows.values():
+ assert set(row['execution_cases'])<=case_ids,row['id']
+ assert all(valid_reference(file) for file in row['evidence']),row['id']
+for file in (OUT/'trace-runtime').glob('*-result.json'):
+ data=json.loads(file.read_text(encoding='utf-8'))
+ if data.get('command','').startswith('go test'):
+  data['command_argv']=shlex.split(data['command']);data['command_shell_note']='Executed as argv without a shell. Use retained Python profile helper from PowerShell; the displayed regex contains literal pipe characters.'
+  file.write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n')
+def sensitive(value):
+ if isinstance(value,dict):
+  for key,item in value.items():
+   private=key.lower() in ['id','login','password','display_name','email'] or key.lower().endswith(('_id','_token','_secret'))
+   if private and isinstance(item,str) and len(item)>8:yield item
+   else:yield from sensitive(item)
+ elif isinstance(value,list):
+  for item in value:yield from sensitive(item)
+needles=list(sensitive(json.loads((PRIVATE/'private-fixture.json').read_text(encoding='utf-8'))))
+for file in OUT.rglob('*'):
+ if file.is_file() and file.suffix in ['.json','.md','.txt','.log']:
+  text=file.read_text(encoding='utf-8');assert all(n not in text for n in needles),file.name
+for file in (OUT/'runner-source').glob('*.py.txt'):
+ source=file.read_text(encoding='utf-8');assert len(source.splitlines())<=120;ast.parse(source)
+assert not subprocess.check_output(['git','diff','HEAD','--','backend','clients','tools/qa/tracing_flow','tools/qa/trace_queries'],cwd=ROOT)
+source=Path(__file__).read_text(encoding='utf-8');assert len(source.splitlines())<=120
+(OUT/'runner-source/validate_trace_public.py.txt').write_text(source,encoding='utf-8',newline='\n')
+print(json.dumps({'source_rows_preserved':len(rows),'executed_scopes':len(cases['cases']),'privacy_scan':'PASS','row_case_and_result_links':'PASS','runner_syntax_and_line_ratchet':'PASS','native_source_unchanged':True,'row_status_counts':dict(collections.Counter(r['status'] for r in rows.values()))}))

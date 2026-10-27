@@ -2091,20 +2091,31 @@
       "title": "[Tracing][UF-10] Сквозная приёмка user flow через реальные relay, Collector и Tempo",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/154",
       "packet": "tracing",
-      "status": "PENDING",
+      "status": "PARTIAL",
       "criteria": [
         {
           "section": "План",
           "requirement": "Создать воспроизводимый изолированный контур с pinned версиями Go/Web/Flutter/SFU/Collector/Tempo, синтетическими аккаунтами/медиа и сохранённым source SHA. Повторно использовать существующие browser/native test harness, не создавать вторую инфраструктуру без необходимости.",
           "source_checkbox": " ",
           "id": "I154.C1",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-relay-sanitization-health",
+            "ISOLATED-two-browser-sdk-flow",
+            "ISOLATED-windows-flutter-sdk-flow",
+            "ISOLATED-worker-durable-cause-sfu",
+            "ISOLATED-websocket-replay-acl",
+            "ISOLATED-relay-dependency-outages",
+            "ISOLATED-traceql-semantic-fixtures",
+            "ISOLATED-traceql-dashboard-queries"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2122,9 +2133,18 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-relay-sanitization-health",
+              "ISOLATED-two-browser-sdk-flow",
+              "ISOLATED-windows-flutter-sdk-flow",
+              "ISOLATED-worker-durable-cause-sfu",
+              "ISOLATED-websocket-replay-acl",
+              "ISOLATED-relay-dependency-outages",
+              "ISOLATED-traceql-semantic-fixtures",
+              "ISOLATED-traceql-dashboard-queries"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2132,13 +2152,24 @@
           "requirement": "Зафиксировать ожидаемый граф spans/parent/links, обязательные поля и stage/outcome для каждого сценария #145. Проверять фактически сохранённый OTLP/Tempo после sanitization, а не только payload до relay.",
           "source_checkbox": " ",
           "id": "I154.C2",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-relay-sanitization-health",
+            "ISOLATED-two-browser-sdk-flow",
+            "ISOLATED-windows-flutter-sdk-flow",
+            "ISOLATED-worker-durable-cause-sfu",
+            "ISOLATED-websocket-replay-acl",
+            "ISOLATED-relay-dependency-outages",
+            "ISOLATED-traceql-semantic-fixtures",
+            "ISOLATED-traceql-dashboard-queries"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2153,9 +2184,18 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-relay-sanitization-health",
+              "ISOLATED-two-browser-sdk-flow",
+              "ISOLATED-windows-flutter-sdk-flow",
+              "ISOLATED-worker-durable-cause-sfu",
+              "ISOLATED-websocket-replay-acl",
+              "ISOLATED-relay-dependency-outages",
+              "ISOLATED-traceql-semantic-fixtures",
+              "ISOLATED-traceql-dashboard-queries"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2163,13 +2203,24 @@
           "requirement": "Добавить deterministic correlation tests в CI; browser/native runtime запускать отдельно с точной матрицей доступных платформ. Для сетевого/fault теста нужны bounded duration/ресурсные stop conditions, не production-нагрузка.",
           "source_checkbox": " ",
           "id": "I154.C3",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-relay-sanitization-health",
+            "ISOLATED-two-browser-sdk-flow",
+            "ISOLATED-windows-flutter-sdk-flow",
+            "ISOLATED-worker-durable-cause-sfu",
+            "ISOLATED-websocket-replay-acl",
+            "ISOLATED-relay-dependency-outages",
+            "ISOLATED-traceql-semantic-fixtures",
+            "ISOLATED-traceql-dashboard-queries"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2182,9 +2233,18 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-relay-sanitization-health",
+              "ISOLATED-two-browser-sdk-flow",
+              "ISOLATED-windows-flutter-sdk-flow",
+              "ISOLATED-worker-durable-cause-sfu",
+              "ISOLATED-websocket-replay-acl",
+              "ISOLATED-relay-dependency-outages",
+              "ISOLATED-traceql-semantic-fixtures",
+              "ISOLATED-traceql-dashboard-queries"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2221,13 +2281,17 @@
           "requirement": "**Нет первого кадра → retry → успех:** failure.stage=first_frame, попытки различимы, логическая связь сохранена, отмена не равна сетевой ошибке.",
           "source_checkbox": null,
           "id": "I154.C5",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-two-browser-sdk-flow"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2240,9 +2304,11 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-two-browser-sdk-flow"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2250,13 +2316,17 @@
           "requirement": "**Message send с потерянным response:** один бизнес-message, связанные retry/ack/sender-render и отдельно receiver-processing; нет read receipt или тела сообщения в traces.",
           "source_checkbox": null,
           "id": "I154.C6",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-two-browser-sdk-flow"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2269,9 +2339,11 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-two-browser-sdk-flow"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2279,13 +2351,17 @@
           "requirement": "**Две вкладки и параллельные действия:** один account/session, разные visits и flows, без parent contamination.",
           "source_checkbox": null,
           "id": "I154.C7",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-two-browser-sdk-flow"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2298,9 +2374,11 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-two-browser-sdk-flow"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2308,13 +2386,17 @@
           "requirement": "**A→logout→B при pending batch:** ни один span A не становится событием B; недоступный post-logout export честно отмечен как потерянный/неизвестный.",
           "source_checkbox": null,
           "id": "I154.C8",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-two-browser-sdk-flow"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2327,9 +2409,11 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-two-browser-sdk-flow"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2366,13 +2450,17 @@
           "requirement": "**WebSocket reconnect/replay/resync/coalescing:** сохранена причинность, дубли не создают повторные результаты; handshake-span завершён до закрытия постоянного соединения.",
           "source_checkbox": null,
           "id": "I154.C10",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-websocket-replay-acl"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2387,9 +2475,11 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-websocket-replay-acl"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2397,13 +2487,17 @@
           "requirement": "**Admin revoke → outbox → restart/retry worker → SFU:** связь переживает перезапуск, committed/pending/attempt/confirmed наблюдения различаются.",
           "source_checkbox": null,
           "id": "I154.C11",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-worker-durable-cause-sfu"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2416,9 +2510,11 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-worker-durable-cause-sfu"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2426,13 +2522,17 @@
           "requirement": "**Relay compatibility/privacy:** old/new schema, неизвестная запись в mixed batch, oversized/malformed payload, поддельная identity/link; корректные records не пропадают молча, чужой DM-контекст недоступен.",
           "source_checkbox": null,
           "id": "I154.C12",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-relay-sanitization-health"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2445,9 +2545,11 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-relay-sanitization-health"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2455,13 +2557,18 @@
           "requirement": "**Collector/Tempo outage, 429 и sampling:** очереди ограничены, retry не блокирует продукт, dropped/stale видны; поздние spans и неполная выборка не изображаются полной историей.",
           "source_checkbox": null,
           "id": "I154.C13",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-two-browser-sdk-flow",
+            "ISOLATED-relay-dependency-outages"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2477,9 +2584,12 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-two-browser-sdk-flow",
+              "ISOLATED-relay-dependency-outages"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2516,13 +2626,18 @@
           "requirement": "Эталонный сценарий подтверждён настоящими двумя клиентами; Web и каждая доступная native-платформа имеют отдельный runtime результат. Test fixtures не выдаются за физическое качество звука/FPS.",
           "source_checkbox": " ",
           "id": "I154.C15",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-two-browser-sdk-flow",
+            "ISOLATED-windows-flutter-sdk-flow"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2537,9 +2652,12 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-two-browser-sdk-flow",
+              "ISOLATED-windows-flutter-sdk-flow"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2547,13 +2665,24 @@
           "requirement": "Сохранены безопасные test-run ID, ожидаемые/фактические связи и проверенные TraceQL queries; в публичном evidence только синтетические данные, без настоящих user/session IDs или содержимого.",
           "source_checkbox": " ",
           "id": "I154.C16",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-relay-sanitization-health",
+            "ISOLATED-two-browser-sdk-flow",
+            "ISOLATED-windows-flutter-sdk-flow",
+            "ISOLATED-worker-durable-cause-sfu",
+            "ISOLATED-websocket-replay-acl",
+            "ISOLATED-relay-dependency-outages",
+            "ISOLATED-traceql-semantic-fixtures",
+            "ISOLATED-traceql-dashboard-queries"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "python .out/qa-goal/seal_evidence.py working; then manually inspect every required runtime receipt, visual observation, skip/platform limit and source identity.",
           "platform": "Evidence files plus the actual platform stated in each receipt.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "EVIDENCE_REQUIREMENT",
           "acceptance_methods": [
             "evidence_integrity"
@@ -2565,9 +2694,18 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-relay-sanitization-health",
+              "ISOLATED-two-browser-sdk-flow",
+              "ISOLATED-windows-flutter-sdk-flow",
+              "ISOLATED-worker-durable-cause-sfu",
+              "ISOLATED-websocket-replay-acl",
+              "ISOLATED-relay-dependency-outages",
+              "ISOLATED-traceql-semantic-fixtures",
+              "ISOLATED-traceql-dashboard-queries"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2575,13 +2713,18 @@
           "requirement": "Проверены отсутствие секретов и кардинальность labels; измерены spans/action, CPU/RAM/экспортная задержка и полнота на диагностическом 100% pilot profile.",
           "source_checkbox": " ",
           "id": "I154.C17",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-relay-sanitization-health",
+            "ISOLATED-two-browser-sdk-flow"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2594,9 +2737,12 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-relay-sanitization-health",
+              "ISOLATED-two-browser-sdk-flow"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -2604,13 +2750,18 @@
           "requirement": "Queries и fixture dataset переданы в финальную dashboard-задачу. Пороговые SLO из продукта не переопределены произвольными числами.",
           "source_checkbox": " ",
           "id": "I154.C18",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-traceql-semantic-fixtures",
+            "ISOLATED-traceql-dashboard-queries"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -2623,14 +2774,28 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-traceql-semantic-fixtures",
+              "ISOLATED-traceql-dashboard-queries"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         }
       ],
-      "execution_cases": [],
-      "evidence": [],
+      "execution_cases": [
+        "ISOLATED-relay-sanitization-health",
+        "ISOLATED-two-browser-sdk-flow",
+        "ISOLATED-windows-flutter-sdk-flow",
+        "ISOLATED-worker-durable-cause-sfu",
+        "ISOLATED-websocket-replay-acl",
+        "ISOLATED-relay-dependency-outages",
+        "ISOLATED-traceql-semantic-fixtures",
+        "ISOLATED-traceql-dashboard-queries"
+      ],
+      "evidence": [
+        "trace-runtime/summary.json"
+      ],
       "defects": [],
       "blockers": [],
       "source_body_sha256": "c1cd47eb48a662df1e08ef6094983c7c1b28507b0b8a9449ebe2ca6157f3f20b",
@@ -5051,13 +5216,18 @@
           "requirement": "[#146 — telemetry relay](https://github.com/Egkurilov/BOOHTACORD/issues/146): изолированный relay→Collector→Tempo: валидная и mixed-version envelope, spoofed identity, forbidden/raw attributes, лимиты body/batch, partial acceptance, collector outage/recovery. Приложить receiver result counts и sanitized query/export evidence без cookies, tokens, payloads или user IDs.",
           "source_checkbox": " ",
           "id": "I240.C11",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-relay-sanitization-health",
+            "ISOLATED-relay-dependency-outages"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime"
@@ -5073,9 +5243,12 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-relay-sanitization-health",
+              "ISOLATED-relay-dependency-outages"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -5083,13 +5256,17 @@
           "requirement": "[#147 — Web ActionScope](https://github.com/Egkurilov/BOOHTACORD/issues/147): в браузере выполнить representative login/message/voice/screen-share actions до видимого результата; проверить navigation/logout/account reset, delayed API/realtime result и same-origin flow propagation. Приложить browser test output и короткую sanitized span/result matrix; не включать тексты сообщений.",
           "source_checkbox": " ",
           "id": "I240.C12",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-two-browser-sdk-flow"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime"
@@ -5103,9 +5280,11 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-two-browser-sdk-flow"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -5113,13 +5292,17 @@
           "requirement": "[#148 — Flutter ActionScope](https://github.com/Egkurilov/BOOHTACORD/issues/148): Flutter test на parallel Futures, retry/terminal-once, server/account reset, late ACK и bounded queue; отдельно проверить packaged Windows/Android client через relay. Приложить flutter test/analyzer/build results, SDK/OS versions и sanitized outcome counts; credentials и span payloads не прикладывать.",
           "source_checkbox": " ",
           "id": "I240.C13",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-windows-flutter-sdk-flow"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime"
@@ -5136,9 +5319,11 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-windows-flutter-sdk-flow"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -5146,13 +5331,17 @@
           "requirement": "[#149 — backend user-flow stages](https://github.com/Egkurilov/BOOHTACORD/issues/149): проверить HTTP/domain stages при успешной транзакции, rollback/error и повторе; commit outcome должен появляться только после commit. Приложить test output и sanitized trace topology/outcome, без bodies, login/IDs и произвольных error strings.",
           "source_checkbox": " ",
           "id": "I240.C14",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-worker-durable-cause-sfu"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | Manual release audit against docs/release/2026-09-25-requirements-matrix.md and every linked gate; record NO_GO for any missing mandatory PASS and obtain the release owner's decision.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | All release platforms and intended deployment.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -5165,9 +5354,11 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-worker-durable-cause-sfu"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -5175,13 +5366,18 @@
           "requirement": "[#150 — realtime causal processing](https://github.com/Egkurilov/BOOHTACORD/issues/150): проверить live/replay delivery, account-bound authorization, unique bounded causal links, protected refresh/render и недоступное/устаревшее событие. Приложить event→processing outcome matrix и safe trace evidence без текста сообщения и участника.",
           "source_checkbox": " ",
           "id": "I240.C15",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-two-browser-sdk-flow",
+            "ISOLATED-websocket-replay-acl"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime"
@@ -5193,9 +5389,12 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-two-browser-sdk-flow",
+              "ISOLATED-websocket-replay-acl"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -5203,13 +5402,17 @@
           "requirement": "[#151 — worker/outbox cause](https://github.com/Egkurilov/BOOHTACORD/issues/151): вызвать outbox operation, retry/reclaim/restart и terminal result; проверить независимые worker roots с durable causal link и корректное поведение legacy/null metadata. Приложить transaction/worker attempt counts и trace-link matrix, без user/session IDs или payloads.",
           "source_checkbox": " ",
           "id": "I240.C16",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-worker-durable-cause-sfu"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime"
@@ -5221,9 +5424,11 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-worker-durable-cause-sfu"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -5259,13 +5464,18 @@
           "requirement": "[#153 — bounded telemetry export](https://github.com/Egkurilov/BOOHTACORD/issues/153): с изолированным Collector прогнать очередь до capacity, batch/retry/timeout, collector outage и восстановление; сверить bounded drops/queue/export outcome и отсутствие блокировки пользовательских действий. Приложить run SHA, Collector version, fault schedule и агрегированные queue/drop/export counters.",
           "source_checkbox": " ",
           "id": "I240.C18",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-two-browser-sdk-flow",
+            "ISOLATED-relay-dependency-outages"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime"
@@ -5280,9 +5490,12 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-two-browser-sdk-flow",
+              "ISOLATED-relay-dependency-outages"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -5290,13 +5503,18 @@
           "requirement": "[#155 — Grafana Traces dashboard](https://github.com/Egkurilov/BOOHTACORD/issues/155): на целевом Grafana deployment подтвердить UID/data sources, актуальные panels/queries, trace-to-metric drilldown, RBAC и полезный вид при отсутствующих/устаревших данных. Приложить deployed config/resource version, read-only query results или sanitized screenshot и результат viewer-role проверки; не экспортировать пользовательские traces.",
           "source_checkbox": " ",
           "id": "I240.C19",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-traceql-semantic-fixtures",
+            "ISOLATED-traceql-dashboard-queries"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
           "platform": "Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "observability_queries"
@@ -5310,9 +5528,12 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-traceql-semantic-fixtures",
+              "ISOLATED-traceql-dashboard-queries"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -5351,12 +5572,21 @@
       "execution_cases": [
         "NOTIFY-deployment-readiness-consent",
         "WEB-session-revocation-draft-isolation",
-        "WEB-current-public-Swagger-viewer"
+        "WEB-current-public-Swagger-viewer",
+        "ISOLATED-relay-sanitization-health",
+        "ISOLATED-relay-dependency-outages",
+        "ISOLATED-two-browser-sdk-flow",
+        "ISOLATED-windows-flutter-sdk-flow",
+        "ISOLATED-worker-durable-cause-sfu",
+        "ISOLATED-websocket-replay-acl",
+        "ISOLATED-traceql-semantic-fixtures",
+        "ISOLATED-traceql-dashboard-queries"
       ],
       "evidence": [
         "notification-readiness/summary.json",
         "web-session-contract/logout.json",
-        "web-session-contract/swagger.json"
+        "web-session-contract/swagger.json",
+        "trace-runtime/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -5580,13 +5810,18 @@
           "requirement": "Подтвердить совместимые queries/field mapping передать владельцу Traces dashboard #155; не считать #155 закрытой.",
           "source_checkbox": null,
           "id": "I241.C7",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-traceql-semantic-fixtures",
+            "ISOLATED-traceql-dashboard-queries"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review. | Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly.",
           "platform": "Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version. | Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "observability_queries",
@@ -5599,9 +5834,12 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-traceql-semantic-fixtures",
+              "ISOLATED-traceql-dashboard-queries"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -6587,10 +6825,15 @@
         }
       ],
       "execution_cases": [
-        "WEB-current-public-Swagger-viewer"
+        "WEB-current-public-Swagger-viewer",
+        "WEB-session-revocation-draft-isolation",
+        "NOTIFY-deployment-readiness-consent",
+        "ISOLATED-traceql-semantic-fixtures",
+        "ISOLATED-traceql-dashboard-queries"
       ],
       "evidence": [
-        "web-session-contract/swagger.json"
+        "web-session-contract/swagger.json",
+        "trace-runtime/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -9118,13 +9361,24 @@
           "requirement": "#144: actual user-flow relay → Collector → Tempo/Grafana correlation, export/freshness/privacy/retry and deployed dashboard delivery. Include #155 production dashboard UID/org=1, deployed queries/ACL/import and rollback; stale earlier candidate/master prerequisites are replaced by the final merged SHA. Detailed #154/#240. Source sanitizer/provisioning tests alone do not prove deployed traces.",
           "source_checkbox": " ",
           "id": "I287.C16",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-relay-sanitization-health",
+            "ISOLATED-two-browser-sdk-flow",
+            "ISOLATED-windows-flutter-sdk-flow",
+            "ISOLATED-worker-durable-cause-sfu",
+            "ISOLATED-websocket-replay-acl",
+            "ISOLATED-relay-dependency-outages",
+            "ISOLATED-traceql-semantic-fixtures",
+            "ISOLATED-traceql-dashboard-queries"
+          ],
+          "evidence": [
+            "trace-runtime/summary.json"
+          ],
           "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly. | With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review. | Manual release audit against docs/release/2026-09-25-requirements-matrix.md and every linked gate; record NO_GO for any missing mandatory PASS and obtain the release owner's decision.",
           "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate. | Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version. | All release platforms and intended deployment.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "trace-runtime/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime",
@@ -9142,9 +9396,18 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-relay-sanitization-health",
+              "ISOLATED-two-browser-sdk-flow",
+              "ISOLATED-windows-flutter-sdk-flow",
+              "ISOLATED-worker-durable-cause-sfu",
+              "ISOLATED-websocket-replay-acl",
+              "ISOLATED-relay-dependency-outages",
+              "ISOLATED-traceql-semantic-fixtures",
+              "ISOLATED-traceql-dashboard-queries"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         }
       ],
@@ -9163,7 +9426,18 @@
         "ANDROID-native-PNG-picker-send-view-delete",
         "WINDOWS-native-admin-entry",
         "WEB-JPEG-GIF-private-image-lifecycle",
-        "WEB-viewer-download-format-mismatch"
+        "WEB-viewer-download-format-mismatch",
+        "ANDROID-populated-prejoin-no-permission",
+        "ANDROID-OS-microphone-denial",
+        "ANDROID-muted-background",
+        "ISOLATED-relay-sanitization-health",
+        "ISOLATED-two-browser-sdk-flow",
+        "ISOLATED-windows-flutter-sdk-flow",
+        "ISOLATED-worker-durable-cause-sfu",
+        "ISOLATED-websocket-replay-acl",
+        "ISOLATED-relay-dependency-outages",
+        "ISOLATED-traceql-semantic-fixtures",
+        "ISOLATED-traceql-dashboard-queries"
       ],
       "evidence": [
         "privacy-result.json",
@@ -9173,7 +9447,8 @@
         "web-session-contract/android-filechooser.json",
         "native-image/summary.json",
         "windows-admin-entry-attempt.json",
-        "web-image-formats/summary.json"
+        "web-image-formats/summary.json",
+        "trace-runtime/summary.json"
       ],
       "defects": [
         581
@@ -15414,7 +15689,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-27T01:46:55.795306+00:00",
+  "updated_utc": "2026-10-27T02:08:49.429513+00:00",
   "known_defect_issues": [
     579,
     580,
@@ -15429,6 +15704,6 @@
     "SOURCE_CONTEXT": 29,
     "DEPENDENCY": 32
   },
-  "remaining_execution_note": "Local Docker29.6.2 Linux amd64 was verified available in this packet; isolated tracing/fault subsets can be prepared. Do not classify all remaining work as externally blocked. Missing physical hosts/listeners/provider/deployed read-only access remain specific limits.",
+  "remaining_execution_note": "Isolated tracing subset completed and owned resources removed. Remaining safe Windows/Android/Web/isolated API fault subsets are queued; do not blanket-block them. Human audibility, missing physical Mac/iPhone/Pixel, provider delivery and deployed Grafana remain separate limitations.",
   "prerequisite_evidence": "prerequisites/constraints.json"
 }

@@ -1,0 +1,23 @@
+"""Keep original CRLF bytes reconstructable in JSON and a clean LF text view."""
+import hashlib,json
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'evidence/qa/open-issues-2026-10-27';TRACE=OUT/'trace-runtime'
+private=ROOT/'.out/qa-goal/private-trace-dashboard-runtime.log';raw=private.read_bytes();public=TRACE/'dashboard-unittest.log'
+assert public.read_bytes()==raw
+original={'encoding':'utf-8','line_endings':'CRLF','original_sha256':hashlib.sha256(raw).hexdigest(),'raw_utf8':raw.decode('utf-8'),
+ 'reconstruction':'raw_utf8.encode("utf-8") yields the exact original subprocess output bytes; no test rerun.'}
+assert original['raw_utf8'].encode('utf-8')==raw
+(TRACE/'dashboard-unittest-original.json').write_text(json.dumps(original,indent=2)+'\n',encoding='utf-8',newline='\n')
+(TRACE/'dashboard-unittest.txt').write_text(original['raw_utf8'].replace('\r\n','\n'),encoding='utf-8',newline='\n')
+public.unlink()
+file=TRACE/'dashboard-runtime-result.json';data=json.loads(file.read_text(encoding='utf-8'))
+data.update({'original_output_bytes':'dashboard-unittest-original.json raw_utf8 encoded UTF8','normalized_text_view':'dashboard-unittest.txt'})
+assert data['raw_log_sha256']==original['original_sha256']
+file.write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n')
+file=TRACE/'summary.json';data=json.loads(file.read_text(encoding='utf-8'));data['controller_failure_retained']=data['controller_failure_retained'].replace('raw dashboard-unittest.log','original dashboard-unittest-original.json / normalized dashboard-unittest.txt')
+file.write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n')
+file=TRACE/'reproduce.md';text=file.read_text(encoding='utf-8').replace('The original byte-for-byte safe unittest log is published as dashboard-unittest.log.','The original safe unittest bytes are reconstructable from dashboard-unittest-original.json\n(raw_utf8 encoded as UTF8); dashboard-unittest.txt is the LF-normalized text view.')
+file.write_text(text,encoding='utf-8',newline='\n')
+source=Path(__file__).read_text(encoding='utf-8');assert len(source.splitlines())<=120
+(OUT/'runner-source/package_unittest_log.py.txt').write_text(source,encoding='utf-8',newline='\n')
+print(json.dumps({'original_CRLF_bytes_reconstructable':True,'original_sha256':original['original_sha256'],'normalized_text_view':True}))

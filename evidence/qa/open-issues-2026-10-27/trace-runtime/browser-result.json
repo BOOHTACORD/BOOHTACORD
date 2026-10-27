@@ -1,0 +1,48 @@
+{
+  "profile": "browser",
+  "source_sha": "4cfafba325291cd673fe410578c73fe9d36c22c5",
+  "command": "go test -json -count=1 -timeout=8m -tags tracing_runtime ./internal/observability/ingest_client_traces -run TestBrowserComponents",
+  "cwd": "backend",
+  "at_utc": "2026-10-27T01:53:12.082359+00:00",
+  "scope": "isolated components, not packaged physical clients",
+  "events": [
+    {
+      "Time": "2026-10-27T04:53:16.1347905+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestBrowserComponentsExportThroughRelayToTempo"
+    },
+    {
+      "Time": "2026-10-27T04:55:22.5621018+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestBrowserComponentsExportThroughRelayToTempo",
+      "Elapsed": 126.43
+    },
+    {
+      "Time": "2026-10-27T04:55:22.5681062+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Elapsed": 128.597
+    }
+  ],
+  "exit": 0,
+  "duration_s": 130.563,
+  "service_controls": [],
+  "skips": [],
+  "raw_log_sha256": "eee8dc8996c0b141a8b677ab2de746c3afad099b9d2d9a5f184aefd153d94062",
+  "status": "PASS_SCOPED",
+  "command_argv": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=8m",
+    "-tags",
+    "tracing_runtime",
+    "./internal/observability/ingest_client_traces",
+    "-run",
+    "TestBrowserComponents"
+  ],
+  "command_shell_note": "Executed as argv without a shell. Use retained Python profile helper from PowerShell; the displayed regex contains literal pipe characters."
+}

@@ -1,0 +1,64 @@
+{
+  "profile": "tempo_outage",
+  "source_sha": "4cfafba325291cd673fe410578c73fe9d36c22c5",
+  "command": "go test -json -count=1 -timeout=8m -tags tracing_runtime ./internal/observability/ingest_client_traces -run TestRuntimeRelay",
+  "cwd": "backend",
+  "at_utc": "2026-10-27T01:57:59.743354+00:00",
+  "scope": "isolated components, not packaged physical clients",
+  "events": [
+    {
+      "Time": "2026-10-27T04:58:04.7937042+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRuntimeRelayStoresSanitizedFlowInTempo"
+    },
+    {
+      "Time": "2026-10-27T04:58:09.8342227+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestRuntimeRelayStoresSanitizedFlowInTempo",
+      "Elapsed": 5.04
+    },
+    {
+      "Time": "2026-10-27T04:58:09.8404195+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Elapsed": 7.191
+    }
+  ],
+  "exit": 0,
+  "duration_s": 11.125,
+  "service_controls": [
+    {
+      "service": "tempo",
+      "action": "stop",
+      "at_utc": "2026-10-27T01:58:00.935594+00:00"
+    },
+    {
+      "service": "tempo",
+      "action": "start",
+      "at_utc": "2026-10-27T01:58:05.882027+00:00"
+    },
+    {
+      "service": "tempo",
+      "action": "start",
+      "at_utc": "2026-10-27T01:58:10.863375+00:00"
+    }
+  ],
+  "skips": [],
+  "raw_log_sha256": "b342b89168be8b27148f6c24eb0638d73458c4b095d6cb639064e9ca31c23851",
+  "status": "PASS_SCOPED",
+  "command_argv": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=8m",
+    "-tags",
+    "tracing_runtime",
+    "./internal/observability/ingest_client_traces",
+    "-run",
+    "TestRuntimeRelay"
+  ],
+  "command_shell_note": "Executed as argv without a shell. Use retained Python profile helper from PowerShell; the displayed regex contains literal pipe characters."
+}

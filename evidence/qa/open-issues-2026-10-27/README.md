@@ -120,6 +120,18 @@ discards drafts; reaction actions require opening the current disclosure; an ima
 viewer attempt passed after bringing the actual page to foreground, without a
 controlled attribution of that earlier failure. The final DM journey passed.
 
+## Isolated tracing checkpoint
+
+[Actual tracing results](trace-runtime/summary.json):8 Go invocations,42 top-level
+test executions (including the required recovery rerun),4 subtests and no skips;
+9 dashboard semantic tests and78 TraceQL executions passed. Browser/native SDK
+fixtures retain their synthetic limits. The dashboard controller failed on CRLF;
+its original9/9 OK log and same-log receipt recovery are retained. Actual Collector
+and Tempo outages were confined to the owned loopback namespace; all its containers,
+network and attached volumes were removed, unrelated container states unchanged.
+No production Grafana, packaged-client trace, audibility, capacity or hosted CI
+acceptance is implied. Parent QA issues remain open.
+
 ## Execution map
 
 `acceptance-methods.json` maps24 native/manual methods to the protected invariant,

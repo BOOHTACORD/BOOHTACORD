@@ -1,0 +1,26 @@
+{
+  "profile": "synthetic-two-client-runtime",
+  "source": "4cfafba325291cd673fe410578c73fe9d36c22c5",
+  "senderRecords": 50,
+  "receiverRecords": 33,
+  "actions": [
+    {
+      "name": "message.send",
+      "attempt": 1,
+      "outcome": "success",
+      "records": 7
+    },
+    {
+      "name": "screen.view",
+      "attempt": 1,
+      "outcome": "timeout",
+      "records": 5
+    },
+    {
+      "name": "screen.view",
+      "attempt": 2,
+      "outcome": "success",
+      "records": 8
+    }
+  ]
+}

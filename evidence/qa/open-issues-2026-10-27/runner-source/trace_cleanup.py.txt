@@ -1,0 +1,35 @@
+"""Remove only the fresh owned tracing namespace after verifying resource ownership."""
+import hashlib,json,subprocess
+from pathlib import Path
+from datetime import datetime,timezone
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.out/qa-goal';PROJECT='bcqa-trace-20261027-0150'
+def call(args):return subprocess.run(args,cwd=ROOT,capture_output=True,text=True,encoding='utf-8',errors='replace')
+def listed(kind):
+ args=['docker',kind,'ls','-q','--filter','label=com.docker.compose.project='+PROJECT] if kind!='container' else ['docker','ps','-aq','--filter','label=com.docker.compose.project='+PROJECT]
+ result=call(args);assert result.returncode==0;return result.stdout.split()
+def containers():
+ ids=call(['docker','ps','-aq']).stdout.split()
+ return json.loads(call(['docker','inspect',*ids]).stdout) if ids else []
+before=containers();own={c['Id'] for c in before if c['Config']['Labels'].get('com.docker.compose.project')==PROJECT}
+assert len(own)==4
+mounts={m['Name'] for c in before if c['Id'] in own for m in c['Mounts'] if m['Type']=='volume'}
+assert all(m.get('Name') not in mounts for c in before if c['Id'] not in own for m in c['Mounts'])
+networks=listed('network');volumes=listed('volume')
+for network in networks:
+ data=json.loads(call(['docker','network','inspect',network]).stdout)[0]
+ assert data['Labels']['com.docker.compose.project']==PROJECT
+ assert set(data.get('Containers',{}))<=own
+for volume in volumes:
+ data=json.loads(call(['docker','volume','inspect',volume]).stdout)[0]
+ assert data['Labels']['com.docker.compose.project']==PROJECT
+foreign_before={c['Id']:c['State']['Status'] for c in before if c['Id'] not in own}
+result=call(['python','-X','utf8',str(OUT/'trace_fixture.py'),'down']);assert result.returncode==0,'Owned compose cleanup failed'
+remaining={kind:len(listed(kind)) for kind in ['container','network','volume']};assert not any(remaining.values())
+assert all(call(['docker','volume','inspect',volume]).returncode!=0 for volume in mounts),'Owned mount volume remains'
+after=containers();foreign_after={c['Id']:c['State']['Status'] for c in after}
+record={'at_utc':datetime.now(timezone.utc).isoformat(),'project':PROJECT,'command':'python .out/qa-goal/trace_fixture.py down',
+ 'guarded_owned_containers':len(own),'guarded_networks':len(networks),'guarded_named_volumes':len(volumes),'guarded_attached_volumes':len(mounts),
+ 'no_foreign_container_shared_owned_volume_or_network':True,'remaining_owned_resources':remaining,'owned_attached_volumes_absent':True,
+ 'unrelated_container_states_equal_before_after':foreign_before==foreign_after,'unrelated_container_snapshot_sha256':hashlib.sha256(json.dumps(foreign_before,sort_keys=True).encode()).hexdigest(),
+ 'engine_and_unrelated_resources_not_stopped':True,'status':'PASS_SCOPED'}
+(OUT/'trace-cleanup-result.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(record))

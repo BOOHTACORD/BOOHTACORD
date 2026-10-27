@@ -1,0 +1,25 @@
+{
+  "collector_outage": {
+    "http": 503,
+    "relay_duration_ms": 0,
+    "accepted_receipt": false
+  },
+  "tempo_outage": {
+    "unavailability_observed": true,
+    "restored_after_observation": true,
+    "stored_within_test_30_second_deadline": true,
+    "test_elapsed_s": 5.04
+  },
+  "post_recovery_relay_result": "relay-result.json",
+  "browser_actions": "browser-observations.json",
+  "worker_graph": {
+    "proof_basis": "Passed source-owned assertions in sfu_runtime_test.go",
+    "recorded_spans": 3,
+    "attempt_results": [
+      "retry",
+      "participant_absent"
+    ],
+    "original_causal_links_preserved": true,
+    "connected_participant_or_acoustic_proof": false
+  }
+}

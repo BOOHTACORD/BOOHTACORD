@@ -1,0 +1,40 @@
+{
+  "at_utc": "2026-10-27T02:06:54.925523+00:00",
+  "status": "PASS_SCOPED; parent QA gates remain PARTIAL/NOT_RUN",
+  "source_sha": "4cfafba325291cd673fe410578c73fe9d36c22c5",
+  "selected_go_invocations": 8,
+  "top_level_go_test_executions": 42,
+  "go_subtest_executions": 4,
+  "selected_go_skips": 0,
+  "dashboard_semantic_tests": 9,
+  "traceql_query_executions": 78,
+  "controller_failure_retained": "dashboard-runtime-result.json; original dashboard-unittest-original.json / normalized dashboard-unittest.txt proves9/9 OK. CRLF-only receipt recovery; original child exit not retained.",
+  "cleanup": "cleanup-result.json;4 owned containers,1 network,2 attached volumes removed; unrelated container states unchanged",
+  "limits": [
+    "Synthetic principal injection does not test production login cookies.",
+    "Browser uses actual components/SDK with synthetic business API and canvas video.",
+    "Native uses Windows Flutter test engine, not packaged Windows/Android clients.",
+    "SFU test confirms absent participant; it does not disconnect a connected physical speaker.",
+    "TraceQL runs against local fixture, not deployed Grafana datasource/RBAC/UID/drilldown.",
+    "No physical audibility, capacity, calibrated FPS/latency, all-platform or hosted CI PASS claim.",
+    "All-selected-test PASS does not mean every source-row clause was executed."
+  ],
+  "native_methods": [
+    "python .out/qa-goal/trace_fixture.py inspect",
+    "python .out/qa-goal/trace_fixture.py pull",
+    "python .out/qa-goal/trace_fixture.py up",
+    "python .out/qa-goal/trace_runtime.py ready",
+    "python .out/qa-goal/trace_runtime.py relay",
+    "python .out/qa-goal/trace_runtime.py browser",
+    "python .out/qa-goal/trace_runtime.py native",
+    "python .out/qa-goal/trace_runtime.py worker",
+    "python .out/qa-goal/trace_runtime.py replay",
+    "python .out/qa-goal/trace_runtime.py collector_outage",
+    "python .out/qa-goal/trace_runtime.py tempo_outage",
+    "python .out/qa-goal/trace_runtime.py relay",
+    "python .out/qa-goal/trace_dashboard_runtime.py",
+    "python .out/qa-goal/recover_trace_dashboard_receipt.py",
+    "python .out/qa-goal/trace_queries_run.py",
+    "python .out/qa-goal/trace_cleanup.py"
+  ]
+}

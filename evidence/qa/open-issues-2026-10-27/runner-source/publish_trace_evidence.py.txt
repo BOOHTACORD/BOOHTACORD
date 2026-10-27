@@ -1,0 +1,55 @@
+"""Publish only checked, non-identifying receipts from the owned isolated tracing run."""
+import hashlib,json,re,subprocess
+from datetime import datetime,timezone
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];PRIVATE=ROOT/'.out/qa-goal';OUT=ROOT/'evidence/qa/open-issues-2026-10-27';TRACE=OUT/'trace-runtime'
+TRACE.mkdir(exist_ok=True)
+names=['trace-fixture-preflight.json','trace-fixture-initial-ready.json','trace-relay-initial-result.json','trace-browser-result.json','trace-native-result.json','trace-worker-result.json','trace-replay-result.json','trace-collector_outage-result.json','trace-tempo_outage-result.json','trace-relay-result.json','trace-browser-observations.json','trace-dashboard-runtime-result.json','trace-dashboard-query-results.json','trace-query-summary.json','trace-resource-sample.json','trace-cleanup-result.json']
+for name in names:
+ data=json.loads((PRIVATE/name).read_text(encoding='utf-8'))
+ (TRACE/name.removeprefix('trace-')).write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n')
+def load(name):return json.loads((PRIVATE/name).read_text(encoding='utf-8'))
+go=[load(n) for n in names if n.endswith('-result.json') and n not in ['trace-dashboard-runtime-result.json','trace-cleanup-result.json']]
+assert len(go)==8 and all(r['status']=='PASS_SCOPED' and r['exit']==0 and not r['skips'] for r in go)
+assert all(r['source_sha']=='4cfafba325291cd673fe410578c73fe9d36c22c5' for r in go)
+queries=load('trace-query-summary.json');assert queries['exit']==0 and queries['statuses']=={'PASS':78}
+dashboard=load('trace-dashboard-runtime-result.json');assert dashboard['tests_run']==9 and dashboard['status']=='PASS_SCOPED_FROM_COMPLETION_LOG'
+raw=(PRIVATE/'private-trace-dashboard-runtime.log').read_bytes();text=raw.decode('utf-8')
+assert all(not line.strip() or line.startswith(('test_','Ran ','OK')) or set(line)=={'-'} for line in text.splitlines()),'Unexpected raw unittest log content'
+assert hashlib.sha256(raw).hexdigest()==dashboard['raw_log_sha256']
+(TRACE/'dashboard-unittest.log').write_bytes(raw)
+proofs={'source_sha':go[0]['source_sha'],'baseline_master_sha':'072426d60b1c0b1f7e5f66722a0da5faa00b50d7',
+ 'host':'Windows amd64; Node24.18.0; Go1.26.4; Flutter3.47.7 / Dart3.13.5; installed Chrome155.0.8059.85',
+ 'flutter_provenance':'../prerequisites/flutter-prerequisite-version.json','physical_installed_app_scope':False,
+ 'native_product_or_test_source_diff':subprocess.check_output(['git','diff','HEAD','--','backend','clients','tools/qa/tracing_flow','tools/qa/trace_queries'],cwd=ROOT)}
+assert not proofs.pop('native_product_or_test_source_diff');proofs['native_product_and_test_source_clean']=True
+proofs['source_files']={}
+files=['tools/qa/tracing_flow/README.md','tools/qa/tracing_flow/compose.qa.yaml','docker/observability/compose.yaml','docker/observability/collector.yaml','docker/observability/tempo.yaml','docker/observability/dashboards/traces.json','tools/toolchains.json','backend/go.mod','backend/go.sum','clients/web/package-lock.json','clients/flutter/pubspec.lock',
+ 'backend/internal/observability/ingest_client_traces/runtime_test.go','backend/internal/observability/ingest_client_traces/browser_runtime_test.go','backend/internal/observability/ingest_client_traces/native_runtime_test.go','backend/internal/observability/ingest_client_traces/collector_outage_runtime_test.go','backend/internal/voice/kick_voice_participant/postgres/sfu_runtime_test.go',
+ 'clients/web/tests/tracing_flow/runtime.browser.spec.ts','clients/flutter/test/features/telemetry/runtime_export_test.dart','tools/qa/trace_queries/check_trace_queries.py','tools/qa/trace_queries/test_runtime.py']
+for name in files:proofs['source_files'][name]=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
+(TRACE/'source-proofs.json').write_text(json.dumps(proofs,indent=2)+'\n',encoding='utf-8',newline='\n')
+outputs={}
+for phase in ['collector_outage','tempo_outage']:
+ outputs[phase]=''.join(json.loads(line).get('Output','') for line in (PRIVATE/f'private-trace-{phase}.jsonl').read_text(encoding='utf-8').splitlines() if line.startswith('{'))
+match=re.search(r'relay status=(\d+) duration_ms=(\d+); no accepted receipt',outputs['collector_outage']);assert match
+assert 'waiting for bounded recovery' in outputs['tempo_outage']
+observed={'collector_outage':{'http':int(match[1]),'relay_duration_ms':int(match[2]),'accepted_receipt':False},
+ 'tempo_outage':{'unavailability_observed':True,'restored_after_observation':True,'stored_within_test_30_second_deadline':True,'test_elapsed_s':next(x['Elapsed'] for x in load('trace-tempo_outage-result.json')['events'] if x.get('Test') and x['Action']=='pass')},
+ 'post_recovery_relay_result':'relay-result.json','browser_actions':'browser-observations.json',
+ 'worker_graph':{'proof_basis':'Passed source-owned assertions in sfu_runtime_test.go','recorded_spans':3,'attempt_results':['retry','participant_absent'],'original_causal_links_preserved':True,'connected_participant_or_acoustic_proof':False}}
+(TRACE/'observations.json').write_text(json.dumps(observed,indent=2)+'\n',encoding='utf-8',newline='\n')
+summary={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_SCOPED; parent QA gates remain PARTIAL/NOT_RUN',
+ 'source_sha':go[0]['source_sha'],'selected_go_invocations':len(go),'top_level_go_test_executions':sum(1 for r in go for e in r['events'] if e['Action']=='pass' and e.get('Test') and '/' not in e['Test']),
+ 'go_subtest_executions':sum(1 for r in go for e in r['events'] if e['Action']=='pass' and '/' in e.get('Test','')),
+ 'selected_go_skips':0,'dashboard_semantic_tests':9,'traceql_query_executions':78,
+ 'controller_failure_retained':'dashboard-runtime-result.json; raw dashboard-unittest.log proves9/9 OK. CRLF-only receipt recovery; original child exit not retained.',
+ 'cleanup':'cleanup-result.json;4 owned containers,1 network,2 attached volumes removed; unrelated container states unchanged',
+ 'limits':['Synthetic principal injection does not test production login cookies.','Browser uses actual components/SDK with synthetic business API and canvas video.','Native uses Windows Flutter test engine, not packaged Windows/Android clients.','SFU test confirms absent participant; it does not disconnect a connected physical speaker.','TraceQL runs against local fixture, not deployed Grafana datasource/RBAC/UID/drilldown.','No physical audibility, capacity, calibrated FPS/latency, all-platform or hosted CI PASS claim.','All-selected-test PASS does not mean every source-row clause was executed.'],
+ 'native_methods':['python .out/qa-goal/trace_fixture.py inspect','python .out/qa-goal/trace_fixture.py pull','python .out/qa-goal/trace_fixture.py up','python .out/qa-goal/trace_runtime.py ready',*[f'python .out/qa-goal/trace_runtime.py {phase}' for phase in ['relay','browser','native','worker','replay','collector_outage','tempo_outage','relay']],'python .out/qa-goal/trace_dashboard_runtime.py','python .out/qa-goal/recover_trace_dashboard_receipt.py','python .out/qa-goal/trace_queries_run.py','python .out/qa-goal/trace_cleanup.py']}
+(TRACE/'summary.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8',newline='\n')
+for name in ['trace_fixture.py','trace_runtime.py','trace_queries_run.py','trace_observations.py','trace_dashboard_runtime.py','trace_dashboard_diagnostics.py','recover_trace_dashboard_receipt.py','trace_cleanup.py','publish_trace_evidence.py']:
+ source=(PRIVATE/name).read_text(encoding='utf-8');assert len(source.splitlines())<=120,name
+ (OUT/'runner-source'/f'{name}.txt').write_text(source,encoding='utf-8',newline='\n')
+(OUT/'github-updates-image-formats.json').write_bytes((PRIVATE/'github-image-formats-receipts.json').read_bytes())
+print(json.dumps(summary))

@@ -1,0 +1,60 @@
+"""Link measured supplemental scopes without closing any complete QA gate."""
+import json
+from datetime import datetime,timezone
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'evidence/qa/open-issues-2026-10-27'
+definitions=[
+ ('ISOLATED-relay-sanitization-health','Mixed telemetry preserves valid records, rejects unknown records and keeps source-specific failures distinct from success.','relay','relay-initial-result.json','Synthetic principal and direct handler; not production secure-cookie authentication.'),
+ ('ISOLATED-two-browser-sdk-flow','Two SDK contexts preserve separate visits, visible message render, timeout/retry outcomes and stale-batch dropping through real relay/Tempo.','browser','browser-result.json','Business API and canvas video are synthetic; no packaged client, physical media or account-switch authentication proof.'),
+ ('ISOLATED-windows-flutter-sdk-flow','Actual Flutter SDK exports only after mounted-frame observation, and message contents do not enter stored traces.','native','native-result.json','Windows Flutter test engine; not the installed Windows executable or physical Android APK.'),
+ ('ISOLATED-worker-durable-cause-sfu','Committed outbox cause survives reclaim/restart/retry; rollback leaks no durable revoke; stored worker links survive an actual SFU call.','worker','worker-result.json','First dependency503 is simulated; actual SFU confirms participant absence, not a connected physical-speaker disconnect.'),
+ ('ISOLATED-websocket-replay-acl','Realtime replay preserves commit order, bounded deduplication and current account/session ACL, with handshake span ending before socket close.','replay','replay-result.json','Source-owned Go handler/database tests; not a packaged client reconnect or deployed trace export proof.'),
+ ('ISOLATED-relay-dependency-outages','Actual stopped Collector returns bounded503 without accepted receipt; accepted data survives an actual Tempo outage and bounded recovery.','collector_outage','observations.json','Only owned localhost containers stopped. Queue saturation/429/sampling/product nonblocking are not fully exercised.'),
+ ('ISOLATED-traceql-semantic-fixtures','Stored query semantics distinguish complete/missing/late terminal, outcomes, visits/accounts, Windows media, preauth denials, legacy and identityless workers.','dashboard','dashboard-runtime-result.json','Synthetic direct OTLP fixtures bypass relay identity. Controller CRLF parsing failed; same completed9/9 OK log was recovered, original child exit unavailable.'),
+ ('ISOLATED-traceql-dashboard-queries','Every selected dashboard TraceQL query executes over15m/6h/24h windows without query error.','queries','query-summary.json','78 successful query executions on isolated stores; empty results are not healthy zero or deployed Grafana UID/RBAC acceptance.')]
+file=OUT/'cases.json';cases=json.loads(file.read_text(encoding='utf-8'));known={c['id'] for c in cases['cases']}
+for ident,protects,phase,result,limits in definitions:
+ command='python .out/qa-goal/trace_runtime.py '+phase
+ if phase=='collector_outage':command+='; python .out/qa-goal/trace_runtime.py tempo_outage; python .out/qa-goal/trace_runtime.py relay'
+ if phase=='dashboard':command='python .out/qa-goal/trace_dashboard_runtime.py; python .out/qa-goal/recover_trace_dashboard_receipt.py (same-log recovery after controller failure)'
+ if phase=='queries':command='python .out/qa-goal/trace_queries_run.py'
+ assert ident not in known
+ cases['cases'].append({'id':ident,'status':'PASS_SCOPED','protects':protects,'command':command,
+  'platform':'Windows amd64; local pinned PostgreSQL17.6/Collector0.161.0/Tempo2.10.3/LiveKit1.13.7 fixture; exact per-phase limits below',
+  'mandatory_when':'Before accepting the corresponding telemetry/realtime/worker/query clauses in QA154/240/241/287; execute all other source-row clauses separately.',
+  'result':'trace-runtime/'+result,'limits':limits,'issues':[154,240,241,287]})
+file.write_text(json.dumps(cases,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+ids=[d[0] for d in definitions];mapping={}
+def link(rows,indexes):
+ for row in rows:mapping[row]=[ids[i] for i in indexes]
+link(['I154.C1','I154.C2','I154.C3','I154.C16'],range(8))
+link(['I154.C5','I154.C6','I154.C7','I154.C8'],[1])
+link(['I154.C10'],[4]);link(['I154.C11'],[3]);link(['I154.C12'],[0]);link(['I154.C13'],[1,5])
+link(['I154.C15'],[1,2]);link(['I154.C17'],[0,1]);link(['I154.C18'],[6,7])
+link(['I240.C11'],[0,5]);link(['I240.C12'],[1]);link(['I240.C13'],[2]);link(['I240.C14','I240.C16'],[3])
+link(['I240.C15'],[1,4]);link(['I240.C18'],[1,5]);link(['I240.C19','I241.C7'],[6,7]);link(['I287.C16'],range(8))
+file=OUT/'matrix.json';matrix=json.loads(file.read_text(encoding='utf-8'));before={r['id']:r['requirement'] for i in matrix['issues'] for r in i['criteria']};linked=[]
+for issue in matrix['issues']:
+ touched=False
+ for row in issue['criteria']:
+  if row['id'] not in mapping:continue
+  touched=True;linked.append(row['id']);row['execution_cases']=list(dict.fromkeys(row['execution_cases']+mapping[row['id']]))
+  row['evidence']=list(dict.fromkeys(row['evidence']+['trace-runtime/summary.json']));row['result']='trace-runtime/summary.json'
+  if row['status'] in ['NOT_RUN','PENDING']:row['status']='PARTIAL'
+  row['reason']='Selected isolated SDK/handler/database/Collector/Tempo/SFU/query facets executed; full-row production auth, packaged platforms, remaining scenarios and deployed Grafana requirements remain unaccepted. See per-case limits.'
+  row['execution_plan']['existing_scoped_witnesses']=list(row['execution_cases'])
+ if touched:
+  issue['execution_cases']=list(dict.fromkeys(issue['execution_cases']+[c for r in issue['criteria'] for c in r['execution_cases']]))
+  issue['evidence']=list(dict.fromkeys(issue['evidence']+['trace-runtime/summary.json']))
+  if issue['status'] in ['NOT_RUN','PENDING']:issue['status']='PARTIAL'
+assert before=={r['id']:r['requirement'] for i in matrix['issues'] for r in i['criteria']}
+assert set(linked)==set(mapping)
+matrix['updated_utc']=datetime.now(timezone.utc).isoformat();matrix['remaining_execution_note']='Isolated tracing subset completed and owned resources removed. Remaining safe Windows/Android/Web/isolated API fault subsets are queued; do not blanket-block them. Human audibility, missing physical Mac/iPhone/Pixel, provider delivery and deployed Grafana remain separate limitations.'
+file.write_text(json.dumps(matrix,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+readme=OUT/'README.md';text=readme.read_text(encoding='utf-8');marker='## Isolated tracing checkpoint'
+assert marker not in text
+text=text.replace('## Execution map',marker+'\n\n[Actual tracing results](trace-runtime/summary.json):8 Go invocations,42 top-level\ntest executions (including the required recovery rerun),4 subtests and no skips;\n9 dashboard semantic tests and78 TraceQL executions passed. Browser/native SDK\nfixtures retain their synthetic limits. The dashboard controller failed on CRLF;\nits original9/9 OK log and same-log receipt recovery are retained. Actual Collector\nand Tempo outages were confined to the owned loopback namespace; all its containers,\nnetwork and attached volumes were removed, unrelated container states unchanged.\nNo production Grafana, packaged-client trace, audibility, capacity or hosted CI\nacceptance is implied. Parent QA issues remain open.\n\n## Execution map')
+readme.write_text(text,encoding='utf-8',newline='\n')
+source=Path(__file__).read_text(encoding='utf-8');assert len(source.splitlines())<=120
+(OUT/'runner-source/link_trace_acceptance.py.txt').write_text(source,encoding='utf-8',newline='\n')
+print(json.dumps({'new_executed_scopes':len(definitions),'linked_source_rows':len(linked),'source_requirements_preserved':len(before),'parent_gates_closed':0}))

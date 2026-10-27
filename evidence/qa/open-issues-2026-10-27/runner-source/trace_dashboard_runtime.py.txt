@@ -1,0 +1,19 @@
+"""Run existing synthetic dashboard semantics against the owned loopback stores."""
+import hashlib,json,os,re,subprocess,time
+from pathlib import Path
+from datetime import datetime,timezone
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.out/qa-goal'
+env=dict(os.environ);env.update({'TRACE_DASHBOARD_RUNTIME':'1','TRACE_QA_COLLECTOR_URL':'http://127.0.0.1:14318','TRACE_QA_TEMPO_URL':'http://127.0.0.1:13200'})
+args=['python','-X','utf8','-m','unittest','-v','tools.qa.trace_queries.test_runtime']
+started=time.monotonic();result=subprocess.run(args,cwd=ROOT,env=env,capture_output=True,timeout=420)
+raw=result.stdout+result.stderr;(OUT/'private-trace-dashboard-runtime.log').write_bytes(raw)
+text=raw.decode('utf-8',errors='replace')
+tests=[{'name':name,'status':status} for name,status in re.findall(r'^(test_\w+) \([^\n]*\) \.\.\. (ok|FAIL|ERROR|skipped[^\n]*)$',text,re.M)]
+run=re.search(r'Ran (\d+) tests? in ',text);assert run,'Missing unittest completion'
+count=int(run[1]);assert len(tests)==count,'Incomplete per-test observations'
+summary={'at_utc':datetime.now(timezone.utc).isoformat(),'command_argv':args,'source_sha':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+ 'exit':result.returncode,'duration_s':round(time.monotonic()-started,3),'tests_run':count,'tests':tests,'raw_log_sha256':hashlib.sha256(raw).hexdigest(),
+ 'scope':'Synthetic OTLP data posted directly to actual Collector/Tempo; proves dashboard query semantics only, not login/relay identity trust, deployed Grafana or actual physical media.'}
+summary['status']='PASS_SCOPED' if result.returncode==0 and all(t['status']=='ok' for t in tests) else 'FAIL_OR_SKIP'
+(OUT/'trace-dashboard-runtime-result.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(summary))
+raise SystemExit(result.returncode)

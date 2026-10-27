@@ -1,0 +1,74 @@
+{
+  "profile": "worker",
+  "source_sha": "4cfafba325291cd673fe410578c73fe9d36c22c5",
+  "command": "go test -json -count=1 -timeout=8m -tags tracing_runtime ./internal/voice/kick_voice_participant/postgres -run TestCommittedCause|TestFailedTransaction|TestDurableWorkerRetry",
+  "cwd": "backend",
+  "at_utc": "2026-10-27T01:56:28.688065+00:00",
+  "scope": "isolated components, not packaged physical clients",
+  "events": [
+    {
+      "Time": "2026-10-27T04:56:44.8600137+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/voice/kick_voice_participant/postgres",
+      "Test": "TestCommittedCauseSurvivesWorkerReclaim"
+    },
+    {
+      "Time": "2026-10-27T04:56:45.2912458+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/voice/kick_voice_participant/postgres",
+      "Test": "TestCommittedCauseSurvivesWorkerReclaim",
+      "Elapsed": 0.43
+    },
+    {
+      "Time": "2026-10-27T04:56:45.2912458+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/voice/kick_voice_participant/postgres",
+      "Test": "TestFailedTransactionDoesNotPublishDurableCause"
+    },
+    {
+      "Time": "2026-10-27T04:56:45.6986967+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/voice/kick_voice_participant/postgres",
+      "Test": "TestFailedTransactionDoesNotPublishDurableCause",
+      "Elapsed": 0.41
+    },
+    {
+      "Time": "2026-10-27T04:56:45.6986967+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/voice/kick_voice_participant/postgres",
+      "Test": "TestDurableWorkerRetryCallsActualSFU"
+    },
+    {
+      "Time": "2026-10-27T04:56:46.6498661+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/voice/kick_voice_participant/postgres",
+      "Test": "TestDurableWorkerRetryCallsActualSFU",
+      "Elapsed": 0.95
+    },
+    {
+      "Time": "2026-10-27T04:56:46.657366+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/voice/kick_voice_participant/postgres",
+      "Elapsed": 4.583
+    }
+  ],
+  "exit": 0,
+  "duration_s": 18.234,
+  "service_controls": [],
+  "skips": [],
+  "raw_log_sha256": "df78ef31576c3768db1a24b901d3f49cc64ab110db045e9ac33f4721c63aef1d",
+  "status": "PASS_SCOPED",
+  "command_argv": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=8m",
+    "-tags",
+    "tracing_runtime",
+    "./internal/voice/kick_voice_participant/postgres",
+    "-run",
+    "TestCommittedCause|TestFailedTransaction|TestDurableWorkerRetry"
+  ],
+  "command_shell_note": "Executed as argv without a shell. Use retained Python profile helper from PowerShell; the displayed regex contains literal pipe characters."
+}

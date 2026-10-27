@@ -1,0 +1,14 @@
+"""Select non-identifying runtime observations from private Go JSON logs."""
+import json,re
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.out/qa-goal'
+file=OUT/'private-trace-browser.jsonl'
+text=''.join(json.loads(line).get('Output','') for line in file.read_text(encoding='utf-8').splitlines() if line.startswith('{'))
+rows=[]
+for line in text.splitlines():
+ line=re.sub(r'\x1b\[[0-9;]*m','',line);start=line.find('{"profile":')
+ if start>=0:
+  data=json.loads(line[start:]);rows.append({k:data[k] for k in ['profile','source','senderRecords','receiverRecords','actions']})
+assert len(rows)==1
+(OUT/'trace-browser-observations.json').write_text(json.dumps(rows[0],indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps(rows[0]))

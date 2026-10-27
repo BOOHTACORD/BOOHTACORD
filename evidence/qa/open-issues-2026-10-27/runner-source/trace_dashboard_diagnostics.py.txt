@@ -1,0 +1,9 @@
+"""Display only safe unittest status/error categories; never raw fixture trace IDs."""
+import re
+from pathlib import Path
+file=Path(__file__).resolve().parent/'private-trace-dashboard-runtime.log'
+text=file.read_text(encoding='utf-8',errors='replace')
+for line in text.splitlines():
+ if line.startswith(('test_','FAIL:','ERROR:','Ran ','OK','FAILED','AssertionError','urllib.error.HTTPError')):
+  print(re.sub(r'[0-9a-fA-F]{32}|[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}','[synthetic-id]',line))
+print('bytes',file.stat().st_size)

@@ -1,0 +1,59 @@
+{
+  "profile": "collector_outage",
+  "source_sha": "4cfafba325291cd673fe410578c73fe9d36c22c5",
+  "command": "go test -json -count=1 -timeout=8m -tags tracing_runtime ./internal/observability/ingest_client_traces -run TestActualCollectorOutageReturnsBoundedUnavailable",
+  "cwd": "backend",
+  "at_utc": "2026-10-27T01:57:44.015235+00:00",
+  "scope": "isolated components, not packaged physical clients",
+  "events": [
+    {
+      "Time": "2026-10-27T04:57:49.2345179+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestActualCollectorOutageReturnsBoundedUnavailable"
+    },
+    {
+      "Time": "2026-10-27T04:57:49.2370184+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Test": "TestActualCollectorOutageReturnsBoundedUnavailable",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-27T04:57:49.2390184+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/ingest_client_traces",
+      "Elapsed": 2.155
+    }
+  ],
+  "exit": 0,
+  "duration_s": 6.313,
+  "service_controls": [
+    {
+      "service": "collector",
+      "action": "stop",
+      "at_utc": "2026-10-27T01:57:45.375765+00:00"
+    },
+    {
+      "service": "collector",
+      "action": "start",
+      "at_utc": "2026-10-27T01:57:50.322886+00:00"
+    }
+  ],
+  "skips": [],
+  "raw_log_sha256": "77e635c1dfbf6586d6815cd7532dee38fb7f736f85eb18763c083839773119c5",
+  "status": "PASS_SCOPED",
+  "command_argv": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=8m",
+    "-tags",
+    "tracing_runtime",
+    "./internal/observability/ingest_client_traces",
+    "-run",
+    "TestActualCollectorOutageReturnsBoundedUnavailable"
+  ],
+  "command_shell_note": "Executed as argv without a shell. Use retained Python profile helper from PowerShell; the displayed regex contains literal pipe characters."
+}

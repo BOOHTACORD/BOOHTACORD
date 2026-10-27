@@ -1,0 +1,129 @@
+{
+  "at_utc": "2026-10-27T01:49:06.289110+00:00",
+  "project": "bcqa-trace-20261027-0150",
+  "engine_local": true,
+  "services": {
+    "collector": {
+      "image": "otel/opentelemetry-collector:0.161.0",
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 4318,
+          "published": "14318",
+          "protocol": "tcp"
+        },
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8889,
+          "published": "18889",
+          "protocol": "tcp"
+        },
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8888,
+          "published": "18888",
+          "protocol": "tcp"
+        }
+      ],
+      "cpus": 1,
+      "mem_limit": "536870912",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-file": "2",
+          "max-size": "10m"
+        }
+      },
+      "restart": "no",
+      "depends_on": {
+        "tempo": {
+          "condition": "service_started",
+          "required": true
+        }
+      },
+      "environment_keys": []
+    },
+    "tempo": {
+      "image": "grafana/tempo:2.10.3",
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 3200,
+          "published": "13200",
+          "protocol": "tcp"
+        }
+      ],
+      "cpus": 1.5,
+      "mem_limit": "2147483648",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-file": "2",
+          "max-size": "10m"
+        }
+      },
+      "restart": "no",
+      "depends_on": null,
+      "environment_keys": []
+    },
+    "postgres": {
+      "image": "postgres:17.6-alpine",
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 5432,
+          "published": "15432",
+          "protocol": "tcp"
+        }
+      ],
+      "cpus": 1,
+      "mem_limit": "536870912",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-file": "2",
+          "max-size": "10m"
+        }
+      },
+      "restart": "no",
+      "depends_on": null,
+      "environment_keys": [
+        "POSTGRES_DB",
+        "POSTGRES_PASSWORD",
+        "POSTGRES_USER"
+      ]
+    },
+    "livekit": {
+      "image": "livekit/livekit-server:v1.13.7",
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 7880,
+          "published": "17880",
+          "protocol": "tcp"
+        }
+      ],
+      "cpus": 1,
+      "mem_limit": "536870912",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-file": "2",
+          "max-size": "10m"
+        }
+      },
+      "restart": "no",
+      "depends_on": null,
+      "environment_keys": []
+    }
+  },
+  "unused_external_network_not_selected": true,
+  "ports_free": true,
+  "no_preexisting_owned_resources": true
+}
