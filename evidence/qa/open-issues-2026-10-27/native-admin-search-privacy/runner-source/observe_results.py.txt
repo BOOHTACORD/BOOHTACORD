@@ -1,0 +1,18 @@
+"""Read the existing result without submitting again; crop only its static count gap."""
+import json,re,io,subprocess,hashlib
+from PIL import Image
+from native_search_v2 import P,nodes,inspect,query_field,label,box,APP,call,now
+from admin_common import ADB
+cfg=json.loads((P/'fixture.private.json').read_text(encoding='utf-8'));rows=nodes();r=inspect(rows,cfg)
+assert r['search_present'] and r['own_query_exact'] and r['scope_all_visible'] and r['allowed_fixture_visible'] and not r['error_visible']
+buttons=[n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and label(n).startswith('Открыть сообщение от ')]
+controls=[n for n in rows if n.get('package')==APP and ('Область поиска' in label(n) or label(n)=='Найти') and box(n)[3]-box(n)[1]<250]
+assert buttons and controls
+r['embedded_count_values']=[int(m) for n in rows for m in re.findall(r'Найдено (\d+) сообщения',label(n))]
+top=max(box(n)[3] for n in controls)+2;bottom=min(box(n)[1] for n in buttons)-1
+assert 0<bottom-top<400;crop=[0,top,1080,bottom]
+raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20);im=Image.open(io.BytesIO(raw)).convert('RGB');assert im.size==(1080,2340)
+im.crop(tuple(crop)).save(P/'native-static-result-count.png')
+r['status']='OBSERVED_EXISTING_NATIVE_RESULTS_VISUAL_COUNT_PENDING';r['at_utc']=now();r['new_submit_issued']=False
+r['static_count_crop']={'bounds':crop,'source_size':list(im.size),'file':'native-static-result-count.png','source_SHA256':hashlib.sha256(raw).hexdigest(),'private_result_rows_and_query_excluded':True}
+(P/'native-result-observation.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(r,ensure_ascii=False))

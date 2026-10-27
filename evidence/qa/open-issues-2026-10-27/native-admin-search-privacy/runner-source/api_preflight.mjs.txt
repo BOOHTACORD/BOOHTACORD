@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict'
+import {connect,save} from './api_context.mjs'
+const r={at_utc:new Date().toISOString(),status:'RUNNING',server_mutation_issued:false,native_cookie_extracted:false,Windows_UI_used:false};let f
+try{
+ f=await connect();r.controlled_sessions=f.attestation
+ const d=await f.api('b','/direct-messages');assert.equal(d.status,200)
+ const own=d.body.direct_messages.filter(x=>x.id===f.phone.conversation&&x.other_participant_id===f.phone.account);assert.equal(own.length,1)
+ assert.ok(f.phone.account!==f.fixture.b.id&&f.phone.account!==f.fixture.c.id)
+ r.retained_native_DM_binding_confirmed=true;r.phone_distinct_from_B_and_C=true
+ const p=await f.api('b','/members/'+encodeURIComponent(f.phone.account));r.phone_profile_http=p.status;assert.equal(p.status,200)
+ r.profile_field_names=Object.keys(p.body);r.native_role_ADMINISTRATOR=p.body.role==='ADMINISTRATOR';r.native_role_ADMIN=p.body.role==='ADMIN'
+ assert.ok(r.native_role_ADMINISTRATOR||r.native_role_ADMIN,'Current phone ADMIN role must be confirmed before fixtures')
+ r.status='PASS_CURRENT_SERVER_NATIVE_ADMIN_IDENTITY_AND_SESSION_BINDING'
+}catch(e){r.status='FAIL_OR_PREREQUISITE';r.error_type=e.name}
+finally{await f?.close();r.finished_at_utc=new Date().toISOString();await save('api-preflight.json',r)}
+console.log(JSON.stringify(r));process.exitCode=r.status.startsWith('PASS')?0:1

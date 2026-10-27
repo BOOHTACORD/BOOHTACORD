@@ -1,0 +1,14 @@
+"""Confirm the reviewed generic empty-state crop still matches fresh native pixels."""
+import io,json,hashlib,subprocess
+from PIL import Image
+from native_search_v2 import P,nodes,inspect
+from admin_common import ADB,now
+cfg=json.loads((P/'fixture.private.json').read_text(encoding='utf-8'));r=inspect(nodes(),cfg)
+assert r['own_query_exact'] and r['scope_all_visible'] and not r['error_visible'] and not r['searching']
+assert not r['allowed_fixture_visible'] and not r['forbidden_fixture_visible'] and r['result_button_nodes']==0
+record=json.loads((P/'native-empty-full-observation.json').read_text(encoding='utf-8'));crop=record['crop']['bounds']
+raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20);im=Image.open(io.BytesIO(raw)).convert('RGB');assert im.size==(1080,2340)
+expected=Image.open(P/record['crop']['file']).convert('RGB');observed=im.crop(tuple(crop));assert observed.size==expected.size
+same=observed.tobytes()==expected.tobytes();assert same
+r.update({'at_utc':now(),'status':'PASS_FRESH_EMPTY_PIXELS_MATCH_REVIEWED_NO_MATCHES','visual_no_matches_title_reviewed':True,'reviewed_image':record['crop']['file'],'reviewed_image_sha256':hashlib.sha256((P/record['crop']['file']).read_bytes()).hexdigest(),'fresh_pixels_match_reviewed_image':same,'source_sha256':hashlib.sha256(raw).hexdigest(),'scope':'After explicit new native query and server tombstones; no automatic realtime-cache invalidation claim'})
+(P/'native-deleted-search-result.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(r,ensure_ascii=False))

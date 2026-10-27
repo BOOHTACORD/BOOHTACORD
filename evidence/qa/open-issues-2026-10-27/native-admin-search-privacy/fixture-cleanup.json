@@ -1,0 +1,22 @@
+{
+  "at_utc": "2026-10-27T23:00:33.251Z",
+  "status": "PASS_OWNED_MESSAGES_REMOVED_AND_SEARCH_CLEARED",
+  "owned_deletions": [
+    {
+      "fixture": "allowed_message",
+      "delete_http": 204,
+      "tombstone_confirmed": true
+    },
+    {
+      "fixture": "forbidden_message",
+      "delete_http": 204,
+      "tombstone_confirmed": true
+    }
+  ],
+  "body_or_identity_logged": false,
+  "b_search_count_after_delete": 0,
+  "c_search_count_after_delete": 0,
+  "existing_or_empty_BC_DM_retained": true,
+  "no_account_role_or_block_mutation": true,
+  "finished_at_utc": "2026-10-27T23:00:33.494Z"
+}

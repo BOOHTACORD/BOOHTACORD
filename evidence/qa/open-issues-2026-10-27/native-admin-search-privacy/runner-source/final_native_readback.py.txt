@@ -1,0 +1,14 @@
+"""Verify original own DM/composer/font/voice and exact permission after search closure."""
+import json
+from native_search_v2 import P,nodes,label,box,search_present,read_font,snapshot,save,now
+cfg=json.loads((P/'fixture.private.json').read_text(encoding='utf-8'));before=json.loads((P/'operating-brief.json').read_text(encoding='utf-8'));cleared=json.loads((P/'native-clear_close.json').read_text(encoding='utf-8'))
+r={'at_utc':now(),'status':'RUNNING'}
+try:
+ assert cleared['status']=='PASS_QUERY_CLEARED_SEARCH_CLOSED' and cleared['original_scope_current_restored']
+ rows=nodes();r['original_own_DM_header']=any(cfg['peer'] in label(n) and box(n)[1]<700 for n in rows);r['search_closed']=not search_present(rows)
+ r['owned_fixture_visible']=any(any(cfg[k] in label(n) for k in ['allowed_body','forbidden_body']) for n in rows)
+ r['native']=snapshot();r['font_scale']=read_font();r['exact_permission_preserved']=r['native']['permission']==before['native_before']['permission'];s=r['native']
+ assert r['original_own_DM_header'] and r['search_closed'] and not r['owned_fixture_visible'] and r['font_scale']==before['font_scale'] and r['exact_permission_preserved']
+ assert s['voice_connected'] and s['mic_fgs'] and not s['muted_control'] and not s['unknown_draft'] and not s['screen_fgs'] and not s['projection_package_present'] and not s['login_fields'];r['status']='PASS_ORIGINAL_NATIVE_STATE_RESTORED'
+except Exception as e:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(e).__name__
+r['finished_at_utc']=now();save('final-native-readback.json',r);print(json.dumps(r))

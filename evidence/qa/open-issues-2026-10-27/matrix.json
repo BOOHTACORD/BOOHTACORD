@@ -168,7 +168,9 @@
             "NOTIFY-deployment-readiness-consent",
             "WEB-session-revocation-draft-isolation",
             "ANDROID-native-PNG-picker-send-view-delete",
-            "WEB-JPEG-GIF-private-image-lifecycle"
+            "WEB-JPEG-GIF-private-image-lifecycle",
+            "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
+            "ANDROID-ADMIN-explicit-search-after-owned-delete"
           ],
           "evidence": [
             "privacy-result.json#/checks/two_participants_and_third_member_acl",
@@ -176,19 +178,21 @@
             "notification-readiness/summary.json",
             "web-session-contract/logout.json",
             "native-image/summary.json",
-            "web-image-formats/summary.json"
+            "web-image-formats/summary.json",
+            "native-admin-search-privacy/summary.json"
           ],
-          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
+          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs | native-admin-search-privacy/README.md actual ADMIN native all-scope UI with independently searchable owned API fixtures.",
           "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "privacy-result.json#/checks/two_participants_and_third_member_acl; privacy-result.json#/checks/actual_image_upload_and_protected_download; notification-readiness/summary.json; web-session-contract/logout.json; native-image/summary.json; web-image-formats/summary.json",
+          "result": "native-admin-search-privacy/summary.json",
           "witness_limits": [
             "DM-two_participants_and_third_member_acl: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
             "DM-actual_image_upload_and_protected_download: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
             "NOTIFY-deployment-readiness-consent: Provider delivery and real OS alert/tap BLOCKED: operator disabled, no Web Push/VAPID readiness. No global configuration changed.",
             "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance",
             "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
-            "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance"
+            "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
+            "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -211,7 +215,9 @@
               "NOTIFY-deployment-readiness-consent",
               "WEB-session-revocation-draft-isolation",
               "ANDROID-native-PNG-picker-send-view-delete",
-              "WEB-JPEG-GIF-private-image-lifecycle"
+              "WEB-JPEG-GIF-private-image-lifecycle",
+              "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
+              "ANDROID-ADMIN-explicit-search-after-owned-delete"
             ]
           }
         },
@@ -314,14 +320,17 @@
         "NOTIFY-deployment-readiness-consent",
         "WEB-session-revocation-draft-isolation",
         "ANDROID-native-PNG-picker-send-view-delete",
-        "WEB-JPEG-GIF-private-image-lifecycle"
+        "WEB-JPEG-GIF-private-image-lifecycle",
+        "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
+        "ANDROID-ADMIN-explicit-search-after-owned-delete"
       ],
       "evidence": [
         "privacy-result.json",
         "notification-readiness/summary.json",
         "web-session-contract/logout.json",
         "native-image/summary.json",
-        "web-image-formats/summary.json"
+        "web-image-formats/summary.json",
+        "native-admin-search-privacy/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -9092,13 +9101,18 @@
           "requirement": "#76: actual PostgreSQL author/date/attachments query, equal timestamps/stable cursor, timezone/DST, deleted and foreign-DM ACL, query plans; Web/native filter persistence and ordinary pointer/keyboard submission. Related #258/#54.",
           "source_checkbox": " ",
           "id": "I287.C3",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental. | Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately.",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
+            "ANDROID-ADMIN-explicit-search-after-owned-delete"
+          ],
+          "evidence": [
+            "native-admin-search-privacy/summary.json"
+          ],
+          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental. | Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately. | native-admin-search-privacy/README.md actual ADMIN native all-scope UI with independently searchable owned API fixtures.",
           "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection. | Installed headed Windows Chrome and explicitly stated CSS viewport; no physical mobile/other-browser substitution.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "native-admin-search-privacy/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_api_faults",
@@ -9114,10 +9128,16 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
+              "ANDROID-ADMIN-explicit-search-after-owned-delete"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "Physical ADMIN global-search foreign-DM and explicit post-delete exclusion now scoped PASS; author/date/attachments/DST/cursors/plans and remaining platforms still unaccepted.",
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim."
+          ]
         },
         {
           "section": "Matrix",
@@ -9655,7 +9675,9 @@
         "ANDROID-admin-role-popup-root-Back",
         "ANDROID-admin-2x-IME-Back-unaccepted",
         "ANDROID-admin-2x-Gboard-keeps-focus",
-        "ANDROID-admin-1x-Gboard-query-Back"
+        "ANDROID-admin-1x-Gboard-query-Back",
+        "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
+        "ANDROID-ADMIN-explicit-search-after-owned-delete"
       ],
       "evidence": [
         "privacy-result.json",
@@ -9670,7 +9692,8 @@
         "native-ptt/summary.json",
         "android-connectivity/summary.json",
         "native-admin/summary.json",
-        "native-admin-gboard/summary.json"
+        "native-admin-gboard/summary.json",
+        "native-admin-search-privacy/summary.json"
       ],
       "defects": [
         581,
@@ -16021,7 +16044,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-27T22:46:42.812929+00:00",
+  "updated_utc": "2026-10-27T23:04:48.793391+00:00",
   "known_defect_issues": [
     579,
     580,

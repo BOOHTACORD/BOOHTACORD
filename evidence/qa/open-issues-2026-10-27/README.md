@@ -220,3 +220,16 @@ Original DM/font/empty filters/voice restored. I287.C14/I301.C4 now FAIL; all
 480 source requirements and earlier failures preserved. Full gates remain open.
 
 Подтверждённый large-text input defect: [#585](https://github.com/Egkurilov/BOOHTACORD/issues/585). Exact bug/QA body readbacks: `native-admin-gboard/github-updates.json`.
+
+## Physical native ADMIN search privacy — 2026-10-28 Moscow
+
+[Two scoped native privacy witnesses](native-admin-search-privacy/summary.json):
+server-attested current ADMIN searches All and renders only an allowed fixture,
+while both allowed/foreign fixtures remain searchable to their participants.
+After both owned messages are deleted, actual same-query native resubmit shows
+No matches. Static/empty crops reviewed at original resolution; initial AX-count
+controller failure and clipped empty crop remain retained. Original query/scope,
+own DM/font/empty composer/permission and unmuted voice/mic restored. Windows uses
+only APIRequestContext fixture controls; no browser/UI or native auth extraction.
+I287.C3 is now PARTIAL. Full browser/hints/unread/notification/file/revoke/search-filter
+acceptance remains open; all480 original requirements and known failures preserved.

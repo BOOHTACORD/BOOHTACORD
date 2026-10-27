@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict'
+import {setTimeout as delay} from 'node:timers/promises'
+import {connect,load,save} from './api_context.mjs'
+const r={at_utc:new Date().toISOString(),status:'RUNNING',owned_deletions:[],body_or_identity_logged:false};let f
+try{
+ const cfg=await load('fixture.private.json');f=await connect()
+ for(const [dmKey,idKey] of [['own_dm','allowed_message'],['foreign_dm','forbidden_message']]){
+  if(!cfg[idKey])continue
+  const d=await f.api('b','/direct-messages/'+cfg[dmKey]+'/messages/'+cfg[idKey],'DELETE');assert.equal(d.status,204)
+  let deleted=false
+  for(let i=0;i<12;i++){const h=await f.api('b','/direct-messages/'+cfg[dmKey]+'/messages');assert.equal(h.status,200);const m=h.body.messages.find(m=>m.id===cfg[idKey]);if(m?.deleted){deleted=true;break}await delay(200)}
+  assert.ok(deleted);r.owned_deletions.push({fixture:idKey,delete_http:204,tombstone_confirmed:true})
+ }
+ for(const k of ['b','c']){const s=await f.api(k,'/search/messages?query='+encodeURIComponent(cfg.query)+'&limit=20');assert.equal(s.status,200);assert.equal(s.body.messages.length,0);r[k+'_search_count_after_delete']=0}
+ r.existing_or_empty_BC_DM_retained=true;r.no_account_role_or_block_mutation=true;r.status='PASS_OWNED_MESSAGES_REMOVED_AND_SEARCH_CLEARED'
+}catch(e){r.status='FAIL_OWNED_FIXTURE_CLEANUP';r.error_type=e.name}
+finally{await f?.close();r.finished_at_utc=new Date().toISOString();await save('fixture-cleanup.json',r)}
+console.log(JSON.stringify(r));process.exitCode=r.status.startsWith('PASS')?0:1

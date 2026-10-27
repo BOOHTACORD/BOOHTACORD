@@ -1,0 +1,43 @@
+{
+  "status": "PARTIAL",
+  "at_utc": "2026-10-27T23:04:30.411570+00:00",
+  "production_url": "https://v.bootybay.ru",
+  "route": "T-041 Direct messages and search -> native all-scope ACL",
+  "platform": {
+    "phone": "SM-A576B Android16/API36 signed1.0.47+2082/source072426d6,1080x2340,density450,font1.0",
+    "installed_APK_SHA256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+    "PC": "Windows Node Playwright APIRequestContext for controlled B/C fixtures; no Windows browser/UI used",
+    "production_Web_source": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+    "API_source": "UNKNOWN"
+  },
+  "facets": {
+    "foreign_DM_exclusion": {
+      "status": "PASS",
+      "result": "native-search-result.json",
+      "witness": "Current phone role ADMINISTRATOR attested by server member profile and retained own-DM binding; distinct B/C participants. B API search sees both fixtures, C sees one; Android All shows one allowed fixture and no foreign body while both remain searchable to their participants"
+    },
+    "deleted_search_exclusion": {
+      "status": "PASS",
+      "result": "native-deleted-search-result.json",
+      "witness": "Both own messages DELETE204 and tombstones, B/C query0; actual native same-query resubmit then zero buttons, bodies absent and visible No matches"
+    }
+  },
+  "limits": "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim.",
+  "role_attestation": "api-preflight.json",
+  "fixture_liveness_before_and_after_native": [
+    "fixture-ready.json",
+    "fixture-live-after-native.json"
+  ],
+  "cleanup": "fixture-cleanup.json",
+  "empty_owned_BC_DM": "Existing or empty conversation retained; only test messages were removed",
+  "restoration": "final-native-readback.json",
+  "source_fingerprints": "source-fingerprints.json",
+  "runner_dependency": "../runner-source/native_sender_phone_common.py.txt plus ../runner-source/android_permission_ui.py.txt and ../native-admin/runner-source/admin_common.py.txt",
+  "runner_provenance": "capture_empty_full.py is retained reconstruction of the inline capture; no pre-execution file hash for that inline step. confirm_empty_pixels.py was hashed before execution and independently matches the reviewed image",
+  "controller_history": "native-run.json original FAIL_OR_CONTROLLER retained; numeric count and No matches widgets use ExcludeSemantics, so accepted visible outcomes use original-resolution crops and fixture/control/zero-result observations",
+  "privacy": "No native auth extraction; secure existing controlled sessions, Origin and strict HTTPS. No body/IDs/names/raw hierarchies/media retained in public artifacts; diagnostic test-contact label removed from scope-observation.json before publication",
+  "new_product_defect_confirmed": false,
+  "original43_consolidation_decisions_touched": 0,
+  "full_QA_gate": "OPEN",
+  "current_scope_refresh": "qa-scope-refresh.json"
+}

@@ -1,0 +1,48 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "medium",
+  "route": "T-041 Direct messages and search -> native workspace search all ACL",
+  "previous_goal_turn": "PROGRESS: issue585, physical Gboard2x counterexamples and1x control, 64 cases/480 source rows published",
+  "mode": "Physical Android search privacy on production with existing owned test-account API fixtures; no Windows UI",
+  "scope": "Current server role and owned DM binding; searchable allowed/foreign positive-negative controls; physical native all-scope search; own message cleanup",
+  "platform": "Physical SM-A576B Android16 signed1.0.47+2082/source072426d6",
+  "preservation": "Existing production session/server, original empty own DM, font1.0, voice/unmuted mic80 and exact permission flags; no native cookies/credentials extraction",
+  "stop_condition": "Owned fixtures removed, own native query cleared and search closed, original DM/font/voice restored; retain exact limits and all original source rows",
+  "native_before": {
+    "at_utc": "2026-10-27T22:53:52.099489+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": true,
+    "voice_connected": true,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false,
+    "projection_package_present": false,
+    "screen_fgs": false,
+    "mic_fgs": true,
+    "fgs_types": [
+      "0x80"
+    ],
+    "SHARE_TEST_visible": true,
+    "unknown_draft": false
+  },
+  "font_scale": 1.0,
+  "owned_DM_header_confirmed": true,
+  "source_files": [
+    "clients/flutter/lib/src/features/search/messages/api.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/build/scope_picker/handler.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/build/results/handler.dart"
+  ],
+  "unresolved": "Current ADMIN role and third-party identity must be attested from existing controlled API before fixtures; native socket/hints/OS notifications not inferred from UI search",
+  "nearest_typed_tests": [
+    "clients/flutter/test/message_social/search_pin_context_test.dart"
+  ]
+}

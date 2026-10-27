@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-27T23:00:32.974581+00:00",
+  "status": "PASS_SCOPED_NATIVE_ADMIN_GLOBAL_SEARCH_PRIVACY",
+  "observation": "native-result-observation.json",
+  "observation_sha256": "9dbad45e6aff9ff65a6a4905e015190888e3e0af9fe0b740e3ffc59bf4936759",
+  "visible_count_original_resolution_review": 1,
+  "count_crop_sha256": "77038cda473ee56b55f7f82accbf31f2e2df494ddcf97562d6ef6111b6028c65",
+  "expected_allowed_fixture_visible": true,
+  "foreign_fixture_visible": false,
+  "exact_own_query_and_all_scope": true,
+  "positive_and_negative_fixtures_still_searchable_after_native_read": true,
+  "role_and_ownership_attestation": "api-preflight.json",
+  "limitation": "Native rendered search only; no raw response/socket/private hint/unread/OS notification/third ADMIN browser acceptance",
+  "controller_history": "native-run.json FAIL_OR_CONTROLLER retained; displayed count is ExcludeSemantics in native build source, resolved by original-resolution static crop and independent live fixture readback"
+}

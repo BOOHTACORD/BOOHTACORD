@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict'
+import {randomBytes,randomUUID} from 'node:crypto'
+import {connect,save,root} from './api_context.mjs'
+import {access} from 'node:fs/promises'
+const r={at_utc:new Date().toISOString(),status:'RUNNING',fixture_messages_created:0,body_or_identity_logged:false,native_cookie_extracted:false,Windows_UI_used:false};let f,cfg
+try{
+ let exists=false;try{await access(new URL('fixture.private.json',root));exists=true}catch{}assert.equal(exists,false,'Never overwrite owned-fixture receipt')
+ f=await connect();const role=await f.api('b','/members/'+encodeURIComponent(f.phone.account));assert.equal(role.status,200);assert.equal(role.body.role,'ADMINISTRATOR')
+ const peers=await f.api('b','/direct-messages');assert.equal(peers.status,200);assert.ok(peers.body.direct_messages.some(d=>d.id===f.phone.conversation&&d.other_participant_id===f.phone.account))
+ assert.notEqual(f.phone.account,f.fixture.b.id);assert.notEqual(f.phone.account,f.fixture.c.id)
+ const query='qapriv'+randomBytes(6).toString('hex');cfg={query,allowed_body:query+' allowed',forbidden_body:query+' hidden',peer:f.fixture.b.login,phone_id:f.phone.account,own_dm:f.phone.conversation};await save('fixture.private.json',cfg)
+ const foreign=await f.api('b','/direct-messages','POST',{participant_id:f.fixture.c.id});assert.ok([200,201].includes(foreign.status));cfg.foreign_dm=foreign.body.id;assert.notEqual(cfg.foreign_dm,cfg.own_dm);await save('fixture.private.json',cfg)
+ const cForeign=await f.api('c','/direct-messages/'+cfg.foreign_dm+'/messages');assert.equal(cForeign.status,200)
+ const cOwn=await f.api('c','/direct-messages/'+cfg.own_dm+'/messages');assert.equal(cOwn.status,404)
+ for(const [dmKey,bodyKey,idKey] of [['own_dm','allowed_body','allowed_message'],['foreign_dm','forbidden_body','forbidden_message']]){
+  const sent=await f.api('b','/direct-messages/'+cfg[dmKey]+'/messages','POST',{client_message_id:randomUUID(),body:cfg[bodyKey]});assert.equal(sent.status,201);assert.equal(sent.body.author_id,f.fixture.b.id);cfg[idKey]=sent.body.id;await save('fixture.private.json',cfg);r.fixture_messages_created++
+ }
+ const bSearch=await f.api('b','/search/messages?query='+encodeURIComponent(query)+'&limit=20'),cSearch=await f.api('c','/search/messages?query='+encodeURIComponent(query)+'&limit=20');assert.equal(bSearch.status,200);assert.equal(cSearch.status,200)
+ r.B_search_count=bSearch.body.messages.length;r.C_search_count=cSearch.body.messages.length
+ r.B_both_fixture_ids_searchable=[cfg.allowed_message,cfg.forbidden_message].every(id=>bSearch.body.messages.some(m=>m.id===id))
+ r.C_only_foreign_fixture_searchable=cSearch.body.messages.length===1&&cSearch.body.messages[0].id===cfg.forbidden_message
+ assert.equal(r.B_search_count,2);assert.ok(r.B_both_fixture_ids_searchable);assert.ok(r.C_only_foreign_fixture_searchable)
+ r.native_current_role_ADMINISTRATOR=true;r.phone_distinct_from_both_participants=true;r.C_original_phone_DM_http=cOwn.status;r.C_own_fixture_DM_http=cForeign.status;r.controlled_sessions=f.attestation
+ const release=await f.clients.b.get('/release-receipt.json');if(release.status()===200)r.production_Web_source=(await release.json()).source_revision
+ r.API_source='UNKNOWN';r.status='PASS_OWNED_SEARCHABLE_FIXTURES_BEFORE_NATIVE_TEST'
+}catch(e){r.status='FAIL_OR_FIXTURE_PREREQUISITE';r.error_type=e.name;r.cleanup_required=!!cfg?.allowed_message||!!cfg?.forbidden_message}
+finally{await f?.close();r.finished_at_utc=new Date().toISOString();await save('fixture-ready.json',r)}
+console.log(JSON.stringify(r));process.exitCode=r.status.startsWith('PASS')?0:1

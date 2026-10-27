@@ -1,0 +1,35 @@
+{
+  "at_utc": "2026-10-27T22:54:20.320Z",
+  "status": "PASS_CURRENT_SERVER_NATIVE_ADMIN_IDENTITY_AND_SESSION_BINDING",
+  "server_mutation_issued": false,
+  "native_cookie_extracted": false,
+  "Windows_UI_used": false,
+  "controlled_sessions": [
+    {
+      "controlled_account": "b",
+      "session_http": 200,
+      "expected_identity_match": true,
+      "secure_HttpOnly_session_present": true
+    },
+    {
+      "controlled_account": "c",
+      "session_http": 200,
+      "expected_identity_match": true,
+      "secure_HttpOnly_session_present": true
+    }
+  ],
+  "retained_native_DM_binding_confirmed": true,
+  "phone_distinct_from_B_and_C": true,
+  "phone_profile_http": 200,
+  "profile_field_names": [
+    "user_id",
+    "login",
+    "display_name",
+    "role",
+    "presence",
+    "profile_revision"
+  ],
+  "native_role_ADMINISTRATOR": true,
+  "native_role_ADMIN": false,
+  "finished_at_utc": "2026-10-27T22:54:20.578Z"
+}

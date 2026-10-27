@@ -1,0 +1,14 @@
+"""Reconstruction of the executed inline empty crop; fresh pixels were separately confirmed."""
+import io,json,subprocess,hashlib
+from PIL import Image
+from native_search_v2 import P,nodes,inspect,label,box,APP
+from admin_common import ADB
+cfg=json.loads((P/'fixture.private.json').read_text(encoding='utf-8'));rows=nodes();r=inspect(rows,cfg)
+assert r['own_query_exact'] and r['scope_all_visible'] and not r['allowed_fixture_visible'] and not r['forbidden_fixture_visible']
+assert r['result_button_nodes']==0 and not r['error_visible'] and not r['searching']
+dock=[box(n)[1] for n in rows if n.get('package')==APP and 'Голос подключён' in label(n) and 0<box(n)[3]-box(n)[1]<400 and box(n)[1]>1400]
+bottom=min([1850]+[y-1 for y in dock]);assert bottom>=1700
+raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20);im=Image.open(io.BytesIO(raw)).convert('RGB');assert im.size==(1080,2340)
+crop=[0,600,1080,bottom];im.crop(tuple(crop)).save(P/'native-deleted-search-empty-full.png')
+r['crop']={'bounds':crop,'source_size':list(im.size),'source_sha256':hashlib.sha256(raw).hexdigest(),'file':'native-deleted-search-empty-full.png','query_and_dock_excluded':True}
+(P/'native-empty-full-observation.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')

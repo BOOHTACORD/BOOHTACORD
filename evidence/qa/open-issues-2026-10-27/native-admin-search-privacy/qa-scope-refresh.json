@@ -1,0 +1,22 @@
+{
+  "at_utc": "2026-10-27T23:07:15.196Z",
+  "queries": [
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue is:open label:QA",
+      "returned": 15
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue is:open QA in:title",
+      "returned": 21
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue is:open",
+      "returned": 44,
+      "topn": 100
+    }
+  ],
+  "intake_count": 37,
+  "QA_label_or_title_not_in_intake": [],
+  "intake_not_in_first_open_page": [],
+  "limit": "Queries are repository status/scope refresh only; no acceptance PASS is implied. An all-open page at the topn limit is not exhaustive."
+}

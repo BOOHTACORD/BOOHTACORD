@@ -1006,6 +1006,34 @@
       ],
       "result": "native-admin-gboard/summary.json#/facets/1x_control_and_Back",
       "limits": "Physical Samsung/source072426d6/Gboard18.5.4 only; no TalkBack/human/hardware-keyboard/other-platform/whole-admin or acoustic acceptance. No exact latency/capacity/causal patch claim. Original controller failures remain historical."
+    },
+    {
+      "id": "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
+      "status": "PASS",
+      "protects": "Current native ADMIN may search own DM but must not render another two-participant DM",
+      "command": "Follow native-admin-search-privacy/README.md: api_preflight.mjs; native_search.py open; native_search_v2.py set_all/run; seed_fixtures.mjs; observe_results.py + static count review; cleanup_fixtures.mjs; native_deleted_search.py; capture_empty_full.py + confirm_empty_pixels.py; clear_close/final_native_readback.py",
+      "platform": "Physical Samsung Android16 signed2082/source072426d6; real native UI; Windows APIRequestContext fixtures only; production HTTPS",
+      "mandatory_when": "Before native foreign/deleted-DM search ACL acceptance in I287.C3; supplemental current-ADMIN privacy witness for I53.C1",
+      "issues": [
+        53,
+        287
+      ],
+      "result": "native-admin-search-privacy/summary.json#/facets/foreign_DM_exclusion",
+      "limits": "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim."
+    },
+    {
+      "id": "ANDROID-ADMIN-explicit-search-after-owned-delete",
+      "status": "PASS",
+      "protects": "After confirmed deletion a new native search must exclude deleted owned messages",
+      "command": "Follow native-admin-search-privacy/README.md: api_preflight.mjs; native_search.py open; native_search_v2.py set_all/run; seed_fixtures.mjs; observe_results.py + static count review; cleanup_fixtures.mjs; native_deleted_search.py; capture_empty_full.py + confirm_empty_pixels.py; clear_close/final_native_readback.py",
+      "platform": "Physical Samsung Android16 signed2082/source072426d6; real native UI; Windows APIRequestContext fixtures only; production HTTPS",
+      "mandatory_when": "Before native foreign/deleted-DM search ACL acceptance in I287.C3; supplemental current-ADMIN privacy witness for I53.C1",
+      "issues": [
+        53,
+        287
+      ],
+      "result": "native-admin-search-privacy/summary.json#/facets/deleted_search_exclusion",
+      "limits": "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim."
     }
   ]
 }

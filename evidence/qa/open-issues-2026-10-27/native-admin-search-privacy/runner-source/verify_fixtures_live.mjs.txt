@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict'
+import {connect,load,save} from './api_context.mjs'
+const r={at_utc:new Date().toISOString(),status:'RUNNING',server_mutation_issued:false};let f
+try{
+ const cfg=await load('fixture.private.json');f=await connect()
+ const b=await f.api('b','/search/messages?query='+encodeURIComponent(cfg.query)+'&limit=20'),c=await f.api('c','/search/messages?query='+encodeURIComponent(cfg.query)+'&limit=20')
+ assert.equal(b.status,200);assert.equal(c.status,200);assert.equal(b.body.messages.length,2);assert.equal(c.body.messages.length,1)
+ assert.ok([cfg.allowed_message,cfg.forbidden_message].every(id=>b.body.messages.some(m=>m.id===id)));assert.equal(c.body.messages[0].id,cfg.forbidden_message)
+ r.B_two_fixture_ids_still_searchable=true;r.C_only_own_fixture_still_searchable=true;r.status='PASS_FIXTURES_STILL_LIVE_AFTER_NATIVE_OBSERVATION'
+}catch(e){r.status='FAIL_OR_PREREQUISITE';r.error_type=e.name}
+finally{await f?.close();r.finished_at_utc=new Date().toISOString();await save('fixture-live-after-native.json',r)}
+console.log(JSON.stringify(r));process.exitCode=r.status.startsWith('PASS')?0:1

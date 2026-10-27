@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-27T22:49:26.589046+00:00",
+  "at_utc": "2026-10-27T23:07:35.908192+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -667,8 +667,8 @@
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
     "cases.json": {
-      "bytes": 65662,
-      "sha256": "9f0e5ad870829cb62e9639f12d2eb304e9c4729016065c7c757c900088a0a7e4"
+      "bytes": 68243,
+      "sha256": "edf04ecf61a9b0b6504bb18f88df2ab64a033c2e440505a8c7d420d4cb382721"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -851,8 +851,8 @@
       "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
     },
     "matrix.json": {
-      "bytes": 1174833,
-      "sha256": "154bde846817567e43affe9fb0c8553bcff1f084d3974d3c7cdf311006b879cd"
+      "bytes": 1176586,
+      "sha256": "fb6ed2f694ac718620447703d76ea111ad470aabad27a53766e26bc62d77f6b8"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -1249,6 +1249,186 @@
     "native-admin-gboard/visual-review.json": {
       "bytes": 1970,
       "sha256": "0077fa99c62bafb28ee987d68fcc19f3f4493a13bc4b2957f044cc88f3801b82"
+    },
+    "native-admin-search-privacy/api-preflight.json": {
+      "bytes": 929,
+      "sha256": "69f5c41a4325595ae256bb9cc796b8a173d07b2b8349c40f6d47149fe7a1b99a"
+    },
+    "native-admin-search-privacy/entry-controls.json": {
+      "bytes": 191,
+      "sha256": "082cd8e5821ea81b9b1dd36f1e475e97a6dcc2a8ccc339125c0f2d86370b5e41"
+    },
+    "native-admin-search-privacy/final-native-readback.json": {
+      "bytes": 956,
+      "sha256": "f763ce218462016ad795eea23cfa00d2e12a83f37b476a5fab0e9edc9439cb87"
+    },
+    "native-admin-search-privacy/fixture-cleanup.json": {
+      "bytes": 598,
+      "sha256": "d07cae162d298c2e398fadc4026933929e6bcf0246c612527a5a39c83581ea5e"
+    },
+    "native-admin-search-privacy/fixture-live-after-native.json": {
+      "bytes": 285,
+      "sha256": "3766eea8b25d5df2c0f05587090a32aea1dfc5d29ee58582e72fb5b4d2528763"
+    },
+    "native-admin-search-privacy/fixture-ready.json": {
+      "bytes": 1028,
+      "sha256": "ccf4a9bd1247df9270b934202aa3296a9902d3806ddc2b9b1759abf617490d4c"
+    },
+    "native-admin-search-privacy/native-after-delete.json": {
+      "bytes": 1355,
+      "sha256": "23a7a5a6fed833c3846970baabf47a95b8bb45a649c8d96cef63733ae90390da"
+    },
+    "native-admin-search-privacy/native-clear_close.json": {
+      "bytes": 950,
+      "sha256": "dd5de76d284b70ab622508561a3b197d57612180300d20787dbe31cec57078bd"
+    },
+    "native-admin-search-privacy/native-deleted-search-empty-full.png": {
+      "bytes": 34009,
+      "sha256": "e6fafe645669e0ded433ff98702faed69c0633edde2f5433c9c28487d329c739"
+    },
+    "native-admin-search-privacy/native-deleted-search-empty.png": {
+      "bytes": 8246,
+      "sha256": "50d5c4baef4d305fd9bcca2bdfc1b0406cbe44cad4b21764afcbd95bbefb01ec"
+    },
+    "native-admin-search-privacy/native-deleted-search-result.json": {
+      "bytes": 841,
+      "sha256": "51826b7006f8f543ef3faee25b8a6b59aa104b9603aa4a4e6c733f62c1fea2d8"
+    },
+    "native-admin-search-privacy/native-empty-full-observation.json": {
+      "bytes": 640,
+      "sha256": "f65e7de7ddfdb5e2196159ffa7804ad0982142de41f6baf17338ad1694c64aae"
+    },
+    "native-admin-search-privacy/native-open.json": {
+      "bytes": 480,
+      "sha256": "322556612f190ac5acda95ff328d88ecb0da36a3ef7ecd5a4fd19c3320b7deda"
+    },
+    "native-admin-search-privacy/native-result-observation.json": {
+      "bytes": 790,
+      "sha256": "9dbad45e6aff9ff65a6a4905e015190888e3e0af9fe0b740e3ffc59bf4936759"
+    },
+    "native-admin-search-privacy/native-run.json": {
+      "bytes": 5225,
+      "sha256": "c88aa43736a6bda047f458dce47e20157942a8719cc6a495a6f70585492d5255"
+    },
+    "native-admin-search-privacy/native-search-result.json": {
+      "bytes": 1004,
+      "sha256": "5846f76ed615c0d3e3408a255d6e38028db73a70410d72c527f676dcf8e769df"
+    },
+    "native-admin-search-privacy/native-set_all.json": {
+      "bytes": 242,
+      "sha256": "bb44297880489106675a52adbffeb1aa99cb7a5b82a7d5f242d9b29888414559"
+    },
+    "native-admin-search-privacy/native-static-result-count.png": {
+      "bytes": 7573,
+      "sha256": "77038cda473ee56b55f7f82accbf31f2e2df494ddcf97562d6ef6111b6028c65"
+    },
+    "native-admin-search-privacy/navigation-controls.json": {
+      "bytes": 392,
+      "sha256": "db5bd46c79e677d1badf3606e082d0f7b253bdabaffdec16391f5af0607ee4f0"
+    },
+    "native-admin-search-privacy/operating-brief.json": {
+      "bytes": 2292,
+      "sha256": "5974c97cf3e7535f463df7534ee1ecbfbd3c29b230c18090d08db84f5c1f2ab7"
+    },
+    "native-admin-search-privacy/qa-scope-refresh.json": {
+      "bytes": 638,
+      "sha256": "cf678eb774c8e2a7d8adaf885142de4ae785da293bfa2106bdf3cfb7d61f673b"
+    },
+    "native-admin-search-privacy/README.md": {
+      "bytes": 7650,
+      "sha256": "dd9b8d01212ab7d476db742a8387e002f6dc8e6694baebd6e308fcaf8c7e0e4c"
+    },
+    "native-admin-search-privacy/runner-before-api-preflight.json": {
+      "bytes": 252,
+      "sha256": "15b53c951a32e0941d57ef112f3b12d5bd2c769caceb48a8a083d39c7f3d7d18"
+    },
+    "native-admin-search-privacy/runner-before-delete-phase.json": {
+      "bytes": 268,
+      "sha256": "2623348773a49eafc788745cd7bf6a0f5b123eaf161fbbfd03278e8ee1a2f2c4"
+    },
+    "native-admin-search-privacy/runner-before-final-readbacks.json": {
+      "bytes": 362,
+      "sha256": "2f2015d2e4cf7118d40502f0292a7b0b428100b4d85be57dbf5f68fbb6471563"
+    },
+    "native-admin-search-privacy/runner-before-fixtures.json": {
+      "bytes": 348,
+      "sha256": "4cf1612ca145e126d38d4f47ab3af4d4ded8aaaedb64bdd4f6d868e22803e61b"
+    },
+    "native-admin-search-privacy/runner-before-native-search-v2.json": {
+      "bytes": 290,
+      "sha256": "5a72c8bc13ee8ac231a208595bf82c9a02f9192b2d7ba663614d93515eec33cb"
+    },
+    "native-admin-search-privacy/runner-before-native-search.json": {
+      "bytes": 161,
+      "sha256": "2c4c7fa6e9c2eac9e0fb6dfcc87b988af2e3437e2e4edc31ca890a2e23c96130"
+    },
+    "native-admin-search-privacy/runner-before-result-observation.json": {
+      "bytes": 163,
+      "sha256": "3b1d43f33e77613f8b40d3bad0c5e9208293870ea11370219c7f81ac7fb05e81"
+    },
+    "native-admin-search-privacy/runner-source/api_context.mjs.txt": {
+      "bytes": 2134,
+      "sha256": "3f22bb8db6dc3f489c4e3a17700bb8ab91a7ce266e95daedd80a0261e06e6667"
+    },
+    "native-admin-search-privacy/runner-source/api_preflight.mjs.txt": {
+      "bytes": 1383,
+      "sha256": "e957346e1bcda6424403e8dbf3e8cefddd84b6c7aa9dc6d1e074b0862f3e9bba"
+    },
+    "native-admin-search-privacy/runner-source/capture_empty_full.py.txt": {
+      "bytes": 1322,
+      "sha256": "60c2e79f52498cbf83e3495af973781746bbf794516dee48dfb96c98871bf094"
+    },
+    "native-admin-search-privacy/runner-source/cleanup_fixtures.mjs.txt": {
+      "bytes": 1535,
+      "sha256": "82c52c2bce930928433fbe3d5303f45f16fb2157a89bc0f7f8150856806a64b0"
+    },
+    "native-admin-search-privacy/runner-source/confirm_empty_pixels.py.txt": {
+      "bytes": 1610,
+      "sha256": "40b1a4da79eda2d7422916590e0d863c2edb715207d997b855e15dfec2979078"
+    },
+    "native-admin-search-privacy/runner-source/final_native_readback.py.txt": {
+      "bytes": 1578,
+      "sha256": "605d67c1328e72d088f943bf563af76371fa2115ffde815e768996e304f6e256"
+    },
+    "native-admin-search-privacy/runner-source/native_deleted_search.py.txt": {
+      "bytes": 1833,
+      "sha256": "4e7bb15433b9e7ad08a8d3337d8c87c1f776949d66fd4b07ffc5dc09cceff152"
+    },
+    "native-admin-search-privacy/runner-source/native_search.py.txt": {
+      "bytes": 4564,
+      "sha256": "af8a6a9437bc53d812a63cc74365eba0b86a1dd9fb86d105d374d891004cdb87"
+    },
+    "native-admin-search-privacy/runner-source/native_search_v2.py.txt": {
+      "bytes": 4670,
+      "sha256": "9f49520ea0035093513f35b7aaf9cf9b9bbb0941376e48670a607a5a72c32451"
+    },
+    "native-admin-search-privacy/runner-source/observe_results.py.txt": {
+      "bytes": 1775,
+      "sha256": "4713eae47b2ea1ce50cc3c306549e90301413196189317938d50b0b72f30d4ee"
+    },
+    "native-admin-search-privacy/runner-source/seed_fixtures.mjs.txt": {
+      "bytes": 3617,
+      "sha256": "a035249f9588afde1033419a494189bc240b6a1a52ade5b621b676c41e393dec"
+    },
+    "native-admin-search-privacy/runner-source/verify_fixtures_live.mjs.txt": {
+      "bytes": 1135,
+      "sha256": "68f61afc3d1b5743bab5c3d8b68a61189f517cde8fdf38de871f48462608a19d"
+    },
+    "native-admin-search-privacy/scope-observation.json": {
+      "bytes": 469,
+      "sha256": "0f9024f1edb84453aed89a8e83930bd281a08bd92ad29d22079853e7accf52f9"
+    },
+    "native-admin-search-privacy/source-fingerprints.json": {
+      "bytes": 2643,
+      "sha256": "69f11b7d1b556ed5962a1146a6f574e2336d0faf5658dfb520943580cfa7ef86"
+    },
+    "native-admin-search-privacy/summary.json": {
+      "bytes": 3128,
+      "sha256": "433f21e1b2782b7954d297166f0bb02549c96e8a571dd452270346f6fa3709ce"
+    },
+    "native-admin-search-privacy/visual-review.json": {
+      "bytes": 1085,
+      "sha256": "f6e942eac506ef9912de1b99e290cd7f6e40e8d4c204f8ce7322cfdde6be49fd"
     },
     "native-chat/append.json": {
       "bytes": 884,
@@ -1807,8 +1987,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 16262,
-      "sha256": "2823a3e5bcf912cfd358a61d90fc4e9285797621f366d7cbcc2ede1dfaa59925"
+      "bytes": 17143,
+      "sha256": "630e624b9aa9824ca68a07921a4b704e4bf17d125cfb22420c51bbdaf1068539"
     },
     "restored-microphone.json": {
       "bytes": 269,

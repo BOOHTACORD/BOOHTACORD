@@ -1,0 +1,53 @@
+"""Control only observed native message search; retain no hierarchy or body/identity."""
+import json,sys,time,re
+from pathlib import Path
+P=Path(__file__).resolve().parent;sys.path.insert(0,str(P.parent/'qa-android-admin'))
+from admin_common import call,nodes,label,box,tap,tap_named,APP,read_font,snapshot,now
+
+def save(name,data):(P/name).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+def search_present(rows):return any(label(n)=='Закрыть поиск' for n in rows)
+def query_field(rows):
+ fields=[n for n in rows if n.get('package')==APP and n.get('class')=='android.widget.EditText' and box(n)[1]<1200 and 0<box(n)[3]-box(n)[1]<300]
+ assert len(fields)==1,'Search field must be unique';return fields[0]
+def inspect(rows,cfg=None):
+ result={'at_utc':now(),'search_present':search_present(rows),'scope_all_visible':any('Область поиска' in label(n) and 'Везде' in label(n) and box(n)[3]-box(n)[1]<250 for n in rows),'searching':any(label(n)=='Ищем сообщения…' for n in rows),'error_visible':any(label(n) in ['Поиск временно недоступен','Не удалось выполнить поиск сообщений.'] for n in rows)}
+ result['result_counts']=[int(m[1]) for n in rows if (m:=re.fullmatch(r'Найдено (\d+) сообщения',label(n)))];result['no_matches']=any(label(n)=='Совпадений нет.' for n in rows)
+ if cfg:
+  f=query_field(rows);result['own_query_exact']=f.get('text')==cfg['query'];labels=[label(n) for n in rows]
+  result['allowed_fixture_visible']=any(cfg['allowed_body'] in s for s in labels);result['forbidden_fixture_visible']=any(cfg['forbidden_body'] in s for s in labels)
+  result['result_button_nodes']=sum(n.get('clickable')=='true' and label(n).startswith('Открыть сообщение от ') for n in rows)
+ return result
+
+if __name__=='__main__':
+ action=sys.argv[1];assert action in ['set_all','run','inspect','clear_close'];r={'action':action,'at_utc':now(),'status':'RUNNING','server_resource_mutation_issued':False}
+ try:
+  rows=nodes();assert read_font()==1.0
+  if action=='set_all':
+   assert search_present(rows) and not query_field(rows).get('text')
+   scope=[n for n in rows if 'Область поиска' in label(n) and n.get('clickable')=='true' and box(n)[3]-box(n)[1]<250]
+   tap(scope);tap_named('Везде');rows=nodes();assert inspect(rows)['scope_all_visible'];r['scope_all_selected']=True;r['status']='READY_EMPTY_ALL_SCOPE'
+  else:
+   cfg=json.loads((P/'fixture.private.json').read_text(encoding='utf-8'));assert search_present(rows)
+   if action=='run':
+    f=query_field(rows);assert not f.get('text');tap([f]);assert query_field(nodes()).get('focused')=='true'
+    call('shell','input','text',cfg['query']);rows=nodes();assert query_field(rows).get('text')==cfg['query'];assert inspect(rows)['scope_all_visible']
+    tap_named('Найти');r['submit_issued']=True
+    for attempt in range(12):
+     rows=nodes();sample=inspect(rows,cfg);r.setdefault('samples',[]).append(sample)
+     if sample['error_visible'] or sample['forbidden_fixture_visible'] or (sample['allowed_fixture_visible'] and sample['result_counts']):break
+     time.sleep(.3)
+    r['observation']=sample
+    if sample['forbidden_fixture_visible']:r['status']='FAIL_FOREIGN_DM_VISIBLE'
+    else:
+     assert sample['own_query_exact'] and sample['scope_all_visible'] and not sample['error_visible'] and sample['allowed_fixture_visible'] and sample['result_counts'] and set(sample['result_counts'])=={1};r['status']='PASS_SCOPED_ADMIN_SEARCH_EXCLUDES_FOREIGN_DM'
+   elif action=='inspect':r['observation']=inspect(rows,cfg);r['status']='OBSERVED'
+   else:
+    f=query_field(rows);value=f.get('text') or '';assert value==cfg['query'] or not value,'Only own query may be cleared'
+    if value:tap_named('Очистить запрос')
+    rows=nodes();assert not query_field(rows).get('text');r['own_query_cleared']=True
+    scope=[n for n in rows if 'Область поиска' in label(n) and n.get('clickable')=='true' and box(n)[3]-box(n)[1]<250]
+    tap(scope);tap_named(cfg['peer']);rows=nodes();r['original_scope_current_restored']=not inspect(rows)['scope_all_visible'];assert r['original_scope_current_restored']
+    tap_named('Закрыть поиск');r['status']='PASS_QUERY_CLEARED_SEARCH_CLOSED';r['native_after']=snapshot()
+ except Exception as e:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(e).__name__
+ finally:r['finished_at_utc']=now();save('native-'+action+'.json',r)
+ print(json.dumps(r,ensure_ascii=False));sys.exit(0 if r['status'].startswith(('PASS','READY','OBSERVED')) else 1)

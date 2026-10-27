@@ -1,0 +1,29 @@
+import assert from 'node:assert/strict'
+import {createRequire} from 'node:module'
+import {readFile,writeFile} from 'node:fs/promises'
+import {fileURLToPath} from 'node:url'
+const require=createRequire('C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/clients/web/package.json')
+export const {request}=require('@playwright/test')
+export const root=new URL('./',import.meta.url),origin='https://v.bootybay.ru'
+export const B=new URL('file:///C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/')
+export const load=async name=>JSON.parse(await readFile(new URL(name,root),'utf8'))
+export const save=async(name,data)=>writeFile(new URL(name,root),JSON.stringify(data,null,2)+'\n')
+export async function connect(){
+ const fixture=JSON.parse(await readFile(new URL('private-fixture.json',B),'utf8'))
+ const phone=JSON.parse(await readFile(new URL('private-upgrade-identity.json',B),'utf8'))
+ const clients={},attestation=[]
+ try{
+  for(const k of ['b','c']){
+   const context=await request.newContext({baseURL:origin,storageState:fileURLToPath(new URL('private-session-'+k+'.json',B)),extraHTTPHeaders:{Origin:origin,Referer:origin+'/'},timeout:15000});clients[k]=context
+   const r=await context.get('/api/v1/auth/session'),d=await r.json();assert.equal(r.status(),200);assert.equal(d.account_id,fixture[k].id);assert.equal(d.authenticated,true)
+   const cookies=(await context.storageState()).cookies.filter(c=>c.domain.replace(/^\./,'')===new URL(origin).hostname)
+   const secureSession=cookies.some(c=>c.secure&&c.httpOnly);assert.ok(secureSession)
+   attestation.push({controlled_account:k,session_http:200,expected_identity_match:true,secure_HttpOnly_session_present:secureSession})
+  }
+  const api=async(k,path,method='GET',data)=>{
+   const r=await clients[k].fetch('/api/v1'+path,{method,...(data===undefined?{}:{data})})
+   return {status:r.status(),body:r.status()===204?null:await r.json()}
+  }
+  return {fixture,phone,clients,attestation,api,close:async()=>{for(const c of Object.values(clients))await c.dispose()}}
+ }catch(e){for(const c of Object.values(clients))await c.dispose();throw e}
+}

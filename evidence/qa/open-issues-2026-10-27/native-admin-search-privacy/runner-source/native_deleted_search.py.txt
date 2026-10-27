@@ -1,0 +1,21 @@
+"""Refresh the same owned query after API tombstones, then retain only generic empty UI."""
+import json,time,io,subprocess,hashlib
+from PIL import Image
+from native_search_v2 import P,nodes,inspect,query_field,label,box,tap_named,now,save
+from admin_common import ADB
+r={'at_utc':now(),'status':'RUNNING','server_resource_mutation_issued':False,'samples':[]}
+try:
+ cfg=json.loads((P/'fixture.private.json').read_text(encoding='utf-8'));cleanup=json.loads((P/'fixture-cleanup.json').read_text(encoding='utf-8'));assert cleanup['status']=='PASS_OWNED_MESSAGES_REMOVED_AND_SEARCH_CLEARED'
+ rows=nodes();assert query_field(rows).get('text')==cfg['query'];assert inspect(rows,cfg)['scope_all_visible'];tap_named('Найти');r['explicit_resubmit_issued']=True;stable=0
+ for i in range(12):
+  rows=nodes();s=inspect(rows,cfg);r['samples'].append(s)
+  empty=s['own_query_exact'] and s['scope_all_visible'] and not s['allowed_fixture_visible'] and not s['forbidden_fixture_visible'] and s['result_button_nodes']==0 and not s['error_visible'] and not s['searching']
+  stable=stable+1 if empty else 0
+  if stable>=2:break
+  time.sleep(.3)
+ assert stable>=2
+ raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20);im=Image.open(io.BytesIO(raw)).convert('RGB');assert im.size==(1080,2340);crop=[0,600,1080,1400];im.crop(tuple(crop)).save(P/'native-deleted-search-empty.png')
+ r['status']='OBSERVED_EMPTY_AFTER_DELETE_VISUAL_PENDING';r['generic_empty_crop']={'bounds':crop,'source_size':list(im.size),'file':'native-deleted-search-empty.png','source_SHA256':hashlib.sha256(raw).hexdigest(),'query_and_voice_dock_excluded':True}
+except Exception as e:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(e).__name__
+finally:r['finished_at_utc']=now();save('native-after-delete.json',r)
+print(json.dumps(r,ensure_ascii=False))
