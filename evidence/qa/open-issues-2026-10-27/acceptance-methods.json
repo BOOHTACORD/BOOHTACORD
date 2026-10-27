@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "scope": "Acceptance execution methods and explicit limits; definitions are not runtime PASS or SG route authority.",
+  "methods": [
+    {
+      "id": "source_reference",
+      "protects": "Historical source/build/evidence claims remain input and cannot become a new runtime PASS.",
+      "command": "Manual evidence audit: read the immutable source links retained in this row; verify referenced run/candidate before reusing any claim.",
+      "platform": "The source-specified platform; no runtime is executed by this audit.",
+      "mandatory_when": "Before using a historical claim in acceptance or release reasoning.",
+      "entry_files": [],
+      "scope": "reference_only",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "dependency_review",
+      "protects": "Parent QA/epic closure follows all linked mandatory child gates.",
+      "command": "Manual dependency audit: inspect each linked issue/PR/native result and preserve its actual PASS/FAIL/NOT_RUN/BLOCKED disposition.",
+      "platform": "All platforms inherited from linked child gates.",
+      "mandatory_when": "Before closing an aggregate QA or release issue.",
+      "entry_files": [],
+      "scope": "aggregation_only",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "evidence_integrity",
+      "protects": "Evidence is source-attributed, sanitized, complete for its claimed scope and bound to retained bytes.",
+      "command": "python .out/qa-goal/seal_evidence.py working; then manually inspect every required runtime receipt, visual observation, skip/platform limit and source identity.",
+      "platform": "Evidence files plus the actual platform stated in each receipt.",
+      "mandatory_when": "Before publishing or closing any runtime/platform/security/media gate.",
+      "entry_files": [
+        ".out/qa-goal/seal_evidence.py"
+      ],
+      "scope": "integrity_is_not_runtime_acceptance",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "release_review",
+      "protects": "Release recommendation waits for required source, hardware, security, media and owner gates.",
+      "command": "Manual release audit against docs/release/2026-09-25-requirements-matrix.md and every linked gate; record NO_GO for any missing mandatory PASS and obtain the release owner's decision.",
+      "platform": "All release platforms and intended deployment.",
+      "mandatory_when": "Before any GO/rollout/closure claim.",
+      "entry_files": [
+        "docs/release/2026-09-25-requirements-matrix.md"
+      ],
+      "scope": "release_decision_no_deploy",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "source_contracts",
+      "protects": "Shared API/security/schema contract stays consistent across native source implementations.",
+      "command": "pwsh -NoProfile -File tools/verify/contracts/verify-contracts.ps1",
+      "platform": "Project-pinned Go/Node/Flutter toolchains; source validation only.",
+      "mandatory_when": "Before claiming shared contract/source parity; runtime rows still require their separate scenarios.",
+      "entry_files": [
+        "tools/verify/contracts/verify-contracts.ps1"
+      ],
+      "scope": "source_only",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "paired_game_audio",
+      "protects": "Real game picture/audio and speech reach an independent physical listener without a sustained echo loop.",
+      "command": "Manual physical protocol docs/runbooks/game-capture.md using authorized test accounts/SHARE_TEST; execute the exact mute/gain/source/voice steps in this row.",
+      "platform": "Physical Windows and Apple Silicon macOS presenters with independent physical observers.",
+      "mandatory_when": "Before game/system-audio, audible gain/mute or POC-01 acceptance.",
+      "entry_files": [
+        "docs/runbooks/game-capture.md"
+      ],
+      "scope": "physical_audio_not_packet_counters",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "paired_media_profile",
+      "protects": "Requested capture profile is distinguished from source/capture/encoded/decoded/presented measurements and real recovery.",
+      "command": "Manual paired protocol docs/runbooks/media-profiles.md; complete the source row's profiles/repeats/normal-degraded-recovery matrix with simultaneous counters and calibrated observations.",
+      "platform": "The row-specified physical publisher/receiver pairs; preserve missing Mac/iOS/Pixel and unknown stages.",
+      "mandatory_when": "Before FPS/quality/latency/adaptation/profile or media-platform support claims.",
+      "entry_files": [
+        "docs/runbooks/media-profiles.md"
+      ],
+      "scope": "physical_media_not_static_source_or_build",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "mac_audio",
+      "protects": "Native CoreAudio/WebRTC permission, inventory, saved device routing, restart/hotplug and actual hearing work on a physical Mac.",
+      "command": "On a physical Mac: python3 -m tools.qa.macos_audio.run --mode both; follow tools/qa/macos_audio/README.md and this row's real-device/listener matrix.",
+      "platform": "Physical macOS Debug/Release with distinct hardware endpoint types and independent listener.",
+      "mandatory_when": "Before macOS audio/device/permission acceptance.",
+      "entry_files": [
+        "tools/qa/macos_audio/run.py",
+        "tools/qa/macos_audio/README.md"
+      ],
+      "scope": "physical_mac_required",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "mac_sender",
+      "protects": "Mac startup/native capture/codec stages use an immutable binary, actual native events and correctly attributed paired presentation.",
+      "command": "On a physical Mac: python3 -m tools.qa.macos_sender.run; follow tools/qa/macos_sender/README.md for startup/stage_baseline/codec cases and exact candidate proofs.",
+      "platform": "Physical Mac paired with a supported actual receiver; source-defined warmup/steady/repeat windows.",
+      "mandatory_when": "Before macOS startup/capture/codec/60FPS or Mac-Web support acceptance.",
+      "entry_files": [
+        "tools/qa/macos_sender/run.py",
+        "tools/qa/macos_sender/README.md"
+      ],
+      "scope": "physical_mac_not_same_host_prototype_capacity",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "browser_workflow",
+      "protects": "Actual authenticated Web state, DM/files/search/focus and account/session transitions preserve ACL and drafts.",
+      "command": "Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately.",
+      "platform": "Installed headed Windows Chrome and explicitly stated CSS viewport; no physical mobile/other-browser substitution.",
+      "mandatory_when": "Before the corresponding authenticated Web workflow acceptance.",
+      "entry_files": [
+        ".out/qa-goal/privacy_run.mjs",
+        ".out/qa-goal/web_logout_run.mjs",
+        ".out/qa-goal/quickjump_run.mjs",
+        ".out/qa-goal/web_image_formats_run.mjs"
+      ],
+      "scope": "scoped_helpers_do_not_cover_whole_broad_row",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "android_physical",
+      "protects": "Shipping Android actually performs native UI/IME/picker/permission/FGS/voice lifecycle operations while preserving user state.",
+      "command": "Use applicable cases.json ADB/native helper commands and native-image/reproduce.md; run the remaining row's actual UI/OS steps on the physical approved candidate and verify the paired result.",
+      "platform": "Physical Samsung Android16 now available; Pixel/iOS/emulator or other OS versions remain distinct variants.",
+      "mandatory_when": "Before Android native/device/OS/FGS/IME/media lifecycle acceptance.",
+      "entry_files": [
+        ".out/qa-goal/android_controls.py",
+        ".out/qa-goal/android_attachment_actions.py",
+        ".out/qa-goal/android_prejoin_ui.py",
+        "evidence/qa/open-issues-2026-10-27/native-image/reproduce.md"
+      ],
+      "scope": "native_UI_not_widget_capture",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "windows_physical",
+      "protects": "Actual installed Windows native controls, keyboard/focus, dialogs and platform lifecycle work visibly.",
+      "command": "Supported Computer Use node_repl @oai/sky: select returned native window, observe, perform one actual UI action and refresh; follow the exact source row task script. Preserve windows-admin-entry-attempt.json for the current input-cache blocker.",
+      "platform": "Physical installed Windows native candidate; no hidden-engine or source/widget substitution.",
+      "mandatory_when": "Before Windows physical native UI/admin/keyboard/window/device acceptance.",
+      "entry_files": [
+        "evidence/qa/open-issues-2026-10-27/windows-admin-entry-attempt.json"
+      ],
+      "scope": "current_indexed_admin_input_blocked",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "isolated_api_faults",
+      "protects": "Failures, quotas, uploads, privacy, history resources and concurrency recover correctly on actual isolated services.",
+      "command": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental.",
+      "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection.",
+      "mandatory_when": "Before fault/saturation/507/quota/revoke/restart/history profiling rows.",
+      "entry_files": [
+        "tools/qa/next_client_acceptance/run.py",
+        "tools/qa/next_client_acceptance/stack.py"
+      ],
+      "scope": "fixture_setup_needed_not_production",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "isolated_trace_runtime",
+      "protects": "Actual relay/SQL/Collector/Tempo stores correct causal/privacy/export outcomes, including owned dependency outages.",
+      "command": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly.",
+      "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate.",
+      "mandatory_when": "Before end-to-end trace/export/collector fault or query acceptance.",
+      "entry_files": [
+        "tools/qa/tracing_flow/README.md",
+        "tools/qa/tracing_flow/compose.qa.yaml",
+        "docker/observability/compose.yaml"
+      ],
+      "scope": "local_Docker_preflight_available_fixture_still_to_prepare",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "observability_queries",
+      "protects": "Deployed metrics/traces/dashboards preserve safe labels, freshness, no-data/unknown and correct role access.",
+      "command": "With approved private read-only endpoints: python tools/qa/runtime_queries/check_runtime_queries.py <dashboard.json> --host-prometheus <private-origin> --app-prometheus <private-origin>; python tools/qa/trace_queries/check_trace_queries.py <private-tempo-origin> docker/observability/dashboards/traces.json; perform the row's actual Grafana/RBAC/alert review.",
+      "platform": "Intended private Prometheus/Tempo/Grafana deployment, actual configured datasource/role and version.",
+      "mandatory_when": "Before deployed observability/fault attribution/alert/query/retention acceptance.",
+      "entry_files": [
+        "tools/qa/runtime_queries/check_runtime_queries.py",
+        "tools/qa/trace_queries/check_trace_queries.py",
+        "docker/observability/dashboards/traces.json"
+      ],
+      "scope": "private_deployed_access_not_supplied",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "isolated_load",
+      "protects": "Capacity/churn/soak/resource limits and cleanup are measured on an approved calibrated isolated cohort without invented SLOs.",
+      "command": "From backend, provide a validated private fixture manifest on stdin to go run ./cmd/backend-load -profile normal (or reconnect/uploads/faults as the source row requires); execute the separate approved media cohort/soak protocol for media capacity.",
+      "platform": "Approved isolated target plus calibrated generator/host/receiver cohort and resource/thermal telemetry.",
+      "mandatory_when": "Before any capacity/load/soak/SLO acceptance or supported profile claim.",
+      "entry_files": [
+        "backend/cmd/backend-load/main.go"
+      ],
+      "scope": "no_approved_calibrated_capacity_cohort",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "notification_e2e",
+      "protects": "Configured real provider alert/tap, account/device consent, binding, expiry/revoke and outage behavior preserve private message boundaries.",
+      "command": "Read readiness with node .out/qa-goal/notification_readiness.mjs; once an approved real transport and signed containing candidate exist, execute the exact Web/FCM/APNs/PWA/OS steps and isolated negative cases from this source row.",
+      "platform": "Actual supported Web browser, GMS Android signed candidate, signed iPhone and separate iOS PWA path.",
+      "mandatory_when": "Before notification release/provider/device/privacy acceptance.",
+      "entry_files": [
+        ".out/qa-goal/notification_readiness.mjs"
+      ],
+      "scope": "production_operator_off_and_Android_candidate_missing_implementation",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "guild_identity",
+      "protects": "Configured one-guild identity remains current, private, accessible and correctly scoped across rename/account changes.",
+      "command": "Supplemental owned fixture: python3 -m tools.qa.guild_identity.run --platform android --device emulator-5558; follow tools/qa/guild_identity/README.md, then perform this row's actual physical AT/title/notification matrix separately.",
+      "platform": "Owned local test deployment for rename; physical Android/Windows/Mac/iOS screen readers as required.",
+      "mandatory_when": "Before configured guild-name, logo announcement, rename or OS notification identity acceptance.",
+      "entry_files": [
+        "tools/qa/guild_identity/run.py",
+        "tools/qa/guild_identity/README.md"
+      ],
+      "scope": "emulator_semantics_not_physical_AT",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "accessibility_runtime",
+      "protects": "Critical actions have correct native/browser semantics, visible focus, target sizes, actual keyboard/AT and text scaling.",
+      "command": "Supplemental isolated runtime: python3 -m tools.qa.accessibility_runtime.run; follow tools/qa/accessibility_runtime/README.md and this row's actual TalkBack/NVDA/VoiceOver/physical keyboard steps.",
+      "platform": "Target browsers and real native devices/readers; emulator/fixture captures are labelled supplemental.",
+      "mandatory_when": "Before full WCAG/Flutter Semantics/manual AT or all-control target acceptance.",
+      "entry_files": [
+        "tools/qa/accessibility_runtime/run.py",
+        "tools/qa/accessibility_runtime/README.md"
+      ],
+      "scope": "full_physical_readers_not_available",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "ui_regressions",
+      "protects": "Registered UI behavior and approved before/after visual regions remain consistent on every claimed native/runtime target.",
+      "command": "./tools/qa/local_features/check.sh --feature shell --feature chat --base origin/master --real-stack; select every additional applicable registered feature and native target per tools/qa/local_features/README.md, then inspect source-resolution images without auto-approving baselines.",
+      "platform": "Prepared supported QA host/targets; current registry rejects physical phones, so this is supplemental to real Samsung/Windows acceptance.",
+      "mandatory_when": "Before UI regression/baseline/full platform release acceptance.",
+      "entry_files": [
+        "tools/qa/local_features/check.sh",
+        "tools/qa/local_features/README.md",
+        "tools/qa/local_features/features.json"
+      ],
+      "scope": "registered_harness_not_all_states_or_physical_phone",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "human_ux_study",
+      "protects": "Task success/time/error and rollout-owner assertions have real before/after human evidence and explicit accountability.",
+      "command": "Manual human study/release-owner protocol in docs/design/UIUX_2026_RELEASE_GATE.md; collect the source row's actual baseline/post-change tasks, sample, conditions and assigned owners; automation timings are not human study results.",
+      "platform": "Actual desktop/mobile users/testers and platform release owners.",
+      "mandatory_when": "Before UX effectiveness or release/rollback-owner completion claims.",
+      "entry_files": [
+        "docs/design/UIUX_2026_RELEASE_GATE.md"
+      ],
+      "scope": "human_results_and_named_owner_evidence_not_supplied",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "release_updates",
+      "protects": "Update readback, immutable candidate identity and actual old-client upgrade remain current without downgrading the primary install.",
+      "command": "Read-only python .out/qa-goal/public_readback.py; use the approved release process and a separate controlled old-client installation for remaining source row upgrade/restart/promotion cases.",
+      "platform": "Intended production public selector plus isolated genuine old Windows client; owner-approved deployment/restart window when required.",
+      "mandatory_when": "Before update catalog/installed-version/deployment/rollback acceptance.",
+      "entry_files": [
+        ".out/qa-goal/public_readback.py"
+      ],
+      "scope": "catalog503_and_stale_requested_versions_not_primary_downgrade",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "roster_runtime",
+      "protects": "Actual nonempty roster, SSE bounds, ACL and owned dependency recovery never confuse unavailable with empty.",
+      "command": "Prepared owned fixture: python3 -m tools.qa.roster_runtime.serve, then python3 -m tools.qa.roster_runtime.run; use native Android/iOS fixture commands from its README only on assigned QA devices. Existing shipping-phone prejoin helpers are separate scoped evidence.",
+      "platform": "Actual isolated Go/PostgreSQL/LiveKit and compiled Web; assigned emulator/simulator supplemental, shipping physical clients separate.",
+      "mandatory_when": "Before full roster outage/recovery/SSE/security/platform acceptance.",
+      "entry_files": [
+        "tools/qa/roster_runtime/README.md",
+        "tools/qa/roster_runtime/serve.py",
+        "tools/qa/roster_runtime/run.py"
+      ],
+      "scope": "compiled_proofs_and_owned_fixture_needed_not_current_phone_driver",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    },
+    {
+      "id": "external_social_preview",
+      "protects": "Public metadata renders a correct generic card in real messenger/parser clients without guild/user private data.",
+      "command": "Source supplement: npm --prefix clients/web run verify:social-preview; actual acceptance follows the row in an authorized own Telegram test destination and Open Graph/Twitter Card parser, recording real rendered card and public URL/image outcomes.",
+      "platform": "Real authorized messenger/parser/browser clients; no unrelated outbound messages.",
+      "mandatory_when": "Before social-preview renderer acceptance; source HTML/PNG GET alone is insufficient.",
+      "entry_files": [
+        "clients/web/scripts/verify_social_preview.mjs"
+      ],
+      "scope": "real_renderer_and_authorized_own_test_destination_needed",
+      "result_location": "cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition."
+    }
+  ]
+}

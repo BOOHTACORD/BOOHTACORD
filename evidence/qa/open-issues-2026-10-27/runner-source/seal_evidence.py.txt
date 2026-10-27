@@ -1,0 +1,35 @@
+"""Seal public evidence bytes and verify staged Git blobs before commit."""
+import hashlib
+import json
+import subprocess
+import sys
+from datetime import datetime,timezone
+from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[2]
+OUT=ROOT/'evidence/qa/open-issues-2026-10-27'
+MANIFEST=OUT/'manifest.json'
+if sys.argv[1]=='refresh':
+    for file in OUT.rglob('*'):
+        if file.is_file() and file.suffix in ['.json','.md','.txt']:
+            data=file.read_text(encoding='utf-8')
+            if file.suffix=='.json':json.loads(data)
+            file.write_text(data,encoding='utf-8',newline='\n')
+    data={'at_utc':datetime.now(timezone.utc).isoformat(),
+          'candidate_evidence':'../../android/physical-share-2026-10-27/result.json','files':{}}
+    for file in sorted(OUT.rglob('*')):
+        if file.is_file() and file!=MANIFEST:
+            raw=file.read_bytes();data['files'][file.relative_to(OUT).as_posix()]={'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+    MANIFEST.write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n')
+else:
+    data=json.loads(MANIFEST.read_text(encoding='utf-8'))
+    for name,expected in data['files'].items():
+        file=OUT/name;raw=file.read_bytes()
+        assert len(raw)==expected['bytes'] and hashlib.sha256(raw).hexdigest()==expected['sha256'],name
+        if sys.argv[1]=='staged':
+            blob=subprocess.check_output(['git','show',':'+file.relative_to(ROOT).as_posix()],cwd=ROOT)
+            assert blob==raw,'Staged bytes differ: '+name
+    assert {f.relative_to(OUT).as_posix() for f in OUT.rglob('*') if f.is_file() and f!=MANIFEST}==set(data['files'])
+for file in (OUT/'runner-source').glob('*.txt'):
+    assert len(file.read_text(encoding='utf-8').splitlines())<=120,file.name
+print(json.dumps({'mode':sys.argv[1],'verified_public_files':len(data['files']),'runner_line_ratchet':'PASS'}))

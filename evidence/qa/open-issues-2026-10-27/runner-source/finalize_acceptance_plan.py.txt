@@ -1,0 +1,51 @@
+"""Retain measured prerequisites and distinguish planned methods from executed cases."""
+import json
+from pathlib import Path
+from datetime import datetime, timezone
+ROOT=Path(__file__).resolve().parents[2]
+OUT=ROOT/'evidence/qa/open-issues-2026-10-27'
+private=ROOT/'.out/qa-goal';target=OUT/'prerequisites';target.mkdir(exist_ok=True)
+for name in ['host-prerequisites.json','controlled-roles-current.json','flutter-prerequisite-version.json','docker-prerequisite.json']:
+ data=json.loads((private/name).read_text(encoding='utf-8'))
+ (target/name).write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n')
+path=OUT/'acceptance-methods.json';catalog=json.loads(path.read_text(encoding='utf-8'))
+for method in catalog['methods']:
+ method['result_location']='cases.json for executed scopes; matrix.json criteria[].execution_cases/evidence for row links; no execution result is implied by this method definition.'
+path.write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+path=OUT/'matrix.json';matrix=json.loads(path.read_text(encoding='utf-8'))
+constraints=[
+ {'code':'PHYSICAL_MAC_NOT_CONNECTED','affects':'Actual macOS capture/audio/codec/permissions; a Windows SDK test cannot replace them.'},
+ {'code':'PHYSICAL_IPHONE_PIXEL_NOT_CONNECTED','affects':'Rows requiring those actual devices; the connected Samsung only covers its stated candidate.'},
+ {'code':'HUMAN_LISTENER_UNAVAILABLE','affects':'Audibility/echo/gain; user explicitly cannot listen now; packet counts are insufficient.'},
+ {'code':'CONTROLLED_ADMIN_NOT_AVAILABLE','affects':'Three controlled browser accounts are MEMBER. The primary native ADMIN session was not extracted.'},
+ {'code':'WINDOWS_CUA_ELEMENT_CACHE_FAILURE','affects':'Native admin entry was not performed; see windows-admin-entry-attempt.json. No product defect inferred.'},
+ {'code':'NOTIFICATION_PROVIDER_OFF','affects':'Actual deployed capabilities disable delivery; Android candidate predates notification implementation. See notification-readiness.'},
+ {'code':'REFERENCE_SCREENSHOT_ZIP_NOT_AT_CHECKED_PATHS','affects':'Exact artifacts/ui-ux-screenshots.zip absent in current and primary checkout, not a global absence claim.'},
+ {'code':'REAL_USER_STUDY_NOT_EXECUTED','affects':'Task timing/SUS/error-rate/owner signoff remain unexecuted, not inferred from automation.'}
+]
+(target/'constraints.json').write_text(json.dumps({'at_utc':datetime.now(timezone.utc).isoformat(),'constraints':constraints,
+ 'available_next_work':'Local Docker/Go/Flutter allow isolated tracing and fault subsets. No blanket external-blocker disposition.'},indent=2)+'\n',encoding='utf-8',newline='\n')
+matrix['prerequisite_evidence']='prerequisites/constraints.json'
+matrix['updated_utc']=datetime.now(timezone.utc).isoformat()
+path.write_text(json.dumps(matrix,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+readme=OUT/'README.md';text=readme.read_text(encoding='utf-8')
+text=text.replace('historical checkbox claims as input, never as new runtime PASS. PENDING rows\nhave not been executed.', 'historical checkbox claims as input, never as new runtime PASS. NOT_RUN rows\nhave no fresh complete-row execution; existing partial witnesses retain their limits.')
+text=text.replace('## Remaining work\n', '## Execution map\n\n`acceptance-methods.json` maps24 native/manual methods to the protected invariant,\ncommand, platform, mandatory trigger and result location. Every preserved source\nrow now references applicable methods. These are execution plans, not runtime PASS.\nThe480 rows include391 acceptance requirements,21 evidence requirements,7 historical\nclaims,29 context rows and32 dependencies; they are not480 independently run tests.\nMeasured prerequisites and exact constraints are retained under `prerequisites/`.\nLocal Docker29.6.2, Go1.26.4 and Flutter3.47.7 are available for isolated subsets.\n\nViewer download mismatch is filed as[#581](https://github.com/Egkurilov/BOOHTACORD/issues/581);\nthe separate original-file card download passed. No parent QA issue is closed.\n\n## Remaining work\n')
+text=text.replace('finish platform/criterion command mapping, then reconcile every QA issue with', 'execute the mapped source/platform variants, then reconcile every QA issue with')
+readme.write_text(text,encoding='utf-8',newline='\n')
+for name in ['plan_acceptance_rows.py','finalize_acceptance_plan.py','seal_evidence.py']:
+ source=(private/name).read_text(encoding='utf-8');assert len(source.splitlines())<=120,name
+ (OUT/'runner-source'/f'{name}.txt').write_text(source,encoding='utf-8',newline='\n')
+secrets=json.loads((private/'private-fixture.json').read_text(encoding='utf-8'))
+def values(value):
+ if isinstance(value,dict):
+  for key,item in value.items():
+   if key.lower() in ['id','login','password'] and isinstance(item,str) and len(item)>8:yield item
+   else:yield from values(item)
+ elif isinstance(value,list):
+  for item in value:yield from values(item)
+needles=list(values(secrets))
+for file in OUT.rglob('*'):
+ if file.is_file() and file.suffix in ['.json','.md','.txt']:
+  assert all(value not in file.read_text(encoding='utf-8') for value in needles),file.name
+print(json.dumps({'prerequisite_files':len(list(target.glob('*.json'))),'privacy_value_scan':'PASS','plan_is_runtime_completion':False}))

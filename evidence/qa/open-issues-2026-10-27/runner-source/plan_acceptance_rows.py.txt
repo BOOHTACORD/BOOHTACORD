@@ -1,0 +1,68 @@
+"""Map every retained source row to explicit native/manual methods without promoting plans to PASS."""
+import collections
+import json
+import re
+from datetime import datetime,timezone
+from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'evidence/qa/open-issues-2026-10-27'
+file=OUT/'matrix.json';matrix=json.loads(file.read_text(encoding='utf-8'))
+before={r['id']:r['requirement'] for i in matrix['issues'] for r in i['criteria']}
+methods={m['id']:m for m in json.loads((OUT/'acceptance-methods.json').read_text(encoding='utf-8'))['methods']}
+for method in methods.values():assert all((ROOT/p).is_file() for p in method['entry_files']),method['id']
+issue_methods={42:['mac_sender','paired_media_profile','android_physical'],53:['browser_workflow','notification_e2e','isolated_api_faults'],54:['browser_workflow','accessibility_runtime','windows_physical','roster_runtime'],55:['paired_game_audio'],57:['paired_media_profile'],58:['isolated_load'],61:['release_review'],62:['android_physical','windows_physical','ui_regressions'],98:['mac_sender'],131:['browser_workflow','android_physical','windows_physical'],132:['android_physical','paired_media_profile'],154:['isolated_trace_runtime','observability_queries'],173:['paired_media_profile','paired_game_audio'],174:['isolated_load','paired_media_profile'],184:['mac_audio'],227:['paired_media_profile','android_physical','windows_physical','isolated_api_faults'],240:['isolated_api_faults','isolated_trace_runtime','observability_queries'],241:['browser_workflow','observability_queries','isolated_api_faults'],243:['isolated_load'],249:['release_updates'],257:['mac_audio'],259:['mac_audio'],272:['roster_runtime'],278:['guild_identity','accessibility_runtime'],283:['browser_workflow','guild_identity'],287:['browser_workflow','android_physical','windows_physical','roster_runtime'],289:['ui_regressions','accessibility_runtime','browser_workflow'],301:['accessibility_runtime'],302:['ui_regressions'],303:['browser_workflow','android_physical','windows_physical','accessibility_runtime'],305:['human_ux_study','release_review'],326:['mac_sender','paired_media_profile'],329:['mac_sender','paired_media_profile'],331:['mac_sender','paired_media_profile'],332:['mac_sender','paired_media_profile'],554:['notification_e2e'],564:['notification_e2e']}
+dependency_sections={'Дочерние задачи','Дорожная карта','Foundation','Interaction','Structure','Polish','Verification','Порядок и критический путь'}
+reference_sections={'Текущее evidence','Подтверждённое состояние','2. Текущее состояние — что переиспользуем','Основания аудита','Код для расширения, не переписывания'}
+summary=collections.Counter()
+for issue in matrix['issues']:
+ assert issue['number'] in issue_methods
+ for row in issue['criteria']:
+  text=row['requirement'];lower=text.lower();section=row['section'];selected=list(issue_methods[issue['number']]);kind='ACCEPTANCE_REQUIREMENT'
+  if section in dependency_sections:kind='DEPENDENCY';selected=['dependency_review']
+  elif section in reference_sections or section=='Scope':kind='SOURCE_CONTEXT';selected=['source_reference']
+  elif re.match(r'^(Evidence:|Для .*сохранён применимый evidence|Сохранены безопасные test-run|Результаты по каждой платформе|Для каждой комбинации записать|Ни одна platform)',text,re.I):kind='EVIDENCE_REQUIREMENT';selected=['evidence_integrity']
+  elif re.match(r'^(Source checks PASS|Локальные автоматические проверки уже PASS|Компонентный regression test PASS|Automated source tests|Automated conversation suite|Scoped Flutter Semantics|QA-301 records)',text,re.I):kind='HISTORICAL_TEST_CLAIM';selected=['source_reference']
+  if kind=='ACCEPTANCE_REQUIREMENT':
+   if issue['number']==131:
+    index=int(row['id'].split('.C')[1]);selected={1:['paired_game_audio','android_physical','windows_physical','mac_audio'],2:['android_physical','accessibility_runtime'],3:['paired_media_profile'],4:['android_physical','paired_media_profile'],5:['browser_workflow'],6:['browser_workflow','isolated_api_faults'],7:['browser_workflow','isolated_api_faults'],8:['android_physical'],9:['isolated_trace_runtime','observability_queries'],10:['paired_game_audio'],11:['browser_workflow','isolated_api_faults'],12:['mac_audio','windows_physical','paired_game_audio'],13:['mac_audio','windows_physical']}.get(index,selected)
+   if issue['number']==132 and any(x in text for x in ['#40',' #42']):selected+=['mac_sender']
+   if issue['number']==240:
+    index=int(row['id'].split('.C')[1]);selected=['isolated_api_faults'] if index<=9 else ['isolated_trace_runtime']
+    if index==1:selected+=['android_physical','windows_physical']
+    if index==10:selected=['source_contracts']
+    if index==19:selected=['observability_queries']
+    if index==20:selected=['paired_media_profile','source_contracts']
+   if issue['number']==241:
+    section_lower=section.lower()
+    if 'openapi' in section_lower:selected=['browser_workflow','source_contracts']
+    elif '109' in section_lower:selected=['external_social_preview']
+    elif '142' in section_lower:selected=['browser_workflow','accessibility_runtime']
+    elif '141' in section_lower:selected=['isolated_api_faults','browser_workflow']
+    elif any(x in section_lower for x in ['grafana','prometheus','qoe','signals']):selected=['observability_queries','isolated_trace_runtime']
+   if issue['number']==287:
+    index=int(row['id'].split('.C')[1]);selected={2:['roster_runtime'],3:['isolated_api_faults','browser_workflow'],4:['guild_identity','browser_workflow'],5:['paired_game_audio','paired_media_profile'],6:['isolated_api_faults'],7:['isolated_api_faults'],8:['browser_workflow','android_physical'],9:['isolated_api_faults','windows_physical','android_physical'],10:['windows_physical','paired_game_audio'],11:['android_physical','paired_game_audio'],12:['mac_audio'],13:['paired_media_profile','isolated_load','release_review'],14:['windows_physical','android_physical','accessibility_runtime'],15:['browser_workflow','isolated_api_faults'],16:['isolated_trace_runtime','observability_queries']}.get(index,selected)
+   if 'collector' in lower and 'tempo' in lower and issue['number'] not in [554,564]:selected+=['isolated_trace_runtime']
+   if any(x in lower for x in ['откат','rollback','rollout','release decision']) and issue['number'] not in [249,305]:selected+=['release_review']
+  selected=list(dict.fromkeys(selected));assert all(m in methods for m in selected)
+  row['row_kind']=kind;row['acceptance_methods']=selected
+  row['execution_plan']={'status':'PLAN_ONLY_NOT_RUNTIME_PROOF','source_scenario':row['id']+' requirement text retained verbatim',
+   'method_scope':'Each method is supplemental; execute every remaining source-row clause and required platform variant separately',
+   'mentioned_platforms':list(dict.fromkeys(re.findall(r'Windows|macOS|Android|iOS|Pixel|Samsung|TalkBack|VoiceOver|NVDA|Firefox|Safari|Chrome|Chromium|Web|Flutter|PostgreSQL|LiveKit|Collector|Tempo|Grafana|Prometheus',text,re.I))),
+   'required_result':'Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values',
+   'mandatory_when':'Before accepting this exact source requirement or closing its parent QA gate',
+   'existing_scoped_witnesses':list(row['execution_cases'])}
+  if row.get('execution','').startswith(('Issue-specific','Requires the issue-specified')) or not row.get('execution'):
+   row['execution']=' | '.join(methods[m]['command'] for m in selected)
+  if row.get('platform','').startswith('Issue-specified') or not row.get('platform'):
+   row['platform']=' | '.join(dict.fromkeys(methods[m]['platform'] for m in selected))
+  if row['status']=='PENDING':
+   row['status']='NOT_RUN';row['reason']='No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.'
+  if row['status']=='NOT_RUN':row['remaining_work_state']='QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run'
+  summary[kind]+=1
+assert before=={r['id']:r['requirement'] for i in matrix['issues'] for r in i['criteria']}
+assert len(before)==480 and len(matrix['issues'])==37
+matrix['updated_utc']=datetime.now(timezone.utc).isoformat();matrix['acceptance_method_catalog']='acceptance-methods.json'
+matrix['row_classification']=dict(summary);matrix['scope_note']='480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.'
+matrix['remaining_execution_note']='Local Docker29.6.2 Linux amd64 was verified available in this packet; isolated tracing/fault subsets can be prepared. Do not classify all remaining work as externally blocked. Missing physical hosts/listeners/provider/deployed read-only access remain specific limits.'
+file.write_text(json.dumps(matrix,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps({'preserved_rows':len(before),'classified_rows':sum(summary.values()),'kinds':dict(summary),'methods':len(methods),'runtime_completion':False}))

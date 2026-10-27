@@ -1,0 +1,38 @@
+{
+  "at_utc": "2026-10-27T01:46:55.794805+00:00",
+  "constraints": [
+    {
+      "code": "PHYSICAL_MAC_NOT_CONNECTED",
+      "affects": "Actual macOS capture/audio/codec/permissions; a Windows SDK test cannot replace them."
+    },
+    {
+      "code": "PHYSICAL_IPHONE_PIXEL_NOT_CONNECTED",
+      "affects": "Rows requiring those actual devices; the connected Samsung only covers its stated candidate."
+    },
+    {
+      "code": "HUMAN_LISTENER_UNAVAILABLE",
+      "affects": "Audibility/echo/gain; user explicitly cannot listen now; packet counts are insufficient."
+    },
+    {
+      "code": "CONTROLLED_ADMIN_NOT_AVAILABLE",
+      "affects": "Three controlled browser accounts are MEMBER. The primary native ADMIN session was not extracted."
+    },
+    {
+      "code": "WINDOWS_CUA_ELEMENT_CACHE_FAILURE",
+      "affects": "Native admin entry was not performed; see windows-admin-entry-attempt.json. No product defect inferred."
+    },
+    {
+      "code": "NOTIFICATION_PROVIDER_OFF",
+      "affects": "Actual deployed capabilities disable delivery; Android candidate predates notification implementation. See notification-readiness."
+    },
+    {
+      "code": "REFERENCE_SCREENSHOT_ZIP_NOT_AT_CHECKED_PATHS",
+      "affects": "Exact artifacts/ui-ux-screenshots.zip absent in current and primary checkout, not a global absence claim."
+    },
+    {
+      "code": "REAL_USER_STUDY_NOT_EXECUTED",
+      "affects": "Task timing/SUS/error-rate/owner signoff remain unexecuted, not inferred from automation."
+    }
+  ],
+  "available_next_work": "Local Docker/Go/Flutter allow isolated tracing and fault subsets. No blanket external-blocker disposition."
+}

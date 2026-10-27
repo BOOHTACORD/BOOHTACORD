@@ -2,8 +2,8 @@
 
 The goal covers all 37 QA issues open at intake. It remains **IN_PROGRESS**.
 `matrix.json` preserves 480 extracted requirement/dependency rows, including
-historical checkbox claims as input, never as new runtime PASS. PENDING rows
-have not been executed. Nine macOS gates require a real Mac; three load gates
+historical checkbox claims as input, never as new runtime PASS. NOT_RUN rows
+have no fresh complete-row execution; existing partial witnesses retain their limits. Nine macOS gates require a real Mac; three load gates
 require an approved isolated target and calibrated host cohort.
 
 `cases.json` is the explicit invariant → command/input → platform → mandatory
@@ -120,10 +120,23 @@ discards drafts; reaction actions require opening the current disclosure; an ima
 viewer attempt passed after bringing the actual page to foreground, without a
 controlled attribution of that earlier failure. The final DM journey passed.
 
+## Execution map
+
+`acceptance-methods.json` maps24 native/manual methods to the protected invariant,
+command, platform, mandatory trigger and result location. Every preserved source
+row now references applicable methods. These are execution plans, not runtime PASS.
+The480 rows include391 acceptance requirements,21 evidence requirements,7 historical
+claims,29 context rows and32 dependencies; they are not480 independently run tests.
+Measured prerequisites and exact constraints are retained under `prerequisites/`.
+Local Docker29.6.2, Go1.26.4 and Flutter3.47.7 are available for isolated subsets.
+
+Viewer download mismatch is filed as[#581](https://github.com/Egkurilov/BOOHTACORD/issues/581);
+the separate original-file card download passed. No parent QA issue is closed.
+
 ## Remaining work
 
 Execute remaining Windows/Android/Web criteria, review the shortcut defect,
-finish platform/criterion command mapping, then reconcile every QA issue with
+execute the mapped source/platform variants, then reconcile every QA issue with
 evidence and exact blockers. No QA issue is closed by this checkpoint. Provider
 E2E, Mac/iOS/Pixel, calibrated media/load, all screen readers and real-user UX
 measurements remain separate gates. No test consolidation or deletion occurred.
