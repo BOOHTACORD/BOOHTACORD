@@ -84,7 +84,7 @@ test('launch keeps selection visible and technical details optional; one gesture
   expect(capture).toBe(0)
 })
 
-test('screen viewer shows the Flutter participant strip and scrolls names by width', async ({ page }, info) => {
+test('screen viewer keeps participant cards compact without horizontal scrolling', async ({ page }, info) => {
   await page.route(/\/api\/v1\/members\/[^/]+\/avatar(?:\?.*)?$/, route => route.fulfill({
     status: 200,
     contentType: 'image/svg+xml',
@@ -101,7 +101,9 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
   await expect(strip.getByText('3 в комнате', { exact: true })).toBeVisible()
   const participantCards = strip.locator('.voice-viewer-participant')
   await expect(participantCards).toHaveCount(3)
-  await expect(participantCards.first()).toHaveCSS('width', '176px')
+  await expect.poll(() => participantCards.first().evaluate(element => element.getBoundingClientRect().width)).toBeLessThanOrEqual(width <= 420 ? 320 : 176)
+  const roster = strip.locator('ul')
+  expect(await roster.evaluate(element => element.scrollWidth <= element.clientWidth + 1)).toBe(true)
   const watcherCount = strip.getByRole('status', { name: 'Зрители трансляции: 1' })
   await expect(watcherCount).toBeVisible()
   await expect(watcherCount).toHaveAttribute('title', 'Зрители трансляции: 1')
@@ -123,6 +125,30 @@ test('screen viewer shows the Flutter participant strip and scrolls names by wid
     await clean(page)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await page.screenshot({ path: info.outputPath(`viewer-participants-${width}-${scale}.png`) })
+  }
+})
+
+test('participant overlay wraps a four-member roster into a compact grid', async ({ page }, info) => {
+  await page.route(/\/api\/v1\/members\/[^/]+\/avatar(?:\?.*)?$/, route => route.fulfill({
+    status: 200,
+    contentType: 'image/svg+xml',
+    body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>',
+  }))
+  for (const [width, scale, maxPanelWidth, expectedRows] of [[390, 200, 320, 4], [640, 100, 320, 2], [1440, 100, 400, 2]]) {
+    await open(page, 'viewer-strip&four-participants', width, scale)
+    await page.getByRole('button', { name: 'Участники · 4' }).click()
+    const panel = page.locator('.screen-viewer-panel-content--participants')
+    const strip = panel.getByTestId('viewer-participants')
+    const cards = strip.locator('.voice-viewer-participant')
+    const roster = strip.locator('ul')
+    await expect(cards).toHaveCount(4)
+    await expect.poll(() => panel.evaluate(element => element.getBoundingClientRect().width)).toBeLessThanOrEqual(maxPanelWidth)
+    expect(await roster.evaluate(element => element.scrollWidth <= element.clientWidth + 1)).toBe(true)
+    expect(await panel.evaluate(element => element.scrollHeight <= element.clientHeight + 1)).toBe(true)
+    const rowPositions = await cards.evaluateAll(elements => [...new Set(elements.map(element => Math.round(element.getBoundingClientRect().top)))])
+    expect(rowPositions).toHaveLength(expectedRows)
+    await clean(page)
+    await page.screenshot({ path: info.outputPath(`viewer-participants-four-${width}-${scale}.png`) })
   }
 })
 

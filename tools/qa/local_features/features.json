@@ -572,7 +572,10 @@
       },
       "participant_names": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
-        "scope": "Voice viewer participant cards are widened to 176px for longer names while horizontal scrolling and narrow/200% text layouts remain within the viewport."
+        "focused": [
+          "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
+        ],
+        "scope": "Voice viewer participant cards wrap into a compact responsive roster with no horizontal scrollbar; phone widths use one column to preserve names at 200% text, while tablet and desktop widths use two columns. Long names retain their full title."
       },
       "viewer_controls": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",

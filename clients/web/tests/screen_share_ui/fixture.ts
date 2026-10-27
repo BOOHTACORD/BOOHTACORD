@@ -21,6 +21,7 @@ const diagnostics = (): ScreenDiagnostics => ({ source: state.source as ScreenDi
 const viewerParticipants: VoiceVolumeParticipant[] = [
   { accountId: 'member-speaking', id: 'member-speaking', microphoneMuted: false, name: 'Участник говорит', speaking: true, volume: 100 },
   { accountId: 'member-sharing', id: 'member-sharing', microphoneMuted: true, name: 'Участник показывает экран', speaking: false, volume: 100 },
+  ...(params.has('four-participants') ? [{ accountId: 'member-four', id: 'member-four', microphoneMuted: false, name: 'Дополнительный участник с длинным именем', speaking: false, volume: 100 }] : []),
 ]
 const fixtureViewerParticipants = params.has('single-participant') ? [] : viewerParticipants
 const viewerScreens: ScreenViewerCard[] = [
