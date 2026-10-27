@@ -723,6 +723,58 @@
       ],
       "result": "local-staging/browser-final-smoke.json",
       "limits": "Two listeners without microphone; no audibility, native Android, media payload or capacity acceptance."
+    },
+    {
+      "id": "UPLOAD-real-TEXT-idle-deadline",
+      "status": "FAIL",
+      "protects": "A stopped TEXT multipart body must time out at60s and release inflight/reserved/staging state without client cooperation.",
+      "command": "python -X utf8 .out/qa-upload-faults/probe_idle.py",
+      "platform": "This Windows PC; real loopback Caddy/Go API and PostgreSQL17.6; source072426d6; no API mocks",
+      "mandatory_when": "Before accepting #134 or I240.C2 and after upload deadline changes",
+      "issues": [
+        240
+      ],
+      "result": "upload-timeout/idle-text-result.json",
+      "limits": "No production, physical Android, microphone or media acceptance.; Global16 concurrency, writer/disk failure, byte-less stalled body and15-minute deployed absolute-duration variants remain NOT_RUN.; Two successful32768-byte unattached synthetic fixtures remain intentionally in this local QA storage; staging is0.; No product code changed, no test consolidation/deletion and no claim that existing unit PASS covers real server-body interruption."
+    },
+    {
+      "id": "UPLOAD-real-DM-idle-deadline",
+      "status": "FAIL",
+      "protects": "A stopped DM multipart body must time out at60s and release inflight/reserved/staging state without client cooperation.",
+      "command": "python -X utf8 .out/qa-upload-faults/probe_dm_idle.py",
+      "platform": "This Windows PC; real loopback Caddy/Go API and PostgreSQL17.6; source072426d6; no API mocks",
+      "mandatory_when": "Before accepting #134 or I240.C2 and after upload deadline changes",
+      "issues": [
+        240
+      ],
+      "result": "upload-timeout/idle-dm-result.json",
+      "limits": "No production, physical Android, microphone or media acceptance.; Global16 concurrency, writer/disk failure, byte-less stalled body and15-minute deployed absolute-duration variants remain NOT_RUN.; Two successful32768-byte unattached synthetic fixtures remain intentionally in this local QA storage; staging is0.; No product code changed, no test consolidation/deletion and no claim that existing unit PASS covers real server-body interruption."
+    },
+    {
+      "id": "UPLOAD-real-account-concurrency-and-progress",
+      "status": "PASS",
+      "protects": "Account concurrency guard, disconnect cleanup and valid slow-progress TEXT/DM uploads remain usable.",
+      "command": "python -X utf8 .out/qa-upload-faults/probe_controls.py",
+      "platform": "This Windows PC; real loopback Caddy/Go API and PostgreSQL17.6; source072426d6; no API mocks",
+      "mandatory_when": "Before accepting upload quota/timeout changes",
+      "issues": [
+        240
+      ],
+      "result": "upload-timeout/controls-result.json",
+      "limits": "Global concurrency/writer failure and automatic timeout cleanup remain separate; current idle timeout FAIL."
+    },
+    {
+      "id": "UPLOAD-native-HTTP1-idle-and-absolute",
+      "status": "FAIL",
+      "protects": "A real net/http server-body read must unblock on deadline; fake reader Close semantics cannot prove this.",
+      "command": "go test -json -overlay ../.out/qa-upload-faults/overlay.private.json ./internal/storage/upload_request -run TestNativeHTTPServerStoppedBodyDeadline -count=1 -timeout=10s",
+      "platform": "Windows amd64, actual Go1.26.4 net/http HTTP1 loopback server",
+      "mandatory_when": "Before accepting the upload_request timeout mechanism",
+      "issues": [
+        240
+      ],
+      "result": "upload-timeout/native-network-result.json",
+      "limits": "Real loopback net/http HTTP1 server,40ms policy and500ms observation. The deployed15-minute absolute policy was not waited out."
     }
   ]
 }

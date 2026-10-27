@@ -1,0 +1,17 @@
+{
+  "go_version": "go version go1.26.4 windows/amd64",
+  "source_file": "GOROOT/src/net/http/transfer.go",
+  "source_sha256": "3e04744176d3cf5bef2827ab158b10aaeec3981ac5f4e7fb86e3dbf5f592eed7",
+  "methods": {
+    "Read": {
+      "line": 831,
+      "same_body_mutex_locked": true
+    },
+    "Close": {
+      "line": 971,
+      "same_body_mutex_locked": true
+    }
+  },
+  "primary_reference": "https://github.com/golang/go/issues/78939",
+  "interpretation": "HTTP1 server body Read and Close serialize on one mutex. The real-network regression confirms that Close does not release this blocked read."
+}

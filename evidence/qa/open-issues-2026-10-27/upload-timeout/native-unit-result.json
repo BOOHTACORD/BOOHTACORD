@@ -1,0 +1,31 @@
+{
+  "command": "go test -json ./internal/storage/upload_request ./internal/storage/admit_upload",
+  "toolchain": "go1.26.4 windows/amd64",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "named_results": [
+    {
+      "Package": "voice-platform/backend/internal/storage/upload_request",
+      "Test": "TestIdleDeadlineClosesBlockedBodyAndCancelsRequest",
+      "Action": "pass"
+    },
+    {
+      "Package": "voice-platform/backend/internal/storage/upload_request",
+      "Test": "TestProgressResetsIdleDeadline",
+      "Action": "pass"
+    },
+    {
+      "Package": "voice-platform/backend/internal/storage/admit_upload",
+      "Test": "TestLimiterCapsPerAccountAndDeploymentAndReleasesEverySlot",
+      "Action": "pass"
+    },
+    {
+      "Package": "voice-platform/backend/internal/storage/admit_upload",
+      "Test": "TestMiddlewareRejectsConcurrentRequestWithRetryAfterAndReleases",
+      "Action": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 4
+  },
+  "raw_sha256": "f0f955574083063b24e63b109b96a4d1142530f126188519222ddde36403bae5"
+}

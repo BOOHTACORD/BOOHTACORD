@@ -1,0 +1,75 @@
+{
+  "at_utc": "2026-10-27T20:04:26.964242+00:00",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "origin": "http://localhost:18088",
+  "case": "DM_partial_multipart_idle",
+  "native_idle_seconds": 60,
+  "observation_bound_seconds": 80,
+  "samples": [
+    {
+      "elapsed_seconds": 1.0,
+      "voice_platform_uploads_inflight": 1.0,
+      "voice_platform_upload_oldest_inflight_seconds": 0.99804657,
+      "voice_platform_attachment_upload_reserved_bytes": 25000000.0,
+      "response_received": false
+    },
+    {
+      "elapsed_seconds": 10.015,
+      "voice_platform_uploads_inflight": 1.0,
+      "voice_platform_upload_oldest_inflight_seconds": 9.269477228,
+      "voice_platform_attachment_upload_reserved_bytes": 25000000.0,
+      "response_received": false
+    },
+    {
+      "elapsed_seconds": 30.047,
+      "voice_platform_uploads_inflight": 1.0,
+      "voice_platform_upload_oldest_inflight_seconds": 27.646264172,
+      "voice_platform_attachment_upload_reserved_bytes": 25000000.0,
+      "response_received": false
+    },
+    {
+      "elapsed_seconds": 55.093,
+      "voice_platform_uploads_inflight": 1.0,
+      "voice_platform_upload_oldest_inflight_seconds": 50.597493105,
+      "voice_platform_attachment_upload_reserved_bytes": 25000000.0,
+      "response_received": false
+    },
+    {
+      "elapsed_seconds": 62.109,
+      "voice_platform_uploads_inflight": 1.0,
+      "voice_platform_upload_oldest_inflight_seconds": 57.0375606,
+      "voice_platform_attachment_upload_reserved_bytes": 25000000.0,
+      "response_received": false
+    },
+    {
+      "elapsed_seconds": 70.14,
+      "voice_platform_uploads_inflight": 1.0,
+      "voice_platform_upload_oldest_inflight_seconds": 64.38979141,
+      "voice_platform_attachment_upload_reserved_bytes": 25000000.0,
+      "response_received": false
+    },
+    {
+      "elapsed_seconds": 80.156,
+      "voice_platform_uploads_inflight": 1.0,
+      "voice_platform_upload_oldest_inflight_seconds": 73.581098847,
+      "voice_platform_attachment_upload_reserved_bytes": 25000000.0,
+      "response_received": false
+    }
+  ],
+  "status": "FAIL_IDLE_TIMEOUT_NOT_ENFORCED",
+  "baseline": {
+    "voice_platform_uploads_inflight": 0.0,
+    "voice_platform_upload_oldest_inflight_seconds": 0.0,
+    "voice_platform_attachment_upload_reserved_bytes": 0.0
+  },
+  "baseline_staging_files": 0,
+  "response_before_abort": null,
+  "staging_files_at_observation_end": 1,
+  "after_explicit_client_disconnect": {
+    "voice_platform_uploads_inflight": 0.0,
+    "voice_platform_upload_oldest_inflight_seconds": 0.0,
+    "voice_platform_attachment_upload_reserved_bytes": 0.0
+  },
+  "staging_files_after_disconnect": 0,
+  "restoration": "PASS"
+}

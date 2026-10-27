@@ -1,0 +1,13 @@
+{
+  "status": "FAIL_REAL_HTTP1_DEADLINES",
+  "command": "go test -json -overlay ../.out/qa-upload-faults/overlay.private.json ./internal/storage/upload_request -run TestNativeHTTPServerStoppedBodyDeadline -count=1 -timeout=10s",
+  "exit_code": 1,
+  "toolchain": "go1.26.4 windows/amd64",
+  "failed_leaf_cases": [
+    "TestNativeHTTPServerStoppedBodyDeadline/idle",
+    "TestNativeHTTPServerStoppedBodyDeadline/absolute"
+  ],
+  "raw_sha256": "0b46af93a49f2aac9a468deae3ccfc8769633f24f4a5242ab0318c3473ed3dad",
+  "overlay_note": "Adds only native_network_test.go from retained test source to the unchanged upload_request package; no product implementation is replaced.",
+  "scope": "Real loopback net/http HTTP1 server,40ms policy and500ms observation. The deployed15-minute absolute policy was not waited out."
+}

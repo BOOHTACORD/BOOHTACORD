@@ -1,0 +1,96 @@
+{
+  "status": "PASS_SCOPED_ACCOUNT_GUARD_AND_PROGRESS",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "at_utc": "2026-10-27T20:06:53.043865+00:00",
+  "origin": "http://localhost:18088",
+  "samples": [
+    {
+      "voice_platform_uploads_inflight": 0.0,
+      "voice_platform_upload_oldest_inflight_seconds": 0.0,
+      "voice_platform_attachment_upload_reserved_bytes": 0.0
+    },
+    {
+      "voice_platform_uploads_inflight": 2.0,
+      "voice_platform_upload_oldest_inflight_seconds": 7.52020642,
+      "voice_platform_attachment_upload_reserved_bytes": 50000000.0
+    },
+    {
+      "voice_platform_uploads_inflight": 2.0,
+      "voice_platform_upload_oldest_inflight_seconds": 16.895876712,
+      "voice_platform_attachment_upload_reserved_bytes": 50000000.0
+    },
+    {
+      "voice_platform_uploads_inflight": 2.0,
+      "voice_platform_upload_oldest_inflight_seconds": 26.26682944,
+      "voice_platform_attachment_upload_reserved_bytes": 50000000.0
+    },
+    {
+      "voice_platform_uploads_inflight": 2.0,
+      "voice_platform_upload_oldest_inflight_seconds": 35.611066008,
+      "voice_platform_attachment_upload_reserved_bytes": 50000000.0
+    },
+    {
+      "voice_platform_uploads_inflight": 2.0,
+      "voice_platform_upload_oldest_inflight_seconds": 44.991243568,
+      "voice_platform_attachment_upload_reserved_bytes": 50000000.0
+    },
+    {
+      "voice_platform_uploads_inflight": 2.0,
+      "voice_platform_upload_oldest_inflight_seconds": 54.360087768,
+      "voice_platform_attachment_upload_reserved_bytes": 50000000.0
+    },
+    {
+      "voice_platform_uploads_inflight": 2.0,
+      "voice_platform_upload_oldest_inflight_seconds": 63.704786051,
+      "voice_platform_attachment_upload_reserved_bytes": 50000000.0
+    }
+  ],
+  "checks": [
+    "per_account_two_active_third_429_RetryAfter1",
+    "disconnect_frees_slots_reservations_and_staging",
+    "TEXT_and_DM_progressing_75s_each_201_after_disconnect"
+  ],
+  "baseline": {
+    "voice_platform_uploads_inflight": 0.0,
+    "voice_platform_upload_oldest_inflight_seconds": 0.0,
+    "voice_platform_attachment_upload_reserved_bytes": 0.0
+  },
+  "two_held": {
+    "voice_platform_uploads_inflight": 2.0,
+    "voice_platform_upload_oldest_inflight_seconds": 1.97367245,
+    "voice_platform_attachment_upload_reserved_bytes": 50000000.0
+  },
+  "third_request": {
+    "status": 429,
+    "code": "UPLOAD_CONCURRENCY_LIMITED",
+    "retry_after": "1"
+  },
+  "after_cancel": {
+    "voice_platform_uploads_inflight": 0.0,
+    "voice_platform_upload_oldest_inflight_seconds": 0.0,
+    "voice_platform_attachment_upload_reserved_bytes": 0.0
+  },
+  "progress_results": [
+    {
+      "scope": "TEXT",
+      "status": 201,
+      "byte_size": 32768,
+      "elapsed_seconds": 77.063,
+      "maximum_inter_chunk_delay_seconds": 25
+    },
+    {
+      "scope": "DM",
+      "status": 201,
+      "byte_size": 32768,
+      "elapsed_seconds": 77.063,
+      "maximum_inter_chunk_delay_seconds": 25
+    }
+  ],
+  "restored": {
+    "voice_platform_uploads_inflight": 0.0,
+    "voice_platform_upload_oldest_inflight_seconds": 0.0,
+    "voice_platform_attachment_upload_reserved_bytes": 0.0
+  },
+  "staging_files_after": 0,
+  "completed_local_unattached_fixtures": 2
+}

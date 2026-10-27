@@ -4962,7 +4962,7 @@
       "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240",
       "packet": "backend_and_runtime",
-      "status": "PARTIAL",
+      "status": "FAIL",
       "criteria": [
         {
           "section": "Сессия, backend admission и security",
@@ -5004,13 +5004,24 @@
           "requirement": "[#134 — остановившиеся uploads](https://github.com/Egkurilov/BOOHTACORD/issues/134): на изолированном API+PostgreSQL выполнить TEXT/DM multipart upload с остановкой body, медленной передачей, cancel/disconnect, ошибкой writer и превышением account/global concurrency. Проверить timeout/status/Retry-After, освобождение слотов/reservations/temp files и новую успешную загрузку. Приложить SHA, HTTP outcomes и агрегированные counters; не использовать production нагрузку.",
           "source_checkbox": " ",
           "id": "I240.C2",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental.",
-          "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection.",
+          "status": "FAIL",
+          "execution_cases": [
+            "UPLOAD-real-TEXT-idle-deadline",
+            "UPLOAD-real-DM-idle-deadline",
+            "UPLOAD-real-account-concurrency-and-progress",
+            "UPLOAD-native-HTTP1-idle-and-absolute"
+          ],
+          "evidence": [
+            "upload-timeout/summary.json",
+            "upload-timeout/idle-text-result.json",
+            "upload-timeout/idle-dm-result.json",
+            "upload-timeout/native-network-result.json",
+            "upload-timeout/controls-result.json"
+          ],
+          "execution": "Run the retained loopback-only probe_idle.py, probe_dm_idle.py and probe_controls.py; native overlay regression command retained in native-network-result.json.",
+          "platform": "This Windows PC; real loopback Caddy/Go API and PostgreSQL17.6; source072426d6; no API mocks",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "upload-timeout/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_api_faults"
@@ -5024,10 +5035,21 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "UPLOAD-real-TEXT-idle-deadline",
+              "UPLOAD-real-DM-idle-deadline",
+              "UPLOAD-real-account-concurrency-and-progress",
+              "UPLOAD-native-HTTP1-idle-and-absolute"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "Both real stopped multipart requests still held active1/reserved25MB/staging1 at80s; no408 before forced disconnect. Original4 unit controls pass, real HTTP1 idle/absolute regression fails.",
+          "remaining_work_state": "FAIL_CONFIRMED; global/writer/other variants remain NOT_RUN",
+          "witness_limits": [
+            "No production, physical Android, microphone or media acceptance.",
+            "Global16 concurrency, writer/disk failure, byte-less stalled body and15-minute deployed absolute-duration variants remain NOT_RUN.",
+            "Two successful32768-byte unattached synthetic fixtures remain intentionally in this local QA storage; staging is0.",
+            "No product code changed, no test consolidation/deletion and no claim that existing unit PASS covers real server-body interruption."
+          ]
         },
         {
           "section": "Сессия, backend admission и security",
@@ -5628,16 +5650,23 @@
         "ISOLATED-traceql-semantic-fixtures",
         "ISOLATED-traceql-dashboard-queries",
         "LOCAL-QA-runtime-and-telemetry",
-        "LOCAL-QA-TEXT-ACL-and-two-SDK-peers"
+        "LOCAL-QA-TEXT-ACL-and-two-SDK-peers",
+        "UPLOAD-real-TEXT-idle-deadline",
+        "UPLOAD-real-DM-idle-deadline",
+        "UPLOAD-real-account-concurrency-and-progress",
+        "UPLOAD-native-HTTP1-idle-and-absolute"
       ],
       "evidence": [
         "notification-readiness/summary.json",
         "web-session-contract/logout.json",
         "web-session-contract/swagger.json",
         "trace-runtime/summary.json",
-        "local-staging/summary.json"
+        "local-staging/summary.json",
+        "upload-timeout/summary.json"
       ],
-      "defects": [],
+      "defects": [
+        134
+      ],
       "blockers": [],
       "source_body_sha256": "7cca703010a69ef8a373315fc6e27adac88f81ff7c8be3a80976e06bfdaba9d3",
       "source_snapshot": ".out/qa-goal/open-issues-snapshot.json",

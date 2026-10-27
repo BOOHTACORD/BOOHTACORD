@@ -1,0 +1,56 @@
+"""Real per-account concurrency rejection and75s progressing TEXT/DM uploads after disconnect."""
+import concurrent.futures,json,time
+from datetime import datetime,timezone
+from common import ROOT,WORK,ORIGIN,SOURCE,Client,connection,guard,snapshot,staging_count,abort,await_clean,write
+guard();client=Client('member_a');topology=json.loads((ROOT/'.out/local-qa/topology.private.json').read_text())
+dm=json.loads((WORK/'dm-scope.private.json').read_text())['direct_message']
+paths=['/channels/'+topology['text']+'/attachments','/direct-messages/'+dm+'/attachments']
+report={'status':'RUNNING','source_revision':SOURCE,'at_utc':datetime.now(timezone.utc).isoformat(),'origin':ORIGIN,'samples':[],'checks':[]}
+start_body=b'--qa-progress\r\nContent-Disposition: form-data; name="file"; filename="synthetic.bin"\r\nContent-Type: application/octet-stream\r\n\r\n'
+end_body=b'\r\n--qa-progress--\r\n';held=[];completed=[]
+def wait_active(expected):
+ deadline=time.monotonic()+8
+ while time.monotonic()<deadline:
+  s=snapshot()
+  if s['voice_platform_uploads_inflight']==expected:return s
+  time.sleep(.2)
+ raise AssertionError('owned_inflight_count_did_not_match')
+def slow(index,path):
+ c=connection();body=start_body+b'X'*32768+end_body;t=time.monotonic()
+ try:
+  c.putrequest('POST','/api/v1'+path)
+  for k,v in {'Origin':ORIGIN,'Cookie':client.cookie,'Content-Type':'multipart/form-data; boundary=qa-progress','Content-Length':str(len(body))}.items():c.putheader(k,v)
+  c.endheaders();c.send(start_body+b'X'*8192)
+  for part in range(3):
+   time.sleep(25);c.send(b'X'*8192+(end_body if part==2 else b''))
+  r=c.getresponse();data=json.loads(r.read());assert r.status==201,('progress_status',r.status)
+  completed.append({'scope':'TEXT' if index==0 else 'DM','id':data['id']})
+  return {'scope':'TEXT' if index==0 else 'DM','status':r.status,'byte_size':data['byte_size'],'elapsed_seconds':round(time.monotonic()-t,3),'maximum_inter_chunk_delay_seconds':25}
+ finally:abort(c)
+try:
+ report['baseline']=await_clean();assert staging_count()==0
+ held=[client.begin(paths[0]),client.begin(paths[1])];report['two_held']=wait_active(2)
+ assert report['two_held']['voice_platform_attachment_upload_reserved_bytes']==50000000
+ c=connection();body=start_body+b'Y'*1024+end_body
+ try:
+  c.request('POST','/api/v1'+paths[0],body=body,headers={'Origin':ORIGIN,'Cookie':client.cookie,'Content-Type':'multipart/form-data; boundary=qa-progress'})
+  r=c.getresponse();data=json.loads(r.read());report['third_request']={'status':r.status,'code':data.get('error',{}).get('code'),'retry_after':r.getheader('Retry-After')}
+  assert report['third_request']=={'status':429,'code':'UPLOAD_CONCURRENCY_LIMITED','retry_after':'1'}
+ finally:abort(c)
+ report['checks'].append('per_account_two_active_third_429_RetryAfter1')
+ for c in held:abort(c)
+ held=[];report['after_cancel']=await_clean();assert staging_count()==0
+ report['checks'].append('disconnect_frees_slots_reservations_and_staging')
+ with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+  jobs=[pool.submit(slow,i,path) for i,path in enumerate(paths)]
+  while not all(j.done() for j in jobs):
+   s=snapshot();report['samples'].append(s);write('controls-result.json',report);print(json.dumps({'stage':'progressing','inflight':s['voice_platform_uploads_inflight'],'reserved':s['voice_platform_attachment_upload_reserved_bytes']}),flush=True);time.sleep(10)
+  report['progress_results']=[j.result() for j in jobs]
+ assert all(r['elapsed_seconds']>=75 and r['status']==201 for r in report['progress_results'])
+ report['checks'].append('TEXT_and_DM_progressing_75s_each_201_after_disconnect')
+ report['status']='PASS_SCOPED_ACCOUNT_GUARD_AND_PROGRESS'
+finally:
+ for c in held:abort(c)
+ write('completed-attachments.private.json',completed);report['restored']=await_clean();report['staging_files_after']=staging_count();report['completed_local_unattached_fixtures']=len(completed)
+ write('controls-result.json',report);print(json.dumps({'status':report['status'],'staging_files':report['staging_files_after']}),flush=True)
+raise SystemExit(0 if report['status'].startswith('PASS') else 1)

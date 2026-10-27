@@ -1,0 +1,24 @@
+{"Time":"2026-10-27T23:02:57.4590113+03:00","Action":"start","Package":"voice-platform/backend/internal/storage/upload_request"}
+{"Time":"2026-10-27T23:02:58.2204408+03:00","Action":"run","Package":"voice-platform/backend/internal/storage/upload_request","Test":"TestIdleDeadlineClosesBlockedBodyAndCancelsRequest"}
+{"Time":"2026-10-27T23:02:58.2204408+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/upload_request","Test":"TestIdleDeadlineClosesBlockedBodyAndCancelsRequest","Output":"=== RUN   TestIdleDeadlineClosesBlockedBodyAndCancelsRequest\n"}
+{"Time":"2026-10-27T23:02:58.2309429+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/upload_request","Test":"TestIdleDeadlineClosesBlockedBodyAndCancelsRequest","Output":"--- PASS: TestIdleDeadlineClosesBlockedBodyAndCancelsRequest (0.01s)\n"}
+{"Time":"2026-10-27T23:02:58.2309429+03:00","Action":"pass","Package":"voice-platform/backend/internal/storage/upload_request","Test":"TestIdleDeadlineClosesBlockedBodyAndCancelsRequest","Elapsed":0.01}
+{"Time":"2026-10-27T23:02:58.2309429+03:00","Action":"run","Package":"voice-platform/backend/internal/storage/upload_request","Test":"TestProgressResetsIdleDeadline"}
+{"Time":"2026-10-27T23:02:58.2309429+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/upload_request","Test":"TestProgressResetsIdleDeadline","Output":"=== RUN   TestProgressResetsIdleDeadline\n"}
+{"Time":"2026-10-27T23:02:58.2309429+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/upload_request","Test":"TestProgressResetsIdleDeadline","Output":"--- PASS: TestProgressResetsIdleDeadline (0.00s)\n"}
+{"Time":"2026-10-27T23:02:58.2309429+03:00","Action":"pass","Package":"voice-platform/backend/internal/storage/upload_request","Test":"TestProgressResetsIdleDeadline","Elapsed":0}
+{"Time":"2026-10-27T23:02:58.2309429+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/upload_request","Output":"PASS\n"}
+{"Time":"2026-10-27T23:02:58.2324409+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/upload_request","Output":"ok  \tvoice-platform/backend/internal/storage/upload_request\t0.773s\n"}
+{"Time":"2026-10-27T23:02:58.2524521+03:00","Action":"pass","Package":"voice-platform/backend/internal/storage/upload_request","Elapsed":0.793}
+{"Time":"2026-10-27T23:02:59.6367476+03:00","Action":"start","Package":"voice-platform/backend/internal/storage/admit_upload"}
+{"Time":"2026-10-27T23:03:00.7790885+03:00","Action":"run","Package":"voice-platform/backend/internal/storage/admit_upload","Test":"TestLimiterCapsPerAccountAndDeploymentAndReleasesEverySlot"}
+{"Time":"2026-10-27T23:03:00.7790885+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/admit_upload","Test":"TestLimiterCapsPerAccountAndDeploymentAndReleasesEverySlot","Output":"=== RUN   TestLimiterCapsPerAccountAndDeploymentAndReleasesEverySlot\n"}
+{"Time":"2026-10-27T23:03:00.7790885+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/admit_upload","Test":"TestLimiterCapsPerAccountAndDeploymentAndReleasesEverySlot","Output":"--- PASS: TestLimiterCapsPerAccountAndDeploymentAndReleasesEverySlot (0.00s)\n"}
+{"Time":"2026-10-27T23:03:00.7790885+03:00","Action":"pass","Package":"voice-platform/backend/internal/storage/admit_upload","Test":"TestLimiterCapsPerAccountAndDeploymentAndReleasesEverySlot","Elapsed":0}
+{"Time":"2026-10-27T23:03:00.7790885+03:00","Action":"run","Package":"voice-platform/backend/internal/storage/admit_upload","Test":"TestMiddlewareRejectsConcurrentRequestWithRetryAfterAndReleases"}
+{"Time":"2026-10-27T23:03:00.7790885+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/admit_upload","Test":"TestMiddlewareRejectsConcurrentRequestWithRetryAfterAndReleases","Output":"=== RUN   TestMiddlewareRejectsConcurrentRequestWithRetryAfterAndReleases\n"}
+{"Time":"2026-10-27T23:03:00.7790885+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/admit_upload","Test":"TestMiddlewareRejectsConcurrentRequestWithRetryAfterAndReleases","Output":"--- PASS: TestMiddlewareRejectsConcurrentRequestWithRetryAfterAndReleases (0.00s)\n"}
+{"Time":"2026-10-27T23:03:00.7790885+03:00","Action":"pass","Package":"voice-platform/backend/internal/storage/admit_upload","Test":"TestMiddlewareRejectsConcurrentRequestWithRetryAfterAndReleases","Elapsed":0}
+{"Time":"2026-10-27T23:03:00.7790885+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/admit_upload","Output":"PASS\n"}
+{"Time":"2026-10-27T23:03:00.7805889+03:00","Action":"output","Package":"voice-platform/backend/internal/storage/admit_upload","Output":"ok  \tvoice-platform/backend/internal/storage/admit_upload\t1.143s\n"}
+{"Time":"2026-10-27T23:03:00.7910904+03:00","Action":"pass","Package":"voice-platform/backend/internal/storage/admit_upload","Elapsed":1.154}

@@ -1,0 +1,58 @@
+"""Loopback-only real upload clients; credentials stay in memory and never enter receipts."""
+import http.client,json,os,re,socket,subprocess,sys,time
+from http.cookies import SimpleCookie
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];WORK=Path(__file__).parent
+sys.path.insert(0,str(ROOT/'.out/local-qa'))
+from profile_common import docker,credentials,ORIGIN,SOURCE,PROJECT
+assert ORIGIN=='http://localhost:18088'
+subprocess.run(['icacls',str(WORK),'/inheritance:r','/grant:r',os.environ['USERNAME']+':(OI)(CI)F'],capture_output=True,check=True)
+def write(name,data):(WORK/name).write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n')
+def guard():
+ assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT).decode().strip()==SOURCE
+ for name in ['api','postgres']:
+  row=json.loads(docker('inspect',PROJECT+'-'+name+'-1'))[0]
+  assert row['State']['Running'] and row['Config']['Labels']['com.docker.compose.project']==PROJECT
+  if name=='api':assert json.loads(docker('image','inspect',row['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+def connection(timeout=85):return http.client.HTTPConnection('localhost',18088,timeout=timeout)
+class Client:
+ def __init__(self,key):
+  c=credentials();self.cookie=''
+  status,_,headers=self.request('/auth/login','POST',{'login':c[key+'_login'],'password':c[key+'_password']})
+  assert status==204,('owned_login_status',status)
+  jar=SimpleCookie(headers['Set-Cookie']);self.cookie='vp_session='+jar['vp_session'].value
+ def request(self,path,method='GET',body=None):
+  c=connection();raw=None if body is None else json.dumps(body).encode()
+  try:
+   c.request(method,'/api/v1'+path,body=raw,headers={'Origin':ORIGIN,'Cookie':self.cookie,'Content-Type':'application/json'})
+   r=c.getresponse();raw=r.read();return r.status,json.loads(raw) if raw else None,dict(r.getheaders())
+  finally:c.close()
+ def begin(self,path,partial=True):
+  c=connection();data=b'--qa-stall\r\nContent-Disposition: form-data; name="file"; filename="synthetic.bin"\r\nContent-Type: application/octet-stream\r\n\r\n'
+  c.putrequest('POST','/api/v1'+path)
+  for k,v in {'Origin':ORIGIN,'Cookie':self.cookie,'Content-Type':'multipart/form-data; boundary=qa-stall','Content-Length':'100000'}.items():c.putheader(k,v)
+  c.endheaders()
+  if partial:c.send(data+b'X'*8192)
+  return c
+def snapshot():
+ raw=docker('exec',PROJECT+'-postgres-1','wget','-qO-','http://api:8080/metrics').decode()
+ names=['voice_platform_uploads_inflight','voice_platform_upload_oldest_inflight_seconds','voice_platform_attachment_upload_reserved_bytes']
+ result={}
+ for name in names:
+  values=re.findall(r'^'+name+r' ([^\n]+)$',raw,re.M);assert len(values)==1,name;result[name]=float(values[0])
+ return result
+def staging_count():
+ volume=PROJECT+'_attachments-data';v=json.loads(docker('volume','inspect',volume))[0]
+ assert v['Labels']['com.docker.compose.project']==PROJECT
+ return int(docker('run','--rm','--network','none','--read-only','--volume',volume+':/qa:ro','postgres:17.6-alpine','sh','-ec','find /qa/staging -type f | wc -l').decode().strip())
+def abort(c):
+ try:c.sock.shutdown(socket.SHUT_RDWR)
+ except (AttributeError,OSError):pass
+ c.close()
+def await_clean(seconds=10):
+ deadline=time.monotonic()+seconds
+ while time.monotonic()<deadline:
+  s=snapshot()
+  if s['voice_platform_uploads_inflight']==0 and s['voice_platform_attachment_upload_reserved_bytes']==0:return s
+  time.sleep(.25)
+ raise AssertionError('owned_upload_resources_not_released')

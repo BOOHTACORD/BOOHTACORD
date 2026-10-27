@@ -1,0 +1,44 @@
+package uploadrequest
+
+import (
+ "bufio"
+ "fmt"
+ "io"
+ "net"
+ "net/http"
+ "net/http/httptest"
+ "testing"
+ "time"
+)
+
+// Uses net/http's real HTTP/1 request body rather than a fake closable reader.
+func TestNativeHTTPServerStoppedBodyDeadline(t *testing.T) {
+ for _, policy := range []struct{name string; maximum, idle time.Duration}{
+  {"idle", 2*time.Second, 40*time.Millisecond},
+  {"absolute", 40*time.Millisecond, 2*time.Second},
+ } {
+  t.Run(policy.name, func(t *testing.T) {
+   entered:=make(chan struct{})
+   server:=httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter,r *http.Request){
+    bounded,cleanup:=WithLimits(r,policy.maximum,policy.idle)
+    defer cleanup();defer bounded.Body.Close()
+    close(entered)
+    _,_ = io.Copy(io.Discard,bounded.Body)
+    if TimedOut(bounded.Context()){w.WriteHeader(http.StatusRequestTimeout);return}
+    w.WriteHeader(http.StatusBadRequest)
+   }))
+   defer server.Close()
+   conn,err:=net.DialTimeout("tcp",server.Listener.Addr().String(),time.Second)
+   if err!=nil{t.Fatal(err)}
+   defer conn.Close()
+   _,err=fmt.Fprint(conn,"POST / HTTP/1.1\r\nHost: localhost\r\nContent-Length: 100000\r\n\r\nX")
+   if err!=nil{t.Fatal(err)}
+   select{case <-entered:case <-time.After(time.Second):t.Fatal("real handler did not start")}
+   if err=conn.SetReadDeadline(time.Now().Add(500*time.Millisecond));err!=nil{t.Fatal(err)}
+   response,err:=http.ReadResponse(bufio.NewReader(conn),nil)
+   if err!=nil{t.Fatalf("real HTTP/1 body remained blocked after %s deadline: %T",policy.name,err)}
+   defer response.Body.Close()
+   if response.StatusCode!=http.StatusRequestTimeout{t.Fatalf("status=%d; want408",response.StatusCode)}
+  })
+ }
+}

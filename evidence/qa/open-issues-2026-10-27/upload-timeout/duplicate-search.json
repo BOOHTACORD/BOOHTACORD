@@ -1,0 +1,66 @@
+{
+  "checked_at_utc": "2026-10-27 20:08:57 UTC",
+  "repository": "Egkurilov/BOOHTACORD",
+  "state_filter": "open",
+  "queries": [
+    {
+      "query": "is:issue upload",
+      "matches": [
+        {
+          "number": 131,
+          "title": "QA — сводная runtime-приёмка реализованных функций",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/131"
+        },
+        {
+          "number": 243,
+          "title": "[QA] Backend load harness acceptance and capacity evidence for #8",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/243"
+        },
+        {
+          "number": 287,
+          "title": "[QA] Приёмка завершённого пакета roster, client features и native hardening",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/287"
+        },
+        {
+          "number": 53,
+          "title": "QA-03 — DM/storage privacy",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/53"
+        },
+        {
+          "number": 240,
+          "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240"
+        },
+        {
+          "number": 54,
+          "title": "QA-05 — Authenticated browser E2E",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/54"
+        },
+        {
+          "number": 62,
+          "title": "QA-13 — Flutter parity и Android/device release",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/62"
+        }
+      ]
+    },
+    {
+      "query": "is:issue UPLOAD_TIMEOUT",
+      "matches": []
+    },
+    {
+      "query": "is:issue 134",
+      "matches": [
+        {
+          "number": 240,
+          "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240"
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "reuse_issue": 134,
+    "previous_state": "closed",
+    "reason": "Exact existing server timeout invariant; no separate open fix issue found. Reopen with new source-bound network evidence."
+  }
+}

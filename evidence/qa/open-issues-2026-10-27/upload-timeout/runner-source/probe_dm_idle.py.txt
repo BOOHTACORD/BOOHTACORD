@@ -1,0 +1,11 @@
+"""Same bounded stopped-body scenario on an owned real two-participant DM."""
+import json,runpy,sys
+from common import ROOT,WORK,Client,write
+users=json.loads((WORK/'owned-users.private.json').read_text());client=Client('member_a')
+status,dm,_=client.request('/direct-messages','POST',{'participant_id':users['member_b']['account_id']})
+assert status in [200,201],('owned_DM_create_status',status)
+write('dm-scope.private.json',{'direct_message':dm['id']})
+source=(WORK/'probe_idle.py').read_text()
+source=source.replace("path='/channels/'+topology['text']+'/attachments'", "path='/direct-messages/'+json.loads((WORK/'dm-scope.private.json').read_text())['direct_message']+'/attachments'")
+source=source.replace('TEXT_partial_multipart_idle','DM_partial_multipart_idle').replace('idle-text-result.json','idle-dm-result.json')
+exec(compile(source,str(WORK/'probe_idle.py'),'exec'))

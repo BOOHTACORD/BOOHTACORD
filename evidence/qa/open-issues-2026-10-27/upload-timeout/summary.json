@@ -1,0 +1,36 @@
+{
+  "status": "FAIL_CONFIRMED_UPLOAD_IDLE_DEADLINE",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "defect_issue": 134,
+  "qa_criterion": "I240.C2",
+  "TEXT_at_80s": {
+    "elapsed_seconds": 80.141,
+    "voice_platform_uploads_inflight": 1.0,
+    "voice_platform_upload_oldest_inflight_seconds": 73.543674274,
+    "voice_platform_attachment_upload_reserved_bytes": 25000000.0,
+    "response_received": false
+  },
+  "DM_at_80s": {
+    "elapsed_seconds": 80.156,
+    "voice_platform_uploads_inflight": 1.0,
+    "voice_platform_upload_oldest_inflight_seconds": 73.581098847,
+    "voice_platform_attachment_upload_reserved_bytes": 25000000.0,
+    "response_received": false
+  },
+  "native_policy_idle_seconds": 60,
+  "actual_HTTP_response_before_forced_disconnect": null,
+  "each_observed_staging_file_count": 1,
+  "each_observed_reserved_bytes": 25000000,
+  "restoration_after_explicit_client_disconnect": "PASS; active0/reserved0/staging0 for both",
+  "controls_PASS": [
+    "Original4 named unit tests,0 skipped",
+    "Third same-account upload:429 UPLOAD_CONCURRENCY_LIMITED Retry-After1",
+    "Real TEXT and DM uploads with25s progress gaps:201 after75s; release active/reserved/staging state"
+  ],
+  "limits": [
+    "No production, physical Android, microphone or media acceptance.",
+    "Global16 concurrency, writer/disk failure, byte-less stalled body and15-minute deployed absolute-duration variants remain NOT_RUN.",
+    "Two successful32768-byte unattached synthetic fixtures remain intentionally in this local QA storage; staging is0.",
+    "No product code changed, no test consolidation/deletion and no claim that existing unit PASS covers real server-body interruption."
+  ]
+}

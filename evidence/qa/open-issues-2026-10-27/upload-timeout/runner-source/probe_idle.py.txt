@@ -1,0 +1,27 @@
+"""Observe native60s idle policy over a real stopped multipart body, bounded to80s."""
+import concurrent.futures,json,sys,time
+from datetime import datetime,timezone
+from common import ROOT,WORK,SOURCE,ORIGIN,Client,write,guard,snapshot,staging_count,abort,await_clean
+guard();client=Client('member_a');topology=json.loads((ROOT/'.out/local-qa/topology.private.json').read_text())
+path='/channels/'+topology['text']+'/attachments';report={'at_utc':datetime.now(timezone.utc).isoformat(),'source_revision':SOURCE,'origin':ORIGIN,'case':'TEXT_partial_multipart_idle','native_idle_seconds':60,'observation_bound_seconds':80,'samples':[],'status':'RUNNING'}
+c=None;pool=concurrent.futures.ThreadPoolExecutor(max_workers=1);start=time.monotonic()
+def response():
+ try:
+  r=c.getresponse();body=r.read();return {'status':r.status,'error_code':json.loads(body).get('error',{}).get('code') if body else None}
+ except Exception as e:return {'transport_error_type':type(e).__name__}
+try:
+ report['baseline']=await_clean();report['baseline_staging_files']=staging_count();assert report['baseline_staging_files']==0
+ c=client.begin(path);start=time.monotonic();pending=pool.submit(response)
+ for tick in [1,10,30,55,62,70,80]:
+  while time.monotonic()-start<tick and not pending.done():time.sleep(.2)
+  s={'elapsed_seconds':round(time.monotonic()-start,3),**snapshot(),'response_received':pending.done()};report['samples'].append(s)
+  write('idle-text-result.json',report);print(json.dumps(s),flush=True)
+  if pending.done():break
+ report['response_before_abort']=pending.result() if pending.done() else None
+ report['staging_files_at_observation_end']=staging_count()
+ report['status']='PASS_IDLE_TIMEOUT' if report['response_before_abort'] and report['response_before_abort'].get('status')==408 and report['samples'][-1]['voice_platform_uploads_inflight']==0 else 'FAIL_IDLE_TIMEOUT_NOT_ENFORCED'
+finally:
+ if c:abort(c)
+ pool.shutdown(wait=True);report['after_explicit_client_disconnect']=await_clean();report['staging_files_after_disconnect']=staging_count();report['restoration']='PASS' if report['staging_files_after_disconnect']==0 else 'FAIL'
+ write('idle-text-result.json',report);print(json.dumps({'status':report['status'],'restoration':report['restoration']}),flush=True)
+sys.exit(0 if report['status'].startswith('PASS') else 1)
