@@ -663,6 +663,19 @@
         303
       ],
       "limits": "No acoustic, RTP/frame continuity, SFU reconnection or RoomReconnecting/RoomReconnected callback assertion. Only sampled UI/server states; brief transitions could be missed.; Both radio intervals were about13s, not a long outage/soak/background/lock/revoke/account-switch matrix.; No VPN/router/Xkeen/provider configuration was changed; no causality attributed to them.; Watchdog was armed and released with exit0; fallback timeout branch was not exercised. Process inspection after the run found0 remaining guard helpers.; Native ASCII input injection and real Gboard window; no human/Gboard typing or selection acceptance.; New master native APK, iOS/macOS/Pixel and original Windows native receiver remain separate unaccepted gates.; Exact PC Web build was absent in initial runs; clean run3 captured Chrome155.0.8059.85 and runtime Web source072426d6. Android VALIDATED was false in its first mobile sample; app delivery is proven by actual PC receipt and verified CELLULAR/WiFi0 before/after, not inferred from that OS flag. Earlier controller failures retained separately; clean run3 fully passed without manual recovery."
+    },
+    {
+      "id": "ANDROID-signed-master-candidate-in-place-upgrade",
+      "status": "PASS_SCOPED",
+      "protects": "An in-place signed Android candidate upgrade preserves the original installation, authenticated account, own DM operation and restorable voice/permission state; exact source, signer and no-skip native gates remain attributable.",
+      "command": "python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final",
+      "platform": "Physical Samsung SM-A576B Android16/API36 arm64; published1.0.45/2080 to signed QA candidate1.0.47/2082/source072426d6; actual Windows Chrome155 receiver; hosted native CI.",
+      "mandatory_when": "Before accepting in-place Android signed-APK upgrade facets of QA62; all other source-row clauses remain separate.",
+      "result": "android-upgrade/summary.json",
+      "issues": [
+        62
+      ],
+      "limits": "Signed release-mode QA candidate from protected master; not a published stable release. No tag/release publication, uninstall, data wipe, downgrade or app-private session extraction.; One actual old-to-new in-place transition; no claim of two distinct public stable releases, clean install, other architectures/devices, migration rollback or full QA-13 acceptance.; Microphone runtime permission/flags preserved exactly; other permission matrices and all notification delivery remain separate.; Voice explicitly left before installation and rejoined afterward. Actual UI/FGS/server roster prove sampled connection state, not media continuity, SDK callback ordering or audibility. Human listener unavailable; acoustic acceptance NOT_RUN.; Old physical results and defects #579/#582 retain their old APK source. They have not yet been retested on this candidate.; First local native contract verification failed because all20 Windows checkout contracts had CRLF bytes. Every hosted manifest hash matched the exact triggering Git blob. Second validation used those unchanged Git bytes; first failure and verifier v1 retained.; Restoration helper had conservative selector failures: first expected room on Personal tab; second matched both room/favorite controls; join-button-only guard found0; DM row View-only guard found0 because actual semantics used ImageView. No unsafe click or app defect inferred. Corrected observed room row and owned peer navigation succeeded."
     }
   ]
 }

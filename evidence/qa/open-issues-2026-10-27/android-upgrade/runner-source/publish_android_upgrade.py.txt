@@ -1,0 +1,51 @@
+"""Publish the completed, scoped signed-candidate upgrade without closing QA-13."""
+import ast,hashlib,json,shutil
+from datetime import datetime,timezone
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];PRIVATE=ROOT/'.out/qa-goal';OUT=ROOT/'evidence/qa/open-issues-2026-10-27';DEST=OUT/'android-upgrade'
+def read(name):return json.loads((PRIVATE/name).read_text(encoding='utf-8'))
+def write(path,data):path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+before=read('android-candidate-before.json');after=read('android-candidate-after.json');install=read('android-candidate-install.json')
+peer_before=read('upgrade-peer-before.json');peer_after=read('upgrade-peer-after.json');roster=read('ptt-peer-upgrade-final.json');verified=read('android-candidate-verified.json');ci=read('android-candidate-ci-final.json')
+assert install['status']=='PASS_SCOPED_IN_PLACE_INSTALL_AND_APP_LAUNCH' and verified['status']=='PASS_INSTALL_INPUT_VERIFIED'
+assert peer_before['status']==peer_after['status']=='PASS_SCOPED_AUTHENTICATED_NATIVE_DM'
+assert peer_after['same_native_account_and_conversation_as_before'] and peer_before['fixture_server_tombstone'] and peer_after['fixture_server_tombstone']
+assert ci['run']['conclusion']=='success' and all(j['conclusion']=='success' for j in ci['jobs'])
+assert before['first_install_time']==after['first_install_time'] and before['permission']==after['permission']
+assert after['version_code']==2082 and after['voice_connected'] and after['microphone_fgs'] and not after['muted_control']
+assert after['composer_empty'] and after['network']['wifi_setting']==before['network']['wifi_setting']=='1'
+assert after['network']['mobile_data_setting']==before['network']['mobile_data_setting']=='1'
+assert roster['status']=='PASS_READ' and roster['room_participants']==3 and not roster['phone_microphone_muted']
+copies={'android-candidate-ci-final.json':'ci.json','android-candidate-after.json':'device-after.json','android-candidate-install.json':'install.json','android-candidate-verified.json':'verified.json','upgrade-peer-after.json':'peer-after.json','ptt-peer-upgrade-final.json':'roster-after.json','upgrade-navigation-restored.json':'navigation-restored.json','upgrade-voice-select-row.json':'voice-select-row.json','upgrade-after-visual-proof.json':'after-visual-proof.json','upgrade-after-restored-voice.png':'upgrade-after-restored-voice.png','android-candidate-local-validation-attempt-1.json':'local-validation-attempt-1.json'}
+for source,name in copies.items():shutil.copyfile(PRIVATE/source,DEST/name)
+target=PRIVATE/'android-candidate-40447079903';shutil.copytree(target/'native-contract',DEST/'native-contract',dirs_exist_ok=True)
+for name in ['artifact-manifest.json','SHA256SUMS','rnnoise-component.cdx.json','LICENSE-RNNoise.txt']:shutil.copyfile(target/'signed-apks'/name,DEST/name)
+shutil.copyfile(target/'source-metadata/receipt.json',DEST/'git-contract-bytes.json')
+for p in PRIVATE.glob('artifact-download-*.json'):shutil.copyfile(p,DEST/'quality'/p.name)
+for p in target.glob('*.zip.inventory.json'):shutil.copyfile(p,DEST/'quality'/p.name)
+shutil.copytree(target/'quality-android',DEST/'quality/quality-android',dirs_exist_ok=True)
+helpers=['artifact_fetch.mjs','candidate_zip.py','verify_android_candidate.py','verify_android_candidate.v1.py.txt','candidate_contract_bytes.py','android_candidate_baseline.py','android_candidate_after.py','installed_android_identity.py','android_candidate_install.py','native_upgrade_ui.py','native_upgrade_peer.mjs','upgrade_restore_owned_dm.py','upgrade_restore_owned_dm.v1.py.txt','upgrade_after_voice_capture.py']
+for name in helpers:
+ p=PRIVATE/name;source=p.read_text(encoding='utf-8');assert len(source.splitlines())<=120
+ if name.endswith('.py'):ast.parse(source)
+ shutil.copyfile(p,DEST/'runner-source'/(name if name.endswith('.txt') else name+'.txt'))
+limits=['Signed release-mode QA candidate from protected master; not a published stable release. No tag/release publication, uninstall, data wipe, downgrade or app-private session extraction.',
+ 'One actual old-to-new in-place transition; no claim of two distinct public stable releases, clean install, other architectures/devices, migration rollback or full QA-13 acceptance.',
+ 'Microphone runtime permission/flags preserved exactly; other permission matrices and all notification delivery remain separate.',
+ 'Voice explicitly left before installation and rejoined afterward. Actual UI/FGS/server roster prove sampled connection state, not media continuity, SDK callback ordering or audibility. Human listener unavailable; acoustic acceptance NOT_RUN.',
+ 'Old physical results and defects #579/#582 retain their old APK source. They have not yet been retested on this candidate.',
+ 'First local native contract verification failed because all20 Windows checkout contracts had CRLF bytes. Every hosted manifest hash matched the exact triggering Git blob. Second validation used those unchanged Git bytes; first failure and verifier v1 retained.',
+ 'Restoration helper had conservative selector failures: first expected room on Personal tab; second matched both room/favorite controls; join-button-only guard found0; DM row View-only guard found0 because actual semantics used ImageView. No unsafe click or app defect inferred. Corrected observed room row and owned peer navigation succeeded.']
+summary={'schema_version':1,'status':'PASS_SCOPED_SIGNED_CANDIDATE_UPGRADE','completed_at_utc':datetime.now(timezone.utc).isoformat(),'source_before':'9c221897fdefec8098f707d61ca5b6e8b28bb0bd','source_after':verified['source_revision'],'version_before':'1.0.45/2080','version_after':'1.0.47/2082','installed_after_sha256':install['installed_APK_sha256'],'workflow_run_id':40447079903,'workflow_url':ci['run']['html_url'],'hosted_jobs_passed':len(ci['jobs']),'android_unit_tests_per_mode':40,'android_unit_modes':2,'android_unit_skips':0,'macos_unit_tests':8,'macos_unit_skips':0,'physical_macos_media':'NOT_RUN','auth_same_account_after_real_DM_send':True,'original_first_install_time_preserved':True,'original_RECORD_AUDIO_permission_preserved_exact':True,'own_messages_deleted_on_both_sides':True,'native_voice_and_original_owned_DM_restored':True,'visual_observations':['Before and after source-resolution crops show green connected status, SHARE_TEST with3 participants, normal microphone control and no active sharing indicator; crops exclude identity/history.','RTT values6ms and23ms are single UI samples, not latency acceptance.'],'limits':limits}
+write(DEST/'summary.json',summary)
+case_id='ANDROID-signed-master-candidate-in-place-upgrade';commands='python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final'
+case={'id':case_id,'status':'PASS_SCOPED','protects':'An in-place signed Android candidate upgrade preserves the original installation, authenticated account, own DM operation and restorable voice/permission state; exact source, signer and no-skip native gates remain attributable.','command':commands,'platform':'Physical Samsung SM-A576B Android16/API36 arm64; published1.0.45/2080 to signed QA candidate1.0.47/2082/source072426d6; actual Windows Chrome155 receiver; hosted native CI.','mandatory_when':'Before accepting in-place Android signed-APK upgrade facets of QA62; all other source-row clauses remain separate.','result':'android-upgrade/summary.json','issues':[62],'limits':'; '.join(limits)}
+cases=json.loads((OUT/'cases.json').read_text(encoding='utf-8'));cases['cases']=[c for c in cases['cases'] if c['id']!=case_id]+[case];write(OUT/'cases.json',cases)
+matrix=json.loads((OUT/'matrix.json').read_text(encoding='utf-8'));issue=next(i for i in matrix['issues'] if i['number']==62);row=next(r for r in issue['criteria'] if r['id']=='I62.C1')
+for item in [issue,row]:
+ if case_id not in item['execution_cases']:item['execution_cases'].append(case_id)
+ if case['result'] not in item['evidence']:item['evidence'].append(case['result'])
+if commands not in row['execution']:row['execution']+='; '+commands
+matrix['updated_utc']=summary['completed_at_utc'];write(OUT/'matrix.json',matrix)
+source=Path(__file__).read_text(encoding='utf-8');assert len(source.splitlines())<=120;shutil.copyfile(Path(__file__),DEST/'runner-source/publish_android_upgrade.py.txt')
+print(json.dumps({'status':summary['status'],'executed_scopes':len(cases['cases']),'QA62_remains':issue['status'],'source_changed':False}))

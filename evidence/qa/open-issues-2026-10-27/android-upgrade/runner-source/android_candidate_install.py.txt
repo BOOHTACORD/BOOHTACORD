@@ -1,0 +1,62 @@
+"""Exact signed candidate upgrade only; never uninstall, downgrade, clear data or retry."""
+import hashlib,json,re,subprocess,time
+from datetime import datetime,timezone
+from android_permission_ui import APP,ADB,ROOT,call,nodes,label,permission,tap_named,state
+from installed_android_identity import installed_hash
+report={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'RUNNING','stage':'preflight','actions':[]}
+def save():
+ (ROOT/'android-candidate-install.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
+def package():
+ raw=call('shell','dumpsys','package',APP)
+ return {'version_name':re.search(r'\bversionName=([^\s]+)',raw)[1],
+  'version_code':int(re.search(r'\bversionCode=(\d+)',raw)[1]),
+  'first_install_time':re.search(r'\bfirstInstallTime=([^\n]+)',raw)[1].strip()}
+try:
+ verified=json.loads((ROOT/'android-candidate-verified.json').read_text())
+ assert verified['status']=='PASS_INSTALL_INPUT_VERIFIED' and verified['next_version_code']==2082
+ ci=json.loads((ROOT/'android-candidate-ci-final.json').read_text())
+ assert ci['run']['id']==40447079903 and ci['run']['status']=='completed' and ci['run']['conclusion']=='success'
+ release=[j for j in ci['jobs'] if j['name']=='android-release'];assert len(release)==1
+ assert all(j['conclusion']=='success' for j in ci['jobs'])
+ publish=[s for s in release[0]['steps'] if s['name']=='Publish immutable exact-source native release']
+ assert len(publish)==1 and publish[0]['conclusion']=='skipped'
+ apk=ROOT/'android-candidate-40447079903/signed-apks/BOOHTACORD-android-v1.0.47-arm64-v8a.apk'
+ assert hashlib.sha256(apk.read_bytes()).hexdigest()==verified['arm64_APK_sha256']
+ before=json.loads((ROOT/'android-candidate-before.json').read_text(encoding='utf-8'))
+ report['before_package']=package();assert report['before_package']['version_code']==2080
+ assert report['before_package']['first_install_time']==before['first_install_time']
+ report['before_state']=state();assert report['before_state']['voice_connected'] and report['before_state']['microphone_fgs']
+ assert not any('types=0x00000020' in x for x in call('shell','dumpsys','activity','services',APP).splitlines())
+ report['stage']='explicit_voice_leave';save();tap_named('Выйти из голосового канала');report['actions'].append('Observed native SHARE_TEST leave control activated')
+ for _ in range(4):
+  left=state()
+  if not left['voice_connected'] and not left['microphone_fgs']:break
+  time.sleep(.5)
+ report['left_state']=left;assert not left['voice_connected'] and not left['microphone_fgs']
+ report['stage']='single_in_place_install';save()
+ result=subprocess.run([ADB,'install','-r',str(apk)],capture_output=True,timeout=180)
+ output=(result.stdout+result.stderr).decode('utf-8','replace')
+ report['install_exit']=result.returncode;report['adb_success_line']=bool(re.search(r'(?m)^Success\s*$',output))
+ report['install_failure_code']=next(iter(re.findall(r'Failure \[([A-Z_]+)',output)),None)
+ report['actions'].append('adb install -r exact verified arm64 APK; one attempt')
+ report['after_package']=package();save()
+ assert result.returncode==0 and report['adb_success_line'] and report['after_package']['version_code']==2082
+ assert report['after_package']['version_name']=='1.0.47'
+ assert report['after_package']['first_install_time']==before['first_install_time']
+ report['installed_APK_sha256']=installed_hash()
+ assert report['installed_APK_sha256']==verified['arm64_APK_sha256']
+ report['stage']='launch_updated_native_app';save()
+ resolved=[s.strip() for s in call('shell','cmd','package','resolve-activity','--brief',APP).splitlines() if s.strip().startswith(APP+'/')]
+ original=json.loads((ROOT/'android-candidate-launch.json').read_text())['component'];assert resolved==[original]
+ call('shell','am','start','-n',original);report['actions'].append('Observed exact native MainActivity launched')
+ for _ in range(5):
+  current=state()
+  if current['app_hierarchy_present'] and (current['navigation_available'] or current['login_fields']):break
+  time.sleep(.5)
+ report['launched_state']=current;report['permission_preserved_exact']=permission()==before['permission']
+ assert current['app_hierarchy_present'] and not current['login_fields'] and report['permission_preserved_exact']
+ report['status']='PASS_SCOPED_IN_PLACE_INSTALL_AND_APP_LAUNCH';report['stage']='needs_native_session_message_and_voice_restoration'
+except Exception as error:
+ report['status']='FAIL_OR_CONTROLLER_ERROR';report['error_type']=type(error).__name__
+finally:
+ save();print(json.dumps({'status':report['status'],'stage':report['stage'],'package':report.get('after_package'),'adb_success':report.get('adb_success_line')}))

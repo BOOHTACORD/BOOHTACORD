@@ -1,0 +1,17 @@
+"""Hash only the installed public base APK; never access app session/private data."""
+import json,re
+from datetime import datetime,timezone
+from android_permission_ui import APP,ROOT,call
+def installed_hash():
+ paths=[s.removeprefix('package:').strip() for s in call('shell','pm','path',APP).splitlines() if s.startswith('package:')]
+ assert len(paths)==1 and re.fullmatch(r'/data/app/[A-Za-z0-9_./=~+-]+/base\.apk',paths[0])
+ result=call('shell','sha256sum',paths[0]);digest=result.split()[0]
+ assert re.fullmatch('[a-f0-9]{64}',digest)
+ return digest
+if __name__=='__main__':
+ expected='7091a98c326e3bea9ecff1f4a10192d3ce8545a298690b17c90d0453ddde8e70'
+ actual=installed_hash();assert actual==expected
+ receipt={'status':'PASS_INSTALLED_BEFORE_APK_HASH','at_utc':datetime.now(timezone.utc).isoformat(),
+  'application_id':APP,'installed_APK_sha256':actual,'published_Android_version':'1.0.45',
+  'source_revision':'9c221897fdefec8098f707d61ca5b6e8b28bb0bd','app_private_data_accessed':False}
+ (ROOT/'installed-before-verification.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(receipt))

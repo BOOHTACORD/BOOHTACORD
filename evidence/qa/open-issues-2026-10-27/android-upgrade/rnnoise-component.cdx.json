@@ -1,0 +1,35 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "components": [
+    {
+      "type": "library",
+      "name": "RNNoise",
+      "version": "v0.1-cdf196b",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/xiph/rnnoise/tree/cdf196b1e9de2f8ff1003328ebf9a4316477429d"
+        }
+      ],
+      "properties": [
+        {
+          "name": "rnnoise:model-sha256",
+          "value": "f0cdb52b30501aab489f90fedbc7a023c719d91b337db2da7f26fc3036556b95"
+        },
+        {
+          "name": "rnnoise:source-archive-sha256",
+          "value": "a6f3bd89c5c12546d049bcdcf6d1b58c301fd9c811e760f3087b036a93501d98"
+        }
+      ]
+    }
+  ]
+}

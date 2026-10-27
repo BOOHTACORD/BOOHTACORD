@@ -1,0 +1,22 @@
+"""Materialize exact Git source bytes for the hosted Linux manifest hash contract."""
+import hashlib,json,re,subprocess
+def export(repo,target,revision,expected):
+ assert re.fullmatch('[a-f0-9]{40}',revision)
+ tree=subprocess.check_output(['git','ls-tree','-z',revision+':contracts'],cwd=repo).split(b'\0')
+ entries={}
+ for row in filter(None,tree):
+  meta,name=row.split(b'\t');mode,kind,_=meta.split()
+  assert mode==b'100644' and kind==b'blob'
+  key=name.decode('utf-8');assert re.fullmatch('[A-Za-z0-9_.-]+',key);entries[key]=True
+ assert set(entries)==set(expected)
+ folder=target/'contracts';folder.mkdir(parents=True,exist_ok=True)
+ for name,digest in expected.items():
+  data=subprocess.check_output(['git','show',revision+':contracts/'+name],cwd=repo)
+  assert hashlib.sha256(data).hexdigest()==digest
+  path=folder/name
+  if path.exists():assert path.read_bytes()==data
+  else:path.write_bytes(data)
+ receipt={'status':'PASS_EXACT_GIT_BLOB_CONTRACTS','source_revision':revision,
+  'contract_sha256':expected,'export_changes_bytes':False,'candidate_artifact_changed':False}
+ (target/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8',newline='\n')
+ return target

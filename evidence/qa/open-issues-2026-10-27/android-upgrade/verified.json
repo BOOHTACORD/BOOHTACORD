@@ -1,0 +1,33 @@
+{
+  "status": "PASS_INSTALL_INPUT_VERIFIED",
+  "at_utc": "2026-10-27T04:21:40.152384+00:00",
+  "workflow_run_id": 40447079903,
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "release_mode": "candidate",
+  "published_release": false,
+  "source_contract_equal_to_hosted": true,
+  "actual_APK_checks": {
+    "BOOHTACORD-android-v1.0.47-arm64-v8a.apk": {
+      "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+      "build_tools": "36.0.0",
+      "version_code": 2082
+    },
+    "BOOHTACORD-android-v1.0.47-armeabi-v7a.apk": {
+      "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+      "build_tools": "36.0.0",
+      "version_code": 1082
+    },
+    "BOOHTACORD-android-v1.0.47-x86_64.apk": {
+      "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+      "build_tools": "36.0.0",
+      "version_code": 4082
+    }
+  },
+  "contract_bytes_source": "Exact Git blobs at triggering SHA; Windows CRLF checkout excluded from byte hashing",
+  "arm64_APK_sha256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+  "application_id": "ru.boohtacord.app",
+  "previous_version_code": 2080,
+  "next_version_code": 2082,
+  "local_validation_runtime": "Windows; apksigner/aapt from SDK build-tools; Java 21.0.11; not a build",
+  "command": "python -X utf8 .out/qa-goal/verify_android_candidate.py"
+}

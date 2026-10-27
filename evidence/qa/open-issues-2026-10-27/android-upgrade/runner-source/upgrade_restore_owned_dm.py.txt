@@ -1,0 +1,22 @@
+"""Restore only the existing owned DM selection after explicit SHARE_TEST rejoin."""
+import json,re
+from datetime import datetime,timezone
+from android_permission_ui import ROOT,APP,nodes,label,call,tap_named,state
+peer=json.loads((ROOT/'private-fixture.json').read_text())['b']['login']
+report={'at_utc':datetime.now(timezone.utc).isoformat(),'actions':[],'body_or_identity_logged':False}
+report['before_state']=state();assert report['before_state']['voice_connected'] and report['before_state']['microphone_fgs']
+rows=nodes()
+if not any(label(n)=='Закрыть навигацию' for n in rows):
+ tap_named('Открыть навигацию');report['actions'].append('Observed Open navigation')
+tap_named('Личные');report['actions'].append('Observed Personal tab')
+rows=nodes();candidates=[n for n in rows if n.get('package')==APP and peer in label(n) and n.get('class')=='android.widget.ImageView' and n.get('clickable')=='true']
+candidates=[n for n in candidates if 0<int(re.findall(r'\d+',n.get('bounds'))[3])-int(re.findall(r'\d+',n.get('bounds'))[1])<250]
+assert len(candidates)==1
+b=list(map(int,re.findall(r'\d+',candidates[0].get('bounds'))));call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2));report['actions'].append('Observed unique existing controlled peer row')
+rows=nodes();fields=[n for n in rows if n.get('class')=='android.widget.EditText']
+report['original_owned_peer_header_matches_privately']=any(peer in label(n) and int(re.findall(r'\d+',n.get('bounds'))[1])<700 for n in rows)
+report['original_empty_composer_restored']=len(fields)==1 and not fields[0].get('text')
+report['after_state']=state();assert report['original_owned_peer_header_matches_privately'] and report['original_empty_composer_restored']
+assert report['after_state']['voice_connected'] and report['after_state']['microphone_fgs'] and not report['after_state']['muted_control']
+report['status']='PASS_SCOPED_OWNED_DM_AND_VOICE_RESTORATION'
+(ROOT/'upgrade-navigation-restored.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(report))

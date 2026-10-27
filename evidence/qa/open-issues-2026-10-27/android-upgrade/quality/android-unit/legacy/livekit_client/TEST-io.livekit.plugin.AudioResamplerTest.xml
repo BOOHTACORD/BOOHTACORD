@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.livekit.plugin.AudioResamplerTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-27T04:07:13.987Z" hostname="runnervmtai0g" time="0.022">
+  <properties/>
+  <testcase name="zero frames returns empty" classname="io.livekit.plugin.AudioResamplerTest" time="0.01"/>
+  <testcase name="same rate returns identical samples" classname="io.livekit.plugin.AudioResamplerTest" time="0.001"/>
+  <testcase name="440Hz sine survives downsample from 48kHz to 16kHz" classname="io.livekit.plugin.AudioResamplerTest" time="0.005"/>
+  <testcase name="1kHz sine is preserved when downsampled to 8kHz" classname="io.livekit.plugin.AudioResamplerTest" time="0.001"/>
+  <testcase name="upsample preserves first and last sample" classname="io.livekit.plugin.AudioResamplerTest" time="0.0"/>
+  <testcase name="downsample 48kHz to 8kHz produces one-sixth frames" classname="io.livekit.plugin.AudioResamplerTest" time="0.0"/>
+  <testcase name="upsample with stereo preserves channel count" classname="io.livekit.plugin.AudioResamplerTest" time="0.0"/>
+  <testcase name="upsample 8kHz to 48kHz produces 6x frames" classname="io.livekit.plugin.AudioResamplerTest" time="0.0"/>
+  <testcase name="downsample averages samples correctly" classname="io.livekit.plugin.AudioResamplerTest" time="0.0"/>
+  <testcase name="single frame upsample" classname="io.livekit.plugin.AudioResamplerTest" time="0.0"/>
+  <testcase name="5kHz sine is attenuated when downsampled to 8kHz" classname="io.livekit.plugin.AudioResamplerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

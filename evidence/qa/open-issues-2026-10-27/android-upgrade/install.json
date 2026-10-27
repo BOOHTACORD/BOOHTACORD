@@ -1,0 +1,79 @@
+{
+  "at_utc": "2026-10-27T04:21:51.049182+00:00",
+  "status": "PASS_SCOPED_IN_PLACE_INSTALL_AND_APP_LAUNCH",
+  "stage": "needs_native_session_message_and_voice_restoration",
+  "actions": [
+    "Observed native SHARE_TEST leave control activated",
+    "adb install -r exact verified arm64 APK; one attempt",
+    "Observed exact native MainActivity launched"
+  ],
+  "before_package": {
+    "version_name": "1.0.45",
+    "version_code": 2080,
+    "first_install_time": "2026-09-26 17:40:00"
+  },
+  "before_state": {
+    "at_utc": "2026-10-27T04:21:54.468272+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": true,
+    "voice_connected": true,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "left_state": {
+    "at_utc": "2026-10-27T04:21:59.505238+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "install_exit": 0,
+  "adb_success_line": true,
+  "install_failure_code": null,
+  "after_package": {
+    "version_name": "1.0.47",
+    "version_code": 2082,
+    "first_install_time": "2026-09-26 17:40:00"
+  },
+  "installed_APK_sha256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+  "launched_state": {
+    "at_utc": "2026-10-27T04:22:08.024122+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "permission_preserved_exact": true
+}

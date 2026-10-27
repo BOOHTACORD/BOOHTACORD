@@ -1,0 +1,19 @@
+import {readFile,writeFile,mkdir,unlink} from 'node:fs/promises'
+import {createHash} from 'node:crypto'
+import assert from 'node:assert/strict'
+const root=new URL('./',import.meta.url),input=new URL('private-artifact-download.json',root)
+const cfg=JSON.parse(await readFile(input,'utf8'))
+const report={artifact_id:cfg.artifact_id,at_utc:new Date().toISOString(),name:cfg.name,status:'RUNNING'}
+try{
+ assert.match(cfg.name,/^[A-Za-z0-9_.-]+\.zip$/);assert.match(cfg.sha256,/^[a-f0-9]{64}$/)
+ const response=await fetch(cfg.url,{signal:AbortSignal.timeout(120000)})
+ report.http=response.status;assert.equal(response.status,200)
+ const limit=300000000,chunks=[];let size=0
+ for await(const chunk of response.body){size+=chunk.length;assert.ok(size<=limit);chunks.push(chunk)}
+ const bytes=Buffer.concat(chunks);report.bytes=size
+ report.sha256=createHash('sha256').update(bytes).digest('hex');assert.equal(report.sha256,cfg.sha256)
+ const target=new URL('android-candidate-40447079903/',root);await mkdir(target,{recursive:true})
+ await writeFile(new URL(cfg.name,target),bytes,{flag:'wx'});report.status='PASS_HASH_VERIFIED'
+}catch(e){report.status='FAIL_DOWNLOAD_OR_HASH';report.error_type=e.name}
+finally{await unlink(input);await writeFile(new URL('artifact-download-'+cfg.artifact_id+'.json',root),JSON.stringify(report,null,2)+'\n')}
+console.log(JSON.stringify(report))

@@ -1,0 +1,47 @@
+"""Verify the exact dry-run source contract and real APK identity before installation."""
+import json,os,subprocess,sys
+from datetime import datetime,timezone
+from pathlib import Path
+ROOT=Path(__file__).resolve().parent;REPO=ROOT.parents[1]
+sys.path.insert(0,str(REPO))
+from tools.release.native_contract import assets as asset_checks
+from tools.build.android.signature import inspect,CERTIFICATE,APPLICATION
+from candidate_contract_bytes import export
+EXPECTED='072426d60b1c0b1f7e5f66722a0da5faa00b50d7'
+os.environ['ANDROID_SDK_ROOT']=r'C:\Users\egkur\AppData\Local\Android\Sdk'
+target=ROOT/'android-candidate-40447079903'
+context=json.loads((target/'native-contract/source.json').read_text(encoding='utf-8'))
+assert context['source_revision']==context['trigger_revision']==EXPECTED
+assert context['repository']=='Egkurilov/BOOHTACORD' and context['platform']=='android'
+assert context['source_ref']=='refs/heads/master' and context['source_event']=='workflow_dispatch'
+assert context['release_mode']=='candidate' and context['tag_verified'] is False
+assert context['identity']['version']=='1.0.47' and context['identity']['native_build']=='82'
+subprocess.run(['git','diff','--exit-code',EXPECTED,'--','contracts','tools/toolchains.json',
+ 'tools/build/android/signature.py','tools/release/native_contract/assets.py'],cwd=REPO,check=True)
+directory=target/'signed-apks'
+manifest=json.loads((directory/'artifact-manifest.json').read_text(encoding='utf-8'))
+asset_checks.ROOT=export(REPO,target/'source-metadata',EXPECTED,manifest['contracts'])
+result=asset_checks.validate(directory,context)
+ci=json.loads((target/'native-contract/contract.json').read_text(encoding='utf-8'))
+assert result==ci,'Local byte-level validation differs from the hosted contract'
+version=context['identity']['version']+'+'+context['identity']['native_build']
+checks={}
+for apk in sorted(directory.glob('*.apk')):
+ actual=inspect(apk,release=True,version=version);checks[apk.name]=actual
+ assert actual['certificate_sha256']==CERTIFICATE
+ assert actual['version_code']==ci['signing']['apks'][apk.name]['version_code']
+arm64=directory/'BOOHTACORD-android-v1.0.47-arm64-v8a.apk'
+assert arm64.is_file() and checks[arm64.name]['version_code']==2082
+baseline=json.loads((ROOT/'android-candidate-before.json').read_text(encoding='utf-8'))
+assert baseline['application_id']==APPLICATION and baseline['version_code']==2080
+assert checks[arm64.name]['version_code']>baseline['version_code']
+receipt={'status':'PASS_INSTALL_INPUT_VERIFIED','at_utc':datetime.now(timezone.utc).isoformat(),
+ 'workflow_run_id':40447079903,'source_revision':EXPECTED,'release_mode':'candidate',
+ 'published_release':False,'source_contract_equal_to_hosted':True,'actual_APK_checks':checks,
+ 'contract_bytes_source':'Exact Git blobs at triggering SHA; Windows CRLF checkout excluded from byte hashing',
+ 'arm64_APK_sha256':ci['assets'][arm64.name]['sha256'],'application_id':APPLICATION,
+ 'previous_version_code':baseline['version_code'],'next_version_code':2082,
+ 'local_validation_runtime':'Windows; apksigner/aapt from SDK build-tools; Java 21.0.11; not a build',
+ 'command':'python -X utf8 .out/qa-goal/verify_android_candidate.py'}
+(ROOT/'android-candidate-verified.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps(receipt))

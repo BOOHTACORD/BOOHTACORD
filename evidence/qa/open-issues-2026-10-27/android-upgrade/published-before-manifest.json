@@ -1,0 +1,118 @@
+{
+  "application_id": "ru.boohtacord.app",
+  "architectures": [
+    "arm64-v8a",
+    "armeabi-v7a",
+    "x86_64"
+  ],
+  "audio_component": {
+    "license": "LICENSE-RNNoise.txt",
+    "model_sha256": "f0cdb52b30501aab489f90fedbc7a023c719d91b337db2da7f26fc3036556b95",
+    "sbom": "rnnoise-component.cdx.json",
+    "source_commit": "cdf196b1e9de2f8ff1003328ebf9a4316477429d"
+  },
+  "contracts": {
+    "client-build.json": "6f28e686659d4c52fc3effda26063eb657d0c6f206fc604845edc433d98796bc",
+    "client-release-catalog.schema.json": "07d26396774c34f77640bab5cc62b5f99ed9aac0217908058801e065282253c4",
+    "client-update-evaluator.fixtures.json": "b8b6778aa315ae48e7f6a9ccec11a8c44fb8f6d81841916671dff0583c9a6ea7",
+    "desktop-update-artifact.schema.json": "96bb82b43766cef80cdf3c5e6e2fbe47b9572b522c286e64e4862606e14ad4db",
+    "mobile-client-contract.md": "221613456fc18f3e02087624abe97f38d08c6eafa14e83f7b12cfb14fbb75e09",
+    "openapi.yaml": "a7ae03ebb55a0a83dd20483dd00b4af315f56e291dc43c5d57a4a3cce4e0704b",
+    "realtime.schema.json": "a6bc7e1a5d3f4cde5c897a2ec743187684652032469bdaacd7ceb84d22d19ff6",
+    "release-manifest.schema.json": "ed7f483eca68423d3899a2df5cbe7a548e5e7d4fcc84a8d3c3e6d628f041e02f",
+    "screen-share-profile-v1.catalog.json": "5b5a805320b0f42cddbb4975e2737856f8f05cf69e99f79a0a8bbea9d3c39413",
+    "screen-share-profile-v1.fixtures.json": "7dc22bb8e7797d433cddd8136659bdde70cf8e1b3dcc65c232092895f2d00ef3",
+    "screen-share-profile-v1.schema.json": "4d38804f1abbf65200dd5ea47ae30c02cd020c12f0cf08c9577815660efd2f68",
+    "screen-share-publisher-lifecycle-v1.fixtures.json": "df7d9ba9e4ad19e4d45dfd9a9396e390f3bed1a471162f7f40279b41bc1ccad3",
+    "screen-share-sfu-smoke-evidence-v1.schema.json": "9d0831766ce5a26594c6ef492fe880dc8c9634f3094759b7c8f4cc5049063e9f",
+    "telemetry-flow-v1.fixtures.json": "d6958190ebb3320b106a9ece7fa6390a5ad548a92901bd1de2dea1bb618a9b88",
+    "telemetry-flow-v1.json": "390f5e12c8746ef5a5d316597808aeb69622ea51c8c76e11e516b23b45857458",
+    "voice-audio-profile.json": "818b1894ada5458b3c21ebe7ed239537cc971b69da7e15326551f6d1bf275d61"
+  },
+  "files": {
+    "BOOHTACORD-android-v1.0.45-arm64-v8a.apk": {
+      "bytes": 20433324,
+      "sha256": "7091a98c326e3bea9ecff1f4a10192d3ce8545a298690b17c90d0453ddde8e70"
+    },
+    "BOOHTACORD-android-v1.0.45-armeabi-v7a.apk": {
+      "bytes": 18300404,
+      "sha256": "42083b80a273d34195ea9c88434cb1a6f24228e9e2826afabfa8646cad3b903d"
+    },
+    "BOOHTACORD-android-v1.0.45-x86_64.apk": {
+      "bytes": 21791762,
+      "sha256": "8e47b87d02ff02c9865b9683e9842f6401f0d89b42ca76c14bb777780488f49e"
+    },
+    "LICENSE-RNNoise.txt": {
+      "bytes": 1581,
+      "sha256": "e2f59ff41d9d03adc3dcf3deff170f8c8cf4a6eb4a9b174762a7656d23200ffa"
+    },
+    "rnnoise-component.cdx.json": {
+      "bytes": 823,
+      "sha256": "0426bb951827495adc912304b4c500ea553ee2ddce89e3cc807e0e2521539d06"
+    }
+  },
+  "platform": "android",
+  "release_id": "android-direct-stable-r59",
+  "release_order": 59,
+  "schema_version": 1,
+  "signing": {
+    "apks": {
+      "BOOHTACORD-android-v1.0.45-arm64-v8a.apk": {
+        "build_tools": "37.0.0",
+        "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+        "size": {
+          "apk_bytes": 20433324,
+          "architectures": [
+            "arm64-v8a"
+          ],
+          "native_bytes": 40186576,
+          "native_compressed_bytes": 17879868
+        },
+        "version_code": 2080
+      },
+      "BOOHTACORD-android-v1.0.45-armeabi-v7a.apk": {
+        "build_tools": "37.0.0",
+        "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+        "size": {
+          "apk_bytes": 18300404,
+          "architectures": [
+            "armeabi-v7a"
+          ],
+          "native_bytes": 31748616,
+          "native_compressed_bytes": 15746892
+        },
+        "version_code": 1080
+      },
+      "BOOHTACORD-android-v1.0.45-x86_64.apk": {
+        "build_tools": "37.0.0",
+        "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+        "size": {
+          "apk_bytes": 21791762,
+          "architectures": [
+            "x86_64"
+          ],
+          "native_bytes": 46076832,
+          "native_compressed_bytes": 19238388
+        },
+        "version_code": 4080
+      }
+    },
+    "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+    "status": "signed"
+  },
+  "source_dirty": false,
+  "source_revision": "9c221897fdefec8098f707d61ca5b6e8b28bb0bd",
+  "toolchains": {
+    "buildx": "0.37.1",
+    "buildx_linux_amd64_sha256": "9447199cdb435f25880548343c128a4b6650e8891ee598905d8d29d39a8e359b",
+    "compose": "5.5.0",
+    "compose_linux_amd64_sha256": "c57ab918abd5b05ca7e7d0f275875dd1330a695074f309dc9eab1b49efafcd4b",
+    "dart": "3.13.5",
+    "flutter": "3.47.7",
+    "go": "1.26.4",
+    "node": "24.18.0",
+    "postgres": "17.6",
+    "task": "3.53.1"
+  },
+  "version": "1.0.45+80"
+}

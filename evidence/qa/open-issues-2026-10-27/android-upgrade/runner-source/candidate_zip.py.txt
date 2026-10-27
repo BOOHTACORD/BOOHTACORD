@@ -1,0 +1,36 @@
+"""Bounded artifact extraction; all archive entries are validated before writing."""
+import hashlib,json,re,stat,sys,zipfile
+from pathlib import Path,PurePosixPath
+ROOT=Path(__file__).parent/'android-candidate-40447079903'
+def unpack(name,sha256):
+ assert re.fullmatch(r'[A-Za-z0-9_.-]+\.zip',name) and re.fullmatch('[a-f0-9]{64}',sha256)
+ source=ROOT/name;assert source.is_file() and not source.is_symlink()
+ assert hashlib.sha256(source.read_bytes()).hexdigest()==sha256
+ target=(ROOT/name.removesuffix('.zip')).resolve();assert target.parent==ROOT.resolve()
+ assert not target.exists();rows=[];seen=set();total=0
+ with zipfile.ZipFile(source) as z:
+  for item in z.infolist():
+   key=item.filename;p=PurePosixPath(key);mode=item.external_attr>>16
+   assert key and p.as_posix()==key.rstrip('/') and not key.startswith('/')
+   assert '\\' not in key and ':' not in key and not stat.S_ISLNK(mode)
+   assert all(x not in ('.','..') and x.rstrip(' .')==x for x in p.parts)
+   assert key.casefold() not in seen and not item.flag_bits&1
+   seen.add(key.casefold());total+=item.file_size
+   assert len(seen)<=64 and total<=300000000 and item.file_size<=95000000
+   resolved=(target/Path(*p.parts)).resolve();assert target in resolved.parents
+   assert item.is_dir() or item.file_size>0
+   rows.append({'name':key,'bytes':item.file_size,'directory':item.is_dir()})
+  assert z.testzip() is None
+  target.mkdir()
+  for item,row in zip(z.infolist(),rows):
+   path=target/Path(*PurePosixPath(item.filename).parts)
+   if item.is_dir():path.mkdir(parents=True,exist_ok=True);continue
+   path.parent.mkdir(parents=True,exist_ok=True)
+   with z.open(item) as stream,path.open('xb') as output:
+    hashed=hashlib.sha256()
+    while chunk:=stream.read(1048576):output.write(chunk);hashed.update(chunk)
+   row['sha256']=hashed.hexdigest()
+ result={'status':'PASS_GUARDED_EXTRACTION','archive':name,'archive_sha256':sha256,'files':rows}
+ (ROOT/(name+'.inventory.json')).write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
+ return result
+if __name__=='__main__':print(json.dumps(unpack(sys.argv[1],sys.argv[2])))

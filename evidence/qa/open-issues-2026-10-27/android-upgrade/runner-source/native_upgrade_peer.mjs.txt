@@ -1,0 +1,45 @@
+import assert from 'node:assert/strict'
+import {execFileSync} from 'node:child_process'
+import {readFile,writeFile} from 'node:fs/promises'
+import {randomBytes} from 'node:crypto'
+import {fileURLToPath} from 'node:url'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,expect,root,origin} from './privacy_fixture.mjs'
+const phase=process.argv[2];assert.ok(['before','after'].includes(phase))
+const folder=fileURLToPath(root),py=(file,...args)=>JSON.parse(execFileSync('python',['-X','utf8',fileURLToPath(new URL(file,root)),...args],{cwd:folder,encoding:'utf8',stdio:['ignore','pipe','pipe'],windowsHide:true,timeout:40000}))
+const protect=url=>execFileSync('icacls',[fileURLToPath(url),'/inheritance:r','/grant:r',process.env.USERNAME+':F'],{stdio:'ignore',windowsHide:true})
+const report={at_utc:new Date().toISOString(),phase,status:'RUNNING',api_mocks:false,physical_android:true,body_or_identity_logged:false,actions:[]}
+const save=()=>writeFile(new URL('upgrade-peer-'+phase+'.json',root),JSON.stringify(report,null,2)+'\n')
+const browser=await chromium.launch({channel:'chrome',headless:false});let f,b,prefix,phone,cfg,message
+const find=async()=>{const r=await api(b.page,prefix+'/messages');assert.equal(r.status,200);return r.body.messages.find(m=>!m.deleted&&m.body===cfg.text&&m.author_id===phone)}
+try{
+ f=await fixture(browser);b=await f.client('b');const nav=await api(b.page,'/direct-messages');assert.equal(nav.status,200)
+ const peers=nav.body.direct_messages.filter(d=>![f.private.a.id,f.private.c.id].includes(d.other_participant_id));assert.equal(peers.length,1)
+ phone=peers[0].other_participant_id;prefix='/direct-messages/'+peers[0].id
+ const identity=new URL('private-upgrade-identity.json',root)
+ if(phase==='before'){await writeFile(identity,JSON.stringify({account:phone,conversation:peers[0].id}));protect(identity)}
+ else {const previous=JSON.parse(await readFile(identity,'utf8'));assert.equal(previous.account,phone);assert.equal(previous.conversation,peers[0].id);report.same_native_account_and_conversation_as_before=true}
+ await b.page.getByRole('button',{name:'Личные',exact:true}).click();await b.page.locator('.direct-message-navigation .channel-button').filter({hasText:peers[0].other_participant_display_name}).click()
+ await expect(b.page.getByRole('textbox',{name:'Сообщение',exact:true})).toBeVisible()
+ report.browser=browser.version();const receipt=await b.context.request.get(origin+'/release-receipt.json');assert.equal(receipt.status(),200);report.receiver_web_source=(await receipt.json()).source_revision
+ cfg={peer:f.private.b.login,text:'upg_'+randomBytes(8).toString('hex')};const file=new URL('private-upgrade-fixture.json',root);await writeFile(file,JSON.stringify(cfg));protect(file)
+ assert.equal(await find(),undefined);report.before_native=py('native_upgrade_ui.py','inspect');assert.ok(report.before_native.composer_empty)
+ report.actions.push(py('native_upgrade_ui.py','send'))
+ for(let i=0;i<12;i++){message=await find();if(message)break;await delay(500)}assert.ok(message)
+ await expect(b.page.getByText(cfg.text,{exact:true})).toBeVisible();report.actual_PC_message_rendered=true;report.actual_server_author_matches_native_phone=true
+ report.status='PASS_SCOPED_AUTHENTICATED_NATIVE_DM'
+}catch(e){report.status='FAIL_OR_CONTROLLER_ERROR';report.error_type=e.name}
+finally{
+ try{
+  if(b&&cfg&&prefix){message=message??await find();if(message){
+   for(const action of ['delete-menu','delete','delete'])report.actions.push(py('native_upgrade_ui.py',action))
+   const until=Date.now()+6000
+   do{const r=await api(b.page,prefix+'/messages?at='+message.id+'&limit=20');report.fixture_server_tombstone=r.body.messages.some(m=>m.id===message.id&&m.deleted);if(report.fixture_server_tombstone)break;await delay(300)}while(Date.now()<until)
+   assert.ok(report.fixture_server_tombstone);await expect(b.page.getByText(cfg.text,{exact:true})).toHaveCount(0);report.fixture_PC_body_removed=true
+  }
+  report.actions.push(py('native_upgrade_ui.py','clear'));report.after_native=py('native_upgrade_ui.py','inspect');assert.ok(report.after_native.composer_empty&&report.after_native.fixture_display_nodes===0)
+  }
+ }catch(e){report.status='FAIL_FIXTURE_CLEANUP';report.cleanup_error_type=e.name}
+ for(const c of f?.contexts??[])await c.close();await browser.close();await save()
+ console.log(JSON.stringify({phase,status:report.status,actual_PC_message_rendered:report.actual_PC_message_rendered,fixture_deleted:report.fixture_server_tombstone,same_native_account:report.same_native_account_and_conversation_as_before}))
+}

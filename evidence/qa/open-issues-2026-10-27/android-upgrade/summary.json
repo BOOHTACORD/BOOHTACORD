@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "PASS_SCOPED_SIGNED_CANDIDATE_UPGRADE",
+  "completed_at_utc": "2026-10-27T04:28:19.277344+00:00",
+  "source_before": "9c221897fdefec8098f707d61ca5b6e8b28bb0bd",
+  "source_after": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "version_before": "1.0.45/2080",
+  "version_after": "1.0.47/2082",
+  "installed_after_sha256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+  "workflow_run_id": 40447079903,
+  "workflow_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40447079903",
+  "hosted_jobs_passed": 6,
+  "android_unit_tests_per_mode": 40,
+  "android_unit_modes": 2,
+  "android_unit_skips": 0,
+  "macos_unit_tests": 8,
+  "macos_unit_skips": 0,
+  "physical_macos_media": "NOT_RUN",
+  "auth_same_account_after_real_DM_send": true,
+  "original_first_install_time_preserved": true,
+  "original_RECORD_AUDIO_permission_preserved_exact": true,
+  "own_messages_deleted_on_both_sides": true,
+  "native_voice_and_original_owned_DM_restored": true,
+  "visual_observations": [
+    "Before and after source-resolution crops show green connected status, SHARE_TEST with3 participants, normal microphone control and no active sharing indicator; crops exclude identity/history.",
+    "RTT values6ms and23ms are single UI samples, not latency acceptance."
+  ],
+  "limits": [
+    "Signed release-mode QA candidate from protected master; not a published stable release. No tag/release publication, uninstall, data wipe, downgrade or app-private session extraction.",
+    "One actual old-to-new in-place transition; no claim of two distinct public stable releases, clean install, other architectures/devices, migration rollback or full QA-13 acceptance.",
+    "Microphone runtime permission/flags preserved exactly; other permission matrices and all notification delivery remain separate.",
+    "Voice explicitly left before installation and rejoined afterward. Actual UI/FGS/server roster prove sampled connection state, not media continuity, SDK callback ordering or audibility. Human listener unavailable; acoustic acceptance NOT_RUN.",
+    "Old physical results and defects #579/#582 retain their old APK source. They have not yet been retested on this candidate.",
+    "First local native contract verification failed because all20 Windows checkout contracts had CRLF bytes. Every hosted manifest hash matched the exact triggering Git blob. Second validation used those unchanged Git bytes; first failure and verifier v1 retained.",
+    "Restoration helper had conservative selector failures: first expected room on Personal tab; second matched both room/favorite controls; join-button-only guard found0; DM row View-only guard found0 because actual semantics used ImageView. No unsafe click or app defect inferred. Corrected observed room row and owned peer navigation succeeded."
+  ]
+}

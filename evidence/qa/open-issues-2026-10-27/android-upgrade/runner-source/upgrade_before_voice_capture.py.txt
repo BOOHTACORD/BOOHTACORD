@@ -1,0 +1,12 @@
+"""Source-sized final native voice dock crop excludes the conversation and identity."""
+import hashlib,json,re,subprocess
+from PIL import Image
+from android_permission_ui import APP,ROOT,ADB,nodes,label
+controls=[n for n in nodes() if n.get('package')==APP and label(n) in ['Выключить микрофон','Выйти из голосового канала']]
+assert len(controls)==2
+boxes=[list(map(int,re.findall(r'\d+',n.get('bounds')))) for n in controls]
+raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20);source=ROOT/'private-upgrade-before-restored.png';source.write_bytes(raw);image=Image.open(source);assert image.size==(1080,2340)
+rect=[0,min(b[1] for b in boxes)-160,image.width,min(image.height,max(b[3] for b in boxes)+12)]
+file=ROOT/'upgrade-before-restored-voice.png';image.crop(rect).save(file)
+result={'source_sha256':hashlib.sha256(raw).hexdigest(),'source_size':list(image.size),'crop':file.name,'crop_rectangle':rect,'crop_sha256':hashlib.sha256(file.read_bytes()).hexdigest(),'resampled':False,'scope':'Final native voice dock only; no message/peer identity or audio evidence.'}
+(ROOT/'upgrade-before-visual-proof.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(result))

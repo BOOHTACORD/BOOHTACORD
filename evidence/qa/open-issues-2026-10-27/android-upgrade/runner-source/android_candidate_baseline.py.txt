@@ -1,0 +1,30 @@
+"""Read-only, sanitized device baseline before any candidate installation."""
+import json,re,sys
+from datetime import datetime,timezone
+from android_permission_ui import APP,ROOT,call,nodes,label,permission
+from android_connectivity_state import network
+sys.stdout.reconfigure(encoding='utf-8')
+rows=nodes();labels=[label(n) for n in rows]
+package=call('shell','dumpsys','package',APP)
+services=call('shell','dumpsys','activity','services',APP)
+result={'at_utc':datetime.now(timezone.utc).isoformat(),'mode':'READ_ONLY',
+ 'adb_state':call('get-state').strip(),'application_id':APP,
+ 'version_name':re.search(r'\bversionName=([^\s]+)',package)[1],
+ 'version_code':int(re.search(r'\bversionCode=(\d+)',package)[1]),
+ 'first_install_time':re.search(r'\bfirstInstallTime=([^\n]+)',package)[1].strip(),
+ 'last_update_time':re.search(r'\blastUpdateTime=([^\n]+)',package)[1].strip(),
+ 'permission':permission(),'network':network(),
+ 'font_scale':call('shell','settings','get','system','font_scale').strip(),
+ 'accelerometer_rotation':call('shell','settings','get','system','accelerometer_rotation').strip(),
+ 'user_rotation':call('shell','settings','get','system','user_rotation').strip(),
+ 'app_hierarchy_present':any(n.get('package')==APP for n in rows),
+ 'login_fields':any(s in ('Логин','Пароль') for s in labels),
+ 'voice_connected':any('Голос подключён' in s for s in labels),
+ 'muted_control':'Включить микрофон' in labels,
+ 'microphone_fgs':'types=0x00000080' in services,
+ 'media_projection_fgs':'types=0x00000020' in services,
+ 'owned_DM_accessibility_keyword_matched':sum('Личное сообщение' in s or 'Личные сообщения' in s for s in labels)>0,
+ 'composer_count':sum(n.get('class')=='android.widget.EditText' for n in rows),
+ 'composer_empty':all(not (n.get('text') or '') for n in rows if n.get('class')=='android.widget.EditText')}
+(ROOT/'android-candidate-before.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps(result,ensure_ascii=False))
