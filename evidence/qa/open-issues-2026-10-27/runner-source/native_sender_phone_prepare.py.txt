@@ -1,0 +1,29 @@
+"""Prepare only public Display settings and the already-connected SHARE_TEST view."""
+import sys,time,json
+from phone_common import *
+action=sys.argv[1];report={'action':action,'at_utc':now(),'body_or_identity_logged':False}
+if action=='before':
+ report['native']=snapshot();assert report['native']['voice_connected'] and report['native']['SHARE_TEST_visible']
+ assert not report['native']['unknown_draft'] and not report['native']['screen_fgs'] and not report['native']['projection_package_present']
+ assert report['native']['mic_fgs'];report['device_epoch_s']=int(call('shell','date','+%s').strip())
+ save('before.json',report)
+elif action=='public-source':
+ assert (WORK/'before.json').is_file();call('shell','am','start','-W','-n',"'com.android.settings/.Settings$DisplaySettingsActivity'");time.sleep(.5)
+ rows=nodes();assert all(n.get('package') in ['com.android.settings','com.android.systemui'] for n in rows)
+ assert any(label(n)=='Дисплей' for n in rows),'Public Display source required'
+ report['display_title_observed']=True;report['settings_app_only_observed']=True;report['setting_value_changed']=False
+ save('public-source.json',report);call('shell','am','start','-n',APP+'/.MainActivity')
+elif action=='voice-view':
+ assert not snapshot()['unknown_draft']
+ rows=nodes()
+ if not any(label(n)=='Закрыть навигацию' for n in rows):tap_named('Открыть навигацию')
+ tap_named('Каналы');rows=nodes()
+ choices=[n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and 'SHARE_TEST' in label(n) and 40<box(n)[3]-box(n)[1]<300 and box(n)[2]-box(n)[0]>300]
+ tap(choices);rows=nodes()
+ if any(label(n)=='Закрыть навигацию' for n in rows):tap_named('Закрыть навигацию')
+ report['native']=snapshot();assert report['native']['voice_connected'] and report['native']['SHARE_TEST_visible']
+ report['join_action_issued']=False;save('voice-view.json',report)
+elif action=='inspect':
+ report['native']=snapshot();save('latest-native.json',report)
+else:raise ValueError('Unknown preparation action')
+print(json.dumps(report))

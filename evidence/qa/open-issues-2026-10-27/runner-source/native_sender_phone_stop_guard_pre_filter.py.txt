@@ -1,0 +1,21 @@
+"""Stop this packet's owned screen share only; preserve the existing voice connection."""
+import json,time,sys
+from phone_common import *
+def stop(reason):
+ r={'at_utc':now(),'reason':reason,'before':projection(),'force_stop_used':False,'voice_leave_issued':False}
+ assert (WORK/'capture-attempt-owned.json').is_file(),'No owned capture attempt'
+ call('shell','am','start','-n',APP+'/.MainActivity');rows=nodes()
+ if r['before']['projection_package_present'] or r['before']['screen_fgs']:
+  controls=[n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and 'останов' in label(n).lower() and any(s in label(n).lower() for s in ['демонстрац','экран','трансляц'])]
+  assert len(controls)==1,'Observed native Stop sharing control required';tap_named(label(controls[0]));r['native_stop_activated']=True
+ for _ in range(6):
+  r['after']=projection()
+  if not r['after']['projection_package_present'] and not r['after']['screen_fgs']:break
+  time.sleep(.5)
+ assert not r['after']['projection_package_present'] and not r['after']['screen_fgs']
+ r['native_after']=snapshot();assert r['native_after']['voice_connected'] and r['native_after']['mic_fgs'] and not r['native_after']['muted_control']
+ r['device_epoch_s']=int(call('shell','date','+%s').strip());r['status']='PASS_SCREEN_STOP_VOICE_PRESERVED';save('stop-'+reason+'.json',r);return r
+if __name__=='__main__':
+ try:print(json.dumps(stop(sys.argv[1] if len(sys.argv)>1 else 'manual')))
+ except Exception as error:
+  r={'status':'FAIL_STOP_OR_CONTROLLER','error_type':type(error).__name__,'at_utc':now()};save('stop-error.json',r);print(json.dumps(r));raise

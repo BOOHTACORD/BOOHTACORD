@@ -1,0 +1,14 @@
+"""Bound only this packet's screen share; use native stop, never kill or voice leave."""
+import json,time,sys
+from phone_common import WORK,now,save
+from phone_stop import stop
+suffix=sys.argv[1] if len(sys.argv)>1 else 'preparation';assert suffix in ['preparation','capture']
+release=WORK/('guard-release-'+suffix);assert not release.exists()
+r={'status':'ARMED','at_utc':now(),'deadline_epoch':time.time()+240,'timeout_seconds':240,'scope':'Only owned app-only Settings capture'};save('guard-result-'+suffix+'.json',r)
+while time.time()<r['deadline_epoch'] and not release.exists():time.sleep(.25)
+if release.exists():r['status']='DISARMED_AFTER_PARENT_CLEANUP'
+elif (WORK/'capture-attempt-owned.json').exists():
+ try:r['stop_result']=stop('deadline');r['status']='DEADLINE_NATIVE_STOP_SUCCEEDED'
+ except Exception as error:r['status']='DEADLINE_STOP_FAILED';r['error_type']=type(error).__name__
+else:r['status']='DEADLINE_WITHOUT_STARTED_OWN_CAPTURE'
+r['finished_at_utc']=now();save('guard-result-'+suffix+'.json',r);print(json.dumps(r))

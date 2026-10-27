@@ -1,0 +1,44 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile} from 'node:fs/promises'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,expect,origin} from 'file:///C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/privacy_fixture.mjs'
+import {observeInit,sample} from './receiver_stats.mjs'
+const root=new URL('./',import.meta.url),clients=[],report={status:'RUNNING',at_utc:new Date().toISOString(),origin,receivers:[],cases:[],api_mocks:false,synthetic_media:false,media_recording:false,browser_audio_output_muted:true}
+const save=()=>writeFile(new URL('peers-result.json',root),JSON.stringify(report,null,2)+'\n')
+const browser=await chromium.launch({channel:'chrome',headless:false,args:['--mute-audio']});let f
+try{
+ f=await fixture({newContext:async options=>{const context=await browser.newContext(options);await context.addInitScript(observeInit);return context}})
+ for(const role of ['b','c']){
+  const client=await f.client(role);clients.push(client);const session=await api(client.page,'/auth/session');assert.equal(session.body.role,'MEMBER')
+  const receipt=await client.context.request.get(origin+'/release-receipt.json');assert.equal(receipt.status(),200)
+  const channel=client.page.locator('.channel-button').filter({hasText:'SHARE_TEST'});await expect(channel).toHaveCount(1);await channel.click()
+  await expect(client.page.locator('.voice-prejoin')).toBeVisible();await client.page.getByRole('button',{name:'Без микрофона',exact:true}).click()
+  await expect(client.page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён',{timeout:30000})
+  const stats=await sample(client.page);assert.equal(stats.mic_calls,0);report.receivers.push({role,source:(await receipt.json()).source_revision,before:stats})
+ }
+ report.browser=browser.version();report.status='READY_TWO_REAL_LISTENERS';await save()
+ let sequence=0;const deadline=Date.now()+720000
+ while(browser.isConnected()&&Date.now()<deadline){
+  let command;try{command=JSON.parse(await readFile(new URL('peer-command.json',root),'utf8'))}catch{}
+  if(command?.sequence>sequence){
+   sequence=command.sequence;if(command.action==='stop')break
+   const row={sequence,action:command.action,at_utc:new Date().toISOString(),receivers:[],status:'RUNNING'}
+   try{
+    if(command.action==='watch'){
+     const source=JSON.parse(await readFile(new URL('source-live.json',root),'utf8'));assert.ok(source.display_title_observed&&source.app_only_selected&&source.settings_app_selected)
+     for(const client of clients){await expect(client.page.locator('.participant-watch:visible')).toHaveCount(1,{timeout:20000});await client.page.locator('.participant-watch:visible').click()}
+     for(const client of clients)await expect.poll(async()=> (await sample(client.page)).video.some(v=>v.width>0&&v.height>0&&v.readyState>=2),{timeout:30000}).toBe(true)
+    }else assert.ok(['sample','after-stop'].includes(command.action))
+    for(let i=0;i<clients.length;i++){const stats=await sample(clients[i].page);assert.equal(stats.mic_calls,0);row.receivers.push({role:['b','c'][i],stats})}
+    row.status='PASS'
+   }catch(error){row.status='FAIL_OR_CONTROLLER';row.error_type=error.name;for(const client of clients)row.receivers.push({stats:await sample(client.page)})}
+   report.cases.push(row);report.completed_sequence=sequence;await save()
+  }await delay(250)
+ }
+ report.status='COMPLETE'
+}catch(error){report.status='FAIL_OR_CONTROLLER';report.error_type=error.name}
+finally{
+ report.explicit_leave=[]
+ for(const client of clients){try{await client.page.getByTestId('voice-dock').getByRole('button',{name:'Выйти из голосового канала',exact:true}).click();report.explicit_leave.push(true)}catch(error){report.explicit_leave.push(false)}}
+ for(const context of f?.contexts??[])await context.close();await browser.close();await save();console.log(JSON.stringify({status:report.status,explicit_leave:report.explicit_leave,cases:report.cases.map(c=>({sequence:c.sequence,action:c.action,status:c.status}))}))
+}

@@ -1,0 +1,25 @@
+// Observe native browser RTC/video counters; retain no IDs, addresses, media or credentials.
+export const observeInit=()=>{
+ const Native=window.RTCPeerConnection;window.__qaSenderPeers=[];window.__qaMicCalls=0
+ window.RTCPeerConnection=class extends Native{constructor(...args){super(...args);window.__qaSenderPeers.push(this)}}
+ const gum=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices)
+ navigator.mediaDevices.getUserMedia=(...args)=>{window.__qaMicCalls++;return gum(...args)}
+}
+export const sample=page=>page.evaluate(async()=>{
+ const inbound=[],remote=[]
+ for(const pc of window.__qaSenderPeers)if(pc.connectionState==='connected'){
+ const stats=await pc.getStats();for(const v of stats.values()){
+  if(v.type==='inbound-rtp'&&!v.isRemote&&(v.kind??v.mediaType)==='video'){
+   const r={};for(const k of ['timestamp','bytesReceived','packetsReceived','packetsLost','framesDecoded','framesDropped','framesPerSecond','frameWidth','frameHeight','jitter','totalDecodeTime','freezeCount','totalFreezesDuration'])if(typeof v[k]==='number')r[k]=v[k]
+   const mime=stats.get(v.codecId)?.mimeType;if(['video/VP8','video/VP9','video/H264','video/AV1'].includes(mime))r.codec=mime;inbound.push(r)
+  }
+  if(v.type==='remote-outbound-rtp'&&typeof v.roundTripTime==='number')remote.push({rtt_seconds:v.roundTripTime})
+ }}
+ const video=[...document.querySelectorAll('video')].map(v=>{
+  if(!v.__qaFrameObserver&&typeof v.requestVideoFrameCallback==='function'){
+   v.__qaFrameObserver={last:null};const tick=(now,m)=>{v.__qaFrameObserver.last={callback_now:now,presentedFrames:m.presentedFrames,width:m.width,height:m.height,mediaTime:m.mediaTime,expectedDisplayTime:m.expectedDisplayTime};v.requestVideoFrameCallback(tick)};v.requestVideoFrameCallback(tick)
+  }
+  return {width:v.videoWidth,height:v.videoHeight,readyState:v.readyState,paused:v.paused,presentation:v.__qaFrameObserver?.last??null,quality:typeof v.getVideoPlaybackQuality==='function'?{totalVideoFrames:v.getVideoPlaybackQuality().totalVideoFrames,droppedVideoFrames:v.getVideoPlaybackQuality().droppedVideoFrames}:null}
+ })
+ return {at_utc:new Date().toISOString(),browser_monotonic_ms:performance.now(),inbound,remote,connected_peers:window.__qaSenderPeers.filter(p=>p.connectionState==='connected').length,mic_calls:window.__qaMicCalls,video,watch_controls:document.querySelectorAll('.participant-watch').length}
+})

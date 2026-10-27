@@ -1,0 +1,12 @@
+"""Scroll only the freshly observed public Display RecyclerView; change no setting."""
+import sys,json,re,hashlib
+from phone_common import *
+direction=sys.argv[1];assert direction in ['down','up'];assert (WORK/'source-live.json').is_file()
+raw=call('shell','dumpsys','activity','activities');top='\n'.join(l for l in raw.splitlines() if 'topResumedActivity' in l or 'mResumedActivity' in l)
+assert 'com.android.settings/.Settings$DisplaySettingsActivity' in top
+rows=nodes();assert all(n.get('package') in ['com.android.settings','com.android.systemui'] for n in rows)
+choices=[n for n in rows if n.get('scrollable')=='true' and n.get('resource-id')=='com.android.settings:id/recycler_view'];assert len(choices)==1
+b=box(choices[0]);assert b[3]-b[1]>700;x=b[0]+(b[2]-b[0])//3;low=b[3]-(b[3]-b[1])//4;high=b[1]+(b[3]-b[1])//4
+a,c=(low,high) if direction=='down' else (high,low)
+call('shell','input','swipe',str(x),str(a),str(x),str(c),'700')
+r={'at_utc':now(),'direction':direction,'viewport':b,'public_Display_activity_confirmed':True,'setting_value_changed':False,'runner_sha256':hashlib.sha256(__import__('pathlib').Path(__file__).read_bytes()).hexdigest()};save('motion-'+direction+'.json',r);print(json.dumps(r))

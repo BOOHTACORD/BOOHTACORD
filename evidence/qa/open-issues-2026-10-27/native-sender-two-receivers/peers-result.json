@@ -1,0 +1,460 @@
+{
+  "status": "COMPLETE",
+  "at_utc": "2026-10-27T21:36:40.845Z",
+  "origin": "https://v.bootybay.ru",
+  "receivers": [
+    {
+      "role": "b",
+      "source": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+      "before": {
+        "at_utc": "2026-10-27T21:36:43.650Z",
+        "browser_monotonic_ms": 2335.7999999821186,
+        "inbound": [],
+        "remote": [],
+        "connected_peers": 1,
+        "mic_calls": 0,
+        "video": [],
+        "watch_controls": 0
+      }
+    },
+    {
+      "role": "c",
+      "source": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+      "before": {
+        "at_utc": "2026-10-27T21:36:45.088Z",
+        "browser_monotonic_ms": 1328,
+        "inbound": [],
+        "remote": [],
+        "connected_peers": 1,
+        "mic_calls": 0,
+        "video": [],
+        "watch_controls": 0
+      }
+    }
+  ],
+  "cases": [
+    {
+      "sequence": 1,
+      "action": "watch",
+      "at_utc": "2026-10-27T21:41:37.191Z",
+      "receivers": [
+        {
+          "stats": {
+            "at_utc": "2026-10-27T21:42:06.433Z",
+            "browser_monotonic_ms": 325118.6999999881,
+            "inbound": [],
+            "remote": [],
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 0,
+                "height": 0,
+                "readyState": 0,
+                "paused": false,
+                "presentation": null,
+                "quality": {
+                  "totalVideoFrames": 0,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "stats": {
+            "at_utc": "2026-10-27T21:42:06.434Z",
+            "browser_monotonic_ms": 322674.1999999881,
+            "inbound": [],
+            "remote": [],
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 0,
+                "height": 0,
+                "readyState": 0,
+                "paused": false,
+                "presentation": null,
+                "quality": {
+                  "totalVideoFrames": 0,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "status": "FAIL_OR_CONTROLLER",
+      "error_type": "Error"
+    },
+    {
+      "sequence": 2,
+      "action": "sample",
+      "at_utc": "2026-10-27T21:42:49.850Z",
+      "receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-27T21:42:49.851Z",
+            "browser_monotonic_ms": 368537.1999999881,
+            "inbound": [
+              {
+                "timestamp": 1793137369851.406,
+                "bytesReceived": 94660,
+                "packetsReceived": 87,
+                "packetsLost": 0,
+                "framesDecoded": 12,
+                "framesDropped": 0,
+                "framesPerSecond": 7,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.094,
+                "totalDecodeTime": 0.015522,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 368478,
+                  "presentedFrames": 12,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 2.871,
+                  "expectedDisplayTime": 368486.4
+                },
+                "quality": {
+                  "totalVideoFrames": 12,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-27T21:42:49.853Z",
+            "browser_monotonic_ms": 366093.3000000119,
+            "inbound": [
+              {
+                "timestamp": 1793137369853.238,
+                "bytesReceived": 96642,
+                "packetsReceived": 89,
+                "packetsLost": 0,
+                "framesDecoded": 12,
+                "framesDropped": 0,
+                "framesPerSecond": 7,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.092,
+                "totalDecodeTime": 0.015733,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 366015.7,
+                  "presentedFrames": 12,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 3.012,
+                  "expectedDisplayTime": 366024
+                },
+                "quality": {
+                  "totalVideoFrames": 12,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "sequence": 3,
+      "action": "sample",
+      "at_utc": "2026-10-27T21:43:21.163Z",
+      "receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-27T21:43:21.165Z",
+            "browser_monotonic_ms": 399850.59999999404,
+            "inbound": [
+              {
+                "timestamp": 1793137401164.807,
+                "bytesReceived": 569798,
+                "packetsReceived": 515,
+                "packetsLost": 3,
+                "framesDecoded": 54,
+                "framesDropped": 0,
+                "framesPerSecond": 10,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.028,
+                "totalDecodeTime": 0.075766,
+                "freezeCount": 3,
+                "totalFreezesDuration": 3.236,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 399699.6,
+                  "presentedFrames": 49,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 34.563,
+                  "expectedDisplayTime": 399708
+                },
+                "quality": {
+                  "totalVideoFrames": 54,
+                  "droppedVideoFrames": 5
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-27T21:43:21.166Z",
+            "browser_monotonic_ms": 397406.3000000119,
+            "inbound": [
+              {
+                "timestamp": 1793137401166.32,
+                "bytesReceived": 561997,
+                "packetsReceived": 508,
+                "packetsLost": 0,
+                "framesDecoded": 56,
+                "framesDropped": 0,
+                "framesPerSecond": 12,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.026,
+                "totalDecodeTime": 0.080289,
+                "freezeCount": 3,
+                "totalFreezesDuration": 3.394,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 397395.7,
+                  "presentedFrames": 48,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 34.699,
+                  "expectedDisplayTime": 397404.1
+                },
+                "quality": {
+                  "totalVideoFrames": 56,
+                  "droppedVideoFrames": 8
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "sequence": 4,
+      "action": "after-stop",
+      "at_utc": "2026-10-27T21:46:32.505Z",
+      "receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-27T21:46:32.507Z",
+            "browser_monotonic_ms": 591192.7999999821,
+            "inbound": [],
+            "remote": [],
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 0,
+                "height": 0,
+                "readyState": 0,
+                "paused": true,
+                "presentation": {
+                  "callback_now": 430170.5,
+                  "presentedFrames": 55,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 65.035,
+                  "expectedDisplayTime": 430178.8
+                },
+                "quality": {
+                  "totalVideoFrames": 0,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-27T21:46:32.508Z",
+            "browser_monotonic_ms": 588748.400000006,
+            "inbound": [],
+            "remote": [],
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 0,
+                "height": 0,
+                "readyState": 0,
+                "paused": true,
+                "presentation": {
+                  "callback_now": 427774.8,
+                  "presentedFrames": 53,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 65.101,
+                  "expectedDisplayTime": 427783.2
+                },
+                "quality": {
+                  "totalVideoFrames": 0,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "sequence": 5,
+      "action": "after-stop",
+      "at_utc": "2026-10-27T21:47:39.579Z",
+      "receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-27T21:47:39.581Z",
+            "browser_monotonic_ms": 658266.5,
+            "inbound": [],
+            "remote": [],
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 0,
+                "height": 0,
+                "readyState": 0,
+                "paused": true,
+                "presentation": {
+                  "callback_now": 430170.5,
+                  "presentedFrames": 55,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 65.035,
+                  "expectedDisplayTime": 430178.8
+                },
+                "quality": {
+                  "totalVideoFrames": 0,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-27T21:47:39.582Z",
+            "browser_monotonic_ms": 655822.400000006,
+            "inbound": [],
+            "remote": [],
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 0,
+                "height": 0,
+                "readyState": 0,
+                "paused": true,
+                "presentation": {
+                  "callback_now": 427774.8,
+                  "presentedFrames": 53,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 65.101,
+                  "expectedDisplayTime": 427783.2
+                },
+                "quality": {
+                  "totalVideoFrames": 0,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "status": "PASS"
+    }
+  ],
+  "api_mocks": false,
+  "synthetic_media": false,
+  "media_recording": false,
+  "browser_audio_output_muted": true,
+  "browser": "155.0.8059.85",
+  "completed_sequence": 5,
+  "explicit_leave": [
+    true,
+    true
+  ]
+}

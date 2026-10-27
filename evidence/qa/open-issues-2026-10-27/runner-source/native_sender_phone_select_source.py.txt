@@ -1,0 +1,15 @@
+"""Select only the fresh Settings task whose public Display thumbnail was reviewed."""
+import json,hashlib
+from phone_common import *
+assert not (WORK/'capture-attempt-owned.json').exists()
+old=json.loads((WORK/'picker-attempt2-structure.json').read_text());expected=old['settings_source_nodes'][0]['bounds']
+assert expected==[118,553,388,1252]
+assert json.loads((WORK/'picker-app-only.json').read_text())['app_only_selected']
+rows=nodes();choices=[n for n in rows if n.get('package')=='com.android.systemui' and label(n)=='Настройки' and n.get('clickable')=='true' and box(n)==expected]
+assert len(choices)==1;before=projection();assert not before['projection_package_present'] and not before['screen_fgs']
+report={'at_utc':now(),'app_only_selected':True,'settings_app_selected':True,'picker_card_bounds':expected,'display_card_reviewed_at_source_resolution':True,'public_Display_title_visible_in_reviewed_card':True,'reviewed_card_sha256':hashlib.sha256((WORK/'settings-picker-card-0.png').read_bytes()).hexdigest(),'prior_projection_absent':True}
+save('capture-attempt-owned.json',report)
+b=box(choices[0]);assert b[3]-b[1]<900;call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2))
+rows=nodes();assert all(n.get('package') in ['com.android.settings','com.android.systemui'] for n in rows)
+assert any(label(n)=='Дисплей' for n in rows),'Stop owned capture if selected source changed'
+report['display_title_observed']=True;report['projection']=projection();report['device_epoch_s']=int(call('shell','date','+%s').strip());report['status']='PUBLIC_APP_ONLY_CAPTURE_STARTED';save('source-live.json',report);print(json.dumps(report))

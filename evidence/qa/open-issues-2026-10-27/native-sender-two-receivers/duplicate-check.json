@@ -1,0 +1,42 @@
+{
+  "at_utc": "2026-10-27T21:52:00.616Z",
+  "queries": [
+    "is:issue Android \"первый кадр\"",
+    "is:issue \"app-only\" \"static\""
+  ],
+  "matches": [
+    [
+      {
+        "number": 579,
+        "title": "[BUG][Windows native] Android screen обнаружен, но просмотр зависает без первого кадра; Chrome на том же ПК декодирует"
+      },
+      {
+        "number": 42,
+        "title": "FE-59/61 paired runtime — Android Emulator → macOS"
+      },
+      {
+        "number": 132,
+        "title": "QA — Android screen share и фоновые потоки: runtime-приёмка #40 #42 #48 #49 #51 #86"
+      },
+      {
+        "number": 40,
+        "title": "FE-61 — Обнаружение чужого стрима на macOS"
+      },
+      {
+        "number": 165,
+        "title": "[ScreenShare][SS-09][P1] Flutter viewer: discovery, renderer generation и восстановление без чёрного экрана"
+      },
+      {
+        "number": 170,
+        "title": "[ScreenShare][SS-14][P1] UX и metadata: режимы «Плавность/Текст», actual vs target и честные capabilities"
+      },
+      {
+        "number": 156,
+        "title": "[ScreenShare][EPIC] Стабильная демонстрация экрана: управляемые профили, подписки и проверенные 60 FPS"
+      }
+    ],
+    []
+  ],
+  "reviewed_existing_issue": 48,
+  "distinction": "579 is Windows native viewer while Chrome decoded; 48 concerns Pixel local preview/renderer. Current observed initial window had two Chrome viewers with zero inbound video, then recovered after source motion. Capture/network/root cause remains unknown; same-root duplication is unproven."
+}

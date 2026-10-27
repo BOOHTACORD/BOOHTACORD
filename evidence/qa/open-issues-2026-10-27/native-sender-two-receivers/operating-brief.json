@@ -1,0 +1,15 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "medium",
+  "route": "T-038 -> features/screen/metrics/report_sample.dart + native Android capture + actual Chrome RTC observation",
+  "mode": "physical production verification",
+  "preservation": "Existing SHARE_TEST voice/unmuted permission/session; public Display app-only source; no audio recording, camera, server faults or router changes",
+  "native_checks": [
+    "actual two headed Chrome MEMBER listener joins; getUserMedia calls0",
+    "Android sender log numeric whitelist and HTTP success milestones",
+    "two receiver getStats and requestVideoFrameCallback snapshots",
+    "native stop and >=10s polling quiet observation; explicit listener leave"
+  ],
+  "limits": "No Mac/Pixel, human audibility, 60FPS/capacity or QoE profile acceptance",
+  "stop_condition": "owned screen projection removed, mic-only FGS and voice preserved, both own listeners leave, source-bound evidence and exact unresolved fields retained"
+}

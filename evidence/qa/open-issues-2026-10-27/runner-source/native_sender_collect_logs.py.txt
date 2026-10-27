@@ -1,0 +1,23 @@
+"""Read logcat transiently; retain only fixed screen event enums and numeric counters."""
+import sys,json,re,subprocess,collections
+from phone_common import WORK,ADB,APP,call,save,now
+phase=sys.argv[1];before=json.loads((WORK/'before.json').read_text());minimum=before['device_epoch_s']
+pid=call('shell','pidof',APP).strip();assert re.fullmatch(r'\d+',pid)
+raw=subprocess.check_output([ADB,'logcat','-d','--pid='+pid,'-v','epoch','-s','flutter:I'],timeout=30).decode('utf-8','replace')
+events={'capture_requested','capture_prepared','capture_created','capture_failed','publish_started','publish_completed','publish_failed','local_published','local_unpublished','sender_stats_sampled','sender_stats_unavailable','sender_report_started','sender_report_sent','sender_report_failed'}
+numbers={'local_screen_publications','remote_screen_publications','remote_participants','sender_stats_entries','frames_sent','bytes_sent','encoded_fps','duration_ms'}
+rows=[]
+for line in raw.splitlines():
+ if '[screen-share]' not in line:continue
+ clock=re.match(r'\s*(\d+\.\d+)',line)
+ if not clock or float(clock[1])<minimum:continue
+ fields=dict(re.findall(r'(\w+)=([^\s]+)',line.split('[screen-share]',1)[1]))
+ if fields.get('event') not in events or fields.get('platform')!='android':continue
+ row={'device_log_epoch_s':float(clock[1]),'event':fields['event'],'platform':'android'}
+ for key in numbers:
+  if key in fields and re.fullmatch(r'\d+',fields[key]):row[key]=int(fields[key])
+ for key,allowed in {'track_enabled':{'true','false'},'error_class':{'http_timeout','http_4xx','http_5xx','network','session_invalidated'},'http_status_class':{'4xx','5xx','other'}}.items():
+  if fields.get(key) in allowed:row[key]=fields[key]
+ rows.append(row)
+r={'phase':phase,'at_utc':now(),'device_epoch_s':int(call('shell','date','+%s').strip()),'raw_log_retained':False,'body_or_identity_logged':False,'events':rows,'event_counts':dict(collections.Counter(row['event'] for row in rows))}
+save('sender-logs-'+phase+'.json',r);print(json.dumps({'phase':phase,'event_counts':r['event_counts'],'raw_log_retained':False}))

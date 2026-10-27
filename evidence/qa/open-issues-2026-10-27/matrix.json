@@ -1523,9 +1523,14 @@
           "requirement": "[#43 — Android sender metrics](https://github.com/Egkurilov/BOOHTACORD/issues/43): при активном удалённом получателе сопоставить sender report с двумя receiver snapshots; проверить корректные положительные counters и остановку polling при unpublish/leave/revoke/disconnect.",
           "source_checkbox": " ",
           "id": "I131.C4",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-screen-two-Web-receivers",
+            "ANDROID-screen-native-stop-polling-quiet"
+          ],
+          "evidence": [
+            "native-sender-two-receivers/summary.json"
+          ],
           "execution": "Use applicable cases.json ADB/native helper commands and native-image/reproduce.md; run the remaining row's actual UI/OS steps on the physical approved candidate and verify the paired result. | Manual paired protocol docs/runbooks/media-profiles.md; complete the source row's profiles/repeats/normal-degraded-recovery matrix with simultaneous counters and calibrated observations.",
           "platform": "Physical Samsung Android16 now available; Pixel/iOS/emulator or other OS versions remain distinct variants. | The row-specified physical publisher/receiver pairs; preserve missing Mac/iOS/Pixel and unknown stages.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
@@ -1547,7 +1552,10 @@
             "existing_scoped_witnesses": []
           },
           "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "Native sender/two Web receivers: scoped positive counters and Stop quiet passed; initial first-frame wait failed before source motion. RTT/source FPS/clocks/other lifecycle/platform/protocol repetitions and original row clauses remain unaccepted. Controller toolbar/guard failures retained."
+          ]
         },
         {
           "section": "Проверки",
@@ -2004,11 +2012,15 @@
           "execution_cases": [
             "ANDROID-muted-background",
             "ANDROID-stop-with-mic",
-            "AUDIO-audibility"
+            "AUDIO-audibility",
+            "ANDROID-screen-two-Web-receivers",
+            "ANDROID-screen-static-first-frame",
+            "ANDROID-screen-native-stop-polling-quiet"
           ],
           "evidence": [
             "muted-background-resume.json; muted-stop.json; restored-microphone.json",
-            "second-cycle-stop.json"
+            "second-cycle-stop.json",
+            "native-sender-two-receivers/summary.json"
           ],
           "execution": "python .out/qa-goal/android_controls.py resume; python .out/qa-goal/android_controls.py stop; python .out/qa-goal/android_controls.py stop; Physical listening at PC and phone",
           "platform": "Physical Samsung Android16, app-only projection; Physical Samsung Android16; Physical Windows + Samsung",
@@ -2017,7 +2029,8 @@
           "witness_limits": [
             "ANDROID-muted-background: Controls/service ownership only; no audibility or frame-rate SLO claim. Original microphone state restored.",
             "ANDROID-stop-with-mic: Scope: foreground service and MediaProjection ownership; full viewer renderer cleanup not proven.",
-            "AUDIO-audibility: User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening."
+            "AUDIO-audibility: User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening.",
+            "Native sender/two Web receivers: scoped positive counters and Stop quiet passed; initial first-frame wait failed before source motion. RTT/source FPS/clocks/other lifecycle/platform/protocol repetitions and original row clauses remain unaccepted. Controller toolbar/guard failures retained."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -2864,9 +2877,14 @@
           "requirement": "Пары минимум: Windows Chromium→Windows/macOS Chromium, macOS Chromium→Windows, Chromium→Safari, Flutter Windows/macOS→Web и обратные направления; Android physical→macOS/Web; Web→Android/iOS receiver. Publish на iOS/Safari проверять только по фактически поддерживаемому контракту #85/#170, unsupported не равно NOT_RUN.",
           "source_checkbox": " ",
           "id": "I173.C1",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-screen-two-Web-receivers",
+            "ANDROID-screen-static-first-frame"
+          ],
+          "evidence": [
+            "native-sender-two-receivers/summary.json"
+          ],
           "execution": "Manual paired protocol docs/runbooks/media-profiles.md; complete the source row's profiles/repeats/normal-degraded-recovery matrix with simultaneous counters and calibrated observations. | Manual physical protocol docs/runbooks/game-capture.md using authorized test accounts/SHARE_TEST; execute the exact mute/gain/source/voice steps in this row.",
           "platform": "The row-specified physical publisher/receiver pairs; preserve missing Mac/iOS/Pixel and unknown stages. | Physical Windows and Apple Silicon macOS presenters with independent physical observers.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
@@ -2895,7 +2913,10 @@
             "existing_scoped_witnesses": []
           },
           "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "Native sender/two Web receivers: scoped positive counters and Stop quiet passed; initial first-frame wait failed before source motion. RTT/source FPS/clocks/other lifecycle/platform/protocol repetitions and original row clauses remain unaccepted. Controller toolbar/guard failures retained."
+          ]
         },
         {
           "section": "Матрица и проведение",
@@ -2960,9 +2981,14 @@
           "requirement": "Одновременно снимать source/capture, encoded, decoded и presentation counters; отсутствие поля оставить unknown. Проверять уникальность синтетических кадров/дубли/потери, freeze count/duration, first-frame/switch p95, encode/decode time, loss/RTT/jitter и layer/codec.",
           "source_checkbox": " ",
           "id": "I173.C4",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-screen-two-Web-receivers",
+            "ANDROID-screen-static-first-frame"
+          ],
+          "evidence": [
+            "native-sender-two-receivers/summary.json"
+          ],
           "execution": "Manual paired protocol docs/runbooks/media-profiles.md; complete the source row's profiles/repeats/normal-degraded-recovery matrix with simultaneous counters and calibrated observations. | Manual physical protocol docs/runbooks/game-capture.md using authorized test accounts/SHARE_TEST; execute the exact mute/gain/source/voice steps in this row.",
           "platform": "The row-specified physical publisher/receiver pairs; preserve missing Mac/iOS/Pixel and unknown stages. | Physical Windows and Apple Silicon macOS presenters with independent physical observers.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
@@ -2982,7 +3008,10 @@
             "existing_scoped_witnesses": []
           },
           "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "Native sender/two Web receivers: scoped positive counters and Stop quiet passed; initial first-frame wait failed before source motion. RTT/source FPS/clocks/other lifecycle/platform/protocol repetitions and original row clauses remain unaccepted. Controller toolbar/guard failures retained."
+          ]
         },
         {
           "section": "Матрица и проведение",
@@ -3018,9 +3047,14 @@
           "requirement": "Сценарии start/cancel/stop/restart, 100 переключений, low→high, republish, full→mini→full, background/resume, sleep/wake, source resize/monitor unplug и network reconnect. Recovery видео не прерывает комнату/голос.",
           "source_checkbox": " ",
           "id": "I173.C6",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-screen-native-stop-polling-quiet",
+            "ANDROID-screen-static-first-frame"
+          ],
+          "evidence": [
+            "native-sender-two-receivers/summary.json"
+          ],
           "execution": "Manual paired protocol docs/runbooks/media-profiles.md; complete the source row's profiles/repeats/normal-degraded-recovery matrix with simultaneous counters and calibrated observations. | Manual physical protocol docs/runbooks/game-capture.md using authorized test accounts/SHARE_TEST; execute the exact mute/gain/source/voice steps in this row.",
           "platform": "The row-specified physical publisher/receiver pairs; preserve missing Mac/iOS/Pixel and unknown stages. | Physical Windows and Apple Silicon macOS presenters with independent physical observers.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
@@ -3040,7 +3074,10 @@
             "existing_scoped_witnesses": []
           },
           "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "Native sender/two Web receivers: scoped positive counters and Stop quiet passed; initial first-frame wait failed before source motion. RTT/source FPS/clocks/other lifecycle/platform/protocol repetitions and original row clauses remain unaccepted. Controller toolbar/guard failures retained."
+          ]
         },
         {
           "section": "Матрица и проведение",
@@ -15884,7 +15921,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-27T21:26:49.788575+00:00",
+  "updated_utc": "2026-10-27T21:53:15.885262+00:00",
   "known_defect_issues": [
     579,
     580,

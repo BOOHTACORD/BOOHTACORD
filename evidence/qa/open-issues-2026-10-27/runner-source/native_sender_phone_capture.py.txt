@@ -1,0 +1,41 @@
+"""Start app-only capture of the already verified public Android Display page."""
+import json,sys,time
+from phone_common import *
+action=sys.argv[1];report={'at_utc':now(),'action':action,'body_or_identity_logged':False}
+if action=='start':
+ assert not (WORK/'capture-attempt-owned.json').exists(),'Never silently restart an old capture attempt'
+ source=json.loads((WORK/'public-source.json').read_text());assert source['display_title_observed'] and source['settings_app_only_observed']
+ before=snapshot();assert before['voice_connected'] and before['SHARE_TEST_visible'] and not before['unknown_draft']
+ assert not before['projection_package_present'] and not before['screen_fgs']
+ rows=nodes();tap([n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and 'начать демонстрацию' in label(n).lower() and box(n)[1]<700])
+ rows=nodes();report['setup_seen']=True
+ report['capability_notice_present']=any(any(k in label(n).lower() for k in ['без звука','не поддерж','недоступ']) for n in rows)
+ report['target_FPS_labels']=[s for s in ['15 FPS','30 FPS','60 FPS'] if any(s==label(n) for n in rows)]
+ save('setup-before-picker.json',report)
+ tap([n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and label(n).startswith('Начать')])
+ rows=nodes();spinner=[n for n in rows if n.get('resource-id')=='com.android.systemui:id/screen_share_mode_options'];assert len(spinner)==1
+ selected=[n.get('text') for n in spinner[0].iter('node') if n.get('text')];assert selected==['Показать приложение'],'Full display capture is not authorized in this packet'
+ report['app_only_selected']=True;save('picker-app-only.json',report)
+ tap([n for n in rows if n.get('resource-id')=='android:id/button1' and label(n)=='Далее'])
+ for _ in range(6):
+  rows=nodes();choices=[n for n in rows if n.get('package')=='com.android.systemui' and n.get('resource-id')=='android:id/text1' and label(n)=='Настройки']
+  if choices:break
+  lists=[n for n in rows if n.get('package')=='com.android.systemui' and n.get('scrollable')=='true']
+  assert len(lists)==1,'Expected one observed system source list';b=box(lists[0]);x=(b[0]+b[2])//2
+  call('shell','input','swipe',str(x),str(b[3]-100),str(x),str(b[1]+100),'450')
+ assert len(choices)==1,'Observed Settings source required'
+ save('capture-attempt-owned.json',{'at_utc':now(),'source':'public Android Display settings','prior_projection_absent':True})
+ tap(choices);report['settings_app_selected']=True;rows=nodes()
+ assert all(n.get('package') in ['com.android.settings','com.android.systemui'] for n in rows)
+ assert any(label(n)=='Дисплей' for n in rows),'Unexpected Settings source; stop the owned capture'
+ report['display_title_observed']=True;report['projection']=projection();report['device_epoch_s']=int(call('shell','date','+%s').strip());report['status']='PUBLIC_APP_ONLY_CAPTURE_STARTED';save('source-live.json',report)
+elif action=='motion':
+ assert (WORK/'source-live.json').is_file();rows=nodes()
+ assert all(n.get('package') in ['com.android.settings','com.android.systemui'] for n in rows)
+ assert any(label(n)=='Дисплей' for n in rows)
+ choices=[n for n in rows if n.get('scrollable')=='true' and box(n)[3]-box(n)[1]>700];assert len(choices)==1
+ b=box(choices[0]);x=b[0]+(b[2]-b[0])//3;low=b[3]-(b[3]-b[1])//4;high=b[1]+(b[3]-b[1])//4
+ direction=sys.argv[2];assert direction in ['down','up'];a,c=(low,high) if direction=='down' else (high,low)
+ call('shell','input','swipe',str(x),str(a),str(x),str(c),'700');report['source_scroll_direction']=direction;report['setting_value_changed']=False
+else:raise ValueError('Unknown bounded capture action')
+print(json.dumps(report))

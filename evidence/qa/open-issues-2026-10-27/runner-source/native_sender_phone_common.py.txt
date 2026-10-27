@@ -1,0 +1,21 @@
+"""Private helpers for this bounded physical screen sender verification."""
+import json,re,sys
+from pathlib import Path
+from datetime import datetime,timezone
+WORK=Path(__file__).parent
+sys.path.insert(0,'C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal')
+from android_permission_ui import call,nodes,label,tap_named,APP,state,ADB
+def save(name,value):(WORK/name).write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8',newline='\n')
+def now():return datetime.now(timezone.utc).isoformat()
+def box(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+def tap(choices):
+ assert len(choices)==1,'Expected unique observed bounded control';b=box(choices[0]);assert 0<b[3]-b[1]<500
+ call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2))
+def projection():
+ raw=call('shell','dumpsys','media_projection');services=call('shell','dumpsys','activity','services',APP)
+ types=[int(s,16) for s in re.findall(r'isForeground=true[^\n]*types=(0x[0-9a-f]+)',services)]
+ return {'projection_package_present':APP in raw,'screen_fgs':any(t&0x20 for t in types),'mic_fgs':any(t&0x80 for t in types),'fgs_types':[hex(t) for t in types]}
+def snapshot():
+ s=state();rows=nodes();s.update(projection());s['SHARE_TEST_visible']=any('SHARE_TEST' in label(n) for n in rows)
+ fields=[n for n in rows if n.get('class')=='android.widget.EditText'];s['unknown_draft']=any(n.get('text') for n in fields)
+ return s

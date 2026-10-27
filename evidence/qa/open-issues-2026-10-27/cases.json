@@ -869,6 +869,51 @@
       ],
       "result": "production-native-resume/summary.json#/facets/live_receive",
       "limits": "Scoped own synthetic DM only. No automatic-follow, p95, acoustic/media, admin ACL, TLS failure injection, native restart, provider, Mac/iOS or whole-row acceptance."
+    },
+    {
+      "id": "ANDROID-screen-two-Web-receivers",
+      "status": "PARTIAL",
+      "protects": "An active authorized Android app-only publisher must provide observable sender and receiver counters.",
+      "command": "Follow native-sender-two-receivers/README.md: peers.mjs + phone_prepare.py + phone_capture.py + observed phone_select_source.py + phone_motion.py + collect_logs.py; bottom dock cleanup and explicit listener leave",
+      "platform": "Physical Samsung SM-A576B Android16 signed2082/source072426d6 + two real headed Chrome155 MEMBER contexts on Windows11/Web8a2cda38; production HTTPS",
+      "mandatory_when": "Before accepting corresponding sender/first-frame/background/cleanup clauses or closing QA131/132/173",
+      "issues": [
+        131,
+        132,
+        173
+      ],
+      "result": "native-sender-two-receivers/summary.json#/facets/paired_sender_receivers",
+      "limits": "One actual capture cycle, moving Settings scroll only, no acoustic/60FPS/capacity/full-platform claim; missing fields and controller/deadline failures retained."
+    },
+    {
+      "id": "ANDROID-screen-static-first-frame",
+      "status": "FAIL",
+      "protects": "After a prolonged app-only source choice, a published already-visible static source must obtain an initial image without requiring a source gesture.",
+      "command": "Follow native-sender-two-receivers/README.md: peers.mjs + phone_prepare.py + phone_capture.py + observed phone_select_source.py + phone_motion.py + collect_logs.py; bottom dock cleanup and explicit listener leave",
+      "platform": "Physical Samsung SM-A576B Android16 signed2082/source072426d6 + two real headed Chrome155 MEMBER contexts on Windows11/Web8a2cda38; production HTTPS",
+      "mandatory_when": "Before accepting corresponding sender/first-frame/background/cleanup clauses or closing QA131/132/173",
+      "issues": [
+        131,
+        132,
+        173
+      ],
+      "result": "native-sender-two-receivers/summary.json#/facets/initial_first_frame",
+      "limits": "One actual capture cycle, moving Settings scroll only, no acoustic/60FPS/capacity/full-platform claim; missing fields and controller/deadline failures retained. The picker was open about150s; immediate selection was not repeated."
+    },
+    {
+      "id": "ANDROID-screen-native-stop-polling-quiet",
+      "status": "PASS",
+      "protects": "Owned native Stop must release screen capture and stop sender sample/report emissions while retaining the existing voice session.",
+      "command": "Follow native-sender-two-receivers/README.md: peers.mjs + phone_prepare.py + phone_capture.py + observed phone_select_source.py + phone_motion.py + collect_logs.py; bottom dock cleanup and explicit listener leave",
+      "platform": "Physical Samsung SM-A576B Android16 signed2082/source072426d6 + two real headed Chrome155 MEMBER contexts on Windows11/Web8a2cda38; production HTTPS",
+      "mandatory_when": "Before accepting corresponding sender/first-frame/background/cleanup clauses or closing QA131/132/173",
+      "issues": [
+        131,
+        132,
+        173
+      ],
+      "result": "native-sender-two-receivers/summary.json#/facets/stop_and_polling_quiet",
+      "limits": "One actual capture cycle, moving Settings scroll only, no acoustic/60FPS/capacity/full-platform claim; missing fields and controller/deadline failures retained."
     }
   ]
 }

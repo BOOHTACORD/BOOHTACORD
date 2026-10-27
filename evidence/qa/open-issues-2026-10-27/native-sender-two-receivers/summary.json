@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "status": "PARTIAL",
+  "at_utc": "2026-10-27T21:53:15.885262+00:00",
+  "origin": "https://v.bootybay.ru",
+  "room": "SHARE_TEST",
+  "android": {
+    "at_utc": "2026-10-27T21:47:52.255016+00:00",
+    "installed_APK_sha256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+    "version_name": "1.0.47",
+    "version_code": 2082,
+    "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "source_attribution": "hash matches existing signed physical candidate record; no app/session data extracted"
+  },
+  "web_sources": [
+    "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+    "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a"
+  ],
+  "browser": "155.0.8059.85",
+  "api_source": "UNKNOWN",
+  "native_source_fingerprints": {
+    "clients/flutter/lib/src/features/screen/metrics/controller.dart": "07da9b9b45bae13bdca2b41427fda93608a1978ed4b32ee309286384e0cdb053",
+    "clients/flutter/lib/src/features/screen/metrics/sample.dart": "3bd625516f5e96b6a10d9d5391e0d67bafb6c2b054938bd791a894997f97b6e8",
+    "clients/flutter/lib/src/features/screen/metrics/report_sample.dart": "6c82e948d61f8891fd8d376bf6ec2d61495aa9c0bfdeda87313003abd792b4a4",
+    "clients/flutter/lib/src/services/screen_share_diagnostics.dart": "9126ef1290315cd0d2fd258a55fd056da1184a0a3fdd4bf9e814879e47fdf033",
+    "clients/flutter/lib/src/screens/workspace_ui/voice_room/build/room_header/handler.dart": "58d75acf2f3737a41c733173524753c7e13314a86beca5c09d60d7366e12ae03",
+    "clients/flutter/lib/src/screens/workspace_ui/voice_dock/build/connected_controls/handler.dart": "b5f58960df1e51c3ac8cf6523d8c047aa0f18a4924781406f2120dbd38e92596"
+  },
+  "runner_binding": {
+    "phone_common.py": {
+      "sha256_before_physical_capture": "77a8217fa963190573bc8d0742ed4cf1079669cc569db319410a3ab3810b9032",
+      "retained_source": "runner-source/native_sender_phone_common.py.txt"
+    },
+    "phone_prepare.py": {
+      "sha256_before_physical_capture": "b977dfa468f3b337a6984e95473c05302d4f9d7b47964dd696c24116bf5e2faa",
+      "retained_source": "runner-source/native_sender_phone_prepare.py.txt"
+    },
+    "phone_capture.py": {
+      "sha256_before_physical_capture": "ee6c2ca97747e9f4ea2297e5b3b8251af133a526fba42b352551d5f900d736ff",
+      "retained_source": "runner-source/native_sender_phone_capture.py.txt"
+    },
+    "phone_select_source.py": {
+      "sha256_before_physical_capture": "3ae0062a674dc9c94a2313bd207364a53e20f0108e7060307bba57733d14f04b",
+      "retained_source": "runner-source/native_sender_phone_select_source.py.txt"
+    },
+    "phone_stop.py": {
+      "sha256_before_physical_capture": "b0f63ac101ef6fc430191d0f340740b7e4cd3119387adf34f28ea8d1bfcb9ef6",
+      "retained_source": "runner-source/native_sender_phone_stop_guard_pre_filter.py.txt"
+    },
+    "capture_guard.py": {
+      "sha256_before_physical_capture": "e38fbabc10861b411019ae780194531693941d0b7788eb62509c93eb49629df4",
+      "retained_source": "runner-source/native_sender_capture_guard.py.txt"
+    },
+    "collect_logs.py": {
+      "sha256_before_physical_capture": "8c59631d662d0dfb703791aeb1d0d5785fd34dee4237ee175f9273ca4f2b530d",
+      "retained_source": "runner-source/native_sender_collect_logs.py.txt"
+    },
+    "receiver_stats.mjs": {
+      "sha256_before_physical_capture": "5daabab7c270244a5941537e3069504307c508a2778562f1c50fbe44f98dcc34",
+      "retained_source": "runner-source/native_sender_receiver_stats.mjs.txt"
+    },
+    "peers.mjs": {
+      "sha256_before_physical_capture": "613cdf59f9d35a8c75922a6239f5b573e7707305bcb72302bddefe6595254fdc",
+      "retained_source": "runner-source/native_sender_peers.mjs.txt"
+    },
+    "phone_motion.py current": {
+      "retained_source": "runner-source/native_sender_phone_motion.py.txt",
+      "sha256_after_execution": "59df1fc8fc7d6d1cb537634431eb9d88a1fa36e770825a798063811312ccf1da"
+    },
+    "phone_stop.py current": {
+      "retained_source": "runner-source/native_sender_phone_stop.py.txt",
+      "sha256_after_execution": "f440275ba2e500f8611a2be92b5ae441f594ddb6f085d619af48e4b48cbc40a6"
+    }
+  },
+  "facets": {
+    "paired_sender_receivers": {
+      "status": "PARTIAL",
+      "sender_samples": 14,
+      "peak_logged_encoded_fps": 14,
+      "max_logged_frames_sent": 65,
+      "max_logged_bytes_sent": 699146,
+      "successful_native_HTTP_report_milestones": 50,
+      "report_failure_milestones": 0,
+      "decoded_samples": [
+        [
+          12,
+          12
+        ],
+        [
+          54,
+          56
+        ]
+      ],
+      "presentation_samples": [
+        [
+          12,
+          12
+        ],
+        [
+          49,
+          48
+        ]
+      ],
+      "codec": "VP8",
+      "actual_dimensions": [
+        590,
+        1280
+      ],
+      "scope": "Two real headed Chrome MEMBER listeners, no getUserMedia calls, public app-only source, microphone-enabled Android in background. Native log counters and accepted-report milestones are not a captured HTTP payload."
+    },
+    "initial_first_frame": {
+      "status": "FAIL",
+      "result": "peers-result.json#/cases/0",
+      "observed": "Both viewers had no inbound video stats, zero intrinsic video size, readyState0, and zero processed frames at the end of the initial30-second watch wait. After verified source scrolling both decoded/presented frames.",
+      "limits": "One capture cycle.30s is the harness observation window, not an approved p95 threshold. Motion/recovery correlation is observed; capture, network or transport causality is unproven. Picker delay is an essential reproduction condition; no general failure rate is established.",
+      "defect_issue": null,
+      "precondition": "System app-only picker remained open for about150s while two Settings task cards were inspected. Ordinary immediate-picker behavior was not retested.",
+      "capture_requested_to_prepared_device_log_seconds": 150.446
+    },
+    "stop_and_polling_quiet": {
+      "status": "PASS",
+      "result": "stop-bottom-attempt.json; polling-quiet-result.json",
+      "quiet_seconds": 68,
+      "scope": "Observed bottom dock Stop cleared MediaProjection and screen FGS; voice/unmuted/mic FGS and permission remained. Native sender sample/report emissions stopped; both receivers had no video RTP and unplayable cleared video sources in two snapshots."
+    }
+  },
+  "receiver_snapshots": [
+    {
+      "snapshot": 2,
+      "receiver": "b",
+      "host_utc": "2026-10-27T21:42:49.851Z",
+      "inbound": [
+        {
+          "timestamp": 1793137369851.406,
+          "bytesReceived": 94660,
+          "packetsReceived": 87,
+          "packetsLost": 0,
+          "framesDecoded": 12,
+          "framesDropped": 0,
+          "framesPerSecond": 7,
+          "frameWidth": 590,
+          "frameHeight": 1280,
+          "jitter": 0.094,
+          "totalDecodeTime": 0.015522,
+          "freezeCount": 0,
+          "totalFreezesDuration": 0,
+          "codec": "video/VP8"
+        }
+      ],
+      "video": [
+        {
+          "width": 590,
+          "height": 1280,
+          "readyState": 4,
+          "paused": false,
+          "presentation": {
+            "callback_now": 368478,
+            "presentedFrames": 12,
+            "width": 590,
+            "height": 1280,
+            "mediaTime": 2.871,
+            "expectedDisplayTime": 368486.4
+          },
+          "quality": {
+            "totalVideoFrames": 12,
+            "droppedVideoFrames": 0
+          }
+        }
+      ]
+    },
+    {
+      "snapshot": 2,
+      "receiver": "c",
+      "host_utc": "2026-10-27T21:42:49.853Z",
+      "inbound": [
+        {
+          "timestamp": 1793137369853.238,
+          "bytesReceived": 96642,
+          "packetsReceived": 89,
+          "packetsLost": 0,
+          "framesDecoded": 12,
+          "framesDropped": 0,
+          "framesPerSecond": 7,
+          "frameWidth": 590,
+          "frameHeight": 1280,
+          "jitter": 0.092,
+          "totalDecodeTime": 0.015733,
+          "freezeCount": 0,
+          "totalFreezesDuration": 0,
+          "codec": "video/VP8"
+        }
+      ],
+      "video": [
+        {
+          "width": 590,
+          "height": 1280,
+          "readyState": 4,
+          "paused": false,
+          "presentation": {
+            "callback_now": 366015.7,
+            "presentedFrames": 12,
+            "width": 590,
+            "height": 1280,
+            "mediaTime": 3.012,
+            "expectedDisplayTime": 366024
+          },
+          "quality": {
+            "totalVideoFrames": 12,
+            "droppedVideoFrames": 0
+          }
+        }
+      ]
+    },
+    {
+      "snapshot": 3,
+      "receiver": "b",
+      "host_utc": "2026-10-27T21:43:21.165Z",
+      "inbound": [
+        {
+          "timestamp": 1793137401164.807,
+          "bytesReceived": 569798,
+          "packetsReceived": 515,
+          "packetsLost": 3,
+          "framesDecoded": 54,
+          "framesDropped": 0,
+          "framesPerSecond": 10,
+          "frameWidth": 590,
+          "frameHeight": 1280,
+          "jitter": 0.028,
+          "totalDecodeTime": 0.075766,
+          "freezeCount": 3,
+          "totalFreezesDuration": 3.236,
+          "codec": "video/VP8"
+        }
+      ],
+      "video": [
+        {
+          "width": 590,
+          "height": 1280,
+          "readyState": 4,
+          "paused": false,
+          "presentation": {
+            "callback_now": 399699.6,
+            "presentedFrames": 49,
+            "width": 590,
+            "height": 1280,
+            "mediaTime": 34.563,
+            "expectedDisplayTime": 399708
+          },
+          "quality": {
+            "totalVideoFrames": 54,
+            "droppedVideoFrames": 5
+          }
+        }
+      ]
+    },
+    {
+      "snapshot": 3,
+      "receiver": "c",
+      "host_utc": "2026-10-27T21:43:21.166Z",
+      "inbound": [
+        {
+          "timestamp": 1793137401166.32,
+          "bytesReceived": 561997,
+          "packetsReceived": 508,
+          "packetsLost": 0,
+          "framesDecoded": 56,
+          "framesDropped": 0,
+          "framesPerSecond": 12,
+          "frameWidth": 590,
+          "frameHeight": 1280,
+          "jitter": 0.026,
+          "totalDecodeTime": 0.080289,
+          "freezeCount": 3,
+          "totalFreezesDuration": 3.394,
+          "codec": "video/VP8"
+        }
+      ],
+      "video": [
+        {
+          "width": 590,
+          "height": 1280,
+          "readyState": 4,
+          "paused": false,
+          "presentation": {
+            "callback_now": 397395.7,
+            "presentedFrames": 48,
+            "width": 590,
+            "height": 1280,
+            "mediaTime": 34.699,
+            "expectedDisplayTime": 397404.1
+          },
+          "quality": {
+            "totalVideoFrames": 56,
+            "droppedVideoFrames": 8
+          }
+        }
+      ]
+    }
+  ],
+  "limits": {
+    "native_full_sender_payload": "NOT_CAPTURED; no session/token extraction or network TLS interception",
+    "sender_RTT": "UNKNOWN",
+    "receiver_RTT": "UNKNOWN; remote-outbound field absent",
+    "source_capture_FPS": "UNKNOWN",
+    "sample_clock_sync": "NOT_MEASURED; no cross-device clock subtraction or glass-to-glass latency",
+    "no_profile_claim": "No calibrated continuous-source,60FPS,3repeats,unique-frame,capacity,quality or latency SLO acceptance",
+    "audio": "NOT_RUN; no human listener; Chrome process audio output muted; no PCM/media recorded",
+    "remaining_lifecycle": "Leave/revoke/disconnect polling-stop variants NOT_RUN; own Stop/unpublish only",
+    "source_motion_receipts": "The first pair was overwritten by the second same-direction motion receipts; native cumulative logs and both receiver snapshots survive. No raw motion receipt is invented.",
+    "toolbar_Stop": "Observed toolbar tap did not establish teardown. Source binds toolbar/dock to the same stop action; delivery to the handler was not instrumented. No separate product defect is claimed without repeat.",
+    "guard": "Preparation guard disarmed before capture. Capture guard failed at deadline because its already-imported Stop helper rejected two controls. Parent bottom dock cleanup succeeded later;240-second bound was NOT achieved.",
+    "receiver_renderer": "Empty video elements remain paused/readyState0 with cleared dimensions; full DOM removal is not claimed.",
+    "visibility": "Only a public Settings picker-card crop and icon-only control crops are published. No decoded content, app hierarchy, identity, tokens or raw logcat retained.",
+    "external_builds": "Actual Android hash rechecked after run; two Web source receipts are separate; API source UNKNOWN. macOS/Pixel/iOS not exercised."
+  },
+  "preservation": {
+    "explicit_listener_leave": [
+      true,
+      true
+    ],
+    "phone_session_or_server_changed": false,
+    "permission_flags_equal": true,
+    "owned_DM_empty_restored": true,
+    "voice_preserved": true,
+    "projection_or_screen_FGS_remaining": false,
+    "router_changed": false,
+    "production_fault_or_load_injected": false,
+    "product_or_test_source_modified": false,
+    "test_consolidation_decisions_applied": 0
+  }
+}

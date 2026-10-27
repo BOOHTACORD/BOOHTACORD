@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-27T21:29:44.345628+00:00",
+  "at_utc": "2026-10-27T21:55:40.200121+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -667,8 +667,8 @@
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
     "cases.json": {
-      "bytes": 55263,
-      "sha256": "e00c0d85a2b45cf1df359e0067a01df2ea5f8c2b6f2ef4a50a2f512b5253aa16"
+      "bytes": 58642,
+      "sha256": "3527bfae01a1bf93e6a3ab167eca9f9be3870a25d4b53a648b64eeae595b7ec9"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -851,8 +851,8 @@
       "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
     },
     "matrix.json": {
-      "bytes": 1165788,
-      "sha256": "fcc6d264ac9b40e77017647d7172f518e282baab7c79aae514d657869e8eb3ec"
+      "bytes": 1168402,
+      "sha256": "b6ee392af1c86a91fc326f2f281b345be2052bb21676e9f7449e7b2f8bb6c334"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -1090,6 +1090,190 @@
       "bytes": 1038,
       "sha256": "a2046aa2c717a26156ebaa76452a328292356b16fe8eb5c48b8922928de74b6b"
     },
+    "native-sender-two-receivers/before.json": {
+      "bytes": 786,
+      "sha256": "7322f6044379204be05b72b2cc1267d571f50a87cd6f4dfcade5fa37594fd5e3"
+    },
+    "native-sender-two-receivers/candidate.json": {
+      "bytes": 375,
+      "sha256": "d0b32b27fb08be3389facb696dd8a66b984de77398cfeaf8fe21be979865cbbd"
+    },
+    "native-sender-two-receivers/capture-attempt-owned.json": {
+      "bytes": 420,
+      "sha256": "d33da0863583d1dc9095882752552c2e50033fd50b005f3192a4f64aa1133ca3"
+    },
+    "native-sender-two-receivers/capture-start-attempt1.json": {
+      "bytes": 626,
+      "sha256": "cb7dc423616860eb7cb812f78f975a1933b43fdc9516925f00f52d10f010fb0d"
+    },
+    "native-sender-two-receivers/duplicate-check.json": {
+      "bytes": 1800,
+      "sha256": "b9e831f9a895d9ac4a3f484b4f88c7cecd89366913126b7d4db7829a26e48b1e"
+    },
+    "native-sender-two-receivers/explicit-display-launch.json": {
+      "bytes": 459,
+      "sha256": "a42603841d3bbf6d59005fa12f8b3744cdf05b64d13516c61a17a69f5f025a30"
+    },
+    "native-sender-two-receivers/final-native.json": {
+      "bytes": 637,
+      "sha256": "d5f0a3add8f2ab99855d16692246789cdd5bf690a51560505e4f911287617e05"
+    },
+    "native-sender-two-receivers/guard-result-capture.json": {
+      "bytes": 295,
+      "sha256": "ee44dbc17f2c60ca4d818883cfb3a566b96b0877543905f2318f046a4db0f60b"
+    },
+    "native-sender-two-receivers/guard-result.json": {
+      "bytes": 269,
+      "sha256": "5e9b515473198e86b915668ebeb6bab5580478f78fbd9c21026995c8d965738d"
+    },
+    "native-sender-two-receivers/motion-controller-attempt1.json": {
+      "bytes": 641,
+      "sha256": "12f5d4244af019fdcb546da95b1466fd87228ab3be048077597d56df80a8c8e6"
+    },
+    "native-sender-two-receivers/motion-down.json": {
+      "bytes": 296,
+      "sha256": "840cd14ed198b8c424b1d5f7edf5f2d961136af0907ead33683bab1cd1d696a0"
+    },
+    "native-sender-two-receivers/motion-up.json": {
+      "bytes": 292,
+      "sha256": "a9864e9a1f4fcc98ad6b1580d4d893741251a7741f9c904768b6f93c2d62ab1e"
+    },
+    "native-sender-two-receivers/operating-brief.json": {
+      "bytes": 983,
+      "sha256": "2910fc8c6dbb63422209dfce7d96ecba8ed2bc8a6d2b1d0ec3cf8f69b7d0005c"
+    },
+    "native-sender-two-receivers/peers-result.json": {
+      "bytes": 13138,
+      "sha256": "f66e462168ff5c603e434a0263eb73308035f6b88c9e7da68e6bd38abb219c28"
+    },
+    "native-sender-two-receivers/picker-app-only.json": {
+      "bytes": 224,
+      "sha256": "bddcbde1a138079383d00d4f566c4bc4af96764833314bf4ce96b5b8f1d6da81"
+    },
+    "native-sender-two-receivers/picker-attempt2-structure.json": {
+      "bytes": 1096,
+      "sha256": "662f4c66201847500d343c6559dbc004239022f35bd80c83216498aeaf3845a2"
+    },
+    "native-sender-two-receivers/polling-quiet-result.json": {
+      "bytes": 186,
+      "sha256": "ca6a840f5c62901870fd34b91a4a8899a1160cbf55fb47f5270dca18c4849eea"
+    },
+    "native-sender-two-receivers/public-source-navigation-attempt2.json": {
+      "bytes": 349,
+      "sha256": "2c9fd8fd7a997a5497ef1ff96c9f9b8f61beee9258440ada6be0a6bbf432987c"
+    },
+    "native-sender-two-receivers/public-source.json": {
+      "bytes": 222,
+      "sha256": "57a5bbf6a18c622c1ab6320315c782df22e61112f36280e671cbd3a7ee4bafa2"
+    },
+    "native-sender-two-receivers/README.md": {
+      "bytes": 3659,
+      "sha256": "fb447a84523f33e7b8eb399cfb4ebb34c048d138fb5c13830efa59cca1f927df"
+    },
+    "native-sender-two-receivers/runner-before.json": {
+      "bytes": 795,
+      "sha256": "89860b1ffa8bec2f088ada9276d4b426d3a984801ae415c7dc0aed47b993ffe0"
+    },
+    "native-sender-two-receivers/runner-capture-before.json": {
+      "bytes": 893,
+      "sha256": "a536f26e50cdbd8657aaff4051d441098a98748e54e912cecd7e26fe30d203d0"
+    },
+    "native-sender-two-receivers/runner-start-before.json": {
+      "bytes": 795,
+      "sha256": "ae44c41001259574055179092d51162dab8bf45a4b83a2608debc0ad8a9024da"
+    },
+    "native-sender-two-receivers/sender-logs-after-bottom.json": {
+      "bytes": 64036,
+      "sha256": "719e46520525a9a1331777cb8a20a18d5715dd85f09b406f0f113b1b73d76350"
+    },
+    "native-sender-two-receivers/sender-logs-afterstop0.json": {
+      "bytes": 44079,
+      "sha256": "63e6c5f3a809863507de9cb5ae2c49bd4a886037f8b57af747c5acd35dc12716"
+    },
+    "native-sender-two-receivers/sender-logs-baseline.json": {
+      "bytes": 209,
+      "sha256": "dbabc2441967076b44c034a70f656e81b11daaa2cd13a7dcc974b229b13916d6"
+    },
+    "native-sender-two-receivers/sender-logs-live1.json": {
+      "bytes": 4330,
+      "sha256": "f9f58ec9d4fa9cba7d6ea5d1ab00c704d653ba75fcdca93c7a772f80c5df57fa"
+    },
+    "native-sender-two-receivers/sender-logs-live2.json": {
+      "bytes": 18379,
+      "sha256": "373fd1c82c3bd58fbde4eb946a0b7e81bb43144742e81cb687237bf343df729a"
+    },
+    "native-sender-two-receivers/sender-logs-live3.json": {
+      "bytes": 25484,
+      "sha256": "b5c0a0a57030690d8e2bfe049f557092b55ec9b8c054a9a3c91bf08b265fb714"
+    },
+    "native-sender-two-receivers/sender-logs-quiet.json": {
+      "bytes": 64029,
+      "sha256": "ed99d5b5c5ae4079e7d1ee6615ed7a258ae994550273b3f26a0db8cbd9a133ce"
+    },
+    "native-sender-two-receivers/sender-panel-entry.json": {
+      "bytes": 306,
+      "sha256": "eab0e6bc2c720d927ee8b4c4bb2e2af06e78e1bc3348295478cd7002a082face"
+    },
+    "native-sender-two-receivers/sender-panel-numbers.json": {
+      "bytes": 162,
+      "sha256": "dc891fea438172e8090478790977feb3e2a7949094451ea0698d0cab122942cd"
+    },
+    "native-sender-two-receivers/settings-picker-card-0.png": {
+      "bytes": 30455,
+      "sha256": "0745d40d77e8b4b01a473e4abde5f52ac1feb1c5103f83bdd9fcc7de9f9e3c89"
+    },
+    "native-sender-two-receivers/settings-structure.json": {
+      "bytes": 1960,
+      "sha256": "2c51bf45977125cfe45770eaf93316110296982ebaa82f4d63fa5339bb6d87ba"
+    },
+    "native-sender-two-receivers/setup-before-picker.json": {
+      "bytes": 195,
+      "sha256": "55a4d591d78c76b7c84a7593a279c0de8037e8dcd27bfa5e1aacaf42979d7090"
+    },
+    "native-sender-two-receivers/source-live.json": {
+      "bytes": 693,
+      "sha256": "ab10d49c79cc9883c1eb360246fa19d27b8c7b687579b0cfea3083121df5bb0a"
+    },
+    "native-sender-two-receivers/source-preparation-attempt1.json": {
+      "bytes": 219,
+      "sha256": "ea6e5a07eeb2b378e4ef4f850bf06d468091602b0d9d41acc9987ea28fc94495"
+    },
+    "native-sender-two-receivers/stop-after-first-action.json": {
+      "bytes": 508,
+      "sha256": "2d7f792773e073468c0c6a0f4289a66186e981195b7e6885405dd28f2cfb1436"
+    },
+    "native-sender-two-receivers/stop-bottom-attempt.json": {
+      "bytes": 1262,
+      "sha256": "4e2ab69c0298680ab9139bb2b6601be495cf494a0472ac02597145f08c98fe2f"
+    },
+    "native-sender-two-receivers/stop-control-0.png": {
+      "bytes": 2111,
+      "sha256": "e59c6b332307f1c6121429bcea9cb6765ad0ac5770e9f812c0f0007616d6ef16"
+    },
+    "native-sender-two-receivers/stop-control-1.png": {
+      "bytes": 2424,
+      "sha256": "fbbca07c1e30d6c1505ebb024b0f77087ae831ed09b9ea5c7646a7fcccbb6cf7"
+    },
+    "native-sender-two-receivers/stop-controls-before-fallback.json": {
+      "bytes": 345,
+      "sha256": "ba1d0cc101cdc55f5932f41c47515181b080a5a83ccf52f017c76f453a0723b6"
+    },
+    "native-sender-two-receivers/stop-error.json": {
+      "bytes": 124,
+      "sha256": "1602dbfb33822448aa4275ba36f41c44acf47c96ce9d41c93d2fed3a43183ba8"
+    },
+    "native-sender-two-receivers/summary.json": {
+      "bytes": 13037,
+      "sha256": "b8f4d933904a3d0705e8d66c1ade69973f2b544217f5f7c830daff0284803550"
+    },
+    "native-sender-two-receivers/validation.json": {
+      "bytes": 499,
+      "sha256": "21e79498a9dfd4c12330df62561eda37c554a55835d28062b890864914c6e1e1"
+    },
+    "native-sender-two-receivers/voice-view.json": {
+      "bytes": 789,
+      "sha256": "3755b7a64dab76d282e982907874f37c9457843323e3da397216d94e4acc884d"
+    },
     "notification-readiness/readiness.json": {
       "bytes": 1310,
       "sha256": "60f5227603cb73d2e982c6b72abaa79d311234977e3d509208ee1124d396044a"
@@ -1231,8 +1415,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 13286,
-      "sha256": "3a80094ac10b43bddc227875c8c5190bba5edef655ac936d943ee64ec8a457d0"
+      "bytes": 14069,
+      "sha256": "db667c216ca425771717ad17c84fdfa2889b6a21bf5064a25e183c6d631f0cd3"
     },
     "restored-microphone.json": {
       "bytes": 269,
@@ -1409,6 +1593,50 @@
     "runner-source/native_realtime_run.mjs.txt": {
       "bytes": 2451,
       "sha256": "187dcade4358e2b225946fe23e4dc005d2ee436013ef1c1a9236cf80be1dad0b"
+    },
+    "runner-source/native_sender_capture_guard.py.txt": {
+      "bytes": 1041,
+      "sha256": "e38fbabc10861b411019ae780194531693941d0b7788eb62509c93eb49629df4"
+    },
+    "runner-source/native_sender_collect_logs.py.txt": {
+      "bytes": 2094,
+      "sha256": "8c59631d662d0dfb703791aeb1d0d5785fd34dee4237ee175f9273ca4f2b530d"
+    },
+    "runner-source/native_sender_peers.mjs.txt": {
+      "bytes": 4098,
+      "sha256": "613cdf59f9d35a8c75922a6239f5b573e7707305bcb72302bddefe6595254fdc"
+    },
+    "runner-source/native_sender_phone_capture.py.txt": {
+      "bytes": 3741,
+      "sha256": "ee6c2ca97747e9f4ea2297e5b3b8251af133a526fba42b352551d5f900d736ff"
+    },
+    "runner-source/native_sender_phone_common.py.txt": {
+      "bytes": 1424,
+      "sha256": "77a8217fa963190573bc8d0742ed4cf1079669cc569db319410a3ab3810b9032"
+    },
+    "runner-source/native_sender_phone_motion.py.txt": {
+      "bytes": 1217,
+      "sha256": "59df1fc8fc7d6d1cb537634431eb9d88a1fa36e770825a798063811312ccf1da"
+    },
+    "runner-source/native_sender_phone_prepare.py.txt": {
+      "bytes": 2114,
+      "sha256": "b977dfa468f3b337a6984e95473c05302d4f9d7b47964dd696c24116bf5e2faa"
+    },
+    "runner-source/native_sender_phone_select_source.py.txt": {
+      "bytes": 1662,
+      "sha256": "3ae0062a674dc9c94a2313bd207364a53e20f0108e7060307bba57733d14f04b"
+    },
+    "runner-source/native_sender_phone_stop.py.txt": {
+      "bytes": 1765,
+      "sha256": "f440275ba2e500f8611a2be92b5ae441f594ddb6f085d619af48e4b48cbc40a6"
+    },
+    "runner-source/native_sender_phone_stop_guard_pre_filter.py.txt": {
+      "bytes": 1655,
+      "sha256": "b0f63ac101ef6fc430191d0f340740b7e4cd3119387adf34f28ea8d1bfcb9ef6"
+    },
+    "runner-source/native_sender_receiver_stats.mjs.txt": {
+      "bytes": 2395,
+      "sha256": "5daabab7c270244a5941537e3069504307c508a2778562f1c50fbe44f98dcc34"
     },
     "runner-source/notification_readiness.mjs.txt": {
       "bytes": 2791,
