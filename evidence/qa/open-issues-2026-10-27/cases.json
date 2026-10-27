@@ -426,6 +426,21 @@
       ],
       "result": "native-image/summary.json",
       "limits": "PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim."
+    },
+    {
+      "id": "WINDOWS-native-admin-entry",
+      "status": "BLOCKED",
+      "protects": "Actual Windows admin navigation/accessibility must be witnessed before accepting seven admin sections; a control in a source/tree is insufficient",
+      "command": "Computer Use node_repl @oai/sky: get_window_state -> observed account Settings element_index click; fresh observation retry; activate_window; paired Tab/ShiftTab; exact tool error retained",
+      "platform": "Physical Windows; installed native1.0.47+82/sourcef5cd7835; supported Windows Computer Use only",
+      "mandatory_when": "Before accepting Windows native admin entry/traversal/focus rows in287/301/303",
+      "issues": [
+        287,
+        301,
+        303
+      ],
+      "result": "windows-admin-entry-attempt.json",
+      "limits": "Two indexed clicks rejected by the helper cache. No admin panel entered, no data mutation or app defect established; keyboard focus name/restoration not proven."
     }
   ]
 }

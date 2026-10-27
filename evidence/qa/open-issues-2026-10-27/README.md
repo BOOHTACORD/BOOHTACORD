@@ -92,6 +92,10 @@ Android and Windows releases in the current first page, not a new master build.
   Original access after deletion404; own phone fixture removed; voice/mic preserved.
   Initial numeric raster probes ignored the screenshot's Display P3 ICC profile;
   corrected conversion passes. No product defect or broad color-quality claim.
+- [Windows native admin entry](windows-admin-entry-attempt.json) is NOT_RUN:
+  supported CUA twice rejected the observed account-menu element as unavailable
+  in its cache; reobserve/activate did not recover. Admin navigation was not
+  performed, exact focus restoration is unproven, and no app defect was inferred.
 
 ## Reproduction and privacy
 
