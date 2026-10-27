@@ -1,0 +1,12 @@
+"""Capture only the actual native PTT control at source resolution."""
+import hashlib,json,re,subprocess,sys
+from PIL import Image
+from android_permission_ui import ROOT,ADB
+label=sys.argv[1];assert re.fullmatch('[a-z0-9-]+',label)
+point=json.loads((ROOT/'private-ptt-point.json').read_text(encoding='utf-8'))
+raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20)
+file=ROOT/f'private-ptt-{label}.png';file.write_bytes(raw);image=Image.open(file);assert image.size==(1080,2340)
+rect=[max(0,point[0]-75),max(0,point[1]-75),min(image.width,point[0]+75),min(image.height,point[1]+75)]
+crop=ROOT/f'ptt-control-{label}.png';image.crop(rect).save(crop)
+result={'crop':crop.name,'source_sha256':hashlib.sha256(raw).hexdigest(),'source_size':list(image.size),'crop_rectangle':rect,'resampled':False,'crop_sha256':hashlib.sha256(crop.read_bytes()).hexdigest()}
+(ROOT/f'ptt-capture-{label}.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(result))

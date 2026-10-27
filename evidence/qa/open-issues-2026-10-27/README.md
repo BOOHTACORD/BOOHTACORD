@@ -132,6 +132,16 @@ network and attached volumes were removed, unrelated container states unchanged.
 No production Grafana, packaged-client trace, audibility, capacity or hosted CI
 acceptance is implied. Parent QA issues remain open.
 
+## Physical Android PTT checkpoint
+
+[Actual signed-device PTT](native-ptt/summary.json): native touch UP, outside-UP,
+CANCEL and HOME all returned the exact phone account to server-reported mute.
+Resume did not unmute. Three room participants stayed present. VAD mode, original
+unmuted microphone/permission and owned empty DM were restored. Source-sized
+control crops were inspected. No audibility or receiving SDK/PCM claim is made;
+immediate FGS snapshots have asynchronous lag. The original UIAutomator/encoding
+controller limits remain explicit. No full QA gate is closed.
+
 ## Execution map
 
 `acceptance-methods.json` maps24 native/manual methods to the protected invariant,

@@ -1071,7 +1071,8 @@
             "ANDROID-populated-prejoin-no-permission",
             "ANDROID-real-filechooser-cancel",
             "AUDIO-audibility",
-            "ANDROID-native-PNG-picker-send-view-delete"
+            "ANDROID-native-PNG-picker-send-view-delete",
+            "ANDROID-physical-ptt-release-cancel-home"
           ],
           "evidence": [
             "native-realtime-result.json",
@@ -1079,12 +1080,13 @@
             "voice-permission/summary.json",
             "native-prejoin/summary.json",
             "web-session-contract/android-filechooser.json",
-            "native-image/summary.json"
+            "native-image/summary.json",
+            "native-ptt/summary.json"
           ],
           "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal",
           "platform": "Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Physical Windows + Samsung; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "native-realtime-result.json; native-chat/summary.json; voice-permission/summary.json; native-prejoin/summary.json; web-session-contract/android-filechooser.json; native-image/summary.json",
+          "result": "native-ptt/summary.json",
           "witness_limits": [
             "ANDROID-DM-receive: One observed upper bound 2450ms includes ADB UI polling; not p95 or proof of the underlying transport. Owned message deleted204.",
             "ANDROID-DM-input-actions: Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim",
@@ -1123,9 +1125,11 @@
               "ANDROID-populated-prejoin-no-permission",
               "ANDROID-real-filechooser-cancel",
               "AUDIO-audibility",
-              "ANDROID-native-PNG-picker-send-view-delete"
+              "ANDROID-native-PNG-picker-send-view-delete",
+              "ANDROID-physical-ptt-release-cancel-home"
             ]
-          }
+          },
+          "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted."
         },
         {
           "section": "Готово, когда",
@@ -1223,7 +1227,8 @@
         "ANDROID-OS-microphone-denial",
         "ANDROID-populated-prejoin-no-permission",
         "ANDROID-real-filechooser-cancel",
-        "ANDROID-native-PNG-picker-send-view-delete"
+        "ANDROID-native-PNG-picker-send-view-delete",
+        "ANDROID-physical-ptt-release-cancel-home"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -1231,7 +1236,8 @@
         "voice-permission/summary.json",
         "native-prejoin/summary.json",
         "web-session-contract/android-filechooser.json",
-        "native-image/summary.json"
+        "native-image/summary.json",
+        "native-ptt/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -1415,13 +1421,17 @@
           "requirement": "[#38 — мобильный PTT](https://github.com/Egkurilov/BOOHTACORD/issues/38): на физических Android/iOS проверить звонок/системное прерывание, сворачивание приложения, отмену удержания и TalkBack/VoiceOver; после любого отпускания/отмены микрофон должен быть заглушён.",
           "source_checkbox": " ",
           "id": "I131.C2",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ANDROID-physical-ptt-release-cancel-home"
+          ],
+          "evidence": [
+            "native-ptt/summary.json"
+          ],
           "execution": "Use applicable cases.json ADB/native helper commands and native-image/reproduce.md; run the remaining row's actual UI/OS steps on the physical approved candidate and verify the paired result. | Supplemental isolated runtime: python3 -m tools.qa.accessibility_runtime.run; follow tools/qa/accessibility_runtime/README.md and this row's actual TalkBack/NVDA/VoiceOver/physical keyboard steps.",
           "platform": "Physical Samsung Android16 now available; Pixel/iOS/emulator or other OS versions remain distinct variants. | Target browsers and real native devices/readers; emulator/fixture captures are labelled supplemental.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "native-ptt/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "android_physical",
@@ -1439,9 +1449,11 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ANDROID-physical-ptt-release-cancel-home"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets. Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -1827,7 +1839,8 @@
         "WEB-session-revocation-draft-isolation",
         "ANDROID-native-PNG-picker-send-view-delete",
         "WEB-JPEG-GIF-private-image-lifecycle",
-        "WEB-viewer-download-format-mismatch"
+        "WEB-viewer-download-format-mismatch",
+        "ANDROID-physical-ptt-release-cancel-home"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -1837,7 +1850,8 @@
         "native-prejoin/summary.json",
         "web-session-contract/logout.json",
         "native-image/summary.json",
-        "web-image-formats/summary.json"
+        "web-image-formats/summary.json",
+        "native-ptt/summary.json"
       ],
       "defects": [
         581
@@ -2002,16 +2016,18 @@
           "execution_cases": [
             "ANDROID-muted-background",
             "ANDROID-OS-microphone-denial",
-            "AUDIO-audibility"
+            "AUDIO-audibility",
+            "ANDROID-physical-ptt-release-cancel-home"
           ],
           "evidence": [
             "muted-background-resume.json; muted-stop.json; restored-microphone.json",
-            "voice-permission/summary.json"
+            "voice-permission/summary.json",
+            "native-ptt/summary.json"
           ],
           "execution": "python .out/qa-goal/android_controls.py resume; python .out/qa-goal/android_controls.py stop; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; Physical listening at PC and phone",
           "platform": "Physical Samsung Android16, app-only projection; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Windows + Samsung",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "muted-background-resume.json; muted-stop.json; restored-microphone.json; voice-permission/summary.json",
+          "result": "native-ptt/summary.json",
           "witness_limits": [
             "ANDROID-muted-background: Controls/service ownership only; no audibility or frame-rate SLO claim. Original microphone state restored.",
             "ANDROID-OS-microphone-denial: Original attempt restoration was incomplete; retained raw, followed by verified explicit restoration. No audibility or all-device acceptance.",
@@ -2034,9 +2050,11 @@
             "existing_scoped_witnesses": [
               "ANDROID-muted-background",
               "ANDROID-OS-microphone-denial",
-              "AUDIO-audibility"
+              "AUDIO-audibility",
+              "ANDROID-physical-ptt-release-cancel-home"
             ]
-          }
+          },
+          "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted."
         },
         {
           "section": "Приёмка",
@@ -2072,12 +2090,14 @@
         "ANDROID-muted-background",
         "ANDROID-stop-with-mic",
         "AUDIO-audibility",
-        "ANDROID-OS-microphone-denial"
+        "ANDROID-OS-microphone-denial",
+        "ANDROID-physical-ptt-release-cancel-home"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
         "second-cycle-stop.json",
-        "voice-permission/summary.json"
+        "voice-permission/summary.json",
+        "native-ptt/summary.json"
       ],
       "defects": [
         579
@@ -9166,16 +9186,18 @@
           "status": "PARTIAL",
           "execution_cases": [
             "ANDROID-OS-microphone-denial",
-            "ANDROID-muted-background"
+            "ANDROID-muted-background",
+            "ANDROID-physical-ptt-release-cancel-home"
           ],
           "evidence": [
             "voice-permission/summary.json",
-            "muted-background-resume.json; muted-stop.json; restored-microphone.json"
+            "muted-background-resume.json; muted-stop.json; restored-microphone.json",
+            "native-ptt/summary.json"
           ],
           "execution": "python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; python .out/qa-goal/android_controls.py resume; python .out/qa-goal/android_controls.py stop",
           "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung Android16, app-only projection",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "voice-permission/summary.json; muted-background-resume.json; muted-stop.json; restored-microphone.json",
+          "result": "native-ptt/summary.json",
           "witness_limits": [
             "ANDROID-OS-microphone-denial: Original attempt restoration was incomplete; retained raw, followed by verified explicit restoration. No audibility or all-device acceptance.",
             "ANDROID-muted-background: Controls/service ownership only; no audibility or frame-rate SLO claim. Original microphone state restored."
@@ -9196,9 +9218,11 @@
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": [
               "ANDROID-OS-microphone-denial",
-              "ANDROID-muted-background"
+              "ANDROID-muted-background",
+              "ANDROID-physical-ptt-release-cancel-home"
             ]
-          }
+          },
+          "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted."
         },
         {
           "section": "Matrix",
@@ -9437,7 +9461,8 @@
         "ISOLATED-websocket-replay-acl",
         "ISOLATED-relay-dependency-outages",
         "ISOLATED-traceql-semantic-fixtures",
-        "ISOLATED-traceql-dashboard-queries"
+        "ISOLATED-traceql-dashboard-queries",
+        "ANDROID-physical-ptt-release-cancel-home"
       ],
       "evidence": [
         "privacy-result.json",
@@ -9448,7 +9473,8 @@
         "native-image/summary.json",
         "windows-admin-entry-attempt.json",
         "web-image-formats/summary.json",
-        "trace-runtime/summary.json"
+        "trace-runtime/summary.json",
+        "native-ptt/summary.json"
       ],
       "defects": [
         581
@@ -11355,18 +11381,20 @@
             "WEB-session-revocation-draft-isolation",
             "ANDROID-native-PNG-picker-send-view-delete",
             "WEB-JPEG-GIF-private-image-lifecycle",
-            "WEB-viewer-download-format-mismatch"
+            "WEB-viewer-download-format-mismatch",
+            "ANDROID-physical-ptt-release-cancel-home"
           ],
           "evidence": [
             "native-chat/summary.json",
             "web-session-contract/logout.json",
             "native-image/summary.json",
-            "web-image-formats/summary.json"
+            "web-image-formats/summary.json",
+            "native-ptt/summary.json"
           ],
           "execution": "node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
           "platform": "Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "native-chat/summary.json; web-session-contract/logout.json; native-image/summary.json; web-image-formats/summary.json",
+          "result": "native-ptt/summary.json",
           "witness_limits": [
             "ANDROID-DM-input-actions: Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim",
             "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance",
@@ -11393,9 +11421,11 @@
               "WEB-session-revocation-draft-isolation",
               "ANDROID-native-PNG-picker-send-view-delete",
               "WEB-JPEG-GIF-private-image-lifecycle",
-              "WEB-viewer-download-format-mismatch"
+              "WEB-viewer-download-format-mismatch",
+              "ANDROID-physical-ptt-release-cancel-home"
             ]
-          }
+          },
+          "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted."
         },
         {
           "section": "Подзадачи",
@@ -11405,16 +11435,18 @@
           "status": "PARTIAL",
           "execution_cases": [
             "ANDROID-DM-two-x-text-and-IME",
-            "ANDROID-real-filechooser-cancel"
+            "ANDROID-real-filechooser-cancel",
+            "ANDROID-physical-ptt-release-cancel-home"
           ],
           "evidence": [
             "android-text-scale-review.json",
-            "web-session-contract/android-filechooser.json"
+            "web-session-contract/android-filechooser.json",
+            "native-ptt/summary.json"
           ],
           "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures; python .out/qa-goal/android_filechooser.py",
           "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; Gboard18.5.4; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "android-text-scale-review.json; web-session-contract/android-filechooser.json",
+          "result": "native-ptt/summary.json",
           "witness_limits": [
             "ANDROID-DM-two-x-text-and-IME: Only DM composer/voice dock and three48dp controls; no TalkBack, text-entry, full catalog or approved baseline claim. System1.0 restored.",
             "ANDROID-real-filechooser-cancel: No file was selected or uploaded, no personal file listings/captures retained; not browser file chooser or image-viewer acceptance"
@@ -11440,9 +11472,11 @@
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": [
               "ANDROID-DM-two-x-text-and-IME",
-              "ANDROID-real-filechooser-cancel"
+              "ANDROID-real-filechooser-cancel",
+              "ANDROID-physical-ptt-release-cancel-home"
             ]
-          }
+          },
+          "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted."
         },
         {
           "section": "Подзадачи",
@@ -11704,7 +11738,8 @@
         "ANDROID-native-PNG-picker-send-view-delete",
         "WINDOWS-native-admin-entry",
         "WEB-JPEG-GIF-private-image-lifecycle",
-        "WEB-viewer-download-format-mismatch"
+        "WEB-viewer-download-format-mismatch",
+        "ANDROID-physical-ptt-release-cancel-home"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -11722,7 +11757,8 @@
         "web-session-contract/android-filechooser.json",
         "native-image/summary.json",
         "windows-admin-entry-attempt.json",
-        "web-image-formats/summary.json"
+        "web-image-formats/summary.json",
+        "native-ptt/summary.json"
       ],
       "defects": [
         579,
@@ -15689,7 +15725,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-27T02:08:49.429513+00:00",
+  "updated_utc": "2026-10-27T02:36:33.995418+00:00",
   "known_defect_issues": [
     579,
     580,

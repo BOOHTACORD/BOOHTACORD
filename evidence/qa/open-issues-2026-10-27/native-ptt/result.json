@@ -1,0 +1,423 @@
+{
+  "at_utc": "2026-10-27T02:31:17.476Z",
+  "status": "PASS_SCOPED",
+  "physical_android": true,
+  "observations": [
+    {
+      "at_utc": "2026-10-27T02:31:17.545Z",
+      "label": "ptt-idle-before",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": true,
+      "room_muted": 2
+    },
+    {
+      "at_utc": "2026-10-27T02:31:20.750Z",
+      "label": "up-held",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": false,
+      "room_muted": 1
+    },
+    {
+      "at_utc": "2026-10-27T02:31:22.252Z",
+      "label": "up-released",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": true,
+      "room_muted": 2
+    },
+    {
+      "at_utc": "2026-10-27T02:31:27.039Z",
+      "label": "up-outside-held",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": false,
+      "room_muted": 1
+    },
+    {
+      "at_utc": "2026-10-27T02:31:27.419Z",
+      "label": "up-outside-released",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": true,
+      "room_muted": 2
+    },
+    {
+      "at_utc": "2026-10-27T02:31:31.197Z",
+      "label": "cancel-held",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": false,
+      "room_muted": 1
+    },
+    {
+      "at_utc": "2026-10-27T02:31:31.747Z",
+      "label": "cancel-released",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": true,
+      "room_muted": 2
+    },
+    {
+      "at_utc": "2026-10-27T02:31:34.614Z",
+      "label": "home-held",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": false,
+      "room_muted": 1
+    },
+    {
+      "at_utc": "2026-10-27T02:31:35.121Z",
+      "label": "home-released",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": true,
+      "room_muted": 2
+    },
+    {
+      "at_utc": "2026-10-27T02:31:36.335Z",
+      "label": "home-background",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": true,
+      "room_muted": 2
+    },
+    {
+      "at_utc": "2026-10-27T02:31:42.798Z",
+      "label": "home-resumed-no-new-press",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": true,
+      "room_muted": 2
+    },
+    {
+      "at_utc": "2026-10-27T02:31:47.896Z",
+      "label": "restored-original-vad-unmuted",
+      "participants": 3,
+      "phone_present": true,
+      "phone_microphone_muted": false,
+      "room_muted": 1
+    }
+  ],
+  "cases": [
+    {
+      "case": "up",
+      "status": "PASS_SCOPED",
+      "down": {
+        "at_utc": "2026-10-27T02:31:20.493949+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "foreground_types": [],
+        "ui_label_state_not_queried": true,
+        "voice_connection_or_mute_not_inferred_from_FGS": true,
+        "action": "down"
+      },
+      "held": {
+        "at_utc": "2026-10-27T02:31:20.750Z",
+        "label": "up-held",
+        "participants": 3,
+        "phone_present": true,
+        "phone_microphone_muted": false,
+        "room_muted": 1
+      },
+      "held_capture": {
+        "crop": "ptt-control-held.png",
+        "source_sha256": "277797e020ad14c2ea4d856386ef49c669d29360c4b6cfa8880fc97b21c25392",
+        "source_size": [
+          1080,
+          2340
+        ],
+        "crop_rectangle": [
+          26,
+          2133,
+          176,
+          2283
+        ],
+        "resampled": false,
+        "crop_sha256": "10bcc0f016fb8b15a3bef3af309daf438ad334c17dd2b7f0bb384b47802b4704"
+      },
+      "release": {
+        "at_utc": "2026-10-27T02:31:21.725536+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "foreground_types": [
+          "0x00000080"
+        ],
+        "ui_label_state_not_queried": true,
+        "voice_connection_or_mute_not_inferred_from_FGS": true,
+        "action": "up"
+      },
+      "after": {
+        "at_utc": "2026-10-27T02:31:22.252Z",
+        "label": "up-released",
+        "participants": 3,
+        "phone_present": true,
+        "phone_microphone_muted": true,
+        "room_muted": 2
+      },
+      "released_capture": {
+        "crop": "ptt-control-released.png",
+        "source_sha256": "5bbcc67add44eaa25e1f9ff6bd558645b9285a4f8871bdee35a236dd39c138e0",
+        "source_size": [
+          1080,
+          2340
+        ],
+        "crop_rectangle": [
+          26,
+          2133,
+          176,
+          2283
+        ],
+        "resampled": false,
+        "crop_sha256": "13097527bfd299c5d613b0bb655873e3a0ecc45b1184c1a80f491e4ef8f1d568"
+      }
+    },
+    {
+      "case": "up-outside",
+      "status": "PASS_SCOPED",
+      "down": {
+        "at_utc": "2026-10-27T02:31:26.505879+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "foreground_types": [],
+        "ui_label_state_not_queried": true,
+        "voice_connection_or_mute_not_inferred_from_FGS": true,
+        "action": "down"
+      },
+      "held": {
+        "at_utc": "2026-10-27T02:31:27.039Z",
+        "label": "up-outside-held",
+        "participants": 3,
+        "phone_present": true,
+        "phone_microphone_muted": false,
+        "room_muted": 1
+      },
+      "release": {
+        "at_utc": "2026-10-27T02:31:27.307615+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "foreground_types": [
+          "0x00000080"
+        ],
+        "ui_label_state_not_queried": true,
+        "voice_connection_or_mute_not_inferred_from_FGS": true,
+        "action": "up-outside"
+      },
+      "after": {
+        "at_utc": "2026-10-27T02:31:27.419Z",
+        "label": "up-outside-released",
+        "participants": 3,
+        "phone_present": true,
+        "phone_microphone_muted": true,
+        "room_muted": 2
+      }
+    },
+    {
+      "case": "cancel",
+      "status": "PASS_SCOPED",
+      "down": {
+        "at_utc": "2026-10-27T02:31:31.091112+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "foreground_types": [],
+        "ui_label_state_not_queried": true,
+        "voice_connection_or_mute_not_inferred_from_FGS": true,
+        "action": "down"
+      },
+      "held": {
+        "at_utc": "2026-10-27T02:31:31.197Z",
+        "label": "cancel-held",
+        "participants": 3,
+        "phone_present": true,
+        "phone_microphone_muted": false,
+        "room_muted": 1
+      },
+      "release": {
+        "action": "actual-android-motion-CANCEL"
+      },
+      "after": {
+        "at_utc": "2026-10-27T02:31:31.747Z",
+        "label": "cancel-released",
+        "participants": 3,
+        "phone_present": true,
+        "phone_microphone_muted": true,
+        "room_muted": 2
+      }
+    },
+    {
+      "case": "home",
+      "status": "PASS_SCOPED",
+      "down": {
+        "at_utc": "2026-10-27T02:31:34.499003+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "foreground_types": [],
+        "ui_label_state_not_queried": true,
+        "voice_connection_or_mute_not_inferred_from_FGS": true,
+        "action": "down"
+      },
+      "held": {
+        "at_utc": "2026-10-27T02:31:34.614Z",
+        "label": "home-held",
+        "participants": 3,
+        "phone_present": true,
+        "phone_microphone_muted": false,
+        "room_muted": 1
+      },
+      "release": {
+        "at_utc": "2026-10-27T02:31:34.947660+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "foreground_types": [
+          "0x00000080"
+        ],
+        "ui_label_state_not_queried": true,
+        "voice_connection_or_mute_not_inferred_from_FGS": true,
+        "action": "home"
+      },
+      "after": {
+        "at_utc": "2026-10-27T02:31:35.121Z",
+        "label": "home-released",
+        "participants": 3,
+        "phone_present": true,
+        "phone_microphone_muted": true,
+        "room_muted": 2
+      },
+      "background_wait_ms": 1200,
+      "background": {
+        "at_utc": "2026-10-27T02:31:36.335Z",
+        "label": "home-background",
+        "participants": 3,
+        "phone_present": true,
+        "phone_microphone_muted": true,
+        "room_muted": 2
+      },
+      "resumed": {
+        "at_utc": "2026-10-27T02:31:42.651612+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "microphone_fgs": false,
+        "voice_connected": true,
+        "muted_control": false,
+        "app_hierarchy_present": true,
+        "system_permission_prompt": false,
+        "navigation_available": false,
+        "login_fields": false,
+        "action": "resume",
+        "native_UTF8_controls_source": "ui-resume.json"
+      },
+      "after_resume": {
+        "at_utc": "2026-10-27T02:31:42.798Z",
+        "label": "home-resumed-no-new-press",
+        "participants": 3,
+        "phone_present": true,
+        "phone_microphone_muted": true,
+        "room_muted": 2
+      }
+    }
+  ],
+  "scope": "Actual Android touch/lifecycle + independent PC server roster. No audio recording or human audibility proof.",
+  "before": {
+    "at_utc": "2026-10-27T02:31:17.545Z",
+    "label": "ptt-idle-before",
+    "participants": 3,
+    "phone_present": true,
+    "phone_microphone_muted": true,
+    "room_muted": 2
+  },
+  "restored_native": {
+    "action": "restore-observed-vad",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "foreground_types": [
+      "0x00000080"
+    ],
+    "observed_vad_bounds": [
+      107,
+      1240,
+      534,
+      1352
+    ],
+    "source_sha256": "dbb818732f3caed7ebadc3a891df6f7d3f48cf5b93c831e9c0aa26b4142fb259",
+    "source_size": [
+      1080,
+      2340
+    ],
+    "crop": "ptt-restored-mode.png",
+    "crop_rectangle": [
+      97,
+      1230,
+      994,
+      1362
+    ],
+    "resampled": false
+  },
+  "restored_roster": {
+    "at_utc": "2026-10-27T02:31:47.896Z",
+    "label": "restored-original-vad-unmuted",
+    "participants": 3,
+    "phone_present": true,
+    "phone_microphone_muted": false,
+    "room_muted": 1
+  },
+  "permission_restored_exact": true,
+  "derivation": {
+    "private_result_sha256": "e860de05626c3efb471af7dc5594fc8658323bc579f765d36bbcd6e3ae6a18d9",
+    "stdout_encoding_limit": "Native subprocess used Windows default stdout encoding; resumed labels were corrupt in the Node copy. Boolean assertions were unaffected. Use native UTF8 ui-resume.json, never the corrupted copied labels."
+  }
+}

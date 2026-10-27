@@ -1,0 +1,65 @@
+"""Publish measured physical Android PTT facets without accepting acoustic or AT gates."""
+import hashlib,json,subprocess
+from datetime import datetime,timezone
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];PRIVATE=ROOT/'.out/qa-goal';OUT=ROOT/'evidence/qa/open-issues-2026-10-27';PTT=OUT/'native-ptt'
+PTT.mkdir(exist_ok=True)
+def load(name):return json.loads((PRIVATE/name).read_text(encoding='utf-8'))
+raw=(PRIVATE/'native-ptt-result.json').read_bytes();result=json.loads(raw)
+assert result['status']=='PASS_SCOPED' and result['permission_restored_exact']
+assert len(result['cases'])==4 and all(c['status']=='PASS_SCOPED' and c['held']['phone_microphone_muted'] is False and c['after']['phone_microphone_muted'] is True for c in result['cases'])
+assert all(o['participants']==3 and o['phone_present'] for o in result['observations'])
+resume=load('ptt-ui-resume.json');assert resume['microphone_fgs'] is False and resume['voice_connected']
+assert any(c['label']=='По нажатию' and c['selected']=='true' for c in resume['controls'])
+for case in result['cases']:
+ if 'resumed' in case:
+  case['resumed'].pop('controls',None);case['resumed']['native_UTF8_controls_source']='ui-resume.json'
+result['derivation']={'private_result_sha256':hashlib.sha256(raw).hexdigest(),'stdout_encoding_limit':'Native subprocess used Windows default stdout encoding; resumed labels were corrupt in the Node copy. Boolean assertions were unaffected. Use native UTF8 ui-resume.json, never the corrupted copied labels.'}
+def write(name,data):(PTT/name).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+write('result.json',result)
+for source,target in [('ptt-ui-inspect.json','original-ui.json'),('ptt-ui-account.json','account-menu-ui.json'),('ptt-ui-ptt-observed.json','selected-ptt-ui.json'),('ptt-ui-resume.json','ui-resume.json'),('ptt-ui-back.json','restored-dm-ui.json'),('ptt-observed-selection-proof.json','observed-selection.json'),('ptt-restored-native.json','restored-native.json'),('ptt-final-candidate.json','candidate-and-final-state.json'),('ptt-peer-before-mode-change.json','peer-original.json'),('ptt-peer-ptt-idle-confirmed.json','peer-ptt-idle.json'),('ptt-peer-settled-restored.json','peer-settled-restored.json')]:write(target,load(source))
+for name in ['ptt-control-held.png','ptt-control-released.png','ptt-restored-mode.png']:(PTT/name).write_bytes((PRIVATE/name).read_bytes())
+summary={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_SCOPED','physical_device':'Samsung SM-A576B Android16/API36',
+ 'candidate':'signed1.0.45+2080/source9c221897fdefec8098f707d61ca5b6e8b28bb0bd; fresh installed APK hash verified',
+ 'runner_worktree_sha':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+ 'invariant':'PTT is inactive after actual pointer UP, UP outside bounds, Android CANCEL and HOME/lifecycle cancellation; foreground resume does not unmute without another press.',
+ 'command':'After observed native account→audio UI and selecting PTT: node .out/qa-goal/native_ptt_run.mjs; independent reads: node .out/qa-goal/native_ptt_peer.mjs <label>; final candidate/view: python -X utf8 .out/qa-goal/ptt_candidate_probe.py',
+ 'mandatory_when':'Before accepting Android PTT release/cancellation/background facets in I131.C2, I132.C5, I287.C11, I303.C2/C3 and the Android scope of I62.C1.',
+ 'actual_cases':[c['case'] for c in result['cases']],'server_observations':len(result['observations']),'participants_preserved':3,
+ 'held_microphone_muted':False,'released_microphone_muted':True,'after_home_and_resume_still_muted':True,
+ 'actual_home_background_sample_wait_ms':1200,'permission_flags_restored_exact':True,'original_mode_vad_restored_visually':True,'original_unmuted_roster_restored':True,
+ 'owned_DM_and_empty_composer_restored':True,'voice_and_microphone_FGS_restored':True,
+ 'visual_review':{'method':'Source-resolution150x150 control crops and897x132 actual selector crop inspected; no resampling or accepted golden.',
+  'held':'Microphone icon/control have purple active tint.','released':'Microphone icon/control return to neutral gray.',
+  'restored':'По голосу selected in purple; По нажатию inactive. Crops contain only static controls; no names, messages or avatars.'},
+ 'measurement_limits':['PC observer read actual server roster under an independent MEMBER session; no receiving SDK track flag, decoded audio or acoustic measurement.','Immediate FGS snapshots lag state changes: some DOWN samples show no FGS and some release samples still showmic80. Only settled resume/no-FGS and final restoredmic80 are established.','UI voice_connected is label presence: account-menu occlusion does not prove disconnect; actual roster membership stayed3.','Initial audio-settings UIAutomator observations returned no XML/ParseError. Source-sized screenshot proved screen present; one observed option tap was used. No duplicate audio-open or product bug inferred.','Subprocess stdout encoding corrupted only copied UI labels; corrected native UTF8 file is retained without rerunning cases.','No incoming phone call/system-call interruption, TalkBack, iOS, actual finger, long background/lock, audibility, audio-frame suppression, connected-peer SFU silence, network reconnect or two-APK upgrade acceptance.'],
+ 'result':'result.json','candidate_and_restoration':'candidate-and-final-state.json','goal_status':'IN_PROGRESS; parent gates remain open; no new product defect established in this scope'}
+write('summary.json',summary)
+cases_file=OUT/'cases.json';cases=json.loads(cases_file.read_text(encoding='utf-8'));ident='ANDROID-physical-ptt-release-cancel-home'
+cases['cases']=[c for c in cases['cases'] if c['id']!=ident]
+cases['cases'].append({'id':ident,'status':'PASS_SCOPED','protects':summary['invariant'],'command':summary['command'],'platform':summary['physical_device']+'; actual signed native candidate, PC authenticated roster reader',
+ 'mandatory_when':summary['mandatory_when'],'result':'native-ptt/summary.json','issues':[62,131,132,287,303],'limits':'; '.join(summary['measurement_limits'])})
+cases_file.write_text(json.dumps(cases,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+file=OUT/'matrix.json';matrix=json.loads(file.read_text(encoding='utf-8'));before={r['id']:r['requirement'] for i in matrix['issues'] for r in i['criteria']}
+selected={'I62.C1','I131.C2','I132.C5','I287.C11','I303.C2','I303.C3'}
+for issue in matrix['issues']:
+ touched=False
+ for row in issue['criteria']:
+  if row['id'] not in selected:continue
+  touched=True;row['execution_cases']=list(dict.fromkeys(row['execution_cases']+[ident]));row['evidence']=list(dict.fromkeys(row['evidence']+['native-ptt/summary.json']));row['result']='native-ptt/summary.json'
+  if row['status'] in ['NOT_RUN','PENDING']:row['status']='PARTIAL'
+  row['reason']=row.get('reason','')+' Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted.'
+  row['execution_plan']['existing_scoped_witnesses']=list(row['execution_cases'])
+ if touched:
+  issue['execution_cases']=list(dict.fromkeys(issue['execution_cases']+[ident]));issue['evidence']=list(dict.fromkeys(issue['evidence']+['native-ptt/summary.json']))
+assert before=={r['id']:r['requirement'] for i in matrix['issues'] for r in i['criteria']}
+matrix['updated_utc']=datetime.now(timezone.utc).isoformat();file.write_text(json.dumps(matrix,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+readme=OUT/'README.md';text=readme.read_text(encoding='utf-8');marker='## Physical Android PTT checkpoint'
+assert marker not in text
+text=text.replace('## Execution map',marker+'\n\n[Actual signed-device PTT](native-ptt/summary.json): native touch UP, outside-UP,\nCANCEL and HOME all returned the exact phone account to server-reported mute.\nResume did not unmute. Three room participants stayed present. VAD mode, original\nunmuted microphone/permission and owned empty DM were restored. Source-sized\ncontrol crops were inspected. No audibility or receiving SDK/PCM claim is made;\nimmediate FGS snapshots have asynchronous lag. The original UIAutomator/encoding\ncontroller limits remain explicit. No full QA gate is closed.\n\n## Execution map')
+readme.write_text(text,encoding='utf-8',newline='\n')
+for name in ['android_ptt_ui.py','android_ptt_restore.py','android_ptt_capture.py','native_ptt_peer.mjs','native_ptt_run.mjs','ptt_candidate_probe.py','publish_native_ptt.py']:
+ source=(PRIVATE/name).read_text(encoding='utf-8');assert len(source.splitlines())<=120,name
+ (OUT/'runner-source'/f'{name}.txt').write_text(source,encoding='utf-8',newline='\n')
+(OUT/'runner-source/android_ptt_ui.v1.py.txt').write_bytes((PRIVATE/'android-ptt-ui-v1-source.txt').read_bytes())
+print(json.dumps({'physical_ptt_cases':4,'server_observations':12,'source_rows_preserved':len(before),'parent_gates_closed':0,'status':'PASS_SCOPED'}))

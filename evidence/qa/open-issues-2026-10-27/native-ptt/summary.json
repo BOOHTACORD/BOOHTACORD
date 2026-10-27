@@ -1,0 +1,44 @@
+{
+  "at_utc": "2026-10-27T02:36:33.961865+00:00",
+  "status": "PASS_SCOPED",
+  "physical_device": "Samsung SM-A576B Android16/API36",
+  "candidate": "signed1.0.45+2080/source9c221897fdefec8098f707d61ca5b6e8b28bb0bd; fresh installed APK hash verified",
+  "runner_worktree_sha": "393fe99e20de01885fc9aa629332720ccd7d79e8",
+  "invariant": "PTT is inactive after actual pointer UP, UP outside bounds, Android CANCEL and HOME/lifecycle cancellation; foreground resume does not unmute without another press.",
+  "command": "After observed native account→audio UI and selecting PTT: node .out/qa-goal/native_ptt_run.mjs; independent reads: node .out/qa-goal/native_ptt_peer.mjs <label>; final candidate/view: python -X utf8 .out/qa-goal/ptt_candidate_probe.py",
+  "mandatory_when": "Before accepting Android PTT release/cancellation/background facets in I131.C2, I132.C5, I287.C11, I303.C2/C3 and the Android scope of I62.C1.",
+  "actual_cases": [
+    "up",
+    "up-outside",
+    "cancel",
+    "home"
+  ],
+  "server_observations": 12,
+  "participants_preserved": 3,
+  "held_microphone_muted": false,
+  "released_microphone_muted": true,
+  "after_home_and_resume_still_muted": true,
+  "actual_home_background_sample_wait_ms": 1200,
+  "permission_flags_restored_exact": true,
+  "original_mode_vad_restored_visually": true,
+  "original_unmuted_roster_restored": true,
+  "owned_DM_and_empty_composer_restored": true,
+  "voice_and_microphone_FGS_restored": true,
+  "visual_review": {
+    "method": "Source-resolution150x150 control crops and897x132 actual selector crop inspected; no resampling or accepted golden.",
+    "held": "Microphone icon/control have purple active tint.",
+    "released": "Microphone icon/control return to neutral gray.",
+    "restored": "По голосу selected in purple; По нажатию inactive. Crops contain only static controls; no names, messages or avatars."
+  },
+  "measurement_limits": [
+    "PC observer read actual server roster under an independent MEMBER session; no receiving SDK track flag, decoded audio or acoustic measurement.",
+    "Immediate FGS snapshots lag state changes: some DOWN samples show no FGS and some release samples still showmic80. Only settled resume/no-FGS and final restoredmic80 are established.",
+    "UI voice_connected is label presence: account-menu occlusion does not prove disconnect; actual roster membership stayed3.",
+    "Initial audio-settings UIAutomator observations returned no XML/ParseError. Source-sized screenshot proved screen present; one observed option tap was used. No duplicate audio-open or product bug inferred.",
+    "Subprocess stdout encoding corrupted only copied UI labels; corrected native UTF8 file is retained without rerunning cases.",
+    "No incoming phone call/system-call interruption, TalkBack, iOS, actual finger, long background/lock, audibility, audio-frame suppression, connected-peer SFU silence, network reconnect or two-APK upgrade acceptance."
+  ],
+  "result": "result.json",
+  "candidate_and_restoration": "candidate-and-final-state.json",
+  "goal_status": "IN_PROGRESS; parent gates remain open; no new product defect established in this scope"
+}

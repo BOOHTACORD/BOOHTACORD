@@ -1,0 +1,22 @@
+"""Fresh installed APK hash and owned-DM restoration check without identities/content."""
+import json,re
+from datetime import datetime,timezone
+from android_permission_ui import APP,ROOT,call,nodes,label,state
+from pathlib import Path
+raw=call('shell','dumpsys','package',APP)
+version=re.search(r'versionName=([^\s]+)',raw);code=re.search(r'versionCode=(\d+)',raw)
+apk=call('shell','pm','path',APP).splitlines();bases=[p.removeprefix('package:') for p in apk if p.endswith('/base.apk')]
+assert len(bases)==1
+digest=call('shell','sha256sum',bases[0]).split()[0]
+assert digest=='7091a98c326e3bea9ecff1f4a10192d3ce8545a298690b17c90d0453ddde8e70'
+assert version[1]=='1.0.45' and code[1]=='2080'
+private=json.loads((ROOT/'private-fixture.json').read_text(encoding='utf-8'));rows=nodes()
+fields=[n for n in rows if n.get('class')=='android.widget.EditText']
+restored={'owned_peer_header_matches_privately':any(private['b']['login'] in label(n) for n in rows),'composer_count':len(fields),'composer_empty':len(fields)==1 and not fields[0].get('text')}
+assert restored['owned_peer_header_matches_privately'] and restored['composer_empty']
+result={'at_utc':datetime.now(timezone.utc).isoformat(),'candidate':{'version':version[1],'version_code':int(code[1]),'installed_apk_sha256':digest,
+ 'source_commit':'9c221897fdefec8098f707d61ca5b6e8b28bb0bd','source_attribution':'Exact APK hash equals prior verified signed candidate record, not current test-worktree HEAD.'},
+ 'model':call('shell','getprop','ro.product.model').strip(),'android_release':call('shell','getprop','ro.build.version.release').strip(),'android_api':int(call('shell','getprop','ro.build.version.sdk').strip()),
+ 'restored_view':restored,'state':state()}
+assert result['state']['voice_connected'] and result['state']['microphone_fgs']
+(ROOT/'ptt-final-candidate.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(result))

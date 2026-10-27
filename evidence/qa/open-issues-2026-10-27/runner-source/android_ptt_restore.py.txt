@@ -1,0 +1,17 @@
+"""Restore the observed VAD mode without touching audio devices, gain or permission."""
+import hashlib,json,re,subprocess,time
+from PIL import Image
+from android_permission_ui import APP,ROOT,ADB,call,nodes,label,permission
+rows=[n for n in nodes() if label(n)=='По голосу' and n.get('enabled')=='true']
+assert len(rows)==1,'Expected one observed VAD option'
+box=list(map(int,re.findall(r'\d+',rows[0].get('bounds'))));assert 0<box[3]-box[1]<250
+call('shell','input','tap',str((box[0]+box[2])//2),str((box[1]+box[3])//2))
+time.sleep(.6)
+services=call('shell','dumpsys','activity','services',APP)
+raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20);file=ROOT/'private-ptt-restored.png';file.write_bytes(raw)
+image=Image.open(file);assert image.size==(1080,2340)
+rect=[max(0,box[0]-10),max(0,box[1]-10),min(image.width,box[2]+460),min(image.height,box[3]+10)]
+crop=ROOT/'ptt-restored-mode.png';image.crop(rect).save(crop)
+result={'action':'restore-observed-vad','permission':permission(),'foreground_types':re.findall(r'isForeground=true[^\n]*types=(0x[0-9a-f]+)',services),
+ 'observed_vad_bounds':box,'source_sha256':hashlib.sha256(raw).hexdigest(),'source_size':list(image.size),'crop':crop.name,'crop_rectangle':rect,'resampled':False}
+(ROOT/'ptt-restored-native.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(result))
